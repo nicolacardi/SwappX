@@ -7,7 +7,6 @@ export class AlunniDataSource implements DataSource<ALU_Alunno> {
 
     private ALU_Alunno = new BehaviorSubject<ALU_Alunno[]>([]);
 
-
     constructor(private svcALU_Alunni: ALU_AlunniService) {}
 
     connect(collectionViewer: CollectionViewer): Observable<ALU_Alunno[]> {
@@ -19,10 +18,7 @@ export class AlunniDataSource implements DataSource<ALU_Alunno> {
     }
 
     loadAlunni() {
-
-
         this.svcALU_Alunni.loadAlunni()
-
         .subscribe(res => this.ALU_Alunno.next(res));
     }    
 }

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ALUAlunniService } from './alu-alunni.service';
+import { ALU_AlunniService } from './alu-alunni.service';
 
 describe('ALUAlunniService', () => {
-  let service: ALUAlunniService;
+  let service: ALU_AlunniService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ALUAlunniService);
+    service = TestBed.inject(ALU_AlunniService);
   });
 
   it('should be created', () => {

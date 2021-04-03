@@ -1,21 +1,27 @@
-<mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
+<mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource2$">
   
-
-  
-    <ng-container matColumnDef="description">
+    <ng-container matColumnDef="nome">
         <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
         <mat-cell class="description-cell"
                   *matCellDef="let ALU_Alunno">{{ALU_Alunno.nome}}</mat-cell>
     </ng-container>
   
-    <ng-container matColumnDef="duration">
+    <ng-container matColumnDef="cognome">
         <mat-header-cell *matHeaderCellDef>Cognome</mat-header-cell>
         <mat-cell class="duration-cell"
                   *matCellDef="let ALU_Alunno">{{ALU_Alunno.cognome}}</mat-cell>
     </ng-container>
     
+    <ng-container matColumnDef="dtNascita">
+        <mat-header-cell *matHeaderCellDef>Data di Nascita</mat-header-cell>
+        <mat-cell class="duration-cell"
+                  *matCellDef="let ALU_Alunno">{{ALU_Alunno.dtNascita | date: "d MMM yyyy"}}</mat-cell>
+    </ng-container>
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"
+    (click)="onRowClicked(row)"
+    ></mat-row>
     
 </mat-table>

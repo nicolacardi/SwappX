@@ -10,17 +10,21 @@ import { AlunniDataSource } from './datasource';
   styleUrls: ['./alu-alunni.component.css']
 })
 export class ALUAlunniComponent implements OnInit {
-  
+  dataSource2$!: Observable<ALU_Alunno[]>;
   dataSource!: AlunniDataSource;
   //obs_ALU_Alunni$! : Observable<ALU_Alunno[]>;
-  displayedColumns = ["nome", "cognome"];
+  displayedColumns = ["nome", "cognome", "dtNascita"];
   constructor(private svcALU_Alunni: ALU_AlunniService) {}
 
   ngOnInit () {
     //this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunni();
     this.dataSource = new AlunniDataSource(this.svcALU_Alunni);
     this.dataSource.loadAlunni();
+    this.dataSource2$ = this.svcALU_Alunni.loadAlunni();
   }
 
+  onRowClicked(row: any) {
+    console.log('Row clicked: ', row);
+  }
 
 }
