@@ -1,0 +1,21 @@
+<mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
+  
+
+  
+    <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+        <mat-cell class="description-cell"
+                  *matCellDef="let ALU_Alunno">{{ALU_Alunno.nome}}</mat-cell>
+    </ng-container>
+  
+    <ng-container matColumnDef="duration">
+        <mat-header-cell *matHeaderCellDef>Cognome</mat-header-cell>
+        <mat-cell class="duration-cell"
+                  *matCellDef="let ALU_Alunno">{{ALU_Alunno.cognome}}</mat-cell>
+    </ng-container>
+    
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    
+</mat-table>
