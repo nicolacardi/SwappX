@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ALU_Alunno } from 'src/models/ALU_Alunno';
-import { ALU_AlunniService } from './services/alu-alunni.service';
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { AlunniService } from './_services/alunni.service';
 
 @Component({
   selector: 'app-root',
@@ -11,12 +11,12 @@ import { ALU_AlunniService } from './services/alu-alunni.service';
 export class AppComponent implements OnInit{
   title = 'SwappX';
 
-  obs_ALU_Alunni$! : Observable<ALU_Alunno[]>;
+
   
-  constructor(private svcALU_Alunni: ALU_AlunniService) {}
+  constructor() {}
 
   ngOnInit () {
-    this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunni();
+
   }
 
 

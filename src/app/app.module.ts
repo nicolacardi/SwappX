@@ -7,13 +7,13 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MaterialModule } from './material/material.module';
-import { ALUAlunniComponent } from './alu-alunni/alu-alunni.component';
+import { MaterialModule } from './_material/material.module';
+import { AlunniListComponent } from './alunni/alunni-list/alunni-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ALUAlunniComponent
+    AlunniListComponent
   ],
   imports: [
     BrowserModule,
