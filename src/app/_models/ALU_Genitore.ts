@@ -1,6 +1,4 @@
-import { ALU_Genitore } from './ALU_Genitore';
-
-export interface ALU_Alunno {
+export interface ALU_Genitore {
         id: number;
         nome: string;
         cognome: string;
@@ -16,20 +14,10 @@ export interface ALU_Alunno {
         nazione: string;
         email: string;
         telefono: string;
-        ckAttivo: boolean;
-        ckDisabile: boolean;
-        ckDSA: boolean;
-        ckAuthFoto: boolean;
-        ckAuthUsoMateriale: boolean;
-        ckAuthuscite: boolean;
-        scuolaProvenienza: string;
-        indirizzoScuolaProvenienza: string;
 
         note: string;
         dtIns: string;
         dtUpd: string;
         userIns: number;
         userUpd: number;
-
-        genitori: ALU_Genitore[];
 }

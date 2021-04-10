@@ -1,24 +1,33 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { BehaviorSubject, Observable, timer } from 'rxjs';
-import { delayWhen, finalize, map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { delayWhen, finalize, map } from 'rxjs/operators';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from '../../_services/alunni.service';
-import { AlunniDataSource } from './ds-alunni';
 import {MatTableDataSource} from '@angular/material/table';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-alunni-list',
   templateUrl: './alunni-list.component.html',
-  styleUrls: ['./alunni-list.component.css']
+  styleUrls: ['./alunni-list.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class AlunniListComponent implements OnInit {
 
+  
   //dsAlunni!: AlunniDataSource;***Questa si usava per passargli un custom datasource
   obs_ALU_Alunni$! : Observable<ALU_Alunno[]>;
   matDataSource = new MatTableDataSource<ALU_Alunno>();
-  displayedColumns = ["nome", "cognome", "dtNascita"];
+  displayedColumns = ["nome", "cognome", "indirizzo", "dtNascita", "ckAttivo" ];
+  expandedElement!: ALU_Alunno | null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -29,9 +38,10 @@ export class AlunniListComponent implements OnInit {
   public loading$ = this.loadingSubject.asObservable();
   
   ngOnInit () {
+
     this.loadingSubject.next(true);
     //this.dsAlunni = new AlunniDataSource(this.svcALU_Alunni);***Questa si usava per passargli un custom datasource
-    this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunni()
+    this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunniWithParents()
       .pipe (
         //delayWhen(() => timer(200)),
         finalize(() => this.loadingSubject.next(false)
@@ -41,22 +51,11 @@ export class AlunniListComponent implements OnInit {
 
     this.obs_ALU_Alunni$.subscribe(val => 
       {
-      
       this.matDataSource.data = val;
       this.matDataSource.paginator = this.paginator;
       this.matDataSource.sort = this.sort;
       }
     );
-    
-    
-    
-
-    //NON USO IL FILE DATASOURCE MA PASSO DIRETTAMENTE L'OBSERVABLE DEL SERVICE COME DATASOURCE DELLA MATTABLE
-    
-    //this.dsAlunni.findAlunni('', 'asc', 0, 3); //filtro e pagination server side
-    //this.loadAlunniPage(3, 0);***Questa si usava per passargli un custom datasource
-    //this.loading$ = this.dsAlunni.loading$;***Questa si usava per passargli un custom datasource
-    //this.dsAlunni.paginator = this.paginator;
     
 
   }
@@ -66,11 +65,21 @@ export class AlunniListComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    //this.paginator.pageIndex = 3;
-
-    //this.paginator.pageIndex = 3;
-    //console.log(this.paginator.getNumberOfPages());
+ 
   }
+
+  applyFilter(event: Event) {
+    console.log (event);
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.matDataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+
+
+
+
+
+
 
   //per paginazione client side ma con datasource custom
   // ngAfterViewInit() {
@@ -112,3 +121,11 @@ export class AlunniListComponent implements OnInit {
       // .pipe (
       //   map(val => val.slice(this.startItem, this.endItem)),
       // )
+
+
+    //NON USO IL FILE DATASOURCE MA PASSO DIRETTAMENTE L'OBSERVABLE DEL SERVICE COME DATASOURCE DELLA MATTABLE
+    
+    //this.dsAlunni.findAlunni('', 'asc', 0, 3); //filtro e pagination server side
+    //this.loadAlunniPage(3, 0);***Questa si usava per passargli un custom datasource
+    //this.loading$ = this.dsAlunni.loading$;***Questa si usava per passargli un custom datasource
+    //this.dsAlunni.paginator = this.paginator;
