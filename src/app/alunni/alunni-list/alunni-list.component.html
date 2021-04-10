@@ -1,22 +1,22 @@
-<div class="spinner-container" *ngIf="dsAlunni.loading$ | async">
+<div class="spinner-container" *ngIf="loading$ | async">
     <mat-spinner></mat-spinner>
 </div>
-<mat-table class="lessons-table mat-elevation-z8" [dataSource]="dsAlunni">
+<mat-table class="lessons-table mat-elevation-z8" matSort [dataSource]="matDataSource">
   
     <ng-container matColumnDef="nome">
-        <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Nome</mat-header-cell>
         <mat-cell class="description-cell"
                   *matCellDef="let AlunniSubject">{{AlunniSubject.nome}}</mat-cell>
     </ng-container>
   
     <ng-container matColumnDef="cognome">
-        <mat-header-cell *matHeaderCellDef>Cognome</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Cognome</mat-header-cell>
         <mat-cell class="duration-cell"
                   *matCellDef="let AlunniSubject">{{AlunniSubject.cognome}}</mat-cell>
     </ng-container>
     
     <ng-container matColumnDef="dtNascita">
-        <mat-header-cell *matHeaderCellDef>Data di Nascita</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Data di Nascita</mat-header-cell>
         <mat-cell class="duration-cell"
                   *matCellDef="let AlunniSubject">{{AlunniSubject.dtNascita | date: "dd/MM/yyyy"}}</mat-cell>
     </ng-container>
@@ -29,5 +29,4 @@
     
 </mat-table>
 
-<mat-paginator [pageSize]="3"
-[pageSizeOptions]="[3, 5, 10]"></mat-paginator>
+<mat-paginator [pageSize]="3" [pageSizeOptions]="[2, 3, 5]"></mat-paginator>

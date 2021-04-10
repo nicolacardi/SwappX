@@ -13,9 +13,11 @@ export class AlunniService {
   constructor(private http: HttpClient) { }
 
   loadAlunni(): Observable<ALU_Alunno[]>{
+    console.log("sto caricando gli alunni");
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni');
   }
 
+  //per filtro e paginazione server side
   findAlunni(filter = '', sortOrder= 'asc', pageNumber = 0, pageSize = 3): Observable<ALU_Alunno[]>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni', {
       params: new HttpParams()
