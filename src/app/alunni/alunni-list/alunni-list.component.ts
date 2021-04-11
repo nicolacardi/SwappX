@@ -8,6 +8,7 @@ import { AlunniService } from '../../_services/alunni.service';
 import {MatTableDataSource} from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
+
 @Component({
   selector: 'app-alunni-list',
   templateUrl: './alunni-list.component.html',
@@ -26,7 +27,7 @@ export class AlunniListComponent implements OnInit {
   //dsAlunni!: AlunniDataSource;***Questa si usava per passargli un custom datasource
   obs_ALU_Alunni$! : Observable<ALU_Alunno[]>;
   matDataSource = new MatTableDataSource<ALU_Alunno>();
-  displayedColumns = ["nome", "cognome", "indirizzo", "dtNascita", "ckAttivo" ];
+  displayedColumns: string[] =  ["nome", "cognome", "dtNascita", "indirizzo", "comune", "CAP", "prov", "email", "telefono", "ckAttivo" ];
   expandedElement!: ALU_Alunno | null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -37,6 +38,7 @@ export class AlunniListComponent implements OnInit {
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
   
+
   ngOnInit () {
 
     this.loadingSubject.next(true);
@@ -73,7 +75,6 @@ export class AlunniListComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.matDataSource.filter = filterValue.trim().toLowerCase();
   }
-
 
 
 

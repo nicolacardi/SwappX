@@ -1,72 +1,109 @@
 
+<h2 style="text-align: center;">Lista Alunni sortable, con paginator, filter, sticky header, collapsible rows</h2>
+<div class="spinner-container" *ngIf="loading$ | async">
+    <mat-spinner></mat-spinner>
+</div>
 
-    <mat-form-field class="mg20">
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
-    </mat-form-field>
+<!-- **************************   FILTER   ******************* -->
+<mat-form-field class="mg20">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+</mat-form-field>
 
-    <div class="spinner-container" *ngIf="loading$ | async">
-        <mat-spinner></mat-spinner>
-    </div>
-    <mat-paginator [pageSize]="3" [pageSizeOptions]="[2, 3, 5]" showFirstLastButtons></mat-paginator>
-<mat-table class="mat-elevation-z8" [dataSource]="matDataSource" matSort
-multiTemplateDataRows>
-  
+
+<!-- **************************   MAT-TABLE   ******************* -->
+<mat-table class="mat-elevation-z8" [dataSource]="matDataSource"
+matSort
+multiTemplateDataRows
+>
+    <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
     <ng-container matColumnDef="nome">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Nome</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
         <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.nome}}</mat-cell>
     </ng-container>
-  
+
     <ng-container matColumnDef="cognome">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Cognome</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</mat-header-cell>
         <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.cognome}}</mat-cell>
     </ng-container>
     
     <ng-container matColumnDef="dtNascita">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Data di Nascita</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Data di Nascita</mat-header-cell>
         <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.dtNascita | date: "dd/MM/yyyy"}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="indirizzo">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Indirizzo</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Indirizzo</mat-header-cell>
         <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.indirizzo}}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="comune">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Comune</mat-header-cell>
+        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.comune}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="CAP">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CAP</mat-header-cell>
+        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.CAP}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="prov">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Prov</mat-header-cell>
+        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.prov}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="CF">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CF</mat-header-cell>
+        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.CF}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</mat-header-cell>
+        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.email}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="telefono">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>telefono</mat-header-cell>
+        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.telefono}}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="ckAttivo">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Attivo</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Attivo</mat-header-cell>
         <mat-cell *matCellDef="let AlunniSubject">
             <mat-checkbox [checked]="AlunniSubject.ckAttivo"></mat-checkbox>
         </mat-cell>
     </ng-container>
 
-
+    <!-- **************************   NG-CONTAINER EXPANDED DETAIL   ******************* -->
     <ng-container matColumnDef="expandedDetail">
         <mat-cell *matCellDef="let AlunniSubject" [attr.colspan]="displayedColumns.length">
-            <div class="example-element-detail"
+            <div class="element-detail"
                 [@detailExpand]="AlunniSubject == expandedElement ? 'expanded' : 'collapsed'">
-                <div class="row">
-                    Genitore 1:
-                    <!-- Genitore: {{AlunniSubject.genitori[0].genitoreID}} -->
+                <div>
+                    <img class= "picture-img" src = '{{ "../../../../../assets/photos/" + AlunniSubject.nome + AlunniSubject.cognome + ".png" }}'>
                 </div>
-                <br>
-                <div class="row">
-                    Genitore 2:
-                    <!-- Genitore: {{AlunniSubject.genitori[0].genitoreID}} -->
-                </div>
+                <div class="mg20">
+                    Indirizzo: {{AlunniSubject.indirizzo}} {{AlunniSubject.comune}} {{AlunniSubject.prov}} <br>
+                    Data e Luogo di Nascita: {{AlunniSubject.dtNascita | date: "dd/MM/yyyy"}} {{AlunniSubject.comuneNascita}} {{AlunniSubject.provNascita}}
+                 </div>
+
             </div>
         </mat-cell>
     </ng-container>
 
-
-      
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     
+    <!-- **************************   MAT-HEADER-ROW   ******************* -->
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    
+    <!-- **************************   MAT-ROW   ******************* -->
     <mat-row *matRowDef="let element; columns: displayedColumns"
-    class="example-element-row"
-    [class.example-expanded-row]="expandedElement === element"
+    class="element-row"
+    [class.expanded-row]="expandedElement === element"
     (click)="expandedElement = expandedElement === element ? null : element"
     ></mat-row>
-    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    <mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></mat-row>
 </mat-table>
 
+<!-- **************************   PAGINATOR   ******************* -->
+
+<mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
