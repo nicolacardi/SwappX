@@ -9,11 +9,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MaterialModule } from './_material/material.module';
 import { AlunniListComponent } from './alunni/alunni-list/alunni-list.component';
+import { GenitoriListComponent } from './genitori/genitori-list/genitori-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AlunniListComponent
+    AlunniListComponent,
+    GenitoriListComponent
   ],
   imports: [
     BrowserModule,
