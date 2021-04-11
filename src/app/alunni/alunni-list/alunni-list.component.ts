@@ -7,6 +7,7 @@ import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from '../../_services/alunni.service';
 import {MatTableDataSource} from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 
 @Component({
@@ -39,6 +40,8 @@ export class AlunniListComponent implements OnInit {
   public loading$ = this.loadingSubject.asObservable();
   
 
+
+
   ngOnInit () {
 
     this.loadingSubject.next(true);
@@ -66,18 +69,15 @@ export class AlunniListComponent implements OnInit {
     console.log('Row clicked: ', row);
   }
 
-  ngAfterViewInit() {
- 
-  }
-
   applyFilter(event: Event) {
     console.log (event);
     const filterValue = (event.target as HTMLInputElement).value;
     this.matDataSource.filter = filterValue.trim().toLowerCase();
   }
 
-
-
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
+  }
 
 
 

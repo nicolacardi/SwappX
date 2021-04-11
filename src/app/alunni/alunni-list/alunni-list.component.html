@@ -13,64 +13,66 @@
 
 <!-- **************************   MAT-TABLE   ******************* -->
 <mat-table class="mat-elevation-z8" [dataSource]="matDataSource"
-matSort
-multiTemplateDataRows
->
+    matSort
+    multiTemplateDataRows
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    (cdkDropListDropped)="drop($event)">
     <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
     <ng-container matColumnDef="nome">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
-        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.nome}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.nome}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="cognome">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</mat-header-cell>
-        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.cognome}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.cognome}}</mat-cell>
     </ng-container>
     
     <ng-container matColumnDef="dtNascita">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Data di Nascita</mat-header-cell>
-        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.dtNascita | date: "dd/MM/yyyy"}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="indirizzo">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Indirizzo</mat-header-cell>
-        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.indirizzo}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.indirizzo}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="comune">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Comune</mat-header-cell>
-        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.comune}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.comune}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="CAP">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CAP</mat-header-cell>
-        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.CAP}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.CAP}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="prov">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Prov</mat-header-cell>
-        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.prov}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.prov}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="CF">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CF</mat-header-cell>
-        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.CF}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.CF}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="email">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</mat-header-cell>
-        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.email}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.email}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="telefono">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>telefono</mat-header-cell>
-        <mat-cell *matCellDef="let AlunniSubject">{{AlunniSubject.telefono}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.telefono}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="ckAttivo">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Attivo</mat-header-cell>
-        <mat-cell *matCellDef="let AlunniSubject">
-            <mat-checkbox [checked]="AlunniSubject.ckAttivo"></mat-checkbox>
+        <mat-cell *matCellDef="let element">
+            <mat-checkbox [checked]="element.ckAttivo"></mat-checkbox>
         </mat-cell>
     </ng-container>
 

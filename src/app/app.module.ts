@@ -10,6 +10,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './_material/material.module';
 import { AlunniListComponent } from './alunni/alunni-list/alunni-list.component';
 import { GenitoriListComponent } from './genitori/genitori-list/genitori-list.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { GenitoriListComponent } from './genitori/genitori-list/genitori-list.co
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]

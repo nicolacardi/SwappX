@@ -18,18 +18,4 @@ export class GenitoriService {
     return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori');
   }
 
-  // loadAlunniWithAlunni(): Observable<ALU_Genitore[]>{
-  //   return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllWithParents');
-  // }
-
-  //per filtro e paginazione server side
-  findGenitori(filter = '', sortOrder= 'asc', pageNumber = 0, pageSize = 3): Observable<ALU_Genitore[]>{
-    return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori', {
-      params: new HttpParams()
-                .set('filter', filter)
-                .set('sortOrder', sortOrder)
-                .set('pageNumber', pageNumber.toString())
-                .set('pageSize', pageSize.toString())
-    });
-  }
 }
