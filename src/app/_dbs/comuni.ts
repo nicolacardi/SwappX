@@ -40,7 +40,8 @@ export const COMUNI: any = [
 		"regione": "Piemonte",
 		"provincia": "TO",
 		"indirizzo": "Piazza Martiri della Libertà"
-	},
+	}
+	,
 	{
 		"istat": "1007",
 		"comune": "Alpette",
@@ -187,7 +188,9 @@ export const COMUNI: any = [
 		"regione": "Piemonte",
 		"provincia": "TO",
 		"indirizzo": "Piazza Statuto"
-	},
+	}
+	/*
+	,
 	{
 		"istat": "1028",
 		"comune": "Borgaro Torinese",
@@ -55855,4 +55858,5 @@ export const COMUNI: any = [
 	{
 		"istat": ""
 	}
+	*/
 ]

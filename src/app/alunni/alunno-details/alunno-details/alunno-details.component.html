@@ -24,17 +24,34 @@
                     <mat-error *ngIf="form.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
                 </mat-form-field>
             </div>
-            <div>
 
+            <div>
+            
+                <mat-form-field>
+                    <mat-label>Comune di Nascita</mat-label>
+                    <input type="text"
+                           placeholder="<Selezionare il Comune>"
+                           aria-label="Comune di Nascita"
+                           matInput
+                           
+                           [formControl]="ctrlComune"
+                           [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let element of filteredComuniNome | async" [value]="element">
+                        {{element}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+
+            <!--
                 <mat-form-field>
                     <mat-select placeholder="Comune di Nascita" formControlName="comuneNascita">
                         <ng-container *ngFor="let element of (comuni$ | async)">
-                            <!-- <mat-option *ngFor="let comune of comuniArr" [value]="comune.istat">{{comune.comune}}</mat-option> -->
                             <mat-option [value]="element">{{element.comune}}</mat-option>
                         </ng-container>
                     </mat-select>
                 </mat-form-field>
-
+            -->
 
                 <!-- <mat-form-field>
                     <input matInput type="text" placeholder="Comune di nascita" formControlName="comuneNascita">
@@ -47,14 +64,15 @@
                 </mat-form-field>
             </div>
             <div>
+            
                 <mat-form-field>
                     <mat-select placeholder="Comune di Residenza" formControlName="comune">
-                        <ng-container *ngFor="let element of (comuni$ | async)">
-                            <!-- <mat-option *ngFor="let comune of comuniArr" [value]="comune.istat">{{comune.comune}}</mat-option> -->
+                        <ng-container *ngFor="let element of (comuniList$ | async)">
                             <mat-option [value]="element">{{element.comune}}</mat-option>
                         </ng-container>
                     </mat-select>
                 </mat-form-field>
+        
                 <!-- <mat-form-field>
                     <input matInput type="text" placeholder="Comune di Residenza" formControlName="comune">
                 </mat-form-field> -->

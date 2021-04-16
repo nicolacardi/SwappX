@@ -1,13 +1,15 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of, timer } from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 import { delayWhen, finalize, tap } from 'rxjs/operators';
+
 import { COMUNI } from 'src/app/_dbs/comuni';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from 'src/app/_services/alunni.service';
 
-interface Comuni {
+interface Comune {
   istat: string;
   comune: string;
   regione: string;
@@ -24,9 +26,14 @@ export class AlunnoDetailsComponent implements OnInit{
   
   alunno!: Observable<ALU_Alunno>;
 
-  comuni$!: Observable<Comuni[]>;
-  comuniArr = COMUNI;
-  
+  ctrlComune = new FormControl();
+  comuniList$!: Observable<Comune[]>;
+  filteredComuniList$!: Observable<Comune[]>;
+
+  comuniNome: string[] = ['Padova', 'Vicenza', 'Ragusa'];
+  filteredComuniNome!: Observable<string[]>;
+
+
   //alunno!: ALU_Alunno;
   loading: boolean = true;
   emptyForm : boolean = false;
@@ -56,9 +63,12 @@ export class AlunnoDetailsComponent implements OnInit{
                   ckAuthUscite:      [false]
 
                 });
-      console.log ("start");
-      this.comuni$ = of(COMUNI);
-      console.log ("end");
+
+      this.comuniList$ = of(COMUNI);
+      this.filteredComuniList$ = of(COMUNI);
+      
+      //this.comuniNome = this.comuni$.map(a => a.foo);
+
       // this.alunniSvc.loadAlunno(this.route.snapshot.params['id'])
       // .subscribe(
       //   val=>{
@@ -98,8 +108,43 @@ export class AlunnoDetailsComponent implements OnInit{
     } else {
       this.emptyForm = true
       this.loading = false
-      
     }
+
+    //AS  
+    this.filteredComuniNome = this.ctrlComune.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+      
+    //AS: MERDA NON VA!
+    /*
+    this.filteredComuniList$ = this.ctrlComune.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => this._filterComune(value))
+    );
+    */
   }
 
+//AS
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.comuniNome.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  private _filterComune(query: string): Observable<Comune[]> {
+    if (query === '') return of([]);
+
+    const queryRegExp = new RegExp(query, 'i');
+
+    return this.comuniList$
+      .pipe(map((comuni) => {
+        return comuni
+            .filter(char => queryRegExp.test(char.comune))
+            .sort((a, b) => a.comune.length - b.comune.length)
+      }));
+  }
+ 
 }
