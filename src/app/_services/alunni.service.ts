@@ -22,7 +22,10 @@ export class AlunniService {
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllWithParents');
   }
 
-
+  loadAlunno(id: any): Observable<ALU_Alunno>{
+    console.log("sto caricando l'alunno");
+    return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/'+id);
+  }
   //per filtro e paginazione server side
   findAlunni(filter = '', sortOrder= 'asc', pageNumber = 0, pageSize = 3): Observable<ALU_Alunno[]>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni', {

@@ -10,14 +10,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './_material/material.module';
 import { AlunniListComponent } from './alunni/alunni-list/alunni-list.component';
 import { GenitoriListComponent } from './genitori/genitori-list/genitori-list.component';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule} from '@angular/cdk/drag-drop';
+import { AlunnoDetailsComponent } from './alunni/alunno-details/alunno-details/alunno-details.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AlunniListComponent,
-    GenitoriListComponent
+    GenitoriListComponent,
+    AlunnoDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -25,9 +29,14 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
-    DragDropModule
+    DragDropModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+
+    { provide: MAT_DATE_LOCALE, useValue: 'it-IT' }
+    
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

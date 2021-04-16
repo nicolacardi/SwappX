@@ -1,5 +1,5 @@
 
-<h2 style="text-align: center;">Lista Alunni sortable, con paginator, filter, sticky header, collapsible rows</h2>
+<h2 style="text-align: center;">Lista Alunni sortable, con paginator, filter, sticky header, movable columns, collapsible rows</h2>
 <div class="spinner-container" *ngIf="loading$ | async">
     <mat-spinner></mat-spinner>
 </div>
@@ -101,7 +101,8 @@
     <mat-row *matRowDef="let element; columns: displayedColumns"
     class="element-row"
     [class.expanded-row]="expandedElement === element"
-    (click)="expandedElement = expandedElement === element ? null : element"
+    (dblclick)="expandedElement = expandedElement === element ? null : element"
+    (click)="onRowClicked(element.id)"
     ></mat-row>
     <mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></mat-row>
 </mat-table>

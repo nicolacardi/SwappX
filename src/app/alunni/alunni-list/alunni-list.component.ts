@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { AlunniService } from '../../_services/alunni.service';
 import {MatTableDataSource} from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -23,7 +24,6 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
   ],
 })
 export class AlunniListComponent implements OnInit {
-
   
   //dsAlunni!: AlunniDataSource;***Questa si usava per passargli un custom datasource
   obs_ALU_Alunni$! : Observable<ALU_Alunno[]>;
@@ -34,14 +34,11 @@ export class AlunniListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private svcALU_Alunni: AlunniService) {}
+  constructor(private svcALU_Alunni: AlunniService, private router : Router) {}
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
   
-
-
-
   ngOnInit () {
 
     this.loadingSubject.next(true);
@@ -65,8 +62,8 @@ export class AlunniListComponent implements OnInit {
 
   }
 
-  onRowClicked(row: any) {
-    console.log('Row clicked: ', row);
+  onRowClicked(id:any) {
+    this.router.navigate(["alunni", id]);
   }
 
   applyFilter(event: Event) {

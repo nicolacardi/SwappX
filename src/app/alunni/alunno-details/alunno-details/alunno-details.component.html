@@ -1,0 +1,30 @@
+<mat-card class="form-card">
+    <mat-card-content>
+        <form class="data-form flex-form" [formGroup] = "form">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Nome" formControlName="nome">
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput type="text" placeholder="Cognome" formControlName="cognome">
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput
+                formControlName = "dtNascita"
+                [matDatepicker]= "dpDtNascita"
+                placeholder="Data di Nascita">
+                <mat-datepicker-toggle matSuffix [for]="dpDtNascita"></mat-datepicker-toggle>
+                <mat-datepicker #dpDtNascita></mat-datepicker>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" [disabled]= "!form.valid">
+            Salva
+            </button>
+        </form>
+
+        <div>
+            {{form.value | json}} {{form.valid}}
+        </div>
+    </mat-card-content>
+</mat-card>
