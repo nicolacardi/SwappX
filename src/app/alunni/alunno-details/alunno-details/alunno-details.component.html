@@ -1,30 +1,129 @@
 <mat-card class="form-card">
     <mat-card-content>
-        <form class="data-form flex-form" [formGroup] = "form">
-            <mat-form-field>
-                <input matInput type="text" placeholder="Nome" formControlName="nome">
-            </mat-form-field>
+        <form *ngIf="(alunno | async)|| emptyForm" class="data-form flex-form" [formGroup] = "form">
+            <div>
+                <mat-form-field>
+                    <input matInput required type="text" placeholder="Nome" minlength= "3" formControlName="nome">
+<!--Problemino: l'errore che segue funziona nel form vuoto ma non quando popolato tramite router...-->
+                    <mat-error *ngIf="form.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field>
+                    <input matInput required type="text" placeholder="Cognome" formControlName="cognome">
+                    <mat-error *ngIf="form.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
+                </mat-form-field>
 
-            <mat-form-field>
-                <input matInput type="text" placeholder="Cognome" formControlName="cognome">
-            </mat-form-field>
+                <mat-form-field class="form-dp">
+                    <input matInput
+                    required
+                    formControlName = "dtNascita"
+                    [matDatepicker]= "dpDtNascita"
+                    placeholder="Data di Nascita">
+                    <mat-datepicker-toggle matSuffix [for]="dpDtNascita"></mat-datepicker-toggle>
+                    <mat-datepicker #dpDtNascita></mat-datepicker>
+                    <mat-error *ngIf="form.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
+                </mat-form-field>
+            </div>
+            <div>
 
-            <mat-form-field>
-                <input matInput
-                formControlName = "dtNascita"
-                [matDatepicker]= "dpDtNascita"
-                placeholder="Data di Nascita">
-                <mat-datepicker-toggle matSuffix [for]="dpDtNascita"></mat-datepicker-toggle>
-                <mat-datepicker #dpDtNascita></mat-datepicker>
-            </mat-form-field>
+                <mat-form-field>
+                    <mat-select placeholder="Comune di Nascita" formControlName="comuneNascita">
+                        <!-- <ng-container *ngFor="let comune of (comuni$ | async)"> -->
+                            <mat-option *ngFor="let comune of comuniArr" [value]="comune.istat">{{comune.comune}}</mat-option>
+                        <!--</ng-container>-->
+                    </mat-select>
+                </mat-form-field>
 
-            <button mat-raised-button color="primary" [disabled]= "!form.valid">
-            Salva
-            </button>
+
+                <!-- <mat-form-field>
+                    <input matInput type="text" placeholder="Comune di nascita" formControlName="comuneNascita">
+                </mat-form-field> -->
+                <mat-form-field>
+                    <input matInput type="text" placeholder="Prov di Nascita" formControlName="provNascita">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="text" placeholder="Paese di Nascita" formControlName="nazioneNascita">
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input matInput type="text" placeholder="Comune di Residenza" formControlName="comune">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="text" placeholder="Prov di Residenza" formControlName="prov">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="text" placeholder="Paese di Residenza" formControlName="nazione">
+                </mat-form-field>
+            </div>
+            
+            <div>
+                <mat-form-field style="width: 370px">
+                    <input  matInput type="text" placeholder="Indirizzo e N. Civico" formControlName="indirizzo">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="text" placeholder="CAP" formControlName="CAP">
+                </mat-form-field>
+            </div>
+
+
+            <table  matTable class="grid-checkboxes">
+                <tr>
+                    <th>
+                        <mat-checkbox color="primary" formControlName="ckAttivo">
+                            Alunno Attivo
+                        </mat-checkbox>
+                    </th>
+                    <th>
+                        <mat-checkbox color="primary" formControlName="ckDSA">
+                            Alunno con DSA
+                        </mat-checkbox>
+                    </th>
+                    <th>
+                        <mat-checkbox color="primary" formControlName="ckDisabile">
+                            Alunno Disabile
+                        </mat-checkbox>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <mat-checkbox color="primary" formControlName="ckAuthFoto">
+                            Autorizz. Uso Foto
+                        </mat-checkbox>
+                    </th>
+                    <th>
+                        <mat-checkbox color="primary" formControlName="ckAuthUscite">
+                            Autorizz. Uscite
+                        </mat-checkbox>
+                    </th>
+                    <th>
+                        <mat-checkbox color="primary" formControlName="ckAuthUsoMateriale">
+                            Autorizz. Uso Mat.
+                        </mat-checkbox>
+                    </th>
+                </tr>
+            </table>
+
+
+            <div>
+                <button style="width: 400px" mat-raised-button color="primary" [disabled]= "!form.valid">
+                Salva
+                </button>
+            </div>
+
         </form>
 
-        <div>
-            {{form.value | json}} {{form.valid}}
+        <!-- <div>
+            errori su campo nome: {{form.controls.nome.errors?.required}}
         </div>
+        <div>
+            form.valid: {{form.valid}}
+        </div> -->
+
+
     </mat-card-content>
 </mat-card>
+
+<div *ngIf ="loading" class="spinner-container">
+    <mat-spinner></mat-spinner>
+</div>

@@ -1,0 +1,10 @@
+.grid-checkboxes {
+    width: 600px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.grid-checkboxes th {
+    text-align: left;
+    font-weight: normal;
+}
