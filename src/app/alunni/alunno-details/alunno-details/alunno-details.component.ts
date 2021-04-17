@@ -1,13 +1,14 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, timer } from 'rxjs';
+import { Observable, of, timer } from 'rxjs';
 import { delayWhen, finalize, tap } from 'rxjs/operators';
 import { COMUNI } from 'src/app/_dbs/comuni';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from 'src/app/_services/alunni.service';
 
 interface Comuni {
+  istat: string;
   comune: string;
   regione: string;
   provincia: string;
@@ -55,6 +56,9 @@ export class AlunnoDetailsComponent implements OnInit{
                   ckAuthUscite:      [false]
 
                 });
+      console.log ("start");
+      this.comuni$ = of(COMUNI);
+      console.log ("end");
       // this.alunniSvc.loadAlunno(this.route.snapshot.params['id'])
       // .subscribe(
       //   val=>{
