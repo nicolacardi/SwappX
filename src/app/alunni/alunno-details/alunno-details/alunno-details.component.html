@@ -4,7 +4,6 @@
             <div>
                 <mat-form-field>
                     <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome">
-<!--Problemino: l'errore che segue funziona nel form vuoto ma non quando popolato tramite router...-->
                     <mat-error *ngIf="form.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
                 </mat-form-field>
                 

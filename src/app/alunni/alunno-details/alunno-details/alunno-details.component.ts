@@ -56,9 +56,9 @@ export class AlunnoDetailsComponent implements OnInit{
                   ckAuthUscite:      [false]
 
                 });
-      console.log ("start");
+
       this.comuni$ = of(COMUNI);
-      console.log ("end");
+
       // this.alunniSvc.loadAlunno(this.route.snapshot.params['id'])
       // .subscribe(
       //   val=>{
