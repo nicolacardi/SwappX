@@ -5,9 +5,8 @@ import { Observable, of, timer } from 'rxjs';
 import {debounceTime, map, startWith, switchMap} from 'rxjs/operators';
 import { delayWhen, finalize, tap } from 'rxjs/operators';
 
-import { COMUNI } from 'src/app/_dbs/comuni';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { TBL_Comune } from 'src/app/_models/TBL_Comune';
+
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { AlunniService } from 'src/app/_services/alunni.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
@@ -79,9 +78,10 @@ export class AlunnoDetailsComponent implements OnInit{
 
     this.filteredComuni$ = this.alunnoForm.controls['comune'].valueChanges
     .pipe(
+        
         //tap(()=>console.log("carico comune", this.alunnoForm.value.comune)),
         debounceTime(300),
-        //tap(() => this.comuniIsLoading = true),
+        tap(() => this.comuniIsLoading = false),
         switchMap(() => this.comuniSvc.filterComuni(this.alunnoForm.value.comune)
       )
     )
