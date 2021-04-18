@@ -1,15 +1,15 @@
 <mat-card class="form-card">
     <mat-card-content>
-        <form *ngIf="(alunno | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
+        <form *ngIf="(alunno | async) || emptyForm" class="data-form flex-form" [formGroup] = "alunnoForm">
             <div>
                 <mat-form-field>
                     <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome">
-                    <mat-error *ngIf="form.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
+                    <mat-error *ngIf="alunnoForm.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
                 </mat-form-field>
                 
                 <mat-form-field>
                     <input matInput required type="text" placeholder="Cognome" formControlName="cognome">
-                    <mat-error *ngIf="form.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
+                    <mat-error *ngIf="alunnoForm.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="form-dp">
@@ -20,7 +20,7 @@
                     placeholder="Data di Nascita">
                     <mat-datepicker-toggle matSuffix [for]="dpDtNascita"></mat-datepicker-toggle>
                     <mat-datepicker #dpDtNascita></mat-datepicker>
-                    <mat-error *ngIf="form.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
+                    <mat-error *ngIf="alunnoForm.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
                 </mat-form-field>
             </div>
 
@@ -36,8 +36,10 @@
                            [formControl]="ctrlComune"
                            [matAutocomplete]="auto">
                     <mat-autocomplete #auto="matAutocomplete">
-                      <mat-option *ngFor="let element of filteredComuniNome | async" [value]="element">
-                        {{element}}
+                      <mat-option *ngFor="let element of filteredComuni | async" [value]="element">
+                        
+                        <span>{{element.comune}}</span>
+                        <small> | ID: {{element.istat}}</small>
                       </mat-option>
                     </mat-autocomplete>
                   </mat-form-field>
@@ -64,6 +66,7 @@
             </div>
             <div>
             
+                <!--
                 <mat-form-field>
                     <mat-select placeholder="Comune di Residenza" formControlName="comune">
                         <ng-container *ngFor="let element of (comuniList$ | async)">
@@ -71,7 +74,7 @@
                         </ng-container>
                     </mat-select>
                 </mat-form-field>
-        
+            -->
                 <!-- <mat-form-field>
                     <input matInput type="text" placeholder="Comune di Residenza" formControlName="comune">
                 </mat-form-field> -->
@@ -132,7 +135,7 @@
 
 
             <div>
-                <button style="width: 400px" mat-raised-button color="primary" [disabled]= "!form.valid">
+                <button style="width: 400px" mat-raised-button color="primary" [disabled]= "!alunnoForm.valid">
                 Salva
                 </button>
             </div>
