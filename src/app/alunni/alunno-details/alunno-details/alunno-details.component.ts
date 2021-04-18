@@ -1,37 +1,37 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of, timer } from 'rxjs';
-import {debounceTime, map, startWith, switchMap} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { debounceTime, switchMap } from 'rxjs/operators';
 import { delayWhen, finalize, tap } from 'rxjs/operators';
 
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-
-import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { AlunniService } from 'src/app/_services/alunni.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
 
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 
 @Component({
-  selector: 'app-alunno-details',
-  templateUrl: './alunno-details.component.html',
-  styleUrls: ['./alunno-details.component.css']
+  selector:     'app-alunno-details',
+  templateUrl:  './alunno-details.component.html',
+  styleUrls:    ['./alunno-details.component.css']
 })
 export class AlunnoDetailsComponent implements OnInit{
 
-  alunnoForm! : FormGroup;
-  emptyForm : boolean = false;
-  alunno!: Observable<ALU_Alunno>;
-  loading: boolean = true;
+  alunnoForm! :           FormGroup;
+  emptyForm :             boolean = false;
+  alunno!:                Observable<ALU_Alunno>;
+  loading:                boolean = true;
 
-  filteredComuni$!: Observable<_UT_Comuni[]>;
-  filteredComuniNascita$!: Observable<_UT_Comuni[]>;
-  comuniIsLoading: boolean = false;
+  filteredComuni$!:       Observable<_UT_Comuni[]>;
+  filteredComuniNascita$!:Observable<_UT_Comuni[]>;
+  comuniIsLoading:        boolean = false;
+  comuniNascitaIsLoading: boolean = false;
 
   constructor(private fb: FormBuilder, 
-      private route:ActivatedRoute,
-      private alunniSvc: AlunniService,
-      private comuniSvc: ComuniService) {
+      private route:      ActivatedRoute,
+      private alunniSvc:  AlunniService,
+      private comuniSvc:  ComuniService) {
 
         this.alunnoForm = this.fb.group({
           nome:              ['', Validators.required],
@@ -52,57 +52,58 @@ export class AlunnoDetailsComponent implements OnInit{
           ckAuthUsoMateriale:[false],
           ckAuthUscite:      [false]
         });
-
   }
 
   ngOnInit () {
-    
-
+    //********************* POPOLAMENTO FORM *******************
+    //serve distinguere tra form vuoto e form poolato in arrivo da lista alunni
     if (this.route.snapshot.params['id']) {
       //alunno è un observable di tipo ALU_Alunno
       //nell'html faccio la | async (==subscribe)
       this.alunno = this.alunniSvc.loadAlunno(this.route.snapshot.params['id'])
       .pipe(
-          //delayWhen(() => timer(2000)),
+          //delayWhen(() => timer(2000)), //per ritardare
           tap(
-           alunno => this.alunnoForm.patchValue(alunno)
+            //patchValue assegna "qualche" campo, quelli che trova
+            //setValue   assegna tutti i campi.
+            alunno => this.alunnoForm.patchValue(alunno)
           ),
           finalize(()=>this.loading = false),
-          tap ( val => console.log(val))
+          //tap ( val => console.log(val))
       );
     } else {
       this.emptyForm = true
       this.loading = false
     }
 
-
+    //********************* FILTRO COMUNE *******************
     this.filteredComuni$ = this.alunnoForm.controls['comune'].valueChanges
     .pipe(
-        
-        //tap(()=>console.log("carico comune", this.alunnoForm.value.comune)),
-        debounceTime(300),
-        tap(() => this.comuniIsLoading = false),
-        switchMap(() => this.comuniSvc.filterComuni(this.alunnoForm.value.comune)
-      )
+      debounceTime(300),
+      tap(() => this.comuniIsLoading = true),
+      //delayWhen(() => timer(2000)),
+      switchMap(() => this.comuniSvc.filterComuni(this.alunnoForm.value.comune)),
+      tap(() => this.comuniIsLoading = false)
     )
 
-
+    //********************* FILTRO COMUNE NASCITA ***********
     this.filteredComuniNascita$ = this.alunnoForm.controls['comuneNascita'].valueChanges
     .pipe(
-        //tap(()=>console.log(this.alunnoForm.value.comune)),
-        debounceTime(300),
-        tap(() => this.comuniIsLoading = true),
-        switchMap(() => this.comuniSvc.filterComuni(this.alunnoForm.value.comuneNascita)
-      )
+      debounceTime(300),
+      tap(() => this.comuniNascitaIsLoading = true),
+      switchMap(() => this.comuniSvc.filterComuni(this.alunnoForm.value.comuneNascita)),
+      tap(() => this.comuniNascitaIsLoading = false)
     )
 
   }
 
 
   displayComune(objComune: any) {
+    //metodo usato da displayWith
     if (objComune.comune) {
       return objComune.comune;
     } else {
+      //in fase di popolamento iniziale non si ha a disposizione un Object ma una stringa
       return objComune
     }
   }
@@ -110,13 +111,19 @@ export class AlunnoDetailsComponent implements OnInit{
   popolaProv(prov: string, cap: string) {
     this.alunnoForm.controls['prov'].setValue(prov);
     this.alunnoForm.controls['CAP'].setValue(cap);
+    this.alunnoForm.controls['nazione'].setValue('Italia');
   }
 
   popolaProvNascita(prov: string) {
     this.alunnoForm.controls['provNascita'].setValue(prov);
+    this.alunnoForm.controls['nazioneNascita'].setValue('Italia');
   }
 
+}
 
+
+
+//***************PROVE VECCHIE DA TOGLIERE**************/
 
       //this.comuni$ = of(COMUNI);
       //this.comuniList$ = of(COMUNI);
@@ -137,8 +144,6 @@ export class AlunnoDetailsComponent implements OnInit{
     // ).subscribe(comuni => this.filteredComuni= comuni.results);
 
 
-    
-    
     //AS 
     /* 
     this.filteredComuniNome = this.ctrlComune.valueChanges
@@ -180,4 +185,4 @@ export class AlunnoDetailsComponent implements OnInit{
       ;
   }
  */
-}
+

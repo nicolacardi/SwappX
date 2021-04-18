@@ -29,15 +29,17 @@
                 <mat-form-field>
                     <mat-label>Comune di Nascita</mat-label>
                     <input type="text"
-                           placeholder="<Selezionare il Comune>"
-                           matInput
-                           formControlName="comuneNascita"
-                           [matAutocomplete]="auto1">
+                            placeholder="<Selezionare il Comune>"
+                            matInput
+                            formControlName="comuneNascita"
+                            [matAutocomplete]="auto1">
                     <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayComune">
-                      <mat-option *ngFor="let element of (filteredComuniNascita$ | async)" [value]="element" (click)="popolaProvNascita(element.provincia)">
-                        <small>{{element.comune}}</small>
-                        <small> - {{element.provincia}}</small>
-                      </mat-option>
+                        <!--<mat-option *ngIf="comuniNascitaIsLoading" class="is-loading"><mat-spinner diameter="30"></mat-spinner></mat-option>-->
+                        <mat-spinner *ngIf="comuniNascitaIsLoading" class="is-loading" diameter="40"></mat-spinner>
+                        <mat-option *ngFor="let element of (filteredComuniNascita$ | async)" [value]="element" (click)="popolaProvNascita(element.provincia)">
+                            <small>{{element.comune}}</small>
+                            <small> - {{element.provincia}}</small>
+                        </mat-option>
                     </mat-autocomplete>
                   </mat-form-field>
 
@@ -52,18 +54,18 @@
                 <mat-form-field>
                     <mat-label>Comune di Residenza</mat-label>
                     <input type="text"
-                           placeholder="<Selezionare il Comune>"
-                           matInput
-                           formControlName="comune"
-                           [matAutocomplete]="auto2">
+                            placeholder="<Selezionare il Comune>"
+                            matInput
+                            formControlName="comune"
+                            [matAutocomplete]="auto2">
                     <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayComune">
-                      <mat-option *ngIf="comuniIsLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
-                      <ng-container *ngIf="!comuniIsLoading">
-                        <mat-option *ngFor="let element of (filteredComuni$ | async)" [value]="element" (click)="popolaProv(element.provincia,  element.cap)">
-                            <small>{{element.comune}}</small>
-                            <small> - {{element.provincia}}</small>
-                        </mat-option>
-                      </ng-container>
+                        <mat-spinner *ngIf="comuniIsLoading" class="is-loading" diameter="40"></mat-spinner>
+                        <ng-container >
+                            <mat-option *ngFor="let element of (filteredComuni$ | async)" [value]="element" (click)="popolaProv(element.provincia,  element.cap)">
+                                <small>{{element.comune}}</small>
+                                <small> - {{element.provincia}}</small>
+                            </mat-option>
+                        </ng-container>
                     </mat-autocomplete>
                   </mat-form-field>
 
