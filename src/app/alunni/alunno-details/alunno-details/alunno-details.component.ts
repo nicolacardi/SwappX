@@ -64,6 +64,7 @@ export class AlunnoDetailsComponent implements OnInit{
 
                 });
 
+      //this.comuni$ = of(COMUNI);
       this.comuniList$ = of(COMUNI);
       this.filteredComuniList$ = of(COMUNI);
       
