@@ -33,7 +33,7 @@
                            matInput
                            formControlName="comuneNascita"
                            [matAutocomplete]="auto1">
-                    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayFn">
+                    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayComune">
                       <mat-option *ngFor="let element of (filteredComuniNascita$ | async)" [value]="element" (click)="popolaProvNascita(element.provincia)">
                         <small>{{element.comune}}</small>
                         <small> - {{element.provincia}}</small>
@@ -57,7 +57,7 @@
                            matInput
                            formControlName="comune"
                            [matAutocomplete]="auto2">
-                    <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayFn">
+                    <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayComune">
                       <mat-option *ngFor="let element of (filteredComuni$ | async)" [value]="element" (click)="popolaProv(element.provincia,  element.cap)">
                         <small>{{element.comune}}</small>
                         <small> - {{element.provincia}}</small>

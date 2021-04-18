@@ -58,6 +58,7 @@ export class AlunnoDetailsComponent implements OnInit{
 
   ngOnInit () {
     
+
     if (this.route.snapshot.params['id']) {
       //alunno è un observable di tipo ALU_Alunno
       //nell'html faccio la | async (==subscribe)
@@ -78,18 +79,19 @@ export class AlunnoDetailsComponent implements OnInit{
 
     this.filteredComuni$ = this.alunnoForm.controls['comune'].valueChanges
     .pipe(
-        //tap(()=>console.log(this.alunnoForm.value.comune)),
+        //tap(()=>console.log("carico comune", this.alunnoForm.value.comune)),
         debounceTime(300),
         //tap(() => this.comuniIsLoading = true),
         switchMap(() => this.comuniSvc.filterComuni(this.alunnoForm.value.comune)
       )
     )
 
+
     this.filteredComuniNascita$ = this.alunnoForm.controls['comuneNascita'].valueChanges
     .pipe(
         //tap(()=>console.log(this.alunnoForm.value.comune)),
         debounceTime(300),
-        //tap(() => this.comuniIsLoading = true),
+        tap(() => this.comuniIsLoading = true),
         switchMap(() => this.comuniSvc.filterComuni(this.alunnoForm.value.comuneNascita)
       )
     )
@@ -97,8 +99,12 @@ export class AlunnoDetailsComponent implements OnInit{
   }
 
 
-  displayFn(objComune: _UT_Comuni) {
-    return objComune.comune;
+  displayComune(objComune: any) {
+    if (objComune.comune) {
+      return objComune.comune;
+    } else {
+      return objComune
+    }
   }
 
   popolaProv(prov: string, cap: string) {

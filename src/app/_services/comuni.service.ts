@@ -13,7 +13,6 @@ export class ComuniService {
   constructor(private http: HttpClient) { }
 
   loadComuni(): Observable<_UT_Comuni[]>{
-    //console.log("sto caricando i dati");
     return this.http.get<_UT_Comuni[]>(environment.apiBaseUrl+'_UT_Comuni');
   }
 
@@ -21,7 +20,7 @@ export class ComuniService {
     return this.http.get<_UT_Comuni[]>(environment.apiBaseUrl+'_UT_Comuni')
       .pipe (
         map(val=> val.filter(val=>val.comune.toLowerCase().includes(searchstring))),
-        //tap(()=> console.log(searchstring))
+        //tap((val)=> console.log(val))
       );
               
   }
