@@ -12,73 +12,47 @@ import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { AlunniService } from 'src/app/_services/alunni.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
 
-/*
-interface Comune {
-  istat: string;
-  comune: string;
-  regione: string;
-  provincia: string;
-  indirizzo: string;
-}
-*/
+
 @Component({
   selector: 'app-alunno-details',
   templateUrl: './alunno-details.component.html',
   styleUrls: ['./alunno-details.component.css']
 })
 export class AlunnoDetailsComponent implements OnInit{
-  
+
+  alunnoForm! : FormGroup;
+  emptyForm : boolean = false;
   alunno!: Observable<ALU_Alunno>;
+  loading: boolean = true;
 
-  ctrlComune = new FormControl();
-
-  filteredComuni!: _UT_Comuni[];
   filteredComuni$!: Observable<_UT_Comuni[]>;
+  filteredComuniNascita$!: Observable<_UT_Comuni[]>;
   comuniIsLoading: boolean = false;
 
-  //comuniList$!: Observable<Comune[]>;
-  //filteredComuni$!: Observable<Comune[]>;
-  //comuniNome: string[] = ['Padova', 'Vicenza', 'Ragusa'];
-  //filteredComuniNome!: Observable<string[]>;
-
-
-  //alunno!: ALU_Alunno;
-  loading: boolean = true;
-  emptyForm : boolean = false;
-  alunnoForm! : FormGroup;
-
   constructor(private fb: FormBuilder, 
-              private route:ActivatedRoute,
-              private alunniSvc: AlunniService,
-              private comuniSvc: ComuniService) {
+      private route:ActivatedRoute,
+      private alunniSvc: AlunniService,
+      private comuniSvc: ComuniService) {
 
-                this.alunnoForm = this.fb.group({
-                  nome:              ['', Validators.required],
-                  cognome:           ['', Validators.required],
-                  dtNascita:         ['', Validators.required],
-                  comuneNascita:     [''],
-                  provNascita:       [''],
-                  nazioneNascita:    [''],
-                  indirizzo:         [''],
-                  comune:            [''],
-                  prov:              [''],
-                  CAP:               [''],
-                  nazione:           [''],
-                  ckAttivo:          [false],
-                  ckDSA:             [false],
-                  ckDisabile:        [false],
-                  ckAuthFoto:        [false],
-                  ckAuthUsoMateriale:[false],
-                  ckAuthUscite:      [false]
-
-                });
-
-
-      //this.comuni$ = of(COMUNI);
-      //this.comuniList$ = of(COMUNI);
-      //this.filteredComuniList$ = of(COMUNI);
-      
-      //this.comuniNome = this.comuni$.map(a => a.foo);
+        this.alunnoForm = this.fb.group({
+          nome:              ['', Validators.required],
+          cognome:           ['', Validators.required],
+          dtNascita:         ['', Validators.required],
+          comuneNascita:     [''],
+          provNascita:       [''],
+          nazioneNascita:    [''],
+          indirizzo:         [''],
+          comune:            [''],
+          prov:              [''],
+          CAP:               [''],
+          nazione:           [''],
+          ckAttivo:          [false],
+          ckDSA:             [false],
+          ckDisabile:        [false],
+          ckAuthFoto:        [false],
+          ckAuthUsoMateriale:[false],
+          ckAuthUscite:      [false]
+        });
 
   }
 
@@ -102,16 +76,49 @@ export class AlunnoDetailsComponent implements OnInit{
     }
 
 
-
-    
-    this.filteredComuni$ = this.alunnoForm.valueChanges
+    this.filteredComuni$ = this.alunnoForm.controls['comune'].valueChanges
     .pipe(
         //tap(()=>console.log(this.alunnoForm.value.comune)),
         debounceTime(300),
-        tap(() => this.comuniIsLoading = true),
+        //tap(() => this.comuniIsLoading = true),
         switchMap(() => this.comuniSvc.filterComuni(this.alunnoForm.value.comune)
       )
     )
+
+    this.filteredComuniNascita$ = this.alunnoForm.controls['comuneNascita'].valueChanges
+    .pipe(
+        //tap(()=>console.log(this.alunnoForm.value.comune)),
+        debounceTime(300),
+        //tap(() => this.comuniIsLoading = true),
+        switchMap(() => this.comuniSvc.filterComuni(this.alunnoForm.value.comuneNascita)
+      )
+    )
+
+  }
+
+
+  displayFn(objComune: _UT_Comuni) {
+    return objComune.comune;
+  }
+
+  popolaProv(prov: string, cap: string) {
+    this.alunnoForm.controls['prov'].setValue(prov);
+    this.alunnoForm.controls['CAP'].setValue(cap);
+  }
+
+  popolaProvNascita(prov: string) {
+    this.alunnoForm.controls['provNascita'].setValue(prov);
+  }
+
+
+
+      //this.comuni$ = of(COMUNI);
+      //this.comuniList$ = of(COMUNI);
+      //this.filteredComuniList$ = of(COMUNI);
+      
+      //this.comuniNome = this.comuni$.map(a => a.foo);
+
+
     //).subscribe(val=> this.filteredComuni = val);
     //).subscribe(val=> console.log(val)); //funziona
 
@@ -134,18 +141,6 @@ export class AlunnoDetailsComponent implements OnInit{
       map(value => this._filter(value))
     );
       */
-
-
-    
-  }
-
-
-
-
-  // displayFn(objComune: _UT_Comuni) {
-  //   if (objComune) { return objComune.comune; }
-  //   else return null;
-  // }
 
 //AS
 /*

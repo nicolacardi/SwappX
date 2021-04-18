@@ -17,9 +17,12 @@ export class ComuniService {
     return this.http.get<_UT_Comuni[]>(environment.apiBaseUrl+'_UT_Comuni');
   }
 
-  filterComuni(search: string): Observable<_UT_Comuni[]>{
-
-    return this.http.get<_UT_Comuni[]>(environment.apiBaseUrl+'_UT_Comuni');
+  filterComuni(searchstring: string): Observable<_UT_Comuni[]>{
+    return this.http.get<_UT_Comuni[]>(environment.apiBaseUrl+'_UT_Comuni')
+      .pipe (
+        map(val=> val.filter(val=>val.comune.toLowerCase().includes(searchstring))),
+        //tap(()=> console.log(searchstring))
+      );
               
   }
 
