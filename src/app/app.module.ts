@@ -15,8 +15,6 @@ import { AlunnoDetailsComponent } from './alunni/alunno-details/alunno-details/a
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
-//import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
-import { InMemDataService } from './_services/in-mem-data.service';
 
 
 @NgModule({
@@ -34,9 +32,6 @@ import { InMemDataService } from './_services/in-mem-data.service';
     MaterialModule,
     DragDropModule,
     ReactiveFormsModule,
-    // HttpClientInMemoryWebApiModule.forRoot(
-    //   InMemDataService, { dataEncapsulation: false, delay: 1000 }),
-    // ]
   ],
   providers: [
 

@@ -8,7 +8,9 @@ import { delayWhen, finalize, tap } from 'rxjs/operators';
 import { COMUNI } from 'src/app/_dbs/comuni';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { TBL_Comune } from 'src/app/_models/TBL_Comune';
+import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { AlunniService } from 'src/app/_services/alunni.service';
+import { ComuniService } from 'src/app/_services/comuni.service';
 
 /*
 interface Comune {
@@ -30,7 +32,8 @@ export class AlunnoDetailsComponent implements OnInit{
 
   ctrlComune = new FormControl();
 
-  filteredComuni: TBL_Comune[] = [];
+  filteredComuni!: _UT_Comuni[];
+  filteredComuni$!: Observable<_UT_Comuni[]>;
   comuniIsLoading: boolean = false;
 
   //comuniList$!: Observable<Comune[]>;
@@ -46,7 +49,8 @@ export class AlunnoDetailsComponent implements OnInit{
 
   constructor(private fb: FormBuilder, 
               private route:ActivatedRoute,
-              private alunniSvc: AlunniService) {
+              private alunniSvc: AlunniService,
+              private comuniSvc: ComuniService) {
 
                 this.alunnoForm = this.fb.group({
                   nome:              ['', Validators.required],
@@ -98,23 +102,30 @@ export class AlunnoDetailsComponent implements OnInit{
     }
 
 
-    if(this.alunnoForm == null) return;
-    else{
+
     
-      this.alunnoForm
-      .get('comuneNascita')
-      .valueChanges
-      .pipe(
+    this.filteredComuni$ = this.alunnoForm.valueChanges
+    .pipe(
+        //tap(()=>console.log(this.alunnoForm.value.comune)),
         debounceTime(300),
         tap(() => this.comuniIsLoading = true),
-        switchMap(value => this.appService.search({name: value}, 1)
-        .pipe(
-          finalize(() => this.comuniIsLoading = false),
-          )
-        )
-      ).subscribe(comuni => this.filteredComuni= comuni.results);
+        switchMap(() => this.comuniSvc.filterComuni(this.alunnoForm.value.comune)
+      )
+    )
+    //).subscribe(val=> this.filteredComuni = val);
+    //).subscribe(val=> console.log(val)); //funziona
+
+
+    //   switchMap(value => this.comuniSvc.search({name: value}, 1)
+    //   .pipe(
+    //     finalize(() => this.comuniIsLoading = false),
+    //     )
+    //   )
+    // ).subscribe(comuni => this.filteredComuni= comuni.results);
+
+
     
-    }
+    
     //AS 
     /* 
     this.filteredComuniNome = this.ctrlComune.valueChanges
@@ -128,10 +139,13 @@ export class AlunnoDetailsComponent implements OnInit{
     
   }
 
-  displayComune(objComune: Comune) {
-    if (objComune) { return objComune.comune; }
-    else return null;
-  }
+
+
+
+  // displayFn(objComune: _UT_Comuni) {
+  //   if (objComune) { return objComune.comune; }
+  //   else return null;
+  // }
 
 //AS
 /*
