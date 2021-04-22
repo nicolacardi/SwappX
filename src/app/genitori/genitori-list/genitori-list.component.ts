@@ -8,6 +8,7 @@ import { GenitoriService } from '../../_services/genitori.service';
 import {MatTableDataSource} from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-genitori-list',
@@ -16,16 +17,16 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 })
 
 export class GenitoriListComponent implements OnInit {
+  
   //dsAlunni!: AlunniDataSource;***Questa si usava per passargli un custom datasource
   obs_ALU_Genitori$! : Observable<ALU_Genitore[]>;
   matDataSource = new MatTableDataSource<ALU_Genitore>();
   displayedColumns = ["nome", "cognome", "indirizzo", "dtNascita" ];
 
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private svcALU_Genitori: GenitoriService) {}
+  constructor(private svcALU_Genitori: GenitoriService, private router : Router) {}
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
@@ -53,8 +54,8 @@ export class GenitoriListComponent implements OnInit {
 
   }
 
-  onRowClicked(row: any) {
-    console.log('Row clicked: ', row);
+  onRowClicked(id: any) {
+    this.router.navigate(["genitori", id]);
   }
 
   applyFilter(event: Event) {

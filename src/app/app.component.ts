@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { AlunniService } from './_services/alunni.service';
 
 @Component({
   selector: 'app-root',

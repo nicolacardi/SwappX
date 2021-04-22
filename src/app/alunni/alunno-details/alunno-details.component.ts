@@ -16,6 +16,7 @@ import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
   templateUrl:  './alunno-details.component.html',
   styleUrls:    ['./alunno-details.component.css']
 })
+
 export class AlunnoDetailsComponent implements OnInit{
 
   alunnoForm! :           FormGroup;

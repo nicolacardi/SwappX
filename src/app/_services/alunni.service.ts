@@ -8,24 +8,26 @@ import { map, catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AlunniService {
 
   constructor(private http: HttpClient) { }
 
   loadAlunni(): Observable<ALU_Alunno[]>{
-    console.log("sto caricando gli alunni");
+    //console.log("loadAlunni");
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni');
   }
 
   loadAlunniWithParents(): Observable<ALU_Alunno[]>{
-    console.log("sto caricando gli alunni");
+    //console.log("loadAlunniWithParents");
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllWithParents');
   }
 
   loadAlunno(id: any): Observable<ALU_Alunno>{
-    console.log("sto caricando l'alunno");
+    //console.log("loadAlunno");
     return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/'+id);
   }
+
   //per filtro e paginazione server side
   findAlunni(filter = '', sortOrder= 'asc', pageNumber = 0, pageSize = 3): Observable<ALU_Alunno[]>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni', {
@@ -36,6 +38,4 @@ export class AlunniService {
                 .set('pageSize', pageSize.toString())
     });
   }
-
-
 }

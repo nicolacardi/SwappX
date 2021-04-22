@@ -14,8 +14,28 @@ export class GenitoriService {
   constructor(private http: HttpClient) { }
 
   loadGenitori(): Observable<ALU_Genitore[]>{
-    //console.log("sto caricando i dati");
+    //console.log("loadGenitori");
     return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori');
   }
 
+  loadGenitoriWithChildren(): Observable<ALU_Genitore[]>{
+    //console.log("loadGenitoriWithChildren");
+    return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllWithChildren');
+  }
+
+  loadAlunno(id: any): Observable<ALU_Genitore>{
+    //console.log("sto caricando l'alunno");
+    return this.http.get<ALU_Genitore>(environment.apiBaseUrl+'ALU_Genitori/'+id);
+  }
+  
+  //per filtro e paginazione server side
+  findAlunni(filter = '', sortOrder= 'asc', pageNumber = 0, pageSize = 3): Observable<ALU_Genitore[]>{
+    return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori', {
+      params: new HttpParams()
+                .set('filter', filter)
+                .set('sortOrder', sortOrder)
+                .set('pageNumber', pageNumber.toString())
+                .set('pageSize', pageSize.toString())
+    });
+  }
 }

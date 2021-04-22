@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { AlunniListComponent } from './alunni/alunni-list/alunni-list.component';
-import { AlunnoDetailsComponent } from './alunni/alunno-details/alunno-details/alunno-details.component';
+import { AlunnoDetailsComponent } from './alunni/alunno-details/alunno-details.component';
 import { GenitoriListComponent } from './genitori/genitori-list/genitori-list.component';
+import { GenitoreDetailsComponent } from './genitori/genitore-details/genitore-details.component';
 
 const routes: Routes = [
   {
@@ -13,12 +15,23 @@ const routes: Routes = [
     path: "alunnoDetails",
     component: AlunnoDetailsComponent
   },
-  {path: 'alunni/:id',
-    component: AlunnoDetailsComponent},
   {
-    path: "genitoriList",
+    path: 'alunni/:id',
+    component: AlunnoDetailsComponent
+  },
+  {
+    path: "genitori",
     component: GenitoriListComponent
   },
+  {
+    path: "genitoreDetails",
+    component: GenitoreDetailsComponent
+  },
+  {
+    path: 'genitori/:id',
+    component: GenitoreDetailsComponent
+  },
+
 ];
 
 @NgModule({

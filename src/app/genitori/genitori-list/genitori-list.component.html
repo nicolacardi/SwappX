@@ -77,7 +77,9 @@
     <!-- **************************   MAT-ROW   ******************* -->
     <mat-row *matRowDef="let element; columns: displayedColumns"
     class="element-row"
+    (click)="onRowClicked(element.id)"
     ></mat-row>
+
 </mat-table>
 
 <!-- **************************   PAGINATOR   ******************* -->
