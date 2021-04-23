@@ -9,7 +9,7 @@ export interface ALU_Genitore {
         CF: string;
         indirizzo: string;
         comune: string;
-        CAP: string;
+        cap: string;
         prov: string;
         nazione: string;
         email: string;

@@ -28,7 +28,7 @@ export class AlunniListComponent implements OnInit {
   //dsAlunni!: AlunniDataSource;***Questa si usava per passargli un custom datasource
   obs_ALU_Alunni$! : Observable<ALU_Alunno[]>;
   matDataSource = new MatTableDataSource<ALU_Alunno>();
-  displayedColumns: string[] =  ["nome", "cognome", "dtNascita", "indirizzo", "comune", "CAP", "prov", "email", "telefono", "ckAttivo" ];
+  displayedColumns: string[] =  ["nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo" ];
   expandedElement!: ALU_Alunno | null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -76,6 +76,15 @@ export class AlunniListComponent implements OnInit {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
   }
 
+  addAlunno(){
+    this.router.navigate(["alunni", ""]);
+  }
+
+
+
+
+}
+
 
 
 
@@ -110,10 +119,6 @@ export class AlunniListComponent implements OnInit {
   //         this.paginator.pageIndex,
   //         this.paginator.pageSize);
   // }
-
-}
-
-
 
 // PER PRENDERE ALCUNI ELEMENTI DELL'OBSERVABLE (tipo dal quinto al settimo)
       // .pipe (

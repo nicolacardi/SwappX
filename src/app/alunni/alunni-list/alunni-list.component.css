@@ -35,6 +35,12 @@ mat-row.detail-row {
     height: 100px;
 }
 
+.button-add {
+    position: fixed;
+    right: 0px;
+    margin-right: 10px;
+}
+
 
 
 

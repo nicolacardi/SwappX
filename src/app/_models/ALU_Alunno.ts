@@ -11,7 +11,7 @@ export interface ALU_Alunno {
         CF: string;
         indirizzo: string;
         comune: string;
-        CAP: string;
+        cap: string;
         prov: string;
         nazione: string;
         email: string;

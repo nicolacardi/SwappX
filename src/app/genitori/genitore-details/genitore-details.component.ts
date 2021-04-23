@@ -44,7 +44,7 @@ export class GenitoreDetailsComponent implements OnInit {
           indirizzo:         [''],
           comune:            [''],
           prov:              [''],
-          CAP:               [''],
+          cap:               [''],
           nazione:           ['']
         });
   }
@@ -108,7 +108,7 @@ export class GenitoreDetailsComponent implements OnInit {
 
   popolaProv(prov: string, cap: string) {
     this.genitoreForm.controls['prov'].setValue(prov);
-    this.genitoreForm.controls['CAP'].setValue(cap);
+    this.genitoreForm.controls['cap'].setValue(cap);
     this.genitoreForm.controls['nazione'].setValue('Italia');
   }
 

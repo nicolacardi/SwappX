@@ -38,4 +38,15 @@ export class AlunniService {
                 .set('pageSize', pageSize.toString())
     });
   }
+
+  putAlunno(formData: any){
+    console.log (environment.apiBaseUrl  + 'ALU_Alunni/' + formData.id , formData);
+    return this.http.put( environment.apiBaseUrl  + 'ALU_Alunni/' + formData.id , formData);    
+  }
+
+  postAlunno(formData: any){
+    console.log (environment.apiBaseUrl  + 'ALU_Alunni/', formData);
+    return this.http.post( environment.apiBaseUrl  + 'ALU_Alunni' , formData);  
+  }
+
 }

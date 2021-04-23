@@ -3,7 +3,9 @@
 <div class="spinner-container" *ngIf="loading$ | async">
     <mat-spinner></mat-spinner>
 </div>
-
+<button mat-mini-fab aria-label="Aggiungi Alunno" class="button-add" color="primary" (click)="addAlunno()">
+    <mat-icon>add</mat-icon>
+</button>
 <!-- **************************   FILTER   ******************* -->
 <mat-form-field class="mg20">
     <mat-label>Filter</mat-label>
@@ -44,9 +46,9 @@
         <mat-cell *matCellDef="let element">{{element.comune}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="CAP">
+    <ng-container matColumnDef="cap">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CAP</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.CAP}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.cap}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="prov">

@@ -82,7 +82,7 @@
                     <input  matInput type="text" placeholder="Indirizzo e N. Civico" formControlName="indirizzo">
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput type="text" placeholder="CAP" formControlName="CAP">
+                    <input matInput type="text" placeholder="CAP" formControlName="cap">
                 </mat-form-field>
             </div>
 
@@ -126,7 +126,9 @@
 
 
             <div>
-                <button style="width: 400px" mat-raised-button color="primary" [disabled]= "!alunnoForm.valid">
+                <button style="width: 400px" mat-raised-button color="primary" 
+                [disabled]= "!alunnoForm.valid" 
+                (click)="save()">
                 Salva
                 </button>
             </div>

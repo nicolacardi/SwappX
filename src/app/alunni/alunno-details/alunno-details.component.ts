@@ -35,6 +35,7 @@ export class AlunnoDetailsComponent implements OnInit{
       private comuniSvc:  ComuniService) {
 
         this.alunnoForm = this.fb.group({
+          id:                [null],
           nome:              ['', Validators.required],
           cognome:           ['', Validators.required],
           dtNascita:         ['', Validators.required],
@@ -44,7 +45,7 @@ export class AlunnoDetailsComponent implements OnInit{
           indirizzo:         [''],
           comune:            [''],
           prov:              [''],
-          CAP:               [''],
+          cap:               [''],
           nazione:           [''],
           ckAttivo:          [false],
           ckDSA:             [false],
@@ -58,7 +59,7 @@ export class AlunnoDetailsComponent implements OnInit{
   ngOnInit () {
     //********************* POPOLAMENTO FORM *******************
     //serve distinguere tra form vuoto e form poolato in arrivo da lista alunni
-    if (this.route.snapshot.params['id']) {
+    if (this.route.snapshot.params['id'] && this.route.snapshot.params['id'] != 0) {
       //alunno è un observable di tipo ALU_Alunno
       //nell'html faccio la | async (==subscribe)
       this.alunno = this.alunniSvc.loadAlunno(this.route.snapshot.params['id'])
@@ -111,7 +112,7 @@ export class AlunnoDetailsComponent implements OnInit{
 
   popolaProv(prov: string, cap: string) {
     this.alunnoForm.controls['prov'].setValue(prov);
-    this.alunnoForm.controls['CAP'].setValue(cap);
+    this.alunnoForm.controls['cap'].setValue(cap);
     this.alunnoForm.controls['nazione'].setValue('Italia');
   }
 
@@ -120,70 +121,13 @@ export class AlunnoDetailsComponent implements OnInit{
     this.alunnoForm.controls['nazioneNascita'].setValue('Italia');
   }
 
+  save(){
+    console.log(this.alunnoForm.value, "sto per salvare");
+    if (this.alunnoForm.controls['id'].value == "") {
+      this.alunniSvc.postAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from post", res));
+    } else {
+      this.alunniSvc.putAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from put", res));
+    }
+  }
 }
-
-
-
-//***************PROVE VECCHIE DA TOGLIERE**************/
-
-      //this.comuni$ = of(COMUNI);
-      //this.comuniList$ = of(COMUNI);
-      //this.filteredComuniList$ = of(COMUNI);
-      
-      //this.comuniNome = this.comuni$.map(a => a.foo);
-
-
-    //).subscribe(val=> this.filteredComuni = val);
-    //).subscribe(val=> console.log(val)); //funziona
-
-
-    //   switchMap(value => this.comuniSvc.search({name: value}, 1)
-    //   .pipe(
-    //     finalize(() => this.comuniIsLoading = false),
-    //     )
-    //   )
-    // ).subscribe(comuni => this.filteredComuni= comuni.results);
-
-
-    //AS 
-    /* 
-    this.filteredComuniNome = this.ctrlComune.valueChanges
-    .pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
-      */
-
-//AS
-/*
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.comuniNome.filter(option => option.toLowerCase().includes(filterValue));
-  }
-*/
-  /*
-  private _filterComune(query: string): Observable<Comune[]> {
-  //private _filterComune(query: string):  string[] {
-    //if (query === '') return of([]);
-
-
-    //objArray.map(({ foo }) => foo)
-
-    
-    const queryRegExp = new RegExp(query, 'i');
-
-    return this.comuniList$ <Comune[]>
-      .pipe(
-        map( 
-          (comuni) => {
-            comuni.filter( query );
-        // comuni.filter(char => queryRegExp.test(char.comune))
-       //.sort((a, b) => a.comune.length - b.comune.length)
-            }
-          )
-        )
-      ;
-  }
- */
 

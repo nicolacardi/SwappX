@@ -12,20 +12,12 @@ const routes: Routes = [
     component: AlunniListComponent
   },
   {
-    path: "alunnoDetails",
-    component: AlunnoDetailsComponent
-  },
-  {
     path: 'alunni/:id',
     component: AlunnoDetailsComponent
   },
   {
     path: "genitori",
     component: GenitoriListComponent
-  },
-  {
-    path: "genitoreDetails",
-    component: GenitoreDetailsComponent
   },
   {
     path: 'genitori/:id',
