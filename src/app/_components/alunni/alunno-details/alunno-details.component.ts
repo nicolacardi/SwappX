@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { delayWhen, finalize, tap } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 import { AlunniService } from 'src/app/_services/alunni.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
+
+
 
 @Component({
   selector:     'app-alunno-details',
@@ -31,6 +35,9 @@ export class AlunnoDetailsComponent implements OnInit{
 
   constructor(private fb: FormBuilder, 
       private route:      ActivatedRoute,
+      private router:     Router,
+      //private snack:      SnackbarComponent,
+      private _snackBar:  MatSnackBar,
       private alunniSvc:  AlunniService,
       private comuniSvc:  ComuniService) {
 
@@ -123,13 +130,16 @@ export class AlunnoDetailsComponent implements OnInit{
   }
 
   save(){
-    console.log("Ecco il form che sto per passare al service", this.alunnoForm.value );
+    //console.log("Ecco il form che sto per passare al service", this.alunnoForm.value );
     if (this.alunnoForm.controls['id'].value == null) {
-
       this.alunniSvc.postAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from post", res));
     } else {
       this.alunniSvc.putAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from put", res));
     }
+    
+    this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record salvato'});
+
+    this.router.navigate(['/alunni']);
   }
 }
 

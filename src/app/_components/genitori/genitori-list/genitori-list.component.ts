@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { delayWhen, finalize, map } from 'rxjs/operators';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
-import { GenitoriService } from '../../_services/genitori.service';
+import { GenitoriService } from '../../../_services/genitori.service';
 import {MatTableDataSource} from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';

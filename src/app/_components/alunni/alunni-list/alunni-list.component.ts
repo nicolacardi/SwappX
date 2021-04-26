@@ -3,39 +3,49 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { delayWhen, finalize, map } from 'rxjs/operators';
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { AlunniService } from '../../_services/alunni.service';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
 
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { AlunniService } from '../../../_services/alunni.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-alunni-list',
   templateUrl: './alunni-list.component.html',
-  styleUrls: ['./alunni-list.component.css'],
+  styleUrls: [],
+  /* expanded
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0'})),
       state('expanded', style({height: '*'})),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
-  ],
+  ],*/
 })
+
 export class AlunniListComponent implements OnInit {
   
   //dsAlunni!: AlunniDataSource;***Questa si usava per passargli un custom datasource
   obs_ALU_Alunni$! : Observable<ALU_Alunno[]>;
   matDataSource = new MatTableDataSource<ALU_Alunno>();
   displayedColumns: string[] =  ["nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo", "actionsColumn"];
-  expandedElement!: ALU_Alunno | null;
+  //expandedElement!: ALU_Alunno | null;      //expanded
 
   //@ViewChild('myTable') myTable!: MatTable<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private svcALU_Alunni: AlunniService, private router : Router) {}
+  constructor(private svcALU_Alunni: AlunniService,
+              private router : Router,
+              public _dialog: MatDialog, 
+              public _snackBar: MatSnackBar) {}
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
@@ -43,14 +53,14 @@ export class AlunniListComponent implements OnInit {
   ngOnInit () {
 
     this.loadingSubject.next(true);
-    //this.dsAlunni = new AlunniDataSource(this.svcALU_Alunni);***Questa si usava per passargli un custom datasource
-    this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunniWithParents()
+
+    //this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunniWithParents()
+    this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunni()
       .pipe (
         //delayWhen(() => timer(200)),
         finalize(() => this.loadingSubject.next(false)
       )
       );
-  
 
     this.obs_ALU_Alunni$.subscribe(val => 
       {
@@ -59,8 +69,6 @@ export class AlunniListComponent implements OnInit {
       this.matDataSource.sort = this.sort;
       }
     );
-    
-
   }
 
   onRowClicked(id:any) {
@@ -68,7 +76,7 @@ export class AlunniListComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
-    console.log (event);
+    //console.log (event);
     const filterValue = (event.target as HTMLInputElement).value;
     this.matDataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -81,28 +89,50 @@ export class AlunniListComponent implements OnInit {
     this.router.navigate(["alunni", ""]);
   }
 
+  /*
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      width: '250px',
+      data: {name: this.name, animal: this.animal}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+    });
+  }
+  */
+
   deleteAlunno(element: any, event: Event){
-    console.log (element.id);
-    this.svcALU_Alunni.deleteAlunno(element.id)
+    
+    const dialogRef = this._dialog.open(DialogYesNoComponent, {
+      width: '320px',
+      data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
+    });
 
-      .subscribe(res=>{
-        console.log("return from delete", res);
-        //this.matDataSource.data = this.matDataSource.data;
-        //this.matDataSource.data.filter(i => i != element.id);
-        //this.myTable.renderRows()
-        
-        }
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log(result);
+      if(result){
+        this.svcALU_Alunni.deleteAlunno(element.id)
+        .subscribe(
+          res=>{    
+            this._snackBar.openFromComponent(SnackbarComponent,{data: 'Alunno ' + element.cognome + ' cancellato'});
+            
+            this.matDataSource.data.splice(this.matDataSource.data.findIndex(x=> x.id === element.id),1);
+            this.matDataSource.data = this.matDataSource.data;
+          },
+          err=> (
+              console.log("ERRORE")
+          )
         );
+      }
+    });
 
-
+    
 
     event.stopPropagation(); 
-    ///this.matDataSource.data = this.matDataSource.data.filter(i=> i != element.id);
-    
-    //this.table.renderRows();
   }
-
-
 }
 
 

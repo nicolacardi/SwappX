@@ -2,7 +2,6 @@
 
 
 /* MAT-TABLE EXPANDABLE ROWS */
-
 mat-row.detail-row {
     /* height: 0; */ /* no */
     flex-basis: 0; /* yes */
@@ -27,19 +26,13 @@ mat-row.detail-row {
 }
 
 /* FINE MAT-TABLE EXPANDABLE ROWS */
-
-
 .picture-img {
     border: solid grey 1px;
     width: 100px;
     height: 100px;
 }
 
-.button-add {
-    position: fixed;
-    right: 0px;
-    margin-right: 10px;
-}
+
 
 
 

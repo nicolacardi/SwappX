@@ -40,18 +40,15 @@ export class AlunniService {
   }
 
   putAlunno(formData: any){
-    console.log ("sto per chiamare la put", environment.apiBaseUrl  + 'ALU_Alunni/' + formData.id , formData);
     return this.http.put( environment.apiBaseUrl  + 'ALU_Alunni/' + formData.id , formData);    
   }
 
   postAlunno(formData: any){
     formData.id = 0;
-    console.log ("Sto per chiamare la post", environment.apiBaseUrl  + 'ALU_Alunni/', formData);
     return this.http.post( environment.apiBaseUrl  + 'ALU_Alunni' , formData);  
   }
 
   deleteAlunno(id: number){
-    console.log ("sto per chiamare la delete", environment.apiBaseUrl  + 'ALU_Alunni/' + id);
     return this.http.delete( environment.apiBaseUrl  + 'ALU_Alunni/' + id);    
   }
 

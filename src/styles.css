@@ -52,5 +52,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     max-width: 180px;
 }
 
-  
+
+.button-trash{
+    cursor:pointer;
+}
+
+/* Bottone Nuovo record */
+.button-add {
+    position: fixed;
+    right: 0px;
+    margin-right: 10px;
+}
+
 /* fine form Material */

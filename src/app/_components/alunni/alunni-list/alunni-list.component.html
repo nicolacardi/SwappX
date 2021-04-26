@@ -82,10 +82,11 @@
     <ng-container matColumnDef="actionsColumn">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Elimina</mat-header-cell>
         <mat-cell *matCellDef="let element;  let j = index;"> 
-                <mat-icon (click)="deleteAlunno(element, $event)" color="warn">delete</mat-icon>
+            <mat-icon (click)="deleteAlunno(element, $event)" color="warn" class="button-trash">delete</mat-icon>
         </mat-cell>
       </ng-container>
     <!-- **************************   NG-CONTAINER EXPANDED DETAIL   ******************* -->
+    <!--
     <ng-container matColumnDef="expandedDetail">
         <mat-cell *matCellDef="let AlunniSubject" [attr.colspan]="displayedColumns.length">
             <div class="element-detail"
@@ -97,23 +98,34 @@
                     Indirizzo: {{AlunniSubject.indirizzo}} {{AlunniSubject.comune}} {{AlunniSubject.prov}} <br>
                     Data e Luogo di Nascita: {{AlunniSubject.dtNascita | date: "dd/MM/yyyy"}} {{AlunniSubject.comuneNascita}} {{AlunniSubject.provNascita}}
                  </div>
-
             </div>
         </mat-cell>
     </ng-container>
-
+    -->
     
     <!-- **************************   MAT-HEADER-ROW   ******************* -->
     <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
     
     <!-- **************************   MAT-ROW   ******************* -->
+    <mat-row *matRowDef="let element;columns: displayedColumns"
+         class="detail-row"
+         (click)="onRowClicked(element.id)">
+    </mat-row>
+
+    <!-- Caso con Expanded row
     <mat-row *matRowDef="let element; columns: displayedColumns"
-    class="element-row"
-    [class.expanded-row]="expandedElement === element"
-    (dblclick)="expandedElement = expandedElement === element ? null : element"
-    (click)="onRowClicked(element.id)"
-    ></mat-row>
-    <mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></mat-row>
+        class="element-row"
+        (click)="onRowClicked(element.id)">
+    </mat-row>
+    <mat-row *matRowDef="let element; columns: displayedColumns"
+        class="element-row"
+        [class.expanded-row]="expandedElement === element"
+        (dblclick)="expandedElement = expandedElement === element ? null : element"
+        (click)="onRowClicked(element.id)">
+    </mat-row>
+    <mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></mat-row>    
+    -->
+    
 </mat-table>
 
 <!-- **************************   PAGINATOR   ******************* -->
