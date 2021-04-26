@@ -117,7 +117,8 @@ export class AlunniListComponent implements OnInit {
         this.svcALU_Alunni.deleteAlunno(element.id)
         .subscribe(
           res=>{    
-            this._snackBar.openFromComponent(SnackbarComponent,{data: 'Alunno ' + element.cognome + ' cancellato'});
+            this._snackBar.openFromComponent(SnackbarComponent,
+              {data: 'Alunno ' + element.nome + ' '+ element.cognome + ' cancellato', panelClass: ['red-snackbar'] });
             
             this.matDataSource.data.splice(this.matDataSource.data.findIndex(x=> x.id === element.id),1);
             this.matDataSource.data = this.matDataSource.data;

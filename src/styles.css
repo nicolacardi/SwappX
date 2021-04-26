@@ -1,9 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
+/*body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*/
+body { margin: 0; font-family: 'Titillium Web', sans-serif; }
+* { font-family: 'Titillium Web', sans-serif;}
+.mat-h1, .mat-headline, .mat-typography h1 {
+    font-family: 'Titillium Web', sans-serif;
+}
 .mg20 {
     margin-left: 20px;
 }
@@ -45,7 +48,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .form-card {
     max-width: 600px;
-    margin: 50px auto 0 auto;
+    margin: 50px auto 10px auto;
 }
 
 .form-dp {
@@ -59,9 +62,66 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Bottone Nuovo record */
 .button-add {
-    position: fixed;
+    position: fixed !important;
     right: 0px;
-    margin-right: 10px;
+    margin-right: 20px !important;
 }
 
 /* fine form Material */
+
+
+.centerColumn {
+    justify-content: center;
+    flex: 0 0 200px;
+  }
+
+.green-snackbar {
+    background-color: #018786;
+    color: white;
+}
+
+.red-snackbar {
+    background-color: #B00020;
+    color: white;
+}
+
+.mat-dialog-buttonsContainer {
+    justify-content: space-evenly;
+}
+
+mat-dialog-container {
+    text-align: center;
+}
+
+/* per sidenav*/
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.leftSidenav {
+    width:  250px;
+    background-color: rgba(255,255,255,1);
+}
+
+.rightSidenav {
+    width:  250px;
+    background-color: rgba(255,255,255,1);
+    color: rgb(10,10,10) !important;
+}
+
+mat-nav-list a{
+    color: rgb(10,10,10) !important;
+
+}
+
+mat-nav-list a mat-icon {
+    margin-right: 10px;
+}
+
+mat-nav-list a img {
+    width: 30px;
+    margin-right: 10px;
+}
+
+
+/*fine per sidenav*/

@@ -1,5 +1,5 @@
 
-<h2 style="text-align: center;">Lista Alunni sortable, con paginator, filter, sticky header, movable columns, collapsible rows</h2>
+<h1 style="text-align: center;">Lista Alunni sortable, con paginator, filter, sticky header, movable columns, collapsible rows</h1>
 <div class="spinner-container" *ngIf="loading$ | async">
     <mat-spinner></mat-spinner>
 </div>
@@ -74,15 +74,15 @@
     <ng-container matColumnDef="ckAttivo">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Attivo</mat-header-cell>
         <mat-cell *matCellDef="let element">
-            <mat-checkbox [checked]="element.ckAttivo"></mat-checkbox>
+            <mat-checkbox [checked]="element.ckAttivo" color="primary"></mat-checkbox>
         </mat-cell>
     </ng-container>
 
 
     <ng-container matColumnDef="actionsColumn">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Elimina</mat-header-cell>
-        <mat-cell *matCellDef="let element;  let j = index;"> 
-            <mat-icon (click)="deleteAlunno(element, $event)" color="warn" class="button-trash">delete</mat-icon>
+        <mat-cell  *matCellDef="let element;  let j = index;"> 
+            <mat-icon (click)="deleteAlunno(element, $event)" color="warn" class="button-trash">delete_outline</mat-icon>
         </mat-cell>
       </ng-container>
     <!-- **************************   NG-CONTAINER EXPANDED DETAIL   ******************* -->

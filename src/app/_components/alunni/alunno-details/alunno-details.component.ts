@@ -137,7 +137,8 @@ export class AlunnoDetailsComponent implements OnInit{
       this.alunniSvc.putAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from put", res));
     }
     
-    this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record salvato'});
+    this._snackBar.openFromComponent(SnackbarComponent,
+      {data: 'Record salvato', panelClass: ['green-snackbar']});
 
     this.router.navigate(['/alunni']);
   }
