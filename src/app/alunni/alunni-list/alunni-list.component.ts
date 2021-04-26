@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { delayWhen, finalize, map } from 'rxjs/operators';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from '../../_services/alunni.service';
-import {MatTableDataSource} from '@angular/material/table';
+import {MatTable, MatTableDataSource} from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
@@ -28,9 +28,10 @@ export class AlunniListComponent implements OnInit {
   //dsAlunni!: AlunniDataSource;***Questa si usava per passargli un custom datasource
   obs_ALU_Alunni$! : Observable<ALU_Alunno[]>;
   matDataSource = new MatTableDataSource<ALU_Alunno>();
-  displayedColumns: string[] =  ["nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo" ];
+  displayedColumns: string[] =  ["nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo", "actionsColumn"];
   expandedElement!: ALU_Alunno | null;
 
+  //@ViewChild('myTable') myTable!: MatTable<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -80,7 +81,26 @@ export class AlunniListComponent implements OnInit {
     this.router.navigate(["alunni", ""]);
   }
 
+  deleteAlunno(element: any, event: Event){
+    console.log (element.id);
+    this.svcALU_Alunni.deleteAlunno(element.id)
 
+      .subscribe(res=>{
+        console.log("return from delete", res);
+        //this.matDataSource.data = this.matDataSource.data;
+        //this.matDataSource.data.filter(i => i != element.id);
+        //this.myTable.renderRows()
+        
+        }
+        );
+
+
+
+    event.stopPropagation(); 
+    ///this.matDataSource.data = this.matDataSource.data.filter(i=> i != element.id);
+    
+    //this.table.renderRows();
+  }
 
 
 }

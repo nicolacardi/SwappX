@@ -62,6 +62,7 @@ export class AlunnoDetailsComponent implements OnInit{
     if (this.route.snapshot.params['id'] && this.route.snapshot.params['id'] != 0) {
       //alunno è un observable di tipo ALU_Alunno
       //nell'html faccio la | async (==subscribe)
+
       this.alunno = this.alunniSvc.loadAlunno(this.route.snapshot.params['id'])
       .pipe(
           //delayWhen(() => timer(2000)), //per ritardare
@@ -122,8 +123,9 @@ export class AlunnoDetailsComponent implements OnInit{
   }
 
   save(){
-    console.log(this.alunnoForm.value, "sto per salvare");
-    if (this.alunnoForm.controls['id'].value == "") {
+    console.log("Ecco il form che sto per passare al service", this.alunnoForm.value );
+    if (this.alunnoForm.controls['id'].value == null) {
+
       this.alunniSvc.postAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from post", res));
     } else {
       this.alunniSvc.putAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from put", res));

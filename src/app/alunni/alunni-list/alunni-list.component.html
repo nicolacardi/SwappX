@@ -78,6 +78,13 @@
         </mat-cell>
     </ng-container>
 
+
+    <ng-container matColumnDef="actionsColumn">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Elimina</mat-header-cell>
+        <mat-cell *matCellDef="let element;  let j = index;"> 
+                <mat-icon (click)="deleteAlunno(element, $event)" color="warn">delete</mat-icon>
+        </mat-cell>
+      </ng-container>
     <!-- **************************   NG-CONTAINER EXPANDED DETAIL   ******************* -->
     <ng-container matColumnDef="expandedDetail">
         <mat-cell *matCellDef="let AlunniSubject" [attr.colspan]="displayedColumns.length">
