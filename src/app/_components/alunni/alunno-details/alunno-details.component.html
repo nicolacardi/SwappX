@@ -1,7 +1,7 @@
 <div class="container">
 <mat-tab-group>
     <mat-tab label="Dati Anagrafici">
-        <mat-card class="form-card" style="height: 425px;">
+        <mat-card class="form-card">
             <mat-card-content>
                 <form *ngIf="(alunno | async) || emptyForm" class="data-form flex-form" [formGroup] = "alunnoForm">
                     <div>
@@ -128,15 +128,17 @@
                     </table>
 
 
-                    <div>
-                        <button style="width: 400px" mat-raised-button color="primary" 
+                    <div mat-dialog-actions class="mat-dialog-buttonsContainer">
+                        <button mat-raised-button color="primary" 
                             [disabled]= "!alunnoForm.valid" 
                             (click)="save()"
                             [mat-dialog-close]="true" >Salva</button>
                         
-                        <button style="width: 100px" mat-raised-button color="secondary" 
+                        <button mat-raised-button color="secondary" 
                             [mat-dialog-close]="true" >Annulla</button>
                     </div>
+
+
                 </form>
 
                 <!-- <div>
@@ -151,7 +153,7 @@
         </mat-card>
     </mat-tab>
     <mat-tab label="Dati Famiglia">
-        <mat-card class="form-card" style="height: 425px;">
+        <mat-card class="form-card">
             <mat-card-content>
                 <form>
 
@@ -160,7 +162,7 @@
         </mat-card>
     </mat-tab>
     <mat-tab label="Anni Scolastici">
-        <mat-card class="form-card" style="height: 425px;">
+        <mat-card class="form-card">
             <mat-card-content>
                 <form>
 
@@ -169,7 +171,7 @@
         </mat-card>
     </mat-tab>
     <mat-tab label="Iter Iscrizione">
-        <mat-card class="form-card" style="height: 425px;">
+        <mat-card class="form-card">
             <mat-card-content>
                 <form>
 
@@ -178,7 +180,7 @@
         </mat-card>
     </mat-tab>
     <mat-tab label="Pagelle">
-        <mat-card class="form-card" style="height: 425px;">
+        <mat-card class="form-card">
             <mat-card-content>
                 <form>
 

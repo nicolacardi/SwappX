@@ -48,7 +48,9 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
 
 .form-card {
     max-width: 600px;
+    height: 425px;
     margin: 50px auto 10px auto;
+    box-shadow: none !important; /*da togliere nel caso di dialog*/
 }
 
 .form-dp {
@@ -87,6 +89,10 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
 
 .mat-dialog-buttonsContainer {
     justify-content: space-evenly;
+}
+
+.mat-dialog-buttonsContainer button {
+    width: 200px;
 }
 
 mat-dialog-container {

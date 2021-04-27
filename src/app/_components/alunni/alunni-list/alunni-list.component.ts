@@ -83,7 +83,8 @@ export class AlunniListComponent implements OnInit {
   onRowClicked(id:any) {
     //this.router.navigate(["alunni", id]);
     const dialogConfig = new MatDialogConfig();
-    //dialogConfig.disableClose = true; //lo fa modale
+    dialogConfig.disableClose = true; //lo fa modale
+    dialogConfig.autoFocus = true;    //il primo elemento ha il focus
     dialogConfig.data = id;
 
     let dialogRef = this.dialog.open(AlunnoDetailsComponent, dialogConfig);
