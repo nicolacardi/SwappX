@@ -77,13 +77,14 @@
         </mat-cell>
     </ng-container>
 
-
     <ng-container matColumnDef="actionsColumn">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Elimina</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Funzioni</mat-header-cell>
         <mat-cell  *matCellDef="let element;  let j = index;"> 
-            <mat-icon (click)="deleteAlunno(element, $event)" color="warn" class="button-trash">delete_outline</mat-icon>
+            <mat-icon (click)="openDetail(element.id)" color="blue" class="button-trash">link</mat-icon>
+            <mat-icon (click)="deleteDetail(element, $event)" color="warn" class="button-trash">delete_outline</mat-icon>
         </mat-cell>
       </ng-container>
+
     <!-- **************************   NG-CONTAINER EXPANDED DETAIL   ******************* -->
     <!--
         in mat-table inserire la directive multiTemplateDataRows

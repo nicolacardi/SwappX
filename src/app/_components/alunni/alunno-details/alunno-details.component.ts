@@ -14,8 +14,6 @@ import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-
-
 @Component({
   selector:     'app-alunno-details',
   templateUrl:  './alunno-details.component.html',
@@ -42,6 +40,8 @@ export class AlunnoDetailsComponent implements OnInit{
       private comuniSvc:  ComuniService,
       @Inject(MAT_DIALOG_DATA) id:number) {
 
+        console.log("id:", id);
+        
         this.id = id;
 
         this.alunnoForm = this.fb.group({
@@ -69,11 +69,8 @@ export class AlunnoDetailsComponent implements OnInit{
   ngOnInit () {
     //********************* POPOLAMENTO FORM *******************
     //serve distinguere tra form vuoto e form poolato in arrivo da lista alunni
-    console.log (this.id);
     if (this.id && this.id != 0) {
-      //alunno è un observable di tipo ALU_Alunno
-      //nell'html faccio la | async (==subscribe)
-
+      //alunno è un observable di tipo ALU_Alunno, nell'html faccio la | async (==subscribe)
       this.alunno = this.alunniSvc.loadAlunno(this.id)
       .pipe(
           //delayWhen(() => timer(2000)), //per ritardare
@@ -108,9 +105,21 @@ export class AlunnoDetailsComponent implements OnInit{
       switchMap(() => this.comuniSvc.filterComuni(this.alunnoForm.value.comuneNascita)),
       tap(() => this.comuniNascitaIsLoading = false)
     )
-
   }
 
+  save(){
+    //console.log("Ecco il form che sto per passare al service", this.alunnoForm.value );
+    if (this.alunnoForm.controls['id'].value == null) {
+      this.alunniSvc.postAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from post", res));
+    } else {
+      this.alunniSvc.putAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from put", res));
+    }
+    
+    this._snackBar.openFromComponent(SnackbarComponent,
+      {data: 'Record salvato', panelClass: ['green-snackbar']});
+
+    //this.router.navigate(['/alunni']);
+  }
 
   displayComune(objComune: any) {
     //metodo usato da displayWith
@@ -133,18 +142,6 @@ export class AlunnoDetailsComponent implements OnInit{
     this.alunnoForm.controls['nazioneNascita'].setValue('Italia');
   }
 
-  save(){
-    //console.log("Ecco il form che sto per passare al service", this.alunnoForm.value );
-    if (this.alunnoForm.controls['id'].value == null) {
-      this.alunniSvc.postAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from post", res));
-    } else {
-      this.alunniSvc.putAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from put", res));
-    }
-    
-    this._snackBar.openFromComponent(SnackbarComponent,
-      {data: 'Record salvato', panelClass: ['green-snackbar']});
 
-    //this.router.navigate(['/alunni']);
-  }
 }
 

@@ -130,12 +130,13 @@
 
                     <div>
                         <button style="width: 400px" mat-raised-button color="primary" 
-                        [disabled]= "!alunnoForm.valid" 
-                        (click)="save()">
-                        Salva
-                        </button>
+                            [disabled]= "!alunnoForm.valid" 
+                            (click)="save()"
+                            [mat-dialog-close]="true" >Salva</button>
+                        
+                        <button style="width: 100px" mat-raised-button color="secondary" 
+                            [mat-dialog-close]="true" >Annulla</button>
                     </div>
-
                 </form>
 
                 <!-- <div>

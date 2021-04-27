@@ -34,8 +34,9 @@ import { AlunnoDetailsComponent } from '../alunno-details/alunno-details.compone
 export class AlunniListComponent implements OnInit {
   
   //dsAlunni!: AlunniDataSource;***Questa si usava per passargli un custom datasource
-  private update = new Subject<ALU_Alunno[]>();
-  update$ = this.update.asObservable();
+  //private update = new Subject<ALU_Alunno[]>();
+  //update$ = this.update.asObservable();
+
   obs_ALU_Alunni$! : Observable<ALU_Alunno[]>;
   matDataSource = new MatTableDataSource<ALU_Alunno>();
   displayedColumns: string[] =  ["nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo", "actionsColumn"];
@@ -54,6 +55,14 @@ export class AlunniListComponent implements OnInit {
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
   
+  ngOnInit () {
+
+    this.loadingSubject.next(true);
+    //this.update$.subscribe (()=>{this.refresh()});
+    this.refresh();
+    //this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunniWithParents()
+  }
+
   refresh () {
     this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunni()
     .pipe (
@@ -71,32 +80,22 @@ export class AlunniListComponent implements OnInit {
     );
   }
 
-  ngOnInit () {
-
-    this.loadingSubject.next(true);
-    //this.update$.subscribe (()=>{this.refresh()});
-    this.refresh();
-    //this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunniWithParents()
-    
-  }
-
   onRowClicked(id:any) {
     //this.router.navigate(["alunni", id]);
     const dialogConfig = new MatDialogConfig();
     //dialogConfig.disableClose = true; //lo fa modale
     dialogConfig.data = id;
+
     let dialogRef = this.dialog.open(AlunnoDetailsComponent, dialogConfig);
-    dialogRef.afterClosed()
-    .subscribe(()=>{
-      console.log("passo di qua");
-      this.refresh();
-      //this.update.next();
-      //this.matDataSource.paginator = this.paginator;
-      //this.matDataSource = new DataSource(this.paginator, this.sort);
-      //this.matDataSource.data = this.matDataSource.data
+    dialogRef.afterClosed().subscribe(()=>{
+      this.refresh();                         //Aggiorna la griglia dopo update da dialog
     });
   }
-
+  
+  // Apertura dettaglio in modalità link
+  openDetail(id:any){
+    this.router.navigate(["alunni", id]);
+  }
 
   applyFilter(event: Event) {
     //console.log (event);
@@ -132,7 +131,9 @@ export class AlunniListComponent implements OnInit {
   }
   */
 
-  deleteAlunno(element: any, event: Event){
+
+
+  deleteDetail(element: any, event: Event){
     
     const dialogRef = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
@@ -159,9 +160,6 @@ export class AlunniListComponent implements OnInit {
         );
       }
     });
-
-    
-
     event.stopPropagation(); 
   }
 }
