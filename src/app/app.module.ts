@@ -43,6 +43,7 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
     DragDropModule,
     ReactiveFormsModule,
     FormsModule,
+    MatMomentDateModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
