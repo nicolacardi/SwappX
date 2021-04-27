@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { delayWhen, finalize, map } from 'rxjs/operators';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -10,11 +10,10 @@ import { Router } from '@angular/router';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from '../../../_services/alunni.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AlunnoDetailsComponent } from '../alunno-details/alunno-details.component';
 
 
 @Component({
@@ -34,8 +33,6 @@ import { AlunnoDetailsComponent } from '../alunno-details/alunno-details.compone
 export class AlunniListComponent implements OnInit {
   
   //dsAlunni!: AlunniDataSource;***Questa si usava per passargli un custom datasource
-  private update = new Subject<ALU_Alunno[]>();
-  update$ = this.update.asObservable();
   obs_ALU_Alunni$! : Observable<ALU_Alunno[]>;
   matDataSource = new MatTableDataSource<ALU_Alunno>();
   displayedColumns: string[] =  ["nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo", "actionsColumn"];
@@ -48,19 +45,22 @@ export class AlunniListComponent implements OnInit {
   constructor(private svcALU_Alunni: AlunniService,
               private router : Router,
               public _dialog: MatDialog, 
-              public _snackBar: MatSnackBar,
-              private dialog: MatDialog) {}
+              public _snackBar: MatSnackBar) {}
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
   
-  refresh () {
+  ngOnInit () {
+
+    this.loadingSubject.next(true);
+
+    //this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunniWithParents()
     this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunni()
-    .pipe (
-      //delayWhen(() => timer(200)),
-      finalize(() => this.loadingSubject.next(false)
-    )
-    );
+      .pipe (
+        //delayWhen(() => timer(200)),
+        finalize(() => this.loadingSubject.next(false)
+      )
+      );
 
     this.obs_ALU_Alunni$.subscribe(val => 
       {
@@ -71,32 +71,9 @@ export class AlunniListComponent implements OnInit {
     );
   }
 
-  ngOnInit () {
-
-    this.loadingSubject.next(true);
-    //this.update$.subscribe (()=>{this.refresh()});
-    this.refresh();
-    //this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunniWithParents()
-    
-  }
-
   onRowClicked(id:any) {
-    //this.router.navigate(["alunni", id]);
-    const dialogConfig = new MatDialogConfig();
-    //dialogConfig.disableClose = true; //lo fa modale
-    dialogConfig.data = id;
-    let dialogRef = this.dialog.open(AlunnoDetailsComponent, dialogConfig);
-    dialogRef.afterClosed()
-    .subscribe(()=>{
-      console.log("passo di qua");
-      this.refresh();
-      //this.update.next();
-      //this.matDataSource.paginator = this.paginator;
-      //this.matDataSource = new DataSource(this.paginator, this.sort);
-      //this.matDataSource.data = this.matDataSource.data
-    });
+    this.router.navigate(["alunni", id]);
   }
-
 
   applyFilter(event: Event) {
     //console.log (event);
@@ -109,13 +86,7 @@ export class AlunniListComponent implements OnInit {
   }
 
   addAlunno(){
-    //this.router.navigate(["alunni", id]);
-    const dialogConfig = new MatDialogConfig();
-    //dialogConfig.disableClose = true; //lo fa modale
-    dialogConfig.data = 0;
-
-    this.dialog.open(AlunnoDetailsComponent, dialogConfig);
-
+    this.router.navigate(["alunni", ""]);
   }
 
   /*
@@ -149,9 +120,8 @@ export class AlunniListComponent implements OnInit {
             this._snackBar.openFromComponent(SnackbarComponent,
               {data: 'Alunno ' + element.nome + ' '+ element.cognome + ' cancellato', panelClass: ['red-snackbar'] });
             
-              this.refresh();
-            //this.matDataSource.data.splice(this.matDataSource.data.findIndex(x=> x.id === element.id),1);
-            //this.matDataSource.data = this.matDataSource.data;
+            this.matDataSource.data.splice(this.matDataSource.data.findIndex(x=> x.id === element.id),1);
+            this.matDataSource.data = this.matDataSource.data;
           },
           err=> (
               console.log("ERRORE")

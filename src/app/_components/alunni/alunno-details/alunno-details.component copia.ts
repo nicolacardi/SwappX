@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -12,7 +12,7 @@ import { ComuniService } from 'src/app/_services/comuni.service';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 
 
@@ -28,7 +28,7 @@ export class AlunnoDetailsComponent implements OnInit{
   emptyForm :             boolean = false;
   alunno!:                Observable<ALU_Alunno>;
   loading:                boolean = true;
-  id!:                    number;
+
   filteredComuni$!:       Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:Observable<_UT_Comuni[]>;
   comuniIsLoading:        boolean = false;
@@ -39,10 +39,7 @@ export class AlunnoDetailsComponent implements OnInit{
       private router:     Router,
       private _snackBar:  MatSnackBar,
       private alunniSvc:  AlunniService,
-      private comuniSvc:  ComuniService,
-      @Inject(MAT_DIALOG_DATA) id:number) {
-
-        this.id = id;
+      private comuniSvc:  ComuniService) {
 
         this.alunnoForm = this.fb.group({
           id:                [null],
@@ -69,12 +66,11 @@ export class AlunnoDetailsComponent implements OnInit{
   ngOnInit () {
     //********************* POPOLAMENTO FORM *******************
     //serve distinguere tra form vuoto e form poolato in arrivo da lista alunni
-    console.log (this.id);
-    if (this.id && this.id != 0) {
+    if (this.route.snapshot.params['id'] && this.route.snapshot.params['id'] != 0) {
       //alunno è un observable di tipo ALU_Alunno
       //nell'html faccio la | async (==subscribe)
 
-      this.alunno = this.alunniSvc.loadAlunno(this.id)
+      this.alunno = this.alunniSvc.loadAlunno(this.route.snapshot.params['id'])
       .pipe(
           //delayWhen(() => timer(2000)), //per ritardare
           tap(
@@ -144,7 +140,7 @@ export class AlunnoDetailsComponent implements OnInit{
     this._snackBar.openFromComponent(SnackbarComponent,
       {data: 'Record salvato', panelClass: ['green-snackbar']});
 
-    //this.router.navigate(['/alunni']);
+    this.router.navigate(['/alunni']);
   }
 }
 

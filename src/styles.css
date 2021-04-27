@@ -125,3 +125,8 @@ mat-nav-list a img {
 
 
 /*fine per sidenav*/
+
+.page-title {
+    text-align: center;
+    margin-top: 10px !important;
+}

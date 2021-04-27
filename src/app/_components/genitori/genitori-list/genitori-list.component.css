@@ -1,40 +1,6 @@
 
 
 
-/* MAT-TABLE EXPANDABLE ROWS */
-
-mat-row.detail-row {
-    /* height: 0; */ /* no */
-    flex-basis: 0; /* yes */
-    min-height: initial; /* override mat-row styling */
-}
-  
-.element-row:not(.expanded-row):hover {
-    background: whitesmoke;
-}
-  
-.element-row:not(.expanded-row):active {
-    background: #efefef;
-}
-
-.element-row{
-    border-bottom-width: 0;
-}
-
-.element-detail {
-    overflow: hidden;
-    display: flex; /*Da riattivare per allineare in sequenza i div all'intero del detail */
-}
-
-/* FINE MAT-TABLE EXPANDABLE ROWS */
-
-
-.picture-img {
-    border: solid grey 1px;
-    width: 100px;
-    height: 100px;
-}
-
 
 
 
