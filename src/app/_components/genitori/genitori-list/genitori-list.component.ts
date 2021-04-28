@@ -21,6 +21,7 @@ export class GenitoriListComponent implements OnInit {
   //dsAlunni!: AlunniDataSource;***Questa si usava per passargli un custom datasource
   obs_ALU_Genitori$! : Observable<ALU_Genitore[]>;
   matDataSource = new MatTableDataSource<ALU_Genitore>();
+  public searchAlu!: number;
 
   @Input()
   idAlunno!: number;
@@ -38,30 +39,41 @@ export class GenitoriListComponent implements OnInit {
   public loading$ = this.loadingSubject.asObservable();
   
   ngOnInit () {
+    //idAlunno = undefined      se sono nella lista Genitori da menu
+    //idAlunno = id dell'alunno se sono nel form dopo aver cliccato su un alunno
+    //idAlunno = 0              se sono nel form su nuovo alunno -> in questo caso non va caricata la lista di tutti.
 
+    console.log ("idAlunno:", this.idAlunno);
     if (this.idAlunno) {
       this.displayedColumns = ["tipo", "nome", "cognome", "telefono", "email"];
     }
 
     this.loadingSubject.next(true);
     //this.dsAlunni = new AlunniDataSource(this.svcALU_Alunni);***Questa si usava per passargli un custom datasource
-    this.obs_ALU_Genitori$ = this.svcALU_Genitori.loadGenitori(this.idAlunno)
-      .pipe (
-        //delayWhen(() => timer(200)),
-        finalize(() => this.loadingSubject.next(false)
-      )
-      );
-  
+    
+    if (this.idAlunno == 0) {
+      this.searchAlu = -1;   
+     } else {
+      this.searchAlu = this.idAlunno;
+     }
 
-    this.obs_ALU_Genitori$.subscribe(val => 
-      {
-      this.matDataSource.data = val;
-      this.matDataSource.paginator = this.paginator;
-      this.matDataSource.sort = this.sort;
-      }
-    );
+      this.obs_ALU_Genitori$ = this.svcALU_Genitori.loadGenitori(this.searchAlu)
+        .pipe (
+          //delayWhen(() => timer(200)),
+          finalize(() => this.loadingSubject.next(false)
+        )
+        );
     
 
+      this.obs_ALU_Genitori$.subscribe(val => 
+        {
+        this.matDataSource.data = val;
+        this.matDataSource.paginator = this.paginator;
+        this.matDataSource.sort = this.sort;
+        }
+      );
+    
+    
   }
 
   onRowClicked(id: any) {

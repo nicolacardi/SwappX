@@ -32,6 +32,7 @@ export class AlunnoDetailsComponent implements OnInit{
   filteredComuniNascita$!:Observable<_UT_Comuni[]>;
   comuniIsLoading:        boolean = false;
   comuniNascitaIsLoading: boolean = false;
+  breakpoint!:            number;
 
   constructor(private fb: FormBuilder, 
       private route:      ActivatedRoute,
@@ -41,7 +42,6 @@ export class AlunnoDetailsComponent implements OnInit{
       private comuniSvc:  ComuniService,
       @Inject(MAT_DIALOG_DATA) id:number) {
 
-        console.log("id:", id);
         
         this.idAlunno = id;
 
@@ -75,8 +75,10 @@ export class AlunnoDetailsComponent implements OnInit{
   }
 
   ngOnInit () {
+    this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     //********************* POPOLAMENTO FORM *******************
     //serve distinguere tra form vuoto e form poolato in arrivo da lista alunni
+    
     if (this.idAlunno && this.idAlunno != 0) {
       //alunno è un observable di tipo ALU_Alunno, nell'html faccio la | async (==subscribe)
       this.alunno = this.alunniSvc.loadAlunnoWithParents(this.idAlunno)
@@ -153,5 +155,11 @@ export class AlunnoDetailsComponent implements OnInit{
     console.log (val);
   }
 
+
+  onResize(event: any) {
+    //console.log(event);
+    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
+    
+  }
 }
 

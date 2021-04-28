@@ -1,0 +1,188 @@
+
+    <mat-icon class="closeDialogButton" mat-button [mat-dialog-close]="true">close</mat-icon>
+
+<div class="container">
+    
+<mat-tab-group>
+    <mat-tab label="Dati Anagrafici">
+        <mat-card class="form-card">
+            <mat-card-content>
+                <form *ngIf="(alunno | async) || emptyForm" class="data-form flex-form" [formGroup] = "alunnoForm">
+                    <div>
+                        <mat-form-field>
+                            <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome">
+                            <mat-error *ngIf="alunnoForm.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
+                        </mat-form-field>
+                        
+                        <mat-form-field>
+                            <input matInput required type="text" placeholder="Cognome" formControlName="cognome">
+                            <mat-error *ngIf="alunnoForm.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field class="form-dp">
+                            <input matInput
+                            required
+                            formControlName = "dtNascita"
+                            [matDatepicker]= "dpDtNascita"
+                            placeholder="Data di Nascita"
+                            (dateChange)="dpclick(date.value)"
+                            #date>
+                            <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
+                            <mat-datepicker #dpDtNascita  ></mat-datepicker>
+                            <mat-error *ngIf="alunnoForm.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                    
+                        <mat-form-field>
+                            <mat-label>Comune di Nascita</mat-label>
+                            <input type="text"
+                                    placeholder="<Selezionare il Comune>"
+                                    matInput
+                                    formControlName="comuneNascita"
+                                    [matAutocomplete]="auto1">
+                            <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayComune">
+                                <!--<mat-option *ngIf="comuniNascitaIsLoading" class="is-loading"><mat-spinner diameter="30"></mat-spinner></mat-option>-->
+                                <mat-spinner *ngIf="comuniNascitaIsLoading" class="is-loading" diameter="40"></mat-spinner>
+                                <mat-option *ngFor="let element of (filteredComuniNascita$ | async)" [value]="element" (click)="popolaProvNascita(element.provincia)">
+                                    <small>{{element.comune}}</small>
+                                    <small> - {{element.provincia}}</small>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="Prov di Nascita" formControlName="provNascita">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="Paese di Nascita" formControlName="nazioneNascita">
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field>
+                            <mat-label>Comune di Residenza</mat-label>
+                            <input type="text"
+                                    placeholder="<Selezionare il Comune>"
+                                    matInput
+                                    formControlName="comune"
+                                    [matAutocomplete]="auto2">
+                            <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayComune">
+                                <mat-spinner *ngIf="comuniIsLoading" class="is-loading" diameter="40"></mat-spinner>
+                                <ng-container >
+                                    <mat-option *ngFor="let element of (filteredComuni$ | async)" [value]="element" (click)="popolaProv(element.provincia,  element.cap)">
+                                        <small>{{element.comune}}</small>
+                                        <small> - {{element.provincia}}</small>
+                                    </mat-option>
+                                </ng-container>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="Prov di Residenza" formControlName="prov">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="Paese di Residenza" formControlName="nazione">
+                        </mat-form-field>
+                    </div>
+                    
+                    <div>
+                        <mat-form-field style="width: 370px">
+                            <input  matInput type="text" placeholder="Indirizzo e N. Civico" formControlName="indirizzo">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="CAP" formControlName="cap">
+                        </mat-form-field>
+                    </div>
+
+
+                    <table  matTable class="grid-checkboxes">
+                        <tr>
+                            <th>
+                                <mat-checkbox color="primary" formControlName="ckAttivo">
+                                    Alunno Attivo
+                                </mat-checkbox>
+                            </th>
+                            <th>
+                                <mat-checkbox color="primary" formControlName="ckDSA">
+                                    Alunno con DSA
+                                </mat-checkbox>
+                            </th>
+                            <th>
+                                <mat-checkbox color="primary" formControlName="ckDisabile">
+                                    Alunno Disabile
+                                </mat-checkbox>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <mat-checkbox color="primary" formControlName="ckAuthFoto">
+                                    Autorizz. Uso Foto
+                                </mat-checkbox>
+                            </th>
+                            <th>
+                                <mat-checkbox color="primary" formControlName="ckAuthUscite">
+                                    Autorizz. Uscite
+                                </mat-checkbox>
+                            </th>
+                            <th>
+                                <mat-checkbox color="primary" formControlName="ckAuthUsoMateriale">
+                                    Autorizz. Uso Mat.
+                                </mat-checkbox>
+                            </th>
+                        </tr>
+                    </table>
+
+
+                    <div mat-dialog-actions class="mat-dialog-buttonsContainer">
+                        <button mat-raised-button color="primary" 
+                            [disabled]= "!alunnoForm.valid" 
+                            (click)="save()"
+                            [mat-dialog-close]="true" >Salva</button>
+                    </div>
+
+
+                </form>
+
+                <!-- <div>
+                    errori su campo nome: {{form.controls.nome.errors?.required}}
+                </div>
+                <div>
+                    form.valid: {{form.valid}}
+                </div> -->
+
+
+            </mat-card-content>
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Dati Famiglia">
+        <mat-card class="form-card">
+            <mat-card-content>
+                <app-genitori-list [idAlunno]="idAlunno"></app-genitori-list>
+            </mat-card-content>
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Anni Scolastici">
+        <mat-card class="form-card">
+            <mat-card-content>
+                <form>
+
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Iter Iscrizione">
+        <mat-card class="form-card">
+            <mat-card-content>
+                <form>
+                    
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </mat-tab>
+
+</mat-tab-group>
+</div>
+<div *ngIf ="loading" class="spinner-container">
+    <mat-spinner></mat-spinner>
+</div>

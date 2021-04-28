@@ -18,7 +18,7 @@
     matSort
     cdkDropList
     cdkDropListOrientation="horizontal"
-    (cdkDropListDropped)="drop($event)">
+    (cdkDropListDropped)="drop($event)" (window:resize)="onResize($event)">
     <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
     <ng-container matColumnDef="nome">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>

@@ -8,17 +8,7 @@
         <mat-card class="form-card">
             <mat-card-content>
                 <form *ngIf="(alunno | async) || emptyForm" class="data-form flex-form" [formGroup] = "alunnoForm">
-
-                    <div mat-dialog-actions class="mat-dialog-buttonsContainer">
-                        <button mat-raised-button color="primary" 
-                            [disabled]= "!alunnoForm.valid" 
-                            (click)="save()"
-                            [mat-dialog-close]="true"               >Salva</button>
-                        <button mat-raised-button color="secondary" >Funz 2</button>
-                        <button mat-raised-button color="warn"      >Funz 3</button>
-                    </div>
-
-                    <mat-grid-list [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
+                    <mat-grid-list [cols]="breakpoint" rowHeight="65px" (window:resize)="onResize($event)">
                         <mat-grid-tile>
                             <mat-form-field>
                                 <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome">
@@ -122,50 +112,53 @@
                                 <input matInput type="text" placeholder="CAP" formControlName="cap">
                             </mat-form-field>
                         </mat-grid-tile>
-                    
-                        <mat-grid-tile>
-                    
-
-                        </mat-grid-tile>
-                        <mat-grid-tile class="tileCk">
-                            <mat-checkbox color="primary" formControlName="ckAttivo">
-                                Alunno Attivo
-                            </mat-checkbox>
-                        </mat-grid-tile>
-
-                        <mat-grid-tile class="tileCk">
-                            <mat-checkbox color="primary" formControlName="ckDSA">
-                                Alunno con DSA
-                            </mat-checkbox>
-                        </mat-grid-tile>
-
-                        <mat-grid-tile class="tileCk">
-                            <mat-checkbox color="primary" formControlName="ckDisabile">
-                                Alunno Disabile
-                            </mat-checkbox>
-                        </mat-grid-tile>
-
-                        <mat-grid-tile class="tileCk">
-                            <mat-checkbox color="primary" formControlName="ckAuthFoto">
-                                Autorizz. Uso Foto
-                            </mat-checkbox>
-                        </mat-grid-tile>
-
-                        <mat-grid-tile class="tileCk">
-                            <mat-checkbox color="primary" formControlName="ckAuthUscite">
-                                Autorizz. Uscite
-                            </mat-checkbox>
-                        </mat-grid-tile>
-
-                        <mat-grid-tile class="tileCk">
-                            <mat-checkbox color="primary" formControlName="ckAuthUsoMateriale">
-                                Autorizz. Uso Mat.
-                            </mat-checkbox>
-                        </mat-grid-tile>
-
                     </mat-grid-list>
 
 
+                    <table  matTable class="grid-checkboxes">
+                        <tr>
+                            <th>
+                                <mat-checkbox color="primary" formControlName="ckAttivo">
+                                    Alunno Attivo
+                                </mat-checkbox>
+                            </th>
+                            <th>
+                                <mat-checkbox color="primary" formControlName="ckDSA">
+                                    Alunno con DSA
+                                </mat-checkbox>
+                            </th>
+                            <th>
+                                <mat-checkbox color="primary" formControlName="ckDisabile">
+                                    Alunno Disabile
+                                </mat-checkbox>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <mat-checkbox color="primary" formControlName="ckAuthFoto">
+                                    Autorizz. Uso Foto
+                                </mat-checkbox>
+                            </th>
+                            <th>
+                                <mat-checkbox color="primary" formControlName="ckAuthUscite">
+                                    Autorizz. Uscite
+                                </mat-checkbox>
+                            </th>
+                            <th>
+                                <mat-checkbox color="primary" formControlName="ckAuthUsoMateriale">
+                                    Autorizz. Uso Mat.
+                                </mat-checkbox>
+                            </th>
+                        </tr>
+                    </table>
+
+
+                    <div mat-dialog-actions class="mat-dialog-buttonsContainer">
+                        <button mat-raised-button color="primary" 
+                            [disabled]= "!alunnoForm.valid" 
+                            (click)="save()"
+                            [mat-dialog-close]="true" >Salva</button>
+                    </div>
 
 
                 </form>

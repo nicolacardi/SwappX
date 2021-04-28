@@ -56,6 +56,7 @@ export class AlunniListComponent implements OnInit {
   public loading$ = this.loadingSubject.asObservable();
   
   ngOnInit () {
+    this.displayedColumns = (window.innerWidth <= 800) ? ["nome", "cognome", "dtNascita", "email"] : ["nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo", "actionsColumn"];;
 
     this.loadingSubject.next(true);
     //this.update$.subscribe (()=>{this.refresh()});
@@ -163,6 +164,11 @@ export class AlunniListComponent implements OnInit {
       }
     });
     event.stopPropagation(); 
+  }
+
+  onResize(event: any) {
+    //console.log(event);
+    this.displayedColumns = (event.target.innerWidth <= 800) ? ["nome", "cognome", "dtNascita", "email"] : ["nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo", "actionsColumn"];;
   }
 }
 

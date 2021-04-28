@@ -43,6 +43,8 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
     margin-left: 5px;       /*NC*/
 }
 
+
+
 .flex-form {
     display: flex;
     flex-direction: column;
@@ -56,9 +58,26 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
     padding-top: 0px !important;
 }
 
-.form-dp {
-    max-width: 180px;
+.tileCk .mat-figure {
+    justify-content:left !important;
 }
+
+@media only screen and (max-width: 800px) {
+    .data-form mat-form-field{
+        margin-right: 45px;      /*NC*/
+        margin-left: 45px;       /*NC*/
+    }    
+    .tileCk .mat-figure {
+        justify-content:center !important;
+    }
+  }
+
+.form-card mat-form-field {
+    width: 100%;
+}
+/* .form-dp {
+    max-width: 180px;
+} */
 
 
 .button-trash{
@@ -99,6 +118,7 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
 
 .mat-dialog-buttonsContainer button {
     width: 200px;
+    margin-bottom: 20px;
 }
 
 mat-dialog-container {
@@ -109,7 +129,7 @@ mat-dialog-container {
     position: relative!important;
   }
 
-.closeDialogButton{
+.closeDialogButton {
     margin: 5px 5px ;
     position: absolute !important;
     top: 0 !important;
@@ -120,7 +140,10 @@ mat-dialog-container {
     cursor: pointer;
 }
 
-/*********** FINE DIALOG ************/
+.mat-dialog-actions {
+ flex-wrap: nowrap !important;
+
+}/*********** FINE DIALOG ************/
 /*********** SIDENAV ************/
 .example-spacer {
     flex: 1 1 auto;
