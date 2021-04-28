@@ -1,12 +1,14 @@
+
+    <mat-icon class="closeDialogButton" mat-button [mat-dialog-close]="true">close</mat-icon>
+
 <div class="container">
+    
 <mat-tab-group>
     <mat-tab label="Dati Anagrafici">
         <mat-card class="form-card">
             <mat-card-content>
                 <form *ngIf="(alunno | async) || emptyForm" class="data-form flex-form" [formGroup] = "alunnoForm">
                     <div>
-                        <div>{{alunno | async | json}}</div>
-
                         <mat-form-field>
                             <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome">
                             <mat-error *ngIf="alunnoForm.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
@@ -137,9 +139,6 @@
                             [disabled]= "!alunnoForm.valid" 
                             (click)="save()"
                             [mat-dialog-close]="true" >Salva</button>
-                        
-                        <button mat-raised-button color="secondary" 
-                            [mat-dialog-close]="true" >Annulla</button>
                     </div>
 
 
@@ -159,9 +158,7 @@
     <mat-tab label="Dati Famiglia">
         <mat-card class="form-card">
             <mat-card-content>
-                <form>
-
-                </form>
+                <app-genitori-list [idAlunno]="idAlunno"></app-genitori-list>
             </mat-card-content>
         </mat-card>
     </mat-tab>
@@ -178,20 +175,12 @@
         <mat-card class="form-card">
             <mat-card-content>
                 <form>
-
+                    
                 </form>
             </mat-card-content>
         </mat-card>
     </mat-tab>
-    <mat-tab label="Pagelle">
-        <mat-card class="form-card">
-            <mat-card-content>
-                <form>
 
-                </form>
-            </mat-card-content>
-        </mat-card>
-    </mat-tab>
 </mat-tab-group>
 </div>
 <div *ngIf ="loading" class="spinner-container">

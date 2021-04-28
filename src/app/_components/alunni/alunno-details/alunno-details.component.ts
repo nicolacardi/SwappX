@@ -23,10 +23,11 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class AlunnoDetailsComponent implements OnInit{
 
   alunnoForm! :           FormGroup;
+  genitoreForm! :           FormGroup;
   emptyForm :             boolean = false;
   alunno!:                Observable<ALU_Alunno>;
   loading:                boolean = true;
-  id!:                    number;
+  idAlunno!:                    number;
   filteredComuni$!:       Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:Observable<_UT_Comuni[]>;
   comuniIsLoading:        boolean = false;
@@ -42,7 +43,7 @@ export class AlunnoDetailsComponent implements OnInit{
 
         console.log("id:", id);
         
-        this.id = id;
+        this.idAlunno = id;
 
         this.alunnoForm = this.fb.group({
           id:                [null],
@@ -62,18 +63,24 @@ export class AlunnoDetailsComponent implements OnInit{
           ckDisabile:        [false],
           ckAuthFoto:        [false],
           ckAuthUsoMateriale:[false],
-          ckAuthUscite:      [false],
+          ckAuthUscite:      [false]
+
+        });
+
+        this.genitoreForm = this.fb.group({
+          id:                [null],
+          nome:              ['', Validators.required],
+          cognome:           ['', Validators.required]
         });
   }
 
   ngOnInit () {
     //********************* POPOLAMENTO FORM *******************
     //serve distinguere tra form vuoto e form poolato in arrivo da lista alunni
-    if (this.id && this.id != 0) {
+    if (this.idAlunno && this.idAlunno != 0) {
       //alunno è un observable di tipo ALU_Alunno, nell'html faccio la | async (==subscribe)
-      this.alunno = this.alunniSvc.loadAlunnoWithParents(this.id)
+      this.alunno = this.alunniSvc.loadAlunnoWithParents(this.idAlunno)
       .pipe(
-          //delayWhen(() => timer(2000)), //per ritardare
           tap(
             //patchValue assegna "qualche" campo, quelli che trova
             //setValue   assegna tutti i campi.

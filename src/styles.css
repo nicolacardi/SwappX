@@ -11,6 +11,8 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
     margin-left: 20px;
 }
 
+.mat-drawer-container { background-color: white; }
+
 .spinner-container {
     position: fixed;
     height: 100vh;
@@ -27,7 +29,7 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
 }
 
 
-/* form Material */
+/*********** FORM MATERIAL ************/
 .data-form {
     text-align: center;     /*NC*/
     max-width: 800px;
@@ -49,8 +51,9 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
 .form-card {
     max-width: 600px;
     height: 425px;
-    margin: 50px auto 10px auto;
+    margin: 0px auto 10px auto;
     box-shadow: none !important; /*da togliere nel caso di dialog*/
+    padding-top: 0px !important;
 }
 
 .form-dp {
@@ -69,7 +72,8 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
     margin-right: 20px !important;
 }
 
-/* fine form Material */
+
+/*********** FINE FORM MATERIAL ************/
 
 
 .centerColumn {
@@ -87,6 +91,8 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
     color: white;
 }
 
+/*********** DIALOG ************/
+
 .mat-dialog-buttonsContainer {
     justify-content: space-evenly;
 }
@@ -99,7 +105,23 @@ mat-dialog-container {
     text-align: center;
 }
 
-/* per sidenav*/
+.cdk-overlay-pane.my-dialog {
+    position: relative!important;
+  }
+
+.closeDialogButton{
+    margin: 5px 5px ;
+    position: absolute !important;
+    top: 0 !important;
+    right: 0;
+    padding: 5px;
+    line-height: 14px;
+    min-width: auto;
+    cursor: pointer;
+}
+
+/*********** FINE DIALOG ************/
+/*********** SIDENAV ************/
 .example-spacer {
     flex: 1 1 auto;
 }
@@ -130,7 +152,7 @@ mat-nav-list a img {
 }
 
 
-/*fine per sidenav*/
+/*********** FINE SIDENAV ************/
 
 .page-title {
     text-align: center;

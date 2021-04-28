@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -21,10 +21,16 @@ export class GenitoriListComponent implements OnInit {
   //dsAlunni!: AlunniDataSource;***Questa si usava per passargli un custom datasource
   obs_ALU_Genitori$! : Observable<ALU_Genitore[]>;
   matDataSource = new MatTableDataSource<ALU_Genitore>();
-  displayedColumns = ["nome", "cognome", "indirizzo", "dtNascita" ];
+
+  @Input()
+  idAlunno!: number;
+
+  displayedColumns = ["nome", "cognome", "tipo", "indirizzo", "telefono", "email", "dtNascita" ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
+
 
   constructor(private svcALU_Genitori: GenitoriService, private router : Router) {}
 
@@ -33,9 +39,13 @@ export class GenitoriListComponent implements OnInit {
   
   ngOnInit () {
 
+    if (this.idAlunno) {
+      this.displayedColumns = ["tipo", "nome", "cognome", "telefono", "email"];
+    }
+
     this.loadingSubject.next(true);
     //this.dsAlunni = new AlunniDataSource(this.svcALU_Alunni);***Questa si usava per passargli un custom datasource
-    this.obs_ALU_Genitori$ = this.svcALU_Genitori.loadGenitori()
+    this.obs_ALU_Genitori$ = this.svcALU_Genitori.loadGenitori(this.idAlunno)
       .pipe (
         //delayWhen(() => timer(200)),
         finalize(() => this.loadingSubject.next(false)

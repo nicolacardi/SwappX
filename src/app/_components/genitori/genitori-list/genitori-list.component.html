@@ -1,18 +1,18 @@
 
-<h1 class="page-title">Elenco Genitori</h1>
+<h1 *ngIf="!idAlunno" class="page-title">Elenco Genitori</h1>
 <div class="spinner-container" *ngIf="loading$ | async">
     <mat-spinner></mat-spinner>
 </div>
 
 <!-- **************************   FILTER   ******************* -->
-<mat-form-field class="mg20">
+<mat-form-field class="mg20" *ngIf="!idAlunno">
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
 </mat-form-field>
 
 
 <!-- **************************   MAT-TABLE   ******************* -->
-<mat-table class="mat-elevation-z8" [dataSource]="matDataSource"
+<mat-table [dataSource]="matDataSource"
     matSort
     cdkDropList
     cdkDropListOrientation="horizontal"
@@ -27,7 +27,12 @@
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.cognome}}</mat-cell>
     </ng-container>
-    
+
+    <ng-container matColumnDef="tipo">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Tipo</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.tipo}}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="dtNascita">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Data di Nascita</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</mat-cell>
@@ -84,4 +89,4 @@
 
 <!-- **************************   PAGINATOR   ******************* -->
 
-<mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+<mat-paginator *ngIf="!idAlunno" [pageSize]="5" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>

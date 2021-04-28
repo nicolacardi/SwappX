@@ -86,7 +86,7 @@ export class AlunniListComponent implements OnInit {
     dialogConfig.disableClose = true; //lo fa modale
     dialogConfig.autoFocus = true;    //il primo elemento ha il focus
     dialogConfig.data = id;
-
+    dialogConfig.panelClass = 'my-dialog';
     let dialogRef = this.dialog.open(AlunnoDetailsComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(()=>{
       this.refresh();                         //Aggiorna la griglia dopo update da dialog
@@ -113,6 +113,7 @@ export class AlunniListComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     //dialogConfig.disableClose = true; //lo fa modale
     dialogConfig.data = 0;
+    dialogConfig.panelClass = 'my-dialog';
 
     this.dialog.open(AlunnoDetailsComponent, dialogConfig);
 

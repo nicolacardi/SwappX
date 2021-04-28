@@ -31,5 +31,5 @@ export interface ALU_Alunno {
         userIns: number;
         userUpd: number;
 
-        genitori: ALU_Genitore[];
+        _Genitori: ALU_Genitore[];
 }
