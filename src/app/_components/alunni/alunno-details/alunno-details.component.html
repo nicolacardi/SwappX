@@ -5,6 +5,8 @@
             <mat-card-content>
                 <form *ngIf="(alunno | async) || emptyForm" class="data-form flex-form" [formGroup] = "alunnoForm">
                     <div>
+                        <div>{{alunno | async | json}}</div>
+
                         <mat-form-field>
                             <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome">
                             <mat-error *ngIf="alunnoForm.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
@@ -20,9 +22,11 @@
                             required
                             formControlName = "dtNascita"
                             [matDatepicker]= "dpDtNascita"
-                            placeholder="Data di Nascita">
-                            <mat-datepicker-toggle matSuffix [for]="dpDtNascita"></mat-datepicker-toggle>
-                            <mat-datepicker #dpDtNascita></mat-datepicker>
+                            placeholder="Data di Nascita"
+                            (dateChange)="dpclick(date.value)"
+                            #date>
+                            <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
+                            <mat-datepicker #dpDtNascita  ></mat-datepicker>
                             <mat-error *ngIf="alunnoForm.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
                         </mat-form-field>
                     </div>

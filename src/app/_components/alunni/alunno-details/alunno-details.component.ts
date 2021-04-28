@@ -62,7 +62,7 @@ export class AlunnoDetailsComponent implements OnInit{
           ckDisabile:        [false],
           ckAuthFoto:        [false],
           ckAuthUsoMateriale:[false],
-          ckAuthUscite:      [false]
+          ckAuthUscite:      [false],
         });
   }
 
@@ -71,7 +71,7 @@ export class AlunnoDetailsComponent implements OnInit{
     //serve distinguere tra form vuoto e form poolato in arrivo da lista alunni
     if (this.id && this.id != 0) {
       //alunno è un observable di tipo ALU_Alunno, nell'html faccio la | async (==subscribe)
-      this.alunno = this.alunniSvc.loadAlunno(this.id)
+      this.alunno = this.alunniSvc.loadAlunnoWithParents(this.id)
       .pipe(
           //delayWhen(() => timer(2000)), //per ritardare
           tap(
@@ -142,6 +142,9 @@ export class AlunnoDetailsComponent implements OnInit{
     this.alunnoForm.controls['nazioneNascita'].setValue('Italia');
   }
 
+  dpclick(val: any){
+    console.log (val);
+  }
 
 }
 
