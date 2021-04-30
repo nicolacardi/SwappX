@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -6,7 +6,7 @@ import { delayWhen, finalize, map } from 'rxjs/operators';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from '../../../_services/alunni.service';
@@ -44,10 +44,12 @@ export class AlunniListComponent implements OnInit {
 
   //@ViewChild('myTable') myTable!: MatTable<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild("filterInput") filterInput!: ElementRef;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private svcALU_Alunni: AlunniService,
-              private router : Router,
+              private route:  ActivatedRoute,
+              private router: Router,
               public _dialog: MatDialog, 
               public _snackBar: MatSnackBar,
               private dialog: MatDialog) {}
@@ -64,6 +66,7 @@ export class AlunniListComponent implements OnInit {
     //this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunniWithParents()
   }
 
+
   refresh () {
     this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunni()
     .pipe (
@@ -74,9 +77,20 @@ export class AlunniListComponent implements OnInit {
 
     this.obs_ALU_Alunni$.subscribe(val => 
       {
-      this.matDataSource.data = val;
-      this.matDataSource.paginator = this.paginator;
-      this.matDataSource.sort = this.sort;
+        var caller_page = this.route.snapshot.queryParams["page"];
+        var caller_size = this.route.snapshot.queryParams["size"];
+        var caller_filter = this.route.snapshot.queryParams["filter"];
+    
+        if(caller_page != undefined ){
+          this.paginator.pageIndex = caller_page;
+          this.paginator.pageSize = caller_size;
+          this.filterInput.nativeElement.value = caller_filter;
+          this.matDataSource.filter = caller_filter;
+        }
+
+        this.matDataSource.data = val;
+        this.matDataSource.paginator = this.paginator;
+        this.matDataSource.sort = this.sort;
       }
     );
   }
@@ -84,8 +98,13 @@ export class AlunniListComponent implements OnInit {
   onRowClicked(id:any) {
     
     //Versione Router
-    this.router.navigate(["alunni", id]);
-    
+    //this.router.navigate(["alunni", id]);
+    //this.router.navigate(["alunni"], {queryParams:{ id:id, page:2}});
+
+    this.router.navigate(["alunni",id], {queryParams:{page: this.paginator.pageIndex,
+                                                      size: this.paginator.pageSize,  
+                                                      filter: this.filterInput.nativeElement.value }});
+
     /* Versione Dialog
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true; //lo fa modale

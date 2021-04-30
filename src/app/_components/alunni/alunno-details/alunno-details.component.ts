@@ -21,11 +21,16 @@ import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 
 export class AlunnoDetailsComponent implements OnInit{
 
+  idAlunno!:              number;
+  caller_page!:           string;
+  caller_size!:           string;
+  caller_filter!:         string;
+
   alunnoForm! :           FormGroup;
   emptyForm :             boolean = false;
   alunno!:                Observable<ALU_Alunno>;
   loading:                boolean = true;
-  idAlunno!:              number;
+  
   filteredComuni$!:       Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:Observable<_UT_Comuni[]>;
   comuniIsLoading:        boolean = false;
@@ -63,11 +68,17 @@ export class AlunnoDetailsComponent implements OnInit{
   }
 
   ngOnInit () {
+
     this.loadData();
   }
 
   loadData(){
+
     this.idAlunno = this.route.snapshot.params['id'];  
+    this.caller_page = this.route.snapshot.queryParams["page"];
+    this.caller_size = this.route.snapshot.queryParams["size"];
+    this.caller_filter = this.route.snapshot.queryParams["filter"];
+
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
 
     //********************* POPOLAMENTO FORM *******************
@@ -123,7 +134,10 @@ export class AlunnoDetailsComponent implements OnInit{
   }
 
   back(){
-    this.router.navigate(['/alunni?page=1']);
+
+    //this.router.navigate(['/alunni?page=' + this.caller_page ]);
+    this.router.navigate(["alunni"], {queryParams:{page: this.caller_page, size: this.caller_size, filter: this.caller_filter }});
+
   }
   refresh(){
     this.loadData();
