@@ -13,6 +13,7 @@ import { ComuniService } from 'src/app/_services/comuni.service';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { validateHorizontalPosition } from '@angular/cdk/overlay';
 
 @Component({
   selector:     'app-alunno-details',
@@ -47,17 +48,17 @@ export class AlunnoDetailsComponent implements OnInit{
 
         this.alunnoForm = this.fb.group({
           id:                [null],
-          nome:              ['', Validators.required],
-          cognome:           ['', Validators.required],
+          nome:              ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+          cognome:           ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
           dtNascita:         ['', Validators.required],
-          comuneNascita:     [''],
-          provNascita:       [''],
-          nazioneNascita:    [''],
-          indirizzo:         [''],
-          comune:            [''],
-          prov:              [''],
-          cap:               [''],
-          nazione:           [''],
+          comuneNascita:     ['', Validators.maxLength(50)],
+          provNascita:       ['', Validators.maxLength(2)] ,
+          nazioneNascita:    ['', Validators.maxLength(3)],
+          indirizzo:         ['', Validators.maxLength(255)],
+          comune:            ['', Validators.maxLength(50)],
+          prov:              ['', Validators.maxLength(2)],
+          cap:               ['', Validators.maxLength(5)],
+          nazione:           ['', Validators.maxLength(3)],
           ckAttivo:          [false],
           ckDSA:             [false],
           ckDisabile:        [false],
@@ -69,8 +70,8 @@ export class AlunnoDetailsComponent implements OnInit{
 
         this.genitoreForm = this.fb.group({
           id:                [null],
-          nome:              ['', Validators.required],
-          cognome:           ['', Validators.required]
+          nome:              ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+          cognome:           ['', { validators:[ Validators.required, Validators.maxLength(50)]}]
         });
   }
 
@@ -117,45 +118,28 @@ export class AlunnoDetailsComponent implements OnInit{
   }
 
   save(){
-    //console.log("Ecco il form che sto per passare al service", this.alunnoForm.value );
-    if (this.alunnoForm.controls['id'].value == null) {
+
+    if (this.alunnoForm.controls['id'].value == null) 
       this.alunniSvc.postAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from post", res));
-    } else {
+    else 
       this.alunniSvc.putAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from put", res));
-    }
     
-    this._snackBar.openFromComponent(SnackbarComponent,
-      {data: 'Record salvato', panelClass: ['green-snackbar']});
+    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
 
     //this.router.navigate(['/alunni']);
-  }
-
-  displayComune(objComune: any) {
-    //metodo usato da displayWith
-    if (objComune.comune) {
-      return objComune.comune;
-    } else {
-      //in fase di popolamento iniziale non si ha a disposizione un Object ma una stringa
-      return objComune
-    }
   }
 
   popolaProv(prov: string, cap: string) {
     this.alunnoForm.controls['prov'].setValue(prov);
     this.alunnoForm.controls['cap'].setValue(cap);
-    this.alunnoForm.controls['nazione'].setValue('Italia');
+    this.alunnoForm.controls['nazione'].setValue('ITA');
   }
 
   popolaProvNascita(prov: string) {
     this.alunnoForm.controls['provNascita'].setValue(prov);
-    this.alunnoForm.controls['nazioneNascita'].setValue('Italia');
+    this.alunnoForm.controls['nazioneNascita'].setValue('ITA');
   }
-
-  dpclick(val: any){
-    console.log (val);
-  }
-
-
+  
   onResize(event: any) {
     //console.log(event);
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
