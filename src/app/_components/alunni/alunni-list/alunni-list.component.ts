@@ -82,7 +82,11 @@ export class AlunniListComponent implements OnInit {
   }
 
   onRowClicked(id:any) {
-    //this.router.navigate(["alunni", id]);
+    
+    //Versione Router
+    this.router.navigate(["alunni", id]);
+    
+    /* Versione Dialog
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true; //lo fa modale
     dialogConfig.autoFocus = true;    //il primo elemento ha il focus
@@ -92,6 +96,7 @@ export class AlunniListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(()=>{
       this.refresh();                         //Aggiorna la griglia dopo update da dialog
     });
+    */
   }
   
   // Apertura dettaglio in modalità link

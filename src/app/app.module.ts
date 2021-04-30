@@ -14,6 +14,8 @@ import { MaterialModule } from './_material/material.module';
 
 import { AlunniListComponent } from './_components/alunni/alunni-list/alunni-list.component';
 import { AlunnoDetailsComponent } from './_components/alunni/alunno-details/alunno-details.component';
+import { AlunnoDashboardComponent } from './_components/alunni/alunno-dashboard/alunno-dashboard.component';
+
 
 import { GenitoriListComponent } from './_components/genitori/genitori-list/genitori-list.component';
 import { GenitoreDetailsComponent } from './_components/genitori/genitore-details/genitore-details.component';
@@ -28,9 +30,12 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
   declarations: [
     AppComponent,
     AlunniListComponent,
-    GenitoriListComponent,
     AlunnoDetailsComponent,
+    AlunnoDashboardComponent,
+
+    GenitoriListComponent,
     GenitoreDetailsComponent,
+    
     DialogYesNoComponent,
     SnackbarComponent,
   ],

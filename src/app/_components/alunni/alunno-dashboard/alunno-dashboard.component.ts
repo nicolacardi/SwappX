@@ -12,20 +12,23 @@ import { ComuniService } from 'src/app/_services/comuni.service';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { validateHorizontalPosition } from '@angular/cdk/overlay';
 
 @Component({
-  selector:     'app-alunno-details',
-  templateUrl:  './alunno-details.component.html',
-  styleUrls:    ['./alunno-details.component.css']
+  selector:     'app-alunno-dashboard',
+  templateUrl:  './alunno-dashboard.component.html',
+  styleUrls:    ['./alunno-dashboard.component.css']
 })
 
-export class AlunnoDetailsComponent implements OnInit{
+export class AlunnoDashboardComponent implements OnInit{
 
   alunnoForm! :           FormGroup;
+  genitoreForm! :           FormGroup;
   emptyForm :             boolean = false;
   alunno!:                Observable<ALU_Alunno>;
   loading:                boolean = true;
-  idAlunno!:              number;
+  idAlunno!:                    number;
   filteredComuni$!:       Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:Observable<_UT_Comuni[]>;
   comuniIsLoading:        boolean = false;
@@ -37,8 +40,12 @@ export class AlunnoDetailsComponent implements OnInit{
       private router:     Router,
       private _snackBar:  MatSnackBar,
       private alunniSvc:  AlunniService,
-      private comuniSvc:  ComuniService) {
+      private comuniSvc:  ComuniService,
+      @Inject(MAT_DIALOG_DATA) id:number) {
+
         
+        this.idAlunno = id;
+
         this.alunnoForm = this.fb.group({
           id:                [null],
           nome:              ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
@@ -60,13 +67,16 @@ export class AlunnoDetailsComponent implements OnInit{
           ckAuthUscite:      [false]
 
         });
+
+        this.genitoreForm = this.fb.group({
+          id:                [null],
+          nome:              ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+          cognome:           ['', { validators:[ Validators.required, Validators.maxLength(50)]}]
+        });
   }
 
   ngOnInit () {
-
-    this.idAlunno = this.route.snapshot.params['id'];  
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
-
     //********************* POPOLAMENTO FORM *******************
     //serve distinguere tra form vuoto e form poolato in arrivo da lista alunni
     
@@ -107,7 +117,6 @@ export class AlunnoDetailsComponent implements OnInit{
     )
   }
 
-  //#region ----- Funzioni -------
   save(){
 
     if (this.alunnoForm.controls['id'].value == null) 
@@ -119,11 +128,6 @@ export class AlunnoDetailsComponent implements OnInit{
 
     //this.router.navigate(['/alunni']);
   }
-  
-  back(){
-    this.router.navigate(['/alunni']);
-  }
-  //#endregion
 
   popolaProv(prov: string, cap: string) {
     this.alunnoForm.controls['prov'].setValue(prov);
@@ -137,7 +141,9 @@ export class AlunnoDetailsComponent implements OnInit{
   }
   
   onResize(event: any) {
+    //console.log(event);
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
+    
   }
 }
 
