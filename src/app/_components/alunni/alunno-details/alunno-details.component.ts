@@ -119,8 +119,14 @@ export class AlunnoDetailsComponent implements OnInit{
 
     //this.router.navigate(['/alunni']);
   }
-  
+
   back(){
+    this.router.navigate(['/alunni']);
+  }
+  refresh(){
+    this.router.navigate(['/alunni']);
+  }
+  delete(){
     this.router.navigate(['/alunni']);
   }
   //#endregion
