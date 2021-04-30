@@ -63,7 +63,10 @@ export class AlunnoDetailsComponent implements OnInit{
   }
 
   ngOnInit () {
+    this.loadData();
+  }
 
+  loadData(){
     this.idAlunno = this.route.snapshot.params['id'];  
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
 
@@ -108,6 +111,7 @@ export class AlunnoDetailsComponent implements OnInit{
   }
 
   //#region ----- Funzioni -------
+
   save(){
 
     if (this.alunnoForm.controls['id'].value == null) 
@@ -116,17 +120,16 @@ export class AlunnoDetailsComponent implements OnInit{
       this.alunniSvc.putAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from put", res));
     
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-
-    //this.router.navigate(['/alunni']);
   }
 
   back(){
-    this.router.navigate(['/alunni']);
+    this.router.navigate(['/alunni?page=1']);
   }
   refresh(){
-    this.router.navigate(['/alunni']);
+    this.loadData();
   }
   delete(){
+    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Funzione non abilitata', panelClass: ['red-snackbar']});
     this.router.navigate(['/alunni']);
   }
   //#endregion
