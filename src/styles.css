@@ -93,6 +93,7 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
     position: fixed !important;
     right: 0px;
     margin-right: 20px !important;
+    z-index: 1000;
 }
 
 

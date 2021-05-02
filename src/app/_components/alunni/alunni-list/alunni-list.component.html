@@ -75,7 +75,7 @@
     <ng-container matColumnDef="ckAttivo">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Attivo</mat-header-cell>
         <mat-cell *matCellDef="let element">
-            <mat-checkbox [checked]="element.ckAttivo" color="primary"></mat-checkbox>
+            <mat-checkbox [checked]="element.ckAttivo" color="primary" disabled></mat-checkbox>
         </mat-cell>
     </ng-container>
 
