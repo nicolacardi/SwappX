@@ -78,11 +78,11 @@
     </ng-container>
 
     <ng-container matColumnDef="actionsColumn">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Funzioni</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
         <mat-cell  *matCellDef="let element;  let j = index;"> 
-            <mat-icon (click)="openDetail(element.id)" color="blue" class="button-trash">link</mat-icon>
-            <mat-icon (click)="deleteDetail(element, $event)" color="warn" class="button-trash">delete_outline</mat-icon>
+            <mat-icon (click)="openDetail(element.id)" class="pointer">account_circle</mat-icon>
         </mat-cell>
+
       </ng-container>
 
     <!-- **************************   NG-CONTAINER EXPANDED DETAIL   ******************* -->
@@ -109,8 +109,7 @@
     
     <!-- **************************   MAT-ROW   ******************* -->
     <mat-row *matRowDef="let element;columns: displayedColumns"
-         class="element-row"
-         (click)="onRowClicked(element.id)">
+         class="element-row">
     </mat-row>
 
     <!-- Caso con Expanded row

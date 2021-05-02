@@ -39,7 +39,7 @@ export class AlunniListComponent implements OnInit {
 
   obs_ALU_Alunni$! : Observable<ALU_Alunno[]>;
   matDataSource = new MatTableDataSource<ALU_Alunno>();
-  displayedColumns: string[] =  ["nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo", "actionsColumn"];
+  displayedColumns: string[] =  ["actionsColumn", "nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo" ];
   //expandedElement!: ALU_Alunno | null;      //expanded
 
   //@ViewChild('myTable') myTable!: MatTable<any>;
@@ -58,7 +58,7 @@ export class AlunniListComponent implements OnInit {
   public loading$ = this.loadingSubject.asObservable();
   
   ngOnInit () {
-    this.displayedColumns = (window.innerWidth <= 800) ? ["nome", "cognome", "dtNascita", "email"] : ["nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo", "actionsColumn"];;
+    this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "dtNascita", "email"] : ["actionsColumn", "nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo"];
 
     this.loadingSubject.next(true);
     //this.update$.subscribe (()=>{this.refresh()});
@@ -80,12 +80,17 @@ export class AlunniListComponent implements OnInit {
         var caller_page = this.route.snapshot.queryParams["page"];
         var caller_size = this.route.snapshot.queryParams["size"];
         var caller_filter = this.route.snapshot.queryParams["filter"];
+        var caller_sortField = this.route.snapshot.queryParams["sortField"];
+        var caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
     
         if(caller_page != undefined ){
           this.paginator.pageIndex = caller_page;
           this.paginator.pageSize = caller_size;
           this.filterInput.nativeElement.value = caller_filter;
           this.matDataSource.filter = caller_filter;
+          //this.matDataSource.sort.direction = caller_sortField;
+          //this.matDataSource.sort.active = caller_sortDirection;
+
         }
 
         this.matDataSource.data = val;
@@ -95,15 +100,19 @@ export class AlunniListComponent implements OnInit {
     );
   }
 
-  onRowClicked(id:any) {
+  openDetail(id:any){
     
     //Versione Router
     //this.router.navigate(["alunni", id]);
     //this.router.navigate(["alunni"], {queryParams:{ id:id, page:2}});
-
+    console.log(this.matDataSource.sort?.active);
+    console.log(this.matDataSource.sort?.direction);
     this.router.navigate(["alunni",id], {queryParams:{page: this.paginator.pageIndex,
                                                       size: this.paginator.pageSize,  
-                                                      filter: this.filterInput.nativeElement.value }});
+                                                      filter: this.filterInput.nativeElement.value,
+                                                      sortField: this.matDataSource.sort?.active,
+                                                      sortDirection: this.matDataSource.sort?.direction
+                                                    }});
 
     /* Versione Dialog
     const dialogConfig = new MatDialogConfig();
@@ -116,11 +125,7 @@ export class AlunniListComponent implements OnInit {
       this.refresh();                         //Aggiorna la griglia dopo update da dialog
     });
     */
-  }
-  
-  // Apertura dettaglio in modalità link
-  openDetail(id:any){
-    this.router.navigate(["alunni", id]);
+
   }
 
   applyFilter(event: Event) {
@@ -139,7 +144,7 @@ export class AlunniListComponent implements OnInit {
     //dialogConfig.disableClose = true; //lo fa modale
     dialogConfig.data = 0;
     dialogConfig.panelClass = 'my-dialog';
-
+    dialogConfig.width = "800px";
     this.dialog.open(AlunnoDetailsComponent, dialogConfig);
 
   }
@@ -168,8 +173,6 @@ export class AlunniListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log(result);
       if(result){
         this.svcALU_Alunni.deleteAlunno(element.id)
         .subscribe(
@@ -192,7 +195,7 @@ export class AlunniListComponent implements OnInit {
 
   onResize(event: any) {
     //console.log(event);
-    this.displayedColumns = (event.target.innerWidth <= 800) ? ["nome", "cognome", "dtNascita", "email"] : ["nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo", "actionsColumn"];;
+    this.displayedColumns = (event.target.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "dtNascita", "email"] : ["actionsColumn", "nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo"];;
   }
 }
 

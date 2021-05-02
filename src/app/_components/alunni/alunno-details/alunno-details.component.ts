@@ -12,6 +12,8 @@ import { ComuniService } from 'src/app/_services/comuni.service';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 @Component({
   selector:     'app-alunno-details',
@@ -25,6 +27,8 @@ export class AlunnoDetailsComponent implements OnInit{
   caller_page!:           string;
   caller_size!:           string;
   caller_filter!:         string;
+  caller_sortField!:      string;
+  caller_sortDirection!:  string;
 
   alunnoForm! :           FormGroup;
   emptyForm :             boolean = false;
@@ -36,13 +40,15 @@ export class AlunnoDetailsComponent implements OnInit{
   comuniIsLoading:        boolean = false;
   comuniNascitaIsLoading: boolean = false;
   breakpoint!:            number;
+  breakpoint2!:            number;
 
   constructor(private fb: FormBuilder, 
       private route:      ActivatedRoute,
       private router:     Router,
       private _snackBar:  MatSnackBar,
       private alunniSvc:  AlunniService,
-      private comuniSvc:  ComuniService) {
+      private comuniSvc:  ComuniService,
+      public _dialog:     MatDialog) {
         
         this.alunnoForm = this.fb.group({
           id:                [null],
@@ -78,8 +84,10 @@ export class AlunnoDetailsComponent implements OnInit{
     this.caller_page = this.route.snapshot.queryParams["page"];
     this.caller_size = this.route.snapshot.queryParams["size"];
     this.caller_filter = this.route.snapshot.queryParams["filter"];
-
+    this.caller_sortField = this.route.snapshot.queryParams["sortField"];
+    this.caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
+    this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
     //********************* POPOLAMENTO FORM *******************
     //serve distinguere tra form vuoto e form poolato in arrivo da lista alunni
@@ -136,15 +144,48 @@ export class AlunnoDetailsComponent implements OnInit{
   back(){
 
     //this.router.navigate(['/alunni?page=' + this.caller_page ]);
-    this.router.navigate(["alunni"], {queryParams:{page: this.caller_page, size: this.caller_size, filter: this.caller_filter }});
+    this.router.navigate(["alunni"], {queryParams:{
+                                      page: this.caller_page,
+                                      size: this.caller_size,
+                                      filter: this.caller_filter,
+                                      sortField: this.caller_sortField,
+                                      sortDirection: this.caller_sortDirection
+                                     }});
 
   }
   refresh(){
     this.loadData();
   }
   delete(){
-    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Funzione non abilitata', panelClass: ['red-snackbar']});
-    this.router.navigate(['/alunni']);
+    const dialogRef = this._dialog.open(DialogYesNoComponent, {
+      width: '320px',
+      data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.alunniSvc.deleteAlunno(this.idAlunno)
+        .pipe (
+          finalize(()=>this.router.navigate(['/alunni']))
+        )
+        .subscribe(
+          res=>{    
+            this._snackBar.openFromComponent(SnackbarComponent,
+              {data: 'Alunno cancellato', panelClass: ['red-snackbar'] });
+            
+              this.refresh();
+            //this.matDataSource.data.splice(this.matDataSource.data.findIndex(x=> x.id === element.id),1);
+            //this.matDataSource.data = this.matDataSource.data;
+          },
+          err=> (
+              console.log("ERRORE")
+          )
+        );
+      }
+    });
+
+    //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Funzione non abilitata', panelClass: ['red-snackbar']});
+    
   }
   //#endregion
 
@@ -161,6 +202,7 @@ export class AlunnoDetailsComponent implements OnInit{
   
   onResize(event: any) {
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
+    this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 3;
   }
 }
 

@@ -3,23 +3,45 @@
     
     <mat-card class="form-card">
         <mat-card-content>
+
             <form *ngIf="(alunno | async) || emptyForm" class="data-form flex-form" [formGroup] = "alunnoForm">
+                <div class="buttonsDetail">
 
-                <div mat-dialog-actions class="mat-dialog-buttonsContainer">
-                    <button mat-raised-button color="secondary" 
-                        (click)="back()">Back</button>
+                    <button *ngIf="!idAlunno" mat-stroked-button color="secondary" mat-dialog-close>
+                        <mat-icon>arrow_back</mat-icon>
+                        <div class="button-textDetail">
+                            annulla
+                        </div>
+                    </button>
 
-                    <button mat-raised-button color="primary" 
+
+                    <button type="button" *ngIf="idAlunno" mat-stroked-button color="secondary" 
+                        (click)="back()">
+                        <mat-icon>arrow_back</mat-icon>
+                        <div class="button-textDetail">
+                            alunni
+                        </div>
+                    </button>
+
+                    <button *ngIf="idAlunno" mat-stroked-button color="secondary" 
                         [disabled]= "!alunnoForm.valid" 
-                        (click)="refresh()">Refresh</button>
+                        (click)="refresh()">
+                        <mat-icon>restart_alt</mat-icon>
+                        <div class="button-textDetail">ricarica</div>
+                    </button>
 
-                    <button mat-raised-button color="primary" 
+                    <button mat-stroked-button color="secondary" 
                         [disabled]= "!alunnoForm.valid" 
-                        (click)="save()">salva</button>
+                        (click)="save()"><mat-icon>save</mat-icon>
+                        <div class="button-textDetail">salva</div>
+                    </button>
 
-                    <button mat-raised-button color="primary" 
+                    <button *ngIf="idAlunno" mat-stroked-button color="warn" 
                         [disabled]= "!alunnoForm.valid" 
-                        (click)="delete()">Cancella</button>
+                        (click)="delete()">
+                        <mat-icon>delete_outline</mat-icon>
+                        <div class="button-textDetail">elimina</div>
+                    </button>
 
                 </div>
 
@@ -128,9 +150,10 @@
                     </mat-grid-tile>
                 
                     <mat-grid-tile>
-                
-
+  
                     </mat-grid-tile>
+                </mat-grid-list>
+                <mat-grid-list [cols]="breakpoint2" rowHeight="40px">
                     <mat-grid-tile class="tileCk">
                         <mat-checkbox color="primary" formControlName="ckAttivo">
                             Alunno Attivo
@@ -143,7 +166,7 @@
                         </mat-checkbox>
                     </mat-grid-tile>
 
-                    <mat-grid-tile class="tileCk">
+                    <mat-grid-tile class="tileCk" >
                         <mat-checkbox color="primary" formControlName="ckDisabile">
                             Alunno Disabile
                         </mat-checkbox>
