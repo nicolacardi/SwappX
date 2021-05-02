@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, SortDirection } from '@angular/material/sort';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { delayWhen, finalize, map } from 'rxjs/operators';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
@@ -41,7 +41,9 @@ export class AlunniListComponent implements OnInit {
   matDataSource = new MatTableDataSource<ALU_Alunno>();
   displayedColumns: string[] =  ["actionsColumn", "nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo" ];
   //expandedElement!: ALU_Alunno | null;      //expanded
-
+  matSortActive!: string;
+  matSortDirection!: SortDirection;
+  
   //@ViewChild('myTable') myTable!: MatTable<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild("filterInput") filterInput!: ElementRef;
@@ -83,25 +85,28 @@ export class AlunniListComponent implements OnInit {
         var caller_sortField = this.route.snapshot.queryParams["sortField"];
         var caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
     
+
+        
+        this.matDataSource.data = val;
+        this.matDataSource.paginator = this.paginator;
+        this.matDataSource.sort = this.sort;
+        this.matSortActive = "";
+
         if(caller_page != undefined ){
+          console.log(caller_page);
           this.paginator.pageIndex = caller_page;
           this.paginator.pageSize = caller_size;
           this.filterInput.nativeElement.value = caller_filter;
           this.matDataSource.filter = caller_filter;
-          //this.matDataSource.sort.direction = caller_sortField;
-          //this.matDataSource.sort.active = caller_sortDirection;
-
+          this.matSortActive = caller_sortField;
+          this.matSortDirection = caller_sortDirection;
         }
-
-        this.matDataSource.data = val;
-        this.matDataSource.paginator = this.paginator;
-        this.matDataSource.sort = this.sort;
       }
     );
   }
 
   openDetail(id:any){
-    
+    console.log (this.sort);
     //Versione Router
     //this.router.navigate(["alunni", id]);
     //this.router.navigate(["alunni"], {queryParams:{ id:id, page:2}});
