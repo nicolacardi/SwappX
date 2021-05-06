@@ -66,7 +66,7 @@ export class AlunnoDetailsComponent implements OnInit{
           prov:                       ['', Validators.maxLength(2)],
           cap:                        ['', Validators.maxLength(5)],
           nazione:                    ['', Validators.maxLength(3)],
-          genere:                     ['',{ validators:[Validators.maxLength(1), Validators.pattern("M|F")]}],
+          genere:                     ['',{ validators:[Validators.maxLength(1), Validators.required, Validators.pattern("M|F")]}],
           cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
           scuolaProvenienza:          ['', Validators.maxLength(255)],
           indirizzoScuolaProvenienza: ['', Validators.maxLength(255)],
