@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -42,6 +42,8 @@ export class AlunnoDetailsComponent implements OnInit{
   breakpoint!:            number;
   breakpoint2!:            number;
 
+
+  
   constructor(private fb: FormBuilder, 
       private route:      ActivatedRoute,
       private router:     Router,
@@ -49,20 +51,25 @@ export class AlunnoDetailsComponent implements OnInit{
       private alunniSvc:  AlunniService,
       private comuniSvc:  ComuniService,
       public _dialog:     MatDialog) {
-        
+        //https://blog.massimopetrossi.com/sicurezza-informatica/una-regex-per-validare-il-codice-fiscale
+        let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
         this.alunnoForm = this.fb.group({
-          id:                [null],
-          nome:              ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-          cognome:           ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-          dtNascita:         ['', Validators.required],
-          comuneNascita:     ['', Validators.maxLength(50)],
-          provNascita:       ['', Validators.maxLength(2)] ,
-          nazioneNascita:    ['', Validators.maxLength(3)],
-          indirizzo:         ['', Validators.maxLength(255)],
-          comune:            ['', Validators.maxLength(50)],
-          prov:              ['', Validators.maxLength(2)],
-          cap:               ['', Validators.maxLength(5)],
-          nazione:           ['', Validators.maxLength(3)],
+          id:                         [null],
+          nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+          cognome:                    ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+          dtNascita:                  ['', Validators.required],
+          comuneNascita:              ['', Validators.maxLength(50)],
+          provNascita:                ['', Validators.maxLength(2)] ,
+          nazioneNascita:             ['', Validators.maxLength(3)],
+          indirizzo:                  ['', Validators.maxLength(255)],
+          comune:                     ['', Validators.maxLength(50)],
+          prov:                       ['', Validators.maxLength(2)],
+          cap:                        ['', Validators.maxLength(5)],
+          nazione:                    ['', Validators.maxLength(3)],
+          genere:                     ['',{ validators:[Validators.maxLength(1), Validators.pattern("M|F")]}],
+          cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
+          scuolaProvenienza:          ['', Validators.maxLength(255)],
+          indirizzoScuolaProvenienza: ['', Validators.maxLength(255)],
           ckAttivo:          [false],
           ckDSA:             [false],
           ckDisabile:        [false],
@@ -102,7 +109,7 @@ export class AlunnoDetailsComponent implements OnInit{
             alunno => this.alunnoForm.patchValue(alunno)
           ),
           finalize(()=>this.loading = false),
-          //tap ( val => console.log(val))
+          tap ( val => console.log(val))
       );
     } else {
       this.emptyForm = true
@@ -134,9 +141,17 @@ export class AlunnoDetailsComponent implements OnInit{
   save(){
 
     if (this.alunnoForm.controls['id'].value == null) 
-      this.alunniSvc.postAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from post", res));
+      this.alunniSvc.postAlunno(this.alunnoForm.value)
+        .subscribe(res=> {
+          console.log("return from post", res);
+
+        });
     else 
-      this.alunniSvc.putAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from put", res));
+      this.alunniSvc.putAlunno(this.alunnoForm.value)
+        .subscribe(res=> {
+          console.log("return from put", res);
+
+        });
     
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
   }
@@ -169,11 +184,12 @@ export class AlunnoDetailsComponent implements OnInit{
           finalize(()=>this.router.navigate(['/alunni']))
         )
         .subscribe(
-          res=>{    
+          res=>{
             this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Alunno cancellato', panelClass: ['red-snackbar'] });
+              {data: 'Alunno cancellato', panelClass: ['red-snackbar']}
+            );
             
-              this.refresh();
+            //this.refresh();
             //this.matDataSource.data.splice(this.matDataSource.data.findIndex(x=> x.id === element.id),1);
             //this.matDataSource.data = this.matDataSource.data;
           },

@@ -73,7 +73,26 @@
                             <mat-error *ngIf="alunnoForm.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
+                </mat-grid-list>
+                <mat-grid-list [cols]="breakpoint" rowHeight="60px">
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="Genere (M/F)" formControlName="genere">
+                        </mat-form-field>
+                    </mat-grid-tile>
 
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="Codice Fiscale" formControlName="cf">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+
+
+
+
+                <mat-grid-list [cols]="breakpoint" rowHeight="60px">
                     <mat-grid-tile>
                         <mat-form-field>
                             <mat-label>Comune di Nascita</mat-label>
@@ -149,10 +168,22 @@
                         </mat-form-field>
                     </mat-grid-tile>
                 
+
+                </mat-grid-list>
+                <mat-grid-list [cols]="breakpoint" rowHeight="60px">
                     <mat-grid-tile>
-  
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="Scuola di provenienza" formControlName="scuolaProvenienza">
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="Indirizzo Scuola di provenienza" formControlName="indirizzoScuolaProvenienza">
+                        </mat-form-field>
                     </mat-grid-tile>
                 </mat-grid-list>
+                
                 <mat-grid-list [cols]="breakpoint2" rowHeight="40px">
                     <mat-grid-tile class="tileCk">
                         <mat-checkbox color="primary" formControlName="ckAttivo">
@@ -190,7 +221,12 @@
                         </mat-checkbox>
                     </mat-grid-tile>
 
+
+
                 </mat-grid-list>
+
+
+
             </form>
 
             <!-- <div>

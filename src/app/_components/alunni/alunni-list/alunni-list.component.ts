@@ -93,25 +93,26 @@ export class AlunniListComponent implements OnInit {
         this.matSortActive = "";
 
         if(caller_page != undefined ){
-          console.log(caller_page);
+          console.log("from Detail: page, size, sortField, sortDirection:",caller_page, caller_size, caller_sortField, caller_sortDirection);
           this.paginator.pageIndex = caller_page;
           this.paginator.pageSize = caller_size;
+          this.matSortActive = caller_sortField; //non funziona benissimo
+          this.matSortDirection = caller_sortDirection;
           this.filterInput.nativeElement.value = caller_filter;
           this.matDataSource.filter = caller_filter;
-          this.matSortActive = caller_sortField;
-          this.matSortDirection = caller_sortDirection;
+
         }
       }
     );
   }
 
   openDetail(id:any){
-    console.log (this.sort);
+    
     //Versione Router
     //this.router.navigate(["alunni", id]);
     //this.router.navigate(["alunni"], {queryParams:{ id:id, page:2}});
-    console.log(this.matDataSource.sort?.active);
-    console.log(this.matDataSource.sort?.direction);
+    console.log("from List sortField:", this.matDataSource.sort?.active); //resta valorizzato anche dopo che il sort è stato neutralizzato! anche con this.maSortActive, anzi lì peggio
+    console.log("from List sortDirection: ", this.matDataSource.sort?.direction);
     this.router.navigate(["alunni",id], {queryParams:{page: this.paginator.pageIndex,
                                                       size: this.paginator.pageSize,  
                                                       filter: this.filterInput.nativeElement.value,
@@ -150,8 +151,13 @@ export class AlunniListComponent implements OnInit {
     dialogConfig.data = 0;
     dialogConfig.panelClass = 'my-dialog';
     dialogConfig.width = "800px";
-    this.dialog.open(AlunnoDetailsComponent, dialogConfig);
-
+    const dialogRef = this.dialog.open(AlunnoDetailsComponent, dialogConfig);
+    dialogRef.afterClosed()
+      .subscribe(
+        () => {
+          this.refresh();
+          console.log("chiudo la add dialog");
+    });
   }
 
   /*

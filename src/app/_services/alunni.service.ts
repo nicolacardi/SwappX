@@ -44,16 +44,16 @@ export class AlunniService {
     });
   }
 
-  putAlunno(formData: any){
+  putAlunno(formData: any): Observable <any>{
     return this.http.put( environment.apiBaseUrl  + 'ALU_Alunni/' + formData.id , formData);    
   }
 
-  postAlunno(formData: any){
+  postAlunno(formData: any): Observable <any>{
     formData.id = 0;
     return this.http.post( environment.apiBaseUrl  + 'ALU_Alunni' , formData);  
   }
 
-  deleteAlunno(id: number){
+  deleteAlunno(id: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'ALU_Alunni/' + id);    
   }
 
