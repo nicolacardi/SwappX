@@ -124,7 +124,6 @@ export class AlunniListComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
-    //console.log (event);
     const filterValue = (event.target as HTMLInputElement).value;
     this.matDataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -134,7 +133,6 @@ export class AlunniListComponent implements OnInit {
   }
 
   addAlunno(){
-    //this.router.navigate(["alunni", id]);
     const dialogConfig = new MatDialogConfig();
     //dialogConfig.disableClose = true; //lo fa modale
     dialogConfig.data = 0;
@@ -145,24 +143,8 @@ export class AlunniListComponent implements OnInit {
       .subscribe(
         () => {
           this.refresh();
-          console.log("chiudo la add dialog");
     });
   }
-
-  /*
-  openDialog(): void {
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '250px',
-      data: {name: this.name, animal: this.animal}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.animal = result;
-    });
-  }
-  */
-
 
 
   deleteDetail(element: any, event: Event){
@@ -179,10 +161,7 @@ export class AlunniListComponent implements OnInit {
           res=>{    
             this._snackBar.openFromComponent(SnackbarComponent,
               {data: 'Alunno ' + element.nome + ' '+ element.cognome + ' cancellato', panelClass: ['red-snackbar'] });
-            
               this.refresh();
-            //this.matDataSource.data.splice(this.matDataSource.data.findIndex(x=> x.id === element.id),1);
-            //this.matDataSource.data = this.matDataSource.data;
           },
           err=> (
               console.log("ERRORE")
@@ -194,7 +173,6 @@ export class AlunniListComponent implements OnInit {
   }
 
   onResize(event: any) {
-    //console.log(event);
     this.displayedColumns = (event.target.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "dtNascita", "email"] : ["actionsColumn", "nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo"];;
   }
 }
