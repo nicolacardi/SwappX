@@ -14,6 +14,7 @@ import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { LoadingService } from '../../utilities/loading/loading.service';
 
 @Component({
   selector:     'app-alunno-details',
@@ -44,14 +45,16 @@ export class AlunnoDetailsComponent implements OnInit{
 
 
   
-  constructor(private fb: FormBuilder, 
-      private route:      ActivatedRoute,
-      private router:     Router,
-      private _snackBar:  MatSnackBar,
-      private alunniSvc:  AlunniService,
-      private comuniSvc:  ComuniService,
-      public _dialog:     MatDialog) {
-        //https://blog.massimopetrossi.com/sicurezza-informatica/una-regex-per-validare-il-codice-fiscale
+  constructor(private fb:     FormBuilder, 
+      private route:          ActivatedRoute,
+      private router:         Router,
+      private alunniSvc:      AlunniService,
+      private comuniSvc:      ComuniService,
+      public _dialog:         MatDialog,
+      private _snackBar:      MatSnackBar,
+      private _loadingService :LoadingService
+      ) {
+
         let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
         this.alunnoForm = this.fb.group({
           id:                         [null],
@@ -97,28 +100,28 @@ export class AlunnoDetailsComponent implements OnInit{
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
     //********************* POPOLAMENTO FORM *******************
-    //serve distinguere tra form vuoto e form poolato in arrivo da lista alunni
+    //serve distinguere tra form vuoto e form popolato in arrivo da lista alunni
     
     if (this.idAlunno && this.idAlunno != 0) {
-      //alunno è un observable di tipo ALU_Alunno, nell'html faccio la | async (==subscribe)
-      this.alunno = this.alunniSvc.loadAlunnoWithParents(this.idAlunno)
+
+      const obsAlunno$: Observable<ALU_Alunno> = this.alunniSvc.loadAlunno(this.idAlunno);
+      const loadAlunno$ = this._loadingService.showLoaderUntilCompleted(obsAlunno$);
+      //TODO: capire perchè serve sia alunno | async e sia il popolamento di alunnoForm
+      this.alunno = loadAlunno$
       .pipe(
           tap(
-            //patchValue assegna "qualche" campo, quelli che trova
-            //setValue   assegna tutti i campi.
             alunno => this.alunnoForm.patchValue(alunno)
-          ),
-          finalize(()=>this.loading = false),
-          tap ( val => console.log(val))
+          )
       );
     } else {
       this.emptyForm = true
-      this.loading = false
     }
 
+    
     //********************* FILTRO COMUNE *******************
     this.filteredComuni$ = this.alunnoForm.controls['comune'].valueChanges
     .pipe(
+      tap(),
       debounceTime(300),
       tap(() => this.comuniIsLoading = true),
       //delayWhen(() => timer(2000)),
@@ -129,6 +132,7 @@ export class AlunnoDetailsComponent implements OnInit{
     //********************* FILTRO COMUNE NASCITA ***********
     this.filteredComuniNascita$ = this.alunnoForm.controls['comuneNascita'].valueChanges
     .pipe(
+      tap(),
       debounceTime(300),
       tap(() => this.comuniNascitaIsLoading = true),
       switchMap(() => this.comuniSvc.filterComuni(this.alunnoForm.value.comuneNascita)),
@@ -144,30 +148,47 @@ export class AlunnoDetailsComponent implements OnInit{
       this.alunniSvc.postAlunno(this.alunnoForm.value)
         .subscribe(res=> {
           console.log("return from post", res);
-
+          this.alunnoForm.markAsPristine();
         });
     else 
       this.alunniSvc.putAlunno(this.alunnoForm.value)
         .subscribe(res=> {
           console.log("return from put", res);
-
+          this.alunnoForm.markAsPristine();
         });
     
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
   }
 
   back(){
-
-    //this.router.navigate(['/alunni?page=' + this.caller_page ]);
-    this.router.navigate(["alunni"], {queryParams:{
-                                      page: this.caller_page,
-                                      size: this.caller_size,
-                                      filter: this.caller_filter,
-                                      sortField: this.caller_sortField,
-                                      sortDirection: this.caller_sortDirection
-                                     }});
-
+    
+    if (this.alunnoForm.dirty) {
+      const dialogRef = this._dialog.open(DialogYesNoComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE", sottoTitolo: "Dati modificati: si conferma l'uscita?"}
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if(!result) return;
+        else this.navigateBack();
+      });
+    } else {
+      this.navigateBack();
+    }
+                         
   }
+
+  navigateBack(){
+    this.router.navigate(["alunni"], {queryParams:{
+      page: this.caller_page,
+      size: this.caller_size,
+      filter: this.caller_filter,
+      sortField: this.caller_sortField,
+      sortDirection: this.caller_sortDirection
+     }});
+  }
+
+
+
   refresh(){
     this.loadData();
   }

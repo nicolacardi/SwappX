@@ -13,7 +13,7 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
 
 .mat-drawer-container { background-color: white; }
 
-.spinner-container {
+/* .spinner-container {
     position: fixed;
     height: 100vh;
     width: 100vw;
@@ -26,7 +26,7 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
     align-items: center;
     background: rgba(0, 0, 0, 0.32);
     z-index: 20000;
-}
+} */
 
 
 /*********** FORM MATERIAL ************/

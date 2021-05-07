@@ -23,6 +23,7 @@ import { GenitoreDetailsComponent } from './_components/genitori/genitore-detail
 import { DialogYesNoComponent } from './_components/utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent } from './_components/utilities/snackbar/snackbar.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { LoadingComponent } from './_components/utilities/loading/loading.component';
 
 
 
@@ -38,6 +39,7 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
     
     DialogYesNoComponent,
     SnackbarComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,

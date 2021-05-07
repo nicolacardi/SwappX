@@ -15,6 +15,7 @@ import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-n
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlunnoDetailsComponent } from '../alunno-details/alunno-details.component';
+import { LoadingService } from '../../utilities/loading/loading.service';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class AlunniListComponent implements OnInit {
   //private update = new Subject<ALU_Alunno[]>();
   //update$ = this.update.asObservable();
 
-  obs_ALU_Alunni$! : Observable<ALU_Alunno[]>;
+  
   matDataSource = new MatTableDataSource<ALU_Alunno>();
   displayedColumns: string[] =  ["actionsColumn", "nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo" ];
   //expandedElement!: ALU_Alunno | null;      //expanded
@@ -49,35 +50,25 @@ export class AlunniListComponent implements OnInit {
   @ViewChild("filterInput") filterInput!: ElementRef;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private svcALU_Alunni: AlunniService,
+  constructor(private svcAlunni: AlunniService,
               private route:  ActivatedRoute,
               private router: Router,
               public _dialog: MatDialog, 
               public _snackBar: MatSnackBar,
-              private dialog: MatDialog) {}
-
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-  public loading$ = this.loadingSubject.asObservable();
+              private _loadingService: LoadingService
+              ) {}
   
   ngOnInit () {
     this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "dtNascita", "email"] : ["actionsColumn", "nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo"];
-
-    this.loadingSubject.next(true);
-    //this.update$.subscribe (()=>{this.refresh()});
     this.refresh();
-    //this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunniWithParents()
   }
 
-
   refresh () {
-    this.obs_ALU_Alunni$ = this.svcALU_Alunni.loadAlunni()
-    .pipe (
-      //delayWhen(() => timer(200)),
-      finalize(() => this.loadingSubject.next(false)
-    )
-    );
 
-    this.obs_ALU_Alunni$.subscribe(val => 
+    const obsAlunni$: Observable<ALU_Alunno[]> = this.svcAlunni.loadAlunni();
+    const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
+
+    loadAlunni$.subscribe(val => 
       {
         var caller_page = this.route.snapshot.queryParams["page"];
         var caller_size = this.route.snapshot.queryParams["size"];
@@ -85,15 +76,13 @@ export class AlunniListComponent implements OnInit {
         var caller_sortField = this.route.snapshot.queryParams["sortField"];
         var caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
     
-
-        
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort;
         this.matSortActive = "";
 
         if(caller_page != undefined ){
-          console.log("from Detail: page, size, sortField, sortDirection:",caller_page, caller_size, caller_sortField, caller_sortDirection);
+          //console.log("from Detail: page, size, sortField, sortDirection:",caller_page, caller_size, caller_sortField, caller_sortDirection);
           this.paginator.pageIndex = caller_page;
           this.paginator.pageSize = caller_size;
           this.matSortActive = caller_sortField; //non funziona benissimo
@@ -151,7 +140,7 @@ export class AlunniListComponent implements OnInit {
     dialogConfig.data = 0;
     dialogConfig.panelClass = 'my-dialog';
     dialogConfig.width = "800px";
-    const dialogRef = this.dialog.open(AlunnoDetailsComponent, dialogConfig);
+    const dialogRef = this._dialog.open(AlunnoDetailsComponent, dialogConfig);
     dialogRef.afterClosed()
       .subscribe(
         () => {
@@ -185,7 +174,7 @@ export class AlunniListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.svcALU_Alunni.deleteAlunno(element.id)
+        this.svcAlunni.deleteAlunno(element.id)
         .subscribe(
           res=>{    
             this._snackBar.openFromComponent(SnackbarComponent,
@@ -212,48 +201,3 @@ export class AlunniListComponent implements OnInit {
 
 
 
-
-  //per paginazione client side ma con datasource custom
-  // ngAfterViewInit() {
-  //   this.paginator.page
-  //   //     .pipe(
-  //   //         tap(() => this.loadAlunniPage())
-  //   //     )
-  //        .subscribe(
-  //          () => this.loadAlunniPage(this.paginator.pageSize, this.paginator.pageIndex)
-  //          //() => console.log (this.paginator.pageSize, this.paginator.pageIndex)
-  //          );
-  //          this.paginator.pageIndex = 1;
-  // }
-
-
-
-  //per paginazione client side ma con custom datasource
-  // loadAlunniPage(pageSize: number, pageIndex: number) {
-  //   console.log (pageSize, pageIndex);
-  //   this.dsAlunni.loadAlunniPage(pageSize, pageIndex);
-  // }
-
-
-  //per filtro e paginazione server side
-  // findAlunniPage() {
-  //     //console.log (this.paginator.pageSize);
-  //     this.dsAlunni.findAlunni(
-  //         '',
-  //         'asc',
-  //         this.paginator.pageIndex,
-  //         this.paginator.pageSize);
-  // }
-
-// PER PRENDERE ALCUNI ELEMENTI DELL'OBSERVABLE (tipo dal quinto al settimo)
-      // .pipe (
-      //   map(val => val.slice(this.startItem, this.endItem)),
-      // )
-
-
-    //NON USO IL FILE DATASOURCE MA PASSO DIRETTAMENTE L'OBSERVABLE DEL SERVICE COME DATASOURCE DELLA MATTABLE
-    
-    //this.dsAlunni.findAlunni('', 'asc', 0, 3); //filtro e pagination server side
-    //this.loadAlunniPage(3, 0);***Questa si usava per passargli un custom datasource
-    //this.loading$ = this.dsAlunni.loading$;***Questa si usava per passargli un custom datasource
-    //this.dsAlunni.paginator = this.paginator;
