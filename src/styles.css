@@ -1,45 +1,52 @@
-/* You can add global styles to this file, and also import other style files */
-
+/************* GENERALI **********/
 html, body { height: 100%; }
-/*body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }*/
+
+/*Font vari*/
 body { margin: 0; font-family: 'Titillium Web', sans-serif; }
+
 * { font-family: 'Titillium Web', sans-serif;}
+
 .mat-h1, .mat-headline, .mat-typography h1 {
     font-family: 'Titillium Web', sans-serif;
 }
+/**********************************/
+
+/*************** VARIE ***********/
+
+/*Colore sfondo*/
+.mat-drawer-container { background-color: white; }
+
+/*Margine*/
 .mg20 {
     margin-left: 20px;
 }
 
-.mat-drawer-container { background-color: white; }
+/*Cursore*/
+.pointer{
+    cursor:pointer;
+}
 
-/* .spinner-container {
-    position: fixed;
-    height: 100vh;
-    width: 100vw;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
+/*Booh?*/
+.centerColumn {
     justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.32);
-    z-index: 20000;
-} */
+    flex: 0 0 200px;
+  }
+
+/*Titolo Pagina*/
+  .page-title {
+    text-align: center;
+    margin-top: 10px !important;
+}
+/**********************************/
 
 
-/*********** FORM MATERIAL ************/
+/*********** FORM MATERIAL ********/
 .data-form {
     text-align: center;     /*NC*/
     max-width: 800px;
     margin: 0 auto;
 }
   
-
-
-
-
 .flex-form {
     display: flex;
     flex-direction: column;
@@ -53,10 +60,8 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
     padding-top: 0px !important;
 }
 
-
 .tileCk .mat-figure {
     justify-content:left !important;
-    /*height: 60% !important;*/
 }
 
 .data-form mat-form-field {
@@ -79,14 +84,6 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
 .form-card mat-form-field {
     width: 100%;
 }
-/* .form-dp {
-    max-width: 180px;
-} */
-
-
-.pointer{
-    cursor:pointer;
-}
 
 /* Bottone Nuovo record */
 .button-add {
@@ -96,52 +93,24 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
     z-index: 1000;
 }
 
-
-/*********** FINE FORM MATERIAL ************/
-
-
-.centerColumn {
-    justify-content: center;
-    flex: 0 0 200px;
-  }
-
-.green-snackbar {
-    background-color: #018786;
-    color: white;
-}
-
-.red-snackbar {
-    background-color: #B00020;
-    color: white;
-}
-
-/*********** DIALOG ************/
-
-.mat-dialog-buttonsContainer {
+/*Detail: Gruppo Buttons sovrastanti*/
+.buttonsDetail {
     margin: 5px;
     flex-wrap: nowrap !important;
     justify-content: center !important;
 }
-
-.mat-dialog-buttonsContainer button {
+/*Detail: Buttons sovrastanti*/
+.buttonsDetail button {
     width: 70px;
     margin-left: 5px;
 }
-
-
+/*Detail: Testo dei Buttons sovrastanti*/
 .button-textDetail {
     margin-top: -10px;
     text-align: center;
 }
 
-mat-dialog-container {
-    text-align: center;
-}
-
-.cdk-overlay-pane.my-dialog {
-    position: relative!important;
-  }
-
+/*Button chiusura di una dialog (tipo dashboard)*/
 .closeDialogButton {
     margin: 5px 5px ;
     position: absolute !important;
@@ -153,19 +122,43 @@ mat-dialog-container {
     cursor: pointer;
 }
 
-.buttonsDetail {
+/*add-DetailDialog è la classe attribuita dinamicamente
+in fase di creazione della Dialog addAlunno*/
+.cdk-overlay-pane.add-DetailDialog {
+    position: relative!important;
+  }
+
+/**********************************/
+
+/*************** SNACKBAR *********/
+.green-snackbar {
+    background-color: #018786;
+    color: white;
+}
+
+.red-snackbar {
+    background-color: #B00020;
+    color: white;
+}
+/**********************************/
+
+/******** MINI-DIALOG **********/
+/*QUI METTIAMO GLI STILI DELLE DIALOG TIPO YES NO OPPURE INSERIMENTO PASSWORD*/
+/*Contenitore Buttons Yes/No*/
+.mat-dialog-buttonsContainer {
     margin: 5px;
     flex-wrap: nowrap !important;
     justify-content: center !important;
 }
 
-.buttonsDetail button {
+/*Buttons Yes/No*/
+.mat-dialog-buttonsContainer button {
     width: 70px;
     margin-left: 5px;
 }
 
+/**********************************/
 
-/*********** FINE DIALOG ************/
 /*********** SIDENAV ************/
 .example-spacer {
     flex: 1 1 auto;
@@ -197,9 +190,23 @@ mat-nav-list a img {
 }
 
 
-/*********** FINE SIDENAV ************/
+/**********************************/
 
-.page-title {
-    text-align: center;
-    margin-top: 10px !important;
-}
+
+
+/*  STILE SPOSTATO NEL LOADING COMPONENT.CSS
+
+.spinner-container {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.32);
+    z-index: 20000;
+} */

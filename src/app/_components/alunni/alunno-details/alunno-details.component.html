@@ -24,7 +24,7 @@
 
                     <button *ngIf="idAlunno" mat-stroked-button color="secondary" 
                         [disabled]= "!alunnoForm.valid" 
-                        (click)="refresh()">
+                        (click)="loadData()">
                         <mat-icon>restart_alt</mat-icon>
                         <div class="button-textDetail">ricarica</div>
                     </button>

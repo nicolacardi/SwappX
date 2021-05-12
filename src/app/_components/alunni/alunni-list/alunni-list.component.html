@@ -15,10 +15,11 @@
 <mat-table [dataSource]="matDataSource"
     matSort
     [matSortActive]="matSortActive"
-    [matSortDirection]="matSortDirection"
+    [matSortDirection] = "'asc'"
     cdkDropList
     cdkDropListOrientation="horizontal"
     (cdkDropListDropped)="drop($event)" (window:resize)="onResize($event)"
+
     >
     <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
     <ng-container matColumnDef="nome">

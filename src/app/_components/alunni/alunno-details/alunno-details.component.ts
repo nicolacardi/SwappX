@@ -1,9 +1,8 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { debounceTime, switchMap } from 'rxjs/operators';
-import { delayWhen, finalize, tap } from 'rxjs/operators';
+import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
@@ -24,24 +23,24 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 
 export class AlunnoDetailsComponent implements OnInit{
 
-  idAlunno!:              number;
-  caller_page!:           string;
-  caller_size!:           string;
-  caller_filter!:         string;
-  caller_sortField!:      string;
-  caller_sortDirection!:  string;
+  idAlunno!:                  number;
+  caller_page!:               string;
+  caller_size!:               string;
+  caller_filter!:             string;
+  caller_sortField!:          string;
+  caller_sortDirection!:      string;
 
-  alunnoForm! :           FormGroup;
-  emptyForm :             boolean = false;
-  alunno!:                Observable<ALU_Alunno>;
-  loading:                boolean = true;
+  alunnoForm! :               FormGroup;
+  emptyForm :                 boolean = false;
+  alunno!:                    Observable<ALU_Alunno>;
+  loading:                    boolean = true;
   
-  filteredComuni$!:       Observable<_UT_Comuni[]>;
-  filteredComuniNascita$!:Observable<_UT_Comuni[]>;
-  comuniIsLoading:        boolean = false;
-  comuniNascitaIsLoading: boolean = false;
-  breakpoint!:            number;
-  breakpoint2!:            number;
+  filteredComuni$!:           Observable<_UT_Comuni[]>;
+  filteredComuniNascita$!:    Observable<_UT_Comuni[]>;
+  comuniIsLoading:            boolean = false;
+  comuniNascitaIsLoading:     boolean = false;
+  breakpoint!:                number;
+  breakpoint2!:               number;
 
 
   
@@ -73,12 +72,12 @@ export class AlunnoDetailsComponent implements OnInit{
           cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
           scuolaProvenienza:          ['', Validators.maxLength(255)],
           indirizzoScuolaProvenienza: ['', Validators.maxLength(255)],
-          ckAttivo:          [false],
-          ckDSA:             [false],
-          ckDisabile:        [false],
-          ckAuthFoto:        [false],
-          ckAuthUsoMateriale:[false],
-          ckAuthUscite:      [false]
+          ckAttivo:                   [false],
+          ckDSA:                      [false],
+          ckDisabile:                 [false],
+          ckAuthFoto:                 [false],
+          ckAuthUsoMateriale:         [false],
+          ckAuthUscite:               [false]
 
         });
   }
@@ -188,10 +187,7 @@ export class AlunnoDetailsComponent implements OnInit{
   }
 
 
-
-  refresh(){
-    this.loadData();
-  }
+  
   delete(){
     const dialogRef = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
