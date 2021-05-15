@@ -11,6 +11,7 @@ import { AlunniService } from '../../../_services/alunni.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AlunnoDetailsComponent } from '../alunno-details/alunno-details.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 
 @Component({
@@ -45,9 +46,12 @@ export class AlunniListComponent implements OnInit {
   matSortActive!: string;
   matSortDirection!: string;
   
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild("filterInput") filterInput!: ElementRef;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
   constructor(private svcAlunni:        AlunniService,
               private route:            ActivatedRoute,
@@ -141,7 +145,22 @@ export class AlunniListComponent implements OnInit {
   onResize(event: any) {
     this.displayedColumns = (event.target.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "dtNascita", "email"] : ["actionsColumn", "nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo"];;
   }
+
+  onRightClick(event: MouseEvent, element: ALU_Alunno) { 
+    event.preventDefault(); 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+    this.matMenuTrigger.menuData = {item: element} 
+    console.log(element);
+    // // we open the menu 
+    this.matMenuTrigger.openMenu(); 
+
+} 
+
+
 }
+
+
 
 
 

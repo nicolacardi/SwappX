@@ -111,8 +111,11 @@
     
     <!-- **************************   MAT-ROW   ******************* -->
     <mat-row *matRowDef="let element;columns: displayedColumns"
-         class="element-row">
+         class="element-row"
+         (contextmenu)="onRightClick($event, element)" 
+         >
     </mat-row>
+
 
     <!-- Caso con Expanded row
     <mat-row *matRowDef="let element; columns: displayedColumns"
@@ -133,3 +136,21 @@
 <!-- **************************   PAGINATOR   ******************* -->
 
 <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+
+
+<!-- ***********************  MENU RIGHT CLICK ****************** -->
+<div style="visibility: hidden; position: fixed;" 
+    [style.left]="menuTopLeftPosition.x" 
+    [style.top]="menuTopLeftPosition.y" 
+    [matMenuTriggerFor]="rightMenu">
+</div> 
+
+<mat-menu #rightMenu="matMenu"> 
+    <ng-template matMenuContent let-item="item"> 
+        <mat-label class="rightMenuTitle">{{item.nome | uppercase}} {{item.cognome | uppercase}}</mat-label> 
+        <button mat-menu-item routerLink="/genitori" [queryParams]="{ filter: item.cognome }">Genitori/Tutori</button> 
+        <button mat-menu-item>Classi Frequentate</button>
+        <button mat-menu-item>Pagelle</button>
+        <button mat-menu-item>Quote e Pagamenti</button>
+    </ng-template> 
+</mat-menu> 

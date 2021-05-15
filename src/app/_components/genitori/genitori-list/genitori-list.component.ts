@@ -8,7 +8,7 @@ import { GenitoriService } from '../../../_services/genitori.service';
 import {MatTableDataSource} from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-genitori-list',
@@ -22,6 +22,7 @@ export class GenitoriListComponent implements OnInit {
   obs_ALU_Genitori$! : Observable<ALU_Genitore[]>;
   matDataSource = new MatTableDataSource<ALU_Genitore>();
   public searchAlu!: number;
+  public filter!: string;
 
   @Input()
   idAlunno!: number;
@@ -33,7 +34,9 @@ export class GenitoriListComponent implements OnInit {
 
 
 
-  constructor(private svcALU_Genitori: GenitoriService, private router : Router) {}
+  constructor(private svcALU_Genitori:        GenitoriService,
+                      private router :        Router,
+                      private route:          ActivatedRoute,) {}
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
@@ -42,6 +45,10 @@ export class GenitoriListComponent implements OnInit {
     //idAlunno = undefined      se sono nella lista Genitori da menu
     //idAlunno = id dell'alunno se sono nel form dopo aver cliccato su un alunno
     //idAlunno = 0              se sono nel form su nuovo alunno -> in questo caso non va caricata la lista di tutti.
+    let filter_param = this.route.snapshot.queryParams["filter"];
+    if (filter_param != undefined) {this.filter = filter_param
+      this.matDataSource.filter = filter_param;
+    } else {this.filter = ''}
 
     console.log ("idAlunno:", this.idAlunno);
     if (this.idAlunno) {

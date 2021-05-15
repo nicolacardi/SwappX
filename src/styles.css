@@ -37,6 +37,15 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
     text-align: center;
     margin-top: 10px !important;
 }
+
+.rightMenuTitle {
+    color: grey;
+    width: 100%;
+    margin-left: 16px;
+    margin-right: 16px;
+    border-bottom: 1px grey solid;
+
+}
 /**********************************/
 
 
