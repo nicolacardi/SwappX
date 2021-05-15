@@ -1,17 +1,25 @@
 
 
-<mat-form-field class="mg20">
-    <mat-label>ID</mat-label>
-    <input matInput placeholder="ID" [value]="genitoriDi" #alunnoID>
-</mat-form-field>
+<form *ngIf="(alunno | async) as objAlunno " class="data-form flex-form" [formGroup] = "formHeaderAlunno">
 
-<mat-form-field class="mg20">
-    <mat-label>Nome</mat-label>
-    <input matInput placeholder="Nome" #alunnoNome>
-</mat-form-field>
-
-<mat-form-field class="mg20">
-    <mat-label>Cognome</mat-label>
-    <input matInput placeholder="Cognome" #alunnoCognome>
-</mat-form-field>
-<br>
+    <mat-grid-list [cols]="3" rowHeight="60px">
+        <mat-grid-tile>        
+            <mat-form-field class="mg20">
+                <mat-label>Nome</mat-label>
+                <input matInput placeholder="Nome" [value]="objAlunno.nome" #nome>
+            </mat-form-field>
+        </mat-grid-tile>
+        
+        <mat-grid-tile>
+            <mat-form-field class="mg20">
+                <mat-label>Cognome</mat-label>
+                <input matInput placeholder="Cognome" [value]="objAlunno.cognome" #cognome>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <button mat-raised-button>
+                pulisci
+            </button>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>

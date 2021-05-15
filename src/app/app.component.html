@@ -1,9 +1,9 @@
 
 
 <mat-sidenav-container fullscreen>
-  <mat-sidenav #start class="leftSidenav">
-      <mat-nav-list>
-          <a mat-list-item routerLink="alunni">
+  <mat-sidenav #start class="leftSidenav" >
+      <mat-nav-list (click)="start.close()">
+          <a mat-list-item routerLink="alunni" >
               <img src="../assets/grey/00Anagrafica.svg">
               <span>Lista Alunni</span>
           </a>
@@ -23,7 +23,7 @@
       </mat-nav-list>
   </mat-sidenav>
     <mat-sidenav position="end" #end class="rightSidenav">
-        <mat-nav-list>
+        <mat-nav-list (click)="end.close()">
             <a mat-list-item>
                 <img src="../assets/grey/08SchedaMaestro.svg">
                 <span>Account</span>

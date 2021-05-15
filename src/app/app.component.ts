@@ -17,5 +17,7 @@ export class AppComponent implements OnInit{
 
   }
 
-
+  hideMenu(){
+    
+  }
 }

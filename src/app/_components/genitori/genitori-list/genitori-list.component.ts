@@ -36,7 +36,7 @@ export class GenitoriListComponent implements OnInit {
 
   matSortActive!:     string;
   matSortDirection!:  string;
-  public genitoriDi!: number;  //alunnoInput viene passato a alunnoHeader qualora ricevuto
+  public idAlunno!: number;  //alunnoInput viene passato a alunnoHeader qualora ricevuto
 
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
@@ -61,15 +61,20 @@ export class GenitoriListComponent implements OnInit {
                         ) {}
 
   ngOnInit () {
-    this.genitoriDi = this.route.snapshot.queryParams['genitoriDi'];
-    this.applyFilterAlunno(this.genitoriDi);
+    this.idAlunno = this.route.snapshot.queryParams['idAlunno'];
     
     this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "telefono", "email","dtNascita"] : ["actionsColumn", "nome", "cognome", "tipo","indirizzo", "telefono", "email","dtNascita"];
     this.refresh();
   }
 
   refresh () {
-    const obsGenitori$: Observable<ALU_Genitore[]> = this.svcGenitori.loadGenitori();
+    let obsGenitori$: Observable<ALU_Genitore[]>;
+    
+    if(this.idAlunno)
+      obsGenitori$= this.svcGenitori.loadGenitoriByAlunno(this.idAlunno);
+    else
+      obsGenitori$= this.svcGenitori.loadGenitori();
+
     const loadGenitori$ =this._loadingService.showLoaderUntilCompleted(obsGenitori$);
 
     loadGenitori$.subscribe(val => 
@@ -80,7 +85,6 @@ export class GenitoriListComponent implements OnInit {
         var caller_sortField = this.route.snapshot.queryParams["sortField"];
         var caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
   
-
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort;

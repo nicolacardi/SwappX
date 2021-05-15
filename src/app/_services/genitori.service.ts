@@ -13,12 +13,13 @@ export class GenitoriService {
 
   constructor(private http: HttpClient) { }
 
-  loadGenitori(idAlunno?: any): Observable<ALU_Genitore[]>{
+  loadGenitori(): Observable<ALU_Genitore[]>{
+  //loadGenitori(idAlunno?: any): Observable<ALU_Genitore[]>{
     //console.log("loadGenitori");
-    if (idAlunno == null || idAlunno == "")
+    //if (idAlunno == null || idAlunno == "")
       return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori');
-    else 
-      return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllByAlunno/'+idAlunno);
+    //else 
+    //  return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllByAlunno/'+idAlunno);
   }
 
   loadGenitoriByAlunno(idAlunno: any): Observable<ALU_Genitore[]>{
