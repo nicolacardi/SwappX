@@ -33,7 +33,7 @@ export class AlunniService {
     return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/GetWithParents/'+id);
   }
 
-  //per filtro e paginazione server side
+  //per filtro e paginazione server side (NON USATO)
   findAlunni(filter = '', sortOrder= 'asc', pageNumber = 0, pageSize = 3): Observable<ALU_Alunno[]>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni', {
       params: new HttpParams()

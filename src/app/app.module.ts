@@ -24,6 +24,7 @@ import { DialogYesNoComponent } from './_components/utilities/dialog-yes-no/dial
 import { SnackbarComponent } from './_components/utilities/snackbar/snackbar.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { LoadingComponent } from './_components/utilities/loading/loading.component';
+import { AlunnoHeaderComponent } from './_components/alunni/alunno-header/alunno-header.component';
 
 
 
@@ -40,6 +41,7 @@ import { LoadingComponent } from './_components/utilities/loading/loading.compon
     DialogYesNoComponent,
     SnackbarComponent,
     LoadingComponent,
+    AlunnoHeaderComponent,
   ],
   imports: [
     BrowserModule,

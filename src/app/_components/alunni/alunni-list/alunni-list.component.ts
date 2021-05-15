@@ -5,19 +5,18 @@ import { Observable } from 'rxjs';
 import { MatTableDataSource} from '@angular/material/table';
 import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from '../../../_services/alunni.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AlunnoDetailsComponent } from '../alunno-details/alunno-details.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
-import { MatMenuTrigger } from '@angular/material/menu';
-
 
 @Component({
   selector:     'app-alunni-list',
   templateUrl:  './alunni-list.component.html',
-  styleUrls:    [],
+  styleUrls:    []
   /* expanded
   animations: [
     trigger('detailExpand', [
@@ -42,6 +41,7 @@ export class AlunniListComponent implements OnInit {
                                 "email", 
                                 "telefono", 
                                 "ckAttivo" ];
+
   //expandedElement!: ALU_Alunno | null;      //expanded
   matSortActive!: string;
   matSortDirection!: string;
@@ -96,7 +96,6 @@ export class AlunniListComponent implements OnInit {
     );
   }
 
-
   openDetail(id:any){
     //***** Versione Router
     this.router.navigate(["alunni",id], {queryParams:{page: this.paginator.pageIndex,
@@ -128,7 +127,7 @@ export class AlunniListComponent implements OnInit {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
   }
 
-  addAlunno(){
+  addRecord(){
     const dialogConfig = new MatDialogConfig();
     //dialogConfig.disableClose = true; //lo farebbe non chiudibile cliccando altrove
     dialogConfig.data = 0;
@@ -150,14 +149,9 @@ export class AlunniListComponent implements OnInit {
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
     this.menuTopLeftPosition.y = event.clientY + 'px'; 
-    this.matMenuTrigger.menuData = {item: element} 
-    console.log(element);
-    // // we open the menu 
+    this.matMenuTrigger.menuData = {item: element}   
     this.matMenuTrigger.openMenu(); 
-
-} 
-
-
+  } 
 }
 
 

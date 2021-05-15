@@ -13,7 +13,6 @@
                         </div>
                     </button>
 
-
                     <button type="button" *ngIf="idAlunno" mat-stroked-button color="secondary" 
                         (click)="back()">
                         <mat-icon>arrow_back</mat-icon>
@@ -41,7 +40,6 @@
                         <mat-icon>delete_outline</mat-icon>
                         <div class="button-textDetail">elimina</div>
                     </button>
-
                 </div>
 
                 <mat-grid-list [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
@@ -89,10 +87,6 @@
                         </mat-form-field>
                     </mat-grid-tile>
                 </mat-grid-list>
-
-
-
-
 
                 <mat-grid-list [cols]="breakpoint" rowHeight="60px">
                     <mat-grid-tile>

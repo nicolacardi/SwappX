@@ -28,7 +28,7 @@ export class AlunnoDashboardComponent implements OnInit{
   emptyForm :             boolean = false;
   alunno!:                Observable<ALU_Alunno>;
   loading:                boolean = true;
-  idAlunno!:                    number;
+  idAlunno!:              number;
   filteredComuni$!:       Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:Observable<_UT_Comuni[]>;
   comuniIsLoading:        boolean = false;

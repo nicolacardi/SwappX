@@ -5,13 +5,13 @@ import { Observable } from 'rxjs';
 import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { MatDialog } from '@angular/material/dialog';
 
 import { AlunniService } from 'src/app/_services/alunni.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
-
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
-import { MatDialog } from '@angular/material/dialog';
+
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
 
@@ -42,8 +42,6 @@ export class AlunnoDetailsComponent implements OnInit{
   breakpoint!:                number;
   breakpoint2!:               number;
 
-
-  
   constructor(private fb:     FormBuilder, 
       private route:          ActivatedRoute,
       private router:         Router,
@@ -51,10 +49,11 @@ export class AlunnoDetailsComponent implements OnInit{
       private comuniSvc:      ComuniService,
       public _dialog:         MatDialog,
       private _snackBar:      MatSnackBar,
-      private _loadingService :LoadingService
-      ) {
+      private _loadingService :LoadingService) 
+  {
 
         let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
+        
         this.alunnoForm = this.fb.group({
           id:                         [null],
           nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
@@ -83,7 +82,6 @@ export class AlunnoDetailsComponent implements OnInit{
   }
 
   ngOnInit () {
-
     this.loadData();
   }
 
@@ -115,7 +113,6 @@ export class AlunnoDetailsComponent implements OnInit{
     } else {
       this.emptyForm = true
     }
-
     
     //********************* FILTRO COMUNE *******************
     this.filteredComuni$ = this.alunnoForm.controls['comune'].valueChanges
@@ -146,13 +143,13 @@ export class AlunnoDetailsComponent implements OnInit{
     if (this.alunnoForm.controls['id'].value == null) 
       this.alunniSvc.postAlunno(this.alunnoForm.value)
         .subscribe(res=> {
-          console.log("return from post", res);
+          //console.log("return from post", res);
           this.alunnoForm.markAsPristine();
         });
     else 
       this.alunniSvc.putAlunno(this.alunnoForm.value)
         .subscribe(res=> {
-          console.log("return from put", res);
+          //console.log("return from put", res);
           this.alunnoForm.markAsPristine();
         });
     
@@ -172,8 +169,7 @@ export class AlunnoDetailsComponent implements OnInit{
       });
     } else {
       this.navigateBack();
-    }
-                         
+    }   
   }
 
   navigateBack(){
@@ -186,8 +182,6 @@ export class AlunnoDetailsComponent implements OnInit{
      }});
   }
 
-
-  
   delete(){
     const dialogRef = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
@@ -203,22 +197,15 @@ export class AlunnoDetailsComponent implements OnInit{
         .subscribe(
           res=>{
             this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Alunno cancellato', panelClass: ['red-snackbar']}
+              {data: 'Record cancellato', panelClass: ['red-snackbar']}
             );
-            
-            //this.refresh();
-            //this.matDataSource.data.splice(this.matDataSource.data.findIndex(x=> x.id === element.id),1);
-            //this.matDataSource.data = this.matDataSource.data;
           },
           err=> (
-              console.log("ERRORE")
+            console.log("ERRORE")
           )
         );
       }
     });
-
-    //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Funzione non abilitata', panelClass: ['red-snackbar']});
-    
   }
   //#endregion
 

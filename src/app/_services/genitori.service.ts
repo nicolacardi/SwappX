@@ -15,12 +15,14 @@ export class GenitoriService {
 
   loadGenitori(idAlunno?: any): Observable<ALU_Genitore[]>{
     //console.log("loadGenitori");
-    if (idAlunno == null || idAlunno == ""){
+    if (idAlunno == null || idAlunno == "")
       return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori');
-    } else {
+    else 
       return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllByAlunno/'+idAlunno);
-    }
+  }
 
+  loadGenitoriByAlunno(idAlunno: any): Observable<ALU_Genitore[]>{
+      return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllByAlunno/'+idAlunno);
   }
 
   loadGenitoriWithChildren(): Observable<ALU_Genitore[]>{
@@ -33,8 +35,8 @@ export class GenitoriService {
     return this.http.get<ALU_Genitore>(environment.apiBaseUrl+'ALU_Genitori/'+id);
   }
   
-  //per filtro e paginazione server side
-  findAlunni(filter = '', sortOrder= 'asc', pageNumber = 0, pageSize = 3): Observable<ALU_Genitore[]>{
+  //per filtro e paginazione server side (NON USATO)
+  findGenitori(filter = '', sortOrder= 'asc', pageNumber = 0, pageSize = 3): Observable<ALU_Genitore[]>{
     return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori', {
       params: new HttpParams()
                 .set('filter', filter)
@@ -42,5 +44,18 @@ export class GenitoriService {
                 .set('pageNumber', pageNumber.toString())
                 .set('pageSize', pageSize.toString())
     });
+  }
+
+  putGenitore(formData: any): Observable <any>{
+    return this.http.put( environment.apiBaseUrl  + 'ALU_Genitori/' + formData.id , formData);    
+  }
+
+  postGenitore(formData: any): Observable <any>{
+    formData.id = 0;
+    return this.http.post( environment.apiBaseUrl  + 'ALU_Genitori' , formData);  
+  }
+
+  deleteGenitore(id: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'ALU_Genitori/' + id);    
   }
 }
