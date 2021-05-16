@@ -10,7 +10,8 @@ export class AlunnoHeaderComponent implements OnInit {
 
 @Input()
 //ID!: number;
-alunno!: ALU_Alunno;
+//alunno!: ALU_Alunno;
+genitoriDi!: number;
 
   constructor() { }
 

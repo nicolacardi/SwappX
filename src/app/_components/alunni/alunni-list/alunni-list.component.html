@@ -143,7 +143,7 @@
 <mat-menu #rightMenu="matMenu"> 
     <ng-template matMenuContent let-item="item"> 
         <mat-label class="rightMenuTitle">{{item.nome | uppercase}} {{item.cognome | uppercase}}</mat-label> 
-        <button mat-menu-item routerLink="/genitori" [queryParams]="{ filter: item.cognome }">Genitori/Tutori</button> 
+        <button mat-menu-item routerLink="/genitori" [queryParams]="{ genitoriDi: item.id }">Genitori/Tutori</button> 
         <button mat-menu-item>Classi Frequentate</button>
         <button mat-menu-item>Pagelle</button>
         <button mat-menu-item>Quote e Pagamenti</button>
