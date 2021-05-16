@@ -30,18 +30,18 @@ export class GenitoreDetailsComponent implements OnInit {
   caller_sortField!:          string;
   caller_sortDirection!:      string;
 
-  genitoreForm! :         FormGroup;
-  emptyForm :             boolean = false;
-  genitore!:              Observable<ALU_Genitore>;
-  loading:                boolean = true;
+  form! :                     FormGroup;
+  emptyForm :                 boolean = false;
+  genitore!:                  Observable<ALU_Genitore>;
+  loading:                    boolean = true;
 
-  filteredComuni$!:       Observable<_UT_Comuni[]>;
-  filteredComuniNascita$!:Observable<_UT_Comuni[]>;
-  comuniIsLoading:        boolean = false;
-  comuniNascitaIsLoading: boolean = false;
+  filteredComuni$!:           Observable<_UT_Comuni[]>;
+  filteredComuniNascita$!:    Observable<_UT_Comuni[]>;
+  comuniIsLoading:            boolean = false;
+  comuniNascitaIsLoading:     boolean = false;
   breakpoint!:                number;
   
-  constructor(private fb:     FormBuilder, 
+  constructor(private fb:             FormBuilder, 
               private route:          ActivatedRoute,
               private router:         Router,
               private genitoriSvc:    GenitoriService,
@@ -52,8 +52,9 @@ export class GenitoreDetailsComponent implements OnInit {
   {
 
         let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
+        let regemail = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$";
         
-        this.genitoreForm = this.fb.group({
+        this.form = this.fb.group({
           id:                         [null],
           nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
           cognome:                    ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
@@ -66,8 +67,12 @@ export class GenitoreDetailsComponent implements OnInit {
           prov:                       ['', Validators.maxLength(2)],
           cap:                        ['', Validators.maxLength(5)],
           nazione:                    ['', Validators.maxLength(3)],
-          genere:                     ['',{ validators:[Validators.maxLength(1), Validators.required, Validators.pattern("M|F")]}],
+          tipo:                       ['',{ validators:[Validators.maxLength(1), Validators.required, Validators.pattern("P|M|T")]}],
           cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
+          telefono:                   ['', Validators.maxLength(13)],
+          telefono2:                  ['', Validators.maxLength(13)],
+          email:                      ['',Validators.email]
+          //email:                      ['', Validators.pattern(regemail)]
         });
   }
 
@@ -92,11 +97,11 @@ export class GenitoreDetailsComponent implements OnInit {
 
       const obsGenitore$: Observable<ALU_Genitore> = this.genitoriSvc.loadAlunno(this.idGenitore);
       const loadGenitore$ = this._loadingService.showLoaderUntilCompleted(obsGenitore$);
-      //TODO: capire perchè serve sia alunno | async e sia il popolamento di genitoreForm
+      //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
       this.genitore = loadGenitore$
       .pipe(
           tap(
-            genitore => this.genitoreForm.patchValue(genitore)
+            genitore => this.form.patchValue(genitore)
           )
       );
     } else {
@@ -104,48 +109,45 @@ export class GenitoreDetailsComponent implements OnInit {
     }
     
     //********************* FILTRO COMUNE *******************
-    this.filteredComuni$ = this.genitoreForm.controls['comune'].valueChanges
+    this.filteredComuni$ = this.form.controls['comune'].valueChanges
     .pipe(
       tap(),
       debounceTime(300),
       tap(() => this.comuniIsLoading = true),
       //delayWhen(() => timer(2000)),
-      switchMap(() => this.comuniSvc.filterComuni(this.genitoreForm.value.comune)),
+      switchMap(() => this.comuniSvc.filterComuni(this.form.value.comune)),
       tap(() => this.comuniIsLoading = false)
     )
 
     //********************* FILTRO COMUNE NASCITA ***********
-    this.filteredComuniNascita$ = this.genitoreForm.controls['comuneNascita'].valueChanges
+    this.filteredComuniNascita$ = this.form.controls['comuneNascita'].valueChanges
     .pipe(
       tap(),
       debounceTime(300),
       tap(() => this.comuniNascitaIsLoading = true),
-      switchMap(() => this.comuniSvc.filterComuni(this.genitoreForm.value.comuneNascita)),
+      switchMap(() => this.comuniSvc.filterComuni(this.form.value.comuneNascita)),
       tap(() => this.comuniNascitaIsLoading = false)
     )
   }  
 
   save(){
-
-    if (this.genitoreForm.controls['id'].value == null) 
-      this.genitoriSvc.postGenitore(this.genitoreForm.value)
+    if (this.form.controls['id'].value == null) 
+      this.genitoriSvc.postGenitore(this.form.value)
         .subscribe(res=> {
           //console.log("return from post", res);
-          this.genitoreForm.markAsPristine();
+          this.form.markAsPristine();
         });
     else 
-      this.genitoriSvc.putGenitore(this.genitoreForm.value)
+      this.genitoriSvc.putGenitore(this.form.value)
         .subscribe(res=> {
           //console.log("return from put", res);
-          this.genitoreForm.markAsPristine();
+          this.form.markAsPristine();
         });
-    
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
   }
 
   back(){
-    
-    if (this.genitoreForm.dirty) {
+    if (this.form.dirty) {
       const dialogRef = this._dialog.open(DialogYesNoComponent, {
         width: '320px',
         data: {titolo: "ATTENZIONE", sottoTitolo: "Dati modificati: si conferma l'uscita?"}
@@ -156,8 +158,7 @@ export class GenitoreDetailsComponent implements OnInit {
       });
     } else {
       this.navigateBack();
-    }
-                        
+    }               
   }
 
   navigateBack(){
@@ -175,7 +176,6 @@ export class GenitoreDetailsComponent implements OnInit {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.genitoriSvc.deleteGenitore(this.idGenitore)
@@ -198,14 +198,14 @@ export class GenitoreDetailsComponent implements OnInit {
 
 
   popolaProv(prov: string, cap: string) {
-    this.genitoreForm.controls['prov'].setValue(prov);
-    this.genitoreForm.controls['cap'].setValue(cap);
-    this.genitoreForm.controls['nazione'].setValue('ITA');
+    this.form.controls['prov'].setValue(prov);
+    this.form.controls['cap'].setValue(cap);
+    this.form.controls['nazione'].setValue('ITA');
   }
 
   popolaProvNascita(prov: string) {
-    this.genitoreForm.controls['provNascita'].setValue(prov);
-    this.genitoreForm.controls['nazioneNascita'].setValue('ITA');
+    this.form.controls['provNascita'].setValue(prov);
+    this.form.controls['nazioneNascita'].setValue('ITA');
   }
 
   onResize(event: any) {

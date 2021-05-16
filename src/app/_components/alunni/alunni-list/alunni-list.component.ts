@@ -43,14 +43,14 @@ export class AlunniListComponent implements OnInit {
                                 "ckAttivo" ];
 
   //expandedElement!: ALU_Alunno | null;      //expanded
-  matSortActive!: string;
-  matSortDirection!: string;
+  matSortActive!:     string;
+  matSortDirection!:  string;
   
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild("filterInput") filterInput!: ElementRef;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!:                        MatPaginator;
+  @ViewChild("filterInput") filterInput!:                     ElementRef;
+  @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
   constructor(private svcAlunni:        AlunniService,
@@ -158,27 +158,27 @@ export class AlunniListComponent implements OnInit {
 
 
 
-  // deleteDetail(element: any, event: Event){
-    
-  //   const dialogRef = this._dialog.open(DialogYesNoComponent, {
-  //     width: '320px',
-  //     data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
-  //   });
+// deleteDetail(element: any, event: Event){
+  
+//   const dialogRef = this._dialog.open(DialogYesNoComponent, {
+//     width: '320px',
+//     data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
+//   });
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if(result){
-  //       this.svcAlunni.deleteAlunno(element.id)
-  //       .subscribe(
-  //         res=>{    
-  //           this._snackBar.openFromComponent(SnackbarComponent,
-  //             {data: 'Alunno ' + element.nome + ' '+ element.cognome + ' cancellato', panelClass: ['red-snackbar'] });
-  //             this.refresh();
-  //         },
-  //         err=> (
-  //             console.log("ERRORE")
-  //         )
-  //       );
-  //     }
-  //   });
-  //   event.stopPropagation(); 
-  // }
+//   dialogRef.afterClosed().subscribe(result => {
+//     if(result){
+//       this.svcAlunni.deleteAlunno(element.id)
+//       .subscribe(
+//         res=>{    
+//           this._snackBar.openFromComponent(SnackbarComponent,
+//             {data: 'Alunno ' + element.nome + ' '+ element.cognome + ' cancellato', panelClass: ['red-snackbar'] });
+//             this.refresh();
+//         },
+//         err=> (
+//             console.log("ERRORE")
+//         )
+//       );
+//     }
+//   });
+//   event.stopPropagation(); 
+// }

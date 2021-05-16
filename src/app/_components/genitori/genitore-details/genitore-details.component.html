@@ -1,9 +1,8 @@
 
 <div class="container">
-
     <mat-card class="form-card">
         <mat-card-content>
-            <form *ngIf="(genitore | async) || emptyForm" class="data-form flex-form" [formGroup] = "genitoreForm">
+            <form *ngIf="(genitore | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
                 <div class="buttonsDetail">
                     <button *ngIf="!idGenitore" mat-stroked-button color="secondary" mat-dialog-close>
                         <mat-icon>arrow_back</mat-icon>
@@ -16,25 +15,25 @@
                         (click)="back()">
                         <mat-icon>arrow_back</mat-icon>
                         <div class="button-textDetail">
-                            alunni
+                            genitori
                         </div>
                     </button>
 
                     <button *ngIf="idGenitore" mat-stroked-button color="secondary" 
-                        [disabled]= "!genitoreForm.valid" 
+                        [disabled]= "!form.valid" 
                         (click)="loadData()">
                         <mat-icon>restart_alt</mat-icon>
                         <div class="button-textDetail">ricarica</div>
                     </button>
 
                     <button mat-stroked-button color="secondary" 
-                        [disabled]= "!genitoreForm.valid" 
+                        [disabled]= "!form.valid" 
                         (click)="save()"><mat-icon>save</mat-icon>
                         <div class="button-textDetail">salva</div>
                     </button>
 
                     <button *ngIf="idGenitore" mat-stroked-button color="warn" 
-                        [disabled]= "!genitoreForm.valid" 
+                        [disabled]= "!form.valid" 
                         (click)="delete()">
                         <mat-icon>delete_outline</mat-icon>
                         <div class="button-textDetail">elimina</div>
@@ -45,14 +44,14 @@
                     <mat-grid-tile>
                         <mat-form-field>
                             <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome">
-                            <mat-error *ngIf="genitoreForm.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
+                            <mat-error *ngIf="form.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
 
                     <mat-grid-tile>
                         <mat-form-field>
                             <input matInput required type="text" placeholder="Cognome" formControlName="cognome">
-                            <mat-error *ngIf="genitoreForm.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
+                            <mat-error *ngIf="form.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
 
@@ -66,15 +65,15 @@
                             #date>
                             <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
                             <mat-datepicker #dpDtNascita  ></mat-datepicker>
-                            <mat-error *ngIf="genitoreForm.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
+                            <mat-error *ngIf="form.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
                 </mat-grid-list>
                 <mat-grid-list [cols]="breakpoint" rowHeight="60px">
                     <mat-grid-tile>
                         <mat-form-field>
-                            <input matInput required type="text" placeholder="Genere (M/F)" formControlName="genere">
-                            <mat-error>Inserire M o F</mat-error>
+                            <input matInput required type="text" placeholder="Tipo (P/M/T)" formControlName="tipo">
+                            <mat-error>Inserire P (padre), M (madre) o T (tutore)</mat-error>
                         </mat-form-field>
                         
                     </mat-grid-tile>
@@ -162,9 +161,28 @@
                             <input matInput type="text" placeholder="CAP" formControlName="cap">
                         </mat-form-field>
                     </mat-grid-tile>
-            
-                </mat-grid-list>  
 
+                </mat-grid-list>  
+                <mat-grid-list [cols]="breakpoint" rowHeight="60px">
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="Telefono" formControlName="telefono">
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="altro Telefono" formControlName="telefono2">
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="e-mail" formControlName="email">
+                            <mat-error>Campo errato</mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
             </form>
 
             <!-- <div>

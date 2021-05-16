@@ -33,14 +33,14 @@ export class GenitoriListComponent implements OnInit {
                       "email", 
                       "dtNascita" ];
 
-  matSortActive!: string;
-  matSortDirection!: string;
+  matSortActive!:     string;
+  matSortDirection!:  string;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild("filterInput") filterInput!: ElementRef;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!:                        MatPaginator;
+  @ViewChild("filterInput") filterInput!:                     ElementRef;
+  @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger;
 
   //@Input()
@@ -48,7 +48,7 @@ export class GenitoriListComponent implements OnInit {
 
   //public alunnoInput!: ALU_Alunno;  
 
-  constructor(private svcGenitori:        GenitoriService,
+  constructor(private svcGenitori:                GenitoriService,
                         private route:            ActivatedRoute,
                         private router:           Router,
                         public _dialog:           MatDialog, 
@@ -58,7 +58,6 @@ export class GenitoriListComponent implements OnInit {
 
   ngOnInit () {
     this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "telefono", "email","dtNascita"] : ["actionsColumn", "nome", "cognome", "tipo","indirizzo", "telefono", "email","dtNascita"];
-
     this.refresh();
   }
 

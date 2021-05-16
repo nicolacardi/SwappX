@@ -30,7 +30,7 @@ export class AlunnoDetailsComponent implements OnInit{
   caller_sortField!:          string;
   caller_sortDirection!:      string;
 
-  alunnoForm! :               FormGroup;
+  form! :                     FormGroup;
   emptyForm :                 boolean = false;
   alunno!:                    Observable<ALU_Alunno>;
   loading:                    boolean = true;
@@ -54,7 +54,7 @@ export class AlunnoDetailsComponent implements OnInit{
 
         let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
         
-        this.alunnoForm = this.fb.group({
+        this.form = this.fb.group({
           id:                         [null],
           nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
           cognome:                    ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
@@ -103,11 +103,11 @@ export class AlunnoDetailsComponent implements OnInit{
 
       const obsAlunno$: Observable<ALU_Alunno> = this.alunniSvc.loadAlunno(this.idAlunno);
       const loadAlunno$ = this._loadingService.showLoaderUntilCompleted(obsAlunno$);
-      //TODO: capire perchè serve sia alunno | async e sia il popolamento di alunnoForm
+      //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
       this.alunno = loadAlunno$
       .pipe(
           tap(
-            alunno => this.alunnoForm.patchValue(alunno)
+            alunno => this.form.patchValue(alunno)
           )
       );
     } else {
@@ -115,23 +115,23 @@ export class AlunnoDetailsComponent implements OnInit{
     }
     
     //********************* FILTRO COMUNE *******************
-    this.filteredComuni$ = this.alunnoForm.controls['comune'].valueChanges
+    this.filteredComuni$ = this.form.controls['comune'].valueChanges
     .pipe(
       tap(),
       debounceTime(300),
       tap(() => this.comuniIsLoading = true),
       //delayWhen(() => timer(2000)),
-      switchMap(() => this.comuniSvc.filterComuni(this.alunnoForm.value.comune)),
+      switchMap(() => this.comuniSvc.filterComuni(this.form.value.comune)),
       tap(() => this.comuniIsLoading = false)
     )
 
     //********************* FILTRO COMUNE NASCITA ***********
-    this.filteredComuniNascita$ = this.alunnoForm.controls['comuneNascita'].valueChanges
+    this.filteredComuniNascita$ = this.form.controls['comuneNascita'].valueChanges
     .pipe(
       tap(),
       debounceTime(300),
       tap(() => this.comuniNascitaIsLoading = true),
-      switchMap(() => this.comuniSvc.filterComuni(this.alunnoForm.value.comuneNascita)),
+      switchMap(() => this.comuniSvc.filterComuni(this.form.value.comuneNascita)),
       tap(() => this.comuniNascitaIsLoading = false)
     )
   }
@@ -139,26 +139,23 @@ export class AlunnoDetailsComponent implements OnInit{
   //#region ----- Funzioni -------
 
   save(){
-
-    if (this.alunnoForm.controls['id'].value == null) 
-      this.alunniSvc.postAlunno(this.alunnoForm.value)
+    if (this.form.controls['id'].value == null) 
+      this.alunniSvc.postAlunno(this.form.value)
         .subscribe(res=> {
           //console.log("return from post", res);
-          this.alunnoForm.markAsPristine();
+          this.form.markAsPristine();
         });
     else 
-      this.alunniSvc.putAlunno(this.alunnoForm.value)
+      this.alunniSvc.putAlunno(this.form.value)
         .subscribe(res=> {
           //console.log("return from put", res);
-          this.alunnoForm.markAsPristine();
+          this.form.markAsPristine();
         });
-    
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
   }
 
   back(){
-    
-    if (this.alunnoForm.dirty) {
+    if (this.form.dirty) {
       const dialogRef = this._dialog.open(DialogYesNoComponent, {
         width: '320px',
         data: {titolo: "ATTENZIONE", sottoTitolo: "Dati modificati: si conferma l'uscita?"}
@@ -187,7 +184,6 @@ export class AlunnoDetailsComponent implements OnInit{
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.alunniSvc.deleteAlunno(this.idAlunno)
@@ -210,14 +206,14 @@ export class AlunnoDetailsComponent implements OnInit{
   //#endregion
 
   popolaProv(prov: string, cap: string) {
-    this.alunnoForm.controls['prov'].setValue(prov);
-    this.alunnoForm.controls['cap'].setValue(cap);
-    this.alunnoForm.controls['nazione'].setValue('ITA');
+    this.form.controls['prov'].setValue(prov);
+    this.form.controls['cap'].setValue(cap);
+    this.form.controls['nazione'].setValue('ITA');
   }
 
   popolaProvNascita(prov: string) {
-    this.alunnoForm.controls['provNascita'].setValue(prov);
-    this.alunnoForm.controls['nazioneNascita'].setValue('ITA');
+    this.form.controls['provNascita'].setValue(prov);
+    this.form.controls['nazioneNascita'].setValue('ITA');
   }
   
   onResize(event: any) {
