@@ -12,6 +12,7 @@ import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { GenitoriService } from '../../../_services/genitori.service';
 import { GenitoreDetailsComponent } from '../genitore-details/genitore-details.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 //import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
@@ -35,6 +36,8 @@ export class GenitoriListComponent implements OnInit {
 
   matSortActive!:     string;
   matSortDirection!:  string;
+  public genitoriDi!: number;  //alunnoInput viene passato a alunnoHeader qualora ricevuto
+
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
@@ -45,8 +48,9 @@ export class GenitoriListComponent implements OnInit {
 
   //@Input()
   //idAlunno!: number;
+  
+ 
 
-  //public alunnoInput!: ALU_Alunno;  
 
   constructor(private svcGenitori:                GenitoriService,
                         private route:            ActivatedRoute,
@@ -57,6 +61,9 @@ export class GenitoriListComponent implements OnInit {
                         ) {}
 
   ngOnInit () {
+    this.genitoriDi = this.route.snapshot.queryParams['genitoriDi'];
+    this.applyFilterAlunno(this.genitoriDi);
+    
     this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "telefono", "email","dtNascita"] : ["actionsColumn", "nome", "cognome", "tipo","indirizzo", "telefono", "email","dtNascita"];
     this.refresh();
   }
@@ -72,11 +79,12 @@ export class GenitoriListComponent implements OnInit {
         var caller_filter = this.route.snapshot.queryParams["filter"];
         var caller_sortField = this.route.snapshot.queryParams["sortField"];
         var caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
-        
+  
+
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort;
-
+        console.log(val);
         if(caller_page != undefined ){
           if (caller_sortDirection) {
             this.sort.sort(({ id: caller_sortField, start: caller_sortDirection}) as MatSortable);
@@ -134,5 +142,12 @@ export class GenitoriListComponent implements OnInit {
     this.matMenuTrigger.menuData = {item: element}   
     this.matMenuTrigger.openMenu(); 
   } 
+
+  applyFilterAlunno(id: number) {
+    //
+    this.matDataSource.filterPredicate = (data, filter) => (data.dtNascita.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) !== -1);
+    if (id) this.matDataSource.filter = id.toString();
+  }
+
 }
 
