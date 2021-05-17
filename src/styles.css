@@ -179,9 +179,13 @@ in fase di creazione della Dialog addAlunno*/
 }
 
 .rightSidenav {
-    width:  250px;
+    width:  480px;
     background-color: rgba(255,255,255,1);
     color: rgb(10,10,10) !important;
+}
+
+.rightSidenav mat-form-feld{
+font-size: 10px;
 }
 
 mat-nav-list a{

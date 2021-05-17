@@ -1,52 +1,96 @@
 
 
 <mat-sidenav-container fullscreen>
-  <mat-sidenav #start class="leftSidenav" >
-      <mat-nav-list (click)="start.close()">
-          <a mat-list-item routerLink="alunni" >
-              <img src="../assets/grey/00Anagrafica.svg">
-              <span>Lista Alunni</span>
-          </a>
-          <!-- <a mat-list-item routerLink="alunni/">
-              <mat-icon>person</mat-icon>
-              <span>Alunno</span>
-          </a> -->
-          <a mat-list-item routerLink="genitori">
-            <img src="../assets/grey/03AnagraficaMaestri.svg">
-              <span>Lista Genitori</span>
-          </a>           
-          <!-- <a mat-list-item routerLink="genitoreDetails">
+    <mat-sidenav #start class="leftSidenav" >
+        <mat-nav-list (click)="start.close()">
+            <a mat-list-item routerLink="alunni" >
+                <mat-icon>face</mat-icon>
+                <span>Lista Alunni</span>
+            </a>
+            <!-- <a mat-list-item routerLink="alunni/">
+                <mat-icon>person</mat-icon>
+                <span>Alunno</span>
+            </a> -->
+            <a mat-list-item routerLink="genitori">
+                <mat-icon>family_restroom</mat-icon>
+                <span>Lista Genitori</span>
+            </a>           
+            <!-- <a mat-list-item routerLink="genitoreDetails">
             <mat-icon>person</mat-icon>
             <span>Genitore</span>
         </a>  -->
 
-      </mat-nav-list>
-  </mat-sidenav>
+        </mat-nav-list>
+    </mat-sidenav>
+    
+    <mat-menu #menu>
+
+        <button mat-menu-item routerLink="/">
+            <mat-icon>account_box</mat-icon>
+            <span>Account</span>
+        </button>
+    
+        <button mat-menu-item routerLink="about">
+            <mat-icon>password</mat-icon>
+            <span>Cambia Password</span>
+        </button>
+    
+        <button mat-menu-item routerLink="/">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+        </button>
+
+    
+    </mat-menu>
+    
+    
     <mat-sidenav position="end" #end class="rightSidenav">
         <mat-nav-list (click)="end.close()">
+            <div mat-list-item style="text-align: center; margin-bottom: 10px;">
+                <span >Filtri</span>
+            </div>
+            <div mat-list-item style="padding: 0 16px">
+
+                <mat-icon>face</mat-icon>
+                <mat-form-field class="mg20">
+                    <mat-label>Nome Alunno</mat-label>
+                    <input matInput placeholder="Nome" #nome>
+                </mat-form-field>
+                <mat-form-field class="mg20">
+                    <mat-label>Cognome Alunno</mat-label>
+                    <input matInput placeholder="Nome" #nome>
+                </mat-form-field>
+
+            </div>
             <a mat-list-item>
-                <img src="../assets/grey/08SchedaMaestro.svg">
-                <span>Account</span>
+                <mat-icon>event</mat-icon>
+                <span>per anno</span>
+            </a>
+            <hr>
+            <a mat-list-item>
+                <mat-icon>printer</mat-icon>
+                <span>Stampa</span>
             </a>
             <a mat-list-item>
-                <img src="../assets/grey/10ModificaPassword.svg">
-                <span>Modifica Password</span>
-            </a>
-            <a mat-list-item>
-                <img src="../assets/grey/Logout.svg">
-                <span>Logout</span>
+                <mat-icon>file_download</mat-icon>
+                <span>Scarica</span>
             </a>
         </mat-nav-list>           
     </mat-sidenav>
-  <mat-toolbar color="primary">
-      <button mat-icon-button (click)="start.open()">
-          <mat-icon>menu</mat-icon>
-      </button>
-      <span class="example-spacer"> SwappX</span>
-      <button mat-icon-button (click)="end.open()">
-        <mat-icon>account_circle</mat-icon>
-    </button>
-  </mat-toolbar>
+
+    <mat-toolbar color="primary">
+        <button mat-icon-button (click)="start.open()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <span class="example-spacer"> SwappX</span>
+
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>account_circle</mat-icon>
+        </button>
+        <button mat-icon-button (click)="end.open()">
+            <mat-icon>build_circle</mat-icon>
+        </button>
+    </mat-toolbar>
 
   <loading></loading>
   <router-outlet></router-outlet>
