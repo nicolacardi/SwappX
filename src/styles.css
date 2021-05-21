@@ -179,7 +179,7 @@ in fase di creazione della Dialog addAlunno*/
 }
 
 .rightSidenav {
-    width:  480px;
+    width:  250px;
     background-color: rgba(255,255,255,1);
     color: rgb(10,10,10) !important;
 }
@@ -202,6 +202,10 @@ mat-nav-list a img {
     margin-right: 10px;
 }
 
+.closeIcon {
+    margin-left: 5px;
+    margin-top: 20px;
+}
 
 /**********************************/
 

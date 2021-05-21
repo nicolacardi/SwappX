@@ -12,6 +12,7 @@ import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from '../../../_services/alunni.service';
 import { AlunnoDetailsComponent } from '../alunno-details/alunno-details.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { FiltriService } from '../../utilities/filtri/filtri.service';
 
 @Component({
   selector:     'app-alunni-list',
@@ -58,7 +59,8 @@ export class AlunniListComponent implements OnInit {
               private router:           Router,
               public _dialog:           MatDialog, 
               //public _snackBar:         MatSnackBar,
-              private _loadingService:  LoadingService
+              private _loadingService:  LoadingService,
+              private _filtriService:   FiltriService
               ) {}
   
   ngOnInit () {
@@ -151,7 +153,12 @@ export class AlunniListComponent implements OnInit {
     this.menuTopLeftPosition.y = event.clientY + 'px'; 
     this.matMenuTrigger.menuData = {item: element}   
     this.matMenuTrigger.openMenu(); 
-  } 
+  }
+
+  openGenitori(id: number) {
+    this._filtriService.passData(id);
+    this.router.navigateByUrl("/genitori");
+  }
 }
 
 

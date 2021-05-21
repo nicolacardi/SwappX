@@ -25,6 +25,7 @@ import { SnackbarComponent } from './_components/utilities/snackbar/snackbar.com
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { LoadingComponent } from './_components/utilities/loading/loading.component';
 import { AlunnoHeaderComponent } from './_components/alunni/alunno-header/alunno-header.component';
+import { FiltriComponent } from './_components/utilities/filtri/filtri.component';
 
 
 
@@ -42,6 +43,7 @@ import { AlunnoHeaderComponent } from './_components/alunni/alunno-header/alunno
     SnackbarComponent,
     LoadingComponent,
     AlunnoHeaderComponent,
+    FiltriComponent,
   ],
   imports: [
     BrowserModule,

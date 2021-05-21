@@ -1,11 +1,14 @@
 
-<h1 class="page-title">Elenco Genitori</h1>
+<h1 class="page-title">Elenco Genitori <mat-icon *ngIf="idAlunno" color="warn" title="filtri avanzati applicati">filter_alt</mat-icon></h1>
 
 <button mat-mini-fab aria-label="Aggiungi Alunno" class="button-add" color="primary" (click)="addRecord()">
     <mat-icon>add</mat-icon>
 </button>
 
-<app-alunno-header [idAlunno]="idAlunno"></app-alunno-header>
+<!-- <app-alunno-header [idAlunno]="idAlunno"></app-alunno-header> -->
+
+
+
 <!-- **************************   FILTER   ******************* -->
 <mat-form-field class="mg20">
     <mat-label>Filtro</mat-label>

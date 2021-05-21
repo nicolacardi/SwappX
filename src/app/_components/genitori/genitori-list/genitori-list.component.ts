@@ -13,6 +13,7 @@ import { GenitoriService } from '../../../_services/genitori.service';
 import { GenitoreDetailsComponent } from '../genitore-details/genitore-details.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { FiltriService } from '../../utilities/filtri/filtri.service';
 
 //import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
@@ -36,7 +37,8 @@ export class GenitoriListComponent implements OnInit {
 
   matSortActive!:     string;
   matSortDirection!:  string;
-  public idAlunno!: number;  //alunnoInput viene passato a alunnoHeader qualora ricevuto
+  filtro!:            number;
+  public idAlunno!:   number;  //alunnoInput viene passato a alunnoHeader qualora ricevuto
 
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
@@ -57,23 +59,34 @@ export class GenitoriListComponent implements OnInit {
                         private router:           Router,
                         public _dialog:           MatDialog, 
                         //public _snackBar:         MatSnackBar,
-                        private _loadingService:  LoadingService
+                        private _loadingService:  LoadingService,
+                        private _filtriService:    FiltriService
                         ) {}
 
   ngOnInit () {
-    this.idAlunno = this.route.snapshot.queryParams['idAlunno'];
+    //this.idAlunno = this.route.snapshot.queryParams['idAlunno'];
     
     this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "telefono", "email","dtNascita"] : ["actionsColumn", "nome", "cognome", "tipo","indirizzo", "telefono", "email","dtNascita"];
-    this.refresh();
+    
+
+    this._filtriService.getData()
+      .subscribe(
+        val=>{
+        this.idAlunno = val;
+        //if (val == null) {this.idAlunno = }
+        this.refresh();
+    });
+    
   }
 
   refresh () {
     let obsGenitori$: Observable<ALU_Genitore[]>;
-    
-    if(this.idAlunno)
+
+    if(this.idAlunno && this.idAlunno != undefined  && this.idAlunno != null && this.idAlunno != 0) {
       obsGenitori$= this.svcGenitori.loadGenitoriByAlunno(this.idAlunno);
-    else
+    } else {
       obsGenitori$= this.svcGenitori.loadGenitori();
+    }
 
     const loadGenitori$ =this._loadingService.showLoaderUntilCompleted(obsGenitori$);
 
@@ -88,7 +101,6 @@ export class GenitoriListComponent implements OnInit {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort;
-        console.log(val);
         if(caller_page != undefined ){
           if (caller_sortDirection) {
             this.sort.sort(({ id: caller_sortField, start: caller_sortDirection}) as MatSortable);
@@ -147,11 +159,11 @@ export class GenitoriListComponent implements OnInit {
     this.matMenuTrigger.openMenu(); 
   } 
 
-  applyFilterAlunno(id: number) {
-    //
-    this.matDataSource.filterPredicate = (data, filter) => (data.dtNascita.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) !== -1);
-    if (id) this.matDataSource.filter = id.toString();
-  }
+  // applyFilterAlunno(id: number) {
+  //   //
+  //   this.matDataSource.filterPredicate = (data, filter) => (data.dtNascita.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) !== -1);
+  //   if (id) this.matDataSource.filter = id.toString();
+  // }
 
 }
 

@@ -14,6 +14,7 @@ import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { FiltriService } from '../../utilities/filtri/filtri.service';
 
 @Component({
   selector:     'app-alunno-details',
@@ -49,7 +50,9 @@ export class AlunnoDetailsComponent implements OnInit{
       private comuniSvc:      ComuniService,
       public _dialog:         MatDialog,
       private _snackBar:      MatSnackBar,
-      private _loadingService :LoadingService) 
+      private _loadingService :LoadingService,
+
+      ) 
   {
 
         let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
