@@ -12,7 +12,7 @@
 </mat-form-field>
 
 <!-- **************************   MAT-TABLE   ******************* -->
-<mat-table [dataSource]="matDataSource"
+<mat-table class="transparent" [dataSource]="matDataSource"
     matSort
     [matSortActive]="matSortActive"
     [matSortDirection] = "'asc'"
@@ -131,7 +131,7 @@
 
 <!-- **************************   PAGINATOR   ******************* -->
 
-<mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+<mat-paginator class="transparent" [pageSize]="5" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
 
 <!-- ***********************  MENU RIGHT CLICK ****************** -->
 <div style="visibility: hidden; position: fixed;" 

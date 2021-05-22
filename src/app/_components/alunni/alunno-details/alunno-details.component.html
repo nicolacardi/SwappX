@@ -165,6 +165,22 @@
                 
 
                 </mat-grid-list>
+
+                <mat-grid-list [cols]="breakpoint" rowHeight="60px">
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="Telefono" formControlName="telefono">
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="e-mail" formControlName="email">
+                            <mat-error>Campo errato</mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
+
                 <mat-grid-list [cols]="breakpoint" rowHeight="60px">
                     <mat-grid-tile>
                         <mat-form-field>

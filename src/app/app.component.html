@@ -49,14 +49,14 @@
         <mat-nav-list>
             <app-filtri></app-filtri>
             <hr>
-            <a mat-list-item>
-                <mat-icon>printer</mat-icon>
-                <span>Stampa</span>
-            </a>
-            <a mat-list-item>
+            <mat-list-item>
+                <mat-icon (clic)="savePDF()">printer</mat-icon>
+                <span class="descMenu">Stampa</span>
+            </mat-list-item >
+            <mat-list-item >
                 <mat-icon>file_download</mat-icon>
-                <span>Scarica</span>
-            </a>
+                <span class="descMenu">Scarica</span>
+            </mat-list-item >
         </mat-nav-list>           
     </mat-sidenav>
 

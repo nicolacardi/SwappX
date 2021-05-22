@@ -31,5 +31,9 @@ export class AppComponent implements OnInit{
     });
   }
 
+  savePDF() {
+    
+  }
+
 
 }

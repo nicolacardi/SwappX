@@ -1,10 +1,18 @@
 /************* GENERALI **********/
-html, body { height: 100%; }
+html, body { height: 100%; 
+    /* background-image: lightblue url("../src/assets/background7.jpg") no-repeat fixed center; */
+
+}
 
 /*Font vari*/
-body { margin: 0; font-family: 'Titillium Web', sans-serif; }
+body { 
+    margin: 0;
+    font-family: 'Titillium Web', sans-serif;
+    
+}
 
-* { font-family: 'Titillium Web', sans-serif;}
+* { font-family: 'Titillium Web', sans-serif;
+    }
 
 .mat-h1, .mat-headline, .mat-typography h1 {
     font-family: 'Titillium Web', sans-serif;
@@ -14,7 +22,12 @@ body { margin: 0; font-family: 'Titillium Web', sans-serif; }
 /*************** VARIE ***********/
 
 /*Colore sfondo*/
-.mat-drawer-container { background-color: white; }
+.mat-drawer-container { background-color: white;
+    background-image: url("../src/assets/backgroundglass.svg");
+    background: white url("../src/assets/backgroundglass.svg") no-repeat center;
+    background-size: cover;
+
+    }
 
 /*Margine*/
 .mg20 {
@@ -207,8 +220,21 @@ mat-nav-list a img {
     margin-top: 20px;
 }
 
+.descMenu{
+    margin-left: 5px;
+}
+
+/* .miniButton {
+    width: 5px !important;
+    height: 5px !important;
+} */
+
 /**********************************/
 
+
+.transparent {
+    background: none;
+}
 
 
 /*  STILE SPOSTATO NEL LOADING COMPONENT.CSS

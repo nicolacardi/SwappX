@@ -1,6 +1,9 @@
 <form class="data-form flex-form" [formGroup] = "form">
     <div mat-list-item style="text-align: center; margin-bottom: 10px;">
         <span >Filtri Avanzati</span>
+        <!-- <button mat-button *ngIf = "id.value" matSuffix   mat-icon-button aria-label="Clear" (click)="resetAllInputs()" >
+            <mat-icon class="miniButton" >close</mat-icon>
+        </button> -->
     </div>
     <mat-list-item >
         <mat-icon>face</mat-icon>
@@ -9,7 +12,7 @@
             <input matInput placeholder="ID" formControlName="id" #id>
             <button mat-button *ngIf = "id.value" matSuffix mat-icon-button aria-label="Clear" (click)="resetInput()">
                 <mat-icon>close</mat-icon>
-              </button>
+            </button>
         </mat-form-field>
         <!-- <mat-form-field class="mg20">
             <mat-label>Nome Alunno</mat-label>
@@ -22,6 +25,10 @@
     </mat-list-item >
     <mat-list-item >
         <mat-icon>event</mat-icon>
-        <span>per anno</span>
+        <span class="descMenu">per anno</span>
+    </mat-list-item >
+    <mat-list-item >
+        <mat-icon>groups</mat-icon>
+        <span class="descMenu">per classe</span>
     </mat-list-item >
 </form>

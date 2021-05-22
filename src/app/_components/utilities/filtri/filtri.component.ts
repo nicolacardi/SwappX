@@ -48,6 +48,9 @@ export class FiltriComponent implements OnInit , AfterViewInit{
   resetInput () {
     this.form.controls['id'].setValue('');
   }
+  resetAllInputs () {
+    this.form.controls['id'].setValue('');
+  }
 
 
 }
