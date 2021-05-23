@@ -14,7 +14,12 @@
             <a mat-list-item routerLink="genitori">
                 <mat-icon>family_restroom</mat-icon>
                 <span>Lista Genitori</span>
-            </a>           
+            </a>  
+            
+            <a mat-list-item routerLink="classi">
+                <mat-icon>assignment_ind</mat-icon>
+                <span>Classi</span>
+            </a>  
             <!-- <a mat-list-item routerLink="genitoreDetails">
             <mat-icon>person</mat-icon>
             <span>Genitore</span>
@@ -24,7 +29,6 @@
     </mat-sidenav>
     
     <mat-menu #menu>
-
         <button mat-menu-item routerLink="/">
             <mat-icon>account_box</mat-icon>
             <span>Account</span>
@@ -39,11 +43,8 @@
             <mat-icon>logout</mat-icon>
             <span>Logout</span>
         </button>
-
-    
     </mat-menu>
-    
-    
+       
     <mat-sidenav position="end" #end class="rightSidenav" [mode]="'side'">
         <mat-icon class="closeIcon pointer" (click)="end.close()">close</mat-icon>
         <mat-nav-list>

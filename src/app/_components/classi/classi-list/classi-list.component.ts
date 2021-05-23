@@ -8,46 +8,39 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { AlunniService } from '../../../_services/alunni.service';
-import { AlunnoDetailsComponent } from '../alunno-details/alunno-details.component';
+import { CLS_ClasseSezione } from 'src/app/_models/CLS_ClasseSezione';
+import { ClassiSezioniService } from '../classi-sezioni.service';
+//import { AlunnoDetailsComponent } from '../-details/alunno-details.component';
 
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { FiltriService } from '../../utilities/filtri/filtri.service';
 
 @Component({
-  selector:     'app-alunni-list',
-  templateUrl:  './alunni-list.component.html',
-  styleUrls:    []
-  /* expanded
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],*/
+  selector: 'app-classi-list',
+  templateUrl: './classi-list.component.html',
+  styleUrls: ['./classi-list.component.css']
 })
+/*
+export class ClassiListComponent implements OnInit {
 
-export class AlunniListComponent implements OnInit {
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+}
+*/
+export class ClassiListComponent implements OnInit {
   
-  matDataSource = new MatTableDataSource<ALU_Alunno>();
-  displayedColumns: string[] =  ["actionsColumn", 
-                                "nome", 
-                                "cognome", 
-                                "dtNascita", 
-                                "indirizzo", 
-                                "comune", 
-                                "cap", 
-                                "prov", 
-                                "email", 
-                                "telefono", 
-                                "ckAttivo" ];
+  matDataSource = new MatTableDataSource<CLS_ClasseSezione>();
+  displayedColumns: string[] =  ["actionsColumn",
+                                "id", 
+                                "sezione", 
+                                "descrizioneBreve", 
+                                "descrizione" 
+                                 ];
 
-  //expandedElement!: ALU_Alunno | null;      //expanded
   matSortActive!:     string;
   matSortDirection!:  string;
-  public idGenitore!: number;  //genitoreInput viene passato a alunnoHeader qualora ricevuto
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
@@ -56,7 +49,7 @@ export class AlunniListComponent implements OnInit {
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
-  constructor(private svcAlunni:        AlunniService,
+  constructor(private svcClassi:        ClassiSezioniService,
               private route:            ActivatedRoute,
               private router:           Router,
               public _dialog:           MatDialog, 
@@ -65,29 +58,26 @@ export class AlunniListComponent implements OnInit {
               ) {}
   
   ngOnInit () {
-    this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "dtNascita", "email"] : ["actionsColumn", "nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo"];
-
+    this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "id", "sezione", "descrizioneBreve", "descrizione"] : ["actionsColumn", "id", "sezione", "descrizioneBreve", "descrizione"];
+    /* TODO!!!
     this._filtriService.getGenitore()
       .subscribe(
         val=>{
         this.idGenitore = val;
         this.refresh();
     });
-
+    */
+    this.refresh(); //TMP
   }
 
   refresh () {
-    let obsAlunni$: Observable<ALU_Alunno[]>;
+    let obsClassi$: Observable<CLS_ClasseSezione[]>;
 
-    if(this.idGenitore && this.idGenitore != undefined  && this.idGenitore != null && this.idGenitore != 0) {
-      obsAlunni$= this.svcAlunni.loadAlunniByGenitore(this.idGenitore);
-    } else {
-      obsAlunni$= this.svcAlunni.loadAlunni();
-    }
+    obsClassi$= this.svcClassi.loadClassi();
 
-    const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
+    const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
-    loadAlunni$.subscribe(val => 
+    loadClassi$.subscribe(val => 
       {
         var caller_page = this.route.snapshot.queryParams["page"];
         var caller_size = this.route.snapshot.queryParams["size"];
@@ -114,7 +104,7 @@ export class AlunniListComponent implements OnInit {
 
   openDetail(id:any){
     //***** Versione Router
-    this.router.navigate(["alunni",id], {queryParams:{page: this.paginator.pageIndex,
+    this.router.navigate(["classi",id], {queryParams:{page: this.paginator.pageIndex,
                                                       size: this.paginator.pageSize,  
                                                       filter: this.filterInput.nativeElement.value,
                                                       sortField: this.matDataSource.sort?.active,
@@ -142,8 +132,9 @@ export class AlunniListComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
   }
-
+  
   addRecord(){
+    /* TODO!!!
     const dialogConfig = new MatDialogConfig();
     //dialogConfig.disableClose = true; //lo farebbe non chiudibile cliccando altrove
     dialogConfig.data = 0;
@@ -155,13 +146,14 @@ export class AlunniListComponent implements OnInit {
         () => {
           this.refresh();
     });
+  */
   }
-
+  
   onResize(event: any) {
-    this.displayedColumns = (event.target.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "dtNascita", "email"] : ["actionsColumn", "nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo"];;
+    this.displayedColumns = (event.target.innerWidth <= 800) ? ["actionsColumn", "id", "sezione", "descrizioneBreve", "descrizione"] : ["actionsColumn", "id", "sezione", "descrizioneBreve", "descrizione"];
   }
 
-  onRightClick(event: MouseEvent, element: ALU_Alunno) { 
+  onRightClick(event: MouseEvent, element: CLS_ClasseSezione) { 
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
     this.menuTopLeftPosition.y = event.clientY + 'px'; 
@@ -169,37 +161,11 @@ export class AlunniListComponent implements OnInit {
     this.matMenuTrigger.openMenu(); 
   }
 
-  openGenitori(id: number) {
-    this._filtriService.passAlunno(id);
-    this.router.navigateByUrl("/genitori");
+  
+  openDetails(id: number) {
+  //  this._filtriService.passAlunno(id);
+  //  this.router.navigateByUrl("/genitori");
   }
+  
 }
 
-
-
-
-
-// deleteDetail(element: any, event: Event){
-  
-//   const dialogRef = this._dialog.open(DialogYesNoComponent, {
-//     width: '320px',
-//     data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
-//   });
-
-//   dialogRef.afterClosed().subscribe(result => {
-//     if(result){
-//       this.svcAlunni.deleteAlunno(element.id)
-//       .subscribe(
-//         res=>{    
-//           this._snackBar.openFromComponent(SnackbarComponent,
-//             {data: 'Alunno ' + element.nome + ' '+ element.cognome + ' cancellato', panelClass: ['red-snackbar'] });
-//             this.refresh();
-//         },
-//         err=> (
-//             console.log("ERRORE")
-//         )
-//       );
-//     }
-//   });
-//   event.stopPropagation(); 
-// }
