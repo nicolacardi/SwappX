@@ -6,7 +6,7 @@
 </button>
 
 <!-- **************************   FILTER   ******************* -->
-<mat-form-field class="mg20">
+<mat-form-field class="ml20">
     <mat-label>Filtro</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
 </mat-form-field>
@@ -95,7 +95,7 @@
                 <div>
                     <img class= "picture-img" src = '{{ "../../../../../assets/photos/" + AlunniSubject.nome + AlunniSubject.cognome + ".png" }}'>
                 </div>
-                <div class="mg20">
+                <div class="ml20">
                     Indirizzo: {{AlunniSubject.indirizzo}} {{AlunniSubject.comune}} {{AlunniSubject.prov}} <br>
                     Data e Luogo di Nascita: {{AlunniSubject.dtNascita | date: "dd/MM/yyyy"}} {{AlunniSubject.comuneNascita}} {{AlunniSubject.provNascita}}
                  </div>

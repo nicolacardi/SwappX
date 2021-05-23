@@ -5,25 +5,25 @@
     </div>
     <mat-list-item >
         <mat-icon>face</mat-icon>
-        <mat-form-field class="mg20">
+        <mat-form-field class="ml20">
             <mat-label>per Alunno</mat-label>
             <input matInput placeholder="ID" formControlName="idAlunno" #idAlunno>
             <button mat-button *ngIf = "idAlunno.value" matSuffix mat-icon-button aria-label="Clear" (click)="resetInput('idAlunno')">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
-        <!-- <mat-form-field class="mg20">
+        <!-- <mat-form-field class="ml20">
             <mat-label>Nome Alunno</mat-label>
             <input matInput placeholder="Nome" #nome>
         </mat-form-field>
-        <mat-form-field class="mg20">
+        <mat-form-field class="ml20">
             <mat-label>Cognome Alunno</mat-label>
             <input matInput placeholder="Nome" #nome>
         </mat-form-field> -->
     </mat-list-item >
     <mat-list-item >
         <mat-icon>family_restroom</mat-icon>
-        <mat-form-field class="mg20">
+        <mat-form-field class="ml20">
             <mat-label>per Genitore</mat-label>
             <input matInput placeholder="ID" formControlName="idGenitore" #idGenitore>
             <button mat-button *ngIf = "idGenitore.value" matSuffix mat-icon-button aria-label="Clear" (click)="resetInput('idGenitore')">
@@ -39,7 +39,7 @@
         <mat-icon>groups</mat-icon>
         <span class="descMenu">per classe</span>
     </mat-list-item >
-    <button mat-button matSuffix mat-raised-button aria-label="Clear" (click)="resetAllInputs()" >
+    <button mat-button matSuffix class="w90 ml12" mat-stroked-button aria-label="Clear" (click)="resetAllInputs()" >
         Pulisci Filtri
     </button>
 </form>

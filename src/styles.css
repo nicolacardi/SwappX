@@ -30,8 +30,27 @@ body {
     }
 
 /*Margine*/
-.mg20 {
+.ml20 {
     margin-left: 20px;
+}
+.ml5 {
+    margin-left: 5px;
+}
+.ml12 {
+    margin-left: 12px !important;
+}
+.mr5 {
+    margin-right: 5px;
+}
+
+.mauto {
+    margin: auto;
+}
+
+/*Width*/
+
+.w90 {
+    width: 90%;
 }
 
 /*Cursore*/
