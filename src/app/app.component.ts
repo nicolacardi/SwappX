@@ -20,15 +20,13 @@ export class AppComponent implements OnInit{
   constructor( private _filtriService: FiltriService) {}
 
   ngOnInit () {
-    this._filtriService.getData()
-    .subscribe(
-      val=>{
-      if (val!=0 && val!= null && val!= undefined){
-        console.log("ora voglio aprire");
-        this.rightSidenav.open();
-        
-      }
-    });
+    //  this._filtriService.getFiltriAttivi()
+    // .subscribe(
+    //   val=>{
+    //   if (val){
+    //     this.rightSidenav.open();
+    //   }
+    // });
   }
 
   savePDF() {

@@ -1,16 +1,14 @@
 <form class="data-form flex-form" [formGroup] = "form">
+
     <div mat-list-item style="text-align: center; margin-bottom: 10px;">
-        <span >Filtri Avanzati</span>
-        <!-- <button mat-button *ngIf = "id.value" matSuffix   mat-icon-button aria-label="Clear" (click)="resetAllInputs()" >
-            <mat-icon class="miniButton" >close</mat-icon>
-        </button> -->
+        Filtri Avanzati
     </div>
     <mat-list-item >
         <mat-icon>face</mat-icon>
         <mat-form-field class="mg20">
             <mat-label>per Alunno</mat-label>
-            <input matInput placeholder="ID" formControlName="id" #id>
-            <button mat-button *ngIf = "id.value" matSuffix mat-icon-button aria-label="Clear" (click)="resetInput()">
+            <input matInput placeholder="ID" formControlName="idAlunno" #idAlunno>
+            <button mat-button *ngIf = "idAlunno.value" matSuffix mat-icon-button aria-label="Clear" (click)="resetInput('idAlunno')">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
@@ -24,6 +22,16 @@
         </mat-form-field> -->
     </mat-list-item >
     <mat-list-item >
+        <mat-icon>family_restroom</mat-icon>
+        <mat-form-field class="mg20">
+            <mat-label>per Genitore</mat-label>
+            <input matInput placeholder="ID" formControlName="idGenitore" #idGenitore>
+            <button mat-button *ngIf = "idGenitore.value" matSuffix mat-icon-button aria-label="Clear" (click)="resetInput('idGenitore')">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+    </mat-list-item >
+    <mat-list-item >
         <mat-icon>event</mat-icon>
         <span class="descMenu">per anno</span>
     </mat-list-item >
@@ -31,4 +39,7 @@
         <mat-icon>groups</mat-icon>
         <span class="descMenu">per classe</span>
     </mat-list-item >
+    <button mat-button matSuffix mat-raised-button aria-label="Clear" (click)="resetAllInputs()" >
+        Pulisci Filtri
+    </button>
 </form>

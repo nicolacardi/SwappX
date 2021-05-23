@@ -46,7 +46,8 @@ export class AlunniListComponent implements OnInit {
   //expandedElement!: ALU_Alunno | null;      //expanded
   matSortActive!:     string;
   matSortDirection!:  string;
-  
+  public idGenitore!: number;  //genitoreInput viene passato a alunnoHeader qualora ricevuto
+
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
@@ -58,7 +59,6 @@ export class AlunniListComponent implements OnInit {
               private route:            ActivatedRoute,
               private router:           Router,
               public _dialog:           MatDialog, 
-              //public _snackBar:         MatSnackBar,
               private _loadingService:  LoadingService,
               private _filtriService:   FiltriService
               ) {}
@@ -66,11 +66,24 @@ export class AlunniListComponent implements OnInit {
   ngOnInit () {
     this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "dtNascita", "email"] : ["actionsColumn", "nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo"];
 
-    this.refresh();
+    this._filtriService.getGenitore()
+      .subscribe(
+        val=>{
+        this.idGenitore = val;
+        this.refresh();
+    });
+
   }
 
   refresh () {
-    const obsAlunni$: Observable<ALU_Alunno[]> = this.svcAlunni.loadAlunni();
+    let obsAlunni$: Observable<ALU_Alunno[]>;
+
+    if(this.idGenitore && this.idGenitore != undefined  && this.idGenitore != null && this.idGenitore != 0) {
+      obsAlunni$= this.svcAlunni.loadAlunniByGenitore(this.idGenitore);
+    } else {
+      obsAlunni$= this.svcAlunni.loadAlunni();
+    }
+
     const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
 
     loadAlunni$.subscribe(val => 
@@ -156,7 +169,7 @@ export class AlunniListComponent implements OnInit {
   }
 
   openGenitori(id: number) {
-    this._filtriService.passData(id);
+    this._filtriService.passAlunno(id);
     this.router.navigateByUrl("/genitori");
   }
 }

@@ -18,6 +18,10 @@ export class AlunniService {
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni');
   }
 
+  loadAlunniByGenitore(idGenitore: any): Observable<ALU_Alunno[]>{
+    return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllByGenitore/'+idGenitore);
+  }
+
   loadAlunniWithParents(): Observable<ALU_Alunno[]>{
     //console.log("loadAlunniWithParents");
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllWithParents');

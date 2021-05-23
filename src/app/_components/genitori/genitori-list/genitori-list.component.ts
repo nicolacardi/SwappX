@@ -37,9 +37,7 @@ export class GenitoriListComponent implements OnInit {
 
   matSortActive!:     string;
   matSortDirection!:  string;
-  filtro!:            number;
   public idAlunno!:   number;  //alunnoInput viene passato a alunnoHeader qualora ricevuto
-
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
@@ -48,32 +46,22 @@ export class GenitoriListComponent implements OnInit {
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger;
 
-  //@Input()
-  //idAlunno!: number;
-  
- 
-
-
   constructor(private svcGenitori:                GenitoriService,
                         private route:            ActivatedRoute,
                         private router:           Router,
                         public _dialog:           MatDialog, 
-                        //public _snackBar:         MatSnackBar,
                         private _loadingService:  LoadingService,
                         private _filtriService:    FiltriService
                         ) {}
 
   ngOnInit () {
-    //this.idAlunno = this.route.snapshot.queryParams['idAlunno'];
     
     this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "telefono", "email","dtNascita"] : ["actionsColumn", "nome", "cognome", "tipo","indirizzo", "telefono", "email","dtNascita"];
-    
 
-    this._filtriService.getData()
+    this._filtriService.getAlunno()
       .subscribe(
         val=>{
         this.idAlunno = val;
-        //if (val == null) {this.idAlunno = }
         this.refresh();
     });
     
@@ -159,6 +147,10 @@ export class GenitoriListComponent implements OnInit {
     this.matMenuTrigger.openMenu(); 
   } 
 
+  openAlunni(id: number) {
+    this._filtriService.passGenitore(id);
+    this.router.navigateByUrl("/alunni");
+  }
   // applyFilterAlunno(id: number) {
   //   //
   //   this.matDataSource.filterPredicate = (data, filter) => (data.dtNascita.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) !== -1);

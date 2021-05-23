@@ -7,18 +7,27 @@ import { concatMap, finalize, tap } from "rxjs/operators";
   })
 export class FiltriService {
 
-    private filtriSubject = new BehaviorSubject<number>(0);
-    filtri$: Observable<number> = this.filtriSubject.asObservable();
+
+    private AlunnoSubject = new BehaviorSubject<number>(0);
+    AlunnoObs$: Observable<number> = this.AlunnoSubject.asObservable();
     
-    
-    passData(data: number) {
-        this.filtriSubject.next(data);
+    passAlunno(data: number) {
+        this.AlunnoSubject.next(data);
     }
 
-    getData () {
-        return this.filtri$;
+    getAlunno () {
+        return this.AlunnoObs$;
     }
 
+    private GenitoreSubject = new BehaviorSubject<number>(0);
+    GenitoreObs$: Observable<number> = this.GenitoreSubject.asObservable();
+    
+    passGenitore(data: number) {
+        this.GenitoreSubject.next(data);
+    }
 
+    getGenitore () {
+        return this.GenitoreObs$;
+    }
 
 }

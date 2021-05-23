@@ -8,48 +8,67 @@ import { FiltriService } from './filtri.service';
   templateUrl: './filtri.component.html',
   styleUrls: ['./filtri.component.css']
 })
-export class FiltriComponent implements OnInit , AfterViewInit{
+export class FiltriComponent implements OnInit {
   form! : FormGroup;
 
   constructor(private fb:             FormBuilder,
               private _filtriService:  FiltriService) {
 
     this.form = this.fb.group({
-      id:       [null]
+      idAlunno:       [null],
+      idGenitore:     [null]
     });
 
-    this._filtriService.getData()
+    this._filtriService.getAlunno()
     .subscribe(
       val=>{
       if (val!=0 && val!= null && val!= undefined){
-        this.form.controls['id'].setValue(val, {emitEvent:false});
+        this.form.controls['idAlunno'].setValue(val, {emitEvent:false});
       }
     });
+
+    this._filtriService.getGenitore()
+    .subscribe(
+      val=>{
+      if (val!=0 && val!= null && val!= undefined){
+        this.form.controls['idGenitore'].setValue(val, {emitEvent:false});
+      }
+    });
+
+
 
    }
 
   ngOnInit(): void {
-    this.form.controls['id'].valueChanges
+    this.form.controls['idAlunno'].valueChanges
     .pipe(
       debounceTime(500),
     )
     .subscribe(val=>
       {console.log("lancio:", val);
-        this._filtriService.passData(val)
-      });
+        this._filtriService.passAlunno(val)
+    });
+
+    this.form.controls['idGenitore'].valueChanges
+    .pipe(
+      debounceTime(500),
+    )
+    .subscribe(val=>
+      {console.log("lancio:", val);
+        this._filtriService.passGenitore(val)
+    });
     
 
   }
 
 
-  ngAfterViewInit() {
+  resetInput (formControlName: string) {
+    this.form.controls[formControlName].setValue('');
+  }
 
-  }
-  resetInput () {
-    this.form.controls['id'].setValue('');
-  }
   resetAllInputs () {
-    this.form.controls['id'].setValue('');
+    this.form.controls['idAlunno'].setValue('');
+    this.form.controls['idGenitore'].setValue('');
   }
 
 
