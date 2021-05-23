@@ -6,7 +6,7 @@
 </button>
 
 <!-- **************************   FILTER   ******************* -->
-<mat-form-field class="ml20">
+<mat-form-field class="ml20 topZIndex">
     <mat-label>Filtro</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
 </mat-form-field>
@@ -32,81 +32,35 @@
         </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="nome">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.nome}}</mat-cell>
+    <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >id</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="cognome">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.cognome}}</mat-cell>
-    </ng-container>
-    
-    <ng-container matColumnDef="dtNascita">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Data di Nascita</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</mat-cell>
+    <ng-container matColumnDef="sezione">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >sezione</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.sezione}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="indirizzo">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Indirizzo</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.indirizzo}}</mat-cell>
+    <ng-container matColumnDef="classeID">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >classeID</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.classeID}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="comune">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Comune</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.comune}}</mat-cell>
+    <ng-container matColumnDef="classe.descrizioneBreve">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Descrizione Breve</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.classe.descrizioneBreve}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="cap">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CAP</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.cap}}</mat-cell>
+    <ng-container matColumnDef="classe.descrizione">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Descrizione 1</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.classe.descrizione}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="prov">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Prov</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.prov}}</mat-cell>
+    <ng-container matColumnDef="classe.descrizione2">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Descrizione 2</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.classe.descrizione2}}</mat-cell>
     </ng-container>
-
-    <ng-container matColumnDef="CF">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CF</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.CF}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="email">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.email}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="telefono">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>telefono</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.telefono}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="ckAttivo">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Attivo</mat-header-cell>
-        <mat-cell *matCellDef="let element">
-            <mat-checkbox [checked]="element.ckAttivo" color="primary" disabled></mat-checkbox>
-        </mat-cell>
-    </ng-container>
-    
-    <!-- **************************   NG-CONTAINER EXPANDED DETAIL   ******************* -->
-    <!--
-        in mat-table inserire la directive multiTemplateDataRows
-    <ng-container matColumnDef="expandedDetail">
-        <mat-cell *matCellDef="let AlunniSubject" [attr.colspan]="displayedColumns.length">
-            <div class="element-detail"
-                [@detailExpand]="AlunniSubject == expandedElement ? 'expanded' : 'collapsed'">
-                <div>
-                    <img class= "picture-img" src = '{{ "../../../../../assets/photos/" + AlunniSubject.nome + AlunniSubject.cognome + ".png" }}'>
-                </div>
-                <div class="ml20">
-                    Indirizzo: {{AlunniSubject.indirizzo}} {{AlunniSubject.comune}} {{AlunniSubject.prov}} <br>
-                    Data e Luogo di Nascita: {{AlunniSubject.dtNascita | date: "dd/MM/yyyy"}} {{AlunniSubject.comuneNascita}} {{AlunniSubject.provNascita}}
-                 </div>
-            </div>
-        </mat-cell>
-    </ng-container>
-    -->
     
     <!-- **************************   MAT-HEADER-ROW   ******************* -->
     <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
@@ -117,20 +71,6 @@
          (contextmenu)="onRightClick($event, element)" >
     </mat-row>
 
-    <!-- Caso con Expanded row
-    <mat-row *matRowDef="let element; columns: displayedColumns"
-        class="element-row"
-        (click)="onRowClicked(element.id)">
-    </mat-row>
-    <mat-row *matRowDef="let element; columns: displayedColumns"
-        class="element-row"
-        [class.expanded-row]="expandedElement === element"
-        (dblclick)="expandedElement = expandedElement === element ? null : element"
-        (click)="onRowClicked(element.id)">
-    </mat-row>
-    <mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></mat-row>    
-    -->
-    
 </mat-table>
 
 
@@ -143,11 +83,10 @@
 
 <mat-menu #rightMenu="matMenu"> 
     <ng-template matMenuContent let-item="item"> 
-        <mat-label class="rightMenuTitle">{{item.nome | uppercase}} {{item.cognome | uppercase}}</mat-label> 
+        <mat-label class="rightMenuTitle">{{item.classe.descrizione2}} Sez.{{item.sezione | uppercase}}</mat-label> 
         <!-- <button mat-menu-item routerLink="/genitori" [queryParams]="{ idAlunno: item.id }">Genitori/Tutori</button>  -->
         <button mat-menu-item (click)="openDetail(item.id)">Dettaglio Classe</button> 
-        <button mat-menu-item>Classi Frequentate</button>
-        <button mat-menu-item>Pagelle</button>
+        <button mat-menu-item>Alunni della classe</button>
         <button mat-menu-item>Quote e Pagamenti</button>
     </ng-template> 
 </mat-menu> 

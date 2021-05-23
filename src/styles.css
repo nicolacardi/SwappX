@@ -128,7 +128,9 @@ body {
 
 /* Bottone Nuovo record */
 .button-add {
+    /*position: fixed !important;*/
     position: fixed !important;
+    top: 80px;
     right: 0px;
     margin-right: 20px !important;
     z-index: 1000;
@@ -272,3 +274,14 @@ mat-nav-list a img {
     background: rgba(0, 0, 0, 0.32);
     z-index: 20000;
 } */
+
+
+.mat-paginator-container {
+    position: absolute;
+    margin-top: -60px;
+    right: 0px;
+}
+
+.topZIndex {
+    z-index: 1000;
+}

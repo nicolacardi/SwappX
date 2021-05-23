@@ -33,10 +33,10 @@ export class ClassiListComponent implements OnInit {
   
   matDataSource = new MatTableDataSource<CLS_ClasseSezione>();
   displayedColumns: string[] =  ["actionsColumn",
-                                "id", 
-                                "sezione", 
-                                "descrizioneBreve", 
-                                "descrizione" 
+                                "classe.descrizione",
+                                "sezione",
+                                "classe.descrizioneBreve",
+                                "classe.descrizione2"
                                  ];
 
   matSortActive!:     string;
@@ -58,7 +58,16 @@ export class ClassiListComponent implements OnInit {
               ) {}
   
   ngOnInit () {
-    this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "id", "sezione", "descrizioneBreve", "descrizione"] : ["actionsColumn", "id", "sezione", "descrizioneBreve", "descrizione"];
+    this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn",
+                                                          "classe.descrizione",
+                                                          "sezione",
+                                                          "classe.descrizioneBreve",
+                                                          "classe.descrizione2"] :
+                                                          ["actionsColumn",
+                                                          "classe.descrizione",
+                                                          "sezione",
+                                                          "classe.descrizioneBreve",
+                                                          "classe.descrizione2"];
     /* TODO!!!
     this._filtriService.getGenitore()
       .subscribe(
@@ -86,6 +95,8 @@ export class ClassiListComponent implements OnInit {
         var caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
         
         this.matDataSource.data = val;
+        this.filterPredicateCustom();   //serve per rendere filtrabili anche i campi nested
+        this.sortCustom();              //serve per rendere sortabili anche i campi nested
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort;
 
@@ -102,6 +113,36 @@ export class ClassiListComponent implements OnInit {
     );
   }
 
+
+  filterPredicateCustom(){ //NC
+    //questa funzione consente il filtro ANCHE sugli oggetti della classe
+    //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
+    this.matDataSource.filterPredicate = (data, filter: string)  => {
+      const accumulator = (currentTerm: any, key: string) => { //Key è il campo in cui cerco
+        if (key === 'classe') {
+          return currentTerm + data.classe.descrizione + data.classe.descrizione2 + data.classe.descrizioneBreve;
+        } else {
+          return currentTerm + data.sezione;
+        }
+      };
+      const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+      const transformedFilter = filter.trim().toLowerCase();
+      return dataStr.indexOf(transformedFilter) !== -1;
+    };
+  }
+
+  sortCustom() {
+    this.matDataSource.sortingDataAccessor = (item, property) => {
+      switch(property) {
+        case 'classe.descrizione': return item.classe.descrizione;
+        case 'classe.descrizione2': return item.classe.descrizione2;
+        case 'classe.descrizioneBreve': return item.classe.descrizioneBreve;
+        default: return item['sezione'];
+      }
+    };
+  }
+
+  
   openDetail(id:any){
     //***** Versione Router
     this.router.navigate(["classi",id], {queryParams:{page: this.paginator.pageIndex,
@@ -150,7 +191,16 @@ export class ClassiListComponent implements OnInit {
   }
   
   onResize(event: any) {
-    this.displayedColumns = (event.target.innerWidth <= 800) ? ["actionsColumn", "id", "sezione", "descrizioneBreve", "descrizione"] : ["actionsColumn", "id", "sezione", "descrizioneBreve", "descrizione"];
+    this.displayedColumns = (event.target.innerWidth <= 800) ? ["actionsColumn", 
+                                                                "classe.descrizione",
+                                                                "sezione",
+                                                                "classe.descrizioneBreve",
+                                                                "classe.descrizione2"] : 
+                                                                ["actionsColumn", 
+                                                                "classe.descrizione",
+                                                                "sezione",
+                                                                "classe.descrizioneBreve",
+                                                                "classe.descrizione2"];
   }
 
   onRightClick(event: MouseEvent, element: CLS_ClasseSezione) { 
