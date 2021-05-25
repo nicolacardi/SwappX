@@ -23,7 +23,7 @@ body {
 
 /*Colore sfondo*/
 .mat-drawer-container { background-color: white;
-    background-image: url("../src/assets/backgroundglass.svg");
+    
     background: white url("../src/assets/backgroundglass.svg") no-repeat center;
     background-size: cover;
 

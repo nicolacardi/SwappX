@@ -33,3 +33,9 @@ export interface ALU_Alunno {
 
         _Genitori: ALU_Genitore[];
 }
+
+
+export interface ALU_test {
+        campo1: string;
+        campo2: string;
+}
