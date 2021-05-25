@@ -14,7 +14,6 @@ export class AlunniService {
   constructor(private http: HttpClient) { }
 
   loadAlunni(): Observable<ALU_Alunno[]>{
-    //console.log("loadAlunni");
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni');
   }
 
@@ -23,17 +22,14 @@ export class AlunniService {
   }
 
   loadAlunniWithParents(): Observable<ALU_Alunno[]>{
-    //console.log("loadAlunniWithParents");
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllWithParents');
   }
 
   loadAlunno(id: any): Observable<ALU_Alunno>{
-    //console.log("loadAlunno");
     return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/'+id);
   }
 
   loadAlunnoWithParents(id: any): Observable<ALU_Alunno>{
-    //console.log("loadAlunnoWithParents");
     return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/GetWithParents/'+id);
   }
 
@@ -63,7 +59,6 @@ export class AlunniService {
 
   filterAlunni(searchstring: string): Observable<ALU_Alunno[]>{
     //console.log("alunni.service.ts - filterAlunni - searchstring:", searchstring);
-
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni')
             .pipe (
@@ -72,7 +67,6 @@ export class AlunniService {
         } else {
       return of()
       }
-
 
     //Quando si fa clic su uno dei valori nella dropdown, searchstring non è più una stringa ma un object ( a causa forse di [value] = "element" in filtri.component.html),
     //quindi non si può più fare searchstring.toLowerCase(), istruzione che si è resa necessaria per cercare in maniera case insensitive
@@ -85,18 +79,13 @@ export class AlunniService {
     // } else {
     //   return of();
     // }
-
   }
 
   findIdAlunno(searchstring: string) : Observable<any>{
-
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni')
       .pipe(
         map(val => val.find(val => (val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase())== searchstring.toLowerCase())),
-        //tap(val=>console.log(val))
       )
-
-
   }
 
 

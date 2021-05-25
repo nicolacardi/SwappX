@@ -95,7 +95,7 @@ export class GenitoreDetailsComponent implements OnInit {
     
     if (this.idGenitore && this.idGenitore != 0) {
 
-      const obsGenitore$: Observable<ALU_Genitore> = this.genitoriSvc.loadAlunno(this.idGenitore);
+      const obsGenitore$: Observable<ALU_Genitore> = this.genitoriSvc.loadGenitore(this.idGenitore);
       const loadGenitore$ = this._loadingService.showLoaderUntilCompleted(obsGenitore$);
       //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
       this.genitore = loadGenitore$

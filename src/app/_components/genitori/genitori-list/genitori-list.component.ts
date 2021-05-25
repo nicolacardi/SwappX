@@ -56,6 +56,8 @@ export class GenitoriListComponent implements OnInit {
 
   ngOnInit () {
     
+    this._filtriService.passPage("genitoriList");
+
     this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "telefono", "email","dtNascita"] : ["actionsColumn", "nome", "cognome", "tipo","indirizzo", "telefono", "email","dtNascita"];
 
     this._filtriService.getAlunno()
@@ -89,6 +91,7 @@ export class GenitoriListComponent implements OnInit {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort;
+        
         if(caller_page != undefined ){
           if (caller_sortDirection) {
             this.sort.sort(({ id: caller_sortField, start: caller_sortDirection}) as MatSortable);
@@ -151,11 +154,6 @@ export class GenitoriListComponent implements OnInit {
     this._filtriService.passGenitore(id);
     this.router.navigateByUrl("/alunni");
   }
-  // applyFilterAlunno(id: number) {
-  //   //
-  //   this.matDataSource.filterPredicate = (data, filter) => (data.dtNascita.trim().toLowerCase().indexOf(filter.trim().toLowerCase()) !== -1);
-  //   if (id) this.matDataSource.filter = id.toString();
-  // }
 
 }
 

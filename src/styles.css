@@ -250,6 +250,10 @@ mat-nav-list a img {
     margin-left: 5px;
 }
 
+.iconaMenu{
+    width: 24px;
+}
+
 /* .miniButton {
     width: 5px !important;
     height: 5px !important;

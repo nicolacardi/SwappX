@@ -3,7 +3,7 @@
     <div mat-list-item style="text-align: center; margin-bottom: 10px;">
         Filtri Avanzati
     </div>
-    <mat-list-item >
+    <mat-list-item *ngIf="(page$ |async) == 'genitoriList'">
         <mat-icon>face</mat-icon>
         <mat-form-field>
             <mat-label>Nome e Cognome Alunno</mat-label>
@@ -12,7 +12,7 @@
                     matInput
                     formControlName="nomeCognomeAlunno"
                     [matAutocomplete]="auto1" #nomeCognomeAlunno 
-                    (keydown.enter) = "onEnter()"
+                    (keydown.enter) = "enterAlunnoInput()"
                     >
                     <!-- [displayWith]="displayFn" DisplayWith impedisce che si possa scrivere qualcosa nella input in maniera programmatica-->
             <mat-autocomplete #auto1="matAutocomplete">
@@ -21,22 +21,36 @@
                     <small>{{element.nome}} {{element.cognome}}</small>
                 </mat-option>
             </mat-autocomplete>
-            <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="resetInput('nomeCognomeAlunno')">
+            <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="resetInputAlunno('nomeCognomeAlunno')">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
     </mat-list-item >
 
-    <mat-list-item >
-        <mat-icon>family_restroom</mat-icon>
-        <mat-form-field class="ml20">
-            <mat-label>per Genitore</mat-label>
-            <input matInput placeholder="ID" formControlName="idGenitore" #idGenitore>
-            <button mat-button *ngIf = "idGenitore.value" matSuffix mat-icon-button aria-label="Clear" (click)="resetInput('idGenitore')">
+    <mat-list-item *ngIf="(page$ |async) == 'alunniList'">
+        <img class="iconaMenu" src="../assets/parents.svg">
+        <mat-form-field>
+            <mat-label>Nome e Cognome Genitore</mat-label>
+            <input type="text"
+                    placeholder="<digita e seleziona>"
+                    matInput
+                    formControlName="nomeCognomeGenitore"
+                    [matAutocomplete]="auto2" #nomeCognomeGenitore 
+                    (keydown.enter) = "enterGenitoreInput()"
+                    >
+                    <!-- [displayWith]="displayFn" DisplayWith impedisce che si possa scrivere qualcosa nella input in maniera programmatica-->
+            <mat-autocomplete #auto2="matAutocomplete">
+                <!-- <mat-spinner *ngIf="nomeAlunnoIsLoading" class="is-loading" diameter="40"></mat-spinner> -->
+                <mat-option *ngFor="let elementG of (filteredGenitori$ | async)" (click) = "clickGenitoreCombo(elementG)" [value]="elementG.nome + ' ' + elementG.cognome" #option>
+                    <small>{{elementG.nome}} {{elementG.cognome}}</small>
+                </mat-option>
+            </mat-autocomplete>
+            <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="resetInputGenitore('nomeCognomeGenitore')">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
     </mat-list-item >
+
     <mat-list-item >
         <mat-icon>event</mat-icon>
         <span class="descMenu">per anno</span>

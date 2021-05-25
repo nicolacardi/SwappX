@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { map, catchError } from 'rxjs/operators';
 
@@ -31,7 +31,7 @@ export class GenitoriService {
     return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllWithChildren');
   }
 
-  loadAlunno(id: any): Observable<ALU_Genitore>{
+  loadGenitore(id: any): Observable<ALU_Genitore>{
     //console.log("sto caricando l'alunno");
     return this.http.get<ALU_Genitore>(environment.apiBaseUrl+'ALU_Genitori/'+id);
   }
@@ -59,4 +59,24 @@ export class GenitoriService {
   deleteGenitore(id: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'ALU_Genitori/' + id);    
   }
+
+  filterGenitori(searchstring: string): Observable<ALU_Genitore[]>{
+    console.log("genitori.service.ts - filtergenitori - searchstring:", searchstring);
+    if (searchstring != null && (typeof searchstring === 'string')) {
+      return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori')
+            .pipe (
+            map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
+      );
+        } else {
+      return of()
+      }
+  }
+
+  findIdGenitore(searchstring: string) : Observable<any>{
+    return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori')
+      .pipe(
+        map(val => val.find(val => (val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase())== searchstring.toLowerCase())),
+      )
+  }
+
 }

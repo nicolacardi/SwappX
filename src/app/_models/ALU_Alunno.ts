@@ -35,7 +35,3 @@ export interface ALU_Alunno {
 }
 
 
-export interface ALU_test {
-        campo1: string;
-        campo2: string;
-}

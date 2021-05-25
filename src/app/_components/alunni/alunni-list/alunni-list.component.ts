@@ -65,6 +65,9 @@ export class AlunniListComponent implements OnInit {
               ) {}
   
   ngOnInit () {
+
+    this._filtriService.passPage("alunniList");
+
     this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "dtNascita", "email"] : ["actionsColumn", "nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo"];
 
     this._filtriService.getGenitore()

@@ -1,13 +1,23 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, of, Subject } from "rxjs";
 import { concatMap, finalize, tap } from "rxjs/operators";
-import { ALU_Alunno, ALU_test } from "src/app/_models/ALU_Alunno";
+import { ALU_Alunno } from "src/app/_models/ALU_Alunno";
 
 @Injectable({
     providedIn: 'root'
   })
 export class FiltriService {
 
+    private pageSubject = new BehaviorSubject<string>('');
+    pageObs$: Observable<string> = this.pageSubject.asObservable();
+
+    passPage(data:string){
+        this.pageSubject.next(data);
+    }
+
+    getPage() {
+        return this.pageObs$;
+    }
 
     private AlunnoSubject = new BehaviorSubject<number>(0);
     AlunnoObs$: Observable<number> = this.AlunnoSubject.asObservable();
@@ -32,16 +42,5 @@ export class FiltriService {
         return this.GenitoreObs$;
     }
 
-
-    // private AlunnoObjSubject = new BehaviorSubject<ALU_Alunno>();
-    // AlunnoObjObs$: Observable<ALU_Alunno> = this.AlunnoObjSubject.asObservable();
-
-    // passAlunnoObj(data: ALU_Alunno) {
-    //     this.AlunnoObjSubject.next(data);
-    // }
-
-    // getAlunnoObj() {
-    //     return this.AlunnoObjObs$;
-    // }
 
 }
