@@ -30,19 +30,9 @@ export class FiltriComponent implements OnInit, AfterViewInit {
               private alunniSvc:        AlunniService) {
 
     this.form = this.fb.group({
-      //idAlunno:       [null],
       idGenitore:     [null],
       nomeCognomeAlunno:     [null] // [RequireMatch]]
     });
-
-    // this._filtriService.getAlunno()
-    // .subscribe(
-    //   val=>{
-    //   if (val!=0 && val!= null && val!= undefined){
-    //     this.form.controls['idAlunno'].setValue(val, {emitEvent:false});
-    //   }
-    // });
-
 
 
     this._filtriService.getAlunno()
@@ -57,13 +47,6 @@ export class FiltriComponent implements OnInit, AfterViewInit {
         }
     });
 
-    // this._filtriService.getAlunno()
-    //   .pipe(
-    //     tap(val=>console.log("ho estratto dal service:"+val)),
-    //     concatMap(val => this.alunniSvc.loadAlunno(val))    //concatMap attende l'observable esterno prima di eseguire quello interno
-    //   )
-    //   .subscribe();     /////NON FUNZIONA!!!!!!!!!!!!!!!!!!!!!!!! E INVECE DOVREBBE!!!! cry cry cry!!!
-
     this._filtriService.getGenitore()
       .subscribe(
         val=>{
@@ -77,18 +60,6 @@ export class FiltriComponent implements OnInit, AfterViewInit {
    }
 
   ngOnInit(): void {
-    //this.form.controls['nomeCognomeAlunno'].setValue("cucu", {emitEvent:false});
-
-
-    // this.form.controls['idAlunno'].valueChanges
-    // .pipe(
-    //   debounceTime(500),
-    // )
-    // .subscribe(val=>
-    //   {
-    //     this._filtriService.passAlunno(val)
-    // });
-
 
     this.form.controls['idGenitore'].valueChanges
     .pipe(
@@ -117,7 +88,6 @@ export class FiltriComponent implements OnInit, AfterViewInit {
     )
 
 
-
   }
 
   ngAfterViewInit() {
@@ -128,20 +98,18 @@ export class FiltriComponent implements OnInit, AfterViewInit {
   resetInput (formControlName: string) {
     this.form.controls[formControlName].setValue('');
     this._filtriService.passAlunno(0);
-    //this.matAutocomplete.showPanel = false;
-    //this.trigger.panelClosingActions;
+
 
   }
 
   resetAllInputs () {
-    //this.form.controls['idAlunno'].setValue('');
     this.form.controls['idGenitore'].setValue('');
   }
 
 
-  displayFn(alunno: ALU_Alunno): string {
-    return alunno && alunno.cognome ? alunno.nome + ' '+ alunno.cognome : '';
-  }
+  // displayFn(alunno: ALU_Alunno): string {
+  //   return alunno && alunno.cognome ? alunno.nome + ' '+ alunno.cognome : '';
+  // }
   
   private _subscribeToClosingActions(): void {
     //questa funzione cancella il valore se non viene fatta una selezione
@@ -159,9 +127,8 @@ export class FiltriComponent implements OnInit, AfterViewInit {
       () => this._subscribeToClosingActions());
   }
 
-  onclick(element : ALU_Alunno) {
+  clickAlunnoCombo(element : ALU_Alunno) {
     this._filtriService.passAlunno(element.id);
-    //this.parkInput.nativeElement.value = element.id;
   }
 
   onEnter () {
