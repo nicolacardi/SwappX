@@ -120,34 +120,9 @@ export class FiltriComponent implements OnInit, AfterViewInit {
 
   }
 
-
-
-
-
-
-
-
   ngAfterViewInit() {
-    this._subscribeToClosingActions();
-
-
-      // fromEvent(this.InputNomeCognome.nativeElement, 'blur')
-      // .pipe(
-      //   switchMap(() => this.alunniSvc.filterAlunni(this.form.value.nomeCognomeAlunno)),
-      // )
-      //  .subscribe( val =>console.log ("filtri.component.ts - ngAfterViewInit", val))
-
-      // .pipe(
-      //   debounceTime(500),
-      // )
-      // .subscribe(val=>
-      //   {console.log("lancioAlunno:", val);
-      //     this._filtriService.passAlunno(val)
-      // })
-
-      //this.form.controls['nomeCognomeAlunno'].setValue("Nicola Cardi");      
+    this._subscribeToClosingActions();   
   }
-
 
 
   resetInput (formControlName: string) {
@@ -174,7 +149,6 @@ export class FiltriComponent implements OnInit, AfterViewInit {
     if (this.subscription && !this.subscription.closed) {
       this.subscription.unsubscribe();
     }
-
     this.subscription = this.trigger.panelClosingActions
       .subscribe(val => {
         if (!val || !val.source) {
@@ -191,37 +165,22 @@ export class FiltriComponent implements OnInit, AfterViewInit {
   }
 
   onEnter () {
-    //this._filtriService.passAlunno(0);
-    //console.log(this.form.controls['nomeCognomeAlunno'].value);
-    
-    // this.alunniSvc.findAlunno(this.form.controls['nomeCognomeAlunno'].value)
-
-    //   .subscribe();
-
-    //dovrei trovare SE esiste il valore che corrisponde a quanto digitato e quello passarlo a passAlunno del service
-
-    //se non esiste devo fare this._filtriService.passAlunno(0);
-
-    //this.form.controls['nomeCognomeAlunno'].setValue(null);
-    console.log("trovo", this.form.controls['nomeCognomeAlunno'].value);
+    //Su pressione di enter devo dapprima selezionare il PRIMO valore della lista aperta (a meno che non sia vuoto)
+    //Una volta selezionato devo trovare, SE esiste, il valore dell'id che corrisponde a quanto digitato e quello passarlo a passAlunno del service
+    //Mancherebbe qui la possibilità di selezionare solo con le freccette e Enter
     if (this.form.controls['nomeCognomeAlunno'].value != '') {
-    this.matAutocomplete.options.first.select();
-    //Questo è il valore che devo cercare: this.matAutocomplete.options.first.viewValue;
+      this.matAutocomplete.options.first.select();
+      //Questo è il valore che devo cercare: this.matAutocomplete.options.first.viewValue;
       this.alunniSvc.findIdAlunno(this.matAutocomplete.options.first.viewValue)
       .pipe(
         tap(val=> this._filtriService.passAlunno(val.id))
       )
       .subscribe();
-    //this._filtriService.passAlunno(element.id);
-      } else {
-        console.log ("era vuoto");
-      }
+    }
       
 
   }
 
-  itemSelected(val: number) {
-    //console.log(val);
-  }
+
 
 }

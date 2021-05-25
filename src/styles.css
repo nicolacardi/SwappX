@@ -29,6 +29,11 @@ body {
 
     }
 
+    .mat-toolbar {
+        background: transparent url("../src/assets/backgroundglassToolbar.svg") no-repeat center;
+        background-size: cover;
+        color: white;
+    }
 /*Margine*/
 .ml20 {
     margin-left: 20px;
