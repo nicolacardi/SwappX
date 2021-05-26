@@ -21,7 +21,7 @@ import { FiltriComponent } from './_components/utilities/filtri/filtri.component
 import { AlunniListComponent } from './_components/alunni/alunni-list/alunni-list.component';
 import { AlunnoDetailsComponent } from './_components/alunni/alunno-details/alunno-details.component';
 import { AlunnoDashboardComponent } from './_components/alunni/alunno-dashboard/alunno-dashboard.component';
-import { AlunnoHeaderComponent } from './_components/alunni/alunno-header/alunno-header.component';
+//import { AlunnoHeaderComponent } from './_components/alunni/alunno-header/alunno-header.component';
 
 import { GenitoriListComponent } from './_components/genitori/genitori-list/genitori-list.component';
 import { GenitoreDetailsComponent } from './_components/genitori/genitore-details/genitore-details.component';
@@ -45,7 +45,7 @@ import { ClasseDetailsComponent } from './_components/classi/classe-details/clas
     DialogYesNoComponent,
     SnackbarComponent,
     LoadingComponent,
-    AlunnoHeaderComponent,
+    //AlunnoHeaderComponent,
     FiltriComponent,
 
   ],

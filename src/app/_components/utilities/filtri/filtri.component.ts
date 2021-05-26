@@ -24,7 +24,7 @@ export class FiltriComponent implements OnInit, AfterViewInit {
   page$!:                   Observable<string>;
   subscription!: Subscription;
 
-  @ViewChild(MatAutocompleteTrigger) trigger!: MatAutocompleteTrigger;  //serve per cancellare quando non si seleziona qualcosa
+  //@ViewChild(MatAutocompleteTrigger) trigger!: MatAutocompleteTrigger;  //serve per cancellare quando non si seleziona qualcosa
   
   @ViewChild(MatAutocomplete) matAutocomplete!: MatAutocomplete;
 
@@ -119,7 +119,7 @@ export class FiltriComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this._subscribeToClosingActions();   
+    //this._subscribeToClosingActions();   
   }
 
 
@@ -141,21 +141,21 @@ export class FiltriComponent implements OnInit, AfterViewInit {
   //   return alunno && alunno.cognome ? alunno.nome + ' '+ alunno.cognome : '';
   // }
   
-  private _subscribeToClosingActions(): void {
-    //questa funzione cancella il valore se non viene fatta una selezione
-    //trovata qui https://stackblitz.com/edit/autocomplete-force-selection-tests-w2fqww?file=app%2Fapp.component.ts
-    if (this.subscription && !this.subscription.closed) {
-      this.subscription.unsubscribe();
-    }
-    this.subscription = this.trigger.panelClosingActions
-      .subscribe(val => {
-        if (!val || !val.source) {
-          //this.form.controls['nomeCognomeAlunno'].setValue(null);
-        }
-      },
-      err => this._subscribeToClosingActions(),
-      () => this._subscribeToClosingActions());
-  }
+  // private _subscribeToClosingActions(): void {
+  //   //questa funzione cancella il valore se non viene fatta una selezione
+  //   //trovata qui https://stackblitz.com/edit/autocomplete-force-selection-tests-w2fqww?file=app%2Fapp.component.ts
+  //   if (this.subscription && !this.subscription.closed) {
+  //     this.subscription.unsubscribe();
+  //   }
+  //   this.subscription = this.trigger.panelClosingActions
+  //     .subscribe(val => {
+  //       if (!val || !val.source) {
+  //         //this.form.controls['nomeCognomeAlunno'].setValue(null);
+  //       }
+  //     },
+  //     err => this._subscribeToClosingActions(),
+  //     () => this._subscribeToClosingActions());
+  // }
 
   clickAlunnoCombo(element : ALU_Alunno) {
     this._filtriService.passAlunno(element.id);
