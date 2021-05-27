@@ -7,6 +7,7 @@ import { GenitoriListComponent } from './_components/genitori/genitori-list/geni
 import { GenitoreDetailsComponent } from './_components/genitori/genitore-details/genitore-details.component';
 import { ClassiListComponent } from './_components/classi/classi-list/classi-list.component';
 import { ClasseDetailsComponent } from './_components/classi/classe-details/classe-details.component';
+import { ClassiSezioniAnniListComponent } from './_components/classiSezioniAnni/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 
 const routes: Routes = [
   {
@@ -27,7 +28,7 @@ const routes: Routes = [
   },
   {
     path: "classi",
-    component: ClassiListComponent
+    component: ClassiSezioniAnniListComponent
   },
   {
     path: 'classi/:id',

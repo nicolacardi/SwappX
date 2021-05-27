@@ -28,6 +28,8 @@ import { GenitoreDetailsComponent } from './_components/genitori/genitore-detail
 
 import { ClassiListComponent } from './_components/classi/classi-list/classi-list.component';
 import { ClasseDetailsComponent } from './_components/classi/classe-details/classe-details.component';
+import { ClassiSezioniAnniListComponent } from './_components/classiSezioniAnni/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { ClasseSezioneAnnoDetailComponent } from './_components/classiSezioniAnni/classe-sezione-anno-detail/classe-sezione-anno-detail.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { ClasseDetailsComponent } from './_components/classi/classe-details/clas
     LoadingComponent,
     //AlunnoHeaderComponent,
     FiltriComponent,
+    ClassiSezioniAnniListComponent,
+    ClasseSezioneAnnoDetailComponent,
 
   ],
   imports: [

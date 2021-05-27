@@ -29,7 +29,7 @@ export class ClassiSezioniService {
     return this.http.put( environment.apiBaseUrl  + 'CLS_ClassiSezioni/' + formData.id , formData);    
   }
 
-  postClase(formData: any): Observable <any>{
+  postClasse(formData: any): Observable <any>{
     formData.id = 0;
     return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiSezioni' , formData);  
   }
