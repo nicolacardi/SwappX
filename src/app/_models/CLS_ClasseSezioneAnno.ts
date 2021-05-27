@@ -1,3 +1,5 @@
+import { ASC_AnnoScolastico } from './ASC_AnnoScolastico';
+
 export interface CLS_Classe {
   descrizioneBreve:     string;
   descrizione:          string;
@@ -10,11 +12,7 @@ export interface CLS_ClasseSezione {
   classe:               CLS_Classe;
 }
 
-export interface ASC_Anno {
-    anno1:              number;
-    anno2:              number;
-    annoscolastico:     string;
-  }
+
 
 export interface CLS_ClasseSezioneAnno {
         id:                   number;
@@ -22,7 +20,7 @@ export interface CLS_ClasseSezioneAnno {
         // descrizioneBreve:     string;
         // descrizione:          string;
         classeSezione:        CLS_ClasseSezione;
-        anno:                 ASC_Anno;
+        anno:                 ASC_AnnoScolastico;
 }
 
 /*

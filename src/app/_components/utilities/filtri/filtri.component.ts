@@ -6,7 +6,9 @@ import { fromEvent, Observable, pipe, Subscription } from 'rxjs';
 import { debounceTime, map, switchMap, tap, concatMap, mergeMap } from 'rxjs/operators';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
+import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { AlunniService } from 'src/app/_services/alunni.service';
+import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { GenitoriService } from 'src/app/_services/genitori.service';
 import { RequireMatch } from '../requireMatch/requireMatch';
 import { FiltriService } from './filtri.service';
@@ -21,6 +23,7 @@ export class FiltriComponent implements OnInit, AfterViewInit {
   form! : FormGroup;
   filteredAlunni$!:         Observable<ALU_Alunno[]>;
   filteredGenitori$!:       Observable<ALU_Genitore[]>;
+  filteredAnniScolastici$!: Observable<ASC_AnnoScolastico[]>;
   page$!:                   Observable<string>;
   subscription!: Subscription;
 
@@ -32,15 +35,19 @@ export class FiltriComponent implements OnInit, AfterViewInit {
   auto1!: MatAutocompleteTrigger;
   @ViewChild('auto2', { read: MatAutocompleteTrigger }) 
   auto2!: MatAutocompleteTrigger;
+  @ViewChild('auto3', { read: MatAutocompleteTrigger }) 
+  auto3!: MatAutocompleteTrigger;
 
-  constructor(private fb:               FormBuilder,
-              private _filtriService:   FiltriService,
-              private alunniSvc:        AlunniService,
-              private genitoriSvc:      GenitoriService) {
+  constructor(private fb:                     FormBuilder,
+              private _filtriService:         FiltriService,
+              private alunniSvc:              AlunniService,
+              private genitoriSvc:            GenitoriService,
+              private anniScolasticiSvc:      AnniScolasticiService) {
 
     this.form = this.fb.group({
       nomeCognomeGenitore:   [null], // [RequireMatch]]
-      nomeCognomeAlunno:     [null] // [RequireMatch]]
+      nomeCognomeAlunno:     [null], // [RequireMatch]]
+      annoScolastico:        [null]
     });
 
 
@@ -65,6 +72,16 @@ export class FiltriComponent implements OnInit, AfterViewInit {
           ;
       }
 
+      this._filtriService.getAnnoScolastico()
+      .subscribe(
+        val=>{
+        if (val!=0 && val!= null && val!= undefined){
+          
+            this.anniScolasticiSvc.loadAnnoScolastico(val)
+            .subscribe(val3=>this.form.controls['annoScolastico'].setValue(val3.annoscolastico, {emitEvent:false}))
+            ;
+        }
+    });
 
       this.page$ = this._filtriService.getPage();
 
@@ -116,6 +133,15 @@ export class FiltriComponent implements OnInit, AfterViewInit {
       switchMap(() => this.genitoriSvc.filterGenitori(this.form.value.nomeCognomeGenitore)), 
     )
 
+    this.filteredAnniScolastici$ = this.form.controls['annoScolastico'].valueChanges
+    .pipe(
+      debounceTime(300),                                                      //attendiamo la digitazione
+      //tap(() => this.nomiIsLoading = true),                                 //attiviamo il loading
+      //delayWhen(() => timer(2000)),                                         //se vogliamo vedere il loading allunghiamo i tempi
+
+      switchMap(() => this.anniScolasticiSvc.filterAnniScolastici(this.form.value.annoScolastico)), 
+    )
+
   }
 
   ngAfterViewInit() {
@@ -133,6 +159,12 @@ export class FiltriComponent implements OnInit, AfterViewInit {
     this.form.controls[formControlName].setValue('');
     this._filtriService.passGenitore(0);
   }
+
+  resetInputAnnoScolastico (formControlName: string) {
+    this.form.controls[formControlName].setValue('');
+    this._filtriService.passAnnoScolastico(0);
+  }
+
   resetAllInputs() {
 
   }
@@ -165,6 +197,10 @@ export class FiltriComponent implements OnInit, AfterViewInit {
     this._filtriService.passGenitore(element.id);
   }
 
+  clickAnnoScolasticoCombo(element : ASC_AnnoScolastico) {
+    this._filtriService.passAnnoScolastico(element.id);
+  }
+
   enterAlunnoInput () {
     //Su pressione di enter devo dapprima selezionare il PRIMO valore della lista aperta (a meno che non sia vuoto)
     //Una volta selezionato devo trovare, SE esiste, il valore dell'id che corrisponde a quanto digitato e quello passarlo a passAlunno del service
@@ -181,9 +217,6 @@ export class FiltriComponent implements OnInit, AfterViewInit {
   }
 
   enterGenitoreInput () {
-    //Su pressione di enter devo dapprima selezionare il PRIMO valore della lista aperta (a meno che non sia vuoto)
-    //Una volta selezionato devo trovare, SE esiste, il valore dell'id che corrisponde a quanto digitato e quello passarlo a passAlunno del service
-    //Mancherebbe qui la possibilità di selezionare solo con le freccette e Enter
     if (this.form.controls['nomeCognomeGenitore'].value != '') {
       this.matAutocomplete.options.first.select();
       //Questo è il valore che devo cercare: this.matAutocomplete.options.first.viewValue;
@@ -195,5 +228,16 @@ export class FiltriComponent implements OnInit, AfterViewInit {
     }
   }
 
+  enterAnnoScolasticoInput() {
+    if (this.form.controls['annoScolastico'].value != '') {
+      this.matAutocomplete.options.first.select();
+      //Questo è il valore che devo cercare: this.matAutocomplete.options.first.viewValue;
+      this.anniScolasticiSvc.findIdAnnoScolastico(this.matAutocomplete.options.first.viewValue)
+      .pipe(
+        tap(val=> this._filtriService.passAnnoScolastico(val.id))
+      )
+      .subscribe();
+    }
+  }
 
 }

@@ -43,4 +43,15 @@ export class FiltriService {
     }
 
 
+    private AnnoSubject = new BehaviorSubject<number>(0);
+    AnnoObs$: Observable<number> = this.AnnoSubject.asObservable();
+    
+    passAnnoScolastico(data: number) {
+        this.AnnoSubject.next(data);
+    }
+
+    getAnnoScolastico () {
+        return this.AnnoObs$;
+    }
+
 }

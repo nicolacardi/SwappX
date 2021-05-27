@@ -43,6 +43,8 @@ export class ClassiSezioniAnniListComponent implements OnInit {
 
   matSortActive!:     string;
   matSortDirection!:  string;
+  public idAnnoScolastico!: number;
+
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
@@ -86,17 +88,29 @@ export class ClassiSezioniAnniListComponent implements OnInit {
         this.refresh();
     });
     */
-    this.refresh(); //TMP
+
+    this._filtriService.getAnnoScolastico()
+    .subscribe(
+      val=>{
+      this.idAnnoScolastico = val;
+      this.refresh();
+  });
+
   }
 
   refresh () {
     let obsClassi$: Observable<CLS_ClasseSezioneAnno[]>;
 
-    obsClassi$= this.svcClassiSezioniAnni.loadClassi();
+    if(this.idAnnoScolastico && this.idAnnoScolastico != undefined  && this.idAnnoScolastico != null && this.idAnnoScolastico != 0) {
+      obsClassi$= this.svcClassiSezioniAnni.loadClassiByAnnoScolastico(this.idAnnoScolastico);
+    } else {
+      obsClassi$= this.svcClassiSezioniAnni.loadClassi();
+    }
 
-    //const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
-    obsClassi$.subscribe(val => 
+    const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
+
+    loadClassi$.subscribe(val => 
       {
         var caller_page = this.route.snapshot.queryParams["page"];
         var caller_size = this.route.snapshot.queryParams["size"];
@@ -129,8 +143,8 @@ export class ClassiSezioniAnniListComponent implements OnInit {
     //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
     this.matDataSource.filterPredicate = (data, filter: string)  => {
       const accumulator = (currentTerm: any, key: string) => { //Key è il campo in cui cerco
-        if (key === 'classeSezione') {
-          return currentTerm + data.sezione;
+        if (key === 'classeSezione.classe') {
+          return currentTerm + data.classeSezione.classe.descrizione + data.classeSezione.classe.descrizione2 + data.classeSezione.classe.descrizioneBreve;
         } else {
           return currentTerm + data.sezione;
         }
@@ -147,7 +161,9 @@ export class ClassiSezioniAnniListComponent implements OnInit {
         case 'classeSezione.classe.descrizione': return item.classeSezione.classe.descrizione;
         case 'classeSezione.classe.descrizione2': return item.classeSezione.classe.descrizione2;
         case 'classeSezione.classe.descrizioneBreve': return item.classeSezione.classe.descrizioneBreve;
-        default: return item['sezione'];
+        case 'classeSezione.sezione': return item.classeSezione.sezione;
+        case 'anno.annoscolastico': return item.anno.annoscolastico;
+        default: return item.anno.annoscolastico;
       }
     };
   }
@@ -161,18 +177,6 @@ export class ClassiSezioniAnniListComponent implements OnInit {
                                                       sortField: this.matDataSource.sort?.active,
                                                       sortDirection: this.matDataSource.sort?.direction
                                                     }});
-    /***** Versione Dialog
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true; //lo fa modale
-    dialogConfig.autoFocus = true;    //il primo elemento ha il focus
-    dialogConfig.data = id;
-    dialogConfig.panelClass = 'my-dialog';
-    let dialogRef = this.dialog.open(AlunnoDetailsComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(()=>{
-      this.refresh();                         //Aggiorna la griglia dopo update da dialog
-    });
-    */
-
   }
 
   applyFilter(event: Event) {

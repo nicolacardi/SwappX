@@ -47,7 +47,7 @@ export class AlunniListComponent implements OnInit {
   //expandedElement!: ALU_Alunno | null;      //expanded
   matSortActive!:     string;
   matSortDirection!:  string;
-  public idGenitore!: number;  //genitoreInput viene passato a alunnoHeader qualora ricevuto
+  public idGenitore!: number;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 

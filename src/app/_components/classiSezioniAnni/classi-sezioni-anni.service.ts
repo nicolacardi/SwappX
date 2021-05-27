@@ -20,6 +20,10 @@ export class ClassiSezioniAnniService {
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/GetAllWithClasseSezioneAndAnno
   }
 
+  loadClassiByAnnoScolastico(idAnnoScolastico: any): Observable<CLS_ClasseSezioneAnno[]>{
+    return this.http.get<CLS_ClasseSezioneAnno[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/GetAllByAnno/'+idAnnoScolastico);
+  }
+
   loadClasse(id: any): Observable<CLS_ClasseSezioneAnno>{
     return this.http.get<CLS_ClasseSezioneAnno>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/'+id);
   } 
@@ -36,6 +40,7 @@ export class ClassiSezioniAnniService {
   deleteClasse(id: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni/' + id);    
   }
+
 
 
 }
