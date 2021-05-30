@@ -1,119 +1,119 @@
 
-<h1 class="page-title">Elenco Genitori <mat-icon *ngIf="idAlunno" color="warn" title="filtri avanzati applicati">filter_alt</mat-icon></h1>
+    <h1 class="page-title">Elenco Genitori <mat-icon *ngIf="idAlunno" color="warn" title="filtri avanzati applicati">filter_alt</mat-icon></h1>
 
-<button mat-mini-fab aria-label="Aggiungi Alunno" class="button-add" color="primary" (click)="addRecord()">
-    <mat-icon>add</mat-icon>
-</button>
+    <button mat-mini-fab aria-label="Aggiungi Alunno" class="button-add" color="primary" (click)="addRecord()">
+        <mat-icon>add</mat-icon>
+    </button>
 
-<!-- <app-alunno-header [idAlunno]="idAlunno"></app-alunno-header> -->
+    <!-- <app-alunno-header [idAlunno]="idAlunno"></app-alunno-header> -->
 
 
 
-<!-- **************************   FILTER   ******************* -->
-<mat-form-field class="ml20 topZIndex">
-    <mat-label>Filtro</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
-</mat-form-field>
+    <!-- **************************   FILTER   ******************* -->
+    <mat-form-field class="ml20 topZIndex">
+        <mat-label>Filtro</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
+    </mat-form-field>
 
-<!-- **************************   PAGINATOR   ******************* -->
-<mat-paginator class="transparent" [pageSize]="10" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+    <!-- **************************   PAGINATOR   ******************* -->
+    <mat-paginator class="transparent" [pageSize]="10" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
 
-<!-- **************************   MAT-TABLE   ******************* -->
-<mat-table class="transparent" [dataSource]="matDataSource"
-    matSort
-    [matSortActive]="matSortActive"
-    [matSortDirection] = "'asc'"
-    cdkDropList
-    cdkDropListOrientation="horizontal"
-    (cdkDropListDropped)="drop($event)" (window:resize)="onResize($event)"
-    >
-    <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
-    <ng-container matColumnDef="actionsColumn">
-        <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-        <mat-cell  *matCellDef="let element;  let j = index;"> 
-            <mat-icon (click)="openDetail(element.id)" class="pointer">account_circle</mat-icon>
-        </mat-cell>
-    </ng-container>
+    <!-- **************************   MAT-TABLE   ******************* -->
+    <mat-table class="transparent" [dataSource]="matDataSource"
+        matSort
+        [matSortActive]="matSortActive"
+        [matSortDirection] = "'asc'"
+        cdkDropList
+        cdkDropListOrientation="horizontal"
+        (cdkDropListDropped)="drop($event)" (window:resize)="onResize($event)"
+        >
+        <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+        <ng-container matColumnDef="actionsColumn">
+            <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
+            <mat-cell  *matCellDef="let element;  let j = index;"> 
+                <mat-icon (click)="openDetail(element.id)" class="pointer">account_circle</mat-icon>
+            </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="nome">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.nome}}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="nome">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.nome}}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="cognome">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.cognome}}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="cognome">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.cognome}}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="tipo">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Tipo</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.tipo}}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="tipo">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Tipo</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.tipo}}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="dtNascita">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Data di Nascita</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="dtNascita">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Data di Nascita</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="indirizzo">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Indirizzo</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.indirizzo}}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="indirizzo">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Indirizzo</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.indirizzo}}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="comune">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Comune</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.comune}}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="comune">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Comune</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.comune}}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="cap">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CAP</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.cap}}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="cap">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CAP</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.cap}}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="prov">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Prov</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.prov}}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="prov">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Prov</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.prov}}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="CF">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CF</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.CF}}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="CF">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CF</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.CF}}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="email">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.email}}</mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.email}}</mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="telefono">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>telefono</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.telefono}}</mat-cell>
-    </ng-container>
-    
-    <!-- **************************   MAT-HEADER-ROW   ******************* -->
-    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-    
-    <!-- **************************   MAT-ROW   ******************* -->
-    <mat-row *matRowDef="let element; columns: displayedColumns"
-        class="element-row"
-        (contextmenu)="onRightClick($event, element)">
-    </mat-row>
+        <ng-container matColumnDef="telefono">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>telefono</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.telefono}}</mat-cell>
+        </ng-container>
+        
+        <!-- **************************   MAT-HEADER-ROW   ******************* -->
+        <mat-header-row *matHeaderRowDef="displayedColumns; "></mat-header-row>
+        
+        <!-- **************************   MAT-ROW   ******************* -->
+        <mat-row *matRowDef="let element; columns: displayedColumns"
+            class="element-row"
+            (contextmenu)="onRightClick($event, element)">
+        </mat-row>
 
-</mat-table>
+    </mat-table>
 
-<!-- ***********************  MENU RIGHT CLICK ****************** -->
-<div style="visibility: hidden; position: fixed;" 
-    [style.left]="menuTopLeftPosition.x" 
-    [style.top]="menuTopLeftPosition.y" 
-    [matMenuTriggerFor]="rightMenu">
-</div> 
+    <!-- ***********************  MENU RIGHT CLICK ****************** -->
+    <div style="visibility: hidden; position: fixed;" 
+        [style.left]="menuTopLeftPosition.x" 
+        [style.top]="menuTopLeftPosition.y" 
+        [matMenuTriggerFor]="rightMenu">
+    </div> 
 
-<mat-menu #rightMenu="matMenu"> 
-    <ng-template matMenuContent let-item="item"> 
-        <mat-label class="rightMenuTitle">{{item.nome | uppercase}} {{item.cognome | uppercase}}</mat-label> 
-        <button mat-menu-item (click)="openAlunni(item.id)">Figli</button> 
-        <button mat-menu-item>Classi Frequentate</button>
-        <button mat-menu-item>Pagelle</button>
-        <button mat-menu-item>Quote e Pagamenti</button>
-    </ng-template> 
-</mat-menu> 
+    <mat-menu #rightMenu="matMenu"> 
+        <ng-template matMenuContent let-item="item"> 
+            <mat-label class="rightMenuTitle">{{item.nome | uppercase}} {{item.cognome | uppercase}}</mat-label> 
+            <button mat-menu-item (click)="openAlunni(item.id)">Figli</button> 
+            <button mat-menu-item>Classi Frequentate</button>
+            <button mat-menu-item>Pagelle</button>
+            <button mat-menu-item>Quote e Pagamenti</button>
+        </ng-template> 
+    </mat-menu> 

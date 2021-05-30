@@ -21,15 +21,14 @@ import { FiltriComponent } from './_components/utilities/filtri/filtri.component
 import { AlunniListComponent } from './_components/alunni/alunni-list/alunni-list.component';
 import { AlunnoDetailsComponent } from './_components/alunni/alunno-details/alunno-details.component';
 import { AlunnoDashboardComponent } from './_components/alunni/alunno-dashboard/alunno-dashboard.component';
-//import { AlunnoHeaderComponent } from './_components/alunni/alunno-header/alunno-header.component';
 
 import { GenitoriListComponent } from './_components/genitori/genitori-list/genitori-list.component';
 import { GenitoreDetailsComponent } from './_components/genitori/genitore-details/genitore-details.component';
 
-import { ClassiListComponent } from './_components/classi/classi-list/classi-list.component';
-import { ClasseDetailsComponent } from './_components/classi/classe-details/classe-details.component';
-import { ClassiSezioniAnniListComponent } from './_components/classiSezioniAnni/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { ClasseSezioneAnnoDetailComponent } from './_components/classiSezioniAnni/classe-sezione-anno-detail/classe-sezione-anno-detail.component';
+
+import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { ClasseSezioneAnnoDetailComponent } from './_components/classi/classe-sezione-anno-detail/classe-sezione-anno-detail.component';
+import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -40,17 +39,14 @@ import { ClasseSezioneAnnoDetailComponent } from './_components/classiSezioniAnn
 
     GenitoriListComponent,
     GenitoreDetailsComponent,
-    
-    ClassiListComponent,
-    ClasseDetailsComponent,
 
     DialogYesNoComponent,
     SnackbarComponent,
     LoadingComponent,
-    //AlunnoHeaderComponent,
     FiltriComponent,
     ClassiSezioniAnniListComponent,
     ClasseSezioneAnnoDetailComponent,
+    ClassiDashboardComponent,
 
   ],
   imports: [

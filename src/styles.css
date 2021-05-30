@@ -20,20 +20,32 @@ body {
 /**********************************/
 
 /*************** VARIE ***********/
+.mat-button.mat-primary .mat-button-focus-overlay {
+    background-color: transparent;
+  }
+
+.color-blue {
+    background-color: #1B3663;
+}
 
 /*Colore sfondo*/
 .mat-drawer-container { background-color: white;
     
-    background: white url("../src/assets/backgroundglass.svg") no-repeat center;
+/*background: white url("../src/assets/backgroundglass.svg") no-repeat center;
+background-size: cover;*/
+
+}
+
+.mat-toolbar {
+    background: transparent url("../src/assets/backgroundglassToolbar.svg") no-repeat center;
     background-size: cover;
+    color: white;
+    z-index: 10000;
+}
+.position-fixed{
+    position: fixed;
+}
 
-    }
-
-    .mat-toolbar {
-        background: transparent url("../src/assets/backgroundglassToolbar.svg") no-repeat center;
-        background-size: cover;
-        color: white;
-    }
 /*Margine*/
 .ml20 {
     margin-left: 20px;
@@ -46,6 +58,10 @@ body {
 }
 .mr5 {
     margin-right: 5px;
+}
+
+.mt64 {
+    margin-top: 64px;
 }
 
 .mauto {
@@ -139,6 +155,7 @@ body {
     right: 0px;
     margin-right: 20px !important;
     z-index: 1000;
+    background-color: #044D7E !important;
 }
 
 /*Detail: Gruppo Buttons sovrastanti*/

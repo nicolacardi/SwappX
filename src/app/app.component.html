@@ -20,6 +20,12 @@
                 <mat-icon>switch_account</mat-icon>
                 <span>Classi</span>
             </a>  
+
+            <a mat-list-item routerLink="classi-dashboard">
+                <mat-icon>switch_account</mat-icon>
+                <span>Classi Dashboard</span>
+            </a> 
+
             <!-- <a mat-list-item routerLink="genitoreDetails">
             <mat-icon>person</mat-icon>
             <span>Genitore</span>
@@ -61,7 +67,7 @@
         </mat-nav-list>           
     </mat-sidenav>
 
-    <mat-toolbar>
+    <mat-toolbar class="position-fixed">
         <button mat-icon-button (click)="start.open()">
             <mat-icon>menu</mat-icon>
         </button>
@@ -74,8 +80,8 @@
             <mat-icon>more_vert</mat-icon>
         </button>
     </mat-toolbar>
-
+    <hr style="height: 50px">
   <loading></loading>
-  <router-outlet></router-outlet>
+        <router-outlet class="mt80"></router-outlet>
 </mat-sidenav-container>
 

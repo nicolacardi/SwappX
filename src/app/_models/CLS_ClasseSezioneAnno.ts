@@ -12,8 +12,6 @@ export interface CLS_ClasseSezione {
   classe:               CLS_Classe;
 }
 
-
-
 export interface CLS_ClasseSezioneAnno {
         id:                   number;
         sezione:              string;

@@ -5,9 +5,9 @@ import { AlunniListComponent } from './_components/alunni/alunni-list/alunni-lis
 import { AlunnoDetailsComponent } from './_components/alunni/alunno-details/alunno-details.component';
 import { GenitoriListComponent } from './_components/genitori/genitori-list/genitori-list.component';
 import { GenitoreDetailsComponent } from './_components/genitori/genitore-details/genitore-details.component';
-import { ClassiListComponent } from './_components/classi/classi-list/classi-list.component';
-import { ClasseDetailsComponent } from './_components/classi/classe-details/classe-details.component';
-import { ClassiSezioniAnniListComponent } from './_components/classiSezioniAnni/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+
+import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
 
 const routes: Routes = [
   {
@@ -31,9 +31,9 @@ const routes: Routes = [
     component: ClassiSezioniAnniListComponent
   },
   {
-    path: 'classi/:id',
-    component: ClasseDetailsComponent
-  },
+    path: "classi-dashboard",
+    component: ClassiDashboardComponent
+  }
 ];
 
 @NgModule({

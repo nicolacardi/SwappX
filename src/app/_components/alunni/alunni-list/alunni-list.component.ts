@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, MatSortable } from '@angular/material/sort';
 import { Observable } from 'rxjs';
@@ -48,13 +48,15 @@ export class AlunniListComponent implements OnInit {
   matSortActive!:     string;
   matSortDirection!:  string;
   public idGenitore!: number;
-
+  public page$!:       Observable<string>;
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild("filterInput") filterInput!:                     ElementRef;
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
+
+  @Input() idClasse!: number;
 
   constructor(private svcAlunni:        AlunniService,
               private route:            ActivatedRoute,
@@ -63,6 +65,7 @@ export class AlunniListComponent implements OnInit {
               private _loadingService:  LoadingService,
               private _filtriService:   FiltriService
               ) {}
+  
   
   ngOnInit () {
 
@@ -77,13 +80,24 @@ export class AlunniListComponent implements OnInit {
         this.refresh();
     });
 
+
   }
 
+
+  ngOnChanges() {
+    this.refresh();
+  }
+  
+
   refresh () {
+    
+    
     let obsAlunni$: Observable<ALU_Alunno[]>;
 
     if(this.idGenitore && this.idGenitore != undefined  && this.idGenitore != null && this.idGenitore != 0) {
       obsAlunni$= this.svcAlunni.loadAlunniByGenitore(this.idGenitore);
+    } else if (this.idClasse && this.idClasse != undefined  && this.idClasse != null && this.idClasse != 0) {
+      obsAlunni$= this.svcAlunni.loadAlunniByClasse(this.idClasse);
     } else {
       obsAlunni$= this.svcAlunni.loadAlunni();
     }

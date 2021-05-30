@@ -1,0 +1,34 @@
+/* Structure */
+
+  
+  .table-container {
+    position: relative;
+    min-height: 200px;
+    max-height: 100%;
+    overflow: auto;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+
+
+  
+  /* Column Widths */
+  .mat-column-classeSezione-classe-descrizione2 {
+    min-width: 130px;
+  }
+
+  .mat-column-classeSezione-sezione {
+    max-width: 30px;
+  }
+  
+  .element-row {
+      cursor: pointer;
+  }
+
+  .highlight{
+    background: rgba(100, 100, 100, 0.2); /* green */
+  }
+

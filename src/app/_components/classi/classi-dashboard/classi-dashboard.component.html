@@ -1,0 +1,65 @@
+
+    <table>
+        <tr>
+            <td style="width:22%; min-width: 315px; height: 85% ;position: absolute; top: 75px; left: 8px;">
+                <mat-card style="height: 100%;" class="card mat-elevation-z8">
+                    <div class="table-container">
+                        <div style="text-align: center;">
+                            <form [formGroup] = "form">
+                                <mat-form-field >
+                                <mat-label>Anno Scolastico</mat-label>
+                                <select matNativeControl formControlName="selectAnnoScolastico">
+                                    <option value="1">2019-20</option>
+                                    <option value="2">2020-21</option>
+                                    <option value="3">2021-22</option>
+                                </select>
+                                </mat-form-field>
+                            </form>
+                        </div>
+                        <!-- **************************   MAT-TABLE   ******************* -->
+                        <mat-table style="height: 70%;" [dataSource]="matDataSource">
+                            <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+
+                            <ng-container matColumnDef="id">
+                                <mat-header-cell *matHeaderCellDef >id</mat-header-cell>
+                                <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="classeSezione.sezione">
+                                <mat-header-cell *matHeaderCellDef >Sez.</mat-header-cell>
+                                <mat-cell *matCellDef="let element">{{element.classeSezione.sezione}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="classeSezione.classe.descrizione2">
+                                <mat-header-cell *matHeaderCellDef >Classe</mat-header-cell>
+                                <mat-cell *matCellDef="let element">{{element.classeSezione.classe.descrizione2}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="anno.annoscolastico">
+                                <mat-header-cell *matHeaderCellDef >a.s.</mat-header-cell>
+                                <mat-cell *matCellDef="let element">{{element.anno.annoscolastico}}</mat-cell>
+                            </ng-container>
+
+                            <!-- **************************   MAT-HEADER-ROW   ******************* -->
+                            <mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></mat-header-row>
+
+                            <!-- **************************   MAT-ROW   ******************* -->
+                            <mat-row *matRowDef="let element;columns: displayedColumns"
+                                class="element-row" (click)="rowclicked(element)"
+                                
+                                [ngClass]="{'highlight': selectedRowIndex == element.id}"
+                                >
+                            </mat-row>
+                        </mat-table>
+                    </div>
+                </mat-card>
+            </td>
+            <td style="width:76%; height: 85%; position: absolute; top: 75px; left: 330px">
+                <mat-card class=" card mat-elevation-z8" style="height: 100%">
+                    <div class="table-container">
+                        <app-alunni-list [idClasse]="idClasse"></app-alunni-list>
+                    </div>
+                </mat-card>
+            </td>
+        </tr>
+    <table>
