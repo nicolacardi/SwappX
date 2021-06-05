@@ -29,6 +29,7 @@ import { GenitoreDetailsComponent } from './_components/genitori/genitore-detail
 import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { ClasseSezioneAnnoDetailComponent } from './_components/classi/classe-sezione-anno-detail/classe-sezione-anno-detail.component';
 import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
+import { DialogAddComponent } from './_components/classi/dialog-add/dialog-add.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/
     ClassiSezioniAnniListComponent,
     ClasseSezioneAnnoDetailComponent,
     ClassiDashboardComponent,
+    DialogAddComponent,
 
   ],
   imports: [

@@ -28,6 +28,9 @@ body {
     background-color: #1B3663;
 }
 
+
+
+
 /*Colore sfondo*/
 .mat-drawer-container { background-color: white;
     
@@ -37,6 +40,7 @@ background-size: cover;*/
 }
 
 .mat-toolbar {
+    font-family: 'Titillium Web', sans-serif;
     background: transparent url("../src/assets/backgroundglassToolbar.svg") no-repeat center;
     background-size: cover;
     color: white;
@@ -47,6 +51,10 @@ background-size: cover;*/
 }
 
 /*Margine*/
+.mb20 {
+    margin-bottom: 20px;
+}
+
 .ml20 {
     margin-left: 20px;
 }
@@ -158,6 +166,17 @@ background-size: cover;*/
     background-color: #044D7E !important;
 }
 
+.button-add2 {
+    /*position: fixed !important;*/
+    position: fixed !important;
+    top: 80px;
+    right: 50px;
+    margin-right: 20px !important;
+    z-index: 1000;
+    background-color: #e0b20d !important;
+}
+
+
 /*Detail: Gruppo Buttons sovrastanti*/
 .buttonsDetail {
     margin: 5px;
@@ -192,7 +211,9 @@ in fase di creazione della Dialog addAlunno*/
 .cdk-overlay-pane.add-DetailDialog {
     position: relative!important;
   }
-
+  .app-full-bleed-dialog .mat-dialog-container{
+      padding: 0px;
+  }
 /**********************************/
 
 /*************** SNACKBAR *********/

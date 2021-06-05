@@ -1,4 +1,6 @@
-
+<button mat-mini-fab aria-label="Aggiungi Alunno alla Classe" class="button-add2" (click)="addAlunnoToClasse()">
+    <mat-icon>add</mat-icon>
+</button>
     <table>
         <tr>
             <td style="width:22%; min-width: 315px; height: 85% ;position: absolute; top: 75px; left: 8px;">
@@ -17,7 +19,7 @@
                             </form>
                         </div>
                         <!-- **************************   MAT-TABLE   ******************* -->
-                        <mat-table style="height: 70%;" [dataSource]="matDataSource">
+                        <mat-table style="height: 70%;" [dataSource]="matDataSource" >
                             <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
 
                             <ng-container matColumnDef="id">

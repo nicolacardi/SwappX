@@ -41,6 +41,9 @@ export class ClassiSezioniAnniService {
     return this.http.delete( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni/' + id);    
   }
 
-
+  postAlunnoInClasse(formData: any) {
+    formData.id = 0;
+    return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnniAlunni' , formData);  
+  }
 
 }
