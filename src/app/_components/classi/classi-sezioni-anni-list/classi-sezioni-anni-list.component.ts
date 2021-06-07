@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
-import { CLS_ClasseSezione } from 'src/app/_models/CLS_ClasseSezione';
+
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 //import { AlunnoDetailsComponent } from '../-details/alunno-details.component';
 

@@ -1,14 +1,8 @@
-export interface CLS_Classe {
-  descrizioneBreve:     string;
-  descrizione:          string;
-  descrizione2:          string;
-}
+import { CLS_Classe } from './CLS_Classe';
 
 export interface CLS_ClasseSezione {
         id:                   number;
         sezione:              string;
-        // descrizioneBreve:     string;
-        // descrizione:          string;
         classe:               CLS_Classe;
 }
 
