@@ -14,6 +14,7 @@ import { AlunnoDetailsComponent } from '../alunno-details/alunno-details.compone
 
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { FiltriService } from '../../utilities/filtri/filtri.service';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector:     'app-alunni-list',
@@ -29,10 +30,12 @@ import { FiltriService } from '../../utilities/filtri/filtri.service';
   ],*/
 })
 
-export class AlunniListComponent implements OnInit, AfterViewInit {
+export class AlunniListComponent implements OnInit {
   
   matDataSource = new MatTableDataSource<ALU_Alunno>();
-  displayedColumns: string[] =  ["actionsColumn", 
+  displayedColumns: string[] =  [
+                                "select",
+                                "actionsColumn", 
                                 "nome", 
                                 "cognome", 
                                 "dtNascita", 
@@ -43,6 +46,10 @@ export class AlunniListComponent implements OnInit, AfterViewInit {
                                 "email", 
                                 "telefono", 
                                 "ckAttivo" ];
+
+  selection = new SelectionModel<ALU_Alunno>(true, []);   //rappresenta la selezione delle checkbox
+
+  
 
   //expandedElement!: ALU_Alunno | null;      //expanded
   matSortActive!:     string;
@@ -74,7 +81,40 @@ export class AlunniListComponent implements OnInit, AfterViewInit {
 
     this._filtriService.passPage("alunniList");
 
-    this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "dtNascita", "email"] : ["actionsColumn", "nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo"];
+    // this.displayedColumns = (window.innerWidth <= 800) ? [
+    //             "select", 
+    //             "actionsColumn", 
+    //             "nome",
+    //             "cognome",
+    //             "dtNascita", 
+    //             "email"] 
+    //             : 
+    //             ["select",
+    //             "actionsColumn", 
+    //             "nome", 
+    //             "cognome", 
+    //             "dtNascita", 
+    //             "indirizzo", 
+    //             "comune", 
+    //             "cap", 
+    //             "prov", 
+    //             "email", 
+    //             "telefono", 
+    //             "ckAttivo"];
+
+    this.displayedColumns = [
+                "select",
+                "actionsColumn", 
+                "nome", 
+                "cognome", 
+                "dtNascita", 
+                "indirizzo", 
+                "comune", 
+                "cap", 
+                "prov", 
+                "email", 
+                "telefono", 
+                "ckAttivo"];
 
     this._filtriService.getGenitore()
       .subscribe(
@@ -86,20 +126,13 @@ export class AlunniListComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngAfterViewInit() {
-    //this.paginator._intl.itemsPerPageLabel="elementi per pagina";
-
-  }
-
-
   ngOnChanges() {
     this.refresh();
   }
   
 
   refresh () {
-    
-    
+        
     let obsAlunni$: Observable<ALU_Alunno[]>;
 
     if(this.idGenitore && this.idGenitore != undefined  && this.idGenitore != null && this.idGenitore != 0) {
@@ -189,7 +222,26 @@ export class AlunniListComponent implements OnInit, AfterViewInit {
   }
 
   onResize(event: any) {
-    this.displayedColumns = (event.target.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "dtNascita", "email"] : ["actionsColumn", "nome", "cognome", "dtNascita", "indirizzo", "comune", "cap", "prov", "email", "telefono", "ckAttivo"];;
+    this.displayedColumns = (event.target.innerWidth <= 800) ? 
+                      ["select", 
+                      "actionsColumn", 
+                      "nome", 
+                      "cognome", 
+                      "dtNascita", 
+                      "email"] 
+                      : 
+                      ["select", 
+                      "actionsColumn", 
+                      "nome", 
+                      "cognome", 
+                      "dtNascita", 
+                      "indirizzo", 
+                      "comune", 
+                      "cap", 
+                      "prov", 
+                      "email", 
+                      "telefono", 
+                      "ckAttivo"];;
   }
 
   onRightClick(event: MouseEvent, element: ALU_Alunno) { 
@@ -204,6 +256,40 @@ export class AlunniListComponent implements OnInit, AfterViewInit {
     this._filtriService.passAlunno(id);
     this.router.navigateByUrl("/genitori");
   }
+
+  //questo metodo ritorna un booleano che dice se sono selezionati tutti i recordo o no
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;   //conta il numero di elementi selezionati
+    const numRows = this.matDataSource.data.length;       //conta il numero di elementi del matDataSource
+    return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
+  }
+
+  //non so se serva questo metodo: genera un valore per l'aria-label...
+  //forse serve per poi pescare i valori selezionati?
+  checkboxLabel(row?: ALU_Alunno): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+  }
+
+  //seleziona/deseleziona tutti i record
+  masterToggle() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+
+    this.selection.select(...this.matDataSource.data);
+  }
+
+  selectedRow(row: number) {
+    //a seconda che resti almeno un elemento selezionato o meno deve comparei l'icona della cancellazioneo rimozione dell'alunno
+    //deve però comparire IN ALUNNI LIST se siamo nella piena pagina e IN DASHBOARD CLASSI se siamo in quella pagina.
+    console.log(row);
+    console.log(this._filtriService.getPage().subscribe(val=>console.log(val)));
+  }
+
 }
 
 
