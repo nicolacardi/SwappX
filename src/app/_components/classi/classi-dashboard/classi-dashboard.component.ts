@@ -77,7 +77,7 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
     loadClassi$.subscribe(val => 
       {
         this.matDataSource.data = val;
-        this.rowclicked(this.matDataSource.data[0]); //seleziona per default la prima riga
+        this.rowclicked(this.matDataSource.data[0]); //seleziona per default la prima riga NON FUNZIONA SEMPRE
       }
     );
     
@@ -91,12 +91,13 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
 
   addAlunnoToClasse() {
     //dialogConfig.disableClose = true; //lo farebbe non chiudibile cliccando altrove
-
     const dialogConfig : MatDialogConfig = {
       panelClass: 'app-full-bleed-dialog',
       width: '400px',
       minHeight: '300px',
-      data: {titolo: "Aggiungi nuovo Alunno alla classe"}
+      data: {titolo: "Aggiungi nuovo Alunno alla classe", 
+              idAnno: this.form.controls['selectAnnoScolastico'].value,
+              idClasse: this.idClasse}
     };
 
     const dialogRef = this._dialog.open(DialogAddComponent, dialogConfig);

@@ -1,6 +1,6 @@
 
     <mat-toolbar>
-        {{data.titolo}}
+        {{data.titolo}} 
     </mat-toolbar>
     <div class="buttonsDetail" mat-dialog-actions>
         <button mat-stroked-button color="secondary" mat-dialog-close>
@@ -9,7 +9,7 @@
                 annulla
             </div>
         </button>
-        <button mat-stroked-button color="secondary">
+        <button mat-stroked-button color="secondary" (click)="save()">
             <mat-icon>save</mat-icon>
             <div class="button-textDetail">
                 salva

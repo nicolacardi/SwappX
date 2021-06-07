@@ -144,6 +144,7 @@ export class AlunnoDetailsComponent implements OnInit{
   //#region ----- Funzioni -------
 
   save(){
+
     if (this.form.controls['id'].value == null) 
       this.alunniSvc.postAlunno(this.form.value)
         .subscribe(res=> {

@@ -85,28 +85,17 @@ export class AlunniService {
     // }
   }
 
-  filterAlunniAnnoEscludiClasse(searchstring: string, idAnno: number, idClasse: number): Observable<ALU_Alunno[]>{
+  filterAlunniAnnoSenzaClasse(searchstring: string, idAnno: number): Observable<ALU_Alunno[]>{
     //console.log("alunni.service.ts - filterAlunni - searchstring:", searchstring);
     if (searchstring != null && (typeof searchstring === 'string')) {
-      return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_AlunniAnnoClasse')
-            .pipe (
-            map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
+      return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnniAlunni/GetByAnnoNoClasse/'+idAnno)
+      //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnniAlunni/GetByAnnoNoClasse/2
+        .pipe (
+        map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
       );
-        } else {
+    } else {
       return of()
-      }
-
-    //Quando si fa clic su uno dei valori nella dropdown, searchstring non è più una stringa ma un object ( a causa forse di [value] = "element" in filtri.component.html),
-    //quindi non si può più fare searchstring.toLowerCase(), istruzione che si è resa necessaria per cercare in maniera case insensitive
-    //dunque, fino a una soluzione migliore, qui testiamo se searchstring sia un object (non una stringa) e in quel caso si restituisce un observable vuoto.
-    // if (typeof searchstring === 'string') {
-    //   return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni')
-    //     .pipe (
-    //       map(val=> val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()) )),
-    //     );
-    // } else {
-    //   return of();
-    // }
+    }
   }
 
   findIdAlunno(searchstring: string) : Observable<any>{

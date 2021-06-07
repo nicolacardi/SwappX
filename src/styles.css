@@ -333,8 +333,13 @@ mat-nav-list a img {
     z-index: 1000;
 }
 
+/*Serve per togliere nelle checkbox delle table quella riga di base*/
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+    border-bottom-style: none !important;
+}
 
-.tooltip-red {
-    
+
+.mat-checkbox {
+    /*color: red;*/
 }
 

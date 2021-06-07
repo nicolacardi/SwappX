@@ -4,6 +4,8 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 export interface DialogData {
   titolo: string;
   sottoTitolo: string;
+  idAnno: number;
+  idClasse: number;
 }
 
 @Component({
