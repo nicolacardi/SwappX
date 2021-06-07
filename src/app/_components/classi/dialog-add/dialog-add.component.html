@@ -40,6 +40,7 @@
                 >
             </mat-chip-list>
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-progress-bar class="is-loading" *ngIf="alunniIsLoading" mode="indeterminate"></mat-progress-bar>
                 <mat-option *ngFor="let element of (filteredAlunni$ | async)" [value]="element.nome + ' ' + element.cognome" [id]="element.id.toString()" #option>
                     <small>{{element.nome}} {{element.cognome}}</small>
                 </mat-option>

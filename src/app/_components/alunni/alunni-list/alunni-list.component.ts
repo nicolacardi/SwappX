@@ -29,7 +29,7 @@ import { FiltriService } from '../../utilities/filtri/filtri.service';
   ],*/
 })
 
-export class AlunniListComponent implements OnInit {
+export class AlunniListComponent implements OnInit, AfterViewInit {
   
   matDataSource = new MatTableDataSource<ALU_Alunno>();
   displayedColumns: string[] =  ["actionsColumn", 
@@ -64,7 +64,10 @@ export class AlunniListComponent implements OnInit {
               public _dialog:           MatDialog, 
               private _loadingService:  LoadingService,
               private _filtriService:   FiltriService
-              ) {}
+              ) {
+
+                
+              }
   
   
   ngOnInit () {
@@ -80,6 +83,11 @@ export class AlunniListComponent implements OnInit {
         this.refresh();
     });
 
+
+  }
+
+  ngAfterViewInit() {
+    //this.paginator._intl.itemsPerPageLabel="elementi per pagina";
 
   }
 
@@ -161,11 +169,17 @@ export class AlunniListComponent implements OnInit {
   }
 
   addRecord(){
-    const dialogConfig = new MatDialogConfig();
+    //const dialogConfig = new MatDialogConfig();
     //dialogConfig.disableClose = true; //lo farebbe non chiudibile cliccando altrove
-    dialogConfig.data = 0;
-    dialogConfig.panelClass = 'add-DetailDialog';
-    dialogConfig.width = "800px";
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '800px',
+      height: '620px',
+      data: 0
+    };
+
+
+
     const dialogRef = this._dialog.open(AlunnoDetailsComponent, dialogConfig);
     dialogRef.afterClosed()
       .subscribe(

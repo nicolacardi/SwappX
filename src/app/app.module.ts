@@ -30,6 +30,8 @@ import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezi
 import { ClasseSezioneAnnoDetailComponent } from './_components/classi/classe-sezione-anno-detail/classe-sezione-anno-detail.component';
 import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
 import { DialogAddComponent } from './_components/classi/dialog-add/dialog-add.component';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { CustomMatPaginatorIntl } from './_components/utilities/paginator-custom/custom-mat-paginator-int';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,11 @@ import { DialogAddComponent } from './_components/classi/dialog-add/dialog-add.c
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
+    {
+      provide: MatPaginatorIntl, 
+      useClass: CustomMatPaginatorIntl
+    }
   ],
   bootstrap: [AppComponent]
 })

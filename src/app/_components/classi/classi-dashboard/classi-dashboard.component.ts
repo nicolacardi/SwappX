@@ -26,8 +26,7 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] =  [
                                 "classeSezione.classe.descrizione2",
-                                "classeSezione.sezione",
-                                "anno.annoscolastico"
+                                "classeSezione.sezione"
                                 ];
 
   public idAnnoScolastico!: number;
@@ -59,6 +58,7 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit () {
     this._filtriService.passPage("classiDashboard");
+    
   }
 
   refresh (val :number) {
@@ -77,8 +77,10 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
     loadClassi$.subscribe(val => 
       {
         this.matDataSource.data = val;
+        this.rowclicked(this.matDataSource.data[0]); //seleziona per default la prima riga
       }
     );
+    
   }
 
   rowclicked(val: CLS_ClasseSezioneAnno ){
@@ -88,14 +90,15 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
   }
 
   addAlunnoToClasse() {
-    const dialogConfig = new MatDialogConfig();
     //dialogConfig.disableClose = true; //lo farebbe non chiudibile cliccando altrove
-    dialogConfig.data = 0;
-    dialogConfig.panelClass = 'app-full-bleed-dialog';
-    dialogConfig.width = "400px";
-    dialogConfig.height = "300px";
 
-    dialogConfig.data = {titolo: "Aggiungi nuovo Alunno alla classe"};
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'app-full-bleed-dialog',
+      width: '400px',
+      minHeight: '300px',
+      data: {titolo: "Aggiungi nuovo Alunno alla classe"}
+    };
+
     const dialogRef = this._dialog.open(DialogAddComponent, dialogConfig);
     //this._dialog.open(DialogAddComponent, dialogConfig);
     // dialogRef.afterClosed()

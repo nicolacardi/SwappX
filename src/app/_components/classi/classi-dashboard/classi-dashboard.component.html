@@ -1,9 +1,7 @@
-<button mat-mini-fab aria-label="Aggiungi Alunno alla Classe" class="button-add2" (click)="addAlunnoToClasse()">
-    <mat-icon>add</mat-icon>
-</button>
+
     <table>
         <tr>
-            <td style="width:22%; min-width: 315px; height: 85% ;position: absolute; top: 75px; left: 8px;">
+            <td style="width:22%; min-width: 315px; height: 83% ;position: absolute; top: 75px; left: 8px;">
                 <mat-card style="height: 100%;" class="card mat-elevation-z8">
                     <div class="table-container">
                         <div style="text-align: center;">
@@ -56,7 +54,10 @@
                     </div>
                 </mat-card>
             </td>
-            <td style="width:76%; height: 85%; position: absolute; top: 75px; left: 330px">
+            <td style="width:76%; height: 83%; position: absolute; top: 75px; left: 330px">
+                <button mat-mini-fab aria-label="Aggiungi Alunno alla Classe" class="button-add2" (click)="addAlunnoToClasse()">
+                    <mat-icon matTooltip="Aggiungi alunni alla classe">person_add</mat-icon>
+                </button>
                 <mat-card class=" card mat-elevation-z8" style="height: 100%">
                     <div class="table-container">
                         <app-alunni-list [idClasse]="idClasse"></app-alunni-list>

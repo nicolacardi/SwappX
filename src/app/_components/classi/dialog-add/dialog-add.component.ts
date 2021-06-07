@@ -2,12 +2,12 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
-import { debounceTime, switchMap } from 'rxjs/operators';
+import { Observable, timer } from 'rxjs';
+import { debounceTime, delayWhen, switchMap, tap } from 'rxjs/operators';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from 'src/app/_services/alunni.service';
 import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { FiltriService } from '../../utilities/filtri/filtri.service';
+
 
 @Component({
   selector: 'app-dialog-add',
@@ -21,37 +21,20 @@ export class DialogAddComponent implements OnInit {
   idAlunniSelezionati:      number[] = [];
   removable =               true;
   selectable =              true;
+  alunniIsLoading:          boolean = false;
 
 
   @ViewChild('nomeCognomeAlunno') nomeCognomeAlunno!: ElementRef<HTMLInputElement>;
 
   constructor(private fb:                             FormBuilder,
-                      private _filtriService:         FiltriService,
                       private alunniSvc:              AlunniService,
-                      public dialogRef: MatDialogRef<DialogAddComponent>,
+                      public dialogRef:               MatDialogRef<DialogAddComponent>,
                       @Inject(MAT_DIALOG_DATA) public data: DialogData) { 
 
-  this.form = this.fb.group({
-    nomeCognomeAlunno:     [null]
-  });
-
-  //per ora uso la getAlunno utilizzata in filtri service
-  //va creato un service _addAlunno?
-  //il metodo da usare non sarà comunque una getAlunno ma una sorta di
-  //getAlunniNonIscrittiaNessunaClasseSezioneNellAnno(annoscolastico)
-  this._filtriService.getAlunno()
-  .subscribe(
-    val=>{
-    if (val!=0 && val!= null && val!= undefined){
-      
-        this.alunniSvc.loadAlunno(val)
-        .subscribe(val3=>this.form.controls['nomeCognomeAlunno'].setValue(val3.nome + ' ' + val3.cognome, {emitEvent:false}))
-        ;
-    }
-});
-
+    this.form = this.fb.group({
+      nomeCognomeAlunno:     [null]
+    });
   }
-
 
 
   ngOnInit(): void {
@@ -59,13 +42,15 @@ export class DialogAddComponent implements OnInit {
     this.filteredAlunni$ = this.form.controls['nomeCognomeAlunno'].valueChanges
     .pipe(
       debounceTime(300),
+      tap(() => this.alunniIsLoading = true),
+      //delayWhen(() => timer(2000)),
       switchMap(() => this.alunniSvc.filterAlunni(this.form.value.nomeCognomeAlunno)), 
+      tap(() => this.alunniIsLoading = false)
     )
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.nomeCognomeAlunno.nativeElement.value = '';
-
     const alunnoToAdd = event.option.viewValue;
     const idAlunnoToAdd = parseInt(event.option.id);
     if (!this.alunniSelezionati.includes(alunnoToAdd)) {
@@ -80,6 +65,7 @@ export class DialogAddComponent implements OnInit {
       this.alunniSelezionati.splice(index, 1);
       this.idAlunniSelezionati.splice(index, 1);
     }
+    this.form.controls['nomeCognomeAlunno'].setValue('');
   }
 
 }

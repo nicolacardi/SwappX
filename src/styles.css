@@ -160,7 +160,7 @@ background-size: cover;*/
     /*position: fixed !important;*/
     position: fixed !important;
     top: 80px;
-    right: 0px;
+    right: 15px;
     margin-right: 20px !important;
     z-index: 1000;
     background-color: #044D7E !important;
@@ -168,9 +168,9 @@ background-size: cover;*/
 
 .button-add2 {
     /*position: fixed !important;*/
-    position: fixed !important;
-    top: 80px;
-    right: 50px;
+    position: absolute !important;
+    left: 10px;
+    top: 5px;
     margin-right: 20px !important;
     z-index: 1000;
     background-color: #e0b20d !important;
@@ -332,3 +332,9 @@ mat-nav-list a img {
 .topZIndex {
     z-index: 1000;
 }
+
+
+.tooltip-red {
+    
+}
+
