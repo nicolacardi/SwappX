@@ -29,9 +29,9 @@
                     (removed)="remove(alunnoSelezionato)"
                     >
                     {{alunnoSelezionato}}
-                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>
-                <input type="text"
+                <input 
                         placeholder = "digita e seleziona"
                         matInput
                         [matChipInputFor]="chipList"

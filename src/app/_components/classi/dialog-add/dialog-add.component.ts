@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable, timer } from 'rxjs';
-import { debounceTime, delayWhen, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, delayWhen, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from 'src/app/_services/alunni.service';
 import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
@@ -49,7 +49,17 @@ export class DialogAddComponent implements OnInit {
       debounceTime(300),
       tap(() => this.alunniIsLoading = true),
       //delayWhen(() => timer(2000)),
-      switchMap(() => this.alunniSvc.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)), 
+      switchMap(val => 
+        this.alunniSvc.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
+            .pipe(
+              map( val2 => val2.filter(val=>!this.idAlunniSelezionati.includes(val.id)) )//FANTASTICO!!! NON MOSTRA QUELLI GIA'SELEZIONATI! MEGLIO DI GOOGLE CHE LI RIMOSTRA!
+            )
+        
+      )
+      // switchMap(() => 
+      //   this.alunniSvc.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
+      // )
+      , 
       tap(() => this.alunniIsLoading = false)
     )
   }
@@ -58,7 +68,8 @@ export class DialogAddComponent implements OnInit {
     this.nomeCognomeAlunno.nativeElement.value = '';
     const alunnoToAdd = event.option.viewValue;
     const idAlunnoToAdd = parseInt(event.option.id);
-    if (!this.alunniSelezionati.includes(alunnoToAdd)) {
+    //in verità dopo la miglioria per cui non si vede più quanto giù selezionato questa if non servirebbe
+    if (!this.alunniSelezionati.includes(alunnoToAdd)) { 
       this.alunniSelezionati.push(alunnoToAdd);
       this.idAlunniSelezionati.push(idAlunnoToAdd);
     }
@@ -74,13 +85,22 @@ export class DialogAddComponent implements OnInit {
   }
 
   save() {
-    //console.log(this.idAlunniSelezionati);
+
     this.idAlunniSelezionati.forEach(val=>{
       let objClasseSezioneAnnoAlunno = {AlunnoID: val, ClasseSezioneAnnoID: this.data.idClasse};
       this.classeSezioneAnnoAlunnoSvc.postClasseSezioneAnnoAlunno(objClasseSezioneAnnoAlunno)
-        .subscribe(val=>console.log(val));
-    }); 
-    //a questo punto manca il refresh della pagina e che la dialog si chiuda
+        .pipe(
+          finalize(()=>this.dialogRef.close())
+        )
+        .subscribe(
+          val=>{console.log("Record Salvato:", val);});
+
+    });
+    
+
+  
+    
+    //a questo punto manca il refresh della pagina
     //forse serve la dialog after closed sul component dashboard in modo che si rinfreschi la chiamata al servizio che carica
   }
 

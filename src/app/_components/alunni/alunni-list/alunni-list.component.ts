@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Injectable, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, MatSortable } from '@angular/material/sort';
 import { Observable } from 'rxjs';
@@ -15,11 +15,17 @@ import { AlunnoDetailsComponent } from '../alunno-details/alunno-details.compone
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { FiltriService } from '../../utilities/filtri/filtri.service';
 import { SelectionModel } from '@angular/cdk/collections';
+import { MatCheckbox } from '@angular/material/checkbox';
+
+
+@Injectable({
+  providedIn: 'root'
+}) //inserisco questa per poter passare il component alla dashboard e poterne usare un metodo (refresh())
 
 @Component({
   selector:     'app-alunni-list',
   templateUrl:  './alunni-list.component.html',
-  styleUrls:    []
+  styleUrls:    [],
   /* expanded
   animations: [
     trigger('detailExpand', [
@@ -28,6 +34,7 @@ import { SelectionModel } from '@angular/cdk/collections';
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],*/
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class AlunniListComponent implements OnInit {
@@ -52,18 +59,22 @@ export class AlunniListComponent implements OnInit {
   
 
   //expandedElement!: ALU_Alunno | null;      //expanded
-  matSortActive!:     string;
-  matSortDirection!:  string;
-  public idGenitore!: number;
-  public page$!:       Observable<string>;
+  matSortActive!:       string;
+  matSortDirection!:    string;
+  public idGenitore!:   number;
+  public page$!:        Observable<string>;
   menuTopLeftPosition =  {x: '0', y: '0'} 
+  idAlunniChecked:      number[] = [];
+  toggleChecks:         boolean = false;
 
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild("filterInput") filterInput!:                     ElementRef;
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
+
   @Input() idClasse!: number;
+
 
   constructor(private svcAlunni:        AlunniService,
               private route:            ActivatedRoute,
@@ -128,11 +139,13 @@ export class AlunniListComponent implements OnInit {
 
   ngOnChanges() {
     this.refresh();
+    this.toggleChecks = false;
+    this.resetSelections();
   }
   
 
   refresh () {
-        
+
     let obsAlunni$: Observable<ALU_Alunno[]>;
 
     if(this.idGenitore && this.idGenitore != undefined  && this.idGenitore != null && this.idGenitore != 0) {
@@ -202,16 +215,12 @@ export class AlunniListComponent implements OnInit {
   }
 
   addRecord(){
-    //const dialogConfig = new MatDialogConfig();
-    //dialogConfig.disableClose = true; //lo farebbe non chiudibile cliccando altrove
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '800px',
       height: '620px',
       data: 0
     };
-
-
 
     const dialogRef = this._dialog.open(AlunnoDetailsComponent, dialogConfig);
     dialogRef.afterClosed()
@@ -257,7 +266,8 @@ export class AlunniListComponent implements OnInit {
     this.router.navigateByUrl("/genitori");
   }
 
-  //questo metodo ritorna un booleano che dice se sono selezionati tutti i recordo o no
+  //questo metodo ritorna un booleano che dice se sono selezionati tutti i record o no
+  //per ora non lo utilizzo
   isAllSelected() {
     const numSelected = this.selection.selected.length;   //conta il numero di elementi selezionati
     const numRows = this.matDataSource.data.length;       //conta il numero di elementi del matDataSource
@@ -275,25 +285,37 @@ export class AlunniListComponent implements OnInit {
 
   //seleziona/deseleziona tutti i record
   masterToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
+    this.toggleChecks = !this.toggleChecks;
+
+    if (this.toggleChecks) {
+      this.selection.select(...this.matDataSource.data);
+    } else {
+      this.resetSelections();
     }
-
-    this.selection.select(...this.matDataSource.data);
   }
 
-  selectedRow(row: number) {
-    //a seconda che resti almeno un elemento selezionato o meno deve comparei l'icona della cancellazioneo rimozione dell'alunno
-    //deve però comparire IN ALUNNI LIST se siamo nella piena pagina e IN DASHBOARD CLASSI se siamo in quella pagina.
-    console.log(row);
-    console.log(this._filtriService.getPage().subscribe(val=>console.log(val)));
+  resetSelections() {
+    this.selection.clear();
+    this.matDataSource.data.forEach(row => this.selection.deselect(row));
+  }
+  selectedRow(element: ALU_Alunno) {
+    this.selection.toggle(element); //questa riga è FONDAMENTALE! E' QUELLA CHE POPOLA LA SELECTION.SELECTED
+    //console.log(this.selection.selected);
+    console.log(this.getChecked());
   }
 
+  getChecked() {
+    //console.log(this.selection.selected);
+    return this.selection.selected;
+  }
 }
 
 
-
+  // RemoveElementFromArray(element: number) {
+  //   this.idAlunniChecked.forEach((value,index)=>{
+  //       if(value==element) this.idAlunniChecked.splice(index,1);
+  //   });
+  // }
 
 
 // deleteDetail(element: any, event: Event){

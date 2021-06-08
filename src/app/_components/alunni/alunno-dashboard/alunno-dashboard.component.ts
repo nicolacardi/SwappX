@@ -24,7 +24,7 @@ import { validateHorizontalPosition } from '@angular/cdk/overlay';
 export class AlunnoDashboardComponent implements OnInit{
 
   alunnoForm! :           FormGroup;
-  genitoreForm! :           FormGroup;
+  genitoreForm! :         FormGroup;
   emptyForm :             boolean = false;
   alunno!:                Observable<ALU_Alunno>;
   loading:                boolean = true;

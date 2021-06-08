@@ -30,22 +30,31 @@
             (window:resize)="onResize($event)" -->
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
 
+        <ng-container matColumnDef="actionsColumn">
+            <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
+            <mat-cell  *matCellDef="let element;  let j = index;"> 
+                <mat-icon (click)="openDetail(element.id)" class="pointer">account_circle</mat-icon>
+            </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="select" >
             <!-- masterToggle delle checkbox di selezione record -->
             <th mat-header-cell *matHeaderCellDef >
               <mat-checkbox (change)="$event ? masterToggle() : null"
-                            [checked]="selection.hasValue() && isAllSelected()"
-                            [indeterminate]="selection.hasValue() && !isAllSelected()"
+                            [checked] = "toggleChecks"
                             [aria-label]="checkboxLabel()"
-                            color="warn">
+                            color="warn" #mstToggle>
+                            <!-- [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" -->
               </mat-checkbox>
             </th>
             <!-- singole checkbox di selezione record -->
-            <td mat-cell *matCellDef="let row">
+            <td mat-cell *matCellDef="let element">
               <mat-checkbox (click)="$event.stopPropagation()"
-                            (change) = "selectedRow(row)"
-                            [checked]="selection.isSelected(row)"
-                            [aria-label]="checkboxLabel(row)"
+                            (change) = "$event ? selectedRow(element) : null"
+                            
+                            [checked]="selection.isSelected(element)"
+                            [aria-label]="checkboxLabel(element)"
                             color="warn">
                             <!-- ho tolto questo (change)="$event ? selection.toggle(row) : null" -->
               </mat-checkbox>
@@ -53,12 +62,7 @@
           </ng-container>
 
 
-        <ng-container matColumnDef="actionsColumn">
-            <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-            <mat-cell  *matCellDef="let element;  let j = index;"> 
-                <mat-icon (click)="openDetail(element.id)" class="pointer">account_circle</mat-icon>
-            </mat-cell>
-        </ng-container>
+
 
         <ng-container matColumnDef="nome">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>

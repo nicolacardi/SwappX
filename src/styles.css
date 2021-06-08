@@ -172,10 +172,19 @@ background-size: cover;*/
     left: 10px;
     top: 5px;
     margin-right: 20px !important;
-    z-index: 1000;
+    z-index: 10000;
     background-color: #e0b20d !important;
 }
 
+.button-add3 {
+    /*position: fixed !important;*/
+    position: absolute !important;
+    left: 60px;
+    top: 5px;
+    margin-right: 20px !important;
+    z-index: 10000;
+    background-color: #e00d0d !important;
+}
 
 /*Detail: Gruppo Buttons sovrastanti*/
 .buttonsDetail {

@@ -1,7 +1,7 @@
 
     <table>
         <tr>
-            <td style="width:22%; min-width: 315px; height: 83% ;position: absolute; top: 75px; left: 8px;">
+            <td style="width:315px; height: 83% ;position: absolute; top: 75px; left: 8px;">
                 <mat-card style="height: 100%;" class="card mat-elevation-z8">
                     <div class="table-container">
                         <div style="text-align: center;">
@@ -58,9 +58,12 @@
                 <button mat-mini-fab aria-label="Aggiungi Alunno alla Classe" class="button-add2" (click)="addAlunnoToClasse()">
                     <mat-icon matTooltip="Aggiungi alunni alla classe">person_add</mat-icon>
                 </button>
+                <button mat-mini-fab aria-label="Aggiungi Alunno alla Classe" class="button-add3" (click)="removeAlunnoFromClasse()">
+                    <mat-icon matTooltip="Rimuovi alunni dalla classe">person_remove</mat-icon>
+                </button>
                 <mat-card class=" card mat-elevation-z8" style="height: 100%">
                     <div class="table-container">
-                        <app-alunni-list [idClasse]="idClasse"></app-alunni-list>
+                        <app-alunni-list *ngIf="showChild" [idClasse]="idClasse"></app-alunni-list>
                     </div>
                 </mat-card>
             </td>
