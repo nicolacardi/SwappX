@@ -22,10 +22,10 @@ import { DialogAddComponent } from '../dialog-add/dialog-add.component';
 export class ClassiDashboardComponent implements OnInit, AfterViewInit {
 
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno>();
-  public idClasse!:        number;
+  public idClasse!:           number;
   selectedRowIndex = -1;
   form! :                     FormGroup;
-  showChild:           boolean = true;
+  showChild:                  boolean = true;
 
   displayedColumns: string[] =  [
                                 "classeSezione.classe.descrizione2",
@@ -46,43 +46,34 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
               public _dialog:                       MatDialog,
               
               ) { 
-
                 this.form = this.fb.group({
                   selectAnnoScolastico:   [2]
                 })
               }
 
   ngOnInit(): void {
-    
     this.refresh(2);
     this.form.controls['selectAnnoScolastico'].valueChanges
     .subscribe(val => {
       this.refresh(val);
       //console.log("classi-dahsboard.component.ts - selectAnnoScolastico.valueChanges : ", val);
     })
-
   }
 
   ngAfterViewInit () {
     this._filtriService.passPage("classiDashboard");
-    
   }
 
   refresh (val :number) {
-
     let obsClassi$: Observable<CLS_ClasseSezioneAnno[]>;
-
     obsClassi$= this.svcClassiSezioniAnni.loadClassiByAnnoScolastico(val);
-
     const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
-
     loadClassi$.subscribe(val => 
       {
         this.matDataSource.data = val;
         this.rowclicked(this.matDataSource.data[0]); //seleziona per default la prima riga NON FUNZIONA SEMPRE
       }
     );
-    
   }
 
   rowclicked(val: CLS_ClasseSezioneAnno ){
@@ -111,8 +102,6 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed()
       .subscribe(
         () => {
-
-
           //qui bisogna dire NON alla parte di sx ma alla alunniList che è tempo di fare refresh
           //questo avviene automaticamente quando si fa clic sulla riga, ma non funziona in questo caso con 
           //this.rowclicked(this.matDataSource.data[0]);
@@ -121,16 +110,13 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
           //this.idClasse = 0;
           //this.idClasse = this.selectedRowIndex
           //setTimeout( () => { this.idClasse = this.selectedRowIndex }, 100 );
-
           // this.showChild = false;
           this.alunnilist.refresh()
           //   setTimeout(() => {
           //      this.showChild = true
           //    }, 100);
           //this.alunnilist.refresh(); //NON FUNZIONA NEMMENO QUESTO!!!
-
           //this.idClasse = 17;
-
           //this.refresh(this.form.value.selectAnnoScolastico);
           //this.matDataSource.data = this.matDataSource.data;
           //this.idClasse = 16;
@@ -139,21 +125,17 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
           //this.form.controls['selectAnnoScolastico'].setValue(2);
           //this.refresh(this.form.value.selectAnnoScolastico); //PARTE MA NON FA IL SUO LAVORO
           //this.matDataSource.data = this.matDataSource.data;
-
     });
   }
 
   removeAlunnoFromClasse() {
-
     const objIdAlunniToRemove = this.alunnilist.getChecked();
     const selections = objIdAlunniToRemove.length;
-
     if (selections != 0) {
       const dialogRef = this._dialog.open(DialogYesNoComponent, {
         width: '320px',
         data: {titolo: "ATTENZIONE", sottoTitolo: "Si stanno cancellando le iscrizioni di "+selections+" alunni alla classe. Continuare?"}
       });
-      
       dialogRef.afterClosed()
       .subscribe(result => {
         if(!result) {

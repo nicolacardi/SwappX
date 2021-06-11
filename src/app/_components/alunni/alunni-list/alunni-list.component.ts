@@ -18,9 +18,6 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 
-@Injectable({
-  providedIn: 'root'
-}) //inserisco questa per poter passare il component alla dashboard e poterne usare un metodo (refresh())
 
 @Component({
   selector:     'app-alunni-list',

@@ -4,7 +4,7 @@
     <mat-sidenav #start class="leftSidenav" >
         <mat-nav-list (click)="start.close()">
             <a mat-list-item routerLink="alunni" >
-                <mat-icon>face</mat-icon>
+                <img class="iconaMenu" src="../assets/alunniList.svg">
                 <span>Lista Alunni</span>
             </a>
             <!-- <a mat-list-item routerLink="alunni/">
@@ -12,18 +12,23 @@
                 <span>Alunno</span>
             </a> -->
             <a mat-list-item routerLink="genitori">
-                <img class="iconaMenu" src="../assets/parents.svg">
+                <img class="iconaMenu" src="../assets/genitoriList.svg">
                 <span>Lista Genitori</span>
             </a>  
             
-            <a mat-list-item routerLink="classi">
+            <!-- <a mat-list-item routerLink="classi">
                 <mat-icon>switch_account</mat-icon>
                 <span>Classi</span>
+            </a>   -->
+
+            <a mat-list-item>
+                <img class="iconaMenu" src="../assets/alunno.svg">
+                <span>Alunno</span>
             </a>  
 
             <a mat-list-item routerLink="classi-dashboard">
-                <mat-icon>switch_account</mat-icon>
-                <span>Classi Dashboard</span>
+                <img class="iconaMenu" src="../assets/classi.svg">
+                <span>Classi</span>
             </a> 
 
             <!-- <a mat-list-item routerLink="genitoreDetails">

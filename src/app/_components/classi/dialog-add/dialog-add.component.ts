@@ -35,8 +35,6 @@ export class DialogAddComponent implements OnInit {
     this.form = this.fb.group({
       nomeCognomeAlunno:     [null]
     });
-
-
   }
 
 
@@ -46,8 +44,8 @@ export class DialogAddComponent implements OnInit {
 
     this.filteredAlunni$ = this.form.controls['nomeCognomeAlunno'].valueChanges
     .pipe(
-      debounceTime(300),
       tap(() => this.alunniIsLoading = true),
+      debounceTime(300),
       //delayWhen(() => timer(2000)),
       switchMap(val => 
         this.alunniSvc.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
@@ -85,7 +83,6 @@ export class DialogAddComponent implements OnInit {
   }
 
   save() {
-
     this.idAlunniSelezionati.forEach(val=>{
       let objClasseSezioneAnnoAlunno = {AlunnoID: val, ClasseSezioneAnnoID: this.data.idClasse};
       this.classeSezioneAnnoAlunnoSvc.postClasseSezioneAnnoAlunno(objClasseSezioneAnnoAlunno)
@@ -94,14 +91,8 @@ export class DialogAddComponent implements OnInit {
         )
         .subscribe(
           val=>{console.log("Record Salvato:", val);});
-
     });
-    
 
-  
-    
-    //a questo punto manca il refresh della pagina
-    //forse serve la dialog after closed sul component dashboard in modo che si rinfreschi la chiamata al servizio che carica
   }
 
 

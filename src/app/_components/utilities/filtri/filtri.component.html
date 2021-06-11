@@ -28,7 +28,7 @@
     </mat-list-item >
 
     <mat-list-item *ngIf="(page$ |async) == 'alunniList'">
-        <img class="iconaMenu" src="../assets/parents.svg">
+        <img class="iconaMenu" src="../assets/genitore.svg">
         <mat-form-field>
             <mat-label>Nome e Cognome Genitore</mat-label>
             <input type="text"
@@ -75,7 +75,7 @@
     </mat-list-item >
 
     <mat-list-item >
-        <mat-icon>switch_account</mat-icon>
+        <img class="iconaMenu" src="../assets/classi.svg">
         <span class="descMenu">per classe</span>
     </mat-list-item >
     <button mat-button matSuffix class="w90 ml12" mat-stroked-button aria-label="Clear" (click)="resetAllInputs()" >

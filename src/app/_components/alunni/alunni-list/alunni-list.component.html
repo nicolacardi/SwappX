@@ -33,7 +33,8 @@
         <ng-container matColumnDef="actionsColumn">
             <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
             <mat-cell  *matCellDef="let element;  let j = index;"> 
-                <mat-icon (click)="openDetail(element.id)" class="pointer">account_circle</mat-icon>
+                
+                <img (click)="openDetail(element.id)" class="iconaMenu pointer" src="../assets/alunno.svg">
             </mat-cell>
         </ng-container>
 
