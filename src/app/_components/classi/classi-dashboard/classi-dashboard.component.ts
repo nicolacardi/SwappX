@@ -1,3 +1,5 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { NONE_TYPE } from '@angular/compiler';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -16,10 +18,31 @@ import { DialogAddComponent } from '../dialog-add/dialog-add.component';
 
 @Component({
   selector: 'app-classi-dashboard',
+  animations: [
+    trigger('openClose', [
+      // ...
+      state('open', style({
+        transform: 'rotate(0)',
+        backgroundImage: 'url("../../../../assets/plus.svg")',
+      })),
+      state('closed', style({
+        transform: 'rotate(-360deg)',
+        color: "black",
+        backgroundImage: 'url("../../../../assets/alunnoPlus.svg")',
+      })),
+      transition('open => closed', [
+        animate('0.2s ease-in-out')
+      ]),
+      transition('closed => open', [
+        animate('0.2s ease-in-out')
+      ]),
+    ]),
+  ],
   templateUrl: './classi-dashboard.component.html',
   styleUrls: ['./classi-dashboard.component.css']
 })
 export class ClassiDashboardComponent implements OnInit, AfterViewInit {
+  isOpen = true;
 
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno>();
   public idClasse!:           number;
@@ -50,6 +73,14 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
                   selectAnnoScolastico:   [2]
                 })
               }
+  
+  mouseOver() {
+    this.isOpen = false;
+  }
+
+  mouseOut() {
+    this.isOpen = true;
+  }
 
   ngOnInit(): void {
     this.refresh(2);
@@ -58,10 +89,12 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
       this.refresh(val);
       //console.log("classi-dahsboard.component.ts - selectAnnoScolastico.valueChanges : ", val);
     })
+
+    this._filtriService.passPage("classiDashboard");
   }
 
   ngAfterViewInit () {
-    this._filtriService.passPage("classiDashboard");
+    //this._filtriService.passPage("classiDashboard");
   }
 
   refresh (val :number) {
@@ -81,7 +114,7 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
 
     this.idClasse = val.id;
     this.selectedRowIndex = val.id;
-    console.log("row clicked");
+    console.log("classi-dashboard.component.ts - rowclicked");
     
   }
 
@@ -144,7 +177,7 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
           objIdAlunniToRemove.forEach(val=>{
             this.svcClassiSezioniAnniAlunni.deleteClasseSezioneAnnoAlunno(this.idClasse , val.id)
               .subscribe(()=>{
-                  console.log("iscrizione di "+val.id+ " a "+this.idClasse + "rimossa" ); 
+                  console.log("classi-dashboard.component.ts - removeAlunnoFromClasse: iscrizione di "+val.id+ " a "+this.idClasse + " rimossa" ); 
                   this.alunnilist.refresh();
                   this.alunnilist.resetSelections();
               })

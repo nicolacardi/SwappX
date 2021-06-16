@@ -40,7 +40,7 @@ export class DialogAddComponent implements OnInit {
 
   ngOnInit(): void {
     this.idClasse = this.data.idClasse;
-    console.log(this.idClasse);
+    console.log("dialog-add.component.ts - ngOnInit: this.idClasse=", this.idClasse);
 
     this.filteredAlunni$ = this.form.controls['nomeCognomeAlunno'].valueChanges
     .pipe(
@@ -90,7 +90,7 @@ export class DialogAddComponent implements OnInit {
           finalize(()=>this.dialogRef.close())
         )
         .subscribe(
-          val=>{console.log("Record Salvato:", val);});
+          val=>{console.log("dialog-add.component.ts - save:Record Salvato:", val);});
     });
 
   }

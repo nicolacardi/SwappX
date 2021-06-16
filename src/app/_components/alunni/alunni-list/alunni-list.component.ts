@@ -37,19 +37,32 @@ import { MatCheckbox } from '@angular/material/checkbox';
 export class AlunniListComponent implements OnInit {
   
   matDataSource = new MatTableDataSource<ALU_Alunno>();
-  displayedColumns: string[] =  [
-                                "select",
-                                "actionsColumn", 
-                                "nome", 
-                                "cognome", 
-                                "dtNascita", 
-                                "indirizzo", 
-                                "comune", 
-                                "cap", 
-                                "prov", 
-                                "email", 
-                                "telefono", 
-                                "ckAttivo" ];
+  displayedColumns: string[] =  [];
+  displayedColumnsAlunniList: string[] = [
+                                  "actionsColumn", 
+                                  "nome", 
+                                  "cognome", 
+                                  "dtNascita", 
+                                  "indirizzo", 
+                                  "comune", 
+                                  "cap", 
+                                  "prov", 
+                                  "email", 
+                                  "telefono", 
+                                  "ckAttivo"];
+  displayedColumnsClassiDashboard: string[] = [
+                                    "select",
+                                    "actionsColumn", 
+                                    "nome", 
+                                    "cognome", 
+                                    "dtNascita", 
+                                    "indirizzo", 
+                                    "comune", 
+                                    "cap", 
+                                    "prov", 
+                                    "email", 
+                                    "telefono", 
+                                    ];
 
   selection = new SelectionModel<ALU_Alunno>(true, []);   //rappresenta la selezione delle checkbox
 
@@ -89,7 +102,7 @@ export class AlunniListComponent implements OnInit {
 
     this._filtriService.getPage().subscribe(val=>{
       this.page = val;
-      console.log("pagina cambiata, ora è:"+val);
+      console.log("alunni-list.component.ts - ngOnInit getPage: la pagina attuale è: "+val);
       });
     
     // this.displayedColumns = (window.innerWidth <= 800) ? [
@@ -113,19 +126,12 @@ export class AlunniListComponent implements OnInit {
     //             "telefono", 
     //             "ckAttivo"];
 
-    this.displayedColumns = [
-                "select",
-                "actionsColumn", 
-                "nome", 
-                "cognome", 
-                "dtNascita", 
-                "indirizzo", 
-                "comune", 
-                "cap", 
-                "prov", 
-                "email", 
-                "telefono", 
-                "ckAttivo"];
+    if (this.page == "alunniList") {
+      this.displayedColumns =  this.displayedColumnsAlunniList;
+    } else {
+      this.displayedColumns =  this.displayedColumnsClassiDashboard;
+    }
+
 
     if (this.page == "alunniList") {
       this._filtriService.getGenitore()
@@ -133,7 +139,7 @@ export class AlunniListComponent implements OnInit {
           val=>{
           this.idGenitore = val;
           //uno dei tre refresh parte qui: serve quando cambia il filtro idGenitore
-          console.log("this.refresh da getGenitore");
+          console.log("alunni-list.component.ts - ngOnInit chiamata a this.refresh da getGenitore");
           this.refresh(); 
 
       });
@@ -146,7 +152,7 @@ export class AlunniListComponent implements OnInit {
     //questo refresh vien lanciato due volte
     //serve perchè quando listAlunni è child di classiDashboard gli viene passato il valore di idClasse
     // e devo "sentire" in questo modo che deve refreshare
-    console.log("this.refresh da ngOnChanges");
+    console.log("alunni-list.component.ts - ngOnChanges chiamata a this.refresh ");
     this.refresh(); 
     this.toggleChecks = false;
     this.resetSelections();
@@ -159,25 +165,25 @@ export class AlunniListComponent implements OnInit {
     if (this.page == "classiDashboard") {
       
       obsAlunni$= this.svcAlunni.loadAlunniByClasse(this.idClasse);
-      console.log("alunnilistcomponent-refresh - alunnilistcomponent-1");
+      console.log("alunni-list.component.ts - this.refresh - caso 1");
 
     } else {
 
 
       if(this.idGenitore && this.idGenitore != undefined  && this.idGenitore != null && this.idGenitore != 0) {
         obsAlunni$= this.svcAlunni.loadAlunniByGenitore(this.idGenitore);
-        console.log("alunnilistcomponent-refresh - alunnilistcomponent-2");
+        console.log("alunni-list.component.ts - this.refresh - caso 2");
       } else {
         //purtroppo passa di qua anche quando sta caricando all'inizio, non ha ancora il numero di pagina (getPage non dà ancora valore)
         //e quindi inizialmente passa di qua comunque
         obsAlunni$= this.svcAlunni.loadAlunni();
-        console.log("alunnilistcomponent-refresh - alunnilistcomponent-3");
+        console.log("alunni-list.component.ts - this.refresh - caso 3: this.page = "+this.page);
       }
 
     }
     
     if (this.page != undefined && this.page != "" && this.page != null) {
-      console.log("alunnilistcomponent-refresh this.page:"+this.page);
+      console.log("alunni-list.component.ts - refresh : carico di loadAlunni$. this.page = "+this.page);
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
 
       loadAlunni$.subscribe(val => 
@@ -324,12 +330,10 @@ export class AlunniListComponent implements OnInit {
   }
   selectedRow(element: ALU_Alunno) {
     this.selection.toggle(element); //questa riga è FONDAMENTALE! E' QUELLA CHE POPOLA LA SELECTION.SELECTED
-    //console.log(this.selection.selected);
-    console.log(this.getChecked());
+    console.log("alunni-list.component.ts - selectedRow: this.getChecked=", this.getChecked());
   }
 
   getChecked() {
-    //console.log(this.selection.selected);
     return this.selection.selected;
   }
 }
