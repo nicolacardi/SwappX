@@ -32,6 +32,7 @@ import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/
 import { DialogAddComponent } from './_components/classi/dialog-add/dialog-add.component';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomMatPaginatorIntl } from './_components/utilities/paginator-custom/custom-mat-paginator-int';
+import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-page.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { CustomMatPaginatorIntl } from './_components/utilities/paginator-custom
     ClasseSezioneAnnoDetailComponent,
     ClassiDashboardComponent,
     DialogAddComponent,
+    AlunniPageComponent,
 
   ],
   imports: [

@@ -59,7 +59,7 @@ export class AlunniListComponent implements OnInit {
   matSortActive!:       string;
   matSortDirection!:    string;
   public idGenitore!:   number;
-  public page$!:        Observable<string>;
+  public page!:         string;
   menuTopLeftPosition =  {x: '0', y: '0'} 
   idAlunniChecked:      number[] = [];
   toggleChecks:         boolean = false;
@@ -87,8 +87,11 @@ export class AlunniListComponent implements OnInit {
   
   ngOnInit () {
 
-    this._filtriService.passPage("alunniList");
-
+    this._filtriService.getPage().subscribe(val=>{
+      this.page = val;
+      console.log("pagina cambiata, ora è:"+val);
+      });
+    
     // this.displayedColumns = (window.innerWidth <= 800) ? [
     //             "select", 
     //             "actionsColumn", 
@@ -124,18 +127,27 @@ export class AlunniListComponent implements OnInit {
                 "telefono", 
                 "ckAttivo"];
 
-    this._filtriService.getGenitore()
-      .subscribe(
-        val=>{
-        this.idGenitore = val;
-        this.refresh();
-    });
+    if (this.page == "alunniList") {
+      this._filtriService.getGenitore()
+        .subscribe(
+          val=>{
+          this.idGenitore = val;
+          //uno dei tre refresh parte qui: serve quando cambia il filtro idGenitore
+          console.log("this.refresh da getGenitore");
+          this.refresh(); 
+
+      });
+    }
 
 
   }
 
   ngOnChanges() {
-    this.refresh();
+    //questo refresh vien lanciato due volte
+    //serve perchè quando listAlunni è child di classiDashboard gli viene passato il valore di idClasse
+    // e devo "sentire" in questo modo che deve refreshare
+    console.log("this.refresh da ngOnChanges");
+    this.refresh(); 
     this.toggleChecks = false;
     this.resetSelections();
   }
@@ -144,40 +156,55 @@ export class AlunniListComponent implements OnInit {
   refresh () {
 
     let obsAlunni$: Observable<ALU_Alunno[]>;
-
-    if(this.idGenitore && this.idGenitore != undefined  && this.idGenitore != null && this.idGenitore != 0) {
-      obsAlunni$= this.svcAlunni.loadAlunniByGenitore(this.idGenitore);
-    } else if (this.idClasse && this.idClasse != undefined  && this.idClasse != null && this.idClasse != 0) {
+    if (this.page == "classiDashboard") {
+      
       obsAlunni$= this.svcAlunni.loadAlunniByClasse(this.idClasse);
+      console.log("alunnilistcomponent-refresh - alunnilistcomponent-1");
+
     } else {
-      obsAlunni$= this.svcAlunni.loadAlunni();
-    }
 
-    const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
 
-    loadAlunni$.subscribe(val => 
-      {
-        var caller_page = this.route.snapshot.queryParams["page"];
-        var caller_size = this.route.snapshot.queryParams["size"];
-        var caller_filter = this.route.snapshot.queryParams["filter"];
-        var caller_sortField = this.route.snapshot.queryParams["sortField"];
-        var caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
-        
-        this.matDataSource.data = val;
-        this.matDataSource.paginator = this.paginator;
-        this.matDataSource.sort = this.sort;
-
-        if(caller_page != undefined ){
-          if (caller_sortDirection) {
-            this.sort.sort(({ id: caller_sortField, start: caller_sortDirection}) as MatSortable);
-          }
-          this.paginator.pageIndex = caller_page;
-          this.paginator.pageSize = caller_size;
-          this.filterInput.nativeElement.value = caller_filter;
-          this.matDataSource.filter = caller_filter;
-        }
+      if(this.idGenitore && this.idGenitore != undefined  && this.idGenitore != null && this.idGenitore != 0) {
+        obsAlunni$= this.svcAlunni.loadAlunniByGenitore(this.idGenitore);
+        console.log("alunnilistcomponent-refresh - alunnilistcomponent-2");
+      } else {
+        //purtroppo passa di qua anche quando sta caricando all'inizio, non ha ancora il numero di pagina (getPage non dà ancora valore)
+        //e quindi inizialmente passa di qua comunque
+        obsAlunni$= this.svcAlunni.loadAlunni();
+        console.log("alunnilistcomponent-refresh - alunnilistcomponent-3");
       }
-    );
+
+    }
+    
+    if (this.page != undefined && this.page != "" && this.page != null) {
+      console.log("alunnilistcomponent-refresh this.page:"+this.page);
+      const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
+
+      loadAlunni$.subscribe(val => 
+        {
+          var caller_page = this.route.snapshot.queryParams["page"];
+          var caller_size = this.route.snapshot.queryParams["size"];
+          var caller_filter = this.route.snapshot.queryParams["filter"];
+          var caller_sortField = this.route.snapshot.queryParams["sortField"];
+          var caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
+          
+          this.matDataSource.data = val;
+          this.matDataSource.paginator = this.paginator;
+          this.matDataSource.sort = this.sort;
+
+          if(caller_page != undefined ){
+            if (caller_sortDirection) {
+              this.sort.sort(({ id: caller_sortField, start: caller_sortDirection}) as MatSortable);
+            }
+            this.paginator.pageIndex = caller_page;
+            this.paginator.pageSize = caller_size;
+            this.filterInput.nativeElement.value = caller_filter;
+            this.matDataSource.filter = caller_filter;
+          }
+        }
+      );
+    }
+    
   }
 
   openDetail(id:any){

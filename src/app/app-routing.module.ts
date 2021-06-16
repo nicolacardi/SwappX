@@ -8,11 +8,12 @@ import { GenitoreDetailsComponent } from './_components/genitori/genitore-detail
 
 import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
+import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-page.component';
 
 const routes: Routes = [
   {
     path: "alunni",
-    component: AlunniListComponent
+    component: AlunniPageComponent
   },
   {
     path: 'alunni/:id',
