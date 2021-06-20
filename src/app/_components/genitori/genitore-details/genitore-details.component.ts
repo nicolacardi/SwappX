@@ -18,7 +18,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 @Component({
   selector: 'app-genitore-details',
   templateUrl: './genitore-details.component.html',
-  styleUrls: ['./genitore-details.component.css']
+  styleUrls: ['./../genitori.css']
 })
 
 export class GenitoreDetailsComponent implements OnInit {

@@ -20,7 +20,7 @@ import { FiltriService } from '../../utilities/filtri/filtri.service';
 @Component({
   selector: 'app-genitori-list',
   templateUrl: './genitori-list.component.html',
-  styleUrls: []
+  styleUrls: ['./../genitori.css']
 })
 
 export class GenitoriListComponent implements OnInit {

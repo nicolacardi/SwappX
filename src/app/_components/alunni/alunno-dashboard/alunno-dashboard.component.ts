@@ -6,19 +6,20 @@ import { debounceTime, switchMap } from 'rxjs/operators';
 import { delayWhen, finalize, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { validateHorizontalPosition } from '@angular/cdk/overlay';
 
 import { AlunniService } from 'src/app/_services/alunni.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { validateHorizontalPosition } from '@angular/cdk/overlay';
+
 
 @Component({
   selector:     'app-alunno-dashboard',
   templateUrl:  './alunno-dashboard.component.html',
-  styleUrls:    ['./alunno-dashboard.component.css']
+  styleUrls:    ['./../alunni.css']
 })
 
 export class AlunnoDashboardComponent implements OnInit{
@@ -40,11 +41,15 @@ export class AlunnoDashboardComponent implements OnInit{
       private router:     Router,
       private _snackBar:  MatSnackBar,
       private alunniSvc:  AlunniService,
-      private comuniSvc:  ComuniService,
-      @Inject(MAT_DIALOG_DATA) id:number) {
+      private comuniSvc:  ComuniService
+     // @Inject(MAT_DIALOG_DATA) id:number) 
+  )
+     {
+
+        console.log("Andrea - alunno-dashboard - Constructor");
 
         
-        this.idAlunno = id;
+        //this.idAlunno = id;
 
         this.alunnoForm = this.fb.group({
           id:                [null],

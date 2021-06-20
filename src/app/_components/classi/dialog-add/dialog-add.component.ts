@@ -37,10 +37,9 @@ export class DialogAddComponent implements OnInit {
     });
   }
 
-
   ngOnInit(): void {
     this.idClasse = this.data.idClasse;
-    console.log("dialog-add.component.ts - ngOnInit: this.idClasse=", this.idClasse);
+    //console.log("dialog-add.component.ts - ngOnInit: this.idClasse=", this.idClasse);
 
     this.filteredAlunni$ = this.form.controls['nomeCognomeAlunno'].valueChanges
     .pipe(
@@ -51,8 +50,7 @@ export class DialogAddComponent implements OnInit {
         this.alunniSvc.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
             .pipe(
               map( val2 => val2.filter(val=>!this.idAlunniSelezionati.includes(val.id)) )//FANTASTICO!!! NON MOSTRA QUELLI GIA'SELEZIONATI! MEGLIO DI GOOGLE CHE LI RIMOSTRA!
-            )
-        
+            ) 
       )
       // switchMap(() => 
       //   this.alunniSvc.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
@@ -83,18 +81,17 @@ export class DialogAddComponent implements OnInit {
   }
 
   save() {
-    this.idAlunniSelezionati.forEach(val=>{
-      let objClasseSezioneAnnoAlunno = {AlunnoID: val, ClasseSezioneAnnoID: this.data.idClasse};
-      this.classeSezioneAnnoAlunnoSvc.postClasseSezioneAnnoAlunno(objClasseSezioneAnnoAlunno)
-        .pipe(
-          finalize(()=>this.dialogRef.close())
-        )
-        .subscribe(
-          val=>{console.log("dialog-add.component.ts - save:Record Salvato:", val);});
+    this.idAlunniSelezionati.forEach(
+      val=>{
+        let objClasseSezioneAnnoAlunno = {AlunnoID: val, ClasseSezioneAnnoID: this.data.idClasse};
+        this.classeSezioneAnnoAlunnoSvc.postClasseSezioneAnnoAlunno(objClasseSezioneAnnoAlunno)
+          .pipe(
+            finalize(()=>this.dialogRef.close())
+          )
+          .subscribe(
+            val=>{
+              console.log("dialog-add.component.ts - save:Record Salvato:", val);}
+          );
     });
-
   }
-
-
-
 }

@@ -19,7 +19,7 @@ import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 @Component({
   selector: 'app-classi-list',
   templateUrl: './classi-sezioni-anni-list.component.html',
-  styleUrls: ['./classi-sezioni-anni-list.component.css']
+  styleUrls: ['./../classi.css']
 })
 /*
 export class ClassiListComponent implements OnInit {

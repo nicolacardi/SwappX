@@ -39,13 +39,17 @@ import { DialogAddComponent } from '../dialog-add/dialog-add.component';
     ]),
   ],
   templateUrl: './classi-dashboard.component.html',
-  styleUrls: ['./classi-dashboard.component.css']
+  styleUrls: ['./../classi.css']
 })
+
 export class ClassiDashboardComponent implements OnInit, AfterViewInit {
-  isOpen = true;
+  
+  public idClasse!:           number;
+  public idAnnoScolastico!:   number;
 
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno>();
-  public idClasse!:           number;
+  
+  isOpen = true;
   selectedRowIndex = -1;
   form! :                     FormGroup;
   showChild:                  boolean = true;
@@ -55,7 +59,6 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
                                 "classeSezione.sezione"
                                 ];
 
-  public idAnnoScolastico!: number;
   menuTopLeftPosition =  {x: '0', y: '0'} 
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
   @ViewChild('selectAnnoScolastico') selectAnnoScolastico!: MatSelect; 
@@ -67,20 +70,13 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
               private _loadingService:              LoadingService,
               private _filtriService:               FiltriService,
               public _dialog:                       MatDialog,
-              
               ) { 
                 this.form = this.fb.group({
                   selectAnnoScolastico:   [2]
                 })
               }
   
-  mouseOver() {
-    this.isOpen = false;
-  }
 
-  mouseOut() {
-    this.isOpen = true;
-  }
 
   ngOnInit(): void {
     this.refresh(2);
@@ -109,16 +105,28 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
     );
   }
 
-  rowclicked(val: CLS_ClasseSezioneAnno ){
-    //console.log("classi-dahsboard.component.ts - rowClicked : idClasse", val.id);
+  mouseOver() {
+    this.isOpen = false;
+  }
 
-    this.idClasse = val.id;
-    this.selectedRowIndex = val.id;
-    console.log("classi-dashboard.component.ts - rowclicked");
-    
+  mouseOut() {
+    this.isOpen = true;
+  }
+
+  rowclicked(val: CLS_ClasseSezioneAnno ){
+    if(val!= undefined){
+      this.idClasse = val.id; 
+      this.selectedRowIndex = val.id;
+    }
+    else
+    this.idClasse = -1; 
+    this.selectedRowIndex = -1;
   }
 
   addAlunnoToClasse() {
+
+    if(this.idClasse<0) return;     //AS: fix per evitare errore nel caso non ci sia una classe selezionata
+
     //dialogConfig.disableClose = true; //lo farebbe non chiudibile cliccando altrove
     const dialogConfig : MatDialogConfig = {
       panelClass: 'app-full-bleed-dialog',
@@ -129,12 +137,11 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
               idClasse: this.idClasse}
     };
 
-
     const dialogRef = this._dialog.open(DialogAddComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+        result => {
+          if(result == undefined){        //AS: non so perchè ma la dialog restituisce undefined se faccio save, stringa vuota se annullo, ma così almeno non fa refresh se annullo
 
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
           //qui bisogna dire NON alla parte di sx ma alla alunniList che è tempo di fare refresh
           //questo avviene automaticamente quando si fa clic sulla riga, ma non funziona in questo caso con 
           //this.rowclicked(this.matDataSource.data[0]);
@@ -144,6 +151,7 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
           //this.idClasse = this.selectedRowIndex
           //setTimeout( () => { this.idClasse = this.selectedRowIndex }, 100 );
           // this.showChild = false;
+          
           this.alunnilist.refresh()
           //   setTimeout(() => {
           //      this.showChild = true
@@ -158,32 +166,39 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
           //this.form.controls['selectAnnoScolastico'].setValue(2);
           //this.refresh(this.form.value.selectAnnoScolastico); //PARTE MA NON FA IL SUO LAVORO
           //this.matDataSource.data = this.matDataSource.data;
+          }
     });
   }
 
   removeAlunnoFromClasse() {
     const objIdAlunniToRemove = this.alunnilist.getChecked();
     const selections = objIdAlunniToRemove.length;
-    if (selections != 0) {
+    if (selections <= 0) {
+      //AS: mettere un messagebox "Selezionare almeno un elemento da cancellare"  ?
+    }
+    else{
+    //if (selections != 0) {
       const dialogRef = this._dialog.open(DialogYesNoComponent, {
         width: '320px',
         data: {titolo: "ATTENZIONE", sottoTitolo: "Si stanno cancellando le iscrizioni di "+selections+" alunni alla classe. Continuare?"}
       });
-      dialogRef.afterClosed()
-      .subscribe(result => {
-        if(!result) {
-          return; 
-        } else {
-          objIdAlunniToRemove.forEach(val=>{
-            this.svcClassiSezioniAnniAlunni.deleteClasseSezioneAnnoAlunno(this.idClasse , val.id)
-              .subscribe(()=>{
-                  console.log("classi-dashboard.component.ts - removeAlunnoFromClasse: iscrizione di "+val.id+ " a "+this.idClasse + " rimossa" ); 
-                  this.alunnilist.refresh();
-                  this.alunnilist.resetSelections();
-              })
-          });
-          
-        }
+      dialogRef.afterClosed().subscribe(
+        result => {
+          if(!result) {
+            return; 
+          } else {
+            objIdAlunniToRemove.forEach(val=>{
+              this.svcClassiSezioniAnniAlunni.deleteClasseSezioneAnnoAlunno(this.idClasse , val.id)
+                .subscribe(()=>{
+                    //console.log("classi-dashboard.component.ts - removeAlunnoFromClasse: iscrizione di "+val.id+ " a "+this.idClasse + " rimossa" ); 
+                    //this.alunnilist.refresh();
+                    //this.alunnilist.resetSelections();
+                })
+            }); 
+            //AS: spostato qua per evitare che faccia n refresh, solo che bisogna verificare la sync
+            this.alunnilist.refresh();
+            this.alunnilist.resetSelections();
+          }
       })
     }
   }

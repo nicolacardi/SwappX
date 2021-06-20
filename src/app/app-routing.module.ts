@@ -9,6 +9,7 @@ import { GenitoreDetailsComponent } from './_components/genitori/genitore-detail
 import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
 import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-page.component';
+import { AlunnoDashboardComponent } from './_components/alunni/alunno-dashboard/alunno-dashboard.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path: 'alunni/:id',
     component: AlunnoDetailsComponent
+  },
+  {
+    path: "alunno-dashboard",
+    component: AlunnoDashboardComponent
   },
   {
     path: "genitori",

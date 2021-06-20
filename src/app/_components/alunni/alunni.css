@@ -1,3 +1,35 @@
+/*BLOCCO1: PROBABILMENTE E' DA TOGLIERE*/
+
+.grid-checkboxes {
+    width: 600px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.grid-checkboxes th {
+    text-align: left;
+    font-weight: normal;
+}
+
+ /* .is-loading ::ng-deep .mat-option-text {
+    display: flex;
+    justify-content: center;
+  }  */
+
+
+  .is-loading{
+    position: absolute;
+    float:center;
+    margin-left: 65px;
+  } 
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+/* ------------- FINE BLOCCO1 ------------------- */
+
+
 /* MAT-TABLE EXPANDABLE ROWS */
 mat-row.detail-row {
     /* height: 0; */ /* no */

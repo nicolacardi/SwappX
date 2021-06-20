@@ -7,6 +7,8 @@ import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from '../../../_services/alunni.service';
@@ -14,9 +16,6 @@ import { AlunnoDetailsComponent } from '../alunno-details/alunno-details.compone
 
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { FiltriService } from '../../utilities/filtri/filtri.service';
-import { SelectionModel } from '@angular/cdk/collections';
-import { MatCheckbox } from '@angular/material/checkbox';
-
 
 
 @Component({
@@ -66,8 +65,6 @@ export class AlunniListComponent implements OnInit {
 
   selection = new SelectionModel<ALU_Alunno>(true, []);   //rappresenta la selezione delle checkbox
 
-  
-
   //expandedElement!: ALU_Alunno | null;      //expanded
   matSortActive!:       string;
   matSortDirection!:    string;
@@ -82,7 +79,6 @@ export class AlunniListComponent implements OnInit {
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
-
   @Input() idClasse!: number;
 
 
@@ -93,16 +89,14 @@ export class AlunniListComponent implements OnInit {
               private _loadingService:  LoadingService,
               private _filtriService:   FiltriService
               ) {
-
-                
-              }
+  }
   
   
   ngOnInit () {
 
     this._filtriService.getPage().subscribe(val=>{
       this.page = val;
-      console.log("alunni-list.component.ts - ngOnInit getPage: la pagina attuale è: "+val);
+      console.log("alunni-list - ngOnInit getPage: la pagina attuale è: "+val);
       });
     
     // this.displayedColumns = (window.innerWidth <= 800) ? [
@@ -132,7 +126,6 @@ export class AlunniListComponent implements OnInit {
       this.displayedColumns =  this.displayedColumnsClassiDashboard;
     }
 
-
     if (this.page == "alunniList") {
       this._filtriService.getGenitore()
         .subscribe(
@@ -141,11 +134,8 @@ export class AlunniListComponent implements OnInit {
           //uno dei tre refresh parte qui: serve quando cambia il filtro idGenitore
           console.log("alunni-list.component.ts - ngOnInit chiamata a this.refresh da getGenitore");
           this.refresh(); 
-
       });
     }
-
-
   }
 
   ngOnChanges() {
@@ -158,7 +148,6 @@ export class AlunniListComponent implements OnInit {
     this.resetSelections();
   }
   
-
   refresh () {
 
     let obsAlunni$: Observable<ALU_Alunno[]>;
@@ -168,8 +157,6 @@ export class AlunniListComponent implements OnInit {
       console.log("alunni-list.component.ts - this.refresh - caso 1");
 
     } else {
-
-
       if(this.idGenitore && this.idGenitore != undefined  && this.idGenitore != null && this.idGenitore != 0) {
         obsAlunni$= this.svcAlunni.loadAlunniByGenitore(this.idGenitore);
         console.log("alunni-list.component.ts - this.refresh - caso 2");
@@ -179,7 +166,6 @@ export class AlunniListComponent implements OnInit {
         obsAlunni$= this.svcAlunni.loadAlunni();
         console.log("alunni-list.component.ts - this.refresh - caso 3: this.page = "+this.page);
       }
-
     }
     
     if (this.page != undefined && this.page != "" && this.page != null) {
@@ -210,7 +196,6 @@ export class AlunniListComponent implements OnInit {
         }
       );
     }
-    
   }
 
   openDetail(id:any){

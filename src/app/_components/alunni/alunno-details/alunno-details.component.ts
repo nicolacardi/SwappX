@@ -19,7 +19,7 @@ import { FiltriService } from '../../utilities/filtri/filtri.service';
 @Component({
   selector:     'app-alunno-details',
   templateUrl:  './alunno-details.component.html',
-  styleUrls:    ['./alunno-details.component.css']
+  styleUrls:    ['./../alunni.css']
 })
 
 export class AlunnoDetailsComponent implements OnInit{

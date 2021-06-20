@@ -1,7 +1,7 @@
 /* Structure */
 
   
-  .table-container {
+.table-container {
     position: relative;
     min-height: 200px;
     max-height: 100%;
@@ -11,9 +11,6 @@
   table {
     width: 100%;
   }
-  
-
-
   
   /* Column Widths */
   .mat-column-classeSezione-classe-descrizione2 {
