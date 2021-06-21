@@ -63,6 +63,9 @@
                     <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg" matTooltip="Rimuovi alunni selezionati dalla classe"
                     >
                 </button>
+                <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" class="button-add4" (click)="creaPdf()">
+                    <mat-icon>print</mat-icon>
+                </button>
                 <mat-card class=" card mat-elevation-z8" style="height: 100%">
                     <div class="table-container">
                         <app-alunni-list *ngIf="showChild" [idClasse]="idClasse"></app-alunni-list>

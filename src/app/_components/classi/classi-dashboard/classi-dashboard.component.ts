@@ -6,11 +6,13 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
+import jsPDF from 'jspdf';
 import { fromEvent, Observable } from 'rxjs';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { FiltriService } from '../../utilities/filtri/filtri.service';
+import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { ClassiSezioniAnniAlunniService } from '../classi-sezioni-anni-alunni.service';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
@@ -70,6 +72,7 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
               private _loadingService:              LoadingService,
               private _filtriService:               FiltriService,
               public _dialog:                       MatDialog,
+              private _jspdf:                       JspdfService
               ) { 
                 this.form = this.fb.group({
                   selectAnnoScolastico:   [2]
@@ -201,5 +204,10 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
           }
       })
     }
+  }
+
+  creaPdf() {
+    const tableHeaders = [['id', 'nome', 'cognome', "genere", "dtNascita"]];
+    this._jspdf.creaPdf(this.alunnilist.matDataSource.data, tableHeaders);
   }
 }

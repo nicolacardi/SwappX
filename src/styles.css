@@ -186,6 +186,16 @@ background-size: cover;*/
     background-color: #e00d0d !important;
 }
 
+.button-add4 {
+    /*position: fixed !important;*/
+    position: absolute !important;
+    left: 110px;
+    top: 5px;
+    margin-right: 20px !important;
+    z-index: 10000;
+    background-color: #1221af !important;
+}
+
 /*Detail: Gruppo Buttons sovrastanti*/
 .buttonsDetail {
     margin: 5px;
