@@ -34,6 +34,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomMatPaginatorIntl } from './_components/utilities/paginator-custom/custom-mat-paginator-int';
 import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-page.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +54,7 @@ import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-pag
     ClassiDashboardComponent,
     DialogAddComponent,
     AlunniPageComponent,
+
 
   ],
   imports: [
