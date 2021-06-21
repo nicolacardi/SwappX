@@ -53,7 +53,7 @@ import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-pag
     ClasseSezioneAnnoDetailComponent,
     ClassiDashboardComponent,
     DialogAddComponent,
-    AlunniPageComponent,
+    AlunniPageComponent
 
 
   ],
