@@ -25,7 +25,7 @@ export class ClassiSezioniAnniService {
   }
 
   loadClasse(id: any): Observable<CLS_ClasseSezioneAnno>{
-    return this.http.get<CLS_ClasseSezioneAnno>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/'+id);
+    return  this.http.get<CLS_ClasseSezioneAnno>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/'+id);
   } 
 
   putClasse(formData: any): Observable <any>{
