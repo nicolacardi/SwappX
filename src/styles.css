@@ -78,9 +78,23 @@ background-size: cover;*/
 
 /*Width*/
 
+.w20 {
+    width: 20%;
+}
+
 .w90 {
     width: 90%;
 }
+
+.h75 {
+    height: 75%;
+}
+
+.no-padding {
+    padding: 0px; 
+}
+
+
 
 /*Cursore*/
 .pointer{

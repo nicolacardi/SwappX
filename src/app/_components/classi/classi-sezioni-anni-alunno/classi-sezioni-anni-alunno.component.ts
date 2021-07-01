@@ -16,8 +16,9 @@ export class ClassiSezioniAnniAlunnoComponent implements OnInit {
 
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno>();
   displayedColumns: string[] =  [
-    "classeSezione.classe.descrizione2",
-    "classeSezione.sezione"
+    "descrizione",
+    "sezione",
+    "annoscolastico"
     ];
     public idAlunno!:   number;
 

@@ -8,19 +8,19 @@
         <mat-cell *matCellDef="let element">{{element.ID}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="classeSezione.sezione">
+    <ng-container matColumnDef="sezione">
         <mat-header-cell *matHeaderCellDef >Sez.</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.classeSezioneAnno.classeSezione.sezione}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="classeSezione.classe.descrizione2">
+    <ng-container matColumnDef="descrizione">
         <mat-header-cell *matHeaderCellDef >Classe</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.classeSezioneAnno.classeSezione.classe.descrizione2}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="anno.annoscolastico">
+    <ng-container matColumnDef="annoscolastico">
         <mat-header-cell *matHeaderCellDef >a.s.</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.anno.annoscolastico}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.classeSezioneAnno.anno.annoscolastico}}</mat-cell>
     </ng-container>
 
     <!-- **************************   MAT-HEADER-ROW   ******************* -->

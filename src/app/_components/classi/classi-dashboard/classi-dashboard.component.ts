@@ -57,8 +57,8 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
   showChild:                  boolean = true;
 
   displayedColumns: string[] =  [
-                                "classeSezione.classe.descrizione2",
-                                "classeSezione.sezione"
+                                "descrizione",
+                                "sezione"
                                 ];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
