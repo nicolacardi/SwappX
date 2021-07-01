@@ -24,26 +24,23 @@ export class AlunnoDashboardNewComponent implements OnInit {
   
   constructor(private fb:                     FormBuilder,
               private alunniSvc:              AlunniService,
-              private _alunnoDashboardNewService:         AlunnoDashboardNewService,
-              ) {
+              private _alunnoDashboardNewService:         AlunnoDashboardNewService  ) {
 
-              this.form = this.fb.group({
-                nomeCognomeAlunno:     [null]
-              });
+      this.form = this.fb.group({
+        nomeCognomeAlunno:     [null]
+      });
 
-              this._alunnoDashboardNewService.getAlunno()
-              .subscribe(
-                val=>{
-                if (val!=0 && val!= null && val!= undefined){
-                  
-                    this.alunniSvc.loadAlunno(val)
-                    .subscribe(val3=>this.form.controls['nomeCognomeAlunno'].setValue(val3.nome + ' ' + val3.cognome, {emitEvent:false}))
-                    ;
-                }
-            });
-
-   }
-
+      this._alunnoDashboardNewService.getAlunno()
+      .subscribe(
+        val=>{
+        if (val!=0 && val!= null && val!= undefined){
+          
+            this.alunniSvc.loadAlunno(val)
+            .subscribe(val3=>this.form.controls['nomeCognomeAlunno'].setValue(val3.nome + ' ' + val3.cognome, {emitEvent:false}))
+            ;
+        }
+    });
+  }
   
   ngOnInit(): void {
     this.filteredAlunni$ = this.form.controls['nomeCognomeAlunno'].valueChanges
@@ -53,8 +50,6 @@ export class AlunnoDashboardNewComponent implements OnInit {
       //delayWhen(() => timer(2000)),                                         //se vogliamo vedere il loading allunghiamo i tempi
       switchMap(() => this.alunniSvc.filterAlunni(this.form.value.nomeCognomeAlunno)), 
     )
-
-
   }
 
   resetInputAlunno (formControlName: string) {
@@ -81,6 +76,4 @@ export class AlunnoDashboardNewComponent implements OnInit {
   clickAlunnoCombo(element : ALU_Alunno) {
     this._alunnoDashboardNewService.passAlunno(element.id);
   }
-
-
 }
