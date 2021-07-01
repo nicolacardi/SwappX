@@ -1,0 +1,34 @@
+
+
+<mat-table style="height: 70%;" [dataSource]="matDataSource" >
+    <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+
+    <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef >id</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.ID}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="classeSezione.sezione">
+        <mat-header-cell *matHeaderCellDef >Sez.</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.classeSezioneAnno.classeSezione.sezione}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="classeSezione.classe.descrizione2">
+        <mat-header-cell *matHeaderCellDef >Classe</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.classeSezioneAnno.classeSezione.classe.descrizione2}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="anno.annoscolastico">
+        <mat-header-cell *matHeaderCellDef >a.s.</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.anno.annoscolastico}}</mat-cell>
+    </ng-container>
+
+    <!-- **************************   MAT-HEADER-ROW   ******************* -->
+    <mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></mat-header-row>
+
+    <!-- **************************   MAT-ROW   ******************* -->
+    <mat-row *matRowDef="let element;columns: displayedColumns"
+        class="element-row" 
+        >
+    </mat-row>
+</mat-table>

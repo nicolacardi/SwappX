@@ -1,8 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { Event } from '@angular/router';
-import { fromEvent, Observable, pipe, Subscription } from 'rxjs';
+import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { Observable, pipe, Subscription } from 'rxjs';
 import { debounceTime, map, switchMap, tap, concatMap, mergeMap } from 'rxjs/operators';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
@@ -20,7 +19,7 @@ import { FiltriService } from './filtri.service';
   styleUrls: ['./filtri.component.css']
 })
 export class FiltriComponent implements OnInit, AfterViewInit {
-  form! : FormGroup;
+  form! :                   FormGroup;
   filteredAlunni$!:         Observable<ALU_Alunno[]>;
   filteredGenitori$!:       Observable<ALU_Genitore[]>;
   filteredAnniScolastici$!: Observable<ASC_AnnoScolastico[]>;

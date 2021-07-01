@@ -10,6 +10,7 @@ import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezi
 import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
 import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-page.component';
 import { AlunnoDashboardComponent } from './_components/alunni/alunno-dashboard/alunno-dashboard.component';
+import { AlunnoDashboardNewComponent } from './_components/alunni/alunno-dashboard-new/alunno-dashboard-new.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: "alunno-dashboard",
     component: AlunnoDashboardComponent
+  },
+  {
+    path: "alunno-dashboardNew",
+    component: AlunnoDashboardNewComponent
   },
   {
     path: "genitori",

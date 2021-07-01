@@ -36,12 +36,10 @@ export class AlunnoDashboardComponent implements OnInit{
   comuniNascitaIsLoading: boolean = false;
   breakpoint!:            number;
 
-  constructor(private fb: FormBuilder, 
-      private route:      ActivatedRoute,
-      private router:     Router,
-      private _snackBar:  MatSnackBar,
-      private alunniSvc:  AlunniService,
-      private comuniSvc:  ComuniService
+  constructor(private fb: FormBuilder,
+              private _snackBar:  MatSnackBar,
+              private alunniSvc:  AlunniService,
+              private comuniSvc:  ComuniService
      // @Inject(MAT_DIALOG_DATA) id:number) 
   )
      {
