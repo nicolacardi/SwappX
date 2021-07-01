@@ -1,0 +1,25 @@
+<form class="data-form " [formGroup] = "form">
+    <mat-form-field>
+        <mat-label>Nome e Cognome Alunno</mat-label>
+        <input type="text"
+                placeholder="<digita e seleziona>"
+                matInput
+                formControlName="nomeCognomeAlunno"
+                [matAutocomplete]="auto1" #nomeCognomeAlunno 
+                (keydown.enter) = "enterAlunnoInput()"
+                >
+                <!-- [displayWith]="displayFn" DisplayWith impedisce che si possa scrivere qualcosa nella input in maniera programmatica-->
+        <mat-autocomplete #auto1="matAutocomplete">
+            <!-- <mat-spinner *ngIf="nomeAlunnoIsLoading" class="is-loading" diameter="40"></mat-spinner> -->
+            <mat-option *ngFor="let element of (filteredAlunni$ | async)" (click) = "clickAlunnoCombo(element)" [value]="element.nome + ' ' + element.cognome" #option>
+                <small>{{element.nome}} {{element.cognome}}</small>
+            </mat-option>
+        </mat-autocomplete>
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="resetInputAlunno('nomeCognomeAlunno')">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
+</form>
+
+
+<app-classi-sezioni-anni-alunno></app-classi-sezioni-anni-alunno>
