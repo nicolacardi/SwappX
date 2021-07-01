@@ -42,8 +42,8 @@
 
                         <!-- **************************   MAT-ROW   ******************* -->
                         <mat-row *matRowDef="let element;columns: displayedColumns"
-                            class="element-row" (click)="rowclicked(element)"
-                            
+                            class="element-row" 
+                            (click)="rowclicked(element)"
                             [ngClass]="{'highlight': selectedRowIndex == element.id}"
                             >
                         </mat-row>

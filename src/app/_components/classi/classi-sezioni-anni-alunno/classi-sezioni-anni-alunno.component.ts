@@ -10,11 +10,12 @@ import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 @Component({
   selector: 'app-classi-sezioni-anni-alunno',
   templateUrl: './classi-sezioni-anni-alunno.component.html',
-  styleUrls: ['./classi-sezioni-anni-alunno.component.css']
+  styleUrls: ['./../classi.css']
 })
 export class ClassiSezioniAnniAlunnoComponent implements OnInit {
 
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno>();
+  selectedRowIndex = -1;
   displayedColumns: string[] =  [
     "descrizione",
     "sezione",
@@ -63,6 +64,11 @@ export class ClassiSezioniAnniAlunnoComponent implements OnInit {
       }
     );
   }
+
+  rowclicked(val: CLS_ClasseSezioneAnno ) {
+    this.selectedRowIndex = val.id;
+  }
+
 
 
   

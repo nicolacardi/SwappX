@@ -121,9 +121,10 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
       this.idClasse = val.id; 
       this.selectedRowIndex = val.id;
     }
-    else
-    this.idClasse = -1; 
-    this.selectedRowIndex = -1;
+    else {
+      this.idClasse = -1; 
+      this.selectedRowIndex = -1;
+    }
   }
 
   addAlunnoToClasse() {
