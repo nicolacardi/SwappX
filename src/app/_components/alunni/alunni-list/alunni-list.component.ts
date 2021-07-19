@@ -21,16 +21,7 @@ import { FiltriService } from '../../utilities/filtri/filtri.service';
 @Component({
   selector:     'app-alunni-list',
   templateUrl:  './alunni-list.component.html',
-  styleUrls:    [],
-  /* expanded
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],*/
-  //changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls:    ['../alunni.css']
 })
 
 export class AlunniListComponent implements OnInit {
@@ -65,7 +56,6 @@ export class AlunniListComponent implements OnInit {
 
   selection = new SelectionModel<ALU_Alunno>(true, []);   //rappresenta la selezione delle checkbox
 
-  //expandedElement!: ALU_Alunno | null;      //expanded
   matSortActive!:       string;
   matSortDirection!:    string;
   public idGenitore!:   number;
@@ -99,32 +89,10 @@ export class AlunniListComponent implements OnInit {
       console.log("alunni-list - ngOnInit getPage: la pagina attuale è: "+val);
       });
     
-    // this.displayedColumns = (window.innerWidth <= 800) ? [
-    //             "select", 
-    //             "actionsColumn", 
-    //             "nome",
-    //             "cognome",
-    //             "dtNascita", 
-    //             "email"] 
-    //             : 
-    //             ["select",
-    //             "actionsColumn", 
-    //             "nome", 
-    //             "cognome", 
-    //             "dtNascita", 
-    //             "indirizzo", 
-    //             "comune", 
-    //             "cap", 
-    //             "prov", 
-    //             "email", 
-    //             "telefono", 
-    //             "ckAttivo"];
-
-    if (this.page == "alunniList") {
+    if (this.page == "alunniList") 
       this.displayedColumns =  this.displayedColumnsAlunniList;
-    } else {
+    else 
       this.displayedColumns =  this.displayedColumnsClassiDashboard;
-    }
 
     if (this.page == "alunniList") {
       this._filtriService.getGenitore()
@@ -142,7 +110,7 @@ export class AlunniListComponent implements OnInit {
     //questo refresh vien lanciato due volte
     //serve perchè quando listAlunni è child di classiDashboard gli viene passato il valore di idClasse
     // e devo "sentire" in questo modo che deve refreshare
-    console.log("alunni-list.component.ts - ngOnChanges chiamata a this.refresh ");
+    //console.log("alunni-list.component.ts - ngOnChanges chiamata a this.refresh ");
     this.refresh(); 
     this.toggleChecks = false;
     this.resetSelections();

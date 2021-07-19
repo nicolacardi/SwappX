@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-rette',
-  templateUrl: './rette.component.html',
+  selector: 'app-pagamenti-page',
+  templateUrl: './pagamenti-page.component.html',
   styleUrls: ['../pagamenti.css']
 })
-export class RetteComponent implements OnInit {
+export class PagamentiPageComponent implements OnInit {
 
   constructor() { }
 

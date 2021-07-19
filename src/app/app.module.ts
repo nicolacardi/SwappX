@@ -36,6 +36,8 @@ import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-pag
 import { AlunnoDashboardNewComponent } from './_components/alunni/alunno-dashboard-new/alunno-dashboard-new.component';
 import { ClassiSezioniAnniAlunnoComponent } from './_components/classi/classi-sezioni-anni-alunno/classi-sezioni-anni-alunno.component';
 import { RetteComponent } from './_components/pagamenti/rette/rette.component';
+import { PagamentiListComponent } from './_components/pagamenti/pagamenti-list/pagamenti-list.component';
+import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
 
 
 @NgModule({
@@ -59,7 +61,9 @@ import { RetteComponent } from './_components/pagamenti/rette/rette.component';
     AlunniPageComponent,
     AlunnoDashboardNewComponent,
     ClassiSezioniAnniAlunnoComponent,
-    RetteComponent
+    RetteComponent,
+    PagamentiListComponent,
+    PagamentiPageComponent
 
 
   ],

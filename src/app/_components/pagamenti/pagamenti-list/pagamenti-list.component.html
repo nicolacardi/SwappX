@@ -1,0 +1,94 @@
+<h1 class="page-title">Elenco Pagamenti </h1>
+
+<!-- **************************   FILTER   ******************* -->
+<mat-form-field class="ml20 topZIndex">
+    <mat-label>Filtro</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
+</mat-form-field>
+
+<!-- **************************   PAGINATOR   ******************* -->
+<mat-paginator class="transparent" [pageSize]="10" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+
+<!-- **************************   MAT-TABLE   ******************* -->
+<mat-table class="transparent" [dataSource]="matDataSource"
+    matSort
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    (cdkDropListDropped)="drop($event)">
+    
+    <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+    <ng-container matColumnDef="actionsColumn">
+        <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
+        <mat-cell  *matCellDef="let element;  let j = index;"> 
+           <!--
+            <img (click)="openDetail(element.id)" class="iconaMenu pointer" src="../assets/alunno.svg">
+           -->
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="dtPagamento">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Data</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.dtPagamento | date: "dd/MM/yyyy"}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="importo">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>importo</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.importo}}</mat-cell>
+    </ng-container>
+    
+    <ng-container matColumnDef="tipoPagID">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Tipo Pag</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.tipoPagID }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="causaleID">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Causale</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.causaleID}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="rettaID">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>rettaID</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.rettaID}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="alunnoID">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>alunnoID</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.alunnoID}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="genitoreID">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>genitoreID</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.genitoreID}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="note">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>note</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.note}}</mat-cell>
+    </ng-container>
+    
+    <!-- **************************   MAT-HEADER-ROW   ******************* -->
+    <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+    
+    <!-- **************************   MAT-ROW   ******************* -->
+    <mat-row *matRowDef="let element;columns: displayedColumns"
+        class="element-row"
+        (contextmenu)="onRightClick($event, element)" >
+    </mat-row>
+
+</mat-table>
+
+<!-- ***********************  MENU RIGHT CLICK ****************** -->
+<div style="visibility: hidden; position: fixed;" 
+    [style.left]="menuTopLeftPosition.x" 
+    [style.top]="menuTopLeftPosition.y" 
+    [matMenuTriggerFor]="rightMenu">
+</div> 
+
+<mat-menu #rightMenu="matMenu"> 
+    <ng-template matMenuContent let-item="item"> 
+        <mat-label class="rightMenuTitle">Dettaglio Alunno</mat-label> 
+        <!-- <button mat-menu-item routerLink="/genitori" [queryParams]="{ idAlunno: item.id }">Genitori/Tutori</button>  
+        <button mat-menu-item (click)="openAlunno(item.id)">Alunno</button> -->
+        <button mat-menu-item>Alunno</button> 
+    </ng-template> 
+</mat-menu> 

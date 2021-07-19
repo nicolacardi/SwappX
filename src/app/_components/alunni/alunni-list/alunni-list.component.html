@@ -1,10 +1,4 @@
-
-    <!-- ciao -->
     <h1 class="page-title">Elenco Alunni <mat-icon *ngIf="idGenitore" color="warn" title="filtri avanzati applicati">filter_alt</mat-icon></h1>
-
-    <!-- <button mat-mini-fab aria-label="Aggiungi Alunno" matTooltip="Nuova anagrafica" class="button-add" (click)="addRecord()">
-        <mat-icon>add</mat-icon>
-    </button> -->
 
     <!-- **************************   FILTER   ******************* -->
     <mat-form-field class="ml20 topZIndex">
@@ -22,12 +16,9 @@
         [matSortDirection] = "'asc'"
         cdkDropList
         cdkDropListOrientation="horizontal"
-        (cdkDropListDropped)="drop($event)" 
-        >
-        <!-- Evento da inserire nel tag mat-table se si vogliono gestire le colonne in base alla finestra:
-            (window:resize)="onResize($event)" -->
-        <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+        (cdkDropListDropped)="drop($event)">
 
+        <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
         <ng-container matColumnDef="actionsColumn">
             <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
             <mat-cell  *matCellDef="let element;  let j = index;"> 
@@ -117,25 +108,6 @@
             </mat-cell>
         </ng-container>
         
-        <!-- **************************   NG-CONTAINER EXPANDED DETAIL   ******************* -->
-        <!--
-            in mat-table inserire la directive multiTemplateDataRows
-        <ng-container matColumnDef="expandedDetail">
-            <mat-cell *matCellDef="let AlunniSubject" [attr.colspan]="displayedColumns.length">
-                <div class="element-detail"
-                    [@detailExpand]="AlunniSubject == expandedElement ? 'expanded' : 'collapsed'">
-                    <div>
-                        <img class= "picture-img" src = '{{ "../../../../../assets/photos/" + AlunniSubject.nome + AlunniSubject.cognome + ".png" }}'>
-                    </div>
-                    <div class="ml20">
-                        Indirizzo: {{AlunniSubject.indirizzo}} {{AlunniSubject.comune}} {{AlunniSubject.prov}} <br>
-                        Data e Luogo di Nascita: {{AlunniSubject.dtNascita | date: "dd/MM/yyyy"}} {{AlunniSubject.comuneNascita}} {{AlunniSubject.provNascita}}
-                    </div>
-                </div>
-            </mat-cell>
-        </ng-container>
-        -->
-        
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
         <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
         
@@ -145,19 +117,6 @@
             (contextmenu)="onRightClick($event, element)" >
         </mat-row>
 
-        <!-- Caso con Expanded row
-        <mat-row *matRowDef="let element; columns: displayedColumns"
-            class="element-row"
-            (click)="onRowClicked(element.id)">
-        </mat-row>
-        <mat-row *matRowDef="let element; columns: displayedColumns"
-            class="element-row"
-            [class.expanded-row]="expandedElement === element"
-            (dblclick)="expandedElement = expandedElement === element ? null : element"
-            (click)="onRowClicked(element.id)">
-        </mat-row>
-        <mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></mat-row>    
-        --> 
     </mat-table>
 
     <!-- ***********************  MENU RIGHT CLICK ****************** -->

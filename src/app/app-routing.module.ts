@@ -11,7 +11,9 @@ import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/
 import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-page.component';
 import { AlunnoDashboardComponent } from './_components/alunni/alunno-dashboard/alunno-dashboard.component';
 import { AlunnoDashboardNewComponent } from './_components/alunni/alunno-dashboard-new/alunno-dashboard-new.component';
+
 import { RetteComponent } from './_components/pagamenti/rette/rette.component';
+import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
 
 const routes: Routes = [
   {
@@ -45,6 +47,11 @@ const routes: Routes = [
   {
     path: "classi-dashboard",
     component: ClassiDashboardComponent
+  },
+
+  {
+    path: "pagamenti",
+    component: PagamentiPageComponent
   },
   {
     path: "rette",

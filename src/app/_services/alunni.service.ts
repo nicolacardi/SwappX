@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { map, catchError, take, tap } from 'rxjs/operators';
+import { map} from 'rxjs/operators';
+
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 @Injectable({
   providedIn: 'root'
@@ -98,6 +99,7 @@ export class AlunniService {
     }
   }
 
+  //Recupera l'id da nome cognome  
   findIdAlunno(searchstring: string) : Observable<any>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni')
       .pipe(
