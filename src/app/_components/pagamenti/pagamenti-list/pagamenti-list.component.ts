@@ -23,10 +23,14 @@ export class PagamentiListComponent implements OnInit {
                                   "actionsColumn", 
                                   "dtPagamento", 
                                   "importo", 
-                                  "tipoPagID", 
-                                  "causaleID", 
+                                  //"tipoPagID", 
+                                  "tipoPagamento.descrizione",
+                                  //"causaleID", 
+                                  "causale.descrizione",
                                   "rettaID", 
-                                  "alunnoID", 
+                                  //"alunnoID", 
+                                  "alunno.cognome",
+                                  "alunno.nome",
                                   "genitoreID", 
                                   "note"];
 
