@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { MatDialog } from '@angular/material/dialog';
 
-import { GenitoriService } from 'src/app/_services/genitori.service';
+import { GenitoriService } from 'src/app/_components/genitori/genitori.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
@@ -132,13 +132,13 @@ export class GenitoreDetailsComponent implements OnInit {
 
   save(){
     if (this.form.controls['id'].value == null) 
-      this.genitoriSvc.postGenitore(this.form.value)
+      this.genitoriSvc.post(this.form.value)
         .subscribe(res=> {
           //console.log("return from post", res);
           this.form.markAsPristine();
         });
     else 
-      this.genitoriSvc.putGenitore(this.form.value)
+      this.genitoriSvc.put(this.form.value)
         .subscribe(res=> {
           //console.log("return from put", res);
           this.form.markAsPristine();
@@ -178,7 +178,7 @@ export class GenitoreDetailsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.genitoriSvc.deleteGenitore(this.idGenitore)
+        this.genitoriSvc.delete(this.idGenitore)
         .pipe (
           finalize(()=>this.router.navigate(['/alunni']))
         )

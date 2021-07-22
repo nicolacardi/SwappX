@@ -9,7 +9,7 @@ import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { validateHorizontalPosition } from '@angular/cdk/overlay';
 
-import { AlunniService } from 'src/app/_services/alunni.service';
+import { AlunniService } from 'src/app/_components/alunni/alunni.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
@@ -123,9 +123,9 @@ export class AlunnoDashboardComponent implements OnInit{
   save(){
 
     if (this.alunnoForm.controls['id'].value == null) 
-      this.alunniSvc.postAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from post", res));
+      this.alunniSvc.post(this.alunnoForm.value).subscribe(res=> console.log("return from post", res));
     else 
-      this.alunniSvc.putAlunno(this.alunnoForm.value).subscribe(res=> console.log("return from put", res));
+      this.alunniSvc.put(this.alunnoForm.value).subscribe(res=> console.log("return from put", res));
     
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
 

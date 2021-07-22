@@ -6,9 +6,9 @@ import { debounceTime, map, switchMap, tap, concatMap, mergeMap } from 'rxjs/ope
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { AlunniService } from 'src/app/_services/alunni.service';
+import { AlunniService } from 'src/app/_components/alunni/alunni.service';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { GenitoriService } from 'src/app/_services/genitori.service';
+import { GenitoriService } from 'src/app/_components/genitori/genitori.service';
 import { RequireMatch } from '../requireMatch/requireMatch';
 import { FiltriService } from './filtri.service';
 

@@ -13,7 +13,7 @@ export class GenitoriService {
 
   constructor(private http: HttpClient) { }
 
-  loadGenitori(): Observable<ALU_Genitore[]>{
+  load(): Observable<ALU_Genitore[]>{
   //loadGenitori(idAlunno?: any): Observable<ALU_Genitore[]>{
     //console.log("loadGenitori");
     //if (idAlunno == null || idAlunno == "")
@@ -22,12 +22,12 @@ export class GenitoriService {
     //  return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllByAlunno/'+idAlunno);
   }
 
-  loadGenitoriByAlunno(idAlunno: any): Observable<ALU_Genitore[]>{
+  loadByAlunno(idAlunno: any): Observable<ALU_Genitore[]>{
       return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllByAlunno/'+idAlunno);
   }
 
-  loadGenitoriWithChildren(): Observable<ALU_Genitore[]>{
-    //console.log("loadGenitoriWithChildren");
+  loadWithChildren(): Observable<ALU_Genitore[]>{
+    //console.log("loadGenitoriChildren");
     return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllWithChildren');
   }
 
@@ -47,16 +47,16 @@ export class GenitoriService {
     });
   }
 
-  putGenitore(formData: any): Observable <any>{
+  put(formData: any): Observable <any>{
     return this.http.put( environment.apiBaseUrl  + 'ALU_Genitori/' + formData.id , formData);    
   }
 
-  postGenitore(formData: any): Observable <any>{
+  post(formData: any): Observable <any>{
     formData.id = 0;
     return this.http.post( environment.apiBaseUrl  + 'ALU_Genitori' , formData);  
   }
 
-  deleteGenitore(id: number): Observable <any>{
+  delete(id: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'ALU_Genitori/' + id);    
   }
 

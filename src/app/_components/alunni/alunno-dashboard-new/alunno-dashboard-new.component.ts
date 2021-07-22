@@ -4,7 +4,7 @@ import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autoc
 import { Observable } from 'rxjs';
 import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { AlunniService } from 'src/app/_services/alunni.service';
+import { AlunniService } from 'src/app/_components/alunni/alunni.service';
 import { FiltriService } from '../../utilities/filtri/filtri.service';
 import { AlunnoDashboardNewService } from './alunno-dashboard-new.service';
 

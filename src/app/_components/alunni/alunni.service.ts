@@ -14,19 +14,19 @@ export class AlunniService {
 
   constructor(private http: HttpClient) { }
 
-  loadAlunni(): Observable<ALU_Alunno[]>{
+  load(): Observable<ALU_Alunno[]>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni');
   }
 
-  loadAlunniByGenitore(idGenitore: any): Observable<ALU_Alunno[]>{
+  loadByGenitore(idGenitore: any): Observable<ALU_Alunno[]>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllByGenitore/'+idGenitore);
   }
 
-  loadAlunniByClasse(idClasse: any): Observable<ALU_Alunno[]>{
+  loadByClasse(idClasse: any): Observable<ALU_Alunno[]>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllByClasse/'+idClasse);
   }
 
-  loadAlunniWithParents(): Observable<ALU_Alunno[]>{
+  loadWithParents(): Observable<ALU_Alunno[]>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllWithParents');
   }
 
@@ -49,16 +49,16 @@ export class AlunniService {
     });
   }
 
-  putAlunno(formData: any): Observable <any>{
+  put(formData: any): Observable <any>{
     return this.http.put( environment.apiBaseUrl  + 'ALU_Alunni/' + formData.id , formData);    
   }
 
-  postAlunno(formData: any): Observable <any>{
+  post(formData: any): Observable <any>{
     formData.id = 0;
     return this.http.post( environment.apiBaseUrl  + 'ALU_Alunni' , formData);  
   }
 
-  deleteAlunno(id: number): Observable <any>{
+  delete(id: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'ALU_Alunni/' + id);    
   }
 

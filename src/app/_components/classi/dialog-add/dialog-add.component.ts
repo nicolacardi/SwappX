@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable, timer } from 'rxjs';
 import { debounceTime, delayWhen, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { AlunniService } from 'src/app/_services/alunni.service';
+import { AlunniService } from 'src/app/_components/alunni/alunni.service';
 import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { ClassiSezioniAnniAlunniService } from '../classi-sezioni-anni-alunni.service';
 

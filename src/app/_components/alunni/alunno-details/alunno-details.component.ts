@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { MatDialog } from '@angular/material/dialog';
 
-import { AlunniService } from 'src/app/_services/alunni.service';
+import { AlunniService } from 'src/app/_components/alunni/alunni.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
@@ -146,13 +146,13 @@ export class AlunnoDetailsComponent implements OnInit{
   save(){
 
     if (this.form.controls['id'].value == null) 
-      this.alunniSvc.postAlunno(this.form.value)
+      this.alunniSvc.post(this.form.value)
         .subscribe(res=> {
           //console.log("return from post", res);
           this.form.markAsPristine();
         });
     else 
-      this.alunniSvc.putAlunno(this.form.value)
+      this.alunniSvc.put(this.form.value)
         .subscribe(res=> {
           //console.log("return from put", res);
           this.form.markAsPristine();
@@ -192,7 +192,7 @@ export class AlunnoDetailsComponent implements OnInit{
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.alunniSvc.deleteAlunno(this.idAlunno)
+        this.alunniSvc.delete(this.idAlunno)
         .pipe (
           finalize(()=>this.router.navigate(['/alunni']))
         )

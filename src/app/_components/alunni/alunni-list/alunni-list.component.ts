@@ -11,7 +11,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { AlunniService } from '../../../_services/alunni.service';
+import { AlunniService } from '../alunni.service';
 import { AlunnoDetailsComponent } from '../alunno-details/alunno-details.component';
 
 import { LoadingService } from '../../utilities/loading/loading.service';
@@ -121,17 +121,17 @@ export class AlunniListComponent implements OnInit {
     let obsAlunni$: Observable<ALU_Alunno[]>;
     if (this.page == "classiDashboard") {
       
-      obsAlunni$= this.svcAlunni.loadAlunniByClasse(this.idClasse);
+      obsAlunni$= this.svcAlunni.loadByClasse(this.idClasse);
       console.log("alunni-list.component.ts - this.refresh - caso 1");
 
     } else {
       if(this.idGenitore && this.idGenitore != undefined  && this.idGenitore != null && this.idGenitore != 0) {
-        obsAlunni$= this.svcAlunni.loadAlunniByGenitore(this.idGenitore);
+        obsAlunni$= this.svcAlunni.loadByGenitore(this.idGenitore);
         console.log("alunni-list.component.ts - this.refresh - caso 2");
       } else {
         //purtroppo passa di qua anche quando sta caricando all'inizio, non ha ancora il numero di pagina (getPage non dà ancora valore)
         //e quindi inizialmente passa di qua comunque
-        obsAlunni$= this.svcAlunni.loadAlunni();
+        obsAlunni$= this.svcAlunni.load();
         console.log("alunni-list.component.ts - this.refresh - caso 3: this.page = "+this.page);
       }
     }
@@ -308,7 +308,7 @@ export class AlunniListComponent implements OnInit {
 
 //   dialogRef.afterClosed().subscribe(result => {
 //     if(result){
-//       this.svcAlunni.deleteAlunno(element.id)
+//       this.svcAlunni.delete(element.id)
 //       .subscribe(
 //         res=>{    
 //           this._snackBar.openFromComponent(SnackbarComponent,

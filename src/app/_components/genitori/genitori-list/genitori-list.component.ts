@@ -9,7 +9,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
-import { GenitoriService } from '../../../_services/genitori.service';
+import { GenitoriService } from '../genitori.service';
 import { GenitoreDetailsComponent } from '../genitore-details/genitore-details.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
@@ -73,9 +73,9 @@ export class GenitoriListComponent implements OnInit {
     let obsGenitori$: Observable<ALU_Genitore[]>;
 
     if(this.idAlunno && this.idAlunno != undefined  && this.idAlunno != null && this.idAlunno != 0) {
-      obsGenitori$= this.svcGenitori.loadGenitoriByAlunno(this.idAlunno);
+      obsGenitori$= this.svcGenitori.loadByAlunno(this.idAlunno);
     } else {
-      obsGenitori$= this.svcGenitori.loadGenitori();
+      obsGenitori$= this.svcGenitori.load();
     }
 
     const loadGenitori$ =this._loadingService.showLoaderUntilCompleted(obsGenitori$);
