@@ -1,8 +1,7 @@
-
 <div class="container">
     <mat-card class="form-card">
         <mat-card-content>
-            <form *ngIf="(alunno | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
+            <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
                 <div class="buttonsDetail">
 
                     <button *ngIf="!idAlunno" mat-stroked-button color="secondary" mat-dialog-close>

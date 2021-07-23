@@ -32,13 +32,13 @@
                     <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>
             </mat-chip-list>
-                <input 
-                    placeholder = "digita e seleziona"
-                    matInput
-                    [matChipInputFor]="chipList"
-                    formControlName="nomeCognomeAlunno"
-                    [matAutocomplete]="auto" #nomeCognomeAlunno 
-                >
+
+            <input 
+                placeholder = "digita e seleziona"
+                matInput
+                [matChipInputFor]="chipList"
+                formControlName="nomeCognomeAlunno"
+                [matAutocomplete]="auto" #nomeCognomeAlunno>
 
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                 <mat-progress-bar class="is-loading" *ngIf="alunniIsLoading" mode="indeterminate"></mat-progress-bar>

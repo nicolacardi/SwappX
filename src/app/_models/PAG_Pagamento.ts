@@ -6,7 +6,7 @@ export interface PAG_Pagamento {
         importo:        number;
         dtPagamento:    Date;
 
-        tipoPagID:      number;                 //Sostituire con oggetto PAG_TipoPagamenti
+        tipoPagamentoID:      number;                 //Sostituire con oggetto PAG_TipoPagamenti
         tipoPagamento:        PAG_TipoPagamento;
 
         causaleID:      number;                 //Sostituire con oggetto PAG_Causali
