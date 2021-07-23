@@ -47,7 +47,7 @@ export class PagamentiEditComponent implements OnInit {
         id:                         [null],
         importo:                    ['', { validators:[ Validators.required, Validators.pattern("^[0-9]*$")]}],
         dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-        tipoPagamentoID:                  ['', Validators.required],
+        tipoPagamentoID:            ['', Validators.required],
         causaleID:                  ['', Validators.required]
 // TODO ...
       });
@@ -61,6 +61,8 @@ export class PagamentiEditComponent implements OnInit {
 
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
 
+ 
+    
     if (this.data) {
       const obsPagamento$: Observable<PAG_Pagamento> = this.pagamentiSvc.loadByID(this.data);
       const loadPagamento$ = this._loadingService.showLoaderUntilCompleted(obsPagamento$);
@@ -70,7 +72,6 @@ export class PagamentiEditComponent implements OnInit {
           tap(
             pagamento => this.form.patchValue(pagamento)
           ),
-          tap(deb => console.log("MERDACCIA", deb))
       );
     } else {
       this.emptyForm = true
@@ -85,7 +86,8 @@ export class PagamentiEditComponent implements OnInit {
       //delayWhen(() => timer(2000)),
       switchMap(() => this.tipiPagamentoSvc.filter(this.form.value.tipoPagamentoID)),
       tap(() => this.tipiPagamentoIsLoading = false)
-    )
+    );
+
   }
 
   save(){
