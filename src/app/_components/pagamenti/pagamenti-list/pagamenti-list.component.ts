@@ -1,12 +1,13 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { PAG_Pagamento } from 'src/app/_models/PAG_Pagamento';
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { PagamentiEditComponent } from '../pagamenti-edit/pagamenti-edit.component';
 import { PagamentiService } from '../pagamenti.service';
 
 @Component({
@@ -23,10 +24,14 @@ export class PagamentiListComponent implements OnInit {
                                   "actionsColumn", 
                                   "dtPagamento", 
                                   "importo", 
-                                  "tipoPagID", 
-                                  "causaleID", 
+                                  //"tipoPagamentoID", 
+                                  "tipoPagamento.descrizione",
+                                  //"causaleID", 
+                                  "causale.descrizione",
                                   "rettaID", 
-                                  "alunnoID", 
+                                  //"alunnoID", 
+                                  "alunno.cognome",
+                                  "alunno.nome",
                                   "genitoreID", 
                                   "note"];
 
@@ -78,4 +83,28 @@ export class PagamentiListComponent implements OnInit {
     this.matMenuTrigger.menuData = {item: element}   
     this.matMenuTrigger.openMenu(); 
   }
+
+  //#region ### Funzioni ###
+  
+
+  openDetail(idPagamento: number){
+
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '800px',
+      height: '620px',
+      data: idPagamento
+    };
+
+    const dialogRef = this._dialog.open(PagamentiEditComponent, dialogConfig);
+    dialogRef.afterClosed()
+      .subscribe(
+        () => {
+          this.refresh();
+    });
+  }
+
+  //#endregion
+
+
 }

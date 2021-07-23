@@ -1,3 +1,4 @@
+import { PAG_TipoPagamento } from "./PAG_TipoPagamento";
 
 export interface PAG_Pagamento {
 
@@ -5,7 +6,9 @@ export interface PAG_Pagamento {
         importo:        number;
         dtPagamento:    Date;
 
-        tipoPagID:      number;                 //Sostituire con oggetto PAG_TipoPagamenti
+        tipoPagamentoID:      number;                 //Sostituire con oggetto PAG_TipoPagamenti
+        tipoPagamento:        PAG_TipoPagamento;
+
         causaleID:      number;                 //Sostituire con oggetto PAG_Causali
         rettaID:        number;                 //Sostituire con oggetto PAG_Rette
 

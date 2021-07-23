@@ -25,16 +25,17 @@ import { FiltriService } from '../../utilities/filtri/filtri.service';
 export class AlunnoDetailsComponent implements OnInit{
 
   idAlunno!:                  number;
+  alunno$!:                    Observable<ALU_Alunno>;
+
+  form! :                     FormGroup;
+  emptyForm :                 boolean = false;
+  loading:                    boolean = true;
+  
   caller_page!:               string;
   caller_size!:               string;
   caller_filter!:             string;
   caller_sortField!:          string;
   caller_sortDirection!:      string;
-
-  form! :                     FormGroup;
-  emptyForm :                 boolean = false;
-  alunno!:                    Observable<ALU_Alunno>;
-  loading:                    boolean = true;
   
   filteredComuni$!:           Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:    Observable<_UT_Comuni[]>;
@@ -109,7 +110,7 @@ export class AlunnoDetailsComponent implements OnInit{
       const obsAlunno$: Observable<ALU_Alunno> = this.alunniSvc.loadAlunno(this.idAlunno);
       const loadAlunno$ = this._loadingService.showLoaderUntilCompleted(obsAlunno$);
       //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
-      this.alunno = loadAlunno$
+      this.alunno$ = loadAlunno$
       .pipe(
           tap(
             alunno => this.form.patchValue(alunno)

@@ -17,8 +17,10 @@ export class PagamentiService {
   load(): Observable<PAG_Pagamento[]>{
     return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti');
   }
-  loadByAlunno(idAlunno: any): Observable<PAG_Pagamento[]>{
-    return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti/GetAllByAlunno/'+idAlunno);
+
+  loadByID(idPagamento: any): Observable<PAG_Pagamento>{
+    
+    return this.http.get<PAG_Pagamento>(environment.apiBaseUrl+'PAG_Pagamenti/'+idPagamento);
   }
 
   put(formData: any): Observable <any>{
