@@ -31,6 +31,7 @@ export class PagamentiEditComponent implements OnInit {
   descTipoPag!:               string;
   tipiPagamentoIsLoading:     boolean=false;
   filteredTipiPagamento$!:    Observable<PAG_TipoPagamento[]>;
+  TipoPagamento$!:            Observable<PAG_TipoPagamento>;
 
   constructor(
     //public dialogRef: MatDialogRef<DialogYesNoComponent>,
@@ -48,6 +49,7 @@ export class PagamentiEditComponent implements OnInit {
         importo:                    ['', { validators:[ Validators.required, Validators.pattern("^[0-9]*$")]}],
         dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
         tipoPagamentoID:            ['', Validators.required],
+        
         causaleID:                  ['', Validators.required]
 // TODO ...
       });
@@ -60,8 +62,6 @@ export class PagamentiEditComponent implements OnInit {
   loadData(){
 
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
-
- 
     
     if (this.data) {
       const obsPagamento$: Observable<PAG_Pagamento> = this.pagamentiSvc.loadByID(this.data);
@@ -73,7 +73,7 @@ export class PagamentiEditComponent implements OnInit {
             pagamento => {
               this.form.patchValue(pagamento)
               this.descTipoPag = pagamento.tipoPagamento.descrizione;
-              console.log(this.descTipoPag);
+              
             }
           ),
       );
@@ -102,6 +102,41 @@ export class PagamentiEditComponent implements OnInit {
   //   });
     
   // }
+  displayFn(id: any) {
+    if (!id) return "";
+  
+    console.log("BELLA MERDA", id);
+/*
+    const obsTipoPagamento$: Observable<PAG_TipoPagamento> = this.tipiPagamentoSvc.loadByID(id).pipe(
+      tap(
+        tipo => {
+          console.log("TIPO PAGAMENTO", tipo.descrizione);
+        }
+      )
+    );
+    */
+    
+    //this.TipoPagamento$ = this.tipiPagamentoSvc.loadByID(id);
+
+        
+    this.TipoPagamento$ =  this.tipiPagamentoSvc.loadByID(id)
+    .pipe(
+        tap(
+          tipo => {
+            //this.form.patchValue(pagamento)
+            this.descTipoPag = tipo.descrizione;
+            
+          }
+        ),
+    );
+
+
+    return this.descTipoPag;
+
+
+    //let index = this.states.findIndex(state => state.id === id);
+    //return this.states[index].name;
+  }
 
   save(){
 //TODO ...

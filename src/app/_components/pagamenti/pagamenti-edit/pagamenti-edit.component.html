@@ -64,7 +64,6 @@
                 </mat-grid-list>
 
                 <mat-grid-list [cols]="breakpoint" rowHeight="60px">
-
                     <mat-grid-tile>
                         <mat-form-field>
                             <input matInput type="number" required placeholder="Tipo pagamento" formControlName="tipoPagamentoID">
@@ -81,7 +80,8 @@
                                     formControlName="tipoPagamentoID"
                                     [matAutocomplete]="auto1">
                                     
-                            <mat-autocomplete #auto1="matAutocomplete" >
+                            <mat-autocomplete #auto1="matAutocomplete"  [displayWith]="displayFn.bind(this)">
+
                                 <mat-spinner *ngIf="tipiPagamentoIsLoading" class="is-loading" diameter="40"></mat-spinner>
                                 <mat-option *ngFor="let element of (filteredTipiPagamento$ | async)" [value]="element">
                                     <small>{{element.descrizione}}</small>
@@ -91,9 +91,6 @@
                     </mat-grid-tile>
 
                 </mat-grid-list>
-
-           
-
             </form>
 
             <!-- <div>
