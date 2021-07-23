@@ -1,0 +1,3 @@
+Dialog Add Alunno e Pagina Edit Alunno dovrebbero usare lo stesso component
+
+LoadAlunno e simili diventano LoadByID
