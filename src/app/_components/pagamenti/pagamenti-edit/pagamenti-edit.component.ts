@@ -28,7 +28,7 @@ export class PagamentiEditComponent implements OnInit {
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
   breakpoint!:                number;
-  
+  descTipoPag!:               string;
   tipiPagamentoIsLoading:     boolean=false;
   filteredTipiPagamento$!:    Observable<PAG_TipoPagamento[]>;
 
@@ -70,7 +70,11 @@ export class PagamentiEditComponent implements OnInit {
       this.pagamento$ = loadPagamento$
       .pipe(
           tap(
-            pagamento => this.form.patchValue(pagamento)
+            pagamento => {
+              this.form.patchValue(pagamento)
+              this.descTipoPag = pagamento.tipoPagamento.descrizione;
+              console.log(this.descTipoPag);
+            }
           ),
       );
     } else {
@@ -89,6 +93,15 @@ export class PagamentiEditComponent implements OnInit {
     );
 
   }
+
+  // autocompleteDisplay() {
+  //    this.tipiPagamentoSvc.loadByID(this.form.value.tipoPagamentoID).subscribe(
+  //     x=>{
+  //       this.descTipoPag = x.descrizione
+
+  //   });
+    
+  // }
 
   save(){
 //TODO ...

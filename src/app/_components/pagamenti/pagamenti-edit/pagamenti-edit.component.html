@@ -83,7 +83,7 @@
                                     
                             <mat-autocomplete #auto1="matAutocomplete" >
                                 <mat-spinner *ngIf="tipiPagamentoIsLoading" class="is-loading" diameter="40"></mat-spinner>
-                                <mat-option *ngFor="let element of (filteredTipiPagamento$ | async)" [value]="element.descrizione" [id]="element.id.toString()">
+                                <mat-option *ngFor="let element of (filteredTipiPagamento$ | async)" [value]="element">
                                     <small>{{element.descrizione}}</small>
                                 </mat-option>
                             </mat-autocomplete>
