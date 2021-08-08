@@ -12,8 +12,7 @@
                     matInput
                     formControlName="nomeCognomeAlunno"
                     [matAutocomplete]="auto1" #nomeCognomeAlunno 
-                    (keydown.enter) = "enterAlunnoInput()"
-                    >
+                    (keydown.enter) = "enterAlunnoInput()">
                     <!-- [displayWith]="displayFn" DisplayWith impedisce che si possa scrivere qualcosa nella input in maniera programmatica-->
             <mat-autocomplete #auto1="matAutocomplete">
                 <!-- <mat-spinner *ngIf="nomeAlunnoIsLoading" class="is-loading" diameter="40"></mat-spinner> -->

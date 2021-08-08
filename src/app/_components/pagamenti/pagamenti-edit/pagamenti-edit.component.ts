@@ -1,9 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
+import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
@@ -17,12 +18,15 @@ import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
+import { AlunniService } from '../../alunni/alunni.service';
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+
 @Component({
   selector: 'app-pagamenti-edit',
   templateUrl: './pagamenti-edit.component.html',
   styleUrls: ['../pagamenti.css']
 })
-export class PagamentiEditComponent implements OnInit {
+export class PagamentiEditComponent implements OnInit, AfterViewInit {
 
   id!:               number;
   pagamento$!:                Observable<PAG_Pagamento>;
@@ -35,6 +39,13 @@ export class PagamentiEditComponent implements OnInit {
   
   causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
   tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
+  
+  filteredAlunni$!:           Observable<ALU_Alunno[]>;
+
+  @ViewChild(MatAutocomplete) matAutocomplete!: MatAutocomplete;
+
+  @ViewChild('autoAlunno', { read: MatAutocompleteTrigger }) 
+  autoAlunno!: MatAutocompleteTrigger;
 
   constructor(
     //public dialogRef: MatDialogRef<DialogYesNoComponent>,
@@ -43,6 +54,7 @@ export class PagamentiEditComponent implements OnInit {
     private pagamentiSvc:     PagamentiService,
     private tipiPagamentoSvc: TipiPagamentoService,
     private causaliPagamentoSvc: CausaliPagamentoService,
+    private alunniSvc:              AlunniService,
     public _dialog:         MatDialog,
     private _snackBar:      MatSnackBar,
     private _loadingService :LoadingService,
@@ -53,12 +65,30 @@ export class PagamentiEditComponent implements OnInit {
         importo:                    ['', { validators:[ Validators.required, Validators.pattern("^[0-9]*$")]}],
         dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
         tipoPagamentoID:            ['', Validators.required],
-        causaleID:                  ['', Validators.required]
+        causaleID:                  ['', Validators.required],
+        alunnoID:                    ['', Validators.required],
+        genitoreID:                    ['', Validators.required],
+        nomeCognomeAlunno:                  ['']
 // TODO ...
       });
   }
 
   ngOnInit()  {
+    //AS: ATTENZIONE: il loadData dà un errore ExpressionChangedAfterItHasBeenCheckedError
+    //--> spostato su AfterViewInit
+    //this.loadData();
+
+    this.filteredAlunni$ = this.form.controls['nomeCognomeAlunno'].valueChanges
+    .pipe(
+      debounceTime(300),                                                      //attendiamo la digitazione
+      //tap(() => this.nomiIsLoading = true),                                 //attiviamo il loading
+      //delayWhen(() => timer(2000)),                                         //se vogliamo vedere il loading allunghiamo i tempi
+
+      switchMap(() => this.alunniSvc.filterAlunni(this.form.value.nomeCognomeAlunno)), 
+    )
+  }
+
+  ngAfterViewInit()  {
     this.loadData();
   }
 
@@ -80,9 +110,7 @@ export class PagamentiEditComponent implements OnInit {
           ),
       );
     } else {
-      console.log("Qui va in errore");
-
-      this.emptyForm = true
+      this.emptyForm = true;
     }
 
     //********************* COMBO TIPO PAGAMENTO *******************
@@ -102,7 +130,7 @@ export class PagamentiEditComponent implements OnInit {
     this.tipiPagamento$ = this.tipiPagamentoSvc.load();
     
     
-    console.log("finito tutto");
+    //console.log("finito tutto");
 
 
   }
@@ -110,7 +138,7 @@ export class PagamentiEditComponent implements OnInit {
     
   save(){
 
-console.log(this.form);
+//console.log(this.form);
 
     if (this.form.controls['id'].value == null) 
       this.pagamentiSvc.post(this.form.value)
@@ -136,6 +164,28 @@ console.log(this.form);
 
   }
 
+  //#region 
+  
+  enterAlunnoInput () {
+    //Su pressione di enter devo dapprima selezionare il PRIMO valore della lista aperta (a meno che non sia vuoto)
+    //Una volta selezionato devo trovare, SE esiste, il valore dell'id che corrisponde a quanto digitato e quello passarlo a passAlunno del service
+    //Mancherebbe qui la possibilità di selezionare solo con le freccette e Enter
+    if (this.form.controls['nomeCognomeAlunno'].value != '') {
+      this.matAutocomplete.options.first.select();
+      //Questo è il valore che devo cercare: this.matAutocomplete.options.first.viewValue;
+      this.alunniSvc.findIdAlunno(this.matAutocomplete.options.first.viewValue)
+      .subscribe();
+    }
+  }
+
+  resetInputAlunno (formControlName: string) {
+
+    //console.log("formControlName" , formControlName);
+    this.form.controls[formControlName].setValue('');
+    this.autoAlunno.closePanel();
+  }
+
+  //#endregion
 
   onResize(event: any) {
     console.log("STEP4");

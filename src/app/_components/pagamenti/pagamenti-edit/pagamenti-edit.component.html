@@ -2,95 +2,120 @@
     <mat-card class="form-card">
         <mat-card-content>
 
-            <form *ngIf="(pagamento$ | async) || emptyForm==true" class="data-form flex-form" [formGroup] = "form">
-                <div class="buttonsDetail">
+            <!--<form *ngIf="(pagamento$ | async) || emptyForm==true" class="data-form flex-form" [formGroup] = "form">-->
+                <form *ngIf="(pagamento$ | async)" class="data-form flex-form" [formGroup] = "form">
+                    <div class="buttonsDetail">
+    
+                        <button *ngIf="!id" mat-stroked-button color="secondary" mat-dialog-close>
+                            <mat-icon>arrow_back</mat-icon>
+                            <div class="button-textDetail">
+                                annulla
+                            </div>
+                        </button>
+    
+                        <button type="button" *ngIf="id" mat-stroked-button color="secondary" 
+                            (click)="back()">
+                            <mat-icon>arrow_back</mat-icon>
+                            <div class="button-textDetail">
+                                alunni
+                            </div>
+                        </button>
+    
+                        <button *ngIf="id" mat-stroked-button color="secondary" 
+                            [disabled]= "!form.valid" 
+                            (click)="loadData()">
+                            <mat-icon>restart_alt</mat-icon>
+                            <div class="button-textDetail">ricarica</div>
+                        </button>
+    
+                        <button mat-stroked-button color="secondary" 
+                            [disabled]= "!form.valid" 
+                            (click)="save()"><mat-icon>save</mat-icon>
+                            <div class="button-textDetail">salva</div>
+                        </button>
+    
+                        <button *ngIf="id" mat-stroked-button color="warn" 
+                            [disabled]= "!form.valid" 
+                            (click)="delete()">
+                            <mat-icon>delete_outline</mat-icon>
+                            <div class="button-textDetail">elimina</div>
+                        </button>
+                    </div>
+    
+                    <mat-grid-list [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
 
-                    <button *ngIf="!id" mat-stroked-button color="secondary" mat-dialog-close>
-                        <mat-icon>arrow_back</mat-icon>
-                        <div class="button-textDetail">
-                            annulla
-                        </div>
-                    </button>
-
-                    <button type="button" *ngIf="id" mat-stroked-button color="secondary" 
-                        (click)="back()">
-                        <mat-icon>arrow_back</mat-icon>
-                        <div class="button-textDetail">
-                            alunni
-                        </div>
-                    </button>
-
-                    <button *ngIf="id" mat-stroked-button color="secondary" 
-                        [disabled]= "!form.valid" 
-                        (click)="loadData()">
-                        <mat-icon>restart_alt</mat-icon>
-                        <div class="button-textDetail">ricarica</div>
-                    </button>
-
-                    <button mat-stroked-button color="secondary" 
-                        [disabled]= "!form.valid" 
-                        (click)="save()"><mat-icon>save</mat-icon>
-                        <div class="button-textDetail">salva</div>
-                    </button>
-
-                    <button *ngIf="id" mat-stroked-button color="warn" 
-                        [disabled]= "!form.valid" 
-                        (click)="delete()">
-                        <mat-icon>delete_outline</mat-icon>
-                        <div class="button-textDetail">elimina</div>
-                    </button>
-                </div>
-
-                <mat-grid-list [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
-
-                    <mat-grid-tile>
-                        <mat-form-field  >
-                            <mat-label>Selezionare la causale</mat-label>
-                            <mat-select formControlName="tipoPagamentoID">
-                              <mat-option *ngFor="let element of (causaliPagamento$ | async)" [value]="element.id">
-                                {{element.descrizione}}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                    </mat-grid-tile>
-
-                    <mat-grid-tile>
-                        <mat-form-field class="form-dp">
-                            <input matInput
-                            required
-                            formControlName = "dtPagamento"
-                            [matDatepicker]= "dpDtPagamento"
-                            placeholder="Data di pagamento"
-                            #date>
-                            <mat-datepicker-toggle matSuffix [for]="dpDtPagamento"></mat-datepicker-toggle>
-                            <mat-datepicker #dpDtPagamento></mat-datepicker>
-                            <mat-error *ngIf="form.controls.dtPagamento.errors?.required"> Campo obbligatorio</mat-error>
-                        </mat-form-field>
-                    </mat-grid-tile>
-                </mat-grid-list>
-
-                <mat-grid-list [cols]="breakpoint" rowHeight="60px">
-                    <mat-grid-tile>
                         <mat-form-field>
-                            <input matInput type="number" required placeholder="Importo" formControlName="importo">
-                            <mat-error *ngIf="form.controls.importo.errors?.required"> Campo obbligatorio</mat-error>
+                            <mat-label>Alunno</mat-label>
+                            <input type="text"
+                                    placeholder="<digita e seleziona>"
+                                    matInput
+                                    formControlName="nomeCognomeAlunno"
+                                    [matAutocomplete]="autoAlunno" #nomeCognomeAlunno 
+                                    (keydown.enter) = "enterAlunnoInput()">
+                                    <!-- [displayWith]="displayFn" DisplayWith impedisce che si possa scrivere qualcosa nella input in maniera programmatica-->
+                            <mat-autocomplete #autoAlunno="matAutocomplete">
+                                <!-- <mat-spinner *ngIf="nomeAlunnoIsLoading" class="is-loading" diameter="40"></mat-spinner> -->
+                                <mat-option *ngFor="let element of (filteredAlunni$ | async)"  [value]="element.nome + ' ' + element.cognome" #option>
+                                    <small>{{element.nome}} {{element.cognome}}</small>
+                                </mat-option>
+                            </mat-autocomplete>
+                            <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="resetInputAlunno('nomeCognomeAlunno')">
+                                <mat-icon>close</mat-icon>
+                            </button>
                         </mat-form-field>
-                    </mat-grid-tile>
+                    </mat-grid-list>
 
-                    <mat-grid-tile>
-                        <mat-form-field  >
-                            <mat-label>Selezionare il tipo di pagamento</mat-label>
-                            <mat-select formControlName="tipoPagamentoID">
-                              <mat-option *ngFor="let element of (tipiPagamento$ | async)" [value]="element.id">
-                                {{element.descrizione}}
-                              </mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                    </mat-grid-tile>
-                </mat-grid-list>
+                    <mat-grid-list [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
+    
 
-            
-            </form>
+                        <mat-grid-tile>
+                            <mat-form-field  >
+                                <mat-label>Selezionare la causale</mat-label>
+                                <mat-select formControlName="tipoPagamentoID">
+                                  <mat-option *ngFor="let element of (causaliPagamento$ | async)" [value]="element.id">
+                                    {{element.descrizione}}
+                                  </mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                        </mat-grid-tile>
+    
+                        <mat-grid-tile>
+                            <mat-form-field class="form-dp">
+                                <input matInput
+                                required
+                                formControlName = "dtPagamento"
+                                [matDatepicker]= "dpDtPagamento"
+                                placeholder="Data di pagamento"
+                                #date>
+                                <mat-datepicker-toggle matSuffix [for]="dpDtPagamento"></mat-datepicker-toggle>
+                                <mat-datepicker #dpDtPagamento></mat-datepicker>
+                                <mat-error *ngIf="form.controls.dtPagamento.errors?.required"> Campo obbligatorio</mat-error>
+                            </mat-form-field>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+    
+                    <mat-grid-list [cols]="breakpoint" rowHeight="60px">
+                        <mat-grid-tile>
+                            <mat-form-field>
+                                <input matInput type="number" required placeholder="Importo" formControlName="importo">
+                                <mat-error *ngIf="form.controls.importo.errors?.required"> Campo obbligatorio</mat-error>
+                            </mat-form-field>
+                        </mat-grid-tile>
+    
+                        <mat-grid-tile>
+                            <mat-form-field  >
+                                <mat-label>Selezionare il tipo di pagamento</mat-label>
+                                <mat-select formControlName="tipoPagamentoID">
+                                  <mat-option *ngFor="let element of (tipiPagamento$ | async)" [value]="element.id">
+                                    {{element.descrizione}}
+                                  </mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+    
+                
+                </form>
         
        
 
