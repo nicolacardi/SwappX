@@ -10,9 +10,12 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 
 import { PagamentiService } from '../pagamenti.service';
 import { TipiPagamentoService } from '../tipiPagamento.service';
+import { CausaliPagamentoService } from '../causaliPagamento.service';
+
 import { PAG_Pagamento } from 'src/app/_models/PAG_Pagamento';
 import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
-
+import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 @Component({
   selector: 'app-pagamenti-edit',
@@ -29,9 +32,9 @@ export class PagamentiEditComponent implements OnInit {
   loading:                    boolean = true;
   breakpoint!:                number;
   descTipoPag!:               string;
-  tipiPagamentoIsLoading:     boolean=false;
-  filteredTipiPagamento$!:    Observable<PAG_TipoPagamento[]>;
-  TipoPagamento$!:            Observable<PAG_TipoPagamento>;
+  
+  causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
+  tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
 
   constructor(
     //public dialogRef: MatDialogRef<DialogYesNoComponent>,
@@ -39,6 +42,7 @@ export class PagamentiEditComponent implements OnInit {
     private fb:     FormBuilder, 
     private pagamentiSvc:     PagamentiService,
     private tipiPagamentoSvc: TipiPagamentoService,
+    private causaliPagamentoSvc: CausaliPagamentoService,
     public _dialog:         MatDialog,
     private _snackBar:      MatSnackBar,
     private _loadingService :LoadingService,
@@ -49,7 +53,6 @@ export class PagamentiEditComponent implements OnInit {
         importo:                    ['', { validators:[ Validators.required, Validators.pattern("^[0-9]*$")]}],
         dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
         tipoPagamentoID:            ['', Validators.required],
-        
         causaleID:                  ['', Validators.required]
 // TODO ...
       });
@@ -73,15 +76,17 @@ export class PagamentiEditComponent implements OnInit {
             pagamento => {
               this.form.patchValue(pagamento)
               this.descTipoPag = pagamento.tipoPagamento.descrizione;
-              
             }
           ),
       );
     } else {
+      console.log("Qui va in errore");
+
       this.emptyForm = true
     }
 
     //********************* COMBO TIPO PAGAMENTO *******************
+    /*
     this.filteredTipiPagamento$ = this.form.controls['tipoPagamentoID'].valueChanges
     .pipe(
       tap(),
@@ -91,55 +96,35 @@ export class PagamentiEditComponent implements OnInit {
       switchMap(() => this.tipiPagamentoSvc.filter(this.form.value.tipoPagamentoID)),
       tap(() => this.tipiPagamentoIsLoading = false)
     );
-
-  }
-
-  // autocompleteDisplay() {
-  //    this.tipiPagamentoSvc.loadByID(this.form.value.tipoPagamentoID).subscribe(
-  //     x=>{
-  //       this.descTipoPag = x.descrizione
-
-  //   });
-    
-  // }
-  displayFn(id: any) {
-    if (!id) return "";
-  
-    console.log("BELLA MERDA", id);
-/*
-    const obsTipoPagamento$: Observable<PAG_TipoPagamento> = this.tipiPagamentoSvc.loadByID(id).pipe(
-      tap(
-        tipo => {
-          console.log("TIPO PAGAMENTO", tipo.descrizione);
-        }
-      )
-    );
     */
+
+    this.causaliPagamento$ = this.causaliPagamentoSvc.load();
+    this.tipiPagamento$ = this.tipiPagamentoSvc.load();
     
-    //this.TipoPagamento$ = this.tipiPagamentoSvc.loadByID(id);
-
-        
-    this.TipoPagamento$ =  this.tipiPagamentoSvc.loadByID(id)
-    .pipe(
-        tap(
-          tipo => {
-            //this.form.patchValue(pagamento)
-            this.descTipoPag = tipo.descrizione;
-            
-          }
-        ),
-    );
+    
+    console.log("finito tutto");
 
 
-    return this.descTipoPag;
-
-
-    //let index = this.states.findIndex(state => state.id === id);
-    //return this.states[index].name;
   }
 
+    
   save(){
-//TODO ...
+
+console.log(this.form);
+
+    if (this.form.controls['id'].value == null) 
+      this.pagamentiSvc.post(this.form.value)
+        .subscribe(res=> {
+          console.log("return from post", res);
+          //this.form.markAsPristine();
+        });
+    else 
+      this.pagamentiSvc.put(this.form.value)
+        .subscribe(res=> {
+          console.log("return from put", res);
+          //this.form.markAsPristine();
+        });
+    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
   }
 
   delete(){
@@ -153,6 +138,11 @@ export class PagamentiEditComponent implements OnInit {
 
 
   onResize(event: any) {
+    console.log("STEP4");
+
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
+
+    console.log("STEP5");
+
   }
 }

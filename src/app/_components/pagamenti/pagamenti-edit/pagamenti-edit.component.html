@@ -1,7 +1,8 @@
 <div class="container">
     <mat-card class="form-card">
         <mat-card-content>
-            <form *ngIf="(pagamento$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
+
+            <form *ngIf="(pagamento$ | async) || emptyForm==true" class="data-form flex-form" [formGroup] = "form">
                 <div class="buttonsDetail">
 
                     <button *ngIf="!id" mat-stroked-button color="secondary" mat-dialog-close>
@@ -41,13 +42,18 @@
                 </div>
 
                 <mat-grid-list [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
+
                     <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput type="number" required placeholder="Importo" formControlName="importo">
-                            <mat-error *ngIf="form.controls.importo.errors?.required"> Campo obbligatorio</mat-error>
-                        </mat-form-field>
+                        <mat-form-field  >
+                            <mat-label>Selezionare la causale</mat-label>
+                            <mat-select formControlName="tipoPagamentoID">
+                              <mat-option *ngFor="let element of (causaliPagamento$ | async)" [value]="element.id">
+                                {{element.descrizione}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
                     </mat-grid-tile>
-                    
+
                     <mat-grid-tile>
                         <mat-form-field class="form-dp">
                             <input matInput
@@ -66,32 +72,28 @@
                 <mat-grid-list [cols]="breakpoint" rowHeight="60px">
                     <mat-grid-tile>
                         <mat-form-field>
-                            <input matInput type="number" required placeholder="Tipo pagamento" formControlName="tipoPagamentoID">
+                            <input matInput type="number" required placeholder="Importo" formControlName="importo">
+                            <mat-error *ngIf="form.controls.importo.errors?.required"> Campo obbligatorio</mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
 
-                    
                     <mat-grid-tile>
-                        <mat-form-field>
-                            <mat-label>Tipo Pagamento</mat-label>
-                            <input 
-                                    placeholder="<Selezionare il tipo di pagamento>"
-                                    matInput
-                                    formControlName="tipoPagamentoID"
-                                    [matAutocomplete]="auto1">
-                                    
-                            <mat-autocomplete #auto1="matAutocomplete"  [displayWith]="displayFn.bind(this)">
-
-                                <mat-spinner *ngIf="tipiPagamentoIsLoading" class="is-loading" diameter="40"></mat-spinner>
-                                <mat-option *ngFor="let element of (filteredTipiPagamento$ | async)" [value]="element">
-                                    <small>{{element.descrizione}}</small>
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field>
+                        <mat-form-field  >
+                            <mat-label>Selezionare il tipo di pagamento</mat-label>
+                            <mat-select formControlName="tipoPagamentoID">
+                              <mat-option *ngFor="let element of (tipiPagamento$ | async)" [value]="element.id">
+                                {{element.descrizione}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
                     </mat-grid-tile>
-
                 </mat-grid-list>
+
+            
             </form>
+        
+       
+
 
             <!-- <div>
                 errori su campo nome: {{form.controls.nome.errors?.required}}

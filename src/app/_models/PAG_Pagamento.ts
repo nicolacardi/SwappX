@@ -9,7 +9,7 @@ export interface PAG_Pagamento {
         tipoPagamentoID:      number;                 //Sostituire con oggetto PAG_TipoPagamenti
         tipoPagamento:        PAG_TipoPagamento;
 
-        causaleID:      number;                 //Sostituire con oggetto PAG_Causali
+        causaleID:      number;                 //Sostituire con oggetto PAG_Causali?
         rettaID:        number;                 //Sostituire con oggetto PAG_Rette
 
         alunnoID:        number;                //Sostituire con oggetto ALU_Alunno
