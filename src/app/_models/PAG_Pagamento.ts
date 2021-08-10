@@ -1,3 +1,4 @@
+import { ALU_Alunno } from "./ALU_Alunno";
 import { PAG_TipoPagamento } from "./PAG_TipoPagamento";
 
 export interface PAG_Pagamento {
@@ -13,6 +14,8 @@ export interface PAG_Pagamento {
         rettaID:        number;                 //Sostituire con oggetto PAG_Rette
 
         alunnoID:        number;                //Sostituire con oggetto ALU_Alunno
+        alunno:          ALU_Alunno;
+        
         genitoreID:      number;                //Sostituire con oggetto ALU_Genitore 
         soggetto:        string;
 

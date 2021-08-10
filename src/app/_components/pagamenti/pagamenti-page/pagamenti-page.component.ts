@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { PagamentiListComponent } from '../pagamenti-list/pagamenti-list.component';
 
 @Component({
   selector: 'app-pagamenti-page',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PagamentiPageComponent implements OnInit {
 
+  @ViewChild(PagamentiListComponent) pagamentiList!: PagamentiListComponent; 
+  
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  addRecord() {
+    this.pagamentiList.addRecord()
+  }
 }

@@ -26,7 +26,7 @@ import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
   templateUrl: './pagamenti-edit.component.html',
   styleUrls: ['../pagamenti.css']
 })
-export class PagamentiEditComponent implements OnInit, AfterViewInit {
+export class PagamentiEditComponent implements OnInit {
 
   id!:               number;
   pagamento$!:                Observable<PAG_Pagamento>;
@@ -66,9 +66,11 @@ export class PagamentiEditComponent implements OnInit, AfterViewInit {
         dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
         tipoPagamentoID:            ['', Validators.required],
         causaleID:                  ['', Validators.required],
-        alunnoID:                    ['', Validators.required],
-        genitoreID:                    ['', Validators.required],
-        nomeCognomeAlunno:                  ['']
+        alunnoID:                   ['', Validators.required],
+        genitoreID:                 ['', Validators.required],
+        nomeCognomeAlunno:          [''],
+        nomeAlunno:                 [{value:'', disabled:true}],
+        cognomeAlunno:              [{value:'', disabled:true}]
 // TODO ...
       });
   }
@@ -86,28 +88,34 @@ export class PagamentiEditComponent implements OnInit, AfterViewInit {
 
       switchMap(() => this.alunniSvc.filterAlunni(this.form.value.nomeCognomeAlunno)), 
     )
-  }
 
-  ngAfterViewInit()  {
     this.loadData();
+    
   }
 
+ 
   loadData(){
 
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     
-    if (this.data) {
+    if (this.data && this.data + '' != "0") {
+      //this.emptyForm = false;
+
       const obsPagamento$: Observable<PAG_Pagamento> = this.pagamentiSvc.loadByID(this.data);
       const loadPagamento$ = this._loadingService.showLoaderUntilCompleted(obsPagamento$);
       
       this.pagamento$ = loadPagamento$
       .pipe(
+        
           tap(
             pagamento => {
               this.form.patchValue(pagamento)
               this.descTipoPag = pagamento.tipoPagamento.descrizione;
+
+              this.form.controls["nomeAlunno"].setValue( pagamento.alunno.nome);
+              this.form.controls["cognomeAlunno"].setValue( pagamento.alunno.cognome);
             }
-          ),
+          )
       );
     } else {
       this.emptyForm = true;
@@ -128,6 +136,7 @@ export class PagamentiEditComponent implements OnInit, AfterViewInit {
 
     this.causaliPagamento$ = this.causaliPagamentoSvc.load();
     this.tipiPagamento$ = this.tipiPagamentoSvc.load();
+    
     
     
     //console.log("finito tutto");

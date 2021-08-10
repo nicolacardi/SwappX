@@ -87,7 +87,13 @@ export class PagamentiListComponent implements OnInit {
   //#region ### Funzioni ###
   
 
-  openDetail(idPagamento: number){
+ 
+  
+  addRecord(){
+    this.editRecord(0);
+  }
+
+  editRecord(idPagamento: number){
 
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',

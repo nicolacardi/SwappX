@@ -9,7 +9,7 @@ import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 })
 export class AlunniPageComponent implements OnInit {
 
-  @ViewChild(AlunniListComponent) alunnilist!: AlunniListComponent; 
+  @ViewChild(AlunniListComponent) alunniList!: AlunniListComponent; 
 
   constructor(private _filtriService:   FiltriService) { }
 
@@ -20,6 +20,6 @@ export class AlunniPageComponent implements OnInit {
   }
 
   addRecord() {
-    this.alunnilist.addRecord()
+    this.alunniList.addRecord()
   }
 }
