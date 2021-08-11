@@ -2,7 +2,8 @@
     <mat-card class="form-card">
         <mat-card-content>
 
-            <form *ngIf="(pagamento$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form"> 
+                <form *ngIf="(pagamento$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form"> 
+                    
                     <div class="buttonsDetail">
 
                         <button mat-stroked-button color="secondary" mat-dialog-close>
@@ -21,7 +22,8 @@
 
                         <button mat-stroked-button color="secondary" 
                             [disabled]= "!form.valid" 
-                            (click)="save()"><mat-icon>save</mat-icon>
+                            (click)="save()">
+                            <mat-icon>save</mat-icon>
                             <div class="button-textDetail">salva</div>
                         </button>
     
