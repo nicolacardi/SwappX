@@ -98,7 +98,7 @@ export class PagamentiListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '800px',
-      height: '620px',
+      height: '500px',
       data: idPagamento
     };
 

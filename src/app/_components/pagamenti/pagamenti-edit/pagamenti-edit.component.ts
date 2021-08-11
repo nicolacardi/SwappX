@@ -28,7 +28,7 @@ import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 })
 export class PagamentiEditComponent implements OnInit {
 
-  id!:               number;
+  id!:                        number;
   pagamento$!:                Observable<PAG_Pagamento>;
 
   form! :                     FormGroup;
@@ -50,14 +50,14 @@ export class PagamentiEditComponent implements OnInit {
   constructor(
     //public dialogRef: MatDialogRef<DialogYesNoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private fb:     FormBuilder, 
-    private pagamentiSvc:     PagamentiService,
-    private tipiPagamentoSvc: TipiPagamentoService,
-    private causaliPagamentoSvc: CausaliPagamentoService,
-    private alunniSvc:              AlunniService,
-    public _dialog:         MatDialog,
-    private _snackBar:      MatSnackBar,
-    private _loadingService :LoadingService,
+    private fb:                           FormBuilder, 
+    private pagamentiSvc:                 PagamentiService,
+    private tipiPagamentoSvc:             TipiPagamentoService,
+    private causaliPagamentoSvc:          CausaliPagamentoService,
+    private alunniSvc:                    AlunniService,
+    public _dialog:                       MatDialog,
+    private _snackBar:                    MatSnackBar,
+    //private _loadingService :             LoadingService,
     ) { 
 
       this.form = this.fb.group({
@@ -76,42 +76,28 @@ export class PagamentiEditComponent implements OnInit {
   }
 
   ngOnInit()  {
-    //AS: ATTENZIONE: il loadData dà un errore ExpressionChangedAfterItHasBeenCheckedError
-    //--> spostato su AfterViewInit
-    //this.loadData();
-
     this.filteredAlunni$ = this.form.controls['nomeCognomeAlunno'].valueChanges
     .pipe(
       debounceTime(300),                                                      //attendiamo la digitazione
       //tap(() => this.nomiIsLoading = true),                                 //attiviamo il loading
       //delayWhen(() => timer(2000)),                                         //se vogliamo vedere il loading allunghiamo i tempi
-
       switchMap(() => this.alunniSvc.filterAlunni(this.form.value.nomeCognomeAlunno)), 
     )
-
     this.loadData();
-    
   }
 
  
   loadData(){
-
-    this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
-    
+    this.breakpoint = (window.innerWidth <= 800) ? 1 : 4;
     if (this.data && this.data + '' != "0") {
-      //this.emptyForm = false;
-
       const obsPagamento$: Observable<PAG_Pagamento> = this.pagamentiSvc.loadByID(this.data);
-      const loadPagamento$ = this._loadingService.showLoaderUntilCompleted(obsPagamento$);
-      
-      this.pagamento$ = loadPagamento$
+      //const loadPagamento$ = this._loadingService.showLoaderUntilCompleted(obsPagamento$);
+      this.pagamento$ = obsPagamento$
       .pipe(
-        
           tap(
             pagamento => {
               this.form.patchValue(pagamento)
               this.descTipoPag = pagamento.tipoPagamento.descrizione;
-
               this.form.controls["nomeAlunno"].setValue( pagamento.alunno.nome);
               this.form.controls["cognomeAlunno"].setValue( pagamento.alunno.cognome);
             }
@@ -120,35 +106,12 @@ export class PagamentiEditComponent implements OnInit {
     } else {
       this.emptyForm = true;
     }
-
-    //********************* COMBO TIPO PAGAMENTO *******************
-    /*
-    this.filteredTipiPagamento$ = this.form.controls['tipoPagamentoID'].valueChanges
-    .pipe(
-      tap(),
-      debounceTime(300),
-      tap(() => this.tipiPagamentoIsLoading = true),
-      //delayWhen(() => timer(2000)),
-      switchMap(() => this.tipiPagamentoSvc.filter(this.form.value.tipoPagamentoID)),
-      tap(() => this.tipiPagamentoIsLoading = false)
-    );
-    */
-
     this.causaliPagamento$ = this.causaliPagamentoSvc.load();
     this.tipiPagamento$ = this.tipiPagamentoSvc.load();
-    
-    
-    
-    //console.log("finito tutto");
-
-
   }
 
     
   save(){
-
-//console.log(this.form);
-
     if (this.form.controls['id'].value == null) 
       this.pagamentiSvc.post(this.form.value)
         .subscribe(res=> {
@@ -173,7 +136,7 @@ export class PagamentiEditComponent implements OnInit {
 
   }
 
-  //#region 
+  //#region funzioni legate all'autocomplete
   
   enterAlunnoInput () {
     //Su pressione di enter devo dapprima selezionare il PRIMO valore della lista aperta (a meno che non sia vuoto)
@@ -188,7 +151,6 @@ export class PagamentiEditComponent implements OnInit {
   }
 
   resetInputAlunno (formControlName: string) {
-
     //console.log("formControlName" , formControlName);
     this.form.controls[formControlName].setValue('');
     this.autoAlunno.closePanel();
@@ -199,7 +161,7 @@ export class PagamentiEditComponent implements OnInit {
   onResize(event: any) {
     console.log("STEP4");
 
-    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
+    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 2;
 
     console.log("STEP5");
 
