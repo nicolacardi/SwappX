@@ -19,9 +19,9 @@
                             <mat-icon>restart_alt</mat-icon>
                             <div class="button-textDetail">ricarica</div>
                         </button>
-
+                        <!-- [disabled]= "!form.valid"  -->
                         <button mat-stroked-button color="secondary" 
-                            [disabled]= "!form.valid" 
+                        [disabled]= "!form.valid"
                             (click)="save()">
                             <mat-icon>save</mat-icon>
                             <div class="button-textDetail">salva</div>
@@ -49,9 +49,9 @@
                                         [matAutocomplete]="autoAlunno" #nomeCognomeAlunno 
                                         (keydown.enter) = "enterAlunnoInput()">
                                         <!-- [displayWith]="displayFn" DisplayWith impedisce che si possa scrivere qualcosa nella input in maniera programmatica-->
-                                <mat-autocomplete #autoAlunno="matAutocomplete">
+                                <mat-autocomplete #autoAlunno="matAutocomplete" (optionSelected)="selected($event)">
                                     <!-- <mat-spinner *ngIf="nomeAlunnoIsLoading" class="is-loading" diameter="40"></mat-spinner> -->
-                                    <mat-option *ngFor="let element of (filteredAlunni$ | async)"  [value]="element.nome + ' ' + element.cognome" #option>
+                                    <mat-option *ngFor="let element of (filteredAlunni$ | async)"  [value]="element.nome + ' ' + element.cognome" [id]="element.id.toString()" #option>
                                         <small>{{element.nome}} {{element.cognome}}</small>
                                     </mat-option>
                                 </mat-autocomplete>
@@ -84,7 +84,7 @@
                         <mat-grid-tile>
                             <mat-form-field  >
                                 <mat-label>Selezionare la causale</mat-label>
-                                <mat-select formControlName="tipoPagamentoID">
+                                <mat-select formControlName="causaleID">
                                   <mat-option *ngFor="let element of (causaliPagamento$ | async)" [value]="element.id">
                                     {{element.descrizione}}
                                   </mat-option>

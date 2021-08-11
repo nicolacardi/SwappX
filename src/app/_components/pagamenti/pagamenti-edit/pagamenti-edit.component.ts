@@ -3,10 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { debounceTime, switchMap, tap } from 'rxjs/operators';
-import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
-import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogData, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
 
 import { PagamentiService } from '../pagamenti.service';
@@ -20,6 +20,7 @@ import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 import { AlunniService } from '../../alunni/alunni.service';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pagamenti-edit',
@@ -30,7 +31,7 @@ export class PagamentiEditComponent implements OnInit {
 
   id!:                        number;
   pagamento$!:                Observable<PAG_Pagamento>;
-
+  idAlunnoSelected!:          number;
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
@@ -49,7 +50,7 @@ export class PagamentiEditComponent implements OnInit {
 
   constructor(
     //public dialogRef: MatDialogRef<DialogYesNoComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    @Inject(MAT_DIALOG_DATA) public idPagamento: DialogData,
     private fb:                           FormBuilder, 
     private pagamentiSvc:                 PagamentiService,
     private tipiPagamentoSvc:             TipiPagamentoService,
@@ -57,6 +58,7 @@ export class PagamentiEditComponent implements OnInit {
     private alunniSvc:                    AlunniService,
     public _dialog:                       MatDialog,
     private _snackBar:                    MatSnackBar,
+    private router:                       Router,
     //private _loadingService :             LoadingService,
     ) { 
 
@@ -66,9 +68,9 @@ export class PagamentiEditComponent implements OnInit {
         dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
         tipoPagamentoID:            ['', Validators.required],
         causaleID:                  ['', Validators.required],
-        alunnoID:                   ['', Validators.required],
-        genitoreID:                 ['', Validators.required],
-        nomeCognomeAlunno:          [''],
+        alunnoID:                   [''],
+        //genitoreID:                 ['', Validators.required],
+        nomeCognomeAlunno:          ['', Validators.required],
         nomeAlunno:                 [{value:'', disabled:true}],
         cognomeAlunno:              [{value:'', disabled:true}]
 // TODO ...
@@ -89,8 +91,8 @@ export class PagamentiEditComponent implements OnInit {
  
   loadData(){
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 4;
-    if (this.data && this.data + '' != "0") {
-      const obsPagamento$: Observable<PAG_Pagamento> = this.pagamentiSvc.loadByID(this.data);
+    if (this.idPagamento && this.idPagamento + '' != "0") {
+      const obsPagamento$: Observable<PAG_Pagamento> = this.pagamentiSvc.loadByID(this.idPagamento);
       //const loadPagamento$ = this._loadingService.showLoaderUntilCompleted(obsPagamento$);
       this.pagamento$ = obsPagamento$
       .pipe(
@@ -110,8 +112,16 @@ export class PagamentiEditComponent implements OnInit {
     this.tipiPagamento$ = this.tipiPagamentoSvc.load();
   }
 
-    
+  
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.idAlunnoSelected = parseInt(event.option.id);
+  }
+
   save(){
+    //ho messo ormai l'id dell'Alunno selezionato in idAlunnoSelected.
+    
+    console.log("idAlunnoSelected", this.idAlunnoSelected);
+    return;
     if (this.form.controls['id'].value == null) 
       this.pagamentiSvc.post(this.form.value)
         .subscribe(res=> {
@@ -128,7 +138,31 @@ export class PagamentiEditComponent implements OnInit {
   }
 
   delete(){
-//TODO ...
+    const dialogRef = this._dialog.open(DialogYesNoComponent, {
+      width: '320px',
+      data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
+    });
+    console.log(this.idPagamento);
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        return;
+        // NON LO FO ANCORA SENNO'RESTO SENZA RECORD
+        this.pagamentiSvc.delete(Number(this.idPagamento))
+        .pipe (
+          finalize(()=>this.router.navigate(['/pagamenti']))
+        )
+        .subscribe(
+          res=>{
+            this._snackBar.openFromComponent(SnackbarComponent,
+              {data: 'Record cancellato', panelClass: ['red-snackbar']}
+            );
+          },
+          err=> (
+              console.log("ERRORE")
+          )
+        );
+      }
+    });
   }
 
   back(){
@@ -159,11 +193,6 @@ export class PagamentiEditComponent implements OnInit {
   //#endregion
 
   onResize(event: any) {
-    console.log("STEP4");
-
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 2;
-
-    console.log("STEP5");
-
   }
 }
