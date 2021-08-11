@@ -6,22 +6,13 @@
             <!--    <form *ngIf="(pagamento$ | async)" class="data-form flex-form" [formGroup] = "form"> -->
                     <div class="buttonsDetail">
     
-                        
-                        <button *ngIf="!id" mat-stroked-button color="secondary" mat-dialog-close>
+                        <button mat-stroked-button color="secondary" mat-dialog-close>
                             <mat-icon>arrow_back</mat-icon>
                             <div class="button-textDetail">
                                 annulla
                             </div>
                         </button>
-    
-                        <button type="button" *ngIf="id" mat-stroked-button color="secondary" 
-                            (click)="back()">
-                            <mat-icon>arrow_back</mat-icon>
-                            <div class="button-textDetail">
-                                alunni
-                            </div>
-                        </button>
-    
+
                         <button *ngIf="id" mat-stroked-button color="secondary" 
                             [disabled]= "!form.valid" 
                             (click)="loadData()">
@@ -45,7 +36,7 @@
                     </div>
                 
                     
-                    <mat-grid-list [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
+                    <mat-grid-list *ngIf="!emptyForm" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
                         <mat-grid-tile>
                             <mat-form-field>
                                 <input matInput type="text" placeholder="Cognome Alunno" formControlName="cognomeAlunno"   >
@@ -58,8 +49,8 @@
                         </mat-grid-tile>
                     </mat-grid-list>    
                 
-                    <mat-grid-list [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">   
-                        <mat-form-field>
+                    <mat-grid-list *ngIf="emptyForm" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">   
+                        <mat-form-field >
                             <mat-label>Alunno</mat-label>
                             <input type="text"
                                     placeholder="<digita e seleziona>"
