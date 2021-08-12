@@ -10,10 +10,12 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { GenitoriService } from '../genitori.service';
-import { GenitoreDetailsComponent } from '../genitore-details/genitore-details.component';
-import { LoadingService } from '../../utilities/loading/loading.service';
+import { GenitoreEditComponent } from '../genitore-edit/genitore-edit.component';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+
 import { FiltriService } from '../../utilities/filtri/filtri.service';
+
+import { LoadingService } from '../../utilities/loading/loading.service';
 
 //import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
@@ -107,12 +109,28 @@ export class GenitoriListComponent implements OnInit {
 
   
   openDetail(id:any){
-    this.router.navigate(["genitori",id], {queryParams:{page: this.paginator.pageIndex,
-                                                      size: this.paginator.pageSize,  
-                                                      filter: this.filterInput.nativeElement.value,
-                                                      sortField: this.matDataSource.sort?.active,
-                                                      sortDirection: this.matDataSource.sort?.direction
-                                                    }});
+    // //***** Versione Router
+    // this.router.navigate(["genitori",id], {queryParams:{page: this.paginator.pageIndex,
+    //                                                   size: this.paginator.pageSize,  
+    //                                                   filter: this.filterInput.nativeElement.value,
+    //                                                   sortField: this.matDataSource.sort?.active,
+    //                                                   sortDirection: this.matDataSource.sort?.direction
+    //                                                 }});
+
+    //***** Versione Dialog
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '800px',
+      height: '620px',
+      data: id
+    };
+
+    const dialogRef = this._dialog.open(GenitoreEditComponent, dialogConfig);
+    dialogRef.afterClosed()
+      .subscribe(
+        () => {
+          this.refresh();
+    });
   }
 
   applyFilter(event: Event) {
@@ -130,7 +148,8 @@ export class GenitoriListComponent implements OnInit {
     dialogConfig.data = 0;
     dialogConfig.panelClass = 'add-DetailDialog';
     dialogConfig.width = "800px";
-    const dialogRef = this._dialog.open(GenitoreDetailsComponent, dialogConfig);
+    
+    const dialogRef = this._dialog.open(GenitoreEditComponent, dialogConfig);
     dialogRef.afterClosed()
       .subscribe(
         () => {

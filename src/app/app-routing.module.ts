@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AlunniListComponent } from './_components/alunni/alunni-list/alunni-list.component';
-import { AlunnoDetailsComponent } from './_components/alunni/alunno-details/alunno-details.component';
+import { AlunnoEditComponent } from './_components/alunni/alunno-edit/alunno-edit.component';
+
 import { GenitoriListComponent } from './_components/genitori/genitori-list/genitori-list.component';
-import { GenitoreDetailsComponent } from './_components/genitori/genitore-details/genitore-details.component';
+import { GenitoreEditComponent } from './_components/genitori/genitore-edit/genitore-edit.component';
 
 import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
@@ -22,7 +23,7 @@ const routes: Routes = [
   },
   {
     path: 'alunni/:id',
-    component: AlunnoDetailsComponent
+    component: AlunnoEditComponent
   },
   {
     path: "alunno-dashboard",
@@ -38,7 +39,7 @@ const routes: Routes = [
   },
   {
     path: 'genitori/:id',
-    component: GenitoreDetailsComponent
+    component: GenitoreEditComponent
   },
   {
     path: "classi",

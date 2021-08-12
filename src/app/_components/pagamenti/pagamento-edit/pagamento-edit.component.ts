@@ -1,33 +1,34 @@
-import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { Observable } from 'rxjs';
-import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
+import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DialogData, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { LoadingService } from '../../utilities/loading/loading.service';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 import { PagamentiService } from '../pagamenti.service';
 import { TipiPagamentoService } from '../tipiPagamento.service';
 import { CausaliPagamentoService } from '../causaliPagamento.service';
+import { AlunniService } from '../../alunni/alunni.service';
 
 import { PAG_Pagamento } from 'src/app/_models/PAG_Pagamento';
 import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-
-import { AlunniService } from '../../alunni/alunni.service';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { Router } from '@angular/router';
+
+import { LoadingService } from '../../utilities/loading/loading.service';
 
 @Component({
-  selector: 'app-pagamenti-edit',
-  templateUrl: './pagamenti-edit.component.html',
+  selector: 'app-pagamento-edit',
+  templateUrl: './pagamento-edit.component.html',
   styleUrls: ['../pagamenti.css']
 })
-export class PagamentiEditComponent implements OnInit {
+
+export class PagamentoEditComponent implements OnInit {
 
   id!:                        number;
   pagamento$!:                Observable<PAG_Pagamento>;
@@ -44,13 +45,11 @@ export class PagamentiEditComponent implements OnInit {
   filteredAlunni$!:           Observable<ALU_Alunno[]>;
 
   @ViewChild(MatAutocomplete) matAutocomplete!: MatAutocomplete;
-
   @ViewChild('autoAlunno', { read: MatAutocompleteTrigger }) 
-  autoAlunno!: MatAutocompleteTrigger;
+    autoAlunno!: MatAutocompleteTrigger;
 
   constructor(
-
-    public _dialogRef: MatDialogRef<PagamentiEditComponent>,
+    public _dialogRef: MatDialogRef<PagamentoEditComponent>,
     @Inject(MAT_DIALOG_DATA) public idPagamento: DialogData,
     private fb:                           FormBuilder, 
     private pagamentiSvc:                 PagamentiService,
@@ -60,8 +59,8 @@ export class PagamentiEditComponent implements OnInit {
     public _dialog:                       MatDialog,
     private _snackBar:                    MatSnackBar,
     private router:                       Router,
-    //private _loadingService :             LoadingService,
-    ) { 
+    private _loadingService :           LoadingService )
+  { 
 
       this.form = this.fb.group({
         id:                         [null],
@@ -124,11 +123,9 @@ export class PagamentiEditComponent implements OnInit {
     this.form.controls['alunnoID'].setValue("");
   }
 
-  save(){
+  //#region ----- Funzioni -------
 
-    //console.log("idAlunnoSelected", this.idAlunnoSelected);
-    console.log("form.value", this.form.value);
-    //console.log("this.form.controls['id'].value", this.form.controls['id'].value);
+  save(){
 
     if (this.form.controls['id'].value == null) {
       this.pagamentiSvc.post(this.form.value)
@@ -157,6 +154,7 @@ export class PagamentiEditComponent implements OnInit {
   }
 
   delete(){
+
     const dialogRef = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
@@ -164,7 +162,6 @@ export class PagamentiEditComponent implements OnInit {
     console.log(this.idPagamento);
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-
         this.pagamentiSvc.delete(Number(this.idPagamento))
         .subscribe(
           res=>{
@@ -180,7 +177,8 @@ export class PagamentiEditComponent implements OnInit {
       }
     });
   }
-
+ //#endregion
+ 
   back(){
     //TODO ...
 

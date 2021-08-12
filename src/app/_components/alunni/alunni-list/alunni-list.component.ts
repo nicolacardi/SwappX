@@ -12,7 +12,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from '../alunni.service';
-import { AlunnoDetailsComponent } from '../alunno-details/alunno-details.component';
+import { AlunnoEditComponent } from '../alunno-edit/alunno-edit.component';
 
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { FiltriService } from '../../utilities/filtri/filtri.service';
@@ -174,7 +174,7 @@ export class AlunniListComponent implements OnInit {
       data: 0
     };
 
-    const dialogRef = this._dialog.open(AlunnoDetailsComponent, dialogConfig);
+    const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
     dialogRef.afterClosed()
       .subscribe(
         () => {
@@ -190,8 +190,8 @@ export class AlunniListComponent implements OnInit {
     //                                                   sortField: this.matDataSource.sort?.active,
     //                                                   sortDirection: this.matDataSource.sort?.direction
     //                                                 }});
-    //***** Versione Dialog
 
+    //***** Versione Dialog
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '800px',
@@ -199,15 +199,12 @@ export class AlunniListComponent implements OnInit {
       data: id
     };
 
-    const dialogRef = this._dialog.open(AlunnoDetailsComponent, dialogConfig);
+    const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
     dialogRef.afterClosed()
       .subscribe(
         () => {
           this.refresh();
     });
-
-
-
   }
 
   applyFilter(event: Event) {
@@ -218,8 +215,6 @@ export class AlunniListComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
   }
-
-
 
   onResize(event: any) {
     this.displayedColumns = (event.target.innerWidth <= 800) ? 

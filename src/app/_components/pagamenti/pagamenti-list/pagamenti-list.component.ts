@@ -6,9 +6,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { PAG_Pagamento } from 'src/app/_models/PAG_Pagamento';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { PagamentiEditComponent } from '../pagamenti-edit/pagamenti-edit.component';
+import { PagamentoEditComponent } from '../pagamento-edit/pagamento-edit.component';
 import { PagamentiService } from '../pagamenti.service';
+import { LoadingService } from '../../utilities/loading/loading.service';
 
 @Component({
   selector: 'app-pagamenti-list',
@@ -102,7 +102,7 @@ export class PagamentiListComponent implements OnInit {
       data: idPagamento
     };
 
-    const dialogRef = this._dialog.open(PagamentiEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(PagamentoEditComponent, dialogConfig);
     dialogRef.afterClosed()
       .subscribe(
         () => {

@@ -2,22 +2,23 @@
 <div class="container">
     <mat-card class="form-card">
         <mat-card-content>
-            <form *ngIf="(genitore | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
+            <form *ngIf="(genitore$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
                 <div class="buttonsDetail">
-                    <button *ngIf="!idGenitore" mat-stroked-button color="secondary" mat-dialog-close>
+
+                    <button mat-stroked-button color="secondary" mat-dialog-close>
                         <mat-icon>arrow_back</mat-icon>
                         <div class="button-textDetail">
-                            annulla
+                            back
                         </div>
                     </button>
 
-                    <button type="button" *ngIf="idGenitore" mat-stroked-button color="secondary" 
+                    <!-- <button type="button" *ngIf="idGenitore" mat-stroked-button color="secondary" 
                         (click)="back()">
                         <mat-icon>arrow_back</mat-icon>
                         <div class="button-textDetail">
                             genitori
                         </div>
-                    </button>
+                    </button> -->
 
                     <button *ngIf="idGenitore" mat-stroked-button color="secondary" 
                         [disabled]= "!form.valid" 
