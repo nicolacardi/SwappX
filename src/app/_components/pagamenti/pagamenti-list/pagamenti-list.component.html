@@ -20,8 +20,7 @@
     <ng-container matColumnDef="actionsColumn">
         <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
         <mat-cell  *matCellDef="let element;  let j = index;"> 
-            <!-- <img (click)="editRecord(element.id)" class="iconaMenu pointer" src="../assets/money.svg"> -->
-            <mat-icon class="pointer" (click)="editRecord(element.id)" aria-hidden="false" aria-label="Example home icon">edit</mat-icon>
+            <img (click)="editRecord(element.id)" class="iconaMenu pointer" src="../assets/money_edit.svg">
         </mat-cell>
     </ng-container>
 

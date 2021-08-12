@@ -32,7 +32,7 @@ export class PagamentiListComponent implements OnInit {
                                   //"alunnoID", 
                                   "alunno.cognome",
                                   "alunno.nome",
-                                  "genitoreID", 
+                                  //"genitoreID", 
                                   "note"];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
