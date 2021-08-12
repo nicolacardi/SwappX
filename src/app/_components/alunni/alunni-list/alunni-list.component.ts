@@ -142,59 +142,28 @@ export class AlunniListComponent implements OnInit {
 
       loadAlunni$.subscribe(val => 
         {
-          var caller_page = this.route.snapshot.queryParams["page"];
-          var caller_size = this.route.snapshot.queryParams["size"];
-          var caller_filter = this.route.snapshot.queryParams["filter"];
-          var caller_sortField = this.route.snapshot.queryParams["sortField"];
-          var caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
+          // var caller_page = this.route.snapshot.queryParams["page"];
+          // var caller_size = this.route.snapshot.queryParams["size"];
+          // var caller_filter = this.route.snapshot.queryParams["filter"];
+          // var caller_sortField = this.route.snapshot.queryParams["sortField"];
+          // var caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
           
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort;
 
-          if(caller_page != undefined ){
-            if (caller_sortDirection) {
-              this.sort.sort(({ id: caller_sortField, start: caller_sortDirection}) as MatSortable);
-            }
-            this.paginator.pageIndex = caller_page;
-            this.paginator.pageSize = caller_size;
-            this.filterInput.nativeElement.value = caller_filter;
-            this.matDataSource.filter = caller_filter;
-          }
+          // if(caller_page != undefined ){
+          //   if (caller_sortDirection) {
+          //     this.sort.sort(({ id: caller_sortField, start: caller_sortDirection}) as MatSortable);
+          //   }
+          //   this.paginator.pageIndex = caller_page;
+          //   this.paginator.pageSize = caller_size;
+          //   this.filterInput.nativeElement.value = caller_filter;
+          //   this.matDataSource.filter = caller_filter;
+          // }
         }
       );
     }
-  }
-
-  openDetail(id:any){
-    //***** Versione Router
-    this.router.navigate(["alunni",id], {queryParams:{page: this.paginator.pageIndex,
-                                                      size: this.paginator.pageSize,  
-                                                      filter: this.filterInput.nativeElement.value,
-                                                      sortField: this.matDataSource.sort?.active,
-                                                      sortDirection: this.matDataSource.sort?.direction
-                                                    }});
-    /***** Versione Dialog
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true; //lo fa modale
-    dialogConfig.autoFocus = true;    //il primo elemento ha il focus
-    dialogConfig.data = id;
-    dialogConfig.panelClass = 'my-dialog';
-    let dialogRef = this.dialog.open(AlunnoDetailsComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(()=>{
-      this.refresh();                         //Aggiorna la griglia dopo update da dialog
-    });
-    */
-
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.matDataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
   }
 
   addRecord(){
@@ -212,6 +181,45 @@ export class AlunniListComponent implements OnInit {
           this.refresh();
     });
   }
+
+  openDetail(id:any){
+    //***** Versione Router
+    // this.router.navigate(["alunni",id], {queryParams:{page: this.paginator.pageIndex,
+    //                                                   size: this.paginator.pageSize,  
+    //                                                   filter: this.filterInput.nativeElement.value,
+    //                                                   sortField: this.matDataSource.sort?.active,
+    //                                                   sortDirection: this.matDataSource.sort?.direction
+    //                                                 }});
+    //***** Versione Dialog
+
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '800px',
+      height: '620px',
+      data: id
+    };
+
+    const dialogRef = this._dialog.open(AlunnoDetailsComponent, dialogConfig);
+    dialogRef.afterClosed()
+      .subscribe(
+        () => {
+          this.refresh();
+    });
+
+
+
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.matDataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
+  }
+
+
 
   onResize(event: any) {
     this.displayedColumns = (event.target.innerWidth <= 800) ? 

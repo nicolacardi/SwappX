@@ -16,23 +16,25 @@ export class PagamentiService {
 
   load(): Observable<PAG_Pagamento[]>{
     return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti');
+    //http://213.215.231.4/swappX/api/PAG_Pagamenti
   }
 
   loadByID(idPagamento: any): Observable<PAG_Pagamento>{
-    
     return this.http.get<PAG_Pagamento>(environment.apiBaseUrl+'PAG_Pagamenti/'+idPagamento);
+    //http://213.215.231.4/swappX/api/PAG_Pagamenti/5
   }
 
   put(formData: any): Observable <any>{
-    return this.http.put( environment.apiBaseUrl  + 'PAG_Pagamenti/' + formData.id , formData);    
+    console.log("form.value", formData);
+    return this.http.put(environment.apiBaseUrl  + 'PAG_Pagamenti/' + formData.id , formData);    
   }
 
   post(formData: any): Observable <any>{
     formData.id = 0;
-    return this.http.post( environment.apiBaseUrl  + 'PAG_Pagamenti' , formData);  
+    return this.http.post(environment.apiBaseUrl  + 'PAG_Pagamenti' , formData);  
   }
 
   delete(id: number): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'PAG_Pagamenti/' + id);    
+    return this.http.delete(environment.apiBaseUrl  + 'PAG_Pagamenti/' + id);    
   }
 }

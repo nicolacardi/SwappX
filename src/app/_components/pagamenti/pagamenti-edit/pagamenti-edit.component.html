@@ -55,16 +55,18 @@
                                         <small>{{element.nome}} {{element.cognome}}</small>
                                     </mat-option>
                                 </mat-autocomplete>
-                                <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="resetInputAlunno('nomeCognomeAlunno')">
+                                <!-- <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="resetInputAlunno('nomeCognomeAlunno')">
                                     <mat-icon>close</mat-icon>
-                                </button>
+                                </button> -->
                             </mat-form-field>
                         </mat-grid-tile>
                     </mat-grid-list>
 
-                    <mat-grid-list [cols]="breakpoint" gutterSize= "10" rowHeight="60px" *ngIf="!emptyForm" (window:resize)="onResize($event)">
+                    <mat-grid-list [cols]="breakpoint" gutterSize= "10" rowHeight="60px" (window:resize)="onResize($event)">
                         <mat-grid-tile>
-
+                            <mat-form-field>
+                                <input matInput type="text" placeholder="ID Alunno" formControlName="alunnoID" >
+                            </mat-form-field>
                         </mat-grid-tile>
                         <mat-grid-tile>
                             <mat-form-field>

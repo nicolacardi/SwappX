@@ -4,20 +4,20 @@
             <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
                 <div class="buttonsDetail">
 
-                    <button *ngIf="!idAlunno" mat-stroked-button color="secondary" mat-dialog-close>
+                    <button mat-stroked-button color="secondary" mat-dialog-close>
                         <mat-icon>arrow_back</mat-icon>
                         <div class="button-textDetail">
                             annulla
                         </div>
                     </button>
 
-                    <button type="button" *ngIf="idAlunno" mat-stroked-button color="secondary" 
+                    <!-- <button type="button" *ngIf="idAlunno" mat-stroked-button color="secondary" 
                         (click)="back()">
                         <mat-icon>arrow_back</mat-icon>
                         <div class="button-textDetail">
                             alunni
                         </div>
-                    </button>
+                    </button> -->
 
                     <button *ngIf="idAlunno" mat-stroked-button color="secondary" 
                         [disabled]= "!form.valid" 

@@ -16,10 +16,12 @@ export class AlunniService {
 
   load(): Observable<ALU_Alunno[]>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni');
+    //http://213.215.231.4/swappX/api/ALU_Alunni
   }
 
   loadByGenitore(idGenitore: any): Observable<ALU_Alunno[]>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllByGenitore/'+idGenitore);
+    //http://213.215.231.4/swappX/api/ALU_Alunni/GetAllByGenitore/3
   }
 
   loadByClasse(idClasse: any): Observable<ALU_Alunno[]>{
@@ -50,6 +52,7 @@ export class AlunniService {
   }
 
   put(formData: any): Observable <any>{
+    console.log("form.value", formData);
     return this.http.put( environment.apiBaseUrl  + 'ALU_Alunni/' + formData.id , formData);    
   }
 

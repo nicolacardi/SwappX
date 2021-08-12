@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { AlunniService } from 'src/app/_components/alunni/alunni.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogData, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { FiltriService } from '../../utilities/filtri/filtri.service';
 
@@ -24,7 +24,7 @@ import { FiltriService } from '../../utilities/filtri/filtri.service';
 
 export class AlunnoDetailsComponent implements OnInit{
 
-  idAlunno!:                  number;
+  //idAlunno!:                  number;
   alunno$!:                    Observable<ALU_Alunno>;
 
   form! :                     FormGroup;
@@ -44,7 +44,9 @@ export class AlunnoDetailsComponent implements OnInit{
   breakpoint!:                number;
   breakpoint2!:               number;
 
-  constructor(private fb:     FormBuilder, 
+  constructor(
+      @Inject(MAT_DIALOG_DATA) public idAlunno: DialogData,
+      private fb:             FormBuilder, 
       private route:          ActivatedRoute,
       private router:         Router,
       private alunniSvc:      AlunniService,
@@ -93,7 +95,7 @@ export class AlunnoDetailsComponent implements OnInit{
 
   loadData(){
 
-    this.idAlunno = this.route.snapshot.params['id'];  
+    //this.idAlunno = this.route.snapshot.params['id'];  
     this.caller_page = this.route.snapshot.queryParams["page"];
     this.caller_size = this.route.snapshot.queryParams["size"];
     this.caller_filter = this.route.snapshot.queryParams["filter"];
@@ -104,13 +106,14 @@ export class AlunnoDetailsComponent implements OnInit{
 
     //********************* POPOLAMENTO FORM *******************
     //serve distinguere tra form vuoto e form popolato in arrivo da lista alunni
+    console.log(this.idAlunno);
     
-    if (this.idAlunno && this.idAlunno != 0) {
+    if (this.idAlunno && this.idAlunno + '' != "0") {
 
       const obsAlunno$: Observable<ALU_Alunno> = this.alunniSvc.loadAlunno(this.idAlunno);
-      const loadAlunno$ = this._loadingService.showLoaderUntilCompleted(obsAlunno$);
+      //const loadAlunno$ = this._loadingService.showLoaderUntilCompleted(obsAlunno$);
       //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
-      this.alunno$ = loadAlunno$
+      this.alunno$ = obsAlunno$
       .pipe(
           tap(
             alunno => this.form.patchValue(alunno)
@@ -161,30 +164,31 @@ export class AlunnoDetailsComponent implements OnInit{
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
   }
 
-  back(){
-    if (this.form.dirty) {
-      const dialogRef = this._dialog.open(DialogYesNoComponent, {
-        width: '320px',
-        data: {titolo: "ATTENZIONE", sottoTitolo: "Dati modificati: si conferma l'uscita?"}
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if(!result) return;
-        else this.navigateBack();
-      });
-    } else {
-      this.navigateBack();
-    }   
-  }
-
-  navigateBack(){
-    this.router.navigate(["alunni"], {queryParams:{
-      page: this.caller_page,
-      size: this.caller_size,
-      filter: this.caller_filter,
-      sortField: this.caller_sortField,
-      sortDirection: this.caller_sortDirection
-     }});
-  }
+  //NON PIU' UTILIZZATA IN QUANTO ORA SI USA SOLO COME DIALOG
+  // back(){
+  //   if (this.form.dirty) {
+  //     const dialogRef = this._dialog.open(DialogYesNoComponent, {
+  //       width: '320px',
+  //       data: {titolo: "ATTENZIONE", sottoTitolo: "Dati modificati: si conferma l'uscita?"}
+  //     });
+  //     dialogRef.afterClosed().subscribe(result => {
+  //       if(!result) return;
+  //       else this.navigateBack();
+  //     });
+  //   } else {
+  //     this.navigateBack();
+  //   }   
+  // }
+  //NON PIU' UTILIZZATA IN QUANTO ORA SI USA SOLO COME DIALOG
+  // navigateBack(){
+  //   this.router.navigate(["alunni"], {queryParams:{
+  //     page: this.caller_page,
+  //     size: this.caller_size,
+  //     filter: this.caller_filter,
+  //     sortField: this.caller_sortField,
+  //     sortDirection: this.caller_sortDirection
+  //    }});
+  // }
 
   delete(){
     const dialogRef = this._dialog.open(DialogYesNoComponent, {
@@ -193,7 +197,7 @@ export class AlunnoDetailsComponent implements OnInit{
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.alunniSvc.delete(this.idAlunno)
+        this.alunniSvc.delete(Number(this.idAlunno))
         .pipe (
           finalize(()=>this.router.navigate(['/alunni']))
         )

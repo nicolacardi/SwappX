@@ -1,5 +1,3 @@
-import { ASC_AnnoScolastico } from './ASC_AnnoScolastico';
-
 
 export interface CLS_ClasseSezioneAnnoAlunno {
         id:                   number;

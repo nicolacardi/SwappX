@@ -64,13 +64,13 @@ export class PagamentiEditComponent implements OnInit {
 
       this.form = this.fb.group({
         id:                         [null],
-        importo:                    ['', { validators:[ Validators.required, Validators.pattern("^[0-9]*$")]}],
-        dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-        tipoPagamentoID:            ['', Validators.required],
+        alunnoID:                   ['', Validators.required],
         causaleID:                  ['', Validators.required],
-        alunnoID:                   [''],
+        dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+        importo:                    ['', { validators:[ Validators.required, Validators.pattern("^[0-9]*$")]}],
+        tipoPagamentoID:            ['', Validators.required],
         //genitoreID:                 ['', Validators.required],
-        nomeCognomeAlunno:          ['', Validators.required],
+        nomeCognomeAlunno:          [''],
         nomeAlunno:                 [{value:'', disabled:true}],
         cognomeAlunno:              [{value:'', disabled:true}]
 // TODO ...
@@ -100,8 +100,9 @@ export class PagamentiEditComponent implements OnInit {
             pagamento => {
               this.form.patchValue(pagamento)
               this.descTipoPag = pagamento.tipoPagamento.descrizione;
-              this.form.controls["nomeAlunno"].setValue( pagamento.alunno.nome);
-              this.form.controls["cognomeAlunno"].setValue( pagamento.alunno.cognome);
+              this.form.controls["nomeAlunno"].setValue(pagamento.alunno.nome);
+              console.log(pagamento.alunno.nome)
+              this.form.controls["cognomeAlunno"].setValue(pagamento.alunno.cognome);
             }
           )
       );
@@ -115,25 +116,27 @@ export class PagamentiEditComponent implements OnInit {
   
   selected(event: MatAutocompleteSelectedEvent): void {
     this.idAlunnoSelected = parseInt(event.option.id);
+    this.form.controls['alunnoID'].setValue(this.idAlunnoSelected);
+
   }
 
   save(){
-    //ho messo ormai l'id dell'Alunno selezionato in idAlunnoSelected.
-    
+
     console.log("idAlunnoSelected", this.idAlunnoSelected);
-    return;
-    if (this.form.controls['id'].value == null) 
+    //console.log("form.value", this.form.value);
+    //console.log("this.form.controls['id'].value", this.form.controls['id'].value);
+
+    if (this.form.controls['id'].value == null) {
       this.pagamentiSvc.post(this.form.value)
         .subscribe(res=> {
-          console.log("return from post", res);
-          //this.form.markAsPristine();
-        });
-    else 
+        console.log("return from post", res);
+      });
+    } else {
       this.pagamentiSvc.put(this.form.value)
         .subscribe(res=> {
-          console.log("return from put", res);
-          //this.form.markAsPristine();
-        });
+        console.log("return from put", res);
+      });
+    }
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
   }
 

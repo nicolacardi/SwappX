@@ -3,27 +3,27 @@ import { PAG_TipoPagamento } from "./PAG_TipoPagamento";
 
 export interface PAG_Pagamento {
 
-        id:             number;
-        importo:        number;
-        dtPagamento:    Date;
+        id:                     number;
+        importo:                number;
+        dtPagamento:            Date;
 
-        tipoPagamentoID:      number;                 //Sostituire con oggetto PAG_TipoPagamenti
-        tipoPagamento:        PAG_TipoPagamento;
+        tipoPagamentoID:        number;                 //Sostituire con oggetto PAG_TipoPagamenti
+        tipoPagamento:          PAG_TipoPagamento;
 
-        causaleID:      number;                 //Sostituire con oggetto PAG_Causali?
-        rettaID:        number;                 //Sostituire con oggetto PAG_Rette
+        causaleID:              number;                 //Sostituire con oggetto PAG_Causali?
+        rettaID:                number;                 //Sostituire con oggetto PAG_Rette
 
-        alunnoID:        number;                //Sostituire con oggetto ALU_Alunno
-        alunno:          ALU_Alunno;
+        alunnoID:               number;                //Sostituire con oggetto ALU_Alunno
+        alunno:                 ALU_Alunno;
         
-        genitoreID:      number;                //Sostituire con oggetto ALU_Genitore 
-        soggetto:        string;
+        genitoreID:             number;                //Sostituire con oggetto ALU_Genitore 
+        soggetto:               string;
 
-        note:           string;
-        dtIns:          string;
-        dtUpd:          string;
-        userIns:        number;
-        userUpd:        number;
+        note:                   string;
+        dtIns:                  string;
+        dtUpd:                  string;
+        userIns:                number;
+        userUpd:                number;
 }
 
 

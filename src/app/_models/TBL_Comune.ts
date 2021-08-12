@@ -3,14 +3,13 @@ export class Comune {
 }
 
 export interface IComuneResponse {
-  total: number;
-  results: TBL_Comune[];
+  total:      number;
+  results:    TBL_Comune[];
 }
 
 export interface TBL_Comune {
-  istat: string;
-  comune: string;
-  regione: string;
-  provincia: string;
-  //indirizzo: string;
+  istat:      string;
+  comune:     string;
+  regione:    string;
+  provincia:  string;
 }
