@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { AlunniService } from 'src/app/_components/alunni/alunni.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
@@ -45,6 +45,7 @@ export class AlunnoDetailsComponent implements OnInit{
   breakpoint2!:               number;
 
   constructor(
+      public _dialogRef: MatDialogRef<AlunnoDetailsComponent>,
       @Inject(MAT_DIALOG_DATA) public idAlunno: DialogData,
       private fb:             FormBuilder, 
       private route:          ActivatedRoute,
@@ -96,11 +97,11 @@ export class AlunnoDetailsComponent implements OnInit{
   loadData(){
 
     //this.idAlunno = this.route.snapshot.params['id'];  
-    this.caller_page = this.route.snapshot.queryParams["page"];
-    this.caller_size = this.route.snapshot.queryParams["size"];
-    this.caller_filter = this.route.snapshot.queryParams["filter"];
-    this.caller_sortField = this.route.snapshot.queryParams["sortField"];
-    this.caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
+    // this.caller_page = this.route.snapshot.queryParams["page"];
+    // this.caller_size = this.route.snapshot.queryParams["size"];
+    // this.caller_filter = this.route.snapshot.queryParams["filter"];
+    // this.caller_sortField = this.route.snapshot.queryParams["sortField"];
+    // this.caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
@@ -153,14 +154,25 @@ export class AlunnoDetailsComponent implements OnInit{
       this.alunniSvc.post(this.form.value)
         .subscribe(res=> {
           //console.log("return from post", res);
-          this.form.markAsPristine();
-        });
+          //this.form.markAsPristine();
+          this._dialogRef.close();
+        },
+        err=> (
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        )
+        );
     else 
       this.alunniSvc.put(this.form.value)
         .subscribe(res=> {
           //console.log("return from put", res);
-          this.form.markAsPristine();
-        });
+          //this.form.markAsPristine();
+          this._dialogRef.close();
+        },
+        err=> (
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        )
+        );
+    
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
   }
 
@@ -191,11 +203,11 @@ export class AlunnoDetailsComponent implements OnInit{
   // }
 
   delete(){
-    const dialogRef = this._dialog.open(DialogYesNoComponent, {
+    const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogYesNo.afterClosed().subscribe(result => {
       if(result){
         this.alunniSvc.delete(Number(this.idAlunno))
         .pipe (
@@ -204,11 +216,12 @@ export class AlunnoDetailsComponent implements OnInit{
         .subscribe(
           res=>{
             this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Record cancellato', panelClass: ['red-snackbar']}
+              {data: 'Record cancellato', panelClass: ['green-snackbar']}
             );
+            this._dialogRef.close();
           },
           err=> (
-            console.log("ERRORE")
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
           )
         );
       }

@@ -9,7 +9,7 @@
                         <button mat-stroked-button color="secondary" mat-dialog-close>
                             <mat-icon>arrow_back</mat-icon>
                             <div class="button-textDetail">
-                                annulla
+                                back
                             </div>
                         </button>
     
@@ -19,7 +19,7 @@
                             <mat-icon>restart_alt</mat-icon>
                             <div class="button-textDetail">ricarica</div>
                         </button>
-                        <!-- [disabled]= "!form.valid"  -->
+
                         <button mat-stroked-button color="secondary" 
                         [disabled]= "!form.valid"
                             (click)="save()">
@@ -47,7 +47,9 @@
                                         matInput
                                         formControlName="nomeCognomeAlunno"
                                         [matAutocomplete]="autoAlunno" #nomeCognomeAlunno 
-                                        (keydown.enter) = "enterAlunnoInput()">
+                                        (keydown.enter) = "enterAlunnoInput()"
+                                        (keydown) = "deleteAlunnoID()"
+                                        >
                                         <!-- [displayWith]="displayFn" DisplayWith impedisce che si possa scrivere qualcosa nella input in maniera programmatica-->
                                 <mat-autocomplete #autoAlunno="matAutocomplete" (optionSelected)="selected($event)">
                                     <!-- <mat-spinner *ngIf="nomeAlunnoIsLoading" class="is-loading" diameter="40"></mat-spinner> -->
@@ -62,11 +64,11 @@
                         </mat-grid-tile>
                     </mat-grid-list>
 
-                    <mat-grid-list [cols]="breakpoint" gutterSize= "10" rowHeight="60px" (window:resize)="onResize($event)">
+                    <mat-grid-list *ngIf="!emptyForm"  [cols]="breakpoint" gutterSize= "10" rowHeight="60px" (window:resize)="onResize($event)">
                         <mat-grid-tile>
-                            <mat-form-field>
+                            <!-- <mat-form-field>
                                 <input matInput type="text" placeholder="ID Alunno" formControlName="alunnoID" >
-                            </mat-form-field>
+                            </mat-form-field> -->
                         </mat-grid-tile>
                         <mat-grid-tile>
                             <mat-form-field>

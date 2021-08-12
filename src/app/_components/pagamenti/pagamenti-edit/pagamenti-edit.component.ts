@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
@@ -49,7 +49,8 @@ export class PagamentiEditComponent implements OnInit {
   autoAlunno!: MatAutocompleteTrigger;
 
   constructor(
-    //public dialogRef: MatDialogRef<DialogYesNoComponent>,
+
+    public _dialogRef: MatDialogRef<PagamentiEditComponent>,
     @Inject(MAT_DIALOG_DATA) public idPagamento: DialogData,
     private fb:                           FormBuilder, 
     private pagamentiSvc:                 PagamentiService,
@@ -67,7 +68,7 @@ export class PagamentiEditComponent implements OnInit {
         alunnoID:                   ['', Validators.required],
         causaleID:                  ['', Validators.required],
         dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-        importo:                    ['', { validators:[ Validators.required, Validators.pattern("^[0-9]*$")]}],
+        importo:                    ['', { validators:[ Validators.required]}],
         tipoPagamentoID:            ['', Validators.required],
         //genitoreID:                 ['', Validators.required],
         nomeCognomeAlunno:          [''],
@@ -117,27 +118,42 @@ export class PagamentiEditComponent implements OnInit {
   selected(event: MatAutocompleteSelectedEvent): void {
     this.idAlunnoSelected = parseInt(event.option.id);
     this.form.controls['alunnoID'].setValue(this.idAlunnoSelected);
+  }
 
+  deleteAlunnoID() {
+    this.form.controls['alunnoID'].setValue("");
   }
 
   save(){
 
-    console.log("idAlunnoSelected", this.idAlunnoSelected);
-    //console.log("form.value", this.form.value);
+    //console.log("idAlunnoSelected", this.idAlunnoSelected);
+    console.log("form.value", this.form.value);
     //console.log("this.form.controls['id'].value", this.form.controls['id'].value);
 
     if (this.form.controls['id'].value == null) {
       this.pagamentiSvc.post(this.form.value)
         .subscribe(res=> {
-        console.log("return from post", res);
-      });
+        //console.log("return from post", res);
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        this._dialogRef.close();
+      },
+      err=> (
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      )
+      );
     } else {
       this.pagamentiSvc.put(this.form.value)
         .subscribe(res=> {
-        console.log("return from put", res);
-      });
+          //console.log("return from put", res);
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        this._dialogRef.close();
+        
+      },
+      err=> (
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      ));
     }
-    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+    
   }
 
   delete(){
@@ -148,20 +164,17 @@ export class PagamentiEditComponent implements OnInit {
     console.log(this.idPagamento);
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        return;
-        // NON LO FO ANCORA SENNO'RESTO SENZA RECORD
+
         this.pagamentiSvc.delete(Number(this.idPagamento))
-        .pipe (
-          finalize(()=>this.router.navigate(['/pagamenti']))
-        )
         .subscribe(
           res=>{
             this._snackBar.openFromComponent(SnackbarComponent,
               {data: 'Record cancellato', panelClass: ['red-snackbar']}
             );
+            this._dialogRef.close();
           },
           err=> (
-              console.log("ERRORE")
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
           )
         );
       }

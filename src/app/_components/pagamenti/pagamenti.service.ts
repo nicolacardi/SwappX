@@ -25,7 +25,6 @@ export class PagamentiService {
   }
 
   put(formData: any): Observable <any>{
-    console.log("form.value", formData);
     return this.http.put(environment.apiBaseUrl  + 'PAG_Pagamenti/' + formData.id , formData);    
   }
 
