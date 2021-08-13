@@ -14,7 +14,7 @@ export interface PAG_Pagamento {
 
         causaleID:              number;                 //Sostituire con oggetto PAG_Causali?
         rettaID:                number;
-        retta:                  PAG_Retta;
+        //retta:                  PAG_Retta;
 
         alunnoID:               number;
         alunno:                 ALU_Alunno;
