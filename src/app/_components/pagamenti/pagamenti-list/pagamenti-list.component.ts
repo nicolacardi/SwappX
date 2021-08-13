@@ -28,11 +28,13 @@ export class PagamentiListComponent implements OnInit {
                                   "tipoPagamento.descrizione",
                                   //"causaleID", 
                                   "causale.descrizione",
-                                  "rettaID", 
+                                  //"rettaID", 
+                                  "retta.quotaConcordata",
+                                  "retta.mese",
                                   //"alunnoID", 
                                   "alunno.cognome",
                                   "alunno.nome",
-                                  //"genitoreID", 
+                                  //"genitoreID",
                                   "note"];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 

@@ -49,6 +49,32 @@
         <mat-cell *matCellDef="let element">{{element.rettaID}}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="retta.quotaConcordata">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>importo Retta</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <!-- {{element.retta.quotaConcordata}} -->
+            <ng-container *ngIf="element.retta; else default1">
+                {{element.retta.quotaConcordata}}
+            </ng-container>
+            <ng-template #default1>
+                -
+          </ng-template>
+
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="retta.mese">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>mese</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <ng-container *ngIf="element.retta; else default2">
+                {{element.retta.mese}}
+            </ng-container>
+            <ng-template #default2>
+                  -
+            </ng-template>
+        </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="alunno.cognome">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Cognome</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.alunno.cognome}}</mat-cell>

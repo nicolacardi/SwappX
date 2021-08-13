@@ -1,5 +1,7 @@
 import { ALU_Alunno } from "./ALU_Alunno";
+import { PAG_Retta } from "./PAG_Retta";
 import { PAG_TipoPagamento } from "./PAG_TipoPagamento";
+
 
 export interface PAG_Pagamento {
 
@@ -7,13 +9,14 @@ export interface PAG_Pagamento {
         importo:                number;
         dtPagamento:            Date;
 
-        tipoPagamentoID:        number;                 //Sostituire con oggetto PAG_TipoPagamenti
+        tipoPagamentoID:        number;
         tipoPagamento:          PAG_TipoPagamento;
 
         causaleID:              number;                 //Sostituire con oggetto PAG_Causali?
-        rettaID:                number;                 //Sostituire con oggetto PAG_Rette
+        rettaID:                number;
+        retta:                  PAG_Retta;
 
-        alunnoID:               number;                //Sostituire con oggetto ALU_Alunno
+        alunnoID:               number;
         alunno:                 ALU_Alunno;
         
         genitoreID:             number;                //Sostituire con oggetto ALU_Genitore 
