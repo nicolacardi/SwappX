@@ -144,8 +144,9 @@ background-size: cover;*/
     padding-top: 0px !important;
 }
 
-.tileCk .mat-figure {
-    justify-content:left !important;
+.tileCk mat-checkbox{
+    position: absolute;
+    left: 5px;
 }
 
 .data-form mat-form-field {
