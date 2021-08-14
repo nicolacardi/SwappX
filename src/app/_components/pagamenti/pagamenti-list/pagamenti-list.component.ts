@@ -48,7 +48,6 @@ export class PagamentiListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.displayedColumns =  this.displayedColumnsList;
     this.refresh();
   }
@@ -87,10 +86,7 @@ export class PagamentiListComponent implements OnInit {
   }
 
   //#region ### Funzioni ###
-  
 
- 
-  
   addRecord(){
     this.editRecord(0);
   }

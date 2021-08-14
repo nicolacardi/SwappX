@@ -13,7 +13,7 @@ import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-pag
 import { AlunnoDashboardComponent } from './_components/alunni/alunno-dashboard/alunno-dashboard.component';
 import { AlunnoDashboardNewComponent } from './_components/alunni/alunno-dashboard-new/alunno-dashboard-new.component';
 
-import { RetteComponent } from './_components/pagamenti/rette/rette.component';
+import { RettePageComponent } from './_components/pagamenti/rette-page/rette-page.component';
 import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
 
 const routes: Routes = [
@@ -56,7 +56,7 @@ const routes: Routes = [
   },
   {
     path: "rette",
-    component: RetteComponent
+    component: RettePageComponent
   }
 
 

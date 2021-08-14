@@ -35,10 +35,11 @@ import { CustomMatPaginatorIntl } from './_components/utilities/paginator-custom
 import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-page.component';
 import { AlunnoDashboardNewComponent } from './_components/alunni/alunno-dashboard-new/alunno-dashboard-new.component';
 import { ClassiSezioniAnniAlunnoComponent } from './_components/classi/classi-sezioni-anni-alunno/classi-sezioni-anni-alunno.component';
-import { RetteComponent } from './_components/pagamenti/rette/rette.component';
+import { RettePageComponent } from './_components/pagamenti/rette-page/rette-page.component';
 import { PagamentiListComponent } from './_components/pagamenti/pagamenti-list/pagamenti-list.component';
 import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
 import { PagamentoEditComponent } from './_components/pagamenti/pagamento-edit/pagamento-edit.component';
+import { RetteListComponent } from './_components/pagamenti/rette-list/rette-list.component';
 
 
 @NgModule({
@@ -62,10 +63,11 @@ import { PagamentoEditComponent } from './_components/pagamenti/pagamento-edit/p
     AlunniPageComponent,
     AlunnoDashboardNewComponent,
     ClassiSezioniAnniAlunnoComponent,
-    RetteComponent,
+    RettePageComponent,
     PagamentiListComponent,
     PagamentiPageComponent,
-    PagamentoEditComponent
+    PagamentoEditComponent,
+    RetteListComponent
 
 
   ],

@@ -1,0 +1,79 @@
+<h1 class="page-title">Elenco Rette </h1>
+
+<!-- **************************   FILTER   ******************* -->
+<mat-form-field class="ml20 topZIndex">
+    <mat-label>Filtro</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
+</mat-form-field>
+
+<!-- **************************   PAGINATOR   ******************* -->
+<mat-paginator class="transparent" [pageSize]="10" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+
+<!-- **************************   MAT-TABLE   ******************* -->
+<mat-table class="transparent" [dataSource]="matDataSource"
+    matSort
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    (cdkDropListDropped)="drop($event)">
+    
+    <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+    <ng-container matColumnDef="actionsColumn">
+        <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
+        <mat-cell  *matCellDef="let element;  let j = index;"> 
+            <img (click)="editRecord(element.id)" class="iconaMenu pointer" src="../assets/money_edit.svg">
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="alunno.cognome">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Cognome</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.alunno.cognome}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="alunno.nome">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="mese">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Mese</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{months[element.mese] | date: 'MMMM'}}</mat-cell>
+        <!-- <mat-cell *matCellDef="let element">{{element.mese}}</mat-cell> -->
+    </ng-container>
+
+    <ng-container matColumnDef="anno">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>anno</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.anno}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="quotaConcordata">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Quota Concordata</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.quotaConcordata}}</mat-cell>
+    </ng-container>
+
+    
+    <!-- **************************   MAT-HEADER-ROW   ******************* -->
+    <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+    
+    <!-- **************************   MAT-ROW   ******************* -->
+    <mat-row *matRowDef="let element;columns: displayedColumns"
+        class="element-row"
+        (contextmenu)="onRightClick($event, element)" >
+    </mat-row>
+
+</mat-table>
+
+<!-- ***********************  MENU RIGHT CLICK ****************** -->
+<div style="visibility: hidden; position: fixed;" 
+    [style.left]="menuTopLeftPosition.x" 
+    [style.top]="menuTopLeftPosition.y" 
+    [matMenuTriggerFor]="rightMenu">
+</div> 
+
+<mat-menu #rightMenu="matMenu"> 
+    <ng-template matMenuContent let-item="item"> 
+        <mat-label class="rightMenuTitle">Dettaglio Retta</mat-label> 
+        <!-- <button mat-menu-item routerLink="/genitori" [queryParams]="{ idAlunno: item.id }">Genitori/Tutori</button>  
+        <button mat-menu-item (click)="openAlunno(item.id)">Alunno</button> -->
+        <button mat-menu-item>Alunno</button> 
+    </ng-template> 
+</mat-menu> 
+
