@@ -42,7 +42,6 @@ export class RetteListComponent implements OnInit {
 
   refresh () {
     let obsRette$: Observable<PAG_Retta[]>;
-      
     obsRette$= this.svcRette.load();
 
     //const loadRette$ =this._loadingService.showLoaderUntilCompleted(obsRette$);
@@ -81,7 +80,7 @@ export class RetteListComponent implements OnInit {
     // const subscribe = example.subscribe(val => console.log("cicciopasticcio", val));
 
     
-
+    /* Group By Mese
     obsRette$
     .pipe(
       mergeMap(res=>res),
@@ -94,13 +93,30 @@ export class RetteListComponent implements OnInit {
     )
       .subscribe(val => 
       {
-        console.log(val);
+        console.log("Rette:" , val);
         //this.matDataSource.data = val;
         //this.matDataSource.paginator = this.paginator;
         //this.matDataSource.sort = this.sort;
       }
     );
+    */
 
+    //Group By alunnoID
+    
+    obsRette$.pipe(
+      mergeMap(res=>res),
+      groupBy(o => o.alunnoID, q=>q.quotaConcordata),
+      //mergeMap(group => group.pipe(toArray())),
+      mergeMap(group => zip(["" + group.key], group.pipe(toArray()))),
+      //mergeMap( (group$) => group$.reduce((x:any, y:any) => [...x, y], ["" + group$.key]))
+      map(arr => ({'alunnoID': parseInt(arr[0]), 'quote': arr.slice(1)}))
+    ).subscribe(val => {
+        console.log("Rette Alunno", val);
+        //this.matDataSource.data = val;
+        //this.matDataSource.paginator = this.paginator;
+        //this.matDataSource.sort = this.sort;
+      }
+    );
 
 
   }
