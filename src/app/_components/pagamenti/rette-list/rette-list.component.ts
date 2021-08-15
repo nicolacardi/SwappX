@@ -1,12 +1,10 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { forkJoin, from, Observable, of, pipe, zip } from 'rxjs';
-import { flatMap, groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { Observable, of, pipe, zip } from 'rxjs';
+import { groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
 
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
-import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPIVOT';
+import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPivot';
 
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { RetteService } from '../rette.service';
@@ -20,11 +18,33 @@ export class RetteListComponent implements OnInit {
   
   matDataSource = new MatTableDataSource<PAG_RettaPivot>();
   
+  d_displayedColumns: string[] =  [
+    "actionsColumn",
+    "tipoRec_D",
+    "alunno.nome",
+    "alunno.cognome",
+    //"alunnoID",
+
+    "d_SET",
+    "d_OTT",
+    "d_NOV",
+    "d_DIC",
+    "d_GEN",
+    "d_FEB",
+    "d_MAR",
+    "d_APR",
+    "d_MAG",
+    "d_GIU",
+    "d_LUG",
+    "d_AGO"
+    ];
+
   c_displayedColumns: string[] = [
                                   "blank", 
+                                  "tipoRec_C",
                                   "blank",
                                   "blank",
-                                  "blank",
+
                                   "c_SET",
                                   "c_OTT",
                                   "c_NOV",
@@ -39,25 +59,7 @@ export class RetteListComponent implements OnInit {
                                   "c_AGO"
                                   //"note"
                                   ];
-  d_displayedColumns: string[] =  [
-                                  "actionsColumn", 
-                                  "alunno.nome",
-                                  "alunno.cognome",
-                                  "alunnoID",
-
-                                  "d_SET",
-                                  "d_OTT",
-                                  "d_NOV",
-                                  "d_DIC",
-                                  "d_GEN",
-                                  "d_FEB",
-                                  "d_MAR",
-                                  "d_APR",
-                                  "d_MAG",
-                                  "d_GIU",
-                                  "d_LUG",
-                                  "d_AGO"
-                                  ];
+  
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   matMenuTrigger: any;
@@ -128,22 +130,13 @@ export class RetteListComponent implements OnInit {
         //this.matDataSource.sort = this.sort;
       }
     );
-
   }
-
-
-  
-
-
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.matDataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.c_displayedColumns, event.previousIndex, event.currentIndex);
-  }
   
   onRightClick(event: MouseEvent, element: PAG_Retta) { 
     event.preventDefault(); 
