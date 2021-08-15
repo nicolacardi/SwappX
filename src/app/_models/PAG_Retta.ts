@@ -1,8 +1,11 @@
+import { ALU_Alunno } from "./ALU_Alunno";
 
 export interface PAG_Retta {
         id:                     number,
         annoID:                 number,
         alunnoID:               number,
+        alunno:                 ALU_Alunno;
+        
         anno:                   number,
         mese:                   number,
         quotaDefault:           number,

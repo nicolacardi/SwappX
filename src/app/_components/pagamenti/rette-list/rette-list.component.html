@@ -41,6 +41,51 @@
             <mat-cell *matCellDef="let element">{{element.NOV}}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="DIC">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >DIC</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.DIC}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="GEN">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >GEN</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.GEN}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="FEB">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >FEB</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.FEB}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="MAR">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >MAR</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.MAR}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="APR">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >APR</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.APR}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="MAG">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >MAG</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.MAG}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="GIU">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >GIU</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.GIU}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="LUG">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >LUG</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.LUG}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="AGO">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >AGO</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.AGO}}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="quote[0][0]">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >quote</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.quote[0][0]}}</mat-cell>
@@ -50,12 +95,12 @@
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >ID</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.alunnoID}}</mat-cell>
     </ng-container>
-
+<!--
     <ng-container matColumnDef="alunno.cognome">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Cognome</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.alunno.cognome}}</mat-cell>
     </ng-container>
-    
+-->
     <ng-container matColumnDef="alunno.nome">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell>

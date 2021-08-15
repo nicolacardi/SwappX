@@ -1,10 +1,12 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { from, Observable, of, zip } from 'rxjs';
+import { forkJoin, from, Observable, of, pipe, zip } from 'rxjs';
 import { flatMap, groupBy, map, mergeMap, toArray } from 'rxjs/operators';
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
-import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPIVOT';
+import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPivot';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { RetteService } from '../rette.service';
 
@@ -21,37 +23,32 @@ export class RetteListComponent implements OnInit {
   displayedColumnsList: string[] = [
                                   "actionsColumn", 
                                   "alunnoID",
+                                 // "alunno",
                                   "SET",
                                   "OTT",
-                                  "NOV"
-                                  //"quote[0][0]",
-                                  // "quote[0][1]",
-                                  // "quote[0][2]",
-                                  // "quote[0][3]",
-                                  // "quote[0][4]",
-                                  // "quote[0][5]",
-                                  // "quote[0][6]",
-                                  // "quote[0][7]",
-                                  // "quote[0][8]",
-                                  // "quote[0][9]",
-
+                                  "NOV",
+                                  "DIC",
+                                  "GEN",
+                                  "FEB",
+                                  "MAR",
+                                  "APR",
+                                  "MAG",
+                                  "GIU",
+                                  "LUG",
+                                  "AGO"
                                   //"note"
                                   ];
-  // displayedColumnsList: string[] = [
-  //                                   "actionsColumn", 
-  //                                   "alunno.cognome"
-  //                                   //"note"
-  //                                   ];
+
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   matMenuTrigger: any;
 
-
-
   months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2));
   
   constructor(private svcRette:         RetteService,
-              private _loadingService:  LoadingService,) { }
+              private _loadingService:  LoadingService) {
+             
+  }
 
   ngOnInit(): void {
     this.displayedColumns =  this.displayedColumnsList;
@@ -60,9 +57,11 @@ export class RetteListComponent implements OnInit {
   }
 
   refresh () {
+
     let obsRette$: Observable<PAG_Retta[]>;
     obsRette$= this.svcRette.load();
 
+    //#region PROVE DEL CAZZO
     //const loadRette$ =this._loadingService.showLoaderUntilCompleted(obsRette$);
 
     // of ({id: 1, name: 'aze1'},
@@ -119,45 +118,50 @@ export class RetteListComponent implements OnInit {
       }
     );
     */
+//#endregion
+    
+// NOTA PER PIU' AVANTI: per avere la riga della retta e sotto la riga del pagamento forse è da usare const result$ = concat(series1$, series2$);
 
-    //Group By alunnoID
     let arrObj: PAG_RettaPivot[] = [];
     obsRette$
     .pipe(
       mergeMap(res=>res),
-      groupBy(o => o.alunnoID, q=>q.quotaConcordata),
-      //mergeMap(group => group.pipe(toArray())),
+      groupBy(o => o.alunnoID,  q=>q.quotaConcordata),
       mergeMap(group => zip(["" + group.key], group.pipe(toArray()))),
-      //mergeMap( (group$) => group$.reduce((x:any, y:any) => [...x, y], ["" + group$.key]))
-      //map(arr => ({'alunnoID': parseInt(arr[0]), 'quote': arr.slice(1)}))
-      // map(arr => (
-      //   {
-      //     'alunnoID': parseInt(arr[0]),
-      //     'SET': arr[1][0],
-      //     'OTT': arr[1][1],
-      //     'NOV': arr[1][2],
-
-      //   }
-      //   ) )
-      map(arr => {
-        
-        //arr.forEach(() => {
-            arrObj.push({'alunnoID': parseInt(arr[0]), 'SET': arr[1][0], 'OTT' :arr[1][1], 'NOV': arr[1][2] });
-        //});
+      
+      map(arr => {        
+        arrObj.push({'alunnoID': parseInt(arr[0]), 
+          alunno: {null, .... }  //QUI PORCA TROIA: bisogna passargli l'oggetto alunno
+          //alunno: arr[1],
+          'SET': arr[1][0], 
+          'OTT' :arr[1][1], 
+          'NOV': arr[1][2],
+          'DIC': arr[1][3],
+          'GEN': arr[1][4],
+          'FEB': arr[1][5],
+          'MAR': arr[1][6],
+          'APR': arr[1][7],
+          'MAG': arr[1][8],
+          'GIU': arr[1][9],
+          'LUG': arr[1][10],
+          'AGO': arr[1][11] });
         return arrObj;
       })
-
     )
+    //.pipe(
+    //  mergeMap( a1 => objAlunni$.pipe (map())
+    
+    //  )
+    //)
     .subscribe(val => {
         console.log("Rette Alunno", val);
-        //console.log(val.quote[0][0]);
         this.matDataSource.data = val;
         //this.matDataSource.paginator = this.paginator;
         //this.matDataSource.sort = this.sort;
       }
     );
 
-
+    const join  = combine
   }
 
 
