@@ -11,6 +11,7 @@
 
 <!-- **************************   MAT-TABLE   ******************* -->
 <mat-table class="transparent" [dataSource]="matDataSource"
+    multiTemplateDataRows
     matSort
     cdkDropList
     cdkDropListOrientation="horizontal"
@@ -36,64 +37,130 @@
             <mat-cell *matCellDef="let element">{{element.alunno.cognome}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="SET">
+    <ng-container matColumnDef="c_SET">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >SET</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.SET}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.c_SET}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="OTT">
+    <ng-container matColumnDef="c_OTT">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >OTT</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.OTT}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.c_OTT}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="NOV">
+    <ng-container matColumnDef="c_NOV">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >NOV</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.NOV}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.c_NOV}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="DIC">
+    <ng-container matColumnDef="c_DIC">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >DIC</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.DIC}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.c_DIC}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="GEN">
+    <ng-container matColumnDef="c_GEN">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >GEN</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.GEN}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.c_GEN}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="FEB">
+    <ng-container matColumnDef="c_FEB">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >FEB</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.FEB}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.c_FEB}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="MAR">
+    <ng-container matColumnDef="c_MAR">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >MAR</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.MAR}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.c_MAR}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="APR">
+    <ng-container matColumnDef="c_APR">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >APR</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.APR}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.c_APR}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="MAG">
+    <ng-container matColumnDef="c_MAG">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >MAG</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.MAG}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.c_MAG}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="GIU">
+    <ng-container matColumnDef="c_GIU">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >GIU</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.GIU}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.c_GIU}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="LUG">
+    <ng-container matColumnDef="c_LUG">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >LUG</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.LUG}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.c_LUG}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="AGO">
+    <ng-container matColumnDef="c_AGO">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >AGO</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.AGO}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.c_AGO}}</mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="d_SET">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >SET</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.d_SET}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="d_OTT">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >OTT</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.d_OTT}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="d_NOV">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >NOV</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.d_NOV}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="d_DIC">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >DIC</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.d_DIC}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="d_GEN">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >GEN</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.d_GEN}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="d_FEB">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >FEB</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.d_FEB}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="d_MAR">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >MAR</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.d_MAR}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="d_APR">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >APR</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.d_APR}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="d_MAG">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >MAG</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.d_MAG}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="d_GIU">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >GIU</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.d_GIU}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="d_LUG">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >LUG</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.d_LUG}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="d_AGO">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >AGO</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.d_AGO}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="blank">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header ></mat-header-cell>
+            <mat-cell *matCellDef="let element"></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="quote[0][0]">
@@ -128,13 +195,18 @@
 
     
     <!-- **************************   MAT-HEADER-ROW   ******************* -->
-    <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+    <mat-header-row *matHeaderRowDef="c_displayedColumns;"></mat-header-row>
     
     <!-- **************************   MAT-ROW   ******************* -->
-    <mat-row *matRowDef="let element;columns: displayedColumns"
+    <mat-row *matRowDef="let element;columns: c_displayedColumns;"
         class="element-row"
         (contextmenu)="onRightClick($event, element)" >
     </mat-row>
+
+    <mat-row *matRowDef="let element; columns: d_displayedColumns;"
+        class="element-row">
+    </mat-row>
+    <!-- <mat-row *matRowDef="let element; columns: d_displayedColumns;" class="element-row"></mat-row> -->
 
 </mat-table>
 

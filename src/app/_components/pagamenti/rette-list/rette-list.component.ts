@@ -20,27 +20,44 @@ export class RetteListComponent implements OnInit {
   
   matDataSource = new MatTableDataSource<PAG_RettaPivot>();
   //matDataSource = new MatTableDataSource<PAG_Retta>();
-  displayedColumns: string[] =  [];
-  displayedColumnsList: string[] = [
+  
+  c_displayedColumns: string[] = [
                                   "actionsColumn", 
                                   "alunno.nome",
                                   "alunno.cognome",
                                   "alunnoID",
-                                  "SET",
-                                  "OTT",
-                                  "NOV",
-                                  "DIC",
-                                  "GEN",
-                                  "FEB",
-                                  "MAR",
-                                  "APR",
-                                  "MAG",
-                                  "GIU",
-                                  "LUG",
-                                  "AGO"
+                                  "c_SET",
+                                  "c_OTT",
+                                  "c_NOV",
+                                  "c_DIC",
+                                  "c_GEN",
+                                  "c_FEB",
+                                  "c_MAR",
+                                  "c_APR",
+                                  "c_MAG",
+                                  "c_GIU",
+                                  "c_LUG",
+                                  "c_AGO"
                                   //"note"
                                   ];
-
+  d_displayedColumns: string[] =  [
+                                  "blank", 
+                                  "blank",
+                                  "blank",
+                                  "blank",
+                                  "d_SET",
+                                  "d_OTT",
+                                  "d_NOV",
+                                  "d_DIC",
+                                  "d_GEN",
+                                  "d_FEB",
+                                  "d_MAR",
+                                  "d_APR",
+                                  "d_MAG",
+                                  "d_GIU",
+                                  "d_LUG",
+                                  "d_AGO"
+                                  ];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   matMenuTrigger: any;
@@ -53,7 +70,7 @@ export class RetteListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.displayedColumns =  this.displayedColumnsList;
+    //this.displayedColumns =  this.displayedColumnsList;
     this.refresh();
 
   }
@@ -144,18 +161,31 @@ export class RetteListComponent implements OnInit {
             'alunnoID': parseInt(arr[0]),
             //alunno: arr[0],
           alunno : arr[1][0].alunno,
-          'SET': arr[1][0]?.quotaConcordata, 
-          'OTT': arr[1][1]?.quotaConcordata, 
-          'NOV': arr[1][2]?.quotaConcordata,
-          'DIC': arr[1][3]?.quotaConcordata,
-          'GEN': arr[1][4]?.quotaConcordata,
-          'FEB': arr[1][5]?.quotaConcordata,
-          'MAR': arr[1][6]?.quotaConcordata,
-          'APR': arr[1][7]?.quotaConcordata,
-          'MAG': arr[1][8]?.quotaConcordata,
-          'GIU': arr[1][9]?.quotaConcordata,
-          'LUG': arr[1][10]?.quotaConcordata,
-          'AGO': arr[1][11]?.quotaConcordata,
+          'c_SET': arr[1][0]?.quotaConcordata, 
+          'c_OTT': arr[1][1]?.quotaConcordata, 
+          'c_NOV': arr[1][2]?.quotaConcordata,
+          'c_DIC': arr[1][3]?.quotaConcordata,
+          'c_GEN': arr[1][4]?.quotaConcordata,
+          'c_FEB': arr[1][5]?.quotaConcordata,
+          'c_MAR': arr[1][6]?.quotaConcordata,
+          'c_APR': arr[1][7]?.quotaConcordata,
+          'c_MAG': arr[1][8]?.quotaConcordata,
+          'c_GIU': arr[1][9]?.quotaConcordata,
+          'c_LUG': arr[1][10]?.quotaConcordata,
+          'c_AGO': arr[1][11]?.quotaConcordata,
+
+          'd_SET': arr[1][0]?.quotaDefault, 
+          'd_OTT': arr[1][1]?.quotaDefault, 
+          'd_NOV': arr[1][2]?.quotaDefault,
+          'd_DIC': arr[1][3]?.quotaDefault,
+          'd_GEN': arr[1][4]?.quotaDefault,
+          'd_FEB': arr[1][5]?.quotaDefault,
+          'd_MAR': arr[1][6]?.quotaDefault,
+          'd_APR': arr[1][7]?.quotaDefault,
+          'd_MAG': arr[1][8]?.quotaDefault,
+          'd_GIU': arr[1][9]?.quotaDefault,
+          'd_LUG': arr[1][10]?.quotaDefault,
+          'd_AGO': arr[1][11]?.quotaDefault,
          });
         return arrObj;
       })
@@ -184,7 +214,7 @@ export class RetteListComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.c_displayedColumns, event.previousIndex, event.currentIndex);
   }
   
   onRightClick(event: MouseEvent, element: PAG_Retta) { 
