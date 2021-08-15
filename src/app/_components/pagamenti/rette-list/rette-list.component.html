@@ -26,6 +26,16 @@
         </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="alunno.nome">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="alunno.cognome">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Cognome</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.alunno.cognome}}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="SET">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >SET</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.SET}}</mat-cell>
@@ -95,16 +105,10 @@
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >ID</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.alunnoID}}</mat-cell>
     </ng-container>
-<!--
-    <ng-container matColumnDef="alunno.cognome">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Cognome</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.alunno.cognome}}</mat-cell>
-    </ng-container>
--->
-    <ng-container matColumnDef="alunno.nome">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell>
-    </ng-container>
+
+
+
+
 
     <ng-container matColumnDef="mese">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Mese</mat-header-cell>

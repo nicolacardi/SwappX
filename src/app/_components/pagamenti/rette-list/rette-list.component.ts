@@ -2,11 +2,12 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { forkJoin, from, Observable, of, pipe, zip } from 'rxjs';
-import { flatMap, groupBy, map, mergeMap, toArray } from 'rxjs/operators';
+import { flatMap, groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
-import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPivot';
+import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPIVOT';
+
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { RetteService } from '../rette.service';
 
@@ -22,8 +23,9 @@ export class RetteListComponent implements OnInit {
   displayedColumns: string[] =  [];
   displayedColumnsList: string[] = [
                                   "actionsColumn", 
+                                  "alunno.nome",
+                                  "alunno.cognome",
                                   "alunnoID",
-                                 // "alunno",
                                   "SET",
                                   "OTT",
                                   "NOV",
@@ -123,45 +125,52 @@ export class RetteListComponent implements OnInit {
 // NOTA PER PIU' AVANTI: per avere la riga della retta e sotto la riga del pagamento forse è da usare const result$ = concat(series1$, series2$);
 
     let arrObj: PAG_RettaPivot[] = [];
+
+
+
     obsRette$
     .pipe(
       mergeMap(res=>res),
-      groupBy(o => o.alunnoID,  q=>q.quotaConcordata),
-      mergeMap(group => zip(["" + group.key], group.pipe(toArray()))),
-      
+      //groupBy(o => o.alunnoID,  a=> a.quotaConcordata),//****FUNZIA
+      groupBy(o => o.alunnoID),
+      //mergeMap(group => zip(["" + group.key], group.pipe(toArray()))), //****FUNZIA
+      //mergeMap(group => zip([group.key], group.pipe(toArray()))),
+      //mergeMap(group => zip([group.key], group.pipe(toArray()))),
+      mergeMap(group => zip(["" + group.key], group.pipe(toArray()))), //****FUNZIA
       map(arr => {        
-        arrObj.push({'alunnoID': parseInt(arr[0]), 
-          alunno: {null, .... }  //QUI PORCA TROIA: bisogna passargli l'oggetto alunno
-          //alunno: arr[1],
-          'SET': arr[1][0], 
-          'OTT' :arr[1][1], 
-          'NOV': arr[1][2],
-          'DIC': arr[1][3],
-          'GEN': arr[1][4],
-          'FEB': arr[1][5],
-          'MAR': arr[1][6],
-          'APR': arr[1][7],
-          'MAG': arr[1][8],
-          'GIU': arr[1][9],
-          'LUG': arr[1][10],
-          'AGO': arr[1][11] });
+        arrObj.push(
+          //{'alunnoID': parseInt(arr[0]), 
+          {
+            'alunnoID': parseInt(arr[0]),
+            //alunno: arr[0],
+          alunno : arr[1][0].alunno,
+          'SET': arr[1][0]?.quotaConcordata, 
+          'OTT': arr[1][1]?.quotaConcordata, 
+          'NOV': arr[1][2]?.quotaConcordata,
+          'DIC': arr[1][3]?.quotaConcordata,
+          'GEN': arr[1][4]?.quotaConcordata,
+          'FEB': arr[1][5]?.quotaConcordata,
+          'MAR': arr[1][6]?.quotaConcordata,
+          'APR': arr[1][7]?.quotaConcordata,
+          'MAG': arr[1][8]?.quotaConcordata,
+          'GIU': arr[1][9]?.quotaConcordata,
+          'LUG': arr[1][10]?.quotaConcordata,
+          'AGO': arr[1][11]?.quotaConcordata,
+         });
         return arrObj;
       })
     )
-    //.pipe(
-    //  mergeMap( a1 => objAlunni$.pipe (map())
-    
-    //  )
+
     //)
     .subscribe(val => {
-        console.log("Rette Alunno", val);
+        console.log("Risultato dei vari Map:", val);
         this.matDataSource.data = val;
         //this.matDataSource.paginator = this.paginator;
         //this.matDataSource.sort = this.sort;
       }
     );
 
-    const join  = combine
+    //const join  = combine
   }
 
 
