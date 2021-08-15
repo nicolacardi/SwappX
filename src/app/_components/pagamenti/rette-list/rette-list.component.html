@@ -17,6 +17,8 @@
     (cdkDropListDropped)="drop($event)">
     
     <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+
+
     <ng-container matColumnDef="actionsColumn">
         <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
         <mat-cell  *matCellDef="let element;  let j = index;"> 
@@ -24,10 +26,36 @@
         </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="SET">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >SET</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.SET}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="OTT">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >OTT</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.OTT}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="NOV">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >NOV</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.NOV}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="quote[0][0]">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >quote</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.quote[0][0]}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="alunnoID">
+        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >ID</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.alunnoID}}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="alunno.cognome">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Cognome</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.alunno.cognome}}</mat-cell>
     </ng-container>
+    
     <ng-container matColumnDef="alunno.nome">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell>

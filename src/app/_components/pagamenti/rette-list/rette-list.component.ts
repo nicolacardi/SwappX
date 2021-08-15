@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { from, Observable, of, zip } from 'rxjs';
 import { flatMap, groupBy, map, mergeMap, toArray } from 'rxjs/operators';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
+import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPIVOT';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { RetteService } from '../rette.service';
 
@@ -14,20 +15,38 @@ import { RetteService } from '../rette.service';
 })
 export class RetteListComponent implements OnInit {
   
-  matDataSource = new MatTableDataSource<PAG_Retta>();
+  matDataSource = new MatTableDataSource<PAG_RettaPivot>();
+  //matDataSource = new MatTableDataSource<PAG_Retta>();
   displayedColumns: string[] =  [];
   displayedColumnsList: string[] = [
                                   "actionsColumn", 
-                                  "quotaConcordata",
-                                  "mese",
-                                  "anno",
-                                  "alunno.cognome",
-                                  "alunno.nome",
+                                  "alunnoID",
+                                  "SET",
+                                  "OTT",
+                                  "NOV"
+                                  //"quote[0][0]",
+                                  // "quote[0][1]",
+                                  // "quote[0][2]",
+                                  // "quote[0][3]",
+                                  // "quote[0][4]",
+                                  // "quote[0][5]",
+                                  // "quote[0][6]",
+                                  // "quote[0][7]",
+                                  // "quote[0][8]",
+                                  // "quote[0][9]",
+
                                   //"note"
                                   ];
+  // displayedColumnsList: string[] = [
+  //                                   "actionsColumn", 
+  //                                   "alunno.cognome"
+  //                                   //"note"
+  //                                   ];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   matMenuTrigger: any;
+
+
 
   months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2));
   
@@ -102,17 +121,37 @@ export class RetteListComponent implements OnInit {
     */
 
     //Group By alunnoID
-    
-    obsRette$.pipe(
+    let arrObj: PAG_RettaPivot[] = [];
+    obsRette$
+    .pipe(
       mergeMap(res=>res),
       groupBy(o => o.alunnoID, q=>q.quotaConcordata),
       //mergeMap(group => group.pipe(toArray())),
       mergeMap(group => zip(["" + group.key], group.pipe(toArray()))),
       //mergeMap( (group$) => group$.reduce((x:any, y:any) => [...x, y], ["" + group$.key]))
-      map(arr => ({'alunnoID': parseInt(arr[0]), 'quote': arr.slice(1)}))
-    ).subscribe(val => {
+      //map(arr => ({'alunnoID': parseInt(arr[0]), 'quote': arr.slice(1)}))
+      // map(arr => (
+      //   {
+      //     'alunnoID': parseInt(arr[0]),
+      //     'SET': arr[1][0],
+      //     'OTT': arr[1][1],
+      //     'NOV': arr[1][2],
+
+      //   }
+      //   ) )
+      map(arr => {
+        
+        arr.forEach(element => {
+            arrObj.push({'alunnoID': parseInt(arr[0]), 'SET': arr[1][0], 'OTT' :arr[1][1], 'NOV': arr[1][2] });
+        });
+        return arrObj;
+      })
+
+    )
+    .subscribe(val => {
         console.log("Rette Alunno", val);
-        //this.matDataSource.data = val;
+        //console.log(val.quote[0][0]);
+        this.matDataSource.data = val;
         //this.matDataSource.paginator = this.paginator;
         //this.matDataSource.sort = this.sort;
       }

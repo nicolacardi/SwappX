@@ -1,6 +1,6 @@
 
 export interface PAG_Retta {
-        id:                     number;
+        id:                     number,
         annoID:                 number,
         alunnoID:               number,
         anno:                   number,
