@@ -141,9 +141,9 @@ export class RetteListComponent implements OnInit {
       //   ) )
       map(arr => {
         
-        arr.forEach(element => {
+        //arr.forEach(() => {
             arrObj.push({'alunnoID': parseInt(arr[0]), 'SET': arr[1][0], 'OTT' :arr[1][1], 'NOV': arr[1][2] });
-        });
+        //});
         return arrObj;
       })
 
