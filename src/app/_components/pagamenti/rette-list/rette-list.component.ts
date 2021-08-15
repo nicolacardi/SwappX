@@ -19,13 +19,12 @@ import { RetteService } from '../rette.service';
 export class RetteListComponent implements OnInit {
   
   matDataSource = new MatTableDataSource<PAG_RettaPivot>();
-  //matDataSource = new MatTableDataSource<PAG_Retta>();
   
   c_displayedColumns: string[] = [
-                                  "actionsColumn", 
-                                  "alunno.nome",
-                                  "alunno.cognome",
-                                  "alunnoID",
+                                  "blank", 
+                                  "blank",
+                                  "blank",
+                                  "blank",
                                   "c_SET",
                                   "c_OTT",
                                   "c_NOV",
@@ -41,10 +40,11 @@ export class RetteListComponent implements OnInit {
                                   //"note"
                                   ];
   d_displayedColumns: string[] =  [
-                                  "blank", 
-                                  "blank",
-                                  "blank",
-                                  "blank",
+                                  "actionsColumn", 
+                                  "alunno.nome",
+                                  "alunno.cognome",
+                                  "alunnoID",
+
                                   "d_SET",
                                   "d_OTT",
                                   "d_NOV",
@@ -70,9 +70,7 @@ export class RetteListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //this.displayedColumns =  this.displayedColumnsList;
     this.refresh();
-
   }
 
   refresh () {
@@ -80,86 +78,18 @@ export class RetteListComponent implements OnInit {
     let obsRette$: Observable<PAG_Retta[]>;
     obsRette$= this.svcRette.load();
 
-    //#region PROVE DEL CAZZO
-    //const loadRette$ =this._loadingService.showLoaderUntilCompleted(obsRette$);
-
-    // of ({id: 1, name: 'aze1'},
-    // {id: 2, name: 'sf2'},
-    // {id: 2, name: 'dg2'},
-    // {id: 1, name: 'erg1'},
-    // {id: 1, name: 'df1'},
-    // {id: 2, name: 'sfqfb2'},
-    // {id: 3, name: 'qfs1'},
-    // {id: 2, name: 'qsgqsfg2'})
-    // .pipe(
-
-    //   groupBy(p => p.id, p=>p.name),
-    //   mergeMap( (group$) => group$.reduce((x:any, y:any) => [...x, y], [group$.key])),  //ma sarebbe flatMap che è deprecated
-    //   //map(arr => ({'mese': (arr[0], 'values': arr.slice(1)}))
-    // ).subscribe(p=> console.log(p))
-
-
-    // const people = [
-    //   { name: 'Sue', age: 25 },
-    //   { name: 'Joe', age: 30 },
-    //   { name: 'Frank', age: 25 },
-    //   { name: 'Sarah', age: 35 }
-    // ];
-    // //emit each person
-    // const source = from(people);
-    // //group by age
-    // const example = source.pipe(
-    //   groupBy(person => person.age),
-    //   // return each item in group as array
-    //   mergeMap(group => group.pipe(toArray()))
-    // );
-
-    // const subscribe = example.subscribe(val => console.log("cicciopasticcio", val));
-
-    
-    /* Group By Mese
-    obsRette$
-    .pipe(
-      mergeMap(res=>res),
-      groupBy(o => o.mese, q=>q.quotaConcordata),
-      // return each item in group as array
-      //mergeMap(group => group.pipe(toArray())),
-      mergeMap(group => zip(["" + group.key], group.pipe(toArray()))),
-      //mergeMap( (group$) => group$.reduce((x:any, y:any) => [...x, y], ["" + group$.key]))
-      map(arr => ({'mese': parseInt(arr[0]), 'quote': arr.slice(1)}))
-    )
-      .subscribe(val => 
-      {
-        console.log("Rette:" , val);
-        //this.matDataSource.data = val;
-        //this.matDataSource.paginator = this.paginator;
-        //this.matDataSource.sort = this.sort;
-      }
-    );
-    */
-//#endregion
-    
 // NOTA PER PIU' AVANTI: per avere la riga della retta e sotto la riga del pagamento forse è da usare const result$ = concat(series1$, series2$);
 
     let arrObj: PAG_RettaPivot[] = [];
-
-
-
     obsRette$
     .pipe(
       mergeMap(res=>res),
-      //groupBy(o => o.alunnoID,  a=> a.quotaConcordata),//****FUNZIA
       groupBy(o => o.alunnoID),
-      //mergeMap(group => zip(["" + group.key], group.pipe(toArray()))), //****FUNZIA
-      //mergeMap(group => zip([group.key], group.pipe(toArray()))),
-      //mergeMap(group => zip([group.key], group.pipe(toArray()))),
-      mergeMap(group => zip(["" + group.key], group.pipe(toArray()))), //****FUNZIA
+      mergeMap(group => zip([group.key], group.pipe(toArray()))),
       map(arr => {        
         arrObj.push(
-          //{'alunnoID': parseInt(arr[0]), 
           {
-            'alunnoID': parseInt(arr[0]),
-            //alunno: arr[0],
+          'alunnoID': arr[0],
           alunno : arr[1][0].alunno,
           'c_SET': arr[1][0]?.quotaConcordata, 
           'c_OTT': arr[1][1]?.quotaConcordata, 
@@ -191,7 +121,6 @@ export class RetteListComponent implements OnInit {
       })
     )
 
-    //)
     .subscribe(val => {
         console.log("Risultato dei vari Map:", val);
         this.matDataSource.data = val;
@@ -200,7 +129,6 @@ export class RetteListComponent implements OnInit {
       }
     );
 
-    //const join  = combine
   }
 
 

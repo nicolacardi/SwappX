@@ -198,12 +198,12 @@
     <mat-header-row *matHeaderRowDef="c_displayedColumns;"></mat-header-row>
     
     <!-- **************************   MAT-ROW   ******************* -->
-    <mat-row *matRowDef="let element;columns: c_displayedColumns;"
+    <mat-row *matRowDef="let element;columns: d_displayedColumns;"
         class="element-row"
         (contextmenu)="onRightClick($event, element)" >
     </mat-row>
 
-    <mat-row *matRowDef="let element; columns: d_displayedColumns;"
+    <mat-row *matRowDef="let element; columns: c_displayedColumns;"
         class="element-row">
     </mat-row>
     <!-- <mat-row *matRowDef="let element; columns: d_displayedColumns;" class="element-row"></mat-row> -->
