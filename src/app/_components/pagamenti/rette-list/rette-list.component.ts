@@ -4,7 +4,7 @@ import { Observable, of, pipe, zip } from 'rxjs';
 import { groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
 
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
-import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPivot';
+import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPIVOT';
 
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { RetteService } from '../rette.service';
@@ -19,44 +19,43 @@ export class RetteListComponent implements OnInit {
   matDataSource = new MatTableDataSource<PAG_RettaPivot>();
   
   d_displayedColumns: string[] =  [
-    "actionsColumn",
-    "tipoRec_D",
-    "alunno.nome",
-    "alunno.cognome",
-    //"alunnoID",
+                                "actionsColumn",
+                                "tipoRec_D",
+                                "alunno.nome",
+                                "alunno.cognome",
 
-    "d_SET",
-    "d_OTT",
-    "d_NOV",
-    "d_DIC",
-    "d_GEN",
-    "d_FEB",
-    "d_MAR",
-    "d_APR",
-    "d_MAG",
-    "d_GIU",
-    "d_LUG",
-    "d_AGO"
+                                "d_SET",
+                                "d_OTT",
+                                "d_NOV",
+                                "d_DIC",
+                                "d_GEN",
+                                "d_FEB",
+                                "d_MAR",
+                                "d_APR",
+                                "d_MAG",
+                                "d_GIU",
+                                "d_LUG",
+                                "d_AGO"
     ];
 
   c_displayedColumns: string[] = [
-                                  "blank", 
-                                  "tipoRec_C",
-                                  "blank",
-                                  "blank",
+                                "blank", 
+                                "tipoRec_C",
+                                "blank",
+                                "blank",
 
-                                  "c_SET",
-                                  "c_OTT",
-                                  "c_NOV",
-                                  "c_DIC",
-                                  "c_GEN",
-                                  "c_FEB",
-                                  "c_MAR",
-                                  "c_APR",
-                                  "c_MAG",
-                                  "c_GIU",
-                                  "c_LUG",
-                                  "c_AGO"
+                                "c_SET",
+                                "c_OTT",
+                                "c_NOV",
+                                "c_DIC",
+                                "c_GEN",
+                                "c_FEB",
+                                "c_MAR",
+                                "c_APR",
+                                "c_MAG",
+                                "c_GIU",
+                                "c_LUG",
+                                "c_AGO"
                                   ];
   
 
@@ -91,6 +90,7 @@ export class RetteListComponent implements OnInit {
           {
           'alunnoID': arr[0],
           alunno : arr[1][0].alunno,
+
           'c_SET': arr[1][0]?.quotaConcordata, 
           'c_OTT': arr[1][1]?.quotaConcordata, 
           'c_NOV': arr[1][2]?.quotaConcordata,

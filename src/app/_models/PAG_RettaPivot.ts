@@ -3,7 +3,7 @@ import { ALU_Alunno } from "./ALU_Alunno";
 export interface PAG_RettaPivot {
         alunnoID:               number;
         alunno:                 ALU_Alunno;
-        
+
         c_SET:    number;
         c_OTT:    number;
         c_NOV:    number;
@@ -29,6 +29,9 @@ export interface PAG_RettaPivot {
         d_GIU:    number;
         d_LUG:    number;
         d_AGO:    number;
+
+
+
 
 }
 
