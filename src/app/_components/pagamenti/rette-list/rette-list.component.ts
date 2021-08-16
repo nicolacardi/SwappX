@@ -25,6 +25,7 @@ export class RetteListComponent implements OnInit {
                                   "blank",
                                   "blank",
                                   "blank",
+
                                   "c_SET",
                                   "c_OTT",
                                   "c_NOV",
@@ -37,7 +38,6 @@ export class RetteListComponent implements OnInit {
                                   "c_GIU",
                                   "c_LUG",
                                   "c_AGO"
-                                  //"note"
                                   ];
   d_displayedColumns: string[] =  [
                                   "actionsColumn", 
@@ -64,8 +64,7 @@ export class RetteListComponent implements OnInit {
 
   months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2));
   
-  constructor(private svcRette:         RetteService,
-              private _loadingService:  LoadingService) {
+  constructor(private svcRette:         RetteService) {
              
   }
 
@@ -130,10 +129,6 @@ export class RetteListComponent implements OnInit {
     );
 
   }
-
-
-  
-
 
 
   applyFilter(event: Event) {
