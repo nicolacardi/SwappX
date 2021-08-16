@@ -7,7 +7,9 @@
 }
 
 .highlight {
-    background-color: rgba(190, 190, 190, 0.224);
+    background-color: rgba(173, 173, 173, 0.142);
+    
+    /* background-image: linear-gradient(to bottom , #FFFFFF 0%, #5993b457 80%); */
 
     
 }

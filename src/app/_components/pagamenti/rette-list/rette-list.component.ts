@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, of, pipe, zip } from 'rxjs';
 import { groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
+import { PAG_Pagamento } from 'src/app/_models/PAG_Pagamento';
 
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPIVOT';
@@ -80,11 +81,13 @@ export class RetteListComponent implements OnInit {
 // NOTA PER PIU' AVANTI: per avere la riga della retta e sotto la riga del pagamento forse è da usare const result$ = concat(series1$, series2$);
 
     let arrObj: PAG_RettaPivot[] = [];
+    let pagObj: PAG_Pagamento[] = [];
     obsRette$
     .pipe(
       mergeMap(res=>res),
       groupBy(o => o.alunnoID),
       mergeMap(group => zip([group.key], group.pipe(toArray()))),
+
       map(arr => {        
         arrObj.push(
           {
