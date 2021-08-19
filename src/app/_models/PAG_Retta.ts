@@ -1,4 +1,5 @@
 import { ALU_Alunno } from "./ALU_Alunno";
+import { PAG_Pagamento } from "./PAG_Pagamento";
 
 export interface PAG_Retta {
         id:                     number,
@@ -16,6 +17,8 @@ export interface PAG_Retta {
         dtUpd:                  string;
         userIns:                number;
         userUpd:                number;
+
+        pagamenti?:             PAG_Pagamento[];              
 }
 
 // "id": 4,

@@ -127,7 +127,7 @@ export class RetteListComponent implements OnInit {
         mergeMap(
          group => group.pipe(
          map(obj => { 
-           console.log ("obj", obj);   
+           //console.log ("obj rette list", obj);   
           //cerca se c'è già un oggetto nell'array con l'alunnoID2 == obj.alunnoID
            var found = myObj2.findIndex(x=>(x.alunnoID2 == obj.alunnoID));           
            if (found == -1) {
