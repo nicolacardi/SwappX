@@ -1,0 +1,62 @@
+<div class="container">
+    <mat-card class="form-card">
+        <mat-card-content>
+           
+                <div class="buttonsDetail">
+
+                    <button mat-stroked-button color="secondary" mat-dialog-close>
+                        <mat-icon>arrow_back</mat-icon>
+                        <div class="button-textDetail">
+                            back
+                        </div>
+                    </button>
+
+                    <!-- <button type="button" *ngIf="idAlunno" mat-stroked-button color="secondary" 
+                        (click)="back()">
+                        <mat-icon>arrow_back</mat-icon>
+                        <div class="button-textDetail">
+                            alunni
+                        </div>
+                    </button> -->
+
+                    <button *ngIf="idAlunno" mat-stroked-button color="secondary" 
+                        [disabled]= "!form.valid" 
+                        (click)="loadData()">
+                        <mat-icon>restart_alt</mat-icon>
+                        <div class="button-textDetail">ricarica</div>
+                    </button>
+
+                    <button mat-stroked-button color="secondary" 
+                        [disabled]= "!form.valid" 
+                        (click)="save()"><mat-icon>save</mat-icon>
+                        <div class="button-textDetail">salva</div>
+                    </button>
+
+                    <button *ngIf="idAlunno" mat-stroked-button color="warn" 
+                        [disabled]= "!form.valid" 
+                        (click)="delete()">
+                        <mat-icon>delete_outline</mat-icon>
+                        <div class="button-textDetail">elimina</div>
+                    </button>
+                </div>
+
+                <div *ngFor="let element of (obsRette$ | async)">
+
+                    <input matInput type="text" required [value]="element.mese">
+                    <input matInput type="text" required [value]="element.quotaConcordata">
+                </div>
+
+                
+
+
+            <!-- <div>
+                errori su campo nome: {{form.controls.nome.errors?.required}}
+            </div>
+            <div>
+                form.valid: {{form.valid}}
+            </div> -->
+
+        </mat-card-content>
+    </mat-card>
+</div>
+

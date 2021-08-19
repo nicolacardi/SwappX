@@ -40,6 +40,7 @@ import { PagamentiListComponent } from './_components/pagamenti/pagamenti-list/p
 import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
 import { PagamentoEditComponent } from './_components/pagamenti/pagamento-edit/pagamento-edit.component';
 import { RetteListComponent } from './_components/pagamenti/rette-list/rette-list.component';
+import { RettaEditComponent } from './_components/pagamenti/retta-edit/retta-edit.component';
 
 
 @NgModule({
@@ -67,7 +68,8 @@ import { RetteListComponent } from './_components/pagamenti/rette-list/rette-lis
     PagamentiListComponent,
     PagamentiPageComponent,
     PagamentoEditComponent,
-    RetteListComponent
+    RetteListComponent,
+    RettaEditComponent
 
 
   ],
