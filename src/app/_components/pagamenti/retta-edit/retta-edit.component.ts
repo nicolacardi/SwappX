@@ -4,25 +4,35 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { PAG_RettaObj } from 'src/app/_models/PAG_RetteObj';
-import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { LoadingService } from '../../utilities/loading/loading.service';
 import { RetteService } from '../rette.service';
+
+import { PAG_Pagamento } from 'src/app/_models/PAG_Pagamento';
+import { PagamentiService } from '../pagamenti.service';
+
+import { LoadingService } from '../../utilities/loading/loading.service';
 
 @Component({
   selector: 'app-retta-edit',
   templateUrl: './retta-edit.component.html',
   styleUrls: ['../pagamenti.css']
 })
+
 export class RettaEditComponent implements OnInit {
 
+  emptyForm :                 boolean = false;
+  loading:                    boolean = true;
+
   public obsRette$!:          Observable<PAG_Retta[]>;
+  public obsPagamenti$!:      Observable<PAG_Pagamento[]>;
+
   idAlunno!:                  number;
   idAnno!:                    number;
   form! :                     FormGroup;
-  emptyForm :                 boolean = false;
-  loading:                    boolean = true;
+
 
   breakpoint!:                number;
   mesi:                      number[] = [];
@@ -30,26 +40,24 @@ export class RettaEditComponent implements OnInit {
   quoteDefault:              number[] = [];
   totPagamenti:              number[] = [];
   nPagamenti:              number[] = [];
+
   public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2));
-  
 
   myObj2: PAG_RettaObj = { 
     meseX:[],
     quoteConcordateX:  [],
     quoteDefaultX:     []
   }
-  
 
   constructor(public _dialogRef: MatDialogRef<RettaEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private fb:             FormBuilder, 
               public _dialog:         MatDialog,
-              private svcRette:       RetteService, 
+              private retteSvc:       RetteService, 
+              private pagamentiSvc:   PagamentiService, 
               private _snackBar:      MatSnackBar,
-              private _loadingService :LoadingService  
-              ) 
+              private _loadingService:LoadingService    ) 
   { 
-
     this.form = this.fb.group({
       id:                         [null],
 
@@ -92,8 +100,6 @@ export class RettaEditComponent implements OnInit {
       p_LUG:                      [0],
       p_AGO:                      [0],
     });
-
-
   }
 
   ngOnInit() {
@@ -101,14 +107,33 @@ export class RettaEditComponent implements OnInit {
   }
 
   loadData(){
+    this.breakpoint = (window.innerWidth <= 800) ? 1 : 4;
 
-    const obsRette$ = this.svcRette.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);
+    this.obsPagamenti$ = this.pagamentiSvc.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
+    
+    /*
+    if (this.idPagamento && this.idPagamento + '' != "0") {
+      const obsPagamento$: Observable<PAG_Pagamento> = this.pagamentiSvc.loadByID(this.idPagamento);
+      //const loadPagamento$ = this._loadingService.showLoaderUntilCompleted(obsPagamento$);
+      this.pagamento$ = obsPagamento$
+      .pipe(
+          tap(
+            pagamento => {
+              this.form.patchValue(pagamento)
+              this.descTipoPag = pagamento.tipoPagamento.descrizione;
+              this.form.controls["nomeAlunno"].setValue(pagamento.alunno.nome);
+              console.log(pagamento.alunno.nome)
+              this.form.controls["cognomeAlunno"].setValue(pagamento.alunno.cognome);
+            }
+          )
+      );
+    } 
+    */
 
-
-    obsRette$
-     .pipe(
+    const obsRette$ = this.retteSvc.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
+    obsRette$.pipe(
        map(obj => { 
-       console.log ("obj", obj);
+       //console.log ("obj", obj);
        let n = 0;
        obj.forEach(z=>{
         this.mesi[obj[n].mese - 1] = obj[n].mese;
@@ -117,20 +142,14 @@ export class RettaEditComponent implements OnInit {
         this.totPagamenti[obj[n].mese-1] = 0;
         this.nPagamenti[obj[n].mese-1] = 0;
         obj[n].pagamenti?.forEach(x=>{
-          console.log (x.importo);
+          //console.log (x.importo);
           this.totPagamenti[obj[n].mese-1] = this.totPagamenti[obj[n].mese-1] + x.importo;
           this.nPagamenti[obj[n].mese-1] = this.nPagamenti[obj[n].mese-1] + 1;
         })
-
-        // ele.items.forEach((item) => {
-        //   sum += item.cost.costNum;
-
-
         n++;
       })   
        //this.quoteConcordate[obj[0].mese] = obj[0].quotaConcordata
        //this.quoteDefault[obj[0].mese] = obj[0].quotaDefault
-
 
     //   //  quoteConcordate[obj.mese] = obj.quotaConcordata;
     //   //  myObj2[found].quoteDefault[obj.mese] = obj.quotaDefault;
@@ -179,10 +198,6 @@ export class RettaEditComponent implements OnInit {
       console.log (this.totPagamenti);
 
     })
-
-    
-    
-    
   }
 
   delete() {
