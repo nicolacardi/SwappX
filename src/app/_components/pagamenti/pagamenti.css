@@ -16,6 +16,12 @@
     /* background-image: linear-gradient(to bottom , #FFFFFF 0%, #5993b457 80%); */
 }
 
+.highlightPagL {
+    background-color: rgb(212, 68, 68);
+    color: white;
+    /* background-image: linear-gradient(to bottom , #FFFFFF 0%, #5993b457 80%); */
+}
+
 .highlightPag {
     color: rgb(255, 0, 0) !important;
     /* background-image: linear-gradient(to bottom , #FFFFFF 0%, #5993b457 80%); */

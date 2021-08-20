@@ -164,6 +164,71 @@
             <mat-cell class="center" *matCellDef="let element">{{element.d_AGO}}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="tipoRec_P">
+        <mat-header-cell *matHeaderCellDef >Tipo</mat-header-cell>
+            <mat-cell *matCellDef="let element">P</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="p_SET">
+        <mat-header-cell class="center" *matHeaderCellDef >SET</mat-header-cell>
+            <mat-cell class="center" *matCellDef="let element" [ngClass]="{'highlightPagL': element.p_SET < element.c_SET}">{{element.p_SET}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="p_OTT">
+        <mat-header-cell class="center" *matHeaderCellDef >OTT</mat-header-cell>
+            <mat-cell class="center" *matCellDef="let element" [ngClass]="{'highlightPagL': element.p_OTT < element.c_OTT}">{{element.p_OTT}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="p_NOV">
+        <mat-header-cell class="center" *matHeaderCellDef >NOV</mat-header-cell>
+            <mat-cell class="center" *matCellDef="let element" [ngClass]="{'highlightPagL': element.p_NOV < element.c_NOV}">{{element.p_NOV}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="p_DIC">
+        <mat-header-cell class="center" *matHeaderCellDef >DIC</mat-header-cell>
+            <mat-cell class="center" *matCellDef="let element" [ngClass]="{'highlightPagL': element.p_DIC < element.c_DIC}">{{element.p_DIC}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="p_GEN">
+        <mat-header-cell class="center" *matHeaderCellDef >GEN</mat-header-cell>
+            <mat-cell class="center" *matCellDef="let element" [ngClass]="{'highlightPagL': element.p_GEN < element.c_GEN}">{{element.p_GEN}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="p_FEB">
+        <mat-header-cell class="center" *matHeaderCellDef >FEB</mat-header-cell>
+            <mat-cell class="center" *matCellDef="let element" [ngClass]="{'highlightPagL': element.p_FEB < element.c_FEB}">{{element.p_FEB}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="p_MAR">
+        <mat-header-cell class="center" *matHeaderCellDef >MAR</mat-header-cell>
+            <mat-cell class="center" *matCellDef="let element" [ngClass]="{'highlightPagL': element.p_MAR < element.c_MAR}">{{element.p_MAR}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="p_APR">
+        <mat-header-cell class="center" *matHeaderCellDef >APR</mat-header-cell>
+            <mat-cell class="center" *matCellDef="let element" [ngClass]="{'highlightPagL': element.p_APR < element.c_APR}">{{element.p_APR}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="p_MAG">
+        <mat-header-cell class="center" *matHeaderCellDef >MAG</mat-header-cell>
+            <mat-cell class="center" *matCellDef="let element" [ngClass]="{'highlightPagL': element.p_MAG < element.c_MAG}">{{element.p_MAG}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="p_GIU">
+        <mat-header-cell class="center" *matHeaderCellDef >GIU</mat-header-cell>
+            <mat-cell class="center" *matCellDef="let element" [ngClass]="{'highlightPagL': element.p_GIU < element.c_GIU}">{{element.p_GIU}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="p_LUG">
+        <mat-header-cell class="center" *matHeaderCellDef >LUG</mat-header-cell>
+            <mat-cell class="center" *matCellDef="let element" [ngClass]="{'highlightPagL': element.p_LUG < element.c_LUG}">{{element.p_LUG}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="p_AGO">
+        <mat-header-cell class="center" *matHeaderCellDef >AGO</mat-header-cell>
+            <mat-cell class="center" *matCellDef="let element" [ngClass]="{'highlightPagL': element.p_AGO < element.c_AGO}">{{element.p_AGO}}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="blank">
         <mat-header-cell *matHeaderCellDef ></mat-header-cell>
             <mat-cell *matCellDef="let element"></mat-cell>
@@ -210,7 +275,11 @@
     </mat-row>
 
     <mat-row *matRowDef="let element; columns: c_displayedColumns;"
-        class="element-row border-bottom">
+        class="element-row">
+    </mat-row>
+
+    <mat-row *matRowDef="let element; columns: p_displayedColumns;"
+    class="element-row border-bottom">
     </mat-row>
 
 

@@ -19,12 +19,11 @@
                         </div>
                     </button> -->
 
-                    <button mat-stroked-button color="secondary" 
-                        
+                    <!-- <button mat-stroked-button color="secondary" 
                         (click)="loadData()">
                         <mat-icon>restart_alt</mat-icon>
                         <div class="button-textDetail">ricarica</div>
-                    </button>
+                    </button> -->
 
                     <button mat-stroked-button color="secondary" 
                         
@@ -34,6 +33,7 @@
 
 
                 </div>
+<!-- QUOTE DEFAULT ****************************************-->
                 <mat-grid-list gutterSize= "10" [cols]="14" rowHeight="60px">
                     <mat-grid-tile [colspan]="2">
                         Default
@@ -41,7 +41,7 @@
                     <mat-grid-tile >
                         <mat-form-field class="center">
                             <input matInput type="text"
-                            formControlName="c_SET"
+                            formControlName="d_SET"
                             placeholder="SET" 
                             [value]="quoteDefault[8]? quoteDefault[8]:0">
                         </mat-form-field>
@@ -49,7 +49,7 @@
                     <mat-grid-tile >
                         <mat-form-field class="center">
                             <input matInput type="text"
-                            formControlName="c_OTT"
+                            formControlName="d_OTT"
                             placeholder="OTT"
                             [value]="quoteDefault[9]? quoteDefault[9]:0">
                         </mat-form-field>
@@ -57,7 +57,7 @@
                     <mat-grid-tile >
                         <mat-form-field class="center">
                             <input matInput type="text"
-                            formControlName="c_NOV"
+                            formControlName="d_NOV"
                             placeholder="NOV" 
                             [value]="quoteDefault[10]? quoteDefault[10]:0">
                         </mat-form-field>
@@ -65,7 +65,7 @@
                     <mat-grid-tile >
                         <mat-form-field class="center">
                             <input matInput type="text"
-                            formControlName="c_DIC"
+                            formControlName="d_DIC"
                             placeholder="DIC" 
                             [value]="quoteDefault[11]? quoteDefault[11]: 0">
                         </mat-form-field>
@@ -73,7 +73,7 @@
                     <mat-grid-tile >
                         <mat-form-field class="center">
                             <input matInput type="text"
-                            formControlName="c_GEN"
+                            formControlName="d_GEN"
                             placeholder="GEN"
                             [value]="quoteDefault[0]? quoteDefault[0]:0">
                         </mat-form-field>
@@ -81,7 +81,7 @@
                     <mat-grid-tile >
                         <mat-form-field class="center">
                             <input matInput type="text"
-                            formControlName="c_FEB"
+                            formControlName="d_FEB"
                             placeholder="FEB" 
                             [value]="quoteDefault[1]? quoteDefault[1]:0">
                         </mat-form-field>
@@ -89,7 +89,7 @@
                     <mat-grid-tile >
                         <mat-form-field class="center">
                             <input matInput type="text"
-                            formControlName="c_MAR"
+                            formControlName="d_MAR"
                             placeholder="MAR" 
                             [value]="quoteDefault[2]? quoteDefault[2]:0">
                         </mat-form-field>
@@ -97,7 +97,7 @@
                     <mat-grid-tile >
                         <mat-form-field class="center">
                             <input matInput type="text"
-                            formControlName="c_APR"
+                            formControlName="d_APR"
                             placeholder="APR" 
                             [value]="quoteDefault[3]? quoteDefault[3]:0">
                         </mat-form-field>
@@ -105,7 +105,7 @@
                     <mat-grid-tile >
                         <mat-form-field class="center">
                             <input matInput type="text"
-                            formControlName="c_MAG"
+                            formControlName="d_MAG"
                             placeholder="MAG" 
                             [value]="quoteDefault[4]? quoteDefault[4]:0">
                         </mat-form-field>
@@ -113,7 +113,7 @@
                     <mat-grid-tile >
                         <mat-form-field class="center">
                             <input matInput type="text"
-                            formControlName="c_GIU"
+                            formControlName="d_GIU"
                             placeholder="GIU" 
                             [value]="quoteDefault[5]? quoteDefault[5]:0">
                         </mat-form-field>
@@ -121,7 +121,7 @@
                     <mat-grid-tile >
                         <mat-form-field class="center">
                             <input matInput type="text"
-                            formControlName="c_LUG"
+                            formControlName="d_LUG"
                             placeholder="LUG" 
                             [value]="quoteDefault[6]? quoteDefault[6]:0">
                         </mat-form-field>
@@ -129,141 +129,213 @@
                     <mat-grid-tile >
                         <mat-form-field class="center">
                             <input matInput type="text"
-                            formControlName="c_AGO"
+                            formControlName="d_AGO"
                             placeholder="AGO" 
                             [value]="quoteDefault[7]? quoteDefault[7]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                 </mat-grid-list>
-
+<!-- QUOTE CONCORDATE ****************************************-->
                 <mat-grid-list gutterSize= "10" [cols]="14" rowHeight="60px">
                     <mat-grid-tile [colspan]="2">
                         Concordate
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightConc': quoteConcordate[8] < quoteDefault[8]}"  [value]="quoteConcordate[8]? quoteConcordate[8]:0">
+                            <input matInput type="text"
+                            formControlName="c_SET"
+                            [ngClass]="{'highlightConc': quoteConcordate[8] < quoteDefault[8]}"
+                            [value]="quoteConcordate[8]? quoteConcordate[8]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightConc': quoteConcordate[9] < quoteDefault[9]}" [value]="quoteConcordate[9]? quoteConcordate[9]:0">
+                            <input matInput type="text"
+                            formControlName="c_OTT"
+                            [ngClass]="{'highlightConc': quoteConcordate[9] < quoteDefault[9]}"
+                            [value]="quoteConcordate[9]? quoteConcordate[9]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightConc': quoteConcordate[10] < quoteDefault[10]}" [value]="quoteConcordate[10]? quoteConcordate[10]:0">
+                            <input matInput type="text"
+                            formControlName="c_NOV"
+                            [ngClass]="{'highlightConc': quoteConcordate[10] < quoteDefault[10]}"
+                            [value]="quoteConcordate[10]? quoteConcordate[10]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightConc': quoteConcordate[11] < quoteDefault[11]}" [value]="quoteConcordate[11]? quoteConcordate[11]: 0">
+                            <input matInput type="text"
+                            formControlName="c_DIC"
+                            [ngClass]="{'highlightConc': quoteConcordate[11] < quoteDefault[11]}"
+                            [value]="quoteConcordate[11]? quoteConcordate[11]: 0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightConc': quoteConcordate[0] < quoteDefault[0]}" [value]="quoteConcordate[0]? quoteConcordate[0]:0">
+                            <input matInput type="text"
+                            formControlName="c_GEN"
+                            [ngClass]="{'highlightConc': quoteConcordate[0] < quoteDefault[0]}"
+                            [value]="quoteConcordate[0]? quoteConcordate[0]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightConc': quoteConcordate[1] < quoteDefault[1]}" [value]="quoteConcordate[1]? quoteConcordate[1]:0">
+                            <input matInput type="text"
+                            formControlName="c_FEB" 
+                            [ngClass]="{'highlightConc': quoteConcordate[1] < quoteDefault[1]}" 
+                            [value]="quoteConcordate[1]? quoteConcordate[1]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightConc': quoteConcordate[2] < quoteDefault[2]}" [value]="quoteConcordate[2]? quoteConcordate[2]:0">
+                            <input matInput type="text"
+                            formControlName="c_MAR"
+                            [ngClass]="{'highlightConc': quoteConcordate[2] < quoteDefault[2]}"
+                            [value]="quoteConcordate[2]? quoteConcordate[2]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightConc': quoteConcordate[3] < quoteDefault[3]}" [value]="quoteConcordate[3]? quoteConcordate[3]:0">
+                            <input matInput type="text"
+                            formControlName="c_APR"
+                            [ngClass]="{'highlightConc': quoteConcordate[3] < quoteDefault[3]}"
+                            [value]="quoteConcordate[3]? quoteConcordate[3]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightConc': quoteConcordate[4] < quoteDefault[4]}" [value]="quoteConcordate[4]? quoteConcordate[4]:0">
+                            <input matInput type="text"
+                            formControlName="c_MAG"
+                            [ngClass]="{'highlightConc': quoteConcordate[4] < quoteDefault[4]}"
+                            [value]="quoteConcordate[4]? quoteConcordate[4]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightConc': quoteConcordate[5] < quoteDefault[5]}" [value]="quoteConcordate[5]? quoteConcordate[5]:0">
+                            <input matInput type="text"
+                            formControlName="c_GIU"
+                            [ngClass]="{'highlightConc': quoteConcordate[5] < quoteDefault[5]}"
+                            [value]="quoteConcordate[5]? quoteConcordate[5]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightConc': quoteConcordate[6] < quoteDefault[6]}" [value]="quoteConcordate[6]? quoteConcordate[6]:0">
+                            <input matInput type="text"
+                            formControlName="c_LUG"
+                            [ngClass]="{'highlightConc': quoteConcordate[6] < quoteDefault[6]}"
+                            [value]="quoteConcordate[6]? quoteConcordate[6]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightConc': quoteConcordate[7] < quoteDefault[7]}" [value]="quoteConcordate[7]? quoteConcordate[7]:0">
+                            <input matInput type="text"
+                            formControlName="c_AGO"
+                            [ngClass]="{'highlightConc': quoteConcordate[7] < quoteDefault[7]}"
+                            [value]="quoteConcordate[7]? quoteConcordate[7]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                 </mat-grid-list>
-
+<!-- QUOTE PAGATE ****************************************-->
                 <mat-grid-list gutterSize= "10" [cols]="14" rowHeight="60px">
                     <mat-grid-tile [colspan]="2">
                         Pagate
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightPag': totPagamenti[8] < quoteConcordate[8]}" [value]="totPagamenti[8]? totPagamenti[8]:0">
+                            <input matInput type="text"
+                            formControlName="p_SET"
+                            [ngClass]="{'highlightPag': totPagamenti[8] < quoteConcordate[8]}"
+                            [value]="totPagamenti[8]? totPagamenti[8]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightPag': totPagamenti[9] < quoteConcordate[9]}" [value]="totPagamenti[9]? totPagamenti[9]:0">
+                            <input matInput type="text"
+                            formControlName="p_OTT"
+                            [ngClass]="{'highlightPag': totPagamenti[9] < quoteConcordate[9]}"
+                            [value]="totPagamenti[9]? totPagamenti[9]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightPag': totPagamenti[10] < quoteConcordate[10]}" [value]="totPagamenti[10]? totPagamenti[10]:0">
+                            <input matInput type="text"
+                            formControlName="p_NOV"
+                            [ngClass]="{'highlightPag': totPagamenti[10] < quoteConcordate[10]}"
+                            [value]="totPagamenti[10]? totPagamenti[10]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightPag': totPagamenti[11] < quoteConcordate[11]}" [value]="totPagamenti[11]? totPagamenti[11]: 0">
+                            <input matInput type="text"
+                            formControlName="p_DIC"
+                            [ngClass]="{'highlightPag': totPagamenti[11] < quoteConcordate[11]}"
+                            [value]="totPagamenti[11]? totPagamenti[11]: 0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightPag': totPagamenti[0] < quoteConcordate[0]}" [value]="totPagamenti[0]? totPagamenti[0]:0">
+                            <input matInput type="text"
+                            formControlName="p_GEN"
+                            [ngClass]="{'highlightPag': totPagamenti[0] < quoteConcordate[0]}"
+                            [value]="totPagamenti[0]? totPagamenti[0]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightPag': totPagamenti[1] < quoteConcordate[1]}" [value]="totPagamenti[1]? totPagamenti[1]:0">
+                            <input matInput type="text"
+                            formControlName="p_FEB"
+                            [ngClass]="{'highlightPag': totPagamenti[1] < quoteConcordate[1]}"
+                            [value]="totPagamenti[1]? totPagamenti[1]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightPag': totPagamenti[2] < quoteConcordate[2]}" [value]="totPagamenti[2]? totPagamenti[2]:0">
+                            <input matInput type="text"
+                            formControlName="p_MAR"
+                            [ngClass]="{'highlightPag': totPagamenti[2] < quoteConcordate[2]}"
+                            [value]="totPagamenti[2]? totPagamenti[2]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightPag': totPagamenti[3] < quoteConcordate[3]}" [value]="totPagamenti[3]? totPagamenti[3]:0">
+                            <input matInput type="text"
+                            formControlName="p_APR"
+                            [ngClass]="{'highlightPag': totPagamenti[3] < quoteConcordate[3]}"
+                            [value]="totPagamenti[3]? totPagamenti[3]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightPag': totPagamenti[4] < quoteConcordate[4]}" [value]="totPagamenti[4]? totPagamenti[4]:0">
+                            <input matInput type="text"
+                            formControlName="p_MAG"
+                            [ngClass]="{'highlightPag': totPagamenti[4] < quoteConcordate[4]}"
+                            [value]="totPagamenti[4]? totPagamenti[4]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightPag': totPagamenti[5] < quoteConcordate[5]}" [value]="totPagamenti[5]? totPagamenti[5]:0">
+                            <input matInput type="text"
+                            formControlName="p_GIU"
+                            [ngClass]="{'highlightPag': totPagamenti[5] < quoteConcordate[5]}"
+                            [value]="totPagamenti[5]? totPagamenti[5]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightPag': totPagamenti[6] < quoteConcordate[6]}" [value]="totPagamenti[6]? totPagamenti[6]:0">
+                            <input matInput type="text"
+                            formControlName="p_LUG"
+                            [ngClass]="{'highlightPag': totPagamenti[6] < quoteConcordate[6]}"
+                            [value]="totPagamenti[6]? totPagamenti[6]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile >
                         <mat-form-field class="center">
-                            <input matInput type="text"  [ngClass]="{'highlightPag': totPagamenti[7] < quoteConcordate[7]}" [value]="totPagamenti[7]? totPagamenti[7]:0">
+                            <input matInput type="text"
+                            formControlName="p_AGO"
+                            [ngClass]="{'highlightPag': totPagamenti[7] < quoteConcordate[7]}"
+                            [value]="totPagamenti[7]? totPagamenti[7]:0">
                         </mat-form-field>
                     </mat-grid-tile>
                 </mat-grid-list>

@@ -52,6 +52,20 @@ export class RettaEditComponent implements OnInit {
 
     this.form = this.fb.group({
       id:                         [null],
+
+      d_SET:                      [0],
+      d_OTT:                      [0],
+      d_NOV:                      [0],
+      d_DIC:                      [0],
+      d_GEN:                      [0],
+      d_FEB:                      [0],
+      d_MAR:                      [0],
+      d_APR:                      [0],
+      d_MAG:                      [0],
+      d_GIU:                      [0],
+      d_LUG:                      [0],
+      d_AGO:                      [0],
+
       c_SET:                      [0],
       c_OTT:                      [0],
       c_NOV:                      [0],
@@ -65,6 +79,18 @@ export class RettaEditComponent implements OnInit {
       c_LUG:                      [0],
       c_AGO:                      [0],
 
+      p_SET:                      [0],
+      p_OTT:                      [0],
+      p_NOV:                      [0],
+      p_DIC:                      [0],
+      p_GEN:                      [0],
+      p_FEB:                      [0],
+      p_MAR:                      [0],
+      p_APR:                      [0],
+      p_MAG:                      [0],
+      p_GIU:                      [0],
+      p_LUG:                      [0],
+      p_AGO:                      [0],
     });
 
 

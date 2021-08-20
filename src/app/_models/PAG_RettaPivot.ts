@@ -30,6 +30,19 @@ export interface PAG_RettaPivot {
         d_LUG:    number;
         d_AGO:    number;
 
+        p_SET:    number;
+        p_OTT:    number;
+        p_NOV:    number;
+        p_DIC:    number;
+        p_GEN:    number;
+        p_FEB:    number;
+        p_MAR:    number;
+        p_APR:    number;
+        p_MAG:    number;
+        p_GIU:    number;
+        p_LUG:    number;
+        p_AGO:    number;
+
 
 
 
