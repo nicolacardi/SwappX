@@ -33,10 +33,35 @@
     display: none;
 }
 
-/* /deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
-} */
+
+/* */
+.square {
+    border: 1px solid rgb(182, 182, 182);
+    padding: 8px;
+    border-radius: 4px;
+    margin-left: 20px;
+}
 
 /deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
     background-color: #044D7E;
 }
+
+/deep/ .mat-slide-toggle-bar {
+    height: 10px !important;
+    width: 24px !important;
+  }
+/deep/ .mat-slide-toggle-thumb {
+    height: 15px !important;
+    width: 15px !important;
+  }
+
+  /deep/ .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
+    transform: translate3d(10px,0,0) !important;
+}
+
+/deep/ .mat-slide-toggle-thumb-container {
+    width: 12px !important;
+    height: 12px !important;
+}
+
 

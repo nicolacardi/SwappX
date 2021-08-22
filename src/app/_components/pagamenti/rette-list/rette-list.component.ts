@@ -34,9 +34,9 @@ export class RetteListComponent implements OnInit {
   d_displayedColumns: string[] =  [
                                 "blank",
                                 "tipoRec_D",
-                                "nome",
-                                "cognome",
-  
+                                "blank",
+                                "blank",
+                                
                                 "d_SET",
                                 "d_OTT",
                                 "d_NOV",
@@ -54,8 +54,9 @@ export class RetteListComponent implements OnInit {
   c_displayedColumns: string[] = [
                                 "actionsColumn", 
                                 "tipoRec_C",
-                                "blank",
-                                "blank",
+
+                                "nome",
+                                "cognome",
 
                                 "c_SET",
                                 "c_OTT",
