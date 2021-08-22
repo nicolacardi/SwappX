@@ -30,6 +30,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatBadgeModule } from '@angular/material/badge';
 import {MatProgressBarModule } from '@angular/material/progress-bar';
 import {MatChipsModule} from '@angular/material/chips';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 const material = [
   MatButtonModule,
   MatButtonToggleModule,
@@ -61,7 +63,8 @@ const material = [
   MatTableModule,
   MatSortModule,
   MatPaginatorModule,
-  MatChipsModule
+  MatChipsModule,
+  MatSlideToggleModule
 
 ];
 

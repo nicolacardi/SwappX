@@ -17,7 +17,7 @@ export class RettePageComponent implements OnInit {
   }
 
   addRecord() {
-    this.retteList.addRecord()
+    //this.retteList.addRecord()
   }
   
 }

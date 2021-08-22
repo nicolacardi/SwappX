@@ -8,18 +8,15 @@
 
 .highlight {
     background-color: rgba(173, 173, 173, 0.142);
-    /* background-image: linear-gradient(to bottom , #FFFFFF 0%, #5993b457 80%); */
 }
 
 .highlightConc {
     color: rgb(255, 136, 0) !important;
-    /* background-image: linear-gradient(to bottom , #FFFFFF 0%, #5993b457 80%); */
 }
 
 .highlightPagL {
     background-color: rgb(212, 68, 68);
     color: white;
-    /* background-image: linear-gradient(to bottom , #FFFFFF 0%, #5993b457 80%); */
 }
 
 .highlightPag {
@@ -31,4 +28,15 @@
     text-align: center;
     justify-content:center;
   }
+
+.hide {
+    display: none;
+}
+
+/* /deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+} */
+
+/deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: #044D7E;
+}
 
