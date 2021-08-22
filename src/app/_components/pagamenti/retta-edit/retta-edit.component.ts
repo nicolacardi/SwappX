@@ -43,8 +43,6 @@ export class RettaEditComponent implements OnInit {
   public mesiArr=           [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
 
-
-
   
   constructor(public _dialogRef: MatDialogRef<RettaEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -95,15 +93,15 @@ export class RettaEditComponent implements OnInit {
           this.totPagamenti[obj[n].mese-1] = 0;
           this.nPagamenti[obj[n].mese-1] = 0;
           this.IDRette[obj[n].mese-1] = obj[n].id;
+
+          //console.log("porca merda: ",obj[n].id );
+
           obj[n].pagamenti?.forEach(x=>{
-          //console.log (x.importo);
-          this.totPagamenti[obj[n].mese-1] = this.totPagamenti[obj[n].mese-1] + x.importo;
-          this.nPagamenti[obj[n].mese-1] = this.nPagamenti[obj[n].mese-1] + 1;
-        })
-
-
-
-        n++;
+            //console.log (x.importo);
+            this.totPagamenti[obj[n].mese-1] = this.totPagamenti[obj[n].mese-1] + x.importo;
+            this.nPagamenti[obj[n].mese-1] = this.nPagamenti[obj[n].mese-1] + 1;
+          });
+          n++;
       })   
        //this.quoteConcordate[obj[0].mese] = obj[0].quotaConcordata
        //this.quoteDefault[obj[0].mese] = obj[0].quotaDefault
@@ -160,7 +158,7 @@ export class RettaEditComponent implements OnInit {
   save() {
     for (let i = 0; i < 12; i++) {
       let childComponent = this.ChildComponents.find(childComponent => childComponent.indice == i);
-      childComponent?.salva();
+      childComponent?.save();
     }
   }
 
