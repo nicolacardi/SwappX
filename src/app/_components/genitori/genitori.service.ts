@@ -15,7 +15,6 @@ export class GenitoriService {
 
   load(): Observable<ALU_Genitore[]>{
   //loadGenitori(idAlunno?: any): Observable<ALU_Genitore[]>{
-    //console.log("loadGenitori");
     //if (idAlunno == null || idAlunno == "")
       return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori');
     //else 
@@ -27,12 +26,10 @@ export class GenitoriService {
   }
 
   loadWithChildren(): Observable<ALU_Genitore[]>{
-    //console.log("loadGenitoriChildren");
     return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllWithChildren');
   }
 
   loadGenitore(id: any): Observable<ALU_Genitore>{
-    //console.log("sto caricando l'alunno");
     return this.http.get<ALU_Genitore>(environment.apiBaseUrl+'ALU_Genitori/'+id);
   }
   

@@ -26,12 +26,12 @@ export class RetteService {
   }
 
   loadByAlunnoAnno(idAlunno: number, idAnno: number): Observable<PAG_Retta[]>{
-    console.log (idAlunno, idAnno);
     return this.http.get<PAG_Retta[]>(environment.apiBaseUrl+'PAG_Rette/GetAllByAlunnoAnno?idAlunno='+idAlunno+"&idAnno="+idAnno);
     //http://213.215.231.4/swappX/api/PAG_Rette/GetAllByAlunnoAnno?idAlunno=3&idAnno=1
   }
 
   put(formData: any): Observable <any>{
+    console.log("rette.service.ts - put - formData=", formData);
     return this.http.put(environment.apiBaseUrl  + 'PAG_Rette/' + formData.id , formData);    
   }
 

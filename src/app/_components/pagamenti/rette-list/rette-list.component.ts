@@ -240,7 +240,6 @@ p_displayedColumns: string[] = [
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    console.log (this.matDataSource.filter);
     this.matDataSource.filter = filterValue.trim().toLowerCase();
     
   }
@@ -279,12 +278,12 @@ p_displayedColumns: string[] = [
 
 
   public toggleD(event: MatSlideToggleChange) {
-    console.log('toggle', event.checked);
+    //console.log('toggle', event.checked);
     this.checkedD = event.checked;
   }
 
   public toggleP(event: MatSlideToggleChange) {
-    console.log('toggle', event.checked);
+    //console.log('toggle', event.checked);
     this.checkedP = event.checked;
   }
 }

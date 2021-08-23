@@ -4,14 +4,16 @@
         <input matInput type="text"
         formControlName="quotaDefault"
         [value] = "inputDefault"
-        [placeholder]="placeholderMese">
+        [placeholder]="placeholderMese"
+        #inpQuotaD>
     </mat-form-field>
 
     <mat-form-field class="center">
         <input matInput type="text"
         formControlName="quotaConcordata"
         [value] = "inputConcordata"
-        [ngClass]="{'highlightConc': inputConcordata < inputDefault}">
+        [ngClass]="{'highlightConc': inputConcordata < inputDefault}"
+        #inpQuotaC>
     </mat-form-field>
 
     <mat-form-field class="center">

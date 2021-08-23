@@ -144,10 +144,10 @@ export class RettaEditComponent implements OnInit {
        })
     )
     .subscribe( () => { 
-      console.log (this.mesi);
-      console.log (this.quoteConcordate);
-      console.log (this.quoteDefault);
-      console.log (this.totPagamenti);
+      // console.log (this.mesi);
+      // console.log (this.quoteConcordate);
+      // console.log (this.quoteDefault);
+      // console.log (this.totPagamenti);
 
     })
   }
