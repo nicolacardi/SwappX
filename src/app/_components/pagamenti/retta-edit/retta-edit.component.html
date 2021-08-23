@@ -1,23 +1,14 @@
 <div class="container">
-    <mat-card class="form-card">
+    <mat-card class="form-card data-form">
         <mat-card-content>
-            <form class="data-form flex-form" [formGroup] = "form">
-                <div class="buttonsDetail">
 
+                <div class="buttonsDetail">
                     <button mat-stroked-button color="secondary" mat-dialog-close>
                         <mat-icon>arrow_back</mat-icon>
                         <div class="button-textDetail">
                             back
                         </div>
                     </button>
-
-                    <!-- <button type="button" *ngIf="idAlunno" mat-stroked-button color="secondary" 
-                        (click)="back()">
-                        <mat-icon>arrow_back</mat-icon>
-                        <div class="button-textDetail">
-                            alunni
-                        </div>
-                    </button> -->
 
                     <!-- <button mat-stroked-button color="secondary" 
                         (click)="loadData()">
@@ -26,14 +17,44 @@
                     </button> -->
 
                     <button mat-stroked-button color="secondary" 
-                        
                         (click)="save()"><mat-icon>save</mat-icon>
                         <div class="button-textDetail">salva</div>
                     </button>
 
-
                 </div>
+
+            <mat-grid-list [cols]="14" rowHeight="200px">
+                <mat-grid-tile [colspan]=2>
+
+
+                        <div>    
+                            <p>DEFAULT</p><br>
+                            <p>CONCORDATE</p><br>
+                            <p>PAGATE</p>
+                        </div>
+
+                </mat-grid-tile>
+                <mat-grid-tile *ngFor="let mese of mesiArr; let i = index" >
+                    <app-rettamese-edit 
+                    [placeholderMese]="placeholderMeseArr[i]"
+                    [inputConcordata]="quoteConcordate[mese]"
+                    [inputDefault]="quoteDefault[mese]"
+                    [inputPagamenti] ="totPagamenti[mese]"
+                    [IDRetta] ="IDRette[mese]"
+                    [indice] ="i"
+                    ></app-rettamese-edit>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+
+
+
+
 <!-- QUOTE DEFAULT ****************************************-->
+            <!--  <form class="data-form flex-form" [formGroup] = "form">
                 <mat-grid-list gutterSize= "10" [cols]="14" rowHeight="60px">
                     <mat-grid-tile [colspan]="2">
                         Default
@@ -134,9 +155,9 @@
                             [value]="quoteDefault[7]? quoteDefault[7]:0">
                         </mat-form-field>
                     </mat-grid-tile>
-                </mat-grid-list>
+                </mat-grid-list> -->
 <!-- QUOTE CONCORDATE ****************************************-->
-                <mat-grid-list gutterSize= "10" [cols]="14" rowHeight="60px">
+                <!-- <mat-grid-list gutterSize= "10" [cols]="14" rowHeight="60px">
                     <mat-grid-tile [colspan]="2">
                         Concordate
                     </mat-grid-tile>
@@ -236,9 +257,9 @@
                             [value]="quoteConcordate[7]? quoteConcordate[7]:0">
                         </mat-form-field>
                     </mat-grid-tile>
-                </mat-grid-list>
+                </mat-grid-list> -->
 <!-- QUOTE PAGATE ****************************************-->
-                <mat-grid-list gutterSize= "10" [cols]="14" rowHeight="60px">
+                <!-- <mat-grid-list gutterSize= "10" [cols]="14" rowHeight="60px">
                     <mat-grid-tile [colspan]="2">
                         Pagate
                     </mat-grid-tile>
@@ -338,18 +359,7 @@
                             [value]="totPagamenti[7]? totPagamenti[7]:0">
                         </mat-form-field>
                     </mat-grid-tile>
-                </mat-grid-list>
+                </mat-grid-list> 
                 
 
-            </form> 
-            <!-- <div>
-                errori su campo nome: {{form.controls.nome.errors?.required}}
-            </div>
-            <div>
-                form.valid: {{form.valid}}
-            </div> -->
-
-        </mat-card-content>
-    </mat-card>
-</div>
-
+            </form> -->

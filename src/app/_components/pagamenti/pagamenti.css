@@ -6,6 +6,11 @@
     border-bottom: 1px dashed #1B3663;
 }
 
+p {
+    font-size: 12px;
+    margin-bottom: 5px !important;
+}
+
 .highlight {
     background-color: rgba(173, 173, 173, 0.142);
 }
@@ -55,7 +60,7 @@
     width: 15px !important;
   }
 
-  /deep/ .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
+/deep/ .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
     transform: translate3d(10px,0,0) !important;
 }
 
@@ -64,4 +69,11 @@
     height: 12px !important;
 }
 
+/* ::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-label { margin-top:-15px; }
+::ng-deep label.ng-star-inserted { transform: translateY(-0.59375em) scale(.75) !important; } */
+
+/deep/ .mat-form-field-infix {
+    border: 0px !important;
+}
 
