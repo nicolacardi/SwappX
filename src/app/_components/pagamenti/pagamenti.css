@@ -29,6 +29,11 @@ p {
     /* background-image: linear-gradient(to bottom , #FFFFFF 0%, #5993b457 80%); */
 }
 
+.highlightPag2 {
+    border-color: rgb(255, 0, 0) !important;
+    /* background-image: linear-gradient(to bottom , #FFFFFF 0%, #5993b457 80%); */
+}
+
 .center {
     text-align: center;
     justify-content:center;

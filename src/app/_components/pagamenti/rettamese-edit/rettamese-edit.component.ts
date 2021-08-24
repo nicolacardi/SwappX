@@ -96,6 +96,10 @@ export class RettameseEditComponent implements OnInit, AfterViewInit {
 
   }
 
+  toNum (x: string): number {
+    return parseInt(x);
+  }
+
 
 }
 

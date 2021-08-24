@@ -13,7 +13,9 @@
 
     <mat-form-field class="cellRetta center" >
         <input matInput type="number"
-        [value] = "inputPagamenti? inputPagamenti : 0">
+        [value] = "inputPagamenti? inputPagamenti : 0"
+        [ngClass]="{'highlightPag2': inputPagamenti < toNum(inpQuotaC.value)}"
+        disabled>
     </mat-form-field>
     
 </form>

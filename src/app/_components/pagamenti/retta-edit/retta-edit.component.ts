@@ -82,8 +82,8 @@ export class RettaEditComponent implements OnInit {
     } 
     */
 
-    const obsRette$ = this.retteSvc.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
-    obsRette$.pipe(
+    this.obsRette$ = this.retteSvc.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
+    this.obsRette$.pipe(
        map(obj => { 
        //console.log ("obj", obj);
        let n = 0;
@@ -111,7 +111,6 @@ export class RettaEditComponent implements OnInit {
     //   // console.log (this.quoteConcordate);
     //   // console.log (this.quoteDefault);
     //   // console.log (this.totPagamenti);
-
     })
   }
 
