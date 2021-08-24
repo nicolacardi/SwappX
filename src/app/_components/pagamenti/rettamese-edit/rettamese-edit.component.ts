@@ -44,7 +44,8 @@ export class RettameseEditComponent implements OnInit {
     //NON RIESCO A FARE FUNZIONARE QUESTA
     //console.log (this.placeholderMese, this.indice, this.IDRetta)
     if (this.IDRetta) {
-      //put in cui passiamo l'ID separatamente (nel form non c'è)
+      //put
+
       this.form.controls['id'].setValue(this.IDRetta);
       if (!this.form.controls['quotaDefault'].dirty) this.form.controls['quotaDefault'].setValue(this.inputDefault);
       if (!this.form.controls['quotaConcordata'].dirty) this.form.controls['quotaConcordata'].setValue(this.inputConcordata);
@@ -55,10 +56,10 @@ export class RettameseEditComponent implements OnInit {
       //The UPDATE statement conflicted with the FOREIGN KEY constraint "FK_PAG_Rette_ALU_Alunni". 
       //The conflict occurred in database "SwappXDB", table "dbo.ALU_Alunni", column 'ID'.
 
-      console.log("put/update");
+      //console.log("put/update");
     } else {
-      //post in cui passiamo l'ID separatamente (nel form non c'è)
-      console.log("post/insert");
+      //post
+      //console.log("post/insert");
     }
   }
 }

@@ -10,6 +10,7 @@ import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { RetteService } from '../rette.service';
 
 import { RettameseEditComponent } from '../rettamese-edit/rettamese-edit.component';
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 @Component({
   selector: 'app-retta-edit',
@@ -29,7 +30,7 @@ export class RettaEditComponent implements OnInit {
   //idAnno!:                    number;
   form! :                     FormGroup;
 
- 
+  alunno!:                    ALU_Alunno;
   breakpoint!:                number;
   mesi:                      number[] = [];
   quoteConcordate:           number[] = [];
@@ -85,19 +86,23 @@ export class RettaEditComponent implements OnInit {
        map(obj => { 
        //console.log ("obj", obj);
        let n = 0;
+       this.alunno = obj[0].alunno;
        obj.forEach(z=>{
         
-        this.mesi[obj[n].mese - 1] = obj[n].mese;
-        this.quoteConcordate[obj[n].mese - 1] = obj[n].quotaConcordata;
-        this.quoteDefault[obj[n].mese - 1] = obj[n].quotaDefault;
-        this.totPagamenti[obj[n].mese-1] = 0;
-        this.nPagamenti[obj[n].mese-1] = 0;
-        this.IDRette[obj[n].mese-1] = obj[n].id;
-        obj[n].pagamenti?.forEach(x=>{
+          this.mesi[obj[n].mese - 1] = obj[n].mese;
+          this.quoteConcordate[obj[n].mese - 1] = obj[n].quotaConcordata;
+          this.quoteDefault[obj[n].mese - 1] = obj[n].quotaDefault;
+          this.totPagamenti[obj[n].mese-1] = 0;
+          this.nPagamenti[obj[n].mese-1] = 0;
+          this.IDRette[obj[n].mese-1] = obj[n].id;
+          obj[n].pagamenti?.forEach(x=>{
           //console.log (x.importo);
           this.totPagamenti[obj[n].mese-1] = this.totPagamenti[obj[n].mese-1] + x.importo;
           this.nPagamenti[obj[n].mese-1] = this.nPagamenti[obj[n].mese-1] + 1;
         })
+
+
+
         n++;
       })   
        //this.quoteConcordate[obj[0].mese] = obj[0].quotaConcordata
@@ -144,10 +149,10 @@ export class RettaEditComponent implements OnInit {
        })
     )
     .subscribe( () => { 
-      // console.log (this.mesi);
-      // console.log (this.quoteConcordate);
-      // console.log (this.quoteDefault);
-      // console.log (this.totPagamenti);
+    //   // console.log (this.mesi);
+    //   // console.log (this.quoteConcordate);
+    //   // console.log (this.quoteDefault);
+    //   // console.log (this.totPagamenti);
 
     })
   }

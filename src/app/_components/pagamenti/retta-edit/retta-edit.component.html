@@ -1,7 +1,6 @@
 <div class="container">
     <mat-card class="form-card data-form">
         <mat-card-content>
-
                 <div class="buttonsDetail">
                     <button mat-stroked-button color="secondary" mat-dialog-close>
                         <mat-icon>arrow_back</mat-icon>
@@ -22,17 +21,27 @@
                     </button>
 
                 </div>
-
+            <!-- <mat-grid-list [cols]="2" rowHeight="200px">
+                <mat-grid-tile>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nome</mat-label>
+                        <input matInput placeholder="Nome" [value]="alunno.nome" disabled>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Cognome</mat-label>
+                        <input matInput placeholder="Cognome" [value]="alunno.cognome" disabled>
+                     </mat-form-field>
+                </mat-grid-tile>
+            </mat-grid-list>   -->
             <mat-grid-list [cols]="14" rowHeight="200px">
                 <mat-grid-tile [colspan]=2>
-
-
                         <div>    
                             <p>DEFAULT</p><br>
                             <p>CONCORDATE</p><br>
                             <p>PAGATE</p>
                         </div>
-
                 </mat-grid-tile>
                 <mat-grid-tile *ngFor="let mese of mesiArr; let i = index" >
                     <app-rettamese-edit 
