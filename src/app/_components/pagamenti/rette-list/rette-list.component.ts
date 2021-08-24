@@ -141,9 +141,9 @@ p_displayedColumns: string[] = [
             arrObj.push(
               {
               'alunnoID': arr[0],
-              alunno : arr[1][0].alunno,
-              nome: arr[1][0].alunno.nome,
-              cognome: arr[1][0].alunno.cognome,
+              alunno : arr[1][0].alunno!,
+              nome: arr[1][0].alunno!.nome,
+              cognome: arr[1][0].alunno!.cognome,
               annoID : arr[1][0].annoID,
               'c_SET': this.trovaQuotaConcMese(arr, 9) ,       //ERA: 'c_SET': arr[1][0].quotaConcordata,  MA COSI' SI CREAVANO I VUOTI
               'c_OTT': this.trovaQuotaConcMese(arr, 10) ,  

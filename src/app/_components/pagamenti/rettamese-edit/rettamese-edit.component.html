@@ -1,7 +1,7 @@
 <form [formGroup] = "form">
 
     <mat-form-field class="center">
-        <input matInput type="text"
+        <input matInput type="number"
         formControlName="quotaDefault"
         [value] = "inputDefault"
         [placeholder]="placeholderMese"
@@ -9,7 +9,7 @@
     </mat-form-field>
 
     <mat-form-field class="center">
-        <input matInput type="text"
+        <input matInput type="number"
         formControlName="quotaConcordata"
         [value] = "inputConcordata"
         [ngClass]="{'highlightConc': inputConcordata < inputDefault}"
@@ -17,7 +17,7 @@
     </mat-form-field>
 
     <mat-form-field class="center">
-        <input matInput type="text"
+        <input matInput type="number"
         
         [value] = "inputPagamenti? inputPagamenti : 0"
         [ngClass]="{'highlightPag': inputPagamenti < inputConcordata}"

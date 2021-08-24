@@ -86,7 +86,7 @@ export class RettaEditComponent implements OnInit {
        map(obj => { 
        //console.log ("obj", obj);
        let n = 0;
-       this.alunno = obj[0].alunno;
+       this.alunno = obj[0].alunno!;
        obj.forEach(z=>{
         
           this.mesi[obj[n].mese - 1] = obj[n].mese;

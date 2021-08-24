@@ -2,10 +2,11 @@ import { ALU_Alunno } from "./ALU_Alunno";
 import { PAG_Pagamento } from "./PAG_Pagamento";
 
 export interface PAG_Retta {
+        map(arg0: any): any;
         id:                     number,
         annoID:                 number,
         alunnoID:               number,
-        alunno:                 ALU_Alunno;
+        alunno?:                 ALU_Alunno;
         
         anno:                   number,
         mese:                   number,

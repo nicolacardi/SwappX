@@ -30,9 +30,9 @@ export class RetteService {
     //http://213.215.231.4/swappX/api/PAG_Rette/GetAllByAlunnoAnno?idAlunno=3&idAnno=1
   }
 
-  put(formData: any): Observable <any>{
-    console.log("rette.service.ts - put - formData=", formData);
-    return this.http.put(environment.apiBaseUrl  + 'PAG_Rette/' + formData.id , formData);    
+  put(obj: PAG_Retta): Observable <any>{
+    console.log("rette.service.ts - put - formData=", obj, obj.id);
+    return this.http.put(environment.apiBaseUrl  + 'PAG_Rette/' + obj.id , obj);    
   }
 
   post(formData: any): Observable <any>{
