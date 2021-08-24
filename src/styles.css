@@ -68,8 +68,16 @@ background-size: cover;*/
     margin-right: 5px;
 }
 
+.mt5 {
+    margin-top: 5px;
+}
+
 .mt10 {
     margin-top: 10px;
+}
+
+.mt20 {
+    margin-top: 20px;
 }
 
 .mt64 {

@@ -1,5 +1,5 @@
 <div class="container">
-    <mat-card class="form-card data-form">
+    <mat-card class="form-cardRette data-form">
         <mat-card-content>
                 <div class="buttonsDetail">
                     <button mat-stroked-button color="secondary" mat-dialog-close>
@@ -35,23 +35,27 @@
                      </mat-form-field>
                 </mat-grid-tile>
             </mat-grid-list>   -->
-            <mat-grid-list [cols]="14" rowHeight="200px">
+            <mat-grid-list [cols]="14" rowHeight="150px">
                 <mat-grid-tile [colspan]=2>
-                        <div>    
-                            <p>DEFAULT</p><br>
-                            <p>CONCORDATE</p><br>
-                            <p>PAGATE</p>
+                        <div>
+                            <br>
+                            <div class="mt10">DEFAULT</div>
+
+                            <div class="mt10">CONCORDATE</div>
+
+                            <div class="mt10">PAGATE</div>
                         </div>
                 </mat-grid-tile>
+
                 <mat-grid-tile *ngFor="let mese of mesiArr; let i = index" >
-                    <app-rettamese-edit 
-                    [placeholderMese]="placeholderMeseArr[i]"
-                    [inputConcordata]="quoteConcordate[mese]"
-                    [inputDefault]="quoteDefault[mese]"
-                    [inputPagamenti] ="totPagamenti[mese]"
-                    [idRetta] ="IDRette[mese]"
-                    [indice] ="i"
-                    ></app-rettamese-edit>
+                    <div>
+                        <mat-label>{{placeholderMeseArr[i]}}</mat-label>
+                        <app-rettamese-edit 
+                        [inputPagamenti] ="totPagamenti[mese]"
+                        [idRetta] ="idRette[mese]"
+                        [indice] ="i"
+                        ></app-rettamese-edit>
+                    </div>
                 </mat-grid-tile>
             </mat-grid-list>
         </mat-card-content>

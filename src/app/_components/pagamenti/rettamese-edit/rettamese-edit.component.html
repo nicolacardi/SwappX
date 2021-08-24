@@ -1,32 +1,19 @@
-<form  *ngIf="(retta$ | async) || emptyForm" [formGroup] = "form">
+<form  *ngIf="(retta$ | async)  || emptyForm" [formGroup] = "form">
 
-<!--        
-    <mat-form-field class="center">
-        <input matInput type="number" formControlName="idRetta">
-    </mat-form-field>
--->
-    <mat-form-field class="center">
+    <mat-form-field class="cellRetta center" >
         <input matInput type="number"
-        formControlName="quotaDefault"
-        
-        [placeholder]="placeholderMese"
-        #inpQuotaD>
+        formControlName="quotaDefault" #inpQuotaD>
     </mat-form-field>
-<!--[value] = "inputDefault"-->
-    <mat-form-field class="center">
+
+    <mat-form-field class="cellRetta center" >
         <input matInput type="number"
         formControlName="quotaConcordata"
-        
-        [ngClass]="{'highlightConc': inputConcordata < inputDefault}"
-        #inpQuotaC>
+        [ngClass]="{'highlightConc': inpQuotaC.value < inpQuotaD.value}" #inpQuotaC>
     </mat-form-field>
-    <!-- [value] = "inputConcordata" -->
-    <mat-form-field class="center">
+
+    <mat-form-field class="cellRetta center" >
         <input matInput type="number"
-        formControlName="quotaConcordata"
-        
-        [ngClass]="{'highlightPag': inputPagamenti < inputConcordata}"
-        >
+        [value] = "inputPagamenti? inputPagamenti : 0">
     </mat-form-field>
-    <!-- [value] = "inputPagamenti? inputPagamenti : 0" -->
+    
 </form>
