@@ -142,3 +142,8 @@ p {
     border-radius: 2px;
     border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
 }
+
+.pagamenti-container {
+    max-height: 300px;
+    overflow: auto;
+}

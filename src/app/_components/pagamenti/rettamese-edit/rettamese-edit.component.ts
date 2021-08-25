@@ -38,7 +38,7 @@ export class RettameseEditComponent implements OnInit, AfterViewInit {
       alunnoID:               [null],
       //alunno?:                 ALU_Alunno;
       
-      anno:                   [null],
+      annoRetta:                   [null],
       mese:                   [null],
       quotaDefault:           [null],
       quotaConcordata:        [null],

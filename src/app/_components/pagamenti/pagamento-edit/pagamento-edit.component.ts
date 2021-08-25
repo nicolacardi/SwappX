@@ -74,7 +74,7 @@ export class PagamentoEditComponent implements OnInit {
         nomeCognomeAlunno:          [''],
         nomeAlunno:                 [{value:'', disabled:true}],
         cognomeAlunno:              [{value:'', disabled:true}]
-// TODO ...
+
       });
   }
 

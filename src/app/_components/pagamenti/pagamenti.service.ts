@@ -24,9 +24,13 @@ export class PagamentiService {
     //http://213.215.231.4/swappX/api/PAG_Pagamenti/5
   }
 
+  loadByAnno(idAnno: number): Observable<PAG_Pagamento[]>{
+    return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti/GetAllByAnno?idAnno='+idAnno);
+    //http://213.215.231.4/swappX/api/PAG_Pagamenti/GetAllByAnno?idAnno=1
+  }
+
   loadByAlunnoAnno(idAlunno: number, idAnno: number): Observable<PAG_Pagamento[]>{
-    console.log (idAlunno, idAnno);
-    return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti/GetAllByAlunnoAnno?idAlunno='+idAlunno+"&idAnno="+idAnno);
+    return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti/GetAllByAlunnoAnno?idAlunno='+idAlunno+'&idAnno='+idAnno);
     //http://213.215.231.4/swappX/api/PAG_Pagamenti/GetAllByAlunnoAnno?idAlunno=3&idAnno=1
   }
 

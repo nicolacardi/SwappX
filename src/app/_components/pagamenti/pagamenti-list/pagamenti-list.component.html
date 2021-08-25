@@ -1,16 +1,26 @@
-<h1 class="page-title">Elenco Pagamenti </h1>
+<h1 *ngIf="show" class="page-title">Elenco Pagamenti </h1>
+
+<!-- **************************   SELECT ANNO   ******************* -->
+<form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
+    <mat-form-field *ngIf="show" class="ml20 topZIndex">
+        <mat-select formControlName="annoScolastico" (selectionChange)="updateList()">
+            <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id" >
+            {{element.annoscolastico}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
 
 <!-- **************************   FILTER   ******************* -->
-<mat-form-field class="ml20 topZIndex">
+<mat-form-field *ngIf="show" class="ml20 topZIndex">
     <mat-label>Filtro</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
 </mat-form-field>
-
+</form>
 <!-- **************************   PAGINATOR   ******************* -->
-<mat-paginator class="transparent" [pageSize]="10" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+<mat-paginator *ngIf="show" class="transparent" [pageSize]="10" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
 
 <!-- **************************   MAT-TABLE   ******************* -->
-<mat-table class="transparent" [dataSource]="matDataSource"
+<mat-table *ngIf="obsAnni$ | async" class="transparent" [dataSource]="matDataSource"
     matSort
     cdkDropList
     cdkDropListOrientation="horizontal"
