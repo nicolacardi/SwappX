@@ -55,15 +55,31 @@ background-size: cover;*/
     margin-bottom: 20px;
 }
 
-.ml20 {
-    margin-left: 20px;
+
+
+.ml2 {
+    margin-left: 2px;
 }
+
+.ml3 {
+    margin-left: 3px;
+}
+
+.ml4 {
+    margin-left: 4px;
+}
+
 .ml5 {
     margin-left: 5px;
 }
 .ml12 {
     margin-left: 12px !important;
 }
+
+.ml20 {
+    margin-left: 20px;
+}
+
 .mr5 {
     margin-right: 5px;
 }

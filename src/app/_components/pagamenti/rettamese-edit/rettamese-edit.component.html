@@ -5,17 +5,17 @@
         formControlName="quotaDefault" #inpQuotaD>
     </mat-form-field>
 
-    <mat-form-field class="cellRetta center" >
+    <mat-form-field class="cellRetta center" [ngClass]="{'highlightConc': inpQuotaC.value < inpQuotaD.value}">
         <input matInput type="number"
         formControlName="quotaConcordata"
-        [ngClass]="{'highlightConc': inpQuotaC.value < inpQuotaD.value}" #inpQuotaC>
+        #inpQuotaC>
     </mat-form-field>
 
-    <mat-form-field class="cellRetta center" >
+    <mat-form-field class="cellRetta center" [ngClass]="{'highlightPag2': inputPagamenti < toNum(inpQuotaC.value)}">
         <input matInput type="number"
         [value] = "inputPagamenti? inputPagamenti : 0"
-        [ngClass]="{'highlightPag2': inputPagamenti < toNum(inpQuotaC.value)}"
-        disabled>
+        
+        readonly>
     </mat-form-field>
     
 </form>

@@ -11,12 +11,12 @@ p {
     margin-bottom: 5px !important;
 }
 
-.highlight {
+/* .highlight {
     background-color: rgba(173, 173, 173, 0.142);
-}
+} */
 
 .highlightConc {
-    color: rgb(255, 136, 0) !important;
+    background-color: rgba(173, 173, 173, 0.142);
 }
 
 .highlightPagL {
@@ -24,14 +24,12 @@ p {
     color: white;
 }
 
-.highlightPag {
+/* .highlightPag {
     color: rgb(255, 0, 0) !important;
-    /* background-image: linear-gradient(to bottom , #FFFFFF 0%, #5993b457 80%); */
-}
+} */
 
 .highlightPag2 {
     border-color: rgb(255, 0, 0) !important;
-    /* background-image: linear-gradient(to bottom , #FFFFFF 0%, #5993b457 80%); */
 }
 
 .center {
@@ -87,6 +85,19 @@ p {
     margin: 0px;
  }
 
+
+  :host ::ng-deep .highlightPag2 .mat-form-field-infix  {
+    background-color: rgb(212, 68, 68);
+    color: white !important;
+}
+
+
+:host ::ng-deep .highlightConc .mat-form-field-infix  {
+    background-color: rgba(173, 173, 173, 0.142);
+}
+
+
+
  :host ::ng-deep .cellRetta .mat-form-field-infix {
     width: 45px; 
     padding-top: 2px !important;
@@ -125,4 +136,9 @@ p {
     margin: 0px auto 10px auto;
     box-shadow: none !important; /*da togliere nel caso di dialog*/
     padding-top: 0px !important;
+}
+
+.cellBordered {
+    border-radius: 2px;
+    border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
 }

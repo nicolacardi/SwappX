@@ -22,14 +22,14 @@
 
                 </div>
 
-            <mat-grid-list *ngIf="obsRette$ | async" [cols]="6" rowHeight="30px">
+            <mat-grid-list class="mt20" *ngIf="obsRette$ | async" [cols]="6" rowHeight="30px">
                 <mat-grid-tile [colspan]=2>
                 </mat-grid-tile>
-                <mat-grid-tile>
-                    <mat-label>{{alunno.nome}}</mat-label>
+                <mat-grid-tile class="cellBordered">
+                    <mat-label >{{alunno.nome}}</mat-label>
                 </mat-grid-tile>
-                <mat-grid-tile>
-                    <mat-label>{{alunno.cognome}}</mat-label>s
+                <mat-grid-tile class="cellBordered ml4">
+                    <mat-label>{{alunno.cognome}}</mat-label>
                 </mat-grid-tile>
             </mat-grid-list>  
             
