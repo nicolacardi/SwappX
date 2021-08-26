@@ -1,3 +1,14 @@
+<!-- 
+    Rev.0 - 28/08/2021
+    Componente per la gestione dei pagamenti per Alunno-Anno
+    Composto da: 
+        - Barra Funzioni
+        - Header: Anno scolastico e alunno
+        - Tabella pivot quote: default/concordate/pagate
+        - Griglia lista pagamenti
+        - riga di inserimento nuovo record
+-->
+
 <h1 *ngIf="show" class="page-title">Elenco Pagamenti </h1>
 
 <!-- **************************   SELECT ANNO   ******************* -->
@@ -66,10 +77,7 @@
             <ng-container *ngIf="element.retta; else default1">
                 {{element.retta.quotaConcordata}}
             </ng-container>
-            <ng-template #default1>
-                -
-          </ng-template>
-
+            <ng-template #default1>-</ng-template>
         </mat-cell>
     </ng-container>
 
@@ -79,19 +87,17 @@
             <ng-container *ngIf="element.retta; else default2">
                 {{months[element.retta.meseRetta]}}
             </ng-container>
-            <ng-template #default2>
-                  -
-            </ng-template>
+            <ng-template #default2>-</ng-template>
         </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="alunno.cognome">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Cognome</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.alunno.cognome}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.alunno.cognome}}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="alunno.nome">
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="genitoreID">
@@ -106,8 +112,9 @@
 
     <ng-container matColumnDef="delete">
         <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-        <mat-cell *matCellDef="let element"><mat-icon class="pointer">delete_outline</mat-icon></mat-cell>
-        
+        <mat-cell *matCellDef="let element">
+            <mat-icon class="pointer" (click)="delete(element.id)">delete_outline</mat-icon>
+        </mat-cell>
     </ng-container>
     
     <!-- **************************   MAT-HEADER-ROW   ******************* -->

@@ -16,8 +16,9 @@ import { PagamentoEditComponent } from '../pagamento-edit/pagamento-edit.compone
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { PAG_Pagamento } from 'src/app/_models/PAG_Pagamento';
 import { SELECT_ITEM_HEIGHT_EM } from '@angular/material/select/select';
-
-
+import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-pagamenti-list',
@@ -72,11 +73,12 @@ export class PagamentiListComponent implements OnInit {
   public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2).toLocaleString('it-IT', {month: 'short'}).toUpperCase());
 
 
-  constructor(private svcPagamenti:     PagamentiService,
+  constructor(private pagamentiSvc:     PagamentiService,
               private svcAnni:          AnniScolasticiService,
-              public _dialog:           MatDialog, 
-              private _loadingService:  LoadingService,
               private fb:               FormBuilder, 
+              public _dialog:           MatDialog, 
+              private _snackBar:        MatSnackBar,
+              private _loadingService:  LoadingService,
     ) 
   {
     //form composto della sola combo Anno Scolastico: così si riesce tra le altre cose a settare un valore di default
@@ -105,9 +107,6 @@ export class PagamentiListComponent implements OnInit {
 
   refresh () {
 
-
-
-
     this.obsAnni$= this.svcAnni.load();
 
     let obsPagamenti$: Observable<PAG_Pagamento[]>;
@@ -116,10 +115,10 @@ export class PagamentiListComponent implements OnInit {
     console.log("this.alunnoID", this.alunnoID);
 
     if (this.alunnoID) {
-      obsPagamenti$= this.svcPagamenti.loadByAlunnoAnno(this.alunnoID, this.annoID);
+      obsPagamenti$= this.pagamentiSvc.loadByAlunnoAnno(this.alunnoID, this.annoID);
     } else {
       if (!this.annoID) this.annoID = this.form.controls['annoScolastico'].value;
-      obsPagamenti$= this.svcPagamenti.loadByAnno(this.annoID);
+      obsPagamenti$= this.pagamentiSvc.loadByAnno(this.annoID);
     }
     //const loadPagamenti$ =this._loadingService.showLoaderUntilCompleted(obsPagamenti$);
 
@@ -172,6 +171,35 @@ export class PagamentiListComponent implements OnInit {
     });
   }
 
+  delete(idPagamento: number){
+
+    const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+      width: '320px',
+      data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
+    });
+    dialogYesNo.afterClosed().subscribe(result => {
+      if(result){
+        this.pagamentiSvc.delete(Number(idPagamento))
+        //.pipe (
+        //  finalize(()=>this.router.navigate(['/alunni']))
+        //)
+        .subscribe(
+          res=>{
+            this._snackBar.openFromComponent(SnackbarComponent,
+              {data: 'Record cancellato', panelClass: ['red-snackbar']}
+            );
+            //this._dialogRef.close();
+            this.refresh();
+            //AS: attenzione: se non faccio refresh la griglia non si aggiorna: perchè ???
+          },
+          err=> (
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          )
+        );
+      }
+    });
+    
+  }
 
   filterPredicateCustom(){ //NC
     //questa funzione consente il filtro ANCHE sugli oggetti della classe
@@ -197,15 +225,12 @@ export class PagamentiListComponent implements OnInit {
              break; 
           } 
        } 
-
-
       };
       const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
       const transformedFilter = filter.trim().toLowerCase();
       return dataStr.indexOf(transformedFilter) !== -1;
     };
   }
-
 
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item, property) => {

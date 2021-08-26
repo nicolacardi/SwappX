@@ -1,3 +1,11 @@
+<!-- 
+    Rev.0 - 28/08/2021
+    Componente per ????
+
+
+AS: lo usiamo questo ???
+-->
+
 <form  *ngIf="(retta$ | async)  || emptyForm" [formGroup] = "form">
 
     <mat-form-field class="cellRetta center" >
@@ -11,7 +19,7 @@
         #inpQuotaC>
     </mat-form-field>
 
-    <mat-form-field class="cellRetta center" [ngClass]="{'highlightPag2': inputPagamenti < toNum(inpQuotaC.value)}">
+    <mat-form-field class="cellRetta center" [ngClass]="{'highlightPag2': inputPagamenti < ConvertToNumber(inpQuotaC.value)}">
         <input matInput type="number"
         [value] = "inputPagamenti? inputPagamenti : 0"
         

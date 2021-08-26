@@ -83,11 +83,9 @@ export class RettameseEditComponent implements OnInit{
     return true;
   }
 
-  toNum (x: string): number {
+  ConvertToNumber (x: string): number {
     return parseInt(x);
   }
-
-
 }
 
 

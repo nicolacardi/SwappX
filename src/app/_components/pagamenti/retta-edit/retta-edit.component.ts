@@ -5,10 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 import { RettameseEditComponent } from '../rettamese-edit/rettamese-edit.component';
-
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 import { RetteService } from '../rette.service';
 import { TipiPagamentoService } from '../tipiPagamento.service';
@@ -29,7 +28,6 @@ import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 })
 
 export class RettaEditComponent implements OnInit {
-
 
   @ViewChildren(RettameseEditComponent) ChildComponents!:QueryList<RettameseEditComponent>;
   
@@ -118,7 +116,7 @@ export class RettaEditComponent implements OnInit {
     })
   }
 
-  save() {
+  savePivot() {
     //questo metodo chiama uno ad uno il metodo save di ciascun child
     //salvando quindi ogni form, cioè ogni record Retta
     let response : boolean;
@@ -132,14 +130,43 @@ export class RettaEditComponent implements OnInit {
       }
     }
 
-    if (hasError) {
+    if (hasError) 
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di Salvataggio', panelClass: ['red-snackbar']})
-    } else {
+    else 
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record Salvato', panelClass: ['green-snackbar']})
-    }
 
     this._dialogRef.close();
-
   }
 
+  save(){
+
+    if (this.formRetta.controls['id'].value == null) {
+      // this.pagamentiSvc.post(this.form.value)
+      //   .subscribe(res=> {
+      //   //console.log("return from post", res);
+      //   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+      //   this._dialogRef.close();
+      // },
+      // err=> (
+      //   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      // )
+      // );
+    } else {
+      // this.pagamentiSvc.put(this.form.value)
+      //   .subscribe(res=> {
+      //     //console.log("return from put", res);
+      //     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+      //   this._dialogRef.close();
+        
+      // },
+      // err=> (
+      //   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      // ));
+    }
+  }
+
+  delete(){
+    //TODO!!!
+
+  }
 }
