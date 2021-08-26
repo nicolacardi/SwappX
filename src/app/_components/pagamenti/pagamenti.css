@@ -85,6 +85,10 @@ p {
     margin: 0px;
  }
 
+ :host ::ng-deep .cellRettaEdit .mat-form-field-wrapper { 
+    padding:5px;
+    margin: 0px;
+ }
 
   :host ::ng-deep .highlightPag2 .mat-form-field-infix  {
     background-color: rgb(212, 68, 68);
@@ -130,6 +134,7 @@ p {
 }
 
 
+
 .form-cardRette {
     max-width: 800px;
     height: 425px;
@@ -146,4 +151,27 @@ p {
 .pagamenti-container {
     max-height: 300px;
     overflow: auto;
+}
+
+.pagamento-edit-container {
+    max-height: 250px;
+    text-align: left;
+    padding-left: 18px;
+    padding-top: 8px;
+}
+
+.bk-white {
+    background-color: white;
+}
+
+.pagamento-edit-container mat-form-field {
+    width: 115px;
+    
+}
+
+.mat-column-delete {
+
+    flex: 0 0 3% !important;
+    width: 3% !important;
+
 }

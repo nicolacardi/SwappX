@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
@@ -13,6 +13,10 @@ import { RettameseEditComponent } from '../rettamese-edit/rettamese-edit.compone
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+import { TipiPagamentoService } from '../tipiPagamento.service';
+import { CausaliPagamentoService } from '../causaliPagamento.service';
+import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
+import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 
 @Component({
   selector: 'app-retta-edit',
@@ -27,7 +31,9 @@ export class RettaEditComponent implements OnInit {
   
   public obsRette$!:          Observable<PAG_Retta[]>;
   //public obsPagamenti$!:      Observable<PAG_Pagamento[]>;
-
+  causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
+  tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
+  
   //idAlunno!:                  number;
   //idAnno!:                    number;
   form! :                     FormGroup;
@@ -53,8 +59,27 @@ export class RettaEditComponent implements OnInit {
               public _dialog:         MatDialog,
               private retteSvc:       RetteService,
               private _snackBar:      MatSnackBar,
+              private tipiPagamentoSvc:             TipiPagamentoService,
+              private causaliPagamentoSvc:          CausaliPagamentoService,
               ) 
-  { }
+  { 
+
+    this.form = this.fb.group({
+      id:                         [null],
+      alunnoID:                   ['', Validators.required],
+      causaleID:                  ['', Validators.required],
+      dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+      importo:                    ['', { validators:[ Validators.required]}],
+      tipoPagamentoID:            ['', Validators.required],
+      //genitoreID:                 ['', Validators.required],
+      nomeCognomeAlunno:          [''],
+      nomeAlunno:                 [{value:'', disabled:true}],
+      cognomeAlunno:              [{value:'', disabled:true}]
+
+    });
+
+    
+  }
 
   ngOnInit() {
     this.loadData();
@@ -62,6 +87,10 @@ export class RettaEditComponent implements OnInit {
 
   loadData(){
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 4;
+
+
+    this.causaliPagamento$ = this.causaliPagamentoSvc.load();
+    this.tipiPagamento$ = this.tipiPagamentoSvc.load();
 
     //this.obsPagamenti$ = this.pagamentiSvc.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
     

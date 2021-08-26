@@ -103,9 +103,15 @@
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>note</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.note}}</mat-cell>
     </ng-container>
+
+    <ng-container matColumnDef="delete">
+        <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
+        <mat-cell *matCellDef="let element"><mat-icon class="pointer">delete_outline</mat-icon></mat-cell>
+        
+    </ng-container>
     
     <!-- **************************   MAT-HEADER-ROW   ******************* -->
-    <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+    <mat-header-row class="bk-white" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
     
     <!-- **************************   MAT-ROW   ******************* -->
     <mat-row *matRowDef="let element;columns: displayedColumns"

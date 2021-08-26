@@ -55,6 +55,7 @@ export class PagamentiListComponent implements OnInit {
                                   "tipoPagamento.descrizione",
                                   "causale.descrizione",
                                   "retta.mese",
+                                  "delete"
                                      ];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
@@ -95,6 +96,9 @@ export class PagamentiListComponent implements OnInit {
   }
 
   refresh () {
+
+
+
 
     this.obsAnni$= this.svcAnni.load();
 

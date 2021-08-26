@@ -80,6 +80,18 @@ background-size: cover;*/
     margin-left: 20px;
 }
 
+.ml100 {
+    margin-left: 100px;
+}
+
+.ml130 {
+    margin-left: 130px;
+}
+
+.ml140 {
+    margin-left: 140px;
+}
+
 .mr5 {
     margin-right: 5px;
 }

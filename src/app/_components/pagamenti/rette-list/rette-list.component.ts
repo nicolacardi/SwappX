@@ -261,7 +261,7 @@ p_displayedColumns: string[] = [
     const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
         width: '800px',
-        height: '620px',
+        height: '680px',
         data: {
           idAlunno: alunno,
           idAnno: anno
