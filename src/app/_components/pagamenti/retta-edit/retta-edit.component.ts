@@ -12,6 +12,7 @@ import { RetteService } from '../rette.service';
 import { RettameseEditComponent } from '../rettamese-edit/rettamese-edit.component';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 
 @Component({
   selector: 'app-retta-edit',
@@ -32,6 +33,7 @@ export class RettaEditComponent implements OnInit {
   form! :                     FormGroup;
 
   alunno!:                    ALU_Alunno;
+  anno!:                      ASC_AnnoScolastico;
   breakpoint!:                number;
   mesi:                      number[] = [];
   quoteConcordate:           number[] = [];
@@ -88,6 +90,7 @@ export class RettaEditComponent implements OnInit {
        //console.log ("obj", obj);
        let n = 0;
        this.alunno = obj[0].alunno!;
+       this.anno = obj[0].anno!;
        obj.forEach(z=>{
         
           this.mesi[obj[n].mese - 1] = obj[n].mese;

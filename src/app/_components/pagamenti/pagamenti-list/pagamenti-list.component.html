@@ -77,7 +77,7 @@
         <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>mese</mat-header-cell>
         <mat-cell *matCellDef="let element">
             <ng-container *ngIf="element.retta; else default2">
-                {{element.retta.mese}}
+                {{months[element.retta.mese]}}
             </ng-container>
             <ng-template #default2>
                   -

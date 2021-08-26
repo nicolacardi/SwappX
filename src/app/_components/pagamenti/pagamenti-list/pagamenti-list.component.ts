@@ -22,7 +22,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class PagamentiListComponent implements OnInit {
 
   @Input() dove!:           string;
-  //@Input() alunnoID!:       number;
+  @Input() alunnoID!:       number;
+  @Input() annoID!:         number;
+
 
   obsAnni$!: Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   form:                     FormGroup;            //form fatto della sola combo anno scolastico
@@ -58,6 +60,9 @@ export class PagamentiListComponent implements OnInit {
   menuTopLeftPosition =  {x: '0', y: '0'} 
   matMenuTrigger: any;
 
+  public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2).toLocaleString('it-IT', {month: 'short'}).toUpperCase());
+
+
   constructor(private svcPagamenti:     PagamentiService,
               private svcAnni:          AnniScolasticiService,
               public _dialog:           MatDialog, 
@@ -68,11 +73,12 @@ export class PagamentiListComponent implements OnInit {
     //form composto della sola combo Anno Scolastico: così si riesce tra le altre cose a settare un valore di default
     this.form = this.fb.group({
       annoScolastico:      [1],
+
     });
   }
 
   ngOnInit(): void {
-
+    
     if (this.dove == 'retta-edit') {
       this.show = false;
       this.displayedColumns =  this.displayedColumnsListRettaEdit;
@@ -84,13 +90,9 @@ export class PagamentiListComponent implements OnInit {
   }
 
   updateList() {
-    //TODO: bisogna ri-attivare refresh per caricare la lista dell'anno selezionato
+    this.annoID = this.form.controls['annoScolastico'].value;
     this.refresh();
   }
-
-
-
-
 
   refresh () {
 
@@ -98,13 +100,15 @@ export class PagamentiListComponent implements OnInit {
 
     let obsPagamenti$: Observable<PAG_Pagamento[]>;
 
-    
     console.log("annoID dalla combobox", this.form.controls['annoScolastico'].value);
-    //console.log("this.alunnoID", this.alunnoID);
-    
-    //TODO serve filtrare l'observable obsPagamenti in base al valore selezionato nella dropdwon anno scolastico
-    obsPagamenti$= this.svcPagamenti.loadByAnno(this.form.controls['annoScolastico'].value);
+    console.log("this.alunnoID", this.alunnoID);
 
+    if (this.alunnoID) {
+      obsPagamenti$= this.svcPagamenti.loadByAlunnoAnno(this.alunnoID, this.annoID);
+    } else {
+      if (!this.annoID) this.annoID = this.form.controls['annoScolastico'].value;
+      obsPagamenti$= this.svcPagamenti.loadByAnno(this.annoID);
+    }
     //const loadPagamenti$ =this._loadingService.showLoaderUntilCompleted(obsPagamenti$);
 
     obsPagamenti$.subscribe(val => 

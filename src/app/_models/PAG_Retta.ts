@@ -1,4 +1,5 @@
 import { ALU_Alunno } from "./ALU_Alunno";
+import { ASC_AnnoScolastico } from "./ASC_AnnoScolastico";
 import { PAG_Pagamento } from "./PAG_Pagamento";
 
 export interface PAG_Retta {
@@ -6,7 +7,7 @@ export interface PAG_Retta {
         id:                     number,
         annoID:                 number,
         alunnoID:               number,
-        alunno?:                 ALU_Alunno;
+        alunno?:                ALU_Alunno;
         
         annoRetta:              number,
         mese:                   number,
@@ -19,7 +20,8 @@ export interface PAG_Retta {
         userIns:                number;
         userUpd:                number;
 
-        pagamenti?:             PAG_Pagamento[];              
+        pagamenti?:             PAG_Pagamento[];
+        anno?:                  ASC_AnnoScolastico;
 }
 
 // "id": 4,
