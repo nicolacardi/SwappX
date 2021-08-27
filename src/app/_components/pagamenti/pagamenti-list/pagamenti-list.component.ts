@@ -1,9 +1,11 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
@@ -13,6 +15,9 @@ import { PagamentoEditComponent } from '../pagamento-edit/pagamento-edit.compone
 
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { PAG_Pagamento } from 'src/app/_models/PAG_Pagamento';
+import { SELECT_ITEM_HEIGHT_EM } from '@angular/material/select/select';
+
+
 
 @Component({
   selector: 'app-pagamenti-list',
@@ -60,6 +65,9 @@ export class PagamentiListComponent implements OnInit {
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   matMenuTrigger: any;
+
+  @ViewChild(MatPaginator) paginator!:    MatPaginator;
+  @ViewChild(MatSort) sort!:              MatSort;
 
   public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2).toLocaleString('it-IT', {month: 'short'}).toUpperCase());
 
@@ -118,17 +126,16 @@ export class PagamentiListComponent implements OnInit {
     obsPagamenti$.subscribe(val => 
       {
         this.matDataSource.data = val;
-        //this.matDataSource.paginator = this.paginator;
-        //this.matDataSource.sort = this.sort;
+        this.matDataSource.paginator = this.paginator;
+        this.matDataSource.sort = this.sort;
+        this.filterPredicateCustom();   //serve per rendere filtrabili anche i campi nested
+        this.sortCustom(); 
       }
     );
-
-
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    console.log (filterValue);
     this.matDataSource.filter = filterValue.trim().toLowerCase();
   }
 
@@ -143,8 +150,6 @@ export class PagamentiListComponent implements OnInit {
     this.matMenuTrigger.menuData = {item: element}   
     this.matMenuTrigger.openMenu(); 
   }
-
-  //#region ### Funzioni ###
 
   addRecord(){
     this.editRecord(0);
@@ -167,7 +172,64 @@ export class PagamentiListComponent implements OnInit {
     });
   }
 
-  //#endregion
+
+  filterPredicateCustom(){ //NC
+    //questa funzione consente il filtro ANCHE sugli oggetti della classe
+    //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
+    this.matDataSource.filterPredicate = (data, filter: string)  => {
+      const accumulator = (currentTerm: any, key: string) => { //Key è il campo in cui cerco
+
+        switch(key) { 
+          case "tipoPagamento": { 
+            return currentTerm + data.tipoPagamento.descrizione; 
+             break; 
+          } 
+          case "causale": { 
+            return currentTerm + data.causale.descrizione; 
+             break; 
+          } 
+          case "alunno": { 
+            return currentTerm + data.alunno.nome + data.alunno.cognome; 
+             break; 
+          } 
+          default: { 
+            return currentTerm + data.importo + data.dtPagamento; 
+             break; 
+          } 
+       } 
+
+
+      };
+      const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+      const transformedFilter = filter.trim().toLowerCase();
+      return dataStr.indexOf(transformedFilter) !== -1;
+    };
+  }
+
+
+  sortCustom() {
+    this.matDataSource.sortingDataAccessor = (item, property) => {
+      switch(property) {
+        case 'tipoPagamento.descrizione':   return item.tipoPagamento.descrizione;
+        case 'causale.descrizione':         return item.causale.descrizione;
+        case 'alunno.nome':                 return item.alunno.nome;
+        case 'alunno.cognome':              return item.alunno.cognome;
+        case 'importo':                     return item.importo;
+        //case 'retta.meseRetta':             return item.retta.meseRetta;      
+        //case 'retta.quotaConcordata':       return item.retta.quotaConcordata;    //NON FUNZIONA PERCHE' CI SONO 'ANCHE' RECORD SENZA retta
+        
+        case 'dtPagamento':                 return parseInt(item.dtPagamento.toString());
+
+        default: return item.alunno.cognome;
+        //default: return Number(item.dtPagamento.toString());
+        //default: return Number(item.dtPagamento);
+        //default: return item.dtPagamento;
+        //default: return item.dtPagamento.toString();
+        //default: return item.alunno.cognome
+      }
+    };
+  }
+
 
 
 }

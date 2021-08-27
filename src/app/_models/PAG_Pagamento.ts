@@ -1,4 +1,5 @@
 import { ALU_Alunno } from "./ALU_Alunno";
+import { PAG_CausalePagamento } from "./PAG_CausalePagamento";
 import { PAG_Retta } from "./PAG_Retta";
 import { PAG_TipoPagamento } from "./PAG_TipoPagamento";
 
@@ -13,8 +14,9 @@ export interface PAG_Pagamento {
         tipoPagamento:          PAG_TipoPagamento;
 
         causaleID:              number;                 //Sostituire con oggetto PAG_Causali?
+        causale:                PAG_CausalePagamento;
         rettaID:                number;
-        //retta:                  PAG_Retta;
+        retta:                  PAG_Retta;            //Serve SOLO per poter ordinare i pagamenti per mese o per importo della retta
 
         alunnoID:               number;
         alunno:                 ALU_Alunno;

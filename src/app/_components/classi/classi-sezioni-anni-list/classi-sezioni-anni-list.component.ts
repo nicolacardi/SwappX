@@ -155,24 +155,6 @@ export class ClassiSezioniAnniListComponent implements OnInit {
     };
   }
 
-  // filterPredicateCustom(){ //NC
-  //   //questa funzione consente il filtro ANCHE sugli oggetti della classe
-  //   //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
-  //   this.matDataSource.filterPredicate = (data, filter: string)  => {
-  //     const accumulator = (currentTerm: any, key: string) => { //Key è il campo in cui cerco
-  //       if (key === 'classe') {
-  //         return currentTerm + data.classe.descrizione + data.classe.descrizione2 + data.classe.descrizioneBreve;
-  //       } else {
-  //         return currentTerm + data.sezione;
-  //       }
-  //     };
-  //     const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
-  //     const transformedFilter = filter.trim().toLowerCase();
-  //     return dataStr.indexOf(transformedFilter) !== -1;
-  //   };
-  // }
-
-
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item, property) => {
       switch(property) {

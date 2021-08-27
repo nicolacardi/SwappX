@@ -60,7 +60,7 @@
     </ng-container>
 
     <ng-container matColumnDef="retta.quotaConcordata">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>importo Retta</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef cdkDrag>importo Retta</mat-header-cell>
         <mat-cell *matCellDef="let element">
             <!-- {{element.retta.quotaConcordata}} -->
             <ng-container *ngIf="element.retta; else default1">
@@ -74,7 +74,7 @@
     </ng-container>
 
     <ng-container matColumnDef="retta.meseRetta">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>mese</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef cdkDrag >mese</mat-header-cell>
         <mat-cell *matCellDef="let element">
             <ng-container *ngIf="element.retta; else default2">
                 {{months[element.retta.meseRetta]}}
@@ -100,7 +100,7 @@
     </ng-container>
 
     <ng-container matColumnDef="note">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>note</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef cdkDrag>note</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.note}}</mat-cell>
     </ng-container>
 
