@@ -1,9 +1,5 @@
 <h1 class="page-title">Elenco Rette </h1>
 
-
-
-
-
 <!-- **************************   FILTER   ******************* -->
 <mat-form-field class="ml20 topZIndex">
     <mat-label>Filtro Alunno</mat-label>
@@ -23,7 +19,6 @@
     >
     
     <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
-
 
     <ng-container matColumnDef="actionsColumn">
         <mat-header-cell *matHeaderCellDef ></mat-header-cell>
@@ -258,8 +253,7 @@
 
     <ng-container matColumnDef="mese">
         <mat-header-cell *matHeaderCellDef >Mese</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{months[element.mese] | date: 'MMMM'}}</mat-cell>
-        <!-- <mat-cell *matCellDef="let element">{{element.mese}}</mat-cell> -->
+        <mat-cell *matCellDef="let element">{{months[element.meseRetta] | date: 'MMMM'}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="anno">

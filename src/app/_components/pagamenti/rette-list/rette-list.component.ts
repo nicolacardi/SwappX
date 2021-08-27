@@ -4,18 +4,15 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatTableDataSource } from '@angular/material/table';
 
-
 import { Observable, zip } from 'rxjs';
 import { groupBy, map, mergeMap, toArray } from 'rxjs/operators';
 
+import { RettaEditComponent } from '../retta-edit/retta-edit.component';
+import { RetteService } from '../rette.service';
 
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPIVOT';
 import { PAG_RettaGroupObj } from 'src/app/_models/PAG_RetteGroupObj';
-
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { RettaEditComponent } from '../retta-edit/retta-edit.component';
-import { RetteService } from '../rette.service';
 
 @Component({
   selector: 'app-rette-list',
@@ -25,9 +22,8 @@ import { RetteService } from '../rette.service';
 export class RetteListComponent implements OnInit {
   
   matDataSource = new MatTableDataSource<PAG_RettaPivot>();
-  @ViewChild(MatPaginator) paginator!:                        MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   
-
   checkedD = true;
   checkedP = true;
 
@@ -48,8 +44,7 @@ export class RetteListComponent implements OnInit {
                                 "d_MAG",
                                 "d_GIU",
                                 "d_LUG",
-                                "d_AGO"
-    ];
+                                "d_AGO" ];
 
   c_displayedColumns: string[] = [
                                 "actionsColumn", 
@@ -69,8 +64,7 @@ export class RetteListComponent implements OnInit {
                                 "c_MAG",
                                 "c_GIU",
                                 "c_LUG",
-                                "c_AGO"
-                                  ];
+                                "c_AGO" ];
   
 p_displayedColumns: string[] = [
                                 "blank", 
@@ -89,41 +83,33 @@ p_displayedColumns: string[] = [
                                 "p_MAG",
                                 "p_GIU",
                                 "p_LUG",
-                                "p_AGO"
-                                  ];
+                                "p_AGO" ];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   matMenuTrigger: any;
-
-  months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2));
 
   myObjAssigned : PAG_RettaGroupObj = {
     alunnoID: 0,
     retta: []
   };
 
+  public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2).toLocaleString('it-IT', {month: 'short'}).toUpperCase());
 
-  
   constructor(private svcRette:         RetteService,
               public _dialog:           MatDialog) {
   }
 
   ngOnInit(): void {
     this.refresh();
-
-    // this.matDataSource.filterPredicate = (data: PAG_RettaPivot, filter: string) => {
-    //   return data.alunno.nome == filter;
-    //  };
   }
-
-
 
   refresh () {
 
     let obsRette$: Observable<PAG_Retta[]>;
     obsRette$= this.svcRette.load();
 
-// NOTA PER PIU' AVANTI: per avere la riga della retta e sotto la riga del pagamento forse è da usare const result$ = concat(series1$, series2$);
+// NOTA PER PIU' AVANTI: 
+// per avere la riga della retta e sotto la riga del pagamento forse è da usare const result$ = concat(series1$, series2$);
 
     let arrObj: PAG_RettaPivot[] = [];
 
@@ -193,7 +179,6 @@ p_displayedColumns: string[] = [
         //console.log("Risultato dei vari map & mergeMap:", val);
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
-  //       //this.matDataSource.sort = this.sort;
        }
      );
    }
@@ -202,9 +187,9 @@ p_displayedColumns: string[] = [
   trovaQuotaConcMese (arr: Array<any>, m: number) : number {
     this.myObjAssigned.alunnoID =  arr[0];
     this.myObjAssigned.retta =  arr[1]; 
-      if (this.myObjAssigned.retta.find(x=> x.mese == m)?.quotaConcordata) {
+      if (this.myObjAssigned.retta.find(x=> x.meseRetta == m)?.quotaConcordata) {
         //INTERESSANTE L'USO DEL '!' IN QUESTO CASO! dice: "sono sicuro che non sia undefined"
-        return this.myObjAssigned.retta.find(x=> x.mese == m)!.quotaConcordata  
+        return this.myObjAssigned.retta.find(x=> x.meseRetta == m)!.quotaConcordata  
       } else {
         return 0;
       }
@@ -213,8 +198,8 @@ p_displayedColumns: string[] = [
   trovaQuotaDefMese (arr: Array<any>, m: number) : number {
     this.myObjAssigned.alunnoID =  arr[0];
     this.myObjAssigned.retta =  arr[1]; 
-      if (this.myObjAssigned.retta.find(x=> x.mese == m)?.quotaDefault) {
-        return this.myObjAssigned.retta.find(x=> x.mese == m)!.quotaDefault
+      if (this.myObjAssigned.retta.find(x=> x.meseRetta == m)?.quotaDefault) {
+        return this.myObjAssigned.retta.find(x=> x.meseRetta == m)!.quotaDefault
       } else {
         return 0;
       }
@@ -225,10 +210,10 @@ p_displayedColumns: string[] = [
     let sumPags: number;
     this.myObjAssigned.alunnoID =  arr[0];
     this.myObjAssigned.retta =  arr[1]; 
-      if (this.myObjAssigned.retta.find(x=> x.mese == m)?.pagamenti) {
+      if (this.myObjAssigned.retta.find(x=> x.meseRetta == m)?.pagamenti) {
         sumPags = 0;
         //IN QUESTO CASO ci sono ben DUE "!" uno per il find e uno per i pagamenti
-        this.myObjAssigned.retta.find(x=> x.mese == m)!.pagamenti!
+        this.myObjAssigned.retta.find(x=> x.meseRetta == m)!.pagamenti!
         .forEach (x=> sumPags = sumPags + x.importo) ;
         return sumPags;
       } else {
@@ -241,7 +226,6 @@ p_displayedColumns: string[] = [
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.matDataSource.filter = filterValue.trim().toLowerCase();
-    
   }
 
   
@@ -252,10 +236,6 @@ p_displayedColumns: string[] = [
     this.matMenuTrigger.menuData = {item: element}   
     this.matMenuTrigger.openMenu(); 
   }
-
-  // addRecord(){
-  //   //TODO
-  // }
 
   editRecord(alunno: number, anno: number){
     const dialogConfig : MatDialogConfig = {
@@ -276,14 +256,11 @@ p_displayedColumns: string[] = [
     });
   }
 
-
   public toggleD(event: MatSlideToggleChange) {
-    //console.log('toggle', event.checked);
     this.checkedD = event.checked;
   }
 
   public toggleP(event: MatSlideToggleChange) {
-    //console.log('toggle', event.checked);
     this.checkedP = event.checked;
   }
 }

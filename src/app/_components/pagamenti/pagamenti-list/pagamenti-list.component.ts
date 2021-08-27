@@ -2,16 +2,17 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
-import { PAG_Pagamento } from 'src/app/_models/PAG_Pagamento';
-import { PagamentoEditComponent } from '../pagamento-edit/pagamento-edit.component';
-import { PagamentiService } from '../pagamenti.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { PagamentiService } from '../pagamenti.service';
+
+import { PagamentoEditComponent } from '../pagamento-edit/pagamento-edit.component';
+
+import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+import { PAG_Pagamento } from 'src/app/_models/PAG_Pagamento';
 
 @Component({
   selector: 'app-pagamenti-list',
@@ -26,7 +27,7 @@ export class PagamentiListComponent implements OnInit {
   @Input() annoID!:         number;
 
 
-  obsAnni$!: Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  obsAnni$!:                Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   form:                     FormGroup;            //form fatto della sola combo anno scolastico
 
   show: boolean = true;
@@ -42,21 +43,20 @@ export class PagamentiListComponent implements OnInit {
                                   "causale.descrizione",
                                   //"rettaID", 
                                   "retta.quotaConcordata",
-                                  "retta.mese",
+                                  "retta.meseRetta",
                                   //"alunnoID", 
                                   "alunno.cognome",
                                   "alunno.nome",
                                   //"genitoreID",
                                   "note"];
+
   displayedColumnsListRettaEdit: string[] = [
-                                   
                                   "dtPagamento", 
                                   "importo", 
                                   "tipoPagamento.descrizione",
                                   "causale.descrizione",
-                                  "retta.mese",
-                                  "delete"
-                                     ];
+                                  "retta.meseRetta",
+                                  "delete" ];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   matMenuTrigger: any;
@@ -128,6 +128,7 @@ export class PagamentiListComponent implements OnInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+    console.log (filterValue);
     this.matDataSource.filter = filterValue.trim().toLowerCase();
   }
 
