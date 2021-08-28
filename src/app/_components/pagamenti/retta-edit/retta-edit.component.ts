@@ -12,6 +12,7 @@ import { RettameseEditComponent } from '../rettamese-edit/rettamese-edit.compone
 import { RetteService } from '../rette.service';
 import { TipiPagamentoService } from '../tipiPagamento.service';
 import { CausaliPagamentoService } from '../causaliPagamento.service';
+import { PagamentiService } from '../pagamenti.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
@@ -20,6 +21,7 @@ import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
 import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { PagamentiListComponent } from '../pagamenti-list/pagamenti-list.component';
+
 
 
 @Component({
@@ -32,7 +34,7 @@ export class RettaEditComponent implements OnInit {
 
   @ViewChildren(RettameseEditComponent) ChildComponents!:QueryList<RettameseEditComponent>;
   
-  //@ViewChild(PagamentiListComponent) ChildPagamenti!: PagamentiListComponent;
+  @ViewChild(PagamentiListComponent) ChildPagamenti!: PagamentiListComponent;
 
   public obsRette$!:          Observable<PAG_Retta[]>;
   causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
@@ -62,6 +64,7 @@ export class RettaEditComponent implements OnInit {
               private _snackBar:      MatSnackBar,
               private tipiPagamentoSvc:             TipiPagamentoService,
               private causaliPagamentoSvc:          CausaliPagamentoService,
+              private pagamentiSvc:     PagamentiService,
               private _loadingService:  LoadingService,
               ) 
   { 
@@ -72,9 +75,6 @@ export class RettaEditComponent implements OnInit {
       dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       importo:                    ['', { validators:[ Validators.required]}],
       tipoPagamentoID:            ['', Validators.required],
-      nomeCognomeAlunno:          [''],
-      nomeAlunno:                 [{value:'', disabled:true}],
-      cognomeAlunno:              [{value:'', disabled:true}]
     });
   }
 
@@ -144,16 +144,20 @@ export class RettaEditComponent implements OnInit {
   save(){
 
     if (this.formRetta.controls['id'].value == null) {
-      // this.pagamentiSvc.post(this.form.value)
-      //   .subscribe(res=> {
-      //   //console.log("return from post", res);
-      //   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-      //   this._dialogRef.close();
-      // },
-      // err=> (
-      //   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      // )
-      // );
+
+      this.formRetta.controls['alunnoID'].setValue(this.alunno.id);
+      console.log("retta-edit.ts save() : this.formRetta.value", this.formRetta.value);
+      this.pagamentiSvc.post(this.formRetta.value)
+        .subscribe(
+          res=> {
+            //console.log("return from post", res);
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+            this._dialogRef.close();
+          },
+          err=> (
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          )
+      );
     } else {
       // this.pagamentiSvc.put(this.form.value)
       //   .subscribe(res=> {
@@ -167,7 +171,7 @@ export class RettaEditComponent implements OnInit {
       // ));
     }
 
-    //this.ChildPagamenti.refresh();
+    this.ChildPagamenti.refresh();
   }
 
   delete(){

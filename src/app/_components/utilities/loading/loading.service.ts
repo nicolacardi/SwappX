@@ -26,25 +26,25 @@ export class LoadingService {
             .pipe(
                 
                 tap(()=> {
-                    console.log("set loading on");
+                    //console.log("set loading on");
                     this.loadingOn();
                 }),
 
                 concatMap(() => obs$), // emette lo stesso identico observable di quello che riceve in input ma ha attivato il loading
                 finalize(()=> {
-                    console.log("set loading off");
+                    //console.log("set loading off");
                     this.loadingOff()
                 })
             )
     }
     
     loadingOn() {
-        console.log("this.loadingSubject - LoadingOn: sta per essere portato a true", this.loadingSubject.getValue());
+        //console.log("this.loadingSubject - LoadingOn: sta per essere portato a true", this.loadingSubject.getValue());
         this.loadingSubject.next(true);
     }
 
     loadingOff() {
-        console.log("this.loadingSubject - LoadingOff: sta per essere portato a false", this.loadingSubject.getValue());
+        //console.log("this.loadingSubject - LoadingOff: sta per essere portato a false", this.loadingSubject.getValue());
         this.loadingSubject.next(false);
     }
 }

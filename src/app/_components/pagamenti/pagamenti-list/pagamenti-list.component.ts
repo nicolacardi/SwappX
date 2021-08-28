@@ -111,8 +111,8 @@ export class PagamentiListComponent implements OnInit {
 
     let obsPagamenti$: Observable<PAG_Pagamento[]>;
 
-    console.log("annoID dalla combobox", this.form.controls['annoScolastico'].value);
-    console.log("this.alunnoID", this.alunnoID);
+    //console.log("annoID dalla combobox", this.form.controls['annoScolastico'].value);
+    //console.log("this.alunnoID", this.alunnoID);
 
     if (this.alunnoID) {
       obsPagamenti$= this.pagamentiSvc.loadByAlunnoAnno(this.alunnoID, this.annoID);
