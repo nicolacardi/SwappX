@@ -19,6 +19,7 @@ import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
 import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
+import { PagamentiListComponent } from '../pagamenti-list/pagamenti-list.component';
 
 
 @Component({
@@ -31,6 +32,8 @@ export class RettaEditComponent implements OnInit {
 
   @ViewChildren(RettameseEditComponent) ChildComponents!:QueryList<RettameseEditComponent>;
   
+  //@ViewChild(PagamentiListComponent) ChildPagamenti!: PagamentiListComponent;
+
   public obsRette$!:          Observable<PAG_Retta[]>;
   causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
   tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
@@ -163,6 +166,8 @@ export class RettaEditComponent implements OnInit {
       //   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       // ));
     }
+
+    //this.ChildPagamenti.refresh();
   }
 
   delete(){
