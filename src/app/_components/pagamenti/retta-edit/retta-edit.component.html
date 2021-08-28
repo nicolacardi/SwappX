@@ -69,43 +69,53 @@
             </div>
 
             <div class="pagamento-edit-container cellBordered mt10">
-
-                <mat-form-field class="form-dp">
-                    <input matInput
-                    required
-                    formControlName = "dtPagamento"
-                    [matDatepicker]= "dpDtPagamento"
-                    placeholder="Data pagamento"
-                    #date>
-                    <mat-datepicker-toggle matSuffix [for]="dpDtPagamento"></mat-datepicker-toggle>
-                    <mat-datepicker #dpDtPagamento></mat-datepicker>
-                    <mat-error *ngIf="form.controls.dtPagamento.errors?.required"> Campo obbligatorio</mat-error>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <input matInput type="number" required placeholder="Importo" formControlName="importo">
-                    <mat-error *ngIf="form.controls.importo.errors?.required"> Campo obbligatorio</mat-error>
-                </mat-form-field>
-
-                <mat-form-field  >
-                    <mat-label>Tipo pagamento</mat-label>
-                    <mat-select formControlName="tipoPagamentoID">
-                        <mat-option *ngFor="let element of (tipiPagamento$ | async)" [value]="element.id">
-                        {{element.descrizione}}
-                        </mat-option>
-                    </mat-select>
+                <form [formGroup] = "formRetta">
+                    <mat-form-field class="form-dp">
+                        <input matInput
+                        required
+                        formControlName = "dtPagamento"
+                        [matDatepicker]= "dpDtPagamento"
+                        placeholder="Data pagamento"
+                        #date>
+                        <mat-datepicker-toggle matSuffix [for]="dpDtPagamento"></mat-datepicker-toggle>
+                        <mat-datepicker #dpDtPagamento></mat-datepicker>
+                        <mat-error *ngIf="formRetta.controls.dtPagamento.errors?.required"> Campo obbligatorio</mat-error>
                     </mat-form-field>
 
-                <mat-form-field  >
-                    <mat-label>Causale</mat-label>
-                    <mat-select formControlName="causaleID">
-                        <mat-option *ngFor="let element of (causaliPagamento$ | async)" [value]="element.id">
-                        {{element.descrizione}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                
-                <mat-icon class="ml140 pointer">add_circle_outline</mat-icon>
+                    <mat-form-field>
+                        <input matInput type="number" required placeholder="Importo" formControlName="importo">
+                        <mat-error *ngIf="formRetta.controls.importo.errors?.required"> Campo obbligatorio</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field  >
+                        <mat-label>Tipo pagamento</mat-label>
+                        <mat-select formControlName="tipoPagamentoID">
+                            <mat-option *ngFor="let element of (tipiPagamento$ | async)" [value]="element.id">
+                            {{element.descrizione}}
+                            </mat-option>
+                        </mat-select>
+                        </mat-form-field>
+
+                    <mat-form-field  >
+                        <mat-label>Causale</mat-label>
+                        <mat-select formControlName="causaleID" #causale>
+                            <mat-option *ngFor="let element of (causaliPagamento$ | async)" [value]="element.id">
+                            {{element.descrizione}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+       
+                    <mat-form-field  *ngIf="causale.value == 1">
+                        <mat-label>MESE</mat-label>
+                        <mat-select formControlName="meseRetta">
+                            <mat-option *ngFor="let element of mesiArr; let i = index" [value]="element">
+                            {{placeholderMeseArr[i]}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-icon class="addRetta pointer">add_circle_outline</mat-icon>
+                </form>
             </div>
         </mat-card-content>
     </mat-card>

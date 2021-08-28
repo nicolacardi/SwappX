@@ -13,12 +13,14 @@ import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { RetteService } from '../rette.service';
 import { TipiPagamentoService } from '../tipiPagamento.service';
 import { CausaliPagamentoService } from '../causaliPagamento.service';
+import { LoadingService } from '../../utilities/loading/loading.service';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
 import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
+
 
 @Component({
   selector: 'app-retta-edit',
@@ -35,7 +37,7 @@ export class RettaEditComponent implements OnInit {
   causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
   tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
   
-  form! :                     FormGroup;
+  formRetta! :                FormGroup;
 
   alunno!:                    ALU_Alunno;
   anno!:                      ASC_AnnoScolastico;
@@ -59,9 +61,10 @@ export class RettaEditComponent implements OnInit {
               private _snackBar:      MatSnackBar,
               private tipiPagamentoSvc:             TipiPagamentoService,
               private causaliPagamentoSvc:          CausaliPagamentoService,
+              private _loadingService:  LoadingService,
               ) 
   { 
-    this.form = this.fb.group({
+    this.formRetta = this.fb.group({
       id:                         [null],
       alunnoID:                   ['', Validators.required],
       causaleID:                  ['', Validators.required],
@@ -84,6 +87,7 @@ export class RettaEditComponent implements OnInit {
     this.tipiPagamento$ = this.tipiPagamentoSvc.load();
 
     this.obsRette$ = this.retteSvc.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
+    //const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
     this.obsRette$.pipe(
       map(obj => { 
         //console.log ("obj", obj);

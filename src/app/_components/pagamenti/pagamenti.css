@@ -157,7 +157,7 @@ p {
     max-height: 250px;
     text-align: left;
     padding-left: 18px;
-    padding-top: 8px;
+    padding-top: 12px;
 }
 
 .bk-white {
@@ -174,4 +174,10 @@ p {
     flex: 0 0 3% !important;
     width: 3% !important;
 
+}
+
+.addRetta {
+    position: absolute;
+    right: 52px;
+    margin-top: 5px;
 }

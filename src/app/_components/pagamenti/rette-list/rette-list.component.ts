@@ -9,10 +9,12 @@ import { groupBy, map, mergeMap, toArray } from 'rxjs/operators';
 
 import { RettaEditComponent } from '../retta-edit/retta-edit.component';
 import { RetteService } from '../rette.service';
+import { LoadingService } from '../../utilities/loading/loading.service';
 
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPIVOT';
 import { PAG_RettaGroupObj } from 'src/app/_models/PAG_RetteGroupObj';
+
 
 @Component({
   selector: 'app-rette-list',
@@ -96,6 +98,7 @@ p_displayedColumns: string[] = [
   public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2).toLocaleString('it-IT', {month: 'short'}).toUpperCase());
 
   constructor(private svcRette:         RetteService,
+              private _loadingService:  LoadingService,
               public _dialog:           MatDialog) {
   }
 
@@ -106,14 +109,21 @@ p_displayedColumns: string[] = [
   refresh () {
 
     let obsRette$: Observable<PAG_Retta[]>;
+
+
+
+
+
     obsRette$= this.svcRette.load();
+
+    const loadRette$ =this._loadingService.showLoaderUntilCompleted(obsRette$);
 
 // NOTA PER PIU' AVANTI: 
 // per avere la riga della retta e sotto la riga del pagamento forse è da usare const result$ = concat(series1$, series2$);
 
     let arrObj: PAG_RettaPivot[] = [];
 
-    obsRette$
+    loadRette$
      .pipe(
        mergeMap(res=>res),
         groupBy(o => o.alunnoID),

@@ -73,9 +73,12 @@ background-size: cover;*/
     margin-left: 5px;
 }
 .ml12 {
-    margin-left: 12px !important;
+    margin-left: 12px;
 }
 
+.ml15 {
+    margin-left: 15px;
+}
 .ml20 {
     margin-left: 20px;
 }
@@ -102,6 +105,10 @@ background-size: cover;*/
 
 .mt10 {
     margin-top: 10px;
+}
+
+.mt15 {
+    margin-top: 15px;
 }
 
 .mt20 {
