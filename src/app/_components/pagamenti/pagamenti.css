@@ -44,11 +44,27 @@ p {
 
 /* */
 .square {
+    position: absolute;
+    top: 70px;
+    left: 0px;
     border: 1px solid rgb(182, 182, 182);
-    padding: 8px;
+    padding: 5px 20px 5px 0px;
     border-radius: 4px;
     margin-left: 20px;
 }
+
+.square2 {
+    position: absolute;
+    top: 67px;
+    left: 0px;
+    border: 1px solid rgb(182, 182, 182);
+    padding: 0px 10px 0px 0px;
+    border-radius: 4px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+
 
 :host ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
     background-color: #044D7E;
@@ -219,4 +235,10 @@ td {
 
 .retteTable .mat-row {
     min-height: 30px;
+  }
+
+
+  .square2 mat-icon {
+    width: 20px; 
+    color: #044D7E;
   }

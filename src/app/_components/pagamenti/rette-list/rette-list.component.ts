@@ -29,6 +29,10 @@ export class RetteListComponent implements OnInit {
   @ViewChild('toggleC') toggleC!: MatSlideToggle; 
   @ViewChild('toggleP') toggleP!: MatSlideToggle; 
 
+  showC= true;
+  showD= true;
+  showP= true;
+  showNum!: number;
 
   toggledNum!:  number;
 
@@ -273,67 +277,133 @@ p_displayedColumns: string[] = [
     });
   }
 
-  // public toggleD(event: MatSlideToggleChange) {
-  //   this.checkedD = event.checked;
-  // }
-
-  // public toggleP(event: MatSlideToggleChange) {
-  //   this.checkedP = event.checked;
-  // }
-
-  public toggleColumns() {
-     this.toggledNum = Number(this.toggleC.checked) + Number(this.toggleD.checked) + Number(this.toggleP.checked);
-    console.log (this.toggledNum);
-
-     if (!this.toggleD.checked) {
-       if (!this.toggleC.checked){
-        this.c_displayedColumns[0] = "blank";
-        this.c_displayedColumns[1] = "blank";
-        this.c_displayedColumns[2] = "blank";
-        this.p_displayedColumns[0] = "actionsColumn";
-        this.p_displayedColumns[1] = "nome";
-        this.p_displayedColumns[2] = "cognome";  
-        this.d_displayedColumns[0] = "blank";
-        this.d_displayedColumns[1] = "blank";
-        this.d_displayedColumns[2] = "blank";
-        
-       } else {
-        this.c_displayedColumns[0] = "actionsColumn";
-        this.c_displayedColumns[1] = "nome";
-        this.c_displayedColumns[2] = "cognome";
-        this.p_displayedColumns[0] = "blank";
-        this.p_displayedColumns[1] = "blank";
-        this.p_displayedColumns[2] = "blank";  
-        this.d_displayedColumns[0] = "blank";
-        this.d_displayedColumns[1] = "blank";
-        this.d_displayedColumns[2] = "blank";
-       }
-     } else {
-      this.c_displayedColumns[0] = "blank";
-      this.c_displayedColumns[1] = "blank";
-      this.c_displayedColumns[2] = "blank";
-      this.p_displayedColumns[0] = "blank";
-      this.p_displayedColumns[1] = "blank";
-      this.p_displayedColumns[2] = "blank";
-      this.d_displayedColumns[0] = "actionsColumn";
-      this.d_displayedColumns[1] = "nome";
-      this.d_displayedColumns[2] = "cognome";
-     }
-
-     if (!this.toggleP.checked) {
-       if (!this.toggleC.checked) {
-        this.showLinesD = true;
-        this.showLinesC = false;
-        this.showLinesP = false;
-       } else {
-        this.showLinesD = false;
-        this.showLinesC = true;
-        this.showLinesP = false;
-       }
-     } else {
-      this.showLinesD = false;
-      this.showLinesC = false;
-      this.showLinesP = true;
-     }
+  public togD() {
+    this.showD = !this.showD;
+    this.tog();
   }
+
+  public togC() {
+    this.showC = !this.showC;
+    this.tog();
+  }
+
+  public togP() {
+    this.showP = !this.showP;
+    this.tog();
+  }
+
+  public tog() {
+    this.showNum = Number(this.showC) + Number(this.showD) + Number(this.showP);
+
+    if (!this.showD) {
+      if (!this.showC){
+       this.c_displayedColumns[0] = "blank";
+       this.c_displayedColumns[1] = "blank";
+       this.c_displayedColumns[2] = "blank";
+       this.p_displayedColumns[0] = "actionsColumn";
+       this.p_displayedColumns[1] = "nome";
+       this.p_displayedColumns[2] = "cognome";  
+       this.d_displayedColumns[0] = "blank";
+       this.d_displayedColumns[1] = "blank";
+       this.d_displayedColumns[2] = "blank";
+       
+      } else {
+       this.c_displayedColumns[0] = "actionsColumn";
+       this.c_displayedColumns[1] = "nome";
+       this.c_displayedColumns[2] = "cognome";
+       this.p_displayedColumns[0] = "blank";
+       this.p_displayedColumns[1] = "blank";
+       this.p_displayedColumns[2] = "blank";  
+       this.d_displayedColumns[0] = "blank";
+       this.d_displayedColumns[1] = "blank";
+       this.d_displayedColumns[2] = "blank";
+      }
+    } else {
+     this.c_displayedColumns[0] = "blank";
+     this.c_displayedColumns[1] = "blank";
+     this.c_displayedColumns[2] = "blank";
+     this.p_displayedColumns[0] = "blank";
+     this.p_displayedColumns[1] = "blank";
+     this.p_displayedColumns[2] = "blank";
+     this.d_displayedColumns[0] = "actionsColumn";
+     this.d_displayedColumns[1] = "nome";
+     this.d_displayedColumns[2] = "cognome";
+    }
+
+    if (!this.showP) {
+      if (!this.showC) {
+       this.showLinesD = true;
+       this.showLinesC = false;
+       this.showLinesP = false;
+      } else {
+       this.showLinesD = false;
+       this.showLinesC = true;
+       this.showLinesP = false;
+      }
+    } else {
+     this.showLinesD = false;
+     this.showLinesC = false;
+     this.showLinesP = true;
+    }
+
+
+  }
+
+
+  // public toggleColumns() {
+  //   //toggledNum è il numero di quelli attivi
+  //    this.toggledNum = Number(this.toggleC.checked) + Number(this.toggleD.checked) + Number(this.toggleP.checked);
+  //   console.log (this.toggledNum);
+
+  //    if (!this.toggleD.checked) {
+  //      if (!this.toggleC.checked){
+  //       this.c_displayedColumns[0] = "blank";
+  //       this.c_displayedColumns[1] = "blank";
+  //       this.c_displayedColumns[2] = "blank";
+  //       this.p_displayedColumns[0] = "actionsColumn";
+  //       this.p_displayedColumns[1] = "nome";
+  //       this.p_displayedColumns[2] = "cognome";  
+  //       this.d_displayedColumns[0] = "blank";
+  //       this.d_displayedColumns[1] = "blank";
+  //       this.d_displayedColumns[2] = "blank";
+        
+  //      } else {
+  //       this.c_displayedColumns[0] = "actionsColumn";
+  //       this.c_displayedColumns[1] = "nome";
+  //       this.c_displayedColumns[2] = "cognome";
+  //       this.p_displayedColumns[0] = "blank";
+  //       this.p_displayedColumns[1] = "blank";
+  //       this.p_displayedColumns[2] = "blank";  
+  //       this.d_displayedColumns[0] = "blank";
+  //       this.d_displayedColumns[1] = "blank";
+  //       this.d_displayedColumns[2] = "blank";
+  //      }
+  //    } else {
+  //     this.c_displayedColumns[0] = "blank";
+  //     this.c_displayedColumns[1] = "blank";
+  //     this.c_displayedColumns[2] = "blank";
+  //     this.p_displayedColumns[0] = "blank";
+  //     this.p_displayedColumns[1] = "blank";
+  //     this.p_displayedColumns[2] = "blank";
+  //     this.d_displayedColumns[0] = "actionsColumn";
+  //     this.d_displayedColumns[1] = "nome";
+  //     this.d_displayedColumns[2] = "cognome";
+  //    }
+
+  //    if (!this.toggleP.checked) {
+  //      if (!this.toggleC.checked) {
+  //       this.showLinesD = true;
+  //       this.showLinesC = false;
+  //       this.showLinesP = false;
+  //      } else {
+  //       this.showLinesD = false;
+  //       this.showLinesC = true;
+  //       this.showLinesP = false;
+  //      }
+  //    } else {
+  //     this.showLinesD = false;
+  //     this.showLinesC = false;
+  //     this.showLinesP = true;
+  //    }
+  // }
 }
