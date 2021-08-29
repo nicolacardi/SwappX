@@ -7,9 +7,9 @@
 </mat-form-field>
 
 <span class="square">
-    <mat-slide-toggle class="ml20" (change)="toggleColumns()" [disabled]= "toggledNum == 2 && !toggleD.checked" color="primary" size="small" #toggleD>Default</mat-slide-toggle>
-    <mat-slide-toggle class="ml20" (change)="toggleColumns()" [disabled]= "toggledNum == 2 && !toggleC.checked" color="primary" #toggleC>Concordate</mat-slide-toggle>
-    <mat-slide-toggle class="ml20" (change)="toggleColumns()" [disabled]= "toggledNum == 2 && !toggleP.checked" color="primary" #toggleP>Pagamenti</mat-slide-toggle>
+    <mat-slide-toggle class="ml20" (change)="toggleColumns()" [disabled]= "toggledNum == 1 && toggleD.checked" color="primary" size="small" #toggleD checked>Default</mat-slide-toggle>
+    <mat-slide-toggle class="ml20" (change)="toggleColumns()" [disabled]= "toggledNum == 1 && toggleC.checked" color="primary" #toggleC checked>Concordate</mat-slide-toggle>
+    <mat-slide-toggle class="ml20" (change)="toggleColumns()" [disabled]= "toggledNum == 1 && toggleP.checked" color="primary" #toggleP checked>Pagamenti</mat-slide-toggle>
 </span>
 <!-- **************************   PAGINATOR   ******************* -->
 <mat-paginator class="transparent" [pageSize]="5" [pageSizeOptions]="[1, 3, 5]" showFirstLastButtons></mat-paginator>
@@ -302,17 +302,17 @@
     <mat-row *matRowDef="let element;columns: d_displayedColumns;"
         class="element-row default-row"
         (contextmenu)="onRightClick($event, element)"
-        [ngClass]="{'hide': toggleD.checked, 'border-bottom': showLinesD}">
+        [ngClass]="{'hide': !toggleD.checked, 'border-bottom': showLinesD}">
     </mat-row>
 
     <mat-row *matRowDef="let element; columns: c_displayedColumns;"
         class="element-row concordate-row" 
-        [ngClass]="{'hide': toggleC.checked, 'border-bottom': showLinesC}">
+        [ngClass]="{'hide': !toggleC.checked, 'border-bottom': showLinesC}">
     </mat-row>
 
     <mat-row *matRowDef="let element; columns: p_displayedColumns;"
         class="element-row pagamenti-row border-bottom"
-        [ngClass]="{'hide': toggleP.checked, 'border-bottom': showLinesP}">
+        [ngClass]="{'hide': !toggleP.checked, 'border-bottom': showLinesP}">
     </mat-row>
 
     <!-- [ngClass]="{'border-bottom': toggleP.checked}" -->

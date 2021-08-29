@@ -283,9 +283,10 @@ p_displayedColumns: string[] = [
 
   public toggleColumns() {
      this.toggledNum = Number(this.toggleC.checked) + Number(this.toggleD.checked) + Number(this.toggleP.checked);
+    console.log (this.toggledNum);
 
-     if (this.toggleD.checked) {
-       if (this.toggleC.checked){
+     if (!this.toggleD.checked) {
+       if (!this.toggleC.checked){
         this.c_displayedColumns[0] = "blank";
         this.c_displayedColumns[1] = "blank";
         this.c_displayedColumns[2] = "blank";
@@ -319,8 +320,8 @@ p_displayedColumns: string[] = [
       this.d_displayedColumns[2] = "cognome";
      }
 
-     if (this.toggleP.checked) {
-       if (this.toggleC.checked) {
+     if (!this.toggleP.checked) {
+       if (!this.toggleC.checked) {
         this.showLinesD = true;
         this.showLinesC = false;
         this.showLinesP = false;
