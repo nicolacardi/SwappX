@@ -217,4 +217,6 @@ td {
 }
 
 
-
+.retteTable .mat-row {
+    min-height: 30px;
+  }

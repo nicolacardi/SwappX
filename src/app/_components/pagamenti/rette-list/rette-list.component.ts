@@ -30,8 +30,6 @@ export class RetteListComponent implements OnInit {
   @ViewChild('toggleP') toggleP!: MatSlideToggle; 
 
 
-  checkedD = true;
-  checkedP = true;
   toggledNum!:  number;
 
   showLinesC = false;
