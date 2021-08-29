@@ -6,7 +6,7 @@
 AS: lo usiamo questo ???
 -->
 
-<form  *ngIf="(retta$ | async)  || emptyForm" [formGroup] = "form">
+<form  *ngIf="(retta$ | async)  || emptyForm" [formGroup] = "form" [ngClass]="{'highlightHover': evidenzia}">
 
     <mat-form-field class="cellRetta center" >
         <input matInput type="number"

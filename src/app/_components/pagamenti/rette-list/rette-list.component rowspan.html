@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { Observable, zip } from 'rxjs';
@@ -25,76 +25,58 @@ export class RetteListComponent implements OnInit {
   
   matDataSource = new MatTableDataSource<PAG_RettaPivot>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild('toggleD') toggleD!: MatSlideToggle; 
-  @ViewChild('toggleC') toggleC!: MatSlideToggle; 
-  @ViewChild('toggleP') toggleP!: MatSlideToggle; 
-
-
+  
   checkedD = true;
   checkedP = true;
-  toggledNum!:  number;
-
-  showLinesC = false;
-  showLinesD = false;
-  showLinesP = true;
 
   d_displayedColumns: string[] =  [
 
-    "actionsColumn", 
-    "nome",
-    "cognome",
-    "tipoRec_D",  
-
-    "d_SET",
-    "d_OTT",
-    "d_NOV",
-    "d_DIC",
-    "d_GEN",
-    "d_FEB",
-    "d_MAR",
-    "d_APR",
-    "d_MAG",
-    "d_GIU",
-    "d_LUG",
-    "d_AGO" ];
+                                "actionsColumn", 
+                                "nome",
+                                "cognome",
+                                "tipoRec_D",                                
+                                "d_SET",
+                                "d_OTT",
+                                "d_NOV",
+                                "d_DIC",
+                                "d_GEN",
+                                "d_FEB",
+                                "d_MAR",
+                                "d_APR",
+                                "d_MAG",
+                                "d_GIU",
+                                "d_LUG",
+                                "d_AGO" ];
 
   c_displayedColumns: string[] = [
-
-    "blank",
-    "blank",
-    "blank",
-    "tipoRec_C",
-    "c_SET",
-    "c_OTT",
-    "c_NOV",
-    "c_DIC",
-    "c_GEN",
-    "c_FEB",
-    "c_MAR",
-    "c_APR",
-    "c_MAG",
-    "c_GIU",
-    "c_LUG",
-    "c_AGO" ];
+                                "tipoRec_C",
+                                "c_SET",
+                                "c_OTT",
+                                "c_NOV",
+                                "c_DIC",
+                                "c_GEN",
+                                "c_FEB",
+                                "c_MAR",
+                                "c_APR",
+                                "c_MAG",
+                                "c_GIU",
+                                "c_LUG",
+                                "c_AGO" ];
   
 p_displayedColumns: string[] = [
-
-    "blank",
-    "blank",
-    "blank",
-    "tipoRec_P",
-    "p_SET",
-    "p_OTT",
-    "p_NOV",
-    "p_DIC",
-    "p_GEN",
-    "p_FEB",
-    "p_MAR",
-    "p_APR",
-    "p_MAG",
-    "p_GIU",
-    "p_LUG",
-    "p_AGO" ];
+                                "tipoRec_P",
+                                "p_SET",
+                                "p_OTT",
+                                "p_NOV",
+                                "p_DIC",
+                                "p_GEN",
+                                "p_FEB",
+                                "p_MAR",
+                                "p_APR",
+                                "p_MAG",
+                                "p_GIU",
+                                "p_LUG",
+                                "p_AGO" ];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   matMenuTrigger: any;
@@ -275,66 +257,11 @@ p_displayedColumns: string[] = [
     });
   }
 
-  // public toggleD(event: MatSlideToggleChange) {
-  //   this.checkedD = event.checked;
-  // }
+  public toggleD(event: MatSlideToggleChange) {
+    this.checkedD = event.checked;
+  }
 
-  // public toggleP(event: MatSlideToggleChange) {
-  //   this.checkedP = event.checked;
-  // }
-
-  public toggleColumns() {
-     this.toggledNum = Number(this.toggleC.checked) + Number(this.toggleD.checked) + Number(this.toggleP.checked);
-
-     if (this.toggleD.checked) {
-       if (this.toggleC.checked){
-        this.c_displayedColumns[0] = "blank";
-        this.c_displayedColumns[1] = "blank";
-        this.c_displayedColumns[2] = "blank";
-        this.p_displayedColumns[0] = "actionsColumn";
-        this.p_displayedColumns[1] = "nome";
-        this.p_displayedColumns[2] = "cognome";  
-        this.d_displayedColumns[0] = "blank";
-        this.d_displayedColumns[1] = "blank";
-        this.d_displayedColumns[2] = "blank";
-        
-       } else {
-        this.c_displayedColumns[0] = "actionsColumn";
-        this.c_displayedColumns[1] = "nome";
-        this.c_displayedColumns[2] = "cognome";
-        this.p_displayedColumns[0] = "blank";
-        this.p_displayedColumns[1] = "blank";
-        this.p_displayedColumns[2] = "blank";  
-        this.d_displayedColumns[0] = "blank";
-        this.d_displayedColumns[1] = "blank";
-        this.d_displayedColumns[2] = "blank";
-       }
-     } else {
-      this.c_displayedColumns[0] = "blank";
-      this.c_displayedColumns[1] = "blank";
-      this.c_displayedColumns[2] = "blank";
-      this.p_displayedColumns[0] = "blank";
-      this.p_displayedColumns[1] = "blank";
-      this.p_displayedColumns[2] = "blank";
-      this.d_displayedColumns[0] = "actionsColumn";
-      this.d_displayedColumns[1] = "nome";
-      this.d_displayedColumns[2] = "cognome";
-     }
-
-     if (this.toggleP.checked) {
-       if (this.toggleC.checked) {
-        this.showLinesD = true;
-        this.showLinesC = false;
-        this.showLinesP = false;
-       } else {
-        this.showLinesD = false;
-        this.showLinesC = true;
-        this.showLinesP = false;
-       }
-     } else {
-      this.showLinesD = false;
-      this.showLinesC = false;
-      this.showLinesP = true;
-     }
+  public toggleP(event: MatSlideToggleChange) {
+    this.checkedP = event.checked;
   }
 }

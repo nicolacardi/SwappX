@@ -3,7 +3,7 @@
 }
 
 .border-bottom {
-    border-bottom: 1px dashed #1B3663;
+    border-bottom: 1px dashed #1B3663 !important;
 }
 
 p {
@@ -178,6 +178,43 @@ p {
 
 .addRetta {
     position: absolute;
-    right: 52px;
-    margin-top: 5px;
+    right: 45px;
 }
+
+.hidden {
+    display: none;
+}
+
+.highlightHover {
+    background-color:rgba(103, 180, 224, 0.656);
+}
+
+
+/* table {
+    width: 100%;
+  }
+
+
+td {
+      border:1px solid rgb(182, 182, 182);
+  } */
+
+
+  .default-row {
+    border-bottom-width: 0px;
+  }
+
+  .concordate-row {
+    border-bottom-width: 0px;
+  }
+
+  .mat-cell {
+    border-bottom: 1px rgba(86, 86, 86, 0.279) solid;
+  }
+
+.cellNoBorder {
+    border-bottom-width: 0px !important;
+}
+
+
+

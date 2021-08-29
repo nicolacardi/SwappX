@@ -42,6 +42,7 @@ import { PagamentoEditComponent } from './_components/pagamenti/pagamento-edit/p
 import { RetteListComponent } from './_components/pagamenti/rette-list/rette-list.component';
 import { RettaEditComponent } from './_components/pagamenti/retta-edit/retta-edit.component';
 import { RettameseEditComponent } from './_components/pagamenti/rettamese-edit/rettamese-edit.component';
+import { RettapagamentoEditComponent } from './_components/pagamenti/rettapagamento-edit/rettapagamento-edit.component';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { RettameseEditComponent } from './_components/pagamenti/rettamese-edit/r
     PagamentoEditComponent,
     RetteListComponent,
     RettaEditComponent,
-    RettameseEditComponent
+    RettameseEditComponent,
+    RettapagamentoEditComponent
 
 
   ],

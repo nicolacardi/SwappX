@@ -33,8 +33,8 @@ import { PagamentiListComponent } from '../pagamenti-list/pagamenti-list.compone
 export class RettaEditComponent implements OnInit {
 
   @ViewChildren(RettameseEditComponent) ChildComponents!:QueryList<RettameseEditComponent>;
-  
   @ViewChild(PagamentiListComponent) ChildPagamenti!: PagamentiListComponent;
+
 
   public obsRette$!:          Observable<PAG_Retta[]>;
   causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
@@ -51,6 +51,7 @@ export class RettaEditComponent implements OnInit {
   totPagamenti:               number[] = [];
   nPagamenti:                 number[] = [];
   idRette:                    number[] = [];
+  idToHighlight!:              number;
 
   public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2));
   public mesiArr=           [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
@@ -62,15 +63,15 @@ export class RettaEditComponent implements OnInit {
               public _dialog:         MatDialog,
               private retteSvc:       RetteService,
               private _snackBar:      MatSnackBar,
-              private tipiPagamentoSvc:             TipiPagamentoService,
-              private causaliPagamentoSvc:          CausaliPagamentoService,
-              private pagamentiSvc:     PagamentiService,
+
+              
               private _loadingService:  LoadingService,
               ) 
   { 
     this.formRetta = this.fb.group({
       id:                         [null],
       alunnoID:                   ['', Validators.required],
+      annoID:                     ['', Validators.required],
       causaleID:                  ['', Validators.required],
       dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       importo:                    ['', { validators:[ Validators.required]}],
@@ -84,8 +85,7 @@ export class RettaEditComponent implements OnInit {
 
   loadData(){
 
-    this.causaliPagamento$ = this.causaliPagamentoSvc.load();
-    this.tipiPagamento$ = this.tipiPagamentoSvc.load();
+
 
     this.obsRette$ = this.retteSvc.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
     //const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
@@ -141,41 +141,15 @@ export class RettaEditComponent implements OnInit {
     this._dialogRef.close();
   }
 
-  save(){
-
-    if (this.formRetta.controls['id'].value == null) {
-
-      this.formRetta.controls['alunnoID'].setValue(this.alunno.id);
-      console.log("retta-edit.ts save() : this.formRetta.value", this.formRetta.value);
-      this.pagamentiSvc.post(this.formRetta.value)
-        .subscribe(
-          res=> {
-            //console.log("return from post", res);
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-            this._dialogRef.close();
-          },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          )
-      );
-    } else {
-      // this.pagamentiSvc.put(this.form.value)
-      //   .subscribe(res=> {
-      //     //console.log("return from put", res);
-      //     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-      //   this._dialogRef.close();
-        
-      // },
-      // err=> (
-      //   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      // ));
-    }
-
+  nuovoPagamentoArrivato(cosa: string) {
+    console.log (cosa);
     this.ChildPagamenti.refresh();
   }
 
-  delete(){
-    //TODO!!!
-
+  hoverPagamentoArrivato(id: number) {
+    console.log ("arrivato", id);
+    this.idToHighlight = id;
+    //this.ChildPagamenti.refresh();
   }
+
 }

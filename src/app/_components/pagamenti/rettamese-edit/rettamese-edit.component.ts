@@ -18,10 +18,12 @@ export class RettameseEditComponent implements OnInit{
   @Input() public idRetta!: number; 
   @Input() public inputPagamenti!: number; 
   @Input() public indice!: number; //serve per poter azionare la save di ciascuna istanza di questo component
-  
+  @Input() public toHighlight!: number; 
+
   retta$!:                    Observable<PAG_Retta>;
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
+  evidenzia:                  boolean = false;
 
   constructor(private fb:             FormBuilder,
               private svcRette:       RetteService,
@@ -52,6 +54,7 @@ export class RettameseEditComponent implements OnInit{
   
   ngOnChanges() {
     this.loadData();
+    if (this.toHighlight == this.idRetta) {this.evidenzia = true} else { this.evidenzia = false}
   }
 
   loadData(){

@@ -57,7 +57,9 @@ ma fa anche l'aggiornamento del pagamento.... uhmmm.....
                         <mat-label>{{placeholderMeseArr[i]}}</mat-label>
                         <app-rettamese-edit [inputPagamenti] ="totPagamenti[mese]"
                                             [idRetta] ="idRette[mese]"
-                                            [indice] ="i">
+                                            [indice] ="i"
+                                            [toHighlight] = "idToHighlight"
+                                            >
                         </app-rettamese-edit>
                     </div>
                 </mat-grid-tile>
@@ -66,58 +68,17 @@ ma fa anche l'aggiornamento del pagamento.... uhmmm.....
             <div class="pagamenti-container cellBordered mt10">
                 <app-pagamenti-list [dove]="'retta-edit'" 
                                     [alunnoID]="data.idAlunno"
-                                    [annoID]="data.idAnno">
+                                    [annoID]="data.idAnno"
+                                    (hoverPagamento) = hoverPagamentoArrivato($event)
+                                    >
                 </app-pagamenti-list>
             </div>
-
-            <div class="pagamento-edit-container cellBordered mt10">
-                <form [formGroup] = "formRetta">
-                    <mat-form-field class="form-dp">
-                        <input matInput  #date
-                            required
-                            formControlName = "dtPagamento"
-                            [matDatepicker]= "dpDtPagamento"
-                            placeholder="Data pagamento" >
-                        <mat-datepicker-toggle matSuffix [for]="dpDtPagamento"></mat-datepicker-toggle>
-                        <mat-datepicker #dpDtPagamento></mat-datepicker>
-                        <mat-error *ngIf="formRetta.controls.dtPagamento.errors?.required"> Campo obbligatorio</mat-error>
-                    </mat-form-field>
-
-                    <mat-form-field>
-                        <input matInput type="number" required placeholder="Importo" formControlName="importo">
-                        <mat-error *ngIf="formRetta.controls.importo.errors?.required"> Campo obbligatorio</mat-error>
-                    </mat-form-field>
-
-                    <mat-form-field  >
-                        <mat-label>Tipo pagamento</mat-label>
-                        <mat-select formControlName="tipoPagamentoID">
-                            <mat-option *ngFor="let element of (tipiPagamento$ | async)" [value]="element.id">
-                                {{element.descrizione}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-                    <mat-form-field  >
-                        <mat-label>Causale</mat-label>
-                        <mat-select formControlName="causaleID" #causale>
-                            <mat-option *ngFor="let element of (causaliPagamento$ | async)" [value]="element.id">
-                                {{element.descrizione}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-       
-                    <mat-form-field  *ngIf="causale.value == 1">
-                        <mat-label>MESE</mat-label>
-                        <mat-select formControlName="meseRetta">
-                            <mat-option *ngFor="let element of mesiArr; let i = index" [value]="element">
-                            {{placeholderMeseArr[i]}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-                    <mat-icon class="addRetta pointer" (click)="save()">save</mat-icon>
-                </form>
-            </div>
+            <app-rettapagamento-edit
+                                    [alunnoID]="data.idAlunno"
+                                    [annoID]="data.idAnno"
+                                    (nuovoPagamento) = "nuovoPagamentoArrivato($event)">
+                </app-rettapagamento-edit>
+            
         </mat-card-content>
     </mat-card>
 </div>

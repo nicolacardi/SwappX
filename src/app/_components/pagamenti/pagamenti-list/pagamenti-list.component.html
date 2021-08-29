@@ -40,7 +40,7 @@
     <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
     <ng-container matColumnDef="actionsColumn">
         <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-        <mat-cell  *matCellDef="let element;  let j = index;"> 
+        <mat-cell *matCellDef="let element;  let j = index;"> 
             <img (click)="editRecord(element.id)" class="iconaMenu pointer" src="../assets/money_edit.svg">
         </mat-cell>
     </ng-container>
@@ -123,7 +123,9 @@
     <!-- **************************   MAT-ROW   ******************* -->
     <mat-row *matRowDef="let element;columns: displayedColumns"
         class="element-row"
-        (contextmenu)="onRightClick($event, element)" >
+        (contextmenu)="onRightClick($event, element)" 
+        (mouseover) = "hoverRow(element.rettaID)"
+        >
     </mat-row>
 
 </mat-table>

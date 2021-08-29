@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -32,6 +32,8 @@ export class PagamentiListComponent implements OnInit {
   @Input() alunnoID!:       number;
   @Input() annoID!:         number;
 
+  @Output('hoverPagamento')
+  pagamentoEmitter = new EventEmitter<number>();
 
   obsAnni$!:                Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   form:                     FormGroup;            //form fatto della sola combo anno scolastico
@@ -254,6 +256,12 @@ export class PagamentiListComponent implements OnInit {
       }
     };
   }
+
+  hoverRow(id: number) {
+    //console.log(id);
+    this.pagamentoEmitter.emit(id);
+  }
+
 
 
 

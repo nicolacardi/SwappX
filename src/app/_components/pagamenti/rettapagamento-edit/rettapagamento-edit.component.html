@@ -1,0 +1,55 @@
+<div class="pagamento-edit-container cellBordered mt10">
+    <form [formGroup] = "formRetta">
+        <mat-form-field class="form-dp">
+            <input matInput  #date
+                required
+                formControlName = "dtPagamento"
+                [matDatepicker]= "dpDtPagamento"
+                placeholder="Data pagamento" >
+            <mat-datepicker-toggle matSuffix [for]="dpDtPagamento"></mat-datepicker-toggle>
+            <mat-datepicker #dpDtPagamento></mat-datepicker>
+            <mat-error *ngIf="formRetta.controls.dtPagamento.errors?.required"> Campo obbligatorio</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput type="number" required placeholder="Importo" formControlName="importo">
+            <mat-error *ngIf="formRetta.controls.importo.errors?.required"> Campo obbligatorio</mat-error>
+        </mat-form-field>
+
+        <mat-form-field  >
+            <mat-label>Tipo pagamento</mat-label>
+            <mat-select formControlName="tipoPagamentoID">
+                <mat-option *ngFor="let element of (tipiPagamento$ | async)" [value]="element.id">
+                    {{element.descrizione}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="formRetta.controls.tipoPagamentoID.errors?.required"> Campo obbligatorio</mat-error>
+        </mat-form-field>
+
+        <mat-form-field  matRequired>
+            <mat-label>Causale</mat-label>
+            <mat-select formControlName="causaleID" #causale (selectionChange)="changedCausale(causale.value)">
+                <mat-option *ngFor="let element of (causaliPagamento$ | async)" [value]="element.id">
+                    {{element.descrizione}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="formRetta.controls.causaleID.errors?.required"> Campo obbligatorio</mat-error>
+        </mat-form-field>
+
+        <mat-form-field  [ngClass]="{'hidden': causale.value != 1}">
+            <mat-label>MESE</mat-label>
+            <mat-select formControlName="meseRetta">
+                <mat-option *ngFor="let element of mesiArr; let i = index" [value]="element">
+                {{placeholderMeseArr[i]}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="formRetta.controls.meseRetta.errors?.required"> Campo obbligatorio</mat-error>
+        </mat-form-field>
+
+        <button mat-icon-button class="addRetta" [disabled]= "!formRetta.valid"  aria-label="Example icon button with a home icon">
+            <mat-icon>save</mat-icon>
+          </button>
+
+        <!-- <mat-icon class="addRetta pointer"  [disabled]= "!formRetta.valid" >save</mat-icon> -->
+    </form>
+</div>
