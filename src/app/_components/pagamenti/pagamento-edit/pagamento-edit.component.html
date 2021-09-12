@@ -77,6 +77,38 @@
                     </mat-grid-tile>
                 </mat-grid-list>    
                 
+                <!-- Riga di inserimento nuovo pagamento-->
+
+             
+                <app-rettapagamento-edit></app-rettapagamento-edit>
+                   
+                        <!--
+[alunnoID]="data.idAlunno"
+                        [annoID]="data.idAnno"
+                        (nuovoPagamento) = "nuovoPagamentoArrivato($event)">
+
+                        -->
+
+                <mat-grid-list gutterSize= "10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
+                    
+                    <mat-grid-tile>
+                        <mat-form-field class="form-dp">
+                            <input matInput #date required
+                                formControlName = "dtPagamento"
+                                [matDatepicker]= "dpDtPagamento"
+                                placeholder="Data di pagamento">
+                            <mat-datepicker-toggle matSuffix [for]="dpDtPagamento"></mat-datepicker-toggle>
+                            <mat-datepicker #dpDtPagamento></mat-datepicker>
+                            <mat-error *ngIf="form.controls.dtPagamento.errors?.required"> Campo obbligatorio</mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput type="number" required placeholder="Importo" formControlName="importo">
+                            <mat-error *ngIf="form.controls.importo.errors?.required"> Campo obbligatorio</mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
 
             </form>
 
