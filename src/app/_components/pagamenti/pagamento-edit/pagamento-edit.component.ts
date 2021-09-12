@@ -33,6 +33,7 @@ export class PagamentoEditComponent implements OnInit {
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
 
+  
   id!:                        number;
   public pagamento$!:         Observable<PAG_Pagamento>;
 
@@ -66,11 +67,7 @@ export class PagamentoEditComponent implements OnInit {
       this.form = this.fb.group({
         id:                         [null],
         alunnoID:                   ['', Validators.required],
-        causaleID:                  ['', Validators.required],
-        dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-        importo:                    ['', { validators:[ Validators.required]}],
-        tipoPagamentoID:            ['', Validators.required],
-        //genitoreID:                 ['', Validators.required],
+
         nomeCognomeAlunno:          [''],
         nomeAlunno:                 [{value:'', disabled:true}],
         cognomeAlunno:              [{value:'', disabled:true}]
@@ -125,61 +122,10 @@ export class PagamentoEditComponent implements OnInit {
 
   //#region ----- Funzioni -------
 
-  save(){
-    if (this.form.controls['id'].value == null) {
-      this.pagamentiSvc.post(this.form.value)
-        .subscribe(res=> {
-        //console.log("return from post", res);
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-        this._dialogRef.close();
-      },
-      err=> (
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
-      );
-    } else {
-      this.pagamentiSvc.put(this.form.value)
-        .subscribe(res=> {
-          //console.log("return from put", res);
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-        this._dialogRef.close();
-        
-      },
-      err=> (
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      ));
-    }
-  }
-
-  delete(){
-    const dialogRef = this._dialog.open(DialogYesNoComponent, {
-      width: '320px',
-      data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
-    });
-    console.log(this.idPagamento);
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.pagamentiSvc.delete(Number(this.idPagamento))
-        .subscribe(
-          res=>{
-            this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Record cancellato', panelClass: ['red-snackbar']}
-            );
-            this._dialogRef.close();
-          },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          )
-        );
-      }
-    });
-  }
+  
  //#endregion
  
-  back(){
-    //TODO ...
 
-  }
 
   //#region funzioni legate all'autocomplete
   
@@ -195,15 +141,13 @@ export class PagamentoEditComponent implements OnInit {
     }
   }
 
-  resetInputAlunno (formControlName: string) {
-    //console.log("formControlName" , formControlName);
-    this.form.controls[formControlName].setValue('');
-    this.autoAlunno.closePanel();
-  }
+  // resetInputAlunno (formControlName: string) {
+  //   //console.log("formControlName" , formControlName);
+  //   this.form.controls[formControlName].setValue('');
+  //   this.autoAlunno.closePanel();
+  // }
 
   //#endregion
 
-  onResize(event: any) {
-    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 2;
-  }
+
 }
