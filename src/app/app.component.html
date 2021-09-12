@@ -69,7 +69,8 @@
             <span>Logout</span>
         </button>
     </mat-menu>
-       
+<!--
+
     <mat-sidenav position="end" #end class="rightSidenav" [mode]="'side'">
         <mat-icon class="closeIcon pointer" (click)="end.close()">close</mat-icon>
         <mat-nav-list>
@@ -85,7 +86,7 @@
             </mat-list-item >
         </mat-nav-list>           
     </mat-sidenav>
-
+-->
     <mat-toolbar class="position-fixed">
         <button mat-icon-button (click)="start.open()">
             <mat-icon>menu</mat-icon>
@@ -95,12 +96,17 @@
         <button mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon>account_circle</mat-icon>
         </button>
+    <!--            
         <button mat-icon-button (click)="end.open()">
             <mat-icon>more_vert</mat-icon>
         </button>
+    -->
     </mat-toolbar>
+
+
     <hr style="height: 50px">
-  <loading></loading>
-        <router-outlet class="mt80"></router-outlet>
+    
+    <loading></loading>
+    <router-outlet class="mt80"></router-outlet>
 </mat-sidenav-container>
 

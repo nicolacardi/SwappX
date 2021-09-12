@@ -85,8 +85,6 @@ export class RettaEditComponent implements OnInit {
 
   loadData(){
 
-
-
     this.obsRette$ = this.retteSvc.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
     //const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
     this.obsRette$.pipe(
@@ -142,12 +140,12 @@ export class RettaEditComponent implements OnInit {
   }
 
   nuovoPagamentoArrivato(cosa: string) {
-    console.log (cosa);
+    //console.log (cosa);
     this.ChildPagamenti.refresh();
   }
 
   hoverPagamentoArrivato(id: number) {
-    console.log ("arrivato", id);
+    //console.log ("arrivato", id);
     this.idToHighlight = id;
     //this.ChildPagamenti.refresh();
   }

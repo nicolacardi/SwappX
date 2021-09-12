@@ -1,4 +1,29 @@
 <button mat-mini-fab aria-label="Aggiungi Alunno" matTooltip="Nuova anagrafica" class="button-add" (click)="addRecord()">
     <mat-icon>add</mat-icon>
 </button>
-<app-alunni-list></app-alunni-list>    
+
+<button mat-icon-button aria-label="Filtri" matTooltip="Filtri"  (click)="end.open()">
+    <mat-icon>filter</mat-icon>
+</button>
+
+<mat-sidenav-container>
+    <mat-sidenav position="end" #end class="rightSidenav" [mode]="'side'">
+        <mat-icon class="closeIcon pointer" (click)="end.close()">close</mat-icon>
+        <mat-nav-list>
+            <app-filtri></app-filtri>
+            <hr>
+            <mat-list-item>
+            <!-- <mat-icon (clic)="savePDF()">printer</mat-icon>-->
+                <span class="descMenu">Stampa</span>
+            </mat-list-item >
+            <mat-list-item >
+                <mat-icon>file_download</mat-icon>
+                <span class="descMenu">Scarica</span>
+            </mat-list-item >
+        </mat-nav-list>           
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <app-alunni-list></app-alunni-list>    
+    </mat-sidenav-content>
+</mat-sidenav-container>

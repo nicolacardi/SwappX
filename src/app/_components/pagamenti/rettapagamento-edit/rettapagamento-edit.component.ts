@@ -21,7 +21,6 @@ export class RettapagamentoEditComponent implements OnInit {
   @Output('nuovoPagamento')
   pagamentoEmitter = new EventEmitter<string>();
 
-
   formRetta! :                FormGroup;
   causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
   tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
@@ -56,19 +55,18 @@ export class RettapagamentoEditComponent implements OnInit {
     this.tipiPagamento$ = this.tipiPagamentoSvc.load();
   }
 
-  save(){
+  save( ){
 
     //if (this.formRetta.controls['id'].value == null) {
       this.formRetta.controls['alunnoID'].setValue(this.alunnoID);
       this.formRetta.controls['annoID'].setValue(this.annoID);
-      console.log("retta-edit.ts save() : this.formRetta.value", this.formRetta.value);
       this.pagamentiSvc.post(this.formRetta.value)
         .subscribe(
           res=> {
-            //console.log("return from post", res);
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
             //this._dialogRef.close();
-            this.pagamentoEmitter.emit("salvato Record");
+            this.pagamentoEmitter.emit("Record salvato");
+            this.resetFields();
           },
           err=> (
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
@@ -77,8 +75,6 @@ export class RettapagamentoEditComponent implements OnInit {
     //} else {
       //NON FACCIAMO MAI LA PUT, E' SEMPRE SOLO UNA POST
     //}
-    
-
   }
 
   changedCausale(value: number) {
@@ -91,4 +87,23 @@ export class RettapagamentoEditComponent implements OnInit {
     }
   }
 
+  resetFields(){
+
+    this.formRetta.controls["id"].setValue(null);
+    this.formRetta.controls["alunnoID"].setValue(null);
+    this.formRetta.controls["annoID"].setValue(null);
+    this.formRetta.controls["causaleID"].setValue(null);
+    this.formRetta.controls["dtPagamento"].setValue(null);
+    this.formRetta.controls["importo"].setValue(null);
+    this.formRetta.controls["tipoPagamentoID"].setValue(null);
+    this.formRetta.controls["meseRetta"].setValue(null);
+
+    this.formRetta.markAsPristine();
+    this.formRetta.markAsUntouched();
+    this.formRetta.updateValueAndValidity();
+
+    for (let control in this.formRetta.controls) {
+      this.formRetta.controls[control].setErrors(null);
+    }
+  }
 }
