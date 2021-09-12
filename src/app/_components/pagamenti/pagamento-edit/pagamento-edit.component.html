@@ -88,12 +88,22 @@
                 </mat-grid-list>    
                 
                 <!-- Riga di inserimento nuovo pagamento-->
+
+             
+                <app-rettapagamento-edit></app-rettapagamento-edit>
+                   
+                        <!--
+[alunnoID]="data.idAlunno"
+                        [annoID]="data.idAnno"
+                        (nuovoPagamento) = "nuovoPagamentoArrivato($event)">
+
+                        -->
+
                 <mat-grid-list gutterSize= "10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
                     
                     <mat-grid-tile>
                         <mat-form-field class="form-dp">
-                            <input matInput #date
-                                required
+                            <input matInput #date required
                                 formControlName = "dtPagamento"
                                 [matDatepicker]= "dpDtPagamento"
                                 placeholder="Data di pagamento">

@@ -1,3 +1,15 @@
+<!-- 
+    Rev.0 - 19/09/2021
+    Riga di editazione pagamento-retta
+    Composto da FormGroup contentente:
+        - dtPagamento
+        - importo
+        - tipoPagamentoID
+        - causaleID
+        - meseRetta (condizionato alla causale)
+        - bottone Save
+-->
+
 <div class="pagamento-edit-container cellBordered mt10">
     <form [formGroup] = "formRetta">
         <mat-form-field class="form-dp">
@@ -46,9 +58,9 @@
             <mat-error *ngIf="formRetta.controls.meseRetta.errors?.required"> Campo obbligatorio</mat-error>
         </mat-form-field>
 
-        <button mat-icon-button class="addRetta" [disabled]= "!formRetta.valid"  aria-label="Example icon button with a home icon">
+        <button mat-icon-button class="addRetta" (click)="save()" [disabled]= "!formRetta.valid"  aria-label="Save">
             <mat-icon>save</mat-icon>
-          </button>
+        </button>
 
         <!-- <mat-icon class="addRetta pointer"  [disabled]= "!formRetta.valid" >save</mat-icon> -->
     </form>

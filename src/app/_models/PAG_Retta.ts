@@ -10,7 +10,7 @@ export interface PAG_Retta {
         alunno?:                ALU_Alunno;
         
         annoRetta:              number,
-        meseRetta:                   number,
+        meseRetta:              number,
         quotaDefault:           number,
         quotaConcordata:        number,
         
