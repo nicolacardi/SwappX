@@ -78,7 +78,7 @@ export class RettapagamentoEditComponent implements OnInit {
           ()=> {
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
             //this._dialogRef.close();
-            this.pagamentoEmitter.emit("Record salvato");
+            this.pagamentoEmitter.emit(this.formRetta.controls['meseRetta'].value);
             this.resetFields();
           },
           err=> (
@@ -93,14 +93,13 @@ export class RettapagamentoEditComponent implements OnInit {
           ()=> {
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
             //this._dialogRef.close();
-            this.pagamentoEmitter.emit("Record salvato");
+            this.pagamentoEmitter.emit("RecordSalvato");
             this.resetFields();
           },
           err=> (
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
           )
         )
-
     }
   }
 

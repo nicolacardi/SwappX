@@ -169,6 +169,10 @@ p {
     overflow: auto;
 }
 
+.utilities-container {
+    height: 380px;
+}
+
 .pagamento-edit-container {
     max-height: 250px;
     text-align: left;
@@ -194,7 +198,7 @@ p {
 
 .addRetta {
     position: absolute;
-    right: 45px;
+    right: 18px;
 }
 
 .hidden {
@@ -246,3 +250,14 @@ td {
     color: #044D7E;
   }
 
+
+  .frameLabel{
+    position: absolute;
+    left: 10px;
+    background-color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 11px;
+    color: grey;
+    z-index: 1000;
+  }

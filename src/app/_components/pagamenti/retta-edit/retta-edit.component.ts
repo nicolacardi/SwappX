@@ -140,9 +140,13 @@ export class RettaEditComponent implements OnInit {
     this._dialogRef.close();
   }
 
-  nuovoPagamentoArrivato() {
+  nuovoPagamentoArrivato(str: string) {
+    //è stato inserito un nuovo pagamento: devo fare il refresh dei child: della lista (ChildPagamenti)
     this.ChildPagamenti.refresh();
-    console.log("arrivato nuovo Pagamento faccio la refresh di tutti i rettaMese");
+
+    //ora dovrei fare il refresh del solo component rettamese interessato...quindi dovrei passare qui l'indice del component rettamese corretto
+    //ma provo per ora a fare il refresh di tutti e 12 i component rettamese
+    console.log("arrivato nuovo Pagamento faccio la refresh di tutti i rettaMese"+str);
     //ora bisogna fare la refresh di tutti i 12 rettamese
     for (let i = 0; i < 12; i++) {
       let childRettaMese = this.ChildrenRettaMese.find(childRettaMese => childRettaMese.indice == i);

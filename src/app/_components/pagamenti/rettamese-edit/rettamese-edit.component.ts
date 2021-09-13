@@ -39,6 +39,7 @@ export class RettameseEditComponent implements OnInit{
       meseRetta:              [null],
       quotaDefault:           [null],
       quotaConcordata:        [null],
+      totPagamenti:           [null],
       
       note:                   [null],
       dtIns:                  [null],
@@ -64,7 +65,14 @@ export class RettameseEditComponent implements OnInit{
       this.retta$ = obsRetta$
       .pipe(
           tap(
-            retta => this.form.patchValue(retta)
+            retta => {
+              this.form.patchValue(retta);
+              let totPagamenti = 0;
+              retta.pagamenti?.forEach( val=>{
+                totPagamenti = totPagamenti + val.importo;
+              })
+              this.form.controls['totPagamenti'].setValue(totPagamenti);
+            }
           )
       );
     } else {

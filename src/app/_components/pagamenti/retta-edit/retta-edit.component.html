@@ -31,7 +31,7 @@ ma fa anche l'aggiornamento del pagamento.... uhmmm.....
                     <input matInput placeholder="anno scolastico" value="{{alunno.cognome}}" readonly>
                 </mat-form-field>
             </div>  
-            <mat-grid-list [cols]="14" rowHeight="130px">
+            <mat-grid-list [cols]="14" rowHeight="140px">
                 <mat-grid-tile [colspan]=2>
                     <div>
                         <br>
@@ -54,28 +54,32 @@ ma fa anche l'aggiornamento del pagamento.... uhmmm.....
                 </mat-grid-tile>
             </mat-grid-list>
             <mat-tab-group mat-align-tabs="center">
-                <mat-tab label="Rette">
 
-                    <div class="pagamenti-container cellBordered mt10">
-                        Utilities vari per la definizione veloce delle rette
-                    </div>
-                    
-                </mat-tab>
-                <mat-tab label="Pagamenti">
-                    
+                <mat-tab label="Gestione Pagamenti">
+                    <mat-label class="frameLabel"> Nuovo Pagamento </mat-label>
+                    <app-rettapagamento-edit
+                                            [alunnoID]="data.idAlunno"
+                                            [annoID]="data.idAnno"
+                                            (nuovoPagamento) = "nuovoPagamentoArrivato($event)">
+                    </app-rettapagamento-edit>
+                    <mat-label class="frameLabel"> Elenco Pagamenti </mat-label>
                     <div class="pagamenti-container cellBordered mt10">
                         <app-pagamenti-list [dove]="'retta-edit'" 
                                             [alunnoID]="data.idAlunno"
                                             [annoID]="data.idAnno"
-                                            (hoverPagamento) = hoverPagamentoArrivato($event)
+                                            (hoverPagamento) = "hoverPagamentoArrivato($event)"
                                             >
                         </app-pagamenti-list>
                     </div>
-                    <app-rettapagamento-edit
-                                            [alunnoID]="data.idAlunno"
-                                            [annoID]="data.idAnno"
-                                            (nuovoPagamento) = "nuovoPagamentoArrivato()">
-                    </app-rettapagamento-edit>
+
+                </mat-tab>
+
+                <mat-tab label="Utilities Rette">
+                    <mat-label class="frameLabel"> Utilities per la definizione rapida delle rette </mat-label>
+                    <div class="utilities-container cellBordered mt10">
+                        
+                    </div>
+                    
                 </mat-tab>
             </mat-tab-group>
             

@@ -19,10 +19,17 @@ AS: lo usiamo questo ??? NC: Eccome! E' uno dei 12 che usiamo dentro il modale, 
         (change) = "save()"
         #inpQuotaC>
     </mat-form-field>
+    
+    <!-- <mat-form-field class="cellRetta center" [ngClass]="{'highlightPag2': inputPagamenti < ConvertToNumber(inpQuotaC.value), 'highlightHover': evidenzia}">
+        <input matInput type="number"
+        [value] = "inputPagamenti? inputPagamenti : 0"
+        
+        readonly>
+    </mat-form-field> -->
 
     <mat-form-field class="cellRetta center" [ngClass]="{'highlightPag2': inputPagamenti < ConvertToNumber(inpQuotaC.value), 'highlightHover': evidenzia}">
         <input matInput type="number"
-        [value] = "inputPagamenti? inputPagamenti : 0"
+        formControlName="totPagamenti"
         
         readonly>
     </mat-form-field>
