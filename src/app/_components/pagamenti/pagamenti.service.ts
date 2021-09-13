@@ -47,4 +47,6 @@ export class PagamentiService {
   delete(id: number): Observable <any>{
     return this.http.delete(environment.apiBaseUrl  + 'PAG_Pagamenti/' + id);    
   }
+
+
 }

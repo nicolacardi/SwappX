@@ -1,12 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSelect } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
+import { concatMap, tap } from 'rxjs/operators';
 import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
 import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { CausaliPagamentoService } from '../causaliPagamento.service';
 import { PagamentiService } from '../pagamenti.service';
+import { RetteService } from '../rette.service';
 import { TipiPagamentoService } from '../tipiPagamento.service';
 
 @Component({
@@ -24,7 +27,8 @@ export class RettapagamentoEditComponent implements OnInit {
   formRetta! :                FormGroup;
   causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
   tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
-
+  @ViewChild('causale')       public causale!: MatSelect;
+  
   public mesiArr=           [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
 
@@ -32,6 +36,7 @@ export class RettapagamentoEditComponent implements OnInit {
               private tipiPagamentoSvc:             TipiPagamentoService,
               private causaliPagamentoSvc:          CausaliPagamentoService,
               private pagamentiSvc:                 PagamentiService,
+              private retteSvc:                     RetteService,
               private _snackBar:                    MatSnackBar,) { 
 
     this.formRetta = this.fb.group({
@@ -42,7 +47,8 @@ export class RettapagamentoEditComponent implements OnInit {
       dtPagamento:                ['', Validators.required],
       importo:                    ['', Validators.required],
       tipoPagamentoID:            ['', Validators.required],
-      meseRetta:                  ['', Validators.required]
+      meseRetta:                  ['', Validators.required],
+      rettaID:                    ['']
     });
   }
 
@@ -56,13 +62,20 @@ export class RettapagamentoEditComponent implements OnInit {
   }
 
   save( ){
+    //if (this.formRetta.controls['id'].value == null) { //non serve questo check: facciamo sempre la post mai la put
+    this.formRetta.controls['alunnoID'].setValue(this.alunnoID);
+    this.formRetta.controls['annoID'].setValue(this.annoID);
+    
 
-    //if (this.formRetta.controls['id'].value == null) {
-      this.formRetta.controls['alunnoID'].setValue(this.alunnoID);
-      this.formRetta.controls['annoID'].setValue(this.annoID);
-      this.pagamentiSvc.post(this.formRetta.value)
+    if (this.causale.value == 1) {
+      //ATTENZIONE: ASINCRONA! BISOGNA ASPETTARE CHE QUESTA RISPONDA PRIMA DI LANCIARE LA SUCCESSIVA post
+      this.retteSvc.loadByAlunnoAnnoMese(this.alunnoID, this.annoID, (this.formRetta.controls['meseRetta'].value + 1))
+      .pipe (
+        tap (val=> this.formRetta.controls['rettaID'].setValue(val.id)), //il valore in arrivo dalla load viene inserito nel form
+        concatMap(() => this.pagamentiSvc.post(this.formRetta.value)) //concatMap ATTENDE l'observable precedente prima di lanciare il successivo
+        )
         .subscribe(
-          res=> {
+          ()=> {
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
             //this._dialogRef.close();
             this.pagamentoEmitter.emit("Record salvato");
@@ -72,9 +85,23 @@ export class RettapagamentoEditComponent implements OnInit {
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
           )
       );
-    //} else {
-      //NON FACCIAMO MAI LA PUT, E' SEMPRE SOLO UNA POST
-    //}
+    } else {
+
+      this.pagamentiSvc.post(this.formRetta.value)
+        
+        .subscribe(
+          ()=> {
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+            //this._dialogRef.close();
+            this.pagamentoEmitter.emit("Record salvato");
+            this.resetFields();
+          },
+          err=> (
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          )
+        )
+
+    }
   }
 
   changedCausale(value: number) {

@@ -119,6 +119,10 @@ background-size: cover;*/
     margin-top: 64px;
 }
 
+.pt50 {
+    padding-top: 50px;
+}
+
 .mauto {
     margin: auto;
 }
@@ -223,6 +227,16 @@ background-size: cover;*/
     position: fixed !important;
     top: 80px;
     right: 15px;
+    margin-right: 20px !important;
+    z-index: 1000;
+    background-color: #044D7E !important;
+}
+
+.button-filter {
+    /*position: fixed !important;*/
+    position: fixed !important;
+    top: 80px;
+    right: 60px;
     margin-right: 20px !important;
     z-index: 1000;
     background-color: #044D7E !important;

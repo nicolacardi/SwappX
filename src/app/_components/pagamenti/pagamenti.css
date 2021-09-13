@@ -165,7 +165,7 @@ p {
 }
 
 .pagamenti-container {
-    max-height: 300px;
+    height: 300px;
     overflow: auto;
 }
 
@@ -202,7 +202,10 @@ p {
 }
 
 .highlightHover {
-    background-color:rgba(103, 180, 224, 0.656);
+    box-shadow: 0 0 3pt 2pt #fffb01;
+    border-radius: 4px;
+    outline-width: 0px;
+
 }
 
 
@@ -242,3 +245,4 @@ td {
     width: 20px; 
     color: #044D7E;
   }
+

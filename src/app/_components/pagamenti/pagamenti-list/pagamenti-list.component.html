@@ -31,7 +31,7 @@
 <mat-paginator *ngIf="show" class="transparent" [pageSize]="10" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
 
 <!-- **************************   MAT-TABLE   ******************* -->
-<mat-table *ngIf="obsAnni$ | async" class="transparent" [dataSource]="matDataSource"
+<mat-table *ngIf="obsAnni$ | async" class="retteTable transparent" [dataSource]="matDataSource"
     matSort
     cdkDropList
     cdkDropListOrientation="horizontal"
@@ -125,6 +125,7 @@
         class="element-row"
         (contextmenu)="onRightClick($event, element)" 
         (mouseover) = "hoverRow(element.rettaID)"
+        (mouseleave) = "hoverLeave()"
         >
     </mat-row>
 

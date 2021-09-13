@@ -35,8 +35,8 @@ export class RettameseEditComponent implements OnInit{
       alunnoID:               [null],
       //alunno?:                 ALU_Alunno;
       
-      annoRetta:                   [null],
-      mese:                   [null],
+      annoRetta:              [null],
+      meseRetta:              [null],
       quotaDefault:           [null],
       quotaConcordata:        [null],
       
@@ -54,7 +54,7 @@ export class RettameseEditComponent implements OnInit{
   
   ngOnChanges() {
     this.loadData();
-    if (this.toHighlight == this.idRetta) {this.evidenzia = true} else { this.evidenzia = false}
+    if (this.toHighlight == this.idRetta && this.toHighlight!= null) {this.evidenzia = true} else { this.evidenzia = false}
   }
 
   loadData(){

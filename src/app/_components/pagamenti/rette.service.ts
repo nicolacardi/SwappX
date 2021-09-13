@@ -30,8 +30,13 @@ export class RetteService {
     //http://213.215.231.4/swappX/api/PAG_Rette/GetAllByAlunnoAnno?idAlunno=3&idAnno=1
   }
 
+  loadByAlunnoAnnoMese(idAlunno: number, idAnno: number, meseRetta: number): Observable<PAG_Retta>{
+    return this.http.get<PAG_Retta>(environment.apiBaseUrl+'PAG_Rette/GetByAlunnoAnnoMese?idAlunno='+idAlunno+'&idAnno='+idAnno+'&meseRetta='+meseRetta);
+    //http://213.215.231.4/swappX/api/PAG_Rette/GetByAlunnoAnnoMese?idAlunno=3&idAnno=1&meseRetta=9
+  }
+
   put(obj: PAG_Retta): Observable <any>{
-    console.log("rette.service.ts - put - formData=", obj, obj.id);
+    //console.log("rette.service.ts - put - formData=", obj, obj.id);
     return this.http.put(environment.apiBaseUrl  + 'PAG_Rette/' + obj.id , obj);    
   }
 

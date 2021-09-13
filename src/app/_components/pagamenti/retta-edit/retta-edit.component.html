@@ -13,35 +13,24 @@ ma fa anche l'aggiornamento del pagamento.... uhmmm.....
 <div class="container">
     <mat-card class="form-cardRette data-form">
         <mat-card-content>
-            <div class="buttonsDetail">
-                <button mat-stroked-button color="secondary" mat-dialog-close>
-                    <mat-icon>arrow_back</mat-icon>
-                    <div class="button-textDetail">back</div>
-                </button>
-
-                <button mat-stroked-button color="secondary" (click)="savePivot()">
-                    <mat-icon>save</mat-icon>
-                    <div class="button-textDetail">salva</div>
-                </button>
-            </div>
+            
 
             <div class="mt10" *ngIf="obsRette$ | async" >
                 <mat-form-field class="cellRettaEdit" appearance="outline">
                     <mat-label>anno scolastico</mat-label>
-                    <input matInput placeholder="anno scolastico" value="{{anno.annoscolastico}}" disabled>
+                    <input matInput placeholder="anno scolastico" value="{{anno.annoscolastico}}" readonly>
                 </mat-form-field>
 
                 <mat-form-field class="cellRettaEdit" appearance="outline">
                     <mat-label>nome alunno</mat-label>
-                    <input matInput placeholder="anno scolastico" value="{{alunno.nome}}" disabled>
+                    <input matInput placeholder="anno scolastico" value="{{alunno.nome}}" readonly>
                 </mat-form-field>
 
                 <mat-form-field class="cellRettaEdit" appearance="outline">
                     <mat-label>cognome alunno</mat-label>
-                    <input matInput placeholder="anno scolastico" value="{{alunno.cognome}}" disabled>
+                    <input matInput placeholder="anno scolastico" value="{{alunno.cognome}}" readonly>
                 </mat-form-field>
             </div>  
-            
             <mat-grid-list [cols]="14" rowHeight="130px">
                 <mat-grid-tile [colspan]=2>
                     <div>
@@ -64,20 +53,31 @@ ma fa anche l'aggiornamento del pagamento.... uhmmm.....
                     </div>
                 </mat-grid-tile>
             </mat-grid-list>
+            <mat-tab-group mat-align-tabs="center">
+                <mat-tab label="Rette">
 
-            <div class="pagamenti-container cellBordered mt10">
-                <app-pagamenti-list [dove]="'retta-edit'" 
-                                    [alunnoID]="data.idAlunno"
-                                    [annoID]="data.idAnno"
-                                    (hoverPagamento) = hoverPagamentoArrivato($event)
-                                    >
-                </app-pagamenti-list>
-            </div>
-            <app-rettapagamento-edit
-                                    [alunnoID]="data.idAlunno"
-                                    [annoID]="data.idAnno"
-                                    (nuovoPagamento) = "nuovoPagamentoArrivato($event)">
-            </app-rettapagamento-edit>
+                    <div class="pagamenti-container cellBordered mt10">
+                        Utilities vari per la definizione veloce delle rette
+                    </div>
+                    
+                </mat-tab>
+                <mat-tab label="Pagamenti">
+                    
+                    <div class="pagamenti-container cellBordered mt10">
+                        <app-pagamenti-list [dove]="'retta-edit'" 
+                                            [alunnoID]="data.idAlunno"
+                                            [annoID]="data.idAnno"
+                                            (hoverPagamento) = hoverPagamentoArrivato($event)
+                                            >
+                        </app-pagamenti-list>
+                    </div>
+                    <app-rettapagamento-edit
+                                            [alunnoID]="data.idAlunno"
+                                            [annoID]="data.idAnno"
+                                            (nuovoPagamento) = "nuovoPagamentoArrivato()">
+                    </app-rettapagamento-edit>
+                </mat-tab>
+            </mat-tab-group>
             
         </mat-card-content>
     </mat-card>

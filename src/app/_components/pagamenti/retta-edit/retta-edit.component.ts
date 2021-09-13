@@ -32,7 +32,7 @@ import { PagamentiListComponent } from '../pagamenti-list/pagamenti-list.compone
 
 export class RettaEditComponent implements OnInit {
 
-  @ViewChildren(RettameseEditComponent) ChildComponents!:QueryList<RettameseEditComponent>;
+  @ViewChildren(RettameseEditComponent) ChildrenRettaMese!:QueryList<RettameseEditComponent>;
   @ViewChild(PagamentiListComponent) ChildPagamenti!: PagamentiListComponent;
 
 
@@ -118,14 +118,15 @@ export class RettaEditComponent implements OnInit {
   }
 
   savePivot() {
+    //NON DOVREBBE PIU' SERVIRE
     //questo metodo chiama uno ad uno il metodo save di ciascun child
     //salvando quindi ogni form, cioè ogni record Retta
     let response : boolean;
     let hasError: boolean = false;
 
     for (let i = 0; i < 12; i++) {
-      let childComponent = this.ChildComponents.find(childComponent => childComponent.indice == i);
-      response = childComponent!.save();
+      let childRettaMese = this.ChildrenRettaMese.find(childRettaMese => childRettaMese.indice == i);
+      response = childRettaMese!.save();
       if (!response) {
         hasError = true;
       }
@@ -139,9 +140,15 @@ export class RettaEditComponent implements OnInit {
     this._dialogRef.close();
   }
 
-  nuovoPagamentoArrivato(cosa: string) {
-    //console.log (cosa);
+  nuovoPagamentoArrivato() {
     this.ChildPagamenti.refresh();
+    console.log("arrivato nuovo Pagamento faccio la refresh di tutti i rettaMese");
+    //ora bisogna fare la refresh di tutti i 12 rettamese
+    for (let i = 0; i < 12; i++) {
+      let childRettaMese = this.ChildrenRettaMese.find(childRettaMese => childRettaMese.indice == i);
+      childRettaMese!.ngOnChanges();
+    }
+    
   }
 
   hoverPagamentoArrivato(id: number) {

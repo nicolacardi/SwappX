@@ -89,7 +89,7 @@
 
                         -->
 
-                <mat-grid-list gutterSize= "10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
+                <mat-grid-list gutterSize= "10" [cols]="breakpoint" rowHeight="60px" >
                     
                     <mat-grid-tile>
                         <mat-form-field class="form-dp">
@@ -109,7 +109,7 @@
                             <mat-error *ngIf="form.controls.importo.errors?.required"> Campo obbligatorio</mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
-
+                </mat-grid-list>
             </form>
 
                 <!-- <div>

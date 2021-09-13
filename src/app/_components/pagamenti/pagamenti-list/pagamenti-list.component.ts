@@ -262,6 +262,10 @@ export class PagamentiListComponent implements OnInit {
     this.pagamentoEmitter.emit(id);
   }
 
+  hoverLeave() {
+    this.pagamentoEmitter.emit(0);
+  }
+
 
 
 

@@ -1,16 +1,21 @@
-<button mat-mini-fab aria-label="Aggiungi Alunno" matTooltip="Nuova anagrafica" class="button-add" (click)="addRecord()">
+<button mat-mini-fab aria-label="Nuova anagrafica" matTooltip="Nuova anagrafica" class="button-add" 
+(click)="addRecord()">
     <mat-icon>add</mat-icon>
 </button>
 
-<button mat-icon-button aria-label="Filtri" matTooltip="Filtri"  (click)="end.open()">
-    <mat-icon>filter</mat-icon>
+<button mat-mini-fab aria-label="Filtri Avanzati" matTooltip="Filtri Avanzati" class="button-filter" 
+(click)="end.toggle()">
+    <mat-icon>filter_alt</mat-icon>
 </button>
 
-<mat-sidenav-container>
-    <mat-sidenav position="end" #end class="rightSidenav" [mode]="'side'">
-        <mat-icon class="closeIcon pointer" (click)="end.close()">close</mat-icon>
+
+
+
+<mat-drawer-container [hasBackdrop]="false">
+    <mat-drawer position="end" #end class="rightSidenav" [mode]="'side'">
+        <!-- <mat-icon class="closeIcon pointer" (click)="end.close()">close</mat-icon> -->
         <mat-nav-list>
-            <app-filtri></app-filtri>
+            <app-alunni-filter></app-alunni-filter>
             <hr>
             <mat-list-item>
             <!-- <mat-icon (clic)="savePDF()">printer</mat-icon>-->
@@ -21,9 +26,9 @@
                 <span class="descMenu">Scarica</span>
             </mat-list-item >
         </mat-nav-list>           
-    </mat-sidenav>
+    </mat-drawer>
 
-    <mat-sidenav-content>
+    <mat-drawer-content>
         <app-alunni-list></app-alunni-list>    
-    </mat-sidenav-content>
-</mat-sidenav-container>
+    </mat-drawer-content>
+</mat-drawer-container>

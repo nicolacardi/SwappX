@@ -2,24 +2,25 @@
     Rev.0 - 28/08/2021
     Componente per ????
 
-
-AS: lo usiamo questo ???
+AS: lo usiamo questo ??? NC: Eccome! E' uno dei 12 che usiamo dentro il modale, uno per mese. Quando leggi cancella questo commento :)
 -->
 
-<form  *ngIf="(retta$ | async)  || emptyForm" [formGroup] = "form" [ngClass]="{'highlightHover': evidenzia}">
+<form  *ngIf="(retta$ | async)  || emptyForm" [formGroup] = "form" >
 
     <mat-form-field class="cellRetta center" >
         <input matInput type="number"
+        (change) = "save()"
         formControlName="quotaDefault" #inpQuotaD>
     </mat-form-field>
 
     <mat-form-field class="cellRetta center" [ngClass]="{'highlightConc': inpQuotaC.value < inpQuotaD.value}">
         <input matInput type="number"
         formControlName="quotaConcordata"
+        (change) = "save()"
         #inpQuotaC>
     </mat-form-field>
 
-    <mat-form-field class="cellRetta center" [ngClass]="{'highlightPag2': inputPagamenti < ConvertToNumber(inpQuotaC.value)}">
+    <mat-form-field class="cellRetta center" [ngClass]="{'highlightPag2': inputPagamenti < ConvertToNumber(inpQuotaC.value), 'highlightHover': evidenzia}">
         <input matInput type="number"
         [value] = "inputPagamenti? inputPagamenti : 0"
         
