@@ -1,3 +1,6 @@
+//TODO causale.value == 1 va cagarissimo
+
+
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
@@ -68,6 +71,7 @@ export class RettapagamentoEditComponent implements OnInit {
     
 
     if (this.causale.value == 1) {
+      
       //ATTENZIONE: ASINCRONA! BISOGNA ASPETTARE CHE QUESTA RISPONDA PRIMA DI LANCIARE LA SUCCESSIVA post
       this.retteSvc.loadByAlunnoAnnoMese(this.alunnoID, this.annoID, (this.formRetta.controls['meseRetta'].value + 1))
       .pipe (
@@ -85,6 +89,7 @@ export class RettapagamentoEditComponent implements OnInit {
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
           )
       );
+
     } else {
 
       this.pagamentiSvc.post(this.formRetta.value)

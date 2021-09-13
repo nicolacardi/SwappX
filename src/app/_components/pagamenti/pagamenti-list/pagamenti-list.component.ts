@@ -99,15 +99,19 @@ export class PagamentiListComponent implements OnInit {
       this.show = true;
       this.displayedColumns =  this.displayedColumnsList;
     }
-    this.refresh();
+    this.loadData();
+  }
+
+  ngOnChanges() {
+    this.loadData();
   }
 
   updateList() {
     this.annoID = this.form.controls['annoScolastico'].value;
-    this.refresh();
+    this.loadData();
   }
 
-  refresh () {
+  loadData () {
 
     this.obsAnni$= this.svcAnni.load();
 
@@ -169,7 +173,7 @@ export class PagamentiListComponent implements OnInit {
     dialogRef.afterClosed()
       .subscribe(
         () => {
-          this.refresh();
+          this.loadData();
     });
   }
 
@@ -191,7 +195,7 @@ export class PagamentiListComponent implements OnInit {
               {data: 'Record cancellato', panelClass: ['red-snackbar']}
             );
             //this._dialogRef.close();
-            this.refresh();
+            this.loadData();
             //AS: attenzione: se non faccio refresh la griglia non si aggiorna: perchè ???
           },
           err=> (

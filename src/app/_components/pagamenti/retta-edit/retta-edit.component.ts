@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { debounceTime, map, switchMap } from 'rxjs/operators';
 import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
@@ -14,6 +14,7 @@ import { TipiPagamentoService } from '../tipiPagamento.service';
 import { CausaliPagamentoService } from '../causaliPagamento.service';
 import { PagamentiService } from '../pagamenti.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { AlunniService } from '../../alunni/alunni.service';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
@@ -21,6 +22,8 @@ import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
 import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { PagamentiListComponent } from '../pagamenti-list/pagamenti-list.component';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+
 
 
 
@@ -34,15 +37,18 @@ export class RettaEditComponent implements OnInit {
 
   @ViewChildren(RettameseEditComponent) ChildrenRettaMese!:QueryList<RettameseEditComponent>;
   @ViewChild(PagamentiListComponent) ChildPagamenti!: PagamentiListComponent;
-
+  @ViewChild(MatAutocomplete) matAutocomplete!: MatAutocomplete;
 
   public obsRette$!:          Observable<PAG_Retta[]>;
   causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
   tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
-  
+  filteredAlunni$!:           Observable<ALU_Alunno[]>;
+
   formRetta! :                FormGroup;
+  formAlunno! :               FormGroup;
 
   alunno!:                    ALU_Alunno;
+  
   anno!:                      ASC_AnnoScolastico;
 
   mesi:                       number[] = [];
@@ -51,7 +57,7 @@ export class RettaEditComponent implements OnInit {
   totPagamenti:               number[] = [];
   nPagamenti:                 number[] = [];
   idRette:                    number[] = [];
-  idToHighlight!:              number;
+  idToHighlight!:             number;
 
   public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2));
   public mesiArr=           [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
@@ -62,6 +68,7 @@ export class RettaEditComponent implements OnInit {
               private fb:             FormBuilder, 
               public _dialog:         MatDialog,
               private retteSvc:       RetteService,
+              private alunniSvc:      AlunniService,
               private _snackBar:      MatSnackBar,
 
               
@@ -76,10 +83,25 @@ export class RettaEditComponent implements OnInit {
       dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       importo:                    ['', { validators:[ Validators.required]}],
       tipoPagamentoID:            ['', Validators.required],
+      nomeCognomeAlunno:          [null]
     });
+
+    // this.formAlunno = this.fb.group({
+    //   nomeCognomeAlunno:          [null]
+    // })
   }
 
   ngOnInit() {
+
+    this.filteredAlunni$ = this.formRetta.controls['nomeCognomeAlunno'].valueChanges
+    .pipe(
+      debounceTime(300),                                                      //attendiamo la digitazione
+      //tap(() => this.nomiIsLoading = true),                                 //attiviamo il loading
+      //delayWhen(() => timer(2000)),                                         //se vogliamo vedere il loading allunghiamo i tempi
+      switchMap(() => this.alunniSvc.filterAlunni(this.formRetta.value.nomeCognomeAlunno)), 
+    )
+
+
     this.loadData();
   }
 
@@ -92,6 +114,8 @@ export class RettaEditComponent implements OnInit {
         //console.log ("obj", obj);
         let n = 0;
         this.alunno = obj[0].alunno!;
+        this.formRetta.controls['nomeCognomeAlunno'].setValue(this.alunno.nome+" "+this.alunno.cognome);
+
         this.anno = obj[0].anno!;
         obj.forEach(()=>{
           this.mesi[obj[n].meseRetta - 1] = obj[n].meseRetta;
@@ -142,7 +166,7 @@ export class RettaEditComponent implements OnInit {
 
   nuovoPagamentoArrivato(str: string) {
     //è stato inserito un nuovo pagamento: devo fare il refresh dei child: della lista (ChildPagamenti)
-    this.ChildPagamenti.refresh();
+    this.ChildPagamenti.loadData();
 
     //ora dovrei fare il refresh del solo component rettamese interessato...quindi dovrei passare qui l'indice del component rettamese corretto
     //ma provo per ora a fare il refresh di tutti e 12 i component rettamese
@@ -159,6 +183,29 @@ export class RettaEditComponent implements OnInit {
     //console.log ("arrivato", id);
     this.idToHighlight = id;
     //this.ChildPagamenti.refresh();
+  }
+
+
+  enterAlunnoInput () {
+    //Su pressione di enter devo dapprima selezionare il PRIMO valore della lista aperta (a meno che non sia vuoto)
+    //Una volta selezionato devo trovare, SE esiste, il valore dell'id che corrisponde a quanto digitato e quello passarlo a passAlunno del service
+    //Mancherebbe qui la possibilità di selezionare solo con le freccette e Enter
+    if (this.formRetta.controls['nomeCognomeAlunno'].value != '') {
+      this.matAutocomplete.options.first.select();
+      //Questo è il valore che devo cercare: this.matAutocomplete.options.first.viewValue;
+      this.alunniSvc.findIdAlunno(this.matAutocomplete.options.first.viewValue)
+      .subscribe();
+    }
+  }
+
+  deleteAlunnoID() {
+    this.formRetta.controls['alunnoID'].setValue("");
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.data.idAlunno = parseInt(event.option.id);
+    this.formRetta.controls['alunnoID'].setValue(parseInt(event.option.id));
+    this.loadData();
   }
 
 }

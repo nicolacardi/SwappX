@@ -1,3 +1,5 @@
+//TODO ngOnChanges scatta un numero enorme di volte su hover della lista pagamenti
+
 import { Component, Input, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -55,6 +57,7 @@ export class RettameseEditComponent implements OnInit{
   
   ngOnChanges() {
     this.loadData();
+    //console.log("ngOnChanges");
     if (this.toHighlight == this.idRetta && this.toHighlight!= null) {this.evidenzia = true} else { this.evidenzia = false}
   }
 
