@@ -10,9 +10,7 @@ import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { RettameseEditComponent } from '../rettamese-edit/rettamese-edit.component';
 
 import { RetteService } from '../rette.service';
-import { TipiPagamentoService } from '../tipiPagamento.service';
-import { CausaliPagamentoService } from '../causaliPagamento.service';
-import { PagamentiService } from '../pagamenti.service';
+
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { AlunniService } from '../../alunni/alunni.service';
 
