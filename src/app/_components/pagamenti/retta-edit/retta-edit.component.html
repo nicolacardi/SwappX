@@ -30,7 +30,9 @@ ma fa anche l'aggiornamento del pagamento.... uhmmm.....
                             formControlName="nomeCognomeAlunno"
                             [matAutocomplete]="autoAlunno" #nomeCognomeAlunno 
                             (keydown.enter) = "enterAlunnoInput()"
-                            (keydown) = "deleteAlunnoID()">
+
+
+                            (blur) = "blur()">
                             <!-- [displayWith]="displayFn" DisplayWith impedisce che si possa scrivere qualcosa nella input in maniera programmatica-->
                     <mat-autocomplete #autoAlunno="matAutocomplete" (optionSelected)="selected($event)">
                         <!-- <mat-spinner *ngIf="nomeAlunnoIsLoading" class="is-loading" diameter="40"></mat-spinner> -->

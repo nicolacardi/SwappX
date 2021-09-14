@@ -50,7 +50,7 @@ export class RettaEditComponent implements OnInit {
   alunno!:                    ALU_Alunno;
   
   anno!:                      ASC_AnnoScolastico;
-
+  
   mesi:                       number[] = [];
   quoteConcordate:            number[] = [];
   quoteDefault:               number[] = [];
@@ -106,11 +106,15 @@ export class RettaEditComponent implements OnInit {
   }
 
   loadData(){
-    if (this.data.idAlunno == 0) return;
+    
     this.obsRette$ = this.retteSvc.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
     //const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
     this.obsRette$.pipe(
       map(obj => { 
+        //obsRette$ è un Observable<PAG_Retta[]> quindi è un elenco/lista/array di 12 oggetti di tipo PAG_Rette
+        //prendo CIASCUNO di questi 12 oggetti e ci popolo vari array di numeri in cui l'indice va da 0 a 11
+        //ed in particolare è obj[n].meseRetta
+        //questi array nell'html li uso per passare ORDINATAMENTE a ognuno dei 12 component rettamese la quotaconcordata, la quotadefault, l'idRetta
         if (obj.length!= 0 ) {
           let n = 0;
           this.alunno = obj[0].alunno!;
@@ -121,6 +125,9 @@ export class RettaEditComponent implements OnInit {
             this.mesi[obj[n].meseRetta - 1] = obj[n].meseRetta;
             this.quoteConcordate[obj[n].meseRetta - 1] = obj[n].quotaConcordata;
             this.quoteDefault[obj[n].meseRetta - 1] = obj[n].quotaDefault;
+
+            //ora calcolo il totale dei pagamenti per ciascun mese e lo metto nell'array totPagamenti sommandolo 
+            //foreach pagamento trovato
             this.totPagamenti[obj[n].meseRetta-1] = 0;
             this.nPagamenti[obj[n].meseRetta-1] = 0;
             this.idRette[obj[n].meseRetta-1] = obj[n].id;
@@ -132,8 +139,23 @@ export class RettaEditComponent implements OnInit {
             n++;
           })
         } else {
+          //obj.length è = 0 quando non c'è alcun obj, cioè quando si vuole inserire un "nuovo pagamento" da zero
+          //la differenza in questo caso è che non c'è un anno e quindi lo dobbiamo forzare
+          //creo un oggetto vuoto di tipo ASC_Annoscolastico, lo assegno a this.anno e poi ci setto il valor di default
+          const tmpObj = <ASC_AnnoScolastico>{};
+          this.anno = tmpObj;
+          this.anno.annoscolastico ="2019-20"; //ovviamente questo sarà un parametro, per ora lo "cablo" dentro
+          //console.log( "obj.length = 0");
+          //this.formRetta.controls['nomeCognomeAlunno'].setValue("");
+          //retta.edit passa i valori a 12 children, uno per mese, che si chiamano rettamese-edit:
+          //nel caso di "nuovo pagamento" impostiamo a 0 tutti i valori trasmessi ai child
           for (let i = 0; i <= 11; i++) {
-            this.idRette[i] = 0;
+            //idRette[da 0 a 11] è il valore dirà ad ognuno dei 12 child che si tratta di un nuovo pagamento
+            this.idRette[i] = 0; 
+            this.quoteConcordate[i]=0;
+            this.quoteDefault[i]=0;
+            this.nPagamenti[i] = 0;
+            this.totPagamenti[i] = 0;
           }
         }
       })
@@ -206,14 +228,35 @@ export class RettaEditComponent implements OnInit {
     }
   }
 
-  deleteAlunnoID() {
-    this.formRetta.controls['alunnoID'].setValue("");
-  }
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.data.idAlunno = parseInt(event.option.id);
     this.formRetta.controls['alunnoID'].setValue(parseInt(event.option.id));
     this.loadData();
   }
+
+
+  blur() {
+    const stored = this.matAutocomplete.options.first.viewValue;
+    const idstored = this.matAutocomplete.options.first.id;
+    console.log(idstored);
+    //se uno cancella tutto si ritrova selezionato il primo della lista
+    if (this.formRetta.controls['nomeCognomeAlunno'].value == "") {
+      this.matAutocomplete.options.first.select();
+    }
+    
+
+    this.alunniSvc.filterAlunniExact(this.formRetta.value.nomeCognomeAlunno).subscribe(val=>
+      {
+        if (!val) {
+          this.data.idAlunno = parseInt(idstored);
+        this.formRetta.controls['nomeCognomeAlunno'].setValue(stored)
+        this.formRetta.controls['alunnoID'].setValue(parseInt(idstored));
+        this.loadData();
+        
+      }
+    })
+  }
+
 
 }

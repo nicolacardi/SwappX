@@ -120,6 +120,7 @@ export class PagamentiListComponent implements OnInit {
     //console.log("annoID dalla combobox", this.form.controls['annoScolastico'].value);
     //console.log("this.alunnoID", this.alunnoID);
 
+    if (this.alunnoID == 0 ) return;
     if (this.alunnoID) {
       obsPagamenti$= this.pagamentiSvc.loadByAlunnoAnno(this.alunnoID, this.annoID);
     } else {
@@ -157,7 +158,6 @@ export class PagamentiListComponent implements OnInit {
   }
 
   addRecord(){
-    
     this.editRecord(0);
   }
 

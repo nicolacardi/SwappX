@@ -89,6 +89,19 @@ export class AlunniService {
     // }
   }
 
+  filterAlunniExact(searchstring: string): Observable<boolean>{
+    //restituisce un observable di true se il valore ha un match esatto altrimenti false
+    if (searchstring != null && (typeof searchstring === 'string')) {
+      return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni')
+            .pipe (
+            map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase())===(searchstring.toLowerCase())).length !==0
+            ),
+      );
+        } else {
+      return of()
+      }
+  }
+
   filterAlunniAnnoSenzaClasse(searchstring: string, idAnno: number): Observable<ALU_Alunno[]>{
     //console.log("alunni.service.ts - filterAlunni - searchstring:", searchstring);
     if (searchstring != null && (typeof searchstring === 'string')) {

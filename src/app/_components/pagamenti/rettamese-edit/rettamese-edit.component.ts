@@ -2,7 +2,7 @@
 
 import { Component, Input, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { RetteService } from '../rette.service';
@@ -32,7 +32,7 @@ export class RettameseEditComponent implements OnInit{
   retta$!:                    Observable<PAG_Retta>;
   obsIdRetta$!:               Observable<number>;
   form! :                     FormGroup;
-  emptyForm :                 boolean = true;
+  emptyForm :                 boolean = false;
   evidenzia:                  boolean = false;
 
   constructor(private fb:             FormBuilder,
@@ -61,30 +61,45 @@ export class RettameseEditComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    // const tmpRetta: Observable <PAG_Retta> =  of();
+    // this.retta$ = tmpRetta;
+
+    //E' stato creato un behaviorSubject per valorizzarlo quando opportuno (con .next su ngOnChanges)
+    //in questo modo solo all'arrivo di idRetta si fa scattare la loadData
+    //La load Data non deve però scattare quando si tratta di nuovo Pagamento 
+    //oppure se l'alunno non ha pagamenti (in entrambi i casi idRettaObs emette 0)
     this.idRettaObs$
     .pipe(
       tap(
       val=>{
-        console.log("val", val);
-        if (val) {this.loadData()}
-        else { this.clearData()}
-
+        if (val!=0) {
+          this.loadData()
+          this.emptyForm = false;
+        }
+        else { 
+          //di qua passa se è un Nuvo Pagamento oppure se ho selezionato un Alunno senza quote
+          this.emptyForm = true;
+          this.form.reset(); 
+        }
       })
     )
     .subscribe()
   }
   
-  clearData () {
-    this.form.reset();
-  }
+
   ngOnChanges() {
-     console.log ("ngOnChanges", this.idRetta);
-    this.idRettaSubject.next(this.idRetta);
+    //non vogliamo che venga lanciata la loadData fin che idRetta è undefined
+    //per questo motivo abbiamo introdotto un behaviorSubject
+    if (this.idRetta != undefined) { 
+        this.idRettaSubject.next(this.idRetta);
+    }
+
     //if (this.toHighlight == this.idRetta && this.toHighlight!= null) {this.evidenzia = true} else { this.evidenzia = false}
   }
 
   loadData(){
-    //console.log ("loadData");
+    //per di qua in caso di nuovo pagamento non passa nemmeno una volta -> non esiste retta$
+    //console.log ("this.idRetta", this.idRetta);
     //this.idRetta = 0 nel caso di alunno che non ha quote
     if (this.idRetta && this.idRetta + '' != "0") {
       const obsRetta$: Observable<PAG_Retta> = this.svcRette.loadByID(this.idRetta);
@@ -93,8 +108,7 @@ export class RettameseEditComponent implements OnInit{
       .pipe(
           tap(
             retta => {
-              console.log ("dentro qua");
-              this.emptyForm = false;
+              //console.log ("dentro qua");
               this.form.patchValue(retta);
               let totPagamenti = 0;
               retta.pagamenti?.forEach( val=>{
@@ -104,16 +118,6 @@ export class RettameseEditComponent implements OnInit{
             }
           )
       );
-
-    } else {
-      //stranamente passa per di qua PRIMA...
-      //togliere questo flag emptyForm significa che tutto si rallenta e c'è il rischio di expressionhaschangedafter...
-      //bisognerebbe che il form non si popolasse proprio
-      this.emptyForm = true;
-      console.log("sono ancora empty");
-      //this.form.controls['quotaConcordata'].setValue(0);
-      //this.form.controls['quotaDefault'].setValue(0);
-      //this.form.controls['totPagamenti'].setValue(0);
     }
   }
 
