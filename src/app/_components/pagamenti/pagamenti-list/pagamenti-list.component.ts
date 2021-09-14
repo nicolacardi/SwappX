@@ -11,7 +11,6 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { PagamentiService } from '../pagamenti.service';
 
-import { PagamentoEditComponent } from '../pagamento-edit/pagamento-edit.component';
 
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { PAG_Pagamento } from 'src/app/_models/PAG_Pagamento';
@@ -19,6 +18,7 @@ import { SELECT_ITEM_HEIGHT_EM } from '@angular/material/select/select';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RettaEditComponent } from '../retta-edit/retta-edit.component';
 
 @Component({
   selector: 'app-pagamenti-list',
@@ -157,19 +157,24 @@ export class PagamentiListComponent implements OnInit {
   }
 
   addRecord(){
+    
     this.editRecord(0);
   }
 
-  editRecord(idPagamento: number){
+  editRecord(alunnoID: number){
 
+    let anno = this.annoID;
     const dialogConfig : MatDialogConfig = {
-      panelClass: 'add-DetailDialog',
-      width: '800px',
-      height: '500px',
-      data: idPagamento
+        panelClass: 'add-DetailDialog',
+        width: '800px',
+        height: '680px',
+        data: {
+          idAlunno: alunnoID,
+          idAnno: anno
+        }
     };
 
-    const dialogRef = this._dialog.open(PagamentoEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(RettaEditComponent, dialogConfig);
     dialogRef.afterClosed()
       .subscribe(
         () => {

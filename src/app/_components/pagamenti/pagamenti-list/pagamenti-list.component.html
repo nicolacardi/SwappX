@@ -14,7 +14,7 @@
 <!-- **************************   SELECT ANNO   ******************* -->
 <form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
     <mat-form-field *ngIf="show" class="ml20 topZIndex">
-        <mat-select formControlName="annoScolastico" (selectionChange)="updateList()">
+        <mat-select formControlName="annoScolastico" (selectionChange)="updateList()" #annoscolastico>
             <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id" >
             {{element.annoscolastico}}
             </mat-option>
@@ -41,7 +41,7 @@
     <ng-container matColumnDef="actionsColumn">
         <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
         <mat-cell *matCellDef="let element;  let j = index;"> 
-            <img (click)="editRecord(element.id)" class="iconaMenu pointer" src="../assets/money_edit.svg">
+            <img (click)="editRecord(element.alunno.id)" class="iconaMenu pointer" src="../assets/money_edit.svg">
         </mat-cell>
     </ng-container>
 

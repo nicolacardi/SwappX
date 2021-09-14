@@ -38,7 +38,6 @@ import { ClassiSezioniAnniAlunnoComponent } from './_components/classi/classi-se
 import { RettePageComponent } from './_components/pagamenti/rette-page/rette-page.component';
 import { PagamentiListComponent } from './_components/pagamenti/pagamenti-list/pagamenti-list.component';
 import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
-import { PagamentoEditComponent } from './_components/pagamenti/pagamento-edit/pagamento-edit.component';
 import { RetteListComponent } from './_components/pagamenti/rette-list/rette-list.component';
 import { RettaEditComponent } from './_components/pagamenti/retta-edit/retta-edit.component';
 import { RettameseEditComponent } from './_components/pagamenti/rettamese-edit/rettamese-edit.component';
@@ -70,7 +69,6 @@ import { AlunniFilterComponent } from './_components/alunni/alunni-filter/alunni
     RettePageComponent,
     PagamentiListComponent,
     PagamentiPageComponent,
-    PagamentoEditComponent,
     RetteListComponent,
     RettaEditComponent,
     RettameseEditComponent,

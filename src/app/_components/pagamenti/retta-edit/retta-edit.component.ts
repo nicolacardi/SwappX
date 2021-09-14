@@ -59,7 +59,7 @@ export class RettaEditComponent implements OnInit {
   idRette:                    number[] = [];
   idToHighlight!:             number;
 
-  public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2));
+  //public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2));
   public mesiArr=           [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
 
@@ -106,31 +106,36 @@ export class RettaEditComponent implements OnInit {
   }
 
   loadData(){
-
+    if (this.data.idAlunno == 0) return;
     this.obsRette$ = this.retteSvc.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
     //const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
     this.obsRette$.pipe(
       map(obj => { 
-        //console.log ("obj", obj);
-        let n = 0;
-        this.alunno = obj[0].alunno!;
-        this.formRetta.controls['nomeCognomeAlunno'].setValue(this.alunno.nome+" "+this.alunno.cognome);
+        if (obj.length!= 0 ) {
+          let n = 0;
+          this.alunno = obj[0].alunno!;
+          this.formRetta.controls['nomeCognomeAlunno'].setValue(this.alunno.nome+" "+this.alunno.cognome);
 
-        this.anno = obj[0].anno!;
-        obj.forEach(()=>{
-          this.mesi[obj[n].meseRetta - 1] = obj[n].meseRetta;
-          this.quoteConcordate[obj[n].meseRetta - 1] = obj[n].quotaConcordata;
-          this.quoteDefault[obj[n].meseRetta - 1] = obj[n].quotaDefault;
-          this.totPagamenti[obj[n].meseRetta-1] = 0;
-          this.nPagamenti[obj[n].meseRetta-1] = 0;
-          this.idRette[obj[n].meseRetta-1] = obj[n].id;
-          obj[n].pagamenti?.forEach(x=>{
-            //console.log (x.importo);
-            this.totPagamenti[obj[n].meseRetta-1] = this.totPagamenti[obj[n].meseRetta-1] + x.importo;
-            this.nPagamenti[obj[n].meseRetta-1] = this.nPagamenti[obj[n].meseRetta-1] + 1;
-          });
-          n++;
-        })
+          this.anno = obj[0].anno!;
+          obj.forEach(()=>{
+            this.mesi[obj[n].meseRetta - 1] = obj[n].meseRetta;
+            this.quoteConcordate[obj[n].meseRetta - 1] = obj[n].quotaConcordata;
+            this.quoteDefault[obj[n].meseRetta - 1] = obj[n].quotaDefault;
+            this.totPagamenti[obj[n].meseRetta-1] = 0;
+            this.nPagamenti[obj[n].meseRetta-1] = 0;
+            this.idRette[obj[n].meseRetta-1] = obj[n].id;
+            obj[n].pagamenti?.forEach(x=>{
+              //console.log (x.importo);
+              this.totPagamenti[obj[n].meseRetta-1] = this.totPagamenti[obj[n].meseRetta-1] + x.importo;
+              this.nPagamenti[obj[n].meseRetta-1] = this.nPagamenti[obj[n].meseRetta-1] + 1;
+            });
+            n++;
+          })
+        } else {
+          for (let i = 0; i <= 11; i++) {
+            this.idRette[i] = 0;
+          }
+        }
       })
     )
     .subscribe( () => { 
@@ -139,7 +144,10 @@ export class RettaEditComponent implements OnInit {
       // console.log (this.quoteDefault);
       // console.log (this.totPagamenti);
     })
+    
   }
+
+
 
   savePivot() {
     //NON DOVREBBE PIU' SERVIRE
