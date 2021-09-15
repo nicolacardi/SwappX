@@ -91,7 +91,8 @@ export class DialogAddComponent implements OnInit {
           )
           .subscribe(
             val=>{
-              console.log("dialog-add.component.ts - save:Record Salvato:", val);}
+              //console.log("dialog-add.component.ts - save:Record Salvato:", val);
+            }
           );
     });
   }

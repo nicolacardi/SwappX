@@ -1,14 +1,3 @@
-<!-- 
-    Rev.0 - 28/08/2021
-    Componente per la gestione dei pagamenti per Alunno-Anno
-    Composto da: 
-        - Barra Funzioni
-        - Header: Anno scolastico e alunno
-        - Tabella pivot quote: default/concordate/pagate
-        - Griglia lista pagamenti
-        - riga di inserimento nuovo record
--->
-
 <h1 *ngIf="show" class="page-title">Elenco Pagamenti </h1>
 
 <!-- **************************   SELECT ANNO   ******************* -->
@@ -28,10 +17,11 @@
     </mat-form-field>
 </form>
 <!-- **************************   PAGINATOR   ******************* -->
-<mat-paginator *ngIf="show" class="transparent" [pageSize]="10" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
+<mat-paginator *ngIf="show" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 100]" showFirstLastButtons></mat-paginator>
 
 <!-- **************************   MAT-TABLE   ******************* -->
-<mat-table *ngIf="obsAnni$ | async" class="retteTable transparent" [dataSource]="matDataSource"
+<!-- <mat-table *ngIf="obsAnni$ | async" class="retteTable transparent" [dataSource]="matDataSource" -->
+<mat-table class="retteTable transparent" [dataSource]="matDataSource"
     matSort
     cdkDropList
     cdkDropListOrientation="horizontal"

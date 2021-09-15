@@ -82,10 +82,10 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
-    this.refresh(2);
+    this.loadData(2);
     this.form.controls['selectAnnoScolastico'].valueChanges
     .subscribe(val => {
-      this.refresh(val);
+      this.loadData(val);
       //console.log("classi-dahsboard.component.ts - selectAnnoScolastico.valueChanges : ", val);
     })
 
@@ -96,7 +96,7 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
     //this._filtriService.passPage("classiDashboard");
   }
 
-  refresh (val :number) {
+  loadData (val :number) {
     let obsClassi$: Observable<CLS_ClasseSezioneAnno[]>;
     obsClassi$= this.svcClassiSezioniAnni.loadClassiByAnnoScolastico(val);
     const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);

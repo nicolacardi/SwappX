@@ -52,7 +52,7 @@ export class AlunniService {
   }
 
   put(formData: any): Observable <any>{
-    console.log("formData", formData);
+    //console.log("formData", formData);
     return this.http.put( environment.apiBaseUrl  + 'ALU_Alunni/' + formData.id , formData);    
   }
 

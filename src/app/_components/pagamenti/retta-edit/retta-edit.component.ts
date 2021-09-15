@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { debounceTime, map, switchMap } from 'rxjs/operators';
+import { debounceTime, map, switchMap, tap } from 'rxjs/operators';
 import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
@@ -21,6 +21,7 @@ import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { PagamentiListComponent } from '../pagamenti-list/pagamenti-list.component';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { RettapagamentoEditComponent } from '../rettapagamento-edit/rettapagamento-edit.component';
 
 
 
@@ -35,6 +36,7 @@ export class RettaEditComponent implements OnInit {
 
   @ViewChildren(RettameseEditComponent) ChildrenRettaMese!:QueryList<RettameseEditComponent>;
   @ViewChild(PagamentiListComponent) ChildPagamenti!: PagamentiListComponent;
+  @ViewChild(RettapagamentoEditComponent) ChildRettapagamentoEdit!: RettapagamentoEditComponent;
   @ViewChild(MatAutocomplete) matAutocomplete!: MatAutocomplete;
 
   public obsRette$!:          Observable<PAG_Retta[]>;
@@ -81,7 +83,8 @@ export class RettaEditComponent implements OnInit {
       dtPagamento:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       importo:                    ['', { validators:[ Validators.required]}],
       tipoPagamentoID:            ['', Validators.required],
-      nomeCognomeAlunno:          [null]
+      nomeCognomeAlunno:          [null],
+      annoscolastico:             [null]
     });
 
     // this.formAlunno = this.fb.group({
@@ -93,18 +96,30 @@ export class RettaEditComponent implements OnInit {
 
     this.filteredAlunni$ = this.formRetta.controls['nomeCognomeAlunno'].valueChanges
     .pipe(
-      debounceTime(300),                                                      //attendiamo la digitazione
-      //tap(() => this.nomiIsLoading = true),                                 //attiviamo il loading
-      //delayWhen(() => timer(2000)),                                         //se vogliamo vedere il loading allunghiamo i tempi
-      switchMap(() => this.alunniSvc.filterAlunni(this.formRetta.value.nomeCognomeAlunno)), 
+      debounceTime(300),
+      switchMap(() => this.alunniSvc.filterAlunni(this.formRetta.value.nomeCognomeAlunno))
     )
 
+    this.formRetta.controls['annoscolastico'].setValue(this.data.idAnno);
 
+    this.formRetta.controls['annoscolastico'].valueChanges
+    .subscribe(
+      val=> {
+        if (val) {
+          console.log(val);
+          this.data.idAnno = val;
+          this.loadData();
+        }
+      }
+    )
+
+    
     this.loadData();
   }
 
   loadData(){
-    
+    console.log("idAnno", this.data.idAnno);
+
     this.obsRette$ = this.retteSvc.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
     //const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
     this.obsRette$.pipe(
@@ -115,10 +130,13 @@ export class RettaEditComponent implements OnInit {
         //questi array nell'html li uso per passare ORDINATAMENTE a ognuno dei 12 component rettamese la quotaconcordata, la quotadefault, l'idRetta
         if (obj.length!= 0 ) {
           let n = 0;
+
           this.alunno = obj[0].alunno!;
           this.formRetta.controls['nomeCognomeAlunno'].setValue(this.alunno.nome+" "+this.alunno.cognome);
 
           this.anno = obj[0].anno!;
+          //this.formRetta.controls['annoscolastico'].setValue(this.anno.id);
+          console.log ("obj", obj);
           obj.forEach(()=>{
             this.mesi[obj[n].meseRetta - 1] = obj[n].meseRetta;
             this.quoteConcordate[obj[n].meseRetta - 1] = obj[n].quotaConcordata;
@@ -150,10 +168,10 @@ export class RettaEditComponent implements OnInit {
           for (let i = 0; i <= 11; i++) {
             //idRette[da 0 a 11] è il valore dirà ad ognuno dei 12 child che si tratta di un nuovo pagamento
             this.idRette[i] = 0; 
-            this.quoteConcordate[i]=0;
-            this.quoteDefault[i]=0;
-            this.nPagamenti[i] = 0;
-            this.totPagamenti[i] = 0;
+            // this.quoteConcordate[i]=0;
+            // this.quoteDefault[i]=0;
+            // this.nPagamenti[i] = 0;
+            // this.totPagamenti[i] = 0;
           }
         }
       })
@@ -198,7 +216,6 @@ export class RettaEditComponent implements OnInit {
 
     //ora dovrei fare il refresh del solo component rettamese interessato...quindi dovrei passare qui l'indice del component rettamese corretto
     //ma provo per ora a fare il refresh di tutti e 12 i component rettamese
-    console.log("arrivato nuovo Pagamento faccio la refresh di tutti i rettaMese"+str);
     //ora bisogna fare la refresh di tutti i 12 rettamese
     for (let i = 0; i < 12; i++) {
       let childRettaMese = this.ChildrenRettaMese.find(childRettaMese => childRettaMese.indice == i);
@@ -240,9 +257,9 @@ export class RettaEditComponent implements OnInit {
     if (!this.matAutocomplete.options.first) return; 
 
     const stored = this.matAutocomplete.options.first.viewValue;
-    console.log ("stored", stored);
+    //console.log ("stored", stored);
     const idstored = this.matAutocomplete.options.first.id;
-    console.log("idstored", idstored);
+    //console.log("idstored", idstored);
     //se uno cancella tutto si ritrova selezionato il primo della lista
     if (this.formRetta.controls['nomeCognomeAlunno'].value == "") {
       this.matAutocomplete.options.first.select();
@@ -259,6 +276,12 @@ export class RettaEditComponent implements OnInit {
         
       }
     })
+  }
+
+  mesePagamentoClicked (meseRettaClicked: number ){
+    //ora devo passare queste informazioni a rettapagamento-edit
+    this.ChildRettapagamentoEdit.formRetta.controls['causaleID'].setValue(1);
+    this.ChildRettapagamentoEdit.formRetta.controls['meseRetta'].setValue(meseRettaClicked - 1);
   }
 
 

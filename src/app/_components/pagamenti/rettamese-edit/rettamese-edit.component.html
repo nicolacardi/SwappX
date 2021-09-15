@@ -36,7 +36,7 @@ All'inizio il form è empty d'accordo. Ma se non si include || emptyform arriva 
     <mat-form-field class="cellRetta center" [ngClass]="{'highlightPag2': inputPagamenti < ConvertToNumber(inpQuotaC.value), 'highlightHover': evidenzia}">
         <input matInput type="number"
         formControlName="totPagamenti"
-        
+        (click) = "clickOnPagamento()"
         readonly>
     </mat-form-field>
     

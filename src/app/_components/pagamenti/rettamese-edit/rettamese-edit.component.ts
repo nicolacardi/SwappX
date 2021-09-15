@@ -1,6 +1,6 @@
 //TODO ngOnChanges scatta un numero enorme di volte su hover della lista pagamenti
 
-import { Component, Input, OnInit} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -24,9 +24,12 @@ export class RettameseEditComponent implements OnInit{
   private idRettaSubject = new BehaviorSubject<number>(0);
   idRettaObs$: Observable<number> = this.idRettaSubject.asObservable();
   @Input() public inputPagamenti!: number; 
-
   @Input() public indice!: number; //serve per poter azionare la save di ciascuna istanza di questo component
   //@Input() public toHighlight!: number; 
+
+
+  @Output('mesePagamentoClicked')
+  clickOnpagamentoEmitter = new EventEmitter<number>();
 
   // quotaConcordata!:           number;
   // quotaDefault!:              number;
@@ -148,6 +151,10 @@ export class RettameseEditComponent implements OnInit{
 
   ConvertToNumber (x: string): number {
     return parseInt(x);
+  }
+
+  clickOnPagamento() {
+    this.clickOnpagamentoEmitter.emit(this.form.controls['meseRetta'].value);
   }
 }
 

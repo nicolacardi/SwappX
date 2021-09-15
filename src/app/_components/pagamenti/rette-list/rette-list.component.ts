@@ -5,7 +5,7 @@ import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-to
 import { MatTableDataSource } from '@angular/material/table';
 
 import { Observable, zip } from 'rxjs';
-import { groupBy, map, mergeMap, toArray } from 'rxjs/operators';
+import { groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
 
 import { RettaEditComponent } from '../retta-edit/retta-edit.component';
 import { RetteService } from '../rette.service';
@@ -133,34 +133,41 @@ p_displayedColumns: string[] = [
   }
 
   updateList() {
-    //TODO da sistemare
-    this.annoID = this.form.controls['annoScolastico'].value;
     this.loadData();
   }
 
   loadData () {
-
-    this.obsAnni$= this.svcAnni.load();
+    this.obsAnni$ = this.svcAnni.load();
+    this.annoID = this.form.controls['annoScolastico'].value;
+    
 
     let obsRette$: Observable<PAG_Retta[]>;
-
-    obsRette$= this.svcRette.loadByAnno(this.annoID); //TODO diventerà loadbyAnno
-
+    obsRette$= this.svcRette.loadByAnno(this.annoID);
     const loadRette$ =this._loadingService.showLoaderUntilCompleted(obsRette$);
 
 // NOTA PER PIU' AVANTI: 
 // per avere la riga della retta e sotto la riga del pagamento forse è da usare const result$ = concat(series1$, series2$);
 
-    let arrObj: PAG_RettaPivot[] = [];
+    
+
+  let arrObj: PAG_RettaPivot[] = [];
 
     loadRette$
      .pipe(
-       mergeMap(res=>res),
+       //questo tap serve nel caso in cui loadRette non restituisse ALCUN record in quanto in questo caso la mergeMap va in crisi: 
+       //lo stream Rxjs si blocca e non avviene nemmeno la subscribe quindi bisogna prevedere quel caso attivando qui ciò che dovrebbe avvenire nella subscribe.
+        tap(val=> { 
+          if (val = []){
+            this.matDataSource.data = [];
+            this.matDataSource.paginator = this.paginator;
+          }
+        }),
+        mergeMap(res=>res),
         groupBy(o => o.alunnoID),
         mergeMap(
           group => zip([group.key], group.pipe(toArray()))),
           map(arr => {
-            //console.log ("arr rette list", arr);  
+            
             //console.log ("quotatrovata2",this.trovaquotaMeseA(arr, 9)) ;
             //console.log ("quotaPagamenti",this.trovaSommaPagMese(arr, 9)) ;
 
@@ -275,6 +282,10 @@ p_displayedColumns: string[] = [
     this.menuTopLeftPosition.y = event.clientY + 'px'; 
     this.matMenuTrigger.menuData = {item: element}   
     this.matMenuTrigger.openMenu(); 
+  }
+
+  addRecord(){
+    this.editRecord(0, this.annoID);
   }
 
   editRecord(alunno: number, anno: number){

@@ -3,115 +3,135 @@
     Componente per l'edit della retta
     Composto da: 
         - Barra Funzioni
-       
-        - TODO !!!!
 
-AS: Attenzione: mettendo la riga di edit del pagamento qui si crea un bel smisiotto: è il componente di editazione della retta 
-ma fa anche l'aggiornamento del pagamento.... uhmmm.....
+    /-retta-edit------------------------------------------------------------\
+    |          annoscolastico               nomeCognomeAlunno               |
+    |           (MatSelect)                 (MatAutoComplete)               |
+    |                                                                       |
+    |                                                                       |
+    |   /-retta-mese 1--\   /-retta-mese 2--\   /-retta-mese 3--\ ....      |
+    |   |               |   |               |   |               |           |
+    |   |               |   |               |   |               |           |
+    |   |               |   |               |   |               |           |
+    |   |               |   |               |   |               |           |
+    |   |               |   |               |   |               |           |
+    |   \---------------/   \---------------/   \---------------/ ....      |
+    |                                                                       |
+    |   /-rettapagamento-edit-----------------------------------\           |
+    |   |                                                       |           |
+    |   \-------------------------------------------------------/           |   
+    |   /-pagamenti-list----------------------------------------\           |
+    |   |                                                       |           |
+    |   |                                                       |           |
+    |   |                                                       |           |
+    |   |                                                       |           |
+    |   |                                                       |           |
+    |   \-------------------------------------------------------/           |
+    |                                                                       |
+    \-----------------------------------------------------------------------/
 -->
 
 <div class="container">
     <form  [formGroup] = "formRetta" >
-    <mat-card class="form-cardRette data-form">
-        <mat-card-content>
-            
+        <mat-card class="form-cardRette data-form">
+            <mat-card-content>
+                
 
-            <div class="mt10" *ngIf="obsRette$ | async" >
-                <mat-form-field class="cellRettaEdit" appearance="outline">
-                    <mat-label>anno scolastico</mat-label>
-                    <input matInput placeholder="anno scolastico" value="{{anno.annoscolastico}}" readonly>
-                </mat-form-field>
+                <div class="mt10" *ngIf="obsRette$ | async" >
+                    <!-- <mat-form-field class="cellRettaEdit" appearance="outline">
+                        <mat-label>anno scolastico</mat-label>
+                        <input matInput placeholder="anno scolastico" value="{{anno.annoscolastico}}" readonly>
+                    </mat-form-field> -->
 
-                <mat-form-field appearance="outline">
-                    <mat-label>Alunno</mat-label>
-                    <input type="text"
-                            placeholder="<digita e seleziona>"
-                            matInput
-                            formControlName="nomeCognomeAlunno"
-                            [matAutocomplete]="autoAlunno" #nomeCognomeAlunno 
-                            (keydown.enter) = "enterAlunnoInput()"
+                    <mat-form-field appearance="outline">
+                        <mat-label>Anno Scolastico</mat-label>
+                        <select matNativeControl formControlName="annoscolastico">
+                            <option value="1">2019-20</option>
+                            <option value="2">2020-21</option>
+                            <option value="3">2021-22</option>
+                        </select>
+                    </mat-form-field>
 
-
-                            (blur) = "blur()">
-                            <!-- [displayWith]="displayFn" DisplayWith impedisce che si possa scrivere qualcosa nella input in maniera programmatica-->
-                    <mat-autocomplete #autoAlunno="matAutocomplete" (optionSelected)="selected($event)">
-                        <!-- <mat-spinner *ngIf="nomeAlunnoIsLoading" class="is-loading" diameter="40"></mat-spinner> -->
-                        <mat-option *ngFor="let element of (filteredAlunni$ | async)"  [value]="element.nome + ' ' + element.cognome" [id]="element.id.toString()" #option>
-                            <small>{{element.nome}} {{element.cognome}}</small>
-                        </mat-option>
-                    </mat-autocomplete>
-                    <!-- <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="resetInputAlunno('nomeCognomeAlunno')">
-                        <mat-icon>close</mat-icon>
-                    </button> -->
-                </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Alunno</mat-label>
+                        <input type="text"
+                                placeholder="<digita e seleziona>"
+                                matInput
+                                formControlName="nomeCognomeAlunno"
+                                [matAutocomplete]="autoAlunno" #nomeCognomeAlunno 
+                                (keydown.enter) = "enterAlunnoInput()"
 
 
-                <!-- <mat-form-field class="cellRettaEdit" appearance="outline">
-                    <mat-label>nome alunno</mat-label>
-                    <input matInput placeholder="anno scolastico" value="{{alunno.nome}}" readonly>
-                </mat-form-field>
+                                (blur) = "blur()">
+                                <!-- [displayWith]="displayFn" DisplayWith impedisce che si possa scrivere qualcosa nella input in maniera programmatica-->
+                        <mat-autocomplete #autoAlunno="matAutocomplete" (optionSelected)="selected($event)">
+                            <!-- <mat-spinner *ngIf="nomeAlunnoIsLoading" class="is-loading" diameter="40"></mat-spinner> -->
+                            <mat-option *ngFor="let element of (filteredAlunni$ | async)"  [value]="element.nome + ' ' + element.cognome" [id]="element.id.toString()" #option>
+                                <small>{{element.nome}} {{element.cognome}}</small>
+                            </mat-option>
+                        </mat-autocomplete>
+                        <!-- <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="resetInputAlunno('nomeCognomeAlunno')">
+                            <mat-icon>close</mat-icon>
+                        </button> -->
+                    </mat-form-field>
+                </div>  
+                <mat-grid-list [cols]="14" rowHeight="140px">
+                    <mat-grid-tile [colspan]=2>
+                        <div>
+                            <br>
+                            <div class="mt10">DEFAULT</div>
+                            <div class="mt10">CONCORDATE</div>
+                            <div class="mt10">PAGATE</div>
+                        </div>
+                    </mat-grid-tile>
 
-                <mat-form-field class="cellRettaEdit" appearance="outline">
-                    <mat-label>cognome alunno</mat-label>
-                    <input matInput placeholder="anno scolastico" value="{{alunno.cognome}}" readonly>
-                </mat-form-field> -->
-            </div>  
-            <mat-grid-list [cols]="14" rowHeight="140px">
-                <mat-grid-tile [colspan]=2>
-                    <div>
-                        <br>
-                        <div class="mt10">DEFAULT</div>
-                        <div class="mt10">CONCORDATE</div>
-                        <div class="mt10">PAGATE</div>
-                    </div>
-                </mat-grid-tile>
+                    <mat-grid-tile *ngFor="let mese of mesiArr; let i = index" >
+                        <div>
+                            <mat-label>{{placeholderMeseArr[i]}}</mat-label>
+                            <app-rettamese-edit [inputPagamenti] ="totPagamenti[mese]"
+                                                [idRetta] ="idRette[mese]"
+                                                [indice] ="i"
 
-                <mat-grid-tile *ngFor="let mese of mesiArr; let i = index" >
-                    <div>
-                        <mat-label>{{placeholderMeseArr[i]}}</mat-label>
-                        <app-rettamese-edit [inputPagamenti] ="totPagamenti[mese]"
-                                            [idRetta] ="idRette[mese]"
-                                            [indice] ="i"
-                                            
-                                            >
-                                            <!--[toHighlight] = "idToHighlight"  -->
-                        </app-rettamese-edit>
-                    </div>
-                </mat-grid-tile>
-            </mat-grid-list>
-            <mat-tab-group mat-align-tabs="center">
+                                                (mesePagamentoClicked) = "mesePagamentoClicked($event)"
+                                                >
+                                                <!--[toHighlight] = "idToHighlight"  -->
+                            </app-rettamese-edit>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+                <mat-tab-group mat-align-tabs="center">
 
-                <mat-tab label="Gestione Pagamenti">
-                    <mat-label class="frameLabel"> Nuovo Pagamento </mat-label>
-                    <app-rettapagamento-edit
-                                            [alunnoID]="data.idAlunno"
-                                            [annoID]="data.idAnno"
-                                            (nuovoPagamento) = "nuovoPagamentoArrivato($event)">
-                    </app-rettapagamento-edit>
-                    <mat-label class="frameLabel"> Elenco Pagamenti </mat-label>
-                    <div class="pagamenti-container cellBordered mt10">
-                        <app-pagamenti-list [dove]="'retta-edit'" 
-                                            [alunnoID]="data.idAlunno"
-                                            [annoID]="data.idAnno"
-                                            (hoverPagamento) = "hoverPagamentoArrivato($event)"
-                                            >
-                        </app-pagamenti-list>
-                    </div>
+                    <mat-tab label="Gestione Pagamenti">
+                        <mat-label class="frameLabel"> Nuovo Pagamento </mat-label>
+                        <app-rettapagamento-edit
+                                                [alunnoID]="data.idAlunno"
+                                                [annoID]="data.idAnno"
+                                                (nuovoPagamento) = "nuovoPagamentoArrivato($event)">
+                        </app-rettapagamento-edit>
+                        <mat-label class="frameLabel"> Elenco Pagamenti </mat-label>
+                        <div class="pagamenti-container cellBordered mt10">
+                            <app-pagamenti-list [dove]="'retta-edit'" 
+                                                [alunnoID]="data.idAlunno"
+                                                [annoID]="data.idAnno"
+                                                (hoverPagamento) = "hoverPagamentoArrivato($event)"
+                                                >
+                            </app-pagamenti-list>
+                        </div>
 
-                </mat-tab>
+                    </mat-tab>
 
-                <mat-tab label="Utilities Rette">
-                    <mat-label class="frameLabel"> Utilities per la definizione rapida delle rette </mat-label>
-                    <div class="utilities-container cellBordered mt10">
+                    <mat-tab label="Utilities Rette">
+                        <mat-label class="frameLabel"> Utilities per la definizione rapida delle rette </mat-label>
+                        <div class="utilities-container cellBordered mt10">
+                            
+                        </div>
                         
-                    </div>
-                    
-                </mat-tab>
-            </mat-tab-group>
-            
-        </mat-card-content>
-    </mat-card>
-</form>
+                    </mat-tab>
+                </mat-tab-group>
+                
+            </mat-card-content>
+        </mat-card>
+    </form>
 </div>
 
 

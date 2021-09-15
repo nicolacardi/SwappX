@@ -132,9 +132,10 @@ export class PagamentiListComponent implements OnInit {
       {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
-        this.matDataSource.sort = this.sort;
+        
         this.filterPredicateCustom();   //serve per rendere filtrabili anche i campi nested
         this.sortCustom(); 
+        this.matDataSource.sort = this.sort;
       }
     );
   }
@@ -215,7 +216,7 @@ export class PagamentiListComponent implements OnInit {
     //questa funzione consente il filtro ANCHE sugli oggetti della classe
     //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
     this.matDataSource.filterPredicate = (data, filter: string)  => {
-      const accumulator = (currentTerm: any, key: string) => { //Key è il campo in cui cerco
+      const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
 
         switch(key) { 
           case "tipoPagamento": { 
@@ -243,7 +244,9 @@ export class PagamentiListComponent implements OnInit {
   }
 
   sortCustom() {
-    this.matDataSource.sortingDataAccessor = (item, property) => {
+
+    this.matDataSource.sortingDataAccessor = (item:any, property) => {
+
       switch(property) {
         case 'tipoPagamento.descrizione':   return item.tipoPagamento.descrizione;
         case 'causale.descrizione':         return item.causale.descrizione;
@@ -254,8 +257,8 @@ export class PagamentiListComponent implements OnInit {
         //case 'retta.quotaConcordata':       return item.retta.quotaConcordata;    //NON FUNZIONA PERCHE' CI SONO 'ANCHE' RECORD SENZA retta
         
         case 'dtPagamento':                 return parseInt(item.dtPagamento.toString());
-
-        default: return item.alunno.cognome;
+        default: return item[property]
+        //default: return item.alunno.cognome;
         //default: return Number(item.dtPagamento.toString());
         //default: return Number(item.dtPagamento);
         //default: return item.dtPagamento;

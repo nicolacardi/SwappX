@@ -16,8 +16,8 @@ export class RettePageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // addRecord() {
-  //   //this.retteList.addRecord()
-  // }
+  addRecord() {
+    this.retteList.addRecord()
+  }
   
 }

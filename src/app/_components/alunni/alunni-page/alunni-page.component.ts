@@ -14,7 +14,7 @@ export class AlunniPageComponent implements OnInit {
   constructor(private _filtriService:   FiltriService) { }
 
   ngOnInit(): void {
-    console.log("AlunniPage - ngOnInit");
+    //console.log("AlunniPage - ngOnInit");
 
     this._filtriService.passPage("alunniList");
   }

@@ -86,7 +86,7 @@ export class AlunniListComponent implements OnInit {
 
     this._filtriService.getPage().subscribe(val=>{
       this.page = val;
-      console.log("alunni-list - ngOnInit getPage: la pagina attuale è: "+val);
+      //console.log("alunni-list - ngOnInit getPage: la pagina attuale è: "+val);
       });
     
     if (this.page == "alunniList") 
@@ -100,7 +100,7 @@ export class AlunniListComponent implements OnInit {
           val=>{
           this.idGenitore = val;
           //uno dei tre refresh parte qui: serve quando cambia il filtro idGenitore
-          console.log("alunni-list.component.ts - ngOnInit chiamata a this.refresh da getGenitore");
+          //console.log("alunni-list.component.ts - ngOnInit chiamata a this.refresh da getGenitore");
           this.refresh(); 
       });
     }
