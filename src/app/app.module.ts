@@ -13,6 +13,7 @@ import { DragDropModule} from '@angular/cdk/drag-drop';
 import { MaterialModule } from './_material/material.module';
 
 import { DialogYesNoComponent } from './_components/utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogOkComponent } from './_components/utilities/dialog-ok/dialog-ok.component';
 import { SnackbarComponent } from './_components/utilities/snackbar/snackbar.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { LoadingComponent } from './_components/utilities/loading/loading.component';
@@ -56,6 +57,7 @@ import { AlunniFilterComponent } from './_components/alunni/alunni-filter/alunni
     GenitoreEditComponent,
 
     DialogYesNoComponent,
+    DialogOkComponent,
     SnackbarComponent,
     LoadingComponent,
     FiltriComponent,

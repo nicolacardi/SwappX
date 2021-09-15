@@ -20,6 +20,12 @@ export class RetteService {
     //http://213.215.231.4/swappX/api/PAG_Rette
   }
 
+  loadByAnno(idAnno: number): Observable<PAG_Retta[]>{
+    return this.http.get<PAG_Retta[]>(environment.apiBaseUrl+'PAG_Rette/GetAllByAnno?idAnno='+idAnno);
+    //http://213.215.231.4/swappX/api/PAG_Rette/GetAllByAnno?idAnno=1
+  }
+
+
   loadByID(idRetta: any): Observable<PAG_Retta>{
     return this.http.get<PAG_Retta>(environment.apiBaseUrl+'PAG_Rette/'+idRetta);
     //http://213.215.231.4/swappX/api/PAG_Rette/5

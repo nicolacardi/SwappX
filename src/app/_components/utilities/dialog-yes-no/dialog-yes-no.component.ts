@@ -23,8 +23,5 @@ export class DialogYesNoComponent   {
 
     }
 
-    onNoClick(): void {
-      this.dialogRef.close();
-    }
 
 }

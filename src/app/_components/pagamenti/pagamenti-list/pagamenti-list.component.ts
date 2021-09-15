@@ -86,7 +86,6 @@ export class PagamentiListComponent implements OnInit {
     //form composto della sola combo Anno Scolastico: così si riesce tra le altre cose a settare un valore di default
     this.form = this.fb.group({
       annoScolastico:      [1],
-
     });
   }
 

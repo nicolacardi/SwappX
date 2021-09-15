@@ -3,12 +3,14 @@
 
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { concatMap, tap } from 'rxjs/operators';
 import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
 import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { CausaliPagamentoService } from '../causaliPagamento.service';
 import { PagamentiService } from '../pagamenti.service';
@@ -40,7 +42,8 @@ export class RettapagamentoEditComponent implements OnInit {
               private causaliPagamentoSvc:          CausaliPagamentoService,
               private pagamentiSvc:                 PagamentiService,
               private retteSvc:                     RetteService,
-              private _snackBar:                    MatSnackBar,) { 
+              private _snackBar:                    MatSnackBar,
+              public _dialog:                       MatDialog,) { 
 
     this.formRetta = this.fb.group({
       id:                         [null],
@@ -66,6 +69,14 @@ export class RettapagamentoEditComponent implements OnInit {
 
   save( ){
     //if (this.formRetta.controls['id'].value == null) { //non serve questo check: facciamo sempre la post mai la put
+   if (this.alunnoID == 0) {
+    this._dialog.open(DialogOkComponent, {
+      width: '320px',
+      data: {titolo: "ATTENZIONE", sottoTitolo: "Selezionare prima un Alunno"}
+    });
+    this.formRetta.reset();
+    return;
+   }
     this.formRetta.controls['alunnoID'].setValue(this.alunnoID);
     this.formRetta.controls['annoID'].setValue(this.annoID);
     

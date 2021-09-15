@@ -235,9 +235,14 @@ export class RettaEditComponent implements OnInit {
 
 
   blur() {
+     //l'unico caso che al momento non possiamo gestire è se non c'è alcun elemento nella dropdown (se p.e. utente scrive "hh")
+     //e anzi per non incorrere in errori in quel caso bisogna uscire dalla routine
+    if (!this.matAutocomplete.options.first) return; 
+
     const stored = this.matAutocomplete.options.first.viewValue;
+    console.log ("stored", stored);
     const idstored = this.matAutocomplete.options.first.id;
-    console.log(idstored);
+    console.log("idstored", idstored);
     //se uno cancella tutto si ritrova selezionato il primo della lista
     if (this.formRetta.controls['nomeCognomeAlunno'].value == "") {
       this.matAutocomplete.options.first.select();

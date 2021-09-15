@@ -8,6 +8,8 @@ import { tap } from 'rxjs/operators';
 import { RetteService } from '../rette.service';
 
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 @Component({
   selector: 'app-rettamese-edit',
@@ -37,6 +39,7 @@ export class RettameseEditComponent implements OnInit{
 
   constructor(private fb:             FormBuilder,
               private svcRette:       RetteService,
+              public _dialog:         MatDialog,
               ) { 
 
     this.form = this.fb.group({
@@ -122,6 +125,7 @@ export class RettameseEditComponent implements OnInit{
   }
 
   save(): boolean{
+    
     if (this.idRetta && this.form.dirty) {
         this.svcRette.put(this.form.value)
           .subscribe(res=> {
@@ -133,6 +137,11 @@ export class RettameseEditComponent implements OnInit{
       );
     } else {
       //post
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE", sottoTitolo: "Selezionare prima un Alunno"}
+      });
+      this.form.reset();
     }
     return true;
   }

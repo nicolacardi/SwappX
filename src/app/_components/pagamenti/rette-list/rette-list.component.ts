@@ -14,6 +14,9 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPIVOT';
 import { PAG_RettaGroupObj } from 'src/app/_models/PAG_RetteGroupObj';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 
 
 @Component({
@@ -28,6 +31,10 @@ export class RetteListComponent implements OnInit {
   @ViewChild('toggleD') toggleD!: MatSlideToggle; 
   @ViewChild('toggleC') toggleC!: MatSlideToggle; 
   @ViewChild('toggleP') toggleP!: MatSlideToggle; 
+
+  obsAnni$!:                Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  form:                     FormGroup;            //form fatto della sola combo anno scolastico
+  annoID!:                  number;
 
   showC= true;
   showD= true;
@@ -109,23 +116,35 @@ p_displayedColumns: string[] = [
   public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2).toLocaleString('it-IT', {month: 'short'}).toUpperCase());
 
   constructor(private svcRette:         RetteService,
+              private svcAnni:          AnniScolasticiService,
               private _loadingService:  LoadingService,
+              private fb:               FormBuilder, 
               public _dialog:           MatDialog) {
+
+              this.form = this.fb.group({
+                annoScolastico:      [1],
+              });
   }
 
-  ngOnInit(): void {
-    this.refresh();
+
+
+  ngOnInit() {
+    this.loadData();
   }
 
-  refresh () {
+  updateList() {
+    //TODO da sistemare
+    this.annoID = this.form.controls['annoScolastico'].value;
+    this.loadData();
+  }
+
+  loadData () {
+
+    this.obsAnni$= this.svcAnni.load();
 
     let obsRette$: Observable<PAG_Retta[]>;
 
-
-
-
-
-    obsRette$= this.svcRette.load();
+    obsRette$= this.svcRette.loadByAnno(this.annoID); //TODO diventerà loadbyAnno
 
     const loadRette$ =this._loadingService.showLoaderUntilCompleted(obsRette$);
 
@@ -273,7 +292,7 @@ p_displayedColumns: string[] = [
     dialogRef.afterClosed()
       .subscribe(
         () => {
-          this.refresh();
+          this.loadData();
     });
   }
 
