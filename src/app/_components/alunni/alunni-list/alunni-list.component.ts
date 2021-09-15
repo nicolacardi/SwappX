@@ -64,6 +64,17 @@ export class AlunniListComponent implements OnInit {
   idAlunniChecked:      number[] = [];
   toggleChecks:         boolean = false;
 
+  filterValues = {
+    nome: '',
+    cognome: '',
+    annoNascita: '',
+    indirizzo: '',
+    comune: '',
+    prov: '',
+    email: '',
+    telefono: ''
+  };
+
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild("filterInput") filterInput!:                     ElementRef;
   @ViewChild(MatSort) sort!:                                  MatSort;
@@ -151,6 +162,7 @@ export class AlunniListComponent implements OnInit {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort;
+          this.matDataSource.filterPredicate = this.createFilter();
 
           // if(caller_page != undefined ){
           //   if (caller_sortDirection) {
@@ -164,6 +176,31 @@ export class AlunniListComponent implements OnInit {
         }
       );
     }
+  }
+
+
+  createFilter(): (data: any, filter: string) => boolean {
+    //la stringa che cerco è 'filter'
+    
+    let filterFunction = function(data: any, filter: any): boolean {
+      //JSON.parse normalizza la stringa e la trasforma in un oggetto javascript
+      let searchTerms = JSON.parse(filter);
+      //data è uno a uno rappresentato dai record del matDataSource
+      //console.log ("data", data);
+     //viene ritornato un boolean che è la AND di tutte le ricerche, su ogni singolo campo
+     //infatti data.nome.toLowerCase().indexOf(searchTerms.nome) !== -1 ritorna truese search.Terms.nome viene trovato nel campo nome di data
+      console.log("data.dtNascita", String(data.dtNascita));
+      return String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+        && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+        && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
+        && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
+        && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
+        && String(data.prov).toLowerCase().indexOf(searchTerms.prov) !== -1
+        //se trova dei valori NULL .toString() va in difficoltà (ce ne sono in telefono e email p.e.) per cui sono passato a String(...)
+        && String(data.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
+        && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1;
+    }
+    return filterFunction;
   }
 
   addRecord(){

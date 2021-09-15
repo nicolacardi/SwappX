@@ -10,7 +10,7 @@ import { GenitoreEditComponent } from './_components/genitori/genitore-edit/geni
 import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
 import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-page.component';
-import { AlunnoDashboardComponent } from './_components/alunni/alunno-dashboard/alunno-dashboard.component';
+
 import { AlunnoDashboardNewComponent } from './_components/alunni/alunno-dashboard-new/alunno-dashboard-new.component';
 
 import { RettePageComponent } from './_components/pagamenti/rette-page/rette-page.component';
@@ -24,10 +24,6 @@ const routes: Routes = [
   {
     path: 'alunni/:id',
     component: AlunnoEditComponent
-  },
-  {
-    path: "alunno-dashboard",
-    component: AlunnoDashboardComponent
   },
   {
     path: "alunno-dashboardNew",

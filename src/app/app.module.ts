@@ -21,7 +21,6 @@ import { FiltriComponent } from './_components/utilities/filtri/filtri.component
 
 import { AlunniListComponent } from './_components/alunni/alunni-list/alunni-list.component';
 import { AlunnoEditComponent } from './_components/alunni/alunno-edit/alunno-edit.component';
-import { AlunnoDashboardComponent } from './_components/alunni/alunno-dashboard/alunno-dashboard.component';
 
 import { GenitoriListComponent } from './_components/genitori/genitori-list/genitori-list.component';
 import { GenitoreEditComponent } from './_components/genitori/genitore-edit/genitore-edit.component';
@@ -51,7 +50,6 @@ import { AlunniFilterComponent } from './_components/alunni/alunni-filter/alunni
     AppComponent,
     AlunniListComponent,
     AlunnoEditComponent,
-    AlunnoDashboardComponent,
 
     GenitoriListComponent,
     GenitoreEditComponent,

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { FiltriService } from '../../utilities/filtri/filtri.service';
 import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 
@@ -11,15 +12,21 @@ export class AlunniPageComponent implements OnInit {
 
   @ViewChild(AlunniListComponent) alunniList!: AlunniListComponent; 
 
+
+
+  
+
   constructor(private _filtriService:   FiltriService) { }
 
   ngOnInit(): void {
-    //console.log("AlunniPage - ngOnInit");
-
     this._filtriService.passPage("alunniList");
+
+   
   }
 
   addRecord() {
     this.alunniList.addRecord()
   }
+
+
 }

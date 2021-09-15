@@ -119,8 +119,16 @@ background-size: cover;*/
     margin-top: 64px;
 }
 
+.pt20 {
+    padding-top: 20px;
+}
+
 .pt50 {
     padding-top: 50px;
+}
+
+.pt60 {
+    padding-top: 60px;
 }
 
 .mauto {
@@ -131,6 +139,10 @@ background-size: cover;*/
 
 .w20 {
     width: 20%;
+}
+
+.w80 {
+    width: 80%;
 }
 
 .w90 {
@@ -351,7 +363,7 @@ in fase di creazione della Dialog addAlunno*/
 }
 
 .rightSidenav {
-    width:  250px;
+    width:  200px;
     background-color: rgba(255,255,255,1);
     color: rgb(10,10,10) !important;
 }

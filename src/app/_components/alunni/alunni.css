@@ -57,7 +57,6 @@ mat-row.detail-row {
 /* FINE MAT-TABLE EXPANDABLE ROWS */
 
 
-
-
-
-
+.alunniTable .mat-row {
+    min-height: 30px;
+  }
