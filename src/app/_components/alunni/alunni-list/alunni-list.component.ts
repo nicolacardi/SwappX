@@ -8,7 +8,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatCheckbox } from '@angular/material/checkbox';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from '../alunni.service';
@@ -16,6 +15,7 @@ import { AlunnoEditComponent } from '../alunno-edit/alunno-edit.component';
 
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { FiltriService } from '../../utilities/filtri/filtri.service';
+import { AlunniFilterComponent } from '../alunni-filter/alunni-filter.component';
 
 
 @Component({
@@ -27,6 +27,8 @@ import { FiltriService } from '../../utilities/filtri/filtri.service';
 export class AlunniListComponent implements OnInit {
   
   matDataSource = new MatTableDataSource<ALU_Alunno>();
+  storedFilterPredicate!:       any;
+
   displayedColumns: string[] =  [];
   displayedColumnsAlunniList: string[] = [
                                   "actionsColumn", 
@@ -64,6 +66,7 @@ export class AlunniListComponent implements OnInit {
   idAlunniChecked:      number[] = [];
   toggleChecks:         boolean = false;
 
+  //filterValues contiene l'elenco dei filtri avanzati da applicare 
   filterValues = {
     nome: '',
     cognome: '',
@@ -81,7 +84,7 @@ export class AlunniListComponent implements OnInit {
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
   @Input() idClasse!: number;
-
+  @Input() alunniFilterComponent!: AlunniFilterComponent;
 
   constructor(private svcAlunni:        AlunniService,
               private route:            ActivatedRoute,
@@ -112,7 +115,7 @@ export class AlunniListComponent implements OnInit {
           this.idGenitore = val;
           //uno dei tre refresh parte qui: serve quando cambia il filtro idGenitore
           //console.log("alunni-list.component.ts - ngOnInit chiamata a this.refresh da getGenitore");
-          this.refresh(); 
+          this.loadData(); 
       });
     }
   }
@@ -122,57 +125,42 @@ export class AlunniListComponent implements OnInit {
     //serve perchè quando listAlunni è child di classiDashboard gli viene passato il valore di idClasse
     // e devo "sentire" in questo modo che deve refreshare
     //console.log("alunni-list.component.ts - ngOnChanges chiamata a this.refresh ");
-    this.refresh(); 
+    this.loadData(); 
     this.toggleChecks = false;
     this.resetSelections();
   }
   
-  refresh () {
+  loadData () {
 
     let obsAlunni$: Observable<ALU_Alunno[]>;
     if (this.page == "classiDashboard") {
       
       obsAlunni$= this.svcAlunni.loadByClasse(this.idClasse);
-      console.log("alunni-list.component.ts - this.refresh - caso 1");
+      console.log("alunni-list.component.ts - this.loadData - caso 1");
 
     } else {
       if(this.idGenitore && this.idGenitore != undefined  && this.idGenitore != null && this.idGenitore != 0) {
         obsAlunni$= this.svcAlunni.loadByGenitore(this.idGenitore);
-        console.log("alunni-list.component.ts - this.refresh - caso 2");
+        console.log("alunni-list.component.ts - this.loadData - caso 2");
       } else {
         //purtroppo passa di qua anche quando sta caricando all'inizio, non ha ancora il numero di pagina (getPage non dà ancora valore)
         //e quindi inizialmente passa di qua comunque
         obsAlunni$= this.svcAlunni.load();
-        console.log("alunni-list.component.ts - this.refresh - caso 3: this.page = "+this.page);
+        console.log("alunni-list.component.ts - this.loadData - caso 3: this.page = "+this.page);
       }
     }
     
     if (this.page != undefined && this.page != "" && this.page != null) {
-      console.log("alunni-list.component.ts - refresh : carico di loadAlunni$. this.page = "+this.page);
+      console.log("alunni-list.component.ts - loadData : carico di loadAlunni$. this.page = "+this.page);
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
 
       loadAlunni$.subscribe(val => 
         {
-          // var caller_page = this.route.snapshot.queryParams["page"];
-          // var caller_size = this.route.snapshot.queryParams["size"];
-          // var caller_filter = this.route.snapshot.queryParams["filter"];
-          // var caller_sortField = this.route.snapshot.queryParams["sortField"];
-          // var caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
-          
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort;
+          this.storedFilterPredicate = this.matDataSource.filterPredicate;
           this.matDataSource.filterPredicate = this.createFilter();
-
-          // if(caller_page != undefined ){
-          //   if (caller_sortDirection) {
-          //     this.sort.sort(({ id: caller_sortField, start: caller_sortDirection}) as MatSortable);
-          //   }
-          //   this.paginator.pageIndex = caller_page;
-          //   this.paginator.pageSize = caller_size;
-          //   this.filterInput.nativeElement.value = caller_filter;
-          //   this.matDataSource.filter = caller_filter;
-          // }
         }
       );
     }
@@ -189,7 +177,7 @@ export class AlunniListComponent implements OnInit {
       //console.log ("data", data);
      //viene ritornato un boolean che è la AND di tutte le ricerche, su ogni singolo campo
      //infatti data.nome.toLowerCase().indexOf(searchTerms.nome) !== -1 ritorna truese search.Terms.nome viene trovato nel campo nome di data
-      console.log("data.dtNascita", String(data.dtNascita));
+      
       return String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
         && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
         && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
@@ -215,20 +203,11 @@ export class AlunniListComponent implements OnInit {
     dialogRef.afterClosed()
       .subscribe(
         () => {
-          this.refresh();
+          this.loadData();
     });
   }
 
   openDetail(id:any){
-    //***** Versione Router
-    // this.router.navigate(["alunni",id], {queryParams:{page: this.paginator.pageIndex,
-    //                                                   size: this.paginator.pageSize,  
-    //                                                   filter: this.filterInput.nativeElement.value,
-    //                                                   sortField: this.matDataSource.sort?.active,
-    //                                                   sortDirection: this.matDataSource.sort?.direction
-    //                                                 }});
-
-    //***** Versione Dialog
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '800px',
@@ -240,12 +219,21 @@ export class AlunniListComponent implements OnInit {
     dialogRef.afterClosed()
       .subscribe(
         () => {
-          this.refresh();
+          this.loadData();
     });
   }
 
   applyFilter(event: Event) {
+    //al SOLO primo carattere devo:
+    //1. resettare il filterpredicate
+    //2. cancellare tutti i filtri
+
     const filterValue = (event.target as HTMLInputElement).value;
+    if (filterValue.length == 1) {
+      //ripristino il filterPredicate iniziale, precedentemente salvato in storedFilterPredicate
+      this.matDataSource.filterPredicate = this.storedFilterPredicate;
+      this.alunniFilterComponent.resetAllInputs();
+    }
     this.matDataSource.filter = filterValue.trim().toLowerCase();
   }
 
@@ -353,7 +341,7 @@ export class AlunniListComponent implements OnInit {
 //         res=>{    
 //           this._snackBar.openFromComponent(SnackbarComponent,
 //             {data: 'Alunno ' + element.nome + ' '+ element.cognome + ' cancellato', panelClass: ['red-snackbar'] });
-//             this.refresh();
+//             this.loadData();
 //         },
 //         err=> (
 //             console.log("ERRORE")
