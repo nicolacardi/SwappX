@@ -1,5 +1,5 @@
 import { Component, Input, OnInit} from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 
 @Component({
@@ -22,12 +22,25 @@ export class AlunniFilterComponent implements OnInit {
   emailFilter = new FormControl('');
   telefonoFilter = new FormControl('');
 
+
   constructor() {}
 
   ngOnInit() {
+
+    //ad ogni modifica del form vado a vedere SE il FilterPredicate è "l'altro".
+    //Se lo è lo reimposto.
+    // this.form.valueChanges
+    // .subscribe (
+    //   ()=> {
+        
+    //     if (this.alunniList.matDataSource.filterPredicate == this.alunniList.storedFilterPredicate)
+    //     this.alunniList.matDataSource.filterPredicate = this.alunniList.createFilter();}
+    // )
+
     this.nomeFilter.valueChanges
     .subscribe(
       val => {
+        this.resetMainFilter();
         this.alunniList.filterValues.nome = val.toLowerCase();
         this.alunniList.matDataSource.filter = JSON.stringify(this.alunniList.filterValues);
       }
@@ -36,6 +49,7 @@ export class AlunniFilterComponent implements OnInit {
     this.cognomeFilter.valueChanges
     .subscribe(
       val => {
+        this.resetMainFilter();
         this.alunniList.filterValues.cognome = val.toLowerCase();
         this.alunniList.matDataSource.filter = JSON.stringify(this.alunniList.filterValues);
       }
@@ -44,6 +58,7 @@ export class AlunniFilterComponent implements OnInit {
     this.annoNascitaFilter.valueChanges
     .subscribe(
       val => {
+        this.resetMainFilter();
         this.alunniList.filterValues.annoNascita = val.toLowerCase();
         this.alunniList.matDataSource.filter = JSON.stringify(this.alunniList.filterValues);
       }
@@ -52,6 +67,10 @@ export class AlunniFilterComponent implements OnInit {
     this.indirizzoFilter.valueChanges
     .subscribe(
       val => {
+        this.resetMainFilter();
+        if (this.alunniList.matDataSource.filterPredicate == this.alunniList.storedFilterPredicate)
+        {this.alunniList.matDataSource.filterPredicate = this.alunniList.createFilter()};
+
         this.alunniList.filterValues.indirizzo = val.toLowerCase();
         this.alunniList.matDataSource.filter = JSON.stringify(this.alunniList.filterValues);
       }
@@ -60,6 +79,7 @@ export class AlunniFilterComponent implements OnInit {
     this.comuneFilter.valueChanges
     .subscribe(
       val => {
+        this.resetMainFilter();
         this.alunniList.filterValues.comune = val.toLowerCase();
         this.alunniList.matDataSource.filter = JSON.stringify(this.alunniList.filterValues);
       }
@@ -68,6 +88,7 @@ export class AlunniFilterComponent implements OnInit {
     this.provFilter.valueChanges
     .subscribe(
       val => {
+        this.resetMainFilter();
         this.alunniList.filterValues.prov = val.toLowerCase();
         this.alunniList.matDataSource.filter = JSON.stringify(this.alunniList.filterValues);
       }
@@ -76,6 +97,7 @@ export class AlunniFilterComponent implements OnInit {
     this.emailFilter.valueChanges
     .subscribe(
       val => {
+        this.resetMainFilter();
         this.alunniList.filterValues.email = val.toLowerCase();
         this.alunniList.matDataSource.filter = JSON.stringify(this.alunniList.filterValues);
       }
@@ -84,6 +106,7 @@ export class AlunniFilterComponent implements OnInit {
     this.telefonoFilter.valueChanges
     .subscribe(
       val => {
+        this.resetMainFilter();
         this.alunniList.filterValues.telefono = val.toLowerCase();
         this.alunniList.matDataSource.filter = JSON.stringify(this.alunniList.filterValues);
       }
@@ -91,14 +114,22 @@ export class AlunniFilterComponent implements OnInit {
 
   }
 
+  resetMainFilter() {
+    if (this.alunniList.matDataSource.filterPredicate == this.alunniList.storedFilterPredicate)
+    {
+    this.alunniList.matDataSource.filter = ''; 
+    this.alunniList.filterInput.nativeElement.value = '';
+    this.alunniList.matDataSource.filterPredicate = this.alunniList.createFilter()};  
+  }
+
   resetAllInputs() {
-    this.nomeFilter.setValue('');
-    this.cognomeFilter.setValue('');
-    this.indirizzoFilter.setValue('');
-    this.comuneFilter.setValue('');
-    this.provFilter.setValue('');
-    this.emailFilter.setValue('');
-    this.telefonoFilter.setValue('');
+    this.nomeFilter.setValue('', {emitEvent:false});
+    this.cognomeFilter.setValue('', {emitEvent:false});
+    this.indirizzoFilter.setValue('', {emitEvent:false});
+    this.comuneFilter.setValue('', {emitEvent:false});
+    this.provFilter.setValue('', {emitEvent:false});
+    this.emailFilter.setValue('', {emitEvent:false});
+    this.telefonoFilter.setValue('', {emitEvent:false});
     
   }
 

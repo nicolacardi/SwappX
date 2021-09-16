@@ -156,11 +156,11 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
           //setTimeout( () => { this.idClasse = this.selectedRowIndex }, 100 );
           // this.showChild = false;
           
-          this.alunnilist.refresh()
+          this.alunnilist.loadData()
           //   setTimeout(() => {
           //      this.showChild = true
           //    }, 100);
-          //this.alunnilist.refresh(); //NON FUNZIONA NEMMENO QUESTO!!!
+          //this.alunnilist.loadData(); //NON FUNZIONA NEMMENO QUESTO!!!
           //this.idClasse = 17;
           //this.refresh(this.form.value.selectAnnoScolastico);
           //this.matDataSource.data = this.matDataSource.data;
@@ -195,12 +195,12 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
               this.svcClassiSezioniAnniAlunni.deleteClasseSezioneAnnoAlunno(this.idClasse , val.id)
                 .subscribe(()=>{
                     //console.log("classi-dashboard.component.ts - removeAlunnoFromClasse: iscrizione di "+val.id+ " a "+this.idClasse + " rimossa" ); 
-                    //this.alunnilist.refresh();
+                    //this.alunnilist.loadData();
                     //this.alunnilist.resetSelections();
                 })
             }); 
             //AS: spostato qua per evitare che faccia n refresh, solo che bisogna verificare la sync
-            this.alunnilist.refresh();
+            this.alunnilist.loadData();
             this.alunnilist.resetSelections();
           }
       })

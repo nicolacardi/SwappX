@@ -12,10 +12,10 @@
     <mat-drawer position="end" #end class="rightSidenav"  [mode]="'side'">
         <!-- <mat-icon class="closeIcon pointer" (click)="end.close()">close</mat-icon> -->
         <!-- app alunni filter deve dialogare con il suo "sibling" app alunni list, allora metto un riferimento (#appalunnilist) e passo una variabile in input a app-alunni-filter -->
-        <app-alunni-filter [alunniList] = "appalunnilist"></app-alunni-filter>    
+        <app-alunni-filter [alunniList] = "appalunnilist" #appalunnifilter></app-alunni-filter>    
     </mat-drawer>
 
     <mat-drawer-content>
-        <app-alunni-list #appalunnilist></app-alunni-list>
+        <app-alunni-list [alunniFilterComponent] = "appalunnifilter" #appalunnilist></app-alunni-list>
     </mat-drawer-content>
 </mat-drawer-container>
