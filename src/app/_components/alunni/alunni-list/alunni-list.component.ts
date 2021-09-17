@@ -75,7 +75,8 @@ export class AlunniListComponent implements OnInit {
     comune: '',
     prov: '',
     email: '',
-    telefono: ''
+    telefono: '',
+    nomeCognomeGenitore: ''
   };
 
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
@@ -145,7 +146,7 @@ export class AlunniListComponent implements OnInit {
       } else {
         //purtroppo passa di qua anche quando sta caricando all'inizio, non ha ancora il numero di pagina (getPage non dà ancora valore)
         //e quindi inizialmente passa di qua comunque
-        obsAlunni$= this.svcAlunni.load();
+        obsAlunni$= this.svcAlunni.loadWithParents();
         console.log("alunni-list.component.ts - this.loadData - caso 3: this.page = "+this.page);
       }
     }
@@ -156,9 +157,11 @@ export class AlunniListComponent implements OnInit {
 
       loadAlunni$.subscribe(val => 
         {
+          console.log(val);
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort;
+          
           this.storedFilterPredicate = this.matDataSource.filterPredicate;
           this.matDataSource.filterPredicate = this.createFilter();
         }
@@ -177,7 +180,29 @@ export class AlunniListComponent implements OnInit {
       //console.log ("data", data);
      //viene ritornato un boolean che è la AND di tutte le ricerche, su ogni singolo campo
      //infatti data.nome.toLowerCase().indexOf(searchTerms.nome) !== -1 ritorna truese search.Terms.nome viene trovato nel campo nome di data
-      
+    
+
+      let foundGenitore : boolean = false;
+      if (Object.values(searchTerms).every(x => x === null || x === '')) {
+        
+        foundGenitore = true;
+      } else {
+        
+        data._Genitori?.forEach(
+          (val: { genitore: { nome: any; cognome: any}; })=>
+        {   
+            //const foundNome = foundGenitore || String(val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1   ;
+            //const foundCognome = foundGenitore || String(val.genitore.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
+            const foundCognomeNome = foundGenitore || String(val.genitore.cognome+" "+val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
+            const foundNomeCognome = foundGenitore || String(val.genitore.nome+" "+val.genitore.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
+            foundGenitore = foundCognomeNome || foundNomeCognome;
+        })
+  
+        //data._Genitori?.forEach((val: { genitore: { nome: any; }; })=>console.log(    String(val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore)    ));
+        //console.log(String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1, searchTerms);
+  
+      }
+
       return String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
         && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
         && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
@@ -186,11 +211,23 @@ export class AlunniListComponent implements OnInit {
         && String(data.prov).toLowerCase().indexOf(searchTerms.prov) !== -1
         //se trova dei valori NULL .toString() va in difficoltà (ce ne sono in telefono e email p.e.) per cui sono passato a String(...)
         && String(data.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
-        && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1;
+        && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
+        && foundGenitore;
+
+      
     }
     return filterFunction;
   }
 
+  concatenaFindGenitori(data: any, searchTerms: any): boolean{
+    let found : boolean;
+    //per ogni genitore trovato vado a concatenare la || di true. Quelli non trovati fanno la || di false quindi non aggiungono niente
+    data._Genitori?.forEach(
+      (val: { genitore: { nome: any; }; })=>
+    (   found = found || String(val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore)  !== -1   ))
+    //alla fine found conterrà true se almeno un genitore viene trovato e false altrimenti
+    return found!;
+  }
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
