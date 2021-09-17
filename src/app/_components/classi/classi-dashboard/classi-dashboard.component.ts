@@ -11,9 +11,9 @@ import { fromEvent, Observable } from 'rxjs';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { FiltriService } from '../../utilities/filtri/filtri.service';
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { NavigationService } from '../../utilities/navigation/navigation.service';
 import { ClassiSezioniAnniAlunniService } from '../classi-sezioni-anni-alunni.service';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { DialogAddComponent } from '../dialog-add/dialog-add.component';
@@ -44,7 +44,7 @@ import { DialogAddComponent } from '../dialog-add/dialog-add.component';
   styleUrls: ['./../classi.css']
 })
 
-export class ClassiDashboardComponent implements OnInit, AfterViewInit {
+export class ClassiDashboardComponent implements OnInit {
   
   public idClasse!:           number;
   public idAnnoScolastico!:   number;
@@ -70,7 +70,7 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
               private svcClassiSezioniAnni:         ClassiSezioniAnniService,
               private svcClassiSezioniAnniAlunni:   ClassiSezioniAnniAlunniService,
               private _loadingService:              LoadingService,
-              private _filtriService:               FiltriService,
+              private _navigationService:           NavigationService,
               public _dialog:                       MatDialog,
               private _jspdf:                       JspdfService
               ) { 
@@ -81,20 +81,18 @@ export class ClassiDashboardComponent implements OnInit, AfterViewInit {
   
 
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this._navigationService.passPage("classiDashboard");
+
     this.loadData(2);
     this.form.controls['selectAnnoScolastico'].valueChanges
     .subscribe(val => {
       this.loadData(val);
       //console.log("classi-dahsboard.component.ts - selectAnnoScolastico.valueChanges : ", val);
     })
-
-    this._filtriService.passPage("classiDashboard");
   }
 
-  ngAfterViewInit () {
-    //this._filtriService.passPage("classiDashboard");
-  }
+
 
   loadData (val :number) {
     let obsClassi$: Observable<CLS_ClasseSezioneAnno[]>;

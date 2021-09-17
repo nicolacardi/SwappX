@@ -46,6 +46,11 @@ background-size: cover;*/
     color: white;
     z-index: 10000;
 }
+
+.mat-toolbar-single-row{
+    padding-left: 8px !important;
+    padding-right: 28px !important;
+}
 .position-fixed{
     position: fixed;
 }
@@ -72,6 +77,11 @@ background-size: cover;*/
 .ml5 {
     margin-left: 5px;
 }
+
+.ml10 {
+    margin-left: 10px;
+}
+
 .ml12 {
     margin-left: 12px;
 }
@@ -115,6 +125,14 @@ background-size: cover;*/
     margin-top: 20px;
 }
 
+.mt50 {
+    margin-top: 50px;
+}
+
+.mt70 {
+    margin-top: 70px;
+}
+
 .mt64 {
     margin-top: 64px;
 }
@@ -147,6 +165,14 @@ background-size: cover;*/
 
 .w90 {
     width: 90%;
+}
+
+.w100 {
+    width: 100%;
+}
+
+.w180px {
+    width: 180px;
 }
 
 .h75 {
@@ -233,12 +259,21 @@ background-size: cover;*/
     width: 100%;
 }
 
-/* Bottone Nuovo record */
+.button-toolbar {
+    /*position: fixed !important;*/
+    position: fixed !important;
+    top: 80px;
+    left: 10px;
+    margin-right: 20px !important;
+    z-index: 1000;
+    background-color: #044D7E !important;
+}
+
 .button-add {
     /*position: fixed !important;*/
     position: fixed !important;
     top: 80px;
-    right: 15px;
+    right: 10px;
     margin-right: 20px !important;
     z-index: 1000;
     background-color: #044D7E !important;
@@ -248,11 +283,13 @@ background-size: cover;*/
     /*position: fixed !important;*/
     position: fixed !important;
     top: 80px;
-    right: 60px;
+    right: 55px;
     margin-right: 20px !important;
     z-index: 1000;
     background-color: #044D7E !important;
 }
+
+
 
 .button-add2 {
     /*position: fixed !important;*/
@@ -363,13 +400,20 @@ in fase di creazione della Dialog addAlunno*/
 }
 
 .rightSidenav {
-    width:  200px;
+    width:  250px;
     background-color: rgba(255,255,255,1);
     color: rgb(10,10,10) !important;
 }
 
 .rightSidenav mat-form-feld{
 font-size: 10px;
+}
+
+.leftSidenav2 {
+    width:  60px;
+    background: transparent url("../src/assets/backgroundglassToolbarVertical.svg") no-repeat;
+    background-size: cover;
+    color: rgb(10,10,10) !important;
 }
 
 mat-nav-list a{
@@ -451,3 +495,4 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 }
 
 
+.material-icons.color_white { color: #FFFFFF; }

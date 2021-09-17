@@ -11,11 +11,10 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { GenitoriService } from '../genitori.service';
 import { GenitoreEditComponent } from '../genitore-edit/genitore-edit.component';
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
-import { FiltriService } from '../../utilities/filtri/filtri.service';
 
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { NavigationService } from '../../utilities/navigation/navigation.service';
 
 //import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
@@ -53,16 +52,16 @@ export class GenitoriListComponent implements OnInit {
                         private router:           Router,
                         public _dialog:           MatDialog, 
                         private _loadingService:  LoadingService,
-                        private _filtriService:    FiltriService
+                        private _navigationService:    NavigationService
                         ) {}
 
   ngOnInit () {
     
-    this._filtriService.passPage("genitoriList");
+    this._navigationService.passPage("genitoriList");
 
     this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn", "nome", "cognome", "telefono", "email","dtNascita"] : ["actionsColumn", "nome", "cognome", "tipo","indirizzo", "telefono", "email","dtNascita"];
 
-    this._filtriService.getAlunno()
+    this._navigationService.getAlunno()
       .subscribe(
         val=>{
         this.idAlunno = val;
@@ -169,8 +168,8 @@ export class GenitoriListComponent implements OnInit {
     this.matMenuTrigger.openMenu(); 
   } 
 
-  openAlunni(id: number) {
-    this._filtriService.passGenitore(id);
+  openAlunni(item: ALU_Genitore) {
+    this._navigationService.passGenitore(item.nome+" "+item.cognome);
     this.router.navigateByUrl("/alunni");
   }
 

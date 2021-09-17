@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { FiltriService } from '../../utilities/filtri/filtri.service';
+import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
+import { NavigationService } from '../../utilities/navigation/navigation.service';
 import { AlunniFilterComponent } from '../alunni-filter/alunni-filter.component';
 import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 
@@ -13,11 +13,16 @@ export class AlunniPageComponent implements OnInit {
 
   @ViewChild(AlunniListComponent) alunniList!: AlunniListComponent; 
   @ViewChild(AlunniFilterComponent) alunniFilterComponent!: AlunniFilterComponent; 
+  
 
-  constructor(private _filtriService:   FiltriService) { }
+  //@ViewChild('sidenav') public drawerFiltriAvanzati!: MatSidenav;
+  @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
+
+  constructor(private _navigationService:  NavigationService) { }
+
 
   ngOnInit(): void {
-    this._filtriService.passPage("alunniList");
+    this._navigationService.passPage("alunniList");
   }
 
   addRecord() {
@@ -33,6 +38,13 @@ export class AlunniPageComponent implements OnInit {
     this.alunniFilterComponent.provFilter.setValue('');
     this.alunniFilterComponent.emailFilter.setValue('');
     this.alunniFilterComponent.telefonoFilter.setValue('');
+
+    this.alunniFilterComponent.nomeCognomeGenitoreFilter.setValue('');
+  }
+
+  openDrawer() {
+    this.drawerFiltriAvanzati.open();
+    console.log ("apriDrawer");
   }
 
 }

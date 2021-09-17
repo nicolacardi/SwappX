@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
@@ -14,8 +14,8 @@ import { AlunniService } from '../alunni.service';
 import { AlunnoEditComponent } from '../alunno-edit/alunno-edit.component';
 
 import { LoadingService } from '../../utilities/loading/loading.service';
-import { FiltriService } from '../../utilities/filtri/filtri.service';
 import { AlunniFilterComponent } from '../alunni-filter/alunni-filter.component';
+import { NavigationService } from '../../utilities/navigation/navigation.service';
 
 
 @Component({
@@ -58,13 +58,13 @@ export class AlunniListComponent implements OnInit {
 
   selection = new SelectionModel<ALU_Alunno>(true, []);   //rappresenta la selezione delle checkbox
 
-  matSortActive!:       string;
-  matSortDirection!:    string;
-  public idGenitore!:   number;
-  public page!:         string;
+  matSortActive!:               string;
+  matSortDirection!:            string;
+  public passedGenitore!:       string;
+  public page!:                 string;
   menuTopLeftPosition =  {x: '0', y: '0'} 
-  idAlunniChecked:      number[] = [];
-  toggleChecks:         boolean = false;
+  idAlunniChecked:              number[] = [];
+  toggleChecks:                 boolean = false;
 
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
   filterValues = {
@@ -87,86 +87,108 @@ export class AlunniListComponent implements OnInit {
   @Input() idClasse!: number;
   @Input() alunniFilterComponent!: AlunniFilterComponent;
 
+  @Output('openDrawer')
+  toggleDrawer = new EventEmitter<number>();
+
   constructor(private svcAlunni:        AlunniService,
-              private route:            ActivatedRoute,
               private router:           Router,
               public _dialog:           MatDialog, 
               private _loadingService:  LoadingService,
-              private _filtriService:   FiltriService
+              private _navigationService:   NavigationService
               ) {
   }
   
+  ngOnChanges() {
+    //mentre classiDashboard ripassa per ngOnChanges quando idClasse gli arriva (è una @Input)
+    //alunniList non ci ripassa.
+    //il problema è che this.page potrebbe essere ancora undefined 
+    //(perchè poi? visto che viene settato sia da alunniPage che da classiDahsboard su ngOnInit come prima cosa?)
+
+
+
+    //ngOnChanges serve perchè quando listAlunni è child di classiDashboard gli viene passato il valore di idClasse
+    // e devo "sentire" in questo modo che deve refreshare
+
+    //if (this.page == 'classiDashboard'  ) {
+
+      //lanciamo loadData SOLO una volta che sia arrivata la this.page.
+      //this.page non arriva, nel caso in cui page = ClassiDashboard
+      //fintanto che la @Input idClasse non è stata settata
+      //se non mettessimo questa if la loadData partirebbe una volta con this.page = undefined
+      //e POI una seconda volta quando idClasse è stato settato e quindi anche this.page: non andrebbe bene
+      this._navigationService.getPage().subscribe(val=>{
+        this.page = val;
+        this.loadData(); 
+        this.toggleChecks = false;
+        this.resetSelections();
+      })
+    //}
+  }
   
   ngOnInit () {
 
-    this._filtriService.getPage().subscribe(val=>{
-      this.page = val;
-      //console.log("alunni-list - ngOnInit getPage: la pagina attuale è: "+val);
-      });
-    
-    if (this.page == "alunniList") 
-      this.displayedColumns =  this.displayedColumnsAlunniList;
-    else 
-      this.displayedColumns =  this.displayedColumnsClassiDashboard;
+    //in ngOnInit mettiamo SOLO le displayedColumn e l'estrazione del Genitore che,
+    // qualora ci fosse nel caso alunniList, va caricato solo su ngOnInit, una sola volta
 
-    if (this.page == "alunniList") {
-      this._filtriService.getGenitore()
-        .subscribe(
-          val=>{
-          this.idGenitore = val;
-          //uno dei tre refresh parte qui: serve quando cambia il filtro idGenitore
-          //console.log("alunni-list.component.ts - ngOnInit chiamata a this.refresh da getGenitore");
-          this.loadData(); 
-      });
-    }
-  }
-
-  ngOnChanges() {
-    //questo refresh vien lanciato due volte
-    //serve perchè quando listAlunni è child di classiDashboard gli viene passato il valore di idClasse
-    // e devo "sentire" in questo modo che deve refreshare
-    //console.log("alunni-list.component.ts - ngOnChanges chiamata a this.refresh ");
-    this.loadData(); 
-    this.toggleChecks = false;
-    this.resetSelections();
-  }
-  
-  loadData () {
-
-    let obsAlunni$: Observable<ALU_Alunno[]>;
-    if (this.page == "classiDashboard") {
-      
-      obsAlunni$= this.svcAlunni.loadByClasse(this.idClasse);
-      console.log("alunni-list.component.ts - this.loadData - caso 1");
-
-    } else {
-      if(this.idGenitore && this.idGenitore != undefined  && this.idGenitore != null && this.idGenitore != 0) {
-        obsAlunni$= this.svcAlunni.loadByGenitore(this.idGenitore);
-        console.log("alunni-list.component.ts - this.loadData - caso 2");
-      } else {
-        //purtroppo passa di qua anche quando sta caricando all'inizio, non ha ancora il numero di pagina (getPage non dà ancora valore)
-        //e quindi inizialmente passa di qua comunque
-        obsAlunni$= this.svcAlunni.loadWithParents();
-        console.log("alunni-list.component.ts - this.loadData - caso 3: this.page = "+this.page);
+      if (this.page == "alunniList") {
+          this.displayedColumns =  this.displayedColumnsAlunniList;
+          this._navigationService.getGenitore()
+          .subscribe(
+            val=>{
+            if (val!= '') {
+              this.passedGenitore = val;
+              this.toggleDrawer.emit();
+              this.alunniFilterComponent.nomeCognomeGenitoreFilter.setValue(val);
+              this.loadData(); 
+            }
+          });
       }
-    }
+      else {//in questo caso this.page è classiDashBoard
+        this.displayedColumns =  this.displayedColumnsClassiDashboard;
+      }
+
+
+    // });
+
+
     
-    if (this.page != undefined && this.page != "" && this.page != null) {
-      console.log("alunni-list.component.ts - loadData : carico di loadAlunni$. this.page = "+this.page);
+  }
+
+
+  loadData () {
+    let obsAlunni$: Observable<ALU_Alunno[]>;
+    console.log ("alunniList.loadData: this.page", this.page)
+
+    if (this.page == "classiDashboard" && this.idClasse != undefined) {
+      obsAlunni$= this.svcAlunni.loadByClasse(this.idClasse);
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
 
       loadAlunni$.subscribe(val => 
         {
-          console.log(val);
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
-          this.matDataSource.sort = this.sort;
-          
+          this.matDataSource.sort = this.sort; 
+        }
+      );
+    } 
+    
+    
+    if (this.page == "alunniList") {
+      obsAlunni$= this.svcAlunni.loadWithParents();
+      const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
+
+      loadAlunni$.subscribe(val => 
+        {
+          this.matDataSource.data = val;
+          this.matDataSource.paginator = this.paginator;
+          this.matDataSource.sort = this.sort; 
           this.storedFilterPredicate = this.matDataSource.filterPredicate;
           this.matDataSource.filterPredicate = this.createFilter();
         }
       );
     }
+    
+
   }
 
 
@@ -198,9 +220,7 @@ export class AlunniListComponent implements OnInit {
             foundGenitore = foundCognomeNome || foundNomeCognome;
         })
   
-        //data._Genitori?.forEach((val: { genitore: { nome: any; }; })=>console.log(    String(val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore)    ));
-        //console.log(String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1, searchTerms);
-  
+
       }
 
       return String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
@@ -213,8 +233,6 @@ export class AlunniListComponent implements OnInit {
         && String(data.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
         && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
         && foundGenitore;
-
-      
     }
     return filterFunction;
   }
@@ -310,7 +328,7 @@ export class AlunniListComponent implements OnInit {
   }
 
   openGenitori(id: number) {
-    this._filtriService.passAlunno(id);
+    this._navigationService.passAlunno(id);
     this.router.navigateByUrl("/genitori");
   }
 
@@ -347,7 +365,7 @@ export class AlunniListComponent implements OnInit {
     this.matDataSource.data.forEach(row => this.selection.deselect(row));
   }
   selectedRow(element: ALU_Alunno) {
-    this.selection.toggle(element); //questa riga è FONDAMENTALE! E' QUELLA CHE POPOLA LA SELECTION.SELECTED
+    this.selection.toggle(element);
     console.log("alunni-list.component.ts - selectedRow: this.getChecked=", this.getChecked());
   }
 
@@ -356,35 +374,3 @@ export class AlunniListComponent implements OnInit {
   }
 }
 
-
-  // RemoveElementFromArray(element: number) {
-  //   this.idAlunniChecked.forEach((value,index)=>{
-  //       if(value==element) this.idAlunniChecked.splice(index,1);
-  //   });
-  // }
-
-
-// deleteDetail(element: any, event: Event){
-  
-//   const dialogRef = this._dialog.open(DialogYesNoComponent, {
-//     width: '320px',
-//     data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
-//   });
-
-//   dialogRef.afterClosed().subscribe(result => {
-//     if(result){
-//       this.svcAlunni.delete(element.id)
-//       .subscribe(
-//         res=>{    
-//           this._snackBar.openFromComponent(SnackbarComponent,
-//             {data: 'Alunno ' + element.nome + ' '+ element.cognome + ' cancellato', panelClass: ['red-snackbar'] });
-//             this.loadData();
-//         },
-//         err=> (
-//             console.log("ERRORE")
-//         )
-//       );
-//     }
-//   });
-//   event.stopPropagation(); 
-// }

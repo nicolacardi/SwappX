@@ -16,7 +16,7 @@ import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 
 import { DialogData, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
-import { FiltriService } from '../../utilities/filtri/filtri.service';
+
 
 @Component({
   selector:     'app-alunno-edit',

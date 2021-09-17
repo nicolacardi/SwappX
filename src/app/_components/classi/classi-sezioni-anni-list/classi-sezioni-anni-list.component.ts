@@ -13,8 +13,8 @@ import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 //import { AlunnoDetailsComponent } from '../-details/alunno-details.component';
 
 import { LoadingService } from '../../utilities/loading/loading.service';
-import { FiltriService } from '../../utilities/filtri/filtri.service';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { NavigationService } from '../../utilities/navigation/navigation.service';
 
 @Component({
   selector: 'app-classi-list',
@@ -58,12 +58,12 @@ export class ClassiSezioniAnniListComponent implements OnInit {
               private router:           Router,
               public _dialog:           MatDialog, 
               private _loadingService:  LoadingService,
-              private _filtriService:   FiltriService
+              private _navigationService:   NavigationService
               ) {}
   
   ngOnInit () {
 
-    this._filtriService.passPage("classiSezioniAnniList");
+    this._navigationService.passPage("classiSezioniAnniList");
 
 
     this.displayedColumns = (window.innerWidth <= 800) ? ["actionsColumn",
@@ -89,7 +89,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
     });
     */
 
-    this._filtriService.getAnnoScolastico()
+    this._navigationService.getAnnoScolastico()
     .subscribe(
       val=>{
       this.idAnnoScolastico = val;

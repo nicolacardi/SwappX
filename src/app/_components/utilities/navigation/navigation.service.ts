@@ -6,7 +6,7 @@ import { ALU_Alunno } from "src/app/_models/ALU_Alunno";
 @Injectable({
     providedIn: 'root'
   })
-export class FiltriService {
+export class NavigationService {
 
     private pageSubject = new BehaviorSubject<string>('');
     pageObs$: Observable<string> = this.pageSubject.asObservable();
@@ -31,10 +31,10 @@ export class FiltriService {
     }
 
 
-    private GenitoreSubject = new BehaviorSubject<number>(0);
-    GenitoreObs$: Observable<number> = this.GenitoreSubject.asObservable();
+    private GenitoreSubject = new BehaviorSubject<string>('');
+    GenitoreObs$: Observable<string> = this.GenitoreSubject.asObservable();
     
-    passGenitore(data: number) {
+    passGenitore(data: string) {
         this.GenitoreSubject.next(data);
     }
 

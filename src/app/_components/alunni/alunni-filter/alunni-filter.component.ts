@@ -132,6 +132,8 @@ export class AlunniFilterComponent implements OnInit {
     this.provFilter.setValue('', {emitEvent:false});
     this.emailFilter.setValue('', {emitEvent:false});
     this.telefonoFilter.setValue('', {emitEvent:false});
+
+    this.nomeCognomeGenitoreFilter.setValue('', {emitEvent:false});
   }
 
   

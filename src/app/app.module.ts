@@ -17,7 +17,7 @@ import { DialogOkComponent } from './_components/utilities/dialog-ok/dialog-ok.c
 import { SnackbarComponent } from './_components/utilities/snackbar/snackbar.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { LoadingComponent } from './_components/utilities/loading/loading.component';
-import { FiltriComponent } from './_components/utilities/filtri/filtri.component';
+
 
 import { AlunniListComponent } from './_components/alunni/alunni-list/alunni-list.component';
 import { AlunnoEditComponent } from './_components/alunni/alunno-edit/alunno-edit.component';
@@ -43,6 +43,7 @@ import { RettaEditComponent } from './_components/pagamenti/retta-edit/retta-edi
 import { RettameseEditComponent } from './_components/pagamenti/rettamese-edit/rettamese-edit.component';
 import { RettapagamentoEditComponent } from './_components/pagamenti/rettapagamento-edit/rettapagamento-edit.component';
 import { AlunniFilterComponent } from './_components/alunni/alunni-filter/alunni-filter.component';
+import { ToolbarComponent } from './_components/alunni/toolbar/toolbar.component';
 
 
 @NgModule({
@@ -58,7 +59,6 @@ import { AlunniFilterComponent } from './_components/alunni/alunni-filter/alunni
     DialogOkComponent,
     SnackbarComponent,
     LoadingComponent,
-    FiltriComponent,
     ClassiSezioniAnniListComponent,
     ClasseSezioneAnnoDetailComponent,
     ClassiDashboardComponent,
@@ -73,7 +73,8 @@ import { AlunniFilterComponent } from './_components/alunni/alunni-filter/alunni
     RettaEditComponent,
     RettameseEditComponent,
     RettapagamentoEditComponent,
-    AlunniFilterComponent
+    AlunniFilterComponent,
+    ToolbarComponent
 
 
   ],
