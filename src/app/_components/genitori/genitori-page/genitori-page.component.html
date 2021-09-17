@@ -12,8 +12,8 @@
 
 <mat-drawer-container [hasBackdrop]="false" style="min-height: 91%">
     <mat-drawer position="end" #sidenav class="rightSidenav"  [mode]="'side'">
-        <!-- app alunni filter deve dialogare con il suo "sibling" app alunni list, allora metto un riferimento (#appalunnilist) e passo una variabile in input a app-alunni-filter -->
-        <app-alunni-filter [alunniListComponent] = "appalunnilist" #appalunnifilter></app-alunni-filter>    
+        <!-- app alunni filter deve dialogare con il suo "sibling" app genitori list, allora metto un riferimento (#appgenitorilist) e passo una variabile in input a app-genitori-filter -->
+        <app-genitori-filter [genitoriListComponent] = "appgenitorilist" #appgenitorifilter></app-genitori-filter>    
     </mat-drawer>
 
     <mat-drawer position="start" #sidenav2 class="leftSidenav2"  [mode]="'side'">
@@ -21,9 +21,7 @@
     </mat-drawer>
 
     <mat-drawer-content>
-        <app-alunni-list [alunniFilterComponent] = "appalunnifilter" 
-                         #appalunnilist  
-                         (openDrawer) = "openDrawer()">
-        </app-alunni-list>
+        <app-genitori-list [genitoriFilterComponent] = "appgenitorifilter" #appgenitorilist (openDrawer) = "openDrawer()">
+        </app-genitori-list>
     </mat-drawer-content>
 </mat-drawer-container>

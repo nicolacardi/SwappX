@@ -42,26 +42,30 @@ import { RettameseEditComponent } from './_components/pagamenti/rettamese-edit/r
 import { RettapagamentoEditComponent } from './_components/pagamenti/rettapagamento-edit/rettapagamento-edit.component';
 import { AlunniFilterComponent } from './_components/alunni/alunni-filter/alunni-filter.component';
 import { ToolbarComponent } from './_components/alunni/toolbar/toolbar.component';
+import { GenitoriPageComponent } from './_components/genitori/genitori-page/genitori-page.component';
+import { GenitoriFilterComponent } from './_components/genitori/genitori-filter/genitori-filter.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    
+    AlunniPageComponent,
     AlunniListComponent,
     AlunnoEditComponent,
+    AlunniFilterComponent,
 
+    GenitoriPageComponent,
     GenitoriListComponent,
     GenitoreEditComponent,
+    GenitoriFilterComponent,
 
-    DialogYesNoComponent,
-    DialogOkComponent,
-    SnackbarComponent,
-    LoadingComponent,
+
     ClassiSezioniAnniListComponent,
     ClasseSezioneAnnoDetailComponent,
     ClassiDashboardComponent,
-    DialogAddComponent,
-    AlunniPageComponent,
+    
+    
     RettePageComponent,
     PagamentiListComponent,
     PagamentiPageComponent,
@@ -69,9 +73,14 @@ import { ToolbarComponent } from './_components/alunni/toolbar/toolbar.component
     RettaEditComponent,
     RettameseEditComponent,
     RettapagamentoEditComponent,
-    AlunniFilterComponent,
-    ToolbarComponent
+    
+    ToolbarComponent,
 
+    DialogAddComponent,
+    DialogYesNoComponent,
+    DialogOkComponent,
+    SnackbarComponent,
+    LoadingComponent,
 
   ],
   imports: [

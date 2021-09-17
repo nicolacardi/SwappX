@@ -19,10 +19,10 @@ export class NavigationService {
         return this.pageObs$;
     }
 
-    private AlunnoSubject = new BehaviorSubject<number>(0);
-    AlunnoObs$: Observable<number> = this.AlunnoSubject.asObservable();
+    private AlunnoSubject = new BehaviorSubject<string>('');
+    AlunnoObs$: Observable<string> = this.AlunnoSubject.asObservable();
     
-    passAlunno(data: number) {
+    passAlunno(data: string) {
         this.AlunnoSubject.next(data);
     }
 

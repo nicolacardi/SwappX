@@ -1,11 +1,25 @@
-    <h1 class="page-title">Elenco Alunni</h1>
+<!-- 
 
+    Rev.0 - 28/08/2021
+    Lista Alunni
+
+-->
+
+
+
+<h1 class="page-title">Elenco Alunni</h1>
 
     <!-- **************************   FILTER   ******************* -->
     <mat-form-field class="ml20 topZIndex">
         <mat-label>Filtro</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
     </mat-form-field>
+    
+    <button mat-icon-button (click)="toggleAttivi()" class="topZIndex">
+        <mat-icon *ngIf="swSoloAttivi" color="primary">check_box</mat-icon>
+        <mat-icon *ngIf="!swSoloAttivi" color="primary">check_box_outline_blank</mat-icon>
+        Solo Alunni Attivi
+    </button>
 
     <!-- **************************   PAGINATOR   ******************* -->
     <mat-paginator class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>
@@ -23,7 +37,6 @@
         <ng-container matColumnDef="actionsColumn">
             <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
             <mat-cell  *matCellDef="let element;  let j = index;"> 
-                
                 <img (click)="openDetail(element.id)" class="iconaMenu pointer" src="../assets/alunno_edit.svg">
             </mat-cell>
         </ng-container>

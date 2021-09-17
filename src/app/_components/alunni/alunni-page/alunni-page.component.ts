@@ -14,12 +14,10 @@ export class AlunniPageComponent implements OnInit {
   @ViewChild(AlunniListComponent) alunniList!: AlunniListComponent; 
   @ViewChild(AlunniFilterComponent) alunniFilterComponent!: AlunniFilterComponent; 
   
-
   //@ViewChild('sidenav') public drawerFiltriAvanzati!: MatSidenav;
   @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
 
   constructor(private _navigationService:  NavigationService) { }
-
 
   ngOnInit(): void {
     this._navigationService.passPage("alunniList");
@@ -38,13 +36,11 @@ export class AlunniPageComponent implements OnInit {
     this.alunniFilterComponent.provFilter.setValue('');
     this.alunniFilterComponent.emailFilter.setValue('');
     this.alunniFilterComponent.telefonoFilter.setValue('');
-
     this.alunniFilterComponent.nomeCognomeGenitoreFilter.setValue('');
   }
 
   openDrawer() {
     this.drawerFiltriAvanzati.open();
-    console.log ("apriDrawer");
+    //console.log ("apriDrawer");
   }
-
 }

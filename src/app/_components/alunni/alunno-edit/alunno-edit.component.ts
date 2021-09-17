@@ -4,7 +4,6 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { Observable } from 'rxjs';
-
 import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -26,7 +25,6 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 
 export class AlunnoEditComponent implements OnInit {
 
-  //idAlunno!:                  number;
   alunno$!:                    Observable<ALU_Alunno>;
 
   form! :                     FormGroup;
@@ -143,8 +141,6 @@ export class AlunnoEditComponent implements OnInit {
     )
   }
 
-  //#region ----- Funzioni -------
-
   save(){
 
     if (this.form.controls['id'].value == null) 
@@ -172,32 +168,6 @@ export class AlunnoEditComponent implements OnInit {
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
   }
 
-  //NON PIU' UTILIZZATA IN QUANTO ORA SI USA SOLO COME DIALOG
-  // back(){
-  //   if (this.form.dirty) {
-  //     const dialogRef = this._dialog.open(DialogYesNoComponent, {
-  //       width: '320px',
-  //       data: {titolo: "ATTENZIONE", sottoTitolo: "Dati modificati: si conferma l'uscita?"}
-  //     });
-  //     dialogRef.afterClosed().subscribe(result => {
-  //       if(!result) return;
-  //       else this.navigateBack();
-  //     });
-  //   } else {
-  //     this.navigateBack();
-  //   }   
-  // }
-  //NON PIU' UTILIZZATA IN QUANTO ORA SI USA SOLO COME DIALOG
-  // navigateBack(){
-  //   this.router.navigate(["alunni"], {queryParams:{
-  //     page: this.caller_page,
-  //     size: this.caller_size,
-  //     filter: this.caller_filter,
-  //     sortField: this.caller_sortField,
-  //     sortDirection: this.caller_sortDirection
-  //    }});
-  // }
-
   delete(){
 
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
@@ -224,7 +194,6 @@ export class AlunnoEditComponent implements OnInit {
       }
     });
   }
-  //#endregion
 
   popolaProv(prov: string, cap: string) {
     this.form.controls['prov'].setValue(prov);
@@ -241,5 +210,34 @@ export class AlunnoEditComponent implements OnInit {
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
     this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 3;
   }
+
+//#region FUNZIONI NON PIU' UTILIZZATE IN QUANTO ORA SI USA SOLO COME DIALOG
+
+  // back(){
+  //   if (this.form.dirty) {
+  //     const dialogRef = this._dialog.open(DialogYesNoComponent, {
+  //       width: '320px',
+  //       data: {titolo: "ATTENZIONE", sottoTitolo: "Dati modificati: si conferma l'uscita?"}
+  //     });
+  //     dialogRef.afterClosed().subscribe(result => {
+  //       if(!result) return;
+  //       else this.navigateBack();
+  //     });
+  //   } else {
+  //     this.navigateBack();
+  //   }   
+  // }
+  //NON PIU' UTILIZZATA IN QUANTO ORA SI USA SOLO COME DIALOG
+  // navigateBack(){
+  //   this.router.navigate(["alunni"], {queryParams:{
+  //     page: this.caller_page,
+  //     size: this.caller_size,
+  //     filter: this.caller_filter,
+  //     sortField: this.caller_sortField,
+  //     sortDirection: this.caller_sortDirection
+  //    }});
+  // }
+
+  //#endregion
 }
 

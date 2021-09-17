@@ -1,13 +1,11 @@
+<!-- 
 
-    <h1 class="page-title">Elenco Genitori <mat-icon *ngIf="idAlunno" color="warn" title="filtri avanzati applicati">filter_alt</mat-icon></h1>
+    Rev.0 - 18/09/2021
+    Lista Genitori
 
-    <button mat-mini-fab aria-label="Aggiungi Alunno" class="button-add" color="primary" (click)="addRecord()">
-        <mat-icon>add</mat-icon>
-    </button>
+-->
 
-    <!-- <app-alunno-header [idAlunno]="idAlunno"></app-alunno-header> -->
-
-
+<h1 class="page-title">Elenco Genitori</h1>
 
     <!-- **************************   FILTER   ******************* -->
     <mat-form-field class="ml20 topZIndex">
@@ -15,6 +13,13 @@
         <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
     </mat-form-field>
 
+    <!--
+    <button mat-icon-button (click)="toggleAttivi()" class="topZIndex">
+        <mat-icon *ngIf="swSoloAttivi" color="primary">check_box</mat-icon>
+        <mat-icon *ngIf="!swSoloAttivi" color="primary">check_box_outline_blank</mat-icon>
+        Solo Alunni Attivi
+    </button>
+    -->
     <!-- **************************   PAGINATOR   ******************* -->
     <mat-paginator class="transparent" [pageSize]="10" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
 

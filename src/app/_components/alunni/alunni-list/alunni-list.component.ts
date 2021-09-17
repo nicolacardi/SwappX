@@ -8,16 +8,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
+import { map } from 'rxjs/operators';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { AlunniService } from '../alunni.service';
 import { AlunnoEditComponent } from '../alunno-edit/alunno-edit.component';
-
-import { LoadingService } from '../../utilities/loading/loading.service';
 import { AlunniFilterComponent } from '../alunni-filter/alunni-filter.component';
-import { NavigationService } from '../../utilities/navigation/navigation.service';
 import { RettaEditComponent } from '../../pagamenti/retta-edit/retta-edit.component';
 
+import { LoadingService } from '../../utilities/loading/loading.service';
+import { NavigationService } from '../../utilities/navigation/navigation.service';
 
 @Component({
   selector:     'app-alunni-list',
@@ -61,11 +61,13 @@ export class AlunniListComponent implements OnInit {
 
   matSortActive!:               string;
   matSortDirection!:            string;
+
   public passedGenitore!:       string;
   public page!:                 string;
   menuTopLeftPosition =  {x: '0', y: '0'} 
   idAlunniChecked:              number[] = [];
   toggleChecks:                 boolean = false;
+  public swSoloAttivi : boolean = true;
 
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
   filterValues = {
@@ -88,8 +90,7 @@ export class AlunniListComponent implements OnInit {
   @Input() idClasse!: number;
   @Input() alunniFilterComponent!: AlunniFilterComponent;
 
-  @Output('openDrawer')
-  toggleDrawer = new EventEmitter<number>();
+  @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
 
   constructor(private svcAlunni:        AlunniService,
               private router:           Router,
@@ -104,7 +105,6 @@ export class AlunniListComponent implements OnInit {
     //alunniList non ci ripassa.
     //il problema è che this.page potrebbe essere ancora undefined 
     //(perchè poi? visto che viene settato sia da alunniPage che da classiDahsboard su ngOnInit come prima cosa?)
-
 
 
     //ngOnChanges serve perchè quando listAlunni è child di classiDashboard gli viene passato il valore di idClasse
@@ -131,34 +131,27 @@ export class AlunniListComponent implements OnInit {
     //in ngOnInit mettiamo SOLO le displayedColumn e l'estrazione del Genitore che,
     // qualora ci fosse nel caso alunniList, va caricato solo su ngOnInit, una sola volta
 
-      if (this.page == "alunniList") {
-          this.displayedColumns =  this.displayedColumnsAlunniList;
-          this._navigationService.getGenitore()
-          .subscribe(
-            val=>{
-            if (val!= '') {
-              this.passedGenitore = val;
-              this.toggleDrawer.emit();
-              this.alunniFilterComponent.nomeCognomeGenitoreFilter.setValue(val);
-              this.loadData(); 
-            }
-          });
-      }
-      else {//in questo caso this.page è classiDashBoard
-        this.displayedColumns =  this.displayedColumnsClassiDashboard;
-      }
+    if (this.page == "alunniList") {
+        this.displayedColumns =  this.displayedColumnsAlunniList;
 
-
-    // });
-
-
-    
+        this._navigationService.getGenitore().subscribe(
+          val=>{
+          if (val!= '') {
+            this.passedGenitore = val;
+            this.toggleDrawer.emit();
+            this.alunniFilterComponent.nomeCognomeGenitoreFilter.setValue(val);
+            this.loadData(); 
+          }
+        });
+    }
+    else {//in questo caso this.page è classiDashBoard
+      this.displayedColumns =  this.displayedColumnsClassiDashboard;
+    }
   }
-
 
   loadData () {
     let obsAlunni$: Observable<ALU_Alunno[]>;
-    console.log ("alunniList.loadData: this.page", this.page)
+    //console.log ("alunniList.loadData: this.page", this.page)
 
     if (this.page == "classiDashboard" && this.idClasse != undefined) {
       obsAlunni$= this.svcAlunni.loadByClasse(this.idClasse);
@@ -173,9 +166,14 @@ export class AlunniListComponent implements OnInit {
       );
     } 
     
-    
     if (this.page == "alunniList") {
-      obsAlunni$= this.svcAlunni.loadWithParents();
+      if(this.swSoloAttivi){
+        obsAlunni$= this.svcAlunni.loadWithParents()
+          .pipe(map(res=> res.filter((x) => x.ckAttivo == true)));
+      }
+      else
+        obsAlunni$= this.svcAlunni.loadWithParents();
+
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
 
       loadAlunni$.subscribe(val => 
@@ -188,40 +186,30 @@ export class AlunniListComponent implements OnInit {
         }
       );
     }
-    
-
   }
-
 
   createFilter(): (data: any, filter: string) => boolean {
     //la stringa che cerco è 'filter'
-    
+
     let filterFunction = function(data: any, filter: any): boolean {
+    
+     // console.log("filter: " , filter);
+
       //JSON.parse normalizza la stringa e la trasforma in un oggetto javascript
       let searchTerms = JSON.parse(filter);
       //data è uno a uno rappresentato dai record del matDataSource
-      //console.log ("data", data);
      //viene ritornato un boolean che è la AND di tutte le ricerche, su ogni singolo campo
      //infatti data.nome.toLowerCase().indexOf(searchTerms.nome) !== -1 ritorna truese search.Terms.nome viene trovato nel campo nome di data
-    
 
       let foundGenitore : boolean = false;
-      if (Object.values(searchTerms).every(x => x === null || x === '')) {
-        
+      if (Object.values(searchTerms).every(x => x === null || x === '')) 
         foundGenitore = true;
-      } else {
-        
-        data._Genitori?.forEach(
-          (val: { genitore: { nome: any; cognome: any}; })=>
-        {   
-            //const foundNome = foundGenitore || String(val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1   ;
-            //const foundCognome = foundGenitore || String(val.genitore.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
+      else {    
+        data._Genitori?.forEach((val: { genitore: { nome: any; cognome: any}; })=>  {   
             const foundCognomeNome = foundGenitore || String(val.genitore.cognome+" "+val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
             const foundNomeCognome = foundGenitore || String(val.genitore.nome+" "+val.genitore.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
             foundGenitore = foundCognomeNome || foundNomeCognome;
         })
-  
-
       }
 
       return String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
@@ -238,15 +226,17 @@ export class AlunniListComponent implements OnInit {
     return filterFunction;
   }
 
+  //NON DOVREBBE SERVIRE, ELIINARE
   concatenaFindGenitori(data: any, searchTerms: any): boolean{
     let found : boolean;
     //per ogni genitore trovato vado a concatenare la || di true. Quelli non trovati fanno la || di false quindi non aggiungono niente
-    data._Genitori?.forEach(
-      (val: { genitore: { nome: any; }; })=>
-    (   found = found || String(val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore)  !== -1   ))
+    data._Genitori?.forEach((val: { genitore: { nome: any; }; })=>    (   
+        found = found || String(val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore)  !== -1   ))
+    
     //alla fine found conterrà true se almeno un genitore viene trovato e false altrimenti
     return found!;
   }
+
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -317,7 +307,7 @@ export class AlunniListComponent implements OnInit {
                       "prov", 
                       "email", 
                       "telefono", 
-                      "ckAttivo"];;
+                      "ckAttivo"];
   }
 
   onRightClick(event: MouseEvent, element: ALU_Alunno) { 
@@ -329,7 +319,7 @@ export class AlunniListComponent implements OnInit {
   }
 
   openGenitori(id: number) {
-    this._navigationService.passAlunno(id);
+    this._navigationService.passAlunno(id.toString());
     this.router.navigateByUrl("/genitori");
   }
 
@@ -366,21 +356,20 @@ export class AlunniListComponent implements OnInit {
   //non so se serva questo metodo: genera un valore per l'aria-label...
   //forse serve per poi pescare i valori selezionati?
   checkboxLabel(row?: ALU_Alunno): string {
-    if (!row) {
+    if (!row) 
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    else
+      return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
 
   //seleziona/deseleziona tutti i record
   masterToggle() {
     this.toggleChecks = !this.toggleChecks;
 
-    if (this.toggleChecks) {
+    if (this.toggleChecks) 
       this.selection.select(...this.matDataSource.data);
-    } else {
+    else 
       this.resetSelections();
-    }
   }
 
   resetSelections() {
@@ -394,6 +383,11 @@ export class AlunniListComponent implements OnInit {
 
   getChecked() {
     return this.selection.selected;
+  }
+
+  toggleAttivi(){
+    this.swSoloAttivi = !this.swSoloAttivi;
+    this.loadData();
   }
 }
 

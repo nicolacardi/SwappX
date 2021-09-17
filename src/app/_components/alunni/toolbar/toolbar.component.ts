@@ -6,12 +6,10 @@ import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html'
 })
-export class ToolbarComponent implements OnInit {
 
-  constructor(public _dialog:         MatDialog,) { }
+export class ToolbarComponent {
 
-  ngOnInit(): void {
-  }
+  constructor(public _dialog: MatDialog) { }
 
   stampa() {
     this._dialog.open(DialogOkComponent, {
@@ -33,5 +31,4 @@ export class ToolbarComponent implements OnInit {
       data: {titolo: "MOEGHEA!", sottoTitolo: "insomma!"}
     });
   }
-
 }

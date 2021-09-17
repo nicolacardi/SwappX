@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { map} from 'rxjs/operators';
+import { filter, map} from 'rxjs/operators';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
@@ -29,8 +29,8 @@ export class AlunniService {
   }
 
   loadWithParents(): Observable<ALU_Alunno[]>{
-    return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllWithParents');
     //http://213.215.231.4/swappX/api/ALU_Alunni/GetAllWithParents
+      return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllWithParents');
   }
 
   loadAlunno(id: any): Observable<ALU_Alunno>{

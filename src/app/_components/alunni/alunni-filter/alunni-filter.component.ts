@@ -11,7 +11,6 @@ import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 export class AlunniFilterComponent implements OnInit {
 
   @Input() alunniListComponent!: AlunniListComponent;
-
   
   nomeFilter = new FormControl('');
   cognomeFilter = new FormControl('');
@@ -23,7 +22,6 @@ export class AlunniFilterComponent implements OnInit {
   telefonoFilter = new FormControl('');
   
   nomeCognomeGenitoreFilter = new FormControl('');
-
 
   constructor() {}
 
@@ -148,8 +146,4 @@ export class AlunniFilterComponent implements OnInit {
 
     this.nomeCognomeGenitoreFilter.setValue('');
   }
-
-  
-
-  
 }
