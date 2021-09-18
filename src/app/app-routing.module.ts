@@ -11,7 +11,6 @@ import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezi
 import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
 import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-page.component';
 
-import { AlunnoDashboardNewComponent } from './_components/alunni/alunno-dashboard-new/alunno-dashboard-new.component';
 
 import { RettePageComponent } from './_components/pagamenti/rette-page/rette-page.component';
 import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
@@ -24,10 +23,6 @@ const routes: Routes = [
   {
     path: 'alunni/:id',
     component: AlunnoEditComponent
-  },
-  {
-    path: "alunno-dashboardNew",
-    component: AlunnoDashboardNewComponent
   },
   {
     path: "genitori",

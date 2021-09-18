@@ -136,6 +136,19 @@ export class AlunniFilterComponent implements OnInit {
     this.nomeCognomeGenitoreFilter.setValue('', {emitEvent:false});
   }
 
+  resetAllInputsAndClearFilters() {
+    this.nomeFilter.setValue('');
+    this.cognomeFilter.setValue('')
+    this.indirizzoFilter.setValue('');
+    this.annoNascitaFilter.setValue('');
+    this.comuneFilter.setValue('');
+    this.provFilter.setValue('');
+    this.emailFilter.setValue('');
+    this.telefonoFilter.setValue('');
+
+    this.nomeCognomeGenitoreFilter.setValue('');
+  }
+
   
 
   

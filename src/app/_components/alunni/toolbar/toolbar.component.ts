@@ -27,4 +27,11 @@ export class ToolbarComponent implements OnInit {
     });
   }
 
+  email() {
+    this._dialog.open(DialogOkComponent, {
+      width: '320px',
+      data: {titolo: "MOEGHEA!", sottoTitolo: "insomma!"}
+    });
+  }
+
 }

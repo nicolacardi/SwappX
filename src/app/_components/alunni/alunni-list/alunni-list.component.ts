@@ -16,6 +16,7 @@ import { AlunnoEditComponent } from '../alunno-edit/alunno-edit.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { AlunniFilterComponent } from '../alunni-filter/alunni-filter.component';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
+import { RettaEditComponent } from '../../pagamenti/retta-edit/retta-edit.component';
 
 
 @Component({
@@ -331,6 +332,28 @@ export class AlunniListComponent implements OnInit {
     this._navigationService.passAlunno(id);
     this.router.navigateByUrl("/genitori");
   }
+
+  openPagamenti(alunnoID: number){
+
+    let anno = 1; //TODO questa sarà un default da mettere nei parametri
+    const dialogConfig : MatDialogConfig = {
+        panelClass: 'add-DetailDialog',
+        width: '800px',
+        height: '680px',
+        data: {
+          idAlunno: alunnoID,
+          idAnno: anno
+        }
+    };
+
+    const dialogRef = this._dialog.open(RettaEditComponent, dialogConfig);
+    dialogRef.afterClosed()
+      .subscribe(
+        () => {
+          this.loadData();
+    });
+  }
+
 
   //questo metodo ritorna un booleano che dice se sono selezionati tutti i record o no
   //per ora non lo utilizzo

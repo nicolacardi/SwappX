@@ -33,8 +33,6 @@ import { DialogAddComponent } from './_components/classi/dialog-add/dialog-add.c
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomMatPaginatorIntl } from './_components/utilities/paginator-custom/custom-mat-paginator-int';
 import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-page.component';
-import { AlunnoDashboardNewComponent } from './_components/alunni/alunno-dashboard-new/alunno-dashboard-new.component';
-import { ClassiSezioniAnniAlunnoComponent } from './_components/classi/classi-sezioni-anni-alunno/classi-sezioni-anni-alunno.component';
 import { RettePageComponent } from './_components/pagamenti/rette-page/rette-page.component';
 import { PagamentiListComponent } from './_components/pagamenti/pagamenti-list/pagamenti-list.component';
 import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
@@ -64,8 +62,6 @@ import { ToolbarComponent } from './_components/alunni/toolbar/toolbar.component
     ClassiDashboardComponent,
     DialogAddComponent,
     AlunniPageComponent,
-    AlunnoDashboardNewComponent,
-    ClassiSezioniAnniAlunnoComponent,
     RettePageComponent,
     PagamentiListComponent,
     PagamentiPageComponent,

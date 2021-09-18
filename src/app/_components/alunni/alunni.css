@@ -45,9 +45,9 @@ mat-row.detail-row {
     background: #efefef;
 }
 
-.element-row{
+/* .element-row{
     border-bottom-width: 0;
-}
+} */
 
 .element-detail {
     overflow: hidden;
