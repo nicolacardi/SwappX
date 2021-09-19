@@ -159,10 +159,7 @@ p {
     padding-top: 0px !important;
 }
 
-.cellBordered {
-    border-radius: 2px;
-    border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
-}
+
 
 .pagamenti-container {
     height: 300px;
@@ -251,13 +248,4 @@ td {
   }
 
 
-  .frameLabel{
-    position: absolute;
-    left: 10px;
-    background-color: white;
-    padding-left: 5px;
-    padding-right: 5px;
-    font-size: 11px;
-    color: grey;
-    z-index: 1000;
-  }
+

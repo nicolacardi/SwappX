@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { Observable } from 'rxjs';
@@ -15,6 +15,7 @@ import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 
 import { DialogData, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { GenitoreEditComponent } from '../../genitori/genitore-edit/genitore-edit.component';
 
 
 @Component({
@@ -98,8 +99,8 @@ export class AlunnoEditComponent implements OnInit {
     // this.caller_filter = this.route.snapshot.queryParams["filter"];
     // this.caller_sortField = this.route.snapshot.queryParams["sortField"];
     // this.caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
-    this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
-    this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
+    this.breakpoint = (window.innerWidth <= 800) ? 1 : 4;
+    this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 4;
 
     //********************* POPOLAMENTO FORM *******************
     //serve distinguere tra form vuoto e form popolato in arrivo da lista alunni
@@ -207,10 +208,25 @@ export class AlunnoEditComponent implements OnInit {
   }
   
   onResize(event: any) {
-    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
-    this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 3;
+    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
+    this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
   }
 
+  addGenitore(){
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '850px',
+      height: '620px',
+      data: 0
+    };
+
+    const dialogRef = this._dialog.open(GenitoreEditComponent, dialogConfig);
+    dialogRef.afterClosed()
+      .subscribe(
+        () => {
+          this.loadData();
+    });
+  }
 //#region FUNZIONI NON PIU' UTILIZZATE IN QUANTO ORA SI USA SOLO COME DIALOG
 
   // back(){

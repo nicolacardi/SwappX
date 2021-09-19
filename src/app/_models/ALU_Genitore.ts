@@ -1,3 +1,5 @@
+import { ALU_Alunno } from "./ALU_Alunno";
+
 export interface ALU_Genitore {
         id:             number;
         nome:           string;
@@ -21,4 +23,6 @@ export interface ALU_Genitore {
         dtUpd:          string;
         userIns:        number;
         userUpd:        number;
+
+        _Figli:         ALU_Alunno[];
 }

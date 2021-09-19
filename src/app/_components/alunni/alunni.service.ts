@@ -29,12 +29,13 @@ export class AlunniService {
   }
 
   loadWithParents(): Observable<ALU_Alunno[]>{
-    //http://213.215.231.4/swappX/api/ALU_Alunni/GetAllWithParents
       return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllWithParents');
+      //http://213.215.231.4/swappX/api/ALU_Alunni/GetAllWithParents
   }
 
   loadAlunno(id: any): Observable<ALU_Alunno>{
     return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/'+id);
+    //http://213.215.231.4/swappX/api/ALU_Alunni/3
   }
 
   loadAlunnoWithParents(id: any): Observable<ALU_Alunno>{

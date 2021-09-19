@@ -291,7 +291,7 @@ p_displayedColumns: string[] = [
   editRecord(alunno: number, anno: number){
     const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
-        width: '800px',
+        width: '850px',
         height: '680px',
         data: {
           idAlunno: alunno,

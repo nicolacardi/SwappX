@@ -19,18 +19,22 @@ export class GenitoriService {
       return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori');
     //else 
     //  return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllByAlunno/'+idAlunno);
+    //http://213.215.231.4/swappX/api/ALU_Alunni
   }
 
   loadByAlunno(idAlunno: any): Observable<ALU_Genitore[]>{
       return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllByAlunno/'+idAlunno);
+      //http://213.215.231.4/swappX/api/ALU_Genitori/GetAllByAlunno/3
   }
 
   loadWithChildren(): Observable<ALU_Genitore[]>{
     return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllWithChildren');
+    //http://213.215.231.4/swappX/api/ALU_Genitori/GetAllWithChildren
   }
 
   loadGenitore(id: any): Observable<ALU_Genitore>{
     return this.http.get<ALU_Genitore>(environment.apiBaseUrl+'ALU_Genitori/'+id);
+    //http://213.215.231.4/swappX/api/ALU_Genitori/3
   }
   
   //per filtro e paginazione server side (NON USATO)

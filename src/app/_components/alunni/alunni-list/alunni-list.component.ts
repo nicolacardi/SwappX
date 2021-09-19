@@ -69,6 +69,7 @@ export class AlunniListComponent implements OnInit {
   toggleChecks:                 boolean = false;
   public swSoloAttivi : boolean = true;
 
+
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
   filterValues = {
     nome: '',
@@ -131,7 +132,7 @@ export class AlunniListComponent implements OnInit {
     //in ngOnInit mettiamo SOLO le displayedColumn e l'estrazione del Genitore che,
     // qualora ci fosse nel caso alunniList, va caricato solo su ngOnInit, una sola volta
 
-    if (this.page == "alunniList") {
+    if (this.page == "alunniPage") {
         this.displayedColumns =  this.displayedColumnsAlunniList;
 
         this._navigationService.getGenitore().subscribe(
@@ -143,15 +144,15 @@ export class AlunniListComponent implements OnInit {
             this.loadData(); 
           }
         });
-    }
-    else {//in questo caso this.page è classiDashBoard
+    } else {//in questo caso this.page è classiDashBoard
       this.displayedColumns =  this.displayedColumnsClassiDashboard;
     }
+
+
   }
 
   loadData () {
     let obsAlunni$: Observable<ALU_Alunno[]>;
-    //console.log ("alunniList.loadData: this.page", this.page)
 
     if (this.page == "classiDashboard" && this.idClasse != undefined) {
       obsAlunni$= this.svcAlunni.loadByClasse(this.idClasse);
@@ -166,7 +167,7 @@ export class AlunniListComponent implements OnInit {
       );
     } 
     
-    if (this.page == "alunniList") {
+    if (this.page == "alunniPage") {
       if(this.swSoloAttivi){
         obsAlunni$= this.svcAlunni.loadWithParents()
           .pipe(map(res=> res.filter((x) => x.ckAttivo == true)));
@@ -240,7 +241,7 @@ export class AlunniListComponent implements OnInit {
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '800px',
+      width: '850px',
       height: '620px',
       data: 0
     };
@@ -256,7 +257,7 @@ export class AlunniListComponent implements OnInit {
   openDetail(id:any){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '800px',
+      width: '850px',
       height: '620px',
       data: id
     };
@@ -318,8 +319,8 @@ export class AlunniListComponent implements OnInit {
     this.matMenuTrigger.openMenu(); 
   }
 
-  openGenitori(id: number) {
-    this._navigationService.passAlunno(id.toString());
+  openGenitori(item: ALU_Alunno) {
+    this._navigationService.passAlunno(item.nome+" "+item.cognome);
     this.router.navigateByUrl("/genitori");
   }
 
@@ -328,7 +329,7 @@ export class AlunniListComponent implements OnInit {
     let anno = 1; //TODO questa sarà un default da mettere nei parametri
     const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
-        width: '800px',
+        width: '850px',
         height: '680px',
         data: {
           idAlunno: alunnoID,

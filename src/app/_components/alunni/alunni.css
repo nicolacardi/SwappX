@@ -65,3 +65,21 @@ mat-row.detail-row {
   :host ::ng-deep  .filtriAvanzati .mat-form-field {
     height: 40px;
 }
+
+
+:host ::ng-deep .mat-tab-label, :host ::ng-deep.mat-tab-label-active{
+  
+  min-width: 15%!important;
+  padding: 3px!important;
+  
+ }
+
+.genitori-list-container {
+  height: 300px;
+  overflow: auto;
+}
+
+.genitori-container {
+  height: 100px;
+  overflow: auto;
+}

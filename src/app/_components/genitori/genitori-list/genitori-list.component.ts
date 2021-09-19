@@ -122,7 +122,7 @@ export class GenitoriListComponent implements OnInit {
     //     .pipe(map(res=> res.filter((x) => x.ckAttivo == true)));
     // }
     // else
-        obsGenitori$= this.svcGenitori.load();
+        obsGenitori$= this.svcGenitori.loadWithChildren();
 
     /*
     if(this.idAlunno && this.idAlunno != undefined  && this.idAlunno != null && this.idAlunno != 0) {
@@ -164,7 +164,7 @@ export class GenitoriListComponent implements OnInit {
 
     let filterFunction = function(data: any, filter: any): boolean {
     
-     // console.log("filter: " , filter);
+     //console.log("filter: " , filter);
 
       //JSON.parse normalizza la stringa e la trasforma in un oggetto javascript
       let searchTerms = JSON.parse(filter);
@@ -174,9 +174,11 @@ export class GenitoriListComponent implements OnInit {
 
       let foundAlunno : boolean = false;
       if (Object.values(searchTerms).every(x => x === null || x === '')) 
-      foundAlunno = true;
-      else {    
-        data.alunni?.forEach((val: { alunno: { nome: any; cognome: any}; })=>  {   
+        foundAlunno = true;
+      else {
+        console.log(data);
+        data._Figli?.forEach((val: { alunno: { nome: any; cognome: any}; })=>  {
+          console.log("val", val);
             const foundCognomeNome = foundAlunno || String(val.alunno.cognome+" "+val.alunno.nome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1;
             const foundNomeCognome = foundAlunno || String(val.alunno.nome+" "+val.alunno.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1; 
             foundAlunno = foundCognomeNome || foundNomeCognome;
@@ -200,7 +202,7 @@ export class GenitoriListComponent implements OnInit {
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '800px',
+      width: '850px',
       height: '620px',
       data: 0
     };
@@ -225,7 +227,7 @@ export class GenitoriListComponent implements OnInit {
     //***** Versione Dialog
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '800px',
+      width: '850px',
       height: '620px',
       data: id
     };

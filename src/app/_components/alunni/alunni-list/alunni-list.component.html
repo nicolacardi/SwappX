@@ -1,12 +1,3 @@
-<!-- 
-
-    Rev.0 - 28/08/2021
-    Lista Alunni
-
--->
-
-
-
 <h1 class="page-title">Elenco Alunni</h1>
 
     <!-- **************************   FILTER   ******************* -->
@@ -15,11 +6,7 @@
         <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
     </mat-form-field>
     
-    <button mat-icon-button (click)="toggleAttivi()" class="topZIndex">
-        <mat-icon *ngIf="swSoloAttivi" color="primary">check_box</mat-icon>
-        <mat-icon *ngIf="!swSoloAttivi" color="primary">check_box_outline_blank</mat-icon>
-        Solo Alunni Attivi
-    </button>
+
 
     <!-- **************************   PAGINATOR   ******************* -->
     <mat-paginator class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>
@@ -116,7 +103,13 @@
         </ng-container>
 
         <ng-container matColumnDef="ckAttivo">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Attivo</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>
+                Solo alunni attivi<br>
+                <button mat-icon-button (click)="toggleAttivi()" class="topZIndex">
+                    <mat-icon *ngIf="swSoloAttivi" color="primary">visibility_off</mat-icon>
+                    <mat-icon *ngIf="!swSoloAttivi" color="primary">visibility</mat-icon>
+                </button>
+            </mat-header-cell>
             <mat-cell *matCellDef="let element">
                 <mat-checkbox [checked]="element.ckAttivo" color="primary" disabled></mat-checkbox>
             </mat-cell>
@@ -144,7 +137,7 @@
         <ng-template matMenuContent let-item="item"> 
             <mat-label class="rightMenuTitle">{{item.nome | uppercase}} {{item.cognome | uppercase}}</mat-label> 
             <!-- <button mat-menu-item routerLink="/genitori" [queryParams]="{ idAlunno: item.id }">Genitori/Tutori</button>  -->
-            <button mat-menu-item (click)="openGenitori(item.id)">Genitori/Tutori</button> 
+            <button mat-menu-item (click)="openGenitori(item)">Genitori/Tutori</button> 
             <button mat-menu-item>Classi Frequentate</button>
             <button mat-menu-item>Pagelle</button>
             <button mat-menu-item (click)="openPagamenti(item.id)">Quote e Pagamenti</button>

@@ -4,6 +4,7 @@ html, body { height: 100%;
 
 }
 
+
 /*Font vari*/
 body { 
     margin: 0;
@@ -80,7 +81,7 @@ background-size: cover;*/
 }
 
 .ml10 {
-    margin-left: 10px;
+    margin-left: 10px !important;
 }
 
 .ml12 {
@@ -169,6 +170,10 @@ background-size: cover;*/
 }
 
 .w100 {
+    width: 95%;
+}
+
+.w100 {
     width: 100%;
 }
 
@@ -227,7 +232,7 @@ background-size: cover;*/
 }
 
 .form-card {
-    max-width: 600px;
+    /* max-width: 600px; */
     height: 425px;
     margin: 0px auto 10px auto;
     box-shadow: none !important; /*da togliere nel caso di dialog*/
@@ -260,73 +265,64 @@ background-size: cover;*/
     width: 100%;
 }
 
-.button-mini-fab-std {
-    margin-left: 10px !important;
+
+
+.btn {
     z-index: 1000;
     background-color: #044D7E !important;
 }
 
-.button-toolbar {
-    /*position: fixed !important;*/
-    position: fixed !important;
+.btn-addModal {
+    position: absolute !important;
+    top: 20px;
+    right: 10px;
+}
+
+.btn-toolbar {
+    position: absolute !important;
     top: 80px;
     left: 10px;
-    margin-right: 20px !important;
-    z-index: 1000;
-    background-color: #454545 !important;
+    background-color: #626262 !important;
 }
 
-.button-add {
-    /*position: fixed !important;*/
-    position: fixed !important;
+.btn-add {
+    position: absolute !important;
     top: 80px;
-    right: 10px;
-    margin-right: 20px !important;
-    z-index: 1000;
-    background-color: #044D7E !important;
+    right: 30px;
 }
 
-.button-filter {
-    /*position: fixed !important;*/
-    position: fixed !important;
-    top: 80px;
-    right: 55px;
-    margin-right: 20px !important;
-    z-index: 1000;
-    background-color: #044D7E !important;
-}
-
-
-
-.button-add2 {
-    /*position: fixed !important;*/
+.btn-addYellow {
     position: absolute !important;
     left: 10px;
     top: 5px;
-    margin-right: 20px !important;
-    z-index: 10000;
     background-color: #e0b20d !important;
 }
 
-.button-add3 {
-    /*position: fixed !important;*/
+.btn-addRed {
     position: absolute !important;
     left: 60px;
     top: 5px;
-    margin-right: 20px !important;
-    z-index: 10000;
     background-color: #e00d0d !important;
 }
 
-.button-add4 {
-    /*position: fixed !important;*/
+.btn-addBlu {
     position: absolute !important;
     left: 110px;
     top: 5px;
-    margin-right: 20px !important;
-    z-index: 10000;
     background-color: #1221af !important;
 }
+
+.btn-filter {
+    position: absolute !important;
+    top: 80px;
+    right: 75px;
+    z-index: 1000;
+    background-color: #044D7E !important;
+}
+
+
+
+
 
 /*Detail: Gruppo Buttons sovrastanti*/
 .buttonsDetail {
@@ -525,4 +521,29 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 /* padding: 0px 0px 30px 0px; */
 }
 
+
+.border-left {
+    border-left: 1px solid grey;
+}
+
+
+.no-overflowx {
+    overflow-x:hidden;
+}
+
+.frameLabel{
+    position: absolute;
+    left: 10px;
+    background-color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 11px;
+    color: grey;
+    z-index: 1000;
+}
+
+.cellBordered {
+    border-radius: 2px;
+    border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
+}
 

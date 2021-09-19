@@ -166,7 +166,7 @@ export class PagamentiListComponent implements OnInit {
     let anno = this.annoID;
     const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
-        width: '800px',
+        width: '850px',
         height: '680px',
         data: {
           idAlunno: alunnoID,

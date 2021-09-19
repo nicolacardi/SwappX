@@ -20,7 +20,7 @@ export class AlunniPageComponent implements OnInit {
   constructor(private _navigationService:  NavigationService) { }
 
   ngOnInit(): void {
-    this._navigationService.passPage("alunniList");
+    this._navigationService.passPage("alunniPage");
   }
 
   addRecord() {

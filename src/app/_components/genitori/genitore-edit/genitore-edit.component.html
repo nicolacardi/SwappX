@@ -3,31 +3,45 @@
     <mat-card class="form-card">
         <mat-card-content>
             <form *ngIf="(genitore$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
-                <div class="buttonsDetail">
+                <div>
+                    <button mat-mini-fab aria-label="Back" matTooltip="Back" class="btn" 
+                    mat-dialog-close>
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
 
-                    <button mat-stroked-button color="secondary" mat-dialog-close>
+                    <button *ngIf="idGenitore" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
+                    [disabled]= "!form.valid" 
+                    (click)="loadData()" >
+                        <mat-icon>restart_alt</mat-icon>
+                    </button>
+
+                    <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                    [disabled]= "!form.valid" 
+                    (click)="save()" >
+                        <mat-icon>save</mat-icon>
+                    </button>
+
+                    <button *ngIf="idGenitore" mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                    [disabled]= "!form.valid" 
+                    (click)="delete()" >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+
+                    <!-- <button mat-stroked-button color="secondary" mat-dialog-close>
                         <mat-icon>arrow_back</mat-icon>
                         <div class="button-textDetail">
                             back
                         </div>
-                    </button>
-
-                    <!-- <button type="button" *ngIf="idGenitore" mat-stroked-button color="secondary" 
-                        (click)="back()">
-                        <mat-icon>arrow_back</mat-icon>
-                        <div class="button-textDetail">
-                            genitori
-                        </div>
                     </button> -->
 
-                    <button *ngIf="idGenitore" mat-stroked-button color="secondary" 
+                    <!-- <button *ngIf="idGenitore" mat-stroked-button color="secondary" 
                         [disabled]= "!form.valid" 
                         (click)="loadData()">
                         <mat-icon>restart_alt</mat-icon>
                         <div class="button-textDetail">ricarica</div>
-                    </button>
+                    </button> -->
 
-                    <button mat-stroked-button color="secondary" 
+                    <!-- <button mat-stroked-button color="secondary" 
                         [disabled]= "!form.valid" 
                         (click)="save()"><mat-icon>save</mat-icon>
                         <div class="button-textDetail">salva</div>
@@ -38,10 +52,10 @@
                         (click)="delete()">
                         <mat-icon>delete_outline</mat-icon>
                         <div class="button-textDetail">elimina</div>
-                    </button>
+                    </button> -->
                 </div>
 
-                <mat-grid-list [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
+                <mat-grid-list class="mt10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
                     <mat-grid-tile>
                         <mat-form-field>
                             <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome">

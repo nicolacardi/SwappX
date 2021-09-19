@@ -6,3 +6,8 @@
 .genitoriTable .mat-row {
     min-height: 30px;
   }
+
+
+:host ::ng-deep  .filtriAvanzati .mat-form-field {
+    height: 40px;
+}
