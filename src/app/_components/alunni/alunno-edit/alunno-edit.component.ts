@@ -7,16 +7,16 @@ import { Observable } from 'rxjs';
 import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 
-
 import { AlunniService } from 'src/app/_components/alunni/alunni.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
+
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 
 import { DialogData, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { GenitoreEditComponent } from '../../genitori/genitore-edit/genitore-edit.component';
-import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 
 
 @Component({
@@ -232,11 +232,17 @@ export class AlunnoEditComponent implements OnInit {
   addToFamily(genitore: ALU_Genitore) {
     //devo fare una verifica prima della post:
     //per caso è già figlio? In teoria dovremmo aver nascosto il genitore dalla lista da cui pescare, no?
-    console.log(genitore);
     const alunnoID = this.idAlunno;
-    console.log(this.idAlunno);
-    this.alunniSvc.postGenitoreAlunno(genitore.id, this.idAlunno)
+    this.alunniSvc.postGenitoreAlunno(genitore.id, this.idAlunno).subscribe(
+      res=> {
+          //console.log("addToFamily OK");
+      },
+      err=> {
+        //console.log("addToFamily KO");
+      }
+    )
   }
+
 //#region FUNZIONI NON PIU' UTILIZZATE IN QUANTO ORA SI USA SOLO COME DIALOG
 
   // back(){

@@ -137,6 +137,7 @@ export class AlunniService {
     console.log("parentela - post a ALU_GenitoriAlunni",parentela);
 
     return this.http.post( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/' , parentela);
+    
   }
 
 }

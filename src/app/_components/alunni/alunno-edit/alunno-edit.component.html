@@ -3,26 +3,25 @@
         <mat-card-content>
             <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
                 <div class="center">
-                    <button mat-mini-fab aria-label="Back" matTooltip="Back" class="btn" 
-                    mat-dialog-close>
+                    <button mat-mini-fab aria-label="Back" matTooltip="Back" class="btn" mat-dialog-close>
                         <mat-icon>arrow_back</mat-icon>
                     </button>
 
                     <button *ngIf="idAlunno" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
-                    [disabled]= "!form.valid" 
-                    (click)="loadData()" >
+                            [disabled]= "!form.valid" 
+                            (click)="loadData()" >
                         <mat-icon>restart_alt</mat-icon>
                     </button>
 
                     <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-                    [disabled]= "!form.valid" 
-                    (click)="save()" >
+                            [disabled]= "!form.valid" 
+                            (click)="save()" >
                         <mat-icon>save</mat-icon>
                     </button>
 
                     <button *ngIf="idAlunno" mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-                    [disabled]= "!form.valid" 
-                    (click)="delete()" >
+                            [disabled]= "!form.valid" 
+                            (click)="delete()" >
                         <mat-icon>delete</mat-icon>
                     </button>
                     <!-- <button mat-stroked-button color="secondary" mat-dialog-close>
@@ -302,25 +301,19 @@
 
                         </mat-grid-list> -->
                     </mat-tab>
-                    <mat-tab label="Famiglia">
-                        
+
+                    <mat-tab label="Famiglia">    
                         <button mat-mini-fab aria-label="Nuova anagrafica Genitore" matTooltip="Nuova anagrafica Genitore" class= "btn btn-addModal" (click)="addGenitore()">
                             <mat-icon>add</mat-icon>
                         </button>
                         <mat-label class="frameLabel">la famiglia di {{nome.value}} </mat-label>
                         <div class="genitori-container cellBordered mt10">
-                            <app-genitori-list 
-                            [dove]="'alunno-edit-edit'"
-                            [alunnoId]="idAlunno">
-                            </app-genitori-list>
+                            <app-genitori-list [dove]="'alunno-edit-edit'"[alunnoId]="idAlunno"></app-genitori-list>
                         </div>
 
                         <mat-label class="frameLabel">Elenco genitori </mat-label>
                         <div class="genitori-list-container cellBordered mt10">
-                            <app-genitori-list 
-                            [dove]="'alunno-edit-list'"
-                            (addToFamily) = "addToFamily($event)">
-                            </app-genitori-list>
+                            <app-genitori-list [dove]="'alunno-edit-list'" (addToFamily) = "addToFamily($event)"></app-genitori-list>
                         </div>
                     </mat-tab>
                     <mat-tab label="Classi Frequentate">
