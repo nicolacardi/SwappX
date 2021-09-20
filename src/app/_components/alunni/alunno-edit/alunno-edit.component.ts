@@ -16,6 +16,7 @@ import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { DialogData, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { GenitoreEditComponent } from '../../genitori/genitore-edit/genitore-edit.component';
+import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 
 
 @Component({
@@ -226,6 +227,14 @@ export class AlunnoEditComponent implements OnInit {
         () => {
           this.loadData();
     });
+  }
+
+  addToFamily(genitore: ALU_Genitore) {
+    //devo fare una verifica prima della post:
+    //per caso è già figlio? In teoria dovremmo aver nascosto il genitore dalla lista da cui pescare, no?
+    console.log(genitore);
+    console.log(this.idAlunno);
+
   }
 //#region FUNZIONI NON PIU' UTILIZZATE IN QUANTO ORA SI USA SOLO COME DIALOG
 

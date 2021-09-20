@@ -2,7 +2,7 @@
     <mat-card class="form-card">
         <mat-card-content>
             <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
-                <div>
+                <div class="center">
                     <button mat-mini-fab aria-label="Back" matTooltip="Back" class="btn" 
                     mat-dialog-close>
                         <mat-icon>arrow_back</mat-icon>
@@ -312,7 +312,10 @@
 
                         <mat-label class="frameLabel">Elenco genitori </mat-label>
                         <div class="genitori-list-container cellBordered mt10">
-                            <app-genitori-list></app-genitori-list>
+                            <app-genitori-list 
+                            [dove]="'alunno-edit'"
+                            (addToFamily) = "addToFamily($event)">
+                            </app-genitori-list>
                         </div>
                     </mat-tab>
                     <mat-tab label="Classi Frequentate">

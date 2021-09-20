@@ -62,8 +62,6 @@ background-size: cover;*/
     margin-bottom: 20px;
 }
 
-
-
 .ml2 {
     margin-left: 2px;
 }
@@ -189,7 +187,9 @@ background-size: cover;*/
     padding: 0px; 
 }
 
-
+.center {
+    text-align: center;
+}
 
 /*Cursore*/
 .pointer{
@@ -221,7 +221,7 @@ background-size: cover;*/
 
 /*********** FORM MATERIAL ********/
 .data-form {
-    text-align: center;     /*NC*/
+    /* text-align: center;     NC */
     max-width: 800px;
     margin: 0 auto;
 }
@@ -261,9 +261,9 @@ background-size: cover;*/
     }
   }
 
-.form-card mat-form-field {
+/* .form-card mat-form-field {
     width: 100%;
-}
+} */
 
 
 
@@ -547,3 +547,32 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
     border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
 }
 
+
+.mat-column-actionsColumn {
+
+    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+    /* width: 5% !important; */
+
+  }
+
+  .mat-column-email {
+    flex: 0 0 180px !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+    word-break: break-word; /*spezza l'email quando troppo lunga*/
+  }
+
+
+
+  .mat-column-xxx {
+    /* flex: 0 0 3% !important; */
+    /* width: 5% !important; */
+
+    /* white-space: unset !important; */
+    /* overflow-wrap: break-word; */
+    /* word-wrap: break-word; */
+    /* word-break: break-word; */
+  
+    /* -ms-hyphens: auto; */
+    /* -moz-hyphens: auto; */
+    /* -webkit-hyphens: auto; */
+    /* hyphens: auto; mette il segno di a capo*/
+  }

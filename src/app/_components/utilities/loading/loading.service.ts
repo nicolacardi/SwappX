@@ -6,7 +6,7 @@ import { concatMap, finalize, tap } from "rxjs/operators";
     providedIn: 'root'
   })
 export class LoadingService {
-
+    show: boolean =  false;
     private loadingSubject = new BehaviorSubject<boolean>(false)
     loading$: Observable<boolean> = this.loadingSubject.asObservable();
     
@@ -21,18 +21,14 @@ export class LoadingService {
         //il component LoadingComponent è stato caricato in app.component come <loading><loading>
         //e' un component VUOTO che contiene SOLO lo spinner che ha un bell'ngIf su loadingService.loading$ | async
         //loading$ è un BehaviorSubject, quindi un servizio stateful nel quale andiamo a scrivere true o false a seconda
-
+        this.loadingOn();
         return of(null) 
             .pipe(
-                
                 tap(()=> {
-                    //console.log("set loading on");
                     this.loadingOn();
                 }),
-
                 concatMap(() => obs$), // emette lo stesso identico observable di quello che riceve in input ma ha attivato il loading
                 finalize(()=> {
-                    //console.log("set loading off");
                     this.loadingOff()
                 })
             )
@@ -41,10 +37,12 @@ export class LoadingService {
     loadingOn() {
         //console.log("this.loadingSubject - LoadingOn: sta per essere portato a true", this.loadingSubject.getValue());
         this.loadingSubject.next(true);
+
     }
 
     loadingOff() {
         //console.log("this.loadingSubject - LoadingOff: sta per essere portato a false", this.loadingSubject.getValue());
         this.loadingSubject.next(false);
+
     }
 }

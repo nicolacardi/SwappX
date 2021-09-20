@@ -21,7 +21,11 @@
     </mat-drawer>
 
     <mat-drawer-content>
-        <app-genitori-list [genitoriFilterComponent] = "appgenitorifilter" #appgenitorilist (openDrawer) = "openDrawer()">
+        <app-genitori-list 
+        [dove] = "'genitori-page'"
+        [genitoriFilterComponent] = "appgenitorifilter" 
+        (openDrawer) = "openDrawer()"
+        #appgenitorilist >
         </app-genitori-list>
     </mat-drawer-content>
 </mat-drawer-container>

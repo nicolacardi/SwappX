@@ -35,9 +35,7 @@
     <form  [formGroup] = "formRetta" >
         <mat-card class="form-cardRette data-form">
             <mat-card-content>
-                
-
-                <div class="mt10" *ngIf="obsRette$ | async" >
+                <div class="center mt10" *ngIf="obsRette$ | async" >
                     <!-- <mat-form-field class="cellRettaEdit" appearance="outline">
                         <mat-label>anno scolastico</mat-label>
                         <input matInput placeholder="anno scolastico" value="{{anno.annoscolastico}}" readonly>
