@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
 import { MatTableDataSource} from '@angular/material/table';
 import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,6 +15,7 @@ import { GenitoriFilterComponent } from '../genitori-filter/genitori-filter.comp
 
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-genitori-list',
@@ -26,7 +27,8 @@ export class GenitoriListComponent implements OnInit {
   
   matDataSource = new MatTableDataSource<ALU_Genitore>();
   storedFilterPredicate!:       any;
-
+  showPageTitle: boolean = true;
+  showTableRibbon: boolean = true;
 
   displayedColumns: string[] =  [];
   displayedColumnsAlunnoEdit: string[] = [
@@ -71,6 +73,7 @@ export class GenitoriListComponent implements OnInit {
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger;
 
   @Input('dove') dove! :                                      string;
+  @Input('alunnoId') alunnoId! :                              number;
   @Input() genitoriFilterComponent!: GenitoriFilterComponent;
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
@@ -97,7 +100,13 @@ export class GenitoriListComponent implements OnInit {
 
   ngOnInit () {
     console.log("this.dove", this.dove);
-    if (this.dove == "alunno-edit") {
+    if (this.dove == "alunno-edit-list" || this.dove == "alunno-edit-edit") {
+      this.showPageTitle = false;
+    }
+    if (this.dove == "alunno-edit-edit") {
+      this.showTableRibbon = false;
+    }
+    if (this.dove == "alunno-edit-list" || this.dove == "alunno-edit-edit") {
       this.displayedColumns = this.displayedColumnsAlunnoEdit;
     } else {
       this.displayedColumns = this.displayedColumnsGenitoriPage;
@@ -117,6 +126,17 @@ export class GenitoriListComponent implements OnInit {
   loadData () {
     console.log("loadData");
     let obsGenitori$: Observable<ALU_Genitore[]>;
+
+    if(this.dove == "alunno-edit-edit"){
+      console.log("this.alunnoId", this.alunnoId);
+      obsGenitori$= this.svcGenitori.loadWithChildren()
+      .pipe(map(res=> res.filter(gen => gen._Figli.some(y => (y.id == this.alunnoId)))));  //Sembra giusta ma non funziona
+    }
+    else {
+      obsGenitori$= this.svcGenitori.loadWithChildren();
+    }
+
+
     obsGenitori$= this.svcGenitori.loadWithChildren();
     //const loadGenitori$ =this._loadingService.showLoaderUntilCompleted(obsGenitori$);
 

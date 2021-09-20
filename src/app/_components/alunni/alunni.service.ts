@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import { filter, map} from 'rxjs/operators';
 
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { ALU_GenitoreAlunno } from 'src/app/_models/ALU_GenitoreAlunno';
+import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +61,7 @@ export class AlunniService {
   }
 
   post(formData: any): Observable <any>{
+    
     formData.id = 0;
     return this.http.post( environment.apiBaseUrl  + 'ALU_Alunni' , formData);  
   }
@@ -125,5 +128,15 @@ export class AlunniService {
       )
   }
 
+  postGenitoreAlunno (genitoreID: number, alunnoID: number): Observable <any>{
+    //console.log("formData", formData);
+    const parentela = <ALU_GenitoreAlunno>{};
+    parentela.id = 0;
+    parentela.alunnoID = alunnoID;
+    parentela.genitoreID = genitoreID;
+    console.log("parentela - post a ALU_GenitoriAlunni",parentela);
+
+    return this.http.post( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/' , parentela);
+  }
 
 }

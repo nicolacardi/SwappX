@@ -308,12 +308,17 @@
                             <mat-icon>add</mat-icon>
                         </button>
                         <mat-label class="frameLabel">la famiglia di {{nome.value}} </mat-label>
-                        <div class="genitori-container cellBordered mt10"></div>
+                        <div class="genitori-container cellBordered mt10">
+                            <app-genitori-list 
+                            [dove]="'alunno-edit-edit'"
+                            [alunnoId]="idAlunno">
+                            </app-genitori-list>
+                        </div>
 
                         <mat-label class="frameLabel">Elenco genitori </mat-label>
                         <div class="genitori-list-container cellBordered mt10">
                             <app-genitori-list 
-                            [dove]="'alunno-edit'"
+                            [dove]="'alunno-edit-list'"
                             (addToFamily) = "addToFamily($event)">
                             </app-genitori-list>
                         </div>

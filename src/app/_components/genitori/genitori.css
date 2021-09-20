@@ -11,3 +11,7 @@
 :host ::ng-deep  .filtriAvanzati .mat-form-field {
     height: 40px;
 }
+
+.lowTitles {
+    min-height: 30px !important;
+  }

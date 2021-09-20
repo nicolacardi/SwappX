@@ -47,7 +47,7 @@ export class AlunnoEditComponent implements OnInit {
   breakpoint2!:               number;
 
   constructor(public _dialogRef: MatDialogRef<AlunnoEditComponent>,
-              @Inject(MAT_DIALOG_DATA) public idAlunno: DialogData,
+              @Inject(MAT_DIALOG_DATA) public idAlunno: number,
               private fb:             FormBuilder, 
               private route:          ActivatedRoute,
               private router:         Router,
@@ -233,8 +233,9 @@ export class AlunnoEditComponent implements OnInit {
     //devo fare una verifica prima della post:
     //per caso è già figlio? In teoria dovremmo aver nascosto il genitore dalla lista da cui pescare, no?
     console.log(genitore);
+    const alunnoID = this.idAlunno;
     console.log(this.idAlunno);
-
+    this.alunniSvc.postGenitoreAlunno(genitore.id, this.idAlunno)
   }
 //#region FUNZIONI NON PIU' UTILIZZATE IN QUANTO ORA SI USA SOLO COME DIALOG
 
