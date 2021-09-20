@@ -129,8 +129,8 @@ export class GenitoriListComponent implements OnInit {
 
     if(this.dove == "alunno-edit-edit"){
       console.log("this.alunnoId", this.alunnoId);
-      obsGenitori$= this.svcGenitori.loadWithChildren()
-      .pipe(map(res=> res.filter(gen => gen._Figli.some(y => (y.id == this.alunnoId)))));  //Sembra giusta ma non funziona
+      obsGenitori$= this.svcGenitori.loadByAlunno(this.alunnoId);
+      //.pipe(map(res=> res.filter(gen => gen._Figli.some(y => (y.id == this.alunnoId)))));  //BELLISSIMA Sembra giusta ma non funziona
     }
     else {
       obsGenitori$= this.svcGenitori.loadWithChildren();
