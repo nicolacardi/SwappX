@@ -2,8 +2,8 @@ import { Component, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { debounceTime, map, switchMap, tap } from 'rxjs/operators';
+import { Observable, timer } from 'rxjs';
+import { debounceTime, delayWhen, map, switchMap, tap } from 'rxjs/operators';
 import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
@@ -121,8 +121,9 @@ export class RettaEditComponent implements OnInit {
     console.log("idAnno", this.data.idAnno);
 
     this.obsRette$ = this.retteSvc.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
-    //const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
-    this.obsRette$.pipe(
+    const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
+    loadRette$.pipe(
+      //delayWhen(() => timer(5000)),
       map(obj => { 
         //obsRette$ è un Observable<PAG_Retta[]> quindi è un elenco/lista/array di 12 oggetti di tipo PAG_Rette
         //prendo CIASCUNO di questi 12 oggetti e ci popolo vari array di numeri in cui l'indice va da 0 a 11

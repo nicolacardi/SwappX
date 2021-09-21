@@ -163,7 +163,6 @@
     <ng-container matColumnDef="d_SET">
         <mat-header-cell class="center" *matHeaderCellDef >SET</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element"
-            
             >{{element.d_SET}}</mat-cell>
     </ng-container>
 
@@ -300,6 +299,11 @@
     </ng-container>
 
     <ng-container matColumnDef="blank">
+        <mat-header-cell *matHeaderCellDef ></mat-header-cell>
+            <mat-cell class="cellNoBorder" *matCellDef="let element"></mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="blank2">
         <mat-header-cell *matHeaderCellDef ></mat-header-cell>
             <mat-cell class="cellNoBorder" *matCellDef="let element"></mat-cell>
     </ng-container>

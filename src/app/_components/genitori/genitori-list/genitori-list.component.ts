@@ -16,6 +16,7 @@ import { GenitoriFilterComponent } from '../genitori-filter/genitori-filter.comp
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
 import { map } from 'rxjs/operators';
+import { AlunniService } from '../../alunni/alunni.service';
 
 @Component({
   selector: 'app-genitori-list',
@@ -31,23 +32,36 @@ export class GenitoriListComponent implements OnInit {
   showTableRibbon: boolean = true;
 
   displayedColumns: string[] =  [];
-  displayedColumnsAlunnoEdit: string[] = [
-                                  "actionsColumn", 
-                                  "nome", 
-                                  "cognome",
-                                  "telefono", 
-                                  "email",
-                                  "dtNascita",
-                                  "addToFam" 
+  displayedColumnsAlunnoEditFamiglia: string[] = [
+      "actionsColumn", 
+      "nome", 
+      "cognome",
+      "tipo",
+      "telefono", 
+      "email",
+      "dtNascita",
+      "removeFromFam" 
     ];
-  displayedColumnsGenitoriPage = ["actionsColumn", 
-                                  "nome", 
-                                  "cognome", 
-                                  "tipo", 
-                                  "indirizzo", 
-                                  "telefono", 
-                                  "email", 
-                                  "dtNascita" ];
+  displayedColumnsAlunnoEditList: string[] = [
+      "actionsColumn", 
+      "nome", 
+      "cognome",
+      "tipo",
+      "telefono", 
+      "email",
+      "dtNascita",
+      "addToFam" 
+  ];
+  displayedColumnsGenitoriPage = [
+    "actionsColumn", 
+    "nome", 
+    "cognome", 
+    "tipo", 
+    "indirizzo", 
+    "telefono", 
+    "email", 
+    "dtNascita"
+   ];
 
 
   public passedAlunno!:       string;
@@ -78,8 +92,11 @@ export class GenitoriListComponent implements OnInit {
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('addToFamily') addToFamily = new EventEmitter<ALU_Genitore>();
+  @Output('removeFromFamily') removeFromFamily = new EventEmitter<ALU_Genitore>();
 
-  constructor(private svcGenitori:                GenitoriService,
+  constructor(
+                        private svcGenitori:      GenitoriService,
+                        private svcAlunni:        AlunniService,
                         private route:            ActivatedRoute,
                         private router:           Router,
                         public _dialog:           MatDialog, 
@@ -93,24 +110,27 @@ export class GenitoriListComponent implements OnInit {
     //   this.page = val;
     //   this.loadData(); 
     // })
-    if (this.dove != "") {
+    if (this.dove != ''){
       this.loadData();
     }
   }
 
   ngOnInit () {
     console.log("this.dove", this.dove);
-    if (this.dove == "alunno-edit-list" || this.dove == "alunno-edit-edit") {
+
+    if (this.dove == "alunno-edit-list" || this.dove == "alunno-edit-famiglia") {
       this.showPageTitle = false;
     }
-    if (this.dove == "alunno-edit-edit") {
+    if (this.dove == "alunno-edit-famiglia") {
       this.showTableRibbon = false;
     }
-    if (this.dove == "alunno-edit-list" || this.dove == "alunno-edit-edit") {
-      this.displayedColumns = this.displayedColumnsAlunnoEdit;
-    } else {
-      this.displayedColumns = this.displayedColumnsGenitoriPage;
+
+    switch(this.dove) {
+      case 'alunno-edit-list': this.displayedColumns = this.displayedColumnsAlunnoEditList; break;
+      case 'alunno-edit-famiglia': this.displayedColumns = this.displayedColumnsAlunnoEditFamiglia; break;
+      default: this.displayedColumns = this.displayedColumnsGenitoriPage;
     }
+
     console.log (this.displayedColumns);
     this._navigationService.getAlunno().subscribe(
       val=>{
@@ -124,13 +144,13 @@ export class GenitoriListComponent implements OnInit {
   }
 
   loadData () {
-    console.log("loadData");
+    console.log("loadData. this.dove:", this.dove);
     let obsGenitori$: Observable<ALU_Genitore[]>;
 
-    if(this.dove == "alunno-edit-edit"){
-      console.log("this.alunnoId", this.alunnoId);
+    if(this.dove == "alunno-edit-famiglia"){
+      console.log("this.alunnoId sto per caricare solo l'alunno:", this.alunnoId);
       obsGenitori$= this.svcGenitori.loadByAlunno(this.alunnoId);
-      
+
       //.pipe(map(res=> res.filter(gen => gen._Figli.some(y => (y.id == this.alunnoId)))));  //BELLISSIMA Sembra giusta ma non funziona
     }
     else {
@@ -138,10 +158,10 @@ export class GenitoriListComponent implements OnInit {
     }
 
 
-    obsGenitori$= this.svcGenitori.loadWithChildren();
-    //const loadGenitori$ =this._loadingService.showLoaderUntilCompleted(obsGenitori$);
+    
+    const loadGenitori$ =this._loadingService.showLoaderUntilCompleted(obsGenitori$);
 
-    obsGenitori$.subscribe(val => 
+    loadGenitori$.subscribe(val => 
       {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
@@ -262,6 +282,11 @@ export class GenitoriListComponent implements OnInit {
   addToFamilyEmit(item: ALU_Genitore) {
     this.addToFamily.emit(item);
   }
+
+  removeFromFamilyEmit(item: ALU_Genitore) {
+    this.removeFromFamily.emit(item);
+  }
+
 }
 
 

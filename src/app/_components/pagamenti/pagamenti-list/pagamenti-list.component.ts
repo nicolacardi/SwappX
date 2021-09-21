@@ -126,9 +126,9 @@ export class PagamentiListComponent implements OnInit {
       if (!this.annoID) this.annoID = this.form.controls['annoScolastico'].value;
       obsPagamenti$= this.pagamentiSvc.loadByAnno(this.annoID);
     }
-    //const loadPagamenti$ =this._loadingService.showLoaderUntilCompleted(obsPagamenti$);
+    const loadPagamenti$ =this._loadingService.showLoaderUntilCompleted(obsPagamenti$);
 
-    obsPagamenti$.subscribe(val => 
+    loadPagamenti$.subscribe(val => 
       {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;

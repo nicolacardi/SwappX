@@ -70,8 +70,8 @@ export class RetteListComponent implements OnInit {
   c_displayedColumns: string[] = [
 
     "blank",
-    "blank",
-    "blank",
+    "blank2",
+    "blank2",
     "tipoRec_C",
     "c_SET",
     "c_OTT",
@@ -89,8 +89,8 @@ export class RetteListComponent implements OnInit {
 p_displayedColumns: string[] = [
 
     "blank",
-    "blank",
-    "blank",
+    "blank2",
+    "blank2",
     "tipoRec_P",
     "p_SET",
     "p_OTT",
@@ -328,33 +328,33 @@ p_displayedColumns: string[] = [
     if (!this.showD) {
       if (!this.showC){
        this.c_displayedColumns[0] = "blank";
-       this.c_displayedColumns[1] = "blank";
-       this.c_displayedColumns[2] = "blank";
+       this.c_displayedColumns[1] = "blank2";
+       this.c_displayedColumns[2] = "blank2";
        this.p_displayedColumns[0] = "actionsColumn";
        this.p_displayedColumns[1] = "nome";
        this.p_displayedColumns[2] = "cognome";  
        this.d_displayedColumns[0] = "blank";
-       this.d_displayedColumns[1] = "blank";
-       this.d_displayedColumns[2] = "blank";
+       this.d_displayedColumns[1] = "blank2";
+       this.d_displayedColumns[2] = "blank2";
        
       } else {
        this.c_displayedColumns[0] = "actionsColumn";
        this.c_displayedColumns[1] = "nome";
        this.c_displayedColumns[2] = "cognome";
        this.p_displayedColumns[0] = "blank";
-       this.p_displayedColumns[1] = "blank";
-       this.p_displayedColumns[2] = "blank";  
+       this.p_displayedColumns[1] = "blank2";
+       this.p_displayedColumns[2] = "blank2";  
        this.d_displayedColumns[0] = "blank";
-       this.d_displayedColumns[1] = "blank";
-       this.d_displayedColumns[2] = "blank";
+       this.d_displayedColumns[1] = "blank2";
+       this.d_displayedColumns[2] = "blank2";
       }
     } else {
      this.c_displayedColumns[0] = "blank";
-     this.c_displayedColumns[1] = "blank";
-     this.c_displayedColumns[2] = "blank";
+     this.c_displayedColumns[1] = "blank2";
+     this.c_displayedColumns[2] = "blank2";
      this.p_displayedColumns[0] = "blank";
-     this.p_displayedColumns[1] = "blank";
-     this.p_displayedColumns[2] = "blank";
+     this.p_displayedColumns[1] = "blank2";
+     this.p_displayedColumns[2] = "blank2";
      this.d_displayedColumns[0] = "actionsColumn";
      this.d_displayedColumns[1] = "nome";
      this.d_displayedColumns[2] = "cognome";

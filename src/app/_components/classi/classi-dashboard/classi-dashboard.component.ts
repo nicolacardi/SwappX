@@ -1,21 +1,16 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { NONE_TYPE } from '@angular/compiler';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatSelect } from '@angular/material/select';
-import { MatTableDataSource } from '@angular/material/table';
 import jsPDF from 'jspdf';
-import { fromEvent, Observable } from 'rxjs';
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
 import { ClassiSezioniAnniAlunniService } from '../classi-sezioni-anni-alunni.service';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
+import { ClassiSezioniAnniComponent } from '../classi-sezioni-anni/classi-sezioni-anni.component';
 import { DialogAddComponent } from '../dialog-add/dialog-add.component';
 
 @Component({
@@ -47,26 +42,13 @@ import { DialogAddComponent } from '../dialog-add/dialog-add.component';
 export class ClassiDashboardComponent implements OnInit {
   
   public idClasse!:           number;
-  public idAnnoScolastico!:   number;
-
-  matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno>();
+  public idAnno!:             number;
   
   isOpen = true;
-  selectedRowIndex = -1;
-  form! :                     FormGroup;
-  showChild:                  boolean = true;
-
-  displayedColumns: string[] =  [
-                                "descrizione",
-                                "sezione"
-                                ];
-
-  menuTopLeftPosition =  {x: '0', y: '0'} 
-  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
-  @ViewChild('selectAnnoScolastico') selectAnnoScolastico!: MatSelect; 
-  @ViewChild(AlunniListComponent) alunnilist!: AlunniListComponent; 
-
-  constructor(private fb:                           FormBuilder, 
+ 
+  @ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
+  @Input () classeSezioneAnnoId!: number;
+  constructor(
               private svcClassiSezioniAnni:         ClassiSezioniAnniService,
               private svcClassiSezioniAnniAlunni:   ClassiSezioniAnniAlunniService,
               private _loadingService:              LoadingService,
@@ -74,36 +56,10 @@ export class ClassiDashboardComponent implements OnInit {
               public _dialog:                       MatDialog,
               private _jspdf:                       JspdfService
               ) { 
-                this.form = this.fb.group({
-                  selectAnnoScolastico:   [2]
-                })
               }
   
-
-
   ngOnInit() {
     this._navigationService.passPage("classiDashboard");
-
-    this.loadData(2);
-    this.form.controls['selectAnnoScolastico'].valueChanges
-    .subscribe(val => {
-      this.loadData(val);
-      //console.log("classi-dahsboard.component.ts - selectAnnoScolastico.valueChanges : ", val);
-    })
-  }
-
-
-
-  loadData (val :number) {
-    let obsClassi$: Observable<CLS_ClasseSezioneAnno[]>;
-    obsClassi$= this.svcClassiSezioniAnni.loadClassiByAnnoScolastico(val);
-    const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
-    loadClassi$.subscribe(val => 
-      {
-        this.matDataSource.data = val;
-        this.rowclicked(this.matDataSource.data[0]); //seleziona per default la prima riga NON FUNZIONA SEMPRE
-      }
-    );
   }
 
   mouseOver() {
@@ -114,66 +70,31 @@ export class ClassiDashboardComponent implements OnInit {
     this.isOpen = true;
   }
 
-  rowclicked(val: CLS_ClasseSezioneAnno ){
-    if(val!= undefined){
-      this.idClasse = val.id; 
-      this.selectedRowIndex = val.id;
-    }
-    else {
-      this.idClasse = -1; 
-      this.selectedRowIndex = -1;
-    }
-  }
 
   addAlunnoToClasse() {
 
-    if(this.idClasse<0) return;     //AS: fix per evitare errore nel caso non ci sia una classe selezionata
+    if(this.idClasse<0) return;
 
-    //dialogConfig.disableClose = true; //lo farebbe non chiudibile cliccando altrove
     const dialogConfig : MatDialogConfig = {
       panelClass: 'app-full-bleed-dialog',
       width: '400px',
       minHeight: '300px',
       data: {titolo: "Aggiungi nuovo Alunno alla classe", 
-              idAnno: this.form.controls['selectAnnoScolastico'].value,
+              idAnno: this.idAnno,
               idClasse: this.idClasse}
     };
 
     const dialogRef = this._dialog.open(DialogAddComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
         result => {
-          if(result == undefined){        //AS: non so perchè ma la dialog restituisce undefined se faccio save, stringa vuota se annullo, ma così almeno non fa refresh se annullo
-
-          //qui bisogna dire NON alla parte di sx ma alla alunniList che è tempo di fare refresh
-          //questo avviene automaticamente quando si fa clic sulla riga, ma non funziona in questo caso con 
-          //this.rowclicked(this.matDataSource.data[0]);
-          //in quanto sto continuando a passare lo stesso valore, non sto cambiando valore: serve un trigger di refresh di alunnilist
-          //this.idClasse = this.selectedRowIndex
-          //this.idClasse = 0;
-          //this.idClasse = this.selectedRowIndex
-          //setTimeout( () => { this.idClasse = this.selectedRowIndex }, 100 );
-          // this.showChild = false;
-          
-          this.alunnilist.loadData()
-          //   setTimeout(() => {
-          //      this.showChild = true
-          //    }, 100);
-          //this.alunnilist.loadData(); //NON FUNZIONA NEMMENO QUESTO!!!
-          //this.idClasse = 17;
-          //this.refresh(this.form.value.selectAnnoScolastico);
-          //this.matDataSource.data = this.matDataSource.data;
-          //this.idClasse = 16;
-          //this.rowclicked(16);
-          //this.rowclicked(this.matDataSource.data[0]);
-          //this.form.controls['selectAnnoScolastico'].setValue(2);
-          //this.refresh(this.form.value.selectAnnoScolastico); //PARTE MA NON FA IL SUO LAVORO
-          //this.matDataSource.data = this.matDataSource.data;
+          if(result == undefined){          
+          this.alunniListComponent.loadData()
           }
     });
   }
 
   removeAlunnoFromClasse() {
-    const objIdAlunniToRemove = this.alunnilist.getChecked();
+    const objIdAlunniToRemove = this.alunniListComponent.getChecked();
     const selections = objIdAlunniToRemove.length;
     if (selections <= 0) {
       //AS: mettere un messagebox "Selezionare almeno un elemento da cancellare"  ?
@@ -193,13 +114,13 @@ export class ClassiDashboardComponent implements OnInit {
               this.svcClassiSezioniAnniAlunni.deleteClasseSezioneAnnoAlunno(this.idClasse , val.id)
                 .subscribe(()=>{
                     //console.log("classi-dashboard.component.ts - removeAlunnoFromClasse: iscrizione di "+val.id+ " a "+this.idClasse + " rimossa" ); 
-                    //this.alunnilist.loadData();
-                    //this.alunnilist.resetSelections();
+                    this.alunniListComponent.loadData();
+                    //this.alunniListComponent.resetSelections();
                 })
             }); 
             //AS: spostato qua per evitare che faccia n refresh, solo che bisogna verificare la sync
-            this.alunnilist.loadData();
-            this.alunnilist.resetSelections();
+            //this.alunniListComponent.loadData();
+            this.alunniListComponent.resetSelections();
           }
       })
     }
@@ -207,6 +128,27 @@ export class ClassiDashboardComponent implements OnInit {
 
   creaPdf() {
     const tableHeaders = [['id', 'nome', 'cognome', "genere", "dtNascita"]];
-    this._jspdf.creaPdf(this.alunnilist.matDataSource.data, tableHeaders);
+    this._jspdf.creaPdf(this.alunniListComponent.matDataSource.data, tableHeaders);
   }
+
+  promuovi() {
+    this._dialog.open(DialogOkComponent, {
+      width: '320px',
+      data: {titolo: "SEMPRE TROPPO CURIOSO", sottoTitolo: "La gatta frettolosa fece i gattini ciechi"}
+    });
+  }
+
+  annoIdEmitted(annoId: number) {
+    //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
+    //serve per la successiva assegnazione ad una classe...in quanto il modale che va ad aggiungere
+    //le classi ha bisogno di conoscere anche l'idAnno per fare le proprie verifiche
+    //console.log (annoId);
+    this.idAnno = annoId;
+  }
+
+  classeIdEmitted(classeId: number) {
+    console.log (classeId);
+    this.idClasse = classeId;
+  }
+
 }

@@ -26,8 +26,6 @@ import { GenitoriListComponent } from './_components/genitori/genitori-list/geni
 import { GenitoreEditComponent } from './_components/genitori/genitore-edit/genitore-edit.component';
 
 
-import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { ClasseSezioneAnnoDetailComponent } from './_components/classi/classe-sezione-anno-detail/classe-sezione-anno-detail.component';
 import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
 import { DialogAddComponent } from './_components/classi/dialog-add/dialog-add.component';
 import { MatPaginatorIntl } from '@angular/material/paginator';
@@ -44,6 +42,7 @@ import { AlunniFilterComponent } from './_components/alunni/alunni-filter/alunni
 import { ToolbarComponent } from './_components/alunni/toolbar/toolbar.component';
 import { GenitoriPageComponent } from './_components/genitori/genitori-page/genitori-page.component';
 import { GenitoriFilterComponent } from './_components/genitori/genitori-filter/genitori-filter.component';
+import { ClassiSezioniAnniComponent } from './_components/classi/classi-sezioni-anni/classi-sezioni-anni.component';
 
 
 @NgModule({
@@ -61,8 +60,6 @@ import { GenitoriFilterComponent } from './_components/genitori/genitori-filter/
     GenitoriFilterComponent,
 
 
-    ClassiSezioniAnniListComponent,
-    ClasseSezioneAnnoDetailComponent,
     ClassiDashboardComponent,
     
     
@@ -81,6 +78,7 @@ import { GenitoriFilterComponent } from './_components/genitori/genitori-filter/
     DialogOkComponent,
     SnackbarComponent,
     LoadingComponent,
+    ClassiSezioniAnniComponent,
 
   ],
   imports: [

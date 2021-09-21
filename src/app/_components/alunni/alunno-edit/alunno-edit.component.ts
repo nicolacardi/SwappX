@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { Observable } from 'rxjs';
-import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
+import { iif, Observable, of } from 'rxjs';
+import { concatMap, debounceTime, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AlunniService } from 'src/app/_components/alunni/alunni.service';
@@ -17,6 +17,7 @@ import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { DialogData, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { GenitoreEditComponent } from '../../genitori/genitore-edit/genitore-edit.component';
+import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 
 
 @Component({
@@ -46,6 +47,11 @@ export class AlunnoEditComponent implements OnInit {
   breakpoint!:                number;
   breakpoint2!:               number;
 
+
+  @ViewChild('genitoriFamiglia') genitoriFamigliaComponent!: AlunniListComponent; 
+  
+
+  
   constructor(public _dialogRef: MatDialogRef<AlunnoEditComponent>,
               @Inject(MAT_DIALOG_DATA) public idAlunno: number,
               private fb:             FormBuilder, 
@@ -109,9 +115,9 @@ export class AlunnoEditComponent implements OnInit {
     if (this.idAlunno && this.idAlunno + '' != "0") {
 
       const obsAlunno$: Observable<ALU_Alunno> = this.alunniSvc.loadAlunno(this.idAlunno);
-      //const loadAlunno$ = this._loadingService.showLoaderUntilCompleted(obsAlunno$);
+      const loadAlunno$ = this._loadingService.showLoaderUntilCompleted(obsAlunno$);
       //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
-      this.alunno$ = obsAlunno$
+      this.alunno$ = loadAlunno$
       .pipe(
           tap(
             alunno => this.form.patchValue(alunno)
@@ -231,18 +237,47 @@ export class AlunnoEditComponent implements OnInit {
 
   addToFamily(genitore: ALU_Genitore) {
     //devo fare una verifica prima della post:
+    //per caso è già figlio? Per questo faccio una concatMap (la post deve avvenire in sequenza quando la verifica è finita)
+    //ma con una condizione: la iif specifica proprio che SE il risultato della verifica è vuoto allora si può procedere con la post
+    //altrimenti si mette in successione l'observable vuoto (of())
+    
+    this.alunniSvc.getGenitoreAlunno(genitore.id, this.idAlunno)
+    .pipe(
+      concatMap( res => iif (()=> res.length == 0, this.alunniSvc.postGenitoreAlunno(genitore.id, this.idAlunno), of() )
+      )
+    ).subscribe(
+      res=> {
+        this.genitoriFamigliaComponent.loadData();
+      },
+      err=> {
+      }
+    )
+
+    // this.alunniSvc.postGenitoreAlunno(genitore.id, this.idAlunno).subscribe(
+    //   res=> {
+    //       //console.log("addToFamily OK");
+    //       this.genitoriFamigliaComponent.loadData();
+    //   },
+    //   err=> {
+    //     //console.log("addToFamily KO");
+    //   }
+    // )
+  }
+
+  removeFromFamily(genitore: ALU_Genitore) {
+    //devo fare una verifica prima della post:
     //per caso è già figlio? In teoria dovremmo aver nascosto il genitore dalla lista da cui pescare, no?
     const alunnoID = this.idAlunno;
-    this.alunniSvc.postGenitoreAlunno(genitore.id, this.idAlunno).subscribe(
+    this.alunniSvc.deleteGenitoreAlunno(genitore.id, this.idAlunno).subscribe(
       res=> {
           //console.log("addToFamily OK");
+          this.genitoriFamigliaComponent.loadData();
       },
       err=> {
         //console.log("addToFamily KO");
       }
     )
   }
-
 //#region FUNZIONI NON PIU' UTILIZZATE IN QUANTO ORA SI USA SOLO COME DIALOG
 
   // back(){

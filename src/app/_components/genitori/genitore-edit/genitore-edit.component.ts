@@ -100,9 +100,9 @@ export class GenitoreEditComponent implements OnInit {
     if (this.idGenitore && this.idGenitore + '' != "0") {
 
       const obsGenitore$: Observable<ALU_Genitore> = this.genitoriSvc.loadGenitore(this.idGenitore);
-      //const loadGenitore$ = this._loadingService.showLoaderUntilCompleted(obsGenitore$);
+      const loadGenitore$ = this._loadingService.showLoaderUntilCompleted(obsGenitore$);
       //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
-      this.genitore$ = obsGenitore$
+      this.genitore$ = loadGenitore$
       .pipe(
           tap(
             genitore => this.form.patchValue(genitore)

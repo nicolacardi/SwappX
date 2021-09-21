@@ -15,7 +15,7 @@ export class ClassiSezioniAnniService {
 
   constructor(private http: HttpClient) { }
 
-  loadClassiByAlunno(idAlunno: number): Observable <any> {
+  loadClassiByAlunno(idAlunno: number): any {
     //restituisce tutte le classiSezioniAnni di un certo Alunno
     return this.http.get( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnniAlunni/GetByAlunno/' + idAlunno);  
         //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnniAlunni/GetByAlunno/3
@@ -29,6 +29,7 @@ export class ClassiSezioniAnniService {
 
   loadClassiByAnnoScolastico(idAnnoScolastico: any): Observable<CLS_ClasseSezioneAnno[]>{
     return this.http.get<CLS_ClasseSezioneAnno[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/GetAllByAnno/'+idAnnoScolastico);
+    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/GetAllByAnno/1
   }
 
   loadClasse(id: any): Observable<CLS_ClasseSezioneAnno>{

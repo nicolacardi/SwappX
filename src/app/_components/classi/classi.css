@@ -13,13 +13,22 @@
   }
   
   /* Column Widths */
-  .mat-column-classeSezione-classe-descrizione2 {
-    min-width: 130px;
+  .mat-column-descrizione {
+    min-width: 170px;
   }
 
-  .mat-column-classeSezione-sezione {
+  .mat-column-sezione {
     max-width: 30px;
   }
+
+  .mat-column-sezioneCSAA {
+    max-width: 30px;
+  }
+  
+  .classiSezioniAnniTable .mat-row {
+    min-height: 30px;
+  }
+
   
   .element-row {
       cursor: pointer;

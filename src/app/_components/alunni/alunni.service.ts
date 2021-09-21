@@ -128,6 +128,11 @@ export class AlunniService {
       )
   }
 
+  getGenitoreAlunno (genitoreID: number, alunnoID: number): Observable <any>{
+    return this.http.get( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/GetAllByGenitoreAlunno?idAlunno='+alunnoID+'&idGenitore='+genitoreID);
+    //http://213.215.231.4/swappX/api/ALU_GenitoriAlunni/GetAllByGenitoreAlunno?idAlunno=3&idGenitore=4
+  }
+
   postGenitoreAlunno (genitoreID: number, alunnoID: number): Observable <any>{
     //console.log("formData", formData);
     const parentela = <ALU_GenitoreAlunno>{};
@@ -135,9 +140,14 @@ export class AlunniService {
     parentela.alunnoID = alunnoID;
     parentela.genitoreID = genitoreID;
     console.log("parentela - post a ALU_GenitoriAlunni",parentela);
-
     return this.http.post( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/' , parentela);
-    
+  }
+
+  deleteGenitoreAlunno (genitoreID: number, alunnoID: number) {
+    console.log ("genitoreID:", genitoreID, "alunnoID:", alunnoID)
+    return this.http.delete( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/DeleteByGenitoreAlunno?idAlunno='+alunnoID+'&idGenitore='+genitoreID);
+    //http://213.215.231.4/swappX/api/ALU_GenitoriAlunni/DeleteByGenitoreAlunno?idAlunno=3&idGenitore=4
+
   }
 
 }

@@ -312,6 +312,13 @@ background-size: cover;*/
     background-color: #1221af !important;
 }
 
+.btn-addGreen {
+    position: absolute !important;
+    left: 160px;
+    top: 5px;
+    background-color: #12af34 !important;
+}
+
 .btn-filter {
     position: absolute !important;
     top: 80px;
@@ -548,17 +555,27 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 }
 
 
+/* tutte le actionsColumn saranno larghe il 5%*/
 .mat-column-actionsColumn {
-
     flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
     /* width: 5% !important; */
+}
 
-  }
+.mat-column-blank {
+    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+    /* width: 5% !important; */
+}
 
-  .mat-column-email {
+.mat-column-tipo {
+    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+    /* width: 5% !important; */
+}
+
+/* tutte le email column saranno larghe 180px e andranno a capo se troppo lunghe */
+.mat-column-email {
     flex: 0 0 180px !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
     word-break: break-word; /*spezza l'email quando troppo lunga*/
-  }
+}
 
 
 

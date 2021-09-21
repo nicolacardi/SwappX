@@ -85,7 +85,9 @@
 
                     <mat-grid-tile *ngFor="let mese of mesiArr; let i = index" >
                         <div>
-                            <mat-label>{{placeholderMeseArr[i]}}</mat-label>
+                            <div class="center">
+                                <mat-label>{{placeholderMeseArr[i]}}</mat-label>
+                            </div>
                             <app-rettamese-edit [inputPagamenti] ="totPagamenti[mese]"
                                                 [idRetta] ="idRette[mese]"
                                                 [indice] ="i"

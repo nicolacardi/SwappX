@@ -59,7 +59,9 @@ mat-row.detail-row {
 
 .alunniTable .mat-row {
     min-height: 30px;
-  }
+}
+
+
 
 
   :host ::ng-deep  .filtriAvanzati .mat-form-field {
@@ -80,5 +82,21 @@ mat-row.detail-row {
 .genitori-container {
   height: 100px;
   overflow: auto;
+}
+
+.classi-list-container {
+  height: 450px;
+  width: 280px;
+  overflow: auto;
+}
+
+.classi-attended-container {
+  height: 450px;
+  width: 460px;
+  overflow: auto;
+}
+
+:host ::ng-deep  .mat-expansion-panel-body {
+  padding: 0px !important;
 }
 

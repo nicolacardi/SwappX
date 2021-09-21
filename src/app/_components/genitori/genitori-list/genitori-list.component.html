@@ -24,8 +24,15 @@
 
         <ng-container matColumnDef="addToFam">
             <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-            <mat-cell  *matCellDef="let element;  let j = index;"> 
+            <mat-cell  *matCellDef="let element;"> 
                 <mat-icon class="pointer" (click) = "addToFamilyEmit(element)">add_circle_outline</mat-icon>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="removeFromFam">
+            <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
+            <mat-cell  *matCellDef="let element;"> 
+                <mat-icon class="pointer" (click) = "removeFromFamilyEmit(element)">remove_circle_outline</mat-icon>
             </mat-cell>
         </ng-container>
 
@@ -45,7 +52,7 @@
         </ng-container>
 
         <ng-container matColumnDef="dtNascita">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Data di Nascita</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Nato il</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</mat-cell>
         </ng-container>
 

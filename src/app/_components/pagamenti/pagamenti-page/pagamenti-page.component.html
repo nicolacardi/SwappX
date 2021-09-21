@@ -1,9 +1,19 @@
 
 <!-- MENU (TODO)-->
+<button mat-mini-fab aria-label="Strumenti" matTooltip="Strumenti" class="btn btn-toolbar" (click)="sidenav2.toggle();" >
+    <mat-icon>construction</mat-icon>
+</button>
 
 <button mat-mini-fab aria-label="Aggiungi Pagamento" matTooltip="Nuovo Pagamento" class="btn btn-add" (click)="addRecord()">
     <mat-icon>add</mat-icon>
 </button>
 
-<app-pagamenti-list></app-pagamenti-list>
+<mat-drawer-container [hasBackdrop]="false" style="min-height: 91%">
+    <mat-drawer position="start" #sidenav2 class="leftSidenav2"  [mode]="'side'">
+        <app-toolbar></app-toolbar>
+    </mat-drawer>
 
+    <mat-drawer-content>
+        <app-pagamenti-list></app-pagamenti-list>
+    </mat-drawer-content>
+</mat-drawer-container>
