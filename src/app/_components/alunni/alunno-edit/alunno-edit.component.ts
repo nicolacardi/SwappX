@@ -18,6 +18,9 @@ import { DialogData, DialogYesNoComponent } from '../../utilities/dialog-yes-no/
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { GenitoreEditComponent } from '../../genitori/genitore-edit/genitore-edit.component';
 import { AlunniListComponent } from '../alunni-list/alunni-list.component';
+import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { ClassiSezioniAnniAlunniService } from '../../classi/classi-sezioni-anni-alunni.service';
+import { ClassiSezioniAnniComponent } from '../../classi/classi-sezioni-anni/classi-sezioni-anni.component';
 
 
 @Component({
@@ -49,19 +52,18 @@ export class AlunnoEditComponent implements OnInit {
 
 
   @ViewChild('genitoriFamiglia') genitoriFamigliaComponent!: AlunniListComponent; 
-  
-
+  @ViewChild('classiSezioniAnniAttended') classiAttendedComponent!: ClassiSezioniAnniComponent; 
+  @ViewChild('classiSezioniAnniList') classiSezioniAnniListComponent!: ClassiSezioniAnniComponent; 
   
   constructor(public _dialogRef: MatDialogRef<AlunnoEditComponent>,
               @Inject(MAT_DIALOG_DATA) public idAlunno: number,
-              private fb:             FormBuilder, 
-              private route:          ActivatedRoute,
-              private router:         Router,
-              private alunniSvc:      AlunniService,
-              private comuniSvc:      ComuniService,
-              public _dialog:         MatDialog,
-              private _snackBar:      MatSnackBar,
-              private _loadingService :LoadingService  ) 
+              private fb:                           FormBuilder, 
+              private alunniSvc:                    AlunniService,
+              private comuniSvc:                    ComuniService,
+              public _dialog:                       MatDialog,
+              private _snackBar:                    MatSnackBar,
+              private _loadingService :             LoadingService,
+              private svcClassiSezioniAnniAlunni:   ClassiSezioniAnniAlunniService, ) 
   {
 
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
@@ -272,6 +274,41 @@ export class AlunnoEditComponent implements OnInit {
       res=> {
           //console.log("addToFamily OK");
           this.genitoriFamigliaComponent.loadData();
+      },
+      err=> {
+        //console.log("addToFamily KO");
+      }
+    )
+
+   
+  }
+
+  addToAttended(classeSezioneAnno: CLS_ClasseSezioneAnno) {
+    //così come ho fatto in dialog-add mi costruisco un oggetto "stile" form e lo passo alla postClasseSezioneAnnoAlunno
+    //avrei potuto anche passare i valori uno ad uno, ma è già pronta così avendola usata in dialog-add
+    let objClasseSezioneAnnoAlunno = {AlunnoID: this.idAlunno, ClasseSezioneAnnoID: classeSezioneAnno.id};
+
+    this.svcClassiSezioniAnniAlunni.getClasseSezioneAnnoAlunnoByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id, this.idAlunno)
+    .pipe(
+      concatMap( res => iif (()=> res.length == 0,this.svcClassiSezioniAnniAlunni.postClasseSezioneAnnoAlunno(objClasseSezioneAnnoAlunno) , of() )
+      )
+    ).subscribe(
+      res=> {
+        //loadData del component attended
+        this.classiAttendedComponent.loadData(0);
+      },
+      err=> {
+      }
+    )
+
+  }
+
+  removeFromAttended(classeSezioneAnno: CLS_ClasseSezioneAnno) {
+
+    this.svcClassiSezioniAnniAlunni.deleteClasseSezioneAnnoAlunno(classeSezioneAnno.id , this.idAlunno).subscribe(
+      res=> {
+          //console.log("addToFamily OK");
+          this.classiAttendedComponent.loadData(0);
       },
       err=> {
         //console.log("addToFamily KO");

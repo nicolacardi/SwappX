@@ -51,7 +51,7 @@
     <ng-container matColumnDef="removeFromAttended">
         <mat-header-cell *matHeaderCellDef ></mat-header-cell>
         <mat-cell *matCellDef="let element">
-            <mat-icon class="pointer" (click) = "removeFromAttendedEmit(element)">remove_circle_outline</mat-icon>
+            <mat-icon class="pointer" (click) = "removeFromAttendedEmit(element.classeSezioneAnno)">remove_circle_outline</mat-icon>
         </mat-cell>
     </ng-container>
 

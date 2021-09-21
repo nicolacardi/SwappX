@@ -287,7 +287,7 @@
                         <button mat-mini-fab aria-label="Nuova anagrafica Genitore" matTooltip="Nuova anagrafica Genitore" class= "btn btn-addModal" (click)="addGenitore()">
                             <mat-icon>add</mat-icon>
                         </button>
-                        <mat-label class="frameLabel">la famiglia di {{nome.value}} </mat-label>
+                        <mat-label class="frameLabel">i genitori/tutori di {{nome.value}} </mat-label>
                         <div class="genitori-container cellBordered mt10">
                             <app-genitori-list [dove]="'alunno-edit-famiglia'"[alunnoId]="idAlunno"  (removeFromFamily) = "removeFromFamily($event)" #genitoriFamiglia></app-genitori-list>
                         </div>
@@ -295,13 +295,13 @@
                             <mat-expansion-panel hideToggle>
                               <mat-expansion-panel-header>
                                 <mat-panel-title>
-                                  Elenco di tutti i genitori
+                                  Elenco di tutti i genitori/tutori
                                 </mat-panel-title>
                                 <mat-panel-description>
                                   (fare click per aprire)
                                 </mat-panel-description>
                               </mat-expansion-panel-header>
-                                <mat-label class="frameLabel">Elenco dei genitori </mat-label>
+                                <mat-label class="frameLabel">Elenco dei genitori/tutori </mat-label>
                                 <div class="genitori-list-container cellBordered mt10">
                                     <app-genitori-list [dove]="'alunno-edit-list'" (addToFamily) = "addToFamily($event)"></app-genitori-list>
                                 </div>
@@ -316,7 +316,8 @@
                                     <mat-label class="frameLabel">Le classi frequentate da {{nome.value}} </mat-label>
                                     <div class="classi-attended-container cellBordered mt10">
                                         <app-classi-sezioni-anni [alunnoId] = "idAlunno" [dove] = "'alunno-edit-attended'"
-                                        ></app-classi-sezioni-anni>
+                                        (removeFromAttended) = "removeFromAttended($event)"
+                                        #classiSezioniAnniAttended></app-classi-sezioni-anni>
                                     </div>
                                 </td>
                                 <td class="td-vertical-accordion">
@@ -334,7 +335,8 @@
                                             <div class="panel-content classi-list-container cellBordered mt10">
                                             
                                             <app-classi-sezioni-anni [dove] = "'alunno-edit-list'"
-                                                ></app-classi-sezioni-anni>
+                                            (addToAttended) = "addToAttended($event)"
+                                            #classiSezioniAnniList></app-classi-sezioni-anni>
                                             </div>
                                         </mat-expansion-panel>
                                     </mat-accordion>  

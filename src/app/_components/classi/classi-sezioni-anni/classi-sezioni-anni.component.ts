@@ -25,7 +25,8 @@ export class ClassiSezioniAnniComponent implements OnInit {
   @ViewChild('selectAnnoScolastico') selectAnnoScolastico!: MatSelect; 
   @Output('annoId') annoIdEmitter = new EventEmitter<number>();
   @Output('classeId') classeIdEmitter = new EventEmitter<number>();
-  
+  @Output('addToAttended') addToAttended = new EventEmitter<CLS_ClasseSezioneAnno>();
+  @Output('removeFromAttended') removeFromAttended = new EventEmitter<CLS_ClasseSezioneAnno>();
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno>();
   selectedRowIndex = -1;
   form! :                     FormGroup;
@@ -91,7 +92,9 @@ export class ClassiSezioniAnniComponent implements OnInit {
 
   loadData (val :number) {
     let obsClassi$: Observable<CLS_ClasseSezioneAnno[]>;
-
+    // if (val == 0) {
+    //   val = this.form.controls['selectAnnoScolastico'].value;
+    // }
     if (this.dove == "alunno-edit-attended") {
       obsClassi$= this.svcClassiSezioniAnni.loadClassiByAlunno(this.alunnoId); //qui bisogna pescare byAlunno MA attenzione: il risultato è strutturalmente diverso
     } else {
@@ -118,12 +121,12 @@ export class ClassiSezioniAnniComponent implements OnInit {
     }
   }
 
-  addToAttendedEmit(item: any) {
-    
+  addToAttendedEmit(item: CLS_ClasseSezioneAnno) {
+    this.addToAttended.emit(item);
   }
 
   removeFromAttendedEmit(item: any) {
-
+    this.removeFromAttended.emit(item);
   }
 
 
