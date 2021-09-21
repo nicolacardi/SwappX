@@ -301,7 +301,7 @@
                                   (fare click per aprire)
                                 </mat-panel-description>
                               </mat-expansion-panel-header>
-                                <mat-label class="frameLabel">Elenco genitori </mat-label>
+                                <mat-label class="frameLabel">Elenco dei genitori </mat-label>
                                 <div class="genitori-list-container cellBordered mt10">
                                     <app-genitori-list [dove]="'alunno-edit-list'" (addToFamily) = "addToFamily($event)"></app-genitori-list>
                                 </div>
@@ -309,20 +309,35 @@
                         </mat-accordion>
 
                     </mat-tab>
-                    <mat-tab label="Classi Frequentate">
+                    <mat-tab label="Classi Frequentate" style="overflow-x: hideen;">
                         <table>
                             <tr>
                                 <td>
+                                    <mat-label class="frameLabel">Le classi frequentate da {{nome.value}} </mat-label>
                                     <div class="classi-attended-container cellBordered mt10">
                                         <app-classi-sezioni-anni [alunnoId] = "idAlunno" [dove] = "'alunno-edit-attended'"
                                         ></app-classi-sezioni-anni>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="classi-list-container cellBordered mt10">
-                                        <app-classi-sezioni-anni [dove] = "'alunno-edit-list'"
-                                        ></app-classi-sezioni-anni>
-                                    </div>
+                                <td class="td-vertical-accordion">
+                                    <mat-accordion class="rotated-accordion">
+                                        <mat-expansion-panel hideToggle>
+                                            <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                                Tutte le classi
+                                            </mat-panel-title>
+                                            <mat-panel-description>
+                                                (fare click per aprire)
+                                            </mat-panel-description>
+                                            </mat-expansion-panel-header>
+                                            <mat-label class="frameLabel le480">Elenco delle classi</mat-label>
+                                            <div class="panel-content classi-list-container cellBordered mt10">
+                                            
+                                            <app-classi-sezioni-anni [dove] = "'alunno-edit-list'"
+                                                ></app-classi-sezioni-anni>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>  
                                 </td>
                             </tr>
                         </table>

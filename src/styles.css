@@ -183,6 +183,10 @@ background-size: cover;*/
     height: 75%;
 }
 
+
+
+
+
 .no-padding {
     padding: 0px; 
 }
@@ -549,6 +553,11 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
     z-index: 1000;
 }
 
+.le480 {
+    left: 480px;
+}
+
+
 .cellBordered {
     border-radius: 2px;
     border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
@@ -558,17 +567,30 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 /* tutte le actionsColumn saranno larghe il 5%*/
 .mat-column-actionsColumn {
     flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
-    /* width: 5% !important; */
 }
 
 .mat-column-blank {
     flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
-    /* width: 5% !important; */
 }
 
 .mat-column-tipo {
     flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
-    /* width: 5% !important; */
+}
+
+.mat-column-addToFam {
+    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+}
+
+.mat-column-removeFromFam {
+    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+}
+
+.mat-column-addToAttended {
+    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+}
+
+.mat-column-removeFromAttended {
+    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
 }
 
 /* tutte le email column saranno larghe 180px e andranno a capo se troppo lunghe */

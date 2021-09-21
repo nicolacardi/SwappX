@@ -92,7 +92,7 @@ mat-row.detail-row {
 
 .classi-attended-container {
   height: 450px;
-  width: 460px;
+  width: 380px;
   overflow: auto;
 }
 
@@ -100,3 +100,37 @@ mat-row.detail-row {
   padding: 0px !important;
 }
 
+
+.td-vertical-accordion {
+  vertical-align: top;
+  padding-top: 12px;
+  max-width: 300px !important;
+}
+
+.rotated-accordion {
+  display: block;
+  transform-origin: top left;
+  transform: rotate(-90deg) translateX(-450px);; /* rotate and position it; translateX value corresponds to panel height */
+  width: 450px; /* this will be the height of the accordion (inversed due to rotation) */
+}
+
+.mat-expansion-panel {
+  max-height: 375px; /* this will be the width of the panel (inversed due to rotation) */
+}
+
+.panel-content {
+  transform-origin: top left;
+  transform: rotate(90deg); /* rotate back */
+  margin-left: 100%; /* position it */
+  height: 448px; /* real height of the content */
+  width: 300px; /* real width of the content */
+}
+
+
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+  box-shadow: none;
+}
+
+/* :host ::ng-deep .mat-tab-body-content {
+  overflow: none !important;
+} */
