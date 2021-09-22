@@ -13,9 +13,14 @@ export class ClassiSezioniAnniAlunniService {
 
 
 
-  getClasseSezioneAnnoAlunnoByAlunnoAndClasseSezioneAnno(idClasseSezioneAnno: number, idAlunno: number): Observable <any> {
+  getByAlunnoAndClasseSezioneAnno(idClasseSezioneAnno: number, idAlunno: number): Observable <any> {
     return this.http.get( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnniAlunni/GetAllByAlunnoAndClasseSezioneAnno?idAlunno='+idAlunno+'&idClasseSezioneAnno='+idClasseSezioneAnno);  
       //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnniAlunni/GetAllByAlunnoAndClasseSezioneAnno?idAlunno=3&idClasseSezioneAnno=1
+  }
+
+  getByAlunnoAndAnno(idAnno: number, idAlunno: number): Observable <any> {
+    return this.http.get( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnniAlunni/GetAllByAlunnoAndAnno?idAlunno='+idAlunno+'&idAnno='+idAnno);  
+      //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnniAlunni/GetAllByAlunnoAndAnno?idAlunno=3&idAnno=1
   }
 
 

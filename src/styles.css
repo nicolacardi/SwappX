@@ -599,6 +599,10 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
     word-break: break-word; /*spezza l'email quando troppo lunga*/
 }
 
+.mat-column-ckAttivo {
+    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+}
+
 
 
   .mat-column-xxx {

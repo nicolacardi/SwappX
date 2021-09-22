@@ -17,6 +17,8 @@ import { PAG_RettaGroupObj } from 'src/app/_models/PAG_RetteGroupObj';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { AlunnoEditComponent } from '../../alunni/alunno-edit/alunno-edit.component';
 
 
 @Component({
@@ -31,6 +33,8 @@ export class RetteListComponent implements OnInit {
   @ViewChild('toggleD') toggleD!: MatSlideToggle; 
   @ViewChild('toggleC') toggleC!: MatSlideToggle; 
   @ViewChild('toggleP') toggleP!: MatSlideToggle; 
+
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
   obsAnni$!:                Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   form:                     FormGroup;            //form fatto della sola combo anno scolastico
@@ -106,7 +110,7 @@ p_displayedColumns: string[] = [
     "p_AGO" ];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
-  matMenuTrigger: any;
+
 
   myObjAssigned : PAG_RettaGroupObj = {
     alunnoID: 0,
@@ -277,6 +281,7 @@ p_displayedColumns: string[] = [
 
   
   onRightClick(event: MouseEvent, element: PAG_Retta) { 
+    console.log ("right click");
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
     this.menuTopLeftPosition.y = event.clientY + 'px'; 
@@ -380,60 +385,22 @@ p_displayedColumns: string[] = [
   }
 
 
-  // public toggleColumns() {
-  //   //toggledNum è il numero di quelli attivi
-  //    this.toggledNum = Number(this.toggleC.checked) + Number(this.toggleD.checked) + Number(this.toggleP.checked);
-  //   console.log (this.toggledNum);
+    openAlunno(alunnoID: number){
 
-  //    if (!this.toggleD.checked) {
-  //      if (!this.toggleC.checked){
-  //       this.c_displayedColumns[0] = "blank";
-  //       this.c_displayedColumns[1] = "blank";
-  //       this.c_displayedColumns[2] = "blank";
-  //       this.p_displayedColumns[0] = "actionsColumn";
-  //       this.p_displayedColumns[1] = "nome";
-  //       this.p_displayedColumns[2] = "cognome";  
-  //       this.d_displayedColumns[0] = "blank";
-  //       this.d_displayedColumns[1] = "blank";
-  //       this.d_displayedColumns[2] = "blank";
-        
-  //      } else {
-  //       this.c_displayedColumns[0] = "actionsColumn";
-  //       this.c_displayedColumns[1] = "nome";
-  //       this.c_displayedColumns[2] = "cognome";
-  //       this.p_displayedColumns[0] = "blank";
-  //       this.p_displayedColumns[1] = "blank";
-  //       this.p_displayedColumns[2] = "blank";  
-  //       this.d_displayedColumns[0] = "blank";
-  //       this.d_displayedColumns[1] = "blank";
-  //       this.d_displayedColumns[2] = "blank";
-  //      }
-  //    } else {
-  //     this.c_displayedColumns[0] = "blank";
-  //     this.c_displayedColumns[1] = "blank";
-  //     this.c_displayedColumns[2] = "blank";
-  //     this.p_displayedColumns[0] = "blank";
-  //     this.p_displayedColumns[1] = "blank";
-  //     this.p_displayedColumns[2] = "blank";
-  //     this.d_displayedColumns[0] = "actionsColumn";
-  //     this.d_displayedColumns[1] = "nome";
-  //     this.d_displayedColumns[2] = "cognome";
-  //    }
+      const dialogConfig : MatDialogConfig = {
+        panelClass: 'add-DetailDialog',
+        width: '850px',
+        height: '620px',
+        data: alunnoID
+      };
+  
+      const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
+      dialogRef.afterClosed()
+        .subscribe(
+          () => {
+            this.loadData();
+      });
+    }
 
-  //    if (!this.toggleP.checked) {
-  //      if (!this.toggleC.checked) {
-  //       this.showLinesD = true;
-  //       this.showLinesC = false;
-  //       this.showLinesP = false;
-  //      } else {
-  //       this.showLinesD = false;
-  //       this.showLinesC = true;
-  //       this.showLinesP = false;
-  //      }
-  //    } else {
-  //     this.showLinesD = false;
-  //     this.showLinesC = false;
-  //     this.showLinesP = true;
-  //    }
-  // }
+
 }

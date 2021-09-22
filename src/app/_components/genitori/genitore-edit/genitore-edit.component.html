@@ -26,178 +26,184 @@
                     (click)="delete()" >
                         <mat-icon>delete</mat-icon>
                     </button>
-
-                    <!-- <button mat-stroked-button color="secondary" mat-dialog-close>
-                        <mat-icon>arrow_back</mat-icon>
-                        <div class="button-textDetail">
-                            back
-                        </div>
-                    </button> -->
-
-                    <!-- <button *ngIf="idGenitore" mat-stroked-button color="secondary" 
-                        [disabled]= "!form.valid" 
-                        (click)="loadData()">
-                        <mat-icon>restart_alt</mat-icon>
-                        <div class="button-textDetail">ricarica</div>
-                    </button> -->
-
-                    <!-- <button mat-stroked-button color="secondary" 
-                        [disabled]= "!form.valid" 
-                        (click)="save()"><mat-icon>save</mat-icon>
-                        <div class="button-textDetail">salva</div>
-                    </button>
-
-                    <button *ngIf="idGenitore" mat-stroked-button color="warn" 
-                        [disabled]= "!form.valid" 
-                        (click)="delete()">
-                        <mat-icon>delete_outline</mat-icon>
-                        <div class="button-textDetail">elimina</div>
-                    </button> -->
                 </div>
+                <mat-tab-group mat-align-tabs="center">
+<!-- ********************************    MAT TAB ANAGRAFICA *********************************** -->
+                    <mat-tab  label="Dati Anagrafici">
+                        <mat-grid-list class="mt10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome">
+                                    <mat-error *ngIf="form.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                <mat-grid-list class="mt10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome">
-                            <mat-error *ngIf="form.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
-                        </mat-form-field>
-                    </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput required type="text" placeholder="Cognome" formControlName="cognome">
+                                    <mat-error *ngIf="form.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput required type="text" placeholder="Cognome" formControlName="cognome">
-                            <mat-error *ngIf="form.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
-                        </mat-form-field>
-                    </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput
+                                    required
+                                    formControlName = "dtNascita"
+                                    [matDatepicker]= "dpDtNascita"
+                                    placeholder="Data di Nascita"
+                                    #date>
+                                    <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
+                                    <mat-datepicker #dpDtNascita  ></mat-datepicker>
+                                    <mat-error *ngIf="form.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <mat-grid-list [cols]="breakpoint" rowHeight="60px">
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput required type="text" placeholder="Tipo (P/M/T)" formControlName="tipo">
+                                    <mat-error>Inserire P (padre), M (madre) o T (tutore)</mat-error>
+                                </mat-form-field>
+                                
+                            </mat-grid-tile>
 
-                    <mat-grid-tile>
-                        <mat-form-field class="form-dp">
-                            <input matInput
-                            required
-                            formControlName = "dtNascita"
-                            [matDatepicker]= "dpDtNascita"
-                            placeholder="Data di Nascita"
-                            #date>
-                            <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
-                            <mat-datepicker #dpDtNascita  ></mat-datepicker>
-                            <mat-error *ngIf="form.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
-                        </mat-form-field>
-                    </mat-grid-tile>
-                </mat-grid-list>
-                <mat-grid-list [cols]="breakpoint" rowHeight="60px">
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput required type="text" placeholder="Tipo (P/M/T)" formControlName="tipo">
-                            <mat-error>Inserire P (padre), M (madre) o T (tutore)</mat-error>
-                        </mat-form-field>
-                        
-                    </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Codice Fiscale" formControlName="cf">
+                                    <mat-error>Campo errato</mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
 
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput type="text" placeholder="Codice Fiscale" formControlName="cf">
-                            <mat-error>Campo errato</mat-error>
-                        </mat-form-field>
-                    </mat-grid-tile>
-                </mat-grid-list>
+                        <mat-grid-list [cols]="breakpoint" rowHeight="60px">
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <mat-label>Comune di Nascita</mat-label>
+                                    <input type="text"
+                                            placeholder="<Selezionare il Comune>"
+                                            matInput
+                                            formControlName="comuneNascita"
+                                            [matAutocomplete]="auto1">
+                                    <mat-autocomplete #auto1="matAutocomplete" >
+                                        <!--<mat-option *ngIf="comuniNascitaIsLoading" class="is-loading"><mat-spinner diameter="30"></mat-spinner></mat-option>-->
+                                        <mat-spinner *ngIf="comuniNascitaIsLoading" class="is-loading" diameter="40"></mat-spinner>
+                                        <mat-option *ngFor="let element of (filteredComuniNascita$ | async)" [value]="element.comune" (click)="popolaProvNascita(element.provincia)">
+                                            <small>{{element.comune}}</small>
+                                            <!-- <small> - {{element.provincia}}</small> -->
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                <mat-grid-list [cols]="breakpoint" rowHeight="60px">
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <mat-label>Comune di Nascita</mat-label>
-                            <input type="text"
-                                    placeholder="<Selezionare il Comune>"
-                                    matInput
-                                    formControlName="comuneNascita"
-                                    [matAutocomplete]="auto1">
-                            <mat-autocomplete #auto1="matAutocomplete" >
-                                <!--<mat-option *ngIf="comuniNascitaIsLoading" class="is-loading"><mat-spinner diameter="30"></mat-spinner></mat-option>-->
-                                <mat-spinner *ngIf="comuniNascitaIsLoading" class="is-loading" diameter="40"></mat-spinner>
-                                <mat-option *ngFor="let element of (filteredComuniNascita$ | async)" [value]="element.comune" (click)="popolaProvNascita(element.provincia)">
-                                    <small>{{element.comune}}</small>
-                                    <!-- <small> - {{element.provincia}}</small> -->
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field>
-                    </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Prov di Nascita" formControlName="provNascita">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput type="text" placeholder="Prov di Nascita" formControlName="provNascita">
-                        </mat-form-field>
-                    </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Paese di Nascita" formControlName="nazioneNascita">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput type="text" placeholder="Paese di Nascita" formControlName="nazioneNascita">
-                        </mat-form-field>
-                    </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <mat-label>Comune di Residenza</mat-label>
+                                    <input type="text"
+                                            placeholder="<Selezionare il Comune>"
+                                            matInput
+                                            formControlName="comune"
+                                            [matAutocomplete]="auto2">
+                                    <mat-autocomplete #auto2="matAutocomplete" >
+                                        <mat-spinner *ngIf="comuniIsLoading" class="is-loading" diameter="40"></mat-spinner>
+                                        <ng-container >
+                                            <mat-option *ngFor="let element of (filteredComuni$ | async)" [value]="element.comune" (click)="popolaProv(element.provincia,  element.cap)">
+                                                <small>{{element.comune}}</small>
+                                                <!-- <small> - {{element.provincia}}</small> -->
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <mat-label>Comune di Residenza</mat-label>
-                            <input type="text"
-                                    placeholder="<Selezionare il Comune>"
-                                    matInput
-                                    formControlName="comune"
-                                    [matAutocomplete]="auto2">
-                            <mat-autocomplete #auto2="matAutocomplete" >
-                                <mat-spinner *ngIf="comuniIsLoading" class="is-loading" diameter="40"></mat-spinner>
-                                <ng-container >
-                                    <mat-option *ngFor="let element of (filteredComuni$ | async)" [value]="element.comune" (click)="popolaProv(element.provincia,  element.cap)">
-                                        <small>{{element.comune}}</small>
-                                        <!-- <small> - {{element.provincia}}</small> -->
-                                    </mat-option>
-                                </ng-container>
-                            </mat-autocomplete>
-                        </mat-form-field>
-                    </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Prov di Residenza" formControlName="prov">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput type="text" placeholder="Prov di Residenza" formControlName="prov">
-                        </mat-form-field>
-                    </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Paese di Residenza" formControlName="nazione">
+                                </mat-form-field>
+                            </mat-grid-tile>
+                            
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input  matInput type="text" placeholder="Indirizzo e N. Civico" formControlName="indirizzo">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput type="text" placeholder="Paese di Residenza" formControlName="nazione">
-                        </mat-form-field>
-                    </mat-grid-tile>
-                    
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <input  matInput type="text" placeholder="Indirizzo e N. Civico" formControlName="indirizzo">
-                        </mat-form-field>
-                    </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="CAP" formControlName="cap">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput type="text" placeholder="CAP" formControlName="cap">
-                        </mat-form-field>
-                    </mat-grid-tile>
+                        </mat-grid-list>  
+                        <mat-grid-list [cols]="breakpoint" rowHeight="60px">
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Telefono" formControlName="telefono">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                </mat-grid-list>  
-                <mat-grid-list [cols]="breakpoint" rowHeight="60px">
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput type="text" placeholder="Telefono" formControlName="telefono">
-                        </mat-form-field>
-                    </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="altro Telefono" formControlName="telefono2">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput type="text" placeholder="altro Telefono" formControlName="telefono2">
-                        </mat-form-field>
-                    </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="e-mail" formControlName="email">
+                                    <mat-error>Campo errato</mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </mat-tab>
+<!-- ********************************    MAT TAB FIGLI ************************************ -->
+                    <mat-tab  label="Famiglia">
+                        <button mat-mini-fab aria-label="Nuova anagrafica Alunno" matTooltip="Nuova anagrafica Alunno" class= "btn btn-addModal" (click)="addAlunno()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        <mat-label class="frameLabel">i figli di .....</mat-label>
+                        <div class="alunni-container cellBordered mt10">
+                            <!-- <app-alunni-list [dove]="'genitore-edit-famiglia'"[genitoreId]="idGenitore"  (removeFromFamily) = "removeFromFamily($event)" #figliFamiglia></app-alunni-list> -->
+                            <app-alunni-list></app-alunni-list>
+                        </div>
+                        <mat-accordion>
+                            <mat-expansion-panel hideToggle>
+                              <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                  Elenco di tutti gli alunni
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                  (fare click per aprire)
+                                </mat-panel-description>
+                              </mat-expansion-panel-header>
+                                <mat-label class="frameLabel">Elenco degli alunni </mat-label>
+                                <div class="alunni-list-container cellBordered mt10">
+                                    <!-- <app-alunni-list [dove]="'genitore-edit-list'" (addToFamily) = "addToFamily($event)"></app-alunni-list> -->
+                                    <app-alunni-list></app-alunni-list>
+                                </div>
+                            </mat-expansion-panel>
+                        </mat-accordion>
 
-                    <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput type="text" placeholder="e-mail" formControlName="email">
-                            <mat-error>Campo errato</mat-error>
-                        </mat-form-field>
-                    </mat-grid-tile>
-                </mat-grid-list>
+                    </mat-tab>
+                </mat-tab-group>
             </form>
 
             <!-- <div>

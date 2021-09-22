@@ -368,12 +368,17 @@
     [matMenuTriggerFor]="rightMenu">
 </div> 
 
+
+<div style="visibility: hidden; position: fixed;" 
+[style.left]="menuTopLeftPosition.x" 
+[style.top]="menuTopLeftPosition.y" 
+[matMenuTriggerFor]="rightMenu">
+</div> 
+
 <mat-menu #rightMenu="matMenu"> 
     <ng-template matMenuContent let-item="item"> 
-        <mat-label class="rightMenuTitle">Dettaglio Retta</mat-label> 
-        <!-- <button mat-menu-item routerLink="/genitori" [queryParams]="{ idAlunno: item.id }">Genitori/Tutori</button>  
-        <button mat-menu-item (click)="openAlunno(item.id)">Alunno</button> -->
-        <button mat-menu-item>Alunno</button> 
+        <mat-label class="rightMenuTitle">{{item.nome | uppercase}} {{item.cognome | uppercase}}</mat-label> 
+        <button mat-menu-item (click)="openAlunno(item.alunnoID)"> Scheda Alunno</button> 
     </ng-template> 
 </mat-menu> 
 
