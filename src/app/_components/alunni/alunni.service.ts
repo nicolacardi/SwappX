@@ -71,7 +71,9 @@ export class AlunniService {
   }
 
   filterAlunni(searchstring: string): Observable<ALU_Alunno[]>{
+    
     //console.log("alunni.service.ts - filterAlunni - searchstring:", searchstring);
+    
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni')
             .pipe (
