@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -40,6 +40,8 @@ export class PagamentiListComponent implements OnInit {
 
   show: boolean = true;
   matDataSource = new MatTableDataSource<PAG_Pagamento>();
+  storedFilterPredicate!:       any;
+
   displayedColumns: string[] =  [];
   displayedColumnsList: string[] = [
                                   "actionsColumn", 
@@ -69,8 +71,16 @@ export class PagamentiListComponent implements OnInit {
   menuTopLeftPosition =  {x: '0', y: '0'} 
   matMenuTrigger: any;
 
+  filterValues = {
+    tipoPagamento: '',
+    causale: '',
+  };
+
   @ViewChild(MatPaginator) paginator!:    MatPaginator;
   @ViewChild(MatSort) sort!:              MatSort;
+  @ViewChild("filterInput") filterInput!:                     ElementRef;
+
+  @Input() alunniFilterComponent!: PagamentiListComponent;
 
   public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2).toLocaleString('it-IT', {month: 'short'}).toUpperCase());
 
@@ -136,10 +146,46 @@ export class PagamentiListComponent implements OnInit {
         this.filterPredicateCustom();   //serve per rendere filtrabili anche i campi nested
         this.sortCustom(); 
         this.matDataSource.sort = this.sort;
+        this.storedFilterPredicate = this.matDataSource.filterPredicate;
+        this.matDataSource.filterPredicate = this.createFilter();
       }
     );
   }
 
+  
+  createFilter(): (data: any, filter: string) => boolean {
+    //la stringa che cerco è 'filter'
+
+    let filterFunction = function(data: any, filter: any): boolean {
+    
+     // console.log("filter: " , filter);
+
+      //JSON.parse normalizza la stringa e la trasforma in un oggetto javascript
+      let searchTerms = JSON.parse(filter);
+      //data è uno a uno rappresentato dai record del matDataSource
+     //viene ritornato un boolean che è la AND di tutte le ricerche, su ogni singolo campo
+     //infatti data.nome.toLowerCase().indexOf(searchTerms.nome) !== -1 ritorna truese search.Terms.nome viene trovato nel campo nome di data
+
+     /*
+      let foundGenitore : boolean = false;
+      if (Object.values(searchTerms).every(x => x === null || x === '')) 
+        foundGenitore = true;
+      else {    
+        data._Genitori?.forEach((val: { genitore: { nome: any; cognome: any}; })=>  {   
+            const foundCognomeNome = foundGenitore || String(val.genitore.cognome+" "+val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
+            const foundNomeCognome = foundGenitore || String(val.genitore.nome+" "+val.genitore.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
+            foundGenitore = foundCognomeNome || foundNomeCognome;
+        })
+      }
+      */
+
+      return String(data.tipoPagamento).toLowerCase().indexOf(searchTerms.nome) !== -1
+        && String(data.causale).toLowerCase().indexOf(searchTerms.cognome) !== -1
+        //....
+        ;
+    }
+    return filterFunction;
+  }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.matDataSource.filter = filterValue.trim().toLowerCase();

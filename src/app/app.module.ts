@@ -43,6 +43,7 @@ import { ToolbarComponent } from './_components/alunni/toolbar/toolbar.component
 import { GenitoriPageComponent } from './_components/genitori/genitori-page/genitori-page.component';
 import { GenitoriFilterComponent } from './_components/genitori/genitori-filter/genitori-filter.component';
 import { ClassiSezioniAnniComponent } from './_components/classi/classi-sezioni-anni/classi-sezioni-anni.component';
+import { PagamentiFilterComponent } from './_components/pagamenti/pagamenti-filter/pagamenti-filter.component';
 
 
 @NgModule({
@@ -79,6 +80,7 @@ import { ClassiSezioniAnniComponent } from './_components/classi/classi-sezioni-
     SnackbarComponent,
     LoadingComponent,
     ClassiSezioniAnniComponent,
+    PagamentiFilterComponent,
 
   ],
   imports: [

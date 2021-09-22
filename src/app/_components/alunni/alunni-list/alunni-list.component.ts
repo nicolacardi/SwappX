@@ -84,8 +84,8 @@ export class AlunniListComponent implements OnInit {
   };
 
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
-  @ViewChild("filterInput") filterInput!:                     ElementRef;
   @ViewChild(MatSort) sort!:                                  MatSort;
+  @ViewChild("filterInput") filterInput!:                     ElementRef;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
   @Input() idClasse!: number;

@@ -8,3 +8,5 @@ LoadAlunno e simili diventano LoadByID
     - popolare la griglia sotto con tutti i genitori solo su evento esplicito (bottone "seleziona genitore" ?)
     - popolare tab classi frequentate (sola lettura)
     
+#### PagamentiPage
+    - aggiungere compoent filtri
