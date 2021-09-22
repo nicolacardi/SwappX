@@ -40,11 +40,11 @@ export class PagamentiFilterComponent implements OnInit {
   }
 
   resetMainFilter() {
-    if (this.pagamentiListComponent.matDataSource.filterPredicate == this.pagamentiListComponent.storedFilterPredicate)
-    {
-    this.pagamentiListComponent.matDataSource.filter = ''; 
-    this.pagamentiListComponent.filterInput.nativeElement.value = '';
-    this.pagamentiListComponent.matDataSource.filterPredicate = this.pagamentiListComponent.createFilter()};  
+    if (this.pagamentiListComponent.matDataSource.filterPredicate == this.pagamentiListComponent.storedFilterPredicate){
+      this.pagamentiListComponent.matDataSource.filter = ''; 
+      this.pagamentiListComponent.filterInput.nativeElement.value = '';
+      this.pagamentiListComponent.matDataSource.filterPredicate = this.pagamentiListComponent.createFilter()
+    };  
   }
 
   resetAllInputs() {

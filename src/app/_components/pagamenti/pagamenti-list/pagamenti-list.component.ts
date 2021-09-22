@@ -19,6 +19,7 @@ import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-n
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RettaEditComponent } from '../retta-edit/retta-edit.component';
+import { PagamentiFilterComponent } from '../pagamenti-filter/pagamenti-filter.component';
 
 @Component({
   selector: 'app-pagamenti-list',
@@ -80,7 +81,7 @@ export class PagamentiListComponent implements OnInit {
   @ViewChild(MatSort) sort!:              MatSort;
   @ViewChild("filterInput") filterInput!:                     ElementRef;
 
-  @Input() alunniFilterComponent!: PagamentiListComponent;
+  @Input() pagamentiFilterComponent!: PagamentiFilterComponent;
 
   public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2).toLocaleString('it-IT', {month: 'short'}).toUpperCase());
 

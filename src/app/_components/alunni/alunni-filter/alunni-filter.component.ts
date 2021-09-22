@@ -114,11 +114,11 @@ export class AlunniFilterComponent implements OnInit {
   }
 
   resetMainFilter() {
-    if (this.alunniListComponent.matDataSource.filterPredicate == this.alunniListComponent.storedFilterPredicate)
-    {
-    this.alunniListComponent.matDataSource.filter = ''; 
-    this.alunniListComponent.filterInput.nativeElement.value = '';
-    this.alunniListComponent.matDataSource.filterPredicate = this.alunniListComponent.createFilter()};  
+    if (this.alunniListComponent.matDataSource.filterPredicate == this.alunniListComponent.storedFilterPredicate){
+      this.alunniListComponent.matDataSource.filter = ''; 
+      this.alunniListComponent.filterInput.nativeElement.value = '';
+      this.alunniListComponent.matDataSource.filterPredicate = this.alunniListComponent.createFilter()
+    };  
   }
 
   resetAllInputs() {

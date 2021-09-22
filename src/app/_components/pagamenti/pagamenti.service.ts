@@ -48,5 +48,18 @@ export class PagamentiService {
     return this.http.delete(environment.apiBaseUrl  + 'PAG_Pagamenti/' + id);    
   }
 
+  filterPagamenti(searchstring: string): Observable<PAG_Pagamento[]>{
+    
+    console.log("pagamenti.service.ts - filterPagamenti - searchstring:", searchstring);
+    
+    if (searchstring != null && (typeof searchstring === 'string')) {
+      return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti')
+            .pipe (
+            map(val=>val.filter(val=>(val.tipoPagamento.descrizione.toLowerCase() + ' ' + val.causale.descrizione.toLowerCase()).includes(searchstring.toLowerCase()))),
+      );
+        } else {
+      return of()
+      }
+  }
 
 }
