@@ -1,11 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { Observable } from 'rxjs';
+import { iif, Observable, of } from 'rxjs';
 
-import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
+import { concatMap, debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { GenitoriService } from 'src/app/_components/genitori/genitori.service';
@@ -15,6 +15,9 @@ import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 
 import { DialogData, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { AlunniService } from '../../alunni/alunni.service';
+import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
 
 @Component({
   selector: 'app-genitore-edit',
@@ -41,13 +44,16 @@ export class GenitoreEditComponent implements OnInit {
   comuniIsLoading:            boolean = false;
   comuniNascitaIsLoading:     boolean = false;
   breakpoint!:                number;
-  
+
+  @ViewChild('alunniFamiglia') alunniFamigliaComponent!: AlunniListComponent; 
+
   constructor(public _dialogRef: MatDialogRef<GenitoreEditComponent>,
               @Inject(MAT_DIALOG_DATA) public idGenitore: number,
               private fb:             FormBuilder, 
               private route:          ActivatedRoute,
               private router:         Router,
               private genitoriSvc:    GenitoriService,
+              private svcAlunni:      AlunniService, //serve perchè è in questa che si trovano le addToFamily e RemoveFromFamily"
               private comuniSvc:      ComuniService,
               public _dialog:         MatDialog,
               private _snackBar:      MatSnackBar,
@@ -234,4 +240,41 @@ export class GenitoreEditComponent implements OnInit {
   addAlunno() {
 
   }
+
+  addToFamily(figlio: ALU_Alunno) {
+    //devo fare una verifica prima della post:
+    //per caso è già figlio? Per questo faccio una concatMap (la post deve avvenire in sequenza quando la verifica è finita)
+    //ma con una condizione: la iif specifica proprio che SE il risultato della verifica è vuoto allora si può procedere con la post
+    //altrimenti si mette in successione l'observable vuoto (of())
+    
+    this.svcAlunni.getGenitoreAlunno(this.idGenitore, figlio.id)
+    .pipe(
+      concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(this.idGenitore, figlio.id), of() )
+      )
+    ).subscribe(
+      res=> {
+        this.alunniFamigliaComponent.loadData();
+      },
+      err=> {
+      }
+    )
+  }
+
+  removeFromFamily(figlio: ALU_Alunno) {
+    //devo fare una verifica prima della post:
+    //per caso è già figlio? In teoria dovremmo aver nascosto il genitore dalla lista da cui pescare, no?
+    const genitoreID = this.idGenitore;
+    this.svcAlunni.deleteGenitoreAlunno(genitoreID, figlio.id).subscribe(
+      res=> {
+          //console.log("addToFamily OK");
+          this.alunniFamigliaComponent.loadData();
+      },
+      err=> {
+        //console.log("addToFamily KO");
+      }
+    )
+
+   
+  }
+
 }

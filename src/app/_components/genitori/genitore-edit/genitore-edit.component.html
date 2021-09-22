@@ -33,7 +33,7 @@
                         <mat-grid-list class="mt10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
                             <mat-grid-tile>
                                 <mat-form-field>
-                                    <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome">
+                                    <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome" #nome>
                                     <mat-error *ngIf="form.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
                                 </mat-form-field>
                             </mat-grid-tile>
@@ -179,10 +179,10 @@
                         <button mat-mini-fab aria-label="Nuova anagrafica Alunno" matTooltip="Nuova anagrafica Alunno" class= "btn btn-addModal" (click)="addAlunno()">
                             <mat-icon>add</mat-icon>
                         </button>
-                        <mat-label class="frameLabel">i figli di .....</mat-label>
+                        <mat-label class="frameLabel">i figli di {{nome.value}}</mat-label>
                         <div class="alunni-container cellBordered mt10">
                             <!-- <app-alunni-list [dove]="'genitore-edit-famiglia'"[genitoreId]="idGenitore"  (removeFromFamily) = "removeFromFamily($event)" #figliFamiglia></app-alunni-list> -->
-                            <app-alunni-list [dove]="'genitore-edit-famiglia'" [genitoreId] ="idGenitore"></app-alunni-list>
+                            <app-alunni-list [dove]="'genitore-edit-famiglia'" [genitoreId] ="idGenitore" (removeFromFamily) = "removeFromFamily($event)" #alunniFamiglia></app-alunni-list>
                         </div>
                         <mat-accordion>
                             <mat-expansion-panel hideToggle>
@@ -197,7 +197,7 @@
                                 <mat-label class="frameLabel">Elenco degli alunni </mat-label>
                                 <div class="alunni-list-container cellBordered mt10">
                                     <!-- <app-alunni-list [dove]="'genitore-edit-list'" (addToFamily) = "addToFamily($event)"></app-alunni-list> -->
-                                    <app-alunni-list [dove]="'genitore-edit-list'" ></app-alunni-list>
+                                    <app-alunni-list [dove]="'genitore-edit-list'" (addToFamily) = "addToFamily($event)"></app-alunni-list>
                                 </div>
                             </mat-expansion-panel>
                         </mat-accordion>

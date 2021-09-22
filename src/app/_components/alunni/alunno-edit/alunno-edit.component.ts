@@ -22,6 +22,7 @@ import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ClassiSezioniAnniAlunniService } from '../../classi/classi-sezioni-anni-alunni.service';
 import { ClassiSezioniAnniComponent } from '../../classi/classi-sezioni-anni/classi-sezioni-anni.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { GenitoriListComponent } from '../../genitori/genitori-list/genitori-list.component';
 
 
 @Component({
@@ -52,7 +53,7 @@ export class AlunnoEditComponent implements OnInit {
   breakpoint2!:               number;
 
 
-  @ViewChild('genitoriFamiglia') genitoriFamigliaComponent!: AlunniListComponent; 
+  @ViewChild('genitoriFamiglia') genitoriFamigliaComponent!: GenitoriListComponent; 
   @ViewChild('classiSezioniAnniAttended') classiAttendedComponent!: ClassiSezioniAnniComponent; 
   @ViewChild('classiSezioniAnniList') classiSezioniAnniListComponent!: ClassiSezioniAnniComponent; 
   
@@ -255,21 +256,9 @@ export class AlunnoEditComponent implements OnInit {
       err=> {
       }
     )
-
-    // this.alunniSvc.postGenitoreAlunno(genitore.id, this.idAlunno).subscribe(
-    //   res=> {
-    //       //console.log("addToFamily OK");
-    //       this.genitoriFamigliaComponent.loadData();
-    //   },
-    //   err=> {
-    //     //console.log("addToFamily KO");
-    //   }
-    // )
   }
 
   removeFromFamily(genitore: ALU_Genitore) {
-    //devo fare una verifica prima della post:
-    //per caso è già figlio? In teoria dovremmo aver nascosto il genitore dalla lista da cui pescare, no?
     const alunnoID = this.idAlunno;
     this.alunniSvc.deleteGenitoreAlunno(genitore.id, this.idAlunno).subscribe(
       res=> {
@@ -336,7 +325,6 @@ export class AlunnoEditComponent implements OnInit {
   }
 
   removeFromAttended(classeSezioneAnno: CLS_ClasseSezioneAnno) {
-
     this.svcClassiSezioniAnniAlunni.deleteClasseSezioneAnnoAlunno(classeSezioneAnno.id , this.idAlunno).subscribe(
       res=> {
           //console.log("addToFamily OK");

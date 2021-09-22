@@ -2,20 +2,21 @@
     background: whitesmoke;
 }
 
+.lowTitles {
+  min-height: 37px !important;
+}
 
 .genitoriTable .mat-row {
     min-height: 30px;
-  }
+}
 
-
+/* FILTRI AVANZATI */
 :host ::ng-deep  .filtriAvanzati .mat-form-field {
     height: 40px;
 }
 
-.lowTitles {
-    min-height: 37px !important;
-  }
 
+/* GENITORE-EDIT*/
 .alunni-container{
   height: 100px;
   overflow: auto;

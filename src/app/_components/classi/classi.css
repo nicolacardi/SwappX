@@ -1,40 +1,41 @@
 /* Structure */
-
+.element-row:hover {
+  background: whitesmoke;
+}
   
 .table-container {
     position: relative;
     min-height: 200px;
     max-height: 100%;
     overflow: auto;
-  }
+}
   
-  table {
-    width: 100%;
-  }
-  
-  /* Column Widths */
-  .mat-column-descrizione {
-    min-width: 170px;
-  }
+table {
+  width: 100%;
+}
 
-  .mat-column-sezione {
-    max-width: 30px;
-  }
+/* Column Widths */
+.mat-column-descrizione {
+  min-width: 170px;
+}
 
-  .mat-column-sezioneCSAA {
-    max-width: 30px;
-  }
-  
-  .classiSezioniAnniTable .mat-row {
-    min-height: 30px;
-  }
+.mat-column-sezione {
+  max-width: 30px;
+}
 
-  
-  .element-row {
-      cursor: pointer;
-  }
+.mat-column-sezioneCSAA {
+  max-width: 30px;
+}
 
-  .highlight{
-    background: rgba(100, 100, 100, 0.2); /* green */
-  }
+.classiSezioniAnniTable .mat-row {
+  min-height: 30px;
+}
+
+.element-row {
+    cursor: pointer;
+}
+
+.highlight{
+  background: rgba(100, 100, 100, 0.2); /* green */
+}
 

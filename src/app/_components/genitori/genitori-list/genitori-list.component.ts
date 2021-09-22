@@ -116,7 +116,6 @@ export class GenitoriListComponent implements OnInit {
   }
 
   ngOnInit () {
-    console.log("this.dove", this.dove);
 
     if (this.dove == "alunno-edit-list" || this.dove == "alunno-edit-famiglia") {
       this.showPageTitle = false;
@@ -131,7 +130,6 @@ export class GenitoriListComponent implements OnInit {
       default: this.displayedColumns = this.displayedColumnsGenitoriPage;
     }
 
-    console.log (this.displayedColumns);
     this._navigationService.getAlunno().subscribe(
       val=>{
       if (val!= '') {
@@ -144,7 +142,6 @@ export class GenitoriListComponent implements OnInit {
   }
 
   loadData () {
-    console.log("loadData. this.dove:", this.dove);
     let obsGenitori$: Observable<ALU_Genitore[]>;
 
     if(this.dove == "alunno-edit-famiglia"){

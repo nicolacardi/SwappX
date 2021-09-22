@@ -64,7 +64,19 @@ export class AlunniListComponent implements OnInit {
     "dtNascita", 
     "email", 
     "telefono", 
+    "removeFromFam"
   ];
+
+  displayedColumnsGenitoreEditList: string[] = [
+    "actionsColumn", 
+    "nome", 
+    "cognome", 
+    "dtNascita", 
+    "email", 
+    "telefono", 
+    "addToFam"
+  ];
+
   selection = new SelectionModel<ALU_Alunno>(true, []);   //rappresenta la selezione delle checkbox
 
   matSortActive!:               string;
@@ -106,6 +118,8 @@ export class AlunniListComponent implements OnInit {
 
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
+  @Output('addToFamily') addToFamily = new EventEmitter<ALU_Alunno>();
+  @Output('removeFromFamily') removeFromFamily = new EventEmitter<ALU_Alunno>();
 
   constructor(private svcAlunni:        AlunniService,
               private router:           Router,
@@ -178,6 +192,7 @@ export class AlunniListComponent implements OnInit {
     switch(this.dove) {
       case 'alunni-page': this.displayedColumns =  this.displayedColumnsAlunniList;; break;
       case 'genitore-edit-famiglia': this.displayedColumns = this.displayedColumnsGenitoreEditFamiglia; break;
+      case 'genitore-edit-list': this.displayedColumns = this.displayedColumnsGenitoreEditList; break;
       default: this.displayedColumns =  this.displayedColumnsClassiDashboard;
     }
 
@@ -222,10 +237,23 @@ export class AlunniListComponent implements OnInit {
       );
     }
 
+    if (this.dove =="alunni-page" || this.dove == "genitore-edit-list") {
+      obsAlunni$= this.svcAlunni.loadWithParents();
+      const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
+      loadAlunni$.subscribe(val => 
+        {
+          this.matDataSource.data = val;
+          this.matDataSource.paginator = this.paginator;
+          this.matDataSource.sort = this.sort; 
+          this.storedFilterPredicate = this.matDataSource.filterPredicate;
+          this.matDataSource.filterPredicate = this.createFilter();
+        }
+      );
+    }
+
     if (this.dove == "genitore-edit-famiglia") {
       obsAlunni$= this.svcAlunni.loadByGenitore(this.genitoreId);
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
-
       loadAlunni$.subscribe(val => 
         {
           this.matDataSource.data = val;
@@ -234,6 +262,7 @@ export class AlunniListComponent implements OnInit {
         }
       );
     }
+    
 
 
   }
@@ -323,12 +352,11 @@ export class AlunniListComponent implements OnInit {
     //al SOLO primo carattere devo:
     //1. resettare il filterpredicate
     //2. cancellare tutti i filtri
-
     const filterValue = (event.target as HTMLInputElement).value;
     if (filterValue.length == 1) {
       //ripristino il filterPredicate iniziale, precedentemente salvato in storedFilterPredicate
       this.matDataSource.filterPredicate = this.storedFilterPredicate;
-      this.alunniFilterComponent.resetAllInputs();
+      if (this.dove == "alunni-page") this.alunniFilterComponent.resetAllInputs();
     }
     this.matDataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -438,6 +466,14 @@ export class AlunniListComponent implements OnInit {
   toggleAttivi(){
     this.swSoloAttivi = !this.swSoloAttivi;
     this.loadData();
+  }
+
+  addToFamilyEmit(item: ALU_Alunno) {
+    this.addToFamily.emit(item);
+  }
+
+  removeFromFamilyEmit(item: ALU_Alunno) {
+    this.removeFromFamily.emit(item);
   }
 }
 
