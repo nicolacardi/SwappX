@@ -15,3 +15,13 @@
 .lowTitles {
     min-height: 37px !important;
   }
+
+.alunni-container{
+  height: 100px;
+  overflow: auto;
+}
+
+.alunni-list-container{
+  height: 300px;
+  overflow: auto;
+}

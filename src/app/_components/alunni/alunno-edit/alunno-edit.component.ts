@@ -21,6 +21,7 @@ import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ClassiSezioniAnniAlunniService } from '../../classi/classi-sezioni-anni-alunni.service';
 import { ClassiSezioniAnniComponent } from '../../classi/classi-sezioni-anni/classi-sezioni-anni.component';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 
 @Component({
@@ -287,9 +288,40 @@ export class AlunnoEditComponent implements OnInit {
     //così come ho fatto in dialog-add mi costruisco un oggetto "stile" form e lo passo alla postClasseSezioneAnnoAlunno
     //avrei potuto anche passare i valori uno ad uno, ma è già pronta così avendola usata in dialog-add
     let objClasseSezioneAnnoAlunno = {AlunnoID: this.idAlunno, ClasseSezioneAnnoID: classeSezioneAnno.id};
-
-    this.svcClassiSezioniAnniAlunni.getClasseSezioneAnnoAlunnoByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id, this.idAlunno)
+    console.log (this.idAlunno, classeSezioneAnno.anno.id);
+    const checks$ = this.svcClassiSezioniAnniAlunni.getByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id, this.idAlunno)
     .pipe(
+      //se trova che la stessa classe è già presente res.length è != 0 quindi non procede con la getByAlunnoAnno ma restituisce of()
+      //se invece res.length == 0 dovrebbe proseguire e concatenare la verifica successiva ch è getByAlunnoAndAnno...
+      //invece "test" non compare mai...quindi? sta uscendo sempre con of()?
+      tap(res=> {
+        console.log("err1");
+        if (res.length !=0) {
+          this._dialog.open(DialogOkComponent, {
+            width: '320px',
+            data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa classe è già stata inserita!"}
+          });
+        }
+      }),
+      concatMap( res => iif (()=> res.length == 0,
+      this.svcClassiSezioniAnniAlunni.getByAlunnoAndAnno(classeSezioneAnno.anno.id, this.idAlunno) , of() )
+      ),
+      tap(res=> {
+        console.log("err2");
+        if (res.length !=0) {
+          this._dialog.open(DialogOkComponent, {
+            width: '320px',
+            data: {titolo: "ATTENZIONE!", sottoTitolo: "E' già stata inserita una classe in quest'anno!"}
+          });
+        }
+      })
+
+    )
+
+
+    checks$
+    .pipe(
+
       concatMap( res => iif (()=> res.length == 0,this.svcClassiSezioniAnniAlunni.postClasseSezioneAnnoAlunno(objClasseSezioneAnnoAlunno) , of() )
       )
     ).subscribe(

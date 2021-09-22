@@ -231,4 +231,8 @@ export class GenitoreEditComponent implements OnInit {
   onResize(event: any) {
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
   }
+
+  addAlunno() {
+    
+  }
 }

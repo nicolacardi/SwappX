@@ -79,10 +79,14 @@ mat-row.detail-row {
   overflow: auto;
 }
 
-.genitori-container {
+
+
+.genitori-container{
   height: 100px;
   overflow: auto;
 }
+
+
 
 .classi-list-container {
   height: 450px;
