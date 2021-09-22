@@ -1,7 +1,7 @@
-<h1 class="page-title">Elenco Alunni</h1>
+<h1 *ngIf="showPageTitle" class="page-title">Elenco Alunni</h1>
 
     <!-- **************************   FILTER   ******************* -->
-    <mat-form-field class="ml20 topZIndex">
+    <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
         <mat-label>Filtro</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
     </mat-form-field>
@@ -9,7 +9,7 @@
 
 
     <!-- **************************   PAGINATOR   ******************* -->
-    <mat-paginator class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>
+    <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>
 
     <!-- **************************   MAT-TABLE   ******************* -->
     <mat-table class="alunniTable transparent" [dataSource]="matDataSource"
@@ -116,7 +116,7 @@
         </ng-container>
         
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
-        <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+        <mat-header-row [ngClass]="{'lowTitles': true}" *matHeaderRowDef="displayedColumns;"></mat-header-row>
         
         <!-- **************************   MAT-ROW   ******************* -->
         <mat-row *matRowDef="let element;columns: displayedColumns"

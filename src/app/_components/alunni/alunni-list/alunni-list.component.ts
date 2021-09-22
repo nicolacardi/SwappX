@@ -32,31 +32,39 @@ export class AlunniListComponent implements OnInit {
 
   displayedColumns: string[] =  [];
   displayedColumnsAlunniList: string[] = [
-                                  "actionsColumn", 
-                                  "nome", 
-                                  "cognome", 
-                                  "dtNascita", 
-                                  "indirizzo", 
-                                  "comune", 
-                                  "cap", 
-                                  "prov", 
-                                  "email", 
-                                  "telefono", 
-                                  "ckAttivo"];
+      "actionsColumn", 
+      "nome", 
+      "cognome", 
+      "dtNascita", 
+      "indirizzo", 
+      "comune", 
+      "cap", 
+      "prov", 
+      "email", 
+      "telefono", 
+      "ckAttivo"
+  ];
   displayedColumnsClassiDashboard: string[] = [
-                                    "select",
-                                    "actionsColumn", 
-                                    "nome", 
-                                    "cognome", 
-                                    "dtNascita", 
-                                    "indirizzo", 
-                                    "comune", 
-                                    "cap", 
-                                    "prov", 
-                                    "email", 
-                                    "telefono", 
-                                    ];
-
+      "select",
+      "actionsColumn", 
+      "nome", 
+      "cognome", 
+      "dtNascita", 
+      "indirizzo", 
+      "comune", 
+      "cap", 
+      "prov", 
+      "email", 
+      "telefono", 
+  ];
+  displayedColumnsGenitoreEditFamiglia: string[] = [
+    "actionsColumn", 
+    "nome", 
+    "cognome", 
+    "dtNascita", 
+    "email", 
+    "telefono", 
+  ];
   selection = new SelectionModel<ALU_Alunno>(true, []);   //rappresenta la selezione delle checkbox
 
   matSortActive!:               string;
@@ -64,10 +72,13 @@ export class AlunniListComponent implements OnInit {
 
   public passedGenitore!:       string;
   public page!:                 string;
+
   menuTopLeftPosition =  {x: '0', y: '0'} 
   idAlunniChecked:              number[] = [];
   toggleChecks:                 boolean = false;
-  public swSoloAttivi : boolean = true;
+  showPageTitle:                boolean = true;
+  showTableRibbon:              boolean = true;
+  public swSoloAttivi :         boolean = true;
 
 
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
@@ -90,6 +101,9 @@ export class AlunniListComponent implements OnInit {
 
   @Input() idClasse!: number;
   @Input() alunniFilterComponent!: AlunniFilterComponent;
+  @Input('dove') dove! :                                      string;
+  @Input('genitoreId') genitoreId! :                          number;
+
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
 
@@ -118,12 +132,20 @@ export class AlunniListComponent implements OnInit {
       //fintanto che la @Input idClasse non è stata settata
       //se non mettessimo questa if la loadData partirebbe una volta con this.page = undefined
       //e POI una seconda volta quando idClasse è stato settato e quindi anche this.page: non andrebbe bene
-      this._navigationService.getPage().subscribe(val=>{
-        this.page = val;
-        this.loadData(); 
+
+          // this._navigationService.getPage().subscribe(val=>{
+          //   this.page = val;
+          //   this.loadData(); 
+          //   this.toggleChecks = false;
+          //   this.resetSelections();
+          // })
+
+      if (this.dove != ''){
+        this.loadData();
         this.toggleChecks = false;
         this.resetSelections();
-      })
+      }
+
     //}
   }
   
@@ -131,9 +153,9 @@ export class AlunniListComponent implements OnInit {
 
     //in ngOnInit mettiamo SOLO le displayedColumn e l'estrazione del Genitore che,
     // qualora ci fosse nel caso alunniList, va caricato solo su ngOnInit, una sola volta
-
-    if (this.page == "alunniPage") {
-        this.displayedColumns =  this.displayedColumnsAlunniList;
+    if (this.dove == "alunni-page") {
+    //if (this.page == "alunniPage") {
+        
 
         this._navigationService.getGenitore().subscribe(
           val=>{
@@ -144,8 +166,19 @@ export class AlunniListComponent implements OnInit {
             this.loadData(); 
           }
         });
-    } else {//in questo caso this.page è classiDashBoard
-      this.displayedColumns =  this.displayedColumnsClassiDashboard;
+    }
+
+    if (this.dove == "genitore-edit-famiglia" || this.dove == "genitore-edit-list") {
+      this.showPageTitle = false;
+    }
+    if (this.dove == "genitore-edit-famiglia") {  
+      this.showTableRibbon = false;
+    }
+
+    switch(this.dove) {
+      case 'alunni-page': this.displayedColumns =  this.displayedColumnsAlunniList;; break;
+      case 'genitore-edit-famiglia': this.displayedColumns = this.displayedColumnsGenitoreEditFamiglia; break;
+      default: this.displayedColumns =  this.displayedColumnsClassiDashboard;
     }
 
 
@@ -153,8 +186,7 @@ export class AlunniListComponent implements OnInit {
 
   loadData () {
     let obsAlunni$: Observable<ALU_Alunno[]>;
-
-    if (this.page == "classiDashboard" && this.idClasse != undefined) {
+    if (this.dove == "classi-dashboard" && this.idClasse != undefined) {
       obsAlunni$= this.svcAlunni.loadByClasse(this.idClasse);
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
 
@@ -167,13 +199,15 @@ export class AlunniListComponent implements OnInit {
       );
     } 
     
-    if (this.page == "alunniPage") {
+    //if (this.page == "alunniPage") {
+    if (this.dove =="alunni-page") {
       if(this.swSoloAttivi){
         obsAlunni$= this.svcAlunni.loadWithParents()
           .pipe(map(res=> res.filter((x) => x.ckAttivo == true)));
       }
-      else
+      else {
         obsAlunni$= this.svcAlunni.loadWithParents();
+      }
 
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
 
@@ -187,6 +221,21 @@ export class AlunniListComponent implements OnInit {
         }
       );
     }
+
+    if (this.dove == "genitore-edit-famiglia") {
+      obsAlunni$= this.svcAlunni.loadByGenitore(this.genitoreId);
+      const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
+
+      loadAlunni$.subscribe(val => 
+        {
+          this.matDataSource.data = val;
+          this.matDataSource.paginator = this.paginator;
+          this.matDataSource.sort = this.sort; 
+        }
+      );
+    }
+
+
   }
 
   createFilter(): (data: any, filter: string) => boolean {

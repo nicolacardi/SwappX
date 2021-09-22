@@ -24,7 +24,6 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 
 export class GenitoreEditComponent implements OnInit {
 
-  //idGenitore!:                number;
   genitore$!:                  Observable<ALU_Genitore>;
 
   form! :                     FormGroup;
@@ -44,7 +43,7 @@ export class GenitoreEditComponent implements OnInit {
   breakpoint!:                number;
   
   constructor(public _dialogRef: MatDialogRef<GenitoreEditComponent>,
-              @Inject(MAT_DIALOG_DATA) public idGenitore: DialogData,
+              @Inject(MAT_DIALOG_DATA) public idGenitore: number,
               private fb:             FormBuilder, 
               private route:          ActivatedRoute,
               private router:         Router,
@@ -233,6 +232,6 @@ export class GenitoreEditComponent implements OnInit {
   }
 
   addAlunno() {
-    
+
   }
 }

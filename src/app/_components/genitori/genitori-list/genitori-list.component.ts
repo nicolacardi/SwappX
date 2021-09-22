@@ -28,8 +28,8 @@ export class GenitoriListComponent implements OnInit {
   
   matDataSource = new MatTableDataSource<ALU_Genitore>();
   storedFilterPredicate!:       any;
-  showPageTitle: boolean = true;
-  showTableRibbon: boolean = true;
+  showPageTitle:                boolean = true;
+  showTableRibbon:              boolean = true;
 
   displayedColumns: string[] =  [];
   displayedColumnsAlunnoEditFamiglia: string[] = [

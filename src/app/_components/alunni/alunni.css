@@ -61,32 +61,24 @@ mat-row.detail-row {
     min-height: 30px;
 }
 
-
-
-
-  :host ::ng-deep  .filtriAvanzati .mat-form-field {
+:host ::ng-deep  .filtriAvanzati .mat-form-field {
     height: 40px;
 }
-
 
 :host ::ng-deep .mat-tab-label, :host ::ng-deep.mat-tab-label-active{
   min-width: 15%!important;
   padding: 3px!important;
- }
+}
 
 .genitori-list-container {
   height: 300px;
   overflow: auto;
 }
 
-
-
 .genitori-container{
   height: 100px;
   overflow: auto;
 }
-
-
 
 .classi-list-container {
   height: 450px;
@@ -138,3 +130,7 @@ mat-row.detail-row {
 /* :host ::ng-deep .mat-tab-body-content {
   overflow: none !important;
 } */
+
+.lowTitles {
+  min-height: 37px !important;
+}
