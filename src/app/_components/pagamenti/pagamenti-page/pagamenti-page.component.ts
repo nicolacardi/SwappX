@@ -32,8 +32,8 @@ export class PagamentiPageComponent implements OnInit {
     console.log("BELLA MERDA");
     //QUI!!!
     //AS: problema: il tipoPAgamento è un oggetto
-    this.pagamentiFilterComponent.tipoPagamentoFilter.setValue('');
-    this.pagamentiFilterComponent.causaleFilter.setValue('');
+    // this.pagamentiFilterComponent.tipoPagamentoFilter.setValue('');
+    // this.pagamentiFilterComponent.causaleFilter.setValue('');
 
     console.log("AAA3");
   }

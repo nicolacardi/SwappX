@@ -40,8 +40,7 @@ export class RettaEditComponent implements OnInit {
   @ViewChild(MatAutocomplete) matAutocomplete!: MatAutocomplete;
 
   public obsRette$!:          Observable<PAG_Retta[]>;
-  causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
-  tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
+
   filteredAlunni$!:           Observable<ALU_Alunno[]>;
 
   formRetta! :                FormGroup;

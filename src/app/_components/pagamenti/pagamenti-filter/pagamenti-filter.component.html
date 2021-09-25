@@ -4,15 +4,103 @@
         <div mat-list-item style="text-align: center; margin-bottom: 10px;">
             Filtri Avanzati
         </div>
-        <mat-form-field class="filter ml12">
-            <mat-label>Tipo Pagamento</mat-label>
-            <input matInput [formControl]="tipoPagamentoFilter">
+
+
+        <mat-form-field  class="ml12">
+            <mat-label>Tipo pagamento</mat-label>
+            <mat-select [formControl]="tipoPagamentoFilter" #tipoPagamento>
+                <mat-option [value]="null">
+                    
+                </mat-option>
+                <mat-option *ngFor="let element of (tipiPagamento$ | async)" [value]="element.id">
+                    {{element.descrizione}}
+                </mat-option>
+            </mat-select>
         </mat-form-field>
 
-        <mat-form-field class="filter ml12">
+        <mat-form-field class="ml12">
             <mat-label>Causale</mat-label>
-            <input matInput [formControl]="causaleFilter">
+            <mat-select [formControl]="causaleFilter" #causale>
+                <mat-option [value]="null">
+                    
+                </mat-option>
+                <mat-option *ngFor="let element of (causaliPagamento$ | async)" [value]="element.id">
+                    {{element.descrizione}}
+                </mat-option>
+            </mat-select>
         </mat-form-field>
+
+        
+
+
+
+        <mat-form-field class="ml12">
+            <mat-label>nome</mat-label>
+            <input matInput [formControl]="nomeFilter">
+        </mat-form-field>
+
+        <mat-form-field class="ml12">
+            <mat-label>cognome</mat-label>
+            <input matInput [formControl]="cognomeFilter">
+        </mat-form-field>
+
+        <br>
+        <div class="relative">
+            <mat-label class="frameLabelTransparent">importo</mat-label>
+            
+            <mat-form-field class="mini-filter ml12 mt30">
+                <mat-label>>=di</mat-label>
+                <input matInput [formControl]="importoPiuDiFilter">
+            </mat-form-field>
+            <mat-form-field class="mini-filter ml12">
+                <mat-label>= a</mat-label>
+                <input matInput [formControl]="importoFilter">
+            </mat-form-field>
+            <mat-form-field class="mini-filter ml12">
+                <mat-label><=di</mat-label>
+                <input matInput [formControl]="importoMenoDiFilter">
+            </mat-form-field>
+        </div>
+
+        <div class="relative">
+            <mat-label class="frameLabelTransparent">data pagamento</mat-label>
+            
+
+            <!-- <mat-form-field>
+                <input matInput
+                required
+                formControlName = "dtNascita"
+                [matDatepicker]= "dpDtNascita"
+                placeholder="Data di Nascita"
+                #date>
+                <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
+                <mat-datepicker #dpDtNascita  ></mat-datepicker>
+            </mat-form-field> -->
+
+
+            <!-- <mat-form-field appearance="fill">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field> -->
+
+            <mat-form-field class="midi-filter ml12 mt30">
+                <mat-label>dal</mat-label>
+                <input matInput [matDatepicker]="dpDal" [formControl]="dataDal">
+                <mat-datepicker-toggle matSuffix [for]="dpDal" ></mat-datepicker-toggle>
+                <mat-datepicker #dpDal  ></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="midi-filter ml12 mt30">
+                <mat-label>al</mat-label>
+                <input matInput [matDatepicker]="dpAl" [formControl]="dataAl">
+                <mat-datepicker-toggle matSuffix [for]="dpAl" ></mat-datepicker-toggle>
+                <mat-datepicker #dpAl  ></mat-datepicker>
+            </mat-form-field>
+
+        </div>
+
 
         <div class="ml12 mt10">
             <button mat-button matSuffix class="w180px ml15" mat-stroked-button aria-label="Clear" (click)="resetAllInputsAndClearFilters()" >
