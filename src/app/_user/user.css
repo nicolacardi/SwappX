@@ -1,0 +1,13 @@
+::ng-deep snack-bar-container.error-class-brutto {
+    color: #1ed449 !important;
+    background-color: #9b2e92 !important;
+    border-color: #c3e6cb !important;
+  }
+
+  ::ng-deep .error-class .mat-simple-snackbar-action {
+    color: red;
+  }
+
+  ::ng-deep .mat-simple-snackbar-action {
+    color: #1ed449 !important;
+  }

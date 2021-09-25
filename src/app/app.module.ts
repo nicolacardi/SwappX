@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
@@ -30,6 +30,7 @@ import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/
 import { DialogAddComponent } from './_components/classi/dialog-add/dialog-add.component';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomMatPaginatorIntl } from './_components/utilities/paginator-custom/custom-mat-paginator-int';
+
 import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-page.component';
 import { RettePageComponent } from './_components/pagamenti/rette-page/rette-page.component';
 import { PagamentiListComponent } from './_components/pagamenti/pagamenti-list/pagamenti-list.component';
@@ -44,6 +45,15 @@ import { GenitoriPageComponent } from './_components/genitori/genitori-page/geni
 import { GenitoriFilterComponent } from './_components/genitori/genitori-filter/genitori-filter.component';
 import { ClassiSezioniAnniComponent } from './_components/classi/classi-sezioni-anni/classi-sezioni-anni.component';
 import { PagamentiFilterComponent } from './_components/pagamenti/pagamenti-filter/pagamenti-filter.component';
+import { DocentiListComponent } from './_components/docenti/docenti-list/docenti-list.component';
+import { DocenteEditComponent } from './_components/docenti/docente-edit/docente-edit.component';
+import { DocentiFilterComponent } from './_components/docenti/docenti-filter/docenti-filter.component';
+import { DocentiPageComponent } from './_components/docenti/docenti-page/docenti-page.component';
+
+import { UserService } from './_user/user.service';
+import { LoginComponent } from './_user/login/login.component';
+import { RegisterComponent } from './_user/register/register.component';
+import { AuthInterceptor } from './_user/auth/auth.interceptor';
 
 
 @NgModule({
@@ -60,9 +70,14 @@ import { PagamentiFilterComponent } from './_components/pagamenti/pagamenti-filt
     GenitoreEditComponent,
     GenitoriFilterComponent,
 
+    ClassiSezioniAnniComponent,
+    PagamentiFilterComponent,
+    DocentiListComponent,
+    DocenteEditComponent,
+    DocentiFilterComponent,
+    DocentiPageComponent,
 
     ClassiDashboardComponent,
-    
     
     RettePageComponent,
     PagamentiListComponent,
@@ -79,8 +94,9 @@ import { PagamentiFilterComponent } from './_components/pagamenti/pagamenti-filt
     DialogOkComponent,
     SnackbarComponent,
     LoadingComponent,
-    ClassiSezioniAnniComponent,
-    PagamentiFilterComponent,
+    LoginComponent,
+    RegisterComponent,
+
 
   ],
   imports: [
@@ -94,6 +110,12 @@ import { PagamentiFilterComponent } from './_components/pagamenti/pagamenti-filt
     FormsModule
   ],
   providers: [
+    UserService,
+    { 
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
     { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
     {

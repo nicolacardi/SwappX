@@ -10,3 +10,7 @@ LoadAlunno e simili diventano LoadByID
     
 #### PagamentiPage
     - aggiungere compoent filtri
+
+
+### _dbs Comuni
+    - spostare su DB SQL
