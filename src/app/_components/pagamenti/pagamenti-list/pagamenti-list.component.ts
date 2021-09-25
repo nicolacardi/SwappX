@@ -75,6 +75,13 @@ export class PagamentiListComponent implements OnInit {
   filterValues = {
     tipoPagamento: '',
     causale: '',
+    importoPiuDi: '',
+    importo: '',
+    importoMenoDi: '',
+    nome: '',
+    cognome: '',
+    dataDal: '',
+    dataAl: ''
   };
 
   @ViewChild(MatPaginator) paginator!:    MatPaginator;
@@ -155,38 +162,48 @@ export class PagamentiListComponent implements OnInit {
 
   
   createFilter(): (data: any, filter: string) => boolean {
-    //la stringa che cerco è 'filter'
 
     let filterFunction = function(data: any, filter: any): boolean {
     
-     // console.log("filter: " , filter);
-
-      //JSON.parse normalizza la stringa e la trasforma in un oggetto javascript
       let searchTerms = JSON.parse(filter);
-      //data è uno a uno rappresentato dai record del matDataSource
-     //viene ritornato un boolean che è la AND di tutte le ricerche, su ogni singolo campo
-     //infatti data.nome.toLowerCase().indexOf(searchTerms.nome) !== -1 ritorna truese search.Terms.nome viene trovato nel campo nome di data
 
-     /*
-      let foundGenitore : boolean = false;
-      if (Object.values(searchTerms).every(x => x === null || x === '')) 
-        foundGenitore = true;
-      else {    
-        data._Genitori?.forEach((val: { genitore: { nome: any; cognome: any}; })=>  {   
-            const foundCognomeNome = foundGenitore || String(val.genitore.cognome+" "+val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
-            const foundNomeCognome = foundGenitore || String(val.genitore.nome+" "+val.genitore.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
-            foundGenitore = foundCognomeNome || foundNomeCognome;
-        })
+      let foundTipoPagamento = (String(data.tipoPagamentoID).indexOf(searchTerms.tipoPagamento) !== -1);
+      if (searchTerms.tipoPagamento == null) foundTipoPagamento = true;
+      
+      let foundCausale = (String(data.causaleID).indexOf(searchTerms.causale) !== -1);
+      if (searchTerms.causale == null) foundCausale = true; //true significa che deve ignorare il filtro: deve rispondere come se trovasse sempre il valore
+
+      let cfrImportoPiuDi = true;
+      let cfrImportoMenoDi = true;
+      let cfrImporti = true;
+      if (searchTerms.importo  == '') {
+        if (searchTerms.importoPiuDi > data.importo) { cfrImportoPiuDi = false }
+        if (searchTerms.importoMenoDi < data.importo && searchTerms.importoMenoDi != '') { cfrImportoMenoDi = false }
+
+         cfrImporti = cfrImportoPiuDi && cfrImportoMenoDi;
+      } else {
+         cfrImporti = (data.importo == searchTerms.importo) 
       }
-      */
 
-      return String(data.tipoPagamento).toLowerCase().indexOf(searchTerms.nome) !== -1
-        && String(data.causale).toLowerCase().indexOf(searchTerms.cognome) !== -1
-        //....
+      let cfrDataDal = true;
+      let cfrDataAl = true;
+      let cfrDate = true;
+      if (searchTerms.dataDal != '') {cfrDataDal = (data.dtPagamento > searchTerms.dataDal)}
+      if (searchTerms.dataAl != '') {cfrDataAl = (data.dtPagamento < searchTerms.dataAl)}
+      cfrDate = cfrDataDal && cfrDataAl;
+
+      return foundTipoPagamento
+        && foundCausale
+        && cfrImporti 
+        && String(data.alunno.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+        && String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+        && cfrDate
         ;
     }
     return filterFunction;
   }
+
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.matDataSource.filter = filterValue.trim().toLowerCase();

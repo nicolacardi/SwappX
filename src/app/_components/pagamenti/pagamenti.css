@@ -248,4 +248,12 @@ td {
   }
 
 
+.mini-filter {
+    max-width: 50px;
+}
+
+.midi-filter {
+    max-width: 85px;
+}
+
 

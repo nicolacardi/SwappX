@@ -290,6 +290,7 @@ export class AlunnoEditComponent implements OnInit {
             width: '320px',
             data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa classe è già stata inserita!"}
           });
+          //finalize; forse al posto dell'iif
         }
       }),
       concatMap( res => iif (()=> res.length == 0,
@@ -308,9 +309,7 @@ export class AlunnoEditComponent implements OnInit {
     )
 
 
-    checks$
-    .pipe(
-
+    checks$.pipe(
       concatMap( res => iif (()=> res.length == 0,this.svcClassiSezioniAnniAlunni.postClasseSezioneAnnoAlunno(objClasseSezioneAnnoAlunno) , of() )
       )
     ).subscribe(
