@@ -4,31 +4,31 @@
     <mat-sidenav #start class="leftSidenav" >
         <mat-nav-list (click)="start.close()">
             <a mat-list-item routerLink="alunni" >
-                <img class="iconaMenu" src="../assets/alunniList.svg">
+                <img class="iconaMenuSidenav" src="../assets/alunniList.svg">
                 <span>Lista Alunni</span>
             </a>
 
             <a mat-list-item routerLink="genitori">
-                <img class="iconaMenu" src="../assets/genitoriList.svg">
+                <img class="iconaMenuSidenav" src="../assets/genitoriList.svg">
                 <span>Lista Genitori</span>
             </a>  
 
             <a mat-list-item routerLink="docenti">
-                <img class="iconaMenu" src="../assets/genitoriList.svg">
+                <img class="iconaMenuSidenav" src="../assets/docentiList.svg">
                 <span>Lista Docenti</span>
             </a>
 
             <a mat-list-item routerLink="classi-dashboard">
-                <img class="iconaMenu" src="../assets/classi.svg">
+                <img class="iconaMenuSidenav" src="../assets/classi.svg">
                 <span>Classi</span>
             </a> 
 
             <a mat-list-item routerLink="pagamenti">
-                <img class="iconaMenu" src="../assets/money.svg">
+                <img class="iconaMenuSidenav" src="../assets/money.svg">
                 <span>Pagamenti</span>
             </a> 
             <a mat-list-item routerLink="rette">
-                <img class="iconaMenu" src="../assets/money.svg">
+                <img class="iconaMenuSidenav" src="../assets/money.svg">
                 <span>Rette</span>
             </a> 
 
@@ -80,6 +80,9 @@
         </button>
         <span class="example-spacer"> SwappX</span>
 
+        <div class="logo">
+            <img class="logo-img" src="../assets/logoscritta.svg">
+        </div>
         <button mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon>account_circle</mat-icon>
         </button>

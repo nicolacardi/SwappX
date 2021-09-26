@@ -463,6 +463,10 @@ mat-nav-list a img {
     height: 24px;
 }
 
+
+.iconaMenuSidenav{
+    width: 40px;
+}
 /* .miniButton {
     width: 5px !important;
     height: 5px !important;
@@ -638,3 +642,14 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
     /* -webkit-hyphens: auto; */
     /* hyphens: auto; mette il segno di a capo*/
   }
+
+.logo {
+  margin: auto;
+  width: 51%;
+  padding-top: 10px;
+
+}
+
+.logo-img {
+    width: 125px;
+}
