@@ -51,6 +51,8 @@ import { DocentiFilterComponent } from './_components/docenti/docenti-filter/doc
 import { DocentiPageComponent } from './_components/docenti/docenti-page/docenti-page.component';
 
 import { UserService } from './_user/user.service';
+
+import { UserComponent } from './_user/user.component';
 import { LoginComponent } from './_user/login/login.component';
 import { RegisterComponent } from './_user/register/register.component';
 import { AuthInterceptor } from './_user/auth/auth.interceptor';
@@ -96,6 +98,7 @@ import { AuthInterceptor } from './_user/auth/auth.interceptor';
     LoadingComponent,
     LoginComponent,
     RegisterComponent,
+    UserComponent,
 
 
   ],

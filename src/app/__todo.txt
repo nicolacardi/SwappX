@@ -1,0 +1,20 @@
+LoadAlunno e simili diventano LoadByID
+uniformare idAlunno e alunnoId idCorso /Corso ID ecc e Svcxxxx / xxxxSvc
+
+
+#### AlunnoEdit - panel Famiglia
+    - gestire bottone cancella (bidone) visibile solo nel panel in alto: rendere invisibile in certe situazioni
+    - popolare la griglia sotto con tutti i genitori solo su evento esplicito (bottone "seleziona genitore" ?) (ottimizzazione prestazioni)
+    - fix campo data spostato a sinistra
+
+### _dbs Comuni
+    - spostare su DB SQL
+
+### Login
+    - web service di autenticazione
+    - JWT (vedi boxX)
+    - verificare service user.service
+
+### Default Component
+
+Fare Default COmponent

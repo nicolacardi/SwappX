@@ -14,37 +14,29 @@ import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/
 
 import { RettePageComponent } from './_components/pagamenti/rette-page/rette-page.component';
 import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
+import { AppComponent } from './app.component';
+import { AuthGuard } from './_user/auth/auth.guard';
+import { UserComponent } from './_user/user.component';
+import { RegisterComponent } from './_user/register/register.component';
+import { LoginComponent } from './_user/login/login.component';
 
 
 const routes: Routes = [
-  {
-    path: "alunni",
-    component: AlunniPageComponent
-  },
-  {
-    path: 'alunni/:id',
-    component: AlunnoEditComponent
-  },
-  {
-    path: "genitori",
-    component: GenitoriPageComponent
-  },
-  {
-    path: 'genitori/:id',
-    component: GenitoreEditComponent
-  },
-  {
-    path: "docenti",
-    component: DocentiPageComponent
-  },
-  {
-    path: 'docenti/:id',
-    component: DocenteEditComponent
-  },
-  {
-    path: "classi-dashboard",
-    component: ClassiDashboardComponent
-  },
+
+  { path:'default', component: AppComponent, canActivate:[AuthGuard]  },
+  { path: "alunni",component: AlunniPageComponent},
+  // {
+  //   path: 'alunni/:id',
+  //   component: AlunnoEditComponent
+  // },
+  { path: "genitori", component: GenitoriPageComponent },
+  // {
+  //   path: 'genitori/:id',
+  //   component: GenitoreEditComponent
+  // },
+  { path: "docenti", component: DocentiPageComponent },
+  { path: 'docenti/:id', component: DocenteEditComponent },
+  { path: "classi-dashboard", component: ClassiDashboardComponent },
 
   {
     path: "pagamenti",
@@ -53,8 +45,21 @@ const routes: Routes = [
   {
     path: "rette",
     component: RettePageComponent
+  },
+
+  { 
+    path:'' , redirectTo: 'user/login', pathMatch: 'full' 
+  },
+
+  { 
+    path:'user', component: UserComponent,
+    children:[
+    {path:'registration', component: RegisterComponent },
+    {path:'login', component: LoginComponent }
+    ]
   }
 
+  
 ];
 
 @NgModule({

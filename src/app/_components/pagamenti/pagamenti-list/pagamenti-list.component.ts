@@ -205,7 +205,13 @@ export class PagamentiListComponent implements OnInit {
 
 
   applyFilter(event: Event) {
+
     const filterValue = (event.target as HTMLInputElement).value;
+    if (filterValue.length == 1) {
+      console.log(event);
+      this.matDataSource.filterPredicate = this.storedFilterPredicate;
+      this.pagamentiFilterComponent.resetAllInputs();
+    }
     this.matDataSource.filter = filterValue.trim().toLowerCase();
   }
 

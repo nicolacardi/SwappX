@@ -31,6 +31,7 @@ export class UserService {
     //The BehaviorSubject holds the value that needs to be shared with other components
     this.BehaviourSubjectcurrentUser = new BehaviorSubject<currentUser>(JSON.parse(localStorage.getItem('currentUser')!));
     this.obscurrentUser = this.BehaviourSubjectcurrentUser.asObservable();
+    console.log ("USER SERVICE CUCU");
   }
 
   formModel = this.fb.group(
@@ -39,9 +40,9 @@ export class UserService {
         Email: ['', Validators.email],
         FullName: [''],
         Passwords: this.fb.group({
-        Password: ['', [Validators.required, Validators.minLength(4)]],
-        ConfirmPassword: ['', Validators.required]
-      },
+          Password: ['', [Validators.required, Validators.minLength(4)]],
+          ConfirmPassword: ['', Validators.required]
+        },
       {
        validator: this.comparePasswords
       }
@@ -56,9 +57,7 @@ export class UserService {
           // store user details in local storage to keep user logged in
           localStorage.setItem('token', user.token);
           localStorage.setItem('currentUser', JSON.stringify(user));
-          
           this.currUser = user;
-
           this.BehaviourSubjectcurrentUser.next(user);
         }     
       return user;

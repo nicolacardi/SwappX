@@ -136,7 +136,13 @@ export class PagamentiFilterComponent implements OnInit {
   resetAllInputs() {
     this.tipoPagamentoFilter.setValue('', {emitEvent:false});
     this.causaleFilter.setValue('', {emitEvent:false});
-    //this.nomeCognomeGenitoreFilter.setValue('', {emitEvent:false});
+    this.nomeFilter.setValue('', {emitEvent:false});
+    this.cognomeFilter.setValue('', {emitEvent:false});
+    this.dataDal.setValue('', {emitEvent:false});
+    this.dataAl.setValue('', {emitEvent:false});
+    this.importoFilter.setValue('', {emitEvent:false});
+    this.importoMenoDiFilter.setValue('', {emitEvent:false});
+    this.importoPiuDiFilter.setValue('', {emitEvent:false});
   }
 
   resetAllInputsAndClearFilters() {
