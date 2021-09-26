@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Router } from '@angular/router';
 import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
@@ -15,12 +15,22 @@ import { UserService } from '../user.service';
 
 export class LoginComponent implements OnInit {
   loading = false;
-  formModel={
-    UserName:'',
-    Password:''
-  };
+  // formModel={
+  //   UserName:'',
+  //   Password:''
+  // };
 
-  constructor(private uService: UserService, private router:Router, private snackBar : MatSnackBar) {
+  form! :                     FormGroup;
+  
+  constructor(private uService:       UserService, 
+              private router:         Router,
+              private snackBar :      MatSnackBar,
+              private fb:             FormBuilder, 
+              ) {
+    this.form = this.fb.group({
+      UserName:                   ['user', Validators.required],
+      Password:                   ['pass', { validators:[ Validators.required, Validators.maxLength(50)]}]
+    })
   }
 
   ngOnInit() {
@@ -30,11 +40,11 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  onSubmit(form:NgForm){
+  onSubmit(){
     this.loading = true;
     //console.log("Login: " + this.formModel.UserName);
 
-    this.uService.Login(form.value).subscribe(
+    this.uService.Login(this.form.value).subscribe(
       (res: any) => {
 
         this.uService.changeLoggedIn(true);
