@@ -1,23 +1,27 @@
 
-<form #form='ngForm' class='mb-4' autocomplete="off" (submit)="onSubmit(form)">
+<!-- <form #form='ngForm' class='mb-4' autocomplete="off" (submit)="onSubmit(form)"> -->
+<form [formGroup] = "form" class='mb-4' autocomplete="off" (submit)="onSubmit()">
 
-    <div class="form-group">
-        <label>UserName</label>
-        <input class="form-control" #UserName="ngModel" name="UserName" [(ngModel)]="formModel.UserName" required>
-    <!--    <label class="text-danger" *ngIf="service.formModel.get('UserName').touched && service.formModel.get('UserName').errors?.required">Campo obbligatorio</label> -->
-    </div>
-    <div class="form-group">
-        <label>Password</label>
-        <input type="password" class="form-control" #Password="ngModel" name="Password" [(ngModel)]="formModel.Password" required>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-8 offset-md-2">
-            <button type="submit" class="btn btn-info btn-lg btn-block" [disabled]="form.invalid">
-              Login In
-            </button>
-        </div>
-    </div>
-    <mat-spinner  class="myspinner" diameter="30" color="#ffffff" *ngIf="loading"></mat-spinner>
-    <div class="myspinner-space" *ngIf="!loading">&nbsp;</div>
+            <div>
+            <mat-form-field>
+                <input matInput required placeholder="user name" formControlName="UserName">
+            </mat-form-field>
+            </div>
+
+            <!-- <input class="form-control" #UserName="ngModel" name="UserName" [(ngModel)]="formModel.UserName" required> -->
+            <div>
+            <mat-form-field>
+                <input matInput required type="password" placeholder="password" formControlName="Password">
+            </mat-form-field>
+             </div>
+            <!-- <input type="password" class="form-control" #Password="ngModel" name="Password" [(ngModel)]="formModel.Password" required> -->
+            <div>
+                <button type="submit" mat-stroked-button [disabled]="form.invalid">
+                Login In
+                </button>
+            </div>
+
+    <!-- <mat-spinner  class="myspinner" diameter="30" color="#ffffff" *ngIf="loading"></mat-spinner> -->
+    <!-- <div class="myspinner-space" *ngIf="!loading">&nbsp;</div> -->
 
 </form>

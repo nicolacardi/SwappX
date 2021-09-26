@@ -141,6 +141,10 @@ background-size: cover;*/
     margin-top: 64px;
 }
 
+.ma {
+    margin: auto;
+}
+
 .pt20 {
     padding-top: 20px;
 }
@@ -335,6 +339,11 @@ background-size: cover;*/
     background-color: #044D7E !important;
 }
 
+.user-container {
+    width: 25%;
+    margin:auto;
+    text-align: center;
+}
 
 
 
@@ -652,4 +661,8 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 
 .logo-img {
     width: 125px;
+}
+
+.logo-login {
+    width: 200px;
 }
