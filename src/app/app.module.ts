@@ -45,10 +45,10 @@ import { GenitoriPageComponent } from './_components/genitori/genitori-page/geni
 import { GenitoriFilterComponent } from './_components/genitori/genitori-filter/genitori-filter.component';
 import { ClassiSezioniAnniComponent } from './_components/classi/classi-sezioni-anni/classi-sezioni-anni.component';
 import { PagamentiFilterComponent } from './_components/pagamenti/pagamenti-filter/pagamenti-filter.component';
-import { DocentiListComponent } from './_components/docenti/docenti-list/docenti-list.component';
-import { DocenteEditComponent } from './_components/docenti/docente-edit/docente-edit.component';
-import { DocentiFilterComponent } from './_components/docenti/docenti-filter/docenti-filter.component';
-import { DocentiPageComponent } from './_components/docenti/docenti-page/docenti-page.component';
+import { PersoneListComponent } from './_components/persone/persone-list/persone-list.component';
+import { PersonaEditComponent } from './_components/persone/persona-edit/persona-edit.component';
+import { PersoneFilterComponent } from './_components/persone/persone-filter/persone-filter.component';
+import { PersonePageComponent } from './_components/persone/persone-page/persone-page.component';
 
 import { UserService } from './_user/user.service';
 
@@ -74,10 +74,10 @@ import { AuthInterceptor } from './_user/auth/auth.interceptor';
 
     ClassiSezioniAnniComponent,
     PagamentiFilterComponent,
-    DocentiListComponent,
-    DocenteEditComponent,
-    DocentiFilterComponent,
-    DocentiPageComponent,
+    PersoneListComponent,
+    PersonaEditComponent,
+    PersoneFilterComponent,
+    PersonePageComponent,
 
     ClassiDashboardComponent,
     
