@@ -91,37 +91,7 @@
   box-shadow: none;
 }
 
-/*BLOCCO1: PROBABILMENTE E' DA TOGLIERE*/
-
-/* .grid-checkboxes {
-    width: 600px;
-    margin-left: 20px;
-    margin-bottom: 10px;
-}
-
-.grid-checkboxes th {
-    text-align: left;
-    font-weight: normal;
-} */
 
 
 
-/* MAT-TABLE EXPANDABLE ROWS */
-/* mat-row.detail-row {
-    
-    flex-basis: 0; 
-    min-height: initial;
-} */
-  
-/* .element-row:not(.expanded-row):hover {
-    background: whitesmoke;
-}
-  
-.element-row:not(.expanded-row):active {
-    background: #efefef;
-} */
 
-/* .element-detail {
-    overflow: hidden;
-    display: flex; 
-} */

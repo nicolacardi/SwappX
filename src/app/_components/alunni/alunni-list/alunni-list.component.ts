@@ -111,8 +111,8 @@ export class AlunniListComponent implements OnInit {
   @ViewChild("filterInput") filterInput!:                     ElementRef;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
-  @Input() idClasse!: number;
-  @Input() alunniFilterComponent!: AlunniFilterComponent;
+  @Input() idClasse!:                                         number;
+  @Input() alunniFilterComponent!:                            AlunniFilterComponent;
   @Input('dove') dove! :                                      string;
   @Input('genitoreId') genitoreId! :                          number;
 
@@ -169,8 +169,6 @@ export class AlunniListComponent implements OnInit {
     // qualora ci fosse nel caso alunniList, va caricato solo su ngOnInit, una sola volta
     if (this.dove == "alunni-page") {
     //if (this.page == "alunniPage") {
-        
-
         this._navigationService.getGenitore().subscribe(
           val=>{
           if (val!= '') {

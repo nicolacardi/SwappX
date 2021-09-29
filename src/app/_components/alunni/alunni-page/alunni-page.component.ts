@@ -13,8 +13,6 @@ export class AlunniPageComponent implements OnInit {
 
   @ViewChild(AlunniListComponent) alunniList!: AlunniListComponent; 
   @ViewChild(AlunniFilterComponent) alunniFilterComponent!: AlunniFilterComponent; 
-  
-  //@ViewChild('sidenav') public drawerFiltriAvanzati!: MatSidenav;
   @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
 
   constructor(private _navigationService:  NavigationService) { }

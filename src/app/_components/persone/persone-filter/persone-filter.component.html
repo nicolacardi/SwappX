@@ -1,1 +1,55 @@
-<p>persone-filter works!</p>
+<mat-nav-list>
+    <div class="filtriAvanzati pt60">
+
+        <div mat-list-item style="text-align: center; margin-bottom: 10px;">
+            Filtri Avanzati
+        </div>
+        <mat-form-field class="ml12">
+            <mat-label>Nome Persona</mat-label>
+            <input matInput [formControl]="nomeFilter">
+        </mat-form-field>
+
+        <mat-form-field class="ml12">
+            <mat-label>Cognome Persona</mat-label>
+            <input matInput [formControl]="cognomeFilter">
+        </mat-form-field>
+
+        <mat-form-field class="ml12">
+            <mat-label>Anno di Nascita</mat-label>
+            <input matInput [formControl]="annoNascitaFilter">
+        </mat-form-field>
+
+        <mat-form-field class="ml12">
+            <mat-label>Indirizzo</mat-label>
+            <input matInput [formControl]="indirizzoFilter">
+        </mat-form-field>
+
+        <mat-form-field class="ml12">
+            <mat-label>Comune</mat-label>
+            <input matInput [formControl]="comuneFilter">
+        </mat-form-field>
+
+        <mat-form-field class="ml12">
+            <mat-label>Prov</mat-label>
+            <input matInput [formControl]="provFilter">
+        </mat-form-field>
+
+        <mat-form-field class="ml12">
+            <mat-label>email</mat-label>
+            <input matInput [formControl]="emailFilter">
+        </mat-form-field>
+
+        <mat-form-field class="ml12">
+            <mat-label>telefono</mat-label>
+            <input matInput [formControl]="telefonoFilter">
+        </mat-form-field>
+
+        <div class="ml12 mt10">
+            <button mat-button matSuffix class="w180px ml15" mat-stroked-button aria-label="Clear" (click)="resetAllInputsAndClearFilters()" >
+                Pulisci Filtri
+            </button>
+        </div>
+
+    </div>
+</mat-nav-list>   
+
