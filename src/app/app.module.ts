@@ -56,6 +56,7 @@ import { UserComponent } from './_user/user.component';
 import { LoginComponent } from './_user/login/login.component';
 import { RegisterComponent } from './_user/register/register.component';
 import { AuthInterceptor } from './_user/auth/auth.interceptor';
+import { HomeComponent } from './_components/home/home.component';
 
 
 @NgModule({
@@ -99,6 +100,7 @@ import { AuthInterceptor } from './_user/auth/auth.interceptor';
     LoginComponent,
     RegisterComponent,
     UserComponent,
+    HomeComponent,
 
 
   ],

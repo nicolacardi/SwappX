@@ -19,11 +19,14 @@ import { AuthGuard } from './_user/auth/auth.guard';
 import { UserComponent } from './_user/user.component';
 import { RegisterComponent } from './_user/register/register.component';
 import { LoginComponent } from './_user/login/login.component';
+import { HomeComponent } from './_components/home/home.component';
 
 
 const routes: Routes = [
 
-  { path:'default', component: AppComponent, canActivate:[AuthGuard]  },
+  //{ path:'home', component: HomeComponent, canActivate:[AuthGuard]  },
+  { path:'home', component: HomeComponent  },
+
   { path: "alunni",component: AlunniPageComponent},
   // {
   //   path: 'alunni/:id',

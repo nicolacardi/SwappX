@@ -49,9 +49,15 @@ export class UserService {
     ) 
   });
 
+
+  
+  fakeLogin() {
+    this.BehaviourSubjectLoggedIn.next(true);
+  }
+  
   //Login(userName: string, userPwd: string) {
   Login(formData: any) {
-    return this.http.post<currentUser>(this.BaseURI  +'/ApplicationUser/Login', formData )
+    return this.http.post<currentUser>(this.BaseURI  +'ApplicationUser/Login', formData )
       .pipe(map(user => {
         if (user && user.token) {
           // store user details in local storage to keep user logged in
@@ -108,7 +114,7 @@ export class UserService {
   }
 
   changeLoggedIn(val: boolean) {
-    this.BehaviourSubjectLoggedIn.next(val)
+    this.BehaviourSubjectLoggedIn.next(val);
     
     //console.log ("user.service.ts - isLoggedIn viene impostato a "+ val)
   }

@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
 
   form! :                     FormGroup;
   
-  constructor(private uService:       UserService, 
+  constructor(private svcUser:       UserService, 
               private router:         Router,
               private snackBar :      MatSnackBar,
               private fb:             FormBuilder,
@@ -48,33 +48,34 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     //console.log("Login: " + this.formModel.UserName);
 
-    this.uService.Login(this.form.value).subscribe(
+    this.svcUser.fakeLogin();
+    this.router.navigateByUrl('/home');  //TEMPORANEO
+
+
+    /*
+    this.svcUser.Login(this.form.value).subscribe(
       (res: any) => {
 
-        this.uService.changeLoggedIn(true);
-        //this.ShowMessage("Login Corretta", "Benvenuto " + this.uService.currUser.fullname, false);
+        this.svcUser.changeLoggedIn(true);
         this._snackBar.openFromComponent(SnackbarComponent, {
           data: 'Benvenuto!', panelClass: ['green-snackbar']
         });
         //Forse fa schifo ma funziona
         //this.sidebar.ngOnInit();
 
-        this.router.navigateByUrl('/default');
+        this.router.navigateByUrl('/home');
       },
       err=> {
         this.loading = false;
 
-        this.uService.changeLoggedIn(false);
+        this.svcUser.changeLoggedIn(false);
         if(err.status== 400) {
-          //this.ShowMessage("Utente o Password errati", "Riprova",true);
           this._snackBar.openFromComponent(SnackbarComponent, {
             data: 'Utente o Password errati! - Riprova!', panelClass: ['green-snackbar']
           });
         }
         else {
           console.log(err);
-          //this.ShowMessage("Server Error: ", "Time-out" ,true);
-          //this.ShowMessage(err,"" , true);
           this._snackBar.openFromComponent(SnackbarComponent, {
             data: 'Server Error: timeout!', panelClass: ['red-snackbar']
           });
@@ -82,6 +83,7 @@ export class LoginComponent implements OnInit {
         }
       }
     );
+    */
   }
 
 
@@ -92,24 +94,6 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  // ShowMessage(msg: string, title?: string, hasErrors: boolean= false ) {
-  //   let config = new MatSnackBarConfig();
-  //   config.verticalPosition  = 'bottom';
-  //   config.horizontalPosition = 'center';
-  //   config.duration = 2000;
-
-  //   if(hasErrors){
-  //     config.panelClass =  ['error-class'];
-  //     console.log("ShowMessage: hasErrors");
-  //   }
-  //   //else
-  //   //  config.panelClass =  ['ng-deep'];
-
-  //   if(title != null)
-  //     this.snackBar.open(msg, title, config);
-  //   else
-  //     this.snackBar.open(msg,"", config);
-  // }
 
 }
 
