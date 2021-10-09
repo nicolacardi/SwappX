@@ -20,47 +20,40 @@ import { UserComponent } from './_user/user.component';
 import { RegisterComponent } from './_user/register/register.component';
 import { LoginComponent } from './_user/login/login.component';
 import { HomeComponent } from './_components/home/home.component';
+import { ClassiPageComponent } from './_components/classi/classi-page/classi-page.component';
 
 
 const routes: Routes = [
 
-  //{ path:'home', component: HomeComponent, canActivate:[AuthGuard]  },
-  { path:'home', component: HomeComponent  },
-
-  { path: "alunni",component: AlunniPageComponent},
-  // {
-  //   path: 'alunni/:id',
-  //   component: AlunnoEditComponent
-  // },
-  { path: "genitori", component: GenitoriPageComponent },
-  // {
-  //   path: 'genitori/:id',
-  //   component: GenitoreEditComponent
-  // },
-  { path: "persone", component: PersonePageComponent },
-  { path: 'persone/:id', component: PersonaEditComponent },
-  { path: "classi-dashboard", component: ClassiDashboardComponent },
-
-  {
-    path: "pagamenti",
-    component: PagamentiPageComponent
-  },
-  {
-    path: "rette",
-    component: RettePageComponent
-  },
+  { path:'' , redirectTo: 'user/login', pathMatch: 'full' },
 
   { 
-    path:'' , redirectTo: 'user/login', pathMatch: 'full' 
-  },
-
-  { 
-    path:'user', component: UserComponent,
+    path:'user',              component: UserComponent,
     children:[
     {path:'registration', component: RegisterComponent },
     {path:'login', component: LoginComponent }
     ]
-  }
+  },
+
+  //{ path:'home', component: HomeComponent, canActivate:[AuthGuard]  },
+
+  { path:'home',              component: HomeComponent  },
+
+  { path: "alunni",           component: AlunniPageComponent},
+
+  { path: "genitori",         component: GenitoriPageComponent },
+
+  { path: "persone",          component: PersonePageComponent },
+
+  { path: "classi",           component: ClassiPageComponent },
+
+  { path: "classi-dashboard", component: ClassiDashboardComponent },
+
+  { path: "pagamenti",        component: PagamentiPageComponent },
+
+  { path: "rette",            component: RettePageComponent }
+
+
 
   
 ];

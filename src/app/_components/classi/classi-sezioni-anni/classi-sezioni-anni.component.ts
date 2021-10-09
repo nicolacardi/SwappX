@@ -8,6 +8,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-classi-sezioni-anni',
@@ -19,9 +20,12 @@ export class ClassiSezioniAnniComponent implements OnInit {
 
   public idAnnoScolastico!:   number;
   showSelect: boolean = true;
+  showPageTitle: boolean = true;
+  showTableRibbon: boolean = true;
   @Input('dove') dove! :                                      string;
   @Input('alunnoId') alunnoId! :                              number;
   
+  @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild('selectAnnoScolastico') selectAnnoScolastico!: MatSelect; 
   @Output('annoId') annoIdEmitter = new EventEmitter<number>();
   @Output('classeId') classeIdEmitter = new EventEmitter<number>();
@@ -31,12 +35,20 @@ export class ClassiSezioniAnniComponent implements OnInit {
   selectedRowIndex = -1;
   form! :                     FormGroup;
 
-  displayedColumns: string[] =  [
+  displayedColumns: string[] =  [];
+
+  // displayedColumns: string[] =  [
+  //   "descrizione",
+  //   "sezione"
+  //   ];
+
+  displayedColumnsClassiDashboard: string[] =  [
     "descrizione",
     "sezione"
     ];
 
-  displayedColumnsClassiDashboard: string[] =  [
+  displayedColumnsClassiPage: string[] =  [
+    "actionsColumn",
     "descrizione",
     "sezione"
     ];
@@ -78,12 +90,25 @@ export class ClassiSezioniAnniComponent implements OnInit {
     })
 
     switch(this.dove) {
-      case 'alunno-edit-list': this.displayedColumns = this.displayedColumnsAlunnoEditList; break;
+      case 'alunno-edit-list':
+        this.displayedColumns = this.displayedColumnsAlunnoEditList;
+        this.showPageTitle = false;
+        this.showTableRibbon = false;
+        break;
       case 'alunno-edit-attended': 
         this.displayedColumns = this.displayedColumnsAlunnoEditAttended;
         this.showSelect = false;
+        this.showPageTitle = false;
+        this.showTableRibbon = false;
         break;
-      case 'classi-dashboard': this.displayedColumns = this.displayedColumnsClassiDashboard; break;
+      case 'classi-dashboard':
+        this.displayedColumns = this.displayedColumnsClassiDashboard;
+        this.showPageTitle = false;
+        this.showTableRibbon = false;
+        break;
+      case 'classi-page':
+          this.displayedColumns = this.displayedColumnsClassiPage;
+          break;
       default: this.displayedColumns = this.displayedColumnsClassiDashboard;
     }
 
@@ -105,6 +130,8 @@ export class ClassiSezioniAnniComponent implements OnInit {
     loadClassi$.subscribe(val => 
       {
         this.matDataSource.data = val;
+        this.matDataSource.paginator = this.paginator;
+        
         this.rowclicked(this.matDataSource.data[0]); //seleziona per default la prima riga NON FUNZIONA SEMPRE... SERVE??
       }
     );
@@ -128,6 +155,19 @@ export class ClassiSezioniAnniComponent implements OnInit {
   removeFromAttendedEmit(item: any) {
     this.removeFromAttended.emit(item);
   }
+
+  openDetail(id:any) {
+
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.matDataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+
+
+
 
 
 }

@@ -282,7 +282,7 @@ export class PagamentiListComponent implements OnInit {
     
   }
 
-  filterPredicateCustom(){ //NC
+  filterPredicateCustom(){
     //questa funzione consente il filtro ANCHE sugli oggetti della classe
     //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
     this.matDataSource.filterPredicate = (data, filter: string)  => {

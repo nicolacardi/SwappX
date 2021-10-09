@@ -1,3 +1,5 @@
+<h1 *ngIf="showPageTitle" class="page-title">Elenco Classi</h1>
+
 <div style="text-align: center;" *ngIf="showSelect">
     <form [formGroup] = "form">
         <mat-form-field >
@@ -10,10 +12,26 @@
         </mat-form-field>
     </form>
 </div>
+
+<!-- **************************   FILTER   ******************* -->
+<mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
+    <mat-label>Filtro</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
+</mat-form-field>
+
+<!-- **************************   PAGINATOR   ******************* -->
+<mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="10" [pageSizeOptions]="[10, 15, 50]" showFirstLastButtons></mat-paginator>
+
 <!-- **************************   MAT-TABLE   ******************* -->
 <mat-table class="classiSezioniAnniTable" style="height: 70%;" [dataSource]="matDataSource" >
     <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
 
+    <ng-container matColumnDef="actionsColumn">
+        <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
+        <mat-cell  *matCellDef="let element;  let j = index;"> 
+            <img (click)="openDetail(element.id)" class="iconaMenu pointer" src="../assets/classe_edit.svg">
+        </mat-cell>
+    </ng-container>
 
 
     <ng-container matColumnDef="sezione">

@@ -57,6 +57,7 @@ import { LoginComponent } from './_user/login/login.component';
 import { RegisterComponent } from './_user/register/register.component';
 import { AuthInterceptor } from './_user/auth/auth.interceptor';
 import { HomeComponent } from './_components/home/home.component';
+import { ClassiPageComponent } from './_components/classi/classi-page/classi-page.component';
 
 
 @NgModule({
@@ -101,6 +102,7 @@ import { HomeComponent } from './_components/home/home.component';
     RegisterComponent,
     UserComponent,
     HomeComponent,
+    ClassiPageComponent,
 
 
   ],
