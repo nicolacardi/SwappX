@@ -18,7 +18,7 @@ export class ClassiSezioniAnniService {
   loadClassiByAlunno(idAlunno: number): any {
     //restituisce tutte le classiSezioniAnni di un certo Alunno
     return this.http.get( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnniAlunni/GetByAlunno/' + idAlunno);  
-        //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnniAlunni/GetByAlunno/3
+    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnniAlunni/GetByAlunno/3
   }
 
 

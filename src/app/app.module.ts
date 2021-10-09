@@ -58,6 +58,7 @@ import { RegisterComponent } from './_user/register/register.component';
 import { AuthInterceptor } from './_user/auth/auth.interceptor';
 import { HomeComponent } from './_components/home/home.component';
 import { ClassiPageComponent } from './_components/classi/classi-page/classi-page.component';
+import { ClasseSezioneAnnoEditComponent } from './_components/classi/classe-sezione-anno-edit/classe-sezione-anno-edit.component';
 
 
 @NgModule({
@@ -103,6 +104,7 @@ import { ClassiPageComponent } from './_components/classi/classi-page/classi-pag
     UserComponent,
     HomeComponent,
     ClassiPageComponent,
+    ClasseSezioneAnnoEditComponent,
 
 
   ],

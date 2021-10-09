@@ -39,6 +39,7 @@
         <mat-cell *matCellDef="let element">{{element.classeSezione.sezione}}</mat-cell>
     </ng-container>
 
+    <!--ATTENZIONE QUI SI VA A VEDERE NON DENTRO CLASSESEZIONEANNO MA DENTRO CLASSESESZIONEANNOALUNNO-->
     <ng-container matColumnDef="sezioneCSAA">
         <mat-header-cell *matHeaderCellDef >Sez.</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.classeSezioneAnno.classeSezione.sezione}}</mat-cell>
@@ -49,11 +50,20 @@
         <mat-cell *matCellDef="let element">{{element.classeSezione.classe.descrizione2}}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="descrizioneAnnoSuccessivo">
+        <mat-header-cell *matHeaderCellDef >Classe Successiva</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{(element.classeSezioneAnnoSucc) === null ? "" :
+            element.classeSezioneAnnoSucc.classeSezione.classe.descrizione2+' '+element.classeSezioneAnnoSucc.classeSezione.sezione}}</mat-cell>
+        <!-- <mat-cell *matCellDef="let element">{{element | json}}</mat-cell> -->
+    </ng-container>
+
+    <!--ATTENZIONE QUI SI VA A VEDERE NON DENTRO CLASSESEZIONEANNO MA DENTRO CLASSESESZIONEANNOALUNNO-->
     <ng-container matColumnDef="descrizioneCSAA">
         <mat-header-cell *matHeaderCellDef >Classe</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.classeSezioneAnno.classeSezione.classe.descrizione2}}</mat-cell>
     </ng-container>
 
+    <!--ATTENZIONE QUI SI VA A VEDERE NON DENTRO CLASSESEZIONEANNO MA DENTRO CLASSESESZIONEANNOALUNNO-->
     <ng-container matColumnDef="annoscolasticoCSAA">
         <mat-header-cell *matHeaderCellDef >anno scolastico</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.classeSezioneAnno.anno.annoscolastico}}</mat-cell>

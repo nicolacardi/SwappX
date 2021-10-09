@@ -9,6 +9,8 @@ import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ClasseSezioneAnnoEditComponent } from '../classe-sezione-anno-edit/classe-sezione-anno-edit.component';
 
 @Component({
   selector: 'app-classi-sezioni-anni',
@@ -50,7 +52,8 @@ export class ClassiSezioniAnniComponent implements OnInit {
   displayedColumnsClassiPage: string[] =  [
     "actionsColumn",
     "descrizione",
-    "sezione"
+    "sezione",
+    "descrizioneAnnoSuccessivo"
     ];
 
   displayedColumnsAlunnoEditList: string[] =  [
@@ -71,6 +74,7 @@ export class ClassiSezioniAnniComponent implements OnInit {
     private svcClassiSezioniAnni:         ClassiSezioniAnniService,
     private _loadingService:              LoadingService,
     private fb:                           FormBuilder, 
+    public _dialog:                       MatDialog, 
   ) { 
     this.form = this.fb.group({
       selectAnnoScolastico:   [2]
@@ -157,7 +161,19 @@ export class ClassiSezioniAnniComponent implements OnInit {
   }
 
   openDetail(id:any) {
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '850px',
+      height: '620px',
+      data: id
+    };
 
+    const dialogRef = this._dialog.open(ClasseSezioneAnnoEditComponent, dialogConfig);
+    dialogRef.afterClosed()
+      .subscribe(
+        () => {
+          this.loadData(1); //TODO: metto intanto un valore di default CABLATO DENTRO COMUNQUE NON FUNZIONA BENE!
+    });
   }
 
   applyFilter(event: Event) {

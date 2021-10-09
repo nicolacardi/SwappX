@@ -1,0 +1,69 @@
+<div class="container">
+    <mat-card class="form-card">
+        <mat-card-content>
+            <form class="data-form flex-form" [formGroup] = "form">
+
+                <div class="center">
+                    <button mat-mini-fab aria-label="Back" matTooltip="Back" class="btn" mat-dialog-close>
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+
+                    <button *ngIf="idClasseSezioneAnno" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
+                            [disabled]= "!form.valid" 
+                            (click)="loadData()" >
+                        <mat-icon>restart_alt</mat-icon>
+                    </button>
+
+                    <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                            [disabled]= "!form.valid" 
+                            (click)="save()" >
+                        <mat-icon>save</mat-icon>
+                    </button>
+
+                    <button *ngIf="idClasseSezioneAnno" mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                            [disabled]= "!form.valid" 
+                            (click)="delete()" >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+
+
+                <mat-grid-list class="no-overflowx mt10" [cols]="breakpoint" rowHeight="60px">
+                    <mat-grid-tile>
+                        <mat-form-field >
+                            <mat-label>Anno Scolastico</mat-label>
+                            <select matNativeControl formControlName="classeID">
+                                <option value="1">2019-20</option>
+                                <option value="2">2020-21</option>
+                                <option value="3">2021-22</option>
+                            </select>
+                            </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput required type="text" placeholder="sezione" formControlName="sezione">
+                            <mat-error *ngIf="form.controls.sezione.errors?.required"> Campo obbligatorio</mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput required type="text" placeholder="annoID" formControlName="annoID">
+                            <mat-error *ngIf="form.controls.annoID.errors?.required"> Campo obbligatorio</mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput required type="text" placeholder="Classe Successiva" formControlName="classeSezioneAnnoSucc">
+                            <mat-error *ngIf="form.controls.classeSezioneAnnoSucc.errors?.required"> Campo obbligatorio</mat-error>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
+                        
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
