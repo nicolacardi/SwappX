@@ -12,7 +12,7 @@
 
 <mat-drawer-container [hasBackdrop]="false" style="min-height: 91%">
     <mat-drawer position="end" #sidenav class="rightSidenav"  [mode]="'side'">
-
+        <app-classi-sezioni-anni-filter [classiSezioniAnniListComponent] = "appclassisezioniannilist" #appclassisezioniannifilter></app-classi-sezioni-anni-filter>    
     </mat-drawer>
 
     <mat-drawer position="start" #sidenav2 class="leftSidenav2"  [mode]="'side'">
@@ -21,7 +21,11 @@
 
     <mat-drawer-content>
         <app-classi-sezioni-anni-list
-            [dove] = "'classi-page'">
+            [classiSezioniAnniFilterComponent] = "appclassisezioniannifilter"
+            [dove] = "'classi-page'"
+            #appclassisezioniannilist
+            >
+            <!-- (openDrawer) = "openDrawer()" -->
         </app-classi-sezioni-anni-list>
     </mat-drawer-content>
 </mat-drawer-container>

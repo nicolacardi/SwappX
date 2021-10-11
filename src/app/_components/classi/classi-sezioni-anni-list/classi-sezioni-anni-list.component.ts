@@ -3,17 +3,23 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
-
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
-
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ClasseSezioneAnnoEditComponent } from '../classe-sezione-anno-edit/classe-sezione-anno-edit.component';
 import { MatSort } from '@angular/material/sort';
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+
+//components
+import { ClasseSezioneAnnoEditComponent } from '../classe-sezione-anno-edit/classe-sezione-anno-edit.component';
+
+//services
+import { LoadingService } from '../../utilities/loading/loading.service';
+import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
+
+//classes
+import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+import { ClassiSezioniAnniFilterComponent } from '../classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
+
 
 @Component({
   selector: 'app-classi-sezioni-anni-list',
@@ -22,6 +28,7 @@ import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service
 })
 export class ClassiSezioniAnniListComponent implements OnInit {
 
+//#region ----- Variabili -------
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno>();
   storedFilterPredicate!:       any;
 
@@ -55,16 +62,27 @@ export class ClassiSezioniAnniListComponent implements OnInit {
     "removeFromAttended"
     ];
     
-  public idAnnoScolastico!:   number;
-  showSelect: boolean = true;
-  showPageTitle: boolean = true;
-  showTableRibbon: boolean = true;
-  obsAnni$!:                                                  Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  public idAnnoScolastico!:           number;
+  showSelect:                         boolean = true;
+  showPageTitle:                      boolean = true;
+  showTableRibbon:                    boolean = true;
+  obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  selectedRowIndex = -1;
+  form! :                             FormGroup;
 
+  //filterValues contiene l'elenco dei filtri avanzati da applicare 
+  filterValues = {
+    classe: '',
+    sezione: '',
+  };
+//#endregion
+
+//#region ----- ViewChild Input Output -------
 
   @Input('dove') dove! :                                      string;
   @Input('alunnoId') alunnoId! :                              number;
   
+  @Input() classiSezioniAnniFilterComponent!:                 ClassiSezioniAnniFilterComponent;
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild("filterInput") filterInput!:                     ElementRef;
@@ -77,13 +95,9 @@ export class ClassiSezioniAnniListComponent implements OnInit {
   @Output('addToAttended') addToAttended = new EventEmitter<CLS_ClasseSezioneAnno>();
   @Output('removeFromAttended') removeFromAttended = new EventEmitter<CLS_ClasseSezioneAnno>();
 
-  selectedRowIndex = -1;
-  form! :                     FormGroup;
+//#endregion
 
-
-
-
-  constructor(
+constructor(
     private svcClassiSezioniAnni:         ClassiSezioniAnniService,
     private svcAnni:                      AnniScolasticiService,
     private _loadingService:              LoadingService,
@@ -94,10 +108,8 @@ export class ClassiSezioniAnniListComponent implements OnInit {
       selectAnnoScolastico:   [2]
     })
   }
-  ngOnChange () {
-    
-  }
 
+//#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
     this.obsAnni$= this.svcAnni.load();
 
@@ -159,6 +171,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
           this.matDataSource.sort = this.sort; 
         }
 
+
         this.storedFilterPredicate = this.matDataSource.filterPredicate;
         this.matDataSource.filterPredicate = this.filterRightPanel();
         this.rowclicked(this.matDataSource.data[0]); //seleziona per default la prima riga NON FUNZIONA SEMPRE... SERVE??
@@ -176,6 +189,9 @@ export class ClassiSezioniAnniListComponent implements OnInit {
       this.selectedRowIndex = -1;
     }
   }
+//#endregion
+
+//#region ----- Emit per alunno-edit -------
 
   addToAttendedEmit(item: CLS_ClasseSezioneAnno) {
     this.addToAttended.emit(item);
@@ -184,6 +200,77 @@ export class ClassiSezioniAnniListComponent implements OnInit {
   removeFromAttendedEmit(item: any) {
     this.removeFromAttended.emit(item);
   }
+
+//#endregion
+
+//#region ----- Filtri & Sort -------
+
+filterRightPanel(): (data: any, filter: string) => boolean {
+  let filterFunction = function(data: any, filter: any): boolean {
+    let searchTerms = JSON.parse(filter);
+    console.log(data);
+    return String(data.classeSezione.classe.descrizione2).toLowerCase().indexOf(searchTerms.classe) !== -1
+          && String(data.classeSezione.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1
+  }
+  return filterFunction;
+}
+
+
+applyFilter(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value;
+  if (filterValue.length == 1) {
+    //ripristino il filterPredicate iniziale, precedentemente salvato in storedFilterPredicate
+    this.filterPredicateCustom();
+    if (this.dove == "classi-page") this.classiSezioniAnniFilterComponent.resetAllInputs();
+  }
+  this.matDataSource.filter = filterValue.trim().toLowerCase();
+}
+
+filterPredicateCustom(){
+  //questa funzione consente il filtro ANCHE sugli oggetti della classe
+  //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
+  this.matDataSource.filterPredicate = (data, filter: string)  => {
+    const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
+      switch(key) { 
+        case "classeSezione": { 
+          return currentTerm + data.classeSezione.sezione + data.classeSezione.classe.descrizione2 ; 
+           break; 
+        } 
+        case "classeSezioneAnnoSucc": { 
+
+          return currentTerm + 
+          ((data.classeSezioneAnnoSucc == null) ? "" : data.classeSezioneAnnoSucc.classeSezione.sezione) + 
+          ((data.classeSezioneAnnoSucc == null) ? "" : data.classeSezioneAnnoSucc.classeSezione.classe.descrizione2);
+           break; 
+        } 
+
+        default: { 
+        //   return currentTerm + data.importo + data.dtPagamento; 
+        return currentTerm;  //di qua non passerà mai
+           break; 
+        } 
+     } 
+    };
+    const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+    const transformedFilter = filter.trim().toLowerCase();
+    return dataStr.indexOf(transformedFilter) !== -1;
+  };
+}
+
+sortCustom() {
+  this.matDataSource.sortingDataAccessor = (item:any, property) => {
+    switch(property) {
+      case 'annoscolastico':                       return item.anno.annoscolastico;
+      case 'sezione':                     return item.classeSezione.sezione;
+      case 'descrizione':         return item.classeSezione.classe.descrizione2;
+
+      default: return item[property]
+    }
+  };
+}
+//#endregion
+
+//#region ----- Add Edit Drop -------
 
   openDetail(id:any) {
     const dialogConfig : MatDialogConfig = {
@@ -200,83 +287,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
           this.loadData(1); //TODO: metto intanto un valore di default CABLATO DENTRO COMUNQUE NON FUNZIONA BENE!
     });
   }
-
-//#region ----- Filtri & Sort -------
-
-  filterRightPanel(): (data: any, filter: string) => boolean {
-    let filterFunction = function(data: any, filter: any): boolean {
-      let searchTerms = JSON.parse(filter);
-
-      // return String(data.annoscolastico).toLowerCase().indexOf(searchTerms.nome) !== -1 //TODO
-      //   && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1 //TODO
-
-      return true; //TMP TODO
-
-    }
-    return filterFunction;
-  }
-
-
-  applyFilter(event: Event) {
-    console.log("apply filter");
-    const filterValue = (event.target as HTMLInputElement).value;
-    if (filterValue.length == 1) {
-      //ripristino il filterPredicate iniziale, precedentemente salvato in storedFilterPredicate
-      this.filterPredicateCustom();
-      //if (this.dove == "alunni-page") this.alunniFilterComponent.resetAllInputs(); TODO
-    }
-    this.matDataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  filterPredicateCustom(){
-    //questa funzione consente il filtro ANCHE sugli oggetti della classe
-    //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
-    this.matDataSource.filterPredicate = (data, filter: string)  => {
-      const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
-        console.log (key);
-        switch(key) { 
-          case "classeSezione": { 
-            return currentTerm + data.classeSezione.sezione + data.classeSezione.classe.descrizione2 ; 
-             break; 
-          } 
-          case "classeSezioneAnnoSucc": { 
-
-            return currentTerm + 
-            ((data.classeSezioneAnnoSucc == null) ? "" : data.classeSezioneAnnoSucc.classeSezione.sezione) + 
-            ((data.classeSezioneAnnoSucc == null) ? "" : data.classeSezioneAnnoSucc.classeSezione.classe.descrizione2);
-             break; 
-          } 
-
-          default: { 
-          //   return currentTerm + data.importo + data.dtPagamento; 
-          return currentTerm;  //di qua non passerà mai
-             break; 
-          } 
-       } 
-      };
-      const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
-      const transformedFilter = filter.trim().toLowerCase();
-      return dataStr.indexOf(transformedFilter) !== -1;
-    };
-  }
-
-  sortCustom() {
-    this.matDataSource.sortingDataAccessor = (item:any, property) => {
-      switch(property) {
-        case 'annoscolastico':                       return item.anno.annoscolastico;
-        case 'sezione':                     return item.classeSezione.sezione;
-        case 'descrizione':         return item.classeSezione.classe.descrizione2;
-
-        default: return item[property]
-      }
-    };
-  }
-  //#endregion
-
-
-  
-
-
+//#endregion
 
 
 }

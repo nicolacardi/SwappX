@@ -2,16 +2,19 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import jsPDF from 'jspdf';
+
+//components
 import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogAddComponent } from '../dialog-add/dialog-add.component';
+
+//services
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
 import { ClassiSezioniAnniAlunniService } from '../classi-sezioni-anni-alunni.service';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
-import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { DialogAddComponent } from '../dialog-add/dialog-add.component';
 
 @Component({
   selector: 'app-classi-dashboard',
@@ -40,18 +43,22 @@ import { DialogAddComponent } from '../dialog-add/dialog-add.component';
 })
 
 export class ClassiDashboardComponent implements OnInit {
-  
+
+//#region ----- Variabili -------
   public idClasse!:           number;
-  public idAnno!:             number;
-  
+  public idAnno!:             number;  
   isOpen = true;
- 
+//#enderegion
+
+//#region ----- ViewChild Input Output -------
   @ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
   @Input () classeSezioneAnnoId!: number;
+//#endregion
+
   constructor(
-              private svcClassiSezioniAnni:         ClassiSezioniAnniService,
+              //private svcClassiSezioniAnni:         ClassiSezioniAnniService,
               private svcClassiSezioniAnniAlunni:   ClassiSezioniAnniAlunniService,
-              private _loadingService:              LoadingService,
+              //private _loadingService:              LoadingService,
               private _navigationService:           NavigationService,
               public _dialog:                       MatDialog,
               private _jspdf:                       JspdfService

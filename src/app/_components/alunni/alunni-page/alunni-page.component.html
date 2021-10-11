@@ -21,10 +21,12 @@
     </mat-drawer>
 
     <mat-drawer-content>
-        <app-alunni-list [alunniFilterComponent] = "appalunnifilter"
-                        [dove] = "'alunni-page'"
-                         #appalunnilist  
-                         (openDrawer) = "openDrawer()">
+        <app-alunni-list
+            [alunniFilterComponent] = "appalunnifilter"
+            [dove] = "'alunni-page'"
+            #appalunnilist  
+            (openDrawer) = "openDrawer()"
+            >
         </app-alunni-list>
     </mat-drawer-content>
 </mat-drawer-container>

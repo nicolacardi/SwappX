@@ -9,10 +9,12 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class ClasseSezioneAnnoEditComponent implements OnInit {
 
+//#region ----- Variabili -------
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
   breakpoint!:                number;
-  
+//#endregion
+
   constructor( @Inject(MAT_DIALOG_DATA) public idClasseSezioneAnno: number,
                 private fb:                  FormBuilder, ) { 
 

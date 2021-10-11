@@ -4,25 +4,27 @@ import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angu
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { iif, Observable, of } from 'rxjs';
-import { concatMap, debounceTime, finalize, map, switchMap, tap } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
+import { concatMap, debounceTime, switchMap, tap } from 'rxjs/operators';
 
+//components
+import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { GenitoreEditComponent } from '../../genitori/genitore-edit/genitore-edit.component';
+import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { GenitoriListComponent } from '../../genitori/genitori-list/genitori-list.component';
+
+//services
+import { LoadingService } from '../../utilities/loading/loading.service';
 import { AlunniService } from 'src/app/_components/alunni/alunni.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
+import { ClassiSezioniAnniAlunniService } from '../../classi/classi-sezioni-anni-alunni.service';
 
+//classes
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
-
-import { DialogData, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { GenitoreEditComponent } from '../../genitori/genitore-edit/genitore-edit.component';
-import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { ClassiSezioniAnniAlunniService } from '../../classi/classi-sezioni-anni-alunni.service';
-import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
-import { GenitoriListComponent } from '../../genitori/genitori-list/genitori-list.component';
+
 
 
 @Component({
@@ -32,6 +34,8 @@ import { GenitoriListComponent } from '../../genitori/genitori-list/genitori-lis
 })
 
 export class AlunnoEditComponent implements OnInit {
+
+//#region ----- Variabili -------
 
   alunno$!:                    Observable<ALU_Alunno>;
 
@@ -51,12 +55,14 @@ export class AlunnoEditComponent implements OnInit {
   comuniNascitaIsLoading:     boolean = false;
   breakpoint!:                number;
   breakpoint2!:               number;
+//#endregion
 
-
+//#region ----- ViewChild Input Output -------
   @ViewChild('genitoriFamiglia') genitoriFamigliaComponent!: GenitoriListComponent; 
   @ViewChild('classiSezioniAnniAttended') classiAttendedComponent!: ClassiSezioniAnniListComponent; 
   @ViewChild('classiSezioniAnniList') classiSezioniAnniListComponent!: ClassiSezioniAnniListComponent; 
-  
+//#endregion
+
   constructor(public _dialogRef: MatDialogRef<AlunnoEditComponent>,
               @Inject(MAT_DIALOG_DATA) public idAlunno: number,
               private fb:                           FormBuilder, 
@@ -98,6 +104,7 @@ export class AlunnoEditComponent implements OnInit {
     });
   }
 
+//#region ----- LifeCycle Hooks e simili-------
   ngOnInit () {
     this.loadData();
   }
@@ -152,7 +159,9 @@ export class AlunnoEditComponent implements OnInit {
       tap(() => this.comuniNascitaIsLoading = false)
     )
   }
+//#endregion
 
+//#region ----- Operazioni CRUD -------
   save(){
 
     if (this.form.controls['id'].value == null) 
@@ -218,11 +227,10 @@ export class AlunnoEditComponent implements OnInit {
     this.form.controls['nazioneNascita'].setValue('ITA');
   }
   
-  onResize(event: any) {
-    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
-    this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
-  }
 
+//#endregion
+
+//#region ----- Metodi di gestione Genitori, Famiglia e Classi -------
   addGenitore(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -269,8 +277,6 @@ export class AlunnoEditComponent implements OnInit {
         //console.log("addToFamily KO");
       }
     )
-
-   
   }
 
   addToAttended(classeSezioneAnno: CLS_ClasseSezioneAnno) {
@@ -334,6 +340,15 @@ export class AlunnoEditComponent implements OnInit {
       }
     )
   }
+//#endregion
+
+//#region ----- Altri metodi -------
+onResize(event: any) {
+  this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
+  this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
+}
+//#endregion
+
 //#region FUNZIONI NON PIU' UTILIZZATE IN QUANTO ORA SI USA SOLO COME DIALOG
 
   // back(){

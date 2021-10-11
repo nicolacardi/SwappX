@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-classi-page',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClassiPageComponent implements OnInit {
 
+//  @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
   constructor() { }
 
   ngOnInit(): void {
@@ -19,5 +21,8 @@ export class ClassiPageComponent implements OnInit {
 
   }
 
+  // openDrawer() {
+  //   this.drawerFiltriAvanzati.open();
+  // }
 
 }

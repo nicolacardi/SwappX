@@ -59,6 +59,7 @@ import { AuthInterceptor } from './_user/auth/auth.interceptor';
 import { HomeComponent } from './_components/home/home.component';
 import { ClassiPageComponent } from './_components/classi/classi-page/classi-page.component';
 import { ClasseSezioneAnnoEditComponent } from './_components/classi/classe-sezione-anno-edit/classe-sezione-anno-edit.component';
+import { ClassiSezioniAnniFilterComponent } from './_components/classi/classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
 
 
 @NgModule({
@@ -105,6 +106,7 @@ import { ClasseSezioneAnnoEditComponent } from './_components/classi/classe-sezi
     HomeComponent,
     ClassiPageComponent,
     ClasseSezioneAnnoEditComponent,
+    ClassiSezioniAnniFilterComponent,
 
 
   ],
