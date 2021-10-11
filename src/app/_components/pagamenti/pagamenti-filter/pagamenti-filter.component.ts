@@ -31,13 +31,13 @@ export class PagamentiFilterComponent implements OnInit {
   dataAl = new FormControl('');
 
   constructor(               
-    private tipiPagamentoSvc:             TipiPagamentoService,
-    private causaliPagamentoSvc:          CausaliPagamentoService,) {}
+    private svcTipiPagamento:             TipiPagamentoService,
+    private svcCausaliPagamento:          CausaliPagamentoService,) {}
 
   ngOnInit() {
 
-    this.causaliPagamento$ = this.causaliPagamentoSvc.load();
-    this.tipiPagamento$ = this.tipiPagamentoSvc.load();
+    this.causaliPagamento$ = this.svcCausaliPagamento.load();
+    this.tipiPagamento$ = this.svcTipiPagamento.load();
 
     this.tipoPagamentoFilter.valueChanges
     .subscribe(
@@ -129,7 +129,7 @@ export class PagamentiFilterComponent implements OnInit {
     if (this.pagamentiListComponent.matDataSource.filterPredicate == this.pagamentiListComponent.storedFilterPredicate){
       this.pagamentiListComponent.matDataSource.filter = ''; 
       this.pagamentiListComponent.filterInput.nativeElement.value = '';
-      this.pagamentiListComponent.matDataSource.filterPredicate = this.pagamentiListComponent.createFilter()
+      this.pagamentiListComponent.matDataSource.filterPredicate = this.pagamentiListComponent.filterRightPanel()
     };  
   }
 

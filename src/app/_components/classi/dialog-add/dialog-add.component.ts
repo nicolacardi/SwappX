@@ -28,8 +28,8 @@ export class DialogAddComponent implements OnInit {
   @ViewChild('nomeCognomeAlunno') nomeCognomeAlunno!: ElementRef<HTMLInputElement>;
 
   constructor(private fb:                             FormBuilder,
-                      private alunniSvc:              AlunniService,
-                      private classeSezioneAnnoAlunnoSvc:ClassiSezioniAnniAlunniService,
+                      private svcAlunni:              AlunniService,
+                      private svcClasseSezioneAnnoAlunno:ClassiSezioniAnniAlunniService,
                       public dialogRef:               MatDialogRef<DialogAddComponent>,
                       @Inject(MAT_DIALOG_DATA) public data: DialogData) { 
 
@@ -48,13 +48,13 @@ export class DialogAddComponent implements OnInit {
       debounceTime(300),
       //delayWhen(() => timer(2000)),
       switchMap(val => 
-        this.alunniSvc.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
+        this.svcAlunni.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
             .pipe(
               map( val2 => val2.filter(val=>!this.idAlunniSelezionati.includes(val.id)) )//FANTASTICO!!! NON MOSTRA QUELLI GIA'SELEZIONATI! MEGLIO DI GOOGLE CHE LI RIMOSTRA!
             ) 
       )
       // switchMap(() => 
-      //   this.alunniSvc.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
+      //   this.svcAlunni.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
       // )
       , 
       tap(() => this.alunniIsLoading = false)
@@ -85,7 +85,7 @@ export class DialogAddComponent implements OnInit {
     this.idAlunniSelezionati.forEach(
       val=>{
         let objClasseSezioneAnnoAlunno = {AlunnoID: val, ClasseSezioneAnnoID: this.data.idClasse};
-        this.classeSezioneAnnoAlunnoSvc.postClasseSezioneAnnoAlunno(objClasseSezioneAnnoAlunno)
+        this.svcClasseSezioneAnnoAlunno.postClasseSezioneAnnoAlunno(objClasseSezioneAnnoAlunno)
           .pipe(
             finalize(()=>this.dialogRef.close())
           )

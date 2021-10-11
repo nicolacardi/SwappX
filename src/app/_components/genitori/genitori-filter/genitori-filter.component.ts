@@ -59,7 +59,7 @@ export class GenitoriFilterComponent implements OnInit {
       val => {
         this.resetMainFilter();
         if (this.genitoriListComponent.matDataSource.filterPredicate == this.genitoriListComponent.storedFilterPredicate)
-        {this.genitoriListComponent.matDataSource.filterPredicate = this.genitoriListComponent.createFilter()};
+        {this.genitoriListComponent.matDataSource.filterPredicate = this.genitoriListComponent.filterRightPanel()};
 
         this.genitoriListComponent.filterValues.indirizzo = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
@@ -117,7 +117,7 @@ export class GenitoriFilterComponent implements OnInit {
     {
     this.genitoriListComponent.matDataSource.filter = ''; 
     this.genitoriListComponent.filterInput.nativeElement.value = '';
-    this.genitoriListComponent.matDataSource.filterPredicate = this.genitoriListComponent.createFilter()};  
+    this.genitoriListComponent.matDataSource.filterPredicate = this.genitoriListComponent.filterRightPanel()};  
   }
 
   resetAllInputs() {

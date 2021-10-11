@@ -78,12 +78,12 @@ export class PersoneListComponent implements OnInit {
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort; 
         this.storedFilterPredicate = this.matDataSource.filterPredicate;
-        this.matDataSource.filterPredicate = this.createFilter();
+        this.matDataSource.filterPredicate = this.filterRightPanel();
       }
     );
   }
 
-  createFilter(): (data: any, filter: string) => boolean {
+  filterRightPanel(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
       return String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1

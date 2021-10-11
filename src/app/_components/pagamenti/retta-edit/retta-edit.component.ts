@@ -65,12 +65,10 @@ export class RettaEditComponent implements OnInit {
   constructor(public _dialogRef: MatDialogRef<RettaEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private fb:             FormBuilder, 
+              private svcRette:       RetteService,
+              private svcAlunni:      AlunniService,
               public _dialog:         MatDialog,
-              private retteSvc:       RetteService,
-              private alunniSvc:      AlunniService,
               private _snackBar:      MatSnackBar,
-
-              
               private _loadingService:  LoadingService,
               ) 
   { 
@@ -96,7 +94,7 @@ export class RettaEditComponent implements OnInit {
     this.filteredAlunni$ = this.formRetta.controls['nomeCognomeAlunno'].valueChanges
     .pipe(
       debounceTime(300),
-      switchMap(() => this.alunniSvc.filterAlunni(this.formRetta.value.nomeCognomeAlunno))
+      switchMap(() => this.svcAlunni.filterAlunni(this.formRetta.value.nomeCognomeAlunno))
     )
 
     this.formRetta.controls['annoscolastico'].setValue(this.data.idAnno);
@@ -119,7 +117,7 @@ export class RettaEditComponent implements OnInit {
   loadData(){
     console.log("idAnno", this.data.idAnno);
 
-    this.obsRette$ = this.retteSvc.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
+    this.obsRette$ = this.svcRette.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
     const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
     loadRette$.pipe(
       //delayWhen(() => timer(5000)),
@@ -238,7 +236,7 @@ export class RettaEditComponent implements OnInit {
     if (this.formRetta.controls['nomeCognomeAlunno'].value != '') {
       this.matAutocomplete.options.first.select();
       //Questo è il valore che devo cercare: this.matAutocomplete.options.first.viewValue;
-      this.alunniSvc.findIdAlunno(this.matAutocomplete.options.first.viewValue)
+      this.svcAlunni.findIdAlunno(this.matAutocomplete.options.first.viewValue)
       .subscribe();
     }
   }
@@ -266,7 +264,7 @@ export class RettaEditComponent implements OnInit {
     }
     
 
-    this.alunniSvc.filterAlunniExact(this.formRetta.value.nomeCognomeAlunno).subscribe(val=>
+    this.svcAlunni.filterAlunniExact(this.formRetta.value.nomeCognomeAlunno).subscribe(val=>
       {
         if (!val) {
           this.data.idAlunno = parseInt(idstored);

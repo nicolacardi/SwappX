@@ -1,29 +1,38 @@
 <h1 *ngIf="showPageTitle" class="page-title">Elenco Classi</h1>
 
-<div style="text-align: center;" *ngIf="showSelect">
+
     <form [formGroup] = "form">
-        <mat-form-field >
+        <mat-form-field  class="ml20 topZIndex" *ngIf="showSelect">
         <mat-label>Anno Scolastico</mat-label>
-        <select matNativeControl formControlName="selectAnnoScolastico">
+        <!-- <select matNativeControl formControlName="selectAnnoScolastico">
             <option value="1">2019-20</option>
             <option value="2">2020-21</option>
             <option value="3">2021-22</option>
-        </select>
+        </select> -->
+
+
+        <mat-select formControlName="selectAnnoScolastico">
+            <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id" >
+            {{element.annoscolastico}}
+            </mat-option>
+        </mat-select>
+
+
         </mat-form-field>
-    </form>
-</div>
 
 <!-- **************************   FILTER   ******************* -->
-<mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
-    <mat-label>Filtro</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
-</mat-form-field>
+        <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
+            <mat-label>Filtro</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
+        </mat-form-field>
+
+    </form>
 
 <!-- **************************   PAGINATOR   ******************* -->
 <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="10" [pageSizeOptions]="[10, 15, 50]" showFirstLastButtons></mat-paginator>
 
 <!-- **************************   MAT-TABLE   ******************* -->
-<mat-table class="classiSezioniAnniTable" style="height: 70%;" [dataSource]="matDataSource" >
+<mat-table class="classiSezioniAnniTable" style="height: 70%;" matSort [dataSource]="matDataSource" >
     <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
 
     <ng-container matColumnDef="actionsColumn">
@@ -33,28 +42,37 @@
         </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="annoscolastico">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>anno scolastico</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.anno.annoscolastico}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="descrizione">
+        <mat-header-cell *matHeaderCellDef mat-sort-header >Classe</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.classeSezione.classe.descrizione2}}</mat-cell>
+    </ng-container>
 
     <ng-container matColumnDef="sezione">
-        <mat-header-cell *matHeaderCellDef >Sez.</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Sez.</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.classeSezione.sezione}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="descrizioneAnnoSuccessivo">
+        <mat-header-cell *matHeaderCellDef >Classe Successiva</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{(element.classeSezioneAnnoSucc) === null ? "" :
+            element.classeSezioneAnnoSucc.classeSezione.classe.descrizione2}}</mat-cell>
+        <!-- <mat-cell *matCellDef="let element">{{element | json}}</mat-cell> -->
+    </ng-container>
+    <ng-container matColumnDef="sezioneAnnoSuccessivo">
+        <mat-header-cell *matHeaderCellDef >Sezione Cl. Successiva</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{(element.classeSezioneAnnoSucc) === null ? "" :
+            element.classeSezioneAnnoSucc.classeSezione.sezione}}</mat-cell>
     </ng-container>
 
     <!--ATTENZIONE QUI SI VA A VEDERE NON DENTRO CLASSESEZIONEANNO MA DENTRO CLASSESESZIONEANNOALUNNO-->
     <ng-container matColumnDef="sezioneCSAA">
         <mat-header-cell *matHeaderCellDef >Sez.</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.classeSezioneAnno.classeSezione.sezione}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="descrizione">
-        <mat-header-cell *matHeaderCellDef >Classe</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.classeSezione.classe.descrizione2}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="descrizioneAnnoSuccessivo">
-        <mat-header-cell *matHeaderCellDef >Classe Successiva</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{(element.classeSezioneAnnoSucc) === null ? "" :
-            element.classeSezioneAnnoSucc.classeSezione.classe.descrizione2+' '+element.classeSezioneAnnoSucc.classeSezione.sezione}}</mat-cell>
-        <!-- <mat-cell *matCellDef="let element">{{element | json}}</mat-cell> -->
     </ng-container>
 
     <!--ATTENZIONE QUI SI VA A VEDERE NON DENTRO CLASSESEZIONEANNO MA DENTRO CLASSESESZIONEANNOALUNNO-->

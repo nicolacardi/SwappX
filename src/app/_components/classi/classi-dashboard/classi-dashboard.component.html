@@ -4,11 +4,11 @@
         <td style="width:315px; height: 83% ;position: absolute; top: 75px; left: 8px;">
             <mat-card style="height: 100%;" class="card mat-elevation-z8">
                 <div class="table-container">
-                    <app-classi-sezioni-anni 
-                    [dove] = "'classi-dashboard'"
-                    (annoId)="annoIdEmitted($event)"
-                    (classeId)="classeIdEmitted($event)">
-                    </app-classi-sezioni-anni>
+                    <app-classi-sezioni-anni-list 
+                        [dove] = "'classi-dashboard'"
+                        (annoId)="annoIdEmitted($event)"
+                        (classeId)="classeIdEmitted($event)">
+                    </app-classi-sezioni-anni-list>
                 </div>
             </mat-card>
         </td>

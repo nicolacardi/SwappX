@@ -43,7 +43,7 @@ import { AlunniFilterComponent } from './_components/alunni/alunni-filter/alunni
 import { ToolbarComponent } from './_components/alunni/toolbar/toolbar.component';
 import { GenitoriPageComponent } from './_components/genitori/genitori-page/genitori-page.component';
 import { GenitoriFilterComponent } from './_components/genitori/genitori-filter/genitori-filter.component';
-import { ClassiSezioniAnniComponent } from './_components/classi/classi-sezioni-anni/classi-sezioni-anni.component';
+import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { PagamentiFilterComponent } from './_components/pagamenti/pagamenti-filter/pagamenti-filter.component';
 import { PersoneListComponent } from './_components/persone/persone-list/persone-list.component';
 import { PersonaEditComponent } from './_components/persone/persona-edit/persona-edit.component';
@@ -75,7 +75,7 @@ import { ClasseSezioneAnnoEditComponent } from './_components/classi/classe-sezi
     GenitoreEditComponent,
     GenitoriFilterComponent,
 
-    ClassiSezioniAnniComponent,
+    ClassiSezioniAnniListComponent,
     PagamentiFilterComponent,
     PersoneListComponent,
     PersonaEditComponent,

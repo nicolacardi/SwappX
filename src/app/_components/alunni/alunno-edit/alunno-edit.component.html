@@ -307,9 +307,9 @@
                                 <td>
                                     <mat-label class="frameLabel">Le classi frequentate da {{nome.value}} </mat-label>
                                     <div class="classi-attended-container cellBordered mt10">
-                                        <app-classi-sezioni-anni [alunnoId] = "idAlunno" [dove] = "'alunno-edit-attended'"
+                                        <app-classi-sezioni-anni-list [alunnoId] = "idAlunno" [dove] = "'alunno-edit-attended'"
                                         (removeFromAttended) = "removeFromAttended($event)"
-                                        #classiSezioniAnniAttended></app-classi-sezioni-anni>
+                                        #classiSezioniAnniAttended></app-classi-sezioni-anni-list>
                                     </div>
                                 </td>
                                 <td class="td-vertical-accordion">
@@ -326,9 +326,11 @@
                                             <mat-label class="frameLabel le480">Elenco delle classi</mat-label>
                                             <div class="panel-content classi-list-container cellBordered mt10">
                                             
-                                            <app-classi-sezioni-anni [dove] = "'alunno-edit-list'"
-                                            (addToAttended) = "addToAttended($event)"
-                                            #classiSezioniAnniList></app-classi-sezioni-anni>
+                                            <app-classi-sezioni-anni-list
+                                                [dove] = "'alunno-edit-list'"
+                                                (addToAttended) = "addToAttended($event)"
+                                                #classiSezioniAnniList>
+                                            </app-classi-sezioni-anni-list>
                                             </div>
                                         </mat-expansion-panel>
                                     </mat-accordion>  

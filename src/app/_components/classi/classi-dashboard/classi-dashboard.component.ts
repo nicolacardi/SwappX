@@ -10,7 +10,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
 import { ClassiSezioniAnniAlunniService } from '../classi-sezioni-anni-alunni.service';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
-import { ClassiSezioniAnniComponent } from '../classi-sezioni-anni/classi-sezioni-anni.component';
+import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { DialogAddComponent } from '../dialog-add/dialog-add.component';
 
 @Component({

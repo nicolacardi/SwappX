@@ -18,3 +18,8 @@ uniformare idAlunno e alunnoId idCorso /Corso ID ecc e Svcxxxx / xxxxSvc
 ### Default Component
 
 Fare Default COmponent
+
+
+PARAMETRI AMBIENTE 
+Ad esempio anno scolastico corrente
+questi finiranno nel localstorage all'atto del login

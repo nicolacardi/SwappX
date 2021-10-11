@@ -116,7 +116,6 @@ export class AlunniListComponent implements OnInit {
   @Input('dove') dove! :                                      string;
   @Input('genitoreId') genitoreId! :                          number;
 
-
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('addToFamily') addToFamily = new EventEmitter<ALU_Alunno>();
   @Output('removeFromFamily') removeFromFamily = new EventEmitter<ALU_Alunno>();
@@ -230,7 +229,7 @@ export class AlunniListComponent implements OnInit {
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
           this.storedFilterPredicate = this.matDataSource.filterPredicate;
-          this.matDataSource.filterPredicate = this.createFilter();
+          this.matDataSource.filterPredicate = this.filterRightPanel();
         }
       );
     }
@@ -244,7 +243,7 @@ export class AlunniListComponent implements OnInit {
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
           this.storedFilterPredicate = this.matDataSource.filterPredicate;
-          this.matDataSource.filterPredicate = this.createFilter();
+          this.matDataSource.filterPredicate = this.filterRightPanel();
         }
       );
     }
@@ -265,7 +264,7 @@ export class AlunniListComponent implements OnInit {
 
   }
 
-  createFilter(): (data: any, filter: string) => boolean {
+  filterRightPanel(): (data: any, filter: string) => boolean {
     //la stringa che cerco è 'filter'
 
     let filterFunction = function(data: any, filter: any): boolean {

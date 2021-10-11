@@ -52,9 +52,9 @@ export class GenitoreEditComponent implements OnInit {
               private fb:             FormBuilder, 
               private route:          ActivatedRoute,
               private router:         Router,
-              private genitoriSvc:    GenitoriService,
+              private svcGenitori:    GenitoriService,
               private svcAlunni:      AlunniService, //serve perchè è in questa che si trovano le addToFamily e RemoveFromFamily"
-              private comuniSvc:      ComuniService,
+              private svcComuni:      ComuniService,
               public _dialog:         MatDialog,
               private _snackBar:      MatSnackBar,
               private _loadingService :LoadingService )
@@ -104,7 +104,7 @@ export class GenitoreEditComponent implements OnInit {
     
     if (this.idGenitore && this.idGenitore + '' != "0") {
 
-      const obsGenitore$: Observable<ALU_Genitore> = this.genitoriSvc.loadGenitore(this.idGenitore);
+      const obsGenitore$: Observable<ALU_Genitore> = this.svcGenitori.loadGenitore(this.idGenitore);
       const loadGenitore$ = this._loadingService.showLoaderUntilCompleted(obsGenitore$);
       //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
       this.genitore$ = loadGenitore$
@@ -124,7 +124,7 @@ export class GenitoreEditComponent implements OnInit {
       debounceTime(300),
       tap(() => this.comuniIsLoading = true),
       //delayWhen(() => timer(2000)),
-      switchMap(() => this.comuniSvc.filterComuni(this.form.value.comune)),
+      switchMap(() => this.svcComuni.filterComuni(this.form.value.comune)),
       tap(() => this.comuniIsLoading = false)
     )
 
@@ -134,7 +134,7 @@ export class GenitoreEditComponent implements OnInit {
       tap(),
       debounceTime(300),
       tap(() => this.comuniNascitaIsLoading = true),
-      switchMap(() => this.comuniSvc.filterComuni(this.form.value.comuneNascita)),
+      switchMap(() => this.svcComuni.filterComuni(this.form.value.comuneNascita)),
       tap(() => this.comuniNascitaIsLoading = false)
     )
   }  
@@ -144,7 +144,7 @@ export class GenitoreEditComponent implements OnInit {
   save(){
 
     if (this.form.controls['id'].value == null) 
-      this.genitoriSvc.post(this.form.value)
+      this.svcGenitori.post(this.form.value)
         .subscribe(res=> {
           //console.log("return from post", res);
           //this.form.markAsPristine();
@@ -155,7 +155,7 @@ export class GenitoreEditComponent implements OnInit {
         )
     );
     else 
-      this.genitoriSvc.put(this.form.value)
+      this.svcGenitori.put(this.form.value)
         .subscribe(res=> {
           //console.log("return from put", res);
           //this.form.markAsPristine();
@@ -202,7 +202,7 @@ export class GenitoreEditComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.genitoriSvc.delete(Number(this.idGenitore))
+        this.svcGenitori.delete(Number(this.idGenitore))
         // .pipe (
         //   finalize(()=>this.router.navigate(['/alunni']))
         // )

@@ -59,7 +59,7 @@ export class AlunniFilterComponent implements OnInit {
       val => {
         this.resetMainFilter();
         if (this.alunniListComponent.matDataSource.filterPredicate == this.alunniListComponent.storedFilterPredicate)
-        {this.alunniListComponent.matDataSource.filterPredicate = this.alunniListComponent.createFilter()};
+        {this.alunniListComponent.matDataSource.filterPredicate = this.alunniListComponent.filterRightPanel()};
 
         this.alunniListComponent.filterValues.indirizzo = val.toLowerCase();
         this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
@@ -117,7 +117,7 @@ export class AlunniFilterComponent implements OnInit {
     if (this.alunniListComponent.matDataSource.filterPredicate == this.alunniListComponent.storedFilterPredicate){
       this.alunniListComponent.matDataSource.filter = ''; 
       this.alunniListComponent.filterInput.nativeElement.value = '';
-      this.alunniListComponent.matDataSource.filterPredicate = this.alunniListComponent.createFilter()
+      this.alunniListComponent.matDataSource.filterPredicate = this.alunniListComponent.filterRightPanel()
     };  
   }
 

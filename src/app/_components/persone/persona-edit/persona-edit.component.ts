@@ -34,8 +34,8 @@ export class PersonaEditComponent implements OnInit {
   constructor(public _dialogRef: MatDialogRef<PersonaEditComponent>,
               @Inject(MAT_DIALOG_DATA) public idPersona: number,
               private fb:                           FormBuilder, 
-              private personeSvc:                   PersoneService,
-              private comuniSvc:                    ComuniService,
+              private svcPersone:                   PersoneService,
+              private svcComuni:                    ComuniService,
               public _dialog:                       MatDialog,
               private _snackBar:                    MatSnackBar,
               private _loadingService :             LoadingService,
@@ -76,7 +76,7 @@ export class PersonaEditComponent implements OnInit {
 
     if (this.idPersona && this.idPersona + '' != "0") {
 
-      const obsPersona$: Observable<PER_Persona> = this.personeSvc.loadPersona(this.idPersona);
+      const obsPersona$: Observable<PER_Persona> = this.svcPersone.loadPersona(this.idPersona);
       const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
 
       this.persona$ = loadPersona$
@@ -96,7 +96,7 @@ export class PersonaEditComponent implements OnInit {
       debounceTime(300),
       tap(() => this.comuniIsLoading = true),
       //delayWhen(() => timer(2000)),
-      switchMap(() => this.comuniSvc.filterComuni(this.form.value.comune)),
+      switchMap(() => this.svcComuni.filterComuni(this.form.value.comune)),
       tap(() => this.comuniIsLoading = false)
     )
 
@@ -106,7 +106,7 @@ export class PersonaEditComponent implements OnInit {
       tap(),
       debounceTime(300),
       tap(() => this.comuniNascitaIsLoading = true),
-      switchMap(() => this.comuniSvc.filterComuni(this.form.value.comuneNascita)),
+      switchMap(() => this.svcComuni.filterComuni(this.form.value.comuneNascita)),
       tap(() => this.comuniNascitaIsLoading = false)
     )
   }
@@ -130,7 +130,7 @@ export class PersonaEditComponent implements OnInit {
   save(){
 
     if (this.form.controls['id'].value == null) 
-      this.personeSvc.post(this.form.value)
+      this.svcPersone.post(this.form.value)
         .subscribe(res=> {
           //console.log("return from post", res);
           //this.form.markAsPristine();
@@ -141,7 +141,7 @@ export class PersonaEditComponent implements OnInit {
         )
     );
     else 
-      this.personeSvc.put(this.form.value)
+      this.svcPersone.put(this.form.value)
         .subscribe(res=> {
           //console.log("return from put", res);
           //this.form.markAsPristine();
@@ -162,7 +162,7 @@ export class PersonaEditComponent implements OnInit {
     });
     dialogYesNo.afterClosed().subscribe(result => {
       if(result){
-        this.personeSvc.delete(Number(this.idPersona))
+        this.svcPersone.delete(Number(this.idPersona))
         //.pipe (
         //  finalize(()=>this.router.navigate(['/alunni']))
         //)

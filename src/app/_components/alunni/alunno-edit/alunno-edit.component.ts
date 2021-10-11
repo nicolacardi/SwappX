@@ -20,7 +20,7 @@ import { GenitoreEditComponent } from '../../genitori/genitore-edit/genitore-edi
 import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ClassiSezioniAnniAlunniService } from '../../classi/classi-sezioni-anni-alunni.service';
-import { ClassiSezioniAnniComponent } from '../../classi/classi-sezioni-anni/classi-sezioni-anni.component';
+import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { GenitoriListComponent } from '../../genitori/genitori-list/genitori-list.component';
 
@@ -54,14 +54,14 @@ export class AlunnoEditComponent implements OnInit {
 
 
   @ViewChild('genitoriFamiglia') genitoriFamigliaComponent!: GenitoriListComponent; 
-  @ViewChild('classiSezioniAnniAttended') classiAttendedComponent!: ClassiSezioniAnniComponent; 
-  @ViewChild('classiSezioniAnniList') classiSezioniAnniListComponent!: ClassiSezioniAnniComponent; 
+  @ViewChild('classiSezioniAnniAttended') classiAttendedComponent!: ClassiSezioniAnniListComponent; 
+  @ViewChild('classiSezioniAnniList') classiSezioniAnniListComponent!: ClassiSezioniAnniListComponent; 
   
   constructor(public _dialogRef: MatDialogRef<AlunnoEditComponent>,
               @Inject(MAT_DIALOG_DATA) public idAlunno: number,
               private fb:                           FormBuilder, 
-              private alunniSvc:                    AlunniService,
-              private comuniSvc:                    ComuniService,
+              private svcAlunni:                    AlunniService,
+              private svcComuni:                    ComuniService,
               public _dialog:                       MatDialog,
               private _snackBar:                    MatSnackBar,
               private _loadingService :             LoadingService,
@@ -118,7 +118,7 @@ export class AlunnoEditComponent implements OnInit {
     
     if (this.idAlunno && this.idAlunno + '' != "0") {
 
-      const obsAlunno$: Observable<ALU_Alunno> = this.alunniSvc.loadAlunno(this.idAlunno);
+      const obsAlunno$: Observable<ALU_Alunno> = this.svcAlunni.loadAlunno(this.idAlunno);
       const loadAlunno$ = this._loadingService.showLoaderUntilCompleted(obsAlunno$);
       //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
       this.alunno$ = loadAlunno$
@@ -138,7 +138,7 @@ export class AlunnoEditComponent implements OnInit {
       debounceTime(300),
       tap(() => this.comuniIsLoading = true),
       //delayWhen(() => timer(2000)),
-      switchMap(() => this.comuniSvc.filterComuni(this.form.value.comune)),
+      switchMap(() => this.svcComuni.filterComuni(this.form.value.comune)),
       tap(() => this.comuniIsLoading = false)
     )
 
@@ -148,7 +148,7 @@ export class AlunnoEditComponent implements OnInit {
       tap(),
       debounceTime(300),
       tap(() => this.comuniNascitaIsLoading = true),
-      switchMap(() => this.comuniSvc.filterComuni(this.form.value.comuneNascita)),
+      switchMap(() => this.svcComuni.filterComuni(this.form.value.comuneNascita)),
       tap(() => this.comuniNascitaIsLoading = false)
     )
   }
@@ -156,7 +156,7 @@ export class AlunnoEditComponent implements OnInit {
   save(){
 
     if (this.form.controls['id'].value == null) 
-      this.alunniSvc.post(this.form.value)
+      this.svcAlunni.post(this.form.value)
         .subscribe(res=> {
           //console.log("return from post", res);
           //this.form.markAsPristine();
@@ -167,7 +167,7 @@ export class AlunnoEditComponent implements OnInit {
         )
     );
     else 
-      this.alunniSvc.put(this.form.value)
+      this.svcAlunni.put(this.form.value)
         .subscribe(res=> {
           //console.log("return from put", res);
           //this.form.markAsPristine();
@@ -188,7 +188,7 @@ export class AlunnoEditComponent implements OnInit {
     });
     dialogYesNo.afterClosed().subscribe(result => {
       if(result){
-        this.alunniSvc.delete(Number(this.idAlunno))
+        this.svcAlunni.delete(Number(this.idAlunno))
         //.pipe (
         //  finalize(()=>this.router.navigate(['/alunni']))
         //)
@@ -245,9 +245,9 @@ export class AlunnoEditComponent implements OnInit {
     //ma con una condizione: la iif specifica proprio che SE il risultato della verifica è vuoto allora si può procedere con la post
     //altrimenti si mette in successione l'observable vuoto (of())
     
-    this.alunniSvc.getGenitoreAlunno(genitore.id, this.idAlunno)
+    this.svcAlunni.getGenitoreAlunno(genitore.id, this.idAlunno)
     .pipe(
-      concatMap( res => iif (()=> res.length == 0, this.alunniSvc.postGenitoreAlunno(genitore.id, this.idAlunno), of() )
+      concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(genitore.id, this.idAlunno), of() )
       )
     ).subscribe(
       res=> {
@@ -260,7 +260,7 @@ export class AlunnoEditComponent implements OnInit {
 
   removeFromFamily(genitore: ALU_Genitore) {
     const alunnoID = this.idAlunno;
-    this.alunniSvc.deleteGenitoreAlunno(genitore.id, this.idAlunno).subscribe(
+    this.svcAlunni.deleteGenitoreAlunno(genitore.id, this.idAlunno).subscribe(
       res=> {
           //console.log("addToFamily OK");
           this.genitoriFamigliaComponent.loadData();

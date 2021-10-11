@@ -56,7 +56,7 @@ export class PersoneFilterComponent implements OnInit {
       val => {
         this.resetMainFilter();
         if (this.personeListComponent.matDataSource.filterPredicate == this.personeListComponent.storedFilterPredicate)
-        {this.personeListComponent.matDataSource.filterPredicate = this.personeListComponent.createFilter()};
+        {this.personeListComponent.matDataSource.filterPredicate = this.personeListComponent.filterRightPanel()};
 
         this.personeListComponent.filterValues.indirizzo = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
@@ -104,7 +104,7 @@ export class PersoneFilterComponent implements OnInit {
     if (this.personeListComponent.matDataSource.filterPredicate == this.personeListComponent.storedFilterPredicate){
       this.personeListComponent.matDataSource.filter = ''; 
       this.personeListComponent.filterInput.nativeElement.value = '';
-      this.personeListComponent.matDataSource.filterPredicate = this.personeListComponent.createFilter()
+      this.personeListComponent.matDataSource.filterPredicate = this.personeListComponent.filterRightPanel()
     };  
   }
 

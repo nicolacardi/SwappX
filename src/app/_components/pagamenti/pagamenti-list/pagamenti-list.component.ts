@@ -93,7 +93,7 @@ export class PagamentiListComponent implements OnInit {
   public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2).toLocaleString('it-IT', {month: 'short'}).toUpperCase());
 
 
-  constructor(private pagamentiSvc:     PagamentiService,
+  constructor(private svcPagamenti:     PagamentiService,
               private svcAnni:          AnniScolasticiService,
               private fb:               FormBuilder, 
               public _dialog:           MatDialog, 
@@ -139,10 +139,10 @@ export class PagamentiListComponent implements OnInit {
 
     if (this.alunnoID == 0 ) return;
     if (this.alunnoID) {
-      obsPagamenti$= this.pagamentiSvc.loadByAlunnoAnno(this.alunnoID, this.annoID);
+      obsPagamenti$= this.svcPagamenti.loadByAlunnoAnno(this.alunnoID, this.annoID);
     } else {
       if (!this.annoID) this.annoID = this.form.controls['annoScolastico'].value;
-      obsPagamenti$= this.pagamentiSvc.loadByAnno(this.annoID);
+      obsPagamenti$= this.svcPagamenti.loadByAnno(this.annoID);
     }
     const loadPagamenti$ =this._loadingService.showLoaderUntilCompleted(obsPagamenti$);
 
@@ -155,13 +155,13 @@ export class PagamentiListComponent implements OnInit {
         this.sortCustom(); 
         this.matDataSource.sort = this.sort;
         this.storedFilterPredicate = this.matDataSource.filterPredicate;
-        this.matDataSource.filterPredicate = this.createFilter();
+        this.matDataSource.filterPredicate = this.filterRightPanel();
       }
     );
   }
 
   
-  createFilter(): (data: any, filter: string) => boolean {
+  filterRightPanel(): (data: any, filter: string) => boolean {
 
     let filterFunction = function(data: any, filter: any): boolean {
     
@@ -260,7 +260,7 @@ export class PagamentiListComponent implements OnInit {
     });
     dialogYesNo.afterClosed().subscribe(result => {
       if(result){
-        this.pagamentiSvc.delete(Number(idPagamento))
+        this.svcPagamenti.delete(Number(idPagamento))
         //.pipe (
         //  finalize(()=>this.router.navigate(['/alunni']))
         //)
