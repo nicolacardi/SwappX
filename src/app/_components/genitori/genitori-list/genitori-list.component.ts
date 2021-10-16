@@ -8,15 +8,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
-import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
-import { GenitoriService } from '../genitori.service';
+//components
 import { GenitoreEditComponent } from '../genitore-edit/genitore-edit.component';
 import { GenitoriFilterComponent } from '../genitori-filter/genitori-filter.component';
 
+//services
+import { GenitoriService } from '../genitori.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
-import { map } from 'rxjs/operators';
 import { AlunniService } from '../../alunni/alunni.service';
+
+//classes
+import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 
 @Component({
   selector: 'app-genitori-list',
@@ -25,11 +28,10 @@ import { AlunniService } from '../../alunni/alunni.service';
 })
 
 export class GenitoriListComponent implements OnInit {
-  
+
+//#region ----- Variabili -------
   matDataSource = new MatTableDataSource<ALU_Genitore>();
   storedFilterPredicate!:       any;
-  showPageTitle:                boolean = true;
-  showTableRibbon:              boolean = true;
 
   displayedColumns: string[] =  [];
   displayedColumnsAlunnoEditFamiglia: string[] = [
@@ -63,6 +65,8 @@ export class GenitoriListComponent implements OnInit {
     "dtNascita"
    ];
 
+  showPageTitle:                boolean = true;
+  showTableRibbon:              boolean = true;
 
   public passedAlunno!:       string;
   public page!:                 string;
@@ -80,7 +84,9 @@ export class GenitoriListComponent implements OnInit {
     telefono: '',
     nomeCognomeAlunno: ''
   };
+//#endregion
 
+//#region ----- ViewChild Input Output -------
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild("filterInput") filterInput!:                     ElementRef;
   @ViewChild(MatSort) sort!:                                  MatSort;
@@ -93,6 +99,7 @@ export class GenitoriListComponent implements OnInit {
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('addToFamily') addToFamily = new EventEmitter<ALU_Genitore>();
   @Output('removeFromFamily') removeFromFamily = new EventEmitter<ALU_Genitore>();
+//#endregion
 
   constructor(
                         private svcGenitori:      GenitoriService,
@@ -104,6 +111,8 @@ export class GenitoriListComponent implements OnInit {
                         private _navigationService:    NavigationService
                         ) {
   }
+
+//#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
     // this._navigationService.getPage().subscribe(val=>{
@@ -168,7 +177,9 @@ export class GenitoriListComponent implements OnInit {
       }
     );
   }
+//#endregion
 
+//#region ----- Filtri & Sort -------
   filterRightPanel(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
@@ -197,6 +208,19 @@ export class GenitoriListComponent implements OnInit {
     return filterFunction;
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    if (filterValue.length == 1) {
+      //ripristino il filterPredicate iniziale, precedentemente salvato in storedFilterPredicate
+      this.matDataSource.filterPredicate = this.storedFilterPredicate;
+      this.genitoriFilterComponent.resetAllInputs();
+    }
+    this.matDataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+//#endregion
+
+//#region ----- Add Edit Drop -------
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -229,19 +253,11 @@ export class GenitoriListComponent implements OnInit {
     });
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    if (filterValue.length == 1) {
-      //ripristino il filterPredicate iniziale, precedentemente salvato in storedFilterPredicate
-      this.matDataSource.filterPredicate = this.storedFilterPredicate;
-      this.genitoriFilterComponent.resetAllInputs();
-    }
-    this.matDataSource.filter = filterValue.trim().toLowerCase();
-  }
-
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
   }
+//#endregion
+
 
   onResize(event: any) {
     this.displayedColumns = (event.target.innerWidth <= 800) ?  

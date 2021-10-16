@@ -4,11 +4,14 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable, timer } from 'rxjs';
 import { debounceTime, delayWhen, finalize, map, switchMap, tap } from 'rxjs/operators';
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { AlunniService } from 'src/app/_components/alunni/alunni.service';
 import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+
+//services
+import { AlunniService } from 'src/app/_components/alunni/alunni.service';
 import { ClassiSezioniAnniAlunniService } from '../classi-sezioni-anni-alunni.service';
 
+//classi
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 @Component({
   selector: 'app-dialog-add',
@@ -17,6 +20,8 @@ import { ClassiSezioniAnniAlunniService } from '../classi-sezioni-anni-alunni.se
 })
 
 export class DialogAddComponent implements OnInit {
+
+//#region ----- Variabili -------
   form! :                   FormGroup;
   filteredAlunni$!:         Observable<ALU_Alunno[]>;
   alunniSelezionati:        string[] = [];
@@ -25,7 +30,11 @@ export class DialogAddComponent implements OnInit {
   selectable =              true;
   alunniIsLoading:          boolean = false;
   idClasse!:                number;
+//#endregion
+
+//#region ----- ViewChild Input Output -------
   @ViewChild('nomeCognomeAlunno') nomeCognomeAlunno!: ElementRef<HTMLInputElement>;
+//#endregion
 
   constructor(private fb:                             FormBuilder,
                       private svcAlunni:              AlunniService,
@@ -38,6 +47,7 @@ export class DialogAddComponent implements OnInit {
     });
   }
 
+//#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
     this.idClasse = this.data.idClasse;
     //console.log("dialog-add.component.ts - ngOnInit: this.idClasse=", this.idClasse);
@@ -61,6 +71,10 @@ export class DialogAddComponent implements OnInit {
     )
   }
 
+//#endregion
+
+//#region ----- Altri metodi -------
+
   selected(event: MatAutocompleteSelectedEvent): void {
     this.nomeCognomeAlunno.nativeElement.value = '';
     const alunnoToAdd = event.option.viewValue;
@@ -80,7 +94,9 @@ export class DialogAddComponent implements OnInit {
     }
     this.form.controls['nomeCognomeAlunno'].setValue('');
   }
+//#endregion
 
+//#region ----- Operazioni CRUD -------
   save() {
     this.idAlunniSelezionati.forEach(
       val=>{
@@ -96,4 +112,7 @@ export class DialogAddComponent implements OnInit {
           );
     });
   }
+//#endregion
+
+
 }

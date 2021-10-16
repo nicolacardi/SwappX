@@ -11,7 +11,7 @@ import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/clas
 })
 export class ClassiSezioniAnniFilterComponent implements OnInit {
 
-  //#region ----- Variabili -------
+//#region ----- Variabili -------
   classeFilter = new FormControl('');
   sezioneFilter = new FormControl('');
 //#endregion

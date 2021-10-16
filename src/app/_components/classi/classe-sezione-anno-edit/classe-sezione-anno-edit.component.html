@@ -31,13 +31,11 @@
                 <mat-grid-list class="no-overflowx mt10" [cols]="breakpoint" rowHeight="60px">
                     <mat-grid-tile>
                         <mat-form-field >
-                            <mat-label>Anno Scolastico</mat-label>
+                            <mat-label>Descrizione Classe</mat-label>
                             <select matNativeControl formControlName="classeID">
-                                <option value="1">2019-20</option>
-                                <option value="2">2020-21</option>
-                                <option value="3">2021-22</option>
+
                             </select>
-                            </mat-form-field>
+                        </mat-form-field>
                     </mat-grid-tile>
 
                     <mat-grid-tile>
@@ -48,9 +46,11 @@
                     </mat-grid-tile>
 
                     <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput required type="text" placeholder="annoID" formControlName="annoID">
-                            <mat-error *ngIf="form.controls.annoID.errors?.required"> Campo obbligatorio</mat-error>
+                        <mat-form-field >
+                            <mat-label>Anno Scolastico</mat-label>
+                            <select matNativeControl formControlName="annoID">
+
+                            </select>
                         </mat-form-field>
                     </mat-grid-tile>
 

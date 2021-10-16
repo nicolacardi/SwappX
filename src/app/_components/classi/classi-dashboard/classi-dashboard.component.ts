@@ -48,7 +48,7 @@ export class ClassiDashboardComponent implements OnInit {
   public idClasse!:           number;
   public idAnno!:             number;  
   isOpen = true;
-//#enderegion
+//#endregion
 
 //#region ----- ViewChild Input Output -------
   @ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
@@ -64,11 +64,14 @@ export class ClassiDashboardComponent implements OnInit {
               private _jspdf:                       JspdfService
               ) { 
               }
-  
+
+//#region ----- LifeCycle Hooks e simili-------
   ngOnInit() {
     this._navigationService.passPage("classiDashboard");
   }
+//#endregion
 
+//#region ----- altri metodi-------
   mouseOver() {
     this.isOpen = false;
   }
@@ -77,7 +80,20 @@ export class ClassiDashboardComponent implements OnInit {
     this.isOpen = true;
   }
 
+  creaPdf() {
+    const tableHeaders = [['id', 'nome', 'cognome', "genere", "dtNascita"]];
+    this._jspdf.creaPdf(this.alunniListComponent.matDataSource.data, tableHeaders);
+  }
 
+  promuovi() {
+    this._dialog.open(DialogOkComponent, {
+      width: '320px',
+      data: {titolo: "SEMPRE TROPPO CURIOSO", sottoTitolo: "La gatta frettolosa fece i gattini ciechi"}
+    });
+  }
+//#endregion
+
+//#region ----- add/remove to/from Classe-------
   addAlunnoToClasse() {
 
     if(this.idClasse<0) return;
@@ -132,19 +148,9 @@ export class ClassiDashboardComponent implements OnInit {
       })
     }
   }
+//#endregion
 
-  creaPdf() {
-    const tableHeaders = [['id', 'nome', 'cognome', "genere", "dtNascita"]];
-    this._jspdf.creaPdf(this.alunniListComponent.matDataSource.data, tableHeaders);
-  }
-
-  promuovi() {
-    this._dialog.open(DialogOkComponent, {
-      width: '320px',
-      data: {titolo: "SEMPRE TROPPO CURIOSO", sottoTitolo: "La gatta frettolosa fece i gattini ciechi"}
-    });
-  }
-
+//#region ----- ricezione emit -------
   annoIdEmitted(annoId: number) {
     //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
     //serve per la successiva assegnazione ad una classe...in quanto il modale che va ad aggiungere
@@ -157,5 +163,6 @@ export class ClassiDashboardComponent implements OnInit {
     console.log (classeId);
     this.idClasse = classeId;
   }
-
+//#endregion
+  
 }
