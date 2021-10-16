@@ -60,6 +60,9 @@ export class UserService {
     return this.http.post<currentUser>(this.BaseURI  +'ApplicationUser/Login', formData )
       .pipe(map(user => {
         if (user && user.token) {
+
+          console.log("Token ricevuto da WS: ", user.token);
+
           // store user details in local storage to keep user logged in
           localStorage.setItem('token', user.token);
           localStorage.setItem('currentUser', JSON.stringify(user));

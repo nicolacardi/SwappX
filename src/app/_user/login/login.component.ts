@@ -40,21 +40,28 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if(localStorage.getItem('token') != null){
-      this.router.navigateByUrl('/default');
+      
+      console.log("Token: " , localStorage.getItem('token'));
+
+      this.router.navigateByUrl('/home');
     }
   }
 
   onSubmit(){
+
+    console.log("Login: " + this.form.controls["UserName"].value);
+
+/*   //TEMPORANEO
     this.loading = true;
-    //console.log("Login: " + this.formModel.UserName);
-
+    
     this.svcUser.fakeLogin();
-    this.router.navigateByUrl('/home');  //TEMPORANEO
+    this.router.navigateByUrl('/home');  
+    */
 
-
-    /*
+    
     this.svcUser.Login(this.form.value).subscribe(
       (res: any) => {
+        
 
         this.svcUser.changeLoggedIn(true);
         this._snackBar.openFromComponent(SnackbarComponent, {
@@ -71,7 +78,7 @@ export class LoginComponent implements OnInit {
         this.svcUser.changeLoggedIn(false);
         if(err.status== 400) {
           this._snackBar.openFromComponent(SnackbarComponent, {
-            data: 'Utente o Password errati! - Riprova!', panelClass: ['green-snackbar']
+            data: 'Utente o Password errati', panelClass: ['red-snackbar']
           });
         }
         else {
@@ -83,7 +90,6 @@ export class LoginComponent implements OnInit {
         }
       }
     );
-    */
   }
 
 

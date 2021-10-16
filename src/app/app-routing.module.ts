@@ -35,13 +35,12 @@ const routes: Routes = [
     ]
   },
 
-  //{ path:'home', component: HomeComponent, canActivate:[AuthGuard]  },
+  { path:'home', component: HomeComponent, canActivate:[AuthGuard]  },
+  //{ path:'home',              component: HomeComponent  },
 
-  { path:'home',              component: HomeComponent  },
+  { path: "alunni",           component: AlunniPageComponent, canActivate:[AuthGuard]},
 
-  { path: "alunni",           component: AlunniPageComponent},
-
-  { path: "genitori",         component: GenitoriPageComponent },
+  { path: "genitori",         component: GenitoriPageComponent, canActivate:[AuthGuard]  },
 
   { path: "persone",          component: PersonePageComponent },
 
@@ -51,11 +50,8 @@ const routes: Routes = [
 
   { path: "pagamenti",        component: PagamentiPageComponent },
 
-  { path: "rette",            component: RettePageComponent }
+  { path: "rette",            component: RettePageComponent },
 
-
-
-  
 ];
 
 @NgModule({
