@@ -1,8 +1,9 @@
 <div class="container">
     <mat-card class="form-card">
         <mat-card-content>
-            <form class="data-form flex-form" [formGroup] = "form">
+            <form *ngIf="(classeSezioneAnno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">            
 
+                <!-- ********************************    BOTTONI     ************************************* -->
                 <div class="center">
                     <button mat-mini-fab aria-label="Back" matTooltip="Back" class="btn" mat-dialog-close>
                         <mat-icon>arrow_back</mat-icon>
@@ -27,7 +28,6 @@
                     </button>
                 </div>
 
-
                 <mat-grid-list class="no-overflowx mt10" [cols]="breakpoint" rowHeight="60px">
                     <mat-grid-tile>
                         <mat-form-field >
@@ -40,17 +40,22 @@
 
                     <mat-grid-tile>
                         <mat-form-field>
-                            <input matInput required type="text" placeholder="sezione" formControlName="sezione">
+                            <input matInput required type="text" placeholder="sezione" maxlength= "1" formControlName="sezione" #sezione>
                             <mat-error *ngIf="form.controls.sezione.errors?.required"> Campo obbligatorio</mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
 
+                            
                     <mat-grid-tile>
-                        <mat-form-field >
+                        <!-- <mat-form-field *ngIf="show" class="ml20 topZIndex"> -->
+                        <mat-form-field  >
                             <mat-label>Anno Scolastico</mat-label>
-                            <select matNativeControl formControlName="annoID">
-
-                            </select>
+                            <mat-select formControlName="annoID">
+                                <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
+                                    {{element.annoscolastico}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="form.controls.annoID.errors?.required"> Campo obbligatorio</mat-error>
                         </mat-form-field>
                     </mat-grid-tile>
 

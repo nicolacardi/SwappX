@@ -74,10 +74,8 @@ export class RettameseEditComponent implements OnInit{
     //in questo modo solo all'arrivo di idRetta si fa scattare la loadData
     //La load Data non deve però scattare quando si tratta di nuovo Pagamento 
     //oppure se l'alunno non ha pagamenti (in entrambi i casi idRettaObs emette 0)
-    this.idRettaObs$
-    .pipe(
-      tap(
-      val=>{
+    this.idRettaObs$.pipe(
+      tap( val=> {
         if (val!=0) {
           this.loadData()
           this.emptyForm = false;
@@ -114,7 +112,6 @@ export class RettameseEditComponent implements OnInit{
       .pipe(
           tap(
             retta => {
-              //console.log ("dentro qua");
               this.form.patchValue(retta);
               let totPagamenti = 0;
               retta.pagamenti?.forEach( val=>{

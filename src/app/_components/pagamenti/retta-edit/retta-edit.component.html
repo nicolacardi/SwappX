@@ -58,8 +58,6 @@
                                 formControlName="nomeCognomeAlunno"
                                 [matAutocomplete]="autoAlunno" #nomeCognomeAlunno 
                                 (keydown.enter) = "enterAlunnoInput()"
-
-
                                 (blur) = "blur()">
                                 <!-- [displayWith]="displayFn" DisplayWith impedisce che si possa scrivere qualcosa nella input in maniera programmatica-->
                         <mat-autocomplete #autoAlunno="matAutocomplete" (optionSelected)="selected($event)">

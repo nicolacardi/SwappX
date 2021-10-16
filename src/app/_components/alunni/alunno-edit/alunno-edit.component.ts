@@ -14,12 +14,12 @@ import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component
 import { GenitoriListComponent } from '../../genitori/genitori-list/genitori-list.component';
 
 //services
-import { LoadingService } from '../../utilities/loading/loading.service';
 import { AlunniService } from 'src/app/_components/alunni/alunni.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
 import { ClassiSezioniAnniAlunniService } from '../../classi/classi-sezioni-anni-alunni.service';
+import { LoadingService } from '../../utilities/loading/loading.service';
 
-//classes
+//models
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
@@ -291,7 +291,7 @@ export class AlunnoEditComponent implements OnInit {
       //se invece res.length == 0 dovrebbe proseguire e concatenare la verifica successiva ch è getByAlunnoAndAnno...
       //invece "test" non compare mai...quindi? sta uscendo sempre con of()?
       tap(res=> {
-        console.log("err1");
+        //console.log("err1");
         if (res.length !=0) {
           this._dialog.open(DialogOkComponent, {
             width: '320px',
@@ -304,7 +304,7 @@ export class AlunnoEditComponent implements OnInit {
       this.svcClassiSezioniAnniAlunni.getByAlunnoAndAnno(classeSezioneAnno.anno.id, this.idAlunno) , of() )
       ),
       tap(res=> {
-        console.log("err2");
+        //console.log("err2");
         if (res.length !=0) {
           this._dialog.open(DialogOkComponent, {
             width: '320px',

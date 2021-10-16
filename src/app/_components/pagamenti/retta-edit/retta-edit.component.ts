@@ -115,7 +115,6 @@ export class RettaEditComponent implements OnInit {
   }
 
   loadData(){
-    console.log("idAnno", this.data.idAnno);
 
     this.obsRette$ = this.svcRette.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
     const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
@@ -134,7 +133,7 @@ export class RettaEditComponent implements OnInit {
 
           this.anno = obj[0].anno!;
           //this.formRetta.controls['annoscolastico'].setValue(this.anno.id);
-          console.log ("obj", obj);
+          //console.log ("obj", obj);
           obj.forEach(()=>{
             this.mesi[obj[n].meseRetta - 1] = obj[n].meseRetta;
             this.quoteConcordate[obj[n].meseRetta - 1] = obj[n].quotaConcordata;
