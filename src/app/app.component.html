@@ -1,6 +1,28 @@
+
+
 <mat-sidenav-container fullscreen >
-    <mat-sidenav #start class="leftSidenav" >
-        <mat-nav-list (click)="start.close()" >
+
+    <mat-toolbar class="position-fixed" [ngClass]="{'hidden-swappx': !isLoggedIn}">
+        <button mat-icon-button (click)="start.open()" >
+            <mat-icon>menu</mat-icon>
+        </button>
+        
+        <div class="logo">
+            <img class="logo-img" src="../assets/logoscritta.svg">
+        </div>
+        <button mat-icon-button [matMenuTriggerFor]="menu" >
+            <mat-icon>account_circle</mat-icon>
+        </button>
+    <!--            
+        <button mat-icon-button (click)="end.open()">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    -->
+    </mat-toolbar>
+
+    <mat-sidenav #start class="leftSidenav">
+        
+        <mat-nav-list (click)="start.close()"   >
             <a mat-list-item routerLink="alunni" >
                 <img class="iconaMenuSidenav" src="../assets/alunniList.svg">
                 <span>Elenco Alunni</span>
@@ -42,9 +64,9 @@
 
         </mat-nav-list>
     </mat-sidenav>
-    
-    <mat-menu #menu>
-        <button mat-menu-item routerLink="/">
+
+    <mat-menu #menu  >
+        <button mat-menu-item routerLink="/"  >
             <mat-icon>account_box</mat-icon>
             <span>Account</span>
         </button>
@@ -54,51 +76,14 @@
             <span>Cambia Password</span>
         </button>
     
-        <button mat-menu-item (click)="logOut()">
+        <button mat-menu-item (click)="logOut()"  >
             <mat-icon>logout</mat-icon>
             <span>Logout</span>
         </button>
     </mat-menu>
-<!--
 
-    <mat-sidenav position="end" #end class="rightSidenav" [mode]="'side'">
-        <mat-icon class="closeIcon pointer" (click)="end.close()">close</mat-icon>
-        <mat-nav-list>
-            <app-filtri></app-filtri>
-            <hr>
-            <mat-list-item>
-                <mat-icon (clic)="savePDF()">printer</mat-icon>
-                <span class="descMenu">Stampa</span>
-            </mat-list-item >
-            <mat-list-item >
-                <mat-icon>file_download</mat-icon>
-                <span class="descMenu">Scarica</span>
-            </mat-list-item >
-        </mat-nav-list>           
-    </mat-sidenav>
--->
-    <mat-toolbar class="position-fixed">
-        <button mat-icon-button (click)="start.open()">
-            <mat-icon>menu</mat-icon>
-        </button>
-        
+    <hr style="height: 48px"  [ngClass]="{'hidden-swappx': !isLoggedIn}"> 
 
-        <div class="logo">
-            <img class="logo-img" src="../assets/logoscritta.svg">
-        </div>
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-            <mat-icon>account_circle</mat-icon>
-        </button>
-    <!--            
-        <button mat-icon-button (click)="end.open()">
-            <mat-icon>more_vert</mat-icon>
-        </button>
-    -->
-    </mat-toolbar>
-
-
-    <hr style="height: 48px">
-    
     <loading></loading>
     <router-outlet class="mt80"></router-outlet>
 </mat-sidenav-container>

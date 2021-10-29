@@ -18,22 +18,24 @@
 \-----------------------------------------------------------------------/
 -->
 
-<mat-card class="user-container">
-    <mat-card-header >
-        <img class="logo-login ma" src="../../assets/logoscrittaazzurro.svg">
-    </mat-card-header>
-    <mat-card-content>
-    <mat-tab-group mat-align-tabs="center">
-        <mat-tab  label="Login">
-            <div class="row center mt20">
-                <app-login></app-login>
-            </div>
-        </mat-tab>
-        <mat-tab  label="Registrazione">
-            <div class="row center mt20">
-                <app-register></app-register>
-            </div>
-        </mat-tab>
-    </mat-tab-group>
-    </mat-card-content>
-</mat-card>
+<div style="background-color: gainsboro; height: 100%;">
+    <mat-card class="user-container" style=" top: 20%; margin: auto; min-height: 430px; min-width: 350px;">
+        <mat-card-header >
+            <img class="logo-login ma" src="../../assets/logoscrittaazzurro.svg">
+        </mat-card-header>
+        <mat-card-content>
+            <mat-tab-group mat-align-tabs="center">
+                <mat-tab  label="Login">
+                    <div class="row center mt20">
+                        <app-login></app-login>
+                    </div>
+                </mat-tab>
+                <mat-tab  label="Registrazione">
+                    <div class="row center mt20">
+                        <app-register></app-register>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+    </mat-card>
+</div>

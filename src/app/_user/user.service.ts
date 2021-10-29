@@ -31,7 +31,6 @@ export class UserService {
     //The BehaviorSubject holds the value that needs to be shared with other components
     this.BehaviourSubjectcurrentUser = new BehaviorSubject<currentUser>(JSON.parse(localStorage.getItem('currentUser')!));
     this.obscurrentUser = this.BehaviourSubjectcurrentUser.asObservable();
-    console.log ("USER SERVICE CUCU");
   }
 
   formModel = this.fb.group(
@@ -61,7 +60,7 @@ export class UserService {
       .pipe(map(user => {
         if (user && user.token) {
 
-          console.log("Token ricevuto da WS: ", user.token);
+          //console.log("Token ricevuto da WS: ", user.token);
 
           // store user details in local storage to keep user logged in
           localStorage.setItem('token', user.token);
@@ -117,9 +116,7 @@ export class UserService {
   }
 
   changeLoggedIn(val: boolean) {
-    this.BehaviourSubjectLoggedIn.next(val);
-    
-    //console.log ("user.service.ts - isLoggedIn viene impostato a "+ val)
+    this.BehaviourSubjectLoggedIn.next(val);    
   }
 
   //AS: custom validator

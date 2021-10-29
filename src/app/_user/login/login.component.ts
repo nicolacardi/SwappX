@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     if(localStorage.getItem('token') != null){
       
-      console.log("Token: " , localStorage.getItem('token'));
+      //console.log("Token: " , localStorage.getItem('token'));
 
       this.router.navigateByUrl('/home');
     }
@@ -49,26 +49,13 @@ export class LoginComponent implements OnInit {
 
   onSubmit(){
 
-    console.log("Login: " + this.form.controls["UserName"].value);
-
-/*   //TEMPORANEO
-    this.loading = true;
-    
-    this.svcUser.fakeLogin();
-    this.router.navigateByUrl('/home');  
-    */
-
-    
     this.svcUser.Login(this.form.value).subscribe(
       (res: any) => {
         
-
         this.svcUser.changeLoggedIn(true);
         this._snackBar.openFromComponent(SnackbarComponent, {
           data: 'Benvenuto!', panelClass: ['green-snackbar']
         });
-        //Forse fa schifo ma funziona
-        //this.sidebar.ngOnInit();
 
         this.router.navigateByUrl('/home');
       },
@@ -86,12 +73,10 @@ export class LoginComponent implements OnInit {
           this._snackBar.openFromComponent(SnackbarComponent, {
             data: 'Server Error: timeout!', panelClass: ['red-snackbar']
           });
-          
         }
       }
     );
   }
-
 
   problemiLogin(){
     this._dialog.open(DialogOkComponent, {
@@ -99,7 +84,5 @@ export class LoginComponent implements OnInit {
       data: {titolo: "HAI DIMENTICATO LA PASSWORD?", sottoTitolo: "Bravo mona!"}
     });
   }
-
-
 }
 
