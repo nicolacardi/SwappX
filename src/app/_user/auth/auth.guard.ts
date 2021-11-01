@@ -15,11 +15,9 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot):  boolean  {
 
-      console.log("DEBUG: auth.guard");
+      //console.log("DEBUG: auth.guard");
 
       if(localStorage.getItem('token') != null){
-        //console.log ("Auth.guard/canActivate: True");
-        
         this.uService.changeLoggedIn(true);
         return true; 
       }

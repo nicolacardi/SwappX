@@ -2,7 +2,7 @@
 
 <mat-sidenav-container fullscreen >
 
-    <mat-toolbar class="position-fixed" [ngClass]="{'hidden-swappx': !isLoggedIn}">
+    <mat-toolbar class="position-fixed" [ngClass]="{'hidden-header': !isLoggedIn}">
         <button mat-icon-button (click)="start.open()" >
             <mat-icon>menu</mat-icon>
         </button>
@@ -23,6 +23,11 @@
     <mat-sidenav #start class="leftSidenav">
         
         <mat-nav-list (click)="start.close()"   >
+            <a mat-list-item routerLink="home" >
+                <mat-icon>home</mat-icon>
+                <span>Home</span>
+            </a>
+            <mat-divider></mat-divider>
             <a mat-list-item routerLink="alunni" >
                 <img class="iconaMenuSidenav" src="../assets/alunniList.svg">
                 <span>Elenco Alunni</span>
@@ -62,13 +67,21 @@
             <span>Genitore</span>
         </a>  -->
 
+
+            <mat-divider></mat-divider>
+            <!-- Utenti -->
+            <a mat-list-item routerLink="users">
+                <mat-icon>people</mat-icon>
+                <span>Gestione Utenti</span>
+            </a> 
+
         </mat-nav-list>
     </mat-sidenav>
 
     <mat-menu #menu  >
         <button mat-menu-item routerLink="/"  >
             <mat-icon>account_box</mat-icon>
-            <span>Account</span>
+            <span>{{userFullName}}</span>
         </button>
     
         <button mat-menu-item routerLink="about">
@@ -82,7 +95,8 @@
         </button>
     </mat-menu>
 
-    <hr style="height: 48px"  [ngClass]="{'hidden-swappx': !isLoggedIn}"> 
+    
+    <hr style="height: 48px"  [ngClass]="{'hidden-header': !isLoggedIn}"> 
 
     <loading></loading>
     <router-outlet class="mt80"></router-outlet>

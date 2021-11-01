@@ -1,0 +1,30 @@
+<button mat-mini-fab aria-label="Strumenti" matTooltip="Strumenti" class="btn btn-toolbar" (click)="sidenav2.toggle();" >
+    <mat-icon>construction</mat-icon>
+</button>
+<!--
+    <button mat-mini-fab aria-label="Nuova anagrafica" matTooltip="Nuova anagrafica" class="btn btn-add" (click)="addRecord()">
+    <mat-icon>add</mat-icon>
+</button>
+-->
+<button mat-mini-fab aria-label="Filtri Avanzati" matTooltip="Filtri Avanzati" class="btn btn-filter" (click)="sidenav.toggle(); resetFiltri()" >
+    <mat-icon>filter_alt</mat-icon>
+</button>
+
+<mat-drawer-container [hasBackdrop]="false" style="min-height: 91%">
+    <mat-drawer position="end" #sidenav class="rightSidenav"  [mode]="'side'">
+        <app-users-filter [usersListComponent] = "appuserslist" #appusersfilter></app-users-filter>    
+    </mat-drawer>
+
+    <mat-drawer position="start" #sidenav2 class="leftSidenav2"  [mode]="'side'">
+        <app-toolbar></app-toolbar>
+    </mat-drawer>
+
+    <mat-drawer-content>
+        <app-users-list
+            [usersFilterComponent] = "appusersfilter"
+            [dove] = "'users-page'"
+            #appuserslist  
+            (openDrawer) = "openDrawer()" >
+        </app-users-list>
+    </mat-drawer-content>
+</mat-drawer-container>

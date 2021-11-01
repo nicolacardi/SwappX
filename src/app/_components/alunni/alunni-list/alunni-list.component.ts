@@ -236,6 +236,7 @@ export class AlunniListComponent implements OnInit {
       );
     }
 
+    //TODO:    VERIFICARE (RIPETUTO?)
     if (this.dove =="alunni-page" || this.dove == "genitore-edit-list") {
       obsAlunni$= this.svcAlunni.loadWithParents();
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
@@ -261,8 +262,6 @@ export class AlunniListComponent implements OnInit {
         }
       );
     }
-    
-
 
   }
 //#endregion

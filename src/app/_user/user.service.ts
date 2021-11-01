@@ -4,7 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { map } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { currentUser } from '../_models/Users';
+import { User } from '../_models/Users';
 import { environment } from 'src/environments/environment';
 
 
@@ -17,19 +17,18 @@ export class UserService {
   private BehaviourSubjectLoggedIn = new BehaviorSubject<boolean>(false);
   obsLoggedIn = this.BehaviourSubjectLoggedIn.asObservable();
 
-  private BehaviourSubjectcurrentUser : BehaviorSubject<currentUser>;
-  public obscurrentUser: Observable<currentUser>;
+  private BehaviourSubjectcurrentUser : BehaviorSubject<User>;
+  public obscurrentUser: Observable<User>;
   
-  public currUser! : currentUser;
+  public currUser! : User;
 
-  //readonly BaseURI = "http://188.152.211.199/iQWApi/api";
   readonly BaseURI = environment.apiBaseUrl;
   
       
   constructor(private fb: FormBuilder, private http: HttpClient) { 
 
     //The BehaviorSubject holds the value that needs to be shared with other components
-    this.BehaviourSubjectcurrentUser = new BehaviorSubject<currentUser>(JSON.parse(localStorage.getItem('currentUser')!));
+    this.BehaviourSubjectcurrentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
     this.obscurrentUser = this.BehaviourSubjectcurrentUser.asObservable();
   }
 
@@ -48,24 +47,19 @@ export class UserService {
     ) 
   });
 
-
-  
-  fakeLogin() {
-    this.BehaviourSubjectLoggedIn.next(true);
-  }
   
   //Login(userName: string, userPwd: string) {
   Login(formData: any) {
-    return this.http.post<currentUser>(this.BaseURI  +'ApplicationUser/Login', formData )
+    return this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
       .pipe(map(user => {
         if (user && user.token) {
 
-          //console.log("Token ricevuto da WS: ", user.token);
+          user.isLoggedIn = true;
 
           // store user details in local storage to keep user logged in
           localStorage.setItem('token', user.token);
           localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currUser = user;
+          
           this.BehaviourSubjectcurrentUser.next(user);
         }     
       return user;
@@ -76,6 +70,10 @@ export class UserService {
     //console.log("DEBUG: User.service/Logout");
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
+
+    const logOutUser = <User>{};
+    logOutUser.isLoggedIn = false;
+    this.BehaviourSubjectcurrentUser.next(logOutUser);
   }
 
   Register()
@@ -86,11 +84,35 @@ export class UserService {
       FullName: this.formModel.value.FullName,
       Password: this.formModel.value.Passwords.Password
     };
-    return  this.http.post(this.BaseURI +'/ApplicationUser/Register', body );
+    //return  this.http.post(this.BaseURI +'/ApplicationUser/Register', body );
+    return  this.http.post(environment.apiBaseUrl +'ApplicationUser/Register', body );
   }
 
-  public get currentUserValue(): currentUser {
+  public get currentUserValue(): User {
     return this.BehaviourSubjectcurrentUser.value;
+  }
+
+
+  fakeLogin() {
+    this.BehaviourSubjectLoggedIn.next(true);
+  }
+  
+  list(): Observable<User[]>{
+    return this.http.get<User[]>(environment.apiBaseUrl+'ApplicationUser');
+  }
+ 
+
+  stringJson: any;
+  stringObject: any;
+  public  getUser() : User {
+  //public  getUser() {
+
+    var tmp = localStorage.getItem('currentUser');
+    this.stringJson = JSON.stringify(tmp);
+    this.stringObject = JSON.parse(this.stringJson);
+
+    return this.stringObject;
+
   }
 
 

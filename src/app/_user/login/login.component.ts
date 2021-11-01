@@ -54,7 +54,8 @@ export class LoginComponent implements OnInit {
         
         this.svcUser.changeLoggedIn(true);
         this._snackBar.openFromComponent(SnackbarComponent, {
-          data: 'Benvenuto!', panelClass: ['green-snackbar']
+          
+          data: 'Benvenuto ' + res.fullname , panelClass: ['green-snackbar']
         });
 
         this.router.navigateByUrl('/home');

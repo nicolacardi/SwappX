@@ -21,6 +21,7 @@ import { RegisterComponent } from './_user/register/register.component';
 import { LoginComponent } from './_user/login/login.component';
 import { HomeComponent } from './_components/home/home.component';
 import { ClassiPageComponent } from './_components/classi/classi-page/classi-page.component';
+import { UsersPageComponent } from './_components/users/users-page/users-page.component';
 
 
 const routes: Routes = [
@@ -51,6 +52,10 @@ const routes: Routes = [
   { path: "pagamenti",        component: PagamentiPageComponent },
 
   { path: "rette",            component: RettePageComponent },
+
+
+  
+  { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard]  },
 
 ];
 
