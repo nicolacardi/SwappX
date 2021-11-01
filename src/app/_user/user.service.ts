@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup} from '@angular/forms';
 import { HttpClient } from "@angular/common/http";
-import { map } from 'rxjs/operators';
+import { catchError, map, timeout } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { User, UserRole } from '../_models/Users';
@@ -14,10 +14,6 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
 })
 
 export class UserService {
-
-  //TODO AS: verificare se possibile eliminarlo e utilizzare solo obscurrentUser
-  private BehaviourSubjectLoggedIn = new BehaviorSubject<boolean>(false);
-  obsLoggedIn = this.BehaviourSubjectLoggedIn.asObservable();
 
   private BehaviourSubjectcurrentUser : BehaviorSubject<User>;
   public obscurrentUser: Observable<User>;
@@ -57,6 +53,7 @@ export class UserService {
   //Login(userName: string, userPwd: string) {
   Login(formData: any) {
     return this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
+      .pipe(timeout(5000))  
       .pipe(map(user => {
         if (user && user.token) {
 
@@ -71,13 +68,12 @@ export class UserService {
           localStorage.setItem('currentUser', JSON.stringify(user));
           
           this.BehaviourSubjectcurrentUser.next(user);
-        }     
+        }    
       return user;
     }));
   }
 
   Logout(){
-    //console.log("DEBUG: User.service/Logout");
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
 
@@ -94,13 +90,12 @@ export class UserService {
       FullName: this.formModel.value.FullName,
       Password: this.formModel.value.Passwords.Password
     };
-    //return  this.http.post(this.BaseURI +'/ApplicationUser/Register', body );
     return  this.http.post(environment.apiBaseUrl +'ApplicationUser/Register', body );
   }
 
 
   fakeLogin() {
-    this.BehaviourSubjectLoggedIn.next(true);
+    //this.BehaviourSubjectLoggedIn.next(true);
   }
   
   list(): Observable<User[]>{
@@ -141,9 +136,11 @@ export class UserService {
 
   }
 
+  /*
   changeLoggedIn(val: boolean) {
     this.BehaviourSubjectLoggedIn.next(val);    
   }
+*/
 
   //AS: custom validator
   comparePasswords(fb: FormGroup )

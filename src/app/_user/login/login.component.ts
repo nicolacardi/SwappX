@@ -60,18 +60,29 @@ export class LoginComponent implements OnInit {
       err=> {
         this.loading = false;
 
+        //console.log("DEBUG - err: ", err);
+
+        this._snackBar.openFromComponent(SnackbarComponent, {
+          data: err, panelClass: ['red-snackbar']
+        });
+
+        /*
         //this.svcUser.changeLoggedIn(false);
         if(err.status== 400) {
           this._snackBar.openFromComponent(SnackbarComponent, {
-            data: 'Utente o Password errati', panelClass: ['red-snackbar']
+            //data: 'Utente o Password errati', panelClass: ['red-snackbar']
+            data: err, panelClass: ['red-snackbar']
           });
         }
         else {
           console.log(err);
+
           this._snackBar.openFromComponent(SnackbarComponent, {
-            data: 'Server Error: timeout!', panelClass: ['red-snackbar']
+              //data: 'Server Error: timeout!', panelClass: ['red-snackbar']
+              data: err, panelClass: ['red-snackbar']
           });
         }
+        */
       }
     );
   }
