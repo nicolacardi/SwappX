@@ -4,8 +4,9 @@ import { HttpClient } from "@angular/common/http";
 import { map } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { User } from '../_models/Users';
+import { User, UserRole } from '../_models/Users';
 import { environment } from 'src/environments/environment';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 
 @Injectable({
@@ -14,6 +15,7 @@ import { environment } from 'src/environments/environment';
 
 export class UserService {
 
+  //TODO AS: verificare se possibile eliminarlo e utilizzare solo obscurrentUser
   private BehaviourSubjectLoggedIn = new BehaviorSubject<boolean>(false);
   obsLoggedIn = this.BehaviourSubjectLoggedIn.asObservable();
 
@@ -30,6 +32,10 @@ export class UserService {
     //The BehaviorSubject holds the value that needs to be shared with other components
     this.BehaviourSubjectcurrentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
     this.obscurrentUser = this.BehaviourSubjectcurrentUser.asObservable();
+  }
+
+  public get currentUserValue(): User {
+    return this.BehaviourSubjectcurrentUser.value;
   }
 
   formModel = this.fb.group(
@@ -55,6 +61,10 @@ export class UserService {
         if (user && user.token) {
 
           user.isLoggedIn = true;
+          
+          //QUI!!!!!
+          //passare da WS il ruolo dell'utente
+          user.role= UserRole.Admin;        //Debug Role
 
           // store user details in local storage to keep user logged in
           localStorage.setItem('token', user.token);
@@ -88,10 +98,6 @@ export class UserService {
     return  this.http.post(environment.apiBaseUrl +'ApplicationUser/Register', body );
   }
 
-  public get currentUserValue(): User {
-    return this.BehaviourSubjectcurrentUser.value;
-  }
-
 
   fakeLogin() {
     this.BehaviourSubjectLoggedIn.next(true);
@@ -101,18 +107,16 @@ export class UserService {
     return this.http.get<User[]>(environment.apiBaseUrl+'ApplicationUser');
   }
  
-
-  stringJson: any;
-  stringObject: any;
   public  getUser() : User {
-  //public  getUser() {
 
+    var stringJson: any;
+    var stringObject: any;
     var tmp = localStorage.getItem('currentUser');
-    this.stringJson = JSON.stringify(tmp);
-    this.stringObject = JSON.parse(this.stringJson);
 
-    return this.stringObject;
+    stringJson = JSON.stringify(tmp);
+    stringObject = JSON.parse(stringJson);
 
+    return stringObject;
   }
 
 

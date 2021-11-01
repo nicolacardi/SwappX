@@ -37,10 +37,11 @@ export class UsersListComponent implements OnInit {
 
   displayedColumns: string[] =  [];
   displayedColumnsUsersList: string[] = [
-      "userID", 
-      "fullname", 
+      //"userID", 
+      "userName", 
+      "fullName", 
       "email", 
-      "username", 
+      
       "badge"
   ];
 
@@ -118,7 +119,7 @@ export class UsersListComponent implements OnInit {
   loadData () {
     let obsUsers$: Observable<User[]>;
 
-    if (this.dove =="users-page") {
+    //if (this.dove =="users-page") {
       obsUsers$= this.svcUsers.list();
       /*
       if(this.swSoloAttivi){
@@ -130,17 +131,21 @@ export class UsersListComponent implements OnInit {
       }
       */
       const loadUsers$ =this._loadingService.showLoaderUntilCompleted(obsUsers$);
+      
+      
 
       loadUsers$.subscribe(val => 
         {
           this.matDataSource.data = val;
+          console.log("DEBUG: ", val  );
+
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
           this.storedFilterPredicate = this.matDataSource.filterPredicate;
           this.matDataSource.filterPredicate = this.filterRightPanel();
         }
       );
-    }
+    //}
   }
 //#endregion
 

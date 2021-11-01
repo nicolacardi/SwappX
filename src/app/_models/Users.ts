@@ -7,4 +7,12 @@ export interface User {
         token?: string;
 
         isLoggedIn?: boolean;
+
+        role: UserRole;
     }
+
+
+export enum UserRole {
+    User = 'User',
+    Admin = 'Admin'
+}

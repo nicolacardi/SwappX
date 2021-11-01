@@ -63,6 +63,7 @@ import { ClassiSezioniAnniFilterComponent } from './_components/classi/classi-se
 import { UsersPageComponent } from './_components/users/users-page/users-page.component';
 import { UsersListComponent } from './_components/users/users-list/users-list.component';
 import { UsersFilterComponent } from './_components/users/users-filter/users-filter.component';
+import { ErrorInterceptor } from './_user/auth/error.interceptor';
 
 
 @NgModule({
@@ -126,19 +127,16 @@ import { UsersFilterComponent } from './_components/users/users-filter/users-fil
     ReactiveFormsModule,
     FormsModule
   ],
+
   providers: [
     UserService,
-    { 
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    //{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },      //Roles
+    
     { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
-    {
-      provide: MatPaginatorIntl, 
-      useClass: CustomMatPaginatorIntl
-    }
+    { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl }
   ],
   bootstrap: [AppComponent]
 })

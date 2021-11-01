@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit {
   
   constructor(private svcUser:       UserService, 
               private router:         Router,
-              private snackBar :      MatSnackBar,
               private fb:             FormBuilder,
               public _dialog:         MatDialog,
               private _snackBar:      MatSnackBar,
@@ -51,10 +50,8 @@ export class LoginComponent implements OnInit {
 
     this.svcUser.Login(this.form.value).subscribe(
       (res: any) => {
-        
-        this.svcUser.changeLoggedIn(true);
+        //this.svcUser.changeLoggedIn(true);
         this._snackBar.openFromComponent(SnackbarComponent, {
-          
           data: 'Benvenuto ' + res.fullname , panelClass: ['green-snackbar']
         });
 
@@ -63,7 +60,7 @@ export class LoginComponent implements OnInit {
       err=> {
         this.loading = false;
 
-        this.svcUser.changeLoggedIn(false);
+        //this.svcUser.changeLoggedIn(false);
         if(err.status== 400) {
           this._snackBar.openFromComponent(SnackbarComponent, {
             data: 'Utente o Password errati', panelClass: ['red-snackbar']

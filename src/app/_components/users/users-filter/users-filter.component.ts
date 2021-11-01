@@ -29,7 +29,7 @@ export class UsersFilterComponent implements OnInit {
     .subscribe(
       val => {
         this.resetMainFilter();
-        this.usersListComponent.filterValues.nome = val.toLowerCase();
+        this.usersListComponent.filterValues.fullname = val.toLowerCase();
         this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
       }
     )

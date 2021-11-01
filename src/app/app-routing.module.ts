@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AppComponent } from './app.component';
+
 import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-page.component';
 import { AlunnoEditComponent } from './_components/alunni/alunno-edit/alunno-edit.component';
 
@@ -14,7 +16,7 @@ import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/
 
 import { RettePageComponent } from './_components/pagamenti/rette-page/rette-page.component';
 import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
-import { AppComponent } from './app.component';
+
 import { AuthGuard } from './_user/auth/auth.guard';
 import { UserComponent } from './_user/user.component';
 import { RegisterComponent } from './_user/register/register.component';
@@ -22,6 +24,8 @@ import { LoginComponent } from './_user/login/login.component';
 import { HomeComponent } from './_components/home/home.component';
 import { ClassiPageComponent } from './_components/classi/classi-page/classi-page.component';
 import { UsersPageComponent } from './_components/users/users-page/users-page.component';
+
+import { UserRole } from './_models/Users';
 
 
 const routes: Routes = [
@@ -55,7 +59,9 @@ const routes: Routes = [
 
 
   
-  { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard]  },
+  { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.Admin] } },
+
+  
 
 ];
 
