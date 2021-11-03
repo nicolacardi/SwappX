@@ -19,7 +19,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
 
 //classes
-import { User } from 'src/app/_models/Users';
+import { User } from 'src/app/_user/Users';
 
 
 @Component({

@@ -4,7 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { catchError, map, timeout } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { User, UserRole } from '../_models/Users';
+import { User, UserRole } from './Users';
 import { environment } from 'src/environments/environment';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
@@ -15,17 +15,13 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
 
 export class UserService {
 
-  private BehaviourSubjectcurrentUser : BehaviorSubject<User>;
+  readonly BaseURI = environment.apiBaseUrl;
+
+  private BehaviourSubjectcurrentUser : BehaviorSubject<User>;      //holds the value that needs to be shared with other components
   public obscurrentUser: Observable<User>;
-  
   public currUser! : User;
 
-  readonly BaseURI = environment.apiBaseUrl;
-  
-      
   constructor(private fb: FormBuilder, private http: HttpClient) { 
-
-    //The BehaviorSubject holds the value that needs to be shared with other components
     this.BehaviourSubjectcurrentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
     this.obscurrentUser = this.BehaviourSubjectcurrentUser.asObservable();
   }
@@ -53,7 +49,7 @@ export class UserService {
   //Login(userName: string, userPwd: string) {
   Login(formData: any) {
     return this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
-      .pipe(timeout(5000))  
+      .pipe(timeout(8000))  
       .pipe(map(user => {
         if (user && user.token) {
 

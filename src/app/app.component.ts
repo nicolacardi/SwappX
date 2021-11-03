@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
-import { User } from './_models/Users';
+import { User } from './_user/Users';
 import { UserService } from './_user/user.service';
 
 

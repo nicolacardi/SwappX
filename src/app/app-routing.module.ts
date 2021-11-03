@@ -25,7 +25,7 @@ import { HomeComponent } from './_components/home/home.component';
 import { ClassiPageComponent } from './_components/classi/classi-page/classi-page.component';
 import { UsersPageComponent } from './_components/users/users-page/users-page.component';
 
-import { UserRole } from './_models/Users';
+import { UserRole } from './_user/Users';
 
 
 const routes: Routes = [
