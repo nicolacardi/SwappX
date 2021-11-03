@@ -65,6 +65,7 @@ import { UsersListComponent } from './_components/users/users-list/users-list.co
 import { UsersFilterComponent } from './_components/users/users-filter/users-filter.component';
 import { ErrorInterceptor } from './_user/auth/error.interceptor';
 import { NewsComponent } from './_components/news/news.component';
+import { AlunniSummaryComponent } from './_components/alunni/alunni-summary/alunni-summary.component';
 
 
 @NgModule({
@@ -116,6 +117,7 @@ import { NewsComponent } from './_components/news/news.component';
     UsersListComponent,
     UsersFilterComponent,
     NewsComponent,
+    AlunniSummaryComponent,
 
 
   ],
