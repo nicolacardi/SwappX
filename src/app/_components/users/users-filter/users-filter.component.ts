@@ -13,7 +13,9 @@ export class UsersFilterComponent implements OnInit {
 
 
 //#region ----- Variabili -------
-  fullnameFilter = new FormControl('');
+  fullnameFilter =  new FormControl('');
+  emailFilter =     new FormControl('');
+  badgeFilter =     new FormControl('');
 //#endregion
   
 //#region ----- ViewChild Input Output -------  
@@ -30,6 +32,24 @@ export class UsersFilterComponent implements OnInit {
       val => {
         this.resetMainFilter();
         this.usersListComponent.filterValues.fullname = val.toLowerCase();
+        this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
+      }
+    )
+
+    this.emailFilter.valueChanges
+    .subscribe(
+      val => {
+        this.resetMainFilter();
+        this.usersListComponent.filterValues.email = val.toLowerCase();
+        this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
+      }
+    )
+
+    this.badgeFilter.valueChanges
+    .subscribe(
+      val => {
+        this.resetMainFilter();
+        this.usersListComponent.filterValues.badge = val.toLowerCase();
         this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
       }
     )

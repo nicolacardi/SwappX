@@ -1,5 +1,3 @@
-
-
 <mat-sidenav-container fullscreen >
 
     <mat-toolbar class="position-fixed" [ngClass]="{'hidden-header': !isLoggedIn}">
@@ -24,7 +22,7 @@
         
         <mat-nav-list (click)="start.close()"   >
             <a mat-list-item routerLink="home" >
-                <mat-icon>home</mat-icon>
+                <img class="iconaMenuSidenav" src="../assets/home.svg">
                 <span>Home</span>
             </a>
             <mat-divider></mat-divider>
@@ -40,27 +38,61 @@
 
             <a mat-list-item routerLink="persone">
                 <img class="iconaMenuSidenav" src="../assets/docentiList.svg">
-                <span>Elenco Persone</span>
+                <span>Elenco Personale</span>
             </a>
 
-            <a mat-list-item routerLink="classi">
-                <img class="iconaMenuSidenav" src="../assets/classiList.svg">
-                <span>Elenco Classi</span>
-            </a> 
+            <mat-expansion-panel hideToggle  
+            #panel
+            (mouseenter)="panel.open()"
+            (mouseleave)="panel.close()"
+            class="mat-elevation-z0">
+                <mat-expansion-panel-header class="sidenav-expansion-panel-header">
+                  <mat-panel-title>
+                    <img class="iconaMenuSidenav mr10" src="../assets/classiMenu.svg">
+                    <span class="fs16">Classi</span>
+                  </mat-panel-title>
+                  <mat-panel-description>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-divider></mat-divider>
+                <a mat-list-item routerLink="classi">
+                    <img class="iconaMenuSidenav" src="../assets/classiList.svg">
+                    <span>Elenco Classi</span>
+                </a> 
 
-            <a mat-list-item routerLink="classi-dashboard">
-                <img class="iconaMenuSidenav" src="../assets/classiDashboard.svg">
-                <span>Gestione Classi</span>
-            </a> 
+                <a mat-list-item routerLink="classi-dashboard">
+                    <img class="iconaMenuSidenav" src="../assets/classiDashboard.svg">
+                    <span>Gestione Classi</span>
+                </a>
+                <mat-divider></mat-divider>
+              </mat-expansion-panel>
 
-            <a mat-list-item routerLink="pagamenti">
-                <img class="iconaMenuSidenav" src="../assets/money.svg">
-                <span>Pagamenti</span>
-            </a> 
-            <a mat-list-item routerLink="rette">
-                <img class="iconaMenuSidenav" src="../assets/money.svg">
-                <span>Rette</span>
-            </a> 
+
+              <mat-expansion-panel hideToggle  
+            #panel2
+            (mouseenter)="panel2.open()"
+            (mouseleave)="panel2.close()"
+            class="mat-elevation-z0">
+                <mat-expansion-panel-header class="sidenav-expansion-panel-header">
+                  <mat-panel-title>
+                    <img class="iconaMenuSidenav mr10" src="../assets/money.svg">
+                    <span class="fs16">Ricavi</span>
+                  </mat-panel-title>
+                  <mat-panel-description>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-divider></mat-divider>
+                <a mat-list-item routerLink="pagamenti">
+                    <img class="iconaMenuSidenav" src="../assets/pagamenti.svg">
+                    <span>Elenco Pagamenti</span>
+                </a> 
+                <a mat-list-item routerLink="rette">
+                    <img class="iconaMenuSidenav" src="../assets/retteList.svg">
+                    <span>Rette</span>
+                </a> 
+                <mat-divider></mat-divider>
+              </mat-expansion-panel>
+
 
             <!-- <a mat-list-item routerLink="genitoreDetails">
             <mat-icon>person</mat-icon>
@@ -71,7 +103,7 @@
             <mat-divider></mat-divider>
             <!-- Utenti -->
             <a mat-list-item routerLink="users">
-                <mat-icon>people</mat-icon>
+                <mat-icon>account_box</mat-icon>
                 <span>Gestione Utenti</span>
             </a> 
 

@@ -25,3 +25,19 @@
   input.form-control:focus {
     box-shadow: none;
   }
+
+
+  .login-card {
+    top: 25%;
+    margin: auto;
+    min-height: 250px;
+    width: 270px;
+  }
+
+  .login-background{
+    background-image: url("../../assets/BackgroundBlackboard2B.jpg"); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+  }

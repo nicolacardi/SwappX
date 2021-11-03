@@ -11,7 +11,6 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { map } from 'rxjs/operators';
 
 //components
-//import { AlunnoEditComponent } from '../alunno-edit/alunno-edit.component';
 import { UsersFilterComponent } from '../users-filter/users-filter.component';
 
 //services
@@ -61,8 +60,9 @@ export class UsersListComponent implements OnInit {
 
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
   filterValues = {
-    fullname: ''
-    
+    fullname: '',
+    email:    '',
+    badge:    ''
   };
 //#endregion
 
@@ -139,6 +139,7 @@ export class UsersListComponent implements OnInit {
           this.matDataSource.data = val;
           console.log("DEBUG: ", val  );
 
+          this.filterPredicateCustom();   //serve per rendere filtrabili anche i campi nested
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
           this.storedFilterPredicate = this.matDataSource.filterPredicate;
@@ -154,10 +155,9 @@ export class UsersListComponent implements OnInit {
   filterRightPanel(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
-
-      return String(data.fullname).toLowerCase().indexOf(searchTerms.fullname) !== -1
-        
-
+      return String(data.fullName).toLowerCase().indexOf(searchTerms.fullname) !== -1
+      && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
+      && String(data.badge).toLowerCase().indexOf(searchTerms.badge) !== -1
     }
     return filterFunction;
   }
@@ -171,6 +171,19 @@ export class UsersListComponent implements OnInit {
     this.matDataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  filterPredicateCustom(){
+    //questa funzione consente il filtro selettivamente su alcuni campi e non su altri oppure su oggetti nested
+    //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
+    this.matDataSource.filterPredicate = (data, filter: string)  => {
+      const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
+      //stabilisco dunque in quali campi cercare
+       return currentTerm + data.email + data.fullname + data.badge
+      };
+      const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+      const transformedFilter = filter.trim().toLowerCase();
+      return dataStr.indexOf(transformedFilter) !== -1;
+    };
+  }
 //#endregion
 
 //#region ----- Add Edit Drop -------

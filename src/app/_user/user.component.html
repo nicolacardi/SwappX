@@ -18,24 +18,24 @@
 \-----------------------------------------------------------------------/
 -->
 
-<div style="background-color: gainsboro; height: 100%;">
-    <mat-card class="user-container" style=" top: 20%; margin: auto; min-height: 430px; min-width: 350px;">
+<div class="login-background">
+    <mat-card class="user-container login-card">
         <mat-card-header >
             <img class="logo-login ma" src="../../assets/logoscrittaazzurro.svg">
         </mat-card-header>
-        <mat-card-content>
-            <mat-tab-group mat-align-tabs="center">
-                <mat-tab  label="Login">
-                    <div class="row center mt20">
+        <mat-card-content class="mt20">
+            <!-- <mat-tab-group mat-align-tabs="center">
+                <mat-tab  label="Login"> -->
+                    <div class="row center">
                         <app-login></app-login>
                     </div>
-                </mat-tab>
-                <mat-tab  label="Registrazione">
+                <!-- </mat-tab> -->
+                <!-- <mat-tab  label="Registrazione">
                     <div class="row center mt20">
                         <app-register></app-register>
                     </div>
                 </mat-tab>
-            </mat-tab-group>
+            </mat-tab-group> -->
         </mat-card-content>
     </mat-card>
 </div>

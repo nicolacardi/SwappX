@@ -8,6 +8,14 @@
             <mat-label>FullName</mat-label>
             <input matInput [formControl]="fullnameFilter">
         </mat-form-field>
+        <mat-form-field class="ml12">
+            <mat-label>email</mat-label>
+            <input matInput [formControl]="emailFilter">
+        </mat-form-field>
+        <mat-form-field class="ml12">
+            <mat-label>Badge</mat-label>
+            <input matInput [formControl]="badgeFilter">
+        </mat-form-field>
 
         <div class="ml12 mt10">
             <button mat-button matSuffix class="w180px ml15" mat-stroked-button aria-label="Clear" (click)="resetAllInputsAndClearFilters()" >

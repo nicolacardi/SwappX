@@ -237,7 +237,7 @@ export class AlunniListComponent implements OnInit {
     }
 
     //TODO:    VERIFICARE (RIPETUTO?)
-    if (this.dove =="alunni-page" || this.dove == "genitore-edit-list") {
+    if (this.dove == "genitore-edit-list") {
       obsAlunni$= this.svcAlunni.loadWithParents();
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
       loadAlunni$.subscribe(val => 
@@ -281,6 +281,7 @@ export class AlunniListComponent implements OnInit {
             foundGenitore = foundCognomeNome || foundNomeCognome;
         })
       }
+
       return String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
         && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
         && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1

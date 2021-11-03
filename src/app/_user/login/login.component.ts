@@ -9,6 +9,7 @@ import { UserService } from '../user.service';
 import { DialogOkComponent } from 'src/app/_components/utilities/dialog-ok/dialog-ok.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
+import { LoadingService } from 'src/app/_components/utilities/loading/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -29,6 +30,7 @@ export class LoginComponent implements OnInit {
               private router:         Router,
               private fb:             FormBuilder,
               public _dialog:         MatDialog,
+              private _loadingService:  LoadingService,
               private _snackBar:      MatSnackBar,
               ) {
     this.form = this.fb.group({
@@ -47,8 +49,9 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(){
-
-    this.svcUser.Login(this.form.value).subscribe(
+    let obsUser$= this.svcUser.Login(this.form.value);
+    const loadUser$ =this._loadingService.showLoaderUntilCompleted(obsUser$);
+    loadUser$.subscribe(
       (res: any) => {
         //this.svcUser.changeLoggedIn(true);
         this._snackBar.openFromComponent(SnackbarComponent, {
