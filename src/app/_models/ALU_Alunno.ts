@@ -34,4 +34,11 @@ export interface ALU_Alunno {
         _Genitori:              ALU_Genitore[];
 }
 
+export interface ALU_AlunnoSummary {
+        classeID:               number;
+        classe:                 string;
+        numeroAlunni:           number;
+        numeroMaschi:           number;
+        numeroFemmine:          number;
 
+}

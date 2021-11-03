@@ -1,11 +1,57 @@
-
-
-
 <mat-card style="height: 100%;" class="card mat-elevation-z8">
-    <div class="table-container">
-       bella raga!!!!
-       <p>alunni-summary works!</p>
-    </div>
+
+        <mat-table class="alunniTable transparent" [dataSource]="matDataSource">
+
+        <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+        <ng-container matColumnDef="actionsColumn">
+            <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
+            <mat-cell  *matCellDef="let element;  let j = index;"> 
+                <img class="iconaMenu pointer" src="../assets/alunno_edit.svg">
+            </mat-cell>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="nome">
+            <mat-header-cell *matHeaderCellDef >nome</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.nome}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cognome">
+            <mat-header-cell *matHeaderCellDef >cognome</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.cognome}}</mat-cell>
+        </ng-container> -->
+
+        <ng-container matColumnDef="classe">
+            <mat-header-cell *matHeaderCellDef >Classe</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.classe}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="numeroAlunni">
+            <mat-header-cell *matHeaderCellDef>Alunni</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.numeroAlunni}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="numeroMaschi">
+            <mat-header-cell *matHeaderCellDef>M</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.numeroMaschi}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="numeroFemmine">
+            <mat-header-cell *matHeaderCellDef>F</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.numeroFemmine}}</mat-cell>
+        </ng-container>
+      
+        
+        <!-- **************************   MAT-HEADER-ROW   ******************* -->
+        <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+        
+        <!-- **************************   MAT-ROW   ******************* -->
+        <mat-row *matRowDef="let element;columns: displayedColumns"
+            class="element-row"
+            >
+        </mat-row>
+
+    </mat-table>
+
+
+
 </mat-card>
 
 

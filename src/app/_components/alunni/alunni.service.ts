@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { filter, map} from 'rxjs/operators';
 
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { ALU_Alunno, ALU_AlunnoSummary } from 'src/app/_models/ALU_Alunno';
 import { ALU_GenitoreAlunno } from 'src/app/_models/ALU_GenitoreAlunno';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 
@@ -42,6 +42,10 @@ export class AlunniService {
 
   loadAlunnoWithParents(id: any): Observable<ALU_Alunno>{
     return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/GetWithParents/'+id);
+  }
+
+  loadSummary(): Observable<ALU_AlunnoSummary[]>{
+    return this.http.get<ALU_AlunnoSummary[]>(environment.apiBaseUrl+'ALU_Alunni/GetSummary/');
   }
 
   //per filtro e paginazione server side (NON USATO)
