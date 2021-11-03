@@ -64,6 +64,7 @@ import { UsersPageComponent } from './_components/users/users-page/users-page.co
 import { UsersListComponent } from './_components/users/users-list/users-list.component';
 import { UsersFilterComponent } from './_components/users/users-filter/users-filter.component';
 import { ErrorInterceptor } from './_user/auth/error.interceptor';
+import { NewsComponent } from './_components/news/news.component';
 
 
 @NgModule({
@@ -114,6 +115,7 @@ import { ErrorInterceptor } from './_user/auth/error.interceptor';
     UsersPageComponent,
     UsersListComponent,
     UsersFilterComponent,
+    NewsComponent,
 
 
   ],
