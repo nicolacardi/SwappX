@@ -10,6 +10,17 @@ export interface CLS_ClasseSezioneAnno {
         anno:                 ASC_AnnoScolastico;
 }
 
+
+export interface CLS_ClasseSezioneAnno_Sum {
+        id:                     number;
+        sezione:                string;
+        classeSezione:          CLS_ClasseSezione;   
+        anno:                   ASC_AnnoScolastico; 
+        numeroAlunni:           number;
+        numeroMaschi:           number;
+        numeroFemmine:          number;
+}
+
 /*
 {
   "id": 1,

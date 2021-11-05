@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { map, catchError } from 'rxjs/operators';
 
 
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnno_Sum } from 'src/app/_models/CLS_ClasseSezioneAnno';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +36,10 @@ export class ClassiSezioniAnniService {
     return  this.http.get<CLS_ClasseSezioneAnno>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/'+id);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/1
   } 
+
+  loadSummary(): Observable<CLS_ClasseSezioneAnno_Sum[]>{
+    return this.http.get<CLS_ClasseSezioneAnno_Sum[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListSummary/');
+  }
 
   putClasse(formData: any): Observable <any>{
     return this.http.put( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni/' + formData.id , formData);    

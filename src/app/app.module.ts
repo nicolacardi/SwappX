@@ -65,7 +65,7 @@ import { UsersListComponent } from './_components/users/users-list/users-list.co
 import { UsersFilterComponent } from './_components/users/users-filter/users-filter.component';
 import { ErrorInterceptor } from './_user/auth/error.interceptor';
 import { NewsComponent } from './_components/news/news.component';
-import { AlunniSummaryComponent } from './_components/alunni/alunni-summary/alunni-summary.component';
+import { ClassiSezioniAnniSummaryComponent } from './_components/classi/classi-sezioni-anni-summary/classi-sezioni-anni-summary.component';
 
 
 @NgModule({
@@ -117,7 +117,7 @@ import { AlunniSummaryComponent } from './_components/alunni/alunni-summary/alun
     UsersListComponent,
     UsersFilterComponent,
     NewsComponent,
-    AlunniSummaryComponent,
+    ClassiSezioniAnniSummaryComponent,
 
 
   ],

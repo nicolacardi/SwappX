@@ -1,41 +1,42 @@
 <mat-card style="height: 100%;" class="card mat-elevation-z8">
 
-        <mat-table class="alunniTable transparent" [dataSource]="matDataSource">
+        <mat-table class="transparent" [dataSource]="matDataSource">
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
-        <ng-container matColumnDef="actionsColumn">
+        <!-- <ng-container matColumnDef="actionsColumn">
             <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
             <mat-cell  *matCellDef="let element;  let j = index;"> 
                 <img class="iconaMenu pointer" src="../assets/alunno_edit.svg">
             </mat-cell>
-        </ng-container>
-
-        <!-- <ng-container matColumnDef="nome">
-            <mat-header-cell *matHeaderCellDef >nome</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.nome}}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="cognome">
-            <mat-header-cell *matHeaderCellDef >cognome</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.cognome}}</mat-cell>
         </ng-container> -->
+
 
         <ng-container matColumnDef="classe">
             <mat-header-cell *matHeaderCellDef >Classe</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.classe}}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="numeroAlunni">
+        <ng-container matColumnDef="sezione">
+            <mat-header-cell *matHeaderCellDef >Sezione</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.sezione}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="anno">
+            <mat-header-cell *matHeaderCellDef >Anno</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.anno}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="numAlunni">
             <mat-header-cell *matHeaderCellDef>Alunni</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.numeroAlunni}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.numAlunni}}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="numeroMaschi">
+        <ng-container matColumnDef="numMaschi">
             <mat-header-cell *matHeaderCellDef>M</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.numeroMaschi}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.numMaschi}}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="numeroFemmine">
+        <ng-container matColumnDef="numFemmine">
             <mat-header-cell *matHeaderCellDef>F</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.numeroFemmine}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.numFemmine}}</mat-cell>
         </ng-container>
       
         
