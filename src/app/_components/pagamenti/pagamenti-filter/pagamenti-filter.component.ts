@@ -22,11 +22,8 @@ import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 export class PagamentiFilterComponent implements OnInit {
 
 //#region ----- Variabili -------
-
   causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
   tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
-  
-  @Input() pagamentiListComponent!: PagamentiListComponent;
   
   tipoPagamentoFilter = new FormControl('');
   causaleFilter = new FormControl('');
@@ -37,10 +34,17 @@ export class PagamentiFilterComponent implements OnInit {
   importoMenoDiFilter = new FormControl('');
   dataDal = new FormControl('');
   dataAl = new FormControl('');
-
+//#endregion
+  
+//#region ----- ViewChild Input Output -------  
+  @Input() pagamentiListComponent!: PagamentiListComponent;
+//#endregion
+  
   constructor(               
     private svcTipiPagamento:             TipiPagamentoService,
     private svcCausaliPagamento:          CausaliPagamentoService,) {}
+
+//#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit() {
 
@@ -132,7 +136,9 @@ export class PagamentiFilterComponent implements OnInit {
     )
 
   }
+//#endregion
 
+//#region ----- Reset vari -------
   resetMainFilter() {
     if (this.pagamentiListComponent.matDataSource.filterPredicate == this.pagamentiListComponent.storedFilterPredicate){
       this.pagamentiListComponent.matDataSource.filter = ''; 
@@ -164,4 +170,5 @@ export class PagamentiFilterComponent implements OnInit {
     this.importoMenoDiFilter.setValue('');
     this.importoPiuDiFilter.setValue('');
   }
+//#endregion
 }

@@ -6,20 +6,22 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
+//components
+import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { RettaEditComponent } from '../retta-edit/retta-edit.component';
+import { PagamentiFilterComponent } from '../pagamenti-filter/pagamenti-filter.component';
+
+//services
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { PagamentiService } from '../pagamenti.service';
 
-
+//models
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { PAG_Pagamento } from 'src/app/_models/PAG_Pagamento';
-import { SELECT_ITEM_HEIGHT_EM } from '@angular/material/select/select';
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { RettaEditComponent } from '../retta-edit/retta-edit.component';
-import { PagamentiFilterComponent } from '../pagamenti-filter/pagamenti-filter.component';
 
 @Component({
   selector: 'app-pagamenti-list',
@@ -29,11 +31,7 @@ import { PagamentiFilterComponent } from '../pagamenti-filter/pagamenti-filter.c
 
 export class PagamentiListComponent implements OnInit {
 
-  @Input() dove!:           string;
-  @Input() alunnoID!:       number;
-  @Input() annoID!:         number;
-
-  @Output('hoverPagamento')
+//#region ----- Variabili -------
   pagamentoEmitter = new EventEmitter<number>();
 
   obsAnni$!:                Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
@@ -84,14 +82,23 @@ export class PagamentiListComponent implements OnInit {
     dataAl: ''
   };
 
+  public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2).toLocaleString('it-IT', {month: 'short'}).toUpperCase());
+
+//#endregion
+
+//#region ----- ViewChild Input Output -------
   @ViewChild(MatPaginator) paginator!:    MatPaginator;
   @ViewChild(MatSort) sort!:              MatSort;
   @ViewChild("filterInput") filterInput!:                     ElementRef;
 
+  @Input() dove!:           string;
+  @Input() alunnoID!:       number;
+  @Input() annoID!:         number;
   @Input() pagamentiFilterComponent!: PagamentiFilterComponent;
 
-  public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2).toLocaleString('it-IT', {month: 'short'}).toUpperCase());
+  //@Output('hoverPagamento');
 
+//#endregion
 
   constructor(private svcPagamenti:     PagamentiService,
               private svcAnni:          AnniScolasticiService,
@@ -107,6 +114,12 @@ export class PagamentiListComponent implements OnInit {
     });
   }
 
+//#region ----- LifeCycle Hooks e simili-------
+
+  ngOnChanges() {
+    this.loadData();
+  }
+
   ngOnInit(): void {
     
     if (this.dove == 'retta-edit') {
@@ -116,10 +129,6 @@ export class PagamentiListComponent implements OnInit {
       this.show = true;
       this.displayedColumns =  this.displayedColumnsList;
     }
-    this.loadData();
-  }
-
-  ngOnChanges() {
     this.loadData();
   }
 
@@ -159,8 +168,10 @@ export class PagamentiListComponent implements OnInit {
       }
     );
   }
+//#endregion
 
-  
+//#region ----- Filtri & Sort -------
+
   filterRightPanel(): (data: any, filter: string) => boolean {
 
     let filterFunction = function(data: any, filter: any): boolean {
@@ -213,73 +224,6 @@ export class PagamentiListComponent implements OnInit {
       this.pagamentiFilterComponent.resetAllInputs();
     }
     this.matDataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
-  }
-  
-  onRightClick(event: MouseEvent, element: PAG_Pagamento) { 
-    event.preventDefault(); 
-    this.menuTopLeftPosition.x = event.clientX + 'px'; 
-    this.menuTopLeftPosition.y = event.clientY + 'px'; 
-    this.matMenuTrigger.menuData = {item: element}   
-    this.matMenuTrigger.openMenu(); 
-  }
-
-  addRecord(){
-    this.editRecord(0);
-  }
-
-  editRecord(alunnoID: number){
-
-    let anno = this.annoID;
-    const dialogConfig : MatDialogConfig = {
-        panelClass: 'add-DetailDialog',
-        width: '850px',
-        height: '680px',
-        data: {
-          idAlunno: alunnoID,
-          idAnno: anno
-        }
-    };
-
-    const dialogRef = this._dialog.open(RettaEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
-  }
-
-  delete(idPagamento: number){
-
-    const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
-      width: '320px',
-      data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
-    });
-    dialogYesNo.afterClosed().subscribe(result => {
-      if(result){
-        this.svcPagamenti.delete(Number(idPagamento))
-        //.pipe (
-        //  finalize(()=>this.router.navigate(['/alunni']))
-        //)
-        .subscribe(
-          res=>{
-            this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Record cancellato', panelClass: ['red-snackbar']}
-            );
-            //this._dialogRef.close();
-            this.loadData();
-            //AS: attenzione: se non faccio refresh la griglia non si aggiorna: perchè ???
-          },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          )
-        );
-      }
-    });
-    
   }
 
   filterPredicateCustom(){
@@ -338,6 +282,84 @@ export class PagamentiListComponent implements OnInit {
     };
   }
 
+//#endregion
+
+//#region ----- Add Edit Drop -------
+
+  addRecord(){
+    this.editRecord(0);
+  }
+
+  editRecord(alunnoID: number){
+
+    let anno = this.annoID;
+    const dialogConfig : MatDialogConfig = {
+        panelClass: 'add-DetailDialog',
+        width: '850px',
+        height: '680px',
+        data: {
+          idAlunno: alunnoID,
+          idAnno: anno
+        }
+    };
+
+    const dialogRef = this._dialog.open(RettaEditComponent, dialogConfig);
+    dialogRef.afterClosed()
+      .subscribe(
+        () => {
+          this.loadData();
+    });
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
+  }
+//#endregion
+
+//#region ----- Right Click -------
+
+  onRightClick(event: MouseEvent, element: PAG_Pagamento) { 
+    event.preventDefault(); 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+    this.matMenuTrigger.menuData = {item: element}   
+    this.matMenuTrigger.openMenu(); 
+  }
+//#endregion
+
+//#region ----- Add Delete Edit Drop -------
+  delete(idPagamento: number){
+
+    const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+      width: '320px',
+      data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
+    });
+    dialogYesNo.afterClosed().subscribe(result => {
+      if(result){
+        this.svcPagamenti.delete(Number(idPagamento))
+        //.pipe (
+        //  finalize(()=>this.router.navigate(['/alunni']))
+        //)
+        .subscribe(
+          res=>{
+            this._snackBar.openFromComponent(SnackbarComponent,
+              {data: 'Record cancellato', panelClass: ['red-snackbar']}
+            );
+            //this._dialogRef.close();
+            this.loadData();
+            //AS: attenzione: se non faccio refresh la griglia non si aggiorna: perchè ???
+          },
+          err=> (
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          )
+        );
+      }
+    });
+    
+  }
+//#endregion
+
+//#region ----- Altri metodi -------
   hoverRow(id: number) {
     //console.log(id);
     this.pagamentoEmitter.emit(id);
@@ -346,7 +368,7 @@ export class PagamentiListComponent implements OnInit {
   hoverLeave() {
     this.pagamentoEmitter.emit(0);
   }
-
+//endregion
 
 
 
