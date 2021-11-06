@@ -39,6 +39,7 @@ export class ClassiSezioniAnniService {
 
   loadSummary(): Observable<CLS_ClasseSezioneAnno_Sum[]>{
     return this.http.get<CLS_ClasseSezioneAnno_Sum[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListSummary/');
+    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListSummary
   }
 
   putClasse(formData: any): Observable <any>{

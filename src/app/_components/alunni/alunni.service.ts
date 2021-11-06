@@ -20,7 +20,7 @@ export class AlunniService {
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni');
     //http://213.215.231.4/swappX/api/ALU_Alunni
   }
-
+  
   loadByGenitore(idGenitore: any): Observable<ALU_Alunno[]>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllByGenitore/'+idGenitore);
     //http://213.215.231.4/swappX/api/ALU_Alunni/GetAllByGenitore/3

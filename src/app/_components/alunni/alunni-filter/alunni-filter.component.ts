@@ -1,5 +1,5 @@
 import { Component, Input, OnInit} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 //components
 import { AlunniListComponent } from '../alunni-list/alunni-list.component';
@@ -11,7 +11,6 @@ import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 })
 
 export class AlunniFilterComponent implements OnInit {
-
 
 //#region ----- Variabili -------
   nomeFilter = new FormControl('');

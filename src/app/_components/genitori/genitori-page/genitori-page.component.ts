@@ -1,9 +1,14 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
-import { NavigationService } from '../../utilities/navigation/navigation.service';
+import { MatDrawer } from '@angular/material/sidenav';
+
+//components
 import { GenitoriFilterComponent } from '../genitori-filter/genitori-filter.component';
 import { GenitoriListComponent } from '../genitori-list/genitori-list.component';
+
+//services
+import { NavigationService } from '../../utilities/navigation/navigation.service';
+
 
 @Component({
   selector: 'app-genitori-page',
@@ -13,21 +18,28 @@ import { GenitoriListComponent } from '../genitori-list/genitori-list.component'
 
 export class GenitoriPageComponent implements OnInit {
 
+//#region ----- ViewChild Input Output -------
   @ViewChild(GenitoriListComponent) genitoriList!: GenitoriListComponent; 
   @ViewChild(GenitoriFilterComponent) genitoriFilterComponent!: GenitoriFilterComponent; 
-  
-  //@ViewChild('sidenav') public drawerFiltriAvanzati!: MatSidenav;
   @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
+//#endregion
+
 
   constructor(private _navigationService:  NavigationService) { }
 
+//#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
     this._navigationService.passPage("genitoriList");
   }
+//#endregion
 
+//#region ----- Add Edit Drop -------
   addRecord() {
     this.genitoriList.addRecord()
   }
+//#endregion
+
+//#region ----- Reset vari -------
 
   resetFiltri() {
     this.genitoriFilterComponent.nomeFilter.setValue('');
@@ -40,9 +52,12 @@ export class GenitoriPageComponent implements OnInit {
     this.genitoriFilterComponent.telefonoFilter.setValue('');
     this.genitoriFilterComponent.nomeCognomeAlunnoFilter.setValue('');
   }
+//#endregion
 
+//#region ----- Altri metodi -------
   openDrawer() {
     this.drawerFiltriAvanzati.open();
-    //console.log ("apriDrawer");
   }
+//#endregion
+
 }

@@ -18,7 +18,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
 import { AlunniService } from '../../alunni/alunni.service';
 
-//classes
+//models
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 
 @Component({
@@ -258,7 +258,34 @@ export class GenitoriListComponent implements OnInit {
   }
 //#endregion
 
+//#region ----- Right Click -------
 
+  onRightClick(event: MouseEvent, element: ALU_Genitore) { 
+    event.preventDefault(); 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+    this.matMenuTrigger.menuData = {item: element}   
+    this.matMenuTrigger.openMenu(); 
+  } 
+
+  openAlunni(item: ALU_Genitore) {
+    this._navigationService.passGenitore(item.nome+" "+item.cognome);
+    this.router.navigateByUrl("/alunni");
+  }
+//#endregion
+
+//#region ----- Emit per alunno-edit -------
+
+  addToFamilyEmit(item: ALU_Genitore) {
+    this.addToFamily.emit(item);
+  }
+
+  removeFromFamilyEmit(item: ALU_Genitore) {
+    this.removeFromFamily.emit(item);
+  }
+//#endregion
+
+//#region ----- Altri metodi -------
   onResize(event: any) {
     this.displayedColumns = (event.target.innerWidth <= 800) ?  
                       ["actionsColumn",
@@ -277,28 +304,7 @@ export class GenitoriListComponent implements OnInit {
                       "email",
                       "dtNascita"];
   }
-
-  onRightClick(event: MouseEvent, element: ALU_Genitore) { 
-    event.preventDefault(); 
-    this.menuTopLeftPosition.x = event.clientX + 'px'; 
-    this.menuTopLeftPosition.y = event.clientY + 'px'; 
-    this.matMenuTrigger.menuData = {item: element}   
-    this.matMenuTrigger.openMenu(); 
-  } 
-
-  openAlunni(item: ALU_Genitore) {
-    this._navigationService.passGenitore(item.nome+" "+item.cognome);
-    this.router.navigateByUrl("/alunni");
-  }
-
-
-  addToFamilyEmit(item: ALU_Genitore) {
-    this.addToFamily.emit(item);
-  }
-
-  removeFromFamilyEmit(item: ALU_Genitore) {
-    this.removeFromFamily.emit(item);
-  }
+//#endregion
 
 }
 

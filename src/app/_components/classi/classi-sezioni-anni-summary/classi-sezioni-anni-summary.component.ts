@@ -31,6 +31,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   constructor(private svcClassi:        ClassiSezioniAnniService,
               private _loadingService:  LoadingService) { }
 
+//#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
     this.loadData();
   }
@@ -53,5 +54,6 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
     );
     
   }
+//#endregion
 
 }

@@ -4,20 +4,23 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { iif, Observable, of } from 'rxjs';
-
 import { concatMap, debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 
+//components
+import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
+import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+
+//services
 import { GenitoriService } from 'src/app/_components/genitori/genitori.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
+import { LoadingService } from '../../utilities/loading/loading.service';
+import { AlunniService } from '../../alunni/alunni.service';
+
+//models
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
-
-import { DialogData, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { LoadingService } from '../../utilities/loading/loading.service';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { AlunniService } from '../../alunni/alunni.service';
-import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
 
 @Component({
   selector: 'app-genitore-edit',
@@ -26,6 +29,8 @@ import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.compon
 })
 
 export class GenitoreEditComponent implements OnInit {
+
+//#region ----- Variabili -------
 
   genitore$!:                  Observable<ALU_Genitore>;
 
@@ -45,7 +50,9 @@ export class GenitoreEditComponent implements OnInit {
   comuniNascitaIsLoading:     boolean = false;
   breakpoint!:                number;
 
+//#region ----- ViewChild Input Output -------
   @ViewChild('alunniFamiglia') alunniFamigliaComponent!: AlunniListComponent; 
+//#endregion
 
   constructor(public _dialogRef: MatDialogRef<GenitoreEditComponent>,
               @Inject(MAT_DIALOG_DATA) public idGenitore: number,
@@ -84,6 +91,8 @@ export class GenitoreEditComponent implements OnInit {
       //email:                      ['', Validators.pattern(regemail)]
     });
   }
+
+//#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit(): void {
     this.loadData();
@@ -139,7 +148,9 @@ export class GenitoreEditComponent implements OnInit {
     )
   }  
 
-  //#region ----- Funzioni -------
+//#endregion
+
+//#region ----- Operazioni CRUD -------
 
   save(){
 
@@ -220,7 +231,7 @@ export class GenitoreEditComponent implements OnInit {
       }
     });
   }
-  //#endregion
+  
 
   popolaProv(prov: string, cap: string) {
     this.form.controls['prov'].setValue(prov);
@@ -233,12 +244,11 @@ export class GenitoreEditComponent implements OnInit {
     this.form.controls['nazioneNascita'].setValue('ITA');
   }
 
-  onResize(event: any) {
-    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
-  }
+//#endregion
 
-  addAlunno() {
+//#region ----- Metodi di gestione Genitori, Famiglia e Classi -------
 
+  addAlunno() { //TODO
   }
 
   addToFamily(figlio: ALU_Alunno) {
@@ -273,8 +283,12 @@ export class GenitoreEditComponent implements OnInit {
         //console.log("addToFamily KO");
       }
     )
-
-   
   }
+//#endregion
 
+//#region ----- Altri metodi -------
+  onResize(event: any) {
+    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
+  }
+//#endregion
 }

@@ -1,5 +1,7 @@
 import { Component, Input, OnInit} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
+
+//components
 import { GenitoriListComponent } from '../genitori-list/genitori-list.component';
 
 @Component({
@@ -10,8 +12,7 @@ import { GenitoriListComponent } from '../genitori-list/genitori-list.component'
 
 export class GenitoriFilterComponent implements OnInit {
 
-  @Input() genitoriListComponent!: GenitoriListComponent;
-  
+ //#region ----- Variabili -------
   nomeFilter = new FormControl('');
   cognomeFilter = new FormControl('');
   annoNascitaFilter = new FormControl('');
@@ -20,10 +21,16 @@ export class GenitoriFilterComponent implements OnInit {
   provFilter = new FormControl('');
   emailFilter = new FormControl('');
   telefonoFilter = new FormControl('');
-  
   nomeCognomeAlunnoFilter = new FormControl('');
+//#endregion
+
+//#region ----- ViewChild Input Output -------  
+  @Input() genitoriListComponent!: GenitoriListComponent;
+//#endregion
 
   constructor() {}
+
+//#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit() {
 
@@ -111,7 +118,9 @@ export class GenitoriFilterComponent implements OnInit {
       }
     )
   }
+//#endregion
 
+//#region ----- Reset vari -------
   resetMainFilter() {
     if (this.genitoriListComponent.matDataSource.filterPredicate == this.genitoriListComponent.storedFilterPredicate)
     {
@@ -145,4 +154,5 @@ export class GenitoriFilterComponent implements OnInit {
 
     this.nomeCognomeAlunnoFilter.setValue('');
   }
+//#endregion
 }

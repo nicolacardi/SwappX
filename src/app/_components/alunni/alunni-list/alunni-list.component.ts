@@ -15,7 +15,7 @@ import { AlunnoEditComponent } from '../alunno-edit/alunno-edit.component';
 import { AlunniFilterComponent } from '../alunni-filter/alunni-filter.component';
 import { RettaEditComponent } from '../../pagamenti/retta-edit/retta-edit.component';
 
-//services
+//models
 import { AlunniService } from '../alunni.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';

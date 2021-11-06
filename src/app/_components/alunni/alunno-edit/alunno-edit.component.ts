@@ -227,7 +227,6 @@ export class AlunnoEditComponent implements OnInit {
     this.form.controls['provNascita'].setValue(prov);
     this.form.controls['nazioneNascita'].setValue('ITA');
   }
-  
 
 //#endregion
 
@@ -344,10 +343,10 @@ export class AlunnoEditComponent implements OnInit {
 //#endregion
 
 //#region ----- Altri metodi -------
-onResize(event: any) {
-  this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
-  this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
-}
+  onResize(event: any) {
+    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
+    this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
+  }
 //#endregion
 
 //#region FUNZIONI NON PIU' UTILIZZATE IN QUANTO ORA SI USA SOLO COME DIALOG
