@@ -2,11 +2,17 @@ import { ThisReceiver } from '@angular/compiler';
 import { Component, Input, OnInit} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
+
+//components
+import { PagamentiListComponent } from '../pagamenti-list/pagamenti-list.component';
+
+//services
+import { CausaliPagamentoService } from '../causaliPagamento.service';
+import { TipiPagamentoService } from '../tipiPagamento.service';
+
+//models
 import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
 import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
-import { CausaliPagamentoService } from '../causaliPagamento.service';
-import { PagamentiListComponent } from '../pagamenti-list/pagamenti-list.component';
-import { TipiPagamentoService } from '../tipiPagamento.service';
 
 @Component({
   selector: 'app-pagamenti-filter',
@@ -14,6 +20,8 @@ import { TipiPagamentoService } from '../tipiPagamento.service';
   styleUrls: ['../pagamenti.css']
 })
 export class PagamentiFilterComponent implements OnInit {
+
+//#region ----- Variabili -------
 
   causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
   tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
