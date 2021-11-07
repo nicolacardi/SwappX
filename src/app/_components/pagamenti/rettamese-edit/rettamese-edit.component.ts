@@ -4,12 +4,16 @@ import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
 
+//components
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+
+//services
 import { RetteService } from '../rette.service';
 
+//models
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 @Component({
   selector: 'app-rettamese-edit',
@@ -19,18 +23,9 @@ import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component
 
 export class RettameseEditComponent implements OnInit{
 
-  @Input() public idRetta!: number; 
-
+//#region ----- Variabili -------
   private idRettaSubject = new BehaviorSubject<number>(0);
   idRettaObs$: Observable<number> = this.idRettaSubject.asObservable();
-  @Input() public inputPagamenti!: number; 
-  @Input() public indice!: number; //serve per poter azionare la save di ciascuna istanza di questo component
-  //@Input() public toHighlight!: number; 
-
-
-  @Output('mesePagamentoClicked')
-  clickOnpagamentoEmitter = new EventEmitter<number>();
-
   // quotaConcordata!:           number;
   // quotaDefault!:              number;
   totPagamenti!:              number;
@@ -39,6 +34,19 @@ export class RettameseEditComponent implements OnInit{
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
   evidenzia:                  boolean = false;
+//#endregion
+
+//#region ----- ViewChild Input Output -------
+
+  @Input() public idRetta!: number; 
+  @Input() public inputPagamenti!: number; 
+  @Input() public indice!: number; //serve per poter azionare la save di ciascuna istanza di questo component
+  //@Input() public toHighlight!: number; 
+
+  @Output('mesePagamentoClicked')
+  clickOnpagamentoEmitter = new EventEmitter<number>();
+//#endregion
+
 
   constructor(private fb:             FormBuilder,
               private svcRette:       RetteService,
@@ -66,6 +74,18 @@ export class RettameseEditComponent implements OnInit{
 
   }
 
+//#region ----- LifeCycle Hooks e simili-------
+
+  ngOnChanges() {
+    //non vogliamo che venga lanciata la loadData fin che idRetta è undefined
+    //per questo motivo abbiamo introdotto un behaviorSubject
+    if (this.idRetta != undefined) { 
+        this.idRettaSubject.next(this.idRetta);
+    }
+
+    //if (this.toHighlight == this.idRetta && this.toHighlight!= null) {this.evidenzia = true} else { this.evidenzia = false}
+  }
+
   ngOnInit(): void {
     // const tmpRetta: Observable <PAG_Retta> =  of();
     // this.retta$ = tmpRetta;
@@ -90,17 +110,6 @@ export class RettameseEditComponent implements OnInit{
     .subscribe()
   }
   
-
-  ngOnChanges() {
-    //non vogliamo che venga lanciata la loadData fin che idRetta è undefined
-    //per questo motivo abbiamo introdotto un behaviorSubject
-    if (this.idRetta != undefined) { 
-        this.idRettaSubject.next(this.idRetta);
-    }
-
-    //if (this.toHighlight == this.idRetta && this.toHighlight!= null) {this.evidenzia = true} else { this.evidenzia = false}
-  }
-
   loadData(){
     //per di qua in caso di nuovo pagamento non passa nemmeno una volta -> non esiste retta$
     //console.log ("this.idRetta", this.idRetta);
@@ -123,7 +132,9 @@ export class RettameseEditComponent implements OnInit{
       );
     }
   }
+//#endregion
 
+//#region ----- Operazioni CRUD -------
   save(): boolean{
     
     if (this.idRetta && this.form.dirty) {
@@ -145,7 +156,9 @@ export class RettameseEditComponent implements OnInit{
     }
     return true;
   }
+//#endregion
 
+//#region ----- Altri metodi -------
   ConvertToNumber (x: string): number {
     return parseInt(x);
   }
@@ -153,6 +166,7 @@ export class RettameseEditComponent implements OnInit{
   clickOnPagamento() {
     this.clickOnpagamentoEmitter.emit(this.form.controls['meseRetta'].value);
   }
+//#endregion
 }
 
 

@@ -4,13 +4,20 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
+
+//components
+import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+
+//services
+import { ComuniService } from 'src/app/_services/comuni.service';
+import { LoadingService } from '../../utilities/loading/loading.service';
+import { PersoneService } from '../persone.service';
+
+//models
 import { PER_Persona } from 'src/app/_models/PER_Persone';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
-import { ComuniService } from 'src/app/_services/comuni.service';
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { PersoneService } from '../persone.service';
+
 
 @Component({
   selector: 'app-persona-edit',
@@ -19,18 +26,18 @@ import { PersoneService } from '../persone.service';
 })
 export class PersonaEditComponent implements OnInit {
 
+//#region ----- Variabili -------
   persona$!:                    Observable<PER_Persona>;
-
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
-
   filteredComuni$!:           Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:    Observable<_UT_Comuni[]>;
   comuniIsLoading:            boolean = false;
   comuniNascitaIsLoading:     boolean = false;
   breakpoint!:                number;
   breakpoint2!:               number;
-  
+//#endregion
+
   constructor(public _dialogRef: MatDialogRef<PersonaEditComponent>,
               @Inject(MAT_DIALOG_DATA) public idPersona: number,
               private fb:                           FormBuilder, 
@@ -64,6 +71,8 @@ export class PersonaEditComponent implements OnInit {
 
     });
   }
+
+//#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit() {
     this.loadData();
@@ -110,22 +119,9 @@ export class PersonaEditComponent implements OnInit {
       tap(() => this.comuniNascitaIsLoading = false)
     )
   }
+//#endregion
 
-  popolaProv(prov: string, cap: string) {
-    this.form.controls['prov'].setValue(prov);
-    this.form.controls['cap'].setValue(cap);
-    this.form.controls['nazione'].setValue('ITA');
-  }
-
-  popolaProvNascita(prov: string) {
-    this.form.controls['provNascita'].setValue(prov);
-    this.form.controls['nazioneNascita'].setValue('ITA');
-  }
-
-  onResize(event: any) {
-    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
-    this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
-  }
+//#region ----- Operazioni CRUD -------
 
   save(){
 
@@ -180,4 +176,23 @@ export class PersonaEditComponent implements OnInit {
       }
     });
   }
+//#endregion
+
+//#region ----- Altri metodi -------
+popolaProv(prov: string, cap: string) {
+  this.form.controls['prov'].setValue(prov);
+  this.form.controls['cap'].setValue(cap);
+  this.form.controls['nazione'].setValue('ITA');
+}
+
+popolaProvNascita(prov: string) {
+  this.form.controls['provNascita'].setValue(prov);
+  this.form.controls['nazioneNascita'].setValue('ITA');
+}
+
+onResize(event: any) {
+  this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
+  this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
+}
+//#endregion
 }

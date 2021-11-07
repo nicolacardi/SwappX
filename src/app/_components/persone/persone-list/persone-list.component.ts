@@ -6,12 +6,18 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
-import { PER_Persona } from 'src/app/_models/PER_Persone';
-import { AlunnoEditComponent } from '../../alunni/alunno-edit/alunno-edit.component';
-import { LoadingService } from '../../utilities/loading/loading.service';
+
+//components
 import { PersonaEditComponent } from '../persona-edit/persona-edit.component';
 import { PersoneFilterComponent } from '../persone-filter/persone-filter.component';
+
+//services
 import { PersoneService } from '../persone.service';
+import { LoadingService } from '../../utilities/loading/loading.service';
+
+//models
+import { PER_Persona } from 'src/app/_models/PER_Persone';
+
 
 @Component({
   selector: 'app-persone-list',
@@ -19,6 +25,8 @@ import { PersoneService } from '../persone.service';
   styleUrls: ['../persone.css']
 })
 export class PersoneListComponent implements OnInit {
+
+//#region ----- Variabili -------
 
   matDataSource = new MatTableDataSource<PER_Persona>();
   storedFilterPredicate!:       any;
@@ -33,14 +41,7 @@ export class PersoneListComponent implements OnInit {
     email: '',
     telefono: ''
   };
-
-  @ViewChild(MatPaginator) paginator!:                        MatPaginator;
-  @ViewChild(MatSort) sort!:                                  MatSort;
-  @ViewChild("filterInput") filterInput!:                     ElementRef;
-
-  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
-  @Input() personeFilterComponent!:                           PersoneFilterComponent;
-  @Input('dove') dove! :                                      string;
+  
   displayedColumns: string[] =  [];
   displayedColumnsPersoneList: string[] = [
       "actionsColumn", 
@@ -57,16 +58,31 @@ export class PersoneListComponent implements OnInit {
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
+//#endregion
+
+//#region ----- ViewChild Input Output -------
+
+  @ViewChild(MatPaginator) paginator!:                        MatPaginator;
+  @ViewChild(MatSort) sort!:                                  MatSort;
+  @ViewChild("filterInput") filterInput!:                     ElementRef;
+
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
+  @Input() personeFilterComponent!:                           PersoneFilterComponent;
+  @Input('dove') dove! :                                      string;
+//#endregion
+
+
+
   constructor(private svcPersone:       PersoneService,
               private _loadingService:  LoadingService,
               public _dialog:           MatDialog, 
             ) { }
 
+//#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
     this.displayedColumns =  this.displayedColumnsPersoneList;
     this.loadData(); 
   }
-
 
   loadData () {
     let obsAlunni$: Observable<PER_Persona[]>;
@@ -82,6 +98,9 @@ export class PersoneListComponent implements OnInit {
       }
     );
   }
+//#endregion
+
+//#region ----- Filtri & Sort -------
 
   filterRightPanel(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
@@ -108,6 +127,24 @@ export class PersoneListComponent implements OnInit {
     }
     this.matDataSource.filter = filterValue.trim().toLowerCase();
   }
+//#endregion
+
+//#region ----- Add Edit Drop -------
+  addRecord(){
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '850px',
+      height: '620px',
+      data: 0
+    };
+
+    const dialogRef = this._dialog.open(PersonaEditComponent, dialogConfig);
+    dialogRef.afterClosed()
+      .subscribe(
+        () => {
+          this.loadData();
+    });
+  }
 
   openDetail(id:any){
     const dialogConfig : MatDialogConfig = {
@@ -125,26 +162,12 @@ export class PersoneListComponent implements OnInit {
     });
   }
 
-  addRecord(){
-    const dialogConfig : MatDialogConfig = {
-      panelClass: 'add-DetailDialog',
-      width: '850px',
-      height: '620px',
-      data: 0
-    };
-
-    const dialogRef = this._dialog.open(PersonaEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
-  }
-
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
   }
+//#endregion
 
+//#region ----- Right Click -------
   onRightClick(event: MouseEvent, element: PER_Persona) { 
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
@@ -152,5 +175,6 @@ export class PersoneListComponent implements OnInit {
     this.matMenuTrigger.menuData = {item: element}   
     this.matMenuTrigger.openMenu(); 
   }
+//#endregion
   
 }

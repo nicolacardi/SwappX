@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+
+//components
 import { PersoneListComponent } from '../persone-list/persone-list.component';
 
 @Component({
@@ -9,8 +11,7 @@ import { PersoneListComponent } from '../persone-list/persone-list.component';
 })
 export class PersoneFilterComponent implements OnInit {
 
-  @Input() personeListComponent!: PersoneListComponent;
-
+//#region ----- Variabili -------
   nomeFilter = new FormControl('');
   cognomeFilter = new FormControl('');
   annoNascitaFilter = new FormControl('');
@@ -19,11 +20,16 @@ export class PersoneFilterComponent implements OnInit {
   provFilter = new FormControl('');
   emailFilter = new FormControl('');
   telefonoFilter = new FormControl('');
-  
+//#endregion
+
+//#region ----- ViewChild Input Output -------  
+  @Input() personeListComponent!: PersoneListComponent;
+//#endregion
   constructor() { }
 
-  ngOnInit(): void {
+//#region ----- LifeCycle Hooks e simili-------
 
+  ngOnInit(): void {
     this.nomeFilter.valueChanges
     .subscribe(
       val => {
@@ -99,7 +105,9 @@ export class PersoneFilterComponent implements OnInit {
       }
     )
   }
+//#endregion
 
+//#region ----- Reset vari -------
   resetMainFilter() {
     if (this.personeListComponent.matDataSource.filterPredicate == this.personeListComponent.storedFilterPredicate){
       this.personeListComponent.matDataSource.filter = ''; 
@@ -130,6 +138,6 @@ export class PersoneFilterComponent implements OnInit {
     this.telefonoFilter.setValue('');
 
   }
-
+//#endregion
 
 }

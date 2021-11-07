@@ -368,7 +368,7 @@ export class PagamentiListComponent implements OnInit {
   hoverLeave() {
     this.pagamentoEmitter.emit(0);
   }
-//endregion
+//#endregion
 
 
 

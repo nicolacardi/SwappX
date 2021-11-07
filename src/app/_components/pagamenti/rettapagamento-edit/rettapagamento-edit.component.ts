@@ -8,14 +8,20 @@ import { MatSelect } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { concatMap, tap } from 'rxjs/operators';
-import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
-import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
+
+//components
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+
+//services
 import { CausaliPagamentoService } from '../causaliPagamento.service';
 import { PagamentiService } from '../pagamenti.service';
 import { RetteService } from '../rette.service';
 import { TipiPagamentoService } from '../tipiPagamento.service';
+
+//models
+import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
+import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 
 @Component({
   selector: 'app-rettapagamento-edit',
@@ -24,18 +30,24 @@ import { TipiPagamentoService } from '../tipiPagamento.service';
 })
 export class RettapagamentoEditComponent implements OnInit {
 
+//#region ----- Variabili -------
+  formRetta! :                FormGroup;
+  causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
+  tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
+
+  public mesiArr=           [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
+  public placeholderMeseArr=["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
+//#endregion
+
+//#region ----- ViewChild Input Output -------
+  @ViewChild('causale')       public causale!: MatSelect;
+
   @Input() alunnoID!:       number;
   @Input() annoID!:         number;
   @Output('nuovoPagamento')
   pagamentoEmitter = new EventEmitter<string>();
+//#endregion
 
-  formRetta! :                FormGroup;
-  causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
-  tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
-  @ViewChild('causale')       public causale!: MatSelect;
-  
-  public mesiArr=           [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
-  public placeholderMeseArr=["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
 
   constructor(private fb:                           FormBuilder, 
               private svcTipiPagamento:             TipiPagamentoService,
@@ -58,6 +70,8 @@ export class RettapagamentoEditComponent implements OnInit {
     });
   }
 
+//#region ----- LifeCycle Hooks e simili-------
+
   ngOnInit() {
     this.loadData();
   }
@@ -66,7 +80,9 @@ export class RettapagamentoEditComponent implements OnInit {
     this.causaliPagamento$ = this.svcCausaliPagamento.load();
     this.tipiPagamento$ = this.svcTipiPagamento.load();
   }
+//#endregion
 
+//#region ----- Operazioni CRUD -------
   save( ){
     //if (this.formRetta.controls['id'].value == null) { //non serve questo check: facciamo sempre la post mai la put
    if (this.alunnoID == 0) {
@@ -118,6 +134,9 @@ export class RettapagamentoEditComponent implements OnInit {
         )
     }
   }
+//#endregion  
+
+//#region ----- Altri metodi -------
 
   changedCausale(value: number) {
     if (value == 1) {
@@ -148,4 +167,6 @@ export class RettapagamentoEditComponent implements OnInit {
       this.formRetta.controls[control].setErrors(null);
     }
   }
+//#endregion
+
 }

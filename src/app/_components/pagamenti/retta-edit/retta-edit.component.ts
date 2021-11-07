@@ -5,24 +5,25 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, timer } from 'rxjs';
 import { debounceTime, delayWhen, map, switchMap, tap } from 'rxjs/operators';
 import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+
+//components
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-
 import { RettameseEditComponent } from '../rettamese-edit/rettamese-edit.component';
+import { PagamentiListComponent } from '../pagamenti-list/pagamenti-list.component';
+import { RettapagamentoEditComponent } from '../rettapagamento-edit/rettapagamento-edit.component';
 
+//services
 import { RetteService } from '../rette.service';
-
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { AlunniService } from '../../alunni/alunni.service';
 
+//models
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
 import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
-import { PagamentiListComponent } from '../pagamenti-list/pagamenti-list.component';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { RettapagamentoEditComponent } from '../rettapagamento-edit/rettapagamento-edit.component';
-
 
 
 
@@ -34,22 +35,14 @@ import { RettapagamentoEditComponent } from '../rettapagamento-edit/rettapagamen
 
 export class RettaEditComponent implements OnInit {
 
-  @ViewChildren(RettameseEditComponent) ChildrenRettaMese!:QueryList<RettameseEditComponent>;
-  @ViewChild(PagamentiListComponent) ChildPagamenti!: PagamentiListComponent;
-  @ViewChild(RettapagamentoEditComponent) ChildRettapagamentoEdit!: RettapagamentoEditComponent;
-  @ViewChild(MatAutocomplete) matAutocomplete!: MatAutocomplete;
+//#region ----- Variabili -------
 
   public obsRette$!:          Observable<PAG_Retta[]>;
-
   filteredAlunni$!:           Observable<ALU_Alunno[]>;
-
   formRetta! :                FormGroup;
   formAlunno! :               FormGroup;
-
   alunno!:                    ALU_Alunno;
-  
   anno!:                      ASC_AnnoScolastico;
-  
   mesi:                       number[] = [];
   quoteConcordate:            number[] = [];
   quoteDefault:               number[] = [];
@@ -61,6 +54,14 @@ export class RettaEditComponent implements OnInit {
   //public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2));
   public mesiArr=           [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
+//#endregion
+
+//#region ----- ViewChild Input Output -------
+  @ViewChildren(RettameseEditComponent) ChildrenRettaMese!:QueryList<RettameseEditComponent>;
+  @ViewChild(PagamentiListComponent) ChildPagamenti!: PagamentiListComponent;
+  @ViewChild(RettapagamentoEditComponent) ChildRettapagamentoEdit!: RettapagamentoEditComponent;
+  @ViewChild(MatAutocomplete) matAutocomplete!: MatAutocomplete;
+//#endregion
 
   constructor(public _dialogRef: MatDialogRef<RettaEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -88,6 +89,8 @@ export class RettaEditComponent implements OnInit {
     //   nomeCognomeAlunno:          [null]
     // })
   }
+
+//#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit() {
 
@@ -181,31 +184,9 @@ export class RettaEditComponent implements OnInit {
     })
     
   }
+//#endregion
 
-
-
-  savePivot() {
-    //NON DOVREBBE PIU' SERVIRE
-    //questo metodo chiama uno ad uno il metodo save di ciascun child
-    //salvando quindi ogni form, cioè ogni record Retta
-    let response : boolean;
-    let hasError: boolean = false;
-
-    for (let i = 0; i < 12; i++) {
-      let childRettaMese = this.ChildrenRettaMese.find(childRettaMese => childRettaMese.indice == i);
-      response = childRettaMese!.save();
-      if (!response) {
-        hasError = true;
-      }
-    }
-
-    if (hasError) 
-      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di Salvataggio', panelClass: ['red-snackbar']})
-    else 
-      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record Salvato', panelClass: ['green-snackbar']})
-
-    this._dialogRef.close();
-  }
+//#region ----- Interazioni Varie Interfaccia -------
 
   nuovoPagamentoArrivato(str: string) {
     //è stato inserito un nuovo pagamento: devo fare il refresh dei child: della lista (ChildPagamenti)
@@ -280,6 +261,33 @@ export class RettaEditComponent implements OnInit {
     this.ChildRettapagamentoEdit.formRetta.controls['causaleID'].setValue(1);
     this.ChildRettapagamentoEdit.formRetta.controls['meseRetta'].setValue(meseRettaClicked - 1);
   }
+//#endregion
 
+
+//#region FUNZIONI NON PIU' UTILIZZATE ?
+
+  savePivot() {
+    //NON DOVREBBE PIU' SERVIRE
+    //questo metodo chiama uno ad uno il metodo save di ciascun child
+    //salvando quindi ogni form, cioè ogni record Retta
+    let response : boolean;
+    let hasError: boolean = false;
+
+    for (let i = 0; i < 12; i++) {
+      let childRettaMese = this.ChildrenRettaMese.find(childRettaMese => childRettaMese.indice == i);
+      response = childRettaMese!.save();
+      if (!response) {
+        hasError = true;
+      }
+    }
+
+    if (hasError) 
+      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di Salvataggio', panelClass: ['red-snackbar']})
+    else 
+      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record Salvato', panelClass: ['green-snackbar']})
+
+    this._dialogRef.close();
+  }
+//#endregion
 
 }

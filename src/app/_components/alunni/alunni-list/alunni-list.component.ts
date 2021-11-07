@@ -344,7 +344,6 @@ export class AlunniListComponent implements OnInit {
 //#endregion
 
 //#region ----- Right Click -------
-
   onRightClick(event: MouseEvent, element: ALU_Alunno) { 
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 

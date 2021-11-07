@@ -32,7 +32,6 @@ export class AlunniFilterComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit() {
-
     this.nomeFilter.valueChanges
     .subscribe(
       val => {
