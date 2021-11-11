@@ -95,7 +95,7 @@ export class ClassiDashboardComponent implements OnInit {
 
 //#region ----- add/remove to/from Classe-------
   addAlunnoToClasse() {
-
+    console.log ("this.idAnno", this.idAnno);
     if(this.idClasse<0) return;
 
     const dialogConfig : MatDialogConfig = {
@@ -155,7 +155,7 @@ export class ClassiDashboardComponent implements OnInit {
     //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
     //serve per la successiva assegnazione ad una classe...in quanto il modale che va ad aggiungere
     //le classi ha bisogno di conoscere anche l'idAnno per fare le proprie verifiche
-    //console.log (annoId);
+    console.log ("annoId", annoId);
     this.idAnno = annoId;
   }
 

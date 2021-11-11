@@ -50,6 +50,7 @@ export class DialogAddComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
     this.idClasse = this.data.idClasse;
+    console.log ("this.data.idAnno", this.data.idAnno);
     //console.log("dialog-add.component.ts - ngOnInit: this.idClasse=", this.idClasse);
 
     this.filteredAlunni$ = this.form.controls['nomeCognomeAlunno'].valueChanges
