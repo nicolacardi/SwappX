@@ -32,6 +32,20 @@ export class ClassiSezioniAnniListComponent implements OnInit {
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno>();
   storedFilterPredicate!:       any;
 
+  public idAnnoScolastico!:           number;
+  showSelect:                         boolean = true;
+  showPageTitle:                      boolean = true;
+  showTableRibbon:                    boolean = true;
+  obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  selectedRowIndex = -1;
+  form! :                             FormGroup;
+
+  //filterValues contiene l'elenco dei filtri avanzati da applicare 
+  filterValues = {
+    classe: '',
+    sezione: '',
+  };
+
   displayedColumns: string[] =  [];
 
   displayedColumnsClassiDashboard: string[] =  [
@@ -62,19 +76,6 @@ export class ClassiSezioniAnniListComponent implements OnInit {
     "removeFromAttended"
     ];
     
-  public idAnnoScolastico!:           number;
-  showSelect:                         boolean = true;
-  showPageTitle:                      boolean = true;
-  showTableRibbon:                    boolean = true;
-  obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-  selectedRowIndex = -1;
-  form! :                             FormGroup;
-
-  //filterValues contiene l'elenco dei filtri avanzati da applicare 
-  filterValues = {
-    classe: '',
-    sezione: '',
-  };
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -105,7 +106,7 @@ constructor(
     public _dialog:                       MatDialog, 
   ) { 
     this.form = this.fb.group({
-      selectAnnoScolastico:   [2]
+      selectAnnoScolastico:   [2]     //ATTENZIONE: leggere anno corrente da parametri ambiente
     })
   }
 

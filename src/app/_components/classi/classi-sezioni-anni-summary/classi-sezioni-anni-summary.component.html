@@ -1,4 +1,20 @@
 <mat-card style="height: 100%;" class="card mat-elevation-z8">
+    
+    <form [formGroup] = "form">
+        <mat-form-field  class="ml20 topZIndex">
+            <mat-label>Anno Scolastico</mat-label>
+
+            <mat-select formControlName="selectAnnoScolastico">
+                <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id" >
+                {{element.annoscolastico}}
+                </mat-option>
+            </mat-select>
+
+        </mat-form-field>
+
+
+    </form>
+
 
         <mat-table class="transparent" [dataSource]="matDataSource">
 

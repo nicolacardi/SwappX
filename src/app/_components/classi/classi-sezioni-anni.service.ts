@@ -37,11 +37,11 @@ export class ClassiSezioniAnniService {
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/1
   } 
 
-  loadSummary(): Observable<CLS_ClasseSezioneAnno_Sum[]>{
-    return this.http.get<CLS_ClasseSezioneAnno_Sum[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListSummary/');
-    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListSummary
+  loadSummary(idAnnoScolastico: any): Observable<CLS_ClasseSezioneAnno_Sum[]>{
+    return this.http.get<CLS_ClasseSezioneAnno_Sum[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListSummary/'+idAnnoScolastico);
+    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListSummary/1
   }
-
+  
   putClasse(formData: any): Observable <any>{
     return this.http.put( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni/' + formData.id , formData);    
   }
