@@ -19,7 +19,7 @@ import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service
 
 //classes
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
-import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPIVOT';
+import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPivot';
 import { PAG_RettaGroupObj } from 'src/app/_models/PAG_RetteGroupObj';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 
