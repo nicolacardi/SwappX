@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { concatMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
-//import { SidebarComponent } from '../../shared/sidebar/sidebar.component'
 
 import { UserService } from '../user.service';
+import { ParametriService } from 'src/app/_services/parametri.service';
+
 import { DialogOkComponent } from 'src/app/_components/utilities/dialog-ok/dialog-ok.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
 import { LoadingService } from 'src/app/_components/utilities/loading/loading.service';
+
 
 @Component({
   selector: 'app-login',
@@ -26,7 +28,8 @@ export class LoginComponent implements OnInit {
 
   form! :                     FormGroup;
   
-  constructor(private svcUser:       UserService, 
+  constructor(private svcUser:       UserService,
+              private svcParametri:   ParametriService, 
               private router:         Router,
               private fb:             FormBuilder,
               public _dialog:         MatDialog,
@@ -49,10 +52,41 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(){
+
+    /*
+    this.svcRette.loadByAlunnoAnnoMese(this.alunnoID, this.annoID, (this.formRetta.controls['meseRetta'].value + 1))
+      .pipe (
+        tap (val=> this.formRetta.controls['rettaID'].setValue(val.id)), //il valore in arrivo dalla load viene inserito nel form
+        concatMap(() => this.svcPagamenti.post(this.formRetta.value)) //concatMap ATTENDE l'observable precedente prima di lanciare il successivo
+        )
+        .subscribe(
+          ()=> {
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+            //this._dialogRef.close();
+            this.pagamentoEmitter.emit(this.formRetta.controls['meseRetta'].value);
+            this.resetFields();
+          },
+          err=> (
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          )
+      );
+    */
     let obsUser$= this.svcUser.Login(this.form.value);
     const loadUser$ =this._loadingService.showLoaderUntilCompleted(obsUser$);
-    loadUser$.subscribe(
+    loadUser$
+    // .pipe(
+    //   concatMap(() => this.svcParametri.loadParametro("AnnoCorrente"))
+    // )
+    .subscribe(
       (res: any) => {
+
+        // console.log("DEBUG:", res);
+        // this.svcParametri.loadParametro("AnnoCorrente").subscribe(
+        //     (par: any) => {
+        //       console.log("DEBUG1:", par);
+        //     }
+        // )
+
         //this.svcUser.changeLoggedIn(true);
         this._snackBar.openFromComponent(SnackbarComponent, {
           data: 'Benvenuto ' + res.fullname , panelClass: ['green-snackbar']

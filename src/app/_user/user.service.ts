@@ -48,7 +48,6 @@ export class UserService {
   
   //Login(userName: string, userPwd: string) {
   Login(formData: any) {
-    console.log ("formData", formData);
     return this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
       .pipe(timeout(8000))  
       .pipe(map(user => {
@@ -56,6 +55,7 @@ export class UserService {
 
           user.isLoggedIn = true;
           
+
           //QUI!!!!!
           //passare da WS il ruolo dell'utente
           user.role= UserRole.Admin;        //Debug Role
@@ -65,8 +65,9 @@ export class UserService {
           localStorage.setItem('currentUser', JSON.stringify(user));
           
           this.BehaviourSubjectcurrentUser.next(user);
-        }    
-      return user;
+        }
+            
+        return user;
     }));
   }
 
