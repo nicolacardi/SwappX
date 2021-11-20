@@ -1,7 +1,7 @@
 
 <table>
     <tr>
-        <td style="width:315px; height: 83% ;position: absolute; top: 75px; left: 8px;">
+        <td class="columnleft-dashboard">
             <mat-card style="height: 100%;" class="card mat-elevation-z8">
                 <div class="table-container">
                     <app-classi-sezioni-anni-list 
@@ -12,7 +12,7 @@
                 </div>
             </mat-card>
         </td>
-        <td style="width:76%; height: 83%; position: absolute; top: 75px; left: 330px">
+        <td class="columnright-dashboard">
             <button mat-mini-fab aria-label="Aggiungi Alunno alla Classe" class="btn btn-addYellow" (click)="addAlunnoToClasse()" >
                 <img class="iconaMenu" src="../../../../assets/empty.svg" matTooltip="Aggiungi alunni alla classe" 
                 [@openClose]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">

@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
 
 //services
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 
 //classes
 import { CLS_ClasseSezioneAnno_Sum } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+
 
 @Component({
   selector: 'app-classi-sezioni-anni-summary',
@@ -27,9 +30,10 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
 
   form! :                             FormGroup;
-
+  menuTopLeftPosition =  {x: '0', y: '0'} 
   displayedColumns: string[] =  [];
   displayedColumnsClassiSezioniAnniSummary: string[] = [
+      "actionsColumn",
       "classe",
       "sezione",
       "anno",
@@ -37,10 +41,11 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
       "numMaschi",
       "numFemmine"
   ];
-
-  
 //#endregion
 
+//#region ----- ViewChild Input Output -------
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
+//#endregion
   constructor(private svcClassi:        ClassiSezioniAnniService,
               private svcAnni:          AnniScolasticiService,
               private fb:               FormBuilder, 
@@ -81,4 +86,14 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   }
 //#endregion
 
+
+//#region ----- LifeCycle Hooks e simili-------
+onRightClick(event: MouseEvent, element: CLS_ClasseSezioneAnno_Sum) { 
+  event.preventDefault(); 
+  this.menuTopLeftPosition.x = event.clientX + 'px'; 
+  this.menuTopLeftPosition.y = event.clientY + 'px'; 
+  this.matMenuTrigger.menuData = {item: element}   
+  this.matMenuTrigger.openMenu(); 
+}
+//#endregion
 }

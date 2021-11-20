@@ -27,6 +27,22 @@ table {
   max-width: 30px;
 }
 
+.mat-column-actionsColumn {
+  min-width: 50px;
+}
+
+.mat-column-numAlunni {
+  width: 80px;
+}
+
+.mat-column-numMaschi {
+  width: 80px;
+}
+
+.mat-column-numFemmine {
+  width: 80px;
+}
+
 .classiSezioniAnniTable .mat-row {
   min-height: 30px;
 }
@@ -38,4 +54,22 @@ table {
 .highlight{
   background: rgba(100, 100, 100, 0.2); /* green */
 }
+
+
+.columnleft-dashboard {
+  width:315px;
+  height: 83% ;
+  position: absolute;
+  top: 75px;
+  left: 8px;
+}
+
+.columnright-dashboard {
+  width:76%;
+  height: 83%;
+  position: absolute;
+  top: 75px;
+  left: 330px
+}
+
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { User } from 'src/app/_user/Users';
 import { UserService } from 'src/app/_user/user.service';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-home',
@@ -25,5 +26,6 @@ export class HomeComponent implements OnInit {
     //this.userFullName= this.svcUser.currUser.fullname;
 
   }
+
 
 }

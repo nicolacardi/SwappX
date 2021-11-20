@@ -48,7 +48,6 @@ export class UserService {
   
   //Login(userName: string, userPwd: string) {
   Login(formData: any) {
-
     return this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
       .pipe(timeout(8000))  
       .pipe(map(user => {
