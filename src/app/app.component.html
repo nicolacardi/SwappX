@@ -5,12 +5,17 @@
             <mat-icon>menu</mat-icon>
         </button>
         
-        <div class="logo">
+        <!-- <div class="logo" >
             <img class="logo-img" src="../assets/logoscritta.svg">
+        </div> -->
+        <div class="logo" >
+            <div class="logo-img2"></div>
         </div>
-        <button mat-icon-button [matMenuTriggerFor]="menu" >
-            <mat-icon>account_circle</mat-icon>
-        </button>
+        <div style="position: absolute; right: 10px;">
+            <button mat-icon-button [matMenuTriggerFor]="menu" >
+                <mat-icon>account_circle</mat-icon>
+            </button>
+        </div>
     <!--            
         <button mat-icon-button (click)="end.open()">
             <mat-icon>more_vert</mat-icon>

@@ -19,12 +19,12 @@
         <mat-table class="transparent" [dataSource]="matDataSource">
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
-        <!-- <ng-container matColumnDef="actionsColumn">
+        <ng-container matColumnDef="actionsColumn">
             <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-            <mat-cell  *matCellDef="let element;  let j = index;"> 
+            <mat-cell  *matCellDef="let element"> 
                 <img class="iconaMenu pointer" src="../assets/alunno_edit.svg">
             </mat-cell>
-        </ng-container> -->
+        </ng-container>
 
 
         <ng-container matColumnDef="classe">
@@ -33,7 +33,7 @@
         </ng-container>
 
         <ng-container matColumnDef="sezione">
-            <mat-header-cell *matHeaderCellDef >Sezione</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef >Sez.</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.sezione}}</mat-cell>
         </ng-container>
 
@@ -62,12 +62,26 @@
         <!-- **************************   MAT-ROW   ******************* -->
         <mat-row *matRowDef="let element;columns: displayedColumns"
             class="element-row"
-            >
+            (contextmenu)="onRightClick($event, element)" >
         </mat-row>
-
     </mat-table>
 
+    <!-- ***********************  MENU RIGHT CLICK ****************** -->
+    <div style="visibility: hidden; position: fixed;" 
+        [style.left]="menuTopLeftPosition.x" 
+        [style.top]="menuTopLeftPosition.y" 
+        [matMenuTriggerFor]="rightMenu">
+    </div> 
 
+    <mat-menu #rightMenu="matMenu"> 
+        <ng-template matMenuContent let-item="item"> 
+            <mat-label class="rightMenuTitle">{{item.classe | uppercase}} {{item.sezione | uppercase}}</mat-label>
+            <!-- <button mat-menu-item routerLink="/genitori" [queryParams]="{ idAlunno: item.id }">Genitori/Tutori</button>  -->
+            <button mat-menu-item>Gestione Classe</button> 
+            <button mat-menu-item>Pagelle</button>
+            <button mat-menu-item>Quote e Pagamenti</button>
+        </ng-template> 
+    </mat-menu> 
 
 </mat-card>
 
