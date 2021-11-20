@@ -60,6 +60,7 @@ export class UserService {
           //passare da WS il ruolo dell'utente
           user.role= UserRole.Admin;        //Debug Role
 
+          
           // store user details in local storage to keep user logged in
           localStorage.setItem('token', user.token);
           localStorage.setItem('currentUser', JSON.stringify(user));
