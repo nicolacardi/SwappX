@@ -37,7 +37,6 @@ export class AppComponent implements OnInit{
     this.svcUser.obscurrentUser.subscribe(val => {
       this.currUser = val;
 
-      console.log("DEBUG: " ,this.currUser);
       if(this.currUser){
         this.userFullName = this.currUser.fullname;
         this.isLoggedIn = this.currUser.isLoggedIn;

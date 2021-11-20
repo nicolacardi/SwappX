@@ -105,13 +105,20 @@ export class PagamentiListComponent implements OnInit {
               private fb:               FormBuilder, 
               public _dialog:           MatDialog, 
               private _snackBar:        MatSnackBar,
-              private _loadingService:  LoadingService,
-    ) 
-  {
-    //form composto della sola combo Anno Scolastico: così si riesce tra le altre cose a settare un valore di default
+              private _loadingService:  LoadingService)  {
+    
+    var tmp = localStorage.getItem('AnnoCorrente');
+    var annoID!: number;
+    if(tmp != null)
+      annoID = +tmp;
+    else
+      annoID = 1;
+
     this.form = this.fb.group({
-      annoScolastico:      [1],
-    });
+      //annoScolastico:      [1],
+      annoScolastico:  annoID
+    })
+
   }
 
 //#region ----- LifeCycle Hooks e simili-------

@@ -71,16 +71,14 @@ export class LoginComponent implements OnInit {
           )
       );
     */
+
     let obsUser$= this.svcUser.Login(this.form.value);
     const loadUser$ =this._loadingService.showLoaderUntilCompleted(obsUser$);
-    loadUser$
-    //  .pipe(
-    //    concatMap(() => this.svcParametri.loadParametro("AnnoCorrente"))
-    //  )
-    .subscribe(
+    
+    loadUser$.subscribe(
       (res: any) => {
 
-          console.log("DEBUG:", res);
+        console.log("DEBUG0:", res);
 
         //  this.svcParametri.loadParametro("AnnoCorrente").subscribe(
         //      (par: any) => {
@@ -90,7 +88,8 @@ export class LoginComponent implements OnInit {
 
         //this.svcUser.changeLoggedIn(true);
         this._snackBar.openFromComponent(SnackbarComponent, {
-          data: 'Benvenuto ' + res.fullname , panelClass: ['green-snackbar']
+          //data: 'Benvenuto ' + res.fullname , panelClass: ['green-snackbar']
+          data: 'Benvenuto ' + res[0].fullname , panelClass: ['green-snackbar']
         });
 
         this.router.navigateByUrl('/home');

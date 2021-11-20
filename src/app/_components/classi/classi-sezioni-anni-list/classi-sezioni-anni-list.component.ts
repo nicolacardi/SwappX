@@ -105,8 +105,17 @@ constructor(
     private fb:                           FormBuilder, 
     public _dialog:                       MatDialog, 
   ) { 
+
+    var tmp = localStorage.getItem('AnnoCorrente');
+    var annoID!: number;
+    if(tmp != null)
+      annoID = +tmp;
+    else
+      annoID = 1;
+
     this.form = this.fb.group({
-      selectAnnoScolastico:   [2]     //ATTENZIONE: leggere anno corrente da parametri ambiente
+      //selectAnnoScolastico:   [2]     //ATTENZIONE: leggere anno corrente da parametri ambiente
+      selectAnnoScolastico:  annoID
     })
   }
 

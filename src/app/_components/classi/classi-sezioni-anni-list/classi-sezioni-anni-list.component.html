@@ -4,13 +4,6 @@
     <form [formGroup] = "form">
         <mat-form-field  class="ml20 topZIndex" *ngIf="showSelect">
         <mat-label>Anno Scolastico</mat-label>
-        <!-- <select matNativeControl formControlName="selectAnnoScolastico">
-            <option value="1">2019-20</option>
-            <option value="2">2020-21</option>
-            <option value="3">2021-22</option>
-        </select> -->
-
-
         <mat-select formControlName="selectAnnoScolastico">
             <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id" >
             {{element.annoscolastico}}

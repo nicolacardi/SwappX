@@ -132,9 +132,16 @@ export class RetteListComponent implements OnInit {
               private fb:               FormBuilder, 
               public _dialog:           MatDialog) {
 
-              this.form = this.fb.group({
-                annoScolastico:      [1],
-              });
+    var tmp = localStorage.getItem('AnnoCorrente');
+    var annoID!: number;
+    if(tmp != null)
+      annoID = +tmp;
+    else
+      annoID = 1;
+
+    this.form = this.fb.group({
+      annoScolastico:  annoID
+    })
   }
 
 //#region ----- LifeCycle Hooks e simili-------

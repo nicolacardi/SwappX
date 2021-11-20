@@ -46,13 +46,22 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
 //#region ----- ViewChild Input Output -------
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 //#endregion
+
   constructor(private svcClassi:        ClassiSezioniAnniService,
               private svcAnni:          AnniScolasticiService,
               private fb:               FormBuilder, 
               private _loadingService:  LoadingService) { 
 
+//AS: brutto, visto che l'anno corrente serve un sacco di volte, forse si potrebbe mettere in una variabile globale già convertita in numero                
+    var tmp = localStorage.getItem('AnnoCorrente');
+    var annoID!: number;
+    if(tmp != null)
+      annoID = +tmp;
+    else
+      annoID = 1;
+
     this.form = this.fb.group({
-      selectAnnoScolastico:   [2]     //ATTENZIONE: leggere anno corrente da parametri ambiente
+      selectAnnoScolastico:  annoID
     })
   }
 
@@ -66,7 +75,6 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
       this.loadData();
       //this.annoIdEmitter.emit(val);
     })
-
   }
 
   loadData() {
@@ -77,8 +85,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
     obsSummary$= this.svcClassi.loadSummary(this.form.controls['selectAnnoScolastico'].value);
     const loadSummary$ =this._loadingService.showLoaderUntilCompleted(obsSummary$);
 
-    loadSummary$.subscribe(val => 
-      {
+    loadSummary$.subscribe(val => {
         this.matDataSource.data = val;
       }
     );
