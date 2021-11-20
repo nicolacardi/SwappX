@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup} from '@angular/forms';
 import { HttpClient } from "@angular/common/http";
 import { catchError, map, timeout } from 'rxjs/operators';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 
-import { User, UserRole } from './Users';
 import { environment } from 'src/environments/environment';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { User, UserRole } from './Users';
+import { _UT_Parametro } from '../_models/_UT_Parametro';
 
 
 @Injectable({
@@ -45,36 +45,45 @@ export class UserService {
     ) 
   });
 
-  
   //Login(userName: string, userPwd: string) {
   Login(formData: any) {
-    return this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
+
+    let httpPost$ = this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
       .pipe(timeout(8000))  
       .pipe(map(user => {
         if (user && user.token) {
-
           user.isLoggedIn = true;
-          
-
-          //QUI!!!!!
-          //passare da WS il ruolo dell'utente
           user.role= UserRole.Admin;        //Debug Role
 
-          
           // store user details in local storage to keep user logged in
           localStorage.setItem('token', user.token);
           localStorage.setItem('currentUser', JSON.stringify(user));
           
           this.BehaviourSubjectcurrentUser.next(user);
         }
-            
-        return user;
-    }));
+        return user;    //AS: ATTENZIONE, SENZA QUESTA RIGA NON VA
+      }));
+
+
+    let httpParam1$ =  this.http.get<_UT_Parametro>(environment.apiBaseUrl+'_UT_Parametri/GetByParName/AnnoCorrente');
+    let httpParam$ =  this.http.get<_UT_Parametro>(environment.apiBaseUrl+'_UT_Parametri/GetByParName/AnnoCorrente')
+      //.pipe(timeout(8000))  
+      .pipe(map( par => {
+
+        //sessionStorage.setItem();
+        localStorage.setItem(par.parName, par.parValue);
+        return par;   //AS: ATTENZIONE, SENZA QUESTA RIGA NON VA
+      }));
+
+    return forkJoin([ httpPost$ ,httpParam$  ]);
   }
 
   Logout(){
+    
+    //Pulizia cookies
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('AnnoCorrente');
 
     const logOutUser = <User>{};
     logOutUser.isLoggedIn = false;
