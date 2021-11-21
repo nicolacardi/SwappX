@@ -13,6 +13,7 @@ import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service
 import { CLS_ClasseSezioneAnno_Sum } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
 
 @Component({
@@ -52,17 +53,13 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
               private fb:               FormBuilder, 
               private _loadingService:  LoadingService) { 
 
-//AS: brutto, visto che l'anno corrente serve un sacco di volte, forse si potrebbe mettere in una variabile globale già convertita in numero                
-    var tmp = localStorage.getItem('AnnoCorrente');
-    var annoID!: number;
-    if(tmp != null)
-      annoID = +tmp;
-    else
-      annoID = 1;
-
+    let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
-      selectAnnoScolastico:  annoID
+      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     })
+
+
+
   }
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -95,12 +92,12 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
 
 
 //#region ----- LifeCycle Hooks e simili-------
-onRightClick(event: MouseEvent, element: CLS_ClasseSezioneAnno_Sum) { 
-  event.preventDefault(); 
-  this.menuTopLeftPosition.x = event.clientX + 'px'; 
-  this.menuTopLeftPosition.y = event.clientY + 'px'; 
-  this.matMenuTrigger.menuData = {item: element}   
-  this.matMenuTrigger.openMenu(); 
-}
+  onRightClick(event: MouseEvent, element: CLS_ClasseSezioneAnno_Sum) { 
+    event.preventDefault(); 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+    this.matMenuTrigger.menuData = {item: element}   
+    this.matMenuTrigger.openMenu(); 
+  }
 //#endregion
 }

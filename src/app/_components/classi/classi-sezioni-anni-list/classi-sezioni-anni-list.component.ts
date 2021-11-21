@@ -19,6 +19,7 @@ import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { ClassiSezioniAnniFilterComponent } from '../classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
+import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
 
 @Component({
@@ -106,16 +107,9 @@ constructor(
     public _dialog:                       MatDialog, 
   ) { 
 
-    var tmp = localStorage.getItem('AnnoCorrente');
-    var annoID!: number;
-    if(tmp != null)
-      annoID = +tmp;
-    else
-      annoID = 1;
-
+    let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
-      //selectAnnoScolastico:   [2]     //ATTENZIONE: leggere anno corrente da parametri ambiente
-      selectAnnoScolastico:  annoID
+      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     })
   }
 

@@ -61,18 +61,15 @@ export class UserService {
           
           this.BehaviourSubjectcurrentUser.next(user);
         }
-        return user;    //AS: ATTENZIONE, SENZA QUESTA RIGA NON VA
+        return user;
       }));
 
-
-    let httpParam1$ =  this.http.get<_UT_Parametro>(environment.apiBaseUrl+'_UT_Parametri/GetByParName/AnnoCorrente');
     let httpParam$ =  this.http.get<_UT_Parametro>(environment.apiBaseUrl+'_UT_Parametri/GetByParName/AnnoCorrente')
-      //.pipe(timeout(8000))  
       .pipe(map( par => {
-
         //sessionStorage.setItem();
-        localStorage.setItem(par.parName, par.parValue);
-        return par;   //AS: ATTENZIONE, SENZA QUESTA RIGA NON VA
+        //localStorage.setItem(par.parName, par.parValue);
+        localStorage.setItem(par.parName, JSON.stringify(par));
+        return par;
       }));
 
     return forkJoin([ httpPost$ ,httpParam$  ]);
@@ -108,6 +105,7 @@ export class UserService {
   
   list(): Observable<User[]>{
     return this.http.get<User[]>(environment.apiBaseUrl+'ApplicationUser');
+    //http://213.215.231.4/swappX/api/ApplicationUser
   }
  
   public  getUser() : User {

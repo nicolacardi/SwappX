@@ -699,3 +699,7 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 .logo-login {
     width: 200px;
 }
+
+.yellow {
+    background-color: #FFFF00;
+}

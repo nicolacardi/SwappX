@@ -9,6 +9,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
 import { map } from 'rxjs/operators';
+import { Pipe, PipeTransform } from '@angular/core';
 
 //components
 import { AlunnoEditComponent } from '../alunno-edit/alunno-edit.component';
@@ -29,11 +30,13 @@ import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
   styleUrls:    ['../alunni.css']
 })
 
+
 export class AlunniListComponent implements OnInit {
 
 //#region ----- Variabili -------
   matDataSource = new MatTableDataSource<ALU_Alunno>();
   storedFilterPredicate!:       any;
+  filterValue = '';
 
   displayedColumns: string[] =  [];
   displayedColumnsAlunniList: string[] = [
@@ -125,6 +128,11 @@ export class AlunniListComponent implements OnInit {
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('addToFamily') addToFamily = new EventEmitter<ALU_Alunno>();
   @Output('removeFromFamily') removeFromFamily = new EventEmitter<ALU_Alunno>();
+
+
+
+
+
 //#endregion
 
   constructor(private svcAlunni:        AlunniService,
@@ -297,12 +305,13 @@ export class AlunniListComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    if (filterValue.length == 1) {
+    this.filterValue = (event.target as HTMLInputElement).value;
+    if (this.filterValue.length == 1) {
       this.matDataSource.filterPredicate = this.storedFilterPredicate;
       if (this.dove == "alunni-page") this.alunniFilterComponent.resetAllInputs();
     }
-    this.matDataSource.filter = filterValue.trim().toLowerCase();
+    
+    this.matDataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
 //#endregion

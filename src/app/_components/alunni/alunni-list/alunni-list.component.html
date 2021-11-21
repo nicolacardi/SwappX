@@ -65,27 +65,32 @@
 
         <ng-container matColumnDef="nome">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.nome}}</mat-cell>
+            <!-- <mat-cell *matCellDef="let element">{{element.nome}}</mat-cell> -->
+            <mat-cell *matCellDef="let element" [innerHTML]="element.nome | highlight: filterValue"></mat-cell>
         </ng-container>
-
+        
         <ng-container matColumnDef="cognome">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.cognome}}</mat-cell>
+            <!-- <mat-cell *matCellDef="let element">{{element.cognome |highlight: filterValue}}</mat-cell> -->
+            <mat-cell *matCellDef="let element" [innerHTML]="element.cognome | highlight: filterValue"></mat-cell>
         </ng-container>
         
         <ng-container matColumnDef="dtNascita">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>nato il</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</mat-cell>
+            <!-- <mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</mat-cell> -->
+            <mat-cell *matCellDef="let element" [innerHTML]="element.dtNascita | date: 'dd/MM/yyyy'"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="indirizzo">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Indirizzo</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.indirizzo}}</mat-cell>
+            <!-- <mat-cell *matCellDef="let element">{{element.indirizzo}}</mat-cell> -->
+            <mat-cell *matCellDef="let element" [innerHTML]="element.indirizzo | highlight: filterValue"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="comune">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Comune</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.comune}}</mat-cell>
+            <!-- <mat-cell *matCellDef="let element">{{element.comune}}</mat-cell> -->
+            <mat-cell *matCellDef="let element" [innerHTML]="element.comune | highlight: filterValue"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="cap">

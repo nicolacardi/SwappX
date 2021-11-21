@@ -66,6 +66,8 @@ import { UsersFilterComponent } from './_components/users/users-filter/users-fil
 import { ErrorInterceptor } from './_user/auth/error.interceptor';
 import { NewsComponent } from './_components/news/news.component';
 import { ClassiSezioniAnniSummaryComponent } from './_components/classi/classi-sezioni-anni-summary/classi-sezioni-anni-summary.component';
+import { HighlightPipe } from './_components/utilities/highlight/highlight.pipe';
+import { RettepagamentiSummaryComponent } from './_components/pagamenti/rettepagamenti-summary/rettepagamenti-summary.component';
 
 
 @NgModule({
@@ -118,6 +120,9 @@ import { ClassiSezioniAnniSummaryComponent } from './_components/classi/classi-s
     UsersFilterComponent,
     NewsComponent,
     ClassiSezioniAnniSummaryComponent,
+    HighlightPipe,
+    RettepagamentiSummaryComponent,
+    
 
 
   ],

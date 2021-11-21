@@ -22,6 +22,7 @@ import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPivot';
 import { PAG_RettaGroupObj } from 'src/app/_models/PAG_RetteGroupObj';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
 @Component({
   selector: 'app-rette-list',
@@ -132,15 +133,10 @@ export class RetteListComponent implements OnInit {
               private fb:               FormBuilder, 
               public _dialog:           MatDialog) {
 
-    var tmp = localStorage.getItem('AnnoCorrente');
-    var annoID!: number;
-    if(tmp != null)
-      annoID = +tmp;
-    else
-      annoID = 1;
 
+    let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
-      annoScolastico:  annoID
+      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     })
   }
 
@@ -155,7 +151,7 @@ export class RetteListComponent implements OnInit {
 
   loadData () {
     this.obsAnni$ = this.svcAnni.load();
-    this.annoID = this.form.controls['annoScolastico'].value;
+    this.annoID = this.form.controls['selectAnnoScolastico'].value;
     
 
     let obsRette$: Observable<PAG_Retta[]>;

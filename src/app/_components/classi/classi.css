@@ -47,6 +47,10 @@ table {
   min-height: 30px;
 }
 
+.classiSezioniAnniSummaryTable .mat-row {
+  min-height: 30px;
+}
+
 .element-row {
     cursor: pointer;
 }

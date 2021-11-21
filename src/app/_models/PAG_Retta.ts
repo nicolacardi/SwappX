@@ -36,3 +36,15 @@ export interface PAG_Retta {
 // "dtUpd": null,
 // "userIns": 1,
 // "userUpd": null
+
+
+export interface PAG_RettePagamenti_Sum {
+        id:                     number;
+        annoRetta:              number;
+        meseRetta:              number;
+
+        importo:                number;
+        quotaDefault:           number;
+        quotaConcordata:        number;
+}
+

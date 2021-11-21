@@ -22,6 +22,7 @@ import { PagamentiService } from '../pagamenti.service';
 //models
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { PAG_Pagamento } from 'src/app/_models/PAG_Pagamento';
+import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
 @Component({
   selector: 'app-pagamenti-list',
@@ -107,17 +108,12 @@ export class PagamentiListComponent implements OnInit {
               private _snackBar:        MatSnackBar,
               private _loadingService:  LoadingService)  {
     
-    var tmp = localStorage.getItem('AnnoCorrente');
-    var annoID!: number;
-    if(tmp != null)
-      annoID = +tmp;
-    else
-      annoID = 1;
-
+    let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
-      //annoScolastico:      [1],
-      annoScolastico:  annoID
+      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     })
+
+
 
   }
 
@@ -140,7 +136,7 @@ export class PagamentiListComponent implements OnInit {
   }
 
   updateList() {
-    this.annoID = this.form.controls['annoScolastico'].value;
+    this.annoID = this.form.controls['selectAnnoScolastico'].value;
     this.loadData();
   }
 
@@ -157,7 +153,7 @@ export class PagamentiListComponent implements OnInit {
     if (this.alunnoID) {
       obsPagamenti$= this.svcPagamenti.loadByAlunnoAnno(this.alunnoID, this.annoID);
     } else {
-      if (!this.annoID) this.annoID = this.form.controls['annoScolastico'].value;
+      if (!this.annoID) this.annoID = this.form.controls['selectAnnoScolastico'].value;
       obsPagamenti$= this.svcPagamenti.loadByAnno(this.annoID);
     }
     const loadPagamenti$ =this._loadingService.showLoaderUntilCompleted(obsPagamenti$);

@@ -16,7 +16,7 @@
     </form>
 
 
-        <mat-table class="classiSezioniAnniSummaryTable transparent" [dataSource]="matDataSource">
+        <mat-table class="rettePagamentiSummaryTable transparent" [dataSource]="matDataSource">
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
         <ng-container matColumnDef="actionsColumn">
@@ -31,27 +31,27 @@
             <mat-cell *matCellDef="let element">{{element.classe}}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="sezione">
-            <mat-header-cell *matHeaderCellDef >Sez.</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.sezione}}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="anno">
+        <ng-container matColumnDef="annoRetta">
             <mat-header-cell *matHeaderCellDef >Anno</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.anno}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.annoRetta}}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="numAlunni">
-            <mat-header-cell *matHeaderCellDef>Alunni</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.numAlunni}}</mat-cell>
+        <ng-container matColumnDef="meseRetta">
+            <mat-header-cell *matHeaderCellDef >Mese</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.meseRetta}}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="numMaschi">
-            <mat-header-cell *matHeaderCellDef>M</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.numMaschi}}</mat-cell>
+
+        <ng-container matColumnDef="quotaDefault">
+            <mat-header-cell *matHeaderCellDef>Quote Default</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.quotaDefault}}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="numFemmine">
-            <mat-header-cell *matHeaderCellDef>F</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.numFemmine}}</mat-cell>
+        <ng-container matColumnDef="quotaConcordata">
+            <mat-header-cell *matHeaderCellDef>Quote Concordate</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.quotaConcordata}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="importo">
+            <mat-header-cell *matHeaderCellDef>Quote Pagate</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.importo}}</mat-cell>
         </ng-container>
       
         
@@ -63,6 +63,8 @@
             class="element-row"
             (contextmenu)="onRightClick($event, element)" >
         </mat-row>
+
+        <!-- <mat-row mat-footer-row *matFooterRowDef="displayedColumns"></mat-row> -->
     </mat-table>
 
     <!-- ***********************  MENU RIGHT CLICK ****************** -->
@@ -74,14 +76,15 @@
 
     <mat-menu #rightMenu="matMenu"> 
         <ng-template matMenuContent let-item="item"> 
-            <mat-label class="rightMenuTitle">{{item.classe | uppercase}} {{item.sezione | uppercase}}</mat-label>
+            <mat-label class="rightMenuTitle">{{item.meseRetta}} - {{item.annoRetta}}</mat-label>
             <!-- <button mat-menu-item routerLink="/genitori" [queryParams]="{ idAlunno: item.id }">Genitori/Tutori</button>  -->
-            <button mat-menu-item>Gestione Classe</button> 
-            <button mat-menu-item>Pagelle</button>
-            <button mat-menu-item>Quote e Pagamenti</button>
+            <button mat-menu-item>Test 1</button> 
+            <button mat-menu-item>Test 2</button>
+            <button mat-menu-item>Test 3</button>
         </ng-template> 
     </mat-menu> 
 
 </mat-card>
+
 
 

@@ -26,7 +26,7 @@
 <h1 class="page-title">Elenco Rette </h1>
 <form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
     <mat-form-field class="ml20 topZIndex">
-        <mat-select formControlName="annoScolastico" (selectionChange)="updateList()" #annoscolastico>
+        <mat-select formControlName="selectAnnoScolastico" (selectionChange)="updateList()" #annoscolastico>
             <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id" >
             {{element.annoscolastico}}
             </mat-option>

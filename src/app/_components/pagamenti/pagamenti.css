@@ -241,6 +241,10 @@ td {
     min-height: 30px;
   }
 
+.rettePagamentiSummaryTable .mat-row {
+    min-height: 30px;
+}
+
 
   .square2 mat-icon {
     width: 20px; 
