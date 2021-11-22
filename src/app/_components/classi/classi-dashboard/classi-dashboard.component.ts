@@ -155,12 +155,11 @@ export class ClassiDashboardComponent implements OnInit {
     //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
     //serve per la successiva assegnazione ad una classe...in quanto il modale che va ad aggiungere
     //le classi ha bisogno di conoscere anche l'idAnno per fare le proprie verifiche
-    //console.log ("annoId", annoId);
+    
     this.idAnno = annoId;
   }
 
   classeIdEmitted(classeId: number) {
-    console.log (classeId);
     this.idClasse = classeId;
   }
 //#endregion

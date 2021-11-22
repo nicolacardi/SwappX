@@ -56,8 +56,6 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
       classeID:                   ['', Validators.required],
       annoID:                     ['', Validators.required],
       classeSezioneAnnoSucc:      ['', Validators.required],
-
-
     });
 
   }
@@ -85,15 +83,12 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
             this.form.patchValue(classe)
 
             //AS: il patch value non sempbra valorizzare il form group ... ????
-            this.form.controls['sezione'].setValue( classe.classeSezione.sezione);
+            //this.form.controls['sezione'].setValue( classe.classeSezione.sezione);
             console.log("[Debug] Sezione = ", classe);
           })
       );
-      
-
-    } else {
+    } else 
       this.emptyForm = true
-    }
   }
 
 //#endregion

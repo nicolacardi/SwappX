@@ -313,27 +313,23 @@ export class AlunnoEditComponent implements OnInit {
       })
 
     )
-
-
     checks$.pipe(
       concatMap( res => iif (()=> res.length == 0,this.svcClassiSezioniAnniAlunni.postClasseSezioneAnnoAlunno(objClasseSezioneAnnoAlunno) , of() )
       )
     ).subscribe(
       res=> {
         //loadData del component attended
-        this.classiAttendedComponent.loadData(0);
+        this.classiAttendedComponent.loadData();
       },
-      err=> {
-      }
+      err=> { }
     )
-
   }
 
   removeFromAttended(classeSezioneAnno: CLS_ClasseSezioneAnno) {
     this.svcClassiSezioniAnniAlunni.deleteClasseSezioneAnnoAlunno(classeSezioneAnno.id , this.idAlunno).subscribe(
       res=> {
           //console.log("addToFamily OK");
-          this.classiAttendedComponent.loadData(0);
+          this.classiAttendedComponent.loadData();
       },
       err=> {
         //console.log("addToFamily KO");

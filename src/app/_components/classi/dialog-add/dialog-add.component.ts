@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -50,25 +50,25 @@ export class DialogAddComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
     this.idClasse = this.data.idClasse;
-    console.log ("this.data.idAnno", this.data.idAnno);
+    
+    //console.log ("this.data.idAnno", this.data.idAnno);
     //console.log("dialog-add.component.ts - ngOnInit: this.idClasse=", this.idClasse);
 
     this.filteredAlunni$ = this.form.controls['nomeCognomeAlunno'].valueChanges
-    .pipe(
-      tap(() => this.alunniIsLoading = true),
-      debounceTime(300),
-      //delayWhen(() => timer(2000)),
-      switchMap(val => 
-        this.svcAlunni.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
-            .pipe(
-              map( val2 => val2.filter(val=>!this.idAlunniSelezionati.includes(val.id)) )//FANTASTICO!!! NON MOSTRA QUELLI GIA'SELEZIONATI! MEGLIO DI GOOGLE CHE LI RIMOSTRA!
-            ) 
-      )
-      // switchMap(() => 
-      //   this.svcAlunni.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
-      // )
-      , 
-      tap(() => this.alunniIsLoading = false)
+      .pipe(
+        tap(() => this.alunniIsLoading = true),
+        debounceTime(300),
+        //delayWhen(() => timer(2000)),
+        switchMap(val => 
+          this.svcAlunni.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
+              .pipe(
+                map( val2 => val2.filter(val=>!this.idAlunniSelezionati.includes(val.id)) )//FANTASTICO!!! NON MOSTRA QUELLI GIA'SELEZIONATI! MEGLIO DI GOOGLE CHE LI RIMOSTRA!
+              ) 
+        ),
+        // switchMap(() => 
+        //   this.svcAlunni.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
+        // )
+        tap(() => this.alunniIsLoading = false)
     )
   }
 
