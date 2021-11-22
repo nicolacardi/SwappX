@@ -7,22 +7,19 @@ export class HighlightPipe implements PipeTransform {
 
   transform(value: string, search: string): string {
     if (search) {
-      //console.log ("prima",value);
       const valueStr = value + ''; // + ''; // Ensure numeric values are converted to strings
-      //console.log ("dopo", valueStr.replace(new RegExp('(' + search + ')', 'gi'), '<span class="yellow">$1</span>'));
-      //return valueStr.replace(new RegExp('(?![^&;]+;)(?!<[^<>]*)(' + search + ')(?![^<>]*>)(?![^&;]+;)', 'gi'), '<span class="yellow">$1</span>');  
-      return valueStr.replace(new RegExp('(' + search + ')', 'gi'), '<span class="yellow">$1</span>');  //QUESTO E' QUASI GIUSTO MA TRIMMA
-      //return valueStr.replace(search, '<span class="yellow">'+search+'</span>');  
-      //return value;
+      const valueStr2 = valueStr.replace (' ','&nbsp;');  
+      //poichè il risulttao verrà isnerito in una innerHTML gli spazi che sono a ridosso dello span vengono interpretati come inutili e quindi ignorati
+      //per questo è necessario sostituirli con &nbsp;
+      const valueStr3 = valueStr2.replace(new RegExp('(' + search + ')', 'gi'), '<span class="yellow">$1</span>');
+      //return valueStr.replace(new RegExp('(?![^&;]+;)(?!<[^<>]*)(' + search + ')(?![^<>]*>)(?![^&;]+;)', 'gi'), '<span class="yellow">$1</span>');  //Così avevo trovato
+      return valueStr3;
     } else {
       return value;
     }
-    //return valueStr.replace(search, '<span class="yellow">'+search+'</span>');  
-    //TODO: 
-    //-toglie gli spazi anche quando non deve
+    //NB: 
     //-non funziona con le date
     //-non funziona sui filtri compositi
-    //return valueStr;
   }
 
 }
