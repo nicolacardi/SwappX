@@ -21,14 +21,14 @@ export class AuthGuard implements CanActivate {
                state: RouterStateSnapshot):  boolean  {
 
     //Versione con UserService
-    const currentUser = this.uService.currentUserValue;
+    const currentUser = this.uService.currentUser;
 
     //console.log("DEBUG: auth.guard - currentuser ", currentUser);
     if (currentUser) {
       //console.log("DEBUG: auth.guard - currentuser.role ", currentUser.role);
  
       // check if route is restricted by role
-      if (route.data.roles && route.data.roles.indexOf(currentUser.role) === -1) {
+      if (route.data.roles && route.data.roles.indexOf(currentUser.ruolo) === -1) {
           // role not authorised so redirect to home page
           this._snackBar.openFromComponent(SnackbarComponent, {
             data: 'Utente non autorizzato', panelClass: ['red-snackbar']

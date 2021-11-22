@@ -57,9 +57,6 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
     this.form = this.fb.group({
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     })
-
-
-
   }
 
 //#region ----- LifeCycle Hooks e simili-------

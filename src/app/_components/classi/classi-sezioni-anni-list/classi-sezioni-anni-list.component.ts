@@ -115,13 +115,14 @@ constructor(
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
+    
     this.obsAnni$= this.svcAnni.load();
 
-    this.loadData(2);
+    this.loadData( );
+    this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);
 
-    this.form.controls['selectAnnoScolastico'].valueChanges
-    .subscribe(val => {
-      this.loadData(val);
+    this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
+      this.loadData();
       this.annoIdEmitter.emit(val);
     })
 
@@ -153,16 +154,18 @@ constructor(
 
   }
 
-  loadData (val :number) {
+  loadData ( ) {
+    const idAnno = this.form.controls["selectAnnoScolastico"].value;
+
     let obsClassi$: Observable<CLS_ClasseSezioneAnno[]>;
     // if (val == 0) {
     //   val = this.form.controls['selectAnnoScolastico'].value;
     // }
-    if (this.dove == "alunno-edit-attended") {
+    if (this.dove == "alunno-edit-attended") 
       obsClassi$= this.svcClassiSezioniAnni.loadClassiByAlunno(this.alunnoId); //qui bisogna pescare byAlunno MA attenzione: il risultato è strutturalmente diverso
-    } else {
-      obsClassi$= this.svcClassiSezioniAnni.loadClassiByAnnoScolastico(val);
-    }
+    else 
+      obsClassi$= this.svcClassiSezioniAnni.loadClassiByAnnoScolastico(idAnno);
+
     const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
     loadClassi$.subscribe(val => 
@@ -175,24 +178,27 @@ constructor(
           this.matDataSource.sort = this.sort; 
         }
 
-
         this.storedFilterPredicate = this.matDataSource.filterPredicate;
         this.matDataSource.filterPredicate = this.filterRightPanel();
-        this.rowclicked(this.matDataSource.data[0]); //seleziona per default la prima riga NON FUNZIONA SEMPRE... SERVE??
+        if(this.matDataSource.data.length >0)
+          this.rowclicked(this.matDataSource.data[0]); //seleziona per default la prima riga NON FUNZIONA SEMPRE... SERVE??
+        else
+        this.rowclicked(undefined);
       }
     );
   }
 
-  rowclicked(val: CLS_ClasseSezioneAnno ){
+  rowclicked(val?: CLS_ClasseSezioneAnno ){
+    
     //il click su una classe deve essere trasmesso su al parent
-    if(val!= undefined){
-      this.classeIdEmitter.emit(val.id);
+    if(val!= undefined && val != null)
       this.selectedRowIndex = val.id;
-    }
-    else {
+    else 
       this.selectedRowIndex = -1;
-    }
+    
+    this.classeIdEmitter.emit(this.selectedRowIndex);
   }
+
 //#endregion
 
 //#region ----- Emit per alunno-edit -------
@@ -277,6 +283,7 @@ sortCustom() {
 //#region ----- Add Edit Drop -------
 
   openDetail(id:any) {
+
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
@@ -286,9 +293,7 @@ sortCustom() {
 
     const dialogRef = this._dialog.open(ClasseSezioneAnnoEditComponent, dialogConfig);
     dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData(1); //TODO: metto intanto un valore di default CABLATO DENTRO COMUNQUE NON FUNZIONA BENE!
+      .subscribe(() => { this.loadData(); //TODO: metto intanto un valore di default CABLATO DENTRO COMUNQUE NON FUNZIONA BENE!
     });
   }
 //#endregion

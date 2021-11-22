@@ -11,11 +11,13 @@
     </tr>
 </table>
 
+
 <mat-grid-list cols="2" >
-    <mat-grid-tile>
+
+    <mat-grid-tile *ngIf="currUser.ruolo > 2">        <!--*ngIf="user.role == 9"-->
         <app-classi-sezioni-anni-summary></app-classi-sezioni-anni-summary>
     </mat-grid-tile>
-    <mat-grid-tile>
+    <mat-grid-tile *ngIf="currUser.ruolo > 3">
         <app-rettepagamenti-summary></app-rettepagamenti-summary>
     </mat-grid-tile>
   </mat-grid-list>

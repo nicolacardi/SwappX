@@ -1,7 +1,5 @@
 
-    <mat-toolbar>
-        {{data.titolo}} 
-    </mat-toolbar>
+    <mat-toolbar>{{data.titolo}}</mat-toolbar>
     <div class="buttonsDetail" mat-dialog-actions>
         <button mat-stroked-button color="secondary" mat-dialog-close>
             <mat-icon>arrow_back</mat-icon>
@@ -17,28 +15,26 @@
         </button>
     </div>
     <br>
-    <form class="data-form flex-form" [formGroup] = "form">
 
+    <form class="data-form flex-form" [formGroup] = "form">
         <mat-form-field>
             <mat-label>Nome e Cognome Alunno</mat-label>
             <mat-chip-list #chipList aria-label="Selezione Alunni">
-                <mat-chip
-                    *ngFor="let alunnoSelezionato of alunniSelezionati"
-                    [selectable]="selectable"
-                    [removable]="removable"
-                    (removed)="remove(alunnoSelezionato)"
-                    >
+                <mat-chip *ngFor="let alunnoSelezionato of alunniSelezionati"
+                        [selectable]="selectable"
+                        [removable]="removable"
+                        (removed)="remove(alunnoSelezionato)">
                     {{alunnoSelezionato}}
                     <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>
             </mat-chip-list>
 
-            <input 
-                placeholder = "digita e seleziona"
-                matInput
-                [matChipInputFor]="chipList"
-                formControlName="nomeCognomeAlunno"
-                [matAutocomplete]="auto" #nomeCognomeAlunno>
+            <input  placeholder = "digita e seleziona"
+                    matInput
+                    cdkFocusInitial
+                    [matChipInputFor]="chipList"
+                    formControlName="nomeCognomeAlunno"
+                    [matAutocomplete]="auto" #nomeCognomeAlunno>
 
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                 <mat-progress-bar class="is-loading" *ngIf="alunniIsLoading" mode="indeterminate"></mat-progress-bar>

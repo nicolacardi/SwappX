@@ -40,8 +40,9 @@
 
                     <mat-grid-tile>
                         <mat-form-field>
-                            <input matInput required type="text" placeholder="sezione" maxlength= "1" formControlName="sezione" #sezione>
-                            <mat-error *ngIf="form.controls.sezione.errors?.required"> Campo obbligatorio</mat-error>
+                            <input matInput required type="text" placeholder="sezione" maxlength= "1" 
+                                    formControlName="classeSezione.sezione" #sezione>
+                           <!-- <mat-error *ngIf="form.controls.sezione.errors?.required"> Campo obbligatorio</mat-error>-->
                         </mat-form-field>
                     </mat-grid-tile>
 

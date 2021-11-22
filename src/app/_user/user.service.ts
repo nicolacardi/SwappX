@@ -19,14 +19,14 @@ export class UserService {
 
   private BehaviourSubjectcurrentUser : BehaviorSubject<User>;      //holds the value that needs to be shared with other components
   public obscurrentUser: Observable<User>;
-  public currUser! : User;
+  //public currUser! : User;
 
   constructor(private fb: FormBuilder, private http: HttpClient) { 
     this.BehaviourSubjectcurrentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
     this.obscurrentUser = this.BehaviourSubjectcurrentUser.asObservable();
   }
 
-  public get currentUserValue(): User {
+  public get currentUser(): User {
     return this.BehaviourSubjectcurrentUser.value;
   }
 
@@ -53,7 +53,9 @@ export class UserService {
       .pipe(map(user => {
         if (user && user.token) {
           user.isLoggedIn = true;
-          user.role= UserRole.Admin;        //Debug Role
+          
+          //TEMP
+          //user.role= UserRole.Admin;        //Debug Role
 
           // store user details in local storage to keep user logged in
           localStorage.setItem('token', user.token);

@@ -104,7 +104,7 @@
 
             <mat-divider></mat-divider>
             <!-- Utenti -->
-            <a mat-list-item routerLink="users" (click)="start.close()">
+            <a mat-list-item routerLink="users" (click)="start.close()" *ngIf="currUser.ruolo == 9">
                 <mat-icon>account_box</mat-icon>
                 <span>Gestione Utenti</span>
             </a> 

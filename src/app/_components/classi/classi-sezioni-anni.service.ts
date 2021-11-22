@@ -31,11 +31,18 @@ export class ClassiSezioniAnniService {
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/GetAllByAnno/1
   }
 
-  loadClasse(id: any): Observable<CLS_ClasseSezioneAnno>{
+  //NON USATA (restituisce l'oggetto con parametri base)
+  loadClasseSimple(id: any): Observable<CLS_ClasseSezioneAnno>{
     return  this.http.get<CLS_ClasseSezioneAnno>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/'+id);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/1
   } 
 
+  loadClasse(id: any): Observable<CLS_ClasseSezioneAnno>{
+    return  this.http.get<CLS_ClasseSezioneAnno>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/getWithClasseSezioneanno/'+id);
+    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/getwithClasseSezioneanno/1
+  } 
+
+  
   loadSummary(idAnnoScolastico: any): Observable<CLS_ClasseSezioneAnno_Sum[]>{
     return this.http.get<CLS_ClasseSezioneAnno_Sum[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListSummary/'+idAnnoScolastico);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListSummary/1

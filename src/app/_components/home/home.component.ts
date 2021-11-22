@@ -11,12 +11,15 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 })
 export class HomeComponent implements OnInit {
 
-  user!:                  User;
+  currUser!:              User;
   userFullName!:          string;
 
 
   constructor( private svcUser:       UserService) {
 
+    this.currUser = svcUser.currentUser;
+    //console.log("Currente user: " , this.currUser);
+    //this.userFullName = this.user.fullname;
   }
 
 
