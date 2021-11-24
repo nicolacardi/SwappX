@@ -71,6 +71,12 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 
     this.obsClassi$= this.svcClassi.load();
 
+    //TODO per ottenere l'elenco di tutte le classi dell'anno scolastico successivo 
+    //forse bisogna prelevare con obsAnni l'id dell'anno della classe che si sta guardando, e poi prendere le classi
+    //tramite loadClassiByAnnoScolastico a cui si passa l'id + 1? Solo e si è sicuri che gli anni scolastici sono stati inseriti tutti
+    //con una sequenza di id...altrimenti serve che ogni anno scolastico abbia l'indicazione dell'id dell'anno successivo...per poter estrarre l'id
+    //dell'anno successivo e con quello fare la loadClassiByAnnoScolastico....
+
     //********************* POPOLAMENTO FORM *******************
     if (this.idClasseSezioneAnno && this.idClasseSezioneAnno + '' != "0") {
 

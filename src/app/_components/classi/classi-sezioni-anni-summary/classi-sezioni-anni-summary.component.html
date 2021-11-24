@@ -28,15 +28,15 @@
         </ng-container>
 
         <ng-container matColumnDef="classe">
-            <mat-header-cell *matHeaderCellDef >Classe</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.classe}}</mat-cell>
-            <mat-footer-cell class="bold" *matFooterCellDef> Totale </mat-footer-cell>
+            <mat-header-cell class="center" *matHeaderCellDef >Classe</mat-header-cell>
+            <mat-cell class="center" *matCellDef="let element">{{element.classe}}</mat-cell>
+            <mat-footer-cell class="bold center" *matFooterCellDef> Totale </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="sezione">
-            <mat-header-cell *matHeaderCellDef >Sez.</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.sezione}}</mat-cell>
-            <mat-footer-cell *matFooterCellDef> </mat-footer-cell>
+            <mat-header-cell class="center" *matHeaderCellDef >Sez.</mat-header-cell>
+            <mat-cell class="center" *matCellDef="let element">{{element.sezione}}</mat-cell>
+            <mat-footer-cell class="center" *matFooterCellDef> </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="anno">
@@ -46,21 +46,21 @@
         </ng-container>
 
         <ng-container matColumnDef="numAlunni">
-            <mat-header-cell *matHeaderCellDef>Alunni</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.numAlunni}}</mat-cell>
-            <mat-footer-cell class="bold" *matFooterCellDef> {{getTotal()}} </mat-footer-cell>
+            <mat-header-cell class="al-right" *matHeaderCellDef>Alunni</mat-header-cell>
+            <mat-cell class="al-right" *matCellDef="let element">{{element.numAlunni}}</mat-cell>
+            <mat-footer-cell class="bold al-right" *matFooterCellDef> {{getTotal()}} </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="numMaschi">
-            <mat-header-cell *matHeaderCellDef>M</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.numMaschi}}</mat-cell>
-            <mat-footer-cell class="bold" *matFooterCellDef> {{getTotalM()}} </mat-footer-cell>
+            <mat-header-cell class="al-right" *matHeaderCellDef>M</mat-header-cell>
+            <mat-cell class="al-right" *matCellDef="let element">{{element.numMaschi}}</mat-cell>
+            <mat-footer-cell class="bold al-right" *matFooterCellDef> {{getTotalM()}} </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="numFemmine">
-            <mat-header-cell *matHeaderCellDef>F</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.numFemmine}}</mat-cell>
-            <mat-footer-cell class="bold" *matFooterCellDef> {{getTotalF()}} </mat-footer-cell>
+            <mat-header-cell class="al-right" *matHeaderCellDef>F</mat-header-cell>
+            <mat-cell class="al-right" *matCellDef="let element">{{element.numFemmine}}</mat-cell>
+            <mat-footer-cell class="bold al-right" *matFooterCellDef> {{getTotalF()}} </mat-footer-cell>
         </ng-container>
       
         
@@ -73,7 +73,7 @@
             (contextmenu)="onRightClick($event, element)" >
         </mat-row>
 
-        <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
+        <mat-footer-row class="grey low-row" *matFooterRowDef="displayedColumns"></mat-footer-row>
     </mat-table>
 
     <!-- ***********************  MENU RIGHT CLICK ****************** -->

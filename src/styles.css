@@ -198,10 +198,6 @@ background-size: cover;*/
     height: 75%;
 }
 
-
-
-
-
 .no-padding {
     padding: 0px; 
 }
@@ -252,7 +248,7 @@ background-size: cover;*/
 
 .form-card {
     /* max-width: 600px; */
-    height: 425px;
+    /*height: 425px;*/
     margin: 0px auto 10px auto;
     box-shadow: none !important; /*da togliere nel caso di dialog*/
     padding-top: 0px !important;
@@ -706,4 +702,20 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 
 .bold {
     font-weight: bold;
+}
+
+.al-right {
+    justify-content: flex-end;
+}
+
+.tx-right {
+  text-align:right;
+}
+
+.grey {
+    background-color: rgb(241, 241, 241);
+}
+  
+.low-row {
+    min-height: 30px;
 }
