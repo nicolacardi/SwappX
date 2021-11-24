@@ -24,34 +24,43 @@
             <mat-cell  *matCellDef="let element"> 
                 <img class="iconaMenu pointer" src="../assets/alunno_edit.svg">
             </mat-cell>
+            <mat-footer-cell class="bold" *matFooterCellDef> </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="classe">
             <mat-header-cell *matHeaderCellDef >Classe</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.classe}}</mat-cell>
+            <mat-footer-cell class="bold" *matFooterCellDef> </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="annoRetta">
             <mat-header-cell *matHeaderCellDef >Anno</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.annoRetta}}</mat-cell>
+            <mat-footer-cell class="bold" *matFooterCellDef> Totale </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="meseRetta">
             <mat-header-cell *matHeaderCellDef >Mese</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.meseRetta}}</mat-cell>
+            <mat-footer-cell class="bold" *matFooterCellDef> </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="quotaDefault">
             <mat-header-cell *matHeaderCellDef>Quote Default</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.quotaDefault}}</mat-cell>
+            <mat-footer-cell class="bold" *matFooterCellDef> {{getTotalDefault()}} </mat-footer-cell>
         </ng-container>
+
         <ng-container matColumnDef="quotaConcordata">
             <mat-header-cell *matHeaderCellDef>Quote Concordate</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.quotaConcordata}}</mat-cell>
+            <mat-footer-cell class="bold" *matFooterCellDef> {{getTotalConcordate()}} </mat-footer-cell>
         </ng-container>
+
         <ng-container matColumnDef="importo">
             <mat-header-cell *matHeaderCellDef>Quote Pagate</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.importo}}</mat-cell>
+            <mat-footer-cell class="bold" *matFooterCellDef> {{getTotalPagate()}} </mat-footer-cell>
         </ng-container>
       
         
@@ -64,7 +73,7 @@
             (contextmenu)="onRightClick($event, element)" >
         </mat-row>
 
-        <!-- <mat-row mat-footer-row *matFooterRowDef="displayedColumns"></mat-row> -->
+        <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
     </mat-table>
 
     <!-- ***********************  MENU RIGHT CLICK ****************** -->

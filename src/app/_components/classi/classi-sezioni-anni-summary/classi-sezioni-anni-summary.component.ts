@@ -37,7 +37,6 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
       "actionsColumn",
       "classe",
       "sezione",
-      "anno",
       "numAlunni",
       "numMaschi",
       "numFemmine"
@@ -95,6 +94,18 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
     this.menuTopLeftPosition.y = event.clientY + 'px'; 
     this.matMenuTrigger.menuData = {item: element}   
     this.matMenuTrigger.openMenu(); 
+  }
+//#endregion
+
+//#region ----- Altri Metodi            -------
+  getTotal() {
+    return this.matDataSource.data.map(t => t.numAlunni).reduce((acc, value) => acc + value, 0)
+  }
+  getTotalM() {
+    return this.matDataSource.data.map(t => t.numMaschi).reduce((acc, value) => acc + value, 0)
+  }
+  getTotalF() {
+    return this.matDataSource.data.map(t => t.numFemmine).reduce((acc, value) => acc + value, 0)
   }
 //#endregion
 }

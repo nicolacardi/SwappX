@@ -96,5 +96,16 @@ displayedColumnsRettePagamentiSummary: string[] = [
   }
 //#endregion
 
+//#region ----- Altri Metodi            -------
+getTotalPagate() {
+  return this.matDataSource.data.map(t => t.importo).reduce((acc, value) => acc + value, 0)
+}
+getTotalConcordate() {
+  return this.matDataSource.data.map(t => t.quotaConcordata).reduce((acc, value) => acc + value, 0)
+}
+getTotalDefault() {
+  return this.matDataSource.data.map(t => t.quotaDefault).reduce((acc, value) => acc + value, 0)
+}
+//#endregion
 
 }

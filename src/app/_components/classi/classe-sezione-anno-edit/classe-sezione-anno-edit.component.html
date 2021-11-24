@@ -32,16 +32,18 @@
                     <mat-grid-tile>
                         <mat-form-field >
                             <mat-label>Descrizione Classe</mat-label>
-                            <select matNativeControl formControlName="classeID">
-
-                            </select>
+                            <mat-select matNativeControl formControlName="classeID">
+                                <mat-option *ngFor="let element of (obsClassi$ | async)" [value]="element.id">
+                                    {{element.descrizione2}}
+                                </mat-option>
+                            </mat-select>
                         </mat-form-field>
                     </mat-grid-tile>
-
+             
                     <mat-grid-tile>
                         <mat-form-field>
                             <input matInput required type="text" placeholder="sezione" maxlength= "1" 
-                                    formControlName="classeSezione.sezione" #sezione>
+                                    formControlName="sezione" #sezione>
                            <!-- <mat-error *ngIf="form.controls.sezione.errors?.required"> Campo obbligatorio</mat-error>-->
                         </mat-form-field>
                     </mat-grid-tile>

@@ -229,7 +229,7 @@ td {
   }
 
   .mat-cell {
-    border-bottom: 1px rgba(86, 86, 86, 0.279) solid;
+    /*border-bottom: 1px rgba(86, 86, 86, 0.279) solid;*/
   }
 
 .cellNoBorder {

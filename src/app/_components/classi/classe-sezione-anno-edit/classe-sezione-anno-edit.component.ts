@@ -9,19 +9,16 @@ import { switchMap, tap } from 'rxjs/operators';
 //components
 
 
-
 //services
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
-
+import { ClassiService } from '../classi.service';
 
 //models
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-
-
-
+import { CLS_Classe } from 'src/app/_models/CLS_Classe';
 
 @Component({
   selector: 'app-classe-sezione-anno-edit',
@@ -35,6 +32,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
   classeSezioneAnno$!:                    Observable<CLS_ClasseSezioneAnno>;
   
   obsAnni$!:                Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  obsClassi$!:                Observable<CLS_Classe[]>;
 
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
@@ -44,6 +42,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
   constructor( @Inject(MAT_DIALOG_DATA) public idClasseSezioneAnno: number,
                 private fb:                                 FormBuilder,
                 private svcClasseSezioneAnno:               ClassiSezioniAnniService,
+                private svcClassi:                          ClassiService,
                 private svcAnni:                            AnniScolasticiService,
                 public _dialog:                             MatDialog,
                 private _snackBar:                          MatSnackBar,
@@ -70,6 +69,8 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 
     this.obsAnni$= this.svcAnni.load();
 
+    this.obsClassi$= this.svcClassi.load();
+
     //********************* POPOLAMENTO FORM *******************
     if (this.idClasseSezioneAnno && this.idClasseSezioneAnno + '' != "0") {
 
@@ -80,11 +81,17 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
       .pipe(
           tap(classe => {
 
-            this.form.patchValue(classe)
-
+            //this.form.patchValue(classe);
+            this.form.controls['sezione'].setValue(classe.classeSezione.sezione); 
+            this.form.controls['classeID'].setValue(classe.classeSezione.classe.id);
+            this.form.controls['annoID'].setValue(classe.anno.id);
+            
+            
+            
             //AS: il patch value non sempbra valorizzare il form group ... ????
             //this.form.controls['sezione'].setValue( classe.classeSezione.sezione);
             console.log("[Debug] Sezione = ", classe);
+            console.log("form", this.form);
           })
       );
     } else 
