@@ -78,7 +78,7 @@
         <ng-container matColumnDef="dtNascita">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>nato il</mat-header-cell>
             <!-- <mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</mat-cell> -->
-            <mat-cell *matCellDef="let element" [innerHTML]="element.dtNascita | date: 'dd/MM/yyyy'"></mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.dtNascita | highlight: filterValue| date: 'dd/MM/yyyy'"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="indirizzo">
