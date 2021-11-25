@@ -44,12 +44,10 @@
                         <mat-form-field>
                             <input matInput required type="text" placeholder="sezione" maxlength= "1" 
                                     formControlName="sezione" #sezione>
-                           <!-- <mat-error *ngIf="form.controls.sezione.errors?.required"> Campo obbligatorio</mat-error>-->
                         </mat-form-field>
                     </mat-grid-tile>
 
                     <mat-grid-tile>
-                        <!-- <mat-form-field *ngIf="show" class="ml20 topZIndex"> -->
                         <mat-form-field  >
                             <mat-label>Anno Scolastico</mat-label>
                             <mat-select formControlName="annoID">
@@ -62,12 +60,19 @@
                     </mat-grid-tile>
 
                     <mat-grid-tile>
-                        <mat-form-field>
-                            <input matInput required type="text" placeholder="Classe Successiva" formControlName="classeSezioneAnnoSucc">
-                            <mat-error *ngIf="form.controls.classeSezioneAnnoSucc.errors?.required"> Campo obbligatorio</mat-error>
+                        <mat-form-field >
+                            
+                            <mat-label>Classe Successiva</mat-label>
+                            <mat-select matNativeControl formControlName="classeSezioneAnnoSuccID">
+                                <mat-option *ngFor="let element of (obsClassiSezioniAnniSucc$ | async)" [value]="element.id">
+                                    a.s. {{element.anno.annoscolastico}} - {{element.classeSezione.classe.descrizioneBreve}} {{element.classeSezione.sezione}}
+                                </mat-option>
+                            </mat-select>
                         </mat-form-field>
                     </mat-grid-tile>
                 </mat-grid-list>
+                <!-- {{obsClassi$ | async | json}} -->
+                <!-- {{obsClassiSezioniAnniSucc$ | async | json}} -->
                         
 
             </form>

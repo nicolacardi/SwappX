@@ -31,8 +31,9 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 
   classeSezioneAnno$!:                    Observable<CLS_ClasseSezioneAnno>;
   
-  obsAnni$!:                Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   obsClassi$!:                Observable<CLS_Classe[]>;
+  obsClassiSezioniAnniSucc$!: Observable<CLS_ClasseSezioneAnno[]>;
 
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
@@ -54,7 +55,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
       sezione:                    ['', Validators.required],
       classeID:                   ['', Validators.required],
       annoID:                     ['', Validators.required],
-      classeSezioneAnnoSucc:      ['', Validators.required],
+      classeSezioneAnnoSuccID:    ['', Validators.required],
     });
 
   }
@@ -71,8 +72,10 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 
     this.obsClassi$= this.svcClassi.load();
 
+    //this.obsClassiSezioniAnniSucc$= this.svcClasseSezioneAnno.loadClassiByAnnoScolastico(2);  //PER ORA CABLATO 2 TODO
+
     //TODO per ottenere l'elenco di tutte le classi dell'anno scolastico successivo 
-    //forse bisogna prelevare con obsAnni l'id dell'anno della classe che si sta guardando, e poi prendere le classi
+    //forse bisogna prelevare l'id dell'anno della classe che si sta guardando, e poi prendere le classi
     //tramite loadClassiByAnnoScolastico a cui si passa l'id + 1? Solo e si è sicuri che gli anni scolastici sono stati inseriti tutti
     //con una sequenza di id...altrimenti serve che ogni anno scolastico abbia l'indicazione dell'id dell'anno successivo...per poter estrarre l'id
     //dell'anno successivo e con quello fare la loadClassiByAnnoScolastico....
@@ -86,12 +89,13 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
       this.classeSezioneAnno$ = loadClasseSezioneAnno$
       .pipe(
           tap(classe => {
-
+            
             //this.form.patchValue(classe);
             this.form.controls['sezione'].setValue(classe.classeSezione.sezione); 
             this.form.controls['classeID'].setValue(classe.classeSezione.classe.id);
             this.form.controls['annoID'].setValue(classe.anno.id);
-            
+            this.obsClassiSezioniAnniSucc$= this.svcClasseSezioneAnno.loadClassiByAnnoScolastico(classe.anno.id + 1); 
+            this.form.controls['classeSezioneAnnoSuccID'].setValue(classe.classeSezioneAnnoSucc?.id); 
             
             
             //AS: il patch value non sempbra valorizzare il form group ... ????

@@ -75,3 +75,7 @@ table {
   top: 75px;
   left: 330px
 }
+
+:host ::ng-deep .mat-form-field-infix {
+  border: 0px !important;
+}
