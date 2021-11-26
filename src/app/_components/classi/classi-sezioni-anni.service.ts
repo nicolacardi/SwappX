@@ -50,12 +50,17 @@ export class ClassiSezioniAnniService {
   }
   
   put(formData: any): Observable <any>{
-    console.log (formData);
+    
+    console.log("DEBUG: PUT classi-sezioni-anni.service ", formData );
+
     return this.http.put( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni/' + formData.id , formData);    
   }
 
   post(formData: any): Observable <any>{
     formData.id = 0;
+
+    console.log("DEBUG: POST classi-sezioni-anni.service ", formData );
+
     return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni' , formData);  
   }
 

@@ -45,11 +45,11 @@ const routes: Routes = [
 
   { path: "alunni",           component: AlunniPageComponent, canActivate:[AuthGuard]},
 
-  { path: "genitori",         component: GenitoriPageComponent, canActivate:[AuthGuard]  },
+  { path: "genitori",         component: GenitoriPageComponent, canActivate:[AuthGuard]},
 
   { path: "persone",          component: PersonePageComponent },
 
-  { path: "classi",           component: ClassiPageComponent },
+  { path: "classi",           component: ClassiPageComponent,canActivate:[AuthGuard] },
 
   { path: "classi-dashboard", component: ClassiDashboardComponent },
 

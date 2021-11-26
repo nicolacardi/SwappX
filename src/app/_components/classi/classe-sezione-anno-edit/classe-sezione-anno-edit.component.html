@@ -50,7 +50,7 @@
                     <mat-grid-tile>
                         <mat-form-field  >
                             <mat-label>Anno Scolastico</mat-label>
-                            <mat-select formControlName="annoID" (change)="updateAnnoSucc()">
+                            <mat-select formControlName="annoID" (selectionChange)="updateAnnoSucc(selectAnno.value)" #selectAnno>
                                 <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
                                     {{element.annoscolastico}}
                                 </mat-option>

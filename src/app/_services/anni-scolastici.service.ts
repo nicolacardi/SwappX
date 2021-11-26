@@ -24,6 +24,11 @@ export class AnniScolasticiService {
     return this.http.get<ASC_AnnoScolastico>(environment.apiBaseUrl+'ASC_Anni/'+id);
     //http://213.215.231.4/swappX/api/ASC_Anni/2
   }
+  
+  loadAnnoSucc(id: any): Observable<ASC_AnnoScolastico>{
+    return this.http.get<ASC_AnnoScolastico>(environment.apiBaseUrl+'ASC_Anni/GetAnnoSucc/'+id);
+    //http://213.215.231.4/swappX/api/ASC_Anni/GetAnnoSucc/2
+  }
 
   filterAnniScolastici(searchstring: string): Observable<ASC_AnnoScolastico[]>{
     console.log("anni-scolastici.service.ts - filterAnniScolastici - searchstring:", searchstring);

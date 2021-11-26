@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
     loadUser$.subscribe(
       (res: any) => {
 
-        console.log("DEBUG0:", res);
+        //console.log("login.component - onSubmit", res);
 
         //  this.svcParametri.loadParametro("AnnoCorrente").subscribe(
         //      (par: any) => {
