@@ -1,7 +1,7 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AlunniListComponent } from '../../../alunni/alunni-list/alunni-list.component';
+import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
 
 @Component({
   selector: 'app-scelta-colonne',
@@ -24,10 +24,6 @@ export class SceltaColonneComponent implements OnInit {
     
     console.log("this.basket ngOninit", this.basket);
   }
-
-  
-
-  
 
   drop(event: CdkDragDrop<string[]>) {
     console.log ("basket prima",this.basket);

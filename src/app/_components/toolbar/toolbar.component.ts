@@ -4,7 +4,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 //components
 import { DialogOkComponent } from '../utilities/dialog-ok/dialog-ok.component';
 import { AlunniListComponent } from '../alunni/alunni-list/alunni-list.component';
-import { SceltaColonneComponent } from './scelta-colonne/scelta-colonne/scelta-colonne.component';
+import { SceltaColonneComponent } from './scelta-colonne/scelta-colonne.component';
 
 @Component({
   selector: 'app-toolbar',
