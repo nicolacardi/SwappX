@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { Observable } from 'rxjs';
@@ -19,6 +19,7 @@ import { ClassiService } from '../classi.service';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { CLS_Classe } from 'src/app/_models/CLS_Classe';
+import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 @Component({
   selector: 'app-classe-sezione-anno-edit',
@@ -40,7 +41,9 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
   breakpoint!:                number;
 //#endregion
 
-  constructor( @Inject(MAT_DIALOG_DATA) public idClasseSezioneAnno: number,
+  constructor( 
+                @Inject(MAT_DIALOG_DATA) public idClasseSezioneAnno: number,
+                public _dialogRef:                          MatDialogRef<ClasseSezioneAnnoEditComponent>,
                 private fb:                                 FormBuilder,
                 private svcClasseSezioneAnno:               ClassiSezioniAnniService,
                 private svcClassi:                          ClassiService,
@@ -55,7 +58,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
       sezione:                    ['', Validators.required],
       classeID:                   ['', Validators.required],
       annoID:                     ['', Validators.required],
-      classeSezioneAnnoSuccID:    ['', Validators.required],
+      classeSezioneAnnoSuccID:    [''],
     });
 
   }
@@ -90,18 +93,15 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
       .pipe(
           tap(classe => {
             
-            //this.form.patchValue(classe);
+            //this.form.patchValue(classe); //non funziona bene, perchè ci sono dei "sotto-oggetti"
+            this.form.controls.id.setValue(classe.id); //NB in questo modo si setta il valore di un campo del formBuilder quando NON compare anche come Form-field nell'HTML
             this.form.controls['sezione'].setValue(classe.classeSezione.sezione); 
             this.form.controls['classeID'].setValue(classe.classeSezione.classe.id);
             this.form.controls['annoID'].setValue(classe.anno.id);
             this.obsClassiSezioniAnniSucc$= this.svcClasseSezioneAnno.loadClassiByAnnoScolastico(classe.anno.id + 1); 
             this.form.controls['classeSezioneAnnoSuccID'].setValue(classe.classeSezioneAnnoSucc?.id); 
             
-            
-            //AS: il patch value non sempbra valorizzare il form group ... ????
-            //this.form.controls['sezione'].setValue( classe.classeSezione.sezione);
-            console.log("[Debug] Sezione = ", classe);
-            console.log("form", this.form);
+            console.log("classeSezioneAnno$ estratta : ", classe);
           })
       );
     } else 
@@ -111,11 +111,64 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 //#endregion
 
 //#region ----- Operazioni CRUD -------
-  save(){}
+  save(){
+    console.log ("form.id", this.form.controls['id'].value );
+    if (this.form.controls['id'].value == null)
+      this.svcClasseSezioneAnno.post(this.form.value)
+        .subscribe(res=> {
+          this._dialogRef.close();
+        },
+        err=> (
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        )
+      );
 
-  delete(){}
+    else
+      this.svcClasseSezioneAnno.put(this.form.value)
+          .subscribe(res=> {
+            this._dialogRef.close();
+          },
+          err=> (
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          )
+      );      
 
-  
+
+  }
+
+  delete(){
+    console.log ("this.idClasseSezioneAnno", this.idClasseSezioneAnno);
+    const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+      width: '320px',
+      data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
+    });
+    dialogYesNo.afterClosed().subscribe(result => {
+      if(result){
+        this.svcClasseSezioneAnno.delete(Number(this.idClasseSezioneAnno))
+        .subscribe(
+          res=>{
+            this._snackBar.openFromComponent(SnackbarComponent,
+              {data: 'Record cancellato', panelClass: ['red-snackbar']}
+            );
+            this._dialogRef.close();
+          },
+          err=> (
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          )
+        );
+      }
+    });
+
+ 
+
+  }
+
+
+  updateAnnoSucc() {
+    //su modifica della combo dell'anno deve cambiare l'eleco delle classi successive disponibili...e che si fa del valore eventualmente già selezionato? lo si pone a null?
+    //comunque? anche se è un valore che sarebbe valido lo perdiamo in caso di modifica dell'anno selezionato?
+
+  }
 //#endregion
 
 }
