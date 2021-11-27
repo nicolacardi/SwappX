@@ -49,16 +49,17 @@ export class ClassiSezioniAnniService {
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListSummary/1
   }
   
-  putClasse(formData: any): Observable <any>{
+  put(formData: any): Observable <any>{
+    console.log (formData);
     return this.http.put( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni/' + formData.id , formData);    
   }
 
-  postClasse(formData: any): Observable <any>{
+  post(formData: any): Observable <any>{
     formData.id = 0;
     return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni' , formData);  
   }
 
-  deleteClasse(id: number): Observable <any>{
+  delete(id: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni/' + id);    
   }
 

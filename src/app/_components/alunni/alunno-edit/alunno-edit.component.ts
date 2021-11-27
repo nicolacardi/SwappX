@@ -165,11 +165,9 @@ export class AlunnoEditComponent implements OnInit {
 //#region ----- Operazioni CRUD -------
   save(){
 
-    if (this.form.controls['id'].value == null) 
+    if (this.form.controls['id'].value == null) //ma non sarebbe == 0?
       this.svcAlunni.post(this.form.value)
         .subscribe(res=> {
-          //console.log("return from post", res);
-          //this.form.markAsPristine();
           this._dialogRef.close();
         },
         err=> (
@@ -179,8 +177,6 @@ export class AlunnoEditComponent implements OnInit {
     else 
       this.svcAlunni.put(this.form.value)
         .subscribe(res=> {
-          //console.log("return from put", res);
-          //this.form.markAsPristine();
           this._dialogRef.close();
         },
         err=> (

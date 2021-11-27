@@ -282,6 +282,22 @@ sortCustom() {
 
 //#region ----- Add Edit Drop -------
 
+  addRecord(){
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '380px',
+      height: '450px',
+      data: 0
+    };
+    const dialogRef = this._dialog.open(ClasseSezioneAnnoEditComponent, dialogConfig);
+    dialogRef.afterClosed()
+      .subscribe(
+        () => {
+          this.loadData();
+    });
+  }
+
+
   openDetail(id:any) {
 
     const dialogConfig : MatDialogConfig = {

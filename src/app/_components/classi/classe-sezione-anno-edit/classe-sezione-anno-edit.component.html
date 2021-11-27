@@ -21,7 +21,7 @@
                         <mat-icon>save</mat-icon>
                     </button>
 
-                    <button *ngIf="idClasseSezioneAnno" mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                    <button *ngIf="idClasseSezioneAnno" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
                             [disabled]= "!form.valid" 
                             (click)="delete()" >
                         <mat-icon>delete</mat-icon>
@@ -50,7 +50,7 @@
                     <mat-grid-tile>
                         <mat-form-field  >
                             <mat-label>Anno Scolastico</mat-label>
-                            <mat-select formControlName="annoID">
+                            <mat-select formControlName="annoID" (change)="updateAnnoSucc()">
                                 <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
                                     {{element.annoscolastico}}
                                 </mat-option>
