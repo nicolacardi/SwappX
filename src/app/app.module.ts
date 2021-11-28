@@ -68,6 +68,7 @@ import { NewsComponent } from './_components/news/news.component';
 import { ClassiSezioniAnniSummaryComponent } from './_components/classi/classi-sezioni-anni-summary/classi-sezioni-anni-summary.component';
 import { HighlightPipe } from './_components/utilities/highlight/highlight.pipe';
 import { RettepagamentiSummaryComponent } from './_components/pagamenti/rettepagamenti-summary/rettepagamenti-summary.component';
+import { SceltaColonneComponent } from './_components/alunni/toolbar/scelta-colonne/scelta-colonne/scelta-colonne.component';
 
 
 @NgModule({
@@ -122,6 +123,7 @@ import { RettepagamentiSummaryComponent } from './_components/pagamenti/rettepag
     ClassiSezioniAnniSummaryComponent,
     HighlightPipe,
     RettepagamentiSummaryComponent,
+    SceltaColonneComponent,
     
 
 

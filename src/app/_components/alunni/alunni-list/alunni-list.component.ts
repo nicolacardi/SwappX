@@ -215,6 +215,7 @@ export class AlunniListComponent implements OnInit {
 
       loadAlunni$.subscribe(val => 
         {
+          
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 

@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
@@ -20,6 +20,7 @@ import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { ClassiSezioniAnniFilterComponent } from '../classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -57,6 +58,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
   displayedColumnsClassiPage: string[] =  [
     "actionsColumn",
     "annoscolastico",
+    //"seq",
     "descrizione",
     "sezione",
     "descrizioneAnnoSuccessivo",
@@ -145,7 +147,6 @@ constructor(
         break;
       case 'classi-page':
           this.displayedColumns = this.displayedColumnsClassiPage;
-          
           this.matDataSource.sort = this.sort;
           break;
       default: this.displayedColumns = this.displayedColumnsClassiDashboard;
@@ -164,11 +165,22 @@ constructor(
     if (this.dove == "alunno-edit-attended") 
       obsClassi$= this.svcClassiSezioniAnni.loadClassiByAlunno(this.alunnoId); //qui bisogna pescare byAlunno MA attenzione: il risultato è strutturalmente diverso
     else 
-      obsClassi$= this.svcClassiSezioniAnni.loadClassiByAnnoScolastico(idAnno);
+      obsClassi$= this.svcClassiSezioniAnni.loadClassiByAnnoScolastico(idAnno)
+      // pipe(
+      // map(res=> {
+      //   var ret = <CLS_ClasseSezioneAnno[]>res.json();
+      //   ret.sort((a,b) => a.classeSezione.classe < b.classeSezione.classe ? -1 : 1);
+      //   return ret;
+      // })
+      // )
+      ;
+
 
     const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
-    loadClassi$.subscribe(val => 
+    loadClassi$
+
+    .subscribe(val => 
       {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
@@ -270,10 +282,11 @@ filterPredicateCustom(){
 sortCustom() {
   this.matDataSource.sortingDataAccessor = (item:any, property) => {
     switch(property) {
-      case 'annoscolastico':                       return item.anno.annoscolastico;
+      case 'annoscolastico':              return item.anno.annoscolastico;
       case 'sezione':                     return item.classeSezione.sezione;
-      case 'descrizione':         return item.classeSezione.classe.descrizione2;
-
+      case 'descrizione':                 return item.classeSezione.classe.descrizione2;
+      case 'descrizioneBreve':            return item.classeSezione.classe.descrizioneBreve;
+      //case 'seq':                         return item.classeSezione.classe.seq;
       default: return item[property]
     }
   };

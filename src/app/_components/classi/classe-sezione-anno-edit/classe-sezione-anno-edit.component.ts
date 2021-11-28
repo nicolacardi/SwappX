@@ -106,7 +106,22 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
             this.form.controls['sezione'].setValue(classe.classeSezione.sezione); 
             this.form.controls['classeID'].setValue(classe.classeSezione.classe.id);
             this.form.controls['annoID'].setValue(classe.anno.id);
-            this.obsClassiSezioniAnniSucc$= this.svcClasseSezioneAnno.loadClassiByAnnoScolastico(classe.anno.id + 1); 
+
+            let annoIDsucc=0;
+            this.svcAnni.loadAnnoSucc(classe.anno.id) 
+            .pipe (
+              tap ( val   =>  annoIDsucc= val.id),
+              concatMap(() => this.obsClassiSezioniAnniSucc$ = this.svcClasseSezioneAnno.loadClassiByAnnoScolastico(annoIDsucc))
+            ).subscribe(
+              res=>{
+              },
+              err=>{
+                this.obs.unsubscribe();  ///NC ??? serve nel caso di errore, ma qui dentro cosa accade se c'è un errore?
+              }
+
+            );
+            //this.obsClassiSezioniAnniSucc$= this.svcClasseSezioneAnno.loadClassiByAnnoScolastico(classe.anno.id + 1); //sostituita da quella sopra che pesca l'anno successivo a quello della classe
+
             this.form.controls['classeSezioneAnnoSuccID'].setValue(classe.classeSezioneAnnoSucc?.id); 
             
             //console.log("classeSezioneAnno$ estratta : ", classe);
@@ -155,6 +170,9 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
             )
       );
     }
+
+    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+
   }
 
   delete(){
@@ -201,7 +219,6 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
         res=>{
         },
         err=>{
-          console.log("MEERDA",annoIDsucc );
           this.obs.unsubscribe();
         }
 

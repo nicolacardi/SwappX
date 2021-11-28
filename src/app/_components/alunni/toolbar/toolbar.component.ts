@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 //components
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { AlunniListComponent } from '../alunni-list/alunni-list.component';
+import { SceltaColonneComponent } from './scelta-colonne/scelta-colonne/scelta-colonne.component';
 
 @Component({
   selector: 'app-toolbar',
@@ -11,6 +13,8 @@ import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component
 
 export class ToolbarComponent {
 
+  @Input() alunniListComponent!:                            AlunniListComponent;
+  
   constructor(public _dialog: MatDialog) { }
 
   stampa() {
@@ -32,5 +36,16 @@ export class ToolbarComponent {
       width: '320px',
       data: {titolo: "MOEGHEA!", sottoTitolo: "insomma!"}
     });
+  }
+
+  scegliColonne() {
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '850px',
+      height: '620px',
+      data: this.alunniListComponent.displayedColumns
+    };
+    const dialogRef = this._dialog.open(SceltaColonneComponent, dialogConfig);
+    ;
   }
 }

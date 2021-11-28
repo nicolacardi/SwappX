@@ -17,6 +17,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 
 //models
 import { PER_Persona } from 'src/app/_models/PER_Persone';
+import { map } from 'rxjs/operators';
 
 
 @Component({

@@ -103,9 +103,14 @@
             <mat-cell *matCellDef="let element">{{element.prov}}</mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="CF">
+        <ng-container matColumnDef="cf">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CF</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.CF}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.cf}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="comuneNascita">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Comune Nascita</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.comuneNascita}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="email">
