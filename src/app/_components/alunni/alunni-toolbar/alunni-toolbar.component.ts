@@ -7,13 +7,13 @@ import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 import { SceltaColonneComponent } from './scelta-colonne/scelta-colonne/scelta-colonne.component';
 
 @Component({
-  selector: 'app-toolbar',
-  templateUrl: './toolbar.component.html'
+  selector: 'app-alunni-toolbar',
+  templateUrl: './alunni-toolbar.component.html'
 })
 
-export class ToolbarComponent {
+export class AlunniToolbarComponent {
 
-  @Input() alunniListComponent!:                            AlunniListComponent;
+  @Input() alunniListComponent!:   AlunniListComponent;
   
   constructor(public _dialog: MatDialog) { }
 
