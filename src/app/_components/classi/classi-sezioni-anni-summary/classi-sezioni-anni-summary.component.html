@@ -87,12 +87,15 @@
         <ng-template matMenuContent let-item="item"> 
             <mat-label class="rightMenuTitle">{{item.classe | uppercase}} {{item.sezione | uppercase}}</mat-label>
             <!-- <button mat-menu-item routerLink="/genitori" [queryParams]="{ idAlunno: item.id }">Genitori/Tutori</button>  -->
-            <button mat-menu-item>Gestione Classe</button> 
+            <button mat-menu-item (click)="openGestioneClasse(item)">Gestione Classe</button> 
             <button mat-menu-item>Pagelle</button>
             <button mat-menu-item>Quote e Pagamenti</button>
         </ng-template> 
     </mat-menu> 
 
 </mat-card>
+
+
+
 
 

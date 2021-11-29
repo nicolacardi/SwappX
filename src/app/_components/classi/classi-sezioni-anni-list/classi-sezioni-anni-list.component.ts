@@ -21,6 +21,7 @@ import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { ClassiSezioniAnniFilterComponent } from '../classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 import { map } from 'rxjs/operators';
+import { NavigationService } from '../../utilities/navigation/navigation.service';
 
 
 @Component({
@@ -107,6 +108,7 @@ constructor(
     private _loadingService:              LoadingService,
     private fb:                           FormBuilder, 
     public _dialog:                       MatDialog, 
+    private _navigationService:           NavigationService
   ) { 
 
     let obj = localStorage.getItem('AnnoCorrente');
@@ -118,6 +120,19 @@ constructor(
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
     
+    // this._navigationService.getAnnoScolastico().subscribe(
+    //   val=>{
+    //   if (val!= null) {
+    //     this.form.controls['selectAnnoScolastico'].setValue(val);
+    //     //this.passedAlunno = val;
+    //     //this.toggleDrawer.emit();
+    //     //this.genitoriFilterComponent.nomeCognomeAlunnoFilter.setValue(val);
+    //     //this.loadData(); 
+    //     //PROBLEMA! se uso questo service ogni volta che entro qui troverò settato il valore parcheggiato nel service!
+        
+    //   }
+    // });    
+
     this.obsAnni$= this.svcAnni.load();
 
     this.loadData( );
