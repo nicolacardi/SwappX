@@ -10,10 +10,12 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 
 //classes
-import { CLS_ClasseSezioneAnno_Sum } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnno_Sum } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
+import { NavigationService } from '../../utilities/navigation/navigation.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -27,7 +29,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
 
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno_Sum>();
 
-  public idAnnoScolastico!:           number;
+  //public idAnnoScolastico!:           number;
   obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
 
   form! :                             FormGroup;
@@ -47,10 +49,12 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 //#endregion
 
-  constructor(private svcClassi:        ClassiSezioniAnniService,
-              private svcAnni:          AnniScolasticiService,
-              private fb:               FormBuilder, 
-              private _loadingService:  LoadingService) { 
+  constructor(private svcClassi:          ClassiSezioniAnniService,
+              private svcAnni:            AnniScolasticiService,
+              private fb:                 FormBuilder, 
+              private _loadingService:    LoadingService,
+              private router:             Router,
+              private _navigationService: NavigationService) { 
 
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
@@ -106,6 +110,21 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   }
   getTotalF() {
     return this.matDataSource.data.map(t => t.numFemmine).reduce((acc, value) => acc + value, 0)
+  }
+
+  openGestioneClasse(item: CLS_ClasseSezioneAnno) {
+    // this._navigationService.passAnnoScolastico(this.form.controls['selectAnnoScolastico'].value);
+    // this._navigationService.passClasseSezioneAnno(item.id);
+    // this.router.navigateByUrl("/classi-dashboard");
+    //PROBLEMA: se uso il metodo del navigation service
+    //a differenza di alunnni e genitori che mettono l'alunno nei filtri sulla destra (o il genitore sui filtri sulla destra)
+    //in questo caso non ho filtri sulla destra. Quindi posso sì passarlo alla classi-dashboard MA vuol dire che classi-dashboard poi userò anche in futuro quel valore
+    //perche' come prima cosa andrà a interrogare il navigation service e quello avrà il valore di anno e di classesezioneAnnoId che sono stati lì salvati 
+    //
+    //alternativa 1: router con parametri per cui se i parametri non ci sono non vengono usati
+    
+
+    
   }
 //#endregion
 }

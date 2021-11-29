@@ -54,4 +54,16 @@ export class NavigationService {
         return this.AnnoObs$;
     }
 
+    private ClasseSezioneAnnoSubject = new BehaviorSubject<number>(0);
+    ClasseSezioneAnnoObs$: Observable<number> = this.ClasseSezioneAnnoSubject.asObservable();
+    
+    passClasseSezioneAnno(data: number) {
+        this.ClasseSezioneAnnoSubject.next(data);
+    }
+
+    getClasseSezioneAnno () {
+        return this.ClasseSezioneAnnoObs$;
+    }
+
+
 }
