@@ -5,6 +5,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 import { SceltaColonneComponent } from '../../toolbar/scelta-colonne/scelta-colonne.component';
+import { _UT_GridLayout, _UT_GridLayoutColumn } from 'src/app/_models/_UT_GridLayout';
 
 @Component({
   selector: 'app-alunni-toolbar',
@@ -15,8 +16,58 @@ export class AlunniToolbarComponent {
 
   @Input() alunniListComponent!:   AlunniListComponent;
   
-  constructor(public _dialog: MatDialog) { }
+  constructor(public _dialog: MatDialog) { 
 
+  }
+
+  scegliColonne(component: AlunniListComponent) {
+
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '850px',
+      height: '620px',
+      //data: component.displayedColumns
+      data:this.buildLayout()
+    };
+    const dialogRef = this._dialog.open(SceltaColonneComponent, dialogConfig);
+
+    
+  }
+
+  private buildLayout(): _UT_GridLayout {
+
+    let obj: _UT_GridLayout= { 
+        id:0,
+        userID:"",
+        gridName: "alunniList",
+        columns:this.loadColumns()
+    };
+    return obj;
+  }
+
+
+  private loadColumns(): _UT_GridLayoutColumn[]  {
+
+    let lst: _UT_GridLayoutColumn[]= [];
+    let obj: _UT_GridLayoutColumn ={columnName:"", isVisible:true, disabled:false} ;
+
+    this.alunniListComponent.displayedColumns.forEach(element => {
+      if(element.startsWith("action")) 
+        obj ={columnName: element, isVisible:true, disabled: true};
+      else
+        obj ={columnName: element, isVisible:true, disabled: false};
+
+      lst.push(obj);
+    });
+
+    //this.empList.push({this.name,this.empoloyeeID});
+    return lst;
+
+  }
+
+
+  
+//____________________________ TODO  _________________________
   stampa() {
     this._dialog.open(DialogOkComponent, {
       width: '320px',
@@ -37,27 +88,7 @@ export class AlunniToolbarComponent {
       data: {titolo: "MOEGHEA!", sottoTitolo: "insomma!"}
     });
   }
-  /*
-  scegliColonne() {
-    const dialogConfig : MatDialogConfig = {
-      panelClass: 'add-DetailDialog',
-      width: '850px',
-      height: '620px',
-      data: this.alunniListComponent.displayedColumns
-    };
-    const dialogRef = this._dialog.open(SceltaColonneComponent, dialogConfig);
-    ;
-  }
-  */
-  scegliColonne(component: AlunniListComponent) {
-    const dialogConfig : MatDialogConfig = {
-      panelClass: 'add-DetailDialog',
-      width: '850px',
-      height: '620px',
-      data: component.displayedColumns
-    };
-    const dialogRef = this._dialog.open(SceltaColonneComponent, dialogConfig);
-    ;
-  }
+
+ 
 
 }

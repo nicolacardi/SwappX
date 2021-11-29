@@ -2,7 +2,11 @@ export interface _UT_GridLayout {
         id:             number;
         userID:         string;
         gridName:       string;
-        columnName:     string;
-        isVisible:      boolean;
+        columns:       _UT_GridLayoutColumn[];
 }
 
+export interface _UT_GridLayoutColumn {
+        columnName:     string;
+        isVisible:      boolean;
+        disabled:       boolean;
+}

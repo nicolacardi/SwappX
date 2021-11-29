@@ -143,6 +143,7 @@ export class AlunniListComponent implements OnInit {
               ) {
   }
   
+
 //#region ----- LifeCycle Hooks e simili-------
   ngOnChanges() {
     //mentre classiDashboard ripassa per ngOnChanges quando idClasse gli arriva (è una @Input)
@@ -206,6 +207,14 @@ export class AlunniListComponent implements OnInit {
     }
   }
 
+  loadLayout(){
+      //chiamata al WS dei layout con nome utente e nome griglia e contesto (variabile 'dove')
+
+      //se trovato, update colonne griglia
+      //this.displayedColumns =  this.displayedColumnsAlunniList;
+
+  }
+
   loadData () {
     let obsAlunni$: Observable<ALU_Alunno[]>;
 
@@ -215,7 +224,6 @@ export class AlunniListComponent implements OnInit {
 
       loadAlunni$.subscribe(val => 
         {
-          
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 

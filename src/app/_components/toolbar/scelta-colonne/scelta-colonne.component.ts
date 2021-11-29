@@ -1,6 +1,8 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { _UT_GridLayout, _UT_GridLayoutColumn } from 'src/app/_models/_UT_GridLayout';
+import { UserService } from 'src/app/_user/user.service';
 import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
 
 @Component({
@@ -10,14 +12,16 @@ import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.compon
 })
 export class SceltaColonneComponent implements OnInit {
 
-  gridName!: string;
+  //griglia!: string;
   //userID!: 
 
+  lstColumns!: _UT_GridLayoutColumn[];
+  lstVisible!: _UT_GridLayoutColumn[];
+  
   basket!: string[];
   items!: string[];
   
   //1- Modificare costruttore: in input deve accettare il parametro [gridName] (l'utente va recuperato da this.uService.currentUser)
-  //ORCAPALETTA: come faccio a injettarlo ? private svcUser:        UserService,
  
   /*
   2-  Chiamare WS GET _UT_Layout [TODO asp.net core]
@@ -38,37 +42,41 @@ export class SceltaColonneComponent implements OnInit {
 
   //5- Refresh chiamante
 
-  constructor(@Inject(MAT_DIALOG_DATA) public displayedColumns: string[]) { }
-
-  ngOnInit(): void {
-    console.log (this.displayedColumns);
-
-    this.basket = this.displayedColumns;
-    this.items = this.displayedColumns;
-    this.items = ['cf', 'comuneNascita'];
-    
-    console.log("this.basket ngOninit", this.basket);
+  constructor(@Inject(MAT_DIALOG_DATA) //public displayedColumns: string[],
+                                       public gridLayout:       _UT_GridLayout, 
+                                       private svcUser:        UserService) { 
+                    
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    console.log ("basket prima",this.basket);
+  ngOnInit(): void {
+
+    this.lstColumns = this.gridLayout.columns.filter(x=> x.isVisible== false);
+    this.lstVisible = this.gridLayout.columns.filter(x=> x.isVisible== true);
+  }
+
+  
+  drop(event: CdkDragDrop<_UT_GridLayoutColumn[]>) {
+
+    if(event.previousContainer.data.length <=1) return;
+
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      console.log("event.previousContainer.data prima", event.previousContainer.data);
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex,
       );
-      console.log("event.previousContainer.data dopo", event.previousContainer.data);
-    
     }
-    console.log ("basket dopo",this.basket);
   }
 
   save() {
+    //TODO: chiamata al WS
+    //...
 
+    //aggiornamento griglia chiamante
+    //...
+    
   }
 }
