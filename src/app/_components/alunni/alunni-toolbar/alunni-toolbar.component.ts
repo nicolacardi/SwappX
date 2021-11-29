@@ -44,7 +44,6 @@ export class AlunniToolbarComponent {
     return obj;
   }
 
-
   private loadColumns(): _UT_GridLayoutColumn[]  {
 
     let lst: _UT_GridLayoutColumn[]= [];
