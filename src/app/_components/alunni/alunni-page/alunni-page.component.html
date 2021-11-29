@@ -23,7 +23,7 @@
     <mat-drawer-content>
         <app-alunni-list
             [alunniFilterComponent] = "appalunnifilter"
-            [dove] = "'alunni-page'"
+            [context] = "'alunni-page'"
             #appalunnilist  
             (openDrawer) = "openDrawer()"
             >

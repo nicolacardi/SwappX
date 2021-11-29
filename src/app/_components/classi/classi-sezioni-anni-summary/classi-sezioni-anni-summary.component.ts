@@ -81,9 +81,9 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
     loadSummary$.subscribe(val => {
         this.matDataSource.data = val;
       }
-    );
-    
+    ); 
   }
+  
 //#endregion
 
 

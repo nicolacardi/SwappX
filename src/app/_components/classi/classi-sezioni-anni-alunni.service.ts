@@ -30,7 +30,6 @@ export class ClassiSezioniAnniAlunniService {
   }
 
   deleteClasseSezioneAnnoAlunno(ClasseSezioneAnnoID: number, idAlunno: number): Observable <any>{
-    console.log("provo a cancellare dove ClasseSezioneAnnoID :"+ClasseSezioneAnnoID+" e idAlunno:"+idAlunno );
     return this.http.delete( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnniAlunni/DeleteByAlunnoAndClasseSezioneAnno?idAlunno='+idAlunno+'&idClasseSezioneAnno='+ClasseSezioneAnnoID);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnniAlunni/DeleteByAlunnoAndClasseSezioneAnno?idAlunno=3&idClasseSezioneAnno=243
 
