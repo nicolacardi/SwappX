@@ -282,7 +282,7 @@
                         </button>
                         <mat-label class="frameLabel">i genitori/tutori di {{nome.value}} </mat-label>
                         <div class="genitori-container cellBordered mt10">
-                            <app-genitori-list [dove]="'alunno-edit-famiglia'"[alunnoId]="idAlunno"  (removeFromFamily) = "removeFromFamily($event)" #genitoriFamiglia></app-genitori-list>
+                            <app-genitori-list [context]="'alunno-edit-famiglia'"[alunnoId]="idAlunno"  (removeFromFamily) = "removeFromFamily($event)" #genitoriFamiglia></app-genitori-list>
                         </div>
                         <mat-accordion>
                             <mat-expansion-panel hideToggle>
@@ -296,7 +296,7 @@
                               </mat-expansion-panel-header>
                                 <mat-label class="frameLabel">Elenco dei genitori/tutori </mat-label>
                                 <div class="genitori-list-container cellBordered mt10">
-                                    <app-genitori-list [dove]="'alunno-edit-list'" (addToFamily) = "addToFamily($event)"></app-genitori-list>
+                                    <app-genitori-list [context]="'alunno-edit-list'" (addToFamily) = "addToFamily($event)"></app-genitori-list>
                                 </div>
                             </mat-expansion-panel>
                         </mat-accordion>

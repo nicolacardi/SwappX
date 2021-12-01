@@ -92,7 +92,7 @@ export class GenitoriListComponent implements OnInit {
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger;
 
-  @Input('dove') dove! :                                      string;
+  @Input('context') context! :                                string;
   @Input('alunnoId') alunnoId! :                              number;
   @Input() genitoriFilterComponent!: GenitoriFilterComponent;
 
@@ -119,21 +119,20 @@ export class GenitoriListComponent implements OnInit {
     //   this.page = val;
     //   this.loadData(); 
     // })
-    if (this.dove != ''){
+    if (this.context != '')
       this.loadData();
-    }
   }
 
   ngOnInit () {
 
-    if (this.dove == "alunno-edit-list" || this.dove == "alunno-edit-famiglia") {
+    if (this.context == "alunno-edit-list" || this.context == "alunno-edit-famiglia") {
       this.showPageTitle = false;
     }
-    if (this.dove == "alunno-edit-famiglia") {
+    if (this.context == "alunno-edit-famiglia") {
       this.showTableRibbon = false;
     }
 
-    switch(this.dove) {
+    switch(this.context) {
       case 'alunno-edit-list': this.displayedColumns = this.displayedColumnsAlunnoEditList; break;
       case 'alunno-edit-famiglia': this.displayedColumns = this.displayedColumnsAlunnoEditFamiglia; break;
       default: this.displayedColumns = this.displayedColumnsGenitoriPage;
@@ -153,7 +152,7 @@ export class GenitoriListComponent implements OnInit {
   loadData () {
     let obsGenitori$: Observable<ALU_Genitore[]>;
 
-    if(this.dove == "alunno-edit-famiglia"){
+    if(this.context == "alunno-edit-famiglia"){
       console.log("this.alunnoId sto per caricare solo l'alunno:", this.alunnoId);
       obsGenitori$= this.svcGenitori.loadByAlunno(this.alunnoId);
 
@@ -162,13 +161,9 @@ export class GenitoriListComponent implements OnInit {
     else {
       obsGenitori$= this.svcGenitori.loadWithChildren();
     }
-
-
-    
     const loadGenitori$ =this._loadingService.showLoaderUntilCompleted(obsGenitori$);
 
-    loadGenitori$.subscribe(val => 
-      {
+    loadGenitori$.subscribe(val =>   {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort;

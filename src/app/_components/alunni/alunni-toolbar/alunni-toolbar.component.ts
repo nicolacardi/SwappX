@@ -30,8 +30,6 @@ export class AlunniToolbarComponent {
       data:this.buildLayout()
     };
     const dialogRef = this._dialog.open(SceltaColonneComponent, dialogConfig);
-
-    
   }
 
   private buildLayout(): _UT_GridLayout {
@@ -40,11 +38,11 @@ export class AlunniToolbarComponent {
         id:0,
         userID:"",
         gridName: "alunniList",
+        context: "",
         columns:this.loadColumns()
     };
     return obj;
   }
-
 
   private loadColumns(): _UT_GridLayoutColumn[]  {
 
@@ -60,9 +58,7 @@ export class AlunniToolbarComponent {
       lst.push(obj);
     });
 
-    //this.empList.push({this.name,this.empoloyeeID});
     return lst;
-
   }
 
 

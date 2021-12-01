@@ -182,7 +182,7 @@
                         <mat-label class="frameLabel">i figli di {{nome.value}}</mat-label>
                         <div class="alunni-container cellBordered mt10">
                             <!-- <app-alunni-list [dove]="'genitore-edit-famiglia'"[genitoreId]="idGenitore"  (removeFromFamily) = "removeFromFamily($event)" #figliFamiglia></app-alunni-list> -->
-                            <app-alunni-list [dove]="'genitore-edit-famiglia'" [genitoreId] ="idGenitore" (removeFromFamily) = "removeFromFamily($event)" #alunniFamiglia></app-alunni-list>
+                            <app-alunni-list [context]="'genitore-edit-famiglia'" [genitoreId] ="idGenitore" (removeFromFamily) = "removeFromFamily($event)" #alunniFamiglia></app-alunni-list>
                         </div>
                         <mat-accordion>
                             <mat-expansion-panel hideToggle>
@@ -197,7 +197,7 @@
                                 <mat-label class="frameLabel">Elenco degli alunni </mat-label>
                                 <div class="alunni-list-container cellBordered mt10">
                                     <!-- <app-alunni-list [dove]="'genitore-edit-list'" (addToFamily) = "addToFamily($event)"></app-alunni-list> -->
-                                    <app-alunni-list [dove]="'genitore-edit-list'" (addToFamily) = "addToFamily($event)"></app-alunni-list>
+                                    <app-alunni-list [context]="'genitore-edit-list'" (addToFamily) = "addToFamily($event)"></app-alunni-list>
                                 </div>
                             </mat-expansion-panel>
                         </mat-accordion>

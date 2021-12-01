@@ -122,16 +122,12 @@ export class AlunniListComponent implements OnInit {
 
   @Input() idClasse!:                                         number;
   @Input() alunniFilterComponent!:                            AlunniFilterComponent;
-  @Input('dove') dove! :                                      string;
+  @Input('context') context! :                                string;
   @Input('genitoreId') genitoreId! :                          number;
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('addToFamily') addToFamily = new EventEmitter<ALU_Alunno>();
   @Output('removeFromFamily') removeFromFamily = new EventEmitter<ALU_Alunno>();
-
-
-
-
 
 //#endregion
 
@@ -170,17 +166,16 @@ export class AlunniListComponent implements OnInit {
           //   this.resetSelections();
           // })
 
-      if (this.dove != ''){
+      if (this.context != ''){
         this.loadData();
         this.toggleChecks = false;
         this.resetSelections();
       }
-
     //}
   }
   
   ngOnInit () {
-    switch(this.dove) {
+    switch(this.context) {
       case 'alunni-page': 
         this.displayedColumns =  this.displayedColumnsAlunniList;
         this._navigationService.getGenitore().subscribe(
@@ -208,8 +203,9 @@ export class AlunniListComponent implements OnInit {
   }
 
   loadLayout(){
-      //chiamata al WS dei layout con nome utente e nome griglia e contesto (variabile 'dove')
+      //chiamata al WS dei layout con nome utente e nome griglia e contesto (variabile 'context')
 
+      
       //se trovato, update colonne griglia
       //this.displayedColumns =  this.displayedColumnsAlunniList;
 
@@ -218,7 +214,7 @@ export class AlunniListComponent implements OnInit {
   loadData () {
     let obsAlunni$: Observable<ALU_Alunno[]>;
 
-    if (this.dove == "classi-dashboard" && this.idClasse != undefined) {
+    if (this.context == "classi-dashboard" && this.idClasse != undefined) {
       obsAlunni$= this.svcAlunni.loadByClasse(this.idClasse);
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
 
@@ -231,7 +227,7 @@ export class AlunniListComponent implements OnInit {
       );
     } 
     
-    if (this.dove =="alunni-page") {
+    if (this.context =="alunni-page") {
       if(this.swSoloAttivi){
         obsAlunni$= this.svcAlunni.loadWithParents()
           .pipe(map(res=> res.filter((x) => x.ckAttivo == true)));
@@ -254,7 +250,7 @@ export class AlunniListComponent implements OnInit {
     }
 
     //TODO:    VERIFICARE (RIPETUTO?)
-    if (this.dove == "genitore-edit-list") {
+    if (this.context == "genitore-edit-list") {
       obsAlunni$= this.svcAlunni.loadWithParents();
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
       loadAlunni$.subscribe(val => 
@@ -268,7 +264,7 @@ export class AlunniListComponent implements OnInit {
       );
     }
 
-    if (this.dove == "genitore-edit-famiglia") {
+    if (this.context == "genitore-edit-famiglia") {
       obsAlunni$= this.svcAlunni.loadByGenitore(this.genitoreId);
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
       loadAlunni$.subscribe(val => 
@@ -317,7 +313,7 @@ export class AlunniListComponent implements OnInit {
     this.filterValue = (event.target as HTMLInputElement).value;
     if (this.filterValue.length == 1) {
       this.matDataSource.filterPredicate = this.storedFilterPredicate;
-      if (this.dove == "alunni-page") this.alunniFilterComponent.resetAllInputs();
+      if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
     }
     
     this.matDataSource.filter = this.filterValue.trim().toLowerCase();
