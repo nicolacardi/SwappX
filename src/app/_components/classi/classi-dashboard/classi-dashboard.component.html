@@ -4,8 +4,11 @@
         <td class="columnleft-dashboard">
             <mat-card style="height: 100%;" class="card mat-elevation-z8">
                 <div class="table-container">
+                    <!-- idAnnoInput è la proprietà che passiamo A classiSezioniAnniList -->
+                    <!-- annoId è la proprietà che riceviamo DA classiSezioniAnniList -->
                     <app-classi-sezioni-anni-list 
                         [dove] = "'classi-dashboard'"
+                        [idAnnoInput] = "idAnnoInput"
                         (annoId)="annoIdEmitted($event)"
                         (classeId)="classeIdEmitted($event)">
                     </app-classi-sezioni-anni-list>

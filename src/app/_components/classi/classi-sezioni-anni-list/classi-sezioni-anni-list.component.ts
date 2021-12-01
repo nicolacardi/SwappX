@@ -85,6 +85,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
 //#region ----- ViewChild Input Output -------
 
   @Input('dove') dove! :                                      string;
+  @Input('idAnnoInput') idAnnoInput! :                        number;
   @Input('alunnoId') alunnoId! :                              number;
   
   @Input() classiSezioniAnniFilterComponent!:                 ClassiSezioniAnniFilterComponent;
@@ -95,8 +96,8 @@ export class ClassiSezioniAnniListComponent implements OnInit {
   
   @ViewChild('selectAnnoScolastico') selectAnnoScolastico!: MatSelect; 
 
-  @Output('annoId') annoIdEmitter = new EventEmitter<number>();
-  @Output('classeId') classeIdEmitter = new EventEmitter<number>();
+  @Output('annoId') annoIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
+  @Output('classeId') classeIdEmitter = new EventEmitter<number>(); //classeId viene EMESSO quando si clicca su una classe
   @Output('addToAttended') addToAttended = new EventEmitter<CLS_ClasseSezioneAnno>();
   @Output('removeFromAttended') removeFromAttended = new EventEmitter<CLS_ClasseSezioneAnno>();
 
@@ -112,8 +113,10 @@ constructor(
   ) { 
 
     let obj = localStorage.getItem('AnnoCorrente');
+    let annoToSet = +(JSON.parse(obj!) as _UT_Parametro).parValue;
+
     this.form = this.fb.group({
-      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
+      selectAnnoScolastico:  annoToSet
     })
   }
 
@@ -171,7 +174,19 @@ constructor(
   }
 
   loadData ( ) {
-    const idAnno = this.form.controls["selectAnnoScolastico"].value;
+
+    
+    let idAnno: number;
+
+
+    console.log ("this.idAnnoInput", this.idAnnoInput);
+    if (this.idAnnoInput != undefined) {
+      this.form.controls.selectAnnoScolastico.setValue(this.idAnnoInput); //non funziona
+      idAnno = this.idAnnoInput;
+    } else {
+      idAnno = this.form.controls["selectAnnoScolastico"].value;
+    }
+
 
     let obsClassi$: Observable<CLS_ClasseSezioneAnno[]>;
     // if (val == 0) {

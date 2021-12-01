@@ -122,7 +122,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
     //perche' come prima cosa andrà a interrogare il navigation service e quello avrà il valore di anno e di classesezioneAnnoId che sono stati lì salvati 
     //
     //alternativa 1: router con parametri per cui se i parametri non ci sono non vengono usati
-    
+    this.router.navigate(['/classi-dashboard'], { queryParams: { idAnno: this.form.controls['selectAnnoScolastico'].value, idClasseSezioneAnno: item.id } });
 
     
   }
