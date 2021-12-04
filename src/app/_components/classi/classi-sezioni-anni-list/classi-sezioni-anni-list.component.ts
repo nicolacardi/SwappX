@@ -20,7 +20,7 @@ import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { ClassiSezioniAnniFilterComponent } from '../classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
-import { map } from 'rxjs/operators';
+import { concatMap, finalize, map, tap } from 'rxjs/operators';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
 
 
@@ -40,6 +40,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
   showPageTitle:                      boolean = true;
   showTableRibbon:                    boolean = true;
   obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+
   selectedRowIndex = -1;
   form! :                             FormGroup;
 
@@ -86,6 +87,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
 
   @Input('dove') dove! :                                      string;
   @Input('idAnnoInput') idAnnoInput! :                        number;
+  @Input('idClasseInput') idClasseInput! :                    number;
   @Input('alunnoId') alunnoId! :                              number;
   
   @Input() classiSezioniAnniFilterComponent!:                 ClassiSezioniAnniFilterComponent;
@@ -113,39 +115,75 @@ constructor(
   ) { 
 
     let obj = localStorage.getItem('AnnoCorrente');
-    let annoToSet = +(JSON.parse(obj!) as _UT_Parametro).parValue;
+    let annoIdToSet = +(JSON.parse(obj!) as _UT_Parametro).parValue;
+    
+    this.svcAnni.loadAnnoScolastico(annoIdToSet)
+      .subscribe ( val=> {
+          this.form = this.fb.group({
+            selectAnnoScolastico:  val  //NON FUNZIONA
+          })
+        }
+      );
 
-    this.form = this.fb.group({
-      selectAnnoScolastico:  annoToSet
-    })
+    // this.form = this.fb.group({
+    //   selectAnnoScolastico:  annoIdToSet  //PROBLEMA!!!!!: QUI NON ABBIAMO UN OGGETTO ANNO MA UN ID!!!
+    // })
+
+
   }
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
-    
-    // this._navigationService.getAnnoScolastico().subscribe(
-    //   val=>{
-    //   if (val!= null) {
-    //     this.form.controls['selectAnnoScolastico'].setValue(val);
-    //     //this.passedAlunno = val;
-    //     //this.toggleDrawer.emit();
-    //     //this.genitoriFilterComponent.nomeCognomeAlunnoFilter.setValue(val);
-    //     //this.loadData(); 
-    //     //PROBLEMA! se uso questo service ogni volta che entro qui troverò settato il valore parcheggiato nel service!
-        
-    //   }
-    // });    
 
-    this.obsAnni$= this.svcAnni.load();
-
-    this.loadData( );
-    this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);
 
     this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
+      console.log("select value onchange", this.form.controls.selectAnnoScolastico.value);
       this.loadData();
-      this.annoIdEmitter.emit(val);
+      //this.annoIdEmitter.emit(val); //così non può funzionare ora che [value] = "element" e non [value] = "element.id"
+      this.annoIdEmitter.emit(val.id);
     })
 
+
+    this.obsAnni$ = this.svcAnni.load()
+      .pipe(
+        //nell'HTML imposto [value] = "element" e non [value] = "element.id"
+        //devo passare alla matSelect non l'id ma l'oggetto
+        //questo lo posso fare nel tap e non nel finalize perchè nel finalize non si può, non c'è la possibilità di mettere (val) ma solo ()
+        tap( val => {
+          //console.log ("this.idAnnoInput", this.idAnnoInput);
+          //this.form.controls.selectAnnoScolastico.setValue(val[this.idAnnoInput-1]); //TERRIBILE!!! bisogna invece trovare l'elemento che ha id = this.idAnnoInput
+          //e che INCIDENTALMENTE corrisponde a this.idAnnoInput - 1
+          //Serve un filter o simile.
+
+          this.form.controls.selectAnnoScolastico.setValue( val.find (val=> val.id == this.idAnnoInput) ); 
+          // console.log ("idAnnoInput", this.idAnnoInput);
+          // console.log ("val", val);
+          // console.log ("val[this.idAnnoInput-1]", val[this.idAnnoInput-1]);
+          // console.log ("val.find", val.find (x=> x.id == this.idAnnoInput)); //MINCHIA MA SONO UGUALI!
+          
+
+          //this.form.controls.selectAnnoScolastico.setValue(val.filter (x=> {return x.id === this.idAnnoInput})); 
+
+
+          
+        }),
+        //Vecchia finalize che non poteva ricevere il (val) =>  
+        // finalize( () => {          
+        //   if (this.idAnnoInput != undefined) {
+        //     console.log ("sto per impostare l'anno con id:" , this.idAnnoInput);
+        //     this.form.controls.selectAnnoScolastico.setValue(this.idAnnoInput);
+        //     console.log("value impostato", this.form.controls.selectAnnoScolastico.value);
+        //   } 
+        // })
+      );
+
+
+    //this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);  //COME FA A FUNZIONARE ORA CHE LA SELECT COME VALUE HA UN OGGETTO?
+    this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value.id); 
+
+
+    this.loadData();  //NC spostato qui da sopra 3.12.2021
+    
     switch(this.dove) {
       case 'alunno-edit-list':
         this.displayedColumns = this.displayedColumnsAlunnoEditList;
@@ -173,25 +211,24 @@ constructor(
 
   }
 
-  loadData ( ) {
 
-    
-    let idAnno: number;
-
-
-    console.log ("this.idAnnoInput", this.idAnnoInput);
-    if (this.idAnnoInput != undefined) {
-      this.form.controls.selectAnnoScolastico.setValue(this.idAnnoInput); //non funziona
-      idAnno = this.idAnnoInput;
-    } else {
-      idAnno = this.form.controls["selectAnnoScolastico"].value;
+  compareAnni (a1:ASC_AnnoScolastico, a2: ASC_AnnoScolastico): boolean {
+    //paragona il valore selezionato con ogni singolo valore delle singole options? Non ho mica capito bene...
+    console.log ("compareAnni", a1, a2);
+    if (a1 && a2) {
+        return a1.id === a2.id;
     }
+    return false;
+  }
 
+
+  loadData ( ) {
+   
+    let idAnno: number;
+    idAnno = this.form.controls["selectAnnoScolastico"].value.id;
+    //idAnno = this.form.controls["selectAnnoScolastico"].value;  Ho cambiato il valore selezionato nell'html, non è più l'id ma l'intero oggetto anno
 
     let obsClassi$: Observable<CLS_ClasseSezioneAnno[]>;
-    // if (val == 0) {
-    //   val = this.form.controls['selectAnnoScolastico'].value;
-    // }
     if (this.dove == "alunno-edit-attended") 
       obsClassi$= this.svcClassiSezioniAnni.loadClassiByAlunno(this.alunnoId); //qui bisogna pescare byAlunno MA attenzione: il risultato è strutturalmente diverso
     else 
