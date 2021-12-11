@@ -114,20 +114,23 @@ constructor(
     private _navigationService:           NavigationService
   ) { 
 
+    // this.form = this.fb.group({
+    //   selectAnnoScolastico:  null  //NON FUNZIONA
+    // })
+
     let obj = localStorage.getItem('AnnoCorrente');
     let annoIdToSet = +(JSON.parse(obj!) as _UT_Parametro).parValue;
     
-    this.svcAnni.loadAnnoScolastico(annoIdToSet)
-      .subscribe ( val=> {
-          this.form = this.fb.group({
-            selectAnnoScolastico:  val  //NON FUNZIONA
-          })
-        }
-      );
+    // this.svcAnni.loadAnnoScolastico(annoIdToSet)
+    //   .subscribe ( val=> {
+    //       console.log(val.id);
+    //       this.form.controls.selectAnnoScolastico.setValue( val); //NON FUNZIONA
+    //     }
+    //   );
 
-    // this.form = this.fb.group({
-    //   selectAnnoScolastico:  annoIdToSet  //PROBLEMA!!!!!: QUI NON ABBIAMO UN OGGETTO ANNO MA UN ID!!!
-    // })
+    this.form = this.fb.group({
+      selectAnnoScolastico:  annoIdToSet  //PROBLEMA!!!!!: QUI NON ABBIAMO UN OGGETTO ANNO MA UN ID!!!
+    })
 
 
   }
@@ -139,8 +142,8 @@ constructor(
     this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
       console.log("select value onchange", this.form.controls.selectAnnoScolastico.value);
       this.loadData();
-      //this.annoIdEmitter.emit(val); //così non può funzionare ora che [value] = "element" e non [value] = "element.id"
-      this.annoIdEmitter.emit(val.id);
+      this.annoIdEmitter.emit(val); //così non può funzionare ora che [value] = "element" e non [value] = "element.id"
+      //this.annoIdEmitter.emit(val.id); ****************************
     })
 
 
@@ -155,7 +158,8 @@ constructor(
           //e che INCIDENTALMENTE corrisponde a this.idAnnoInput - 1
           //Serve un filter o simile.
 
-          this.form.controls.selectAnnoScolastico.setValue( val.find (val=> val.id == this.idAnnoInput) ); 
+          //this.form.controls.selectAnnoScolastico.setValue( val.find (val=> val.id == this.idAnnoInput) ); ********************
+          
           // console.log ("idAnnoInput", this.idAnnoInput);
           // console.log ("val", val);
           // console.log ("val[this.idAnnoInput-1]", val[this.idAnnoInput-1]);
@@ -178,8 +182,8 @@ constructor(
       );
 
 
-    //this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);  //COME FA A FUNZIONARE ORA CHE LA SELECT COME VALUE HA UN OGGETTO?
-    this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value.id); 
+    this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);  //COME FA A FUNZIONARE ORA CHE LA SELECT COME VALUE HA UN OGGETTO?
+    //this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value.id); ***********************
 
 
     this.loadData();  //NC spostato qui da sopra 3.12.2021
@@ -225,8 +229,8 @@ constructor(
   loadData ( ) {
    
     let idAnno: number;
-    idAnno = this.form.controls["selectAnnoScolastico"].value.id;
-    //idAnno = this.form.controls["selectAnnoScolastico"].value;  Ho cambiato il valore selezionato nell'html, non è più l'id ma l'intero oggetto anno
+    //idAnno = this.form.controls["selectAnnoScolastico"].value.id;
+    idAnno = this.form.controls["selectAnnoScolastico"].value;  //Ho cambiato il valore selezionato nell'html, non è più l'id ma l'intero oggetto anno
 
     let obsClassi$: Observable<CLS_ClasseSezioneAnno[]>;
     if (this.dove == "alunno-edit-attended") 
