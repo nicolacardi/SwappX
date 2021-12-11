@@ -1,0 +1,73 @@
+<div class="w100">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Novità di STOODY
+            </mat-panel-title>
+            <mat-panel-description>
+        </mat-panel-description>
+        </mat-expansion-panel-header>
+        -Modificato css login<br>
+        -Modificato Menu introdotte collapsible sections<br>
+        -Inserito loader sulla login<br>
+        -Inserite le news nella homepage<br>
+        -inserita l'indicazione delle news nella homepage<br>
+        -inserita l'indicazione dell'indicazione delle news nella homepage... ecc ecc
+    </mat-expansion-panel>
+
+
+
+</div>
+
+
+
+<mat-card style="height: 30%;" class="card mat-elevation-z8">
+    <div>Benvenuto {{currUser.fullname}}, queste sono le notizie per te:</div>
+
+    <mat-table class="rettePagamentiSummaryTable transparent" [dataSource]="matDataSource">
+
+        <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+        <ng-container matColumnDef="actionsColumn">
+            <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
+            <mat-cell  *matCellDef="let element"> 
+                <img class="iconaMenu pointer" src="../assets/alunno_edit.svg">
+            </mat-cell>
+            <mat-footer-cell class="bold" *matFooterCellDef> </mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="message">
+            <mat-header-cell *matHeaderCellDef >Classe</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.classe}}</mat-cell>
+            <mat-footer-cell class="bold" *matFooterCellDef> </mat-footer-cell>
+        </ng-container>
+
+        <!-- **************************   MAT-HEADER-ROW   ******************* -->
+        <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+        
+        <!-- **************************   MAT-ROW   ******************* -->
+       <!--
+        <mat-row *matRowDef="let element;columns: displayedColumns"
+            class="element-row"
+            (contextmenu)="onRightClick($event, element)" >
+        </mat-row>
+        -->
+        <mat-footer-row class="grey low-row" *matFooterRowDef="displayedColumns"></mat-footer-row>
+    </mat-table>
+
+    <!-- ***********************  MENU RIGHT CLICK ****************** -->
+    <!--
+    <div style="visibility: hidden; position: fixed;" 
+        [style.left]="menuTopLeftPosition.x" 
+        [style.top]="menuTopLeftPosition.y" 
+        [matMenuTriggerFor]="rightMenu">
+    </div> 
+    <mat-menu #rightMenu="matMenu"> 
+        <ng-template matMenuContent let-item="item"> 
+            <mat-label class="rightMenuTitle">{{item.meseRetta}} - {{item.annoRetta}}</mat-label>
+            <button mat-menu-item>Test 1</button> 
+            <button mat-menu-item>Test 2</button>
+            <button mat-menu-item>Test 3</button>
+        </ng-template> 
+    </mat-menu> 
+    -->
+</mat-card>

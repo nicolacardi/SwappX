@@ -63,7 +63,7 @@ import { UsersPageComponent } from './_components/users/users-page/users-page.co
 import { UsersListComponent } from './_components/users/users-list/users-list.component';
 import { UsersFilterComponent } from './_components/users/users-filter/users-filter.component';
 
-import { NewsComponent } from './_components/news/news.component';
+import { MessaggiComponent } from './_components/messaggi/messaggi.component';
 
 import { ToolbarComponent } from './_components/toolbar/toolbar.component';
 import { SceltaColonneComponent } from './_components/toolbar/scelta-colonne/scelta-colonne.component';
@@ -127,8 +127,6 @@ import { HighlightPipe } from './_components/utilities/highlight/highlight.pipe'
     ToolbarComponent,
     SceltaColonneComponent,
 
-    
-
     LoginComponent,
     RegisterComponent,
 
@@ -136,7 +134,8 @@ import { HighlightPipe } from './_components/utilities/highlight/highlight.pipe'
     UsersPageComponent,
     UsersListComponent,
     UsersFilterComponent,
-    NewsComponent,
+
+    MessaggiComponent,
  
     HighlightPipe,
     DialogYesNoComponent,

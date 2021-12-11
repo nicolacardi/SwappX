@@ -20,8 +20,8 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
   templateUrl: './rettepagamenti-summary.component.html',
   styleUrls: ['../pagamenti.css']
 })
-export class RettepagamentiSummaryComponent implements OnInit {
 
+export class RettepagamentiSummaryComponent implements OnInit {
 
 //#region ----- Variabili -------
 
@@ -51,10 +51,10 @@ displayedColumnsRettePagamentiSummary: string[] = [
               private fb:               FormBuilder,
               private _loadingService:  LoadingService) { 
   
-  let obj = localStorage.getItem('AnnoCorrente');
-  this.form = this.fb.group({
-    selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
-  })
+    let obj = localStorage.getItem('AnnoCorrente');
+    this.form = this.fb.group({
+      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
+    })
 
   }
 
@@ -82,8 +82,8 @@ displayedColumnsRettePagamentiSummary: string[] = [
         this.matDataSource.data = val;
       }
     );
-    
   }
+
 //#endregion
 
 //#region ----- LifeCycle Hooks e simili-------
