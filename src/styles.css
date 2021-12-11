@@ -36,6 +36,17 @@ h3 { font-family: 'Titillium Web', sans-serif !important;
 }
 
 
+.flex-container {
+    display: flex;
+    justify-content:space-evenly;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.flex-item {
+    margin-top: 15px;
+}
+
 
 
 /*Colore sfondo*/

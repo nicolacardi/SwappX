@@ -36,7 +36,6 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   menuTopLeftPosition =  {x: '0', y: '0'} 
   displayedColumns: string[] =  [];
   displayedColumnsClassiSezioniAnniSummary: string[] = [
-      "actionsColumn",
       "classe",
       "sezione",
       "numAlunni",

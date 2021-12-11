@@ -8,7 +8,7 @@ import { User } from 'src/app/_user/Users';
 import { LoadingService } from '../utilities/loading/loading.service';
 
 @Component({
-  selector: 'app-news',
+  selector: 'app-messaggi',
   templateUrl: './messaggi.component.html',
   styleUrls: ['./messaggi.component.css']
 })

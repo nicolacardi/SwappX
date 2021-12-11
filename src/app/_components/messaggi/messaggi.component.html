@@ -1,4 +1,4 @@
-<div class="w100">
+<!-- <div class="w100">
     <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title>
@@ -13,17 +13,21 @@
         -Inserite le news nella homepage<br>
         -inserita l'indicazione delle news nella homepage<br>
         -inserita l'indicazione dell'indicazione delle news nella homepage... ecc ecc
-    </mat-expansion-panel>
+    
+</div> -->
 
 
 
-</div>
+<!-- <mat-card style="height: 30%;" class="card mat-elevation-z8"> -->
 
-
-
-<mat-card style="height: 30%;" class="card mat-elevation-z8">
-    <div>Benvenuto {{currUser.fullname}}, queste sono le notizie per te:</div>
-
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <div>Benvenuto {{currUser.fullname}}, queste sono le notizie per te:</div>
+            </mat-panel-title>
+            <mat-panel-description>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
     <mat-table class="rettePagamentiSummaryTable transparent" [dataSource]="matDataSource">
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
@@ -53,7 +57,7 @@
         -->
         <mat-footer-row class="grey low-row" *matFooterRowDef="displayedColumns"></mat-footer-row>
     </mat-table>
-
+</mat-expansion-panel>
     <!-- ***********************  MENU RIGHT CLICK ****************** -->
     <!--
     <div style="visibility: hidden; position: fixed;" 
@@ -70,4 +74,4 @@
         </ng-template> 
     </mat-menu> 
     -->
-</mat-card>
+<!-- </mat-card> -->

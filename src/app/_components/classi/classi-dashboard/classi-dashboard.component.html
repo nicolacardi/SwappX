@@ -6,10 +6,11 @@
                 <div class="table-container">
                     <!-- idAnnoInput è la proprietà che passiamo A classiSezioniAnniList -->
                     <!-- annoId è la proprietà che riceviamo DA classiSezioniAnniList -->
+                    <!-- [idAnnoInput] = "idAnnoInput"
+                    [idClasseInput] = "idClasseInput" -->
                     <app-classi-sezioni-anni-list 
                         [dove] = "'classi-dashboard'"
-                        [idAnnoInput] = "idAnnoInput"
-                        [idClasseInput] = "idClasseInput"
+
                         (annoId)="annoIdEmitted($event)"
                         (classeId)="classeIdEmitted($event)">
                     </app-classi-sezioni-anni-list>
