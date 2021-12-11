@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,6 +22,7 @@ import { ClassiSezioniAnniFilterComponent } from '../classi-sezioni-anni-filter/
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 import { concatMap, finalize, map, tap } from 'rxjs/operators';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -29,12 +30,13 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
   templateUrl: './classi-sezioni-anni-list.component.html',
   styleUrls: ['./../classi.css']
 })
-export class ClassiSezioniAnniListComponent implements OnInit {
+export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#region ----- Variabili -------
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno>();
   storedFilterPredicate!:       any;
-
+  idAnnoInput!:                       string; //Da routing
+  idClasseInput!:                     string; //Da routing
   public idAnnoScolastico!:           number;
   showSelect:                         boolean = true;
   showPageTitle:                      boolean = true;
@@ -86,8 +88,6 @@ export class ClassiSezioniAnniListComponent implements OnInit {
 //#region ----- ViewChild Input Output -------
 
   @Input('dove') dove! :                                      string;
-  @Input('idAnnoInput') idAnnoInput! :                        number;
-  @Input('idClasseInput') idClasseInput! :                    number;
   @Input('alunnoId') alunnoId! :                              number;
   
   @Input() classiSezioniAnniFilterComponent!:                 ClassiSezioniAnniFilterComponent;
@@ -111,26 +111,14 @@ constructor(
     private _loadingService:              LoadingService,
     private fb:                           FormBuilder, 
     public _dialog:                       MatDialog, 
-    private _navigationService:           NavigationService
+    private actRoute:                     ActivatedRoute,
   ) { 
 
-    // this.form = this.fb.group({
-    //   selectAnnoScolastico:  null  //NON FUNZIONA
-    // })
-
     let obj = localStorage.getItem('AnnoCorrente');
-    let annoIdToSet = +(JSON.parse(obj!) as _UT_Parametro).parValue;
-    
-    // this.svcAnni.loadAnnoScolastico(annoIdToSet)
-    //   .subscribe ( val=> {
-    //       console.log(val.id);
-    //       this.form.controls.selectAnnoScolastico.setValue( val); //NON FUNZIONA
-    //     }
-    //   );
 
     this.form = this.fb.group({
-      selectAnnoScolastico:  annoIdToSet  //PROBLEMA!!!!!: QUI NON ABBIAMO UN OGGETTO ANNO MA UN ID!!!
-    })
+      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
+    });
 
 
   }
@@ -139,54 +127,35 @@ constructor(
   ngOnInit(): void {
 
 
+    this.actRoute.queryParams.subscribe(
+      params => {
+          this.idAnnoInput = params['idAnno'];     
+          this.idClasseInput = params['idClasseSezioneAnno'];  
+    });
+
+    console.log ("idAnnoInput from route",this.idAnnoInput);
+    console.log ("idClasseInput from route",this.idClasseInput);
+
+
     this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
-      console.log("select value onchange", this.form.controls.selectAnnoScolastico.value);
       this.loadData();
-      this.annoIdEmitter.emit(val); //così non può funzionare ora che [value] = "element" e non [value] = "element.id"
-      //this.annoIdEmitter.emit(val.id); ****************************
+      this.annoIdEmitter.emit(val);
     })
 
 
     this.obsAnni$ = this.svcAnni.load()
       .pipe(
-        //nell'HTML imposto [value] = "element" e non [value] = "element.id"
-        //devo passare alla matSelect non l'id ma l'oggetto
-        //questo lo posso fare nel tap e non nel finalize perchè nel finalize non si può, non c'è la possibilità di mettere (val) ma solo ()
-        tap( val => {
-          //console.log ("this.idAnnoInput", this.idAnnoInput);
-          //this.form.controls.selectAnnoScolastico.setValue(val[this.idAnnoInput-1]); //TERRIBILE!!! bisogna invece trovare l'elemento che ha id = this.idAnnoInput
-          //e che INCIDENTALMENTE corrisponde a this.idAnnoInput - 1
-          //Serve un filter o simile.
-
-          //this.form.controls.selectAnnoScolastico.setValue( val.find (val=> val.id == this.idAnnoInput) ); ********************
-          
-          // console.log ("idAnnoInput", this.idAnnoInput);
-          // console.log ("val", val);
-          // console.log ("val[this.idAnnoInput-1]", val[this.idAnnoInput-1]);
-          // console.log ("val.find", val.find (x=> x.id == this.idAnnoInput)); //MINCHIA MA SONO UGUALI!
-          
-
-          //this.form.controls.selectAnnoScolastico.setValue(val.filter (x=> {return x.id === this.idAnnoInput})); 
-
-
-          
+        finalize( () => {
+          if (this.idAnnoInput) { //se arrivo da home
+            this.form.controls.selectAnnoScolastico.setValue(parseInt(this.idAnnoInput));
+          }
         }),
-        //Vecchia finalize che non poteva ricevere il (val) =>  
-        // finalize( () => {          
-        //   if (this.idAnnoInput != undefined) {
-        //     console.log ("sto per impostare l'anno con id:" , this.idAnnoInput);
-        //     this.form.controls.selectAnnoScolastico.setValue(this.idAnnoInput);
-        //     console.log("value impostato", this.form.controls.selectAnnoScolastico.value);
-        //   } 
-        // })
+
       );
 
+    this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);
 
-    this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);  //COME FA A FUNZIONARE ORA CHE LA SELECT COME VALUE HA UN OGGETTO?
-    //this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value.id); ***********************
-
-
-    this.loadData();  //NC spostato qui da sopra 3.12.2021
+    this.loadData();
     
     switch(this.dove) {
       case 'alunno-edit-list':
@@ -215,22 +184,16 @@ constructor(
 
   }
 
+  ngOnChanges() {
 
-  compareAnni (a1:ASC_AnnoScolastico, a2: ASC_AnnoScolastico): boolean {
-    //paragona il valore selezionato con ogni singolo valore delle singole options? Non ho mica capito bene...
-    console.log ("compareAnni", a1, a2);
-    if (a1 && a2) {
-        return a1.id === a2.id;
-    }
-    return false;
   }
 
 
   loadData ( ) {
    
     let idAnno: number;
-    //idAnno = this.form.controls["selectAnnoScolastico"].value.id;
-    idAnno = this.form.controls["selectAnnoScolastico"].value;  //Ho cambiato il valore selezionato nell'html, non è più l'id ma l'intero oggetto anno
+
+    idAnno = this.form.controls["selectAnnoScolastico"].value;
 
     let obsClassi$: Observable<CLS_ClasseSezioneAnno[]>;
     if (this.dove == "alunno-edit-attended") 
@@ -249,9 +212,7 @@ constructor(
 
     const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
-    loadClassi$
-
-    .subscribe(val => 
+    loadClassi$.subscribe(val => 
       {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
@@ -263,24 +224,31 @@ constructor(
 
         this.storedFilterPredicate = this.matDataSource.filterPredicate;
         this.matDataSource.filterPredicate = this.filterRightPanel();
+        
         if(this.matDataSource.data.length >0)
-          this.rowclicked(this.matDataSource.data[0]); //seleziona per default la prima riga NON FUNZIONA SEMPRE... SERVE??
+        this.rowclicked(this.idClasseInput);  
+        //this.rowclicked(this.matDataSource.data[0].id.toString()); //seleziona per default la prima riga NON FUNZIONA SEMPRE... SERVE??
         else
-        this.rowclicked(undefined);
+          this.rowclicked(undefined);
       }
     );
+
+
   }
 
-  rowclicked(val?: CLS_ClasseSezioneAnno ){
-    
+
+
+  rowclicked(idClasseSezioneAnno?: string ){
+    //console.log ("idClasseSezioneAnno", parseInt(idClasseSezioneAnno));
     //il click su una classe deve essere trasmesso su al parent
-    if(val!= undefined && val != null)
-      this.selectedRowIndex = val.id;
+    if(idClasseSezioneAnno!= undefined && idClasseSezioneAnno != null)
+      this.selectedRowIndex = parseInt(idClasseSezioneAnno);
     else 
-      this.selectedRowIndex = -1;
-    
+      this.selectedRowIndex = this.matDataSource.data[0].id;
+    //console.log ("this.selectedRowIndex NEW", this.selectedRowIndex);
     this.classeIdEmitter.emit(this.selectedRowIndex);
   }
+
 
 //#endregion
 
