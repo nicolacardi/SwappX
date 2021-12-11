@@ -5,9 +5,10 @@
 
         <mat-form-field  class="ml20 topZIndex" *ngIf="showSelect">
             <mat-label>Anno Scolastico</mat-label>
-            <mat-select formControlName="selectAnnoScolastico" [compareWith]="compareAnni">
-                <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id" [id]="element.id.toString()">
-                <!-- <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element" > MA COME VALUE DEVO METTERE l'ID O L'ELEMENT INTERO??-->  
+            <mat-select formControlName="selectAnnoScolastico">
+                <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
+            <!-- <mat-select formControlName="selectAnnoScolastico" [compareWith]="compareAnni"> -->
+                <!-- <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element" [id]="element.id.toString()" > -->
                 {{element.annoscolastico}}
                 </mat-option>
             </mat-select>
@@ -112,7 +113,7 @@
     <!-- **************************   MAT-ROW   ******************* -->
     <mat-row *matRowDef="let element;columns: displayedColumns"
         class="element-row" 
-        (click)="rowclicked(element)"
+        (click)="rowclicked(element.id)"
         [ngClass]="{'highlight': selectedRowIndex == element.id}"
         >
     </mat-row>

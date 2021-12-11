@@ -50,8 +50,8 @@ export class ClassiDashboardComponent implements OnInit {
 //#region ----- Variabili -------
   public idClasse!:             number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public idAnno!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
-  public idClasseInput!:        number;   //valore ricevuto (routed) dal ruoting
-  public idAnnoInput!:          number;   //valore ricevuto (routed) dal ruoting
+  public idClasseInput!:        string;   //valore ricevuto (routed) dal ruoting
+  public idAnnoInput!:          string;   //valore ricevuto (routed) dal ruoting
   isOpen = true;
 //#endregion
 

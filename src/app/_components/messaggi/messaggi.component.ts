@@ -11,7 +11,7 @@ import { LoadingService } from '../utilities/loading/loading.service';
 import { MessaggiService } from './messaggi.service';
 
 @Component({
-  selector: 'app-news',
+  selector: 'app-messaggi',
   templateUrl: './messaggi.component.html',
   styleUrls: ['./messaggi.component.css']
 })
