@@ -27,9 +27,8 @@ public currUser!: User;
 
 matDataSource = new MatTableDataSource<_UT_Message>();
 displayedColumns: string[] = [
-  //"actionsColumn",
-  "userID"
-  //"message"
+  "message",
+  "actionsColumn"
 ];
 
 //#endregion
@@ -41,22 +40,19 @@ displayedColumns: string[] = [
     this.currUser = JSON.parse(obj!) as User;
    }
 
-  ngOnInit(): void {
-
+  ngOnInit(){
     this.loadData();
-
   }
 
 
   loadData(){
-    //this.displayedColumns = this.displayedColumns;
-    
-    
+
     console.log("DEBUG messaggi - DisplayedColumns:", this.displayedColumns);
     console.log("DEBUG messaggi - this.currUser.userID:", this.currUser.userID);
     
 
     let obsNews$: Observable<_UT_Message[]>;
+
     obsNews$ = this.svcMessages.loadByUserID(this.currUser.userID);
     const loadNews$ =this._loadingService.showLoaderUntilCompleted(obsNews$);
 
@@ -68,5 +64,10 @@ displayedColumns: string[] = [
       }
     );
 
+  }
+
+  segnaLetto(id: number) {
+    console.log (id);
+    
   }
 }
