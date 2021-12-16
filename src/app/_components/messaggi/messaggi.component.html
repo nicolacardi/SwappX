@@ -1,4 +1,5 @@
-    <mat-expansion-panel>
+ <!--
+ <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title>
                 <div>Benvenuto {{currUser.fullname}}, queste sono le notizie per te:</div>
@@ -6,8 +7,12 @@
             <mat-panel-description>
             </mat-panel-description>
         </mat-expansion-panel-header>
-
+    </mat-expansion-panel>
+-->
+    <mat-card style="height: 100%;" class="card mat-elevation-z8">
+    
         <div>{{matDataSource.data|json}} </div>
+
         <mat-table  [dataSource]="matDataSource">
 
             <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
@@ -19,21 +24,25 @@
                 </mat-cell>
             </ng-container>
         -->
-
             <ng-container matColumnDef="userID">
                 <mat-header-cell *matHeaderCellDef >userID</mat-header-cell>
                 <mat-cell *matCellDef="let element">{{element.userID}}</mat-cell>
+                <mat-footer-cell class="bold" *matFooterCellDef> </mat-footer-cell>
             </ng-container>
-
+<!--
             <ng-container matColumnDef="message">
                 <mat-header-cell *matHeaderCellDef >Message</mat-header-cell>
                 <mat-cell *matCellDef="let element">{{element.message}}</mat-cell>
+                <mat-footer-cell class="bold" *matFooterCellDef> </mat-footer-cell>
             </ng-container>
-
+        -->
             <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
-            <mat-row *matRowDef="let element;columns: displayedColumns" class="element-row"></mat-row>
+            <mat-row *matRowDef="let element;columns: displayedColumns" 
+                class="element-row">
+            </mat-row>
+            <mat-footer-row class="grey low-row" *matFooterRowDef="displayedColumns"></mat-footer-row>
         </mat-table>
-    </mat-expansion-panel>
+    </mat-card>
 
     <!-- ***********************  MENU RIGHT CLICK ****************** -->
     <!--

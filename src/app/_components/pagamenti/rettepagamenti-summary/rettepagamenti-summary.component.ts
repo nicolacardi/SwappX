@@ -46,16 +46,15 @@ displayedColumnsRettePagamentiSummary: string[] = [
 @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 //#endregion
 
-  constructor(private svcRette:         RetteService,
+  constructor(private fb:               FormBuilder,
+              private svcRette:         RetteService,
               private svcAnni:          AnniScolasticiService,
-              private fb:               FormBuilder,
               private _loadingService:  LoadingService) { 
   
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     })
-
   }
 
 //#region ----- LifeCycle Hooks e simili-------

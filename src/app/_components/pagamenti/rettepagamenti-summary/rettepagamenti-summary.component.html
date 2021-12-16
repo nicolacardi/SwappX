@@ -6,10 +6,9 @@
 
             <mat-select formControlName="selectAnnoScolastico">
                 <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id" >
-                {{element.annoscolastico}}
+                    {{element.annoscolastico}}
                 </mat-option>
             </mat-select>
-
         </mat-form-field>
     </form>
 
@@ -89,7 +88,6 @@
             <button mat-menu-item>Test 3</button>
         </ng-template> 
     </mat-menu> 
-
 </mat-card>
 
 
