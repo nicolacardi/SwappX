@@ -13,7 +13,6 @@ import { User } from 'src/app/_user/Users';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
 
-
 @Component({
   selector: 'app-messaggi',
   templateUrl: './messaggi.component.html',
@@ -49,12 +48,7 @@ displayedColumns: string[] = [
     this.loadData();
   }
 
-
   loadData(){
-
-    console.log("DEBUG messaggi - DisplayedColumns:", this.displayedColumns);
-    console.log("DEBUG messaggi - this.currUser.userID:", this.currUser.userID);
-    
 
     let obsNews$: Observable<_UT_Message[]>;
 
@@ -63,45 +57,37 @@ displayedColumns: string[] = [
 
     loadNews$.subscribe(val => {
       this.matDataSource.data = val;
-
-      console.log("messaggi: ", this.matDataSource.data);
-
       }
     );
-
   }
 
   closeMsg(element: _UT_Message) {
-    console.log("element", element);
-    element.closed = true;
 
-      this.svcMessages.put(element).subscribe(
+    element.closed = !element.closed;
 
-        res=> {
-          this.loadData();
-        },
-        err=>  {
-          //return false;
-        }
-
-
+    this.svcMessages.put(element).subscribe(
+      res=> {
+        this.loadData();
+      },
+      err=>  {
+        this._snackBar.openFromComponent(SnackbarComponent, {
+          data: 'Errore nella chuisura  del messaggio ', panelClass: ['red-snackbar']
+        });
+      }
     );
   }
 
   deleteMsg(id: number) {
 
-
-      this.svcMessages.delete(id).subscribe(
-
-        res=> {
-          this.loadData();
-        },
-        err=>  {
-          //return false;
-        }
-
-
+    this.svcMessages.delete(id).subscribe(
+      res=> {
+        this.loadData();
+      },
+      err=>  {
+        this._snackBar.openFromComponent(SnackbarComponent, {
+          data: 'Errore nella cancellazione  del messaggio ', panelClass: ['red-snackbar']
+        });
+      }
     );
   }
-
 }
