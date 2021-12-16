@@ -1,0 +1,7 @@
+.messaggiTable .mat-row {
+    min-height: 30px;
+  }
+
+  .lowTitles {
+    min-height: 37px !important;
+  }

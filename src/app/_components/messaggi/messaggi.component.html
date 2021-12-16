@@ -1,4 +1,4 @@
- <!--
+
  <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title>
@@ -7,43 +7,40 @@
             <mat-panel-description>
             </mat-panel-description>
         </mat-expansion-panel-header>
-    </mat-expansion-panel>
--->
-    <mat-card style="height: 100%;" class="card mat-elevation-z8">
-    
-        <div>{{matDataSource.data|json}} </div>
 
-        <mat-table  [dataSource]="matDataSource">
+
+
+
+        <mat-table class="messaggiTable transparent" [dataSource]="matDataSource">
 
             <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
-           <!--
+           
             <ng-container matColumnDef="actionsColumn">
-                <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                <mat-cell  *matCellDef="let element"> 
-                    <img class="iconaMenu pointer" src="../assets/alunno_edit.svg">
+                <mat-header-cell *matHeaderCellDef>Letto</mat-header-cell>
+                <mat-cell  *matCellDef="let element" (click)="segnaLetto(element.id)"> 
+                    <mat-icon>check_box_outline_blank</mat-icon>
                 </mat-cell>
             </ng-container>
-        -->
-            <ng-container matColumnDef="userID">
+       
+            <!-- <ng-container matColumnDef="userID">
                 <mat-header-cell *matHeaderCellDef >userID</mat-header-cell>
                 <mat-cell *matCellDef="let element">{{element.userID}}</mat-cell>
-                <mat-footer-cell class="bold" *matFooterCellDef> </mat-footer-cell>
-            </ng-container>
-<!--
+            </ng-container> -->
+
             <ng-container matColumnDef="message">
                 <mat-header-cell *matHeaderCellDef >Message</mat-header-cell>
                 <mat-cell *matCellDef="let element">{{element.message}}</mat-cell>
                 <mat-footer-cell class="bold" *matFooterCellDef> </mat-footer-cell>
             </ng-container>
-        -->
-            <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+       
+            <mat-header-row class="lowTitles" *matHeaderRowDef="displayedColumns;"></mat-header-row>
             <mat-row *matRowDef="let element;columns: displayedColumns" 
                 class="element-row">
             </mat-row>
-            <mat-footer-row class="grey low-row" *matFooterRowDef="displayedColumns"></mat-footer-row>
         </mat-table>
-    </mat-card>
 
+
+</mat-expansion-panel>
     <!-- ***********************  MENU RIGHT CLICK ****************** -->
     <!--
     <div style="visibility: hidden; position: fixed;" 

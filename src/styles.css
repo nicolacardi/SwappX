@@ -622,7 +622,7 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 
 /* tutte le actionsColumn saranno larghe il 5%*/
 .mat-column-actionsColumn {
-    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+    flex: 0 0 8% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
 }
 
 .mat-column-blank {
