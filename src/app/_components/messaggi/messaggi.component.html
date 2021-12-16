@@ -5,15 +5,23 @@
         
         <ng-container matColumnDef="actionsColumn">
             <mat-header-cell *matHeaderCellDef>Letto</mat-header-cell>
-            <mat-cell  *matCellDef="let element" (click)="closeMsg(element)"> 
-                <mat-icon>check_box_outline_blank</mat-icon>
+            <mat-cell  *matCellDef="let element" matTooltip="Segna Messaggio come letto" (click)="closeMsg(element)"> 
+                <mat-icon class="pointer" *ngIf="!element.closed">check_box_outline_blank</mat-icon>
+                <mat-icon class="defaultcursor" *ngIf="element.closed">check_box</mat-icon>
             </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="message">
             <mat-header-cell *matHeaderCellDef >Message</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.message}}</mat-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{'stroked': element.closed}">{{element.message}}</mat-cell>
             <mat-footer-cell class="bold" *matFooterCellDef> </mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="delete">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell  *matCellDef="let element" matTooltip="Cancella Messaggio" (click)="deleteMsg(element.id)"> 
+                <mat-icon class="pointer"  *ngIf="element.closed">delete</mat-icon>
+            </mat-cell>
         </ng-container>
 
         <mat-header-row class="lowTitles" *matHeaderRowDef="displayedColumns;"></mat-header-row>

@@ -231,6 +231,10 @@ background-size: cover;*/
     cursor:pointer;
 }
 
+.defaultcursor{
+    cursor:default;
+}
+
 /*Booh?*/
 .centerColumn {
     justify-content: center;
@@ -662,6 +666,10 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
     flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
 }
 
+.mat-column-delete {
+    flex: 0 0 8% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+}
+
 
 
   .mat-column-xxx {
@@ -738,4 +746,8 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
   
 .low-row {
     min-height: 30px;
+}
+
+.stroked {
+    text-decoration: line-through;
 }

@@ -30,7 +30,8 @@ public currUser!: User;
 matDataSource = new MatTableDataSource<_UT_Message>();
 displayedColumns: string[] = [
   "message",
-  "actionsColumn"
+  "actionsColumn",
+  "delete"
 ];
 
 //#endregion
@@ -86,4 +87,21 @@ displayedColumns: string[] = [
 
     );
   }
+
+  deleteMsg(id: number) {
+
+
+      this.svcMessages.delete(id).subscribe(
+
+        res=> {
+          this.loadData();
+        },
+        err=>  {
+          //return false;
+        }
+
+
+    );
+  }
+
 }
