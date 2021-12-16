@@ -24,7 +24,7 @@ public currUser!: User;
 
 matDataSource = new MatTableDataSource<_UT_Message>();
 displayedColumns: string[] = [
-  "actionsColumn",
+  //"actionsColumn",
   "userID",
   "message"
 ];

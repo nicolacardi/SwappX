@@ -7,15 +7,18 @@
             </mat-panel-description>
         </mat-expansion-panel-header>
 
+        <div>{{matDataSource.data|json}} </div>
         <mat-table  [dataSource]="matDataSource">
 
             <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+           <!--
             <ng-container matColumnDef="actionsColumn">
                 <mat-header-cell *matHeaderCellDef></mat-header-cell>
                 <mat-cell  *matCellDef="let element"> 
                     <img class="iconaMenu pointer" src="../assets/alunno_edit.svg">
                 </mat-cell>
             </ng-container>
+        -->
 
             <ng-container matColumnDef="userID">
                 <mat-header-cell *matHeaderCellDef >userID</mat-header-cell>
