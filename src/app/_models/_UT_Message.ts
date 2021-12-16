@@ -4,5 +4,5 @@ export interface _UT_Message {
         message:    string;
         closed:     boolean;
         dtIns:      Date;
-        dtClose:      Date;
+        dtClose:    Date;
 }

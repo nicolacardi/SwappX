@@ -10,6 +10,8 @@ import { MessaggiService } from './messaggi.service';
 //models
 import { _UT_Message } from 'src/app/_models/_UT_Message';
 import { User } from 'src/app/_user/Users';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
 
 
 @Component({
@@ -34,7 +36,9 @@ displayedColumns: string[] = [
 //#endregion
 
   constructor(private svcMessages:      MessaggiService,  
-              private _loadingService:  LoadingService) {
+              private _loadingService:  LoadingService,
+              private _snackBar:        MatSnackBar
+              ) {
 
     let obj = localStorage.getItem('currentUser');
     this.currUser = JSON.parse(obj!) as User;
@@ -66,8 +70,20 @@ displayedColumns: string[] = [
 
   }
 
-  segnaLetto(id: number) {
-    console.log (id);
-    
+  closeMsg(element: _UT_Message) {
+    console.log("element", element);
+    element.closed = true;
+
+      this.svcMessages.put(element).subscribe(
+
+        res=> {
+          this.loadData();
+        },
+        err=>  {
+          //return false;
+        }
+
+
+    );
   }
 }

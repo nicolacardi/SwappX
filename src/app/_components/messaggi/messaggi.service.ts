@@ -28,7 +28,9 @@ export class MessaggiService {
     //http://213.215.231.4/swappX/api/_UT_Messages/GetByUserID/75b01815-1282-4459-bbf5-61bc877a9100
   }
 
+
   put(formData: any): Observable <any>{
+    console.log ("formData nel service put", formData);
     return this.http.put(environment.apiBaseUrl  + '_UT_Messages/' + formData.id , formData);    
   }
 
