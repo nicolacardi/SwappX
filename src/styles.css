@@ -45,6 +45,9 @@ h3 { font-family: 'Titillium Web', sans-serif !important;
 
 .flex-item {
     margin-top: 15px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 30%;
 }
 
 
