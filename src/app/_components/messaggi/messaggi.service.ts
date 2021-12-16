@@ -23,13 +23,9 @@ export class MessaggiService {
   }
 
   loadByUserID(userID: string): Observable<_UT_Message[]>{
-    return this.http.get<_UT_Message[]>(environment.apiBaseUrl+'PAG_Pagamenti/GetAllByUserID?userID='+userID);
-    //http://213.215.231.4/swappX/api/_UT_Messages/GetAllByUserID?userID=XXX-XXXX-XXXXX
-  }
-
-  loadByAlunnoAnno(idAlunno: number, idAnno: number): Observable<_UT_Message[]>{
-    return this.http.get<_UT_Message[]>(environment.apiBaseUrl+'PAG_Pagamenti/GetAllByAlunnoAnno?idAlunno='+idAlunno+'&idAnno='+idAnno);
-    //http://213.215.231.4/swappX/api/_UT_Messages/GetAllByAlunnoAnno?idAlunno=3&idAnno=1
+    //return this.http.get<_UT_Message[]>(environment.apiBaseUrl+'_UT_Messages/GetByUserID/userID='+userID);
+    return this.http.get<_UT_Message[]>(environment.apiBaseUrl+'_UT_Messages/GetByUserID/' + userID);
+    //http://213.215.231.4/swappX/api/_UT_Messages/GetByUserID/75b01815-1282-4459-bbf5-61bc877a9100
   }
 
   put(formData: any): Observable <any>{
