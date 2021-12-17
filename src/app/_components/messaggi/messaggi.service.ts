@@ -23,12 +23,11 @@ export class MessaggiService {
   }
 
   loadByUserID(userID: string): Observable<_UT_Message[]>{
-    return this.http.get<_UT_Message[]>(environment.apiBaseUrl+'_UT_Messages/ListByUserID/' + userID);
-    //http://213.215.231.4/swappX/api/_UT_Messages/ListByUserID/75b01815-1282-4459-bbf5-61bc877a9100
+    return this.http.get<_UT_Message[]>(environment.apiBaseUrl+'_UT_Messages/GetByUserID/' + userID);
+    //http://213.215.231.4/swappX/api/_UT_Messages/GetByUserID/75b01815-1282-4459-bbf5-61bc877a9100
   }
 
   put(formData: any): Observable <any>{
-    console.log ("formData nel service put", formData);
     return this.http.put(environment.apiBaseUrl  + '_UT_Messages/' + formData.id , formData);    
   }
 
@@ -40,6 +39,4 @@ export class MessaggiService {
   delete(id: number): Observable <any>{
     return this.http.delete(environment.apiBaseUrl  + '_UT_Messages/' + id);    
   }
-
-
 }
