@@ -26,6 +26,7 @@ import { ClassiPageComponent } from './_components/classi/classi-page/classi-pag
 import { UsersPageComponent } from './_components/users/users-page/users-page.component';
 
 import { UserRole } from './_user/Users';
+import { AccountComponent } from './_components/account/account.component';
 
 
 const routes: Routes = [
@@ -57,7 +58,7 @@ const routes: Routes = [
 
   { path: "rette",            component: RettePageComponent },
 
-
+  { path: "account",          component: AccountComponent },
   
   { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.Admin] } },
 

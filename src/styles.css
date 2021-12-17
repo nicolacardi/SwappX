@@ -210,6 +210,13 @@ background-size: cover;*/
     width: 100%;
 }
 
+.w50px {
+    width: 50px;
+}
+
+.w100px {
+    width: 100px;
+}
 .w180px {
     width: 180px;
 }
@@ -750,4 +757,18 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 
 .stroked {
     text-decoration: line-through;
+}
+
+.photocontainer {
+    width: 100px;
+    height: 100px;
+    border-radius: 200px;
+    border: 1px solid grey;
+}
+
+.roundphoto {
+    width: 100px;
+    height: 100px;
+    border-radius: 200px;
+    border: 1px solid grey;
 }

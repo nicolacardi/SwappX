@@ -1,0 +1,67 @@
+
+    <form class="data-form" [formGroup] = "form">
+
+
+        <img class="logo-img mt50 roundphoto" id="immagine" [src]="imgFile">
+
+        <!-- <img class="logo-img mt50 roundphoto" id="immagine2" [src]="imgFileResized"> -->
+
+
+            <div class="form-group">
+                <label for="name">Nome del file</label>
+                <input class="form-control" id="name" formControlName="name" type="text">
+                <div *ngIf="uf.name.touched && uf.name.invalid" class="alert alert-danger">
+                <div *ngIf="uf.name.errors!.required">Name is required.</div>
+                </div>
+            </div>
+
+            <!-- <button class="btn btn-success" type="submit">Upload File</button> -->
+
+            <input type="file" class="form-control" id="file" formControlName="file" (change)="onImageChange($event)" #fileDialog hidden>
+            <!-- <div *ngIf="uf.file.touched && uf.file.invalid" class="alert alert-danger">
+            <div *ngIf="uf.file.errors!.required">Image file is required.</div>
+            </div> -->
+            <div class="flex-container mt10">
+            <button mat-button matSuffix class="w180px" mat-stroked-button aria-label="Clear" (click)="fileDialog.click()" >
+                Seleziona Foto
+            </button>
+            </div>
+
+
+
+
+
+        
+
+
+        <div class="flex-container">
+            <mat-form-field class="w180px flex-item">
+                <input  matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome" #nome>
+                <mat-error *ngIf="form.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="w180px flex-item">
+                <input matInput type="text" required placeholder="Cognome" minlength= "3" formControlName="cognome" #nome>
+                <mat-error *ngIf="form.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-container">
+            <mat-form-field class="w180px flex-item">
+                <input matInput type="password" required placeholder="Password" minlength= "3" formControlName="password" #nome>
+                <mat-error *ngIf="form.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-container">
+            <mat-form-field class="w180px flex-item">
+                <input matInput type="password" required placeholder="Nuova Password" minlength= "3" formControlName="newPassword" #nome>
+                <mat-error *ngIf="form.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="w180px flex-item">
+                <input matInput type="password" required placeholder="Ripeti Password" minlength= "3" formControlName="repeatNewPassword" #nome>
+                <mat-error *ngIf="form.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
+            </mat-form-field>
+
+        </div>
+
+    </form>
