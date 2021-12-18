@@ -1,15 +1,12 @@
 <form [formGroup]="form">
     <div class="mt20 image-cropper bordered">
-        <img *ngIf="imgFile" class="roundphoto logo-img" [src]="imgFile">
-    </div>
-    <div class="flex-container form-group mt20">
-        <input class="form-control" id="name" formControlName="name" type="text" >
+        <img id="myImg" *ngIf="imgFile" class="roundphoto logo-img" [src]="imgFile">
     </div>
 
     <div class="flex-container form-group mt20 ">
         <div class="form-group">
             <input type="file" class="form-control" id="file" formControlName="file" (change)="onImageChange($event)"hidden #selectFile>
-            <button mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile.click()" >Seleziona File</button>
+            <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile.click()" >Seleziona Immagine</button>
 
             <!-- <div *ngIf="uf.file.touched && uf.file.invalid" class="alert alert-danger">
                 <div *ngIf="uf.file.errors.required">Image file is required.</div>
@@ -17,8 +14,37 @@
         </div>
     </div>
 
-    <!-- <div class="flex-container form-group mt20 ">
-        <button mat-button matSuffix class="w180px ma" mat-stroked-button >Upload</button>
-    </div>   -->
+
+    <div class="center mt10">
+        <mat-form-field>
+            <input matInput type="text" placeholder="Nome Utente" formControlName="username" [disabled]= "true">
+        </mat-form-field>
+    </div>
+    <div class="center">
+        <mat-form-field>
+            <input matInput type="text" placeholder="Nome e Cognome" formControlName="fullname">
+        </mat-form-field>
+    </div>
+    <div class="center">
+        <mat-form-field>
+            <input matInput type="password" placeholder="Password" formControlName="password">
+        </mat-form-field>
+    </div>
+
+    <div class="center">
+        <mat-form-field>
+            <input matInput type="password" placeholder="Nuova Password" formControlName="newPassword">
+        </mat-form-field>
+    </div>
+
+    <div class="center">
+        <mat-form-field>
+            <input matInput type="password" placeholder="Ripeti Password" formControlName="repeatPassword">
+        </mat-form-field>
+    </div>
+
+    <div class="center">
+        <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="saveProfile()">Salva</button>
+    </div>
 
   </form>
