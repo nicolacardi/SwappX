@@ -202,12 +202,16 @@ background-size: cover;*/
     width: 90%;
 }
 
-.w100 {
+.w95 {
     width: 95%;
 }
 
 .w100 {
     width: 100%;
+}
+
+.w100px {
+    width: 100px;
 }
 
 .w180px {
@@ -216,6 +220,10 @@ background-size: cover;*/
 
 .h75 {
     height: 75%;
+}
+
+.h100px {
+    height: 100px;
 }
 
 .no-padding {
@@ -750,4 +758,27 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 
 .stroked {
     text-decoration: line-through;
+}
+
+.roundphoto {
+    
+    margin: 0 auto;
+    height: 100%;
+    /* width: auto; */
+    /* object-fit: cover; */
+}
+
+.image-cropper {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.bordered {
+    border: 1px solid grey;
 }

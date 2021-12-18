@@ -7,6 +7,7 @@ import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User, UserRole } from './Users';
 import { _UT_Parametro } from '../_models/_UT_Parametro';
+import { _UT_UserFoto } from '../_models/_UT_UserFoto';
 
 
 @Injectable({
@@ -108,6 +109,16 @@ export class UserService {
   list(): Observable<User[]>{
     return this.http.get<User[]>(environment.apiBaseUrl+'ApplicationUser');
     //http://213.215.231.4/swappX/api/ApplicationUser
+  }
+
+
+  getUserFoto(userID: string): Observable<_UT_UserFoto>{
+    return this.http.get<_UT_UserFoto>(environment.apiBaseUrl+'_UT_UsersFoto/GetByUserID/' + userID);
+    //http://213.215.231.4/swappX/api/_UT_UsersFoto/GetByUserID/75b01815-1282-4459-bbf5-61bc877a9100
+  }
+ 
+  putUserFoto(formData: any): Observable<any>{
+    return this.http.put(environment.apiBaseUrl+'_UT_UsersFoto/' + formData.id, formData);
   }
  
   public  getUser() : User {

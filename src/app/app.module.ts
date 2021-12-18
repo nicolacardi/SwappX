@@ -76,6 +76,7 @@ import { LoadingComponent } from './_components/utilities/loading/loading.compon
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomMatPaginatorIntl } from './_components/utilities/paginator-custom/custom-mat-paginator-int';
 import { HighlightPipe } from './_components/utilities/highlight/highlight.pipe';
+import { AccountComponent } from './_components/account/account.component';
 
 
 
@@ -142,6 +143,7 @@ import { HighlightPipe } from './_components/utilities/highlight/highlight.pipe'
     DialogOkComponent,
     LoadingComponent,
     SnackbarComponent,
+    AccountComponent,
 
   ],
   imports: [
