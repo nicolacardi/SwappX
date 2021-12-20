@@ -17,6 +17,7 @@ export class AccountComponent implements OnInit {
   form! :           FormGroup;
 
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
+  @ViewChild('canvasDOM', {static: false}) canvasDOM!: ElementRef;
 
   
   public currUser!: User;
@@ -60,7 +61,6 @@ export class AccountComponent implements OnInit {
 
     }
   }
-
   saveProfile(){
     //this.fotoObj.foto = this.imgFile;
     this.fotoObj.foto = this.immagineDOM.nativeElement.src;
