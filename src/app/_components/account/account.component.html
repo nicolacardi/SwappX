@@ -1,6 +1,8 @@
+
 <form [formGroup]="form">
+
     <div class="mt20 image-cropper bordered">
-        <img id="myImg" *ngIf="imgFile" class="roundphoto logo-img" [src]="imgFile">
+        <img #myImg *ngIf="imgFile" class="roundphoto logo-img" [src]="imgFile">
     </div>
 
     <div class="flex-container form-group mt20 ">
