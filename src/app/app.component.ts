@@ -18,7 +18,7 @@ export class AppComponent implements OnInit{
   public isLoggedIn?:  boolean = false;
   public currUser!: User;
   public userFullName: string = "";
-
+  public imgAccount!: string;
   stringJson: any;
   stringObject: any;
 
@@ -32,6 +32,9 @@ export class AppComponent implements OnInit{
   constructor(private svcUser:        UserService,
               private router: Router) {}
 
+  ngOnChange() {
+
+  }
   ngOnInit () {
 
     this.svcUser.obscurrentUser.subscribe(val => {
@@ -42,6 +45,10 @@ export class AppComponent implements OnInit{
         this.isLoggedIn = this.currUser.isLoggedIn;
       }
     })
+
+    this.svcUser.getUserFoto(this.currUser.userID).subscribe(val=> {this.imgAccount = val.foto;});
+
+
   }
 
   logOut(){

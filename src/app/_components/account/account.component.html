@@ -1,13 +1,16 @@
 
 <form [formGroup]="form">
 
-    <div class="mt20 image-cropper bordered">
-        <img #myImg *ngIf="imgFile" class="roundphoto logo-img" [src]="imgFile">
+    <!-- <div class="mt20 image-cropper bordered"> -->
+    <div class="w100px h100px ma-lr mt20 br200 shadowed" >
+        <img #myImg *ngIf="imgFile" class="w100px  br200 bordered " [src]="imgFile">
     </div>
+    <!-- </div> -->
 
+    
     <div class="flex-container form-group mt20 ">
         <div class="form-group">
-            <input type="file" class="form-control" id="file" formControlName="file" (change)="onImageChange($event)"hidden #selectFile>
+            <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" formControlName="file" (change)="onImageChange($event)"hidden #selectFile>
             <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile.click()" >Seleziona Immagine</button>
 
             <!-- <div *ngIf="uf.file.touched && uf.file.invalid" class="alert alert-danger">

@@ -1,8 +1,11 @@
+import { templateJitUrl } from '@angular/compiler';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { _UT_UserFoto } from 'src/app/_models/_UT_UserFoto';
 import { UserService } from 'src/app/_user/user.service';
 import { User } from 'src/app/_user/Users';
+import { DialogOkComponent } from '../utilities/dialog-ok/dialog-ok.component';
 import { Utility } from '../utilities/utility.component';
 
 @Component({
@@ -21,8 +24,9 @@ export class AccountComponent implements OnInit {
 
   
   public currUser!: User;
-  constructor(private fb:       FormBuilder, 
-              private svcUser:  UserService
+  constructor(private fb:         FormBuilder, 
+              private svcUser:    UserService,
+              public _dialog:     MatDialog
     ) { 
     this.form = this.fb.group({
       file:           ['' , [Validators.required]],
@@ -48,6 +52,17 @@ export class AccountComponent implements OnInit {
     
     if(e.target.files && e.target.files.length) {
       const [file] = e.target.files;
+      //const [file] = e.target.files;
+
+      console.log ("size", e.target.files[0]);
+      if(e.target.files[0].size > 200000){
+        this._dialog.open(DialogOkComponent, {
+          width: '320px',
+          data: {titolo: "ATTENZIONE!", sottoTitolo: "Il file eccede la dimensione massima (200kb)"}
+        });
+        return;
+     };
+
       reader.readAsDataURL(file);
     
       reader.onload = () => {

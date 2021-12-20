@@ -11,9 +11,11 @@
         <div class="logo" >
             <div class="logo-img2"></div>
         </div>
-        <div style="position: absolute; right: 10px;">
+        <div style="position: absolute; right: 30px;">
             <button mat-icon-button [matMenuTriggerFor]="menu" >
-                <mat-icon>account_circle</mat-icon>
+                <mat-icon *ngIf="!imgAccount">account_circle</mat-icon>
+                <img #myImg *ngIf="imgAccount" class="w40px  br200 bordered-white " [src]="imgAccount">
+
             </button>
         </div>
     <!--            
