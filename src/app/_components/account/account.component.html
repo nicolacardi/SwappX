@@ -2,10 +2,10 @@
     <div class="mt20 image-cropper bordered">
         <img id="myImg" *ngIf="imgFile" class="roundphoto logo-img" [src]="imgFile">
     </div>
-
+    <canvas #canvasDOM> </canvas>
     <div class="flex-container form-group mt20 ">
         <div class="form-group">
-            <input type="file" class="form-control" id="file" formControlName="file" (change)="onImageChange($event)"hidden #selectFile>
+            <input type="file" class="form-control" id="file" formControlName="file" (change)="onImageChange($event)" hidden #selectFile>
             <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile.click()" >Seleziona Immagine</button>
 
             <!-- <div *ngIf="uf.file.touched && uf.file.invalid" class="alert alert-danger">

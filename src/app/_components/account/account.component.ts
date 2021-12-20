@@ -17,6 +17,7 @@ export class AccountComponent implements OnInit {
   form! :           FormGroup;
 
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
+  @ViewChild('canvasDOM', {static: false}) canvasDOM!: ElementRef;
 
   
   public currUser!: User;
@@ -55,23 +56,33 @@ export class AccountComponent implements OnInit {
       reader.readAsDataURL(file);
     
       reader.onload = () => {
-        this.imgFile = reader.result as string;
-                    // ///resize
-                    // let canvas = document.createElement("canvas");
-                    // let ctx = canvas.getContext("2d");
-                    // ctx!.drawImage(this.immagineDOM.nativeElement, 0, 0, 300, 300);
 
-                    // var dataurl = canvas.toDataURL(e.target.file.type);
-                    // this.imgFile = dataurl;  //NON SEMBRA FUNZIONARE
-
-        //preparo l'oggetto e lo salvo sul db
-
-
+        const imgBase64 = reader.result as string;
+        // console.log ("imgBase64Originale" ,imgBase64);
+        this.resizeImgBase64(imgBase64, 100, 100);
+        //this.imgFile = tmp.src;
+        //this.imgFile = URL.createObjectURL(tmp);
    
       };
 
     }
   }
+  
+  resizeImgBase64(imgBase64: string, w: number, h: number) {
+    let img = new Image();
+    img.src = imgBase64;
+    let canvas = this.canvasDOM.nativeElement;
+    canvas.width = w;
+    canvas.height = h;
+    let ctx = canvas.getContext("2d");
+    ctx!.drawImage(img, 0, 0, w, h);
+    return canvas.toDataURL('image/jpg', 10);
+  }
+  // convertToBase64(file: any) {
+  //   console.log("file", file);
+  // }
+
+
   
   saveProfile(){
     this.fotoObj.foto = this.imgFile;
