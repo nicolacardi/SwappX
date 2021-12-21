@@ -3,6 +3,8 @@ import { FormControl } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { User } from './_user/Users';
+
+//services
 import { UserService } from './_user/user.service';
 
 
@@ -13,28 +15,25 @@ import { UserService } from './_user/user.service';
 })
 export class AppComponent implements OnInit{
 
+//#region ----- Variabili -------
   //isLoggedIn?: boolean;
-
   public isLoggedIn?:  boolean = false;
   public currUser!: User;
   public userFullName: string = "";
-  public imgAccount!: string;
+  public imgAccount = "";
   stringJson: any;
   stringObject: any;
 
   public mode = new FormControl('over');
   title = 'Stoody';
+//#endregion
 
-
-
+//#region ----- ViewChild Input Output -------
   @ViewChild('end') public rightSidenav!: MatSidenav;
-  
+//#endregion
   constructor(private svcUser:        UserService,
               private router: Router) {}
 
-  ngOnChange() {
-
-  }
   ngOnInit () {
 
     this.svcUser.obscurrentUser.subscribe(val => {
