@@ -45,6 +45,7 @@ displayedColumns: string[] = [
    }
 
   ngOnInit(){
+
     this.loadData();
   }
 
@@ -53,12 +54,15 @@ displayedColumns: string[] = [
     let obsNews$: Observable<_UT_Message[]>;
 
     obsNews$ = this.svcMessages.loadByUserID(this.currUser.userID);
+
     const loadNews$ =this._loadingService.showLoaderUntilCompleted(obsNews$);
 
     loadNews$.subscribe(val => {
       this.matDataSource.data = val;
+
       }
     );
+
   }
 
   closeMsg(element: _UT_Message) {

@@ -259,6 +259,14 @@ background-size: cover;*/
     height: 125px;
 }
 
+.h150px {
+    height: 150px;
+}
+
+.h200px {
+    height: 200px;
+}
+
 .no-padding {
     padding: 0px; 
 }
@@ -832,6 +840,14 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 
 .bordered-white {
     border: 2px solid rgb(255, 255, 255);
+}
+
+.bordered-grey {
+    border: 1px solid grey;
+}
+
+.big-border {
+    border: 60px solid rgba(0,0,0, .3);
 }
 
 

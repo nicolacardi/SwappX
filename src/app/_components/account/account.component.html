@@ -10,9 +10,8 @@
     
     <div class="flex-container form-group mt20 ">
         <div class="form-group">
-            <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" formControlName="file" (change)="onImageChange($event)"hidden #selectFile>
+            <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" formControlName="file" (change)="cropImage($event)"hidden #selectFile>
             <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile.click()" >Seleziona Immagine</button>
-
             <!-- <div *ngIf="uf.file.touched && uf.file.invalid" class="alert alert-danger">
                 <div *ngIf="uf.file.errors.required">Image file is required.</div>
             </div> -->
