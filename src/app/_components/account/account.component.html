@@ -34,26 +34,39 @@
             <input matInput type="text" placeholder="e-mail" formControlName="email">
         </mat-form-field>
     </div>
-    <div class="center">
-        <mat-form-field>
-            <input matInput type="password" placeholder="Password" formControlName="password">
-        </mat-form-field>
+</form>
+<form [formGroup]="form">
+
+    <div class="center ma w200px br5 bordered-grey">
+        <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header class="sidenav-expansion-panel-header">
+            <mat-panel-title>
+                Cambio password
+            </mat-panel-title>
+            <mat-panel-description> </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="center">
+                <mat-form-field>
+                    <input matInput type="password" placeholder="Password Attuale" formControlName="password">
+                </mat-form-field>
+            </div>
+        
+            <div class="center">
+                <mat-form-field>
+                    <input matInput type="password" placeholder="Nuova Password" formControlName="newPassword">
+                </mat-form-field>
+            </div>
+        
+            <div class="center">
+                <mat-form-field>
+                    <input matInput type="password" placeholder="Ripeti Password" formControlName="repeatPassword">
+                </mat-form-field>
+            </div>
+        </mat-expansion-panel>
     </div>
 
-    <div class="center">
-        <mat-form-field>
-            <input matInput type="password" placeholder="Nuova Password" formControlName="newPassword">
-        </mat-form-field>
-    </div>
+</form>
 
-    <div class="center">
-        <mat-form-field>
-            <input matInput type="password" placeholder="Ripeti Password" formControlName="repeatPassword">
-        </mat-form-field>
-    </div>
-
-    <div class="center">
-        <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="saveProfile()">Salva</button>
-    </div>
-
-  </form>
+<div class="center mt10">
+    <button type="button" mat-button matSuffix class="w180px ma mt10" mat-stroked-button (click)="saveProfile()">Salva</button>
+</div>
