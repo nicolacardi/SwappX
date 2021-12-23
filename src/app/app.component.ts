@@ -51,10 +51,9 @@ export class AppComponent implements OnInit{
     this.refreshUserData();
 
     if (this.eventEmitterService.subsVar==undefined) {    
-      console.log("this.eventEmitterService.subsVar", this.eventEmitterService.subsVar);
+    
       this.eventEmitterService.subsVar = this.eventEmitterService.invokeAppComponentRefreshFoto.subscribe(
         (name:string) => {     //Questo è il modo per tipizzare una lambda expression  
-          console.log("app.component sto per fare la refresh");
           this.refreshUserData();    
       });    
     } 

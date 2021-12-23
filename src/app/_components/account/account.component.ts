@@ -28,6 +28,7 @@ export class AccountComponent implements OnInit {
   foto!:            string;
   fotoObj!:         _UT_UserFoto
   form! :           FormGroup;
+  formPsw! :           FormGroup;
   public currUser!: User;
 
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
@@ -49,9 +50,14 @@ export class AccountComponent implements OnInit {
       username:       [{value:'' , disabled: true}, [Validators.required]],
       email:          [''],
       fullname:       ['' , [Validators.required]],
-      password:       [''],
-      newPassword:    [''],
-      repeatPassword: ['']
+    });
+
+    this.formPsw = this.fb.group({
+      password:        ['', [Validators.required, Validators.minLength(4)]],
+      newPassword:     ['', [Validators.required, Validators.minLength(4)]],
+      repeatPassword:  ['', Validators.required]
+    
+
     });
   }
 
@@ -118,7 +124,8 @@ export class AccountComponent implements OnInit {
       UserName:   this.form.controls.username.value,
       Email:      this.form.controls.email.value,
       FullName:   this.form.controls.fullname.value,
-      //Password:   this.formModel.value.Passwords.Password
+
+
     };
 
     this.svcUser.put(formData).subscribe(

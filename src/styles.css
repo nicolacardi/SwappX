@@ -81,6 +81,15 @@ background-size: cover;*/
     font-size: 16px;
 }
 /*Margine*/
+
+.mb5 {
+    margin-bottom: 5px;
+}
+
+.mb10 {
+    margin-bottom: 10px;
+}
+
 .mb20 {
     margin-bottom: 20px;
 }
@@ -269,6 +278,10 @@ background-size: cover;*/
 
 .no-padding {
     padding: 0px; 
+}
+
+.br5 {
+    border-radius: 5px; 
 }
 
 .br20 {

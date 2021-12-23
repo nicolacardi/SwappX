@@ -14,7 +14,6 @@ import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnno_Sum } from 'src/app/_model
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
-import { NavigationService } from '../../utilities/navigation/navigation.service';
 import { Router } from '@angular/router';
 
 
@@ -52,8 +51,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
               private svcAnni:            AnniScolasticiService,
               private fb:                 FormBuilder, 
               private _loadingService:    LoadingService,
-              private router:             Router,
-              private _navigationService: NavigationService) { 
+              private router:             Router) { 
 
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
@@ -112,21 +110,9 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   }
 
   openGestioneClasse(item: CLS_ClasseSezioneAnno) {
-    // this._navigationService.passAnnoScolastico(this.form.controls['selectAnnoScolastico'].value);
-    // this._navigationService.passClasseSezioneAnno(item.id);
-    // this.router.navigateByUrl("/classi-dashboard");
-    //PROBLEMA: se uso il metodo del navigation service
-    //a differenza di alunnni e genitori che mettono l'alunno nei filtri sulla destra (o il genitore sui filtri sulla destra)
-    //in questo caso non ho filtri sulla destra. Quindi posso sì passarlo alla classi-dashboard MA vuol dire che classi-dashboard poi userò anche in futuro quel valore
-    //perche' come prima cosa andrà a interrogare il navigation service e quello avrà il valore di anno e di classesezioneAnnoId che sono stati lì salvati 
-    //
-    //alternativa 1: router con parametri per cui se i parametri non ci sono non vengono usati
-
-    console.log("classisezioniannisummary - openGestioneClasse - item di cui id passata a classisezioniannilist", item);
-    console.log("classisezioniannisummary - openGestioneClasse - anno passato a classisezioniannilist", this.form.controls['selectAnnoScolastico'].value);
+    //console.log("classisezioniannisummary - openGestioneClasse - item di cui id passata a classisezioniannilist", item);
+    //((console.log("classisezioniannisummary - openGestioneClasse - anno passato a classisezioniannilist", this.form.controls['selectAnnoScolastico'].value);
     this.router.navigate(['/classi-dashboard'], { queryParams: { idAnno: this.form.controls['selectAnnoScolastico'].value, idClasseSezioneAnno: item.id } });
-
-    
   }
 //#endregion
 }

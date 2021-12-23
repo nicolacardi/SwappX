@@ -133,8 +133,8 @@ constructor(
           this.idClasseInput = params['idClasseSezioneAnno'];  
     });
 
-    console.log ("idAnnoInput from route",this.idAnnoInput);
-    console.log ("idClasseInput from route",this.idClasseInput);
+    //console.log ("idAnnoInput from route",this.idAnnoInput);
+    //console.log ("idClasseInput from route",this.idClasseInput);
 
 
     this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
