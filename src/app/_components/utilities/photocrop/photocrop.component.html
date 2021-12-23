@@ -17,7 +17,7 @@
 <h3 class="center">Utility di CROP</h3>
 <div class="example-boundary ma">
 
-    <div class="example-box" color="primary" cdkDragBoundary=".example-boundary" style="position: absolute;" [cdkDragFreeDragPosition] = "dragPosition" cdkDrag>
+    <div class="example-box" color="primary" cdkDragBoundary=".example-boundary" (cdkDragEnded)="dragEnded($event)" style="position: absolute;" [cdkDragFreeDragPosition] = "dragPosition" cdkDrag>
     </div>
 
     <img #myImg *ngIf="imgFile"
