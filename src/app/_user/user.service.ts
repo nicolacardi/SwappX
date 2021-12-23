@@ -33,12 +33,12 @@ export class UserService {
 
   formModel = this.fb.group(
       {
-        UserName: ['', Validators.required],
-        Email: ['', Validators.email],
-        FullName: [''],
+        UserName:   ['', Validators.required],
+        Email:      ['', Validators.email],
+        FullName:   [''],
         Passwords: this.fb.group({
-          Password: ['', [Validators.required, Validators.minLength(4)]],
-          ConfirmPassword: ['', Validators.required]
+          Password:         ['', [Validators.required, Validators.minLength(4)]],
+          ConfirmPassword:  ['', Validators.required]
         },
       {
        validator: this.comparePasswords
@@ -93,14 +93,17 @@ export class UserService {
   Register()
   {
     var body = {
-      UserName: this.formModel.value.UserName,
-      Email: this.formModel.value.Email,
-      FullName: this.formModel.value.FullName,
-      Password: this.formModel.value.Passwords.Password
+      UserName:   this.formModel.value.UserName,
+      Email:      this.formModel.value.Email,
+      FullName:   this.formModel.value.FullName,
+      Password:   this.formModel.value.Passwords.Password
     };
     return  this.http.post(environment.apiBaseUrl +'ApplicationUser/Register', body );
   }
 
+  put(formData: any): Observable <any>{
+    return  this.http.put(environment.apiBaseUrl +'ApplicationUser/'+ formData.userID, formData );
+  }
 
   fakeLogin() {
     //this.BehaviourSubjectLoggedIn.next(true);

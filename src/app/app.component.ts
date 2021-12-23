@@ -6,6 +6,7 @@ import { User } from './_user/Users';
 
 //services
 import { UserService } from './_user/user.service';
+import { EventEmitterService } from './_services/event-emitter.service';
 
 
 @Component({
@@ -31,8 +32,10 @@ export class AppComponent implements OnInit{
 //#region ----- ViewChild Input Output -------
   @ViewChild('end') public rightSidenav!: MatSidenav;
 //#endregion
-  constructor(private svcUser:        UserService,
-              private router: Router) {}
+  constructor(private svcUser:              UserService,
+              private router:               Router,
+              private eventEmitterService:  EventEmitterService 
+              ) {}
 
   ngOnInit () {
 
@@ -45,11 +48,29 @@ export class AppComponent implements OnInit{
       }
     })
 
-    this.svcUser.getUserFoto(this.currUser.userID).subscribe(val=> {this.imgAccount = val.foto;});
+    this.refreshUserData();
+
+    if (this.eventEmitterService.subsVar==undefined) {    
+      console.log("this.eventEmitterService.subsVar", this.eventEmitterService.subsVar);
+      this.eventEmitterService.subsVar = this.eventEmitterService.invokeAppComponentRefreshFoto.subscribe(
+        (name:string) => {     //Questo è il modo per tipizzare una lambda expression  
+          console.log("app.component sto per fare la refresh");
+          this.refreshUserData();    
+      });    
+    } 
 
 
   }
 
+  refreshUserData () {
+    this.svcUser.getUserFoto(this.currUser.userID).subscribe(val=> {this.imgAccount = val.foto; });
+    
+    let obj = localStorage.getItem('currentUser');
+    const tokenUser = JSON.parse(obj!) as User;
+    this.userFullName = tokenUser.fullname;  //TODO non si aggiorna se canactivate attivo
+
+  }
+  
   logOut(){
 
     //this.currUser = null;

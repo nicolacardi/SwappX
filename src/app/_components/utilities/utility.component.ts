@@ -9,6 +9,8 @@ export abstract class Utility {
       img.src = src;
       img.onload = () => {
         const elem = document.createElement('canvas');
+
+
         const ratio = img.height / img.width;
         elem.width = newX;
         elem.height = newY;
@@ -21,6 +23,8 @@ export abstract class Utility {
           newX = newY/ratio;          //rende il taglio proporzionato
           posX = (newX-newY)/2;       //posiziona il taglio
         }
+
+        
         const ctx = elem.getContext('2d');
         
         ctx!.drawImage(img, -posX, -posY, newX, newY);

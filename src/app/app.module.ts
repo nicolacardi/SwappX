@@ -78,6 +78,7 @@ import { CustomMatPaginatorIntl } from './_components/utilities/paginator-custom
 import { HighlightPipe } from './_components/utilities/highlight/highlight.pipe';
 import { AccountComponent } from './_components/account/account.component';
 import { PhotocropComponent } from './_components/utilities/photocrop/photocrop.component';
+import { EventEmitterService } from './_services/event-emitter.service';
 
 
 
@@ -167,7 +168,8 @@ import { PhotocropComponent } from './_components/utilities/photocrop/photocrop.
     
     { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
-    { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl }
+    { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl },
+    { provide: EventEmitterService}
   ],
   bootstrap: [AppComponent]
 })

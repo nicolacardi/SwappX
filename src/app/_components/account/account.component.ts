@@ -1,14 +1,22 @@
-import { templateJitUrl } from '@angular/compiler';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { _UT_UserFoto } from 'src/app/_models/_UT_UserFoto';
-import { UserService } from 'src/app/_user/user.service';
-import { User } from 'src/app/_user/Users';
+
+//components
 import { DialogOkComponent } from '../utilities/dialog-ok/dialog-ok.component';
 import { PhotocropComponent } from '../utilities/photocrop/photocrop.component';
+import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
 import { Utility } from '../utilities/utility.component';
+
+//services
+import { EventEmitterService } from 'src/app/_services/event-emitter.service';
+import { UserService } from 'src/app/_user/user.service';
+
+//models
+import { _UT_UserFoto } from 'src/app/_models/_UT_UserFoto';
+import { User } from 'src/app/_user/Users';
 
 @Component({
   selector: 'app-account',
@@ -20,21 +28,26 @@ export class AccountComponent implements OnInit {
   foto!:            string;
   fotoObj!:         _UT_UserFoto
   form! :           FormGroup;
+  public currUser!: User;
+
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
   @ViewChild('canvasDOM', {static: false}) canvasDOM!: ElementRef;
 
   
-  public currUser!: User;
-  constructor(private fb:         FormBuilder, 
-              private svcUser:    UserService,
-              public _dialog:     MatDialog,
-              private router:           Router,
+
+  constructor(private fb:                   FormBuilder, 
+              private svcUser:              UserService,
+              public _dialog:               MatDialog,
+              private router:               Router,
+              private eventEmitterService:  EventEmitterService,
+              private _snackBar:            MatSnackBar,
     ) { 
 
 
     this.form = this.fb.group({
       file:           ['' , [Validators.required]],
       username:       [{value:'' , disabled: true}, [Validators.required]],
+      email:          [''],
       fullname:       ['' , [Validators.required]],
       password:       [''],
       newPassword:    [''],
@@ -46,6 +59,7 @@ export class AccountComponent implements OnInit {
     let obj = localStorage.getItem('currentUser');
     this.currUser = JSON.parse(obj!) as User;
     this.form.controls.username.setValue(this.currUser.username);
+    this.form.controls.email.setValue(this.currUser.email);
     this.form.controls.fullname.setValue(this.currUser.fullname);
     this.svcUser.getUserFoto(this.currUser.userID).subscribe(val=> {this.imgFile = val.foto; this.fotoObj = val;});
   }
@@ -98,9 +112,36 @@ export class AccountComponent implements OnInit {
 
 
   saveProfile(){
+
+    var formData = {
+      userID:     this.currUser.userID,   
+      UserName:   this.form.controls.username.value,
+      Email:      this.form.controls.email.value,
+      FullName:   this.form.controls.fullname.value,
+      //Password:   this.formModel.value.Passwords.Password
+    };
+
+    this.svcUser.put(formData).subscribe(
+      ()=> {
+        this.currUser.username = this.form.controls.username.value;
+        this.currUser.email =this.form.controls.email.value;
+        this.currUser.fullname = this.form.controls.fullname.value;
+
+        localStorage.setItem('currentUser', JSON.stringify(this.currUser));
+        
+
+      }
+    );
     //this.fotoObj.foto = this.imgFile;
     this.fotoObj.foto = this.immagineDOM.nativeElement.src;
-    this.svcUser.putUserFoto(this.fotoObj).subscribe();
+    this.svcUser.putUserFoto(this.fotoObj)
+    .subscribe(() => {
+        this.eventEmitterService.onAccountSaveProfile();
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo account salvato', panelClass: ['green-snackbar']});
+
+      }
+    );
+      
 
 
   }
