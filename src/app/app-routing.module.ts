@@ -26,7 +26,8 @@ import { ClassiPageComponent } from './_components/classi/classi-page/classi-pag
 import { UsersPageComponent } from './_components/users/users-page/users-page.component';
 
 import { UserRole } from './_user/Users';
-import { AccountComponent } from './_components/account/account.component';
+import { ProfiloComponent } from './_components/account/profilo/profilo.component';
+import { ChangePswComponent } from './_components/account/change-psw/change-psw.component';
 
 
 const routes: Routes = [
@@ -62,8 +63,8 @@ const routes: Routes = [
   
   { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.Admin] } },
 
-  { path: "account",          component: AccountComponent, canActivate:[AuthGuard] },
-
+  { path: "profilo",          component: ProfiloComponent, canActivate:[AuthGuard] },
+  { path: "change-psw",       component: ChangePswComponent, canActivate:[AuthGuard] },
 
 ];
 

@@ -117,15 +117,17 @@
         </mat-nav-list>
     </mat-sidenav>
 
-
-
     <mat-menu #menu  >
-        <button mat-menu-item routerLink="account"  >
+        <button mat-menu-item routerLink="profilo"  >
             <mat-icon>account_box</mat-icon>
             <span>{{userFullName}}</span>
         </button>
 
-    
+        <button mat-menu-item routerLink="change-psw" >
+            <mat-icon>password</mat-icon>
+            <span>Cambia password</span>
+        </button>
+
         <button mat-menu-item (click)="logOut()"  >
             <mat-icon>logout</mat-icon>
             <span>Logout</span>

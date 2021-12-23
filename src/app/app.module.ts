@@ -52,9 +52,6 @@ import { RettaEditComponent } from './_components/pagamenti/retta-edit/retta-edi
 import { RettameseEditComponent } from './_components/pagamenti/rettamese-edit/rettamese-edit.component';
 import { RettapagamentoEditComponent } from './_components/pagamenti/rettapagamento-edit/rettapagamento-edit.component';
 
-
-
-
 import { UserService } from './_user/user.service';
 import { UserComponent } from './_user/user.component';
 import { LoginComponent } from './_user/login/login.component';
@@ -64,6 +61,8 @@ import { UsersListComponent } from './_components/users/users-list/users-list.co
 import { UsersFilterComponent } from './_components/users/users-filter/users-filter.component';
 
 import { MessaggiComponent } from './_components/messaggi/messaggi.component';
+import { ProfiloComponent } from './_components/account/profilo/profilo.component';
+import { ChangePswComponent } from './_components/account/change-psw/change-psw.component';
 
 import { ToolbarComponent } from './_components/toolbar/toolbar.component';
 import { SceltaColonneComponent } from './_components/toolbar/scelta-colonne/scelta-colonne.component';
@@ -76,9 +75,9 @@ import { LoadingComponent } from './_components/utilities/loading/loading.compon
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomMatPaginatorIntl } from './_components/utilities/paginator-custom/custom-mat-paginator-int';
 import { HighlightPipe } from './_components/utilities/highlight/highlight.pipe';
-import { AccountComponent } from './_components/account/account.component';
 import { PhotocropComponent } from './_components/utilities/photocrop/photocrop.component';
 import { EventEmitterService } from './_services/event-emitter.service';
+
 
 
 
@@ -145,8 +144,9 @@ import { EventEmitterService } from './_services/event-emitter.service';
     DialogOkComponent,
     LoadingComponent,
     SnackbarComponent,
-    AccountComponent,
+    ProfiloComponent,
     PhotocropComponent,
+    ChangePswComponent,
 
   ],
   imports: [

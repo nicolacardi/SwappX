@@ -5,10 +5,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 //components
-import { DialogOkComponent } from '../utilities/dialog-ok/dialog-ok.component';
-import { PhotocropComponent } from '../utilities/photocrop/photocrop.component';
-import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
-import { Utility } from '../utilities/utility.component';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { PhotocropComponent } from '../../utilities/photocrop/photocrop.component';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { Utility } from '../../utilities/utility.component';
 
 //services
 import { EventEmitterService } from 'src/app/_services/event-emitter.service';
@@ -19,11 +19,12 @@ import { _UT_UserFoto } from 'src/app/_models/_UT_UserFoto';
 import { User } from 'src/app/_user/Users';
 
 @Component({
-  selector: 'app-account',
-  templateUrl: './account.component.html',
-  styleUrls: ['./account.component.css']
+  selector: 'app-profilo',
+  templateUrl: './profilo.component.html',
+  styleUrls: ['../account.component.css']
 })
-export class AccountComponent implements OnInit {
+
+export class ProfiloComponent implements OnInit {
   imgFile!:         string;
   foto!:            string;
   fotoObj!:         _UT_UserFoto
@@ -41,9 +42,8 @@ export class AccountComponent implements OnInit {
               public _dialog:               MatDialog,
               private router:               Router,
               private eventEmitterService:  EventEmitterService,
-              private _snackBar:            MatSnackBar,
+              private _snackBar:            MatSnackBar
     ) { 
-
 
     this.form = this.fb.group({
       file:           ['' , [Validators.required]],
@@ -52,13 +52,7 @@ export class AccountComponent implements OnInit {
       fullname:       ['' , [Validators.required]],
     });
 
-    this.formPsw = this.fb.group({
-      password:        ['', [Validators.required, Validators.minLength(4)]],
-      newPassword:     ['', [Validators.required, Validators.minLength(4)]],
-      repeatPassword:  ['', Validators.required]
-    
 
-    });
   }
 
   ngOnInit(): void {
@@ -117,7 +111,7 @@ export class AccountComponent implements OnInit {
   }
 
 
-  saveProfile(){
+  save(){
 
     var formData = {
       userID:     this.currUser.userID,   
