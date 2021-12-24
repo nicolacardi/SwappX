@@ -24,22 +24,24 @@ export class ChangePswComponent implements OnInit {
       password:        ['', [Validators.required, Validators.minLength(4)]],
       newPassword:     ['', [Validators.required, Validators.minLength(4)]],
       repeatPassword:  ['', Validators.required]
-    
-
     });
   }
 
   ngOnInit(): void {
+    let obj = localStorage.getItem('currentUser');
+    this.currUser = JSON.parse(obj!) as User;
+
   }
 
 
   save(){
     
     var formData = {
-      userID:     this.currUser.userID,
-      Password:   this.form.controls.newPassword.value
+      userID:       this.currUser.userID,
+      currPassword:  this.form.controls.password.value,
+      newPassword:  this.form.controls.newPassword.value
     };
 
-    this.svcUser.put(formData).subscribe();
+    this.svcUser.ChangePassword(formData).subscribe();
   }
 }

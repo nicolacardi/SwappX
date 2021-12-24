@@ -14,8 +14,8 @@
         <div style="position: absolute; right: 30px;">
             <button mat-icon-button [matMenuTriggerFor]="menu" >
                 <!-- <mat-icon>account_circle</mat-icon> -->
-                <mat-icon *ngIf="imgAccount == '' ">account_circle</mat-icon>
-                <img #myImg *ngIf="imgAccount != ''" class="w40px  br200 bordered-white " [src]="imgAccount">        
+                <mat-icon *ngIf="imgAccount == '' || imgAccount== null ">account_circle</mat-icon>
+                <img #myImg *ngIf="imgAccount != '' && imgAccount != null " class="w40px  br200 bordered-white " [src]="imgAccount">        
             </button>
             
         </div>
