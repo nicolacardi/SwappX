@@ -35,8 +35,6 @@ export class ProfiloComponent implements OnInit {
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
   @ViewChild('canvasDOM', {static: false}) canvasDOM!: ElementRef;
 
-  
-
   constructor(private fb:                   FormBuilder, 
               private svcUser:              UserService,
               public _dialog:               MatDialog,
@@ -51,8 +49,6 @@ export class ProfiloComponent implements OnInit {
       email:          [''],
       fullname:       ['' , [Validators.required]],
     });
-
-
   }
 
   ngOnInit(): void {
@@ -139,7 +135,6 @@ export class ProfiloComponent implements OnInit {
       err => {
         console.log("ERRORE this.svcUser.put", formData);
       }
-      
     );
 
     if(this.immagineDOM != undefined){
@@ -154,5 +149,4 @@ export class ProfiloComponent implements OnInit {
       );
     }
   }
-
 }

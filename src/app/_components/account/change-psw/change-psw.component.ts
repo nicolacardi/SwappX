@@ -61,7 +61,6 @@ export class ChangePswComponent implements OnInit {
 
   }
 
-
   save(){
     
     var formData = {
@@ -80,6 +79,5 @@ export class ChangePswComponent implements OnInit {
     err=>{
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio della password', panelClass: ['red-snackbar']});
     });
-    
   }
 }

@@ -103,7 +103,7 @@ export class UserService {
 
   put(formData: any): Observable <any>{
 
-    console.log("user.service\put", formData);
+    //console.log("user.service\put", formData);
 
     return this.http.put(environment.apiBaseUrl +'ApplicationUser/'+ formData.userID, formData );
   }
@@ -129,7 +129,7 @@ export class UserService {
   
   saveUserFoto(formData: any): Observable<any>{
 
-    console.log("saveUserFoto", formData);
+    //console.log("saveUserFoto", formData);
     
     if(formData.id == null || formData.id <= 0)
       return this.http.post(environment.apiBaseUrl+'_UT_UsersFoto', formData);
