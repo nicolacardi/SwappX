@@ -35,9 +35,13 @@ export class AppComponent implements OnInit{
   constructor(private svcUser:              UserService,
               private router:               Router,
               private eventEmitterService:  EventEmitterService 
-              ) {}
+              ) {
+  }
 
   ngOnInit () {
+
+    console.log("app.component|ngOnInit");
+    
 
     this.svcUser.obscurrentUser.subscribe(val => {
       this.currUser = val;
@@ -50,19 +54,25 @@ export class AppComponent implements OnInit{
 
     this.refreshUserData();
 
+    console.log("this.eventEmitterService.subsVar", this.eventEmitterService.subsVar);
+    
+    //Carico i dati e l'immagine dell'utente tramite un eventEmitter
     if (this.eventEmitterService.subsVar==undefined) {    
     
+      console.log("QUI");
       this.eventEmitterService.subsVar = this.eventEmitterService.invokeAppComponentRefreshFoto.subscribe(
         (name:string) => {     //Questo è il modo per tipizzare una lambda expression  
           this.refreshUserData();    
       });    
     } 
-
-
   }
 
   refreshUserData () {
-    this.svcUser.getUserFoto(this.currUser.userID).subscribe(val=> {this.imgAccount = val.foto; });
+    this.svcUser.getUserFoto(this.currUser.userID).subscribe(
+      val=> {
+        console.log("refreshUserData", val);
+        this.imgAccount = val.foto; }
+    );
     
     let obj = localStorage.getItem('currentUser');
     const tokenUser = JSON.parse(obj!) as User;

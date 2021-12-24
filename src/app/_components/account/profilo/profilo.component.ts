@@ -61,7 +61,16 @@ export class ProfiloComponent implements OnInit {
     this.form.controls.username.setValue(this.currUser.username);
     this.form.controls.email.setValue(this.currUser.email);
     this.form.controls.fullname.setValue(this.currUser.fullname);
-    this.svcUser.getUserFoto(this.currUser.userID).subscribe(val=> {this.imgFile = val.foto; this.fotoObj = val;});
+    
+    this.svcUser.getUserFoto(this.currUser.userID).subscribe(
+      val=> {
+        if(val){
+          this.imgFile = val.foto; 
+          this.fotoObj = val;
+        }
+      }
+    );
+
   }
    
   onImageChange(e: any) {
@@ -118,8 +127,6 @@ export class ProfiloComponent implements OnInit {
       UserName:   this.form.controls.username.value,
       Email:      this.form.controls.email.value,
       FullName:   this.form.controls.fullname.value,
-
-
     };
 
     this.svcUser.put(formData).subscribe(
@@ -129,25 +136,24 @@ export class ProfiloComponent implements OnInit {
         this.currUser.fullname = this.form.controls.fullname.value;
 
         localStorage.setItem('currentUser', JSON.stringify(this.currUser));
-        
-
+      },
+      err => {
+        console.log("ERRORE this.svcUser.put", formData);
       }
-    );
-    //this.fotoObj.foto = this.imgFile;
-    this.fotoObj.foto = this.immagineDOM.nativeElement.src;
-    this.svcUser.putUserFoto(this.fotoObj)
-    .subscribe(() => {
-        this.eventEmitterService.onAccountSaveProfile();
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo account salvato', panelClass: ['green-snackbar']});
-
-      }
-    );
       
+    );
 
+    //this.fotoObj.foto = this.imgFile;
 
+    if(this.immagineDOM != undefined){
+      this.fotoObj.foto = this.immagineDOM.nativeElement.src;
+      this.svcUser.putUserFoto(this.fotoObj)
+      .subscribe(() => {
+          this.eventEmitterService.onAccountSaveProfile();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo account salvato', panelClass: ['green-snackbar']});
+        }
+      );
+    }
   }
-
-
-
 
 }

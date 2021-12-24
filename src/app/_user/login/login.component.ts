@@ -11,6 +11,7 @@ import { DialogOkComponent } from 'src/app/_components/utilities/dialog-ok/dialo
 import { MatDialog } from '@angular/material/dialog';
 import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
 import { LoadingService } from 'src/app/_components/utilities/loading/loading.service';
+import { EventEmitterService } from 'src/app/_services/event-emitter.service';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class LoginComponent implements OnInit {
               private svcParametri:   ParametriService, 
               private router:         Router,
               private fb:             FormBuilder,
+              private eventEmitterService:  EventEmitterService,
               public _dialog:         MatDialog,
               private _loadingService:  LoadingService,
               private _snackBar:      MatSnackBar,
@@ -85,6 +87,8 @@ export class LoginComponent implements OnInit {
         //        console.log("DEBUG1:", par);
         //      }
         //  )
+
+        this.eventEmitterService.onAccountSaveProfile();
 
         //this.svcUser.changeLoggedIn(true);
         this._snackBar.openFromComponent(SnackbarComponent, {
