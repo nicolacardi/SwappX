@@ -77,6 +77,7 @@ import { CustomMatPaginatorIntl } from './_components/utilities/paginator-custom
 import { HighlightPipe } from './_components/utilities/highlight/highlight.pipe';
 import { PhotocropComponent } from './_components/utilities/photocrop/photocrop.component';
 import { EventEmitterService } from './_services/event-emitter.service';
+import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.component';
 
 
 
@@ -147,6 +148,7 @@ import { EventEmitterService } from './_services/event-emitter.service';
     ProfiloComponent,
     PhotocropComponent,
     ChangePswComponent,
+    ImpostazioniComponent,
 
   ],
   imports: [

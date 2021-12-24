@@ -20,8 +20,7 @@ import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { ClassiSezioniAnniFilterComponent } from '../classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
-import { concatMap, finalize, map, tap } from 'rxjs/operators';
-import { NavigationService } from '../../utilities/navigation/navigation.service';
+import { finalize } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
 
@@ -34,7 +33,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#region ----- Variabili -------
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno>();
-  storedFilterPredicate!:       any;
+  storedFilterPredicate!:             any;
   idAnnoInput!:                       string; //Da routing
   idClasseInput!:                     string; //Da routing
   public idAnnoScolastico!:           number;
@@ -42,9 +41,9 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   showPageTitle:                      boolean = true;
   showTableRibbon:                    boolean = true;
   obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  form! :                             FormGroup;
 
   selectedRowIndex = -1;
-  form! :                             FormGroup;
 
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
   filterValues = {
