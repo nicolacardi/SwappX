@@ -1,4 +1,5 @@
-<form [formGroup]="form">
+
+<form [formGroup]="form" class="mt50">
 
     <div class="center">
         <mat-form-field>
@@ -9,16 +10,20 @@
     <div class="center">
         <mat-form-field>
             <input matInput type="password" placeholder="Nuova Password" formControlName="newPassword">
+            <mat-error >Password tra 4 a 19 caratteri</mat-error>
         </mat-form-field>
     </div>
 
     <div class="center">
         <mat-form-field>
             <input matInput type="password" placeholder="Ripeti Password" formControlName="repeatPassword">
+            <mat-error >La password di conferma non coincide</mat-error>
         </mat-form-field>
     </div>
 </form>
 
 <div class="center mt10">
-    <button type="button" mat-button matSuffix class="w180px ma mt10" mat-stroked-button (click)="save()">Salva</button>
+    <button type="button" mat-button matSuffix class="w180px ma mt10" mat-stroked-button
+        [disabled]="!form.valid"
+        (click)="save()">Salva</button>
 </div>

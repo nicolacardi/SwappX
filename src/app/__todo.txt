@@ -11,15 +11,11 @@ uniformare idAlunno e alunnoId idCorso /Corso ID ecc e Svcxxxx / xxxxSvc
     - spostare su DB SQL
 
 ### Login
-    - web service di autenticazione
-    - JWT (vedi boxX)
-    - verificare service user.service
+ 
 
 ### Default Component
 
 Fare Default COmponent
 
 
-PARAMETRI AMBIENTE 
-Ad esempio anno scolastico corrente
-questi finiranno nel localstorage all'atto del login
+ 

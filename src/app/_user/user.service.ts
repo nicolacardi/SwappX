@@ -103,8 +103,9 @@ export class UserService {
 
   put(formData: any): Observable <any>{
 
-    //console.log("user.service\put", formData);
-    return  this.http.put(environment.apiBaseUrl +'ApplicationUser/'+ formData.userID, formData );
+    console.log("user.service\put", formData);
+
+    return this.http.put(environment.apiBaseUrl +'ApplicationUser/'+ formData.userID, formData );
   }
 
   ChangePassword(formData: any): Observable <any>{
@@ -123,6 +124,17 @@ export class UserService {
   getUserFoto(userID: string): Observable<_UT_UserFoto>{
     return this.http.get<_UT_UserFoto>(environment.apiBaseUrl+'_UT_UsersFoto/GetByUserID/' + userID);
     //http://213.215.231.4/swappX/api/_UT_UsersFoto/GetByUserID/75b01815-1282-4459-bbf5-61bc877a9100
+  }
+ 
+  
+  saveUserFoto(formData: any): Observable<any>{
+
+    console.log("saveUserFoto", formData);
+    
+    if(formData.id == null || formData.id <= 0)
+      return this.http.post(environment.apiBaseUrl+'_UT_UsersFoto', formData);
+    else
+      return this.http.put(environment.apiBaseUrl+'_UT_UsersFoto/' + formData.id, formData);
   }
  
   putUserFoto(formData: any): Observable<any>{

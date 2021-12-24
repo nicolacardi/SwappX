@@ -56,6 +56,7 @@ export class ProfiloComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     let obj = localStorage.getItem('currentUser');
     this.currUser = JSON.parse(obj!) as User;
     this.form.controls.username.setValue(this.currUser.username);
@@ -70,7 +71,6 @@ export class ProfiloComponent implements OnInit {
         }
       }
     );
-
   }
    
   onImageChange(e: any) {
@@ -119,7 +119,6 @@ export class ProfiloComponent implements OnInit {
     }
   }
 
-
   save(){
 
     var formData = {
@@ -143,14 +142,14 @@ export class ProfiloComponent implements OnInit {
       
     );
 
-    //this.fotoObj.foto = this.imgFile;
-
     if(this.immagineDOM != undefined){
+      this.fotoObj.userID = this.currUser.userID;
       this.fotoObj.foto = this.immagineDOM.nativeElement.src;
-      this.svcUser.putUserFoto(this.fotoObj)
+
+      this.svcUser.saveUserFoto(this.fotoObj)
       .subscribe(() => {
           this.eventEmitterService.onAccountSaveProfile();
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo account salvato', panelClass: ['green-snackbar']});
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo salvato', panelClass: ['green-snackbar']});
         }
       );
     }
