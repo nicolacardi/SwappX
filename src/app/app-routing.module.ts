@@ -45,7 +45,7 @@ const routes: Routes = [
 
   { path:'home',              component: HomeComponent, canActivate:[AuthGuard]  },
 
-  { path: "impostazioni",     component: ImpostazioniComponent, canActivate:[AuthGuard] },
+
 
   { path: "alunni",           component: AlunniPageComponent, canActivate:[AuthGuard]},
 
@@ -62,6 +62,9 @@ const routes: Routes = [
   { path: "rette",            component: RettePageComponent },
 
   { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.Admin] } },
+  
+  { path: "impostazioni",     component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: [UserRole.Admin, UserRole.Segreteria] }  },
+
 
   { path: "profilo",          component: ProfiloComponent, canActivate:[AuthGuard] },
 

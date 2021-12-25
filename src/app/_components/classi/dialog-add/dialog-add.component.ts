@@ -8,7 +8,7 @@ import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.componen
 
 //services
 import { AlunniService } from 'src/app/_components/alunni/alunni.service';
-import { ClassiSezioniAnniAlunniService } from '../classi-sezioni-anni-alunni.service';
+import { IscrizioniService } from '../iscrizioni.service';
 
 //classi
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
@@ -38,7 +38,7 @@ export class DialogAddComponent implements OnInit {
 
   constructor(private fb:                             FormBuilder,
                       private svcAlunni:              AlunniService,
-                      private svcClasseSezioneAnnoAlunno:ClassiSezioniAnniAlunniService,
+                      private svcIscrizioni:          IscrizioniService,
                       public dialogRef:               MatDialogRef<DialogAddComponent>,
                       @Inject(MAT_DIALOG_DATA) public data: DialogData) { 
 
@@ -102,7 +102,7 @@ export class DialogAddComponent implements OnInit {
     this.idAlunniSelezionati.forEach(
       val=>{
         let objClasseSezioneAnnoAlunno = {AlunnoID: val, ClasseSezioneAnnoID: this.data.idClasse};
-        this.svcClasseSezioneAnnoAlunno.postClasseSezioneAnnoAlunno(objClasseSezioneAnnoAlunno)
+        this.svcIscrizioni.post(objClasseSezioneAnnoAlunno)
           .pipe(
             finalize(()=>this.dialogRef.close())
           )

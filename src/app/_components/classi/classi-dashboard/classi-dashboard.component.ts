@@ -14,7 +14,7 @@ import { DialogAddComponent } from '../dialog-add/dialog-add.component';
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
-import { ClassiSezioniAnniAlunniService } from '../classi-sezioni-anni-alunni.service';
+import { IscrizioniService } from '../iscrizioni.service';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 
@@ -62,14 +62,13 @@ export class ClassiDashboardComponent implements OnInit {
 
   constructor(
               //private svcClassiSezioniAnni:         ClassiSezioniAnniService,
-              private svcClassiSezioniAnniAlunni:   ClassiSezioniAnniAlunniService,
+              private svcIscrizioni:                IscrizioniService,
               //private _loadingService:              LoadingService,
               private _navigationService:           NavigationService,
               public _dialog:                       MatDialog,
               private _jspdf:                       JspdfService,
               private actRoute:                      ActivatedRoute,
-              private router:                        Router
-              ) { 
+              private router:                        Router          ) { 
               }
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -155,7 +154,7 @@ export class ClassiDashboardComponent implements OnInit {
             return; 
           } else {
             objIdAlunniToRemove.forEach(val=>{
-              this.svcClassiSezioniAnniAlunni.deleteClasseSezioneAnnoAlunno(this.idClasse , val.id)
+              this.svcIscrizioni.delete(this.idClasse , val.id)
                 .subscribe(()=>{
                     //console.log("classi-dashboard.component.ts - removeAlunnoFromClasse: iscrizione di "+val.id+ " a "+this.idClasse + " rimossa" ); 
                     this.alunniListComponent.loadData();

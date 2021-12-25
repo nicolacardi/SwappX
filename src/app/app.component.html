@@ -38,10 +38,7 @@
                 <img class="iconaMenuSidenav" src="../assets/home.svg">
                 <span>Home</span>
             </a>
-            <a mat-list-item routerLink="impostazioni" (click)="start.close()" >
-                <img class="iconaMenuSidenav" src="../assets/settings.svg">
-                <span>Impostazioni</span>
-            </a>
+
             <mat-divider></mat-divider>
             <a mat-list-item routerLink="alunni" (click)="start.close()" >
                 <img class="iconaMenuSidenav" src="../assets/alunniList.svg">
@@ -76,7 +73,7 @@
 
                 <a mat-list-item routerLink="classi-dashboard" (click)="start.close()">
                     <img class="iconaMenuSidenav" src="../assets/classiDashboard.svg">
-                    <span>Gestione Classi</span>
+                    <span>Iscrizioni</span>
                 </a>
                 <mat-divider></mat-divider>
             </mat-expansion-panel>
@@ -117,6 +114,11 @@
                 <mat-icon>account_box</mat-icon>
                 <span>Gestione Utenti</span>
             </a> 
+
+            <a mat-list-item routerLink="impostazioni" (click)="start.close()"  *ngIf="currUser && currUser.ruolo >=4">
+                <img class="iconaMenuSidenav" src="../assets/settings.svg">
+                <span>Impostazioni</span>
+            </a>
 
         </mat-nav-list>
     </mat-sidenav>

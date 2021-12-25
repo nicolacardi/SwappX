@@ -17,8 +17,8 @@ export class ClassiSezioniAnniService {
 
   loadClassiByAlunno(idAlunno: number): any {
     //restituisce tutte le classiSezioniAnni di un certo Alunno
-    return this.http.get( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnniAlunni/GetByAlunno/' + idAlunno);  
-    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnniAlunni/GetByAlunno/3
+    return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/GetByAlunno/' + idAlunno);  
+    //http://213.215.231.4/swappX/api/CLS_Iscrizioni/GetByAlunno/3
   }
 
   //*********NON USATA***********
@@ -59,7 +59,7 @@ export class ClassiSezioniAnniService {
   post(formData: any): Observable <any>{
     formData.id = 0;
 
-    console.log("DEBUG: POST classi-sezioni-anni.service ", formData );
+    //console.log("DEBUG: POST classi-sezioni-anni.service ", formData );
 
     return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni' , formData);  
   }
@@ -70,7 +70,7 @@ export class ClassiSezioniAnniService {
 
   postAlunnoInClasse(formData: any) {
     formData.id = 0;
-    return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnniAlunni' , formData);  
+    return this.http.post( environment.apiBaseUrl  + 'CLS_Iscrizioni' , formData);  
   }
 
 }

@@ -28,6 +28,8 @@ export class AuthGuard implements CanActivate {
       //console.log("DEBUG: auth.guard - currentuser.role ", currentUser.ruolo);
  
       // check if route is restricted by role
+      console.log("Auth Guard | Ruolo", currentUser.ruolo);
+      
       if (route.data.roles && route.data.roles.indexOf(currentUser.ruolo) === -1) {
           // role not authorised so redirect to home page
           this._snackBar.openFromComponent(SnackbarComponent, {

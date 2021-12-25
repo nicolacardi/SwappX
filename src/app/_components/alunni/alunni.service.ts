@@ -110,8 +110,8 @@ export class AlunniService {
   filterAlunniAnnoSenzaClasse(searchstring: string, idAnno: number): Observable<ALU_Alunno[]>{
     //console.log("alunni.service.ts - filterAlunni - searchstring:", searchstring);
     if (searchstring != null && (typeof searchstring === 'string')) {
-      return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnniAlunni/GetByAnnoNoClasse/'+idAnno)
-      //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnniAlunni/GetByAnnoNoClasse/2
+      return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'CLS_Iscrizioni/GetByAnnoNoClasse/'+idAnno)
+      //http://213.215.231.4/swappX/api/CLS_Iscrizioni/GetByAnnoNoClasse/2
         .pipe (
         map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
       );

@@ -16,7 +16,7 @@ import { GenitoriListComponent } from '../../genitori/genitori-list/genitori-lis
 //services
 import { AlunniService } from 'src/app/_components/alunni/alunni.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
-import { ClassiSezioniAnniAlunniService } from '../../classi/classi-sezioni-anni-alunni.service';
+import { IscrizioniService } from '../../classi/iscrizioni.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 
 //models
@@ -66,7 +66,7 @@ export class AlunnoEditComponent implements OnInit {
   constructor(public _dialogRef: MatDialogRef<AlunnoEditComponent>,
               @Inject(MAT_DIALOG_DATA) public idAlunno: number,
               private fb:                           FormBuilder, 
-              private svcClassiSezioniAnniAlunni:   ClassiSezioniAnniAlunniService,
+              private svcIscrizioni:                IscrizioniService,
               private svcAlunni:                    AlunniService,
               private svcComuni:                    ComuniService,
               public _dialog:                       MatDialog,
@@ -280,7 +280,7 @@ export class AlunnoEditComponent implements OnInit {
     //avrei potuto anche passare i valori uno ad uno, ma è già pronta così avendola usata in dialog-add
     let objClasseSezioneAnnoAlunno = {AlunnoID: this.idAlunno, ClasseSezioneAnnoID: classeSezioneAnno.id};
     console.log (this.idAlunno, classeSezioneAnno.anno.id);
-    const checks$ = this.svcClassiSezioniAnniAlunni.getByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id, this.idAlunno)
+    const checks$ = this.svcIscrizioni.getByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id, this.idAlunno)
     .pipe(
       //se trova che la stessa classe è già presente res.length è != 0 quindi non procede con la getByAlunnoAnno ma restituisce of()
       //se invece res.length == 0 dovrebbe proseguire e concatenare la verifica successiva ch è getByAlunnoAndAnno...
@@ -296,7 +296,7 @@ export class AlunnoEditComponent implements OnInit {
         }
       }),
       concatMap( res => iif (()=> res.length == 0,
-      this.svcClassiSezioniAnniAlunni.getByAlunnoAndAnno(classeSezioneAnno.anno.id, this.idAlunno) , of() )
+      this.svcIscrizioni.getByAlunnoAndAnno(classeSezioneAnno.anno.id, this.idAlunno) , of() )
       ),
       tap(res=> {
         //console.log("err2");
@@ -310,7 +310,7 @@ export class AlunnoEditComponent implements OnInit {
 
     )
     checks$.pipe(
-      concatMap( res => iif (()=> res.length == 0,this.svcClassiSezioniAnniAlunni.postClasseSezioneAnnoAlunno(objClasseSezioneAnnoAlunno) , of() )
+      concatMap( res => iif (()=> res.length == 0,this.svcIscrizioni.post(objClasseSezioneAnnoAlunno) , of() )
       )
     ).subscribe(
       res=> {
@@ -322,7 +322,7 @@ export class AlunnoEditComponent implements OnInit {
   }
 
   removeFromAttended(classeSezioneAnno: CLS_ClasseSezioneAnno) {
-    this.svcClassiSezioniAnniAlunni.deleteClasseSezioneAnnoAlunno(classeSezioneAnno.id , this.idAlunno).subscribe(
+    this.svcIscrizioni.delete(classeSezioneAnno.id , this.idAlunno).subscribe(
       res=> {
           //console.log("addToFamily OK");
           this.classiAttendedComponent.loadData();
