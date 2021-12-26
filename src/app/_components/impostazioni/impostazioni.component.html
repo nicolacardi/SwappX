@@ -1,0 +1,29 @@
+<h1 class="page-title">Impostazione Parametri</h1>
+
+<form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
+
+    <div class="w180px ma">
+        <mat-form-field>
+            <mat-label>Anno Scolastico di Default</mat-label>
+            <mat-select formControlName="selectAnnoScolastico">
+                <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
+            <!-- <mat-select formControlName="selectAnnoScolastico" [compareWith]="compareAnni"> -->
+                <!-- <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element" [id]="element.id.toString()" > -->
+                {{element.annoscolastico}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>   
+    </div>
+    <mat-grid-list class="ma w50" [cols]="14" rowHeight="140px">
+        <mat-grid-tile *ngFor="let mese of mesiArr; let i = index" >
+            <div class="center">
+                <mat-label>{{placeholderMeseArr[i]}}</mat-label>
+            </div>
+            <br>
+            <div>
+                <mat-checkbox></mat-checkbox>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+</form>

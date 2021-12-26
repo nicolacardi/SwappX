@@ -101,20 +101,20 @@ export class PagamentiListComponent implements OnInit {
 
 //#endregion
 
-  constructor(private svcPagamenti:     PagamentiService,
-              private svcAnni:          AnniScolasticiService,
-              private fb:               FormBuilder, 
-              public _dialog:           MatDialog, 
-              private _snackBar:        MatSnackBar,
-              private _loadingService:  LoadingService)  {
+  constructor(
+    private svcPagamenti:     PagamentiService,
+    private svcAnni:          AnniScolasticiService,
+    private fb:               FormBuilder, 
+    public _dialog:           MatDialog, 
+    private _snackBar:        MatSnackBar,
+    private _loadingService:  LoadingService
+  )
+  {
     
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     })
-
-
-
   }
 
 //#region ----- LifeCycle Hooks e simili-------
