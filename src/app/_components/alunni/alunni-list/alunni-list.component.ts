@@ -65,6 +65,7 @@ export class AlunniListComponent implements OnInit {
       "email", 
       "telefono", 
   ];
+
   displayedColumnsGenitoreEditFamiglia: string[] = [
     "actionsColumn", 
     "nome", 

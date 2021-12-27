@@ -111,7 +111,7 @@ export class RetteListComponent implements OnInit {
 
   myObjAssigned : PAG_RettaGroupObj = {
     alunnoID: 0,
-    retta: []
+    _Rette: []
   };
 
   public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2).toLocaleString('it-IT', {month: 'short'}).toUpperCase());
@@ -243,10 +243,10 @@ export class RetteListComponent implements OnInit {
 
   trovaQuotaConcMese (arr: Array<any>, m: number) : number {
     this.myObjAssigned.alunnoID =  arr[0];
-    this.myObjAssigned.retta =  arr[1]; 
-      if (this.myObjAssigned.retta.find(x=> x.meseRetta == m)?.quotaConcordata) {
+    this.myObjAssigned._Rette =  arr[1]; 
+      if (this.myObjAssigned._Rette.find(x=> x.meseRetta == m)?.quotaConcordata) {
         //INTERESSANTE L'USO DEL '!' IN QUESTO CASO! dice: "sono sicuro che non sia undefined"
-        return this.myObjAssigned.retta.find(x=> x.meseRetta == m)!.quotaConcordata  
+        return this.myObjAssigned._Rette.find(x=> x.meseRetta == m)!.quotaConcordata  
       } else {
         return 0;
       }
@@ -254,9 +254,9 @@ export class RetteListComponent implements OnInit {
 
   trovaQuotaDefMese (arr: Array<any>, m: number) : number {
     this.myObjAssigned.alunnoID =  arr[0];
-    this.myObjAssigned.retta =  arr[1]; 
-      if (this.myObjAssigned.retta.find(x=> x.meseRetta == m)?.quotaDefault) {
-        return this.myObjAssigned.retta.find(x=> x.meseRetta == m)!.quotaDefault
+    this.myObjAssigned._Rette =  arr[1]; 
+      if (this.myObjAssigned._Rette.find(x=> x.meseRetta == m)?.quotaDefault) {
+        return this.myObjAssigned._Rette.find(x=> x.meseRetta == m)!.quotaDefault
       } else {
         return 0;
       }
@@ -266,11 +266,11 @@ export class RetteListComponent implements OnInit {
     //console.log (arr);
     let sumPags: number;
     this.myObjAssigned.alunnoID =  arr[0];
-    this.myObjAssigned.retta =  arr[1]; 
-      if (this.myObjAssigned.retta.find(x=> x.meseRetta == m)?.pagamenti) {
+    this.myObjAssigned._Rette =  arr[1]; 
+      if (this.myObjAssigned._Rette.find(x=> x.meseRetta == m)?.pagamenti) {
         sumPags = 0;
         //IN QUESTO CASO ci sono ben DUE "!" uno per il find e uno per i pagamenti
-        this.myObjAssigned.retta.find(x=> x.meseRetta == m)!.pagamenti!
+        this.myObjAssigned._Rette.find(x=> x.meseRetta == m)!.pagamenti!
         .forEach (x=> sumPags = sumPags + x.importo) ;
         return sumPags;
       } else {

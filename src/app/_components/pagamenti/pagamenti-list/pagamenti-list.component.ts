@@ -241,7 +241,7 @@ export class PagamentiListComponent implements OnInit {
              break; 
           } 
           case "causale": { 
-            return currentTerm + data.causale.descrizione; 
+            return currentTerm + data.Causale.descrizione; 
              break; 
           } 
           case "alunno": { 

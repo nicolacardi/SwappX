@@ -55,7 +55,7 @@ export class PagamentiService {
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti')
             .pipe (
-            map(val=>val.filter(val=>(val.tipoPagamento.descrizione.toLowerCase() + ' ' + val.causale.descrizione.toLowerCase()).includes(searchstring.toLowerCase()))),
+            map(val=>val.filter(val=>(val.tipoPagamento.descrizione.toLowerCase() + ' ' + val.Causale.descrizione.toLowerCase()).includes(searchstring.toLowerCase()))),
       );
         } else {
       return of()

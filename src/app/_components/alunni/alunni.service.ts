@@ -28,6 +28,7 @@ export class AlunniService {
 
   loadByClasse(idClasse: any): Observable<ALU_Alunno[]>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllByClasse/'+idClasse);
+    //http://213.215.231.4/swappX/api/ALU_Alunni/GetAllByClasse/3
   }
 
   loadWithParents(): Observable<ALU_Alunno[]>{

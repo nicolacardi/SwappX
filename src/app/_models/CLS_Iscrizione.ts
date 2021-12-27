@@ -1,22 +1,19 @@
+import { CLS_IscrizioneStato } from "./CLS_IscrizioneStato";
 
-export interface CLS_ClasseSezioneAnnoAlunno {
+export interface CLS_Iscrizione {
         id:                   number;
         classeSezioneAnnoID:  number;
         alunnoID:             number;
 
+        statoID:              number;
+        dtIni:                string;
+        dtEnd:                string;
 
+        note:                 string;
+        dtIns:                string;
+        dtUpd:                string;
+        userIns:              number;
+        userUpd:              number;
         
+        Stato:               CLS_IscrizioneStato;
 }
-
-// {
-//     "id": 3,
-//     "classeSezioneAnnoID": 1,
-//     "alunnoID": 3,
-//     "note": "string",
-//     "dtIns": "2021-03-17T00:00:00",
-//     "dtUpd": "2021-03-17T00:00:00",
-//     "userIns": 3,
-//     "userUpd": 0,
-//     "classeSezioneAnno": null,
-//     "alunno": null
-//   },

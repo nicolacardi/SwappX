@@ -14,7 +14,7 @@ export interface PAG_Pagamento {
         tipoPagamento:          PAG_TipoPagamento;
 
         causaleID:              number;                 //Sostituire con oggetto PAG_Causali?
-        causale:                PAG_CausalePagamento;
+        Causale:                PAG_CausalePagamento;
         rettaID:                number;
         retta:                  PAG_Retta;            //Serve SOLO per poter ordinare i pagamenti per mese o per importo della retta
 
