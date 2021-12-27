@@ -51,7 +51,6 @@ h3 { font-family: 'Titillium Web', sans-serif !important;
 }
 
 
-
 /*Colore sfondo*/
 .mat-drawer-container { background-color: white;
     
@@ -75,6 +74,22 @@ background-size: cover;*/
 }
 .position-fixed{
     position: fixed;
+}
+
+.fs8 {
+    font-size: 8px ;
+}
+
+.fs10 {
+    font-size: 10px !important;
+}
+
+.fs12 {
+    font-size: 12px !important;
+}
+
+.fs14 {
+    font-size: 14px !important;
 }
 
 .fs16 {
@@ -184,6 +199,14 @@ background-size: cover;*/
 .ma-lr {
     margin-left: auto;
     margin-right: auto;
+}
+
+.p5 {
+    padding: 5px;
+}
+
+.p10 {
+    padding: 10px;
 }
 
 .pt20 {
@@ -318,8 +341,13 @@ background-size: cover;*/
   }
 
 /*Titolo Pagina*/
-  .page-title {
+.page-title {
     text-align: center;
+    margin-top: 10px !important;
+}
+
+.page-subtitle {
+    text-align: center; 
     margin-top: 10px !important;
 }
 
@@ -862,6 +890,10 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 
 .bordered-grey {
     border: 1px solid grey;
+}
+
+.bordered-bottom {
+    border-bottom: 1px solid grey;
 }
 
 .big-border {
