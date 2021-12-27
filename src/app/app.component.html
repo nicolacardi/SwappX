@@ -110,11 +110,11 @@
             <!-- Utenti -->
             <a mat-list-item routerLink="users" (click)="start.close()" *ngIf="currUser && currUser.ruolo == 9">
             <!-- <a mat-list-item routerLink="users" (click)="start.close()"> -->
-                <mat-icon>account_box</mat-icon>
+                <img class="iconaMenuSidenav" src="../assets/gestioneUtenti.svg">
                 <span>Gestione Utenti</span>
             </a> 
 
-            <a mat-list-item routerLink="impostazioni" (click)="start.close()"  *ngIf="currUser && currUser.ruolo >=4">
+            <a mat-list-item routerLink="impostazioni" (click)="start.close()"  style="position: absolute; bottom: 0;" *ngIf="currUser && currUser.ruolo >=4">
                 <img class="iconaMenuSidenav" src="../assets/settings.svg">
                 <span>Impostazioni</span>
             </a>
