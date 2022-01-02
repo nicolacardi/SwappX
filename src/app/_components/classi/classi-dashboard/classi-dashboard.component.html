@@ -10,7 +10,6 @@
                     [idClasseInput] = "idClasseInput" -->
                     <app-classi-sezioni-anni-list 
                         [dove] = "'classi-dashboard'"
-
                         (annoId)="annoIdEmitted($event)"
                         (classeId)="classeIdEmitted($event)">
                     </app-classi-sezioni-anni-list>
@@ -18,13 +17,12 @@
             </mat-card>
         </td>
         <td class="columnright-dashboard">
-            <button mat-mini-fab aria-label="Aggiungi Alunno alla Classe" class="btn btn-addYellow" (click)="addAlunnoToClasse()" >
-                <img class="iconaMenu" src="../../../../assets/empty.svg" matTooltip="Aggiungi alunni alla classe" 
+            <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="btn btn-addYellow" (click)="addAlunnoToClasse()" >
+                <img class="iconaMenu" src="../../../../assets/empty.svg" matTooltip="Iscrivi alunni alla classe" 
                 [@openClose]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
             </button>
-            <button mat-mini-fab aria-label="Aggiungi Alunno alla Classe" class="btn btn-addRed" (click)="removeAlunnoFromClasse()">
-                <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg" matTooltip="Rimuovi alunni selezionati dalla classe"
-                >
+            <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="btn btn-addRed" (click)="removeAlunnoFromClasse()">
+                <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg" matTooltip="Rimuovi alunni selezionati dalla classe"  >
             </button>
             <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="esportaPdf" class="btn btn-addBlu" (click)="creaPdf()">
                 <mat-icon>print</mat-icon>
@@ -34,7 +32,8 @@
             </button>
             <mat-card class=" card mat-elevation-z8" style="height: 100%">
                 <div class="table-container">
-                    <app-alunni-list [context] = "'classi-dashboard'" [idClasse]="idClasse"></app-alunni-list>
+                    <!-- <app-alunni-list [context] = "'classi-dashboard'" [idClasse]="idClasse"></app-alunni-list> -->
+                    <app-iscrizioni-list   [idClasse]="idClasse"></app-iscrizioni-list>
                 </div>
             </mat-card>
         </td>

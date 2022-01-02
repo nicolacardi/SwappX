@@ -14,12 +14,13 @@ import { IscrizioniService } from '../iscrizioni.service';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 @Component({
-  selector: 'app-dialog-add',
-  templateUrl: './dialog-add.component.html',
-  styleUrls: ['./dialog-add.component.css']
+  selector: 'app-iscrizioni-add',
+  templateUrl: './iscrizioni-add.component.html',
+  //styleUrls: ['./dialog-add.component.css']
+  styleUrls: ['./../classi.css']
 })
 
-export class DialogAddComponent implements OnInit {
+export class IscrizioniAddComponent implements OnInit {
 
 //#region ----- Variabili -------
   form! :                   FormGroup;
@@ -39,7 +40,7 @@ export class DialogAddComponent implements OnInit {
   constructor(private fb:                             FormBuilder,
                       private svcAlunni:              AlunniService,
                       private svcIscrizioni:          IscrizioniService,
-                      public dialogRef:               MatDialogRef<DialogAddComponent>,
+                      public dialogRef:               MatDialogRef<IscrizioniAddComponent>,
                       @Inject(MAT_DIALOG_DATA) public data: DialogData) { 
 
     this.form = this.fb.group({
@@ -49,6 +50,7 @@ export class DialogAddComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
+
     this.idClasse = this.data.idClasse;
     
     //console.log ("this.data.idAnno", this.data.idAnno);
@@ -77,6 +79,7 @@ export class DialogAddComponent implements OnInit {
 //#region ----- Altri metodi -------
 
   selected(event: MatAutocompleteSelectedEvent): void {
+
     this.nomeCognomeAlunno.nativeElement.value = '';
     const alunnoToAdd = event.option.viewValue;
     const idAlunnoToAdd = parseInt(event.option.id);

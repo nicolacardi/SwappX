@@ -79,3 +79,8 @@ table {
 :host ::ng-deep .mat-form-field-infix {
   border: 0px !important;
 }
+
+
+.is-loading{
+  position: absolute;
+} 

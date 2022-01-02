@@ -40,7 +40,7 @@ import { ClasseSezioneAnnoEditComponent } from './_components/classi/classe-sezi
 import { ClassiSezioniAnniFilterComponent } from './_components/classi/classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
 import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
-import { DialogAddComponent } from './_components/classi/dialog-add/dialog-add.component';
+import { IscrizioniAddComponent } from './_components/classi/iscrizioni-add/iscrizioni-add.component';
 
 import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
 import { PagamentiListComponent } from './_components/pagamenti/pagamenti-list/pagamenti-list.component';
@@ -78,6 +78,7 @@ import { HighlightPipe } from './_components/utilities/highlight/highlight.pipe'
 import { PhotocropComponent } from './_components/utilities/photocrop/photocrop.component';
 import { EventEmitterService } from './_services/event-emitter.service';
 import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.component';
+import { IscrizioniListComponent } from './_components/classi/iscrizioni-list/iscrizioni-list.component';
 
 
 
@@ -112,8 +113,13 @@ import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.c
     ClassiSezioniAnniFilterComponent,
     ClassiSezioniAnniListComponent,
     ClassiDashboardComponent,
-    DialogAddComponent,
+
     
+    IscrizioniListComponent,
+    IscrizioniAddComponent,
+    //IscrizioniEditComponent,
+    //IscrizioniFilterComponent,
+
     PagamentiListComponent,
     PagamentiPageComponent,
     PagamentiFilterComponent,

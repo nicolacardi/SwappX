@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { DialogAddComponent } from '../dialog-add/dialog-add.component';
+import { IscrizioniAddComponent } from '../iscrizioni-add/iscrizioni-add.component';
 
 //services
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
@@ -122,12 +122,12 @@ export class ClassiDashboardComponent implements OnInit {
       panelClass: 'app-full-bleed-dialog',
       width: '400px',
       minHeight: '300px',
-      data: {titolo: "Aggiungi nuovo Alunno alla classe", 
+      data: {titolo: "Iscrivi alunno alla classe", 
               idAnno: this.idAnno,
               idClasse: this.idClasse}
     };
 
-    const dialogRef = this._dialog.open(DialogAddComponent, dialogConfig);
+    const dialogRef = this._dialog.open(IscrizioniAddComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
         result => {
           if(result == undefined){          
