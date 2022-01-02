@@ -111,7 +111,10 @@ export class IscrizioniAddComponent implements OnInit {
           )
           .subscribe(
             val=>{
-              //console.log("dialog-add.component.ts - save:Record Salvato:", val);
+              console.log("iscrizioni-add.component.ts - save:Record Salvato:", val);
+            },
+            err =>{
+              console.log("iscrizioni-add.component.ts - errore:", val);
             }
           );
     });
