@@ -14,7 +14,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 //components
 //import { IscrizioneEditComponent } from '../iscrizione-edit/iscrizione-edit.component';           //TODO!!!
 //import { IscrizioniFilterComponent } from '../iscrizioni-filter/iscrizioni-filter.component';     //TODO!!!
+import { AlunnoEditComponent } from '../../alunni/alunno-edit/alunno-edit.component';
 import { RettaEditComponent } from '../../pagamenti/retta-edit/retta-edit.component';
+
 
 //models
 import { IscrizioniService } from '../iscrizioni.service';
@@ -132,6 +134,7 @@ export class IscrizioniListComponent implements OnInit {
     let obsIscrizioni$: Observable<CLS_Iscrizione[]>;
 
     //if (this.context == "classi-dashboard" && this.idClasse != undefined) {
+    if (this.idClasse != undefined) {
       obsIscrizioni$= this.svcIscrizioni.listByClasseSezioneAnno(this.idClasse);
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
 
@@ -142,7 +145,7 @@ export class IscrizioniListComponent implements OnInit {
           this.matDataSource.sort = this.sort; 
         }
       );
-    //} 
+    } 
   }
 
   //#endregion
@@ -215,22 +218,20 @@ export class IscrizioniListComponent implements OnInit {
     */
   }
 
-  openDetail(id:any){
-    //TODO!!!
-    /*
+  openDetail(alunnoID:number){
+    
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
       height: '620px',
-      data: id
+      data: alunnoID
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
-    */
+    dialogRef.afterClosed().subscribe(
+      () => { 
+        this.loadData(); 
+      }
+    );
   }
 
   drop(event: CdkDragDrop<string[]>) {

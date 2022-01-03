@@ -153,7 +153,7 @@ export class GenitoriListComponent implements OnInit {
     let obsGenitori$: Observable<ALU_Genitore[]>;
 
     if(this.context == "alunno-edit-famiglia"){
-      console.log("this.alunnoId sto per caricare solo l'alunno:", this.alunnoId);
+      //console.log("this.alunnoId sto per caricare solo l'alunno:", this.alunnoId);
       obsGenitori$= this.svcGenitori.loadByAlunno(this.alunnoId);
 
       //.pipe(map(res=> res.filter(gen => gen._Figli.some(y => (y.id == this.alunnoId)))));  //BELLISSIMA Sembra giusta ma non funziona
@@ -182,9 +182,8 @@ export class GenitoriListComponent implements OnInit {
       if (Object.values(searchTerms).every(x => x === null || x === '')) 
         foundAlunno = true;
       else {
-        console.log(data);
+        //console.log(data);
         data._Figli?.forEach((val: { alunno: { nome: any; cognome: any}; })=>  {
-          console.log("val", val);
             const foundCognomeNome = foundAlunno || String(val.alunno.cognome+" "+val.alunno.nome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1;
             const foundNomeCognome = foundAlunno || String(val.alunno.nome+" "+val.alunno.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1; 
             foundAlunno = foundCognomeNome || foundNomeCognome;

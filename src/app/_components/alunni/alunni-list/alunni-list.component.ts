@@ -339,6 +339,7 @@ export class AlunniListComponent implements OnInit {
   }
 
   openDetail(id:any){
+
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
@@ -346,11 +347,11 @@ export class AlunniListComponent implements OnInit {
       data: id
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(
+      () => { 
+        this.loadData(); 
+      }
+    );
   }
 
   drop(event: CdkDragDrop<string[]>) {

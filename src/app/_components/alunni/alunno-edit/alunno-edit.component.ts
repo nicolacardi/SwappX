@@ -72,8 +72,7 @@ export class AlunnoEditComponent implements OnInit {
               public _dialog:                       MatDialog,
               private _snackBar:                    MatSnackBar,
               private _loadingService :             LoadingService
-              ) 
-  {
+              )  {
 
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
     
