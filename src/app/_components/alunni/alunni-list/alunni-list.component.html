@@ -10,7 +10,7 @@
     <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>
 
     <!-- **************************   MAT-TABLE   ******************* -->
-    <mat-table class="alunniTable transparent" [dataSource]="matDataSource"
+    <mat-table class="_table-row-low transparent" [dataSource]="matDataSource"
         matSort
         [matSortActive]="matSortActive"
         [matSortDirection] = "'asc'"
@@ -137,7 +137,7 @@
         </ng-container>
         
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
-        <mat-header-row [ngClass]="{'lowTitles': true}" *matHeaderRowDef="displayedColumns;"></mat-header-row>
+        <mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></mat-header-row>
         
         <!-- **************************   MAT-ROW   ******************* -->
         <mat-row *matRowDef="let element;columns: displayedColumns"

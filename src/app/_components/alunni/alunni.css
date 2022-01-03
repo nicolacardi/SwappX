@@ -1,27 +1,3 @@
-.element-row:hover {
-  background: whitesmoke;
-}
-
-.is-loading{
-  position: absolute;
-  float:center;
-  margin-left: 65px;
-} 
-
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* TABLE VARIE */
-
-.alunniTable .mat-row {
-    min-height: 30px;
-}
-
-.lowTitles {
-  min-height: 37px !important;
-}
 
 
 /* FILTRI AVANZATI */
@@ -92,12 +68,7 @@
 }
 
 
-.mat-cell {
-  width: auto;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+
 
 
 

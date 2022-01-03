@@ -321,13 +321,12 @@ export class AlunnoEditComponent implements OnInit {
   }
 
   removeFromAttended(classeSezioneAnno: CLS_ClasseSezioneAnno) {
-    this.svcIscrizioni.delete(classeSezioneAnno.id , this.idAlunno).subscribe(
+    this.svcIscrizioni.deleteByClasseAlunno(classeSezioneAnno.id , this.idAlunno).subscribe(
       res=> {
-          //console.log("addToFamily OK");
           this.classiAttendedComponent.loadData();
       },
       err=> {
-        //console.log("addToFamily KO");
+        //console.log("removeFromAttended KO");
       }
     )
   }

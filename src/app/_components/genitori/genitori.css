@@ -1,15 +1,6 @@
-.element-row:hover {
-    background: whitesmoke;
-}
+ 
 
-.lowTitles {
-  min-height: 37px !important;
-}
-
-.genitoriTable .mat-row {
-    min-height: 30px;
-}
-
+ 
 /* FILTRI AVANZATI */
 :host ::ng-deep  .filtriAvanzati .mat-form-field {
     height: 40px;

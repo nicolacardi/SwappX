@@ -74,10 +74,9 @@
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>telefono</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.telefono}}</mat-cell>
         </ng-container>
-
        
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
-        <mat-header-row [ngClass]="{'lowTitles': true}" *matHeaderRowDef="displayedColumns;"></mat-header-row>
+        <mat-header-row class="_table-title-low"  *matHeaderRowDef="displayedColumns;"></mat-header-row>
         
         <!-- **************************   MAT-ROW   ******************* -->
         <mat-row *matRowDef="let element;columns: displayedColumns"

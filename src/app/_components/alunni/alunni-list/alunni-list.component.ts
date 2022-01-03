@@ -215,6 +215,7 @@ export class AlunniListComponent implements OnInit {
   loadData () {
     let obsAlunni$: Observable<ALU_Alunno[]>;
 
+    //AS: [TODO] Verificare, non dovrebbe più servire
     if (this.context == "classi-dashboard" && this.idClasse != undefined) {
       obsAlunni$= this.svcAlunni.loadByClasse(this.idClasse);
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);

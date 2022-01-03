@@ -45,14 +45,14 @@ export class IscrizioniListComponent implements OnInit {
       "actionsColumn", 
       "nome", 
       "cognome", 
-      "stato", 
-      "dtNascita", 
-      "indirizzo", 
-      "comune", 
-      "cap", 
-      "prov", 
       "email", 
-      "telefono", 
+      "telefono",
+      "dtNascita", 
+      "stato",    //Stato Iscrizione
+      // "indirizzo", 
+      // "comune", 
+      // "cap", 
+      // "prov"
   ];
 
   selection = new SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
@@ -71,6 +71,7 @@ export class IscrizioniListComponent implements OnInit {
   public swSoloAttivi :         boolean = true;
 
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
+  /*
   filterValues = {
     nome: '',
     cognome: '',
@@ -83,6 +84,7 @@ export class IscrizioniListComponent implements OnInit {
     telefono: '',
     nomeCognomeGenitore: ''
   };
+  */
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -127,7 +129,6 @@ export class IscrizioniListComponent implements OnInit {
       //chiamata al WS dei layout con nome utente e nome griglia e contesto (variabile 'context')
       //se trovato, update colonne griglia
       //this.displayedColumns =  this.displayedColumnsAlunniList;
-
   }
 
   loadData () {
@@ -136,22 +137,38 @@ export class IscrizioniListComponent implements OnInit {
     //if (this.context == "classi-dashboard" && this.idClasse != undefined) {
     if (this.idClasse != undefined) {
       obsIscrizioni$= this.svcIscrizioni.listByClasseSezioneAnno(this.idClasse);
-      const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
+      const loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
 
-      loadAlunni$.subscribe(val => 
-        {
+      loadIscrizioni$.subscribe(val =>  {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
+          this.sortCustom(); 
           this.matDataSource.sort = this.sort; 
+          console.log("DEBUG", this.sort);
         }
       );
     } 
   }
 
-  //#endregion
+  sortCustom() {
+    this.matDataSource.sortingDataAccessor = (item:any, property) => {
+      switch(property) {
+        case 'nome':                        return item.alunno.nome;
+        case 'cognome':                     return item.alunno.cognome;
+        case 'email':                       return item.alunno.email;
+        case 'telefono':                    return item.alunno.telefono;
+        case 'dtNascita':                   return item.alunno.dtNascita;
+        case 'stato':                       return item.stato.descrizione;
+        default: return item[property]
+      }
+    };
+  }
+
+//#endregion
 
 //#region ----- Filtri & Sort -------
 
+/*
   filterRightPanel(): (data: any, filter: string) => boolean {
 
     let filterFunction = function(data: any, filter: any): boolean {
@@ -185,17 +202,14 @@ export class IscrizioniListComponent implements OnInit {
   applyFilter(event: Event) {
 
     //TODO!!!!
-    /*
     this.filterValue = (event.target as HTMLInputElement).value;
     if (this.filterValue.length == 1) {
       this.matDataSource.filterPredicate = this.storedFilterPredicate;
       if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
     }
-    
     this.matDataSource.filter = this.filterValue.trim().toLowerCase();
-    */
   }
-
+*/
 //#endregion
 
 //#region ----- Add Edit Drop -------
@@ -240,6 +254,7 @@ export class IscrizioniListComponent implements OnInit {
 //#endregion
 
 //#region ----- Right Click -------
+
   onRightClick(event: MouseEvent, element: CLS_Iscrizione) { 
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 

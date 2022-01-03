@@ -1,6 +1,4 @@
-.element-row:hover {
-    background: whitesmoke;
-}
+ 
 
 .border-bottom {
     border-bottom: 1px solid #1B3663 !important;
@@ -226,10 +224,6 @@ td {
 
   .concordate-row {
     border-bottom-width: 0px;
-  }
-
-  .mat-cell {
-    /*border-bottom: 1px rgba(86, 86, 86, 0.279) solid;*/
   }
 
 .cellNoBorder {

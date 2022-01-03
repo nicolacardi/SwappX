@@ -5,7 +5,9 @@ import jsPDF from 'jspdf';
 import { ActivatedRoute, Router } from '@angular/router';
 
 //components
-import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
+//import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
+import { IscrizioniListComponent } from '../iscrizioni-list/iscrizioni-list.component';
+
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { IscrizioniAddComponent } from '../iscrizioni-add/iscrizioni-add.component';
@@ -56,7 +58,8 @@ export class ClassiDashboardComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-  @ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
+  //@ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
+  @ViewChild(IscrizioniListComponent) iscrizioniListComponent!: IscrizioniListComponent; 
   @Input () classeSezioneAnnoId!: number;
 //#endregion
 
@@ -102,7 +105,7 @@ export class ClassiDashboardComponent implements OnInit {
 
   creaPdf() {
     const tableHeaders = [['id', 'nome', 'cognome', "genere", "dtNascita"]];
-    this._jspdf.creaPdf(this.alunniListComponent.matDataSource.data, tableHeaders);
+    this._jspdf.creaPdf(this.iscrizioniListComponent.matDataSource.data, tableHeaders);
   }
 
   promuovi() {
@@ -114,6 +117,7 @@ export class ClassiDashboardComponent implements OnInit {
 //#endregion
 
 //#region ----- add/remove to/from Classe-------
+
   addAlunnoToClasse() {
     console.log ("this.idAnno", this.idAnno);
     if(this.idClasse<0) return;
@@ -131,14 +135,16 @@ export class ClassiDashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
         result => {
           if(result == undefined){          
-          this.alunniListComponent.loadData()
+          this.iscrizioniListComponent.loadData()
           }
     });
   }
 
   removeAlunnoFromClasse() {
-    const objIdAlunniToRemove = this.alunniListComponent.getChecked();
-    const selections = objIdAlunniToRemove.length;
+    //const objIdAlunniToRemove = this.alunniListComponent.getChecked();
+    const objIdToRemove = this.iscrizioniListComponent.getChecked();
+
+    const selections = objIdToRemove.length;
     if (selections <= 0) {
       //AS: mettere un messagebox "Selezionare almeno un elemento da cancellare"  ?
     }
@@ -153,17 +159,19 @@ export class ClassiDashboardComponent implements OnInit {
           if(!result) {
             return; 
           } else {
-            objIdAlunniToRemove.forEach(val=>{
-              this.svcIscrizioni.delete(this.idClasse , val.id)
+            objIdToRemove.forEach(val=>{
+              //this.svcIscrizioni.delete(this.idClasse , val.id)
+              this.svcIscrizioni.delete(val.id)
                 .subscribe(()=>{
                     //console.log("classi-dashboard.component.ts - removeAlunnoFromClasse: iscrizione di "+val.id+ " a "+this.idClasse + " rimossa" ); 
-                    this.alunniListComponent.loadData();
-                    //this.alunniListComponent.resetSelections();
+                    //this.alunniListComponent.loadData();
+                    this.iscrizioniListComponent.loadData();
                 })
             }); 
             //AS: spostato qua per evitare che faccia n refresh, solo che bisogna verificare la sync
             //this.alunniListComponent.loadData();
-            this.alunniListComponent.resetSelections();
+            //this.alunniListComponent.resetSelections();
+            this.iscrizioniListComponent.resetSelections();
           }
       })
     }

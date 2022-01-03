@@ -547,6 +547,44 @@ in fase di creazione della Dialog addAlunno*/
 
 /**********************************/
 
+
+/*********** TABLES ***************/
+
+.element-row:hover {
+    background: whitesmoke;
+}
+
+.mat-cell {
+    width: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+  
+._table-row-low .mat-row {
+    min-height: 30px;
+}
+
+._table-title-low {
+    min-height: 37px !important;
+}
+
+/**********************************/
+
+/*********** SPINNER *************/ 
+
+._spinner-is-loading-mini{
+  position: absolute;
+  float:center; 
+  margin-left: 65px;
+} 
+._spinner-is-loading{
+    position: absolute;
+  } 
+
+/**********************************/
+
+
 /*********** SIDENAV ************/
 .example-spacer {
     flex: 1 1 auto;

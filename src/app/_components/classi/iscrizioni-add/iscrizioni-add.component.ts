@@ -12,6 +12,8 @@ import { IscrizioniService } from '../iscrizioni.service';
 
 //classi
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 @Component({
   selector: 'app-iscrizioni-add',
@@ -41,6 +43,7 @@ export class IscrizioniAddComponent implements OnInit {
                       private svcAlunni:              AlunniService,
                       private svcIscrizioni:          IscrizioniService,
                       public dialogRef:               MatDialogRef<IscrizioniAddComponent>,
+                      private _snackBar:              MatSnackBar,
                       @Inject(MAT_DIALOG_DATA) public data: DialogData) { 
 
     this.form = this.fb.group({
@@ -52,10 +55,6 @@ export class IscrizioniAddComponent implements OnInit {
   ngOnInit(): void {
 
     this.idClasse = this.data.idClasse;
-    
-    //console.log ("this.data.idAnno", this.data.idAnno);
-    //console.log("dialog-add.component.ts - ngOnInit: this.idClasse=", this.idClasse);
-
     this.filteredAlunni$ = this.form.controls['nomeCognomeAlunno'].valueChanges
       .pipe(
         tap(() => this.alunniIsLoading = true),
@@ -83,6 +82,7 @@ export class IscrizioniAddComponent implements OnInit {
     this.nomeCognomeAlunno.nativeElement.value = '';
     const alunnoToAdd = event.option.viewValue;
     const idAlunnoToAdd = parseInt(event.option.id);
+
     //in verità dopo la miglioria per cui non si vede più quanto giù selezionato questa if non servirebbe
     if (!this.alunniSelezionati.includes(alunnoToAdd)) { 
       this.alunniSelezionati.push(alunnoToAdd);
@@ -91,6 +91,7 @@ export class IscrizioniAddComponent implements OnInit {
   }
 
   remove(alunnoSelezionato: string): void {
+
     const index = this.alunniSelezionati.indexOf(alunnoSelezionato);
     if (index >= 0) {
       this.alunniSelezionati.splice(index, 1);
@@ -101,24 +102,28 @@ export class IscrizioniAddComponent implements OnInit {
 //#endregion
 
 //#region ----- Operazioni CRUD -------
+
   save() {
     this.idAlunniSelezionati.forEach(
       val=>{
-        let objClasseSezioneAnnoAlunno = {AlunnoID: val, ClasseSezioneAnnoID: this.data.idClasse};
-        this.svcIscrizioni.post(objClasseSezioneAnnoAlunno)
-          .pipe(
-            finalize(()=>this.dialogRef.close())
-          )
+        let objIscrizione = {
+          AlunnoID: val,
+          ClasseSezioneAnnoID: this.data.idClasse
+        };
+        this.svcIscrizioni.post(objIscrizione)
+          .pipe( finalize(()=>this.dialogRef.close()))
           .subscribe(
             val=>{
-              console.log("iscrizioni-add.component.ts - save:Record Salvato:", val);
+             // console.log("iscrizioni-add.component.ts - save:Record Salvato:", val);
             },
             err =>{
-              console.log("iscrizioni-add.component.ts - errore:", val);
+              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+              console.log("iscrizioni-add.component.ts - errore:", err);
             }
           );
-    });
+      });
   }
+
 //#endregion
 
 

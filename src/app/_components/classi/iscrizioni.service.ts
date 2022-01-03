@@ -30,14 +30,24 @@ export class IscrizioniService {
   }
 
   post(formData: any): Observable <any>{
-    return this.http.post( environment.apiBaseUrl  + 'CLS_Iscrizioni' , formData);  
-  }
 
-  delete(ClasseSezioneAnnoID: number, idAlunno: number): Observable <any>{
+    formData.id = 0;
+    formData.statoID = 1;
+    //formData.dtIns= "01/01/2022";
+
+    return this.http.post( environment.apiBaseUrl  + 'CLS_Iscrizioni' , formData);  
+
+  }
+  
+  deleteByClasseAlunno(ClasseSezioneAnnoID: number, idAlunno: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'CLS_Iscrizioni/DeleteByAlunnoAndClasseSezioneAnno?idAlunno='+idAlunno+'&idClasseSezioneAnno='+ClasseSezioneAnnoID);
     //http://213.215.231.4/swappX/api/CLS_Iscrizioni/DeleteByAlunnoAndClasseSezioneAnno?idAlunno=3&idClasseSezioneAnno=243
   }
 
+  
+  delete(id: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'CLS_Iscrizioni/' + id); 
+  }
       
 
 

@@ -1,16 +1,19 @@
 <h1 *ngIf="showPageTitle" class="page-title">Elenco Iscritti</h1>
 
     <!-- **************************   FILTER   ******************* -->
+   <!--
     <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
         <mat-label>Filtro</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
     </mat-form-field>
+    -->
+    
     
     <!-- **************************   PAGINATOR   ******************* -->
     <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>
 
     <!-- **************************   MAT-TABLE   ******************* -->
-    <mat-table class="alunniTable transparent" [dataSource]="matDataSource"
+    <mat-table class="_table-row-low transparent" [dataSource]="matDataSource"
         matSort
         [matSortActive]="matSortActive"
         [matSortDirection] = "'asc'"
@@ -86,38 +89,6 @@
             <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.dtNascita | highlight: filterValue| date: 'dd/MM/yyyy'"></mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="indirizzo">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Indirizzo</mat-header-cell>
-            <!-- <mat-cell *matCellDef="let element">{{element.indirizzo}}</mat-cell> -->
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.indirizzo|highlight:filterValue"></mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="comune">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Comune</mat-header-cell>
-            <!-- <mat-cell *matCellDef="let element">{{element.comune}}</mat-cell> -->
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.comune | highlight: filterValue"></mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="cap">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CAP</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.alunno.cap}}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="prov">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Prov</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.alunno.prov}}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="cf">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CF</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.alunno.cf}}</mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="comuneNascita">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Comune Nascita</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.alunno.comuneNascita}}</mat-cell>
-        </ng-container>
-
         <ng-container matColumnDef="email">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.alunno.email}}</mat-cell>
@@ -142,8 +113,8 @@
         </ng-container>
         
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
-        <mat-header-row [ngClass]="{'lowTitles': true}" *matHeaderRowDef="displayedColumns;"></mat-header-row>
-        
+        <mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></mat-header-row>  
+
         <!-- **************************   MAT-ROW   ******************* -->
         <mat-row *matRowDef="let element;columns: displayedColumns"
             class="element-row"

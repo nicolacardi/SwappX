@@ -1,7 +1,5 @@
 /* Structure */
-.element-row:hover {
-  background: whitesmoke;
-}
+ 
   
 .table-container {
     position: relative;
@@ -81,6 +79,3 @@ table {
 }
 
 
-.is-loading{
-  position: absolute;
-} 
