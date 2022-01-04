@@ -1,12 +1,4 @@
-.messaggiTable .mat-row {
-  min-height: 30px;
-}
-
-.lowTitles {
-  min-height: 37px !important;
-}
-
 /*ATTENZIONE: overriding element standard su ../Styles.css  */
-.mat-cell {
-  white-space: normal;
-}
+  .mat-cell {
+    white-space: normal;
+  }

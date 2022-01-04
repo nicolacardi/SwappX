@@ -1,81 +1,75 @@
-/* Structure */
- 
-  
-.table-container {
-    position: relative;
-    min-height: 200px;
-    max-height: 100%;
-    overflow: auto;
-}
-  
-table {
-  width: 100%;
-}
 
-/* Column Widths */
-.mat-column-descrizione {
-  min-width: 170px;
-}
+  ._table-container {
+      position: relative;
+      min-height: 200px;
+      max-height: 100%;
+      overflow: auto;
+  }
+    
+  /* table {
+    width: 100%;
+  } */
 
-.mat-column-sezione {
-  max-width: 30px;
-}
+  /* .element-row {
+      cursor: pointer;
+  } */
 
-.mat-column-sezioneCSAA {
-  max-width: 30px;
-}
+  /* :host ::ng-deep .mat-form-field-infix {
+    border: 0px !important;
+  } */
 
-.mat-column-actionsColumn {
-  min-width: 50px;
-}
+  /* Larghezza colonne specifiche nelle table di questa sezione*/
+  .mat-column-descrizione {
+    min-width: 170px;
+  }
 
-.mat-column-numAlunni {
-  width: 80px;
-}
+  .mat-column-sezione {
+    max-width: 30px;
+  }
 
-.mat-column-numMaschi {
-  width: 80px;
-}
+  .mat-column-sezioneCSAA {
+    max-width: 30px;
+  }
 
-.mat-column-numFemmine {
-  width: 80px;
-}
+  .mat-column-actionsColumn {
+    min-width: 50px;
+  }
 
-.classiSezioniAnniTable .mat-row {
-  min-height: 30px;
-}
+  .mat-column-numAlunni {
+    width: 80px;
+  }
 
-.classiSezioniAnniSummaryTable .mat-row {
-  min-height: 30px;
-}
+  .mat-column-numMaschi {
+    width: 80px;
+  }
 
-.element-row {
-    cursor: pointer;
-}
+  .mat-column-numFemmine {
+    width: 80px;
+  }
 
-.highlight{
-  background: rgba(100, 100, 100, 0.2); /* green */
-}
+  /*evidenziazione della riga che rimane selezionata*/
+  ._table-row-selected-highlight{
+    background: rgba(100, 100, 100, 0.2);
+  }
+
+  /*colonna di sx classi dashboard*/ 
+  ._columnleft-dashboard {
+    width:315px;
+    height: 83% ;
+    position: absolute;
+    top: 75px;
+    left: 8px;
+  }
+
+    /*colonna di dx classi dashboard*/ 
+  ._columnright-dashboard {
+    width:76%;
+    height: 83%;
+    position: absolute;
+    top: 75px;
+    left: 330px
+  }
 
 
-.columnleft-dashboard {
-  width:315px;
-  height: 83% ;
-  position: absolute;
-  top: 75px;
-  left: 8px;
-}
-
-.columnright-dashboard {
-  width:76%;
-  height: 83%;
-  position: absolute;
-  top: 75px;
-  left: 330px
-}
-
-:host ::ng-deep .mat-form-field-infix {
-  border: 0px !important;
-}
 
 

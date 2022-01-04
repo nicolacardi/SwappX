@@ -1,71 +1,79 @@
-
-
 /* FILTRI AVANZATI */
-:host ::ng-deep  .filtriAvanzati .mat-form-field {
+  :host ::ng-deep  .filtriAvanzati .mat-form-field {
     height: 40px;
-}
+  }
 
-:host ::ng-deep .mat-tab-label, :host ::ng-deep.mat-tab-label-active{
-  min-width: 15%!important;
-  padding: 3px!important;
-}
+  :host ::ng-deep .mat-tab-label, :host ::ng-deep.mat-tab-label-active{
+    min-width: 15%!important;
+    padding: 3px!important;
+  }
 
 /* ALUNNO-EDIT */
-.genitori-list-container {
-  height: 300px;
-  overflow: auto;
-}
 
-.genitori-container{
-  height: 100px;
-  overflow: auto;
-}
+  /* genitori dell'alunno selezionato */
+  ._genitori-container{
+    height: 100px;
+    overflow: auto;
+  }
 
-.classi-list-container {
-  height: 450px;
-  width: 280px;
-  overflow: auto;
-}
+  /* elenco tutti i genitori da cui attingere */
+  ._genitori-list-container {
+    height: 280px;
+    overflow: auto;
+  }
 
-.classi-attended-container {
-  height: 450px;
-  width: 380px;
-  overflow: auto;
-}
+  /* elenco classi frequentate */
+  ._classi-attended-container {
+    height: 450px;
+    width: 380px;
+    overflow: auto;
+  }
 
-:host ::ng-deep  .mat-expansion-panel-body {
-  padding: 0px !important;
-}
+  /* elenco tutte le classi */
+  ._classi-list-container {
+    height: 450px;
+    width: 280px;
+    overflow: auto;
+  }
 
-/*EXPANSION PANEL*/
-.td-vertical-accordion {
-  vertical-align: top;
-  padding-top: 12px;
-  max-width: 300px !important;
-}
+  /*ACCORDION VERTICALE MOLTO COMPLICATO: l'accordion è verticale e deve aprirsi verso destra*/
+  /* td accordion verticale elenco classi */
+  ._classi-list-td-vertical-accordion {
+    vertical-align: top;
+    padding-top: 12px;
+    max-width: 300px !important;
+  }
 
-.rotated-accordion {
-  display: block;
-  transform-origin: top left;
-  transform: rotate(-90deg) translateX(-450px);; /* rotate and position it; translateX value corresponds to panel height */
-  width: 450px; /* this will be the height of the accordion (inversed due to rotation) */
-}
+  /* accordion verticale elenco classi */
+  /*questo accordion è verticale e non come standard orizzontale: viene prima girato a -90 e traslato a -450*/
+  /*poi viene ri-ruotato a 90: è un espediente per farlo funzionare in qs modo*/
+  ._rotated-accordion {
+    display: block;
+    transform-origin: top left;
+    transform: rotate(-90deg) translateX(-450px); /* rotate and position it; translateX value corresponds to panel height */
+    width: 450px;                                 /* this will be the height of the accordion (inversed due to rotation) */
+  }
 
-.mat-expansion-panel {
-  max-height: 375px; /* this will be the width of the panel (inversed due to rotation) */
-}
+  ._panel-content {
+    transform-origin: top left;
+    transform: rotate(90deg); /* rotate back Questo è un espediente per avere l'accordion verticale e il panel prizzontale*/
+    margin-left: 100%;        /* position it */
+    height: 448px;            /* real height of the content */
+    width: 280px;             /* real width of the content */
+  }
 
-.panel-content {
-  transform-origin: top left;
-  transform: rotate(90deg); /* rotate back */
-  margin-left: 100%; /* position it */
-  height: 448px; /* real height of the content */
-  width: 300px; /* real width of the content */
-}
+  :host ::ng-deep  .mat-expansion-panel-body {
+    padding: 0px !important;
+  }
+  
+  .mat-expansion-panel {
+    max-height: 375px;        /* this will be the width of the panel (inversed due to rotation) */
+  }
 
-.mat-expansion-panel:not([class*=mat-elevation-z]) {
-  box-shadow: none;
-}
+  /* voglio togliere la box-shadow dal mat-expansion-panel*/
+  .mat-expansion-panel:not([class*=mat-elevation-z]) {
+    box-shadow: none;
+  }
 
 
 

@@ -1,23 +1,23 @@
- 
-
- 
 /* FILTRI AVANZATI */
-:host ::ng-deep  .filtriAvanzati .mat-form-field {
-    height: 40px;
-}
-
+  :host ::ng-deep  .filtriAvanzati .mat-form-field {
+      height: 40px;
+  }
 
 /* GENITORE-EDIT*/
-.alunni-container{
-  height: 100px;
-  overflow: auto;
-}
+  
+  /* figli del genitore selezionato */
+  ._alunni-container{
+    height: 100px;
+    overflow: auto;
+  }
 
-.alunni-list-container{
-  height: 300px;
-  overflow: auto;
-}
+  /* elenco tutti i figli potenziali da cui attingere */
+  _.alunni-list-container{
+    height: 300px;
+    overflow: auto;
+  }
 
-:host ::ng-deep  .mat-expansion-panel-body {
-  padding: 0px !important;
-}
+  :host ::ng-deep  .mat-expansion-panel-body {
+    padding: 0px !important;
+  }
+

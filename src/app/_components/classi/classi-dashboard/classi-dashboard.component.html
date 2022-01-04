@@ -1,9 +1,9 @@
 
 <table>
     <tr>
-        <td class="columnleft-dashboard">
+        <td class="_columnleft-dashboard">
             <mat-card style="height: 100%;" class="card mat-elevation-z8">
-                <div class="table-container">
+                <div class="_table-container">
                     <!-- idAnnoInput è la proprietà che passiamo A classiSezioniAnniList -->
                     <!-- annoId è la proprietà che riceviamo DA classiSezioniAnniList -->
                     <!-- [idAnnoInput] = "idAnnoInput"
@@ -16,7 +16,7 @@
                 </div>
             </mat-card>
         </td>
-        <td class="columnright-dashboard">
+        <td class="_columnright-dashboard">
                 <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="btn btn-addYellow" (click)="addAlunnoToClasse()" >
                     <img class="iconaMenu" src="../../../../assets/empty.svg" matTooltip="Iscrivi alunni alla classe" 
                     [@openClose]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
@@ -31,7 +31,7 @@
                     <mat-icon>school</mat-icon>
                 </button>
                 <mat-card class=" card mat-elevation-z8" style="height: 100%">
-                    <div class="table-container">
+                    <div class="_table-container">
                         <!--<app-alunni-list [context] = "'classi-dashboard'" [idClasse]="idClasse"></app-alunni-list> -->
                         <app-iscrizioni-list   [idClasse]="idClasse"></app-iscrizioni-list>
                     </div>
@@ -39,7 +39,7 @@
            <!-- ipotesi component di dettaglio dell'alunno
             <tr>
                 <mat-card class=" card mat-elevation-z8" style="height: 100%">
-                    <div class="table-container">
+                    <div class="_table-container">
                         <app-alunno-edit></app-alunno-edit>
                     </div>
                 </mat-card>

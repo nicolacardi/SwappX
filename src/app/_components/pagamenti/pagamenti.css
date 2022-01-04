@@ -1,257 +1,220 @@
  
 
-.border-bottom {
-    border-bottom: 1px solid #1B3663 !important;
-}
-
-p {
+/* p {
     font-size: 12px;
     margin-bottom: 5px !important;
-}
-
-/* .highlight {
-    background-color: rgba(173, 173, 173, 0.142);
 } */
 
-.highlightConc {
-    background-color: rgba(173, 173, 173, 0.142);
-}
+/* 
+    :host ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+        background-color: #044D7E;
+    }
 
-.highlightPagL {
-    background-color: rgb(212, 68, 68);
-    color: white;
-}
+    :host ::ng-deep .mat-slide-toggle-bar {
+        height: 10px !important;
+        width: 24px !important;
+    }
+    :host ::ng-deep .mat-slide-toggle-thumb {
+        height: 15px !important;
+        width: 15px !important;
+    }
 
-/* .highlightPag {
-    color: rgb(255, 0, 0) !important;
-} */
+    :host ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
+        transform: translate3d(10px,0,0) !important;
+    }
 
-.highlightPag2 {
-    border-color: rgb(255, 0, 0) !important;
-}
+    :host ::ng-deep .mat-slide-toggle-thumb-container {
+        width: 12px !important;
+        height: 12px !important;
+    } */
 
-.center {
-    text-align: center;
-    justify-content:center;
-  }
-
-.hide {
-    display: none;
-}
-
-
-/* */
-.square {
-    position: absolute;
-    top: 70px;
-    left: 0px;
-    border: 1px solid rgb(182, 182, 182);
-    padding: 5px 20px 5px 0px;
-    border-radius: 4px;
-    margin-left: 20px;
-}
-
-.square2 {
-    position: absolute;
-    top: 67px;
-    left: 0px;
-    border: 1px solid rgb(182, 182, 182);
-    padding: 0px 10px 0px 0px;
-    border-radius: 4px;
-    margin-left: 20px;
-    margin-bottom: 10px;
-}
-
-
-
-:host ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
-    background-color: #044D7E;
-}
-
-:host ::ng-deep .mat-slide-toggle-bar {
-    height: 10px !important;
-    width: 24px !important;
-  }
-:host ::ng-deep .mat-slide-toggle-thumb {
-    height: 15px !important;
-    width: 15px !important;
-  }
-
-:host ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb-container {
-    transform: translate3d(10px,0,0) !important;
-}
-
-:host ::ng-deep .mat-slide-toggle-thumb-container {
-    width: 12px !important;
-    height: 12px !important;
-}
-
-/* ::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-label { margin-top:-15px; }
-::ng-deep label.ng-star-inserted { transform: translateY(-0.59375em) scale(.75) !important; } */
-
-:host ::ng-deep .mat-form-field-infix {
-    border: 0px !important;
-}
-
-:host ::ng-deep .cellRetta .mat-form-field-wrapper { 
-    padding:0px;
-    margin: 0px;
- }
-
- :host ::ng-deep .cellRettaEdit .mat-form-field-wrapper { 
-    padding:5px;
-    margin: 0px;
- }
-
-  :host ::ng-deep .highlightPag2 .mat-form-field-infix  {
-    background-color: rgb(212, 68, 68);
-    color: white !important;
-}
-
-
-:host ::ng-deep .highlightConc .mat-form-field-infix  {
-    background-color: rgba(173, 173, 173, 0.142);
-}
-
-
-
- :host ::ng-deep .cellRetta .mat-form-field-infix {
-    width: 45px; 
-    padding-top: 2px !important;
-    padding-bottom: 0px !important;
-    border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
-    border-radius: 2px;
-    height: 20px;
-}
-
-:host ::ng-deep .cellRetta .mat-form-field-underline {
-    display: none;
-}
-
-
-.data-form mat-form-field {
-    margin-top: 5px;
-}
-
-
-
-.cellRetta input[matinput]::-webkit-outer-spin-button,
-.cellRetta input[matinput]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-.cellRetta  input[matinput][type=number] {
-  -moz-appearance: textfield;
-}
-
-
-
-.form-cardRette {
-    max-width: 800px;
-    height: 425px;
-    margin: 0px auto 10px auto;
-    box-shadow: none !important; /*da togliere nel caso di dialog*/
-    padding-top: 0px !important;
-}
-
-
-
-.pagamenti-container {
-    height: 300px;
-    overflow: auto;
-}
-
-.utilities-container {
-    height: 380px;
-}
-
-.pagamento-edit-container {
-    max-height: 250px;
-    text-align: left;
-    padding-left: 18px;
-    padding-top: 12px;
-}
-
-.bk-white {
-    background-color: white;
-}
-
-.pagamento-edit-container mat-form-field {
-    width: 115px;
+    /* :host ::ng-deep .mat-form-field-infix {
+        border: 0px !important;
+    } */
     
-}
+    /*
+    .bk-white {
+        background-color: white;
+    } */
+    
 
-.mat-column-delete {
+    /*rette-border-bottom viene usato per gestire correttamente il bordo inferiore*/
+    /*nelle rette che possono essere nascoste per categoria*/
+    ._rette-border-bottom {
+        border-bottom: 1px solid #1B3663 !important;
+    }
 
-    flex: 0 0 3% !important;
-    width: 3% !important;
+    ._default-row {
+        border-bottom-width: 0px;
+        }
+        
+    ._concordate-row {
+        border-bottom-width: 0px;
+    }
 
-}
+    ._highlightConc {
+        background-color: rgba(173, 173, 173, 0.142);
+    }
 
-.addRetta {
-    position: absolute;
-    right: 18px;
-}
+    ._highlightPagL {
+        background-color: rgb(212, 68, 68);
+        color: white;
+    }
 
-.hidden {
-    display: none;
-}
+    ._highlightPag2 {
+        border-color: rgb(255, 0, 0) !important;
+    }
 
-.highlightHover {
-    box-shadow: 0 0 3pt 2pt #fffb01;
-    border-radius: 4px;
-    outline-width: 0px;
+    .center {
+        text-align: center;
+        justify-content:center;
+    }
 
-}
+    .hide {
+        display: none;
+    }
 
+    /*blocco con gli occhietti in alto sulle rette*/
+    ._visibility-rette-container {
+        position: absolute;
+        top: 67px;
+        left: 0px;
+        border: 1px solid rgb(182, 182, 182);
+        padding: 0px 10px 0px 0px;
+        border-radius: 4px;
+        margin-left: 20px;
+        margin-bottom: 10px;
+    }
 
-/* table {
-    width: 100%;
-  }
-
-
-td {
-      border:1px solid rgb(182, 182, 182);
-  } */
-
-
-  .default-row {
-    border-bottom-width: 0px;
-  }
-
-  .concordate-row {
-    border-bottom-width: 0px;
-  }
-
-.cellNoBorder {
-    border-bottom-width: 0px !important;
-}
-
-
-.retteTable .mat-row {
-    min-height: 30px;
-  }
-
-.rettePagamentiSummaryTable .mat-row {
-    min-height: 30px;
-}
-
-
-  .square2 mat-icon {
-    width: 20px; 
-    color: #044D7E;
-  }
+    ._visibility-rette-container mat-icon {
+        width: 20px; 
+        color: #044D7E;
+    }
 
 
-.mini-filter {
-    max-width: 50px;
-}
+    /*CELLETTE  RETTE D,C,P IN RETTA EDIT */
+    /* avvicina le celle nelle quali sono scritte le rette D C e P in retta edit*/
+    :host ::ng-deep .cellRetta .mat-form-field-wrapper { 
+        padding:0px;
+        margin: 0px;
+    }
 
-.midi-filter {
-    max-width: 85px;
-}
+    /*estetica delle cellette nelle quali sono scirtte le rete D C e P in retta edit */
+    :host ::ng-deep .cellRetta .mat-form-field-infix {
+        width: 45px; 
+        padding-top: 2px !important;
+        padding-bottom: 0px !important;
+        border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
+        border-radius: 2px;
+        height: 20px;
+    }
+
+    /*allineamento*/
+    .cellRetta input[matinput]::-webkit-outer-spin-button,
+    .cellRetta input[matinput]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    .cellRetta  input[matinput][type=number] {
+        -moz-appearance: textfield;
+    }
+
+    /*bordo inferiore nascosto (finiva a metà cella)*/
+    :host ::ng-deep .cellRetta .mat-form-field-underline {
+        display: none;
+    }
+
+    :host ::ng-deep .cellRettaEdit .mat-form-field-wrapper { 
+        padding:5px;
+        margin: 0px;
+    }
+
+    :host ::ng-deep ._highlightPag2 .mat-form-field-infix  {
+        background-color: rgb(212, 68, 68);
+        color: white !important;
+    }
+
+    :host ::ng-deep ._highlightConc .mat-form-field-infix  {
+        background-color: rgba(173, 173, 173, 0.142);
+    }
+
+    /*distanza verticale tra i mat-form-field in retta-edit*/
+    .data-form mat-form-field {
+        margin-top: 5px;
+    }
+
+    /*larghezza colonna specifica*/
+    .mat-column-delete {
+        flex: 0 0 3% !important;
+        width: 3% !important;
+    }
+
+    /*rightfilter panel*/
+    .mini-filter {
+        max-width: 50px;
+    }
+
+    .midi-filter {
+        max-width: 85px;
+    }
+
+
+
+
+    /*caratteristiche della card Rette*/
+    .form-cardRette {
+        box-shadow: none !important; /*da togliere nel caso di dialog*/
+        padding-top: 0px !important;
+    }
+
+
+    /*elenco pagamenti in retta-edit*/
+    ._pagamenti-container {
+        height: 240px;
+        overflow: auto;
+    }
+
+    /*utilities suddivisione rette in retta-edit*/
+    ._utilities-container {
+        height: 330px;
+    }
+
+    /*elenco pagamenti in retta-edit*/
+    ._pagamento-edit-container {
+        max-height: 250px;
+        text-align: left;
+        padding-left: 18px;
+        padding-top: 12px;
+    }
+
+    /*larghezza ridotta dei mat-form-field*/
+    ._pagamento-edit-container mat-form-field {
+        width: 115px; 
+    }
+
+    /*non funziona o non viene più usato BOH*/
+    .highlightHover {
+        box-shadow: 0 0 3pt 2pt #fffb01;
+        border-radius: 4px;
+        outline-width: 0px;
+    }
+
+    /*il mese deve essere ascosto quando in retta-edit non si seleziona come causale "retta"*/
+    ._mese-hidden {
+        display: none;
+    }
+
+    /*pulsante save in retta-edit sezione Nuovo Pagamento - posizionamento*/
+    .addRetta {
+        position: absolute;
+        right: 18px;
+    }
+
+
+
+
+
 
 

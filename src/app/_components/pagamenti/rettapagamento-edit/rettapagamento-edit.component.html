@@ -10,7 +10,7 @@
         - bottone Save
 -->
 
-<div class="pagamento-edit-container cellBordered mt10">
+<div class="_pagamento-edit-container cellBordered mt10">
     <form [formGroup] = "formRetta">
         <mat-form-field>
             <input matInput  #date
@@ -48,7 +48,7 @@
             <mat-error *ngIf="formRetta.controls.causaleID.errors?.required"> Campo obbligatorio</mat-error>
         </mat-form-field>
 
-        <mat-form-field  [ngClass]="{'hidden': causale.value != 1}">
+        <mat-form-field  [ngClass]="{'_mese-hidden': causale.value != 1}">
             <mat-label>MESE</mat-label>
             <mat-select formControlName="meseRetta">
                 <mat-option *ngFor="let element of mesiArr; let i = index" [value]="element">

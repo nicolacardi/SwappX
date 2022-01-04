@@ -2,7 +2,3 @@
 :host ::ng-deep  .filtriAvanzati .mat-form-field {
     height: 40px;
 }
-
-.personeTable .mat-row {
-    min-height: 30px;
-}

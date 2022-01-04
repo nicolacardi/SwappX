@@ -31,7 +31,7 @@
 <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="10" [pageSizeOptions]="[10, 15, 50]" showFirstLastButtons></mat-paginator>
 
 <!-- **************************   MAT-TABLE   ******************* -->
-<mat-table class="classiSezioniAnniTable" style="height: 70%;" matSort [dataSource]="matDataSource">
+<mat-table class="_table-row-low" style="height: 70%;" matSort [dataSource]="matDataSource">
     <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
 
     <ng-container matColumnDef="actionsColumn">
@@ -114,7 +114,7 @@
     <mat-row *matRowDef="let element;columns: displayedColumns"
         class="element-row" 
         (click)="rowclicked(element.id)"
-        [ngClass]="{'highlight': selectedRowIndex == element.id}"
+        [ngClass]="{'_table-row-selected-highlight': selectedRowIndex == element.id}"
         >
     </mat-row>
 </mat-table>

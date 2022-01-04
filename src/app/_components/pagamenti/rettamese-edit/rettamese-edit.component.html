@@ -1,15 +1,3 @@
-<!-- 
-    Rev.0 - 28/08/2021
-    Componente per ????
-
-AS: lo usiamo questo ??? NC: Eccome! E' uno dei 12 che usiamo dentro il modale, uno per mese. Quando leggi cancella questo commento :)
-
-
-
-All'inizio il form è empty d'accordo. Ma se non si include || emptyform arriva la expressionhaschangedafter...perchè?
--->
-
-<!-- <form  *ngIf="(retta$ | async)  || emptyForm" [formGroup] = "form" > -->
 <form  *ngIf="(retta$ | async)  || emptyForm" [formGroup] = "form" >
     <mat-form-field class="cellRetta center" >
         <input matInput type="number"
@@ -18,7 +6,7 @@ All'inizio il form è empty d'accordo. Ma se non si include || emptyform arriva 
     </mat-form-field>
 
     <mat-form-field class="cellRetta center">
-    <!-- <mat-form-field class="cellRetta center" [ngClass]="{'highlightConc': quotaConcordata < quotaDefault}"> -->
+    <!-- <mat-form-field class="cellRetta center" [ngClass]="{'_highlightConc': quotaConcordata < quotaDefault}"> -->
         <input matInput type="number"
         formControlName="quotaConcordata"
         (change) = "save()"
@@ -26,14 +14,14 @@ All'inizio il form è empty d'accordo. Ma se non si include || emptyform arriva 
         
     </mat-form-field>
     
-    <!-- <mat-form-field class="cellRetta center" [ngClass]="{'highlightPag2': inputPagamenti < ConvertToNumber(inpQuotaC.value), 'highlightHover': evidenzia}">
+    <!-- <mat-form-field class="cellRetta center" [ngClass]="{'_highlightPag2': inputPagamenti < ConvertToNumber(inpQuotaC.value), 'highlightHover': evidenzia}">
         <input matInput type="number"
         [value] = "inputPagamenti? inputPagamenti : 0"
         
         readonly>
     </mat-form-field> -->
 
-    <mat-form-field class="cellRetta center" [ngClass]="{'highlightPag2': inputPagamenti < ConvertToNumber(inpQuotaC.value), 'highlightHover': evidenzia}">
+    <mat-form-field class="cellRetta center" [ngClass]="{'_highlightPag2': inputPagamenti < ConvertToNumber(inpQuotaC.value), 'highlightHover': evidenzia}">
         <input matInput type="number"
         formControlName="totPagamenti"
         (click) = "clickOnPagamento()"
