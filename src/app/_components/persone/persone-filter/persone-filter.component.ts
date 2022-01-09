@@ -111,6 +111,8 @@ export class PersoneFilterComponent implements OnInit {
   resetMainFilter() {
     if (this.personeListComponent.matDataSource.filterPredicate == this.personeListComponent.storedFilterPredicate){
       this.personeListComponent.matDataSource.filter = ''; 
+      //this.personeListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
+
       this.personeListComponent.filterInput.nativeElement.value = '';
       this.personeListComponent.matDataSource.filterPredicate = this.personeListComponent.filterRightPanel()
     };  

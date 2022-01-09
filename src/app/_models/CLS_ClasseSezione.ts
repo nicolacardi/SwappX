@@ -5,5 +5,5 @@ export interface CLS_ClasseSezione {
         classeID:             number;
         sezione:              string;
 
-        Classe:               CLS_Classe;
+        classe:               CLS_Classe;
 }

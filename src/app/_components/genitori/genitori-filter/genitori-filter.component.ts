@@ -125,6 +125,7 @@ export class GenitoriFilterComponent implements OnInit {
     if (this.genitoriListComponent.matDataSource.filterPredicate == this.genitoriListComponent.storedFilterPredicate)
     {
     this.genitoriListComponent.matDataSource.filter = ''; 
+    //this.genitoriListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
     this.genitoriListComponent.filterInput.nativeElement.value = '';
     this.genitoriListComponent.matDataSource.filterPredicate = this.genitoriListComponent.filterRightPanel()};  
   }

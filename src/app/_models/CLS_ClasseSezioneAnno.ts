@@ -6,7 +6,7 @@ export interface CLS_ClasseSezioneAnno {
         id:                       number;
         sezione:                  string;
 
-        ClasseSezione:            CLS_ClasseSezione;
+        classeSezione:           CLS_ClasseSezione;
         ClasseSezioneAnnoSucc:    CLS_ClasseSezioneAnno;
         Anno:                     ASC_AnnoScolastico;
 }

@@ -63,7 +63,7 @@
                             <mat-label>Classe Successiva</mat-label>
                             <mat-select matNativeControl formControlName="classeSezioneAnnoSuccID">
                                 <mat-option *ngFor="let element of (obsClassiSezioniAnniSucc$ | async)" [value]="element.id">
-                                    a.s. {{element.Anno.annoscolastico}} - {{element.ClasseSezione.Classe.descrizioneBreve}} {{element.ClasseSezione.sezione}}
+                                    a.s. {{element.Anno.annoscolastico}} - {{element.classeSezione.classe.descrizioneBreve}} {{element.classeSezione.sezione}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -71,6 +71,6 @@
                 </mat-grid-list>
                 <!-- {{obsClassi$ | async | json}} -->
                 <!-- {{obsClassiSezioniAnniSucc$ | async | json}} -->
-W            </form>
+            </form>
         </mat-card-content>
     </mat-card>

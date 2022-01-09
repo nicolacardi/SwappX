@@ -97,7 +97,7 @@
 
         <ng-container matColumnDef="cf">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CF</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cf | highlight: filterValue"></mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cf==null?'': element.alunno.cf| highlight: filterValue"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="stato">
@@ -113,12 +113,12 @@
 
         <ng-container matColumnDef="email">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.email | highlight: filterValue"></mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.email==null?'': element.alunno.email | highlight: filterValue"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="telefono">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>telefono</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.telefono | highlight: filterValue"></mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.telefono==null?'': element.alunno.telefono | highlight: filterValue"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="indirizzo">
@@ -127,7 +127,7 @@
         </ng-container>
         <ng-container matColumnDef="comune">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>comune</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.indirizzo | highlight: filterValue"></mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.comune | highlight: filterValue"></mat-cell>
         </ng-container>
         <ng-container matColumnDef="prov">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>prov</mat-header-cell>

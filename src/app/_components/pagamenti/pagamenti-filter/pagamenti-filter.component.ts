@@ -142,6 +142,7 @@ export class PagamentiFilterComponent implements OnInit {
   resetMainFilter() {
     if (this.pagamentiListComponent.matDataSource.filterPredicate == this.pagamentiListComponent.storedFilterPredicate){
       this.pagamentiListComponent.matDataSource.filter = ''; 
+      //this.pagamentiListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
       this.pagamentiListComponent.filterInput.nativeElement.value = '';
       this.pagamentiListComponent.matDataSource.filterPredicate = this.pagamentiListComponent.filterRightPanel()
     };  

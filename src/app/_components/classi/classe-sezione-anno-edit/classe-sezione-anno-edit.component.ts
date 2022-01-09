@@ -103,8 +103,8 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
             
             //this.form.patchValue(classe); //non funziona bene, perchè ci sono dei "sotto-oggetti"
             this.form.controls.id.setValue(classe.id); //NB in questo modo si setta il valore di un campo del formBuilder quando NON compare anche come Form-field nell'HTML
-            this.form.controls['sezione'].setValue(classe.ClasseSezione.sezione); 
-            this.form.controls['classeID'].setValue(classe.ClasseSezione.Classe.id);
+            this.form.controls['sezione'].setValue(classe.classeSezione.sezione); 
+            this.form.controls['classeID'].setValue(classe.classeSezione.classe.id);
             this.form.controls['annoID'].setValue(classe.Anno.id);
 
             let annoIDsucc=0;

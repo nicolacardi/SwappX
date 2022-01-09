@@ -51,6 +51,7 @@ export class ClassiSezioniAnniFilterComponent implements OnInit {
     if (this.classiSezioniAnniListComponent.matDataSource.filter != ''){
     // if (this.classiSezioniAnniListComponent.matDataSource.filterPredicate == this.classiSezioniAnniListComponent.storedFilterPredicate){
       this.classiSezioniAnniListComponent.matDataSource.filter = ''; 
+      //this.classiSezioniAnniListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
       this.classiSezioniAnniListComponent.filterInput.nativeElement.value = '';
       this.classiSezioniAnniListComponent.matDataSource.filterPredicate = this.classiSezioniAnniListComponent.filterRightPanel()
     };  

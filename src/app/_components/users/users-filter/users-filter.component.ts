@@ -61,6 +61,7 @@ export class UsersFilterComponent implements OnInit {
   resetMainFilter() {
     if (this.usersListComponent.matDataSource.filterPredicate == this.usersListComponent.storedFilterPredicate){
       this.usersListComponent.matDataSource.filter = ''; 
+      //this.usersListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
       this.usersListComponent.filterInput.nativeElement.value = '';
       this.usersListComponent.matDataSource.filterPredicate = this.usersListComponent.filterRightPanel()
     };  

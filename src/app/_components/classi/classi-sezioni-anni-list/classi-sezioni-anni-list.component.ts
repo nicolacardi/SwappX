@@ -293,14 +293,14 @@ filterPredicateCustom(){
     const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
       switch(key) { 
         case "classeSezione": { 
-          return currentTerm + data.ClasseSezione.sezione + data.ClasseSezione.Classe.descrizione2 ; 
+          return currentTerm + data.classeSezione.sezione + data.classeSezione.classe.descrizione2 ; 
            break; 
         } 
         case "classeSezioneAnnoSucc": { 
 
           return currentTerm + 
-          ((data.ClasseSezioneAnnoSucc == null) ? "" : data.ClasseSezioneAnnoSucc.ClasseSezione.sezione) + 
-          ((data.ClasseSezioneAnnoSucc == null) ? "" : data.ClasseSezioneAnnoSucc.ClasseSezione.Classe.descrizione2);
+          ((data.ClasseSezioneAnnoSucc == null) ? "" : data.ClasseSezioneAnnoSucc.classeSezione.sezione) + 
+          ((data.ClasseSezioneAnnoSucc == null) ? "" : data.ClasseSezioneAnnoSucc.classeSezione.classe.descrizione2);
            break; 
         } 
 

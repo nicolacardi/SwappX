@@ -161,15 +161,18 @@ export class IscrizioniListComponent implements OnInit {
       const loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
 
       loadIscrizioni$.subscribe(val =>  {
+
           this.matDataSource.data = val;
-          this.matDataSource.paginator = this.paginator;
-          
+          this.matDataSource.paginator = this.paginator;          
           
           this.sortCustom();
           this.matDataSource.sort = this.sort; 
           
+          //applico il filterPredicateCustom (si tratta del filtro Main).
           this.filterPredicateCustom();
+          //conservo l'attuale filterPredicate in storedFilterPredicate
           this.storedFilterPredicate = this.matDataSource.filterPredicate;
+          //applico il filterPredicate del RightPanel...? Perchè?
           this.matDataSource.filterPredicate = this.filterRightPanel();
         }
       );
@@ -207,30 +210,35 @@ export class IscrizioniListComponent implements OnInit {
 
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
-      // let foundGenitore : boolean = false;
-      // if (Object.values(searchTerms).every(x => x === null || x === '')) 
-      //   foundGenitore = true;
-      // else {    
-      //   data._Genitori?.forEach((val: { genitore: { nome: any; cognome: any}; })=>  {   
-      //       const foundCognomeNome = foundGenitore || String(val.genitore.cognome+" "+val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
-      //       const foundNomeCognome = foundGenitore || String(val.genitore.nome+" "+val.genitore.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
-      //       foundGenitore = foundCognomeNome || foundNomeCognome;
-      //   })
-      // }
-
-
-      return String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
-        && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
-        && String(data.classe).toLowerCase().indexOf(searchTerms.classe) !== -1
-        && String(data.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1
-        && String(data.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
-        && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
-        && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
-        && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
-        && String(data.prov).toLowerCase().indexOf(searchTerms.prov) !== -1
-        //se trova dei valori NULL .toString() va in difficoltà (ce ne sono in telefono e email p.e.) per cui sono passato a String(...)
-        && String(data.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
-        && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
+      // console.log ("searchterms", searchTerms);
+      // console.log ("data", data);
+      let foundEqualClass : boolean = false;
+      if (Object.values(searchTerms).every(x => x === null || x === '')) 
+        foundEqualClass = true;
+      else {    
+        if (String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase() == searchTerms.classe) { 
+          foundEqualClass = true;
+        }
+        // data._Genitori?.forEach((val: { genitore: { nome: any; cognome: any}; })=>  {   
+        //     const foundCognomeNome = foundGenitore || String(val.genitore.cognome+" "+val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
+        //     const foundNomeCognome = foundGenitore || String(val.genitore.nome+" "+val.genitore.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
+        //     foundGenitore = foundCognomeNome || foundNomeCognome;
+        // })
+      }
+      console.log(foundEqualClass);
+      return String(data.alunno.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+        && String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+       
+        && String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1
+        && foundEqualClass
+       //&& String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase().indexOf(searchTerms.classe) !== -1
+        // && String(data.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
+        // && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
+        // && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
+        // && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
+        // && String(data.prov).toLowerCase().indexOf(searchTerms.prov) !== -1
+        // && String(data.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
+        // && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
         //&& foundGenitore
         ;
     }
@@ -258,29 +266,42 @@ filterPredicateCustom(){
     const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
     
 
-      //console.log("Key: " , key);
-      console.log("data: " , data);
+
+      let toreturn =  '';
 
       switch(key) { 
           
           case "alunno":{
-            return currentTerm   + data.alunno.nome + data.alunno.cognome +data.alunno.cf + data.alunno.email + data.alunno.indirizzo + data.alunno.comune + data.alunno.prov;
-            // + data.alunno.telefono  ;      //AS: PROBLEMA CON I NUMERICI
-            //return currentTerm   + data.alunno.nome + data.alunno.cognome;// 
+            toreturn = currentTerm   + 
+            ((data.alunno.nome == null) ? "" : data.alunno.nome) +
+            ((data.alunno.cognome == null) ? "" : data.alunno.cognome) +
+            ((data.alunno.email == null) ? "" : data.alunno.email) +
+            ((data.alunno.indirizzo == null) ? "" : data.alunno.indirizzo) +
+            ((data.alunno.comune == null) ? "" : data.alunno.comune) +
+            ((data.alunno.prov == null) ? "" : data.alunno.prov) +
+            ((data.alunno.cf == null) ? "" : data.alunno.cf)  +
+            ((data.alunno.telefono == null) ? "" : data.alunno.telefono) 
+            // console.log("currentTerm: " , currentTerm);
+            // console.log("Key: " , key);
+            // console.log("data: " , data);
+            // console.log("key:alunno->return: " , toreturn);
+            return toreturn;
             break;
           }
           
           case "stato": { 
-            return currentTerm   + data.stato.descrizione  ;
+            toreturn = currentTerm   + 
+            ((data.stato.descrizione == null) ? "" : data.stato.descrizione);
+            return toreturn  ;
             break; 
           } 
-          // case "classeSezioneAnnoSucc": { 
-
-          //   return currentTerm + 
-          //   ((data.ClasseSezioneAnnoSucc == null) ? "" : data.ClasseSezioneAnnoSucc.ClasseSezione.sezione) + 
-          //   ((data.ClasseSezioneAnnoSucc == null) ? "" : data.ClasseSezioneAnnoSucc.ClasseSezione.Classe.descrizione2);
-          //    break; 
-          // } 
+          case "classeSezioneAnno": { 
+            toreturn = currentTerm + 
+            ((data.classeSezioneAnno.classeSezione.sezione == null) ? "" : data.classeSezioneAnno.classeSezione.sezione) + 
+            ((data.classeSezioneAnno.classeSezione.classe.descrizioneBreve == null) ? "" : data.classeSezioneAnno.classeSezione.classe.descrizioneBreve);
+            return toreturn  ;
+            break; 
+          } 
 
           default: { 
             return currentTerm;  //di qua non passerà mai
