@@ -50,18 +50,19 @@ export class IscrizioniListComponent implements OnInit {
 
 
   displayedColumns: string[] = [
-      "select",
+      //"select",
       "actionsColumn", 
       "nome", 
       "cognome", 
+      "cf",
       "email", 
       "telefono",
       "dtNascita", 
       "stato",    //Stato Iscrizione
-      // "indirizzo", 
-      // "comune", 
-      // "cap", 
-      // "prov"
+      "indirizzo", 
+      "comune", 
+      //"cap", 
+      "prov"
   ];
 
   selection = new SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
@@ -172,6 +173,7 @@ export class IscrizioniListComponent implements OnInit {
       switch(property) {
         case 'nome':                        return item.alunno.nome;
         case 'cognome':                     return item.alunno.cognome;
+        case 'cf':                          return item.alunno.cf;
         case 'email':                       return item.alunno.email;
         case 'telefono':                    return item.alunno.telefono;
         case 'dtNascita':                   return item.alunno.dtNascita;
@@ -203,6 +205,7 @@ export class IscrizioniListComponent implements OnInit {
 
       return String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
         && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+        && String(data.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
         && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
         && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
         && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
@@ -362,13 +365,15 @@ export class IscrizioniListComponent implements OnInit {
       "actionsColumn", 
       "nome", 
       "cognome", 
+      "cf", 
       "dtNascita", 
       "email"] 
       : 
       ["select", 
       "actionsColumn", 
       "nome", 
-      "cognome", 
+      "cognome",
+      "cf",  
       "dtNascita", 
       "indirizzo", 
       "comune", 
@@ -379,7 +384,6 @@ export class IscrizioniListComponent implements OnInit {
       "ckAttivo"];
   }
 //#endregion
-
 
 }
 

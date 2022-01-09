@@ -54,29 +54,27 @@
             </mat-cell>
         </ng-container>
     -->
+
+    <!-- masterToggle delle checkbox di selezione record (VERIFICARE SE SERVE) -->
+    <!--
         <ng-container matColumnDef="select" >
-            <!-- masterToggle delle checkbox di selezione record -->
             <th mat-header-cell *matHeaderCellDef >
               <mat-checkbox (change)="$event ? masterToggle() : null"
                             [checked] = "toggleChecks"
                             [aria-label]="checkboxLabel()"
                             color="warn" #mstToggle>
-                            <!-- [checked]="selection.hasValue() && isAllSelected()"
-                            [indeterminate]="selection.hasValue() && !isAllSelected()" -->
               </mat-checkbox>
             </th>
-            <!-- singole checkbox di selezione record -->
             <td mat-cell *matCellDef="let element">
               <mat-checkbox (click)="$event.stopPropagation()"
                             (change) = "$event ? selectedRow(element) : null"
                             [checked]="selection.isSelected(element)"
                             [aria-label]="checkboxLabel(element)"
                             color="warn">
-                            <!-- ho tolto questo (change)="$event ? selection.toggle(row) : null" -->
               </mat-checkbox>
             </td>
         </ng-container>
-
+    -->
         <ng-container matColumnDef="nome">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
             <!--<mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell> -->
@@ -87,6 +85,11 @@
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</mat-header-cell>
             <!-- <mat-cell *matCellDef="let element">{{element.cognome |highlight: filterValue}}</mat-cell> -->
             <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cognome | highlight: filterValues"></mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cf">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CF</mat-header-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cf | highlight: filterValues"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="stato">
@@ -110,6 +113,21 @@
             <mat-cell *matCellDef="let element">{{element.alunno.telefono}}</mat-cell>
         </ng-container>
 
+
+        <ng-container matColumnDef="indirizzo">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>indirizzo</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.alunno.indirizzo}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="comune">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>comune</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.alunno.comune}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="prov">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>prov</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.alunno.prov}}</mat-cell>
+        </ng-container>
+
+<!--
         <ng-container matColumnDef="ckAttivo">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>
                 Solo alunni attivi<br>
@@ -122,7 +140,7 @@
                 <mat-checkbox [checked]="element.ckAttivo" color="primary" disabled></mat-checkbox>
             </mat-cell>
         </ng-container>
-        
+    -->
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
         <mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></mat-header-row>  
 
