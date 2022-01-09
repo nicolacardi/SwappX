@@ -1,4 +1,4 @@
-<h1 *ngIf="show" class="page-title">Elenco Pagamenti </h1>
+<h1 *ngIf="show" class="_titolo-pagina">Elenco Pagamenti </h1>
 
 <!-- **************************   SELECT ANNO   ******************* -->
 <form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
@@ -130,7 +130,7 @@
 
 <mat-menu #rightMenu="matMenu"> 
     <ng-template matMenuContent let-item="item"> 
-        <mat-label class="rightMenuTitle">Dettaglio Pagamento</mat-label> 
+        <mat-label class="_titolo-filtri-avanzati">Dettaglio Pagamento</mat-label> 
         <!-- <button mat-menu-item routerLink="/genitori" [queryParams]="{ idAlunno: item.id }">Genitori/Tutori</button>  
         <button mat-menu-item (click)="openAlunno(item.id)">Alunno</button> -->
         <button mat-menu-item>Alunno</button> 
