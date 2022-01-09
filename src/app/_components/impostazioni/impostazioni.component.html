@@ -1,4 +1,4 @@
-<h1 class="page-title">Impostazione Parametri</h1>
+<h1 class="_titolo-pagina">Impostazione Parametri</h1>
 
 <form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
 
@@ -15,9 +15,9 @@
         </mat-form-field>   
     </div>
 
-    <h1 class="page-title fs14">Ripartizione standard quote</h1>
+    <h1 class="_titolo-pagina fs14">Ripartizione standard quote</h1>
 
-    <mat-grid-list class="ma w50 bordered-grey br5 p5" [cols]="12" rowHeight="20px">
+    <mat-grid-list class="ma w50 bordered-grey p5" [cols]="12" rowHeight="20px">
         
         <mat-grid-tile *ngFor="let mese of mesiArr; let i = index" >
             <mat-label>{{placeholderMeseArr[i]}}</mat-label>
