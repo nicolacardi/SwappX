@@ -47,18 +47,20 @@ export class IscrizioniListComponent implements OnInit {
   form:                         FormGroup;            //form fatto della sola combo anno scolastico
   
   storedFilterPredicate!:       any;
-
+  
 
   displayedColumns: string[] = [
       //"select",
       "actionsColumn", 
       "nome", 
       "cognome", 
+      "classe",
+      "sezione",
+      "stato",    //Stato Iscrizione
       "cf",
       "email", 
       "telefono",
       "dtNascita", 
-      "stato",    //Stato Iscrizione
       "indirizzo", 
       "comune", 
       //"cap", 
@@ -80,22 +82,22 @@ export class IscrizioniListComponent implements OnInit {
   showTableRibbon:              boolean = true;
   public swSoloAttivi :         boolean = true;
 
+  filterValue = '';       //Filtro semplice
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
-  filterValues = '';                    //TODO!!!
-  /*
   filterValues = {
     nome: '',
     cognome: '',
+    classe: '',
+    sezione: '',
     stato: '',
-    annoNascita: '',
-    indirizzo: '',
-    comune: '',
-    prov: '',
+    cf: '',
     email: '',
     telefono: '',
-    nomeCognomeGenitore: ''
+    dtNascita: '',
+    indirizzo: '',
+    comune: '',
+    prov: ''
   };
-  */
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -132,7 +134,7 @@ export class IscrizioniListComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-    this.loadData();
+    //this.loadData();
   }
   
   ngOnInit () {
@@ -154,15 +156,21 @@ export class IscrizioniListComponent implements OnInit {
     let obsIscrizioni$: Observable<CLS_Iscrizione[]>;
 
     this.annoID = this.form.controls['selectAnnoScolastico'].value;
-    if (this.annoID != undefined) {
+    if (this.annoID != undefined && this.annoID > 0 ) {
       obsIscrizioni$= this.svcIscrizioni.listByAnno(this.annoID);
       const loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
 
       loadIscrizioni$.subscribe(val =>  {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
-          this.sortCustom(); 
+          
+          
+          this.sortCustom();
           this.matDataSource.sort = this.sort; 
+          
+          this.filterPredicateCustom();
+          this.storedFilterPredicate = this.matDataSource.filterPredicate;
+          this.matDataSource.filterPredicate = this.filterRightPanel();
         }
       );
     } 
@@ -173,11 +181,18 @@ export class IscrizioniListComponent implements OnInit {
       switch(property) {
         case 'nome':                        return item.alunno.nome;
         case 'cognome':                     return item.alunno.cognome;
+        case 'classe':                      return item.classeSezioneAnno.classeSezione.classe.descrizioneBreve;
+        case 'sezione':                     return item.classeSezioneAnno.classeSezione.sezione;
+
         case 'cf':                          return item.alunno.cf;
         case 'email':                       return item.alunno.email;
         case 'telefono':                    return item.alunno.telefono;
         case 'dtNascita':                   return item.alunno.dtNascita;
         case 'stato':                       return item.stato.descrizione;
+        case 'indirizzo':                   return item.alunno.indirizzo;
+        case 'comune':                      return item.alunno.comune;
+        case 'prov':                        return item.alunno.prov;
+
         default: return item[property]
       }
     };
@@ -203,8 +218,11 @@ export class IscrizioniListComponent implements OnInit {
       //   })
       // }
 
+
       return String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
         && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+        && String(data.classe).toLowerCase().indexOf(searchTerms.classe) !== -1
+        && String(data.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1
         && String(data.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
         && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
         && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
@@ -220,16 +238,63 @@ export class IscrizioniListComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
+    this.filterValue = (event.target as HTMLInputElement).value;
 
-    //TODO!!!!
-    this.filterValues = (event.target as HTMLInputElement).value;
-    if (this.filterValues.length == 1) {
+    if (this.filterValue.length == 1) {
+      //console.log("primo giro");
       this.matDataSource.filterPredicate = this.storedFilterPredicate;
-      if (this.context == "alunni-page") this.iscrizioniFilterComponent.resetAllInputs();
+
+      this.iscrizioniFilterComponent.resetAllInputs();
     }
-    this.matDataSource.filter = this.filterValues.trim().toLowerCase();
+    //console.log(this.filterValue.trim().toLowerCase());
+
+   this.matDataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
+  
+filterPredicateCustom(){
+  //questa funzione consente il filtro ANCHE sugli oggetti della classe
+  this.matDataSource.filterPredicate = (data: CLS_Iscrizione, filter: string)  => {
+    const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
+    
+
+      //console.log("Key: " , key);
+      console.log("data: " , data);
+
+      switch(key) { 
+          
+          case "alunno":{
+            return currentTerm   + data.alunno.nome + data.alunno.cognome +data.alunno.cf + data.alunno.email + data.alunno.indirizzo + data.alunno.comune + data.alunno.prov;
+            // + data.alunno.telefono  ;      //AS: PROBLEMA CON I NUMERICI
+            //return currentTerm   + data.alunno.nome + data.alunno.cognome;// 
+            break;
+          }
+          
+          case "stato": { 
+            return currentTerm   + data.stato.descrizione  ;
+            break; 
+          } 
+          // case "classeSezioneAnnoSucc": { 
+
+          //   return currentTerm + 
+          //   ((data.ClasseSezioneAnnoSucc == null) ? "" : data.ClasseSezioneAnnoSucc.ClasseSezione.sezione) + 
+          //   ((data.ClasseSezioneAnnoSucc == null) ? "" : data.ClasseSezioneAnnoSucc.ClasseSezione.Classe.descrizione2);
+          //    break; 
+          // } 
+
+          default: { 
+            return currentTerm;  //di qua non passerà mai
+            break; 
+          } 
+      } 
+    };
+
+    
+    const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+    const transformedFilter = filter.trim().toLowerCase();
+    return dataStr.indexOf(transformedFilter) !== -1;
+  };
+}
 //#endregion
 
 //#region ----- Add Edit Drop -------
@@ -330,15 +395,15 @@ export class IscrizioniListComponent implements OnInit {
     this.matDataSource.data.forEach(row => this.selection.deselect(row));
   }
 
-  toggleAttivi(){
-    this.swSoloAttivi = !this.swSoloAttivi;
-    this.loadData();
-  }
+  // toggleAttivi(){
+  //   this.swSoloAttivi = !this.swSoloAttivi;
+  //   this.loadData();
+  // }
 
-  getChecked() {
-    //funzione usata da classi-dahsboard
-    return this.selection.selected;
-  }
+  // getChecked() {
+  //   //funzione usata da classi-dahsboard
+  //   return this.selection.selected;
+  // }
 
     //non so se serva questo metodo: genera un valore per l'aria-label...
   //forse serve per poi pescare i valori selezionati?
@@ -360,32 +425,10 @@ export class IscrizioniListComponent implements OnInit {
 
 //#region ----- Altri metodi -------
   onResize(event: any) {
-    this.displayedColumns = (event.target.innerWidth <= 800) ? 
-      ["select", 
-      "actionsColumn", 
-      "nome", 
-      "cognome", 
-      "cf", 
-      "dtNascita", 
-      "email"] 
-      : 
-      ["select", 
-      "actionsColumn", 
-      "nome", 
-      "cognome",
-      "cf",  
-      "dtNascita", 
-      "indirizzo", 
-      "comune", 
-      "cap", 
-      "prov", 
-      "email", 
-      "telefono", 
-      "ckAttivo"];
+    
   }
 //#endregion
 
 }
 
-
-
+  

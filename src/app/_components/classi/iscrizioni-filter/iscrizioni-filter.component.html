@@ -4,6 +4,17 @@
         <div mat-list-item style="text-align: center; margin-bottom: 10px;">
             Filtri Avanzati
         </div>
+
+        <mat-form-field class="ml12">
+            <mat-label>Nome</mat-label>
+            <input matInput [formControl]="nomeFilter">
+        </mat-form-field>
+
+        <mat-form-field class="ml12">
+            <mat-label>Cognome</mat-label>
+            <input matInput [formControl]="cognomeFilter">
+        </mat-form-field>
+
         <mat-form-field class="ml12">
             <mat-label>Classe</mat-label>
             <input matInput [formControl]="classeFilter">

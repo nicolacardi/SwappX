@@ -12,6 +12,8 @@ import { IscrizioniListComponent } from '../iscrizioni-list/iscrizioni-list.comp
 export class IscrizioniFilterComponent implements OnInit {
 
 //#region ----- Variabili -------
+  nomeFilter = new FormControl('');
+  cognomeFilter = new FormControl('');
   classeFilter = new FormControl('');
   sezioneFilter = new FormControl('');
 //#endregion
@@ -24,11 +26,28 @@ export class IscrizioniFilterComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit() {
 
+    this.nomeFilter.valueChanges
+    .subscribe(
+      val => {
+        this.resetMainFilter();
+        this.iscrizioniListComponent.filterValues.nome = val.toLowerCase(); 
+        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
+      }
+    )
+    this.cognomeFilter.valueChanges
+    .subscribe(
+      val => {
+        this.resetMainFilter();
+        this.iscrizioniListComponent.filterValues.cognome = val.toLowerCase();  
+        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
+      }
+    )
+
     this.classeFilter.valueChanges
     .subscribe(
       val => {
         this.resetMainFilter();
-        //this.iscrizioniListComponent.filterValues.classe = val.toLowerCase(); DA ABILITARE
+        this.iscrizioniListComponent.filterValues.classe = val.toLowerCase(); 
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
     )
@@ -37,7 +56,7 @@ export class IscrizioniFilterComponent implements OnInit {
     .subscribe(
       val => {
         this.resetMainFilter();
-        //this.iscrizioniListComponent.filterValues.sezione = val.toLowerCase(); DA ABILITARE
+        this.iscrizioniListComponent.filterValues.sezione = val.toLowerCase(); 
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
     )
@@ -48,8 +67,7 @@ export class IscrizioniFilterComponent implements OnInit {
 
 //#region ----- Reset vari -------
   resetMainFilter() {
-    if (this.iscrizioniListComponent.matDataSource.filter != ''){
-    // if (this.iscrizioniListComponent.matDataSource.filterPredicate == this.iscrizioniListComponent.storedFilterPredicate){
+    if (this.iscrizioniListComponent.matDataSource.filterPredicate == this.iscrizioniListComponent.storedFilterPredicate){
       this.iscrizioniListComponent.matDataSource.filter = ''; 
       this.iscrizioniListComponent.filterInput.nativeElement.value = '';
       this.iscrizioniListComponent.matDataSource.filterPredicate = this.iscrizioniListComponent.filterRightPanel()
@@ -57,11 +75,15 @@ export class IscrizioniFilterComponent implements OnInit {
   }
 
   resetAllInputs() {
+    this.nomeFilter.setValue('', {emitEvent:false});
+    this.cognomeFilter.setValue('', {emitEvent:false});
     this.classeFilter.setValue('', {emitEvent:false});
     this.sezioneFilter.setValue('', {emitEvent:false});
   }
 
   resetAllInputsAndClearFilters() {
+    this.nomeFilter.setValue('');
+    this.cognomeFilter.setValue('');
     this.classeFilter.setValue('');
     this.sezioneFilter.setValue('')
   }

@@ -1,7 +1,8 @@
 <h1 *ngIf="showPageTitle" class="_titolo-pagina">Elenco Iscritti per Anno</h1>
 
-<!-- **************************   SELECT ANNO   ******************* -->
+
 <form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
+    <!-- **************************   SELECT ANNO   ******************* -->
     <mat-form-field  class="ml20 topZIndex">
         <mat-select formControlName="selectAnnoScolastico" (selectionChange)="updateList()" #annoscolastico>
             <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id" >
@@ -9,16 +10,14 @@
             </mat-option>
         </mat-select>
     </mat-form-field>
-</form>
 
-    <!-- **************************   FILTER   ******************* -->
-   <!--
+    <!-- **************************   FILTER   ******************* -->  
     <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
         <mat-label>Filtro</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
     </mat-form-field>
-    -->
-    
+</form>
+
     
     <!-- **************************   PAGINATOR   ******************* -->
     <!-- <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator> -->
@@ -78,53 +77,61 @@
         <ng-container matColumnDef="nome">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
             <!--<mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell> -->
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValues"></mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></mat-cell>
         </ng-container>
         
         <ng-container matColumnDef="cognome">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</mat-header-cell>
             <!-- <mat-cell *matCellDef="let element">{{element.cognome |highlight: filterValue}}</mat-cell> -->
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cognome | highlight: filterValues"></mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cognome | highlight: filterValue"></mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="classe">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Classe</mat-header-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.classeSezioneAnno.classeSezione.classe.descrizioneBreve | highlight: filterValue"></mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="sezione">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Sez</mat-header-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.classeSezioneAnno.classeSezione.sezione | highlight: filterValue"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="cf">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CF</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cf | highlight: filterValues"></mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cf | highlight: filterValue"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="stato">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>St.Iscrizione</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.stato.descrizione | highlight: filterValues"></mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.stato.descrizione | highlight: filterValue"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="dtNascita">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>nato il</mat-header-cell>
             <!-- <mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</mat-cell> -->
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.dtNascita | highlight: filterValues| date: 'dd/MM/yyyy'"></mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.dtNascita | highlight: filterValue| date: 'dd/MM/yyyy'"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="email">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.alunno.email}}</mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.email | highlight: filterValue"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="telefono">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>telefono</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.alunno.telefono}}</mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.telefono | highlight: filterValue"></mat-cell>
         </ng-container>
-
 
         <ng-container matColumnDef="indirizzo">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>indirizzo</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.alunno.indirizzo}}</mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.indirizzo | highlight: filterValue"></mat-cell>
         </ng-container>
         <ng-container matColumnDef="comune">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>comune</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.alunno.comune}}</mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.indirizzo | highlight: filterValue"></mat-cell>
         </ng-container>
         <ng-container matColumnDef="prov">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>prov</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.alunno.prov}}</mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.prov | highlight: filterValue"></mat-cell>
         </ng-container>
 
 <!--

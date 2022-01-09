@@ -1,3 +1,4 @@
+import { ALU_Alunno } from "./ALU_Alunno";
 import { CLS_IscrizioneStato } from "./CLS_IscrizioneStato";
 
 export interface CLS_Iscrizione {
@@ -15,5 +16,7 @@ export interface CLS_Iscrizione {
         userIns:              number;
         userUpd:              number;
         
-        Stato:               CLS_IscrizioneStato;
+        //Stato:               CLS_IscrizioneStato; 
+        stato:                CLS_IscrizioneStato;               //AS: test per filterPredicateCustom
+        alunno:               ALU_Alunno;     
 }

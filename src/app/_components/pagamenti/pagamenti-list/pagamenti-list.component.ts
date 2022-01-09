@@ -143,11 +143,7 @@ export class PagamentiListComponent implements OnInit {
   loadData () {
 
     this.obsAnni$= this.svcAnni.load();
-
     let obsPagamenti$: Observable<PAG_Pagamento[]>;
-
-    //console.log("annoID dalla combobox", this.form.controls['annoScolastico'].value);
-    //console.log("this.alunnoID", this.alunnoID);
 
     if (this.alunnoID == 0 ) return;
     if (this.alunnoID) {
@@ -163,9 +159,10 @@ export class PagamentiListComponent implements OnInit {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         
-        this.filterPredicateCustom();   //serve per rendere filtrabili anche i campi nested
         this.sortCustom(); 
         this.matDataSource.sort = this.sort;
+
+        this.filterPredicateCustom();   //serve per rendere filtrabili anche i campi nested
         this.storedFilterPredicate = this.matDataSource.filterPredicate;
         this.matDataSource.filterPredicate = this.filterRightPanel();
       }

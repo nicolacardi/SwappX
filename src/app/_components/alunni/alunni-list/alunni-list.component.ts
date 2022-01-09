@@ -36,7 +36,6 @@ export class AlunniListComponent implements OnInit {
 //#region ----- Variabili -------
   matDataSource = new MatTableDataSource<ALU_Alunno>();
   storedFilterPredicate!:       any;
-  filterValue = '';
 
   displayedColumns: string[] =  [];
   displayedColumnsAlunniList: string[] = [
@@ -101,7 +100,8 @@ export class AlunniListComponent implements OnInit {
   showTableRibbon:              boolean = true;
   public swSoloAttivi :         boolean = true;
 
-  //filterValues contiene l'elenco dei filtri avanzati da applicare 
+  filterValue = '';       //Filtro semplice
+  //filterValues contiene l'elenco dei filtri da applicare 
   filterValues = {
     nome: '',
     cognome: '',
@@ -147,7 +147,6 @@ export class AlunniListComponent implements OnInit {
     //alunniList non ci ripassa.
     //il problema è che this.page potrebbe essere ancora undefined 
     //(perchè poi? visto che viene settato sia da alunniPage che da classiDahsboard su ngOnInit come prima cosa?)
-
 
     //ngOnChanges serve perchè quando listAlunni è child di classiDashboard gli viene passato il valore di idClasse
     // e devo "sentire" in questo modo che deve refreshare
@@ -240,13 +239,12 @@ export class AlunniListComponent implements OnInit {
 
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
 
-      loadAlunni$.subscribe(val => 
-        {
+      loadAlunni$.subscribe(val =>   {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
-          this.matDataSource.sort = this.sort; 
           this.storedFilterPredicate = this.matDataSource.filterPredicate;
           this.matDataSource.filterPredicate = this.filterRightPanel();
+          this.matDataSource.sort = this.sort; 
         }
       );
     }
@@ -261,6 +259,7 @@ export class AlunniListComponent implements OnInit {
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
           this.storedFilterPredicate = this.matDataSource.filterPredicate;
+
           this.matDataSource.filterPredicate = this.filterRightPanel();
         }
       );
@@ -313,11 +312,11 @@ export class AlunniListComponent implements OnInit {
 
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
+
     if (this.filterValue.length == 1) {
       this.matDataSource.filterPredicate = this.storedFilterPredicate;
       if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
     }
-    
     this.matDataSource.filter = this.filterValue.trim().toLowerCase();
   }
 

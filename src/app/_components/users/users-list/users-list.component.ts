@@ -137,7 +137,6 @@ export class UsersListComponent implements OnInit {
       loadUsers$.subscribe(val => 
         {
           this.matDataSource.data = val;
-          console.log("DEBUG: ", val  );
 
           this.filterPredicateCustom();   //serve per rendere filtrabili anche i campi nested
           this.matDataSource.paginator = this.paginator;

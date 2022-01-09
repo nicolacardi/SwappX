@@ -8,7 +8,7 @@ export interface ALU_Alunno {
         comuneNascita:          string;
         provNascita:            string;
         nazioneNascita:         string;
-        CF:                     string;
+        cf:                     string;
         indirizzo:              string;
         comune:                 string;
         cap:                    string;
