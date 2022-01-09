@@ -123,7 +123,7 @@ import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.c
     IscrizioniClasseListComponent,
     IscrizioniAddComponent,
 
-    PersonePageComponent,
+    IscrizioniPageComponent,
     IscrizioniListComponent,
     //IscrizioniEditComponent,
     IscrizioniFilterComponent,

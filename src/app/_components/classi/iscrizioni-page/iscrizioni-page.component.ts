@@ -10,17 +10,17 @@ import { IscrizioniListComponent } from '../iscrizioni-list/iscrizioni-list.comp
 export class IscrizioniPageComponent implements OnInit {
 
 
-  @ViewChild(IscrizioniListComponent) IscrizioniListComponent!: IscrizioniListComponent; 
+  @ViewChild(IscrizioniListComponent) iscrizioniList!: IscrizioniListComponent; 
 
   
-//  @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
+  // @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
   constructor() { }
 
   ngOnInit(): void {
   }
 
   addRecord() {
-      this.IscrizioniListComponent.addRecord()
+      this.iscrizioniList.addRecord()
   }
   resetFiltri() {
 

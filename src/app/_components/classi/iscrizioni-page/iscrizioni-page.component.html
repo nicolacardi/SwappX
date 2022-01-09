@@ -1,6 +1,6 @@
-<!-- <button mat-mini-fab aria-label="Strumenti" matTooltip="Strumenti" class="btn btn-toolbar" (click)="sidenav2.toggle()" >
+<button mat-mini-fab aria-label="Strumenti" matTooltip="Strumenti" class="btn btn-toolbar" (click)="sidenav2.toggle()" >
     <mat-icon>construction</mat-icon>
-</button> -->
+</button>
 
 <button mat-mini-fab aria-label="Nuova anagrafica" matTooltip="Nuova anagrafica" class="btn btn-add" (click)="addRecord()">
     <mat-icon>add</mat-icon>
@@ -21,8 +21,8 @@
 
     <mat-drawer-content>
         <app-iscrizioni-list
+            
             [iscrizioniFilterComponent] = "appiscrizionifilter"
-
             #appiscrizionilist >
             <!-- (openDrawer) = "openDrawer()" -->
         </app-iscrizioni-list>
