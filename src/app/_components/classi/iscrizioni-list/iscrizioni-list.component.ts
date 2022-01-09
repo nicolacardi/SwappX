@@ -26,6 +26,10 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
 //classes
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { IscrizioniFilterComponent } from '../iscrizioni-filter/iscrizioni-filter.component';
+import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
 @Component({
   selector:     'app-iscrizioni-list',
@@ -38,8 +42,12 @@ export class IscrizioniListComponent implements OnInit {
 
 //#region ----- Variabili -------
   matDataSource = new MatTableDataSource<CLS_Iscrizione>();
+ 
+  obsAnni$!:                    Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  form:                         FormGroup;            //form fatto della sola combo anno scolastico
+  
   storedFilterPredicate!:       any;
-  filterValues = '';
+
 
   displayedColumns: string[] = [
       "select",
@@ -72,6 +80,7 @@ export class IscrizioniListComponent implements OnInit {
   public swSoloAttivi :         boolean = true;
 
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
+  filterValues = '';                    //TODO!!!
   /*
   filterValues = {
     nome: '',
@@ -94,7 +103,7 @@ export class IscrizioniListComponent implements OnInit {
   @ViewChild("filterInput") filterInput!:                     ElementRef;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
-  @Input() idClasse!:                                         number;
+  @Input() annoID!:                                           number;
   @Input() iscrizioniFilterComponent!:                        IscrizioniFilterComponent;
   @Input('context') context! :                                string;
 
@@ -103,27 +112,30 @@ export class IscrizioniListComponent implements OnInit {
 //#endregion
 
   constructor(private svcIscrizioni:    IscrizioniService,
-              private router:           Router,
-              public _dialog:           MatDialog, 
-              private _loadingService:  LoadingService,
-              private _navigationService:   NavigationService
-              ) {
+    private svcAnni:          AnniScolasticiService,
+    private fb:               FormBuilder, 
+    private router:           Router,
+    public _dialog:           MatDialog, 
+    private _loadingService:  LoadingService,
+    private _navigationService:   NavigationService
+    ) {
+
+    let obj = localStorage.getItem('AnnoCorrente');
+
+    this.form = this.fb.group({
+      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
+    })
   }
   
 
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-
-      if (this.context != ''){
-        this.loadData();
-        this.toggleChecks = false;
-        this.resetSelections();
-      }
+    this.loadData();
   }
   
   ngOnInit () {
-    
+    this.loadData();
   }
 
   loadLayout(){
@@ -132,12 +144,17 @@ export class IscrizioniListComponent implements OnInit {
       //this.displayedColumns =  this.displayedColumnsAlunniList;
   }
 
+  updateList() {
+    this.loadData();
+  }
+
   loadData () {
+    this.obsAnni$= this.svcAnni.load();
     let obsIscrizioni$: Observable<CLS_Iscrizione[]>;
 
-    //if (this.context == "classi-dashboard" && this.idClasse != undefined) {
-    if (this.idClasse != undefined) {
-      obsIscrizioni$= this.svcIscrizioni.listByClasseSezioneAnno(this.idClasse);
+    this.annoID = this.form.controls['selectAnnoScolastico'].value;
+    if (this.annoID != undefined) {
+      obsIscrizioni$= this.svcIscrizioni.listByAnno(this.annoID);
       const loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
 
       loadIscrizioni$.subscribe(val =>  {
@@ -145,7 +162,6 @@ export class IscrizioniListComponent implements OnInit {
           this.matDataSource.paginator = this.paginator;
           this.sortCustom(); 
           this.matDataSource.sort = this.sort; 
-          console.log("DEBUG", this.sort);
         }
       );
     } 

@@ -33,13 +33,14 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 export class PagamentiListComponent implements OnInit {
 
 //#region ----- Variabili -------
+  matDataSource = new MatTableDataSource<PAG_Pagamento>();
   pagamentoEmitter = new EventEmitter<number>();
 
   obsAnni$!:                Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   form:                     FormGroup;            //form fatto della sola combo anno scolastico
 
   show: boolean = true;
-  matDataSource = new MatTableDataSource<PAG_Pagamento>();
+ 
   storedFilterPredicate!:       any;
 
   displayedColumns: string[] =  [];
@@ -108,9 +109,8 @@ export class PagamentiListComponent implements OnInit {
     public _dialog:           MatDialog, 
     private _snackBar:        MatSnackBar,
     private _loadingService:  LoadingService
-  )
-  {
-    
+  ) {
+   
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue

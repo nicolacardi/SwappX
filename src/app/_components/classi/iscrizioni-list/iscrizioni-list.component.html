@@ -1,5 +1,16 @@
 <h1 *ngIf="showPageTitle" class="page-title">Elenco Iscritti per Anno</h1>
 
+<!-- **************************   SELECT ANNO   ******************* -->
+<form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
+    <mat-form-field  class="ml20 topZIndex">
+        <mat-select formControlName="selectAnnoScolastico" (selectionChange)="updateList()" #annoscolastico>
+            <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id" >
+            {{element.annoscolastico}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</form>
+
     <!-- **************************   FILTER   ******************* -->
    <!--
     <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">

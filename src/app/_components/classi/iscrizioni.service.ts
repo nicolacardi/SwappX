@@ -11,7 +11,13 @@ export class IscrizioniService {
 
   constructor(private http: HttpClient) { }
 
-  
+  listByAnno(idAnno: number): Observable <any> {
+    //return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByClasseSezioneAnno?idClasseSezioneAnno='+idClasseSezioneAnno);  
+    return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByAnno/'+idAnno); 
+      //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByAnno?idAnno=5
+      //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByAnno/5
+  }
+
   listByClasseSezioneAnno(idClasseSezioneAnno: number): Observable <any> {
     //return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByClasseSezioneAnno?idClasseSezioneAnno='+idClasseSezioneAnno);  
     return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByClasseSezioneAnno/'+idClasseSezioneAnno); 
