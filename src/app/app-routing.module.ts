@@ -24,6 +24,7 @@ import { LoginComponent } from './_user/login/login.component';
 import { HomeComponent } from './_components/home/home.component';
 import { ClassiPageComponent } from './_components/classi/classi-page/classi-page.component';
 import { UsersPageComponent } from './_components/users/users-page/users-page.component';
+import { IscrizioniPageComponent } from './_components/classi/iscrizioni-page/iscrizioni-page.component';
 
 import { UserRole } from './_user/Users';
 import { ProfiloComponent } from './_components/account/profilo/profilo.component';
@@ -45,9 +46,9 @@ const routes: Routes = [
 
   { path:'home',              component: HomeComponent, canActivate:[AuthGuard]  },
 
-
-
   { path: "alunni",           component: AlunniPageComponent, canActivate:[AuthGuard]},
+
+  { path: "iscrizioni",       component: IscrizioniPageComponent, canActivate:[AuthGuard]},
 
   { path: "genitori",         component: GenitoriPageComponent, canActivate:[AuthGuard]},
 

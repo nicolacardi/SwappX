@@ -1,8 +1,3 @@
-/* FILTRI AVANZATI */
-  :host ::ng-deep  .filtriAvanzati .mat-form-field {
-      height: 40px;
-  }
-
 /* GENITORE-EDIT*/
   
   /* figli del genitore selezionato */

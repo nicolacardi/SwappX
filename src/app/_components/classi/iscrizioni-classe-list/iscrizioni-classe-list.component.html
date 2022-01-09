@@ -69,24 +69,24 @@
         <ng-container matColumnDef="nome">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
             <!--<mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell> -->
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValues"></mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></mat-cell>
         </ng-container>
         
         <ng-container matColumnDef="cognome">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</mat-header-cell>
             <!-- <mat-cell *matCellDef="let element">{{element.cognome |highlight: filterValue}}</mat-cell> -->
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cognome | highlight: filterValues"></mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cognome | highlight: filterValue"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="stato">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>St.Iscrizione</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.stato.descrizione | highlight: filterValues"></mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.stato.descrizione | highlight: filterValue"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="dtNascita">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>nato il</mat-header-cell>
             <!-- <mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</mat-cell> -->
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.dtNascita | highlight: filterValues| date: 'dd/MM/yyyy'"></mat-cell>
+            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.dtNascita | highlight: filterValue| date: 'dd/MM/yyyy'"></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="email">

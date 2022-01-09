@@ -1,19 +1,16 @@
 /************* GENERALI **********/
 html, body { height: 100%; 
     /* background-image: lightblue url("../src/assets/background7.jpg") no-repeat fixed center; */
-
 }
-
 
 /*Font vari*/
 body { 
     margin: 0;
     font-family: 'Titillium Web', sans-serif;
-    
 }
 
 * { font-family: 'Titillium Web', sans-serif;
-    }
+}
 
 h2 { font-family: 'Titillium Web', sans-serif !important;
 }
@@ -476,6 +473,11 @@ background-size: cover;*/
     text-align: center;
 }
 
+
+/* FILTRI AVANZATI */
+    .filtriAvanzati .mat-form-field {
+        height: 40px;
+    }
 
 
 

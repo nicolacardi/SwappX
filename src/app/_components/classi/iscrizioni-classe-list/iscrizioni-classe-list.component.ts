@@ -25,21 +25,20 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
 
 //classes
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
-import { IscrizioniFilterComponent } from '../iscrizioni-filter/iscrizioni-filter.component';
 
 @Component({
-  selector:     'app-iscrizioni-list',
-  templateUrl:  './iscrizioni-list.component.html',
+  selector:     'app-iscrizioni-classe-list',
+  templateUrl:  './iscrizioni-classe-list.component.html',
   styleUrls:    ['../classi.css']
 })
 
 
-export class IscrizioniListComponent implements OnInit {
+export class IscrizioniClasseListComponent implements OnInit {
 
 //#region ----- Variabili -------
   matDataSource = new MatTableDataSource<CLS_Iscrizione>();
   storedFilterPredicate!:       any;
-  filterValues = '';
+  filterValue = '';
 
   displayedColumns: string[] = [
       "select",
@@ -95,7 +94,7 @@ export class IscrizioniListComponent implements OnInit {
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
   @Input() idClasse!:                                         number;
-  @Input() iscrizioniFilterComponent!:                        IscrizioniFilterComponent;
+  //@Input() alunniFilterComponent!:                            IscrizioniFilterComponent;    //TODO!!!
   @Input('context') context! :                                string;
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
@@ -169,7 +168,7 @@ export class IscrizioniListComponent implements OnInit {
 
 //#region ----- Filtri & Sort -------
 
-
+/*
   filterRightPanel(): (data: any, filter: string) => boolean {
 
     let filterFunction = function(data: any, filter: any): boolean {
@@ -203,14 +202,14 @@ export class IscrizioniListComponent implements OnInit {
   applyFilter(event: Event) {
 
     //TODO!!!!
-    this.filterValues = (event.target as HTMLInputElement).value;
-    if (this.filterValues.length == 1) {
+    this.filterValue = (event.target as HTMLInputElement).value;
+    if (this.filterValue.length == 1) {
       this.matDataSource.filterPredicate = this.storedFilterPredicate;
-      if (this.context == "alunni-page") this.iscrizioniFilterComponent.resetAllInputs();
+      if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
     }
-    this.matDataSource.filter = this.filterValues.trim().toLowerCase();
+    this.matDataSource.filter = this.filterValue.trim().toLowerCase();
   }
-
+*/
 //#endregion
 
 //#region ----- Add Edit Drop -------

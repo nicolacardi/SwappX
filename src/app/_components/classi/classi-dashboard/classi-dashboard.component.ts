@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 //components
 //import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
-import { IscrizioniListComponent } from '../iscrizioni-list/iscrizioni-list.component';
+import { IscrizioniClasseListComponent } from '../iscrizioni-classe-list/iscrizioni-classe-list.component';
 
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
@@ -59,7 +59,7 @@ export class ClassiDashboardComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
   //@ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
-  @ViewChild(IscrizioniListComponent) iscrizioniListComponent!: IscrizioniListComponent; 
+  @ViewChild(IscrizioniClasseListComponent) iscrizioniListComponent!: IscrizioniClasseListComponent; 
   @Input () classeSezioneAnnoId!: number;
 //#endregion
 
