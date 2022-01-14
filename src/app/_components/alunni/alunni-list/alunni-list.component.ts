@@ -51,19 +51,6 @@ export class AlunniListComponent implements OnInit {
       "telefono", 
       "ckAttivo"
   ];
-  displayedColumnsClassiDashboard: string[] = [
-      "select",
-      "actionsColumn", 
-      "nome", 
-      "cognome", 
-      "dtNascita", 
-      "indirizzo", 
-      "comune", 
-      "cap", 
-      "prov", 
-      "email", 
-      "telefono", 
-  ];
 
   displayedColumnsGenitoreEditFamiglia: string[] = [
     "actionsColumn", 
@@ -159,13 +146,6 @@ export class AlunniListComponent implements OnInit {
       //se non mettessimo questa if la loadData partirebbe una volta con this.page = undefined
       //e POI una seconda volta quando idClasse è stato settato e quindi anche this.page: non andrebbe bene
 
-          // this._navigationService.getPage().subscribe(val=>{
-          //   this.page = val;
-          //   this.loadData(); 
-          //   this.toggleChecks = false;
-          //   this.resetSelections();
-          // })
-
       if (this.context != ''){
         this.loadData();
         this.toggleChecks = false;
@@ -198,7 +178,7 @@ export class AlunniListComponent implements OnInit {
         this.showPageTitle = false;
       break;
       default: 
-        this.displayedColumns =  this.displayedColumnsClassiDashboard;
+        this.displayedColumns =  this.displayedColumnsAlunniList;
     }
   }
 
@@ -215,18 +195,18 @@ export class AlunniListComponent implements OnInit {
     let obsAlunni$: Observable<ALU_Alunno[]>;
 
     //AS: [TODO] Verificare, non dovrebbe più servire
-    if (this.context == "classi-dashboard" && this.idClasse != undefined) {
-      obsAlunni$= this.svcAlunni.loadByClasse(this.idClasse);
-      const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
+    // if (this.context == "classi-dashboard" && this.idClasse != undefined) {
+    //   obsAlunni$= this.svcAlunni.loadByClasse(this.idClasse);
+    //   const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
 
-      loadAlunni$.subscribe(val => 
-        {
-          this.matDataSource.data = val;
-          this.matDataSource.paginator = this.paginator;
-          this.matDataSource.sort = this.sort; 
-        }
-      );
-    } 
+    //   loadAlunni$.subscribe(val => 
+    //     {
+    //       this.matDataSource.data = val;
+    //       this.matDataSource.paginator = this.paginator;
+    //       this.matDataSource.sort = this.sort; 
+    //     }
+    //   );
+    // } 
     
     if (this.context =="alunni-page") {
       if(this.swSoloAttivi){

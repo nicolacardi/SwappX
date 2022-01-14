@@ -34,7 +34,7 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 @Component({
   selector:     'app-iscrizioni-list',
   templateUrl:  './iscrizioni-list.component.html',
-  styleUrls:    ['../classi.css']
+  styleUrls:    ['../classi.scss']
 })
 
 
@@ -207,30 +207,37 @@ export class IscrizioniListComponent implements OnInit {
 
 
   filterRightPanel(): (data: any, filter: string) => boolean {
-
+    
     let filterFunction = function(data: any, filter: any): boolean {
+
       let searchTerms = JSON.parse(filter);
-      // console.log ("searchterms", searchTerms);
-      // console.log ("data", data);
-      let foundEqualClass : boolean = false;
-      if (Object.values(searchTerms).every(x => x === null || x === '')) 
-        foundEqualClass = true;
-      else {    
-        if (String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase() == searchTerms.classe) { 
-          foundEqualClass = true;
-        }
-        // data._Genitori?.forEach((val: { genitore: { nome: any; cognome: any}; })=>  {   
-        //     const foundCognomeNome = foundGenitore || String(val.genitore.cognome+" "+val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
-        //     const foundNomeCognome = foundGenitore || String(val.genitore.nome+" "+val.genitore.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
-        //     foundGenitore = foundCognomeNome || foundNomeCognome;
-        // })
+      let trovataClasseOVuota : boolean = true;
+      // if (Object.values(searchTerms).every(x => x === null || x === '')) 
+      //   foundEqualClass = true;
+      // else {    
+      if (searchTerms.classe == "") { 
+        trovataClasseOVuota = true;
+      } else {
+        trovataClasseOVuota = false;
       }
-      console.log(foundEqualClass);
+
+      if (String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase() == searchTerms.classe) { 
+        trovataClasseOVuota = true;
+      }
+      
+
+      // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
       return String(data.alunno.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
         && String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
-       
         && String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1
-        && foundEqualClass
+        && trovataClasseOVuota
+        && String(data.alunno.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
+        && String(data.alunno.email).toLowerCase().indexOf(searchTerms.email) !== -1
+        && String(data.alunno.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
+        && String(data.alunno.dtNascita).toLowerCase().indexOf(searchTerms.dtNascita) !== -1
+
+
+
        //&& String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase().indexOf(searchTerms.classe) !== -1
         // && String(data.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
         // && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
@@ -254,12 +261,17 @@ export class IscrizioniListComponent implements OnInit {
 
       this.iscrizioniFilterComponent.resetAllInputs();
     }
-    //console.log(this.filterValue.trim().toLowerCase());
+    // console.log("this.filterValue.trim().toLowerCase()", this.filterValue.trim().toLowerCase());
 
    this.matDataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
-  
+
+formatDate (dateStr: any) {
+  let dArr = dateStr.split("-");
+  return dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
+}
+
 filterPredicateCustom(){
   //questa funzione consente il filtro ANCHE sugli oggetti della classe
   this.matDataSource.filterPredicate = (data: CLS_Iscrizione, filter: string)  => {
@@ -280,11 +292,9 @@ filterPredicateCustom(){
             ((data.alunno.comune == null) ? "" : data.alunno.comune) +
             ((data.alunno.prov == null) ? "" : data.alunno.prov) +
             ((data.alunno.cf == null) ? "" : data.alunno.cf)  +
-            ((data.alunno.telefono == null) ? "" : data.alunno.telefono) 
-            // console.log("currentTerm: " , currentTerm);
-            // console.log("Key: " , key);
-            // console.log("data: " , data);
-            // console.log("key:alunno->return: " , toreturn);
+            ((data.alunno.telefono == null) ? "" : data.alunno.telefono) + 
+            ((data.alunno.dtNascita == null) ? "" : this.formatDate(data.alunno.dtNascita))
+
             return toreturn;
             break;
           }
@@ -449,6 +459,8 @@ filterPredicateCustom(){
     
   }
 //#endregion
+
+
 
 }
 

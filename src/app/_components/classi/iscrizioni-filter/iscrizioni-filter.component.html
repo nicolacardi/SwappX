@@ -25,6 +25,28 @@
             <input matInput [formControl]="sezioneFilter">
         </mat-form-field>
 
+        <mat-form-field class="ml12">
+            <mat-label>CF</mat-label>
+            <input matInput [formControl]="cfFilter">
+        </mat-form-field>
+
+        <mat-form-field class="ml12">
+            <mat-label>email</mat-label>
+            <input matInput [formControl]="emailFilter">
+        </mat-form-field>
+
+        <mat-form-field class="ml12">
+            <mat-label>telefono</mat-label>
+            <input matInput [formControl]="telefonoFilter">
+        </mat-form-field>
+
+        <mat-form-field class="ml12">
+            <mat-label>nato il</mat-label>
+            <input matInput [formControl]="dtNascitaFilter">
+        </mat-form-field>
+
+
+
         <div class="ml12 mt10">
             <button mat-button matSuffix class="w180px ml15" mat-stroked-button aria-label="Clear" (click)="resetAllInputsAndClearFilters()" >
                 Pulisci Filtri

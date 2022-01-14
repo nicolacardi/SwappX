@@ -80,9 +80,11 @@ import { LoadingComponent } from './_components/utilities/loading/loading.compon
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomMatPaginatorIntl } from './_components/utilities/paginator-custom/custom-mat-paginator-int';
 import { HighlightPipe } from './_components/utilities/highlight/highlight.pipe';
+import { HighlightDatePipe } from './_components/utilities/highlight/highlightDate.pipe';
 import { PhotocropComponent } from './_components/utilities/photocrop/photocrop.component';
 import { EventEmitterService } from './_services/event-emitter.service';
 import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.component';
+import { ResizeColumnDirective } from './_components/utilities/resize-column/resize-column.directive';
 
 
 
@@ -155,6 +157,7 @@ import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.c
     MessaggiComponent,
  
     HighlightPipe,
+    HighlightDatePipe,
     DialogYesNoComponent,
     DialogOkComponent,
     LoadingComponent,
@@ -163,6 +166,7 @@ import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.c
     PhotocropComponent,
     ChangePswComponent,
     ImpostazioniComponent,
+    ResizeColumnDirective,
 
   ],
   imports: [

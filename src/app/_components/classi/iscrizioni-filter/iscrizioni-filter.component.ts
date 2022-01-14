@@ -12,10 +12,14 @@ import { IscrizioniListComponent } from '../iscrizioni-list/iscrizioni-list.comp
 export class IscrizioniFilterComponent implements OnInit {
 
 //#region ----- Variabili -------
-  nomeFilter = new FormControl('');
-  cognomeFilter = new FormControl('');
-  classeFilter = new FormControl('');
-  sezioneFilter = new FormControl('');
+  nomeFilter =      new FormControl('');
+  cognomeFilter =   new FormControl('');
+  classeFilter =    new FormControl('');
+  sezioneFilter =   new FormControl('');
+  cfFilter =        new FormControl('');
+  emailFilter =     new FormControl('');
+  telefonoFilter =  new FormControl('');
+  dtNascitaFilter = new FormControl('');
 //#endregion
 
 //#region ----- ViewChild Input Output -------  
@@ -57,6 +61,42 @@ export class IscrizioniFilterComponent implements OnInit {
       val => {
         this.resetMainFilter();
         this.iscrizioniListComponent.filterValues.sezione = val.toLowerCase(); 
+        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
+      }
+    )
+
+    this.cfFilter.valueChanges
+    .subscribe(
+      val => {
+        this.resetMainFilter();
+        this.iscrizioniListComponent.filterValues.cf = val.toLowerCase(); 
+        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
+      }
+    )
+
+    this.emailFilter.valueChanges
+    .subscribe(
+      val => {
+        this.resetMainFilter();
+        this.iscrizioniListComponent.filterValues.email = val.toLowerCase(); 
+        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
+      }
+    )
+
+    this.telefonoFilter.valueChanges
+    .subscribe(
+      val => {
+        this.resetMainFilter();
+        this.iscrizioniListComponent.filterValues.telefono = val.toLowerCase(); 
+        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
+      }
+    )
+
+    this.dtNascitaFilter.valueChanges
+    .subscribe(
+      val => {
+        this.resetMainFilter();
+        this.iscrizioniListComponent.filterValues.dtNascita = val.toLowerCase(); 
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
     )

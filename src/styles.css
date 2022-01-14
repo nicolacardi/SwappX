@@ -555,6 +555,7 @@ in fase di creazione della Dialog addAlunno*/
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
   
 ._table-row-low .mat-row {
     min-height: 30px;
