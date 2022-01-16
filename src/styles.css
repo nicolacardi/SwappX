@@ -551,11 +551,11 @@ in fase di creazione della Dialog addAlunno*/
 
 .mat-cell {
     width: auto;
-    white-space: nowrap;
+    
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
+/* white-space: nowrap; */
   
 ._table-row-low .mat-row {
     min-height: 30px;

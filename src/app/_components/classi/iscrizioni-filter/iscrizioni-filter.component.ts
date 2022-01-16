@@ -36,7 +36,7 @@ export class IscrizioniFilterComponent implements OnInit {
     this.nomeFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetMainFilter();
         this.iscrizioniListComponent.filterValues.nome = val.toLowerCase(); 
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
@@ -44,7 +44,7 @@ export class IscrizioniFilterComponent implements OnInit {
     this.cognomeFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetMainFilter();
         this.iscrizioniListComponent.filterValues.cognome = val.toLowerCase();  
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
@@ -135,15 +135,17 @@ export class IscrizioniFilterComponent implements OnInit {
 //#endregion
 
 //#region ----- Reset vari -------
+
   resetMainFilter() {
     //se il filterpredicate è uguale a quello stored (quindi "se sono in modalità filtro Main")
     //allora resetta il filtro e come filterPredicate usa filterRightPanel.
     //if (this.iscrizioniListComponent.matDataSource.filterPredicate == this.iscrizioniListComponent.storedFilterPredicate){
       //this.iscrizioniListComponent.matDataSource.filter = ''; 
-      this.iscrizioniListComponent.filterValue = '';
+      
+      //this.iscrizioniListComponent.filterValue = '';
       this.iscrizioniListComponent.filterValues.filtrosx = ''; 
-      this.iscrizioniListComponent.filterInput.nativeElement.value = '';
-      console.log ("resetMainFilter", this.iscrizioniListComponent.filterValues);
+      //this.iscrizioniListComponent.filterInput.nativeElement.value = '';
+
       //this.iscrizioniListComponent.matDataSource.filterPredicate = this.iscrizioniListComponent.filterRightPanel()
     //};  
   }
@@ -160,8 +162,6 @@ export class IscrizioniFilterComponent implements OnInit {
     this.indirizzoFilter.setValue('', {emitEvent:false});
     this.comuneFilter.setValue('', {emitEvent:false});
     this.provFilter.setValue('', {emitEvent:false});
-
-
   }
 
   resetAllInputsAndClearFilters() {

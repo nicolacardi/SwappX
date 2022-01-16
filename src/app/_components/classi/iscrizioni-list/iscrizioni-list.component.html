@@ -16,6 +16,10 @@
         <mat-label>Filtro</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
     </mat-form-field>
+    <button mat-icon-button *ngIf="filterValue" (click)="resetSearch();applyFilter($event)"  class="topZIndex">
+        <mat-icon  color="primary">clear</mat-icon>
+    </button>
+
 </form>
 
     
@@ -75,13 +79,13 @@
         </ng-container>
     -->
         <ng-container matColumnDef="nome">
-            <mat-header-cell *matHeaderCellDef [resizeColumn]="true">Nome</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header [resizeColumn]="true">Nome</mat-header-cell>
             <!-- <mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell> -->
             <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></mat-cell>
         </ng-container>
         
-        <ng-container matColumnDef="cognome">
-            <mat-header-cell *matHeaderCellDef>Cognome</mat-header-cell>
+        <ng-container matColumnDef="cognome" >
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Cognome</mat-header-cell>
             <!-- <mat-cell *matCellDef="let element">{{element.alunno.cognome}}</mat-cell> -->
             <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cognome | highlight: filterValue"></mat-cell>
         </ng-container>

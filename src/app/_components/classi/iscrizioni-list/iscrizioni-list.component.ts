@@ -24,6 +24,7 @@ import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector:     'app-iscrizioni-list',
@@ -42,7 +43,6 @@ export class IscrizioniListComponent implements OnInit {
   
   storedFilterPredicate!:       any;
   
-
   displayedColumns: string[] = [
       //"select",
       "actionsColumn", 
@@ -78,7 +78,7 @@ export class IscrizioniListComponent implements OnInit {
 
   filterValue = '';       //Filtro semplice
   
-  //filterValues contiene l'elenco dei filtri avanzati da applicare 
+  //Filtri avanzati
   filterValues = {
     nome: '',
     cognome: '',
@@ -156,16 +156,26 @@ export class IscrizioniListComponent implements OnInit {
       const loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
 
       loadIscrizioni$.subscribe(val =>  {
-
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;          
-          
           this.sortCustom();
           this.matDataSource.sort = this.sort; 
-          this.matDataSource.filterPredicate = this.filterPredicateUnico();
+          this.matDataSource.filterPredicate = this.filterPredicate();
         }
       );
     } 
+  }
+
+  
+
+//#endregion
+
+//#region ----- Filtri & Sort -------
+
+  resetSearch(){
+    this.filterInput.nativeElement.value = "";
+    this.filterValue = "";
+    this.filterValues.filtrosx = "";
   }
 
   sortCustom() {
@@ -190,19 +200,15 @@ export class IscrizioniListComponent implements OnInit {
     };
   }
 
-//#endregion
-
-//#region ----- Filtri & Sort -------
-
-
   applyFilter(event: Event) {
 
     this.filterValue = (event.target as HTMLInputElement).value;
 
     //Reset dei filtri di destra
-    this.iscrizioniFilterComponent.resetAllInputs();
+    //this.iscrizioniFilterComponent.resetAllInputs();
 
     //Reset di filterValues
+    /*
     this.filterValues = {
       nome: '',
       cognome: '',
@@ -218,69 +224,57 @@ export class IscrizioniListComponent implements OnInit {
       prov: '',
       filtrosx: ''
     };
-
+    */
     //Inserimento del Main Filter in uno specifico (filtrosx) dei campi di filterValues
-    this.filterValues.filtrosx = this.filterValue.toLowerCase();
+    console.log("Filter value", this.filterValue);
 
+    if( this.filterValue != undefined && this.filterValue != ""){
+      this.filterValues.filtrosx = this.filterValue.toLowerCase();
+    }
     //applicazione del filtro
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
 
-filterPredicateUnico(): (data: any, filter: string) => boolean {
+filterPredicate(): (data: any, filter: string) => boolean {
 
   let filterFunction = function(data: any, filter: any): boolean {
 
     let searchTerms = JSON.parse(filter);
 
-    let trovataClasseOVuota : boolean = true;
-    // if (Object.values(searchTerms).every(x => x === null || x === '')) 
-    //   foundEqualClass = true;
-    // else {    
-    if (searchTerms.classe == "") { 
+    let trovataClasseOVuota : boolean = false; 
+    if (searchTerms.classe == null || searchTerms.classe == "") 
       trovataClasseOVuota = true;
-    } else {
-      trovataClasseOVuota = false;
-    }
-
-    if (String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase() == searchTerms.classe) { 
+    if (String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase() == searchTerms.classe) 
       trovataClasseOVuota = true;
-    }
     
-
     let dArr = data.alunno.dtNascita.split("-");
     const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 
-    //console.log("cerco "+searchTerms.filtrosx+ " in ", data) ;
-    let boolSx = 
-    String(data.alunno.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-    || String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-    || String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-    || String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-    || String(data.alunno.cf).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-    || String(data.alunno.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-    || String(data.alunno.telefono).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-    || String(dtNascitaddmmyyyy).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-    || String(data.alunno.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-    || String(data.alunno.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-    || String(data.alunno.prov).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
-
-    //console.log ("boolSx",boolSx);
+    let boolSx = String(data.alunno.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+              || String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+              || String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+              || String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+              || String(data.alunno.cf).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+              || String(data.alunno.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+              || String(data.alunno.telefono).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+              || String(dtNascitaddmmyyyy).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+              || String(data.alunno.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+              || String(data.alunno.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+              || String(data.alunno.prov).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
 
     // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
-    let boolDx = 
-    String(data.alunno.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
-    && String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
-    && String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1
-    && trovataClasseOVuota
-    && String(data.alunno.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
-    && String(data.alunno.email).toLowerCase().indexOf(searchTerms.email) !== -1
-    && String(data.alunno.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
-    && String(dtNascitaddmmyyyy).toLowerCase().indexOf(searchTerms.dtNascita) !== -1
-    && String(data.alunno.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
-    && String(data.alunno.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
-    && String(data.alunno.prov).toLowerCase().indexOf(searchTerms.prov) !== -1;
+    let boolDx = String(data.alunno.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+              && String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+              && String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1
+              && trovataClasseOVuota
+              && String(data.alunno.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
+              && String(data.alunno.email).toLowerCase().indexOf(searchTerms.email) !== -1
+              && String(data.alunno.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
+              && String(dtNascitaddmmyyyy).toLowerCase().indexOf(searchTerms.dtNascita) !== -1
+              && String(data.alunno.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
+              && String(data.alunno.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
+              && String(data.alunno.prov).toLowerCase().indexOf(searchTerms.prov) !== -1;
 
-    //console.log ("boolDx",boolDx);
     return boolSx && boolDx;
   }
   return filterFunction;
@@ -290,6 +284,7 @@ filterPredicateUnico(): (data: any, filter: string) => boolean {
 //#endregion
 
 //#region ----- Add Edit Drop -------
+
   addRecord(){
 
     //TODO!!!
@@ -362,7 +357,7 @@ filterPredicateUnico(): (data: any, filter: string) => boolean {
   }
 //#endregion
 
-//#region ----- Emit per alunno-edit -------
+//#region ----- Emit per edit -------
 
 
 
@@ -373,6 +368,7 @@ filterPredicateUnico(): (data: any, filter: string) => boolean {
     this.selection.toggle(element);
   }
 
+  /*
   masterToggle() {
     this.toggleChecks = !this.toggleChecks;
 
@@ -381,7 +377,8 @@ filterPredicateUnico(): (data: any, filter: string) => boolean {
     else 
       this.resetSelections();
   }
-
+  */
+  
   resetSelections() {
     this.selection.clear();
     this.matDataSource.data.forEach(row => this.selection.deselect(row));
