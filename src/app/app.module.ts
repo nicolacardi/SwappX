@@ -86,6 +86,7 @@ import { PhotocropComponent } from './_components/utilities/photocrop/photocrop.
 import { EventEmitterService } from './_services/event-emitter.service';
 import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.component';
 import { ResizeColumnDirective } from './_components/utilities/resize-column/resize-column.directive';
+import { RettaCalcoloComponent } from './_components/pagamenti/retta-calcolo/retta-calcolo.component';
 
 
 
@@ -169,6 +170,7 @@ import { ResizeColumnDirective } from './_components/utilities/resize-column/res
     ChangePswComponent,
     ImpostazioniComponent,
     ResizeColumnDirective,
+    RettaCalcoloComponent,
 
   ],
   imports: [

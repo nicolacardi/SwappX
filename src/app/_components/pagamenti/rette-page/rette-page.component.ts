@@ -14,10 +14,13 @@ export class RettePageComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    
   }
 
   addRecord() {
     this.retteList.addRecord()
   }
-  
+  calcoloRette() {
+    this.retteList.calcoloRette()
+  }
 }

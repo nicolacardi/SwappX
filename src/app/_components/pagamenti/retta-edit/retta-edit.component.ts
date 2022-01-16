@@ -24,8 +24,7 @@ import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
 import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
-
-
+import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 
 @Component({
   selector: 'app-retta-edit',
@@ -38,11 +37,14 @@ export class RettaEditComponent implements OnInit {
 //#region ----- Variabili -------
 
   public obsRette$!:          Observable<PAG_Retta[]>;
+  obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+
   filteredAlunni$!:           Observable<ALU_Alunno[]>;
   formRetta! :                FormGroup;
   formAlunno! :               FormGroup;
   alunno!:                    ALU_Alunno;
   anno!:                      ASC_AnnoScolastico;
+
   mesi:                       number[] = [];
   quoteConcordate:            number[] = [];
   quoteDefault:               number[] = [];
@@ -68,10 +70,10 @@ export class RettaEditComponent implements OnInit {
               private fb:             FormBuilder, 
               private svcRette:       RetteService,
               private svcAlunni:      AlunniService,
+              private svcAnni:        AnniScolasticiService,
               public _dialog:         MatDialog,
               private _snackBar:      MatSnackBar,
-              private _loadingService:  LoadingService,
-              ) 
+              private _loadingService:  LoadingService  ) 
   { 
     this.formRetta = this.fb.group({
       id:                         [null],
@@ -82,7 +84,7 @@ export class RettaEditComponent implements OnInit {
       importo:                    ['', { validators:[ Validators.required]}],
       tipoPagamentoID:            ['', Validators.required],
       nomeCognomeAlunno:          [null],
-      annoscolastico:             [null]
+      selectAnnoScolastico:             [null]
     });
 
     // this.formAlunno = this.fb.group({
@@ -100,20 +102,17 @@ export class RettaEditComponent implements OnInit {
       switchMap(() => this.svcAlunni.filterAlunni(this.formRetta.value.nomeCognomeAlunno))
     )
 
-    this.formRetta.controls['annoscolastico'].setValue(this.data.idAnno);
+    this.obsAnni$ = this.svcAnni.load();
 
-    this.formRetta.controls['annoscolastico'].valueChanges
-    .subscribe(
+    this.formRetta.controls['selectAnnoScolastico'].setValue(this.data.idAnno);
+    this.formRetta.controls['selectAnnoScolastico'].valueChanges.subscribe(
       val=> {
         if (val) {
-          console.log(val);
           this.data.idAnno = val;
           this.loadData();
         }
       }
     )
-
-    
     this.loadData();
   }
 
@@ -160,8 +159,11 @@ export class RettaEditComponent implements OnInit {
           //creo un oggetto vuoto di tipo ASC_Annoscolastico, lo assegno a this.anno e poi ci setto il valor di default
           const tmpObj = <ASC_AnnoScolastico>{};
           this.anno = tmpObj;
+
+          //QUI!!!!! BELLA MERDA!!!! TODO!!!!!
           this.anno.annoscolastico ="2019-20"; //ovviamente questo sarà un parametro, per ora lo "cablo" dentro
-          //console.log( "obj.length = 0");
+          //this.anno.annoscolastico = ;
+
           //this.formRetta.controls['nomeCognomeAlunno'].setValue("");
           //retta.edit passa i valori a 12 children, uno per mese, che si chiamano rettamese-edit:
           //nel caso di "nuovo pagamento" impostiamo a 0 tutti i valori trasmessi ai child
@@ -242,7 +244,6 @@ export class RettaEditComponent implements OnInit {
     if (this.formRetta.controls['nomeCognomeAlunno'].value == "") {
       this.matAutocomplete.options.first.select();
     }
-    
 
     this.svcAlunni.filterAlunniExact(this.formRetta.value.nomeCognomeAlunno).subscribe(val=>
       {
@@ -251,7 +252,6 @@ export class RettaEditComponent implements OnInit {
         this.formRetta.controls['nomeCognomeAlunno'].setValue(stored)
         this.formRetta.controls['alunnoID'].setValue(parseInt(idstored));
         this.loadData();
-        
       }
     })
   }

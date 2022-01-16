@@ -50,7 +50,6 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     "sezione",
     "descrizioneAnnoSuccessivo",
     "sezioneAnnoSuccessivo"
-    
   ];
 
   displayedColumnsAlunnoEditList: string[] =  [
@@ -85,8 +84,6 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     sezione: '',
     filtrosx: ''
   };
-
- 
     
 //#endregion
 
@@ -114,21 +111,17 @@ constructor(
     private _loadingService:              LoadingService,
     private fb:                           FormBuilder, 
     public _dialog:                       MatDialog, 
-    private actRoute:                     ActivatedRoute,
-  ) { 
+    private actRoute:                     ActivatedRoute ) { 
 
     let obj = localStorage.getItem('AnnoCorrente');
 
     this.form = this.fb.group({
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     });
-
-
   }
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
-
 
     this.actRoute.queryParams.subscribe(
       params => {
@@ -136,15 +129,11 @@ constructor(
           this.idClasseInput = params['idClasseSezioneAnno'];  
     });
 
-    //console.log ("idAnnoInput from route",this.idAnnoInput);
-    //console.log ("idClasseInput from route",this.idClasseInput);
-
 
     this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
       this.loadData();
       this.annoIdEmitter.emit(val);
     })
-
 
     this.obsAnni$ = this.svcAnni.load()
       .pipe(
@@ -153,7 +142,6 @@ constructor(
             this.form.controls.selectAnnoScolastico.setValue(parseInt(this.idAnnoInput));
           }
         }),
-
       );
 
     this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);
@@ -234,11 +222,7 @@ constructor(
           this.rowclicked(undefined);
       }
     );
-
-
   }
-
-
 
   rowclicked(idClasseSezioneAnno?: string ){
     //console.log ("idClasseSezioneAnno", parseInt(idClasseSezioneAnno));

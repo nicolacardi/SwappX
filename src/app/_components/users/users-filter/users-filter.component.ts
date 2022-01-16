@@ -30,7 +30,7 @@ export class UsersFilterComponent implements OnInit {
     this.fullnameFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.usersListComponent.filterValues.fullname = val.toLowerCase();
         this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
       }
@@ -39,7 +39,7 @@ export class UsersFilterComponent implements OnInit {
     this.emailFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.usersListComponent.filterValues.email = val.toLowerCase();
         this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
       }
@@ -48,7 +48,7 @@ export class UsersFilterComponent implements OnInit {
     this.badgeFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.usersListComponent.filterValues.badge = val.toLowerCase();
         this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
       }
@@ -58,7 +58,7 @@ export class UsersFilterComponent implements OnInit {
 //#endregion
 
 //#region ----- Reset vari -------
-  resetMainFilter() {
+  resetFilterSx() {
       // this.usersListComponent.matDataSource.filter = ''; 
       // this.usersListComponent.filterValue = '';
       // this.usersListComponent.filterValues.filtrosx = ''; 

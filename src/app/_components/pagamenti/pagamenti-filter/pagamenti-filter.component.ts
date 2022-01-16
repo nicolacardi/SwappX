@@ -54,7 +54,7 @@ export class PagamentiFilterComponent implements OnInit {
     this.tipoPagamentoFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.tipoPagamento = val;
         this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
       }
@@ -63,7 +63,7 @@ export class PagamentiFilterComponent implements OnInit {
     this.causaleFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.causale = val;
         this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
       }
@@ -72,7 +72,7 @@ export class PagamentiFilterComponent implements OnInit {
     this.nomeFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.nome = val;
         this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
       }
@@ -81,7 +81,7 @@ export class PagamentiFilterComponent implements OnInit {
     this.cognomeFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.cognome = val;
         this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
       }
@@ -91,7 +91,7 @@ export class PagamentiFilterComponent implements OnInit {
     this.importoPiuDiFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.importoPiuDi = val;
         this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
       }
@@ -100,7 +100,7 @@ export class PagamentiFilterComponent implements OnInit {
     this.importoMenoDiFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.importoMenoDi = val;
         this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
       }
@@ -111,7 +111,7 @@ export class PagamentiFilterComponent implements OnInit {
       val => {
         if (this.importoFilter.value != '') {this.importoMenoDiFilter.disable();this.importoPiuDiFilter.disable()} 
         else {this.importoMenoDiFilter.enable(); this.importoPiuDiFilter.enable()}
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.importo = val;
         this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
       }
@@ -120,7 +120,7 @@ export class PagamentiFilterComponent implements OnInit {
     this.dataDal.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.dataDal = val;
         this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
       }
@@ -129,7 +129,7 @@ export class PagamentiFilterComponent implements OnInit {
     this.dataAl.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.dataAl = val;
         this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
       }
@@ -139,7 +139,7 @@ export class PagamentiFilterComponent implements OnInit {
 //#endregion
 
 //#region ----- Reset vari -------
-  resetMainFilter() {
+  resetFilterSx() {
       //this.pagamentiListComponent.matDataSource.filter = ''; 
       //this.pagamentiListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
       //this.pagamentiListComponent.filterInput.nativeElement.value = '';

@@ -31,11 +31,14 @@ export class AlunniFilterComponent implements OnInit {
   constructor() {}
 
 //#region ----- LifeCycle Hooks e simili-------
+
+ 
   ngOnInit() {
+
     this.nomeFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();  
         this.alunniListComponent.filterValues.nome = val.toLowerCase();
         this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
       }
@@ -44,7 +47,7 @@ export class AlunniFilterComponent implements OnInit {
     this.cognomeFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.alunniListComponent.filterValues.cognome = val.toLowerCase();
         this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
       }
@@ -53,7 +56,7 @@ export class AlunniFilterComponent implements OnInit {
     this.dtNascitaFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.alunniListComponent.filterValues.dtNascita = val.toLowerCase();
         this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
       }
@@ -62,7 +65,7 @@ export class AlunniFilterComponent implements OnInit {
     this.indirizzoFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.alunniListComponent.filterValues.indirizzo = val.toLowerCase();
         this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
       }
@@ -71,7 +74,7 @@ export class AlunniFilterComponent implements OnInit {
     this.comuneFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.alunniListComponent.filterValues.comune = val.toLowerCase();
         this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
       }
@@ -80,7 +83,7 @@ export class AlunniFilterComponent implements OnInit {
     this.provFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.alunniListComponent.filterValues.prov = val.toLowerCase();
         this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
       }
@@ -89,7 +92,7 @@ export class AlunniFilterComponent implements OnInit {
     this.emailFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.alunniListComponent.filterValues.email = val.toLowerCase();
         this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
       }
@@ -98,7 +101,7 @@ export class AlunniFilterComponent implements OnInit {
     this.telefonoFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.alunniListComponent.filterValues.telefono = val.toLowerCase();
         this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
       }
@@ -107,7 +110,7 @@ export class AlunniFilterComponent implements OnInit {
     this.nomeCognomeGenitoreFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.alunniListComponent.filterValues.nomeCognomeGenitore = val.toLowerCase();
         this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
       }
@@ -117,12 +120,14 @@ export class AlunniFilterComponent implements OnInit {
 //#endregion
 
 //#region ----- Reset vari -------
-  resetMainFilter() {
+
+  //AS: pulizia filtro di sinistra, chiamata su edit filtro di destra
+  // PER IL MOMENTO NON UTILIZZATA
+  resetFilterSx() {
       // this.alunniListComponent.matDataSource.filter = ''; 
       // this.alunniListComponent.filterValue = '';
       // this.alunniListComponent.filterValues.filtrosx = ''; 
       // this.alunniListComponent.filterInput.nativeElement.value = '';
-      console.log(this.alunniListComponent.filterValues);
   }
 
   resetAllInputs() {
@@ -134,11 +139,7 @@ export class AlunniFilterComponent implements OnInit {
     this.provFilter.setValue('', {emitEvent:false});
     this.emailFilter.setValue('', {emitEvent:false});
     this.telefonoFilter.setValue('', {emitEvent:false});
-
     this.nomeCognomeGenitoreFilter.setValue('', {emitEvent:false});
-
-    console.log(this.alunniListComponent.filterValues);
-
   }
 
   resetAllInputsAndClearFilters() {
@@ -150,11 +151,8 @@ export class AlunniFilterComponent implements OnInit {
     this.provFilter.setValue('');
     this.emailFilter.setValue('');
     this.telefonoFilter.setValue('');
-
     this.nomeCognomeGenitoreFilter.setValue('');
-    
-    console.log(this.alunniListComponent.filterValues);
-
   }
-//#endregion
+
+  //#endregion
 }

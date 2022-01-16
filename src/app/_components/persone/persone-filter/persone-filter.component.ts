@@ -33,7 +33,7 @@ export class PersoneFilterComponent implements OnInit {
     this.nomeFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.personeListComponent.filterValues.nome = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
@@ -42,7 +42,7 @@ export class PersoneFilterComponent implements OnInit {
     this.cognomeFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.personeListComponent.filterValues.cognome = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
@@ -51,7 +51,7 @@ export class PersoneFilterComponent implements OnInit {
     this.annoNascitaFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.personeListComponent.filterValues.annoNascita = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
@@ -60,7 +60,7 @@ export class PersoneFilterComponent implements OnInit {
     this.indirizzoFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.personeListComponent.filterValues.indirizzo = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
@@ -69,7 +69,7 @@ export class PersoneFilterComponent implements OnInit {
     this.comuneFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.personeListComponent.filterValues.comune = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
@@ -78,7 +78,7 @@ export class PersoneFilterComponent implements OnInit {
     this.provFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.personeListComponent.filterValues.prov = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
@@ -87,7 +87,7 @@ export class PersoneFilterComponent implements OnInit {
     this.emailFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.personeListComponent.filterValues.email = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
@@ -96,7 +96,7 @@ export class PersoneFilterComponent implements OnInit {
     this.telefonoFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.personeListComponent.filterValues.telefono = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
@@ -105,7 +105,7 @@ export class PersoneFilterComponent implements OnInit {
 //#endregion
 
 //#region ----- Reset vari -------
-  resetMainFilter() {
+  resetFilterSx() {
       //this.personeListComponent.matDataSource.filter = ''; 
       //this.personeListComponent.filterValue = '';
       //this.personeListComponent.filterValues.filtrosx = ''; 

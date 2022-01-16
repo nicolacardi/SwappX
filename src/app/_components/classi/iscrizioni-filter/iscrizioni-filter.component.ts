@@ -36,7 +36,7 @@ export class IscrizioniFilterComponent implements OnInit {
     this.nomeFilter.valueChanges
     .subscribe(
       val => {
-        //this.resetMainFilter();
+        //this.resetFilterSx();
         this.iscrizioniListComponent.filterValues.nome = val.toLowerCase(); 
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
@@ -44,7 +44,7 @@ export class IscrizioniFilterComponent implements OnInit {
     this.cognomeFilter.valueChanges
     .subscribe(
       val => {
-        //this.resetMainFilter();
+        //this.resetFilterSx();
         this.iscrizioniListComponent.filterValues.cognome = val.toLowerCase();  
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
@@ -53,7 +53,7 @@ export class IscrizioniFilterComponent implements OnInit {
     this.classeFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.iscrizioniListComponent.filterValues.classe = val.toLowerCase(); 
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
@@ -62,7 +62,7 @@ export class IscrizioniFilterComponent implements OnInit {
     this.sezioneFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.iscrizioniListComponent.filterValues.sezione = val.toLowerCase(); 
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
@@ -71,7 +71,7 @@ export class IscrizioniFilterComponent implements OnInit {
     this.cfFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.iscrizioniListComponent.filterValues.cf = val.toLowerCase(); 
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
@@ -80,7 +80,7 @@ export class IscrizioniFilterComponent implements OnInit {
     this.emailFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.iscrizioniListComponent.filterValues.email = val.toLowerCase(); 
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
@@ -89,7 +89,7 @@ export class IscrizioniFilterComponent implements OnInit {
     this.telefonoFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.iscrizioniListComponent.filterValues.telefono = val.toLowerCase(); 
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
@@ -98,7 +98,7 @@ export class IscrizioniFilterComponent implements OnInit {
     this.dtNascitaFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.iscrizioniListComponent.filterValues.dtNascita = val.toLowerCase(); 
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
@@ -107,7 +107,7 @@ export class IscrizioniFilterComponent implements OnInit {
     this.indirizzoFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.iscrizioniListComponent.filterValues.indirizzo = val.toLowerCase(); 
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
@@ -116,7 +116,7 @@ export class IscrizioniFilterComponent implements OnInit {
     this.comuneFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.iscrizioniListComponent.filterValues.comune = val.toLowerCase(); 
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
@@ -125,7 +125,7 @@ export class IscrizioniFilterComponent implements OnInit {
     this.provFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.iscrizioniListComponent.filterValues.prov = val.toLowerCase(); 
         this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
       }
@@ -136,7 +136,7 @@ export class IscrizioniFilterComponent implements OnInit {
 
 //#region ----- Reset vari -------
 
-  resetMainFilter() {
+  resetFilterSx() {
       //this.iscrizioniListComponent.matDataSource.filter = '';       
       //this.iscrizioniListComponent.filterValue = '';
       this.iscrizioniListComponent.filterValues.filtrosx = ''; 

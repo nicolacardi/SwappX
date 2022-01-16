@@ -312,7 +312,7 @@ export class AlunniListComponent implements OnInit {
                 // console.log("prov",String(data.prov).toLowerCase().indexOf(searchTerms.prov));
                 // console.log("telefono",String(data.telefono).toLowerCase().indexOf(searchTerms.telefono));
                 // console.log("email",String(data.email).toLowerCase().indexOf(searchTerms.email));
-                console.log("cognome", data.cognome, "foundGenitore",foundGenitore);
+                //console.log("cognome", data.cognome, "foundGenitore",foundGenitore);
 
       return boolSx && boolDx;
     }
