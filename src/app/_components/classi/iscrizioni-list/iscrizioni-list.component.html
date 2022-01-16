@@ -27,7 +27,7 @@
     <!-- <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator> -->
 
     <!-- **************************   MAT-TABLE   ******************* -->
-    <mat-table class="_table-row-low transparent" [dataSource]="matDataSource"
+    <table mat-table class="_table-row-low transparent" [dataSource]="matDataSource"
         matSort
         [matSortActive]="matSortActive"
         [matSortDirection] = "'asc'"
@@ -37,24 +37,24 @@
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
         <ng-container matColumnDef="actionsColumn">
-            <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-            <mat-cell  *matCellDef="let element;  let j = index;"> 
+            <th mat-header-cell *matHeaderCellDef cdkDrag></th>
+            <td mat-cell  *matCellDef="let element;  let j = index;"> 
                 <img (click)="openDetail(element.alunnoID)" class="iconaMenu pointer" src="../assets/alunno_edit.svg">
-            </mat-cell>
+            </td>
         </ng-container>
     <!--
         <ng-container matColumnDef="addToFam">
             <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-            <mat-cell  *matCellDef="let element;"> 
+            <td mat-cell  *matCellDef="let element;"> 
                 <mat-icon class="pointer" (click) = "addToFamilyEmit(element)">add_circle_outline</mat-icon>
-            </mat-cell>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="removeFromFam">
             <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-            <mat-cell  *matCellDef="let element;"> 
+            <td mat-cell  *matCellDef="let element;"> 
                 <mat-icon class="pointer" (click) = "removeFromFamilyEmit(element)">remove_circle_outline</mat-icon>
-            </mat-cell>
+            </td>
         </ng-container>
     -->
 
@@ -79,63 +79,63 @@
         </ng-container>
     -->
         <ng-container matColumnDef="nome">
-            <mat-header-cell *matHeaderCellDef mat-sort-header [resizeColumn]="true">Nome</mat-header-cell>
-            <!-- <mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell> -->
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></mat-cell>
+            <th mat-header-cell *matHeaderCellDef [resizeColumn]="true">Nome</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.alunno.nome}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></td>
         </ng-container>
         
-        <ng-container matColumnDef="cognome" >
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Cognome</mat-header-cell>
-            <!-- <mat-cell *matCellDef="let element">{{element.alunno.cognome}}</mat-cell> -->
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cognome | highlight: filterValue"></mat-cell>
+        <ng-container matColumnDef="cognome">
+            <th mat-header-cell *matHeaderCellDef>Cognome</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.alunno.cognome}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cognome | highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="classe">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Classe</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.classeSezioneAnno.classeSezione.classe.descrizioneBreve | highlight: filterValue"></mat-cell>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Classe</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.classeSezioneAnno.classeSezione.classe.descrizioneBreve | highlight: filterValue"></td>
         </ng-container>
         <ng-container matColumnDef="sezione">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Sez</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.classeSezioneAnno.classeSezione.sezione | highlight: filterValue"></mat-cell>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Sez</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.classeSezioneAnno.classeSezione.sezione | highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="cf">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>CF</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cf==null?'': element.alunno.cf| highlight: filterValue"></mat-cell>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>CF</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cf==null?'': element.alunno.cf| highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="stato">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>St.Iscrizione</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.stato.descrizione | highlight: filterValue"></mat-cell>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>St.Iscrizione</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.stato.descrizione | highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="dtNascita">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>nato il</mat-header-cell>
-            <!-- <mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</mat-cell> -->
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.dtNascita | highlightDate: filterValue"></mat-cell>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>nato il</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.dtNascita | highlightDate: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="email">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>email</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.email==null?'': element.alunno.email | highlight: filterValue"></mat-cell>
+            <th style="width: 50px" mat-header-cell *matHeaderCellDef mat-sort-header>email</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.email==null?'': element.alunno.email | highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="telefono">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>telefono</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.telefono==null?'': element.alunno.telefono | highlight: filterValue"></mat-cell>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>telefono</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.telefono==null?'': element.alunno.telefono | highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="indirizzo">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>indirizzo</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.indirizzo | highlight: filterValue"></mat-cell>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>indirizzo</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.indirizzo | highlight: filterValue"></td>
         </ng-container>
         <ng-container matColumnDef="comune">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>comune</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.comune | highlight: filterValue"></mat-cell>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>comune</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.comune | highlight: filterValue"></td>
         </ng-container>
         <ng-container matColumnDef="prov">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>prov</mat-header-cell>
-            <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.prov | highlight: filterValue"></mat-cell>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>prov</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.prov | highlight: filterValue"></td>
         </ng-container>
 
 <!--
@@ -147,21 +147,21 @@
                     <mat-icon *ngIf="!swSoloAttivi" color="primary">visibility</mat-icon>
                 </button>
             </mat-header-cell>
-            <mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element">
                 <mat-checkbox [checked]="element.ckAttivo" color="primary" disabled></mat-checkbox>
-            </mat-cell>
+            </td>
         </ng-container>
     -->
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
-        <mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></mat-header-row>  
+        <tr mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></tr>  
 
         <!-- **************************   MAT-ROW   ******************* -->
-        <mat-row *matRowDef="let element;columns: displayedColumns"
+        <tr mat-row *matRowDef="let element;columns: displayedColumns"
             class="element-row"
             (contextmenu)="onRightClick($event, element)" >
-        </mat-row>
+        </tr>
 
-    </mat-table>
+    </table>
 
     <!-- ***********************  MENU RIGHT CLICK ****************** -->
     <div style="visibility: hidden; position: fixed;" 
