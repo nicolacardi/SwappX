@@ -64,7 +64,7 @@
         </ng-container>
 
         <ng-container matColumnDef="nome">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header [resizeColumn]= "true" >Nome</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.nome}}</mat-cell>
             <!-- <mat-cell *matCellDef="let element" [innerHTML]="element.nome|highlight:filterValue"></mat-cell> -->
         </ng-container>
