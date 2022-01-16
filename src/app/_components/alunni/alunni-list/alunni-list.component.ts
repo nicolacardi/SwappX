@@ -9,7 +9,6 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
 import { map } from 'rxjs/operators';
-import { Pipe, PipeTransform } from '@angular/core';
 
 //components
 import { AlunnoEditComponent } from '../alunno-edit/alunno-edit.component';
@@ -30,12 +29,13 @@ import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
   styleUrls:    ['../alunni.css']
 })
 
-
 export class AlunniListComponent implements OnInit {
 
 //#region ----- Variabili -------
+storedFilterPredicate!:       any;
   matDataSource = new MatTableDataSource<ALU_Alunno>();
-  storedFilterPredicate!:       any;
+  matSortActive!:               string;
+  matSortDirection!:            string;
 
   displayedColumns: string[] =  [];
   displayedColumnsAlunniList: string[] = [
@@ -74,9 +74,6 @@ export class AlunniListComponent implements OnInit {
 
   selection = new SelectionModel<ALU_Alunno>(true, []);   //rappresenta la selezione delle checkbox
 
-  matSortActive!:               string;
-  matSortDirection!:            string;
-
   public passedGenitore!:       string;
   public page!:                 string;
 
@@ -88,17 +85,18 @@ export class AlunniListComponent implements OnInit {
   public swSoloAttivi :         boolean = true;
 
   filterValue = '';       //Filtro semplice
-  //filterValues contiene l'elenco dei filtri da applicare 
+
   filterValues = {
     nome: '',
     cognome: '',
-    annoNascita: '',
+    dtNascita: '',
     indirizzo: '',
     comune: '',
     prov: '',
     email: '',
     telefono: '',
-    nomeCognomeGenitore: ''
+    nomeCognomeGenitore: '',
+    filtrosx: ''
   };
 //#endregion
 
@@ -119,13 +117,13 @@ export class AlunniListComponent implements OnInit {
 
 //#endregion
 
-  constructor(private svcAlunni:        AlunniService,
-              private router:           Router,
-              public _dialog:           MatDialog, 
-              private _loadingService:  LoadingService,
-              private _navigationService:   NavigationService
-              ) {
-  }
+  constructor(
+    private svcAlunni:        AlunniService,
+    private router:           Router,
+    public _dialog:           MatDialog, 
+    private _loadingService:  LoadingService,
+    private _navigationService:   NavigationService
+  ) {}
   
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -222,14 +220,12 @@ export class AlunniListComponent implements OnInit {
       loadAlunni$.subscribe(val =>   {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
-          this.storedFilterPredicate = this.matDataSource.filterPredicate;
-          this.matDataSource.filterPredicate = this.filterRightPanel();
           this.matDataSource.sort = this.sort; 
+          this.matDataSource.filterPredicate = this.filterRightPanel();
         }
       );
     }
 
-    //TODO:    VERIFICARE (RIPETUTO?)
     if (this.context == "genitore-edit-list") {
       obsAlunni$= this.svcAlunni.loadWithParents();
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
@@ -238,8 +234,6 @@ export class AlunniListComponent implements OnInit {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
-          this.storedFilterPredicate = this.matDataSource.filterPredicate;
-
           this.matDataSource.filterPredicate = this.filterRightPanel();
         }
       );
@@ -261,10 +255,18 @@ export class AlunniListComponent implements OnInit {
 //#endregion
 
 //#region ----- Filtri & Sort -------
+  applyFilter(event: Event) {
+    this.filterValue = (event.target as HTMLInputElement).value;
+    if( this.filterValue != undefined && this.filterValue != ""){
+      this.filterValues.filtrosx = this.filterValue.toLowerCase();
+    }
+    if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
+    this.matDataSource.filter = JSON.stringify(this.filterValues)
+  }
 
   filterRightPanel(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
-      console.log (data);
+
       let searchTerms = JSON.parse(filter);
       let foundGenitore : boolean = false;
       if (Object.values(searchTerms).every(x => x === null || x === '')) 
@@ -277,29 +279,36 @@ export class AlunniListComponent implements OnInit {
         })
       }
 
-      return String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
-        && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
-        && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
-        && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
-        && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
-        && String(data.prov).toLowerCase().indexOf(searchTerms.prov) !== -1
-        //se trova dei valori NULL .toString() va in difficoltà (ce ne sono in telefono e email p.e.) per cui sono passato a String(...)
-        && String(data.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
-        && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
-        && foundGenitore;
+      let dArr = data.dtNascita.split("-");
+      const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
+
+
+      let boolSx = String(data.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(dtNascitaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
+                || String(data.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.prov).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.telefono).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+      
+      // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
+      let boolDx = String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+                && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+                && String(dtNascitaddmmyyyy).indexOf(searchTerms.dtNascita) !== -1
+                && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
+                && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
+                && String(data.prov).toLowerCase().indexOf(searchTerms.prov) !== -1
+                && String(data.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
+                && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
+                && foundGenitore;
+
+      return boolSx && boolDx;
     }
     return filterFunction;
   }
 
-  applyFilter(event: Event) {
-    this.filterValue = (event.target as HTMLInputElement).value;
 
-    if (this.filterValue.length == 1) {
-      this.matDataSource.filterPredicate = this.storedFilterPredicate;
-      if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
-    }
-    this.matDataSource.filter = this.filterValue.trim().toLowerCase();
-  }
 
 //#endregion
 

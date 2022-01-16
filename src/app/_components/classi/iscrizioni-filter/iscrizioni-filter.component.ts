@@ -137,17 +137,10 @@ export class IscrizioniFilterComponent implements OnInit {
 //#region ----- Reset vari -------
 
   resetMainFilter() {
-    //se il filterpredicate è uguale a quello stored (quindi "se sono in modalità filtro Main")
-    //allora resetta il filtro e come filterPredicate usa filterRightPanel.
-    //if (this.iscrizioniListComponent.matDataSource.filterPredicate == this.iscrizioniListComponent.storedFilterPredicate){
-      //this.iscrizioniListComponent.matDataSource.filter = ''; 
-      
+      //this.iscrizioniListComponent.matDataSource.filter = '';       
       //this.iscrizioniListComponent.filterValue = '';
       this.iscrizioniListComponent.filterValues.filtrosx = ''; 
       //this.iscrizioniListComponent.filterInput.nativeElement.value = '';
-
-      //this.iscrizioniListComponent.matDataSource.filterPredicate = this.iscrizioniListComponent.filterRightPanel()
-    //};  
   }
 
   resetAllInputs() {

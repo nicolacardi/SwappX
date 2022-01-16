@@ -24,25 +24,20 @@ import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
-import { filter } from 'rxjs/operators';
-
 @Component({
   selector:     'app-iscrizioni-list',
   templateUrl:  './iscrizioni-list.component.html',
-  styleUrls:    ['../classi.scss']
+  styleUrls:    ['../classi.css']
 })
-
 
 export class IscrizioniListComponent implements OnInit {
 
 //#region ----- Variabili -------
+
   matDataSource = new MatTableDataSource<CLS_Iscrizione>();
- 
-  obsAnni$!:                    Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-  form:                         FormGroup;            //form fatto della sola combo anno scolastico
-  
-  storedFilterPredicate!:       any;
-  
+  matSortActive!:               string;
+  matSortDirection!:            string;
+
   displayedColumns: string[] = [
       //"select",
       "actionsColumn", 
@@ -57,28 +52,23 @@ export class IscrizioniListComponent implements OnInit {
       "dtNascita", 
       "indirizzo", 
       "comune", 
-      //"cap", 
       "prov"
   ];
 
   selection = new SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
 
-  matSortActive!:               string;
-  matSortDirection!:            string;
-
-  //public passedGenitore!:       string;
-  public page!:                 string;
-
+  obsAnni$!:                    Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  form:                         FormGroup;            //form fatto della sola combo anno scolastico
+  
   menuTopLeftPosition =  {x: '0', y: '0'} 
-  idAlunniChecked:              number[] = [];
+  //idAlunniChecked:              number[] = [];
   toggleChecks:                 boolean = false;
   showPageTitle:                boolean = true;
   showTableRibbon:              boolean = true;
-  public swSoloAttivi :         boolean = true;
+  // public swSoloAttivi :         boolean = true;
 
   filterValue = '';       //Filtro semplice
-  
-  //Filtri avanzati
+
   filterValues = {
     nome: '',
     cognome: '',
@@ -111,20 +101,18 @@ export class IscrizioniListComponent implements OnInit {
 
 //#endregion
 
-  constructor(private svcIscrizioni:    IscrizioniService,
+  constructor(
+    private svcIscrizioni:    IscrizioniService,
     private svcAnni:          AnniScolasticiService,
     private fb:               FormBuilder, 
     public _dialog:           MatDialog, 
     private _loadingService:  LoadingService,
-    ) {
-
+  ) {
     let obj = localStorage.getItem('AnnoCorrente');
-
     this.form = this.fb.group({
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     })
   }
-  
 
 //#region ----- LifeCycle Hooks e simili-------
 
@@ -165,9 +153,6 @@ export class IscrizioniListComponent implements OnInit {
       );
     } 
   }
-
-  
-
 //#endregion
 
 //#region ----- Filtri & Sort -------
@@ -226,8 +211,6 @@ export class IscrizioniListComponent implements OnInit {
     };
     */
     //Inserimento del Main Filter in uno specifico (filtrosx) dei campi di filterValues
-    console.log("Filter value", this.filterValue);
-
     if( this.filterValue != undefined && this.filterValue != ""){
       this.filterValues.filtrosx = this.filterValue.toLowerCase();
     }
@@ -235,52 +218,51 @@ export class IscrizioniListComponent implements OnInit {
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
 
-filterPredicate(): (data: any, filter: string) => boolean {
+  filterPredicate(): (data: any, filter: string) => boolean {
 
-  let filterFunction = function(data: any, filter: any): boolean {
+    let filterFunction = function(data: any, filter: any): boolean {
+      
+      let searchTerms = JSON.parse(filter);
+      //la Classe viene gestita separatamente in quanto solo per lei (nel filtro di dx) si trova la corrispondenza ESATTA
+      let trovataClasseOVuota : boolean = false; 
 
-    let searchTerms = JSON.parse(filter);
+      if (searchTerms.classe == null || searchTerms.classe == "") 
+        trovataClasseOVuota = true;
+      if (String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase() == searchTerms.classe) 
+        trovataClasseOVuota = true;
+      
+      let dArr = data.alunno.dtNascita.split("-");
+      const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 
-    let trovataClasseOVuota : boolean = false; 
-    if (searchTerms.classe == null || searchTerms.classe == "") 
-      trovataClasseOVuota = true;
-    if (String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase() == searchTerms.classe) 
-      trovataClasseOVuota = true;
-    
-    let dArr = data.alunno.dtNascita.split("-");
-    const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
+      let boolSx = String(data.alunno.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.cf).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.telefono).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(dtNascitaddmmyyyy).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.prov).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
 
-    let boolSx = String(data.alunno.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-              || String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-              || String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-              || String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-              || String(data.alunno.cf).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-              || String(data.alunno.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-              || String(data.alunno.telefono).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-              || String(dtNascitaddmmyyyy).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-              || String(data.alunno.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-              || String(data.alunno.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-              || String(data.alunno.prov).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
+      // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
+      let boolDx = String(data.alunno.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+                && String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+                && String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1
+                && trovataClasseOVuota
+                && String(data.alunno.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
+                && String(data.alunno.email).toLowerCase().indexOf(searchTerms.email) !== -1
+                && String(data.alunno.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
+                && String(dtNascitaddmmyyyy).toLowerCase().indexOf(searchTerms.dtNascita) !== -1
+                && String(data.alunno.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
+                && String(data.alunno.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
+                && String(data.alunno.prov).toLowerCase().indexOf(searchTerms.prov) !== -1;
 
-    // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
-    let boolDx = String(data.alunno.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
-              && String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
-              && String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1
-              && trovataClasseOVuota
-              && String(data.alunno.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
-              && String(data.alunno.email).toLowerCase().indexOf(searchTerms.email) !== -1
-              && String(data.alunno.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
-              && String(dtNascitaddmmyyyy).toLowerCase().indexOf(searchTerms.dtNascita) !== -1
-              && String(data.alunno.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
-              && String(data.alunno.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
-              && String(data.alunno.prov).toLowerCase().indexOf(searchTerms.prov) !== -1;
-
-    return boolSx && boolDx;
+      return boolSx && boolDx;
+    }
+    return filterFunction;
   }
-  return filterFunction;
-}
-
-
 //#endregion
 
 //#region ----- Add Edit Drop -------
@@ -336,7 +318,6 @@ filterPredicate(): (data: any, filter: string) => boolean {
   }
 
   openPagamenti(alunnoID: number){
-
     let anno = 1; //TODO questa sarà un default da mettere nei parametri
     const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
@@ -355,12 +336,6 @@ filterPredicate(): (data: any, filter: string) => boolean {
           this.loadData();
     });
   }
-//#endregion
-
-//#region ----- Emit per edit -------
-
-
-
 //#endregion
 
 //#region ----- Gestione Campo Checkbox -------
@@ -411,14 +386,6 @@ filterPredicate(): (data: any, filter: string) => boolean {
     return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
   }
 //#endregion
-
-//#region ----- Altri metodi -------
-  onResize(event: any) {
-    
-  }
-//#endregion
-
-
 
 }
 

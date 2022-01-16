@@ -58,7 +58,7 @@ export class ResizeColumnDirective implements OnInit {
       );
 
       // Set table header width
-      this.renderer.setStyle(this.column, "width", `${width}px`);  //non funziona se non usiamo td e tr! CASSSSSO!
+      this.renderer.setStyle(this.column, "width", `${width}px`);
 
       // Set table cells width
       for (const cell of tableCells) {

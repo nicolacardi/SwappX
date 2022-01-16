@@ -42,7 +42,7 @@ export class AlunniPageComponent implements OnInit {
     this.alunniFilterComponent.nomeFilter.setValue('');
     this.alunniFilterComponent.cognomeFilter.setValue('');
     this.alunniFilterComponent.indirizzoFilter.setValue('');
-    this.alunniFilterComponent.annoNascitaFilter.setValue('');
+    this.alunniFilterComponent.dtNascitaFilter.setValue('');
     this.alunniFilterComponent.comuneFilter.setValue('');
     this.alunniFilterComponent.provFilter.setValue('');
     this.alunniFilterComponent.emailFilter.setValue('');

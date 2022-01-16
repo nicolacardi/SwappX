@@ -15,7 +15,7 @@ export class AlunniFilterComponent implements OnInit {
 //#region ----- Variabili -------
   nomeFilter = new FormControl('');
   cognomeFilter = new FormControl('');
-  annoNascitaFilter = new FormControl('');
+  dtNascitaFilter = new FormControl('');
   indirizzoFilter = new FormControl('');
   comuneFilter = new FormControl('');
   provFilter = new FormControl('');
@@ -50,11 +50,11 @@ export class AlunniFilterComponent implements OnInit {
       }
     )
 
-    this.annoNascitaFilter.valueChanges
+    this.dtNascitaFilter.valueChanges
     .subscribe(
       val => {
         this.resetMainFilter();
-        this.alunniListComponent.filterValues.annoNascita = val.toLowerCase();
+        this.alunniListComponent.filterValues.dtNascita = val.toLowerCase();
         this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
       }
     )
@@ -121,19 +121,17 @@ export class AlunniFilterComponent implements OnInit {
 
 //#region ----- Reset vari -------
   resetMainFilter() {
-    if (this.alunniListComponent.matDataSource.filterPredicate == this.alunniListComponent.storedFilterPredicate){
-      this.alunniListComponent.matDataSource.filter = ''; 
-      this.alunniListComponent.filterValue = '';
-      this.alunniListComponent.filterInput.nativeElement.value = '';
-      this.alunniListComponent.matDataSource.filterPredicate = this.alunniListComponent.filterRightPanel()
-    };  
+      // this.alunniListComponent.matDataSource.filter = ''; 
+      // this.alunniListComponent.filterValue = '';
+      this.alunniListComponent.filterValues.filtrosx = ''; 
+      // this.alunniListComponent.filterInput.nativeElement.value = '';
   }
 
   resetAllInputs() {
     this.nomeFilter.setValue('', {emitEvent:false});
     this.cognomeFilter.setValue('', {emitEvent:false});
     this.indirizzoFilter.setValue('', {emitEvent:false});
-    this.annoNascitaFilter.setValue('', {emitEvent:false});
+    this.dtNascitaFilter.setValue('', {emitEvent:false});
     this.comuneFilter.setValue('', {emitEvent:false});
     this.provFilter.setValue('', {emitEvent:false});
     this.emailFilter.setValue('', {emitEvent:false});
@@ -146,7 +144,7 @@ export class AlunniFilterComponent implements OnInit {
     this.nomeFilter.setValue('');
     this.cognomeFilter.setValue('')
     this.indirizzoFilter.setValue('');
-    this.annoNascitaFilter.setValue('');
+    this.dtNascitaFilter.setValue('');
     this.comuneFilter.setValue('');
     this.provFilter.setValue('');
     this.emailFilter.setValue('');

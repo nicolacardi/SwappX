@@ -30,6 +30,14 @@
         text-align: center; 
         margin-top: 10px !important;
     } */
+
+
+    /*Serve per togliere nelle checkbox delle table quella riga di base*/
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell tr.mat-cell{
+    /* border-bottom-style: solid 3px red !important; */
+}
+
+
 /*#region ********** GENERALI **********/
     html, body { 
         height: 100%; 
@@ -69,25 +77,25 @@
 /*#endregion ***************************/
 
 /*#region ********** FONT-SIZE *********/
-.fs8 {
-    font-size: 8px ;
-}
+    .fs8 {
+        font-size: 8px ;
+    }
 
-.fs10 {
-    font-size: 10px !important;
-}
+    .fs10 {
+        font-size: 10px !important;
+    }
 
-.fs12 {
-    font-size: 12px !important;
-}
+    .fs12 {
+        font-size: 12px !important;
+    }
 
-.fs14 {
-    font-size: 14px !important;
-}
+    .fs14 {
+        font-size: 14px !important;
+    }
 
-.fs16 {
-    font-size: 16px;
-}
+    .fs16 {
+        font-size: 16px;
+    }
 
 /*#endregion ***************************/
 
@@ -549,13 +557,17 @@ in fase di creazione della Dialog addAlunno*/
     background: whitesmoke;
 }
 
+.element-row {
+ height: 30px!important;
+}
+
 .mat-cell {
     width: auto;
-    
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-/* white-space: nowrap; */
+
   
 ._table-row-low .mat-row {
     min-height: 30px;
@@ -564,6 +576,7 @@ in fase di creazione della Dialog addAlunno*/
 ._table-title-low {
     min-height: 37px !important;
 }
+
 
 /**********************************/
 
@@ -686,10 +699,7 @@ mat-nav-list a img {
     z-index: 1000;
 }
 
-/*Serve per togliere nelle checkbox delle table quella riga di base*/
-th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
-    border-bottom-style: none !important;
-}
+
 
 
 .mat-checkbox {

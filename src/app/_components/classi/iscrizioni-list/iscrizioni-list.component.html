@@ -1,6 +1,5 @@
 <h1 *ngIf="showPageTitle" class="_titolo-pagina">Elenco Iscritti per Anno</h1>
 
-
 <form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
     <!-- **************************   SELECT ANNO   ******************* -->
     <mat-form-field  class="ml20 topZIndex">
@@ -27,7 +26,7 @@
     <!-- <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator> -->
 
     <!-- **************************   MAT-TABLE   ******************* -->
-    <table mat-table class="_table-row-low transparent" [dataSource]="matDataSource"
+    <table mat-table class="_table-row-low transparent w100" [dataSource]="matDataSource"
         matSort
         [matSortActive]="matSortActive"
         [matSortDirection] = "'asc'"
@@ -79,68 +78,73 @@
         </ng-container>
     -->
         <ng-container matColumnDef="nome">
-            <th mat-header-cell *matHeaderCellDef [resizeColumn]="true">Nome</th>
+            <th mat-header-cell *matHeaderCellDef  cdkDrag mat-sort-header>Nome</th>
             <!-- <td mat-cell *matCellDef="let element">{{element.alunno.nome}}</td> -->
             <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></td>
         </ng-container>
         
         <ng-container matColumnDef="cognome">
-            <th mat-header-cell *matHeaderCellDef>Cognome</th>
+            <th mat-header-cell *matHeaderCellDef  cdkDrag mat-sort-header>Cognome</th>
             <!-- <td mat-cell *matCellDef="let element">{{element.alunno.cognome}}</td> -->
             <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cognome | highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="classe">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Classe</th>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Classe</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.classeSezioneAnno.classeSezione.classe.descrizioneBreve | highlight: filterValue"></td>
         </ng-container>
         <ng-container matColumnDef="sezione">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Sez</th>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Sez</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.classeSezioneAnno.classeSezione.sezione | highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="cf">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>CF</th>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CF</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cf==null?'': element.alunno.cf| highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="stato">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>St.Iscrizione</th>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>St.Iscrizione</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.stato.descrizione | highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="dtNascita">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>nato il</th>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>nato il</th>
             <!-- <td mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</td> -->
             <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.dtNascita | highlightDate: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="email">
-            <th style="width: 50px" mat-header-cell *matHeaderCellDef mat-sort-header>email</th>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.email==null?'': element.alunno.email | highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="telefono">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>telefono</th>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>telefono</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.telefono==null?'': element.alunno.telefono | highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="indirizzo">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>indirizzo</th>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>indirizzo</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.indirizzo | highlight: filterValue"></td>
         </ng-container>
         <ng-container matColumnDef="comune">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>comune</th>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>comune</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.comune | highlight: filterValue"></td>
         </ng-container>
         <ng-container matColumnDef="prov">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>prov</th>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>prov</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.prov | highlight: filterValue"></td>
         </ng-container>
 
+        <!-- <ng-container matColumnDef="cost">
+            <th mat-header-cell *matHeaderCellDef> Totale Alunni </th>
+            <td mat-cell *matCellDef="let element"> {{data.cost}} </td>
+            <td mat-footer-cell *matFooterCellDef> {{totalCost}} </td>
+          </ng-container> -->
 <!--
         <ng-container matColumnDef="ckAttivo">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>
+            <mat-header-cell *matHeaderCellDef cdkDrag cdkDrag mat-sort-header>
                 Solo alunni attivi<br>
                 <button mat-icon-button (click)="toggleAttivi()" class="topZIndex">
                     <mat-icon *ngIf="swSoloAttivi" color="primary">visibility_off</mat-icon>
@@ -160,6 +164,8 @@
             class="element-row"
             (contextmenu)="onRightClick($event, element)" >
         </tr>
+
+        <!-- <td mat-footer-cell *matFooterCellDef> ciao </td> -->
 
     </table>
 
