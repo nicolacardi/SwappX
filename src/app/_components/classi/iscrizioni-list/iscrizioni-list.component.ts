@@ -4,30 +4,24 @@ import { MatSort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
 import { MatTableDataSource} from '@angular/material/table';
 import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
-import { map } from 'rxjs/operators';
-import { Pipe, PipeTransform } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 //components
 //import { IscrizioneEditComponent } from '../iscrizione-edit/iscrizione-edit.component';           //TODO!!!
-//import { IscrizioniFilterComponent } from '../iscrizioni-filter/iscrizioni-filter.component';     //TODO!!!
+import { IscrizioniFilterComponent } from '../iscrizioni-filter/iscrizioni-filter.component';
 import { AlunnoEditComponent } from '../../alunni/alunno-edit/alunno-edit.component';
 import { RettaEditComponent } from '../../pagamenti/retta-edit/retta-edit.component';
-
 
 //models
 import { IscrizioniService } from '../iscrizioni.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
-import { NavigationService } from '../../utilities/navigation/navigation.service';
 
 //classes
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
-import { IscrizioniFilterComponent } from '../iscrizioni-filter/iscrizioni-filter.component';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
@@ -83,6 +77,7 @@ export class IscrizioniListComponent implements OnInit {
   public swSoloAttivi :         boolean = true;
 
   filterValue = '';       //Filtro semplice
+  
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
   filterValues = {
     nome: '',
@@ -96,8 +91,10 @@ export class IscrizioniListComponent implements OnInit {
     dtNascita: '',
     indirizzo: '',
     comune: '',
-    prov: ''
+    prov: '',
+    filtrosx: ''
   };
+
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -117,10 +114,8 @@ export class IscrizioniListComponent implements OnInit {
   constructor(private svcIscrizioni:    IscrizioniService,
     private svcAnni:          AnniScolasticiService,
     private fb:               FormBuilder, 
-    private router:           Router,
     public _dialog:           MatDialog, 
     private _loadingService:  LoadingService,
-    private _navigationService:   NavigationService
     ) {
 
     let obj = localStorage.getItem('AnnoCorrente');
@@ -167,13 +162,7 @@ export class IscrizioniListComponent implements OnInit {
           
           this.sortCustom();
           this.matDataSource.sort = this.sort; 
-          
-          //applico il filterPredicateCustom (si tratta del filtro Main).
-          this.filterPredicateCustom();
-          //conservo l'attuale filterPredicate in storedFilterPredicate
-          this.storedFilterPredicate = this.matDataSource.filterPredicate;
-          //applico il filterPredicate del RightPanel...? Perchè?
-          this.matDataSource.filterPredicate = this.filterRightPanel();
+          this.matDataSource.filterPredicate = this.filterPredicateUnico();
         }
       );
     } 
@@ -206,126 +195,98 @@ export class IscrizioniListComponent implements OnInit {
 //#region ----- Filtri & Sort -------
 
 
-  filterRightPanel(): (data: any, filter: string) => boolean {
-    
-    let filterFunction = function(data: any, filter: any): boolean {
-
-      let searchTerms = JSON.parse(filter);
-      let trovataClasseOVuota : boolean = true;
-      // if (Object.values(searchTerms).every(x => x === null || x === '')) 
-      //   foundEqualClass = true;
-      // else {    
-      if (searchTerms.classe == "") { 
-        trovataClasseOVuota = true;
-      } else {
-        trovataClasseOVuota = false;
-      }
-
-      if (String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase() == searchTerms.classe) { 
-        trovataClasseOVuota = true;
-      }
-      
-
-      // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
-      return String(data.alunno.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
-        && String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
-        && String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1
-        && trovataClasseOVuota
-        && String(data.alunno.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
-        && String(data.alunno.email).toLowerCase().indexOf(searchTerms.email) !== -1
-        && String(data.alunno.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
-        && String(data.alunno.dtNascita).toLowerCase().indexOf(searchTerms.dtNascita) !== -1
-
-
-
-       //&& String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase().indexOf(searchTerms.classe) !== -1
-        // && String(data.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
-        // && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
-        // && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
-        // && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
-        // && String(data.prov).toLowerCase().indexOf(searchTerms.prov) !== -1
-        // && String(data.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
-        // && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
-        //&& foundGenitore
-        ;
-    }
-    return filterFunction;
-  }
-
   applyFilter(event: Event) {
+
     this.filterValue = (event.target as HTMLInputElement).value;
 
-    if (this.filterValue.length == 1) {
-      //console.log("primo giro");
-      this.matDataSource.filterPredicate = this.storedFilterPredicate;
+    //Reset dei filtri di destra
+    this.iscrizioniFilterComponent.resetAllInputs();
 
-      this.iscrizioniFilterComponent.resetAllInputs();
-    }
-    // console.log("this.filterValue.trim().toLowerCase()", this.filterValue.trim().toLowerCase());
-
-   this.matDataSource.filter = this.filterValue.trim().toLowerCase();
-  }
-
-
-formatDate (dateStr: any) {
-  let dArr = dateStr.split("-");
-  return dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
-}
-
-filterPredicateCustom(){
-  //questa funzione consente il filtro ANCHE sugli oggetti della classe
-  this.matDataSource.filterPredicate = (data: CLS_Iscrizione, filter: string)  => {
-    const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
-    
-
-
-      let toreturn =  '';
-
-      switch(key) { 
-          
-          case "alunno":{
-            toreturn = currentTerm   + 
-            ((data.alunno.nome == null) ? "" : data.alunno.nome) +
-            ((data.alunno.cognome == null) ? "" : data.alunno.cognome) +
-            ((data.alunno.email == null) ? "" : data.alunno.email) +
-            ((data.alunno.indirizzo == null) ? "" : data.alunno.indirizzo) +
-            ((data.alunno.comune == null) ? "" : data.alunno.comune) +
-            ((data.alunno.prov == null) ? "" : data.alunno.prov) +
-            ((data.alunno.cf == null) ? "" : data.alunno.cf)  +
-            ((data.alunno.telefono == null) ? "" : data.alunno.telefono) + 
-            ((data.alunno.dtNascita == null) ? "" : this.formatDate(data.alunno.dtNascita))
-
-            return toreturn;
-            break;
-          }
-          
-          case "stato": { 
-            toreturn = currentTerm   + 
-            ((data.stato.descrizione == null) ? "" : data.stato.descrizione);
-            return toreturn  ;
-            break; 
-          } 
-          case "classeSezioneAnno": { 
-            toreturn = currentTerm + 
-            ((data.classeSezioneAnno.classeSezione.sezione == null) ? "" : data.classeSezioneAnno.classeSezione.sezione) + 
-            ((data.classeSezioneAnno.classeSezione.classe.descrizioneBreve == null) ? "" : data.classeSezioneAnno.classeSezione.classe.descrizioneBreve);
-            return toreturn  ;
-            break; 
-          } 
-
-          default: { 
-            return currentTerm;  //di qua non passerà mai
-            break; 
-          } 
-      } 
+    //Reset di filterValues
+    this.filterValues = {
+      nome: '',
+      cognome: '',
+      classe: '',
+      sezione: '',
+      stato: '',
+      cf: '',
+      email: '',
+      telefono: '',
+      dtNascita: '',
+      indirizzo: '',
+      comune: '',
+      prov: '',
+      filtrosx: ''
     };
 
+    //Inserimento del Main Filter in uno specifico (filtrosx) dei campi di filterValues
+    this.filterValues.filtrosx = this.filterValue.toLowerCase();
+
+    //applicazione del filtro
+    this.matDataSource.filter = JSON.stringify(this.filterValues)
+  }
+
+filterPredicateUnico(): (data: any, filter: string) => boolean {
+
+  let filterFunction = function(data: any, filter: any): boolean {
+
+    let searchTerms = JSON.parse(filter);
+
+    let trovataClasseOVuota : boolean = true;
+    // if (Object.values(searchTerms).every(x => x === null || x === '')) 
+    //   foundEqualClass = true;
+    // else {    
+    if (searchTerms.classe == "") { 
+      trovataClasseOVuota = true;
+    } else {
+      trovataClasseOVuota = false;
+    }
+
+    if (String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase() == searchTerms.classe) { 
+      trovataClasseOVuota = true;
+    }
     
-    const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
-    const transformedFilter = filter.trim().toLowerCase();
-    return dataStr.indexOf(transformedFilter) !== -1;
-  };
+
+    let dArr = data.alunno.dtNascita.split("-");
+    const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
+
+    //console.log("cerco "+searchTerms.filtrosx+ " in ", data) ;
+    let boolSx = 
+    String(data.alunno.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+    || String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+    || String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+    || String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+    || String(data.alunno.cf).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+    || String(data.alunno.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+    || String(data.alunno.telefono).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+    || String(dtNascitaddmmyyyy).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+    || String(data.alunno.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+    || String(data.alunno.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+    || String(data.alunno.prov).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
+
+    //console.log ("boolSx",boolSx);
+
+    // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
+    let boolDx = 
+    String(data.alunno.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+    && String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+    && String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1
+    && trovataClasseOVuota
+    && String(data.alunno.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
+    && String(data.alunno.email).toLowerCase().indexOf(searchTerms.email) !== -1
+    && String(data.alunno.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
+    && String(dtNascitaddmmyyyy).toLowerCase().indexOf(searchTerms.dtNascita) !== -1
+    && String(data.alunno.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
+    && String(data.alunno.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
+    && String(data.alunno.prov).toLowerCase().indexOf(searchTerms.prov) !== -1;
+
+    //console.log ("boolDx",boolDx);
+    return boolSx && boolDx;
+  }
+  return filterFunction;
 }
+
+
 //#endregion
 
 //#region ----- Add Edit Drop -------

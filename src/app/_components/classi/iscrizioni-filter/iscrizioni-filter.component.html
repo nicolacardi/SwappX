@@ -45,7 +45,20 @@
             <input matInput [formControl]="dtNascitaFilter">
         </mat-form-field>
 
+        <mat-form-field class="ml12">
+            <mat-label>indirizzo</mat-label>
+            <input matInput [formControl]="indirizzoFilter">
+        </mat-form-field>
 
+        <mat-form-field class="ml12">
+            <mat-label>comune</mat-label>
+            <input matInput [formControl]="comuneFilter">
+        </mat-form-field>
+
+        <mat-form-field class="ml12">
+            <mat-label>prov</mat-label>
+            <input matInput [formControl]="provFilter">
+        </mat-form-field>
 
         <div class="ml12 mt10">
             <button mat-button matSuffix class="w180px ml15" mat-stroked-button aria-label="Clear" (click)="resetAllInputsAndClearFilters()" >

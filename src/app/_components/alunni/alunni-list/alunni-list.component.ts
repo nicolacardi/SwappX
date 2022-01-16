@@ -264,6 +264,7 @@ export class AlunniListComponent implements OnInit {
 
   filterRightPanel(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
+      console.log (data);
       let searchTerms = JSON.parse(filter);
       let foundGenitore : boolean = false;
       if (Object.values(searchTerms).every(x => x === null || x === '')) 

@@ -63,8 +63,8 @@ export class AlunniFilterComponent implements OnInit {
     .subscribe(
       val => {
         this.resetMainFilter();
-        if (this.alunniListComponent.matDataSource.filterPredicate == this.alunniListComponent.storedFilterPredicate)
-        {this.alunniListComponent.matDataSource.filterPredicate = this.alunniListComponent.filterRightPanel()};
+        // if (this.alunniListComponent.matDataSource.filterPredicate == this.alunniListComponent.storedFilterPredicate)
+        // {this.alunniListComponent.matDataSource.filterPredicate = this.alunniListComponent.filterRightPanel()};
 
         this.alunniListComponent.filterValues.indirizzo = val.toLowerCase();
         this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);

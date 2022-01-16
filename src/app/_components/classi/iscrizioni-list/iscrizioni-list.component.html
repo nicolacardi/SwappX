@@ -76,13 +76,13 @@
     -->
         <ng-container matColumnDef="nome">
             <mat-header-cell *matHeaderCellDef [resizeColumn]="true">Nome</mat-header-cell>
-            <!--<mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell> -->
+            <!-- <mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell> -->
             <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></mat-cell>
         </ng-container>
         
         <ng-container matColumnDef="cognome">
             <mat-header-cell *matHeaderCellDef>Cognome</mat-header-cell>
-            <!-- <mat-cell *matCellDef="let element">{{element.cognome |highlight: filterValue}}</mat-cell> -->
+            <!-- <mat-cell *matCellDef="let element">{{element.alunno.cognome}}</mat-cell> -->
             <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cognome | highlight: filterValue"></mat-cell>
         </ng-container>
 

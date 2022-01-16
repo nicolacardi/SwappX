@@ -20,6 +20,9 @@ export class IscrizioniFilterComponent implements OnInit {
   emailFilter =     new FormControl('');
   telefonoFilter =  new FormControl('');
   dtNascitaFilter = new FormControl('');
+  indirizzoFilter = new FormControl('');
+  comuneFilter =    new FormControl('');
+  provFilter =      new FormControl('');
 //#endregion
 
 //#region ----- ViewChild Input Output -------  
@@ -101,6 +104,32 @@ export class IscrizioniFilterComponent implements OnInit {
       }
     )
 
+    this.indirizzoFilter.valueChanges
+    .subscribe(
+      val => {
+        this.resetMainFilter();
+        this.iscrizioniListComponent.filterValues.indirizzo = val.toLowerCase(); 
+        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
+      }
+    )
+
+    this.comuneFilter.valueChanges
+    .subscribe(
+      val => {
+        this.resetMainFilter();
+        this.iscrizioniListComponent.filterValues.comune = val.toLowerCase(); 
+        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
+      }
+    )
+
+    this.provFilter.valueChanges
+    .subscribe(
+      val => {
+        this.resetMainFilter();
+        this.iscrizioniListComponent.filterValues.prov = val.toLowerCase(); 
+        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
+      }
+    )
 
   }
 //#endregion
@@ -109,12 +138,14 @@ export class IscrizioniFilterComponent implements OnInit {
   resetMainFilter() {
     //se il filterpredicate è uguale a quello stored (quindi "se sono in modalità filtro Main")
     //allora resetta il filtro e come filterPredicate usa filterRightPanel.
-    if (this.iscrizioniListComponent.matDataSource.filterPredicate == this.iscrizioniListComponent.storedFilterPredicate){
-      this.iscrizioniListComponent.matDataSource.filter = ''; 
-      this.iscrizioniListComponent.filterValue = ''; 
+    //if (this.iscrizioniListComponent.matDataSource.filterPredicate == this.iscrizioniListComponent.storedFilterPredicate){
+      //this.iscrizioniListComponent.matDataSource.filter = ''; 
+      this.iscrizioniListComponent.filterValue = '';
+      this.iscrizioniListComponent.filterValues.filtrosx = ''; 
       this.iscrizioniListComponent.filterInput.nativeElement.value = '';
-      this.iscrizioniListComponent.matDataSource.filterPredicate = this.iscrizioniListComponent.filterRightPanel()
-    };  
+      console.log ("resetMainFilter", this.iscrizioniListComponent.filterValues);
+      //this.iscrizioniListComponent.matDataSource.filterPredicate = this.iscrizioniListComponent.filterRightPanel()
+    //};  
   }
 
   resetAllInputs() {
@@ -122,13 +153,29 @@ export class IscrizioniFilterComponent implements OnInit {
     this.cognomeFilter.setValue('', {emitEvent:false});
     this.classeFilter.setValue('', {emitEvent:false});
     this.sezioneFilter.setValue('', {emitEvent:false});
+    this.cfFilter.setValue('', {emitEvent:false});
+    this.emailFilter.setValue('', {emitEvent:false});
+    this.telefonoFilter.setValue('', {emitEvent:false});
+    this.dtNascitaFilter.setValue('', {emitEvent:false});
+    this.indirizzoFilter.setValue('', {emitEvent:false});
+    this.comuneFilter.setValue('', {emitEvent:false});
+    this.provFilter.setValue('', {emitEvent:false});
+
+
   }
 
   resetAllInputsAndClearFilters() {
     this.nomeFilter.setValue('');
     this.cognomeFilter.setValue('');
     this.classeFilter.setValue('');
-    this.sezioneFilter.setValue('')
+    this.sezioneFilter.setValue('');
+    this.cfFilter.setValue('');
+    this.emailFilter.setValue('');
+    this.telefonoFilter.setValue('');
+    this.dtNascitaFilter.setValue('');
+    this.indirizzoFilter.setValue('');
+    this.comuneFilter.setValue('');
+    this.provFilter.setValue('')
   }
 
 
