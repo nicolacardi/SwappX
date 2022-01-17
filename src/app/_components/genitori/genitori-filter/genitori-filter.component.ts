@@ -15,7 +15,7 @@ export class GenitoriFilterComponent implements OnInit {
  //#region ----- Variabili -------
   nomeFilter = new FormControl('');
   cognomeFilter = new FormControl('');
-  annoNascitaFilter = new FormControl('');
+  dtNascitaFilter = new FormControl('');
   indirizzoFilter = new FormControl('');
   comuneFilter = new FormControl('');
   provFilter = new FormControl('');
@@ -52,11 +52,11 @@ export class GenitoriFilterComponent implements OnInit {
       }
     )
 
-    this.annoNascitaFilter.valueChanges
+    this.dtNascitaFilter.valueChanges
     .subscribe(
       val => {
         this.resetMainFilter();
-        this.genitoriListComponent.filterValues.annoNascita = val.toLowerCase();
+        this.genitoriListComponent.filterValues.dtNascita = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
     )
@@ -65,9 +65,6 @@ export class GenitoriFilterComponent implements OnInit {
     .subscribe(
       val => {
         this.resetMainFilter();
-        if (this.genitoriListComponent.matDataSource.filterPredicate == this.genitoriListComponent.storedFilterPredicate)
-        {this.genitoriListComponent.matDataSource.filterPredicate = this.genitoriListComponent.filterRightPanel()};
-
         this.genitoriListComponent.filterValues.indirizzo = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
@@ -122,38 +119,41 @@ export class GenitoriFilterComponent implements OnInit {
 
 //#region ----- Reset vari -------
   resetMainFilter() {
-    if (this.genitoriListComponent.matDataSource.filterPredicate == this.genitoriListComponent.storedFilterPredicate)
-    {
-    this.genitoriListComponent.matDataSource.filter = ''; 
+
+    //this.genitoriListComponent.matDataSource.filter = ''; 
     //this.genitoriListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
-    this.genitoriListComponent.filterInput.nativeElement.value = '';
-    this.genitoriListComponent.matDataSource.filterPredicate = this.genitoriListComponent.filterRightPanel()};  
+    //this.genitoriListComponent.filterValues.filtrosx = ''; 
+    //this.genitoriListComponent.filterInput.nativeElement.value = '';
+    console.log(this.genitoriListComponent.filterValues);
+
   }
 
   resetAllInputs() {
     this.nomeFilter.setValue('', {emitEvent:false});
     this.cognomeFilter.setValue('', {emitEvent:false});
     this.indirizzoFilter.setValue('', {emitEvent:false});
-    this.annoNascitaFilter.setValue('', {emitEvent:false});
+    this.dtNascitaFilter.setValue('', {emitEvent:false});
     this.comuneFilter.setValue('', {emitEvent:false});
     this.provFilter.setValue('', {emitEvent:false});
     this.emailFilter.setValue('', {emitEvent:false});
     this.telefonoFilter.setValue('', {emitEvent:false});
 
     this.nomeCognomeAlunnoFilter.setValue('', {emitEvent:false});
+    console.log(this.genitoriListComponent.filterValues);
   }
 
   resetAllInputsAndClearFilters() {
     this.nomeFilter.setValue('');
     this.cognomeFilter.setValue('')
     this.indirizzoFilter.setValue('');
-    this.annoNascitaFilter.setValue('');
+    this.dtNascitaFilter.setValue('');
     this.comuneFilter.setValue('');
     this.provFilter.setValue('');
     this.emailFilter.setValue('');
     this.telefonoFilter.setValue('');
 
     this.nomeCognomeAlunnoFilter.setValue('');
+    console.log(this.genitoriListComponent.filterValues);
   }
 //#endregion
 }

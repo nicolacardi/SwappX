@@ -123,8 +123,9 @@ export class AlunniFilterComponent implements OnInit {
   resetMainFilter() {
       // this.alunniListComponent.matDataSource.filter = ''; 
       // this.alunniListComponent.filterValue = '';
-      this.alunniListComponent.filterValues.filtrosx = ''; 
+      //this.alunniListComponent.filterValues.filtrosx = ''; 
       // this.alunniListComponent.filterInput.nativeElement.value = '';
+      console.log(this.alunniListComponent.filterValues);
   }
 
   resetAllInputs() {
@@ -138,6 +139,8 @@ export class AlunniFilterComponent implements OnInit {
     this.telefonoFilter.setValue('', {emitEvent:false});
 
     this.nomeCognomeGenitoreFilter.setValue('', {emitEvent:false});
+    console.log(this.alunniListComponent.filterValues);
+
   }
 
   resetAllInputsAndClearFilters() {
@@ -151,6 +154,8 @@ export class AlunniFilterComponent implements OnInit {
     this.telefonoFilter.setValue('');
 
     this.nomeCognomeGenitoreFilter.setValue('');
+    console.log(this.alunniListComponent.filterValues);
+
   }
 //#endregion
 }

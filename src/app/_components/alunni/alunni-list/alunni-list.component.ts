@@ -32,10 +32,7 @@ import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 export class AlunniListComponent implements OnInit {
 
 //#region ----- Variabili -------
-storedFilterPredicate!:       any;
   matDataSource = new MatTableDataSource<ALU_Alunno>();
-  matSortActive!:               string;
-  matSortDirection!:            string;
 
   displayedColumns: string[] =  [];
   displayedColumnsAlunniList: string[] = [
@@ -79,7 +76,9 @@ storedFilterPredicate!:       any;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   idAlunniChecked:              number[] = [];
+  
   toggleChecks:                 boolean = false;
+
   showPageTitle:                boolean = true;
   showTableRibbon:              boolean = true;
   public swSoloAttivi :         boolean = true;
@@ -257,10 +256,8 @@ storedFilterPredicate!:       any;
 //#region ----- Filtri & Sort -------
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
-    if( this.filterValue != undefined && this.filterValue != ""){
-      this.filterValues.filtrosx = this.filterValue.toLowerCase();
-    }
-    if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
+    this.filterValues.filtrosx = this.filterValue.toLowerCase();
+    //if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
 
@@ -317,7 +314,7 @@ storedFilterPredicate!:       any;
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
-      height: '620px',
+      height: '650px',
       data: 0
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);

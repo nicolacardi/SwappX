@@ -557,9 +557,7 @@ in fase di creazione della Dialog addAlunno*/
     background: whitesmoke;
 }
 
-.element-row {
- height: 30px!important;
-}
+
 
 .mat-cell {
     width: auto;
@@ -568,13 +566,18 @@ in fase di creazione della Dialog addAlunno*/
     text-overflow: ellipsis;
 }
 
-  
+
+.element-row {
+    height: 30px!important;         /*FUNZIONA SOLO PER LE <table mat-table>*/
+}
+
 ._table-row-low .mat-row {
-    min-height: 30px;
+    min-height: 30px;               /*FUNZIONA SOLO PER LE <mat-table>*/
 }
 
 ._table-title-low {
-    min-height: 37px !important;
+    min-height: 37px !important;    /*FUNZIONA SOLO PER LE <mat-table>*/
+    height: 30px!important;         /*FUNZIONA SOLO PER LE <table mat-table>*/
 }
 
 

@@ -9,98 +9,109 @@
     <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="10" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
 
     <!-- **************************   MAT-TABLE   ******************* -->
-    <mat-table class="_table-row-low transparent" [dataSource]="matDataSource"
+    <table mat-table class="_table-row-low transparent w100" [dataSource]="matDataSource"
         matSort
         cdkDropList
         cdkDropListOrientation="horizontal"
-        (cdkDropListDropped)="drop($event)" (window:resize)="onResize($event)">
+        (cdkDropListDropped)="drop($event)">
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
         <ng-container matColumnDef="actionsColumn">
-            <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-            <mat-cell  *matCellDef="let element;"> 
+            <th mat-header-cell *matHeaderCellDef cdkDrag></th>
+            <td mat-cell  *matCellDef="let element;"> 
                 <img (click)="openDetail(element.id)" class="iconaMenu pointer" src="../assets/genitore_edit.svg">
-            </mat-cell>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="addToFam">
-            <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-            <mat-cell  *matCellDef="let element;"> 
+            <th mat-header-cell *matHeaderCellDef cdkDrag></th>
+            <td mat-cell  *matCellDef="let element;"> 
                 <mat-icon class="pointer" (click) = "addToFamilyEmit(element)">add_circle_outline</mat-icon>
-            </mat-cell>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="removeFromFam">
-            <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-            <mat-cell  *matCellDef="let element;"> 
+            <th mat-header-cell *matHeaderCellDef cdkDrag></th>
+            <td mat-cell  *matCellDef="let element;"> 
                 <mat-icon class="pointer" (click) = "removeFromFamilyEmit(element)">remove_circle_outline</mat-icon>
-            </mat-cell>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="nome">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.nome}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.nome}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.nome|highlight:filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="cognome">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.cognome}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.cognome}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.cognome|highlight:filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="tipo">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Tipo</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.tipo}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Tipo</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.tipo}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.tipo|highlight:filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="dtNascita">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Nato il</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Nato il</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.dtNascita|highlightDate:filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="indirizzo">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Indirizzo</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.indirizzo}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Indirizzo</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.indirizzo}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.indirizzo|highlight:filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="comune">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Comune</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.comune}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Comune</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.comune}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.comune|highlight:filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="cap">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CAP</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.cap}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CAP</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.cap}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.cap|highlight:filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="prov">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Prov</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.prov}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Prov</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.prov}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.prov|highlight:filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="CF">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CF</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.CF}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CF</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.CF}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.CF|highlight:filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="email">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.email}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.email}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.email|highlight:filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="telefono">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>telefono</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.telefono}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>telefono</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.telefono}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.telefono|highlight:filterValue"></td>
         </ng-container>
         
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
-        <mat-header-row class="_table-title-low" *matHeaderRowDef="displayedColumns; "></mat-header-row>
+        <tr mat-header-row class="_table-title-low" *matHeaderRowDef="displayedColumns; "></tr>
         
         <!-- **************************   MAT-ROW   ******************* -->
-        <mat-row *matRowDef="let element; columns: displayedColumns"
+        <tr mat-row *matRowDef="let element; columns: displayedColumns"
             class="element-row"
             (contextmenu)="onRightClick($event, element)">
-        </mat-row>
+        </tr>
 
-    </mat-table>
+    </table>
 
     <!-- ***********************  MENU RIGHT CLICK ****************** -->
     <div style="visibility: hidden; position: fixed;" 

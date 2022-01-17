@@ -31,7 +31,6 @@ export class GenitoriListComponent implements OnInit {
 
 //#region ----- Variabili -------
   matDataSource = new MatTableDataSource<ALU_Genitore>();
-  storedFilterPredicate!:       any;
 
   displayedColumns: string[] =  [];
   displayedColumnsAlunnoEditFamiglia: string[] = [
@@ -65,36 +64,41 @@ export class GenitoriListComponent implements OnInit {
     "dtNascita"
    ];
 
+
+
+  public passedAlunno!:         string;
+  public page!:                 string;
+  
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+
   showPageTitle:                boolean = true;
   showTableRibbon:              boolean = true;
 
-  public passedAlunno!:       string;
-  public page!:                 string;
-  menuTopLeftPosition =  {x: '0', y: '0'} 
-
+  filterValue = '';       //Filtro semplice
    //filterValues contiene l'elenco dei filtri avanzati da applicare 
    filterValues = {
     nome: '',
     cognome: '',
-    annoNascita: '',
+    dtNascita: '',
     indirizzo: '',
     comune: '',
     prov: '',
     email: '',
     telefono: '',
-    nomeCognomeAlunno: ''
+    nomeCognomeAlunno: '',
+    filtrosx: ''
   };
 //#endregion
 
 //#region ----- ViewChild Input Output -------
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
-  @ViewChild("filterInput") filterInput!:                     ElementRef;
   @ViewChild(MatSort) sort!:                                  MatSort;
+  @ViewChild("filterInput") filterInput!:                     ElementRef;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger;
 
+  @Input() genitoriFilterComponent!: GenitoriFilterComponent;
   @Input('context') context! :                                string;
   @Input('alunnoId') alunnoId! :                              number;
-  @Input() genitoriFilterComponent!: GenitoriFilterComponent;
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('addToFamily') addToFamily = new EventEmitter<ALU_Genitore>();
@@ -102,23 +106,18 @@ export class GenitoriListComponent implements OnInit {
 //#endregion
 
   constructor(
-                        private svcGenitori:      GenitoriService,
-                        private svcAlunni:        AlunniService,
-                        private route:            ActivatedRoute,
-                        private router:           Router,
-                        public _dialog:           MatDialog, 
-                        private _loadingService:  LoadingService,
-                        private _navigationService:    NavigationService
-                        ) {
-  }
+    private svcGenitori:      GenitoriService,
+    private svcAlunni:        AlunniService,
+    private route:            ActivatedRoute,
+    private router:           Router,
+    public _dialog:           MatDialog, 
+    private _loadingService:  LoadingService,
+    private _navigationService:    NavigationService
+  ) {}
 
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-    // this._navigationService.getPage().subscribe(val=>{
-    //   this.page = val;
-    //   this.loadData(); 
-    // })
     if (this.context != '')
       this.loadData();
   }
@@ -153,9 +152,7 @@ export class GenitoriListComponent implements OnInit {
     let obsGenitori$: Observable<ALU_Genitore[]>;
 
     if(this.context == "alunno-edit-famiglia"){
-      //console.log("this.alunnoId sto per caricare solo l'alunno:", this.alunnoId);
       obsGenitori$= this.svcGenitori.loadByAlunno(this.alunnoId);
-
       //.pipe(map(res=> res.filter(gen => gen._Figli.some(y => (y.id == this.alunnoId)))));  //BELLISSIMA Sembra giusta ma non funziona
     }
     else {
@@ -167,7 +164,6 @@ export class GenitoriListComponent implements OnInit {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort;
-        this.storedFilterPredicate = this.matDataSource.filterPredicate;
         this.matDataSource.filterPredicate = this.filterRightPanel();
       }
     );
@@ -175,8 +171,16 @@ export class GenitoriListComponent implements OnInit {
 //#endregion
 
 //#region ----- Filtri & Sort -------
+  applyFilter(event: Event) {
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.filterValues.filtrosx = this.filterValue.toLowerCase();
+    //this.genitoriFilterComponent.resetAllInputs();
+    this.matDataSource.filter = JSON.stringify(this.filterValues)
+  }
+
   filterRightPanel(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
+      
       let searchTerms = JSON.parse(filter);
       let foundAlunno : boolean = false;
       if (Object.values(searchTerms).every(x => x === null || x === '')) 
@@ -189,28 +193,38 @@ export class GenitoriListComponent implements OnInit {
             foundAlunno = foundCognomeNome || foundNomeCognome;
         })
       }
-      return String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
-        && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
-        && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
-        && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
-        && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
-        && String(data.prov).toLowerCase().indexOf(searchTerms.prov) !== -1
-        && String(data.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
-        && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
-        && foundAlunno;
+
+      let dArr = data.dtNascita.split("-");
+      const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
+
+
+      let boolSx = String(data.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(dtNascitaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
+                || String(data.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.prov).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.telefono).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+
+      // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
+      let boolDx = String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+                && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+                && String(dtNascitaddmmyyyy).indexOf(searchTerms.dtNascita) !== -1
+                && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
+                && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
+                && String(data.prov).toLowerCase().indexOf(searchTerms.prov) !== -1
+                && String(data.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
+                && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
+                && foundAlunno;
+
+      return boolSx && boolDx;
+
     }
     return filterFunction;
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    if (filterValue.length == 1) {
-      //ripristino il filterPredicate iniziale, precedentemente salvato in storedFilterPredicate
-      this.matDataSource.filterPredicate = this.storedFilterPredicate;
-      this.genitoriFilterComponent.resetAllInputs();
-    }
-    this.matDataSource.filter = filterValue.trim().toLowerCase();
-  }
+
 
 //#endregion
 
@@ -279,26 +293,7 @@ export class GenitoriListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Altri metodi -------
-  onResize(event: any) {
-    this.displayedColumns = (event.target.innerWidth <= 800) ?  
-                      ["actionsColumn",
-                      "nome", 
-                      "cognome", 
-                      "telefono",
-                      "email",
-                      "dtNascita"] 
-                      : 
-                      ["actionsColumn", 
-                      "nome", 
-                      "cognome", 
-                      "tipo",
-                      "indirizzo", 
-                      "telefono", 
-                      "email",
-                      "dtNascita"];
-  }
-//#endregion
+
 
 }
 

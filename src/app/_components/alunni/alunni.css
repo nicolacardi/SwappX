@@ -8,7 +8,7 @@
 
   /* elenco tutti i genitori da cui attingere */
   ._genitori-list-container {
-    height: 280px;
+    height: 260px;
     overflow: auto;
   }
 
@@ -57,7 +57,7 @@
   }
   
   .mat-expansion-panel {
-    max-height: 375px;        /* this will be the width of the panel (inversed due to rotation) */
+    max-height: 360px;        /* this will be the width of the panel (inversed due to rotation) */
   }
 
   /* voglio togliere la box-shadow dal mat-expansion-panel*/

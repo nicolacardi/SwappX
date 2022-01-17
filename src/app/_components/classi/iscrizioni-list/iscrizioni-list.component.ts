@@ -291,7 +291,7 @@ export class IscrizioniListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
-      height: '620px',
+      height: '650px',
       data: alunnoID
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);

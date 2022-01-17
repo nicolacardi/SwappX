@@ -42,15 +42,7 @@ export class GenitoriPageComponent implements OnInit {
 //#region ----- Reset vari -------
 
   resetFiltri() {
-    this.genitoriFilterComponent.nomeFilter.setValue('');
-    this.genitoriFilterComponent.cognomeFilter.setValue('');
-    this.genitoriFilterComponent.indirizzoFilter.setValue('');
-    this.genitoriFilterComponent.annoNascitaFilter.setValue('');
-    this.genitoriFilterComponent.comuneFilter.setValue('');
-    this.genitoriFilterComponent.provFilter.setValue('');
-    this.genitoriFilterComponent.emailFilter.setValue('');
-    this.genitoriFilterComponent.telefonoFilter.setValue('');
-    this.genitoriFilterComponent.nomeCognomeAlunnoFilter.setValue('');
+    this.genitoriFilterComponent.resetAllInputs();
   }
 //#endregion
 

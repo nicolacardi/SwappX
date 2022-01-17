@@ -12,8 +12,6 @@
     <!-- **************************   MAT-TABLE   ******************* -->
     <table mat-table class="_table-row-low transparent w100" [dataSource]="matDataSource"
         matSort
-        [matSortActive]="matSortActive"
-        [matSortDirection] = "'asc'"
         cdkDropList
         cdkDropListOrientation="horizontal"
         (cdkDropListDropped)="drop($event)">
@@ -65,32 +63,32 @@
 
         <ng-container matColumnDef="nome">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</th>
-            <td mat-cell *matCellDef="let element">{{element.nome}}</td>
-            <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.nome|highlight:filterValue"></td> -->
+            <!-- <td mat-cell *matCellDef="let element">{{element.nome}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.nome|highlight:filterValue"></td>
         </ng-container>
         
         <ng-container matColumnDef="cognome">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</th>
-            <td mat-cell *matCellDef="let element">{{element.cognome}}</td>
-            <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.cognome | highlight: filterValue"></td> -->
+            <!-- <td mat-cell *matCellDef="let element">{{element.cognome}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.cognome | highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="dtNascita">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>nato il</th>
-            <td mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</td>
-            <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.dtNascita | highlightDate: filterValue"></td> -->
+            <!-- <td mat-cell *matCellDef="let element">{{element.dtNascita | date: "dd/MM/yyyy"}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.dtNascita | highlightDate: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="indirizzo">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Indirizzo</th>
-            <td mat-cell *matCellDef="let element">{{element.indirizzo}}</td>
-            <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.indirizzo|highlight:filterValue"></td> -->
+            <!-- <td mat-cell *matCellDef="let element">{{element.indirizzo}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.indirizzo|highlight:filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="comune">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Comune</th>
-            <td mat-cell *matCellDef="let element">{{element.comune}}</td>
-            <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.comune | highlight: filterValue"></td> -->
+            <!-- <td mat-cell *matCellDef="let element">{{element.comune}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.comune | highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="cap">
