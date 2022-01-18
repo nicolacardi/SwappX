@@ -17,17 +17,17 @@
             </mat-card>
         </td>
         <td class="_columnright-dashboard">
-                <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="btn btn-addYellow" (click)="addAlunnoToClasse()" >
+                <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addYellow" (click)="addAlunnoToClasse()" >
                     <img class="iconaMenu" src="../../../../assets/empty.svg" matTooltip="Iscrivi alunni alla classe" 
                     [@openClose]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
                 </button>
-                <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="btn btn-addRed" (click)="removeAlunnoFromClasse()">
+                <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="_btn-addRed" (click)="removeAlunnoFromClasse()">
                     <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg" matTooltip="Rimuovi alunni selezionati dalla classe"  >
                 </button>
-                <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="esportaPdf" class="btn btn-addBlu" (click)="creaPdf()">
+                <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="esportaPdf" class="_btn-addBlu" (click)="creaPdf()">
                     <mat-icon>print</mat-icon>
                 </button>
-                <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="Promuovi" class="btn btn-addGreen" (click)="promuovi()">
+                <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="Promuovi" class="_btn-addGreen" (click)="promuovi()">
                     <mat-icon>school</mat-icon>
                 </button>
                 <mat-card class=" card mat-elevation-z8" style="height: 100%">

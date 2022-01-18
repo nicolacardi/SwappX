@@ -48,23 +48,27 @@ export class ClassiSezioniAnniFilterComponent implements OnInit {
 
 //#region ----- Reset vari -------
   resetMainFilter() {
-    if (this.classiSezioniAnniListComponent.matDataSource.filter != ''){
-    // if (this.classiSezioniAnniListComponent.matDataSource.filterPredicate == this.classiSezioniAnniListComponent.storedFilterPredicate){
-      this.classiSezioniAnniListComponent.matDataSource.filter = ''; 
+      //this.classiSezioniAnniListComponent.matDataSource.filter = ''; 
       //this.classiSezioniAnniListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
-      this.classiSezioniAnniListComponent.filterInput.nativeElement.value = '';
-      this.classiSezioniAnniListComponent.matDataSource.filterPredicate = this.classiSezioniAnniListComponent.filterRightPanel()
-    };  
+      //this.classiSezioniAnniListComponent.filterInput.nativeElement.value = '';
+      //this.classiSezioniAnniListComponent.matDataSource.filterPredicate = this.classiSezioniAnniListComponent.filterRightPanel()
+      console.log(this.classiSezioniAnniListComponent.filterValues);
   }
 
   resetAllInputs() {
     this.classeFilter.setValue('', {emitEvent:false});
     this.sezioneFilter.setValue('', {emitEvent:false});
+
+    console.log(this.classiSezioniAnniListComponent.filterValues);
+
   }
 
   resetAllInputsAndClearFilters() {
     this.classeFilter.setValue('');
     this.sezioneFilter.setValue('')
+
+    console.log(this.classiSezioniAnniListComponent.filterValues);
+
   }
 
 

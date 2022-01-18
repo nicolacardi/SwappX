@@ -6,9 +6,12 @@ import { Observable, pipe } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
+import { finalize } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 //components
 import { ClasseSezioneAnnoEditComponent } from '../classe-sezione-anno-edit/classe-sezione-anno-edit.component';
+import { ClassiSezioniAnniFilterComponent } from '../classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
 
 //services
 import { LoadingService } from '../../utilities/loading/loading.service';
@@ -18,10 +21,8 @@ import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service
 //classes
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { ClassiSezioniAnniFilterComponent } from '../classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
-import { finalize } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+
 
 
 @Component({
@@ -33,7 +34,38 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#region ----- Variabili -------
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno>();
-  storedFilterPredicate!:             any;
+
+  displayedColumns: string[] =  [];
+
+  displayedColumnsClassiDashboard: string[] =  [
+    "descrizione",
+    "sezione"
+  ];
+
+  displayedColumnsClassiPage: string[] =  [
+    "actionsColumn",
+    "annoscolastico",
+    //"seq",
+    "descrizione",
+    "sezione",
+    "descrizioneAnnoSuccessivo",
+    "sezioneAnnoSuccessivo"
+    
+  ];
+
+  displayedColumnsAlunnoEditList: string[] =  [
+    "descrizione",
+    "sezione",
+    "addToAttended"
+  ];
+
+  displayedColumnsAlunnoEditAttended: string[] =  [
+    "descrizioneCSAA",
+    "sezioneCSAA",
+    "annoscolasticoCSAA",
+    "removeFromAttended"
+  ];
+
   idAnnoInput!:                       string; //Da routing
   idClasseInput!:                     string; //Da routing
   public idAnnoScolastico!:           number;
@@ -45,42 +77,16 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
   selectedRowIndex = -1;
 
+  filterValue = '';       //Filtro semplice
+
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
   filterValues = {
     classe: '',
     sezione: '',
+    filtrosx: ''
   };
 
-  displayedColumns: string[] =  [];
-
-  displayedColumnsClassiDashboard: string[] =  [
-    "descrizione",
-    "sezione"
-    ];
-
-  displayedColumnsClassiPage: string[] =  [
-    "actionsColumn",
-    "annoscolastico",
-    //"seq",
-    "descrizione",
-    "sezione",
-    "descrizioneAnnoSuccessivo",
-    "sezioneAnnoSuccessivo"
-    
-    ];
-
-  displayedColumnsAlunnoEditList: string[] =  [
-    "descrizione",
-    "sezione",
-    "addToAttended"
-    ];
-
-  displayedColumnsAlunnoEditAttended: string[] =  [
-    "descrizioneCSAA",
-    "sezioneCSAA",
-    "annoscolasticoCSAA",
-    "removeFromAttended"
-    ];
+ 
     
 //#endregion
 
@@ -88,13 +94,11 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
   @Input('dove') dove! :                                      string;
   @Input('alunnoId') alunnoId! :                              number;
-  
   @Input() classiSezioniAnniFilterComponent!:                 ClassiSezioniAnniFilterComponent;
+
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild(MatSort) sort!:                                  MatSort;
-  @ViewChild("filterInput") filterInput!:                     ElementRef;
-  //@ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
-  
+  @ViewChild("filterInput") filterInput!:                     ElementRef;  
   @ViewChild('selectAnnoScolastico') selectAnnoScolastico!: MatSelect; 
 
   @Output('annoId') annoIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
@@ -221,8 +225,7 @@ constructor(
           this.matDataSource.sort = this.sort; 
         }
 
-        this.storedFilterPredicate = this.matDataSource.filterPredicate;
-        this.matDataSource.filterPredicate = this.filterRightPanel();
+        this.matDataSource.filterPredicate = this.filterPredicate();
         
         if(this.matDataSource.data.length >0)
         this.rowclicked(this.idClasseInput);  
@@ -265,57 +268,61 @@ constructor(
 
 //#region ----- Filtri & Sort -------
 
-filterRightPanel(): (data: any, filter: string) => boolean {
-  let filterFunction = function(data: any, filter: any): boolean {
-    let searchTerms = JSON.parse(filter);
-    console.log(data);
-    return String(data.classeSezione.classe.descrizione2).toLowerCase().indexOf(searchTerms.classe) !== -1
-          && String(data.classeSezione.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1
+  applyFilter(event: Event) {
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.filterValues.filtrosx = this.filterValue.toLowerCase();
+    //if (this.dove == "classi-page") this.classiSezioniAnniFilterComponent.resetAllInputs();
+    this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
-  return filterFunction;
-}
 
+  filterPredicate(): (data: any, filter: string) => boolean {
+    let filterFunction = function(data: any, filter: any): boolean {
+      let searchTerms = JSON.parse(filter);
 
-applyFilter(event: Event) {
-  const filterValue = (event.target as HTMLInputElement).value;
-  if (filterValue.length == 1) {
-    //ripristino il filterPredicate iniziale, precedentemente salvato in storedFilterPredicate
-    this.filterPredicateCustom();
-    if (this.dove == "classi-page") this.classiSezioniAnniFilterComponent.resetAllInputs();
+      let boolSx = String(data.classeSezione.classe.descrizione2).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.classeSezione.sezione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;;
+
+      let boolDx = String(data.classeSezione.classe.descrizione2).toLowerCase().indexOf(searchTerms.classe) !== -1
+                && String(data.classeSezione.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1;
+
+      return boolDx && boolSx;
+    }
+    return filterFunction;
   }
-  this.matDataSource.filter = filterValue.trim().toLowerCase();
-}
 
-filterPredicateCustom(){
-  //questa funzione consente il filtro ANCHE sugli oggetti della classe
-  //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
-  this.matDataSource.filterPredicate = (data, filter: string)  => {
-    const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
-      switch(key) { 
-        case "classeSezione": { 
-          return currentTerm + data.classeSezione.sezione + data.classeSezione.classe.descrizione2 ; 
-           break; 
-        } 
-        case "classeSezioneAnnoSucc": { 
 
-          return currentTerm + 
-          ((data.ClasseSezioneAnnoSucc == null) ? "" : data.ClasseSezioneAnnoSucc.classeSezione.sezione) + 
-          ((data.ClasseSezioneAnnoSucc == null) ? "" : data.ClasseSezioneAnnoSucc.classeSezione.classe.descrizione2);
-           break; 
-        } 
 
-        default: { 
-        //   return currentTerm + data.importo + data.dtPagamento; 
-        return currentTerm;  //di qua non passerà mai
-           break; 
-        } 
-     } 
-    };
-    const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
-    const transformedFilter = filter.trim().toLowerCase();
-    return dataStr.indexOf(transformedFilter) !== -1;
-  };
-}
+
+// filterPredicateCustom(){
+//   //questa funzione consente il filtro ANCHE sugli oggetti della classe
+//   //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
+//   this.matDataSource.filterPredicate = (data, filter: string)  => {
+//     const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
+//       switch(key) { 
+//         case "classeSezione": { 
+//           return currentTerm + data.classeSezione.sezione + data.classeSezione.classe.descrizione2 ; 
+//            break; 
+//         } 
+//         case "classeSezioneAnnoSucc": { 
+
+//           return currentTerm + 
+//           ((data.ClasseSezioneAnnoSucc == null) ? "" : data.ClasseSezioneAnnoSucc.classeSezione.sezione) + 
+//           ((data.ClasseSezioneAnnoSucc == null) ? "" : data.ClasseSezioneAnnoSucc.classeSezione.classe.descrizione2);
+//            break; 
+//         } 
+
+//         default: { 
+//         //   return currentTerm + data.importo + data.dtPagamento; 
+//         return currentTerm;  //di qua non passerà mai
+//            break; 
+//         } 
+//      } 
+//     };
+//     const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+//     const transformedFilter = filter.trim().toLowerCase();
+//     return dataStr.indexOf(transformedFilter) !== -1;
+//   };
+// }
 
 sortCustom() {
   this.matDataSource.sortingDataAccessor = (item:any, property) => {

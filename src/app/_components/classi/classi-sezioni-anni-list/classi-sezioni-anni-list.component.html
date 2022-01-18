@@ -31,90 +31,98 @@
 <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="10" [pageSizeOptions]="[10, 15, 50]" showFirstLastButtons></mat-paginator>
 
 <!-- **************************   MAT-TABLE   ******************* -->
-<mat-table class="_table-row-low" style="height: 70%;" matSort [dataSource]="matDataSource">
+<table mat-table class="_table-row-low w100" matSort [dataSource]="matDataSource">
     <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
 
     <ng-container matColumnDef="actionsColumn">
-        <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-        <mat-cell  *matCellDef="let element;  let j = index;"> 
+        <th mat-header-cell *matHeaderCellDef cdkDrag></th>
+        <td mat-cell  *matCellDef="let element;  let j = index;"> 
             <img (click)="openDetail(element.id)" class="iconaMenu pointer" src="../assets/classe_edit.svg">
-        </mat-cell>
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="annoscolastico">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>anno scolastico</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.anno.annoscolastico}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>anno scolastico</th>
+        <td mat-cell *matCellDef="let element">{{element.anno.annoscolastico}}</td>
     </ng-container>
 
     <ng-container matColumnDef="descrizione">
-        <mat-header-cell *matHeaderCellDef mat-sort-header >Classe</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.classeSezione.classe.descrizione2}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header >Classe</th>
+        <td mat-cell *matCellDef="let element">{{element.classeSezione.classe.descrizione2}}</td>
     </ng-container>
 
     <!-- <ng-container matColumnDef="seq">
-        <mat-header-cell *matHeaderCellDef mat-sort-header >Classe</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.classeSezione.classe.seq}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header >Classe</th>
+        <td mat-cell *matCellDef="let element">{{element.classeSezione.classe.seq}}</td>
     </ng-container> -->
 
     <ng-container matColumnDef="sezione">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Sez.</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.classeSezione.sezione}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sez.</th>
+        <td mat-cell *matCellDef="let element">{{element.classeSezione.sezione}}</td>
     </ng-container>
 
     <ng-container matColumnDef="descrizioneAnnoSuccessivo">
-        <mat-header-cell *matHeaderCellDef >Classe Successiva</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{(element.classeSezioneAnnoSucc) === null ? "" :
-            element.classeSezioneAnnoSucc.classeSezione.classe.descrizione2}}</mat-cell>
-        <!-- <mat-cell *matCellDef="let element">{{element | json}}</mat-cell> -->
+        <th mat-header-cell *matHeaderCellDef >Classe Successiva</th>
+        <td mat-cell *matCellDef="let element">{{(element.classeSezioneAnnoSucc) === null ? "" :
+            element.classeSezioneAnnoSucc.classeSezione.classe.descrizione2}}</td>
+        <!-- <td mat-cell *matCellDef="let element">{{element | json}}</td> -->
     </ng-container>
     <ng-container matColumnDef="sezioneAnnoSuccessivo">
-        <mat-header-cell *matHeaderCellDef >Sezione Cl. Successiva</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{(element.classeSezioneAnnoSucc) === null ? "" :
-            element.classeSezioneAnnoSucc.classeSezione.sezione}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef >Sezione Cl. Successiva</th>
+        <td mat-cell *matCellDef="let element">{{(element.classeSezioneAnnoSucc) === null ? "" :
+            element.classeSezioneAnnoSucc.classeSezione.sezione}}</td>
     </ng-container>
 
     <!--ATTENZIONE QUI SI VA A VEDERE NON DENTRO CLASSESEZIONEANNO MA DENTRO CLASSESESZIONEANNOALUNNO-->
     <ng-container matColumnDef="sezioneCSAA">
-        <mat-header-cell *matHeaderCellDef >Sez.</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.classeSezioneAnno.classeSezione.sezione}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef >Sez.</th>
+        <td mat-cell *matCellDef="let element">{{element.classeSezioneAnno.classeSezione.sezione}}</td>
     </ng-container>
 
     <!--ATTENZIONE QUI SI VA A VEDERE NON DENTRO CLASSESEZIONEANNO MA DENTRO CLASSESESZIONEANNOALUNNO-->
     <ng-container matColumnDef="descrizioneCSAA">
-        <mat-header-cell *matHeaderCellDef >Classe</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.classeSezioneAnno.classeSezione.classe.descrizione2}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef >Classe</th>
+        <td mat-cell *matCellDef="let element">{{element.classeSezioneAnno.classeSezione.classe.descrizione2}}</td>
     </ng-container>
 
     <!--ATTENZIONE QUI SI VA A VEDERE NON DENTRO CLASSESEZIONEANNO MA DENTRO CLASSESESZIONEANNOALUNNO-->
     <ng-container matColumnDef="annoscolasticoCSAA">
-        <mat-header-cell *matHeaderCellDef >anno scolastico</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.classeSezioneAnno.anno.annoscolastico}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef >anno scolastico</th>
+        <td mat-cell *matCellDef="let element">{{element.classeSezioneAnno.anno.annoscolastico}}</td>
     </ng-container>
 
     <ng-container matColumnDef="addToAttended">
-        <mat-header-cell *matHeaderCellDef ></mat-header-cell>
-        <mat-cell *matCellDef="let element">
+        <th mat-header-cell *matHeaderCellDef ></th>
+        <td mat-cell *matCellDef="let element">
             <mat-icon class="pointer" (click) = "addToAttendedEmit(element)">add_circle_outline</mat-icon>
-        </mat-cell>
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="removeFromAttended">
-        <mat-header-cell *matHeaderCellDef ></mat-header-cell>
-        <mat-cell *matCellDef="let element">
+        <th mat-header-cell *matHeaderCellDef ></th>
+        <td mat-cell *matCellDef="let element">
             <mat-icon class="pointer" (click) = "removeFromAttendedEmit(element.classeSezioneAnno)">remove_circle_outline</mat-icon>
-        </mat-cell>
+        </td>
     </ng-container>
 
 
 
     <!-- **************************   MAT-HEADER-ROW   ******************* -->
-    <mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></mat-header-row>
+    <tr mat-header-row class="_table-title-low" *matHeaderRowDef="displayedColumns;  sticky: true"></tr>
 
     <!-- **************************   MAT-ROW   ******************* -->
-    <mat-row *matRowDef="let element;columns: displayedColumns"
-        class="element-row" 
+    <tr mat-row *matRowDef="let element;columns: displayedColumns"
+        class="element-row"
+
         (click)="rowclicked(element.id)"
-        [ngClass]="{'_table-row-selected-highlight': selectedRowIndex == element.id}"
+
+        [ngClass]="{
+        '_table-row-selected-highlight': selectedRowIndex == element.id && dove == 'classi-dashboard',
+        '_row-pointercursor': dove == 'classi-dashboard'
+        }"
+
         >
-    </mat-row>
-</mat-table>
+    </tr>
+    
+    <!-- [ngClass]="{'_table-row-selected-highlight': selectedRowIndex == element.id}" -->
+</table>

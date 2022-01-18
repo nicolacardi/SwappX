@@ -33,9 +33,31 @@
 
 
     /*Serve per togliere nelle checkbox delle table quella riga di base*/
-th.mat-header-cell, td.mat-cell, td.mat-footer-cell tr.mat-cell{
-    /* border-bottom-style: solid 3px red !important; */
-}
+
+/* Detail: Gruppo Buttons sovrastanti
+.buttonsDetail {
+    margin: 5px;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+} */
+
+/*Detail: Buttons sovrastanti*/
+/* .buttonsDetail button {
+    width: 70px;
+    margin-left: 5px;
+} */
+
+/*Button chiusura di una dialog (tipo dashboard)*/
+/* .closeDialogButton {
+    margin: 5px 5px ;
+    position: absolute !important;
+    top: 0 !important;
+    right: 0;
+    padding: 5px;
+    line-height: 14px;
+    min-width: auto;
+    cursor: pointer;
+} */
 
 
 /*#region ********** GENERALI **********/
@@ -361,6 +383,118 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell tr.mat-cell{
     }
 /*#endregion ***************************/
 
+/*#region ********** BUTTONS ***********/
+    .btn {
+        z-index: 1000;
+        background-color: #044D7E !important;
+    }
+
+    /* button di add*/
+    ._btn-add {
+        z-index: 1000;
+        position: absolute !important;
+        top: 80px;
+        right: 30px;
+        background-color: #044D7E !important;
+    }
+
+    /* button di add dentro il modale di edit, ad es. dentro alunno-edit */
+    ._btn-addModal {
+        z-index: 1000;
+        position: absolute !important;
+        top: 20px;
+        right: 10px;
+        background-color: #044D7E !important;
+    }
+
+    /* button di apertura toolbar sulla sx */
+    ._btn-toolbar {
+        z-index: 1000;
+        position: absolute !important;
+        top: 80px;
+        left: 10px;
+        background-color: #626262 !important;
+    }
+
+    /* button di apertura filtri Avanzati sulla dx */
+    ._btn-filter {
+        z-index: 1000;
+        position: absolute !important;
+        top: 80px;
+        right: 75px;
+        z-index: 1000;
+        background-color: #044D7E !important;
+    }
+
+    ._btn-addYellow {
+        z-index: 1000;
+        position: absolute !important;
+        left: 10px;
+        top: 5px;
+        background-color: #e0b20d !important;
+    }
+
+    ._btn-addRed {
+        z-index: 1000;
+        position: absolute !important;
+        left: 60px;
+        top: 5px;
+        background-color: #e00d0d !important;
+    }
+
+    ._btn-addBlu {
+        z-index: 1000;
+        position: absolute !important;
+        left: 110px;
+        top: 5px;
+        background-color: #1221af !important;
+    }
+
+    ._btn-addGreen {
+        z-index: 1000;
+        position: absolute !important;
+        left: 160px;
+        top: 5px;
+        background-color: #12af34 !important;
+    }
+
+/*#endregion ***************************/
+
+/*#region ********** FILTRI AVANZATI ***/
+    .filtriAvanzati .mat-form-field {
+        height: 40px;
+    }
+/*#endregion ***************************/
+
+/*#region ********** SNACKBAR **********/
+    .green-snackbar {
+        background-color: #018786;
+        color: white;
+    }
+
+    .red-snackbar {
+        background-color: #B00020;
+        color: white;
+    }
+/*#endregion ***************************/
+
+/*#region ********** SPINNER ***********/ 
+
+    ._spinner-is-loading-mini{
+        position: absolute;
+        float:center; 
+        margin-left: 65px;
+    }
+
+    ._spinner-is-loading{
+        position: absolute;
+    } 
+
+/*#endregion ***************************/
+  
+
+  
+
 
 /*********** FORM MATERIAL ********/
 .data-form {
@@ -407,67 +541,6 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell tr.mat-cell{
 } */
 
 
-
-.btn {
-    z-index: 1000;
-    background-color: #044D7E !important;
-}
-
-.btn-addModal {
-    position: absolute !important;
-    top: 20px;
-    right: 10px;
-}
-
-.btn-toolbar {
-    position: absolute !important;
-    top: 80px;
-    left: 10px;
-    background-color: #626262 !important;
-}
-
-.btn-add {
-    position: absolute !important;
-    top: 80px;
-    right: 30px;
-}
-
-.btn-addYellow {
-    position: absolute !important;
-    left: 10px;
-    top: 5px;
-    background-color: #e0b20d !important;
-}
-
-.btn-addRed {
-    position: absolute !important;
-    left: 60px;
-    top: 5px;
-    background-color: #e00d0d !important;
-}
-
-.btn-addBlu {
-    position: absolute !important;
-    left: 110px;
-    top: 5px;
-    background-color: #1221af !important;
-}
-
-.btn-addGreen {
-    position: absolute !important;
-    left: 160px;
-    top: 5px;
-    background-color: #12af34 !important;
-}
-
-.btn-filter {
-    position: absolute !important;
-    top: 80px;
-    right: 75px;
-    z-index: 1000;
-    background-color: #044D7E !important;
-}
-
 .user-container {
     width: 25%;
     margin:auto;
@@ -475,41 +548,8 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell tr.mat-cell{
 }
 
 
-/* FILTRI AVANZATI */
-    .filtriAvanzati .mat-form-field {
-        height: 40px;
-    }
 
 
-
-/*Detail: Gruppo Buttons sovrastanti*/
-.buttonsDetail {
-    margin: 5px;
-    flex-wrap: nowrap !important;
-    justify-content: center !important;
-}
-/*Detail: Buttons sovrastanti*/
-.buttonsDetail button {
-    width: 70px;
-    margin-left: 5px;
-}
-/*Detail: Testo dei Buttons sovrastanti*/
-.button-textDetail {
-    margin-top: -10px;
-    text-align: center;
-}
-
-/*Button chiusura di una dialog (tipo dashboard)*/
-.closeDialogButton {
-    margin: 5px 5px ;
-    position: absolute !important;
-    top: 0 !important;
-    right: 0;
-    padding: 5px;
-    line-height: 14px;
-    min-width: auto;
-    cursor: pointer;
-}
 
 /*add-DetailDialog è la classe attribuita dinamicamente
 in fase di creazione della Dialog addAlunno*/
@@ -521,17 +561,7 @@ in fase di creazione della Dialog addAlunno*/
   }
 /**********************************/
 
-/*************** SNACKBAR *********/
-.green-snackbar {
-    background-color: #018786;
-    color: white;
-}
 
-.red-snackbar {
-    background-color: #B00020;
-    color: white;
-}
-/**********************************/
 
 /******** MINI-DIALOG **********/
 /*QUI METTIAMO GLI STILI DELLE DIALOG TIPO YES NO OPPURE INSERIMENTO PASSWORD*/
@@ -567,32 +597,29 @@ in fase di creazione della Dialog addAlunno*/
 }
 
 
-.element-row {
-    height: 30px!important;         /*FUNZIONA SOLO PER LE <table mat-table>*/
-}
+    .element-row {
+        height: 30px!important;         /*FUNZIONA SOLO PER LE <table mat-table>*/
+    }
 
-._table-row-low .mat-row {
-    min-height: 30px;               /*FUNZIONA SOLO PER LE <mat-table>*/
-}
+    ._table-row-low .mat-row {
+        min-height: 30px;               /*FUNZIONA SOLO PER LE <mat-table>*/
+    }
 
-._table-title-low {
-    min-height: 37px !important;    /*FUNZIONA SOLO PER LE <mat-table>*/
-    height: 30px!important;         /*FUNZIONA SOLO PER LE <table mat-table>*/
-}
+    ._table-title-low {
+        min-height: 37px !important;    /*FUNZIONA SOLO PER LE <mat-table>*/
+        height: 30px!important;         /*FUNZIONA SOLO PER LE <table mat-table>*/
+    }
 
+    /* row pointer cursor usata da classi-sezioni-anni in classi-dashboard come ngClass*/
+    ._row-pointercursor {
+        cursor: pointer;
+    }
 
-/**********************************/
-
-/*********** SPINNER *************/ 
-
-._spinner-is-loading-mini{
-  position: absolute;
-  float:center; 
-  margin-left: 65px;
-} 
-._spinner-is-loading{
-    position: absolute;
-  } 
+    /*evidenziazione della riga che rimane selezionata - usata da classi-sezioni-anni in classi-dashboard come ngClass*/
+    ._table-row-selected-highlight{
+        background: rgba(100, 100, 100, 0.2);
+        cursor: pointer;
+    }
 
 /**********************************/
 

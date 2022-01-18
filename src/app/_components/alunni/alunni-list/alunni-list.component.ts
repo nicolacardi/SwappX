@@ -35,6 +35,7 @@ export class AlunniListComponent implements OnInit {
   matDataSource = new MatTableDataSource<ALU_Alunno>();
 
   displayedColumns: string[] =  [];
+  
   displayedColumnsAlunniList: string[] = [
       "actionsColumn", 
       "nome", 

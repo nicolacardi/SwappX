@@ -105,10 +105,10 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
             this.form.controls.id.setValue(classe.id); //NB in questo modo si setta il valore di un campo del formBuilder quando NON compare anche come Form-field nell'HTML
             this.form.controls['sezione'].setValue(classe.classeSezione.sezione); 
             this.form.controls['classeID'].setValue(classe.classeSezione.classe.id);
-            this.form.controls['annoID'].setValue(classe.Anno.id);
+            this.form.controls['annoID'].setValue(classe.anno.id);
 
             let annoIDsucc=0;
-            this.svcAnni.loadAnnoSucc(classe.Anno.id) 
+            this.svcAnni.loadAnnoSucc(classe.anno.id) 
             .pipe (
               tap ( val   =>  annoIDsucc= val.id),
               concatMap(() => this.obsClassiSezioniAnniSucc$ = this.svcClasseSezioneAnno.loadClassiByAnnoScolastico(annoIDsucc))

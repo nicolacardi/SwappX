@@ -6,20 +6,19 @@
       overflow: auto;
   }
     
-  /* table {
-    width: 100%;
-  } */
 
-  /* .element-row {
-      cursor: pointer;
-  } */
+
+  /* Bordo inferiore nelle checkbox */
+  th.mat-header-cell._no-bottom-border, td.mat-cell._no-bottom-border {
+    border-bottom-width: 0px !important;
+  }
 
   /* :host ::ng-deep .mat-form-field-infix {
     border: 0px !important;
   } */
 
   /* Larghezza colonne specifiche nelle table di questa sezione*/
-  .mat-column-descrizione {
+  /* .mat-column-descrizione {
     min-width: 170px;
   }
 
@@ -50,12 +49,9 @@
   .mat-column-stato {
     background-color: rgba(173, 173, 173, 0.142);
     padding-left: 10px;
-  }
+  } */
 
-  /*evidenziazione della riga che rimane selezionata*/
-  ._table-row-selected-highlight{
-    background: rgba(100, 100, 100, 0.2);
-  }
+
 
   /*colonna di sx classi dashboard*/ 
   ._columnleft-dashboard {

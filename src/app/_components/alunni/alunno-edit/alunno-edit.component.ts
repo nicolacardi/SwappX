@@ -278,14 +278,14 @@ export class AlunnoEditComponent implements OnInit {
     //così come ho fatto in dialog-add mi costruisco un oggetto "stile" form e lo passo alla postClasseSezioneAnnoAlunno
     //avrei potuto anche passare i valori uno ad uno, ma è già pronta così avendola usata in dialog-add
     let objClasseSezioneAnnoAlunno = {AlunnoID: this.idAlunno, ClasseSezioneAnnoID: classeSezioneAnno.id};
-    console.log (this.idAlunno, classeSezioneAnno.Anno.id);
+    // console.log ("QUI", this.idAlunno, classeSezioneAnno.Anno.id);
+
     const checks$ = this.svcIscrizioni.getByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id, this.idAlunno)
     .pipe(
       //se trova che la stessa classe è già presente res.length è != 0 quindi non procede con la getByAlunnoAnno ma restituisce of()
       //se invece res.length == 0 dovrebbe proseguire e concatenare la verifica successiva ch è getByAlunnoAndAnno...
       //invece "test" non compare mai...quindi? sta uscendo sempre con of()?
       tap(res=> {
-        //console.log("err1");
         if (res.length !=0) {
           this._dialog.open(DialogOkComponent, {
             width: '320px',
@@ -295,7 +295,7 @@ export class AlunnoEditComponent implements OnInit {
         }
       }),
       concatMap( res => iif (()=> res.length == 0,
-      this.svcIscrizioni.getByAlunnoAndAnno(classeSezioneAnno.Anno.id, this.idAlunno) , of() )
+        this.svcIscrizioni.getByAlunnoAndAnno(classeSezioneAnno.anno.id, this.idAlunno) , of() )
       ),
       tap(res=> {
         //console.log("err2");
