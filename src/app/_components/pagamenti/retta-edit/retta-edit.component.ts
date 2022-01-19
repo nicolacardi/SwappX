@@ -75,6 +75,8 @@ export class RettaEditComponent implements OnInit {
               private _snackBar:      MatSnackBar,
               private _loadingService:  LoadingService  ) 
   { 
+    _dialogRef.disableClose = true;
+
     this.formRetta = this.fb.group({
       id:                         [null],
       alunnoID:                   ['', Validators.required],

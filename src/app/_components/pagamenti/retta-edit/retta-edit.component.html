@@ -32,7 +32,10 @@
 -->
 
     <form  [formGroup] = "formRetta" >
+
         <mat-card class="form-cardRette data-form">
+            <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
+
             <mat-card-content>
                 <div class="center mt10" *ngIf="obsRette$ | async" >
                     <mat-form-field appearance="outline">

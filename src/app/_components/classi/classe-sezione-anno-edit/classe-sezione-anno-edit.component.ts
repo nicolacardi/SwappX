@@ -50,18 +50,18 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 //#endregion
 
   constructor( 
-                @Inject(MAT_DIALOG_DATA) public idClasseSezioneAnno: number,
-                public _dialogRef:                          MatDialogRef<ClasseSezioneAnnoEditComponent>,
-                private fb:                                 FormBuilder,
-                private svcClasseSezioneAnno:               ClassiSezioniAnniService,
-                private svcClasseSezione:                   ClassiSezioniService,
-                private svcClassi:                          ClassiService,
-                private svcAnni:                            AnniScolasticiService,
-                public _dialog:                             MatDialog,
-                private _snackBar:                          MatSnackBar,
-                private _loadingService :                   LoadingService
-                 ) { 
-
+    @Inject(MAT_DIALOG_DATA) public idClasseSezioneAnno: number,
+    public _dialogRef:                          MatDialogRef<ClasseSezioneAnnoEditComponent>,
+    private fb:                                 FormBuilder,
+    private svcClasseSezioneAnno:               ClassiSezioniAnniService,
+    private svcClasseSezione:                   ClassiSezioniService,
+    private svcClassi:                          ClassiService,
+    private svcAnni:                            AnniScolasticiService,
+    public _dialog:                             MatDialog,
+    private _snackBar:                          MatSnackBar,
+    private _loadingService :                   LoadingService
+  ) { 
+    _dialogRef.disableClose = true;
     this.form = this.fb.group({
       id:                         [null],
       annoID:                     ['', Validators.required],

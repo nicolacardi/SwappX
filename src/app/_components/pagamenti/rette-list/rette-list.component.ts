@@ -324,7 +324,7 @@ export class RetteListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
         width: '850px',
-        height: '680px',
+        height: '700px',
         data: {
           idAlunno: alunno,
           idAnno: anno

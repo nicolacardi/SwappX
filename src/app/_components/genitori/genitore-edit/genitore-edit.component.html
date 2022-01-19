@@ -3,10 +3,12 @@
         <mat-card-content>
             <form *ngIf="(genitore$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
                 <div class="center">
-                    <button mat-mini-fab aria-label="Back" matTooltip="Back" class="btn" 
+                    <!-- <button mat-mini-fab aria-label="Back" matTooltip="Back" class="btn" 
                     mat-dialog-close>
                         <mat-icon>arrow_back</mat-icon>
-                    </button>
+                    </button> -->
+
+                    <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
                     <button *ngIf="idGenitore" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
                     [disabled]= "!form.valid" 

@@ -475,9 +475,22 @@
         
     }
     ._btn-toolbar-close{
-        background-image: url("./assets/toolbar/toolbar-close.svg"); 
-        background-color: #044D7E !important ;
+        background-image: url("./assets/toolbar/toolbar-close-black.svg"); 
+        background-color: transparent !important ;
+        background-repeat: no-repeat;
+        position: absolute ! important;
+        right: 0px;
+        top: 0px;
+        height: 25px !important;
+        width: 25px !important;
+        transition: transform .2s ease-in-out;
     }
+
+    ._btn-toolbar-close:hover{
+        transform: rotate(180deg);
+    }
+
+
 
 
 /*#endregion ***************************/

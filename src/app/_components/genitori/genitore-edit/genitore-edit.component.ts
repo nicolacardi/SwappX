@@ -54,19 +54,20 @@ export class GenitoreEditComponent implements OnInit {
   @ViewChild('alunniFamiglia') alunniFamigliaComponent!: AlunniListComponent; 
 //#endregion
 
-  constructor(public _dialogRef: MatDialogRef<GenitoreEditComponent>,
-              @Inject(MAT_DIALOG_DATA) public idGenitore: number,
-              private fb:             FormBuilder, 
-              private route:          ActivatedRoute,
-              private router:         Router,
-              private svcGenitori:    GenitoriService,
-              private svcAlunni:      AlunniService, //serve perchè è in questa che si trovano le addToFamily e RemoveFromFamily"
-              private svcComuni:      ComuniService,
-              public _dialog:         MatDialog,
-              private _snackBar:      MatSnackBar,
-              private _loadingService :LoadingService )
-  {
-
+  constructor(
+    public _dialogRef: MatDialogRef<GenitoreEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public idGenitore: number,
+    private fb:             FormBuilder, 
+    private route:          ActivatedRoute,
+    private router:         Router,
+    private svcGenitori:    GenitoriService,
+    private svcAlunni:      AlunniService, //serve perchè è in questa che si trovano le addToFamily e RemoveFromFamily"
+    private svcComuni:      ComuniService,
+    public _dialog:         MatDialog,
+    private _snackBar:      MatSnackBar,
+    private _loadingService :LoadingService 
+  ) {
+    _dialogRef.disableClose = true;
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
     let regemail = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$";
     

@@ -38,17 +38,17 @@ export class PersonaEditComponent implements OnInit {
   breakpoint2!:               number;
 //#endregion
 
-  constructor(public _dialogRef: MatDialogRef<PersonaEditComponent>,
-              @Inject(MAT_DIALOG_DATA) public idPersona: number,
-              private fb:                           FormBuilder, 
-              private svcPersone:                   PersoneService,
-              private svcComuni:                    ComuniService,
-              public _dialog:                       MatDialog,
-              private _snackBar:                    MatSnackBar,
-              private _loadingService :             LoadingService,
-              ) 
-  { 
-
+  constructor(
+    public _dialogRef: MatDialogRef<PersonaEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public idPersona: number,
+    private fb:                           FormBuilder, 
+    private svcPersone:                   PersoneService,
+    private svcComuni:                    ComuniService,
+    public _dialog:                       MatDialog,
+    private _snackBar:                    MatSnackBar,
+    private _loadingService :             LoadingService,
+  ) { 
+    _dialogRef.disableClose = true;
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 
     this.form = this.fb.group({

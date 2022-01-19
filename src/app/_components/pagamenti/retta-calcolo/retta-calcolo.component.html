@@ -1,40 +1,62 @@
-<form  [formGroup] = "form" >
-    <mat-form-field class="ml20 topZIndex" appearance="outline">
-        <mat-label>Anno Scolastico</mat-label>
-        <mat-select formControlName="selectAnnoScolastico">
-            <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
-            {{element.annoscolastico}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+<mat-card class="form-card">
+    <mat-card-content>
+        <form  [formGroup] = "form" >
+            <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
-    <mat-form-field class="ml20 topZIndex" appearance="outline">
-        <mat-label>Classe</mat-label>
-        <mat-select formControlName="selectClasse">
-            <mat-option value="0">&#60;Tutte le classi&#62;</mat-option>
-            <mat-option *ngFor="let element of (obsClassiSezioniAnni$ | async)" [value]="element.id">
-            {{element.classeSezione.classe.descrizioneBreve}} {{element.classeSezione.sezione}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+            <div class="center">
+                <mat-form-field class="ml20 topZIndex" appearance="outline">
+                    <mat-label>Anno Scolastico</mat-label>
+                    <mat-select formControlName="selectAnnoScolastico">
+                        <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
+                        {{element.annoscolastico}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
 
-    <mat-form-field class="ml20 topZIndex" appearance="outline">
-        <mat-label>Alunno</mat-label>
-        <input type="text"
-                placeholder="<seleziona l'alunno>"
-                matInput
-                formControlName="nomeCognomeAlunno"
-                [matAutocomplete]="autoAlunno" #nomeCognomeAlunno 
-                (keydown.enter) = "enterAlunnoInput()"
-                (blur) = "blur()" >
+                <mat-form-field class="ml20 topZIndex" appearance="outline">
+                    <mat-label>Classe</mat-label>
+                    <mat-select formControlName="selectClasse">
+                        <mat-option value="0">&#60;Tutte le classi&#62;</mat-option>
+                        <mat-option *ngFor="let element of (obsClassiSezioniAnni$ | async)" [value]="element.id">
+                        {{element.classeSezione.classe.descrizioneBreve}} {{element.classeSezione.sezione}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
 
-        <mat-autocomplete #autoAlunno="matAutocomplete" (optionSelected)="selected($event)">
-            <mat-option *ngFor="let element of (obsFilteredAlunni$ | async)"  [value]="element.nome + ' ' + element.cognome" [id]="element.id.toString()" #option>
-                <small>{{element.nome}} {{element.cognome}}</small>
-            </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>
-</form>
+                <mat-form-field class="ml20 topZIndex" appearance="outline">
+                    <mat-label>Alunno</mat-label>
+                    <input type="text"
+                            placeholder="<seleziona l'alunno>"
+                            matInput
+                            formControlName="nomeCognomeAlunno"
+                            [matAutocomplete]="autoAlunno" #nomeCognomeAlunno 
+                            (keydown.enter) = "enterAlunnoInput()"
+                            (blur) = "blur()" >
+
+                    <mat-autocomplete #autoAlunno="matAutocomplete" (optionSelected)="selected($event)">
+                        <mat-option *ngFor="let element of (obsFilteredAlunni$ | async)"  [value]="element.nome + ' ' + element.cognome" [id]="element.id.toString()" #option>
+                            <small>{{element.nome}} {{element.cognome}}</small>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div> 
+
+            <h1 class="_titolo-pagina fs14">Ripartizione standard quote</h1>
+
+            <mat-grid-list class="ma w50 bordered-grey p5" [cols]="12" rowHeight="20px">
+                
+                <mat-grid-tile *ngFor="let mese of mesiArr; let i = index" >
+                    <mat-label>{{placeholderMeseArr[i]}}</mat-label>
+                </mat-grid-tile>
+                <mat-grid-tile *ngFor="let placeholderMese of placeholderMeseArr; let i = index" >
+                    <mat-checkbox [checked]="!!+mesiSel.substring(i,i+1)"></mat-checkbox>
+                </mat-grid-tile>
+            </mat-grid-list>
+
+
+        </form>
+    </mat-card-content>
+</mat-card>
 
 
 

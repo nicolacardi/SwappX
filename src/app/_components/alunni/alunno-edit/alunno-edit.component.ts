@@ -63,16 +63,19 @@ export class AlunnoEditComponent implements OnInit {
   @ViewChild('classiSezioniAnniList') classiSezioniAnniListComponent!: ClassiSezioniAnniListComponent; 
 //#endregion
 
-  constructor(public _dialogRef: MatDialogRef<AlunnoEditComponent>,
-              @Inject(MAT_DIALOG_DATA) public idAlunno: number,
-              private fb:                           FormBuilder, 
-              private svcIscrizioni:                IscrizioniService,
-              private svcAlunni:                    AlunniService,
-              private svcComuni:                    ComuniService,
-              public _dialog:                       MatDialog,
-              private _snackBar:                    MatSnackBar,
-              private _loadingService :             LoadingService
-              )  {
+  constructor(
+    public _dialogRef: MatDialogRef<AlunnoEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public idAlunno: number,
+    private fb:                           FormBuilder, 
+    private svcIscrizioni:                IscrizioniService,
+    private svcAlunni:                    AlunniService,
+    private svcComuni:                    ComuniService,
+    public _dialog:                       MatDialog,
+    private _snackBar:                    MatSnackBar,
+    private _loadingService :             LoadingService
+  ) {
+
+    _dialogRef.disableClose = true;
 
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
     
