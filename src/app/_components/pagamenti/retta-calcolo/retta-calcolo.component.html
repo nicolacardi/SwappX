@@ -1,0 +1,40 @@
+<form  [formGroup] = "form" >
+    <mat-form-field class="ml20 topZIndex" appearance="outline">
+        <mat-label>Anno Scolastico</mat-label>
+        <mat-select formControlName="selectAnnoScolastico">
+            <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
+            {{element.annoscolastico}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="ml20 topZIndex" appearance="outline">
+        <mat-label>Classe</mat-label>
+        <mat-select formControlName="selectClasse">
+            <mat-option value="0">&#60;Tutte le classi&#62;</mat-option>
+            <mat-option *ngFor="let element of (obsClassiSezioniAnni$ | async)" [value]="element.id">
+            {{element.classeSezione.classe.descrizioneBreve}} {{element.classeSezione.sezione}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="ml20 topZIndex" appearance="outline">
+        <mat-label>Alunno</mat-label>
+        <input type="text"
+                placeholder="<seleziona l'alunno>"
+                matInput
+                formControlName="nomeCognomeAlunno"
+                [matAutocomplete]="autoAlunno" #nomeCognomeAlunno 
+                (keydown.enter) = "enterAlunnoInput()"
+                (blur) = "blur()" >
+
+        <mat-autocomplete #autoAlunno="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-option *ngFor="let element of (obsFilteredAlunni$ | async)"  [value]="element.nome + ' ' + element.cognome" [id]="element.id.toString()" #option>
+                <small>{{element.nome}} {{element.cognome}}</small>
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+</form>
+
+
+

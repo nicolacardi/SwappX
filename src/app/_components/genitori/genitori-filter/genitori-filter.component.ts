@@ -37,7 +37,7 @@ export class GenitoriFilterComponent implements OnInit {
     this.nomeFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.nome = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
@@ -46,7 +46,7 @@ export class GenitoriFilterComponent implements OnInit {
     this.cognomeFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.cognome = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
@@ -55,7 +55,7 @@ export class GenitoriFilterComponent implements OnInit {
     this.dtNascitaFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.dtNascita = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
@@ -64,7 +64,7 @@ export class GenitoriFilterComponent implements OnInit {
     this.indirizzoFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.indirizzo = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
@@ -73,7 +73,7 @@ export class GenitoriFilterComponent implements OnInit {
     this.comuneFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.comune = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
@@ -82,7 +82,7 @@ export class GenitoriFilterComponent implements OnInit {
     this.provFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.prov = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
@@ -91,7 +91,7 @@ export class GenitoriFilterComponent implements OnInit {
     this.emailFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.email = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
@@ -100,7 +100,7 @@ export class GenitoriFilterComponent implements OnInit {
     this.telefonoFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.telefono = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
@@ -109,7 +109,7 @@ export class GenitoriFilterComponent implements OnInit {
     this.nomeCognomeAlunnoFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.nomeCognomeAlunno = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
@@ -118,14 +118,12 @@ export class GenitoriFilterComponent implements OnInit {
 //#endregion
 
 //#region ----- Reset vari -------
-  resetMainFilter() {
-
+  resetFilterSx() {
     //this.genitoriListComponent.matDataSource.filter = ''; 
     //this.genitoriListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
     //this.genitoriListComponent.filterValues.filtrosx = ''; 
     //this.genitoriListComponent.filterInput.nativeElement.value = '';
-    console.log(this.genitoriListComponent.filterValues);
-
+    //console.log(this.genitoriListComponent.filterValues);
   }
 
   resetAllInputs() {
@@ -137,9 +135,7 @@ export class GenitoriFilterComponent implements OnInit {
     this.provFilter.setValue('', {emitEvent:false});
     this.emailFilter.setValue('', {emitEvent:false});
     this.telefonoFilter.setValue('', {emitEvent:false});
-
     this.nomeCognomeAlunnoFilter.setValue('', {emitEvent:false});
-    console.log(this.genitoriListComponent.filterValues);
   }
 
   resetAllInputsAndClearFilters() {
@@ -151,9 +147,7 @@ export class GenitoriFilterComponent implements OnInit {
     this.provFilter.setValue('');
     this.emailFilter.setValue('');
     this.telefonoFilter.setValue('');
-
     this.nomeCognomeAlunnoFilter.setValue('');
-    console.log(this.genitoriListComponent.filterValues);
   }
 //#endregion
 }

@@ -35,18 +35,13 @@
         <mat-card class="form-cardRette data-form">
             <mat-card-content>
                 <div class="center mt10" *ngIf="obsRette$ | async" >
-                    <!-- <mat-form-field class="cellRettaEdit" appearance="outline">
-                        <mat-label>anno scolastico</mat-label>
-                        <input matInput placeholder="anno scolastico" value="{{anno.annoscolastico}}" readonly>
-                    </mat-form-field> -->
-
                     <mat-form-field appearance="outline">
                         <mat-label>Anno Scolastico</mat-label>
-                        <select matNativeControl formControlName="annoscolastico">
-                            <option value="1">2019-20</option>
-                            <option value="2">2020-21</option>
-                            <option value="3">2021-22</option>
-                        </select>
+                        <mat-select formControlName="selectAnnoScolastico">
+                            <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
+                            {{element.annoscolastico}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">

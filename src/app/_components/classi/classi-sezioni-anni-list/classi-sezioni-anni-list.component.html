@@ -1,23 +1,13 @@
 <h1 *ngIf="showPageTitle" class="_titolo-pagina">Elenco Classi</h1>
 
-
     <form [formGroup] = "form">
-
         <mat-form-field  class="ml20 topZIndex" *ngIf="showSelect">
             <mat-label>Anno Scolastico</mat-label>
             <mat-select formControlName="selectAnnoScolastico">
                 <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
-            <!-- <mat-select formControlName="selectAnnoScolastico" [compareWith]="compareAnni"> -->
-                <!-- <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element" [id]="element.id.toString()" > -->
                 {{element.annoscolastico}}
                 </mat-option>
             </mat-select>
-
-
-
-            <!-- SEMPLICISSIMO! <mat-option ngFor="let element of (filteredAlunni$ | async)" 
-                [value]="element.nome + ' ' + element.cognome" 
-                *[id]="element.id.toString()" #option></mat-option> -->
         </mat-form-field>
 <!-- **************************   FILTER   ******************* -->
         <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">

@@ -46,6 +46,10 @@
                         <mat-icon>arrow_back</mat-icon>
                     </button>
 
+                    <!-- <button mat-mini-fab aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close>
+                        
+                    </button> -->
+
                     <button *ngIf="idAlunno" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
                             [disabled]= "!form.valid" 
                             (click)="loadData()" >

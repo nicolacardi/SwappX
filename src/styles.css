@@ -407,6 +407,14 @@
         background-color: #044D7E !important;
     }
 
+    ._btn-calcolo-rette{
+        background-image: url("./assets/toolbar/calcolo-rette.svg"); 
+        background-color: #044D7E !important ;
+        position: absolute !important;
+        top: 80px;
+        right: 75px;
+    }
+
     /* button di apertura toolbar sulla sx */
     ._btn-toolbar {
         z-index: 1000;
@@ -422,7 +430,6 @@
         position: absolute !important;
         top: 80px;
         right: 75px;
-        z-index: 1000;
         background-color: #044D7E !important;
     }
 
@@ -457,6 +464,21 @@
         top: 5px;
         background-color: #12af34 !important;
     }
+
+    ._btn-toolbar-reload{
+        
+    }
+    ._btn-toolbar-save{
+        
+    }
+    ._btn-toolbar-delete{
+        
+    }
+    ._btn-toolbar-close{
+        background-image: url("./assets/toolbar/toolbar-close.svg"); 
+        background-color: #044D7E !important ;
+    }
+
 
 /*#endregion ***************************/
 

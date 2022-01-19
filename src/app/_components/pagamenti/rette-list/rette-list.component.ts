@@ -11,6 +11,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 //components
 import { RettaEditComponent } from '../retta-edit/retta-edit.component';
 import { AlunnoEditComponent } from '../../alunni/alunno-edit/alunno-edit.component';
+import { RettaCalcoloComponent } from '../retta-calcolo/retta-calcolo.component';
 
 //services
 import { RetteService } from '../rette.service';
@@ -338,6 +339,25 @@ export class RetteListComponent implements OnInit {
     });
   }
 
+  calcoloRette(){
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '850px',
+      height: '680px',
+      data: {
+        //idAlunno: alunno,
+        idAnno:  this.annoID
+      }
+    };
+
+    const dialogRef = this._dialog.open(RettaCalcoloComponent, dialogConfig);
+    dialogRef.afterClosed()
+      .subscribe(
+        () => {
+          this.loadData();
+    });
+  }
+  
   public togD() {
     this.showD = !this.showD;
     this.tog();

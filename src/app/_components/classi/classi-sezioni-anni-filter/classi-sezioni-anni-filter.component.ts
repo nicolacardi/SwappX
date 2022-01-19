@@ -27,7 +27,7 @@ export class ClassiSezioniAnniFilterComponent implements OnInit {
     this.classeFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.classiSezioniAnniListComponent.filterValues.classe = val.toLowerCase();
         this.classiSezioniAnniListComponent.matDataSource.filter = JSON.stringify(this.classiSezioniAnniListComponent.filterValues);
       }
@@ -36,7 +36,7 @@ export class ClassiSezioniAnniFilterComponent implements OnInit {
     this.sezioneFilter.valueChanges
     .subscribe(
       val => {
-        this.resetMainFilter();
+        //this.resetFilterSx();
         this.classiSezioniAnniListComponent.filterValues.sezione = val.toLowerCase();
         this.classiSezioniAnniListComponent.matDataSource.filter = JSON.stringify(this.classiSezioniAnniListComponent.filterValues);
       }
@@ -47,7 +47,7 @@ export class ClassiSezioniAnniFilterComponent implements OnInit {
 //#endregion
 
 //#region ----- Reset vari -------
-  resetMainFilter() {
+  resetFilterSx() {
       //this.classiSezioniAnniListComponent.matDataSource.filter = ''; 
       //this.classiSezioniAnniListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
       //this.classiSezioniAnniListComponent.filterInput.nativeElement.value = '';
