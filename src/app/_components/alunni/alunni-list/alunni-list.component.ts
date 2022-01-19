@@ -221,7 +221,7 @@ export class AlunniListComponent implements OnInit {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
-          this.matDataSource.filterPredicate = this.filterRightPanel();
+          this.matDataSource.filterPredicate = this.filterPredicate();
         }
       );
     }
@@ -234,7 +234,7 @@ export class AlunniListComponent implements OnInit {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
-          this.matDataSource.filterPredicate = this.filterRightPanel();
+          this.matDataSource.filterPredicate = this.filterPredicate();
         }
       );
     }
@@ -262,14 +262,16 @@ export class AlunniListComponent implements OnInit {
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
 
-  filterRightPanel(): (data: any, filter: string) => boolean {
+  filterPredicate(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
 
       let searchTerms = JSON.parse(filter);
       let foundGenitore : boolean = false;
-      if (Object.values(searchTerms).every(x => x === null || x === '')) 
+
+      // if (Object.values(searchTerms).every(x => x === null || x === '')) 
+      if (data._Genitori.length == 0) //restituiva false se i Genitori non c'erano: sbagliato
         foundGenitore = true;
-      else {    
+      else {
         data._Genitori?.forEach((val: { genitore: { nome: any; cognome: any}; })=>  {   
             const foundCognomeNome = foundGenitore || String(val.genitore.cognome+" "+val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
             const foundNomeCognome = foundGenitore || String(val.genitore.nome+" "+val.genitore.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
@@ -288,7 +290,7 @@ export class AlunniListComponent implements OnInit {
                 || String(data.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.prov).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.telefono).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
       
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
       let boolDx = String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
@@ -301,12 +303,21 @@ export class AlunniListComponent implements OnInit {
                 && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
                 && foundGenitore;
 
+                // console.log(data, searchTerms, boolSx, boolDx);
+                // console.log("nome",String(data.nome).toLowerCase().indexOf(searchTerms.nome));
+                // console.log("cognome",String(data.cognome).toLowerCase().indexOf(searchTerms.cognome));
+                // console.log("dtNacsita",String(dtNascitaddmmyyyy).indexOf(searchTerms.dtNascita));
+                // console.log("indirizzo",String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo));
+                // console.log("comune", String(data.comune).toLowerCase().indexOf(searchTerms.comune));
+                // console.log("prov",String(data.prov).toLowerCase().indexOf(searchTerms.prov));
+                // console.log("telefono",String(data.telefono).toLowerCase().indexOf(searchTerms.telefono));
+                // console.log("email",String(data.email).toLowerCase().indexOf(searchTerms.email));
+                console.log("cognome", data.cognome, "foundGenitore",foundGenitore);
+
       return boolSx && boolDx;
     }
     return filterFunction;
   }
-
-
 
 //#endregion
 

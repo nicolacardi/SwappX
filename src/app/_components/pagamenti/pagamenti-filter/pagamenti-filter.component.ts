@@ -140,13 +140,12 @@ export class PagamentiFilterComponent implements OnInit {
 
 //#region ----- Reset vari -------
   resetMainFilter() {
-    if (this.pagamentiListComponent.matDataSource.filterPredicate == this.pagamentiListComponent.storedFilterPredicate){
-      this.pagamentiListComponent.matDataSource.filter = ''; 
+      //this.pagamentiListComponent.matDataSource.filter = ''; 
       //this.pagamentiListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
-      this.pagamentiListComponent.filterInput.nativeElement.value = '';
-      this.pagamentiListComponent.matDataSource.filterPredicate = this.pagamentiListComponent.filterRightPanel()
-    };  
-  }
+      //this.pagamentiListComponent.filterInput.nativeElement.value = '';
+      console.log(this.pagamentiListComponent.filterValues);
+
+    }
 
   resetAllInputs() {
     this.tipoPagamentoFilter.setValue('', {emitEvent:false});
@@ -158,6 +157,8 @@ export class PagamentiFilterComponent implements OnInit {
     this.importoFilter.setValue('', {emitEvent:false});
     this.importoMenoDiFilter.setValue('', {emitEvent:false});
     this.importoPiuDiFilter.setValue('', {emitEvent:false});
+
+    console.log(this.pagamentiListComponent.filterValues);
   }
 
   resetAllInputsAndClearFilters() {
@@ -170,6 +171,8 @@ export class PagamentiFilterComponent implements OnInit {
     this.importoFilter.setValue('');
     this.importoMenoDiFilter.setValue('');
     this.importoPiuDiFilter.setValue('');
+
+    console.log(this.pagamentiListComponent.filterValues);
   }
 //#endregion
 }

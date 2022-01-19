@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
-import { map } from 'rxjs/operators';
 
 //components
 import { UsersFilterComponent } from '../users-filter/users-filter.component';
@@ -21,7 +20,6 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
 //classes
 import { User } from 'src/app/_user/Users';
 
-
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
@@ -32,7 +30,6 @@ export class UsersListComponent implements OnInit {
 
 //#region ----- Variabili -------
   matDataSource = new MatTableDataSource<User>();
-  storedFilterPredicate!:       any;
 
   displayedColumns: string[] =  [];
   displayedColumnsUsersList: string[] = [
@@ -58,11 +55,14 @@ export class UsersListComponent implements OnInit {
   showTableRibbon:              boolean = true;
   public swSoloAttivi :         boolean = true;
 
+  filterValue = '';       //Filtro semplice
+
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
   filterValues = {
     fullname: '',
     email:    '',
-    badge:    ''
+    badge:    '',
+    filtrosx: ''
   };
 //#endregion
 
@@ -137,12 +137,9 @@ export class UsersListComponent implements OnInit {
       loadUsers$.subscribe(val => 
         {
           this.matDataSource.data = val;
-
-          this.filterPredicateCustom();   //serve per rendere filtrabili anche i campi nested
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
-          this.storedFilterPredicate = this.matDataSource.filterPredicate;
-          this.matDataSource.filterPredicate = this.filterRightPanel();
+          this.matDataSource.filterPredicate = this.filterPredicate();
         }
       );
     //}
@@ -150,39 +147,46 @@ export class UsersListComponent implements OnInit {
 //#endregion
 
 //#region ----- Filtri & Sort -------
+  applyFilter(event: Event) {
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.filterValues.filtrosx = this.filterValue.toLowerCase();
+    //if (this.dove == "alunni-page") this.usersFilterComponent.resetAllInputs();
+    this.matDataSource.filter = JSON.stringify(this.filterValues)
+  }
 
-  filterRightPanel(): (data: any, filter: string) => boolean {
+
+  filterPredicate(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
-      return String(data.fullName).toLowerCase().indexOf(searchTerms.fullname) !== -1
-      && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
-      && String(data.badge).toLowerCase().indexOf(searchTerms.badge) !== -1
+
+      let boolSx = String(data.fullName).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.badge).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
+
+      let boolDx = String(data.fullName).toLowerCase().indexOf(searchTerms.fullname) !== -1
+                && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
+                && String(data.badge).toLowerCase().indexOf(searchTerms.badge) !== -1;
+
+
+      return boolSx && boolDx;
     }
     return filterFunction;
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    if (filterValue.length == 1) {
-      this.matDataSource.filterPredicate = this.storedFilterPredicate;
-      if (this.dove == "alunni-page") this.usersFilterComponent.resetAllInputs();
-    }
-    this.matDataSource.filter = filterValue.trim().toLowerCase();
-  }
 
-  filterPredicateCustom(){
-    //questa funzione consente il filtro selettivamente su alcuni campi e non su altri oppure su oggetti nested
-    //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
-    this.matDataSource.filterPredicate = (data, filter: string)  => {
-      const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
-      //stabilisco dunque in quali campi cercare
-       return currentTerm + data.email + data.fullname + data.badge
-      };
-      const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
-      const transformedFilter = filter.trim().toLowerCase();
-      return dataStr.indexOf(transformedFilter) !== -1;
-    };
-  }
+  // filterPredicateCustom(){
+  //   //questa funzione consente il filtro selettivamente su alcuni campi e non su altri oppure su oggetti nested
+  //   //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
+  //   this.matDataSource.filterPredicate = (data, filter: string)  => {
+  //     const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
+  //     //stabilisco dunque in quali campi cercare
+  //      return currentTerm + data.email + data.fullname + data.badge
+  //     };
+  //     const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+  //     const transformedFilter = filter.trim().toLowerCase();
+  //     return dataStr.indexOf(transformedFilter) !== -1;
+  //   };
+  // }
 //#endregion
 
 //#region ----- Add Edit Drop -------

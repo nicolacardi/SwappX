@@ -164,7 +164,7 @@ export class GenitoriListComponent implements OnInit {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort;
-        this.matDataSource.filterPredicate = this.filterRightPanel();
+        this.matDataSource.filterPredicate = this.filterPredicate();
       }
     );
   }
@@ -178,15 +178,16 @@ export class GenitoriListComponent implements OnInit {
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
 
-  filterRightPanel(): (data: any, filter: string) => boolean {
+  filterPredicate(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
       
       let searchTerms = JSON.parse(filter);
       let foundAlunno : boolean = false;
-      if (Object.values(searchTerms).every(x => x === null || x === '')) 
+      
+      //if (Object.values(searchTerms).every(x => x === null || x === '')) 
+      if (data._Figli.length == 0)
         foundAlunno = true;
       else {
-        //console.log(data);
         data._Figli?.forEach((val: { alunno: { nome: any; cognome: any}; })=>  {
             const foundCognomeNome = foundAlunno || String(val.alunno.cognome+" "+val.alunno.nome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1;
             const foundNomeCognome = foundAlunno || String(val.alunno.nome+" "+val.alunno.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1; 
@@ -218,6 +219,16 @@ export class GenitoriListComponent implements OnInit {
                 && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
                 && foundAlunno;
 
+                // console.log(data, searchTerms, boolSx, boolDx);
+                // console.log("nome",String(data.nome).toLowerCase().indexOf(searchTerms.nome));
+                // console.log("cognome",String(data.cognome).toLowerCase().indexOf(searchTerms.cognome));
+                // console.log("dtNacsita",String(dtNascitaddmmyyyy).indexOf(searchTerms.dtNascita));
+                // console.log("indirizzo",String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo));
+                // console.log("comune", String(data.comune).toLowerCase().indexOf(searchTerms.comune));
+                // console.log("prov",String(data.prov).toLowerCase().indexOf(searchTerms.prov));
+                // console.log("telefono",String(data.telefono).toLowerCase().indexOf(searchTerms.telefono));
+                // console.log("email",String(data.email).toLowerCase().indexOf(searchTerms.email));
+                // console.log("foundAlunno",foundAlunno);
       return boolSx && boolDx;
 
     }

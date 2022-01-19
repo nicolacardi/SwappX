@@ -41,8 +41,6 @@ export class PagamentiListComponent implements OnInit {
 
   show: boolean = true;
  
-  storedFilterPredicate!:       any;
-
   displayedColumns: string[] =  [];
   displayedColumnsList: string[] = [
                                   "actionsColumn", 
@@ -72,6 +70,8 @@ export class PagamentiListComponent implements OnInit {
   menuTopLeftPosition =  {x: '0', y: '0'} 
   matMenuTrigger: any;
 
+  filterValue = '';       //Filtro semplice
+
   filterValues = {
     tipoPagamento: '',
     causale: '',
@@ -81,7 +81,8 @@ export class PagamentiListComponent implements OnInit {
     nome: '',
     cognome: '',
     dataDal: '',
-    dataAl: ''
+    dataAl: '',
+    filtrosx: ''
   };
 
   public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2).toLocaleString('it-IT', {month: 'short'}).toUpperCase());
@@ -161,10 +162,7 @@ export class PagamentiListComponent implements OnInit {
         
         this.sortCustom(); 
         this.matDataSource.sort = this.sort;
-
-        this.filterPredicateCustom();   //serve per rendere filtrabili anche i campi nested
-        this.storedFilterPredicate = this.matDataSource.filterPredicate;
-        this.matDataSource.filterPredicate = this.filterRightPanel();
+        this.matDataSource.filterPredicate = this.filterPredicate();
       }
     );
   }
@@ -172,7 +170,15 @@ export class PagamentiListComponent implements OnInit {
 
 //#region ----- Filtri & Sort -------
 
-  filterRightPanel(): (data: any, filter: string) => boolean {
+  applyFilter(event: Event) {
+
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.filterValues.filtrosx = this.filterValue.toLowerCase();
+    //this.pagamentiFilterComponent.resetAllInputs();
+    this.matDataSource.filter = JSON.stringify(this.filterValues)
+  }
+
+  filterPredicate(): (data: any, filter: string) => boolean {
 
     let filterFunction = function(data: any, filter: any): boolean {
     
@@ -203,59 +209,60 @@ export class PagamentiListComponent implements OnInit {
       if (searchTerms.dataAl != '') {cfrDataAl = (data.dtPagamento < searchTerms.dataAl)}
       cfrDate = cfrDataDal && cfrDataAl;
 
-      return foundTipoPagamento
-        && foundCausale
-        && cfrImporti 
-        && String(data.alunno.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
-        && String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
-        && cfrDate
-        ;
+      let dArr = data.dtPagamento.split("-");
+      const dtPagamentoddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
+      console.log (data);
+
+      let boolSx = String(data.alunno.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+            || String(dtPagamentoddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
+            || String(data.importo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+            || String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
+
+      let boolDx = foundTipoPagamento
+            && foundCausale
+            && cfrImporti 
+            && String(data.alunno.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+            && String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+            && cfrDate;
+
+      return boolSx && boolDx;
     }
     return filterFunction;
   }
 
 
-  applyFilter(event: Event) {
 
-    const filterValue = (event.target as HTMLInputElement).value;
-    if (filterValue.length == 1) {
-      console.log(event);
-      this.matDataSource.filterPredicate = this.storedFilterPredicate;
-      this.pagamentiFilterComponent.resetAllInputs();
-    }
-    this.matDataSource.filter = filterValue.trim().toLowerCase();
-  }
 
-  filterPredicateCustom(){
-    //questa funzione consente il filtro ANCHE sugli oggetti della classe
-    //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
-    this.matDataSource.filterPredicate = (data, filter: string)  => {
-      const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
+  // filterPredicateCustom(){
+  //   //questa funzione consente il filtro ANCHE sugli oggetti della classe
+  //   //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
+  //   this.matDataSource.filterPredicate = (data, filter: string)  => {
+  //     const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
 
-        switch(key) { 
-          case "tipoPagamento": { 
-            return currentTerm + data.tipoPagamento.descrizione; 
-             break; 
-          } 
-          case "causale": { 
-            return currentTerm + data.Causale.descrizione; 
-             break; 
-          } 
-          case "alunno": { 
-            return currentTerm + data.alunno.nome + data.alunno.cognome; 
-             break; 
-          } 
-          default: { 
-            return currentTerm + data.importo + data.dtPagamento; 
-             break; 
-          } 
-       } 
-      };
-      const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
-      const transformedFilter = filter.trim().toLowerCase();
-      return dataStr.indexOf(transformedFilter) !== -1;
-    };
-  }
+  //       switch(key) { 
+  //         case "tipoPagamento": { 
+  //           return currentTerm + data.tipoPagamento.descrizione; 
+  //            break; 
+  //         } 
+  //         case "causale": { 
+  //           return currentTerm + data.Causale.descrizione; 
+  //            break; 
+  //         } 
+  //         case "alunno": { 
+  //           return currentTerm + data.alunno.nome + data.alunno.cognome; 
+  //            break; 
+  //         } 
+  //         default: { 
+  //           return currentTerm + data.importo + data.dtPagamento; 
+  //            break; 
+  //         } 
+  //      } 
+  //     };
+  //     const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+  //     const transformedFilter = filter.trim().toLowerCase();
+  //     return dataStr.indexOf(transformedFilter) !== -1;
+  //   };
+  // }
 
   sortCustom() {
 

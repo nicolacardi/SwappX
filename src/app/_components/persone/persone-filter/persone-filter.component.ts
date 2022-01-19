@@ -61,9 +61,6 @@ export class PersoneFilterComponent implements OnInit {
     .subscribe(
       val => {
         this.resetMainFilter();
-        if (this.personeListComponent.matDataSource.filterPredicate == this.personeListComponent.storedFilterPredicate)
-        {this.personeListComponent.matDataSource.filterPredicate = this.personeListComponent.filterRightPanel()};
-
         this.personeListComponent.filterValues.indirizzo = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
@@ -109,13 +106,12 @@ export class PersoneFilterComponent implements OnInit {
 
 //#region ----- Reset vari -------
   resetMainFilter() {
-    if (this.personeListComponent.matDataSource.filterPredicate == this.personeListComponent.storedFilterPredicate){
-      this.personeListComponent.matDataSource.filter = ''; 
-      //this.personeListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
+      //this.personeListComponent.matDataSource.filter = ''; 
+      //this.personeListComponent.filterValue = '';
+      //this.personeListComponent.filterValues.filtrosx = ''; 
+      //this.personeListComponent.filterInput.nativeElement.value = '';
+      console.log(this.personeListComponent.filterValues);
 
-      this.personeListComponent.filterInput.nativeElement.value = '';
-      this.personeListComponent.matDataSource.filterPredicate = this.personeListComponent.filterRightPanel()
-    };  
   }
 
   resetAllInputs() {
@@ -127,6 +123,9 @@ export class PersoneFilterComponent implements OnInit {
     this.provFilter.setValue('', {emitEvent:false});
     this.emailFilter.setValue('', {emitEvent:false});
     this.telefonoFilter.setValue('', {emitEvent:false});
+
+    console.log(this.personeListComponent.filterValues);
+
   }
 
   resetAllInputsAndClearFilters() {
@@ -138,6 +137,9 @@ export class PersoneFilterComponent implements OnInit {
     this.provFilter.setValue('');
     this.emailFilter.setValue('');
     this.telefonoFilter.setValue('');
+
+    console.log(this.personeListComponent.filterValues);
+
 
   }
 //#endregion

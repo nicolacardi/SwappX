@@ -10,7 +10,7 @@
     <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>
 
     <!-- **************************   MAT-TABLE   ******************* -->
-    <mat-table class="usersTable transparent" [dataSource]="matDataSource"
+    <table mat-table class="usersTable transparent w100" [dataSource]="matDataSource"
         matSort
         [matSortActive]="matSortActive"
         [matSortDirection] = "'asc'"
@@ -20,10 +20,10 @@
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
         <ng-container matColumnDef="actionsColumn">
-            <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-            <mat-cell  *matCellDef="let element;  let j = index;"> 
+            <th mat-header-cell *matHeaderCellDef cdkDrag></th>
+            <td mat-cell  *matCellDef="let element;  let j = index;"> 
                 <img (click)="openDetail(element.id)" class="iconaMenu pointer" src="../assets/alunno_edit.svg">
-            </mat-cell>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="select" >
@@ -50,29 +50,39 @@
         </ng-container>
 
         <ng-container matColumnDef="userID">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >userID</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.userID}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >userID</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.userID}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.userID | highlight:filterValue"></td>
+
         </ng-container>
         
         <ng-container matColumnDef="userName">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>username</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.userName}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>username</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.userName}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.userName | highlight:filterValue"></td>
+
         </ng-container>
 
         <ng-container matColumnDef="fullName">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>fullName</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.fullName}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>fullName</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.fullName}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.fullName | highlight:filterValue"></td>
+
         </ng-container>
 
         <ng-container matColumnDef="email">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.email}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.email}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.email | highlight:filterValue"></td>
+
         </ng-container>
 
 
         <ng-container matColumnDef="badge">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>badge</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.badge}}</mat-cell>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>badge</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.badge}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.badge | highlight:filterValue"></td>
+
         </ng-container>
 
         <!--
@@ -90,15 +100,15 @@
         </ng-container>
     -->
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
-        <mat-header-row class="_table-title-low" *matHeaderRowDef="displayedColumns;"></mat-header-row>
+      <tr mat-header-row class="_table-title-low" *matHeaderRowDef="displayedColumns;"></tr>
         
         <!-- **************************   MAT-ROW   ******************* -->
         
-        <mat-row *matRowDef="let element;columns: displayedColumns" class="element-row">
+        <tr mat-row *matRowDef="let element;columns: displayedColumns" class="element-row">
            
-        </mat-row>
+        </tr>
         <!--  (contextmenu)="onRightClick($event, element)" -->
-    </mat-table>
+    </table>
 
     <!-- ***********************  MENU RIGHT CLICK ****************** -->
 

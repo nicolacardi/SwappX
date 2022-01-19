@@ -17,9 +17,6 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 
 //models
 import { PER_Persona } from 'src/app/_models/PER_Persone';
-import { map } from 'rxjs/operators';
-
-
 @Component({
   selector: 'app-persone-list',
   templateUrl: './persone-list.component.html',
@@ -30,19 +27,7 @@ export class PersoneListComponent implements OnInit {
 //#region ----- Variabili -------
 
   matDataSource = new MatTableDataSource<PER_Persona>();
-  storedFilterPredicate!:       any;
 
-  filterValues = {
-    nome: '',
-    cognome: '',
-    annoNascita: '',
-    indirizzo: '',
-    comune: '',
-    prov: '',
-    email: '',
-    telefono: ''
-  };
-  
   displayedColumns: string[] =  [];
   displayedColumnsPersoneList: string[] = [
       "actionsColumn", 
@@ -56,6 +41,21 @@ export class PersoneListComponent implements OnInit {
       "email", 
       "telefono"
   ];
+
+  filterValue = '';       //Filtro semplice
+
+  filterValues = {
+    nome: '',
+    cognome: '',
+    annoNascita: '',
+    indirizzo: '',
+    comune: '',
+    prov: '',
+    email: '',
+    telefono: '',
+    filtrosx: ''
+  };
+  
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
@@ -74,10 +74,11 @@ export class PersoneListComponent implements OnInit {
 
 
 
-  constructor(private svcPersone:       PersoneService,
-              private _loadingService:  LoadingService,
-              public _dialog:           MatDialog, 
-            ) { }
+  constructor(
+    private svcPersone:       PersoneService,
+    private _loadingService:  LoadingService,
+    public _dialog:           MatDialog, 
+  ) { }
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
@@ -94,8 +95,7 @@ export class PersoneListComponent implements OnInit {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort; 
-        this.storedFilterPredicate = this.matDataSource.filterPredicate;
-        this.matDataSource.filterPredicate = this.filterRightPanel();
+        this.matDataSource.filterPredicate = this.filterPredicate();
       }
     );
   }
@@ -103,31 +103,42 @@ export class PersoneListComponent implements OnInit {
 
 //#region ----- Filtri & Sort -------
 
-  filterRightPanel(): (data: any, filter: string) => boolean {
+  applyFilter(event: Event) {
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.filterValues.filtrosx = this.filterValue.toLowerCase();
+    //if (this.dove == "persone-page") this.personeFilterComponent.resetAllInputs();
+    this.matDataSource.filter = JSON.stringify(this.filterValues)
+  }
+
+
+  filterPredicate(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
-      return String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
-        && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
-        && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
-        && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
-        && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
-        && String(data.prov).toLowerCase().indexOf(searchTerms.prov) !== -1
-        && String(data.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
-        && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
+
+      let boolSx = String(data.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.dtNascita).indexOf(searchTerms.filtrosx) !== -1
+                || String(data.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.prov).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.telefono).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
+
+      // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
+      let boolDx = String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+                && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+                && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
+                && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
+                && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
+                && String(data.prov).toLowerCase().indexOf(searchTerms.prov) !== -1
+                && String(data.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
+                && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1;
+
+      return boolSx && boolDx;
     }
     return filterFunction;
   }
 
-
-  applyFilter(event: Event) {
-
-    const filterValue = (event.target as HTMLInputElement).value;
-    if (filterValue.length == 1) {
-      this.matDataSource.filterPredicate = this.storedFilterPredicate;
-      if (this.dove == "persone-page") this.personeFilterComponent.resetAllInputs();
-    }
-    this.matDataSource.filter = filterValue.trim().toLowerCase();
-  }
 //#endregion
 
 //#region ----- Add Edit Drop -------

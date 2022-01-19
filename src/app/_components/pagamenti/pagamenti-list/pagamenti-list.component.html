@@ -21,7 +21,7 @@
 
 <!-- **************************   MAT-TABLE   ******************* -->
 <!-- <mat-table *ngIf="obsAnni$ | async" class="retteTable transparent" [dataSource]="matDataSource" -->
-<mat-table class="_table-row-low transparent" [dataSource]="matDataSource"
+<table mat-table class="_table-row-low transparent w100" [dataSource]="matDataSource"
     matSort
     cdkDropList
     cdkDropListOrientation="horizontal"
@@ -29,97 +29,109 @@
     
     <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
     <ng-container matColumnDef="actionsColumn">
-        <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-        <mat-cell *matCellDef="let element;  let j = index;"> 
+        <th mat-header-cell *matHeaderCellDef cdkDrag></th>
+        <td mat-cell *matCellDef="let element;  let j = index;"> 
             <img (click)="editRecord(element.alunno.id)" class="iconaMenu pointer" src="../assets/money_edit.svg">
-        </mat-cell>
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="dtPagamento">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Data</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.dtPagamento | date: "dd/MM/yyyy"}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Data</th>
+        <!-- <td mat-cell *matCellDef="let element">{{element.dtPagamento | date: "dd/MM/yyyy"}}</td> -->
+        <td mat-cell *matCellDef="let element" [innerHTML]="element.dtPagamento | highlightDate: filterValue"></td>
+
     </ng-container>
 
     <ng-container matColumnDef="importo">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>importo</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.importo}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>importo</th>
+        <!-- <td mat-cell *matCellDef="let element">{{element.importo}}</td> -->
+        <td mat-cell *matCellDef="let element" [innerHTML]="element.importo | highlight: filterValue"></td>
+
     </ng-container>
 
     <ng-container matColumnDef="tipoPagamento.descrizione">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Tipo Pag</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.tipoPagamento.descrizione}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Tipo Pag</th>
+        <!-- <td mat-cell *matCellDef="let element">{{element.tipoPagamento.descrizione}}</td> -->
+        <td mat-cell *matCellDef="let element" [innerHTML]="element.tipoPagamento.descrizione | highlight: filterValue"></td>
+
     </ng-container>
 
     <ng-container matColumnDef="causale.descrizione">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Causale</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.causale.descrizione}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Causale</th>
+            <!-- <td mat-cell *matCellDef="let element">{{element.causale.descrizione}}</td> -->
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.causale.descrizione | highlight: filterValue"></td>
+
     </ng-container>
 
     <ng-container matColumnDef="rettaID">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>rettaID</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.rettaID}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>rettaID</th>
+        <td mat-cell *matCellDef="let element">{{element.rettaID}}</td>
     </ng-container>
 
     <ng-container matColumnDef="retta.quotaConcordata">
-        <mat-header-cell *matHeaderCellDef cdkDrag>importo Retta</mat-header-cell>
-        <mat-cell *matCellDef="let element">
+        <th mat-header-cell *matHeaderCellDef cdkDrag>importo Retta</th>
+        <td mat-cell *matCellDef="let element">
             <!-- {{element.retta.quotaConcordata}} -->
             <ng-container *ngIf="element.retta; else default1">
                 {{element.retta.quotaConcordata}}
             </ng-container>
             <ng-template #default1>-</ng-template>
-        </mat-cell>
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="retta.meseRetta">
-        <mat-header-cell *matHeaderCellDef cdkDrag >mese</mat-header-cell>
-        <mat-cell *matCellDef="let element">
+        <th mat-header-cell *matHeaderCellDef cdkDrag >mese</th>
+        <td mat-cell *matCellDef="let element">
             <ng-container *ngIf="element.retta; else default2">
                 {{months[element.retta.meseRetta]}}
             </ng-container>
             <ng-template #default2>-</ng-template>
-        </mat-cell>
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="alunno.cognome">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Cognome</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.alunno.cognome}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Cognome</th>
+        <!-- <td mat-cell *matCellDef="let element">{{element.alunno.cognome}}</td> -->
+        <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cognome | highlight: filterValue"></td>
+
     </ng-container>
     <ng-container matColumnDef="alunno.nome">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.alunno.nome}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</th>
+        <!-- <td mat-cell *matCellDef="let element">{{element.alunno.nome}}</td> -->
+        <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome | highlight: filterValue"></td>
+
     </ng-container>
 
     <ng-container matColumnDef="genitoreID">
-        <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>genitoreID</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.genitoreID}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>genitoreID</th>
+        <td mat-cell *matCellDef="let element">{{element.genitoreID}}</td>
     </ng-container>
 
     <ng-container matColumnDef="note">
-        <mat-header-cell *matHeaderCellDef cdkDrag>note</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.note}}</mat-cell>
+        <th mat-header-cell *matHeaderCellDef cdkDrag>note</th>
+        <td mat-cell *matCellDef="let element">{{element.note}}</td>
     </ng-container>
 
     <ng-container matColumnDef="delete">
-        <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-        <mat-cell *matCellDef="let element">
+        <th mat-header-cell *matHeaderCellDef cdkDrag></th>
+        <td mat-cell *matCellDef="let element">
             <mat-icon class="pointer" (click)="delete(element.id)">delete_outline</mat-icon>
-        </mat-cell>
+        </td>
     </ng-container>
     
     <!-- **************************   MAT-HEADER-ROW   ******************* -->
-    <mat-header-row class="bk-white" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <tr mat-header-row class="bk-white" *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     
     <!-- **************************   MAT-ROW   ******************* -->
-    <mat-row *matRowDef="let element;columns: displayedColumns"
+    <tr mat-row *matRowDef="let element;columns: displayedColumns"
         class="element-row"
         (contextmenu)="onRightClick($event, element)" 
         (mouseover) = "hoverRow(element.rettaID)"
         (mouseleave) = "hoverLeave()"
         >
-    </mat-row>
+</tr>
 
-</mat-table>
+</table>
 
 <!-- ***********************  MENU RIGHT CLICK ****************** -->
 <div style="visibility: hidden; position: fixed;" 
