@@ -1,18 +1,21 @@
 <h1 class="_titolo-pagina">Impostazione Parametri</h1>
 
-<form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
+<!-- <form *ngIf="obsAnni$ | async" [formGroup] = "form">  -->
 
+    parAnnoCorrente: {{parAnnoCorrente.parValue}}
     <div class="w180px ma">
-        <mat-form-field>
+        <!-- <mat-form-field> -->
             <mat-label>Anno Scolastico di Default</mat-label>
-            <mat-select formControlName="selectAnnoScolastico">
+            <!-- <mat-select formControlName="selectAnnoScolastico" [(value)]="parAnnoCorrente.parValue"> -->
+            <mat-select [(value)]="parAnnoCorrente.parValue"> 
                 <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
+
             <!-- <mat-select formControlName="selectAnnoScolastico" [compareWith]="compareAnni"> -->
                 <!-- <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element" [id]="element.id.toString()" > -->
                 {{element.annoscolastico}}
                 </mat-option>
             </mat-select>
-        </mat-form-field>   
+        <!-- </mat-form-field>    -->
     </div>
 
     <h1 class="_titolo-pagina fs14">Ripartizione standard quote</h1>
@@ -23,7 +26,7 @@
         </mat-grid-tile>
 
         <mat-grid-tile *ngFor="let placeholderMese of placeholderMeseArr; let i = index;" #QuoteList>
-            <mat-checkbox [attr.id]="'arrQuote'+i" [checked]="!!+ objQuoteDefault.parValue.substring(i,i+1)"></mat-checkbox>
+            <mat-checkbox #QuoteListElement [attr.id]="'arrQuote'+i" [checked]="!!+ parQuoteDefault.parValue.substring(i,i+1)"></mat-checkbox>
         </mat-grid-tile>
     </mat-grid-list>
 
@@ -42,7 +45,7 @@
 
 
 
-</form>
+<!-- </form> -->
 
 <div class="center mt10">
     <button type="button" mat-button matSuffix class="w180px ma mt10" mat-stroked-button (click)="save()">Salva</button>

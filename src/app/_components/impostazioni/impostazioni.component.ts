@@ -17,19 +17,20 @@ import { LoadingService } from '../utilities/loading/loading.service';
   templateUrl: './impostazioni.component.html',
   styleUrls: ['./impostazioni.component.css']
 })
+
 export class ImpostazioniComponent implements OnInit {
 
   obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   form! :                             FormGroup;
   
+  public parAnnoCorrente!:       _UT_Parametro;
+
   public mesiArr =            [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=  ["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
-  //public QuoteDefault =            "000000000000";
-  public objQuoteDefault!:       _UT_Parametro;
+  public parQuoteDefault!:       _UT_Parametro;
 
-  @ViewChildren('QuoteList') QuoteList!: QueryList<ElementRef>;
+  @ViewChildren('QuoteListElement') QuoteList!: QueryList<any>;
   
-
   constructor(
     private fb:                       FormBuilder, 
     private svcAnni:                  AnniScolasticiService,
@@ -39,16 +40,21 @@ export class ImpostazioniComponent implements OnInit {
 
     let obj = localStorage.getItem('AnnoCorrente');
 
-    this.form = this.fb.group({
-      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
-    });
+    // this.form = this.fb.group({
+    //   selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
+    // });
 
-    this.svcParametri.loadParametro('QuoteDefault')
-      .subscribe(x=>{
-        this.objQuoteDefault = x;
+    this.svcParametri.loadParametro('AnnoCorrente')
+      .subscribe(par=>{
+        this.parAnnoCorrente = par;
       }
     );
 
+    this.svcParametri.loadParametro('QuoteDefault')
+      .subscribe(par=>{
+        this.parQuoteDefault = par;
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -58,26 +64,20 @@ export class ImpostazioniComponent implements OnInit {
 
   save(){
 
-    // var formData: _UT_Parametro = {
-    //   id:             this.currUser.userID,   
-    //   parName:        this.form.controls.username.value,
-    //   parDescr:       this.form.controls.email.value,
-    //   parValue:       this.form.controls.fullname.value,
-    // };
+  //Costruisco la stringa del parametro QuoteDefault
+  let arrCheckboxes = this.QuoteList.toArray();
+  let strCheckboxes="";
+
+  arrCheckboxes.forEach(element => {
+    if(element.checked == true)
+      strCheckboxes += "1";
+    else
+      strCheckboxes += "0";
+  });
+  this.parQuoteDefault.parValue = strCheckboxes;
 
 
-    this.objQuoteDefault.parValue = "111111111111";
-
-console.log("QUOTE LIST: ",this.QuoteList);
-
-console.log("QUOTE LIST foreach: ",this.QuoteList.forEach);
-
-this.QuoteList.forEach(writer => console.log(writer));
-
-
-
-//this.QuoteList.forEach();
-    this.svcParametri.put(this.objQuoteDefault).subscribe( 
+  this.svcParametri.put(this.parQuoteDefault).subscribe( 
       res=>{
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Parametri salvati', panelClass: ['green-snackbar']})
       },
@@ -85,49 +85,6 @@ this.QuoteList.forEach(writer => console.log(writer));
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       }
     );
-
-    /*
-    export interface _UT_Parametro {
-    id:                 number;
-    parName:            string;
-    parDescr:           string;
-    parValue:           string;
-  }
-
-     save(){
-
-    var formData = {
-      userID:     this.currUser.userID,   
-      UserName:   this.form.controls.username.value,
-      Email:      this.form.controls.email.value,
-      FullName:   this.form.controls.fullname.value,
-    };
-
-    this.svcUser.put(formData).subscribe(
-      ()=> {
-        this.currUser.username = this.form.controls.username.value;
-        this.currUser.email =this.form.controls.email.value;
-        this.currUser.fullname = this.form.controls.fullname.value;
-
-        localStorage.setItem('currentUser', JSON.stringify(this.currUser));
-      },
-      err => {
-        console.log("ERRORE this.svcUser.put", formData);
-      }
-    );
-
-    if(this.immagineDOM != undefined){
-      this.fotoObj.userID = this.currUser.userID;
-      this.fotoObj.foto = this.immagineDOM.nativeElement.src;
-
-      this.svcUser.saveUserFoto(this.fotoObj)
-      .subscribe(() => {
-          this.eventEmitterService.onAccountSaveProfile();
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo salvato', panelClass: ['green-snackbar']});
-        }
-      );
-    }
-  }
-    */
+  
   }
 }  
