@@ -34,7 +34,7 @@ export class RettaCalcoloComponent implements OnInit {
   form! :                             FormGroup;
   public mesiArr =            [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=  ["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
-  public QuoteDefault =            "110100000000";
+  public QuoteDefault =            "000000000000";
 
   constructor(
     public _dialogRef:                    MatDialogRef<RettaCalcoloComponent>,

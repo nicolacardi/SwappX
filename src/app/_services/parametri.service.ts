@@ -24,6 +24,47 @@ export class ParametriService {
     //http://213.215.231.4/swappX/api/_UT_Parametri/GetByParName/AnnoCorrente
   }
  
+  put(par: _UT_Parametro): Observable <any>{
+    return this.http.put( environment.apiBaseUrl  + '_UT_Parametri/' + par.id , par);    
+  }
 
+  /*
+  export interface _UT_Parametro {
+    id:                 number;
+    parName:            string;
+    parDescr:           string;
+    parValue:           string;
+  }
+  */
+  /*
+              // PUT: api/_UT_Parametri/5
+            // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+            [HttpPut("{id}")]
+            public async Task<IActionResult> Put(int id, _UT_Parametro parametro)
+            {
+                if (id != parametro.ID)
+                    return BadRequest();
+
+                _context.Entry(parametro).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!Exists(id))
+                        return NotFound();
+                    else
+                        throw;
+                }
+
+                return NoContent();
+            }
+  */
+  post(formData: any): Observable <any>{
+    formData.id = 0;
+    return this.http.post( environment.apiBaseUrl  + '_UT_Parametri' , formData);  
+  }
 
 }

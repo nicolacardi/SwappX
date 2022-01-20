@@ -18,14 +18,15 @@
     <h1 class="_titolo-pagina fs14">Ripartizione standard quote</h1>
 
     <mat-grid-list class="ma w50 bordered-grey p5" [cols]="12" rowHeight="20px">
-        
-        <mat-grid-tile *ngFor="let placeholderMese of placeholderMeseArr; let i = index" >
+        <mat-grid-tile *ngFor="let mese of mesiArr; let i = index" >
             <mat-label>{{placeholderMeseArr[i]}}</mat-label>
         </mat-grid-tile>
-        <mat-grid-tile *ngFor="let placeholderMese of placeholderMeseArr; let i = index" >
-            <mat-checkbox></mat-checkbox>
+
+        <mat-grid-tile *ngFor="let placeholderMese of placeholderMeseArr; let i = index;" #QuoteList>
+            <mat-checkbox [attr.id]="'arrQuote'+i" [checked]="!!+ objQuoteDefault.parValue.substring(i,i+1)"></mat-checkbox>
         </mat-grid-tile>
     </mat-grid-list>
+
     <div class="center mt10">
         <mat-slide-toggle class="ma">Parametro 1</mat-slide-toggle>
     </div>
@@ -44,5 +45,6 @@
 </form>
 
 <div class="center mt10">
-    <button type="button" mat-button matSuffix class="w180px ma mt10" mat-stroked-button>Salva</button>
+    <button type="button" mat-button matSuffix class="w180px ma mt10" mat-stroked-button (click)="save()">Salva</button>
 </div>
+ 
