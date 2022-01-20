@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { User, UserRole } from './Users';
 import { _UT_Parametro } from '../_models/_UT_Parametro';
 import { _UT_UserFoto } from '../_models/_UT_UserFoto';
+import { ParametriService } from '../_services/parametri.service';
 
 
 @Injectable({
@@ -22,7 +23,11 @@ export class UserService {
   public obscurrentUser: Observable<User>;
   //public currUser! : User;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) { 
+  constructor(
+    private fb:             FormBuilder,
+    private http:           HttpClient,
+    private svcParametri:   ParametriService
+    ) { 
     this.BehaviourSubjectcurrentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
     this.obscurrentUser = this.BehaviourSubjectcurrentUser.asObservable();
   }
@@ -67,7 +72,8 @@ export class UserService {
         return user;
       }));
 
-    let httpParam$ =  this.http.get<_UT_Parametro>(environment.apiBaseUrl+'_UT_Parametri/GetByParName/AnnoCorrente')
+    //let httpParam$ =  this.http.get<_UT_Parametro>(environment.apiBaseUrl+'_UT_Parametri/GetByParName/AnnoCorrente')
+    let httpParam$ = this.svcParametri.loadParametro('AnnoCorrente')
       .pipe(map( par => {
         //sessionStorage.setItem();
         //localStorage.setItem(par.parName, par.parValue);

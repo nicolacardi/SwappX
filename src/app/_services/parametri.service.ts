@@ -24,4 +24,6 @@ export class ParametriService {
     //http://213.215.231.4/swappX/api/_UT_Parametri/GetByParName/AnnoCorrente
   }
  
+
+
 }

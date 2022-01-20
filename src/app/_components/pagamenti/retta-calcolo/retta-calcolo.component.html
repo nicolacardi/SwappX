@@ -49,11 +49,20 @@
                     <mat-label>{{placeholderMeseArr[i]}}</mat-label>
                 </mat-grid-tile>
                 <mat-grid-tile *ngFor="let placeholderMese of placeholderMeseArr; let i = index" >
-                    <mat-checkbox [checked]="!!+mesiSel.substring(i,i+1)"></mat-checkbox>
+                    <mat-checkbox [checked]="!!+QuoteDefault.substring(i,i+1)"></mat-checkbox>
                 </mat-grid-tile>
             </mat-grid-list>
+            <div class="center mt10">
+                <mat-form-field appearance="outline">
+                    <mat-label>Importo Annuale</mat-label>
+                    <input matInput type="text" required placeholder="Importo Default Annuale" minlength= "3" formControlName="importo">
+                </mat-form-field>
 
-
+                <mat-form-field class="ml20" appearance="outline">
+                    <mat-label>Importo 2 Annuale</mat-label>
+                    <input matInput type="text" required placeholder="Importo 2" minlength= "3" formControlName="importo2">
+                </mat-form-field>
+            </div>
         </form>
     </mat-card-content>
 </mat-card>
