@@ -16,6 +16,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
+import { ParametriService } from 'src/app/_services/parametri.service';
 
 @Component({
   selector: 'app-retta-calcolo',
@@ -26,19 +27,21 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 export class RettaCalcoloComponent implements OnInit {
 
   obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  obsQuoteDefault$!:                  Observable<_UT_Parametro>;
   obsClassiSezioniAnni$!:             Observable<CLS_ClasseSezioneAnno[]>;
   obsFilteredAlunni$!:                Observable<ALU_Alunno[]>;
 
   form! :                             FormGroup;
   public mesiArr =            [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=  ["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
-  public mesiSel =            "110100000000";
+  public QuoteDefault =            "110100000000";
 
   constructor(
     public _dialogRef:                    MatDialogRef<RettaCalcoloComponent>,
     private svcAnni:                      AnniScolasticiService,
     private svcClasseSezioneAnno:         ClassiSezioniAnniService,
     private svcAlunni:                    AlunniService,
+    private svcParametri:                 ParametriService,
     private _loadingService:              LoadingService,
     private fb:                           FormBuilder, 
   ) {
@@ -48,9 +51,19 @@ export class RettaCalcoloComponent implements OnInit {
 
     this.form = this.fb.group({
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue,
-      selectClasse:         "0",
+      selectClasse:         ["0"],
+      importo:              ["0"],
+      importo2:              ["0"],
       nomeCognomeAlunno:    [null]
     });
+
+    this.svcParametri.loadParametro('QuoteDefault')
+      .subscribe(x=>{
+      this.QuoteDefault = x.parValue
+      }
+    );
+
+
   }
 
   ngOnInit(): void {
@@ -71,6 +84,21 @@ export class RettaCalcoloComponent implements OnInit {
     this.obsClassiSezioniAnni$ = this.svcClasseSezioneAnno.loadClassiByAnnoScolastico(this.form.controls["selectAnnoScolastico"].value);
 
     //this.loadData();
+
+    this.form.controls['selectClasse'].valueChanges
+    .subscribe(
+      val => {
+        //this.form.controls['importo'].setValue(
+       this.svcClasseSezioneAnno.loadClasse(val)
+       .subscribe(
+         res=> { 
+          this.form.controls['importo'].setValue(res.classeSezione.classe.importo);
+          this.form.controls['importo2'].setValue(res.classeSezione.classe.importo2);
+         }
+       
+       );
+    })
+
   }
 
   loadData ( ) {
