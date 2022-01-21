@@ -40,51 +40,60 @@ export class ImpostazioniComponent implements OnInit {
 
     let obj = localStorage.getItem('AnnoCorrente');
 
-    // this.form = this.fb.group({
-    //   selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
-    // });
+    this.form = this.fb.group({
+      // selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
+      selectAnnoScolastico: ""
+    });
 
     this.svcParametri.loadParametro('AnnoCorrente')
       .subscribe(par=>{
         this.parAnnoCorrente = par;
+        this.form.controls['selectAnnoScolastico'].setValue(parseInt(this.parAnnoCorrente.parValue));
       }
     );
+
+
 
     this.svcParametri.loadParametro('QuoteDefault')
       .subscribe(par=>{
         this.parQuoteDefault = par;
+
       }
     );
   }
 
   ngOnInit(): void {
-    this.obsAnni$= this.svcAnni.load();
+    this.obsAnni$= this.svcAnni.load()
+    // .pipe (
+    //   x=> {this.form.controls['selectAnnoScolastico'].setValue(x.)}
+    // )
+    ;
 
   }
 
   save(){
 
-  //Costruisco la stringa del parametro QuoteDefault
-  let arrCheckboxes = this.QuoteList.toArray();
-  let strCheckboxes="";
+    //Costruisco la stringa del parametro QuoteDefault
+    let arrCheckboxes = this.QuoteList.toArray();
+    let strCheckboxes="";
 
-  arrCheckboxes.forEach(element => {
-    if(element.checked == true)
-      strCheckboxes += "1";
-    else
-      strCheckboxes += "0";
-  });
-  this.parQuoteDefault.parValue = strCheckboxes;
+    arrCheckboxes.forEach(element => {
+      if(element.checked == true)
+        strCheckboxes += "1";
+      else
+        strCheckboxes += "0";
+    });
+    this.parQuoteDefault.parValue = strCheckboxes;
 
 
-  this.svcParametri.put(this.parQuoteDefault).subscribe( 
-      res=>{
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Parametri salvati', panelClass: ['green-snackbar']})
-      },
-      err=>{
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      }
-    );
+    this.svcParametri.put(this.parQuoteDefault).subscribe( 
+        res=>{
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Parametri salvati', panelClass: ['green-snackbar']})
+        },
+        err=>{
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        }
+      );
   
   }
 }  
