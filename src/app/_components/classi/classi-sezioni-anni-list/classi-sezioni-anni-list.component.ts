@@ -22,6 +22,9 @@ import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 
 
@@ -65,6 +68,22 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     "removeFromAttended"
   ];
 
+
+  displayedColumnsRettaCalcolo: string[] =  [
+
+    "descrizione",
+    "sezione",
+    "importo",
+    "importo2",
+    "select"
+  ];
+
+
+  selection = new SelectionModel<CLS_ClasseSezioneAnno>(true, []);   //rappresenta la selezione delle checkbox
+  
+  toggleChecks:                       boolean = false;
+  public swSoloAttivi :               boolean = true;
+
   idAnnoInput!:                       string; //Da routing
   idClasseInput!:                     string; //Da routing
   public idAnnoScolastico!:           number;
@@ -73,6 +92,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   showTableRibbon:                    boolean = true;
   obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   form! :                             FormGroup;
+  public showProgress=                false;
+  public endedProgress=                   false;
 
   selectedRowIndex = -1;
 
@@ -100,8 +121,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
   @Output('annoId') annoIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
   @Output('classeId') classeIdEmitter = new EventEmitter<number>(); //classeId viene EMESSO quando si clicca su una classe
-  @Output('addToAttended') addToAttended = new EventEmitter<CLS_ClasseSezioneAnno>();
-  @Output('removeFromAttended') removeFromAttended = new EventEmitter<CLS_ClasseSezioneAnno>();
+  @Output('addToAttended') addToAttended = new EventEmitter<CLS_ClasseSezioneAnno>(); //EMESSO quando si clicca sul (+) di aggiunta alle classi frequentate
+  @Output('removeFromAttended') removeFromAttended = new EventEmitter<CLS_ClasseSezioneAnno>(); //EMESSO quando si clicca sul (-) del rimuovi da classi frequentate
 
 //#endregion
 
@@ -111,7 +132,9 @@ constructor(
     private _loadingService:              LoadingService,
     private fb:                           FormBuilder, 
     public _dialog:                       MatDialog, 
-    private actRoute:                     ActivatedRoute ) { 
+    private actRoute:                     ActivatedRoute,
+    private _snackBar:                    MatSnackBar,
+    ) { 
 
     let obj = localStorage.getItem('AnnoCorrente');
 
@@ -164,10 +187,17 @@ constructor(
         this.displayedColumns = this.displayedColumnsClassiDashboard;
         this.showPageTitle = false;
         this.showTableRibbon = false;
+        // this.matDataSource.sort = this.sort; TODO
         break;
       case 'classi-page':
           this.displayedColumns = this.displayedColumnsClassiPage;
           this.matDataSource.sort = this.sort;
+          break;
+      case 'retta-calcolo':
+          this.displayedColumns = this.displayedColumnsRettaCalcolo;
+          this.showPageTitle = false;
+          this.showTableRibbon = false;
+          //this.matDataSource.sort = this.sort; TODO
           break;
       default: this.displayedColumns = this.displayedColumnsClassiDashboard;
     }
@@ -353,6 +383,77 @@ sortCustom() {
     dialogRef.afterClosed()
       .subscribe(() => { this.loadData(); //TODO: metto intanto un valore di default CABLATO DENTRO COMUNQUE NON FUNZIONA BENE!
     });
+  }
+
+  updateImporto(element: CLS_ClasseSezioneAnno, value: any) {
+    //console.log (element, value);
+    element.classeSezione.classe.importo = parseFloat(value);
+    //console.log (element);
+    this.svcClassiSezioniAnni.put(element).subscribe(
+      res=> {
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Importo salvato', panelClass: ['green-snackbar']})  //MOSTRA ESITO OK MA NON SALVA
+
+      },
+      err=> (
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      )
+
+    );  //NON VA
+  }
+//#endregion
+
+
+
+
+//#region ----- Gestione Campo Checkbox -------
+  selectedRow(element: CLS_ClasseSezioneAnno) {
+    this.selection.toggle(element);
+  }
+
+  masterToggle() {
+    this.toggleChecks = !this.toggleChecks;
+
+    if (this.toggleChecks) 
+      this.selection.select(...this.matDataSource.data);
+    else 
+      this.resetSelections();
+  }
+
+  resetSelections() {
+    this.selection.clear();
+    this.matDataSource.data.forEach(row => this.selection.deselect(row));
+  }
+
+  toggleAttivi(){
+    this.swSoloAttivi = !this.swSoloAttivi;
+    this.loadData();
+  }
+
+  getChecked() {
+    //funzione usata da classi-dahsboard
+    return this.selection.selected;
+  }
+
+    //non so se serva questo metodo: genera un valore per l'aria-label...
+  //forse serve per poi pescare i valori selezionati?
+  checkboxLabel(row?: CLS_ClasseSezioneAnno): string {
+    if (!row) 
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    else
+      return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+  }
+
+  //questo metodo ritorna un booleano che dice se sono selezionati tutti i record o no
+  //per ora non lo utilizzo
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;   //conta il numero di elementi selezionati
+    const numRows = this.matDataSource.data.length;       //conta il numero di elementi del matDataSource
+    return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
+  }
+
+  isNoneSelected() {
+    const numSelected = this.selection.selected.length;   //conta il numero di elementi selezionati
+    return numSelected === 0;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
   }
 //#endregion
 

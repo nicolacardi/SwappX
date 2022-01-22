@@ -389,6 +389,10 @@
         background-color: #044D7E !important;
     }
 
+    ._btn-text {
+        color: white;
+        background-color: #044D7E !important;
+    }
     /* button di add*/
     ._btn-add {
         z-index: 1000;
@@ -656,6 +660,10 @@ in fase di creazione della Dialog addAlunno*/
         cursor: pointer;
     }
 
+
+
+
+
 /**********************************/
 
 
@@ -728,13 +736,19 @@ mat-nav-list a img {
     height: 5px !important;
 } */
 
+._icona-check-green {
+    color: green;
+    transition: transform .2s ease-in-out;
+}
 /**********************************/
 
 
 .transparent {
     background: none;
 }
-
+.invisible {
+    visibility: hidden;
+}
 
 /*  STILE SPOSTATO NEL LOADING COMPONENT.CSS
 

@@ -181,6 +181,13 @@
         height: 330px;
     }
 
+    /*usato p.e. in retta-calcolo per vedere elenco classi*/
+    ._scrollable-classi-list-container{
+        height: 400px;
+        
+        overflow: auto;
+    }
+
     /*elenco pagamenti in retta-edit*/
     ._pagamento-edit-container {
         max-height: 250px;

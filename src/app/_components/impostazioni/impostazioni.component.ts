@@ -53,7 +53,6 @@ export class ImpostazioniComponent implements OnInit {
     );
 
 
-
     this.svcParametri.loadParametro('QuoteDefault')
       .subscribe(par=>{
         this.parQuoteDefault = par;

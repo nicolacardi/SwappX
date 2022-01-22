@@ -5,7 +5,9 @@
       max-height: 100%;
       overflow: auto;
   }
-    
+
+
+
 
 
   /* Bordo inferiore nelle checkbox */
@@ -71,6 +73,10 @@
     left: 330px
   }
 
+
+  .prgBar {
+    margin-top: 10px;
+  }
 
 
 

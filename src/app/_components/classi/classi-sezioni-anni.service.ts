@@ -50,9 +50,6 @@ export class ClassiSezioniAnniService {
   }
   
   put(formData: any): Observable <any>{
-    
-    console.log("DEBUG: PUT classi-sezioni-anni.service ", formData );
-
     return this.http.put( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni/' + formData.id , formData);    
   }
 
