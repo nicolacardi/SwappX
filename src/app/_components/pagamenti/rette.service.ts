@@ -50,10 +50,14 @@ export class RetteService {
     return this.http.put(environment.apiBaseUrl  + 'PAG_Rette/' + obj.id , obj);    
   }
 
-  post(formData: any): Observable <any>{
-    formData.id = 0;
-    return this.http.post(environment.apiBaseUrl  + 'PAG_Rette' , formData);  
+  post(obj: PAG_Retta): Observable <any>{
+    obj.id = 0;
+    return this.http.post(environment.apiBaseUrl  + 'PAG_Rette' , obj);  
   }
+  // post(formData: any): Observable <any>{
+  //   formData.id = 0;
+  //   return this.http.post(environment.apiBaseUrl  + 'PAG_Rette' , formData);  
+  // }
 
   delete(id: number): Observable <any>{
     return this.http.delete(environment.apiBaseUrl  + 'PAG_Rette/' + id);    
