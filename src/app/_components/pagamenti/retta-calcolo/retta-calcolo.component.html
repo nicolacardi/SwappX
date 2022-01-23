@@ -48,7 +48,7 @@
                     <mat-label>{{placeholderMeseArr[i]}}</mat-label>
                 </mat-grid-tile>
                 <mat-grid-tile *ngFor="let placeholderMese of placeholderMeseArr; let i = index" >
-                    <mat-checkbox color="warn"  [checked]="!!+QuoteDefault.substring(i,i+1)"></mat-checkbox>
+                    <mat-checkbox color="warn" #QuoteListElement [checked]="!!+QuoteDefault.substring(i,i+1)"></mat-checkbox>
                 </mat-grid-tile>
             </mat-grid-list>
 

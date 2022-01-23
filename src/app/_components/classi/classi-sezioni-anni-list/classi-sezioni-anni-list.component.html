@@ -59,7 +59,8 @@
                 <mat-progress-bar class="prgBar" [ngClass]="{'invisible': ! (showProgress && ckSelected.checked)}" mode="indeterminate"></mat-progress-bar>  
             </div>
             <div class="flex-item">
-                <mat-icon [ngClass]="{'invisible': ! (endedProgress && ckSelected.checked)}" class="_icona-check-green">check_circle_outline</mat-icon>
+                <mat-icon  [attr.id]="'endedIcon_'+element.id" class="_icona-check-green">check_circle_outline</mat-icon>
+                <!-- [ngClass]="{'invisible': ! (endedProgress && ckSelected.checked)}" -->
             </div>
         </div>
         </td>

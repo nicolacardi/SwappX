@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
@@ -93,8 +93,9 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   form! :                             FormGroup;
   public showProgress=                false;
-  public endedProgress=                   false;
+  public endedProgress=               false;
 
+  
   selectedRowIndex = -1;
 
   filterValue = '';       //Filtro semplice
@@ -118,7 +119,9 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild("filterInput") filterInput!:                     ElementRef;  
   @ViewChild('selectAnnoScolastico') selectAnnoScolastico!: MatSelect; 
+  // @ViewChildren('endedIcons') endedIcons!: QueryList<any>;
 
+  
   @Output('annoId') annoIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
   @Output('classeId') classeIdEmitter = new EventEmitter<number>(); //classeId viene EMESSO quando si clicca su una classe
   @Output('addToAttended') addToAttended = new EventEmitter<CLS_ClasseSezioneAnno>(); //EMESSO quando si clicca sul (+) di aggiunta alle classi frequentate
@@ -151,7 +154,6 @@ constructor(
           this.idAnnoInput = params['idAnno'];     
           this.idClasseInput = params['idClasseSezioneAnno'];  
     });
-
 
     this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
       this.loadData();

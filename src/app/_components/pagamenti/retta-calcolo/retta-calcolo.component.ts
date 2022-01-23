@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -6,24 +6,28 @@ import { Observable } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
+//components
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { RettameseEditComponent } from '../rettamese-edit/rettamese-edit.component';
+
 //services
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { AlunniService } from '../../alunni/alunni.service';
 import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { ParametriService } from 'src/app/_services/parametri.service';
+import { IscrizioniService } from '../../classi/iscrizioni.service';
+import { RetteService } from '../rette.service';
+
 
 //classes
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
-import { ParametriService } from 'src/app/_services/parametri.service';
-import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
-import { IscrizioniService } from '../../classi/iscrizioni.service';
-import { RetteService } from '../rette.service';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
-import { RettameseEditComponent } from '../rettamese-edit/rettamese-edit.component';
+import { AttachSession } from 'protractor/built/driverProviders';
 
 @Component({
   selector: 'app-retta-calcolo',
@@ -45,7 +49,8 @@ export class RettaCalcoloComponent implements OnInit {
   public placeholderMeseArr=          ["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
   public QuoteDefault =               "000000000000";
 
-  @ViewChild('ListClassi') viewListClassi!: ClassiSezioniAnniListComponent; 
+  @ViewChild('ListClassi') viewListClassi!:     ClassiSezioniAnniListComponent; 
+  @ViewChildren('QuoteListElement') QuoteList!: QueryList<any>;
 
   constructor(
     public _dialogRef:                    MatDialogRef<RettaCalcoloComponent>,
@@ -149,14 +154,17 @@ export class RettaCalcoloComponent implements OnInit {
         //this.viewListClassi.showProgress = true;
            
         this.elaboraClasse(element);
-        //this.viewListClassi.endedProgress = false;
+        //this.viewListClassi.showProgress = false;
+        this.viewListClassi.endedProgress = true;
+        // let arrEndedIcons = this.viewListClassi.endedIcons.toArray();
+        // console.log (arrEndedIcons);
 
       }); 
       
       /*
       this.viewListClassi.showProgress = true;
       setTimeout(()  => {
-        this.viewListClassi.showProgress = false;
+        
         this.viewListClassi.endedProgress = true;
       }
       , 3000);
@@ -166,65 +174,128 @@ export class RettaCalcoloComponent implements OnInit {
 
   elaboraClasse(objClasseSezioneAnno: CLS_ClasseSezioneAnno){
 
-    console.log("ElaboraClasse - objClasseSezioneAnno:", objClasseSezioneAnno );
+    //********************************************************************************************************************************************************
+    //ATTENZIONE! DEVO ESSERE SICURO CHE SE C'è UNA RETTA IN UN MESE CI SIA IN TUTTI I 12 MESI ALTRIMENTI LA UPDATE NON FUNZIONA CORRETTAMENTE! ASSICURARSENE!
 
-    var ImportoAnno =objClasseSezioneAnno.classeSezione.classe.importo;
-    var ImportoAnno2 =objClasseSezioneAnno.classeSezione.classe.importo2;
+    let annoRetta = 0;
+    let importoMese  = 0;
+    let importoMeseRound  = 0;
+    let restoImportoMese  = 0;
+    let mese = 0 ;
+    let i = 0;
+    let contaChecked = 0;
+
+
+    let arrCheckboxes = this.QuoteList.toArray();
+    for( i=1; i<=12; i++){
+      if (arrCheckboxes[i-1].checked == true) {contaChecked++}
+    }
+
+    let anno1 = objClasseSezioneAnno.anno.anno1;
+    let anno2 = objClasseSezioneAnno.anno.anno2;
+
+    var importoAnno =objClasseSezioneAnno.classeSezione.classe.importo;
+    var importoAnno2 =objClasseSezioneAnno.classeSezione.classe.importo2;
+
+    importoMeseRound = Math.floor(importoAnno/contaChecked);
+    //per applicare il resto alla prima quota devo essere sicuro che le quote vengano passate in ordine, quindi nel service metto una orderby
+    restoImportoMese = importoAnno - importoMeseRound * contaChecked; 
 
     let obsIscrizioni$: Observable<CLS_Iscrizione[]>;
     obsIscrizioni$= this.svcIscrizioni.listByClasseSezioneAnno(objClasseSezioneAnno.id);
+    
     obsIscrizioni$.subscribe(val =>  {
 
-      //console.log("loop: " , val);
-
         val.forEach( (iscrizione: CLS_Iscrizione) => {
+            let primaQuota =  true;
             //iscrizione.statoID = 2;     //GET Stato ID ....
             //Update CLS_Iscrizione ....
-            let anno = this.viewListClassi.form.controls["selectAnnoScolastico"].value;
+            let anno = this.viewListClassi.form.controls["selectAnnoScolastico"].value; //SERVE? in verità l'idAnno sta anche dentro all'objClasseSezioneAnno...
 
             this.svcRette.loadByAlunnoAnno(iscrizione.alunnoID, anno )
               .subscribe(
                 retteAnnoAlunno =>{
+
                   if(retteAnnoAlunno.length == 0){
-                      console.log("INSERT - AlunnoID", iscrizione.alunnoID);
+                    console.log("INSERT - iscrizione: ", iscrizione, iscrizione.alunnoID, iscrizione.alunno.nome, iscrizione.alunno.cognome);
 
-                      //QUI!!!
-                      for( let i=1; i<=12; i++){
+                    const d = new Date();
+                    d.setSeconds(0,0);
+                    let dateNow = d.toISOString().split('.')[0];
 
-                        let rettaMese: PAG_Retta = {
-                          id : 0,
-                          annoID:                 anno,
-                          alunnoID:               iscrizione.alunnoID,
-                          
-                          annoRetta:              0,
-                          meseRetta:              0,
-                          quotaDefault:           0,
-                          quotaConcordata:        ImportoAnno,
-                          
-                          note:                   '',
-                          dtIns:                  '',
-                          dtUpd:                  '',
-                          userIns:                1,
-                          userUpd:                1
-                      };
+                    for( i=1; i<=12; i++){
 
-                      console.log("INSERT: ", rettaMese);
+                      if (i <= 4) {
+                        mese = i + 8;
+                        annoRetta = anno1;
+                      } else {
+                        mese = i - 4;
+                        annoRetta = anno2;
+                      }
+                      //console.log ("i", i, "arrCheckboxes[i-1].checked", arrCheckboxes[i-1].checked);
 
-                      this.svcRette.put(rettaMese);
-                    }
+                      if (arrCheckboxes[i-1].checked == false) { 
+                        importoMese = 0;
+                      } else {
+                        if (primaQuota) {
+                          importoMese = importoMeseRound + restoImportoMese;
+                          primaQuota = false;
+                        } else {
+                          importoMese = importoMeseRound;
+                        }
+                      }
 
+                      let rettaMese: PAG_Retta = {
+                        id : 0,
+                        annoID:                 anno,
+                        alunnoID:               iscrizione.alunnoID,
+                        annoRetta:              annoRetta,
+                        meseRetta:              mese,
+                        quotaDefault:           0,
+                        quotaConcordata:        importoMese,
+                        
+                        note:                   'test',
+                        dtIns:                  dateNow,
+                        dtUpd:                  dateNow,
+                        userIns:                1,
+                        userUpd:                1
+                    };
 
+                      console.log("POST: ", rettaMese);
+
+                      this.svcRette.post(rettaMese).subscribe();
                   }
-                  else{
-                    console.log("UPDATE - retteAnnoAlunno", retteAnnoAlunno);
-                    retteAnnoAlunno.forEach(rettaMese => {
 
-                      //ImportoMESE!!!!
-                      rettaMese.quotaConcordata = ImportoAnno;
+
+                  } else {
+                    console.log("UPDATE - retteAnnoAlunno", retteAnnoAlunno);
+
+                    retteAnnoAlunno.forEach((rettaMese) => {
+                      mese = rettaMese.meseRetta;
+
+                      if (mese <= 8) {
+                        i = mese + 3;
+                      } else {
+                        i = mese - 9;
+                      }
+                      console.log ("mese", mese, "i", i);
+                      console.log ("arrCheckboxes[i].checked", arrCheckboxes[i].checked);
+                      if (arrCheckboxes[i].checked == false) {
+                        importoMese = 0;
+                      } else {
+                        if (primaQuota) {
+                          importoMese = importoMeseRound + restoImportoMese;
+                          primaQuota = false;
+                        } else {
+                          importoMese = importoMeseRound;
+                        }
+                      }
+
+                      rettaMese.quotaConcordata = importoMese;
                       //... importo2      TODO
                       console.log("PUT RettaMese: ", rettaMese);
 
-                      this.svcRette.put(rettaMese);
+                      this.svcRette.put(rettaMese).subscribe();
                     });
                     
                   }
