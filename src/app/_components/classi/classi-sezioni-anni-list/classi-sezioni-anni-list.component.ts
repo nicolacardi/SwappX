@@ -386,9 +386,9 @@ sortCustom() {
   }
 
   updateImporto(element: CLS_ClasseSezioneAnno, value: any) {
-    //console.log (element, value);
+
     element.classeSezione.classe.importo = parseFloat(value);
-    //console.log (element);
+
     this.svcClassiSezioniAnni.put(element).subscribe(
       res=> {
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Importo salvato', panelClass: ['green-snackbar']})  //MOSTRA ESITO OK MA NON SALVA
