@@ -1,13 +1,14 @@
 import { ALU_Alunno } from "./ALU_Alunno";
 import { ASC_AnnoScolastico } from "./ASC_AnnoScolastico";
+import { CLS_Iscrizione } from "./CLS_Iscrizione";
 import { PAG_Pagamento } from "./PAG_Pagamento";
 
 export interface PAG_Retta {
        
         id:                     number,
+        iscrizioneID:           number,
         annoID:                 number,
         alunnoID:               number,
-        alunno?:                ALU_Alunno;
         
         annoRetta:              number,
         meseRetta:              number,
@@ -20,22 +21,13 @@ export interface PAG_Retta {
         userIns:                number;
         userUpd:                number;
 
-        pagamenti?:             PAG_Pagamento[];
+        iscrizione?:            CLS_Iscrizione;
         anno?:                  ASC_AnnoScolastico;
+        alunno?:                ALU_Alunno;
+        pagamenti?:             PAG_Pagamento[];
+
 }
 
-// "id": 4,
-// "annoID": 1,
-// "alunnoID": 3,
-// "anno": 2019,
-// "mese": 10,
-// "quotaDefault": 300,
-// "quotaConcordata": 280,
-// "note": null,
-// "dtIns": "2021-07-01T00:00:00",
-// "dtUpd": null,
-// "userIns": 1,
-// "userUpd": null
 
 
 export interface PAG_RettePagamenti_Sum {

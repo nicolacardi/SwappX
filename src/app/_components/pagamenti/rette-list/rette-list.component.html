@@ -59,10 +59,10 @@
             <mat-cell *matCellDef="let element">{{element.cognome}}</mat-cell>
     </ng-container>
 
-    <!-- <ng-container matColumnDef="classe">
+    <ng-container matColumnDef="classe">
         <mat-header-cell *matHeaderCellDef >Classe</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.nome}}</mat-cell>
-    </ng-container> -->
+            <mat-cell *matCellDef="let element">{{element.iscrizione.classeSezioneAnno.classeSezione.classe.descrizioneBreve + ' '+ element.iscrizione.classeSezioneAnno.classeSezione.sezione}}</mat-cell>
+    </ng-container>
 
     <ng-container matColumnDef="tipoRec_C">
         <mat-header-cell *matHeaderCellDef >Tipo</mat-header-cell>
@@ -168,66 +168,66 @@
     <ng-container matColumnDef="d_SET">
         <mat-header-cell class="center" *matHeaderCellDef >SET</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element"
-            >{{element.d_SET}}</mat-cell>
+            ></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="d_OTT">
         <mat-header-cell class="center" *matHeaderCellDef >OTT</mat-header-cell>
-            <mat-cell class="center" *matCellDef="let element">{{element.d_OTT}}</mat-cell>
+            <mat-cell class="center" *matCellDef="let element"></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="d_NOV">
         <mat-header-cell class="center" *matHeaderCellDef >NOV</mat-header-cell>
-            <mat-cell class="center" *matCellDef="let element">{{element.d_NOV}}</mat-cell>
+            <mat-cell class="center" *matCellDef="let element"></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="d_DIC">
         <mat-header-cell class="center" *matHeaderCellDef >DIC</mat-header-cell>
-            <mat-cell class="center" *matCellDef="let element">{{element.d_DIC}}</mat-cell>
+            <mat-cell class="center" *matCellDef="let element"></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="d_GEN">
         <mat-header-cell class="center" *matHeaderCellDef >GEN</mat-header-cell>
-            <mat-cell class="center" *matCellDef="let element">{{element.d_GEN}}</mat-cell>
+            <mat-cell class="center" *matCellDef="let element"></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="d_FEB">
         <mat-header-cell class="center" *matHeaderCellDef >FEB</mat-header-cell>
-            <mat-cell class="center" *matCellDef="let element">{{element.d_FEB}}</mat-cell>
+            <mat-cell class="center" *matCellDef="let element"></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="d_MAR">
         <mat-header-cell class="center" *matHeaderCellDef >MAR</mat-header-cell>
-            <mat-cell class="center" *matCellDef="let element">{{element.d_MAR}}</mat-cell>
+            <mat-cell class="center" *matCellDef="let element"></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="d_APR">
         <mat-header-cell class="center" *matHeaderCellDef >APR</mat-header-cell>
-            <mat-cell class="center" *matCellDef="let element">{{element.d_APR}}</mat-cell>
+            <mat-cell class="center" *matCellDef="let element"></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="d_MAG">
         <mat-header-cell class="center" *matHeaderCellDef >MAG</mat-header-cell>
-            <mat-cell class="center" *matCellDef="let element">{{element.d_MAG}}</mat-cell>
+            <mat-cell class="center" *matCellDef="let element"></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="d_GIU">
         <mat-header-cell class="center" *matHeaderCellDef >GIU</mat-header-cell>
-            <mat-cell class="center" *matCellDef="let element">{{element.d_GIU}}</mat-cell>
+            <mat-cell class="center" *matCellDef="let element"></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="d_LUG">
         <mat-header-cell class="center" *matHeaderCellDef >LUG</mat-header-cell>
-            <mat-cell class="center" *matCellDef="let element">{{element.d_LUG}}</mat-cell>
+            <mat-cell class="center" *matCellDef="let element"></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="d_AGO">
         <mat-header-cell class="center" *matHeaderCellDef >AGO</mat-header-cell>
-            <mat-cell class="center" *matCellDef="let element">{{element.d_AGO}}</mat-cell>
+            <mat-cell class="center" *matCellDef="let element"></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="d_TOT">
-        <mat-header-cell class="_grey-background" *matHeaderCellDef >ANNO</mat-header-cell>
+        <mat-header-cell class="center _grey-background" *matHeaderCellDef >ANNO</mat-header-cell>
             <mat-cell class="center _totAnno _grey-background" *matCellDef="let element" 
             
             >{{element.d_TOT}}</mat-cell>
@@ -358,7 +358,7 @@
 
     
     <!-- **************************   MAT-HEADER-ROW   ******************* -->
-    <mat-header-row *matHeaderRowDef="c_displayedColumns;"></mat-header-row>
+    <mat-header-row *matHeaderRowDef="d_displayedColumns;"></mat-header-row>
     
     <!-- **************************   MAT-ROW   ******************* -->
     <mat-row *matRowDef="let element;columns: d_displayedColumns;"

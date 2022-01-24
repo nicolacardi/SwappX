@@ -1,5 +1,6 @@
 import { ALU_Alunno } from "./ALU_Alunno";
 import { CLS_ClasseSezioneAnno } from "./CLS_ClasseSezioneAnno";
+import { CLS_Iscrizione } from "./CLS_Iscrizione";
 
 export interface PAG_RettaPivot {
         alunnoID:               number;
@@ -53,7 +54,8 @@ export interface PAG_RettaPivot {
 
         p_TOT:    number;
 
-        ClasseSezioneAnno?:    CLS_ClasseSezioneAnno; //NC 240122  ...per mostrare in ElencoRette anche la classe
+        iscrizione?:           CLS_Iscrizione;
+        classeSezioneAnno?:    CLS_ClasseSezioneAnno; //NC 240122  ...per mostrare in ElencoRette anche la classe
 
 
 }

@@ -38,7 +38,7 @@ export class RetteListComponent implements OnInit {
   obsAnni$!:                Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   form:                     FormGroup;            //form fatto della sola combo anno scolastico
   annoID!:                  number;
-
+  public pippo!:             string;
   showC= true;
   showD= true;
   showP= true;
@@ -55,25 +55,27 @@ export class RetteListComponent implements OnInit {
     "actionsColumn", 
     "nome",
     "cognome",
+    "classe",
     "tipoRec_D",  
     "d_TOT",
-    "blank2",
-    "blank2",
-    "blank2",
-    "blank2",
-    "blank2",
-    "blank2",
-    "blank2",
-    "blank2",
-    "blank2",
-    "blank2",
-    "blank2",
-    "blank2"
+    "d_SET",
+    "d_OTT",
+    "d_NOV",
+    "d_DIC",
+    "d_GEN",
+    "d_FEB",
+    "d_MAR",
+    "d_APR",
+    "d_MAG",
+    "d_GIU",
+    "d_LUG",
+    "d_AGO",
   ];
 
   c_displayedColumns: string[] = [
 
     "blank",
+    "blank2",
     "blank2",
     "blank2",
     "tipoRec_C",
@@ -95,6 +97,7 @@ export class RetteListComponent implements OnInit {
   p_displayedColumns: string[] = [
 
     "blank",
+    "blank2",
     "blank2",
     "blank2",
     "tipoRec_P",
@@ -188,6 +191,7 @@ export class RetteListComponent implements OnInit {
           //console.log ("quotatrovata2",this.trovaquotaMeseA(arr, 9)) ;
           //console.log ("quotaPagamenti",this.trovaSommaPagMese(arr, 9)) ;
           console.log ("arr",arr[1][0]) ; 
+          this.pippo = arr[1][0].iscrizione?.classeSezioneAnno!.classeSezione!.classe!.descrizioneBreve!;
           arrObj.push(
             {
             'alunnoID': arr[0],
@@ -195,6 +199,7 @@ export class RetteListComponent implements OnInit {
             nome: arr[1][0].alunno!.nome,
             cognome: arr[1][0].alunno!.cognome,
             annoID : arr[1][0].annoID,
+            iscrizione : arr[1][0].iscrizione,
             'c_SET': this.trovaQuotaConcMese(arr, 9) ,       //ERA: 'c_SET': arr[1][0].quotaConcordata,  MA COSI' SI CREAVANO I VUOTI
             'c_OTT': this.trovaQuotaConcMese(arr, 10) ,  
             'c_NOV': this.trovaQuotaConcMese(arr, 11) ,  
@@ -428,34 +433,43 @@ export class RetteListComponent implements OnInit {
        this.c_displayedColumns[0] = "blank";
        this.c_displayedColumns[1] = "blank2";
        this.c_displayedColumns[2] = "blank2";
+       this.c_displayedColumns[3] = "blank2";
        this.p_displayedColumns[0] = "actionsColumn";
        this.p_displayedColumns[1] = "nome";
-       this.p_displayedColumns[2] = "cognome";  
+       this.p_displayedColumns[2] = "cognome";
+       this.p_displayedColumns[3] = "classe";  
        this.d_displayedColumns[0] = "blank";
        this.d_displayedColumns[1] = "blank2";
        this.d_displayedColumns[2] = "blank2";
+       this.d_displayedColumns[3] = "blank2";
        
       } else {
        this.c_displayedColumns[0] = "actionsColumn";
        this.c_displayedColumns[1] = "nome";
        this.c_displayedColumns[2] = "cognome";
+       this.c_displayedColumns[3] = "classe";
        this.p_displayedColumns[0] = "blank";
        this.p_displayedColumns[1] = "blank2";
-       this.p_displayedColumns[2] = "blank2";  
+       this.p_displayedColumns[2] = "blank2";
+       this.p_displayedColumns[3] = "blank2";
        this.d_displayedColumns[0] = "blank";
        this.d_displayedColumns[1] = "blank2";
        this.d_displayedColumns[2] = "blank2";
+       this.d_displayedColumns[3] = "blank2";
       }
     } else {
      this.c_displayedColumns[0] = "blank";
      this.c_displayedColumns[1] = "blank2";
      this.c_displayedColumns[2] = "blank2";
+     this.c_displayedColumns[3] = "blank2";
      this.p_displayedColumns[0] = "blank";
      this.p_displayedColumns[1] = "blank2";
      this.p_displayedColumns[2] = "blank2";
+     this.p_displayedColumns[3] = "blank2";
      this.d_displayedColumns[0] = "actionsColumn";
      this.d_displayedColumns[1] = "nome";
      this.d_displayedColumns[2] = "cognome";
+     this.d_displayedColumns[3] = "classe";
     }
 
     if (!this.showP) {

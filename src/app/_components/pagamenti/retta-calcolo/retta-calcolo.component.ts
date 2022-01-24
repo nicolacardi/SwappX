@@ -10,6 +10,8 @@ import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { RettameseEditComponent } from '../rettamese-edit/rettamese-edit.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 //services
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
@@ -28,6 +30,7 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { AttachSession } from 'protractor/built/driverProviders';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 @Component({
   selector: 'app-retta-calcolo',
@@ -64,6 +67,8 @@ export class RettaCalcoloComponent implements OnInit {
     private svcParametri:                 ParametriService,
     private _loadingService:              LoadingService,
     private fb:                           FormBuilder, 
+    private _snackBar:                    MatSnackBar
+
   ) {
 
     _dialogRef.disableClose = true;
@@ -166,17 +171,13 @@ export class RettaCalcoloComponent implements OnInit {
         // (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).style.visibility = "visible";
         (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).style.visibility = "visible";
         (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).style.opacity = "1";
+        
+        
 
       }); 
-      
-      /*
-      this.viewListClassi.showProgress = true;
-      setTimeout(()  => {
-        
-        this.viewListClassi.endedProgress = true;
-      }
-      , 3000);
-      */
+      console.log("QUI");
+      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per le classi selezionate', panelClass: ['green-snackbar']});
+
     }
   }
 
@@ -199,6 +200,7 @@ export class RettaCalcoloComponent implements OnInit {
       if (arrCheckboxes[i-1].checked == true) {contaChecked++}
     }
 
+    let annoID = objClasseSezioneAnno.anno.id
     let anno1 = objClasseSezioneAnno.anno.anno1;
     let anno2 = objClasseSezioneAnno.anno.anno2;
 
@@ -216,11 +218,11 @@ export class RettaCalcoloComponent implements OnInit {
 
         val.forEach( (iscrizione: CLS_Iscrizione) => {
             let primaQuota =  true;
+
             //iscrizione.statoID = 2;     //GET Stato ID ....
             //Update CLS_Iscrizione ....
-            let anno = this.viewListClassi.form.controls["selectAnnoScolastico"].value; //SERVE? in verità l'idAnno sta anche dentro all'objClasseSezioneAnno...
 
-            this.svcRette.loadByAlunnoAnno(iscrizione.alunnoID, anno )
+            this.svcRette.loadByAlunnoAnno(iscrizione.alunnoID, annoID )
               .subscribe(
                 retteAnnoAlunno =>{
 
@@ -255,7 +257,8 @@ export class RettaCalcoloComponent implements OnInit {
 
                       let rettaMese: PAG_Retta = {
                         id : 0,
-                        annoID:                 anno,
+                        iscrizioneID:           iscrizione.id,
+                        annoID:                 annoID,
                         alunnoID:               iscrizione.alunnoID,
                         annoRetta:              annoRetta,
                         meseRetta:              mese,

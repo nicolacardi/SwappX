@@ -35,13 +35,14 @@ export class ProfiloComponent implements OnInit {
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
   @ViewChild('canvasDOM', {static: false}) canvasDOM!: ElementRef;
 
-  constructor(private fb:                   FormBuilder, 
-              private svcUser:              UserService,
-              public _dialog:               MatDialog,
-              private router:               Router,
-              private eventEmitterService:  EventEmitterService,
-              private _snackBar:            MatSnackBar
-    ) { 
+  constructor(
+    private fb:                   FormBuilder, 
+    private svcUser:              UserService,
+    public _dialog:               MatDialog,
+    private router:               Router,
+    private eventEmitterService:  EventEmitterService,
+    private _snackBar:            MatSnackBar
+) { 
 
     this.form = this.fb.group({
       file:           ['' , [Validators.required]],
