@@ -94,7 +94,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   form! :                             FormGroup;
   public showProgress=                false;
   public endedProgress=               false;
-
+  public arrEndedIcons = [23, 32];
   
   selectedRowIndex = -1;
 
@@ -111,16 +111,15 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#region ----- ViewChild Input Output -------
 
-  @Input('dove') dove! :                                      string;
-  @Input('alunnoId') alunnoId! :                              number;
-  @Input() classiSezioniAnniFilterComponent!:                 ClassiSezioniAnniFilterComponent;
+  @Input('dove') dove! :                                          string;
+  @Input('alunnoId') alunnoId! :                                  number;
+  @Input() classiSezioniAnniFilterComponent!:                     ClassiSezioniAnniFilterComponent;
 
-  @ViewChild(MatPaginator) paginator!:                        MatPaginator;
-  @ViewChild(MatSort) sort!:                                  MatSort;
-  @ViewChild("filterInput") filterInput!:                     ElementRef;  
-  @ViewChild('selectAnnoScolastico') selectAnnoScolastico!: MatSelect; 
-  // @ViewChildren('endedIcons') endedIcons!: QueryList<any>;
-
+  @ViewChild(MatPaginator) paginator!:                            MatPaginator;
+  @ViewChild(MatSort) sort!:                                      MatSort;
+  @ViewChild("filterInput") filterInput!:                         ElementRef;  
+  @ViewChild('selectAnnoScolastico') selectAnnoScolastico!:       MatSelect; 
+  @ViewChildren("endedIcons", { read: ElementRef }) endedIcons!:  QueryList<ElementRef>   //elenco delle icone di fine procedura
   
   @Output('annoId') annoIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
   @Output('classeId') classeIdEmitter = new EventEmitter<number>(); //classeId viene EMESSO quando si clicca su una classe
@@ -148,7 +147,8 @@ constructor(
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
-
+    // let arrEndedIcons = this.endedIcons.toArray();
+    // console.log ("endedIcons", arrEndedIcons);
     this.actRoute.queryParams.subscribe(
       params => {
           this.idAnnoInput = params['idAnno'];     
