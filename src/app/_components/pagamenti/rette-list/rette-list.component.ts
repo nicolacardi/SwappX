@@ -56,19 +56,20 @@ export class RetteListComponent implements OnInit {
     "nome",
     "cognome",
     "tipoRec_D",  
-
-    "d_SET",
-    "d_OTT",
-    "d_NOV",
-    "d_DIC",
-    "d_GEN",
-    "d_FEB",
-    "d_MAR",
-    "d_APR",
-    "d_MAG",
-    "d_GIU",
-    "d_LUG",
-    "d_AGO" ];
+    "d_TOT",
+    "blank2",
+    "blank2",
+    "blank2",
+    "blank2",
+    "blank2",
+    "blank2",
+    "blank2",
+    "blank2",
+    "blank2",
+    "blank2",
+    "blank2",
+    "blank2"
+  ];
 
   c_displayedColumns: string[] = [
 
@@ -76,6 +77,7 @@ export class RetteListComponent implements OnInit {
     "blank2",
     "blank2",
     "tipoRec_C",
+    "c_TOT",
     "c_SET",
     "c_OTT",
     "c_NOV",
@@ -87,7 +89,8 @@ export class RetteListComponent implements OnInit {
     "c_MAG",
     "c_GIU",
     "c_LUG",
-    "c_AGO" ];
+    "c_AGO",
+     ];
   
   p_displayedColumns: string[] = [
 
@@ -95,6 +98,7 @@ export class RetteListComponent implements OnInit {
     "blank2",
     "blank2",
     "tipoRec_P",
+    "p_TOT",
     "p_SET",
     "p_OTT",
     "p_NOV",
@@ -106,7 +110,8 @@ export class RetteListComponent implements OnInit {
     "p_MAG",
     "p_GIU",
     "p_LUG",
-    "p_AGO" ];
+    "p_AGO",
+    ];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
@@ -182,7 +187,7 @@ export class RetteListComponent implements OnInit {
           
           //console.log ("quotatrovata2",this.trovaquotaMeseA(arr, 9)) ;
           //console.log ("quotaPagamenti",this.trovaSommaPagMese(arr, 9)) ;
-
+          console.log ("arr",arr[1][0]) ; 
           arrObj.push(
             {
             'alunnoID': arr[0],
@@ -201,7 +206,9 @@ export class RetteListComponent implements OnInit {
             'c_MAG': this.trovaQuotaConcMese(arr, 5) ,  
             'c_GIU': this.trovaQuotaConcMese(arr, 6) ,  
             'c_LUG': this.trovaQuotaConcMese(arr, 7) ,  
-            'c_AGO': this.trovaQuotaConcMese(arr, 8) ,  
+            'c_AGO': this.trovaQuotaConcMese(arr, 8) , 
+            
+            'c_TOT': this.sommaQuoteConc(arr),
 
             'd_SET': this.trovaQuotaDefMese(arr, 9), 
             'd_OTT': this.trovaQuotaDefMese(arr, 10),
@@ -216,6 +223,8 @@ export class RetteListComponent implements OnInit {
             'd_LUG': this.trovaQuotaDefMese(arr, 7),
             'd_AGO': this.trovaQuotaDefMese(arr, 8),
 
+            'd_TOT': this.sommaQuoteDef(arr),
+
             'p_SET': this.trovaSommaPagMese(arr, 9), 
             'p_OTT': this.trovaSommaPagMese(arr, 10),
             'p_NOV': this.trovaSommaPagMese(arr, 11),
@@ -227,7 +236,9 @@ export class RetteListComponent implements OnInit {
             'p_MAG': this.trovaSommaPagMese(arr, 5),
             'p_GIU': this.trovaSommaPagMese(arr, 6),
             'p_LUG': this.trovaSommaPagMese(arr, 7),
-            'p_AGO': this.trovaSommaPagMese(arr, 8)
+            'p_AGO': this.trovaSommaPagMese(arr, 8),
+
+            'p_TOT': this.sommaQuotePagAnno(arr),
             }
           );  //fine arrObj.push
           return arrObj;
@@ -251,7 +262,18 @@ export class RetteListComponent implements OnInit {
       } else {
         return 0;
       }
-   }
+  }
+
+  sommaQuoteConc (arr: Array<any>) : number {
+    this.myObjAssigned.alunnoID =  arr[0];
+    this.myObjAssigned._Rette =  arr[1]; 
+    let totQuotaConcordata = 0;
+    if (this.myObjAssigned._Rette.length != 0) {
+      this.myObjAssigned._Rette.forEach(mese=> totQuotaConcordata += mese.quotaConcordata) 
+    }
+      //INTERESSANTE L'USO DEL '!' IN QUESTO CASO! dice: "sono sicuro che non sia undefined"
+    return totQuotaConcordata;  
+  }
 
   trovaQuotaDefMese (arr: Array<any>, m: number) : number {
     this.myObjAssigned.alunnoID =  arr[0];
@@ -261,23 +283,48 @@ export class RetteListComponent implements OnInit {
       } else {
         return 0;
       }
-   }
+  }
 
-   trovaSommaPagMese (arr: Array<any>, m: number) : number {
+  sommaQuoteDef (arr: Array<any>) : number {
+    this.myObjAssigned.alunnoID =  arr[0];
+    this.myObjAssigned._Rette =  arr[1]; 
+    let totQuotaDefault = 0;
+    if (this.myObjAssigned._Rette.length != 0) {
+      this.myObjAssigned._Rette.forEach(mese=> totQuotaDefault += mese.quotaDefault) 
+    }
+      //INTERESSANTE L'USO DEL '!' IN QUESTO CASO! dice: "sono sicuro che non sia undefined"
+    return totQuotaDefault;  
+  }
+
+  trovaSommaPagMese (arr: Array<any>, m: number) : number {
+  //console.log (arr);
+  let sumPags: number;
+  this.myObjAssigned.alunnoID =  arr[0];
+  this.myObjAssigned._Rette =  arr[1]; 
+    if (this.myObjAssigned._Rette.find(x=> x.meseRetta == m)?.pagamenti) {
+      sumPags = 0;
+      //IN QUESTO CASO ci sono ben DUE "!" uno per il find e uno per i pagamenti
+      this.myObjAssigned._Rette.find(x=> x.meseRetta == m)!.pagamenti!
+      .forEach (x=> sumPags = sumPags + x.importo) ;
+      return sumPags;
+    } else {
+      return 0;
+    }
+  }
+
+  sommaQuotePagAnno (arr: Array<any>) : number {
     //console.log (arr);
     let sumPags: number;
     this.myObjAssigned.alunnoID =  arr[0];
-    this.myObjAssigned._Rette =  arr[1]; 
-      if (this.myObjAssigned._Rette.find(x=> x.meseRetta == m)?.pagamenti) {
-        sumPags = 0;
-        //IN QUESTO CASO ci sono ben DUE "!" uno per il find e uno per i pagamenti
-        this.myObjAssigned._Rette.find(x=> x.meseRetta == m)!.pagamenti!
-        .forEach (x=> sumPags = sumPags + x.importo) ;
-        return sumPags;
-      } else {
-        return 0;
-      }
-   }
+    this.myObjAssigned._Rette =  arr[1];
+    let sumPagsAnno = 0 ;
+    if (this.myObjAssigned._Rette.length != 0) {
+      this.myObjAssigned._Rette.forEach(mese => mese!.pagamenti!
+        .forEach (x=> sumPagsAnno = sumPagsAnno + x.importo)) ;
+    } 
+
+    return sumPagsAnno;
+  }
 //#endregion
 
 //#region ----- Filtri & Sort -------

@@ -59,93 +59,105 @@
             <mat-cell *matCellDef="let element">{{element.cognome}}</mat-cell>
     </ng-container>
 
+    <!-- <ng-container matColumnDef="classe">
+        <mat-header-cell *matHeaderCellDef >Classe</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.nome}}</mat-cell>
+    </ng-container> -->
+
     <ng-container matColumnDef="tipoRec_C">
         <mat-header-cell *matHeaderCellDef >Tipo</mat-header-cell>
             <mat-cell *matCellDef="let element">Concordate</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="c_SET">
-        <mat-header-cell *matHeaderCellDef >SET</mat-header-cell>
+        <mat-header-cell class="center" *matHeaderCellDef >SET</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element" 
             [ngClass]="{'_highlightConc': element.c_SET < element.d_SET}"
             >{{element.c_SET}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="c_OTT">
-        <mat-header-cell *matHeaderCellDef >OTT</mat-header-cell>
+        <mat-header-cell class="center" *matHeaderCellDef >OTT</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element" 
             [ngClass]="{'_highlightConc': element.c_OTT < element.d_OTT}"
             >{{element.c_OTT}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="c_NOV">
-        <mat-header-cell *matHeaderCellDef >NOV</mat-header-cell>
+        <mat-header-cell class="center" *matHeaderCellDef >NOV</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element" 
             [ngClass]="{'_highlightConc': element.c_NOV < element.d_NOV}"
             >{{element.c_NOV}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="c_DIC">
-        <mat-header-cell *matHeaderCellDef >DIC</mat-header-cell>
+        <mat-header-cell class="center" *matHeaderCellDef >DIC</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element"
             [ngClass]="{'_highlightConc': element.c_DIC < element.d_DIC}"
             >{{element.c_DIC}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="c_GEN">
-        <mat-header-cell *matHeaderCellDef >GEN</mat-header-cell>
+        <mat-header-cell class="center" *matHeaderCellDef >GEN</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element" 
             [ngClass]="{'_highlightConc': element.c_GEN < element.d_GEN}"
             >{{element.c_GEN}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="c_FEB">
-        <mat-header-cell *matHeaderCellDef >FEB</mat-header-cell>
+        <mat-header-cell class="center" *matHeaderCellDef >FEB</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element" 
             [ngClass]="{'_highlightConc': element.c_FEB < element.d_FEB}"
             >{{element.c_FEB}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="c_MAR">
-        <mat-header-cell *matHeaderCellDef >MAR</mat-header-cell>
+        <mat-header-cell class="center" *matHeaderCellDef >MAR</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element" 
             [ngClass]="{'_highlightConc': element.c_MAR < element.d_MAR}"
             >{{element.c_MAR}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="c_APR">
-        <mat-header-cell *matHeaderCellDef >APR</mat-header-cell>
+        <mat-header-cell class="center" *matHeaderCellDef >APR</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element" 
             [ngClass]="{'_highlightConc': element.c_APR < element.d_APR}"
             >{{element.c_APR}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="c_MAG">
-        <mat-header-cell *matHeaderCellDef >MAG</mat-header-cell>
+        <mat-header-cell class="center" *matHeaderCellDef >MAG</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element" 
             [ngClass]="{'_highlightConc': element.c_MAG < element.d_MAG}"
             >{{element.c_MAG}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="c_GIU">
-        <mat-header-cell *matHeaderCellDef >GIU</mat-header-cell>
+        <mat-header-cell class="center" *matHeaderCellDef >GIU</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element" 
             [ngClass]="{'_highlightConc': element.c_GIU < element.d_GIU}"
             >{{element.c_GIU}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="c_LUG">
-        <mat-header-cell *matHeaderCellDef >LUG</mat-header-cell>
+        <mat-header-cell class="center" *matHeaderCellDef >LUG</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element" 
             [ngClass]="{'_highlightConc': element.c_LUG < element.d_LUG}"
             >{{element.c_LUG}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="c_AGO">
-        <mat-header-cell *matHeaderCellDef >AGO</mat-header-cell>
+        <mat-header-cell class="center" *matHeaderCellDef >AGO</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element" 
             [ngClass]="{'highlight': element.c_AGO < element.d_AGO}"
             >{{element.c_AGO}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="c_TOT">
+        <mat-header-cell class="center _grey-background" *matHeaderCellDef >ANNO</mat-header-cell>
+            <mat-cell class="center _totAnno _grey-background" *matCellDef="let element" 
+            
+            >{{element.c_TOT}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="tipoRec_D">
@@ -212,6 +224,13 @@
     <ng-container matColumnDef="d_AGO">
         <mat-header-cell class="center" *matHeaderCellDef >AGO</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element">{{element.d_AGO}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="d_TOT">
+        <mat-header-cell class="_grey-background" *matHeaderCellDef >ANNO</mat-header-cell>
+            <mat-cell class="center _totAnno _grey-background" *matCellDef="let element" 
+            
+            >{{element.d_TOT}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="tipoRec_P">
@@ -291,6 +310,13 @@
             [ngClass]="{'_highlightPagL': element.p_AGO < element.c_AGO}">{{element.p_AGO}}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="p_TOT">
+        <mat-header-cell *matHeaderCellDef >ANNO</mat-header-cell>
+            <mat-cell class="center _totAnno _grey-background" *matCellDef="let element" 
+            
+            >{{element.p_TOT}}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="blank">
         <mat-header-cell *matHeaderCellDef ></mat-header-cell>
             <mat-cell class="cellNoBorder" *matCellDef="let element"></mat-cell>
@@ -332,7 +358,7 @@
 
     
     <!-- **************************   MAT-HEADER-ROW   ******************* -->
-    <mat-header-row *matHeaderRowDef="d_displayedColumns;"></mat-header-row>
+    <mat-header-row *matHeaderRowDef="c_displayedColumns;"></mat-header-row>
     
     <!-- **************************   MAT-ROW   ******************* -->
     <mat-row *matRowDef="let element;columns: d_displayedColumns;"

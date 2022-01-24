@@ -257,6 +257,10 @@
     .pt60 {
         padding-top: 60px;
     }
+
+    .pl5 {
+        padding-left: 5px;
+    }
 /*#endregion ***************************/
 
 /*#region ********** WIDTH *************/
@@ -663,6 +667,10 @@ in fase di creazione della Dialog addAlunno*/
     }
 
 
+    ._grey-background {
+        background-color: rgba(173, 173, 173, 0.142);
+    }
+
 
 
 
@@ -740,7 +748,8 @@ mat-nav-list a img {
 
 ._icona-check-green {
     color: green;
-    transition: transform .2s ease-in-out;
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
 }
 /**********************************/
 

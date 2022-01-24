@@ -163,7 +163,9 @@ export class RettaCalcoloComponent implements OnInit {
         let arrEndedIcons = this.viewListClassi.endedIcons.toArray();
         //imposta l'icona che ha id = "endedIcon_idDellaClasse" a visibility= visible
         // (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).innerHTML = "FINITO";  //se avessimo voluto mostrare un testo in una label
+        // (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).style.visibility = "visible";
         (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).style.visibility = "visible";
+        (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).style.opacity = "1";
 
       }); 
       
