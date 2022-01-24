@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -154,10 +154,16 @@ export class RettaCalcoloComponent implements OnInit {
         //this.viewListClassi.showProgress = true;
            
         this.elaboraClasse(element);
+        
         //this.viewListClassi.showProgress = false;
+        
         this.viewListClassi.endedProgress = true;
-        // let arrEndedIcons = this.viewListClassi.endedIcons.toArray();
-        // console.log (arrEndedIcons);
+
+        //crea l'array di icone di fine procedura
+        let arrEndedIcons = this.viewListClassi.endedIcons.toArray();
+        //imposta l'icona che ha id = "endedIcon_idDellaClasse" a visibility= visible
+        // (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).innerHTML = "FINITO";  //se avessimo voluto mostrare un testo in una label
+        (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).style.visibility = "visible";
 
       }); 
       
@@ -217,7 +223,7 @@ export class RettaCalcoloComponent implements OnInit {
                 retteAnnoAlunno =>{
 
                   if(retteAnnoAlunno.length == 0){
-                    console.log("INSERT - iscrizione: ", iscrizione, iscrizione.alunnoID, iscrizione.alunno.nome, iscrizione.alunno.cognome);
+                    //console.log("INSERT - iscrizione: ", iscrizione, iscrizione.alunnoID, iscrizione.alunno.nome, iscrizione.alunno.cognome);
 
                     const d = new Date();
                     d.setSeconds(0,0);
@@ -268,7 +274,7 @@ export class RettaCalcoloComponent implements OnInit {
 
 
                   } else {
-                    console.log("UPDATE - retteAnnoAlunno", retteAnnoAlunno);
+                    //console.log("UPDATE - retteAnnoAlunno", retteAnnoAlunno);
 
                     retteAnnoAlunno.forEach((rettaMese) => {
                       mese = rettaMese.meseRetta;
@@ -278,8 +284,8 @@ export class RettaCalcoloComponent implements OnInit {
                       } else {
                         i = mese - 9;
                       }
-                      console.log ("mese", mese, "i", i);
-                      console.log ("arrCheckboxes[i].checked", arrCheckboxes[i].checked);
+                      //console.log ("mese", mese, "i", i);
+                      //console.log ("arrCheckboxes[i].checked", arrCheckboxes[i].checked);
                       if (arrCheckboxes[i].checked == false) {
                         importoMese = 0;
                       } else {
@@ -293,7 +299,7 @@ export class RettaCalcoloComponent implements OnInit {
 
                       rettaMese.quotaConcordata = importoMese;
                       //... importo2      TODO
-                      console.log("PUT RettaMese: ", rettaMese);
+                      //console.log("PUT RettaMese: ", rettaMese);
 
                       this.svcRette.put(rettaMese).subscribe();
                     });

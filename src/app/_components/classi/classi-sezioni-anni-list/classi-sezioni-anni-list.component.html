@@ -55,12 +55,13 @@
                                 <!-- ho tolto questo (change)="$event ? selection.toggle(row) : null" -->
                 </mat-checkbox>
             </div>  
-            <div class="flex-item">
+            <!-- <div class="flex-item">
                 <mat-progress-bar class="prgBar" [ngClass]="{'invisible': ! (showProgress && ckSelected.checked)}" mode="indeterminate"></mat-progress-bar>  
-            </div>
+            </div> è troppo veloce per la progressbar -->
             <div class="flex-item">
-                <mat-icon  [attr.id]="'endedIcon_'+element.id" class="_icona-check-green">check_circle_outline</mat-icon>
-                <!-- [ngClass]="{'invisible': ! (endedProgress && ckSelected.checked)}" -->
+                <!-- l'id indica QUALE icona andrà accesa, #endedIcons serve per la viewChildren, servono entrambe -->
+                <mat-icon  #endedIcons [attr.id]="'endedIcon_'+element.id" class="_icona-check-green invisible">check_circle_outline</mat-icon>
+                <!-- <mat-label #endedIcons [attr.id]="'endedIcon_'+element.id"></mat-label>  -->
             </div>
         </div>
         </td>
