@@ -171,6 +171,9 @@ export class RettaCalcoloComponent implements OnInit {
     //per applicare il resto alla prima quota devo essere sicuro che le quote vengano passate in ordine, quindi nel service metto una orderby
     restoImportoMese = importoAnno - importoMeseRound * contaChecked; 
 
+
+
+
     let obsIscrizioni$: Observable<CLS_Iscrizione[]>;
     obsIscrizioni$= this.svcIscrizioni.listByClasseSezioneAnno(objClasseSezioneAnno.id);
     
@@ -181,6 +184,8 @@ export class RettaCalcoloComponent implements OnInit {
 
             //iscrizione.statoID = 2;     //GET Stato ID ....
             //Update CLS_Iscrizione ....
+            this.svcIscrizioni.updateStato(iscrizione, "20").subscribe();
+            
 
             this.svcRette.loadByAlunnoAnno(iscrizione.alunnoID, annoID )
               .subscribe(
