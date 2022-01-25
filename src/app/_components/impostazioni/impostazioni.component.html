@@ -26,8 +26,9 @@
     </mat-grid-list>
 
     <div class="center mt10">
-        <mat-slide-toggle class="ma">Parametro 1</mat-slide-toggle>
+        <mat-slide-toggle *ngIf="parQuoteRidotteFratelli" formControlName="quoteRidotteFratelli" class="ma">Quota ridotta per fratelli minori</mat-slide-toggle>
     </div>
+
     <div class="center">
         <mat-slide-toggle class="ma">Parametro 2</mat-slide-toggle>
     </div>
