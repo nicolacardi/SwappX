@@ -222,7 +222,7 @@ export class RettaCalcoloComponent implements OnInit {
                         alunnoID:               iscrizione.alunnoID,
                         annoRetta:              annoRetta,
                         meseRetta:              mese,
-                        quotaDefault:           0,
+                        quotaDefault:           importoMese,
                         quotaConcordata:        importoMese,
                         
                         note:                   'test',
@@ -263,6 +263,7 @@ export class RettaCalcoloComponent implements OnInit {
                       }
 
                       rettaMese.quotaConcordata = importoMese;
+                      rettaMese.quotaDefault = importoMese;
                       //... importo2      TODO
                       //console.log("PUT RettaMese: ", rettaMese);
 

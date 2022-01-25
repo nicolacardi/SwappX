@@ -180,6 +180,10 @@
         margin-left: 20px;
     }
 
+    .ml50 {
+        margin-left: 50px;
+    }
+
     .ml100 {
         margin-left: 100px;
     }
@@ -199,6 +203,10 @@
 
     .mr10 {
         margin-right: 10px;
+    }
+
+    .mr20 {
+        margin-right: 20px;
     }
 
     /* margin-top */
@@ -361,6 +369,10 @@
     .center {
         text-align: center;
     }
+
+    .left {
+        text-align: left;
+    }
 /*#endregion ***************************/
 
 /*#region ********** CURSOR ************/
@@ -372,6 +384,13 @@
         cursor:default;
     }
 /*#endregion ***************************/
+
+/*#region ********** CURSOR ************/
+    ._oflow-hide {
+        overflow: hidden
+    }
+/*#endregion ***************************/
+
 
 /*#region ********** TITOLI ************/
 
@@ -1072,3 +1091,11 @@ div.inner img {
     flex-basis: 30%;
 }
 
+/*serve per fissare la posizione relative di un container dentro il quale si trova un position absolute*/
+    ._pos-relative {
+        position: relative;
+    }
+
+    ._pos-absolute {
+        position: absolute;
+    }
