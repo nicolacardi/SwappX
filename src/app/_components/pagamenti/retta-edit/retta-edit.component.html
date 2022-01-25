@@ -68,13 +68,31 @@
                         </button> -->
                     </mat-form-field>
                 </div>  
-                <mat-grid-list [cols]="14" rowHeight="140px">
+                <mat-grid-list [cols]="15" rowHeight="140px">
                     <mat-grid-tile [colspan]=2>
                         <div>
                             <br>
                             <div class="mt10">DEFAULT</div>
                             <div class="mt10">CONCORDATE</div>
                             <div class="mt10">PAGATE</div>
+                        </div>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile class="mr20">
+                        <div>
+                            <div class="center">
+                                <mat-label>Anno</mat-label>
+                            </div>
+                            <app-rettamese-edit>
+
+                                                <!-- [inputPagamenti] ="totPagamenti[anno]"
+                                                [idRetta] ="idRette[anno]"
+                                                [indice] ="i"
+
+                                                (mesePagamentoClicked) = "mesePagamentoClicked($event)" -->
+                                                >
+                                                <!--[toHighlight] = "idToHighlight"  -->
+                            </app-rettamese-edit>
                         </div>
                     </mat-grid-tile>
 
