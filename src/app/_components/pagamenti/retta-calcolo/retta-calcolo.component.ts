@@ -94,37 +94,6 @@ export class RettaCalcoloComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
-    //   // this.loadData();
-    //   // this.annoIdEmitter.emit(val);
-    //   this.obsClassiSezioniAnni$ = this.svcClasseSezioneAnno.loadClassiByAnnoScolastico(this.form.controls["selectAnnoScolastico"].value);
-    // })
-
-    // this.obsFilteredAlunni$ = this.form.controls['nomeCognomeAlunno'].valueChanges
-    // .pipe(
-    //   debounceTime(300),
-    //   switchMap(() => this.svcAlunni.filterAlunni(this.form.value.nomeCognomeAlunno))
-    // )
-
-    // this.obsAnni$ = this.svcAnni.load();
-    // this.obsClassiSezioniAnni$ = this.svcClasseSezioneAnno.loadClassiByAnnoScolastico(this.form.controls["selectAnnoScolastico"].value);
-
-    //this.loadData();
-
-    // this.form.controls['selectClasse'].valueChanges
-    // .subscribe(
-    //   val => {
-    //     //this.form.controls['importo'].setValue(
-    //    this.svcClasseSezioneAnno.loadClasse(val)
-    //    .subscribe(
-    //      res=> { 
-    //       this.form.controls['importo'].setValue(res.classeSezione.classe.importo);
-    //       this.form.controls['importo2'].setValue(res.classeSezione.classe.importo2);
-    //      }
-       
-    //    );
-    // })
-
   }
 
   loadData ( ) {
@@ -140,9 +109,6 @@ export class RettaCalcoloComponent implements OnInit {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    //this.data.idAlunno = parseInt(event.option.id);
-    //this.form.controls['alunnoID'].setValue(parseInt(event.option.id));
-    this.loadData();
   }
 
   calcola() {
@@ -156,19 +122,13 @@ export class RettaCalcoloComponent implements OnInit {
       
 
       this.viewListClassi.getChecked().forEach(element => {     
-        //this.viewListClassi.showProgress = true;
            
         this.elaboraClasse(element);
-        
-        //this.viewListClassi.showProgress = false;
-        
-        this.viewListClassi.endedProgress = true;
-
+      
         //crea l'array di icone di fine procedura
         let arrEndedIcons = this.viewListClassi.endedIcons.toArray();
         //imposta l'icona che ha id = "endedIcon_idDellaClasse" a visibility= visible
         // (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).innerHTML = "FINITO";  //se avessimo voluto mostrare un testo in una label
-        // (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).style.visibility = "visible";
         (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).style.visibility = "visible";
         (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).style.opacity = "1";
         

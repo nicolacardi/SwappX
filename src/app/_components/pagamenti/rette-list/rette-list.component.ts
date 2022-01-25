@@ -38,7 +38,6 @@ export class RetteListComponent implements OnInit {
   obsAnni$!:                Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   form:                     FormGroup;            //form fatto della sola combo anno scolastico
   annoID!:                  number;
-  public pippo!:             string;
   showC= true;
   showD= true;
   showP= true;
@@ -49,6 +48,7 @@ export class RetteListComponent implements OnInit {
   showLinesC = false;
   showLinesD = false;
   showLinesP = true;
+
 
   d_displayedColumns: string[] =  [
 
@@ -117,6 +117,8 @@ export class RetteListComponent implements OnInit {
     ];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
+
+  displayedTitles = this.d_displayedColumns; //per poter cambiare matHeaderRowDef quando si usa l'occhietto in alto
 
   myObjAssigned : PAG_RettaGroupObj = {
     alunnoID: 0,
@@ -190,8 +192,7 @@ export class RetteListComponent implements OnInit {
           
           //console.log ("quotatrovata2",this.trovaquotaMeseA(arr, 9)) ;
           //console.log ("quotaPagamenti",this.trovaSommaPagMese(arr, 9)) ;
-          console.log ("arr",arr[1][0]) ; 
-          this.pippo = arr[1][0].iscrizione?.classeSezioneAnno!.classeSezione!.classe!.descrizioneBreve!;
+          //console.log ("arr",arr[1][0]) ; 
           arrObj.push(
             {
             'alunnoID': arr[0],
@@ -253,6 +254,7 @@ export class RetteListComponent implements OnInit {
       .subscribe(val => {
         //console.log("Risultato dei vari map & mergeMap:", val);
         this.matDataSource.data = val;
+        this.filterPredicateCustom();
         this.matDataSource.paginator = this.paginator;
        }
       );
@@ -337,6 +339,34 @@ export class RetteListComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.matDataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  filterPredicateCustom(){
+  //questa funzione consente il filtro ANCHE sugli oggetti della classe
+  //è diversa (quindi + semplice) dal filterPredicate delle altre pagine in quanto non contempla i filtri di destra (qui assenti)
+  //e svolge, quindi, solo la funzione per il filtro di sinistra
+  //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
+  this.matDataSource.filterPredicate = (data, filter: string)  => {
+    const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
+      
+      switch(key) { 
+        case "iscrizione": { 
+          return currentTerm + data.iscrizione?.classeSezioneAnno.classeSezione.classe.descrizioneBreve+" "+data.iscrizione?.classeSezioneAnno.classeSezione.sezione ; 
+           break; 
+        } 
+
+        default: { 
+        return currentTerm + data.nome + data.cognome;
+           break; 
+        } 
+     } 
+    };
+
+    const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+    const transformedFilter = filter.trim().toLowerCase();
+    return dataStr.indexOf(transformedFilter) !== -1;
+  };
+}
+
 //#endregion
 
 //#region ----- Right Click -------
@@ -427,7 +457,6 @@ export class RetteListComponent implements OnInit {
 
   public tog() {
     this.showNum = Number(this.showC) + Number(this.showD) + Number(this.showP);
-
     if (!this.showD) {
       if (!this.showC){
        this.c_displayedColumns[0] = "blank";
@@ -442,6 +471,7 @@ export class RetteListComponent implements OnInit {
        this.d_displayedColumns[1] = "blank2";
        this.d_displayedColumns[2] = "blank2";
        this.d_displayedColumns[3] = "blank2";
+       this.displayedTitles = this.p_displayedColumns;
        
       } else {
        this.c_displayedColumns[0] = "actionsColumn";
@@ -456,6 +486,8 @@ export class RetteListComponent implements OnInit {
        this.d_displayedColumns[1] = "blank2";
        this.d_displayedColumns[2] = "blank2";
        this.d_displayedColumns[3] = "blank2";
+       this.displayedTitles = this.c_displayedColumns;
+
       }
     } else {
      this.c_displayedColumns[0] = "blank";
@@ -470,6 +502,8 @@ export class RetteListComponent implements OnInit {
      this.d_displayedColumns[1] = "nome";
      this.d_displayedColumns[2] = "cognome";
      this.d_displayedColumns[3] = "classe";
+     this.displayedTitles = this.d_displayedColumns;
+
     }
 
     if (!this.showP) {

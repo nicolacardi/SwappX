@@ -27,8 +27,8 @@
     </mat-form-field>
     <!-- **************************   FILTER   ******************* -->
     <mat-form-field class="ml20 mt10 topZIndex">
-        <mat-label>Filtro Alunno</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="cerca nome o cognome" #input>
+        <mat-label>Filtro Alunno/Classe</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="nome, cognome o classe" #input>
     </mat-form-field>
 </form>
 
@@ -358,7 +358,7 @@
 
     
     <!-- **************************   MAT-HEADER-ROW   ******************* -->
-    <mat-header-row *matHeaderRowDef="d_displayedColumns;"></mat-header-row>
+    <mat-header-row *matHeaderRowDef="displayedTitles"></mat-header-row>
     
     <!-- **************************   MAT-ROW   ******************* -->
     <mat-row *matRowDef="let element;columns: d_displayedColumns;"

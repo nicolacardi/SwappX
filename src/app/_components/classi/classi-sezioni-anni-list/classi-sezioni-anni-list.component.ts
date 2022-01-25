@@ -93,9 +93,6 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   form! :                             FormGroup;
   public showProgress=                false;
-  public endedProgress=               false;
-  public arrEndedIcons = [23, 32];
-  
   selectedRowIndex = -1;
 
   filterValue = '';       //Filtro semplice
