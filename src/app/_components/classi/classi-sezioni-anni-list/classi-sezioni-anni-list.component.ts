@@ -17,14 +17,16 @@ import { ClassiSezioniAnniFilterComponent } from '../classi-sezioni-anni-filter/
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
+import { IscrizioniService } from '../iscrizioni.service';
 
 //classes
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnno_Query } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+
 
 
 
@@ -36,7 +38,8 @@ import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#region ----- Variabili -------
-  matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno>();
+  matDataSourceIscrizioni = new MatTableDataSource<CLS_ClasseSezioneAnno>();
+  matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno_Query>();
 
   displayedColumns: string[] =  [];
 
@@ -72,18 +75,16 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 
   displayedColumnsRettaCalcolo: string[] =  [
-
     "descrizione",
     "sezione",
     "numAlunni",
     "importo",
     "importo2",
     "select",
-    
   ];
 
 
-  selection = new SelectionModel<CLS_ClasseSezioneAnno>(true, []);   //rappresenta la selezione delle checkbox
+  selection = new SelectionModel<CLS_ClasseSezioneAnno_Query>(true, []);   //rappresenta la selezione delle checkbox
   
   toggleChecks:                       boolean = false;
   public swSoloAttivi :               boolean = true;
@@ -131,6 +132,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 constructor(
     private svcClassiSezioniAnni:         ClassiSezioniAnniService,
+    private svcIscrizioni:                IscrizioniService,
     private svcAnni:                      AnniScolasticiService,
     private _loadingService:              LoadingService,
     private fb:                           FormBuilder, 
@@ -206,8 +208,6 @@ constructor(
           break;
       default: this.displayedColumns = this.displayedColumnsClassiDashboard;
     }
-
-
   }
 
   ngOnChanges() {
@@ -218,46 +218,66 @@ constructor(
   loadData ( ) {
    
     let idAnno: number;
-
     idAnno = this.form.controls["selectAnnoScolastico"].value;
 
-    let obsClassi$: Observable<CLS_ClasseSezioneAnno[]>;
-    if (this.dove == "alunno-edit-attended") 
-      obsClassi$= this.svcClassiSezioniAnni.loadClassiByAlunno(this.alunnoId); //qui bisogna pescare byAlunno MA attenzione: il risultato è strutturalmente diverso
-    else 
-      obsClassi$= this.svcClassiSezioniAnni.loadClassiByAnnoScolastico(idAnno)
+    
+    if (this.dove == "alunno-edit-attended") {
+      let obsIscrizioni$: Observable<CLS_ClasseSezioneAnno[]>;
+      obsIscrizioni$= this.svcIscrizioni.listByAlunno(this.alunnoId); //qui bisogna pescare byAlunno MA attenzione: il risultato è strutturalmente diverso
+
+      const loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
+
+      loadIscrizioni$.subscribe(val =>   {
+        console.log (val);
+        this.matDataSourceIscrizioni.data = val;
+        this.matDataSourceIscrizioni.paginator = this.paginator;
+
+        if (this.dove == "classi-page") {
+          this.sortCustom(); 
+          this.matDataSourceIscrizioni.sort = this.sort; 
+        }
+
+        this.matDataSourceIscrizioni.filterPredicate = this.filterPredicate();
+        
+        if(this.matDataSourceIscrizioni.data.length >0)
+          this.rowclicked(this.idClasseInput);  
+        //this.rowclicked(this.matDataSourceIscrizioni.data[0].id.toString()); //seleziona per default la prima riga NON FUNZIONA SEMPRE... SERVE??
+        else
+          this.rowclicked(undefined);
+      });
+    }
+    else{ 
+      let obsClassi$: Observable<CLS_ClasseSezioneAnno_Query[]>;
+      obsClassi$= this.svcClassiSezioniAnni.loadClassiByAnnoScolastico(idAnno);
       // pipe(
       // map(res=> {
       //   var ret = <CLS_ClasseSezioneAnno[]>res.json();
       //   ret.sort((a,b) => a.classeSezione.classe < b.classeSezione.classe ? -1 : 1);
       //   return ret;
-      // })
-      // )
-      ;
+      // })) ;
 
+      const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
-    const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
-
-    loadClassi$.subscribe(val => 
-      {
-        console.log (val);
-        this.matDataSource.data = val;
-        this.matDataSource.paginator = this.paginator;
-
-        if (this.dove == "classi-page") {
-          this.sortCustom(); 
-          this.matDataSource.sort = this.sort; 
+      loadClassi$.subscribe(val =>   {
+          console.log (val);
+          this.matDataSource.data = val;
+          this.matDataSource.paginator = this.paginator;
+  
+          if (this.dove == "classi-page") {
+            this.sortCustom(); 
+            this.matDataSource.sort = this.sort; 
+          }
+  
+          this.matDataSource.filterPredicate = this.filterPredicate();
+          
+          if(this.matDataSource.data.length >0)
+          this.rowclicked(this.idClasseInput);  
+          //this.rowclicked(this.matDataSource.data[0].id.toString()); //seleziona per default la prima riga NON FUNZIONA SEMPRE... SERVE??
+          else
+            this.rowclicked(undefined);
         }
-
-        this.matDataSource.filterPredicate = this.filterPredicate();
-        
-        if(this.matDataSource.data.length >0)
-        this.rowclicked(this.idClasseInput);  
-        //this.rowclicked(this.matDataSource.data[0].id.toString()); //seleziona per default la prima riga NON FUNZIONA SEMPRE... SERVE??
-        else
-          this.rowclicked(undefined);
-      }
-    );
+      );
+    }
   }
 
   rowclicked(idClasseSezioneAnno?: string ){
@@ -267,7 +287,7 @@ constructor(
       this.selectedRowIndex = parseInt(idClasseSezioneAnno);
     else 
       this.selectedRowIndex = this.matDataSource.data[0].id;
-    //console.log ("this.selectedRowIndex NEW", this.selectedRowIndex);
+
     this.classeIdEmitter.emit(this.selectedRowIndex);
   }
 
@@ -375,9 +395,7 @@ sortCustom() {
     });
   }
 
-
   openDetail(id:any) {
-
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '380px',
@@ -398,21 +416,16 @@ sortCustom() {
     this.svcClassiSezioniAnni.put(element).subscribe(
       res=> {
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Importo salvato', panelClass: ['green-snackbar']})  //MOSTRA ESITO OK MA NON SALVA
-
       },
       err=> (
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       )
-
     );  //NON VA
   }
 //#endregion
 
-
-
-
 //#region ----- Gestione Campo Checkbox -------
-  selectedRow(element: CLS_ClasseSezioneAnno) {
+  selectedRow(element: CLS_ClasseSezioneAnno_Query) {
     this.selection.toggle(element);
   }
 
@@ -442,7 +455,7 @@ sortCustom() {
 
     //non so se serva questo metodo: genera un valore per l'aria-label...
   //forse serve per poi pescare i valori selezionati?
-  checkboxLabel(row?: CLS_ClasseSezioneAnno): string {
+  checkboxLabel(row?: CLS_ClasseSezioneAnno_Query): string {
     if (!row) 
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     else
