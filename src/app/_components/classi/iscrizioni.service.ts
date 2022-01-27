@@ -43,7 +43,12 @@ export class IscrizioniService {
     return this.http.post( environment.apiBaseUrl  + 'CLS_Iscrizioni' , formData);  
   }
   
-  https://localhost:44327/api/CLS_Iscrizioni/UpdateStato?id=5&CodiceStato=20'
+  //bisogna passare alla post un formData
+  //updateStato (id: number, codiceStato: number) {
+  updateStato(formData: any): Observable <any>{
+    return this.http.post( environment.apiBaseUrl  + 'CLS_Iscrizioni/UpdateStato?id='+formData.id+'&CodiceStato='+formData.codiceStato, formData);
+  }
+  //http://213.215.231.4/swappX/api/CLS_Iscrizioni/UpdateStato?id=5&CodiceStato=20
 
   deleteByClasseAlunno(ClasseSezioneAnnoID: number, idAlunno: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'CLS_Iscrizioni/DeleteByAlunnoAndClasseSezioneAnno?idAlunno='+idAlunno+'&idClasseSezioneAnno='+ClasseSezioneAnnoID);

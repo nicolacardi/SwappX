@@ -115,10 +115,7 @@ export class UserService {
   }
 
   ChangePassword(formData: any): Observable <any>{
-
-    //return  this.http.post(environment.apiBaseUrl +'ApplicationUser/ChangePassword', formData );
     return  this.http.post(environment.apiBaseUrl +'ApplicationUser/ChangePassword?userID=' + formData.userID + "&currPassword=" + formData.currPassword + "&newPassword=" + formData.newPassword,formData);
-
     //https://213.215.231.4/swappX/api/ApplicationUser/ChangePassword?userID=b19efc9f-5502-4396-b076-45e6c3d9ef22&currPassword=123456&newPassword=1234
   }
   

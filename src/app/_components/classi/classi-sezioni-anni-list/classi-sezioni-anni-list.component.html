@@ -43,23 +43,24 @@
             </mat-icon>
         </th>
 
-        <td mat-cell *matCellDef="let element" >
-            <mat-checkbox
-                class="w40px _pos-relative"
-                (click)="$event.stopPropagation()"
-                (change) = "$event ? selectedRow(element) : null"
-                [checked]="selection.isSelected(element)"
-                [aria-label]="checkboxLabel(element)"
-                color="warn" #ckSelected
-                style="vertical-align: middle">
-            </mat-checkbox>
+        <td mat-cell *matCellDef="let element" class="w100px">
+                <mat-checkbox
+                    class="w40px _pos-relative _floatleft"
+                    (click)="$event.stopPropagation()"
+                    (change) = "$event ? selectedRow(element) : null"
+                    [checked]="selection.isSelected(element)"
+                    [aria-label]="checkboxLabel(element)"
+                    color="warn" #ckSelected
+                    style="vertical-align: middle">
+                </mat-checkbox>
 
             <mat-icon  
                 #endedIcons 
                 [attr.id]="'endedIcon_'+element.id" 
-                class="_icona-check-green invisible _pos-absolute ml10">
+                class="_icona-check-green invisible ml10 _floatleft">
                 check_circle_outline
             </mat-icon>
+
         </td>
     </ng-container>
 
@@ -133,15 +134,17 @@
         <td mat-cell *matCellDef="let element">{{element.classeSezione.classe.importo2}}</td>
     </ng-container>
 
+    <ng-container matColumnDef="numAlunni">
+        <th class="center" mat-header-cell *matHeaderCellDef >N. Alunni</th>
+        <td mat-cell class="center" *matCellDef="let element">{{element.numAlunni}}</td>
+    </ng-container>
+
     <ng-container matColumnDef="addToAttended">
         <th mat-header-cell *matHeaderCellDef ></th>
         <td mat-cell *matCellDef="let element">
             <mat-icon class="pointer" (click) = "addToAttendedEmit(element)">add_circle_outline</mat-icon>
         </td>
     </ng-container>
-
-
-
 
     <ng-container matColumnDef="removeFromAttended">
         <th mat-header-cell *matHeaderCellDef ></th>

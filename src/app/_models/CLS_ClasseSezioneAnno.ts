@@ -9,6 +9,7 @@ export interface CLS_ClasseSezioneAnno {
         classeSezione:            CLS_ClasseSezione;
         ClasseSezioneAnnoSucc:    CLS_ClasseSezioneAnno;
         anno:                     ASC_AnnoScolastico;   //FORSE VA MINUSCOLO??
+        numAlunni:                number;
 }
 
 

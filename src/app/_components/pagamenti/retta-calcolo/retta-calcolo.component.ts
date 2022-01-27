@@ -120,11 +120,13 @@ export class RettaCalcoloComponent implements OnInit {
 
     } else {
       
-
+      console.log(this.viewListClassi.getChecked());
+      //return;
       this.viewListClassi.getChecked().forEach(element => {     
            
         this.elaboraClasse(element);
-      
+        
+        this.viewListClassi.selection.toggle(element);
         //crea l'array di icone di fine procedura
         let arrEndedIcons = this.viewListClassi.endedIcons.toArray();
         //imposta l'icona che ha id = "endedIcon_idDellaClasse" a visibility= visible
@@ -184,7 +186,13 @@ export class RettaCalcoloComponent implements OnInit {
 
             //iscrizione.statoID = 2;     //GET Stato ID ....
             //Update CLS_Iscrizione ....
-            this.svcIscrizioni.updateStato(iscrizione, "20").subscribe();
+
+            let formData = {
+              id: iscrizione.id,
+              codiceStato: 20
+            }
+
+            this.svcIscrizioni.updateStato(formData).subscribe();
             
 
             this.svcRette.loadByAlunnoAnno(iscrizione.alunnoID, annoID )

@@ -42,12 +42,14 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
   displayedColumnsClassiDashboard: string[] =  [
     "descrizione",
-    "sezione"
+    "sezione",
+    "numAlunni"
   ];
 
   displayedColumnsClassiPage: string[] =  [
     "actionsColumn",
     "annoscolastico",
+    "numAlunni",
     //"seq",
     "descrizione",
     "sezione",
@@ -73,9 +75,11 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
     "descrizione",
     "sezione",
+    "numAlunni",
     "importo",
     "importo2",
-    "select"
+    "select",
+    
   ];
 
 
@@ -155,6 +159,8 @@ constructor(
     this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
       this.loadData();
       this.annoIdEmitter.emit(val);
+      //vanno resettate le selezioni delle checkbox
+      this.resetSelections();
     })
 
     this.obsAnni$ = this.svcAnni.load()
@@ -234,6 +240,7 @@ constructor(
 
     loadClassi$.subscribe(val => 
       {
+        console.log (val);
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
 
