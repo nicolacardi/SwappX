@@ -23,13 +23,13 @@ export class ClassiSezioniAnniService {
 
   //*********NON USATA***********
   loadClassi(): Observable<CLS_ClasseSezioneAnno[]>{
-    return this.http.get<CLS_ClasseSezioneAnno[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/GetAllWithClasseSezioneAnno');
-    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/GetAllWithClasseSezioneAnno
+    return this.http.get<CLS_ClasseSezioneAnno[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListWithClasseSezioneAnno');
+    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListWithClasseSezioneAnno
   }
 
   loadClassiByAnnoScolastico(idAnnoScolastico: any): Observable<CLS_ClasseSezioneAnno[]>{
-    return this.http.get<CLS_ClasseSezioneAnno[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/GetAllByAnno/'+idAnnoScolastico);
-    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/GetAllByAnno/1
+    return this.http.get<CLS_ClasseSezioneAnno[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnno/'+idAnnoScolastico);
+    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnno/1
   }
 
   //NON USATA (restituisce l'oggetto con parametri base)
