@@ -144,7 +144,6 @@ export class IscrizioniClasseListComponent implements OnInit {
           this.matDataSource.paginator = this.paginator;
           this.sortCustom(); 
           this.matDataSource.sort = this.sort; 
-          console.log("DEBUG", this.sort);
         }
       );
     } 

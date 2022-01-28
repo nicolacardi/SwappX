@@ -51,11 +51,11 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
   displayedColumnsClassiPage: string[] =  [
     "actionsColumn",
-    "annoscolastico",
-    "numAlunni",
+    //"annoscolastico",
     //"seq",
     "descrizione",
     "sezione",
+    "numAlunni",
     "descrizioneAnnoSuccessivo",
     "sezioneAnnoSuccessivo"
   ];
@@ -259,7 +259,6 @@ constructor(
       const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
       loadClassi$.subscribe(val =>   {
-          console.log (val);
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
   
@@ -319,18 +318,16 @@ constructor(
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
 
-      let boolSx = String(data.classeSezione.classe.descrizione2).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.classeSezione.sezione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;;
+      let boolSx = String(data.descrizione2).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.sezione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;;
 
-      let boolDx = String(data.classeSezione.classe.descrizione2).toLowerCase().indexOf(searchTerms.classe) !== -1
-                && String(data.classeSezione.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1;
+      let boolDx = String(data.descrizione2).toLowerCase().indexOf(searchTerms.classe) !== -1
+                && String(data.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1;
 
       return boolDx && boolSx;
     }
     return filterFunction;
   }
-
-
 
 
 // filterPredicateCustom(){
@@ -367,10 +364,12 @@ constructor(
 sortCustom() {
   this.matDataSource.sortingDataAccessor = (item:any, property) => {
     switch(property) {
-      case 'annoscolastico':              return item.anno.annoscolastico;
-      case 'sezione':                     return item.classeSezione.sezione;
-      case 'descrizione':                 return item.classeSezione.classe.descrizione2;
-      case 'descrizioneBreve':            return item.classeSezione.classe.descrizioneBreve;
+      //case 'annoscolastico':              return item.annoScolastico;
+      case 'sezione':                     return item.sezione;
+      case 'descrizione':                 return item.descrizione2;
+      case 'descrizioneBreve':            return item.descrizioneBreve;
+      case 'numAlunni':                   return item.numAlunni;
+
       //case 'seq':                         return item.classeSezione.classe.seq;
       default: return item[property]
     }
