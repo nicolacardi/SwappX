@@ -94,7 +94,6 @@ export class IscrizioniListComponent implements OnInit {
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
   @Input() annoID!:                                           number;
-  @Input('alunnoId') alunnoId! :                              number;
   @Input() iscrizioniFilterComponent!:                        IscrizioniFilterComponent;
   @Input('context') context! :                                string;
 
@@ -107,12 +106,12 @@ export class IscrizioniListComponent implements OnInit {
     private svcAnni:          AnniScolasticiService,
     private fb:               FormBuilder, 
     public _dialog:           MatDialog, 
-    private _loadingService:  LoadingService ) {
-
+    private _loadingService:  LoadingService,
+  ) {
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
-    });
+    })
   }
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -211,7 +210,6 @@ export class IscrizioniListComponent implements OnInit {
       filtrosx: ''
     };
     */
-   
     //Inserimento del Main Filter in uno specifico (filtrosx) dei campi di filterValues
     if( this.filterValue != undefined && this.filterValue != ""){
       this.filterValues.filtrosx = this.filterValue.toLowerCase();

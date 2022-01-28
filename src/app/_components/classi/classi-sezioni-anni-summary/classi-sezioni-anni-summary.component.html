@@ -11,9 +11,12 @@
             </mat-select>
 
         </mat-form-field>
+
+
     </form>
 
-    <mat-table class="_table-row-low transparent" [dataSource]="matDataSource">
+
+        <mat-table class="_table-row-low transparent" [dataSource]="matDataSource">
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
         <ng-container matColumnDef="actionsColumn">
@@ -24,9 +27,9 @@
             <mat-footer-cell *matFooterCellDef> </mat-footer-cell>
         </ng-container>
 
-        <ng-container matColumnDef="descrizioneBreve">
+        <ng-container matColumnDef="classe">
             <mat-header-cell class="center" *matHeaderCellDef >Classe</mat-header-cell>
-            <mat-cell class="center" *matCellDef="let element">{{element.descrizioneBreve}}</mat-cell>
+            <mat-cell class="center" *matCellDef="let element">{{element.classe}}</mat-cell>
             <mat-footer-cell class="bold center" *matFooterCellDef> Totale </mat-footer-cell>
         </ng-container>
 
@@ -34,6 +37,12 @@
             <mat-header-cell class="center" *matHeaderCellDef >Sez.</mat-header-cell>
             <mat-cell class="center" *matCellDef="let element">{{element.sezione}}</mat-cell>
             <mat-footer-cell class="center" *matFooterCellDef> </mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="anno">
+            <mat-header-cell *matHeaderCellDef >Anno</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.anno}}</mat-cell>
+            <mat-footer-cell *matFooterCellDef> </mat-footer-cell>
         </ng-container>
 
         <ng-container matColumnDef="numAlunni">

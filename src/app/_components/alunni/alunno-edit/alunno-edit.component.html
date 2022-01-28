@@ -309,15 +309,9 @@
                                 <td>
                                     <mat-label class="frameLabel">Le classi frequentate da {{nome.value}} </mat-label>
                                     <div class="_classi-attended-container cellBordered mt10">
-                                        <!--
                                         <app-classi-sezioni-anni-list [alunnoId] = "idAlunno" [dove] = "'alunno-edit-attended'"
-                                            (removeFromAttended) = "removeFromAttended($event)"
-                                            #classiSezioniAnniAttended>
-                                        </app-classi-sezioni-anni-list>
-                                        -->
-                                        <app-iscrizioni-list [alunnoId] = "idAlunno" #iscrizioniAlunno >
-
-                                        </app-iscrizioni-list>
+                                        (removeFromAttended) = "removeFromAttended($event)"
+                                        #classiSezioniAnniAttended></app-classi-sezioni-anni-list>
                                     </div>
                                 </td>
                                 <td class="_classi-list-td-vertical-accordion">

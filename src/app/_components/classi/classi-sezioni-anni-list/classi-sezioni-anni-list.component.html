@@ -75,36 +75,38 @@
 
     <ng-container matColumnDef="annoscolastico">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>anno scolastico</th>
-        <td mat-cell *matCellDef="let element">{{element.annoScolastico}}</td>
+        <td mat-cell *matCellDef="let element">{{element.anno.annoscolastico}}</td>
         <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.anno.annoscolastico | highlight:filterValue"></td> -->
     </ng-container>
 
     <ng-container matColumnDef="descrizione">
         <th mat-header-cell *matHeaderCellDef mat-sort-header >Classe</th>
         <!-- <td mat-cell *matCellDef="let element">{{element.classeSezione.classe.descrizione2}}</td> -->
-        <td mat-cell *matCellDef="let element" [innerHTML]="element.descrizione2 | highlight:filterValue"></td>
+        <td mat-cell *matCellDef="let element" [innerHTML]="element.classeSezione.classe.descrizione2 | highlight:filterValue"></td>
     </ng-container>
 
     <ng-container matColumnDef="sezione">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Sez.</th>
         <!-- <td mat-cell *matCellDef="let element">{{element.classeSezione.sezione}}</td> -->
-        <td mat-cell *matCellDef="let element" [innerHTML]="element.sezione | highlight:filterValue"></td>
+        <td mat-cell *matCellDef="let element" [innerHTML]="element.classeSezione.sezione | highlight:filterValue"></td>
     </ng-container>
 
     <ng-container matColumnDef="descrizioneAnnoSuccessivo">
         <th mat-header-cell *matHeaderCellDef >Classe Successiva</th>
-        <td mat-cell *matCellDef="let element">{{(element.descrizione2AnnoSucc) === null ? "" : element.descrizione2AnnoSucc}}</td>
+        <td mat-cell *matCellDef="let element">{{(element.classeSezioneAnnoSucc) === null ? "" :
+            element.classeSezioneAnnoSucc.classeSezione.classe.descrizione2}}</td>
     </ng-container>
 
     <ng-container matColumnDef="sezioneAnnoSuccessivo">
         <th mat-header-cell *matHeaderCellDef >Sezione Cl. Successiva</th>
-        <td mat-cell *matCellDef="let element">{{(element.classeSezioneAnnoSucc) === null ? "" :  element.sezioneAnnoSucc}}</td>
+        <td mat-cell *matCellDef="let element">{{(element.classeSezioneAnnoSucc) === null ? "" :
+            element.classeSezioneAnnoSucc.classeSezione.sezione}}</td>
     </ng-container>
 
     <!--ATTENZIONE QUI SI VA A VEDERE NON DENTRO CLASSESEZIONEANNO MA DENTRO CLASSESEZIONEANNOALUNNO-->
     <ng-container matColumnDef="sezioneCSAA">
         <th mat-header-cell *matHeaderCellDef >Sez.</th>
-        <td mat-cell *matCellDef="let element">{{element.sezione}}</td>
+        <td mat-cell *matCellDef="let element">{{element.classeSezioneAnno.classeSezione.sezione}}</td>
     </ng-container>
 
     <!--ATTENZIONE QUI SI VA A VEDERE NON DENTRO CLASSESEZIONEANNO MA DENTRO CLASSESEZIONEANNOALUNNO-->
@@ -121,7 +123,7 @@
 
     <ng-container matColumnDef="importo">
         <th mat-header-cell *matHeaderCellDef >importo</th>
-        <td mat-cell *matCellDef="let element">{{element.importo}}</td>
+        <td mat-cell *matCellDef="let element">{{element.classeSezione.classe.importo}}</td>
         <!-- <td mat-cell *matCellDef="let element"> -->
             <!-- <input matInput type="text" required placeholder="Importo" [value] = "element.classeSezione.classe.importo" (change)="updateImporto(element, importo.value)" #importo> -->
         <!-- </td> -->
@@ -129,7 +131,7 @@
 
     <ng-container matColumnDef="importo2">
         <th mat-header-cell *matHeaderCellDef >importo2</th>
-        <td mat-cell *matCellDef="let element">{{element.importo2}}</td>
+        <td mat-cell *matCellDef="let element">{{element.classeSezione.classe.importo2}}</td>
     </ng-container>
 
     <ng-container matColumnDef="numAlunni">

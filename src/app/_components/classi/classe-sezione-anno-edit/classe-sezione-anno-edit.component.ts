@@ -20,10 +20,11 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 
 
 //models
-import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnno_Query } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { CLS_Classe } from 'src/app/_models/CLS_Classe';
 import { CLS_ClasseSezione } from 'src/app/_models/CLS_ClasseSezione';
+import { InputModality } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-classe-sezione-anno-edit',
@@ -38,9 +39,9 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
   
   obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   obsClassi$!:                Observable<CLS_Classe[]>;
-  obsClassiSezioniAnniSucc$!: Observable<CLS_ClasseSezioneAnno_Query[]>;
+  obsClassiSezioniAnniSucc$!: Observable<CLS_ClasseSezioneAnno[]>;
+  
   obsClasseSezione$!:         Observable<CLS_ClasseSezione>;
-
   obs!: Subscription;
 
   form! :                     FormGroup;
