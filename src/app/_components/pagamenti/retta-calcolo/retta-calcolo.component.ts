@@ -25,7 +25,7 @@ import { RetteService } from '../rette.service';
 
 //classes
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnno_Query } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
@@ -120,7 +120,7 @@ export class RettaCalcoloComponent implements OnInit {
 
     } else {
       
-      console.log(this.viewListClassi.getChecked());
+      //console.log(this.viewListClassi.getChecked());
       //return;
       this.viewListClassi.getChecked().forEach(element => {     
            
@@ -133,17 +133,13 @@ export class RettaCalcoloComponent implements OnInit {
         // (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).innerHTML = "FINITO";  //se avessimo voluto mostrare un testo in una label
         (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).style.visibility = "visible";
         (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).style.opacity = "1";
-        
-        
-
       }); 
-      console.log("QUI");
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per le classi selezionate', panelClass: ['green-snackbar']});
 
     }
   }
 
-  elaboraClasse(objClasseSezioneAnno: CLS_ClasseSezioneAnno){
+  elaboraClasse(objClasseSezioneAnno: CLS_ClasseSezioneAnno_Query){
 
     //********************************************************************************************************************************************************
     //ATTENZIONE! DEVO ESSERE SICURO CHE SE C'è UNA RETTA IN UN MESE CI SIA IN TUTTI I 12 MESI ALTRIMENTI LA UPDATE NON FUNZIONA CORRETTAMENTE! ASSICURARSENE!
@@ -162,19 +158,16 @@ export class RettaCalcoloComponent implements OnInit {
       if (arrCheckboxes[i-1].checked == true) {contaChecked++}
     }
 
-    let annoID = objClasseSezioneAnno.anno.id
-    let anno1 = objClasseSezioneAnno.anno.anno1;
-    let anno2 = objClasseSezioneAnno.anno.anno2;
+    let annoID = objClasseSezioneAnno.annoID; 
+    let anno1 = objClasseSezioneAnno.anno1;
+    let anno2 = objClasseSezioneAnno.anno2;
 
-    var importoAnno =objClasseSezioneAnno.classeSezione.classe.importo;
-    var importoAnno2 =objClasseSezioneAnno.classeSezione.classe.importo2;
+    var importoAnno =objClasseSezioneAnno.importo;
+    var importoAnno2 =objClasseSezioneAnno.importo2;
 
     importoMeseRound = Math.floor(importoAnno/contaChecked);
     //per applicare il resto alla prima quota devo essere sicuro che le quote vengano passate in ordine, quindi nel service metto una orderby
     restoImportoMese = importoAnno - importoMeseRound * contaChecked; 
-
-
-
 
     let obsIscrizioni$: Observable<CLS_Iscrizione[]>;
     obsIscrizioni$= this.svcIscrizioni.listByClasseSezioneAnno(objClasseSezioneAnno.id);

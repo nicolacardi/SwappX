@@ -59,7 +59,7 @@ export class AlunnoEditComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
   @ViewChild('genitoriFamiglia') genitoriFamigliaComponent!: GenitoriListComponent; 
-  @ViewChild('classiSezioniAnniAttended') classiAttendedComponent!: ClassiSezioniAnniListComponent; 
+  @ViewChild('iscrizioniAlunno') classiAttendedComponent!: ClassiSezioniAnniListComponent; 
   @ViewChild('classiSezioniAnniList') classiSezioniAnniListComponent!: ClassiSezioniAnniListComponent; 
 //#endregion
 

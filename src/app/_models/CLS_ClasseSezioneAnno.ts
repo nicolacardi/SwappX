@@ -23,3 +23,25 @@ export interface CLS_ClasseSezioneAnno_Sum {
         numFemmine:             number;
 }
 
+export interface CLS_ClasseSezioneAnno_Query {
+        id:                     number;
+        classeSezioneID:        number;
+
+        descrizioneBreve:       string;
+        descrizione2:           string; 
+        sezione:                string;
+        importo:                number;
+        importo2:               number;
+
+        annoID:                 number;
+        anno1:                  number;
+        anno2:                  number;
+        annoScolastico:         string;
+
+        sezioneAnnoSucc:        string;
+        descrizione2AnnoSucc:   string;
+
+        numAlunni:              number;
+        numMaschi:              number;
+        numFemmine:             number;
+}
