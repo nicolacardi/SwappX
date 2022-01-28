@@ -44,8 +44,8 @@ export class ClassiSezioniAnniService {
 
   
   loadSummary(idAnnoScolastico: any): Observable<CLS_ClasseSezioneAnno_Query[]>{
-    return this.http.get<CLS_ClasseSezioneAnno_Query[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoQuery/'+idAnnoScolastico);
-    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnnoQuery/1
+    return this.http.get<CLS_ClasseSezioneAnno_Query[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoGroup/'+idAnnoScolastico);
+    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnnoGroup/1
   }
   
   put(formData: any): Observable <any>{
