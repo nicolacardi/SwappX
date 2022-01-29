@@ -55,24 +55,6 @@ export class LoginComponent implements OnInit {
 
   onSubmit(){
 
-    /*
-    this.svcRette.loadByAlunnoAnnoMese(this.alunnoID, this.annoID, (this.formRetta.controls['meseRetta'].value + 1))
-      .pipe (
-        tap (val=> this.formRetta.controls['rettaID'].setValue(val.id)), //il valore in arrivo dalla load viene inserito nel form
-        concatMap(() => this.svcPagamenti.post(this.formRetta.value)) //concatMap ATTENDE l'observable precedente prima di lanciare il successivo
-        )
-        .subscribe(
-          ()=> {
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-            //this._dialogRef.close();
-            this.pagamentoEmitter.emit(this.formRetta.controls['meseRetta'].value);
-            this.resetFields();
-          },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          )
-      );
-    */
 
     let obsUser$= this.svcUser.Login(this.form.value);
     const loadUser$ =this._loadingService.showLoaderUntilCompleted(obsUser$);

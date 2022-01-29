@@ -12,9 +12,9 @@ export class ComuniService {
 
   constructor(private http: HttpClient) { }
 
-  loadComuni(): Observable<_UT_Comuni[]>{
-    return this.http.get<_UT_Comuni[]>(environment.apiBaseUrl+'_UT_Comuni');
-  }
+  // loadComuni(): Observable<_UT_Comuni[]>{
+  //   return this.http.get<_UT_Comuni[]>(environment.apiBaseUrl+'_UT_Comuni');
+  // }
 
   filterComuni(searchstring: string): Observable<_UT_Comuni[]>{
     return this.http.get<_UT_Comuni[]>(environment.apiBaseUrl+'_UT_Comuni')

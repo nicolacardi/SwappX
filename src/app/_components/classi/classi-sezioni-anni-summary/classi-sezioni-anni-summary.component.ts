@@ -47,7 +47,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 //#endregion
 
-  constructor(private svcClassi:          ClassiSezioniAnniService,
+  constructor(private svcClassiSezioniAnni:          ClassiSezioniAnniService,
               private svcAnni:            AnniScolasticiService,
               private fb:                 FormBuilder, 
               private _loadingService:    LoadingService,
@@ -76,7 +76,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
     this.displayedColumns = this.displayedColumnsClassiSezioniAnniSummary;
     
     let obsSummary$: Observable<CLS_ClasseSezioneAnno_Query[]>;
-    obsSummary$= this.svcClassi.loadSummary(this.form.controls['selectAnnoScolastico'].value);
+    obsSummary$= this.svcClassiSezioniAnni.loadSummary(this.form.controls['selectAnnoScolastico'].value);
     const loadSummary$ =this._loadingService.showLoaderUntilCompleted(obsSummary$);
 
     loadSummary$.subscribe(val => {

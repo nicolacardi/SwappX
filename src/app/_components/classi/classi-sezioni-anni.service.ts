@@ -22,10 +22,7 @@ export class ClassiSezioniAnniService {
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListWithClasseSezioneAnno
   }
 
-  // loadClassiByAnnoScolastico(idAnnoScolastico: any): Observable<CLS_ClasseSezioneAnno[]>{
-  //   return this.http.get<CLS_ClasseSezioneAnno[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnno/'+idAnnoScolastico);
-  //   //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnno/1
-  // }
+
   loadClassiByAnnoScolastico(idAnnoScolastico: any): Observable<CLS_ClasseSezioneAnno_Query[]>{
     return this.http.get<CLS_ClasseSezioneAnno_Query[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoGroup/'+idAnnoScolastico);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnnoGroup/1
@@ -42,7 +39,6 @@ export class ClassiSezioniAnniService {
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/getwithClasseSezioneanno/1
   } 
 
-  
   loadSummary(idAnnoScolastico: any): Observable<CLS_ClasseSezioneAnno_Query[]>{
     return this.http.get<CLS_ClasseSezioneAnno_Query[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoGroup/'+idAnnoScolastico);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnnoGroup/1
