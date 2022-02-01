@@ -60,7 +60,7 @@ export class ProfiloComponent implements OnInit {
     this.form.controls.email.setValue(this.currUser.email);
     this.form.controls.fullname.setValue(this.currUser.fullname);
     
-    this.svcUser.getUserFoto(this.currUser.userID).subscribe(
+    this.svcUser.getFotoByUserID(this.currUser.userID).subscribe(
       val=> {
         if(val){
           this.imgFile = val.foto; 
@@ -142,7 +142,7 @@ export class ProfiloComponent implements OnInit {
       this.fotoObj.userID = this.currUser.userID;
       this.fotoObj.foto = this.immagineDOM.nativeElement.src;
 
-      this.svcUser.saveUserFoto(this.fotoObj)
+      this.svcUser.postputFoto(this.fotoObj)
       .subscribe(() => {
           this.eventEmitterService.onAccountSaveProfile();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo salvato', panelClass: ['green-snackbar']});

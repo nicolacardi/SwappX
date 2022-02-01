@@ -71,7 +71,7 @@ export class RettaCalcoloComponent implements OnInit {
 
     _dialogRef.disableClose = true;
 
-     this.svcParametri.loadParametro('QuoteDefault')
+     this.svcParametri.getByParName('QuoteDefault')
       .subscribe(x=>{
       this.QuoteDefault = x.parValue
       }

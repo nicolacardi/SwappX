@@ -62,7 +62,7 @@ export class AppComponent implements OnInit{
   }
 
   refreshUserData () {
-    this.svcUser.getUserFoto(this.currUser.userID).subscribe(
+    this.svcUser.getFotoByUserID(this.currUser.userID).subscribe(
       val=> {
         this.imgAccount = val.foto; }
     );

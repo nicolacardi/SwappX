@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
 
         //console.log("login.component - onSubmit", res);
 
-        //  this.svcParametri.loadParametro("AnnoCorrente").subscribe(
+        //  this.svcParametri.getByParName("AnnoCorrente").subscribe(
         //      (par: any) => {
         //        console.log("DEBUG1:", par);
         //      }
