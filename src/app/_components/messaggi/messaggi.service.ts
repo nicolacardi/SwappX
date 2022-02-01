@@ -12,17 +12,17 @@ export class MessaggiService {
 
   constructor(private http: HttpClient) { }
 
-  load(): Observable<_UT_Message[]>{
+  list(): Observable<_UT_Message[]>{
     return this.http.get<_UT_Message[]>(environment.apiBaseUrl+'_UT_Message');
     //http://213.215.231.4/swappX/api/_UT_Messages
   }
 
-  loadByID(idMessage: any): Observable<_UT_Message>{
+  get(idMessage: any): Observable<_UT_Message>{
     return this.http.get<_UT_Message>(environment.apiBaseUrl+'_UT_Messages/'+idMessage);
     //http://213.215.231.4/swappX/api/_UT_Messages/5
   }
 
-  loadByUserID(userID: string): Observable<_UT_Message[]>{
+  listByUserID(userID: string): Observable<_UT_Message[]>{
     return this.http.get<_UT_Message[]>(environment.apiBaseUrl+'_UT_Messages/ListByUserID/' + userID);
     //http://213.215.231.4/swappX/api/_UT_Messages/ListByUserID/75b01815-1282-4459-bbf5-61bc877a9100
   }

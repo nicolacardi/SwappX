@@ -53,7 +53,7 @@ displayedColumns: string[] = [
 
     let obsNews$: Observable<_UT_Message[]>;
 
-    obsNews$ = this.svcMessages.loadByUserID(this.currUser.userID);
+    obsNews$ = this.svcMessages.listByUserID(this.currUser.userID);
 
     const loadNews$ =this._loadingService.showLoaderUntilCompleted(obsNews$);
 

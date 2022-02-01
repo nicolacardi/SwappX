@@ -134,7 +134,7 @@ export class GenitoreEditComponent implements OnInit {
       debounceTime(300),
       tap(() => this.comuniIsLoading = true),
       //delayWhen(() => timer(2000)),
-      switchMap(() => this.svcComuni.filterComuni(this.form.value.comune)),
+      switchMap(() => this.svcComuni.filterList(this.form.value.comune)),
       tap(() => this.comuniIsLoading = false)
     )
 
@@ -144,7 +144,7 @@ export class GenitoreEditComponent implements OnInit {
       tap(),
       debounceTime(300),
       tap(() => this.comuniNascitaIsLoading = true),
-      switchMap(() => this.svcComuni.filterComuni(this.form.value.comuneNascita)),
+      switchMap(() => this.svcComuni.filterList(this.form.value.comuneNascita)),
       tap(() => this.comuniNascitaIsLoading = false)
     )
   }  
