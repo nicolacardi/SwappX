@@ -18,9 +18,9 @@ export class TipiPagamentoService {
     return this.http.get<PAG_TipoPagamento[]>(environment.apiBaseUrl+'PAG_TipiPagamento');
   }
 
-  loadByID(idTipoPagamento: any): Observable<PAG_TipoPagamento>{  
-    return this.http.get<PAG_TipoPagamento>(environment.apiBaseUrl+'PAG_TipiPagamento/'+idTipoPagamento);
-  }
+  // loadByID(idTipoPagamento: any): Observable<PAG_TipoPagamento>{  
+  //   return this.http.get<PAG_TipoPagamento>(environment.apiBaseUrl+'PAG_TipiPagamento/'+idTipoPagamento);
+  // }
 
   
   filter(searchstring: string): Observable<PAG_TipoPagamento[]>{

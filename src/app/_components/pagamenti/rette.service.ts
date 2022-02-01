@@ -54,10 +54,6 @@ export class RetteService {
     obj.id = 0;
     return this.http.post(environment.apiBaseUrl  + 'PAG_Rette' , obj);  
   }
-  // post(formData: any): Observable <any>{
-  //   formData.id = 0;
-  //   return this.http.post(environment.apiBaseUrl  + 'PAG_Rette' , formData);  
-  // }
 
   delete(id: number): Observable <any>{
     return this.http.delete(environment.apiBaseUrl  + 'PAG_Rette/' + id);    
