@@ -60,7 +60,7 @@ export class ProfiloComponent implements OnInit {
     this.form.controls.email.setValue(this.currUser.email);
     this.form.controls.fullname.setValue(this.currUser.fullname);
     
-    this.svcUser.getUserFoto(this.currUser.userID).subscribe(
+    this.svcUser.getFotoByUserID(this.currUser.userID).subscribe(
       val=> {
         if(val){
           this.imgFile = val.foto; 

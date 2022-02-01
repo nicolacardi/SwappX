@@ -83,7 +83,7 @@ export class RettaCalcoloComponent implements OnInit {
     //   nomeCognomeAlunno:    [null]
     // });
 
-    this.svcParametri.loadParametro('QuoteDefault')
+    this.svcParametri.getByParName('QuoteDefault')
       .subscribe(x=>{
       this.QuoteDefault = x.parValue
       }

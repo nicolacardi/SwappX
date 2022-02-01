@@ -19,7 +19,7 @@ export class ParametriService {
     //http://213.215.231.4/swappX/api/_UT_Parametri
   }
 
-  loadParametro(parName: string): Observable<_UT_Parametro>{
+  getByParName(parName: string): Observable<_UT_Parametro>{
     return this.http.get<_UT_Parametro>(environment.apiBaseUrl+'_UT_Parametri/GetByParName/'+parName);
     //http://213.215.231.4/swappX/api/_UT_Parametri/GetByParName/AnnoCorrente
   }

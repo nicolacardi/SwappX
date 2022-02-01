@@ -52,20 +52,20 @@ export class ImpostazioniComponent implements OnInit {
       quoteRidotteFratelli : false
     });
 
-    this.svcParametri.loadParametro('AnnoCorrente').subscribe(
+    this.svcParametri.getByParName('AnnoCorrente').subscribe(
       par=>{
         this.parAnnoCorrente = par;
         this.form.controls['selectAnnoScolastico'].setValue(parseInt(par.parValue));
       }
     );
 
-    this.svcParametri.loadParametro('QuoteDefault').subscribe(
+    this.svcParametri.getByParName('QuoteDefault').subscribe(
       par=>{
         this.parQuoteDefault = par;
       }
     );
 
-    this.svcParametri.loadParametro('QuoteRidotteFratelli').subscribe(
+    this.svcParametri.getByParName('QuoteRidotteFratelli').subscribe(
       par=>{
         this.parQuoteRidotteFratelli = par;
         this.form.controls['quoteRidotteFratelli'].setValue(JSON.parse(par.parValue));
