@@ -16,7 +16,7 @@ export class AlunniService {
 
   constructor(private http: HttpClient) { }
 
-  load(): Observable<ALU_Alunno[]>{
+  list(): Observable<ALU_Alunno[]>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni');
     //http://213.215.231.4/swappX/api/ALU_Alunni
   }
@@ -45,16 +45,7 @@ export class AlunniService {
     return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/GetWithParents/'+id);
   }
 
-  //per filtro e paginazione server side (NON USATO)
-  findAlunni(filter = '', sortOrder= 'asc', pageNumber = 0, pageSize = 3): Observable<ALU_Alunno[]>{
-    return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni', {
-      params: new HttpParams()
-                .set('filter', filter)
-                .set('sortOrder', sortOrder)
-                .set('pageNumber', pageNumber.toString())
-                .set('pageSize', pageSize.toString())
-    });
-  }
+
 
   put(formData: any): Observable <any>{
     return this.http.put( environment.apiBaseUrl  + 'ALU_Alunni/' + formData.id , formData);    
@@ -70,9 +61,7 @@ export class AlunniService {
   }
 
   filterAlunni(searchstring: string): Observable<ALU_Alunno[]>{
-    
-    //console.log("alunni.service.ts - filterAlunni - searchstring:", searchstring);
-    
+
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni')
             .pipe (
@@ -152,3 +141,16 @@ export class AlunniService {
   }
 
 }
+
+
+
+  // //per filtro e paginazione server side (NON USATO)
+  // findAlunni(filter = '', sortOrder= 'asc', pageNumber = 0, pageSize = 3): Observable<ALU_Alunno[]>{
+  //   return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni', {
+  //     params: new HttpParams()
+  //               .set('filter', filter)
+  //               .set('sortOrder', sortOrder)
+  //               .set('pageNumber', pageNumber.toString())
+  //               .set('pageSize', pageSize.toString())
+  //   });
+  // }

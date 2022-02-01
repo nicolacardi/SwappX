@@ -124,26 +124,21 @@ export class UserService {
     //http://213.215.231.4/swappX/api/ApplicationUser
   }
 
-  //questo metodo si chiama getFotoByUserID e non getByUserID come il metodo relativo perchè lo abbiamo messo nel service user e non in un service Foto
+  //questo metodo si chiama getFotoByUserID e non getByUserID come il metodo relativo nel WS perchè lo abbiamo messo nel service user e non in un service Foto
   getFotoByUserID(userID: string): Observable<_UT_UserFoto>{
     return this.http.get<_UT_UserFoto>(environment.apiBaseUrl+'_UT_UsersFoto/GetByUserID/' + userID);
     //http://213.215.231.4/swappX/api/_UT_UsersFoto/GetByUserID/75b01815-1282-4459-bbf5-61bc877a9100
   }
  
-  
-  saveUserFoto(formData: any): Observable<any>{
-
-    //console.log("saveUserFoto", formData);
-    
+  //questo metodo si chiama postputFoto e non post o put come i metodi relativo nel WS perchè lo abbiamo messo nel service user
+  //e non in un service Foto e in più perchè fa sia una post che una put
+  postputFoto(formData: any): Observable<any>{    
     if(formData.id == null || formData.id <= 0)
       return this.http.post(environment.apiBaseUrl+'_UT_UsersFoto', formData);
     else
       return this.http.put(environment.apiBaseUrl+'_UT_UsersFoto/' + formData.id, formData);
   }
  
-  putUserFoto(formData: any): Observable<any>{
-    return this.http.put(environment.apiBaseUrl+'_UT_UsersFoto/' + formData.id, formData);
-  }
  
   public  getUser() : User {
 

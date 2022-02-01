@@ -142,7 +142,7 @@ export class ProfiloComponent implements OnInit {
       this.fotoObj.userID = this.currUser.userID;
       this.fotoObj.foto = this.immagineDOM.nativeElement.src;
 
-      this.svcUser.saveUserFoto(this.fotoObj)
+      this.svcUser.postputFoto(this.fotoObj)
       .subscribe(() => {
           this.eventEmitterService.onAccountSaveProfile();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo salvato', panelClass: ['green-snackbar']});

@@ -251,10 +251,10 @@ export class RettaEditComponent implements OnInit {
       {
         if (!val) {
           this.data.idAlunno = parseInt(idstored);
-        this.formRetta.controls['nomeCognomeAlunno'].setValue(stored)
-        this.formRetta.controls['alunnoID'].setValue(parseInt(idstored));
-        this.loadData();
-      }
+          this.formRetta.controls['nomeCognomeAlunno'].setValue(stored)
+          this.formRetta.controls['alunnoID'].setValue(parseInt(idstored));
+          this.loadData();
+        }
     })
   }
 
