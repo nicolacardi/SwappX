@@ -118,6 +118,16 @@ export class AlunniService {
       )
   }
 
+  hasFratelloMaggiore(alunnoID: number): Observable<boolean> {
+    
+    return this.http.get<boolean>( environment.apiBaseUrl  + 'ALU_Alunni/HasFratelloMaggiore/'+alunnoID);
+    //http://213.215.231.4/swappX/api/ALU_Alunni/HasFratelloMaggiore/3 
+  }
+
+
+//#region -- GenitoreAlunno
+
+
   getGenitoreAlunno (genitoreID: number, alunnoID: number): Observable <any>{
     return this.http.get( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/GetAllByGenitoreAlunno?idAlunno='+alunnoID+'&idGenitore='+genitoreID);
     //http://213.215.231.4/swappX/api/ALU_GenitoriAlunni/GetAllByGenitoreAlunno?idAlunno=3&idGenitore=4
@@ -137,8 +147,10 @@ export class AlunniService {
     //console.log ("genitoreID:", genitoreID, "alunnoID:", alunnoID)
     return this.http.delete( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/DeleteByGenitoreAlunno?idAlunno='+alunnoID+'&idGenitore='+genitoreID);
     //http://213.215.231.4/swappX/api/ALU_GenitoriAlunni/DeleteByGenitoreAlunno?idAlunno=3&idGenitore=4
-
   }
+
+//#endregion
+ 
 
 }
 

@@ -1,6 +1,8 @@
 import { ALU_Genitore } from './ALU_Genitore';
 
+
 export interface ALU_Alunno {
+
         id:                     number;
         nome:                   string;
         cognome:                string;
@@ -34,3 +36,4 @@ export interface ALU_Alunno {
         _Genitori:              ALU_Genitore[];
 }
 
+ 
