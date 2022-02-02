@@ -104,8 +104,7 @@ export class RettapagamentoEditComponent implements OnInit {
       .pipe (
         tap (val=> this.formRetta.controls['rettaID'].setValue(val.id)), //il valore in arrivo dalla load viene inserito nel form
         concatMap(() => this.svcPagamenti.post(this.formRetta.value)) //concatMap ATTENDE l'observable precedente prima di lanciare il successivo
-        )
-        .subscribe(
+      ).subscribe(
           ()=> {
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
             //this._dialogRef.close();

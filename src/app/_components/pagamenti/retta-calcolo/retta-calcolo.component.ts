@@ -51,7 +51,7 @@ export class RettaCalcoloComponent implements OnInit {
   public mesiArr =                    [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=          ["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
   public QuoteDefault =               "000000000000";
-  private hasFratelloMaggiore = false;
+  //private hasFratelloMaggiore = false;
 
   @ViewChild('ListClassi') viewListClassi!:     ClassiSezioniAnniListComponent; 
   @ViewChildren('QuoteListElement') QuoteList!: QueryList<any>;
@@ -170,15 +170,15 @@ export class RettaCalcoloComponent implements OnInit {
             this.svcIscrizioni.updateStato(formData).subscribe();
             //-------- 
               //this.svcRette.loadByAlunnoAnno(iscrizione.alunnoID, annoID ).subscribe(  
-
+            let hasFratelloMaggiore  = false;
             this.svcAlunni.hasFratelloMaggiore(iscrizione.alunnoID )
               .pipe (
                 tap (val=> {
-                  this.hasFratelloMaggiore  = val
+                  hasFratelloMaggiore = val;
                   console.log("Tap: " ,  iscrizione.alunno.id, iscrizione.alunno.cognome + " " + iscrizione.alunno.nome, val);
                 } ),  
                 concatMap(() => this.svcRette.loadByAlunnoAnno(iscrizione.alunnoID, annoID ))
-                ).subscribe( retteAnnoAlunno =>{
+              ).subscribe( retteAnnoAlunno =>{
 
                   //se array vuoto, INSERT
                   if(retteAnnoAlunno.length == 0){
@@ -251,7 +251,7 @@ export class RettaCalcoloComponent implements OnInit {
                         else 
                           importoMese = importoMeseRound;
                       }
-                      console.log("this.hasFratelloMaggiore: ", iscrizione.alunno.cognome + " " + iscrizione.alunno.nome, this.hasFratelloMaggiore );
+                      console.log("this.hasFratelloMaggiore: ", iscrizione.alunno.cognome + " " + iscrizione.alunno.nome, hasFratelloMaggiore );
 
 
                       rettaMese.quotaConcordata = importoMese;
