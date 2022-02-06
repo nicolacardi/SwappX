@@ -20,7 +20,7 @@ import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service
 import { IscrizioniService } from '../iscrizioni.service';
 
 //classes
-import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnno_Query } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -39,7 +39,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#region ----- Variabili -------
   matDataSourceIscrizioni = new MatTableDataSource<CLS_ClasseSezioneAnno>();
-  matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno_Query>();
+  matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnnoGroup>();
 
   displayedColumns: string[] =  [];
 
@@ -84,7 +84,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   ];
 
 
-  selection = new SelectionModel<CLS_ClasseSezioneAnno_Query>(true, []);   //rappresenta la selezione delle checkbox
+  selection = new SelectionModel<CLS_ClasseSezioneAnnoGroup>(true, []);   //rappresenta la selezione delle checkbox
   
   toggleChecks:                       boolean = false;
   public swSoloAttivi :               boolean = true;
@@ -247,8 +247,8 @@ constructor(
       });
     }
     else{ 
-      let obsClassi$: Observable<CLS_ClasseSezioneAnno_Query[]>;
-      obsClassi$= this.svcClassiSezioniAnni.loadClassiByAnnoScolastico(idAnno);
+      let obsClassi$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
+      obsClassi$= this.svcClassiSezioniAnni.listByAnnoGroupByClasse(idAnno);
       // pipe(
       // map(res=> {
       //   var ret = <CLS_ClasseSezioneAnno[]>res.json();
@@ -424,7 +424,7 @@ sortCustom() {
 //#endregion
 
 //#region ----- Gestione Campo Checkbox -------
-  selectedRow(element: CLS_ClasseSezioneAnno_Query) {
+  selectedRow(element: CLS_ClasseSezioneAnnoGroup) {
     this.selection.toggle(element);
   }
 
@@ -454,7 +454,7 @@ sortCustom() {
 
     //non so se serva questo metodo: genera un valore per l'aria-label...
   //forse serve per poi pescare i valori selezionati?
-  checkboxLabel(row?: CLS_ClasseSezioneAnno_Query): string {
+  checkboxLabel(row?: CLS_ClasseSezioneAnnoGroup): string {
     if (!row) 
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     else

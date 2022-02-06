@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { map, catchError } from 'rxjs/operators';
 
 
-import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnno_Query, CLS_ClasseSezioneAnno_Sum } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup, CLS_ClasseSezioneAnno_Sum } from 'src/app/_models/CLS_ClasseSezioneAnno';
 
 @Injectable({
   providedIn: 'root'
@@ -15,34 +15,21 @@ export class ClassiSezioniAnniService {
 
   constructor(private http: HttpClient) { }
 
-
-  //*********NON USATA***********
-  loadClassi(): Observable<CLS_ClasseSezioneAnno[]>{
-    return this.http.get<CLS_ClasseSezioneAnno[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListWithClasseSezioneAnno');
-    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListWithClasseSezioneAnno
-  }
-
-
-  loadClassiByAnnoScolastico(idAnnoScolastico: any): Observable<CLS_ClasseSezioneAnno_Query[]>{
-    return this.http.get<CLS_ClasseSezioneAnno_Query[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoGroup/'+idAnnoScolastico);
-    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnnoGroup/1
-  }
-
-  //NON USATA (restituisce l'oggetto con parametri base)
-  loadClasseSimple(id: any): Observable<CLS_ClasseSezioneAnno>{
+  //NON USATA (gest standard)
+  get(id: any): Observable<CLS_ClasseSezioneAnno>{
     return  this.http.get<CLS_ClasseSezioneAnno>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/'+id);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/1
   } 
+
+  listByAnnoGroupByClasse(idAnnoScolastico: any): Observable<CLS_ClasseSezioneAnnoGroup[]>{
+    return this.http.get<CLS_ClasseSezioneAnnoGroup[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoGroupByClasse/'+idAnnoScolastico);
+    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnnoGroupByClasse/1
+  }
 
   loadClasse(id: any): Observable<CLS_ClasseSezioneAnno>{
     return  this.http.get<CLS_ClasseSezioneAnno>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/getWithClasseSezioneanno/'+id);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/getwithClasseSezioneanno/1
   } 
-
-  loadSummary(idAnnoScolastico: any): Observable<CLS_ClasseSezioneAnno_Query[]>{
-    return this.http.get<CLS_ClasseSezioneAnno_Query[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoGroup/'+idAnnoScolastico);
-    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnnoGroup/1
-  }
   
   put(formData: any): Observable <any>{
     return this.http.put( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni/' + formData.id , formData);    
@@ -50,8 +37,6 @@ export class ClassiSezioniAnniService {
 
   post(formData: any): Observable <any>{
     formData.id = 0;
-
-    //console.log("DEBUG: POST classi-sezioni-anni.service ", formData );
 
     return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni' , formData);  
   }

@@ -23,7 +23,7 @@ export interface CLS_ClasseSezioneAnno_Sum {
         numFemmine:             number;
 }
 
-export interface CLS_ClasseSezioneAnno_Query {
+export interface CLS_ClasseSezioneAnnoGroup {
         id:                     number;
         classeSezioneID:        number;
 
@@ -44,4 +44,13 @@ export interface CLS_ClasseSezioneAnno_Query {
         numAlunni:              number;
         numMaschi:              number;
         numFemmine:             number;
+
+        numStato10:             number;
+        numStato20:             number;
+        numStato30:             number;
+        numStato40:             number;
+        numStato50:             number;
+        numStato60:             number;
+        numStato70:             number;
+        numStato80:             number;
 }

@@ -20,7 +20,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 
 
 //models
-import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnno_Query } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { CLS_Classe } from 'src/app/_models/CLS_Classe';
 import { CLS_ClasseSezione } from 'src/app/_models/CLS_ClasseSezione';
@@ -38,7 +38,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
   
   obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   obsClassi$!:                Observable<CLS_Classe[]>;
-  obsClassiSezioniAnniSucc$!: Observable<CLS_ClasseSezioneAnno_Query[]>;
+  obsClassiSezioniAnniSucc$!: Observable<CLS_ClasseSezioneAnnoGroup[]>;
   obsClasseSezione$!:         Observable<CLS_ClasseSezione>;
 
   obs!: Subscription;
@@ -110,7 +110,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
             this.svcAnni.loadAnnoSucc(classe.anno.id) 
             .pipe (
               tap ( val   =>  annoIDsucc= val.id),
-              concatMap(() => this.obsClassiSezioniAnniSucc$ = this.svcClasseSezioneAnno.loadClassiByAnnoScolastico(annoIDsucc))
+              concatMap(() => this.obsClassiSezioniAnniSucc$ = this.svcClasseSezioneAnno.listByAnnoGroupByClasse(annoIDsucc))
             ).subscribe(
               res=>{
               },
@@ -119,11 +119,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
               }
 
             );
-            //this.obsClassiSezioniAnniSucc$= this.svcClasseSezioneAnno.loadClassiByAnnoScolastico(classe.anno.id + 1); //sostituita da quella sopra che pesca l'anno successivo a quello della classe
-
             this.form.controls['classeSezioneAnnoSuccID'].setValue(classe.ClasseSezioneAnnoSucc?.id); 
-            
-            //console.log("classeSezioneAnno$ estratta : ", classe);
           })
       );
     } else 
@@ -213,7 +209,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
     this.obs=  this.svcAnni.loadAnnoSucc(selectedAnno) 
       .pipe (
         tap ( val   =>  annoIDsucc= val.id),
-        concatMap(() => this.obsClassiSezioniAnniSucc$= this.svcClasseSezioneAnno.loadClassiByAnnoScolastico(annoIDsucc))
+        concatMap(() => this.obsClassiSezioniAnniSucc$= this.svcClasseSezioneAnno.listByAnnoGroupByClasse(annoIDsucc))
       ).subscribe(
         res=>{
         },

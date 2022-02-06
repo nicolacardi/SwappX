@@ -10,7 +10,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 
 //classes
-import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnno_Query } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
@@ -26,7 +26,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
 
 //#region ----- Variabili -------
 
-  matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnno_Query>();
+  matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnnoGroup>();
 
   //public idAnnoScolastico!:           number;
   obsAnni$!:                            Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
@@ -75,8 +75,8 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
 
     this.displayedColumns = this.displayedColumnsClassiSezioniAnniSummary;
     
-    let obsSummary$: Observable<CLS_ClasseSezioneAnno_Query[]>;
-    obsSummary$= this.svcClassiSezioniAnni.loadSummary(this.form.controls['selectAnnoScolastico'].value);
+    let obsSummary$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
+    obsSummary$= this.svcClassiSezioniAnni.listByAnnoGroupByClasse(this.form.controls['selectAnnoScolastico'].value);
     const loadSummary$ =this._loadingService.showLoaderUntilCompleted(obsSummary$);
 
     loadSummary$.subscribe(val => {
@@ -89,7 +89,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
 
 
 //#region ----- LifeCycle Hooks e simili-------
-  onRightClick(event: MouseEvent, element: CLS_ClasseSezioneAnno_Query) { 
+  onRightClick(event: MouseEvent, element: CLS_ClasseSezioneAnnoGroup) { 
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
     this.menuTopLeftPosition.y = event.clientY + 'px'; 

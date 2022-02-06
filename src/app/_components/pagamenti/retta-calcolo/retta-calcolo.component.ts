@@ -25,7 +25,7 @@ import { RetteService } from '../rette.service';
 
 //classes
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnno_Query } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
@@ -126,7 +126,7 @@ export class RettaCalcoloComponent implements OnInit {
     }
   }
 
-  private elaboraClasse(objClasseSezioneAnno: CLS_ClasseSezioneAnno_Query){
+  private elaboraClasse(objClasseSezioneAnno: CLS_ClasseSezioneAnnoGroup){
 
     //********************************************************************************************************************************************************
     //ATTENZIONE! DEVO ESSERE SICURO CHE SE C'è UNA RETTA IN UN MESE CI SIA IN TUTTI I 12 MESI ALTRIMENTI LA UPDATE NON FUNZIONA CORRETTAMENTE! ASSICURARSENE!
