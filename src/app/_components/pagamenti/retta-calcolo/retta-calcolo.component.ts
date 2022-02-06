@@ -41,17 +41,18 @@ import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 export class RettaCalcoloComponent implements OnInit {
 
   obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-  obsQuoteDefault$!:                  Observable<_UT_Parametro>;
+  //obsQuoteDefault$!:                  Observable<_UT_Parametro>;
+  //obsQuoteRidotteFratelli$!:          Observable<_UT_Parametro>;
+  
   obsClassiSezioniAnni$!:             Observable<CLS_ClasseSezioneAnno[]>;
   obsRette$!:                         Observable<PAG_Retta[]>;
-  
   // obsFilteredAlunni$!:                Observable<ALU_Alunno[]>;
 
   form! :                             FormGroup;
   public mesiArr =                    [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=          ["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
   public QuoteDefault =               "000000000000";
-  //private hasFratelloMaggiore = false;
+  public QuoteRidotteFratelli =       false;
 
   @ViewChild('ListClassi') viewListClassi!:     ClassiSezioniAnniListComponent; 
   @ViewChildren('QuoteListElement') QuoteList!: QueryList<any>;
@@ -71,11 +72,15 @@ export class RettaCalcoloComponent implements OnInit {
 
     _dialogRef.disableClose = true;
 
-     this.svcParametri.getByParName('QuoteDefault')
-      .subscribe(x=>{
-      this.QuoteDefault = x.parValue
-      }
-    );
+    this.svcParametri.getByParName('QuoteDefault').subscribe(
+      x=>{
+        this.QuoteDefault = x.parValue
+      });
+
+    this.svcParametri.getByParName('QuoteRidotteFratelli').subscribe(
+      x=> {
+        if(x.parValue == "true") this.QuoteRidotteFratelli = true;
+      });
   }
 
   ngOnInit(): void {
@@ -152,7 +157,7 @@ export class RettaCalcoloComponent implements OnInit {
     importoMeseRound = Math.floor(importoAnno/contaMesi);
     restoImportoMese = importoAnno - importoMeseRound * contaMesi;  //per applicare il resto alla prima quota devo essere sicuro che le quote vengano passate in ordine, quindi nel service metto una orderby
     importoMeseRound2 = Math.floor(importoAnno2/contaMesi);
-    restoImportoMese2 = importoAnno - importoMeseRound2 * contaMesi; 
+    restoImportoMese2 = importoAnno2 - importoMeseRound2 * contaMesi; 
 
     let obsIscrizioni$: Observable<CLS_Iscrizione[]>;
     obsIscrizioni$= this.svcIscrizioni.listByClasseSezioneAnno(objClasseSezioneAnno.id);
@@ -169,101 +174,109 @@ export class RettaCalcoloComponent implements OnInit {
             }
             this.svcIscrizioni.updateStato(formData).subscribe();
             //-------- 
-              //this.svcRette.loadByAlunnoAnno(iscrizione.alunnoID, annoID ).subscribe(  
-            let hasFratelloMaggiore  = false;
+
+            let hasFratelloMaggiore= false;
             this.svcAlunni.hasFratelloMaggiore(iscrizione.alunnoID )
               .pipe (
                 tap (val=> {
                   hasFratelloMaggiore = val;
-                  console.log("Tap: " ,  iscrizione.alunno.id, iscrizione.alunno.cognome + " " + iscrizione.alunno.nome, val);
-                } ),  
-                concatMap(() => this.svcRette.loadByAlunnoAnno(iscrizione.alunnoID, annoID ))
-              ).subscribe( retteAnnoAlunno =>{
+                }),  
+                concatMap(() => this.svcRette.loadByAlunnoAnno(iscrizione.alunnoID, annoID )))
+                  .subscribe( retteAnnoAlunno =>{
 
-                  //se array vuoto, INSERT
-                  if(retteAnnoAlunno.length == 0){
+                    //se array vuoto, INSERT
+                    if(retteAnnoAlunno.length == 0){
 
-                    const d = new Date();
-                    d.setSeconds(0,0);
-                    let dateNow = d.toISOString().split('.')[0];
+                      const d = new Date();
+                      d.setSeconds(0,0);
+                      let dateNow = d.toISOString().split('.')[0];
 
-                    //loop per i 12 mesi, i primi quattro dell'anno1, gli altri dell'anno2
-                    for( i=1; i<=12; i++){
-                      if (i <= 4) {
-                        mese = i + 8;
-                        annoRetta = anno1;
+                      //loop per i 12 mesi, i primi quattro dell'anno1, gli altri dell'anno2
+                      for( i=1; i<=12; i++){
+                        if (i <= 4) {
+                          mese = i + 8;
+                          annoRetta = anno1;
+                        } 
+                        else {
+                          mese = i - 4;
+                          annoRetta = anno2;
+                        }
+
+                        if (arrCheckMesi[i-1].checked == false) 
+                          importoMese = 0;             
+                        else {
+                          if( this.QuoteRidotteFratelli && hasFratelloMaggiore){
+                            if (primaQuota) {
+                              importoMese = importoMeseRound2 + restoImportoMese2;
+                              primaQuota = false;
+                            } 
+                            else importoMese = importoMeseRound2;
+                          }
+                          else{
+                            if (primaQuota) {
+                              importoMese = importoMeseRound + restoImportoMese;
+                              primaQuota = false;
+                            } 
+                            else  importoMese = importoMeseRound;
+                          }
+                        }
+
+                        let rettaMese: PAG_Retta = {
+                          id : 0,
+                          iscrizioneID:           iscrizione.id,
+                          annoID:                 annoID,
+                          alunnoID:               iscrizione.alunnoID,
+                          annoRetta:              annoRetta,
+                          meseRetta:              mese,
+                          quotaDefault:           importoMese,
+                          quotaConcordata:        importoMese,
+                          
+                          note:                   '',
+                          dtIns:                  dateNow,
+                          dtUpd:                  dateNow,
+                          userIns:                1,
+                          userUpd:                1
+                        };
+                        this.svcRette.post(rettaMese).subscribe();
                       } 
-                      else {
-                        mese = i - 4;
-                        annoRetta = anno2;
-                      }
+                    }
+                    else {
+                      //console.log("UPDATE - retteAnnoAlunno", retteAnnoAlunno);
 
-                      if (arrCheckMesi[i-1].checked == false) 
-                        importoMese = 0;             
-                      else {
-                        if (primaQuota) {
-                          importoMese = importoMeseRound + restoImportoMese;
-                          primaQuota = false;
-                        } 
+                      retteAnnoAlunno.forEach((rettaMese) => {
+                        mese = rettaMese.meseRetta;
+
+                        if (mese <= 8) 
+                          i = mese + 3;
                         else 
-                          importoMese = importoMeseRound;
-                      }
-                      
-                      let rettaMese: PAG_Retta = {
-                        id : 0,
-                        iscrizioneID:           iscrizione.id,
-                        annoID:                 annoID,
-                        alunnoID:               iscrizione.alunnoID,
-                        annoRetta:              annoRetta,
-                        meseRetta:              mese,
-                        quotaDefault:           importoMese,
-                        quotaConcordata:        importoMese,
+                          i = mese - 9;
                         
-                        note:                   '',
-                        dtIns:                  dateNow,
-                        dtUpd:                  dateNow,
-                        userIns:                1,
-                        userUpd:                1
-                      };
-                      this.svcRette.post(rettaMese).subscribe();
-                    } 
-                  }
-                  else {
-                    //console.log("UPDATE - retteAnnoAlunno", retteAnnoAlunno);
+                        if (arrCheckMesi[i].checked == false) 
+                          importoMese = 0;
+                        else {
+                          if( this.QuoteRidotteFratelli && hasFratelloMaggiore){
+                            if (primaQuota) {
+                              importoMese = importoMeseRound2 + restoImportoMese2;
+                              primaQuota = false;
+                            } 
+                            else importoMese = importoMeseRound2;
+                          }
+                          else{
+                            if (primaQuota) {
+                              importoMese = importoMeseRound + restoImportoMese;
+                              primaQuota = false;
+                            } 
+                            else importoMese = importoMeseRound;
+                          }
+                        }
 
-                    retteAnnoAlunno.forEach((rettaMese) => {
-                      mese = rettaMese.meseRetta;
+                        rettaMese.quotaConcordata = importoMese;
+                        rettaMese.quotaDefault = importoMese;
 
-                      if (mese <= 8) 
-                        i = mese + 3;
-                      else 
-                        i = mese - 9;
-                      
-                      //console.log ("mese", mese, "i", i);
-                      //console.log ("arrCheckboxes[i].checked", arrCheckboxes[i].checked);
-                      if (arrCheckMesi[i].checked == false) 
-                        importoMese = 0;
-                      else {
-                        if (primaQuota) {
-                          importoMese = importoMeseRound + restoImportoMese;
-                          primaQuota = false;
-                        } 
-                        else 
-                          importoMese = importoMeseRound;
-                      }
-                      console.log("this.hasFratelloMaggiore: ", iscrizione.alunno.cognome + " " + iscrizione.alunno.nome, hasFratelloMaggiore );
-
-
-                      rettaMese.quotaConcordata = importoMese;
-                      rettaMese.quotaDefault = importoMese;
-
-                      //... importo2      TODO
-                      //console.log("PUT RettaMese: ", rettaMese);
-
-                      this.svcRette.put(rettaMese).subscribe();
-                    });
+                        this.svcRette.put(rettaMese).subscribe();
+                      });
+                    }
                 }
-              }
             );
         });
       }
