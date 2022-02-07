@@ -26,6 +26,9 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 
 
@@ -56,6 +59,16 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     "descrizione",
     "sezione",
     "numAlunni",
+
+    "numStato10",
+    "numStato20",
+    "numStato30",
+    "numStato40",
+    "numStato50",
+    "numStato60",
+    "numStato70",
+    "numStato80",
+
     "descrizioneAnnoSuccessivo",
     "sezioneAnnoSuccessivo"
   ];
@@ -78,6 +91,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     "descrizione",
     "sezione",
     "numAlunni",
+    "numStato20Highlight",
     "importo",
     "importo2",
     "select",
@@ -122,7 +136,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   @ViewChild("filterInput") filterInput!:                         ElementRef;  
   @ViewChild('selectAnnoScolastico') selectAnnoScolastico!:       MatSelect; 
   @ViewChildren("endedIcons", { read: ElementRef }) endedIcons!:  QueryList<ElementRef>   //elenco delle icone di fine procedura
-  
+  //@ViewChildren("ckSelected", { read: ElementRef }) ckSelected!:  QueryList<ElementRef>   //elenco delle icone di fine procedura)
+  //@ViewChildren ('ckSelected' ) ckSelected!:QueryList<any>;
   @Output('annoId') annoIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
   @Output('classeId') classeIdEmitter = new EventEmitter<number>(); //classeId viene EMESSO quando si clicca su una classe
   @Output('addToAttended') addToAttended = new EventEmitter<CLS_ClasseSezioneAnno>(); //EMESSO quando si clicca sul (+) di aggiunta alle classi frequentate
@@ -163,6 +178,8 @@ constructor(
       this.annoIdEmitter.emit(val);
       //vanno resettate le selezioni delle checkbox
       this.resetSelections();
+      //e anche il masterToggle
+      this.toggleChecks = false;
     })
 
     this.obsAnni$ = this.svcAnni.load()
@@ -282,6 +299,8 @@ constructor(
   rowclicked(idClasseSezioneAnno?: string ){
     //console.log ("idClasseSezioneAnno", parseInt(idClasseSezioneAnno));
     //il click su una classe deve essere trasmesso su al parent
+
+
     if(idClasseSezioneAnno!= undefined && idClasseSezioneAnno != null)
       this.selectedRowIndex = parseInt(idClasseSezioneAnno);
     else 
@@ -425,14 +444,49 @@ sortCustom() {
 
 //#region ----- Gestione Campo Checkbox -------
   selectedRow(element: CLS_ClasseSezioneAnnoGroup) {
-    this.selection.toggle(element);
+    //DA DECIDERE: SE GLI ALUNNI SONO GIA' TUTTI CON QUOTE DIAMO LA POSSIBILITA' DI RIFARE? DIREI DI SI' PERCHè SE SONO CAMBIATE LE QUOTE?
+    //IN QUESTO CASO VA MODIFICATA LA REGLA DELL'ngClass nell'HTML. E PERO':
+    //1. BISOGNA CAPIRE COME IN CASO DI "NO" ALLA SEGUENTE RICHIESTA (qui di seguito) TOGLIERE IL FLAG PERCHE' LA PARTE + SOTTO (deselect) NON FUNZIONA
+    //2. BISOGNA DECIDERE COME FARE PER IL MASTER TOGGLE: SELEZIONA ANCHE TUTTI QUELLI IN QUESTE CONDIZIONI o cosa fa? CERCARE "YUHUU" IN QUESTO FILE
+    let eseguiToggle = true;
+    if (element.numAlunni == element.numStato20 ) {
+      const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE", sottoTitolo: "Gli alunni della classe sono già tutti in stato 20. Vuoi Sovrascrivere le quote con un nuovo calcolo?"}
+      });
+
+      dialogYesNo.afterClosed().subscribe(result => {
+        if(result){
+          eseguiToggle = true;
+        } else {
+          eseguiToggle = false;
+
+        }
+        
+
+      })
+    }
+
+    
+    if (eseguiToggle) {
+      this.selection.toggle(element);
+    } else {
+      const miariga = this.matDataSource.data.find(row => row.id == element.id);
+      console.log (miariga);
+      this.selection.deselect(miariga!); //non funziona
+      
+    //   //trovo del matDataSource la riga giusta
+    //   const miariga = this.matDataSource.data.find(row => row.id == element.id);
+    //   console.log (miariga);
+    //   this.selection.deselect(miariga!); //non funziona
+    }
   }
 
   masterToggle() {
     this.toggleChecks = !this.toggleChecks;
 
     if (this.toggleChecks) 
-      this.selection.select(...this.matDataSource.data);
+      this.selection.select(...this.matDataSource.data.filter(x=> (x.numAlunni != 0 && x.numAlunni != x.numStato20))); //YUHUUU!
     else 
       this.resetSelections();
   }

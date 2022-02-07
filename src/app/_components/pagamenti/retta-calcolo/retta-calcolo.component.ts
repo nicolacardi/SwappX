@@ -109,8 +109,7 @@ export class RettaCalcoloComponent implements OnInit {
         data: {titolo: "ATTENZIONE!", sottoTitolo: "Selezionare almeno una classe"}
       });
 
-    } 
-    else {
+    } else {
       this.viewListClassi.getChecked().forEach(element => {     
            
         this.elaboraClasse(element);
@@ -122,8 +121,12 @@ export class RettaCalcoloComponent implements OnInit {
         (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).style.visibility = "visible";
         (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+element.id)?.nativeElement as HTMLElement).style.opacity = "1";
       }); 
+
+
+
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per le classi selezionate', panelClass: ['green-snackbar']});
     }
+
   }
 
   private elaboraClasse(objClasseSezioneAnno: CLS_ClasseSezioneAnnoGroup){
@@ -167,13 +170,17 @@ export class RettaCalcoloComponent implements OnInit {
         val.forEach( (iscrizione: CLS_Iscrizione) => {
             let primaQuota =  true;
 
-            //------   Update Stato CLS_Iscrizione 
             let formData = {
               id: iscrizione.id,
               codiceStato: 20
             }
-            this.svcIscrizioni.updateStato(formData).subscribe();
-            //-------- 
+            //this.svcIscrizioni.updateStato(formData).subscribe();
+            this.svcIscrizioni.updateStato(formData)
+              .subscribe(
+                () => this.viewListClassi.loadData()
+              );
+
+            
 
             let hasFratelloMaggiore= false;
             this.svcAlunni.hasFratelloMaggiore(iscrizione.alunnoID )
