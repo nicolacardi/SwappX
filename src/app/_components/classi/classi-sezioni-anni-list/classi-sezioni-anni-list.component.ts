@@ -444,7 +444,6 @@ sortCustom() {
 
 //#region ----- Gestione Campo Checkbox -------
   selectedRow(element: CLS_ClasseSezioneAnnoGroup) {
-
       this.selection.toggle(element);
   }
 
