@@ -444,42 +444,8 @@ sortCustom() {
 
 //#region ----- Gestione Campo Checkbox -------
   selectedRow(element: CLS_ClasseSezioneAnnoGroup) {
-    //DA DECIDERE: SE GLI ALUNNI SONO GIA' TUTTI CON QUOTE DIAMO LA POSSIBILITA' DI RIFARE? DIREI DI SI' PERCHè SE SONO CAMBIATE LE QUOTE?
-    //IN QUESTO CASO VA MODIFICATA LA REGLA DELL'ngClass nell'HTML. E PERO':
-    //1. BISOGNA CAPIRE COME IN CASO DI "NO" ALLA SEGUENTE RICHIESTA (qui di seguito) TOGLIERE IL FLAG PERCHE' LA PARTE + SOTTO (deselect) NON FUNZIONA
-    //2. BISOGNA DECIDERE COME FARE PER IL MASTER TOGGLE: SELEZIONA ANCHE TUTTI QUELLI IN QUESTE CONDIZIONI o cosa fa? CERCARE "YUHUU" IN QUESTO FILE
-    let eseguiToggle = true;
-    if (element.numAlunni == element.numStato20 ) {
-      const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
-        width: '320px',
-        data: {titolo: "ATTENZIONE", sottoTitolo: "Gli alunni della classe sono già tutti in stato 20. Vuoi Sovrascrivere le quote con un nuovo calcolo?"}
-      });
 
-      dialogYesNo.afterClosed().subscribe(result => {
-        if(result){
-          eseguiToggle = true;
-        } else {
-          eseguiToggle = false;
-
-        }
-        
-
-      })
-    }
-
-    
-    if (eseguiToggle) {
       this.selection.toggle(element);
-    } else {
-      const miariga = this.matDataSource.data.find(row => row.id == element.id);
-      console.log (miariga);
-      this.selection.deselect(miariga!); //non funziona
-      
-    //   //trovo del matDataSource la riga giusta
-    //   const miariga = this.matDataSource.data.find(row => row.id == element.id);
-    //   console.log (miariga);
-    //   this.selection.deselect(miariga!); //non funziona
-    }
   }
 
   masterToggle() {
