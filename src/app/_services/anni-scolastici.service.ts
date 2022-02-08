@@ -25,7 +25,7 @@ export class AnniScolasticiService {
     //http://213.215.231.4/swappX/api/ASC_Anni/2
   }
   
-  loadAnnoSucc(id: any): Observable<ASC_AnnoScolastico>{
+  getAnnoSucc(id: any): Observable<ASC_AnnoScolastico>{
     return this.http.get<ASC_AnnoScolastico>(environment.apiBaseUrl+'ASC_Anni/GetAnnoSucc/'+id);
     //http://213.215.231.4/swappX/api/ASC_Anni/GetAnnoSucc/2
   }

@@ -1,0 +1,20 @@
+Sono stati selezionati {{data.arrAlunniChecked.length}} alunni
+<!-- della Classe {{classeSezioneAnno.classeSezione.classe.descrizione2+" "+classeSezioneAnno.classeSezione.sezione}} -->
+Selezionare la classe di destinazione
+<form  [formGroup] = "form" >
+    <mat-form-field appearance="outline">
+        <mat-label>Classe Sezione</mat-label>
+        <mat-select formControlName="selectClasseSezioneAnno">
+            <mat-option *ngFor="let element of (tmpObs$ | async)" [value]="element.id">
+            {{element.descrizione2+" "+element.sezione+" "+element.annoScolastico}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</form>
+
+
+<div mat-dialog-actions class="mat-dialog-buttonsContainer">
+    <button class="_btn-text" mat-button cdkFocusInitial (click)="iscrivi()">Procedi</button> 
+</div>
+
+        

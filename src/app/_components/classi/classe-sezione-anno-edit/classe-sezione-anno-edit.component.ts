@@ -107,7 +107,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
             this.form.controls['annoID'].setValue(classe.anno.id);
 
             let annoIDsucc=0;
-            this.svcAnni.loadAnnoSucc(classe.anno.id) 
+            this.svcAnni.getAnnoSucc(classe.anno.id) 
             .pipe (
               tap ( val   =>  annoIDsucc= val.id),
               concatMap(() => this.obsClassiSezioniAnniSucc$ = this.svcClasseSezioneAnno.listByAnnoGroupByClasse(annoIDsucc))
@@ -206,7 +206,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
     let annoIDsucc=0;
 
   
-    this.obs=  this.svcAnni.loadAnnoSucc(selectedAnno) 
+    this.obs=  this.svcAnni.getAnnoSucc(selectedAnno) 
       .pipe (
         tap ( val   =>  annoIDsucc= val.id),
         concatMap(() => this.obsClassiSezioniAnniSucc$= this.svcClasseSezioneAnno.listByAnnoGroupByClasse(annoIDsucc))

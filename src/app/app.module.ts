@@ -87,6 +87,7 @@ import { EventEmitterService } from './_services/event-emitter.service';
 import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.component';
 import { ResizeColumnDirective } from './_components/utilities/resize-column/resize-column.directive';
 import { RettaCalcoloComponent } from './_components/pagamenti/retta-calcolo/retta-calcolo.component';
+import { IscrizioniClasseCalcoloComponent } from './_components/classi/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 
 
 
@@ -171,6 +172,7 @@ import { RettaCalcoloComponent } from './_components/pagamenti/retta-calcolo/ret
     ImpostazioniComponent,
     ResizeColumnDirective,
     RettaCalcoloComponent,
+    IscrizioniClasseCalcoloComponent,
 
   ],
   imports: [

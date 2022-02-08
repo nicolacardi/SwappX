@@ -86,7 +86,7 @@ export class RettaEditComponent implements OnInit {
       importo:                    ['', { validators:[ Validators.required]}],
       tipoPagamentoID:            ['', Validators.required],
       nomeCognomeAlunno:          [null],
-      selectAnnoScolastico:             [null]
+      selectAnnoScolastico:       [null]
     });
 
     // this.formAlunno = this.fb.group({

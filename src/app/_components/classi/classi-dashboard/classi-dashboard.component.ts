@@ -19,6 +19,7 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
 import { IscrizioniService } from '../iscrizioni.service';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { IscrizioniClasseCalcoloComponent } from '../iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 
 
 @Component({
@@ -59,7 +60,7 @@ export class ClassiDashboardComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
   //@ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
-  @ViewChild(IscrizioniClasseListComponent) iscrizioniListComponent!: IscrizioniClasseListComponent; 
+  @ViewChild(IscrizioniClasseListComponent) viewListIscrizioni!: IscrizioniClasseListComponent; 
   @Input () classeSezioneAnnoId!: number;
 //#endregion
 
@@ -105,14 +106,24 @@ export class ClassiDashboardComponent implements OnInit {
 
   creaPdf() {
     const tableHeaders = [['id', 'nome', 'cognome', "genere", "dtNascita"]];
-    this._jspdf.creaPdf(this.iscrizioniListComponent.matDataSource.data, tableHeaders);
+    this._jspdf.creaPdf(this.viewListIscrizioni.matDataSource.data, tableHeaders);
   }
 
   promuovi() {
-    this._dialog.open(DialogOkComponent, {
-      width: '320px',
-      data: {titolo: "SEMPRE TROPPO CURIOSO", sottoTitolo: "La gatta frettolosa fece i gattini ciechi"}
-    });
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '850px',
+      height: '680px',
+      data: {
+        idAnno:                 this.idAnno,
+        idClasseSezioneAnno:  this.idClasse,
+        arrAlunniChecked:     this.viewListIscrizioni.getChecked(),
+
+      }
+    };
+
+    const dialogRef = this._dialog.open(IscrizioniClasseCalcoloComponent, dialogConfig);
+
   }
 //#endregion
 
@@ -135,14 +146,14 @@ export class ClassiDashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
         result => {
           if(result == undefined){          
-          this.iscrizioniListComponent.loadData()
+          this.viewListIscrizioni.loadData()
           }
     });
   }
 
   removeAlunnoFromClasse() {
     //const objIdAlunniToRemove = this.alunniListComponent.getChecked();
-    const objIdToRemove = this.iscrizioniListComponent.getChecked();
+    const objIdToRemove = this.viewListIscrizioni.getChecked();
 
     const selections = objIdToRemove.length;
     if (selections <= 0) {
@@ -165,13 +176,13 @@ export class ClassiDashboardComponent implements OnInit {
                 .subscribe(()=>{
                     //console.log("classi-dashboard.component.ts - removeAlunnoFromClasse: iscrizione di "+val.id+ " a "+this.idClasse + " rimossa" ); 
                     //this.alunniListComponent.loadData();
-                    this.iscrizioniListComponent.loadData();
+                    this.viewListIscrizioni.loadData();
                 })
             }); 
             //AS: spostato qua per evitare che faccia n refresh, solo che bisogna verificare la sync
             //this.alunniListComponent.loadData();
             //this.alunniListComponent.resetSelections();
-            this.iscrizioniListComponent.resetSelections();
+            this.viewListIscrizioni.resetSelections();
           }
       })
     }
