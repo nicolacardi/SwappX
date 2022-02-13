@@ -1,11 +1,13 @@
+<button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
+
 Sono stati selezionati {{data.arrAlunniChecked.length}} alunni
 <!-- della Classe {{classeSezioneAnno.classeSezione.classe.descrizione2+" "+classeSezioneAnno.classeSezione.sezione}} -->
 Selezionare la classe di destinazione
 <form  [formGroup] = "form" >
-    <mat-form-field appearance="outline">
+    <mat-form-field class="w250px mt20">
         <mat-label>Classe Sezione</mat-label>
-        <mat-select formControlName="selectClasseSezioneAnno">
-            <mat-option *ngFor="let element of (tmpObs$ | async)" [value]="element.id">
+        <mat-select  formControlName="selectClasseSezioneAnno">
+            <mat-option *ngFor="let element of (obsClassiAnniSucc$ | async)" [value]="element.id">
             {{element.descrizione2+" "+element.sezione+" "+element.annoScolastico}}
             </mat-option>
         </mat-select>

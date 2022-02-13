@@ -284,25 +284,29 @@ export class AlunnoEditComponent implements OnInit {
     // console.log ("QUI", this.idAlunno, classeSezioneAnno.Anno.id);
 
     const checks$ = this.svcIscrizioni.getByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id, this.idAlunno)
+
+    //const checks$ = this.svcIscrizioni.getByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id, 999)
     .pipe(
       //se trova che la stessa classe è già presente res.length è != 0 quindi non procede con la getByAlunnoAnno ma restituisce of()
       //se invece res.length == 0 dovrebbe proseguire e concatenare la verifica successiva ch è getByAlunnoAndAnno...
       //invece "test" non compare mai...quindi? sta uscendo sempre con of()?
       tap(res=> {
-        if (res.length !=0) {
+          if (res != null) {
           this._dialog.open(DialogOkComponent, {
             width: '320px',
             data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa classe è già stata inserita!"}
           });
           //finalize; forse al posto dell'iif
+          }
         }
-      }),
-      concatMap( res => iif (()=> res.length == 0,
+      ),
+      //concatMap( res => iif (()=> res.length == 0,
+      concatMap( res => iif (()=> res == null,
+
         this.svcIscrizioni.getByAlunnoAndAnno(classeSezioneAnno.anno.id, this.idAlunno) , of() )
       ),
       tap(res=> {
-        //console.log("err2");
-        if (res.length !=0) {
+        if (res != null) {
           this._dialog.open(DialogOkComponent, {
             width: '320px',
             data: {titolo: "ATTENZIONE!", sottoTitolo: "E' già stata inserita una classe in quest'anno!"}
@@ -311,8 +315,9 @@ export class AlunnoEditComponent implements OnInit {
       })
 
     )
-    checks$.pipe(
-      concatMap( res => iif (()=> res.length == 0,this.svcIscrizioni.post(objClasseSezioneAnnoAlunno) , of() )
+    checks$
+    .pipe(
+      concatMap( res => iif (()=> res == null, this.svcIscrizioni.post(objClasseSezioneAnnoAlunno) , of() )
       )
     ).subscribe(
       res=> {

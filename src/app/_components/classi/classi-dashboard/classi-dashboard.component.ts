@@ -112,8 +112,8 @@ export class ClassiDashboardComponent implements OnInit {
   promuovi() {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '850px',
-      height: '680px',
+      width: '450px',
+      height: '300px',
       data: {
         idAnno:                 this.idAnno,
         idClasseSezioneAnno:  this.idClasse,

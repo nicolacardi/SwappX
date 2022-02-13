@@ -331,6 +331,17 @@
         width: 200px;
     }
 
+    .w250px {
+        width: 250px;
+    }
+
+    .w300px {
+        width: 300px;
+    }
+
+    ::ng-deep .mat-formfield-wrapper{
+        width:2000px;
+    }
 /*#endregion ***************************/
 
 /*#region ********** HEIGHT ************/

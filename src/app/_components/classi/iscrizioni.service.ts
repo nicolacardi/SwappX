@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
+import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -29,14 +30,14 @@ export class IscrizioniService {
     //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByAlunno/3
   }
 
-  getByAlunnoAndClasseSezioneAnno(idClasseSezioneAnno: number, idAlunno: number): Observable <any> {
-    return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByAlunnoAndClasseSezioneAnno?idAlunno='+idAlunno+'&idClasseSezioneAnno='+idClasseSezioneAnno);  
-      //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByAlunnoAndClasseSezioneAnno?idAlunno=3&idClasseSezioneAnno=1
+  getByAlunnoAndClasseSezioneAnno(idClasseSezioneAnno: number, idAlunno: number): Observable <CLS_Iscrizione> {
+    return this.http.get <CLS_Iscrizione>( environment.apiBaseUrl  + 'CLS_Iscrizioni/GetByAlunnoAndClasseSezioneAnno?idAlunno='+idAlunno+'&idClasseSezioneAnno='+idClasseSezioneAnno);  
+      //http://213.215.231.4/swappX/api/CLS_Iscrizioni/GetByAlunnoAndClasseSezioneAnno?idAlunno=3&idClasseSezioneAnno=1
   }
 
-  getByAlunnoAndAnno(idAnno: number, idAlunno: number): Observable <any> {
-    return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByAlunnoAndAnno?idAlunno='+idAlunno+'&idAnno='+idAnno);  
-      //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByAlunnoAndAnno?idAlunno=3&idAnno=1
+  getByAlunnoAndAnno(idAnno: number, idAlunno: number): Observable <CLS_Iscrizione> {
+    return this.http.get <CLS_Iscrizione>( environment.apiBaseUrl  + 'CLS_Iscrizioni/GetByAlunnoAndAnno?idAlunno='+idAlunno+'&idAnno='+idAnno);  
+      //http://213.215.231.4/swappX/api/CLS_Iscrizioni/GetByAlunnoAndAnno?idAlunno=3&idAnno=1
   }
 
   post(formData: any): Observable <any>{
@@ -44,7 +45,7 @@ export class IscrizioniService {
     formData.id = 0;
     formData.statoID = 1;
     //formData.dtIns= "01/01/2022";
-
+    console.log ("formData post Iscrizioni", formData);
     return this.http.post( environment.apiBaseUrl  + 'CLS_Iscrizioni' , formData);  
   }
   
