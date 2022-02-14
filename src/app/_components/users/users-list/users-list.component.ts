@@ -19,6 +19,7 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
 
 //classes
 import { User } from 'src/app/_user/Users';
+import { UserEditComponent } from '../user-edit/user-edit.component';
 
 @Component({
   selector: 'app-users-list',
@@ -34,6 +35,7 @@ export class UsersListComponent implements OnInit {
   displayedColumns: string[] =  [];
   displayedColumnsUsersList: string[] = [
       //"userID", 
+      "actionsColumn",
       "userName", 
       "fullName", 
       "email", 
@@ -210,18 +212,18 @@ export class UsersListComponent implements OnInit {
   openDetail(id:any){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '850px',
-      height: '620px',
+      width: '500px',
+      height: '400px',
       data: id
     };
-    /* TODO
+
     const dialogRef = this._dialog.open(UserEditComponent, dialogConfig);
     dialogRef.afterClosed()
       .subscribe(
         () => {
           this.loadData();
     });
-    */
+    
   }
 
   drop(event: CdkDragDrop<string[]>) {

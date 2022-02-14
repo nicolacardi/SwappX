@@ -107,10 +107,14 @@ export class UserService {
     return  this.http.post(environment.apiBaseUrl +'ApplicationUser/Register', body );
   }
 
+  get(id: string): Observable<User>{
+    return this.http.get<User>(environment.apiBaseUrl+'ApplicationUser/' + id);
+    //http://213.215.231.4/swappX/api/ApplicationUser/b19efc9f-5502-4396-b076-45e6c3d9ef21
+  }
+
+
   put(formData: any): Observable <any>{
-
     //console.log("user.service\put", formData);
-
     return this.http.put(environment.apiBaseUrl +'ApplicationUser/'+ formData.userID, formData );
   }
 
@@ -195,5 +199,11 @@ export class UserService {
         confirmPasswordCtrl.setErrors(null);
     }
     */
+  }
+
+
+  delete(id: string): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'ApplicationUser/' + id);    
+    //in questo momento il WS non funziona, provo a ipotizzare la delete sia così
   }
 }

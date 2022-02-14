@@ -775,6 +775,14 @@ mat-nav-list a img {
     height: 24px;
 }
 
+.iconaMenuBig{
+    height: 60px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    opacity: 0.2;
+}
+
 
 .iconaMenuSidenav{
     width: 40px;

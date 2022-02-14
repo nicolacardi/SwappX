@@ -1,0 +1,74 @@
+<mat-card class="form-card">
+    <mat-card-content>
+        <form *ngIf="(user$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">            
+
+            <!-- ********************************    BOTTONI     ************************************* -->
+            <div class="center">
+                <img class="iconaMenuBig" src="../assets/utente_edit.svg">
+                <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
+
+                <button *ngIf="idUser" mat-mini-fab matTooltip="Ricarica" class="btn ml10"
+                        
+                        (click)="loadData()" >
+                        <!-- [disabled]= "!form.valid"  -->
+                    <mat-icon>restart_alt</mat-icon>
+                </button>
+
+                <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                        
+                        (click)="save()" >
+                        <!-- [disabled]= "!form.valid"  -->
+                    <mat-icon>save</mat-icon>
+                </button>
+
+                <button *ngIf="idUser" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
+                        
+                        (click)="delete()" >
+                        <!-- [disabled]= "!form.valid"  -->
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+
+            <mat-grid-list class="no-overflowx mt50" [cols]="2" rowHeight="60px">
+
+         
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput required type="text" placeholder="userName" 
+                                formControlName="userName">
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput required type="text" placeholder="fullName" 
+                                formControlName="fullName">
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput required type="text" placeholder="email" 
+                                formControlName="email">
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput required type="text" placeholder="badge" 
+                                formControlName="badge">
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile colspan="2">
+                    <mat-form-field>
+                        <input matInput type="password" placeholder="password" 
+                                formControlName="password">
+                    </mat-form-field>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <!-- {{obsClassi$ | async | json}} -->
+            <!-- {{obsClassiSezioniAnniSucc$ | async | json}} -->
+        </form>
+    </mat-card-content>
+</mat-card>

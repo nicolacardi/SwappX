@@ -89,6 +89,7 @@ import { ResizeColumnDirective } from './_components/utilities/resize-column/res
 import { RettaCalcoloComponent } from './_components/pagamenti/retta-calcolo/retta-calcolo.component';
 import { IscrizioniClasseCalcoloComponent } from './_components/classi/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 import { IscrizioniAlunnoListComponent } from './_components/classi/iscrizioni-alunno-list/iscrizioni-alunno-list.component';
+import { UserEditComponent } from './_components/users/user-edit/user-edit.component';
 
 
 
@@ -175,6 +176,7 @@ import { IscrizioniAlunnoListComponent } from './_components/classi/iscrizioni-a
     RettaCalcoloComponent,
     IscrizioniClasseCalcoloComponent,
     IscrizioniAlunnoListComponent,
+    UserEditComponent,
 
   ],
   imports: [
