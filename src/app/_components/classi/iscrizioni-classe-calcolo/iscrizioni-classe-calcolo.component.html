@@ -1,22 +1,40 @@
-<button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
+<mat-card class="form-card">
+    <mat-card-content>
+        <form class="data-form flex-form" [formGroup] = "form" >
+            <div class="">
+                <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
+            </div>
+            <mat-label class="center mt10">PROMOZIONE</mat-label>
+            <mat-label class="center mt20" *ngIf="data.arrAlunniChecked.length > 1">Sono stati selezionati {{data.arrAlunniChecked.length}} alunni</mat-label>
+            <mat-label class="center mt20" *ngIf="data.arrAlunniChecked.length == 1">E' stato selezionato {{data.arrAlunniChecked.length}} alunno</mat-label>
 
-Sono stati selezionati {{data.arrAlunniChecked.length}} alunni
-<!-- della Classe {{classeSezioneAnno.classeSezione.classe.descrizione2+" "+classeSezioneAnno.classeSezione.sezione}} -->
-Selezionare la classe di destinazione
-<form  [formGroup] = "form" >
-    <mat-form-field class="w250px mt20">
-        <mat-label>Classe Sezione</mat-label>
-        <mat-select  formControlName="selectClasseSezioneAnno">
-            <mat-option *ngFor="let element of (obsClassiAnniSucc$ | async)" [value]="element.id">
-            {{element.descrizione2+" "+element.sezione+" "+element.annoScolastico}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-</form>
+            <!-- <mat-label class="center mt20">della classe {{classeSezioneAnno.classeSezione.classe.descrizioneBreve+" "+classeSezioneAnno.classeSezione.sezione}}  alunni</mat-label> -->
+            <mat-label class="center">Scegliere la classe di destinazione</mat-label>
+            <mat-label class="center" *ngIf="annoSucc">per l'anno {{annoSucc.annoscolastico}}</mat-label>
+            <mat-form-field class="w225px mt20">
+                <mat-label *ngIf="annoSucc">Classi-Sezioni del {{annoSucc.annoscolastico}} disponibili</mat-label>
+                <mat-select  formControlName="selectClasseSezioneAnno">
+                    <mat-option *ngFor="let element of (obsClassiAnniSucc$ | async)" [value]="element.id">
+                        <!-- <span style="width: 200px;">{{element.descrizione2}} {{element.sezione}}</span> -->
+                        <mat-grid-list cols="4" rowHeight="10px">
+                            <mat-grid-tile colspan="3" class="left">
+                                <div class="w100">
+                                    {{element.descrizione2}}
+                                </div>
+                            </mat-grid-tile>
+                            <mat-grid-tile>
+                                {{element.sezione}}
+                            </mat-grid-tile>
+                          </mat-grid-list>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
 
 
-<div mat-dialog-actions class="mat-dialog-buttonsContainer">
-    <button class="_btn-text" mat-button cdkFocusInitial (click)="iscrivi()">Procedi</button> 
-</div>
-
+        <div mat-dialog-actions class="mat-dialog-buttonsContainer">
+            <button class="_btn-text" mat-button cdkFocusInitial (click)="iscrivi()" mat-dialog-close>Procedi</button> 
+        </div>
+    </mat-card-content>
+</mat-card>
         

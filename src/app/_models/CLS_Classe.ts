@@ -4,6 +4,7 @@ export interface CLS_Classe {
   descrizioneBreve:     string;
   descrizione:          string;
   descrizione2:         string;
+  seq:                  number;
   importo:              number;
   importo2:             number;
 }

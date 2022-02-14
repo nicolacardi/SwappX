@@ -15,12 +15,12 @@ export class AnniScolasticiService {
   constructor(private http: HttpClient) { }
 
   
-  load(): Observable<ASC_AnnoScolastico[]>{
+  list(): Observable<ASC_AnnoScolastico[]>{
     return this.http.get<ASC_AnnoScolastico[]>(environment.apiBaseUrl+'ASC_Anni');
     //http://213.215.231.4/swappX/api/ASC_Anni
   }
 
-  loadAnnoScolastico(id: any): Observable<ASC_AnnoScolastico>{
+  get(id: any): Observable<ASC_AnnoScolastico>{
     return this.http.get<ASC_AnnoScolastico>(environment.apiBaseUrl+'ASC_Anni/'+id);
     //http://213.215.231.4/swappX/api/ASC_Anni/2
   }

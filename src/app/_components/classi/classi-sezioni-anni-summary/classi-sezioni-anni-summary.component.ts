@@ -61,7 +61,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
-    this.obsAnni$= this.svcAnni.load();
+    this.obsAnni$= this.svcAnni.list();
     this.loadData();
 
     this.form.controls['selectAnnoScolastico'].valueChanges

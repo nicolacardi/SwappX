@@ -161,7 +161,7 @@ export class RetteListComponent implements OnInit {
   }
 
   loadData () {
-    this.obsAnni$ = this.svcAnni.load();
+    this.obsAnni$ = this.svcAnni.list();
     this.annoID = this.form.controls['selectAnnoScolastico'].value;
     
 

@@ -7,7 +7,7 @@ export interface CLS_ClasseSezioneAnno {
         sezione:                  string;
         
         classeSezione:            CLS_ClasseSezione;
-
+        
         classeSezioneAnnoSuccID:  number;
         ClasseSezioneAnnoSucc:    CLS_ClasseSezioneAnno;
         anno:                     ASC_AnnoScolastico;   //FORSE VA MINUSCOLO??
@@ -39,7 +39,7 @@ export interface CLS_ClasseSezioneAnnoGroup {
         anno1:                  number;
         anno2:                  number;
         annoScolastico:         string;
-
+        seq:                    number;
         sezioneAnnoSucc:        string;
         descrizione2AnnoSucc:   string;
 

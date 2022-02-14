@@ -1,45 +1,46 @@
+<mat-card class="form-card">
+    <mat-card-content>
+        <form class="data-form flex-form" [formGroup] = "form">
+            <div class="center mt20 relative">
+                <button mat-icon-button matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
+    
+                <!-- <button mat-mini-fab aria-label="Back" matTooltip="Back" class="btn" mat-dialog-close>
+                    <mat-icon>arrow_back</mat-icon>
+                </button> -->
+    
+                <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                    (click)="save()" >
+                        <mat-icon>save</mat-icon>
+                </button>
+            </div>
+            <mat-form-field>
+                <mat-label>Nome e Cognome Alunno</mat-label>
+                <mat-chip-list #chipList aria-label="Selezione Alunni">
+                    <mat-chip *ngFor="let alunnoSelezionato of alunniSelezionati"
+                            [selectable]="selectable"
+                            [removable]="removable"
+                            (removed)="remove(alunnoSelezionato)">
+                        {{alunnoSelezionato}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                </mat-chip-list>
 
-    <!-- <mat-toolbar>{{data.titolo}}</mat-toolbar> -->
-    <div align="center" mat-dialog-actions>
+                <input  placeholder = "digita e seleziona"
+                        matInput
+                        cdkFocusInitial
+                        [matChipInputFor]="chipList"
+                        formControlName="nomeCognomeAlunno"
+                        [matAutocomplete]="auto" #nomeCognomeAlunno>
 
-        <button mat-mini-fab aria-label="Back" matTooltip="Back" class="btn" mat-dialog-close>
-            <mat-icon>arrow_back</mat-icon>
-        </button>
-
-        <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-            (click)="save()" >
-                <mat-icon>save</mat-icon>
-        </button>
-    </div>
-    <br>
-
-    <form class="data-form flex-form" [formGroup] = "form">
-        <mat-form-field>
-            <mat-label>Nome e Cognome Alunno</mat-label>
-            <mat-chip-list #chipList aria-label="Selezione Alunni">
-                <mat-chip *ngFor="let alunnoSelezionato of alunniSelezionati"
-                        [selectable]="selectable"
-                        [removable]="removable"
-                        (removed)="remove(alunnoSelezionato)">
-                    {{alunnoSelezionato}}
-                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                </mat-chip>
-            </mat-chip-list>
-
-            <input  placeholder = "digita e seleziona"
-                    matInput
-                    cdkFocusInitial
-                    [matChipInputFor]="chipList"
-                    formControlName="nomeCognomeAlunno"
-                    [matAutocomplete]="auto" #nomeCognomeAlunno>
-
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                <mat-progress-bar class="is-loading" *ngIf="alunniIsLoading" mode="indeterminate"></mat-progress-bar>
-                <mat-option *ngFor="let element of (filteredAlunni$ | async)" [value]="element.nome + ' ' + element.cognome" [id]="element.id.toString()" #option>
-                    <small>{{element.nome}} {{element.cognome}}</small>
-                </mat-option>
-            </mat-autocomplete>
-        </mat-form-field>
-    </form>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    <mat-progress-bar class="is-loading" *ngIf="alunniIsLoading" mode="indeterminate"></mat-progress-bar>
+                    <mat-option *ngFor="let element of (filteredAlunni$ | async)" [value]="element.nome + ' ' + element.cognome" [id]="element.id.toString()" #option>
+                        <small>{{element.nome}} {{element.cognome}}</small>
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </form>
+    </mat-card-content>
+</mat-card>
 
 

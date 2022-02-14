@@ -23,7 +23,8 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 
 
 
@@ -58,9 +59,9 @@ export class AlunnoEditComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-  @ViewChild('genitoriFamiglia') genitoriFamigliaComponent!: GenitoriListComponent; 
-  @ViewChild('iscrizioniAlunno') classiAttendedComponent!: ClassiSezioniAnniListComponent; 
-  @ViewChild('classiSezioniAnniList') classiSezioniAnniListComponent!: ClassiSezioniAnniListComponent; 
+  @ViewChild('genitoriFamiglia') genitoriFamigliaComponent!:            GenitoriListComponent; 
+  @ViewChild('iscrizioniAlunno') classiAttendedComponent!:              ClassiSezioniAnniListComponent; 
+  @ViewChild('classiSezioniAnniList') classiSezioniAnniListComponent!:  ClassiSezioniAnniListComponent; 
 //#endregion
 
   constructor(
@@ -277,15 +278,12 @@ export class AlunnoEditComponent implements OnInit {
     )
   }
 
-  addToAttended(classeSezioneAnno: CLS_ClasseSezioneAnno) {
+  addToAttended(classeSezioneAnno: CLS_ClasseSezioneAnnoGroup) {
+    console.log("sto per aggiungere la classe" , classeSezioneAnno);
     //così come ho fatto in dialog-add mi costruisco un oggetto "stile" form e lo passo alla postClasseSezioneAnnoAlunno
     //avrei potuto anche passare i valori uno ad uno, ma è già pronta così avendola usata in dialog-add
     let objClasseSezioneAnnoAlunno = {AlunnoID: this.idAlunno, ClasseSezioneAnnoID: classeSezioneAnno.id};
-    // console.log ("QUI", this.idAlunno, classeSezioneAnno.Anno.id);
-
     const checks$ = this.svcIscrizioni.getByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id, this.idAlunno)
-
-    //const checks$ = this.svcIscrizioni.getByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id, 999)
     .pipe(
       //se trova che la stessa classe è già presente res.length è != 0 quindi non procede con la getByAlunnoAnno ma restituisce of()
       //se invece res.length == 0 dovrebbe proseguire e concatenare la verifica successiva ch è getByAlunnoAndAnno...
@@ -296,14 +294,14 @@ export class AlunnoEditComponent implements OnInit {
             width: '320px',
             data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa classe è già stata inserita!"}
           });
-          //finalize; forse al posto dell'iif
+          
+          } else {
+            console.log("l'alunno non frequenta la classe a cui sto cercando di iscriverlo, posso procedere");
           }
         }
       ),
-      //concatMap( res => iif (()=> res.length == 0,
       concatMap( res => iif (()=> res == null,
-
-        this.svcIscrizioni.getByAlunnoAndAnno(classeSezioneAnno.anno.id, this.idAlunno) , of() )
+        this.svcIscrizioni.getByAlunnoAndAnno(classeSezioneAnno.annoID, this.idAlunno) , of() )
       ),
       tap(res=> {
         if (res != null) {
@@ -311,6 +309,8 @@ export class AlunnoEditComponent implements OnInit {
             width: '320px',
             data: {titolo: "ATTENZIONE!", sottoTitolo: "E' già stata inserita una classe in quest'anno!"}
           });
+        } else {
+          console.log("l'alunno non frequenta alcuna classe nell'anno a cui sto cercando di iscriverlo, posso procedere");
         }
       })
 

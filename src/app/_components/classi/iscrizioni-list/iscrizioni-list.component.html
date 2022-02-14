@@ -28,8 +28,6 @@
     <!-- **************************   MAT-TABLE   ******************* -->
     <table mat-table class="_table-row-low transparent w100" [dataSource]="matDataSource"
         matSort
-        [matSortActive]="matSortActive"
-        [matSortDirection] = "'asc'"
         cdkDropList
         cdkDropListOrientation="horizontal"
         (cdkDropListDropped)="drop($event)">
@@ -41,42 +39,7 @@
                 <img (click)="openDetail(element.alunnoID)" class="iconaMenu pointer" src="../assets/alunno_edit.svg">
             </td>
         </ng-container>
-    <!--
-        <ng-container matColumnDef="addToFam">
-            <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-            <td mat-cell  *matCellDef="let element;"> 
-                <mat-icon class="pointer" (click) = "addToFamilyEmit(element)">add_circle_outline</mat-icon>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="removeFromFam">
-            <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
-            <td mat-cell  *matCellDef="let element;"> 
-                <mat-icon class="pointer" (click) = "removeFromFamilyEmit(element)">remove_circle_outline</mat-icon>
-            </td>
-        </ng-container>
-    -->
-
-    <!-- masterToggle delle checkbox di selezione record (VERIFICARE SE SERVE) -->
-    <!--
-        <ng-container matColumnDef="select" >
-            <th mat-header-cell *matHeaderCellDef >
-              <mat-checkbox (change)="$event ? masterToggle() : null"
-                            [checked] = "toggleChecks"
-                            [aria-label]="checkboxLabel()"
-                            color="warn" #mstToggle>
-              </mat-checkbox>
-            </th>
-            <td mat-cell *matCellDef="let element">
-              <mat-checkbox (click)="$event.stopPropagation()"
-                            (change) = "$event ? selectedRow(element) : null"
-                            [checked]="selection.isSelected(element)"
-                            [aria-label]="checkboxLabel(element)"
-                            color="warn">
-              </mat-checkbox>
-            </td>
-        </ng-container>
-    -->
+   
         <ng-container matColumnDef="nome">
             <th mat-header-cell *matHeaderCellDef  cdkDrag mat-sort-header>Nome</th>
             <!-- <td mat-cell *matCellDef="let element">{{element.alunno.nome}}</td> -->
@@ -93,6 +56,7 @@
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Classe</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.classeSezioneAnno.classeSezione.classe.descrizioneBreve | highlight: filterValue"></td>
         </ng-container>
+
         <ng-container matColumnDef="sezione">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Sez</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.classeSezioneAnno.classeSezione.sezione | highlight: filterValue"></td>
@@ -137,25 +101,6 @@
             <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.prov | highlight: filterValue"></td>
         </ng-container>
 
-        <!-- <ng-container matColumnDef="cost">
-            <th mat-header-cell *matHeaderCellDef> Totale Alunni </th>
-            <td mat-cell *matCellDef="let element"> {{data.cost}} </td>
-            <td mat-footer-cell *matFooterCellDef> {{totalCost}} </td>
-          </ng-container> -->
-<!--
-        <ng-container matColumnDef="ckAttivo">
-            <mat-header-cell *matHeaderCellDef cdkDrag cdkDrag mat-sort-header>
-                Solo alunni attivi<br>
-                <button mat-icon-button (click)="toggleAttivi()" class="topZIndex">
-                    <mat-icon *ngIf="swSoloAttivi" color="primary">visibility_off</mat-icon>
-                    <mat-icon *ngIf="!swSoloAttivi" color="primary">visibility</mat-icon>
-                </button>
-            </mat-header-cell>
-            <td mat-cell *matCellDef="let element">
-                <mat-checkbox [checked]="element.ckAttivo" color="primary" disabled></mat-checkbox>
-            </td>
-        </ng-container>
-    -->
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
         <tr mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></tr>  
 
@@ -179,8 +124,6 @@
     <mat-menu #rightMenu="matMenu"> 
         <ng-template matMenuContent let-item="item"> 
             <mat-label class="_titolo-filtri-avanzati">{{item.nome | uppercase}} {{item.cognome | uppercase}}</mat-label> 
-            <!-- <button mat-menu-item routerLink="/genitori" [queryParams]="{ idAlunno: item.id }">Genitori/Tutori</button>  -->
-            <!--<button mat-menu-item (click)="openGenitori(item)">Genitori/Tutori</button> --> 
             <button mat-menu-item>Classi Frequentate</button>
             <button mat-menu-item>Pagelle</button>
             <button mat-menu-item (click)="openPagamenti(item.id)">Quote e Pagamenti</button>

@@ -143,7 +143,7 @@ export class PagamentiListComponent implements OnInit {
 
   loadData () {
 
-    this.obsAnni$= this.svcAnni.load();
+    this.obsAnni$= this.svcAnni.list();
     let obsPagamenti$: Observable<PAG_Pagamento[]>;
 
     if (this.alunnoID == 0 ) return;

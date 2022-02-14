@@ -104,7 +104,7 @@ export class RettaEditComponent implements OnInit {
       switchMap(() => this.svcAlunni.filterAlunni(this.formRetta.value.nomeCognomeAlunno))
     )
 
-    this.obsAnni$ = this.svcAnni.load();
+    this.obsAnni$ = this.svcAnni.list();
 
     this.formRetta.controls['selectAnnoScolastico'].setValue(this.data.idAnno);
     this.formRetta.controls['selectAnnoScolastico'].valueChanges.subscribe(

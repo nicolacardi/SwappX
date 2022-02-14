@@ -60,6 +60,7 @@ export class ClassiDashboardComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
   //@ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
+  @ViewChild(ClassiSezioniAnniListComponent) viewClassiSezioniAnni!: ClassiSezioniAnniListComponent; 
   @ViewChild(IscrizioniClasseListComponent) viewListIscrizioni!: IscrizioniClasseListComponent; 
   @Input () classeSezioneAnnoId!: number;
 //#endregion
@@ -110,12 +111,22 @@ export class ClassiDashboardComponent implements OnInit {
   }
 
   promuovi() {
+
+    if (this.viewListIscrizioni.getChecked().length == 0) {
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "Selezionare almeno un alunno da promuovere"}
+      });
+      return;
+    }
+    
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '450px',
-      height: '300px',
+      width: '300px',
+      height: '325px',
       data: {
-        idAnno:                 this.idAnno,
+        idAnno:               this.idAnno,
+        classeSezioneAnno:    this.viewClassiSezioniAnni.classeSezioneAnno,
         idClasseSezioneAnno:  this.idClasse,
         arrAlunniChecked:     this.viewListIscrizioni.getChecked(),
 
@@ -138,7 +149,7 @@ export class ClassiDashboardComponent implements OnInit {
       width: '400px',
       minHeight: '300px',
       data: {titolo: "Iscrivi alunno alla classe", 
-              idAnno: this.idAnno,
+              idAnno:   this.idAnno,
               idClasse: this.idClasse}
     };
 
@@ -152,37 +163,48 @@ export class ClassiDashboardComponent implements OnInit {
   }
 
   removeAlunnoFromClasse() {
-    //const objIdAlunniToRemove = this.alunniListComponent.getChecked();
     const objIdToRemove = this.viewListIscrizioni.getChecked();
 
     const selections = objIdToRemove.length;
     if (selections <= 0) {
-      //AS: mettere un messagebox "Selezionare almeno un elemento da cancellare"  ?
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "Selezionare almeno un alunno da cancellare"}
+      });
     }
     else{
-    //if (selections != 0) {
+
       const dialogRef = this._dialog.open(DialogYesNoComponent, {
         width: '320px',
         data: {titolo: "ATTENZIONE", sottoTitolo: "Si stanno cancellando le iscrizioni di "+selections+" alunni alla classe. Continuare?"}
       });
       dialogRef.afterClosed().subscribe(
-        result => {
+        async result => {
           if(!result) {
             return; 
           } else {
-            objIdToRemove.forEach(val=>{
-              //this.svcIscrizioni.delete(this.idClasse , val.id)
-              this.svcIscrizioni.delete(val.id)
-                .subscribe(()=>{
-                    //console.log("classi-dashboard.component.ts - removeAlunnoFromClasse: iscrizione di "+val.id+ " a "+this.idClasse + " rimossa" ); 
-                    //this.alunniListComponent.loadData();
-                    this.viewListIscrizioni.loadData();
-                })
-            }); 
-            //AS: spostato qua per evitare che faccia n refresh, solo che bisogna verificare la sync
-            //this.alunniListComponent.loadData();
-            //this.alunniListComponent.resetSelections();
+            // objIdToRemove.forEach(val=>{
+              
+            //   this.svcIscrizioni.delete(val.id)
+            //     .subscribe(()=>{
+            //     })
+            // }); 
+            //per ragioni di sincronia (aggiornamento classiSezioniAnniList dopo il loop) usiamo la Promise()
+            for (const element of objIdToRemove) {
+              await this.svcIscrizioni.delete(element.id)
+              .toPromise();
+            }
+
+            // let tmpclicked = this.viewClassiSezioniAnni.idClasseSezioneAnno;
+            // console.log (tmpclicked);
+            this.viewClassiSezioniAnni.loadData()
+            // this.viewClassiSezioniAnni.rowclicked(tmpclicked.toString());
+            
+            this.router.navigate(['/classi-dashboard'], { queryParams: { idAnno: this.idAnno, idClasseSezioneAnno: this.idClasse } });
+
             this.viewListIscrizioni.resetSelections();
+            this.viewListIscrizioni.loadData();
+
           }
       })
     }

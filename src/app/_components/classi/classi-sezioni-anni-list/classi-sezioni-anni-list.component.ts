@@ -79,12 +79,10 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     "addToAttended"
   ];
 
-  displayedColumnsAlunnoEditAttended: string[] =  [
-    "descrizioneCSAA",
-    "sezioneCSAA",
-    "annoscolasticoCSAA",
-    "removeFromAttended"
-  ];
+  // displayedColumnsAlunnoEditAttended: string[] =  [
+  //   "descrizione",
+  //   "sezione"
+  // ];
 
 
   displayedColumnsRettaCalcolo: string[] =  [
@@ -105,6 +103,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
   idAnnoInput!:                       string; //Da routing
   idClasseInput!:                     string; //Da routing
+  idClasseSezioneAnno!:               string;
+  classeSezioneAnno!:                 CLS_ClasseSezioneAnno;
   public idAnnoScolastico!:           number;
   showSelect:                         boolean = true;
   showPageTitle:                      boolean = true;
@@ -140,8 +140,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   //@ViewChildren ('ckSelected' ) ckSelected!:QueryList<any>;
   @Output('annoId') annoIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
   @Output('classeId') classeIdEmitter = new EventEmitter<number>(); //classeId viene EMESSO quando si clicca su una classe
-  @Output('addToAttended') addToAttended = new EventEmitter<CLS_ClasseSezioneAnno>(); //EMESSO quando si clicca sul (+) di aggiunta alle classi frequentate
-  @Output('removeFromAttended') removeFromAttended = new EventEmitter<CLS_ClasseSezioneAnno>(); //EMESSO quando si clicca sul (-) del rimuovi da classi frequentate
+  @Output('addToAttended') addToAttended = new EventEmitter<CLS_ClasseSezioneAnnoGroup>(); //EMESSO quando si clicca sul (+) di aggiunta alle classi frequentate
 
 //#endregion
 
@@ -153,7 +152,7 @@ constructor(
     private fb:                           FormBuilder, 
     public _dialog:                       MatDialog, 
     private actRoute:                     ActivatedRoute,
-    private _snackBar:                    MatSnackBar,
+    private _snackBar:                    MatSnackBar
     ) { 
 
     let obj = localStorage.getItem('AnnoCorrente');
@@ -182,7 +181,7 @@ constructor(
       this.toggleChecks = false;
     })
 
-    this.obsAnni$ = this.svcAnni.load()
+    this.obsAnni$ = this.svcAnni.list()
       .pipe(
         finalize( () => {
           if (this.idAnnoInput) { //se arrivo da home
@@ -201,12 +200,12 @@ constructor(
         this.showPageTitle = false;
         this.showTableRibbon = false;
         break;
-      case 'alunno-edit-attended': 
-        this.displayedColumns = this.displayedColumnsAlunnoEditAttended;
-        this.showSelect = false;
-        this.showPageTitle = false;
-        this.showTableRibbon = false;
-        break;
+      // case 'alunno-edit-attended': 
+      //   this.displayedColumns = this.displayedColumnsAlunnoEditAttended;
+      //   this.showSelect = false;
+      //   this.showPageTitle = false;
+      //   this.showTableRibbon = false;
+      //   break;
       case 'classi-dashboard':
         this.displayedColumns = this.displayedColumnsClassiDashboard;
         this.showPageTitle = false;
@@ -237,33 +236,6 @@ constructor(
     let idAnno: number;
     idAnno = this.form.controls["selectAnnoScolastico"].value;
 
-    
-    if (this.dove == "alunno-edit-attended") {
-      let obsIscrizioni$: Observable<CLS_ClasseSezioneAnno[]>;
-      obsIscrizioni$= this.svcIscrizioni.listByAlunno(this.alunnoId); //qui bisogna pescare byAlunno MA attenzione: il risultato è strutturalmente diverso
-
-      const loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
-
-      loadIscrizioni$.subscribe(val =>   {
-        console.log (val);
-        this.matDataSourceIscrizioni.data = val;
-        this.matDataSourceIscrizioni.paginator = this.paginator;
-
-        if (this.dove == "classi-page") {
-          this.sortCustom(); 
-          this.matDataSourceIscrizioni.sort = this.sort; 
-        }
-
-        this.matDataSourceIscrizioni.filterPredicate = this.filterPredicate();
-        
-        if(this.matDataSourceIscrizioni.data.length >0)
-          this.rowclicked(this.idClasseInput);  
-        //this.rowclicked(this.matDataSourceIscrizioni.data[0].id.toString()); //seleziona per default la prima riga NON FUNZIONA SEMPRE... SERVE??
-        else
-          this.rowclicked(undefined);
-      });
-    }
-    else{ 
       let obsClassi$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
       obsClassi$= this.svcClassiSezioniAnni.listByAnnoGroupByClasse(idAnno);
       // pipe(
@@ -287,18 +259,22 @@ constructor(
           this.matDataSource.filterPredicate = this.filterPredicate();
           
           if(this.matDataSource.data.length >0)
-          this.rowclicked(this.idClasseInput);  
-          //this.rowclicked(this.matDataSource.data[0].id.toString()); //seleziona per default la prima riga NON FUNZIONA SEMPRE... SERVE??
+            if (this.idClasseInput) 
+              this.rowclicked(this.idClasseInput);  
+            else
+              this.rowclicked(this.matDataSource.data[0].id.toString()); //seleziona per default la prima riga DA TESTARE
           else
             this.rowclicked(undefined);
         }
       );
-    }
   }
 
   rowclicked(idClasseSezioneAnno?: string ){
-    //console.log ("idClasseSezioneAnno", parseInt(idClasseSezioneAnno));
+    //console.log ("idClasseSezioneAnno", parseInt(idClasseSezioneAnno!));
     //il click su una classe deve essere trasmesso su al parent
+    this.idClasseSezioneAnno = idClasseSezioneAnno!;
+    //per potermi estrarre seq in iscrizioni-classe-calcolo mi preparo qui il valore della classe
+    if (idClasseSezioneAnno) {this.svcClassiSezioniAnni.get(parseInt(this.idClasseSezioneAnno)).subscribe(val=>this.classeSezioneAnno = val);} 
 
 
     if(idClasseSezioneAnno!= undefined && idClasseSezioneAnno != null)
@@ -314,12 +290,9 @@ constructor(
 
 //#region ----- Emit per alunno-edit -------
 
-  addToAttendedEmit(item: CLS_ClasseSezioneAnno) {
+  addToAttendedEmit(item: CLS_ClasseSezioneAnnoGroup) {
+    console.log ("emetto questo da classisezioniannilist", item);
     this.addToAttended.emit(item);
-  }
-
-  removeFromAttendedEmit(item: any) {
-    this.removeFromAttended.emit(item);
   }
 
 //#endregion

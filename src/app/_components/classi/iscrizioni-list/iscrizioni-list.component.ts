@@ -10,7 +10,6 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 //components
-//import { IscrizioneEditComponent } from '../iscrizione-edit/iscrizione-edit.component';           //TODO!!!
 import { IscrizioniFilterComponent } from '../iscrizioni-filter/iscrizioni-filter.component';
 import { AlunnoEditComponent } from '../../alunni/alunno-edit/alunno-edit.component';
 import { RettaEditComponent } from '../../pagamenti/retta-edit/retta-edit.component';
@@ -24,6 +23,7 @@ import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
+
 @Component({
   selector:     'app-iscrizioni-list',
   templateUrl:  './iscrizioni-list.component.html',
@@ -34,18 +34,15 @@ export class IscrizioniListComponent implements OnInit {
 
 //#region ----- Variabili -------
 
-  matDataSource = new MatTableDataSource<CLS_Iscrizione>();
-  matSortActive!:               string;
-  matSortDirection!:            string;
+  matDataSource = new           MatTableDataSource<CLS_Iscrizione>();
 
-  displayedColumns: string[] = [
-      //"select",
+  displayedColumns:             string[] = [
       "actionsColumn", 
       "nome", 
       "cognome", 
       "classe",
       "sezione",
-      "stato",    //Stato Iscrizione
+      "stato",
       "cf",
       "email", 
       "telefono",
@@ -55,17 +52,17 @@ export class IscrizioniListComponent implements OnInit {
       "prov"
   ];
 
-  selection = new SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
 
-  obsAnni$!:                    Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-  form:                         FormGroup;            //form fatto della sola combo anno scolastico
+  selection = new               SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
+  obsAnni$!:                    Observable<ASC_AnnoScolastico[]>;           //Serve per la combo anno scolastico
+  form:                         FormGroup;                                  //form fatto della sola combo anno scolastico
   
   menuTopLeftPosition =  {x: '0', y: '0'} 
-  //idAlunniChecked:              number[] = [];
+
   toggleChecks:                 boolean = false;
   showPageTitle:                boolean = true;
   showTableRibbon:              boolean = true;
-  // public swSoloAttivi :         boolean = true;
+
 
   filterValue = '';       //Filtro semplice
 
@@ -96,9 +93,9 @@ export class IscrizioniListComponent implements OnInit {
   @Input() annoID!:                                           number;
   @Input('alunnoId') alunnoId! :                              number;
   @Input() iscrizioniFilterComponent!:                        IscrizioniFilterComponent;
-  @Input('context') context! :                                string;
+  @Input('dove') dove! :                                      string;
 
-  @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
+  @Output('openDrawer') toggleDrawer = new                    EventEmitter<number>();
 
 //#endregion
 
@@ -116,19 +113,9 @@ export class IscrizioniListComponent implements OnInit {
   }
 
 //#region ----- LifeCycle Hooks e simili-------
-
-  ngOnChanges() {
-    //this.loadData();
-  }
   
   ngOnInit () {
     this.loadData();
-  }
-
-  loadLayout(){
-      //chiamata al WS dei layout con nome utente e nome griglia e contesto (variabile 'context')
-      //se trovato, update colonne griglia
-      //this.displayedColumns =  this.displayedColumnsAlunniList;
   }
 
   updateList() {
@@ -136,13 +123,13 @@ export class IscrizioniListComponent implements OnInit {
   }
 
   loadData () {
-    this.obsAnni$= this.svcAnni.load();
+    this.obsAnni$= this.svcAnni.list();
     let obsIscrizioni$: Observable<CLS_Iscrizione[]>;
 
     this.annoID = this.form.controls['selectAnnoScolastico'].value;
     if (this.annoID != undefined && this.annoID > 0 ) {
       obsIscrizioni$= this.svcIscrizioni.listByAnno(this.annoID);
-      const loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
+      let loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
 
       loadIscrizioni$.subscribe(val =>  {
           this.matDataSource.data = val;
@@ -171,7 +158,6 @@ export class IscrizioniListComponent implements OnInit {
         case 'cognome':                     return item.alunno.cognome;
         case 'classe':                      return item.classeSezioneAnno.classeSezione.classe.descrizioneBreve;
         case 'sezione':                     return item.classeSezioneAnno.classeSezione.sezione;
-
         case 'cf':                          return item.alunno.cf;
         case 'email':                       return item.alunno.email;
         case 'telefono':                    return item.alunno.telefono;
@@ -192,25 +178,6 @@ export class IscrizioniListComponent implements OnInit {
 
     //Reset dei filtri di destra
     //this.iscrizioniFilterComponent.resetAllInputs();
-
-    //Reset di filterValues
-    /*
-    this.filterValues = {
-      nome: '',
-      cognome: '',
-      classe: '',
-      sezione: '',
-      stato: '',
-      cf: '',
-      email: '',
-      telefono: '',
-      dtNascita: '',
-      indirizzo: '',
-      comune: '',
-      prov: '',
-      filtrosx: ''
-    };
-    */
    
     //Inserimento del Main Filter in uno specifico (filtrosx) dei campi di filterValues
     if( this.filterValue != undefined && this.filterValue != ""){

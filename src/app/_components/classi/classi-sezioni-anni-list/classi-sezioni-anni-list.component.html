@@ -102,22 +102,22 @@
     </ng-container>
 
     <!--ATTENZIONE QUI SI VA A VEDERE NON DENTRO CLASSESEZIONEANNO MA DENTRO CLASSESEZIONEANNOALUNNO-->
-    <ng-container matColumnDef="sezioneCSAA">
+    <!-- <ng-container matColumnDef="sezioneCSAA">
         <th mat-header-cell *matHeaderCellDef >Sez.</th>
         <td mat-cell *matCellDef="let element">{{element.sezione}}</td>
-    </ng-container>
+    </ng-container> -->
 
     <!--ATTENZIONE QUI SI VA A VEDERE NON DENTRO CLASSESEZIONEANNO MA DENTRO CLASSESEZIONEANNOALUNNO-->
-    <ng-container matColumnDef="descrizioneCSAA">
+    <!-- <ng-container matColumnDef="descrizioneCSAA">
         <th mat-header-cell *matHeaderCellDef >Classe</th>
         <td mat-cell *matCellDef="let element">{{element.classeSezioneAnno.classeSezione.classe.descrizione2}}</td>
-    </ng-container>
+    </ng-container> -->
 
     <!--ATTENZIONE QUI SI VA A VEDERE NON DENTRO CLASSESEZIONEANNO MA DENTRO CLASSESEZIONEANNOALUNNO-->
-    <ng-container matColumnDef="annoscolasticoCSAA">
+    <!-- <ng-container matColumnDef="annoscolasticoCSAA">
         <th mat-header-cell *matHeaderCellDef >anno scolastico</th>
         <td mat-cell *matCellDef="let element">{{element.classeSezioneAnno.anno.annoscolastico}}</td>
-    </ng-container>
+    </ng-container> -->
 
     <ng-container matColumnDef="importo">
         <th mat-header-cell *matHeaderCellDef >importo</th>
@@ -188,14 +188,6 @@
             <mat-icon class="pointer" (click) = "addToAttendedEmit(element)">add_circle_outline</mat-icon>
         </td>
     </ng-container>
-
-    <ng-container matColumnDef="removeFromAttended">
-        <th mat-header-cell *matHeaderCellDef ></th>
-        <td mat-cell *matCellDef="let element">
-            <mat-icon class="pointer" (click) = "removeFromAttendedEmit(element.classeSezioneAnno)">remove_circle_outline</mat-icon>
-        </td>
-    </ng-container>
-
 
 
     <!-- **************************   MAT-HEADER-ROW   ******************* -->

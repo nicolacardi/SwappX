@@ -74,7 +74,7 @@ export class ImpostazioniComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.obsAnni$= this.svcAnni.load();
+    this.obsAnni$= this.svcAnni.list();
   }
 
   save(){

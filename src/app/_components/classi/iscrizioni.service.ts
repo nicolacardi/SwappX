@@ -45,7 +45,7 @@ export class IscrizioniService {
     formData.id = 0;
     formData.statoID = 1;
     //formData.dtIns= "01/01/2022";
-    console.log ("formData post Iscrizioni", formData);
+    //console.log ("formData post Iscrizioni", formData);
     return this.http.post( environment.apiBaseUrl  + 'CLS_Iscrizioni' , formData);  
   }
   
