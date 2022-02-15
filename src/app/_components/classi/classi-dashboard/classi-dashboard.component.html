@@ -18,17 +18,17 @@
         </td>
         <td class="_columnright-dashboard">
                 <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addYellow" (click)="addAlunnoToClasse()" >
-                    <img class="iconaMenu" src="../../../../assets/empty.svg" matTooltip="Iscrivi alunni alla classe" 
+                    <img class="iconaMenu" src="../../../../assets/empty.svg"
                     [@openClose]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
                 </button>
                 <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="_btn-addRed" (click)="removeAlunnoFromClasse()">
-                    <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg" matTooltip="Rimuovi alunni selezionati dalla classe"  >
+                    <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg">
                 </button>
                 <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="esportaPdf" class="_btn-addBlu" (click)="creaPdf()">
                     <mat-icon>print</mat-icon>
                 </button>
                 <button mat-mini-fab aria-label="Promuovi alunni" matTooltip="Promuovi" class="_btn-addGreen" (click)="promuovi()">
-                    <mat-icon>school</mat-icon>
+                    <img class="iconaMenu" src="../../../../assets/promuovi_white.svg">
                 </button>
                 <mat-card class=" card mat-elevation-z8" style="height: 100%">
                     <div class="_table-container">

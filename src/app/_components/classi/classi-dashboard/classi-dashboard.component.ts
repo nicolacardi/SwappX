@@ -66,15 +66,13 @@ export class ClassiDashboardComponent implements OnInit {
 //#endregion
 
   constructor(
-              //private svcClassiSezioniAnni:         ClassiSezioniAnniService,
-              private svcIscrizioni:                IscrizioniService,
-              //private _loadingService:              LoadingService,
-              private _navigationService:           NavigationService,
-              public _dialog:                       MatDialog,
-              private _jspdf:                       JspdfService,
-              private actRoute:                      ActivatedRoute,
-              private router:                        Router          ) { 
-              }
+    private svcIscrizioni:                IscrizioniService,
+    private _navigationService:           NavigationService,
+    public _dialog:                       MatDialog,
+    private _jspdf:                       JspdfService,
+    private actRoute:                     ActivatedRoute,
+    private router:                       Router          
+    ) {}
 
 //#region ----- LifeCycle Hooks e simili-------
 
@@ -106,9 +104,46 @@ export class ClassiDashboardComponent implements OnInit {
   }
 
   creaPdf() {
-    const tableHeaders = [['id', 'nome', 'cognome', "genere", "dtNascita"]];
-    this._jspdf.creaPdf(this.viewListIscrizioni.matDataSource.data, tableHeaders);
+    const tableHeaders = [['id', 'nome', 'cognome', "email", "telefono", "nato il", "St.Iscrizione"]];
+    const tableFields = [['id', 'nome', 'cognome', "email", "telefono", "nato il", "St.Iscrizione"]];
+
+
+
+    console.log (this.propertiesToArray(this.viewListIscrizioni.matDataSource.data[0]));
+    var keyNames = Object.keys(this.viewListIscrizioni.matDataSource.data[0]);
+    console.log (keyNames);
+    keyNames.forEach(
+      x => {
+
+      }
+    )
+    //this._jspdf.creaPdf(this.viewListIscrizioni.matDataSource.data, tableHeaders);
   }
+
+
+  propertiesToArray(obj: any) {
+    const isObject = (val: any) =>
+      val && typeof val === 'object' && !Array.isArray(val);
+  
+    const addDelimiter = (a: any, b: any) =>
+      a ? `${a}.${b}` : b;
+  
+    const paths: any = (obj = {}, head = '') => {
+      return Object.entries(obj)
+        .reduce((product, [key, value]) => 
+          {
+            let fullPath = addDelimiter(head, key)
+            return isObject(value) ?
+              product.concat(paths(value, fullPath))
+            : product.concat(fullPath)
+          }, []);
+    }
+  
+    return paths(obj);
+  }
+    
+
+
 
   promuovi() {
 
@@ -123,7 +158,7 @@ export class ClassiDashboardComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '300px',
-      height: '325px',
+      height: '335px',
       data: {
         idAnno:               this.idAnno,
         classeSezioneAnno:    this.viewClassiSezioniAnni.classeSezioneAnno,

@@ -1,15 +1,14 @@
 <mat-card class="form-card">
     <mat-card-content>
         <form class="data-form flex-form" [formGroup] = "form" >
-            <img class="iconaMenuBig" src="../assets/money_edit.svg">
+            <img class="iconaMenuBig" src="../assets/promuovi_black.svg">
 
             <div>
-
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
             </div>
             <mat-label class="center mt10">PROMOZIONE</mat-label>
-            <mat-label class="center mt20" *ngIf="data.arrAlunniChecked.length > 1">Sono stati selezionati {{data.arrAlunniChecked.length}} alunni</mat-label>
-            <mat-label class="center mt20" *ngIf="data.arrAlunniChecked.length == 1">E' stato selezionato {{data.arrAlunniChecked.length}} alunno</mat-label>
+            <mat-label class="center mt30" *ngIf="data.arrAlunniChecked.length > 1">Sono stati selezionati {{data.arrAlunniChecked.length}} alunni</mat-label>
+            <mat-label class="center mt30" *ngIf="data.arrAlunniChecked.length == 1">E' stato selezionato {{data.arrAlunniChecked.length}} alunno</mat-label>
 
             <!-- <mat-label class="center mt20">della classe {{classeSezioneAnno.classeSezione.classe.descrizioneBreve+" "+classeSezioneAnno.classeSezione.sezione}}  alunni</mat-label> -->
             <mat-label class="center">Scegliere la classe di destinazione</mat-label>
