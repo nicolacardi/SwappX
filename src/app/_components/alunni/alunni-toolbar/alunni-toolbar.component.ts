@@ -69,12 +69,12 @@ export class AlunniToolbarComponent {
   
 //____________________________ TODO  _________________________
   stampa() {
-          let title = "Elenco Alunni";
-          //elenco i campi da tenere
-          let fieldsToKeep = ['nome', 'cognome', 'dtNascita', 'indirizzo', 'comune', 'cap', 'prov', 'email', 'telefono'];
-          //elenco i nomi delle colonne
-          let columnsNames = [['nome', 'cognome', 'nato il', 'indirizzo', 'comune', 'cap', 'prov', 'email', 'telefono']];
-          this._jspdf.creaPdf(this.alunniListComponent.matDataSource.data, columnsNames, fieldsToKeep, title);    
+    let title = "Elenco Alunni";
+    //elenco i campi da tenere
+    let fieldsToKeep = ['nome', 'cognome', 'dtNascita', 'indirizzo', 'comune', 'cap', 'prov', 'email', 'telefono'];
+    //elenco i nomi delle colonne
+    let columnsNames = [['nome', 'cognome', 'nato il', 'indirizzo', 'comune', 'cap', 'prov', 'email', 'telefono']];
+    this._jspdf.creaPdf(this.alunniListComponent.matDataSource.data, columnsNames, fieldsToKeep, title);    
   }
 
   scarica() {

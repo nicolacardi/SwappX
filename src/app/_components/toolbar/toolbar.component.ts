@@ -5,6 +5,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DialogOkComponent } from '../utilities/dialog-ok/dialog-ok.component';
 import { AlunniListComponent } from '../alunni/alunni-list/alunni-list.component';
 import { SceltaColonneComponent } from './scelta-colonne/scelta-colonne.component';
+import { JspdfService } from '../utilities/jspdf/jspdf.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -15,19 +16,20 @@ export class ToolbarComponent {
 
   @Input() alunniListComponent!:   AlunniListComponent;
   
-  constructor(public _dialog: MatDialog) { }
+  constructor(
+    public _dialog:                MatDialog,
+    private _jspdf:                JspdfService
+
+    ) { }
 
   stampa() {
-    this._dialog.open(DialogOkComponent, {
-      width: '320px',
-      data: {titolo: "CURIOSO!", sottoTitolo: "Abbi pazienza!"}
-    });
+
   }
 
   scarica() {
     this._dialog.open(DialogOkComponent, {
       width: '320px',
-      data: {titolo: "TE GO DITO CHE TE SI' CURIOSO!", sottoTitolo: "proprio impaziente eh!"}
+      data: {titolo: "CURIOSO!", sottoTitolo: "Abbi pazienza!"}
     });
   }
 
