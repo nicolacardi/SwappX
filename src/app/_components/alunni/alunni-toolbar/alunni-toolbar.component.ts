@@ -6,6 +6,7 @@ import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component
 import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 import { SceltaColonneComponent } from '../../toolbar/scelta-colonne/scelta-colonne.component';
 import { _UT_GridLayout, _UT_GridLayoutColumn } from 'src/app/_models/_UT_GridLayout';
+import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 
 @Component({
   selector: 'app-alunni-toolbar',
@@ -16,7 +17,10 @@ export class AlunniToolbarComponent {
 
   @Input() alunniListComponent!:   AlunniListComponent;
   
-  constructor(public _dialog: MatDialog) { 
+  constructor(
+    public _dialog:                MatDialog,
+    private _jspdf:                JspdfService
+    ) { 
 
   }
 
@@ -65,16 +69,19 @@ export class AlunniToolbarComponent {
   
 //____________________________ TODO  _________________________
   stampa() {
-    this._dialog.open(DialogOkComponent, {
-      width: '320px',
-      data: {titolo: "CURIOSO!", sottoTitolo: "Abbi pazienza!"}
-    });
+          let title = "Elenco Alunni";
+          //elenco i campi da tenere
+          let fieldsToKeep = ['nome', 'cognome', 'dtNascita', 'indirizzo', 'comune', 'cap', 'prov', 'email', 'telefono'];
+          //elenco i nomi delle colonne
+          let columnsNames = [['nome', 'cognome', 'nato il', 'indirizzo', 'comune', 'cap', 'prov', 'email', 'telefono']];
+          this._jspdf.creaPdf(this.alunniListComponent.matDataSource.data, columnsNames, fieldsToKeep, title);    
   }
 
   scarica() {
+
     this._dialog.open(DialogOkComponent, {
       width: '320px',
-      data: {titolo: "TE GO DITO CHE TE SI' CURIOSO!", sottoTitolo: "proprio impaziente eh!"}
+      data: {titolo: "CURIOSO!", sottoTitolo: "Abbi pazienza!"}
     });
   }
 
