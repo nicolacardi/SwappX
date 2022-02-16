@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { jsPDF } from 'jspdf';
+
+import '../../../../assets/fonts/TitilliumWeb-Regular-normal.js';
 import autoTable from 'jspdf-autotable';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +12,45 @@ export class JspdfService {
 
   constructor() { }
 
-  creaPdf(toPrint :any, tableHeaders: any) {
+  creaPdf(toPrint :any, columnsNames: any, fieldsToKeep: any, title: string) {
+
+    const doc = new jsPDF('l', 'mm', [297, 210]);
+    doc.setFont('TitilliumWeb-Regular', 'normal');
+    var width = doc.internal.pageSize.getWidth()
+    doc.text(title, width/2, 15, { align: 'center' });
+   console.log(doc.getFontList());
+    
+
+
+
+    //tolgo dall'array tutti i campi che non servono
+    //faccio una copia del matDataSource
+    let tmpObjArr : any = toPrint;
+    //creo una mappa delle sue proprietà
+    let allProperties = this.propertiesToArray(toPrint[0]);
+
+    //creo l'array che butterò fuori
+    let arrResult : any= [];
+
+    //con l'aiuto della funzione flatten schiaccio gli oggetti e li metto in arrResult
+    tmpObjArr.forEach ((element: any) =>
+      //console.log(this.flattenObj(element) ),
+      arrResult.push(this.flattenObj(element))
+    )  
+    console.log (arrResult);
+    
+    //per ogni proprietà nella mappa vado a vedere se sono incluse nell'array di quelle da tenere
+    allProperties.forEach((proprieta: string) =>{
+        //se la proprietà non è inclusa....
+        if (!fieldsToKeep.includes(proprieta)) {
+          //vado a toglierla da ArrResult
+          arrResult.forEach ( (record: any) => {
+            delete record[proprieta];}
+          )
+        }
+      }
+    )
+
 
   //tutto questo casino lo ha aggiunto lui perchè c'è un problemino di tipo
   //sarebbe stato: let array = json.map(obj => Object.values(obj)); 
@@ -17,21 +58,33 @@ export class JspdfService {
   //infatti autotable richiede che il body sia un array di array
 
 
-  // var keyNames = Object.keys(toPrint.matDataSource.data[0]);
-  // console.log (keyNames);
-
-
-
-    let array = toPrint.map((obj: { [s: string]: unknown; } | ArrayLike<unknown>) => Object.values(obj)); 
+    let array = arrResult.map((obj: { [s: string]: unknown; } | ArrayLike<unknown>) => Object.values(obj)); 
     console.log("outputData", array);
 
-    const doc = new jsPDF();
+    //const doc = new jsPDF();
+
+
+
+
 
     autoTable(doc, {
       startY: 20,
-      head: tableHeaders,
+      head: columnsNames,
       body: array,
+      styles: {font: "TitilliumWeb-Regular"},
+      willDrawCell: (HookData) => {  
+        // if (HookData.section === 'head') { doc.setTextColor(255, 0, 0);} //colora le celle dell'head di rosso
+        let cellContent = HookData.cell.raw+"";
+        let last9 = cellContent.slice(-9);
+        if (last9 == 'T00:00:00') { //in questo modo OSCENO identifico se si tratta di una data
+          //console.log ("Hookdata.cell", HookData.cell);
+          HookData.cell.text[0] = cellContent.slice(0,10); //non so perchè ma HookData.cell.text è un array!
+        }
+      }
     })
+
+
+
 
     // doc.text("jspdf funziona + o - come fpdf che io uso, ma ha moltissimi metodi suoi", 10, 10);
     // doc.text("In questo punto scrivo quello che mi pare", 100, 100);
@@ -56,10 +109,10 @@ export class JspdfService {
     // doc.setFillColor(0,0,200);
     // doc.cell(110, 140, 70, 20, "alla fine è solo questione di dedicarci del tempo...ma si può fare quasi tutto quello che si vuole", 0, "left");
 
-    doc.save("table.pdf");
+    const d = new Date();
+    doc.save(d.toISOString().split('T')[0]+"_Export.pdf");
     
   }
-
 
 
   flattenObj (arrToFlatten: any){
@@ -86,6 +139,7 @@ export class JspdfService {
   
   
     flatDeep(arr: any, d = 1) {
+      //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
       //questa funzione schiaccia un array (non un object, attenzione)
       return d > 0 ? arr.reduce((acc: any, val: any) => acc.concat(Array.isArray(val) ? this.flatDeep(val, d - 1) : val), [])
                    : arr.slice();
@@ -93,6 +147,7 @@ export class JspdfService {
   
   
     deletePropertyPath (obj: any, path: any) {
+      //https://stackoverflow.com/questions/40712249/deleting-nested-property-in-javascript-object
       //questa funzione cancella una nested property passandogli il percorso da eliminare in forma: alunno.nome
       if (!obj || !path) {
         return;
@@ -134,5 +189,5 @@ export class JspdfService {
     }
 
 
-    
+
 }
