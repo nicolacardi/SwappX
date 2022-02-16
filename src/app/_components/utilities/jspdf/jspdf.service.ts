@@ -15,14 +15,17 @@ export class JspdfService {
   creaPdf(toPrint :any, columnsNames: any, fieldsToKeep: any, title: string) {
 
     const doc = new jsPDF('l', 'mm', [297, 210]);
+    //console.log(doc.getFontList());
     doc.setFont('TitilliumWeb-Regular', 'normal');
     var width = doc.internal.pageSize.getWidth()
     doc.text(title, width/2, 15, { align: 'center' });
-   console.log(doc.getFontList());
     
+    //costruisco la data per il footer (vedi options di autoTable è oltre)
+    var today = new Date();
+    var monthpadded = String(today.getMonth()+1).padStart(2, '0');
+    var nDate = today.getDate() + '/' + monthpadded + '/' + today.getFullYear();
 
-
-
+//#region PREPARAZIONE DEI DATI ***************************************************************************
     //tolgo dall'array tutti i campi che non servono
     //faccio una copia del matDataSource
     let tmpObjArr : any = toPrint;
@@ -50,23 +53,17 @@ export class JspdfService {
         }
       }
     )
+//#endregion FINE PREPARAZONE DEI DATI ********************************************************************
 
 
   //tutto questo casino lo ha aggiunto lui perchè c'è un problemino di tipo
   //sarebbe stato: let array = json.map(obj => Object.values(obj)); 
   //che serve a trasformare un array di objects in un array di array
   //infatti autotable richiede che il body sia un array di array
+  let array = arrResult.map((obj: { [s: string]: unknown; } | ArrayLike<unknown>) => Object.values(obj)); 
+  //console.log("outputData", array);
 
-
-    let array = arrResult.map((obj: { [s: string]: unknown; } | ArrayLike<unknown>) => Object.values(obj)); 
-    console.log("outputData", array);
-
-    //const doc = new jsPDF();
-
-
-
-
-
+//#region PASSAGGIO A AUTOTABLE DEI DATI PREPARATI ********************************************************
     autoTable(doc, {
       startY: 20,
       head: columnsNames,
@@ -80,8 +77,38 @@ export class JspdfService {
           //console.log ("Hookdata.cell", HookData.cell);
           HookData.cell.text[0] = cellContent.slice(0,10); //non so perchè ma HookData.cell.text è un array!
         }
+      },
+      showHead: "everyPage",
+      didDrawPage: function (data) {
+
+        // Header
+        doc.setFontSize(20);
+        doc.setTextColor(40);
+        //doc.text(title, data.settings.margin.left, 10);
+        
+
+        // Footer
+        var str = "Page " + data.pageNumber + "/" + data.pageCount;
+
+        doc.setFontSize(9);
+
+        // jsPDF 1.4+ uses getWidth, <1.4 uses .width
+        var pageSize = doc.internal.pageSize;
+        
+        var pageWidth = pageSize.width
+        ? pageSize.width
+        : pageSize.getWidth();
+
+        var pageHeight = pageSize.height
+          ? pageSize.height
+          : pageSize.getHeight();
+        doc.text(str, data.settings.margin.left, pageHeight - 10);
+        doc.text(title, pageWidth - data.settings.margin.right, pageHeight - 10, { align: 'right' });
+        doc.text(nDate, width/2, 200, { align: 'center' });
       }
+
     })
+//#endregion FINE AUTOTABLE ***************************************************************
 
 
 
