@@ -20,6 +20,8 @@ import { IscrizioniService } from '../iscrizioni.service';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { IscrizioniClasseCalcoloComponent } from '../iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
+import { AlunnoEditComponent } from '../../alunni/alunno-edit/alunno-edit.component';
+import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 
 
 @Component({
@@ -48,7 +50,10 @@ import { IscrizioniClasseCalcoloComponent } from '../iscrizioni-classe-calcolo/i
   styleUrls: ['./../classi.css']
 })
 
+
+
 export class ClassiDashboardComponent implements OnInit {
+
 
 //#region ----- Variabili -------
   public idClasse!:             number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
@@ -103,25 +108,96 @@ export class ClassiDashboardComponent implements OnInit {
     this.isOpen = true;
   }
 
+
+
   creaPdf() {
-    const tableHeaders = [['id', 'nome', 'cognome', "email", "telefono", "nato il", "St.Iscrizione"]];
-    const tableFields = [['id', 'nome', 'cognome', "email", "telefono", "nato il", "St.Iscrizione"]];
 
+    //elenco i campi da tenere
+    let fieldsToKeep = ['alunno.nome', 'alunno.cognome'];
+    let columnsNames = [['nome', 'cognome']];
+    //tolgo dall'array tutti i campi che non servono
+    //faccio una copia del matDataSource
+    let tmpObjArr : any = this.viewListIscrizioni.matDataSource.data;
+    //creo una mappa delle sue proprietà
+    let allProperties = this.propertiesToArray(this.viewListIscrizioni.matDataSource.data[0]);
 
+    //creo l'array che butterò fuori
+    let arrResult : any= [];
 
-    console.log (this.propertiesToArray(this.viewListIscrizioni.matDataSource.data[0]));
-    var keyNames = Object.keys(this.viewListIscrizioni.matDataSource.data[0]);
-    console.log (keyNames);
-    keyNames.forEach(
-      x => {
-
+    //con l'aiuto della funzione flatten schiaccio gli oggetti e li metto in arrResult
+    tmpObjArr.forEach ((element: any) =>
+      //console.log(this.flattenObj(element) ),
+      arrResult.push(this.flattenObj(element))
+    )  
+    console.log (arrResult);
+    
+    //per ogni proprietà nella mappa vado a vedere se sono incluse nell'array di quelle da tenere
+    allProperties.forEach((proprieta: string) =>{
+        //se la proprietà non è inclusa....
+        if (!fieldsToKeep.includes(proprieta)) {
+          //vado a toglierla da ArrResult
+          arrResult.forEach ( (record: any) => {
+            delete record[proprieta];}
+          )
+        }
       }
     )
-    //this._jspdf.creaPdf(this.viewListIscrizioni.matDataSource.data, tableHeaders);
+
+    this._jspdf.creaPdf(arrResult, columnsNames);
   }
+
+  flattenObj (arrToFlatten: any){
+  //questa funzione serve per schiacciare un Object
+  //e restituire campi del tipo alunno.nome, alunno.cognome invece di alunno {nome:..., cognome:...}
+    let result : any = {};
+    for (const i in arrToFlatten) {
+        //se trova un oggetto allora chiama se stessa ricorsivamente
+        if ((typeof arrToFlatten[i]) === 'object' && !Array.isArray(arrToFlatten[i])) {
+            const temp = this.flattenObj(arrToFlatten[i]);
+            for (const j in temp) {
+                //costruisce la stringa ricorsivamente
+                result[i + '.' + j] = temp[j];
+            }
+        }
+        // altrimenti non gli fa nulla
+        else {
+            result[i] = arrToFlatten[i];
+        }
+    }
+    return result;
+  };
+
+
+
+  flatDeep(arr: any, d = 1) {
+    //questa funzione schiaccia un array (non un object, attenzione)
+    return d > 0 ? arr.reduce((acc: any, val: any) => acc.concat(Array.isArray(val) ? this.flatDeep(val, d - 1) : val), [])
+                 : arr.slice();
+  };
+
+
+  deletePropertyPath (obj: any, path: any) {
+    //questa funzione cancella una nested property passandogli il percorso da eliminare in forma: alunno.nome
+    if (!obj || !path) {
+      return;
+    }
+    if (typeof path === 'string') {
+      path = path.split('.');
+    }
+    for (var i = 0; i < path.length - 1; i++) {
+      obj = obj[path[i]];
+      if (typeof obj === 'undefined') {
+        return;
+      }
+    }
+    delete obj[path.pop()];
+  };
+
 
 
   propertiesToArray(obj: any) {
+    //var keyNames = Object.keys(Object); //estrae solo i nomi delle prorietà di primo livello
+    //questa routine estrae invece tutte le proprietà e sottoproprietà di un oggetto nella forma alunno.nome
     const isObject = (val: any) =>
       val && typeof val === 'object' && !Array.isArray(val);
   
@@ -138,7 +214,6 @@ export class ClassiDashboardComponent implements OnInit {
             : product.concat(fullPath)
           }, []);
     }
-  
     return paths(obj);
   }
     

@@ -66,6 +66,23 @@
                                 formControlName="password">
                     </mat-form-field>
                 </mat-grid-tile>
+
+                <mat-grid-tile colspan="2">
+                    <mat-form-field>
+                        <mat-label>Ruolo</mat-label>
+                        <mat-select formControlName="ruolo">
+                            <mat-option *ngFor="let element of ruoli" [value]="element">
+                            {{element}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+
+
+
+
+
             </mat-grid-list>
             <!-- {{obsClassi$ | async | json}} -->
             <!-- {{obsClassiSezioniAnniSucc$ | async | json}} -->

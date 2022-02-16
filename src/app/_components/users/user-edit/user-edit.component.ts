@@ -21,6 +21,7 @@ export class UserEditComponent implements OnInit {
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
 
+  ruoli =[1,3,4,9];
   constructor(
     @Inject(MAT_DIALOG_DATA) public idUser: string,
     public _dialogRef:                          MatDialogRef<UserEditComponent>,
@@ -39,7 +40,8 @@ export class UserEditComponent implements OnInit {
       fullName:         [''],
       email:            [''],
       badge:            [''],
-      password:         ['']
+      password:         [''],
+      ruolo:            [''],
     });
 
   }
@@ -97,6 +99,57 @@ export class UserEditComponent implements OnInit {
   }
 
   save() {
+
+    var formData = {
+      userID:     this.idUser,   
+      UserName:   this.form.controls.userName.value,
+      Email:      this.form.controls.email.value,
+      FullName:   this.form.controls.fullName.value,
+      Badge:      this.form.controls.badge.value,
+      Ruolo:      this.form.controls.ruolo.value
+    };
+    console.log("formData", formData);
+
+    if (formData.userID == "0") {
+        this.svcUser.post(this.form.value)
+             .subscribe(res=> {
+               this._dialogRef.close();
+             },
+             err=> (
+               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+             ));
+    } else {
+      this.svcUser.put(formData)
+        .subscribe( ()=> {
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo utente salvato (MANCANO PASSWORD E RUOLO)', panelClass: ['green-snackbar']})}
+        );
+    }
+
+
+
+
+    //   if (this.form.controls['id'].value == null) //ma non sarebbe == 0?
+    //   this.svcAlunni.post(this.form.value)
+    //     .subscribe(res=> {
+    //       this._dialogRef.close();
+    //     },
+    //     err=> (
+    //       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+    //     )
+    // );
+    // else 
+    //   this.svcAlunni.put(this.form.value)
+    //     .subscribe(res=> {
+    //       this._dialogRef.close();
+    //     },
+    //     err=> (
+    //       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+    //     )
+    // );
+    // this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+
+
+
   }
 
 }

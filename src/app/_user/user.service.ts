@@ -114,9 +114,14 @@ export class UserService {
 
 
   put(formData: any): Observable <any>{
-    //console.log("user.service\put", formData);
+    console.log("user.service.put", formData);
     return this.http.put(environment.apiBaseUrl +'ApplicationUser/'+ formData.userID, formData );
   }
+
+  post(formData: any): Observable <any>{
+    return  this.http.post(environment.apiBaseUrl +'ApplicationUser/Register', formData );
+  }
+
 
   ChangePassword(formData: any): Observable <any>{
     return  this.http.post(environment.apiBaseUrl +'ApplicationUser/ChangePassword?userID=' + formData.userID + "&currPassword=" + formData.currPassword + "&newPassword=" + formData.newPassword,formData);

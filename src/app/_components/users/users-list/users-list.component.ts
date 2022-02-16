@@ -39,7 +39,7 @@ export class UsersListComponent implements OnInit {
       "userName", 
       "fullName", 
       "email", 
-      
+      "ruolo",
       "badge"
   ];
 
@@ -193,28 +193,27 @@ export class UsersListComponent implements OnInit {
 
 //#region ----- Add Edit Drop -------
   addRecord(){
-    /*
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '850px',
-      height: '620px',
-      data: 0
+      width:      '500px',
+      height:     '450px',
+      data:       0
     };
+
     const dialogRef = this._dialog.open(UserEditComponent, dialogConfig);
     dialogRef.afterClosed()
       .subscribe(
         () => {
           this.loadData();
     });
-    */
   }
 
   openDetail(id:any){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '500px',
-      height: '400px',
-      data: id
+      width:      '500px',
+      height:     '450px',
+      data:       id
     };
 
     const dialogRef = this._dialog.open(UserEditComponent, dialogConfig);
@@ -223,7 +222,6 @@ export class UsersListComponent implements OnInit {
         () => {
           this.loadData();
     });
-    
   }
 
   drop(event: CdkDragDrop<string[]>) {

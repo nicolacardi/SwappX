@@ -33,7 +33,7 @@ export class UsersPageComponent implements OnInit {
   
 //#region ----- Add Edit Drop -------
   addRecord() {
-    //this.usersList.addRecord()
+    this.usersList.addRecord()
   }
 //#endregion
   

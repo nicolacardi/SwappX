@@ -19,7 +19,7 @@ export enum UserRole {
     Alunno = 1,
     Genitore = 2,
     Docente = 3,
-    Segreteria=4,
+    Segreteria = 4,
 
     Admin = 9
 
