@@ -43,6 +43,22 @@ export class UsersListComponent implements OnInit {
       "badge"
   ];
 
+  rptTitle = 'Lista Utenti';
+
+  rptFieldsToKeep  = [
+    "userName", 
+    "fullName", 
+    "email", 
+    "ruolo",
+    "badge"];
+
+  rptColumnsNames  = [
+    "userName", 
+    "Nome completo", 
+    "email", 
+    "ruolo",
+    "badge"];
+
   selection = new SelectionModel<User>(true, []);   //rappresenta la selezione delle checkbox
 
   matSortActive!:               string;

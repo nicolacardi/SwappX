@@ -14,17 +14,26 @@
 
 <mat-drawer-container [hasBackdrop]="false" style="min-height: 91%">
     <mat-drawer position="end" #sidenav class="rightSidenav"  [mode]="'side'">
-        <app-pagamenti-filter [pagamentiListComponent] = "apppagamentilist" #apppagamentifilter></app-pagamenti-filter>    
+        <app-pagamenti-filter 
+            [pagamentiListComponent] = "apppagamentilist" 
+            #apppagamentifilter>
+        </app-pagamenti-filter>    
     </mat-drawer>
 
     <mat-drawer position="start" #sidenav2 class="leftSidenav2"  [mode]="'side'">
-        <app-toolbar></app-toolbar>
+        <app-toolbar
+            [rptTitle]="apppagamentilist.rptTitle" 
+            [rptFieldsToKeep]="apppagamentilist.rptFieldsToKeep" 
+            [rptColumnsNames]="apppagamentilist.rptColumnsNames" 
+            [rptData]="apppagamentilist.matDataSource.data">
+        </app-toolbar>
     </mat-drawer>
 
     <mat-drawer-content>
-        <app-pagamenti-list [pagamentiFilterComponent] = "apppagamentifilter" 
-                            #apppagamentilist  
-                            (openDrawer) = "openDrawer()">
+        <app-pagamenti-list 
+            [pagamentiFilterComponent] = "apppagamentifilter" 
+            (openDrawer) = "openDrawer()"
+            #apppagamentilist>
         </app-pagamenti-list>
     </mat-drawer-content>
 

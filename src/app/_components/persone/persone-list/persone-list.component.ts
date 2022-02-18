@@ -30,16 +30,16 @@ export class PersoneListComponent implements OnInit {
 
   displayedColumns: string[] =  [];
   displayedColumnsPersoneList: string[] = [
-      "actionsColumn", 
-      "nome", 
-      "cognome", 
-      "dtNascita", 
-      "indirizzo", 
-      "comune", 
-      "cap", 
-      "prov", 
-      "email", 
-      "telefono"
+    "actionsColumn", 
+    "nome", 
+    "cognome", 
+    "dtNascita", 
+    "indirizzo", 
+    "comune", 
+    "cap", 
+    "prov", 
+    "email", 
+    "telefono"
   ];
 
   filterValue = '';       //Filtro semplice
@@ -56,6 +56,29 @@ export class PersoneListComponent implements OnInit {
     filtrosx: ''
   };
   
+  rptTitle = 'Elenco Persone';
+  
+  rptFieldsToKeep  = [
+    "nome", 
+    "cognome", 
+    "dtNascita", 
+    "indirizzo", 
+    "comune", 
+    "cap", 
+    "prov", 
+    "email", 
+    "telefono"];
+
+  rptColumnsNames  = [
+    "nome", 
+    "cognome", 
+    "nato il", 
+    "indirizzo", 
+    "comune", 
+    "cap", 
+    "prov", 
+    "email", 
+    "telefono"];
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 

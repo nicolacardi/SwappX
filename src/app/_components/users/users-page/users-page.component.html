@@ -20,15 +20,20 @@
     </mat-drawer>
 
     <mat-drawer position="start" #sidenav2 class="leftSidenav2"  [mode]="'side'">
-        <app-toolbar></app-toolbar>
+        <app-toolbar
+            [rptTitle]="appuserslist.rptTitle" 
+            [rptFieldsToKeep]="appuserslist.rptFieldsToKeep" 
+            [rptColumnsNames]="appuserslist.rptColumnsNames" 
+            [rptData]="appuserslist.matDataSource.data">
+        ></app-toolbar>
     </mat-drawer>
 
     <mat-drawer-content>
         <app-users-list
             [usersFilterComponent] = "appusersfilter"
-            [dove] = "'users-page'"
-            #appuserslist  
-            (openDrawer) = "openDrawer()" >
+            [dove] = "'users-page'" 
+            (openDrawer) = "openDrawer()" 
+            #appuserslist >
         </app-users-list>
     </mat-drawer-content>
 </mat-drawer-container>

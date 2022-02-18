@@ -16,14 +16,20 @@
     </mat-drawer>
 
     <mat-drawer position="start" #sidenav2 class="leftSidenav2"  [mode]="'side'">
-        <app-toolbar></app-toolbar>
+        <app-toolbar 
+            [rptTitle]="apppersonelist.rptTitle" 
+            [rptFieldsToKeep]="apppersonelist.rptFieldsToKeep" 
+            [rptColumnsNames]="apppersonelist.rptColumnsNames" 
+            [rptData]="apppersonelist.matDataSource.data">
+        </app-toolbar>
     </mat-drawer>
 
     <mat-drawer-content>
-        <app-persone-list [personeFilterComponent] = "apppersonefilter"
-                        [dove] = "'persone-page'"
-                         #apppersonelist  
-                         (openDrawer) = "openDrawer()">
+        <app-persone-list 
+            [personeFilterComponent] = "apppersonefilter"
+            [dove] = "'persone-page'"
+            (openDrawer) = "openDrawer()"
+             #apppersonelist>
         </app-persone-list>
     </mat-drawer-content>
 </mat-drawer-container>

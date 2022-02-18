@@ -43,29 +43,55 @@ export class PagamentiListComponent implements OnInit {
  
   displayedColumns: string[] =  [];
   displayedColumnsList: string[] = [
-                                  "actionsColumn", 
-                                  "dtPagamento", 
-                                  "importo", 
-                                  //"tipoPagamentoID", 
-                                  "tipoPagamento.descrizione",
-                                  //"causaleID", 
-                                  "causale.descrizione",
-                                  //"rettaID", 
-                                  "retta.quotaConcordata",
-                                  "retta.meseRetta",
-                                  //"alunnoID", 
-                                  "alunno.cognome",
-                                  "alunno.nome",
-                                  //"genitoreID",
-                                  "note"];
+    "actionsColumn", 
+    "dtPagamento", 
+    "importo", 
+    //"tipoPagamentoID", 
+    "tipoPagamento.descrizione",
+    //"causaleID", 
+    "causale.descrizione",
+    //"rettaID", 
+    "retta.quotaConcordata",
+    "retta.meseRetta",
+    //"alunnoID", 
+    "alunno.cognome",
+    "alunno.nome",
+    //"genitoreID",
+    "note"];
 
   displayedColumnsListRettaEdit: string[] = [
-                                  "dtPagamento", 
-                                  "importo", 
-                                  "tipoPagamento.descrizione",
-                                  "causale.descrizione",
-                                  "retta.meseRetta",
-                                  "delete" ];
+    "dtPagamento", 
+    "importo", 
+    "tipoPagamento.descrizione",
+    "causale.descrizione",
+    "retta.meseRetta",
+    "delete" ];
+
+
+  rptTitle = 'Lista pagamenti';
+
+  rptFieldsToKeep  = [
+    "dtPagamento", 
+    "importo", 
+    "tipoPagamento.descrizione",
+    "causale.descrizione",
+    "retta.quotaConcordata",
+    "retta.meseRetta",
+    "alunno.cognome",
+    "alunno.nome",
+    "note"];
+
+  rptColumnsNames  = [
+    "dtPagamento", 
+    "importo", 
+    "Tipo Pagamento",
+    "Causale",
+    "Quota Concordata",
+    "Mese",
+    "Cognome Alunno",
+    "Nome Alunno",
+    "note"];
+
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   matMenuTrigger: any;
