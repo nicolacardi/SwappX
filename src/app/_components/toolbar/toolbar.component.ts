@@ -13,9 +13,15 @@ import { JspdfService } from '../utilities/jspdf/jspdf.service';
 })
 
 export class ToolbarComponent {
+  rptColumnsNameArr !:                           [string[]];
+  @Input() alunniListComponent!:                AlunniListComponent;
+  @Input('rptTitle') rptTitle! :                string;
+  @Input('rptFieldsToKeep') rptFieldsToKeep! :  string[];
+  @Input('rptColumnsNames') rptColumnsNames! :  string[];
+  @Input('rptData') rptData! :                  any;
 
-  @Input() alunniListComponent!:   AlunniListComponent;
-  
+
+
   constructor(
     public _dialog:                MatDialog,
     private _jspdf:                JspdfService
@@ -23,7 +29,13 @@ export class ToolbarComponent {
     ) { }
 
   stampa() {
-
+    // console.log ("toolbar.component : this.rptTitle", this.rptTitle);
+    // console.log ("toolbar.component : this.rptFieldsToKeep", this.rptFieldsToKeep);
+    // console.log ("toolbar.component : this.rptColumnsNames", this.rptColumnsNames);
+    // console.log ("toolbar.component : this.rptData", this.rptData);
+    //i columnsNames sono uno strano array con un array dentro... così vuole jspdf
+    this.rptColumnsNameArr = [this.rptColumnsNames]; 
+    this._jspdf.creaPdf(this.rptData, this.rptColumnsNameArr, this.rptFieldsToKeep, this.rptTitle);    
   }
 
   scarica() {

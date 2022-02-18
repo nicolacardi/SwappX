@@ -52,6 +52,35 @@ export class IscrizioniListComponent implements OnInit {
       "prov"
   ];
 
+  rptTitle = 'Lista Iscrizioni';
+  
+  rptFieldsToKeep  = [
+      "alunno.nome", 
+      "alunno.cognome", 
+      "classeSezioneAnno.classeSezione.classe.descrizioneBreve",
+      "classeSezioneAnno.classeSezione.sezione",
+      "stato.descrizione",
+      "alunno.email", 
+      "alunno.telefono",
+      "alunno.dtNascita", 
+      "alunno.indirizzo", 
+      "alunno.comune", 
+      "alunno.prov"
+  ];
+
+  rptColumnsNames  = [
+      "nome", 
+      "cognome", 
+      "classe",
+      "sezione",
+      "stato",
+      "email", 
+      "telefono",
+      "nato il", 
+      "indirizzo", 
+      "comune", 
+      "prov"
+  ];
 
   selection = new               SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
   obsAnni$!:                    Observable<ASC_AnnoScolastico[]>;           //Serve per la combo anno scolastico

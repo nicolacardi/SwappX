@@ -17,7 +17,12 @@
     </mat-drawer>
 
     <mat-drawer position="start" #sidenav2 class="leftSidenav2"  [mode]="'side'">
-        <app-toolbar></app-toolbar>
+        <app-toolbar 
+            [rptTitle]="appgenitorilist.rptTitle" 
+            [rptFieldsToKeep]="appgenitorilist.rptFieldsToKeep" 
+            [rptColumnsNames]="appgenitorilist.rptColumnsNames" 
+            [rptData]="appgenitorilist.matDataSource.data">
+        </app-toolbar>
     </mat-drawer>
 
     <mat-drawer-content>

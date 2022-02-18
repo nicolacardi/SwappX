@@ -64,6 +64,25 @@ export class GenitoriListComponent implements OnInit {
     "dtNascita"
    ];
 
+  rptTitle = 'List Genitori';
+  
+  rptFieldsToKeep  = [
+     "nome", 
+     "cognome", 
+     "tipo", 
+     "indirizzo", 
+     "telefono", 
+     "email", 
+     "dtNascita"];
+
+  rptColumnsNames  = [
+      "nome", 
+      "cognome", 
+      "tipo", 
+      "indirizzo", 
+      "telefono", 
+      "email", 
+      "nato il"];
 
 
   public passedAlunno!:         string;

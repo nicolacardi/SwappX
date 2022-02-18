@@ -26,41 +26,68 @@ export class JspdfService {
     var nDate = today.getDate() + '/' + monthpadded + '/' + today.getFullYear();
 
 //#region PREPARAZIONE DEI DATI ***************************************************************************
-    //tolgo dall'array tutti i campi che non servono
+
     //faccio una copia del matDataSource
-    let tmpObjArr : any = toPrint;
-    //creo una mappa delle sue proprietà
-    let allProperties = this.propertiesToArray(toPrint[0]);
+    //let tmpObjArr = toPrint; //ATTENZIONE: questa crea solo una REFERENCE all'array!
+    //let sourceArr = JSON.parse(JSON.stringify(toPrint)); //questo è il modo corretto di cerare una copia di un array
 
-    //creo l'array che butterò fuori
-    let arrResult : any= [];
+    //console.log ("jspdf.service: array da stampare", toPrint);
 
-    //con l'aiuto della funzione flatten schiaccio gli oggetti e li metto in arrResult
-    tmpObjArr.forEach ((element: any) =>
-      //console.log(this.flattenObj(element) ),
-      arrResult.push(this.flattenObj(element))
-    )  
-    console.log (arrResult);
-    
-    //per ogni proprietà nella mappa vado a vedere se sono incluse nell'array di quelle da tenere
-    allProperties.forEach((proprieta: string) =>{
-        //se la proprietà non è inclusa....
-        if (!fieldsToKeep.includes(proprieta)) {
-          //vado a toglierla da ArrResult
-          arrResult.forEach ( (record: any) => {
-            delete record[proprieta];}
-          )
-        }
-      }
+    //creo una mappa delle sue proprietà da stampare
+    //let allProperties = this.propertiesToArray(toPrint[0]);
+    //console.log ("jspdf.service: elenco di tutte le proprietà e di quelle dei nested objects", allProperties);
+
+    console.log ("jspdf.service: fieldsToKeep sono i campi da tenere:", fieldsToKeep);
+
+    //creo l'array per l'operazione di flattening
+    let flattened : any= [];
+
+    //con la funzione flattenObj schiaccio gli oggetti e li metto in flattened: i campi saranno del tipo alunno.nome
+    toPrint.forEach ((element: any) =>{
+      flattened.push(this.flattenObj(element))}
     )
+    console.log ("jspdf.service: arrResult prima di togliere i campi superflui", flattened);
+
+
+    // //per ogni proprietà nella mappa vado a vedere se sono incluse nell'array di quelle da tenere
+    //FUNZIONA MA HA I CAMPI IN DISORDINE!!!! NON RIESCO QUI A GOVERNARE L'ORDINE DEI CAMPI
+    // allProperties.forEach((proprieta: string) =>{
+    //     //se la proprietà non è inclusa....
+    //     if (!fieldsToKeep.includes(proprieta)) {
+    //       //vado a toglierla da ArrResult
+    //       flattenedToPrint.forEach ( (record: any) => {
+    //         delete record[proprieta];}
+    //       )
+    //     }
+    //   }
+    // )
+    // console.log ("jspdf.service: arrResult dopo aver tolto i campi superflui", flattenedToPrint);
+
+//il metodo di togliere i campi che non servono lascia l'ordine che decide LUI nei campi...non va bene. serve una procedura che PESCHI i campi che servono
+
+     //https://stackoverflow.com/questions/58637899/create-a-copy-of-an-array-but-with-only-specific-fields FUOCHINO FUOCHINO...
+     //https://stackoverflow.com/questions/68768940/typescript-array-map-with-dynamic-keys ECCO LA RISPOSTA!!!
+
+      //quanto segue prende l'array flattened e NE ESTRAE solo i campi che si trovano descritti in fieldsToKeep (quindi dinamicamente)
+      let subsetFromFlattened = flattened.map((item: any) => {
+        const returnValue : any = {}
+        fieldsToKeep.forEach((key: string) => {
+          returnValue[key] = item[key]
+        })
+        return returnValue;
+      })
+
+    console.log ("jspdf.service: selectionFromFlattened dopo aver aggiunto i campi fieldsToKeep", subsetFromFlattened);
+
+
+
 //#endregion FINE PREPARAZONE DEI DATI ********************************************************************
 
 
-  //tutto questo casino lo ha aggiunto lui perchè c'è un problemino di tipo
-  //sarebbe stato: let array = json.map(obj => Object.values(obj)); 
-  //che serve a trasformare un array di objects in un array di array
-  //infatti autotable richiede che il body sia un array di array
-  let array = arrResult.map((obj: { [s: string]: unknown; } | ArrayLike<unknown>) => Object.values(obj)); 
+  //la riga che segue originariamente sarebbe stata: let array = json.map(obj => Object.values(obj)); 
+  //e serve a trasformare un array di objects in un array di arrays
+  //infatti autotable richiede che il body sia un array di arrays
+  let array = subsetFromFlattened.map((obj: { [s: string]: unknown; } | ArrayLike<unknown>) => Object.values(obj)); 
   //console.log("outputData", array);
 
 //#region PASSAGGIO A AUTOTABLE DEI DATI PREPARATI ********************************************************
@@ -77,6 +104,14 @@ export class JspdfService {
           //console.log ("Hookdata.cell", HookData.cell);
           HookData.cell.text[0] = cellContent.slice(0,10); //non so perchè ma HookData.cell.text è un array!
         }
+
+        // if (HookData.cell.raw === null) {
+        //   HookData.cell.text[0] = "ccc";
+        // }
+
+        // if (HookData.cell.raw == "") {
+        //   HookData.cell.text[0] = "ccc";
+        // }
       },
       showHead: "everyPage",
       didDrawPage: function (data) {
@@ -102,6 +137,7 @@ export class JspdfService {
         var pageHeight = pageSize.height
           ? pageSize.height
           : pageSize.getHeight();
+
         doc.text(str, data.settings.margin.left, pageHeight - 10);
         doc.text(title, pageWidth - data.settings.margin.right, pageHeight - 10, { align: 'right' });
         doc.text(nDate, width/2, 200, { align: 'center' });

@@ -16,12 +16,16 @@
     </mat-drawer>
 
     <mat-drawer position="start" #sidenav2 class="leftSidenav2"  [mode]="'side'">
-        <app-toolbar></app-toolbar>
+        <app-toolbar 
+            [rptTitle]="appiscrizionilist.rptTitle" 
+            [rptFieldsToKeep]="appiscrizionilist.rptFieldsToKeep" 
+            [rptColumnsNames]="appiscrizionilist.rptColumnsNames" 
+            [rptData]="appiscrizionilist.matDataSource.data">
+        </app-toolbar>
     </mat-drawer>
 
     <mat-drawer-content>
         <app-iscrizioni-list
-            
             [iscrizioniFilterComponent] = "appiscrizionifilter"
             #appiscrizionilist >
             <!-- (openDrawer) = "openDrawer()" -->

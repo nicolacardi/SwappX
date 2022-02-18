@@ -95,6 +95,19 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     "select",
   ];
 
+  rptTitle = 'Lista Classi';
+  
+  rptFieldsToKeep  = [
+    "descrizione2",
+    "sezione",
+    "numAlunni"
+  ];
+
+  rptColumnsNames  = [
+    "descrizione",
+    "sezione",
+    "numero alunni"
+  ];
 
   selection = new SelectionModel<CLS_ClasseSezioneAnnoGroup>(true, []);   //rappresenta la selezione delle checkbox
   
