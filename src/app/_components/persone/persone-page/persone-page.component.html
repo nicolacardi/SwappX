@@ -20,7 +20,8 @@
             [rptTitle]="apppersonelist.rptTitle" 
             [rptFieldsToKeep]="apppersonelist.rptFieldsToKeep" 
             [rptColumnsNames]="apppersonelist.rptColumnsNames" 
-            [rptData]="apppersonelist.matDataSource.data">
+            [rptData]="apppersonelist.matDataSource.data"
+            [columnsComponent] = "apppersonelist">
         </app-toolbar>
     </mat-drawer>
 

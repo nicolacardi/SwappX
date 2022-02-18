@@ -70,6 +70,30 @@ export class AlunniListComponent implements OnInit {
     "addToFam"
   ];
 
+  rptTitle = 'Lista Alunni';
+  
+  rptFieldsToKeep  = [
+    "nome", 
+    "cognome", 
+    "dtNascita", 
+    "indirizzo", 
+    "comune", 
+    "cap", 
+    "prov", 
+    "email", 
+    "telefono", ];
+
+  rptColumnsNames  = [
+    "nome", 
+    "cognome", 
+    "nato il", 
+    "indirizzo", 
+    "comune", 
+    "cap", 
+    "prov", 
+    "email", 
+    "telefono", ];
+
   selection = new SelectionModel<ALU_Alunno>(true, []);   //rappresenta la selezione delle checkbox
 
   public passedGenitore!:       string;

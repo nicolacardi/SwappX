@@ -1,43 +1,46 @@
+<mat-card class="form-card">
+    <mat-card-content>
 <!-- ********************************    BOTTONI     ************************************* -->
-<div class="center">
-    <button mat-mini-fab aria-label="Back" matTooltip="Back" class="btn" mat-dialog-close>
-        <mat-icon>arrow_back</mat-icon>
-    </button>
+        <div class="center">
 
-    <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-            (click)="save()" >
-        <mat-icon>save</mat-icon>
-    </button>
+            <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
-</div>
+            <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                    (click)="save()" >
+                <mat-icon>save</mat-icon>
+            </button>
 
-<div cdkDropListGroup>
-    <div class="flex-box">
-        <div class="container">
-            <h2>Colonne Disponibili</h2>
-<!--         
-            <div cdkDropList class="list"  [cdkDropListData]="items"  cdkDropListSortingDisabled
-                    (cdkDropListDropped)="drop($event)">
-                <div class="box" *ngFor="let item of items" cdkDrag>{{item}}</div>
-            </div>
-             -->
-            <div cdkDropList #InvisibleList="cdkDropList"  class="list"  [cdkDropListData]="lstColumns" (cdkDropListDropped)="drop($event)"
-                 cdkDropListSortingDisabled >
-                <div class="box" *ngFor="let column of lstColumns" cdkDrag>{{column.columnName}}</div>
-            </div>
-            
         </div>
 
-        <div class="container">
-            <h2>Colonne Selezionate</h2>
-<!--         
-            <div cdkDropList class="list" [cdkDropListData]="basket"(cdkDropListDropped)="drop($event)">
-                <div class="box" *ngFor="let item of basket" cdkDrag>{{item}}</div>
-            </div> -->
+        <div cdkDropListGroup>
+            <div class="flex-box">
+                <div class="container">
+                    <h2>Colonne Disponibili</h2>
+        <!--         
+                    <div cdkDropList class="list"  [cdkDropListData]="items"  cdkDropListSortingDisabled
+                            (cdkDropListDropped)="drop($event)">
+                        <div class="box" *ngFor="let item of items" cdkDrag>{{item}}</div>
+                    </div>
+                    -->
+                    <div cdkDropList #InvisibleList="cdkDropList"  class="list"  [cdkDropListData]="lstColumns" (cdkDropListDropped)="drop($event)"
+                        cdkDropListSortingDisabled >
+                        <div class="box" *ngFor="let column of lstColumns" cdkDrag>{{column.columnName}}</div>
+                    </div>
+                    
+                </div>
 
-            <div cdkDropList #VisibleList="cdkDropList" class="list"  [cdkDropListData]="lstVisible"  (cdkDropListDropped)="drop($event)">
-                <div class="box" *ngFor="let column of lstVisible" cdkDrag [cdkDragDisabled]="column.disabled" >{{column.columnName}}</div>
+                <div class="container">
+                    <h2>Colonne Selezionate</h2>
+        <!--         
+                    <div cdkDropList class="list" [cdkDropListData]="basket"(cdkDropListDropped)="drop($event)">
+                        <div class="box" *ngFor="let item of basket" cdkDrag>{{item}}</div>
+                    </div> -->
+
+                    <div cdkDropList #VisibleList="cdkDropList" class="list"  [cdkDropListData]="lstVisible"  (cdkDropListDropped)="drop($event)">
+                        <div class="box" *ngFor="let column of lstVisible" cdkDrag [cdkDragDisabled]="column.disabled" >{{column.columnName}}</div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </mat-card-content>
+</mat-card>

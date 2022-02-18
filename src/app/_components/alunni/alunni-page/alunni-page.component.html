@@ -17,15 +17,21 @@
     </mat-drawer>
 
     <mat-drawer position="start" #sidenav2 class="leftSidenav2"  [mode]="'side'">
-        <app-alunni-toolbar [alunniListComponent] = "appalunnilist" ></app-alunni-toolbar>
+        <app-toolbar 
+            [rptTitle]="appalunnilist.rptTitle" 
+            [rptFieldsToKeep]="appalunnilist.rptFieldsToKeep" 
+            [rptColumnsNames]="appalunnilist.rptColumnsNames" 
+            [rptData]="appalunnilist.matDataSource.data"
+            [columnsComponent] = "appalunnilist">
+        </app-toolbar>
     </mat-drawer>
 
     <mat-drawer-content>
         <app-alunni-list
             [alunniFilterComponent] = "appalunnifilter"
             [context] = "'alunni-page'"
-            #appalunnilist  
             (openDrawer) = "openDrawer()"
+            #appalunnilist  
             >
         </app-alunni-list>
     </mat-drawer-content>

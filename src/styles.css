@@ -538,8 +538,21 @@
         transform: rotate(180deg);
     }
 
+    ._btn-PDF {
+        background-image: url("./assets/PDFiconGreys.svg"); 
+    }
 
+    ._btn-PDF:hover {
+        background-image: url("./assets/PDFicon.svg"); 
+    }
 
+    ._btn-XLS {
+        background-image: url("./assets/XLSiconGreys.svg"); 
+    }
+
+    ._btn-XLS:hover {
+        background-image: url("./assets/XLSicon.svg"); 
+    }
 
 /*#endregion ***************************/
 

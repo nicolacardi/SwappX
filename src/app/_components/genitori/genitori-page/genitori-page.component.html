@@ -21,7 +21,9 @@
             [rptTitle]="appgenitorilist.rptTitle" 
             [rptFieldsToKeep]="appgenitorilist.rptFieldsToKeep" 
             [rptColumnsNames]="appgenitorilist.rptColumnsNames" 
-            [rptData]="appgenitorilist.matDataSource.data">
+            [rptData]="appgenitorilist.matDataSource.data"
+            [columnsComponent] = "appgenitorilist"
+            >
         </app-toolbar>
     </mat-drawer>
 

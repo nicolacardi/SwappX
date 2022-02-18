@@ -23,7 +23,6 @@ import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-pag
 import { AlunniListComponent } from './_components/alunni/alunni-list/alunni-list.component';
 import { AlunnoEditComponent } from './_components/alunni/alunno-edit/alunno-edit.component';
 import { AlunniFilterComponent } from './_components/alunni/alunni-filter/alunni-filter.component';
-import { AlunniToolbarComponent } from './_components/alunni/alunni-toolbar/alunni-toolbar.component';
 
 import { GenitoriPageComponent } from './_components/genitori/genitori-page/genitori-page.component';
 import { GenitoriListComponent } from './_components/genitori/genitori-list/genitori-list.component';
@@ -108,8 +107,7 @@ import { UserEditComponent } from './_components/users/user-edit/user-edit.compo
     AlunniListComponent,
     AlunnoEditComponent,
     AlunniFilterComponent,
-    AlunniToolbarComponent,
-
+    
     GenitoriPageComponent,
     GenitoriListComponent,
     GenitoreEditComponent,
