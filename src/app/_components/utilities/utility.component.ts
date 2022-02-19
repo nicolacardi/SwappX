@@ -1,3 +1,5 @@
+import { User } from "src/app/_user/Users";
+
 export abstract class Utility {
      
 
@@ -54,6 +56,12 @@ export abstract class Utility {
     })
   }
 
+  public static getCurrentUser() : User {
+    var obj: any;
+    var tmp = localStorage.getItem('currentUser');
+    obj = JSON.parse(tmp!) as User;
+    return obj;
+  }
 
 }
 

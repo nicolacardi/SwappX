@@ -44,6 +44,7 @@ export class UsersListComponent implements OnInit {
   ];
 
   rptTitle = 'Lista Utenti';
+  rptFileName = 'ListaUtenti';
 
   rptFieldsToKeep  = [
     "userName", 

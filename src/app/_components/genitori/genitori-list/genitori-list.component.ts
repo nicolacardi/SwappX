@@ -65,7 +65,8 @@ export class GenitoriListComponent implements OnInit {
    ];
 
   rptTitle = 'List Genitori';
-  
+  rptFileName = 'ListaGenitori';
+
   rptFieldsToKeep  = [
     "nome", 
     "cognome", 

@@ -69,6 +69,7 @@ export class PagamentiListComponent implements OnInit {
 
 
   rptTitle = 'Lista pagamenti';
+  rptFileName = 'ListaPagamenti';
 
   rptFieldsToKeep  = [
     "dtPagamento", 

@@ -57,7 +57,8 @@ export class PersoneListComponent implements OnInit {
   };
   
   rptTitle = 'Elenco Persone';
-  
+  rptFileName = 'ListaPersone';
+
   rptFieldsToKeep  = [
     "nome", 
     "cognome", 

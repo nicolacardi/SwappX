@@ -125,7 +125,7 @@ export class UserService {
 
   ChangePassword(formData: any): Observable <any>{
     return  this.http.post(environment.apiBaseUrl +'ApplicationUser/ChangePassword?userID=' + formData.userID + "&currPassword=" + formData.currPassword + "&newPassword=" + formData.newPassword,formData);
-    //https://213.215.231.4/swappX/api/ApplicationUser/ChangePassword?userID=b19efc9f-5502-4396-b076-45e6c3d9ef22&currPassword=123456&newPassword=1234
+    //https://213.215.231.4/swappX/api/ApplicationUser/ChangePassword?userID=75b01815-1282-4459-bbf5-61bc877a9100&currPassword=1234&newPassword=12345
   }
   
   list(): Observable<User[]>{
@@ -149,17 +149,7 @@ export class UserService {
   }
  
  
-  public  getUser() : User {
 
-    var stringJson: any;
-    var stringObject: any;
-    var tmp = localStorage.getItem('currentUser');
-
-    stringJson = JSON.stringify(tmp);
-    stringObject = JSON.parse(stringJson);
-
-    return stringObject;
-  }
 
 
 //AS: VERIFICARE
@@ -212,3 +202,5 @@ export class UserService {
     //in questo momento il WS non funziona, provo a ipotizzare la delete sia così
   }
 }
+
+

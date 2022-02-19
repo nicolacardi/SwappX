@@ -71,7 +71,7 @@ export class AlunniListComponent implements OnInit {
   ];
 
   rptTitle = 'Lista Alunni';
-  
+  rptFileName = 'ListaAlunni';
   rptFieldsToKeep  = [
     "nome", 
     "cognome", 

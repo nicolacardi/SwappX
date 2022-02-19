@@ -2,12 +2,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
-import { User } from './_user/Users';
 
 //services
 import { UserService } from './_user/user.service';
 import { EventEmitterService } from './_services/event-emitter.service';
+import { Utility } from  './_components/utilities/utility.component';
 
+//models
+import { User } from './_user/Users';
 
 @Component({
   selector: 'app-root',
@@ -67,9 +69,8 @@ export class AppComponent implements OnInit{
         this.imgAccount = val.foto; }
     );
     
-    let obj = localStorage.getItem('currentUser');
-    const tokenUser = JSON.parse(obj!) as User;
-    this.userFullName = tokenUser.fullname;  //TODO non si aggiorna se canactivate attivo
+    let currUser = Utility.getCurrentUser();
+    this.userFullName = currUser.fullname;
 
   }
   

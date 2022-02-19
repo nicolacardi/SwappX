@@ -96,7 +96,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   ];
 
   rptTitle = 'Lista Classi';
-  
+  rptFileName = 'ListaClassi';
   rptFieldsToKeep  = [
     "descrizione2",
     "sezione",

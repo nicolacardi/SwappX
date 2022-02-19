@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from 'src/app/_user/user.service';
 import { User } from 'src/app/_user/Users';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { Utility } from '../../utilities/utility.component';
 
 @Component({
   selector: 'app-change-psw',
@@ -56,9 +57,7 @@ export class ChangePswComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let obj = localStorage.getItem('currentUser');
-    this.currUser = JSON.parse(obj!) as User;
-
+    this.currUser = Utility.getCurrentUser();
   }
 
   save(){

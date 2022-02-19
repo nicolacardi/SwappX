@@ -12,6 +12,7 @@ import { _UT_Message } from 'src/app/_models/_UT_Message';
 import { User } from 'src/app/_user/Users';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
+import { Utility } from '../utilities/utility.component';
 
 @Component({
   selector: 'app-messaggi',
@@ -35,13 +36,12 @@ displayedColumns: string[] = [
 
 //#endregion
 
-  constructor(private svcMessages:      MessaggiService,  
-              private _loadingService:  LoadingService,
-              private _snackBar:        MatSnackBar
-              ) {
-
-    let obj = localStorage.getItem('currentUser');
-    this.currUser = JSON.parse(obj!) as User;
+  constructor(
+    private svcMessages:      MessaggiService,  
+    private _loadingService:  LoadingService,
+    private _snackBar:        MatSnackBar
+  ) {
+    this.currUser = Utility.getCurrentUser();    
    }
 
   ngOnInit(){

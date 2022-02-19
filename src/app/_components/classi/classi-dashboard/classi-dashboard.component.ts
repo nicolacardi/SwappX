@@ -115,7 +115,7 @@ export class ClassiDashboardComponent implements OnInit {
     let fieldsToKeep = ['alunno.nome', 'alunno.cognome'];
     //elenco i nomi delle colonne
     let columnsNames = [['nome', 'cognome']];
-    this._jspdf.creaPdf(this.viewListIscrizioni.matDataSource.data, columnsNames, fieldsToKeep, "Classe");
+    this._jspdf.creaPdf(this.viewListIscrizioni.matDataSource.data, columnsNames, fieldsToKeep, "Classe", "ListaClassi");
   }
 
 

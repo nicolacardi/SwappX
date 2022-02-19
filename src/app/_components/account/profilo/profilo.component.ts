@@ -29,7 +29,7 @@ export class ProfiloComponent implements OnInit {
   foto!:            string;
   fotoObj!:         _UT_UserFoto
   form! :           FormGroup;
-  formPsw! :           FormGroup;
+  formPsw! :        FormGroup;
   public currUser!: User;
 
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
@@ -53,9 +53,8 @@ export class ProfiloComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currUser = Utility.getCurrentUser();
 
-    let obj = localStorage.getItem('currentUser');
-    this.currUser = JSON.parse(obj!) as User;
     this.form.controls.username.setValue(this.currUser.username);
     this.form.controls.email.setValue(this.currUser.email);
     this.form.controls.fullname.setValue(this.currUser.fullname);

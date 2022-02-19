@@ -53,7 +53,7 @@ export class IscrizioniListComponent implements OnInit {
   ];
 
   rptTitle = 'Lista Iscrizioni';
-  
+  rptFileName = 'ListaIscrizioni';
   rptFieldsToKeep  = [
       "alunno.nome", 
       "alunno.cognome", 

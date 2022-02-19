@@ -12,7 +12,7 @@ export class JspdfService {
 
   constructor() { }
 
-  creaPdf(toPrint :any, columnsNames: any, fieldsToKeep: any, title: string) {
+  creaPdf(toPrint :any, columnsNames: any, fieldsToKeep: any, title: string, fileName: string) {
 
     const doc = new jsPDF('l', 'mm', [297, 210]);
     //console.log(doc.getFontList());
@@ -173,7 +173,7 @@ export class JspdfService {
     // doc.cell(110, 140, 70, 20, "alla fine è solo questione di dedicarci del tempo...ma si può fare quasi tutto quello che si vuole", 0, "left");
 
     const d = new Date();
-    doc.save(d.toISOString().split('T')[0]+"_Export.pdf");
+    doc.save(d.toISOString().split('T')[0]+"_"+fileName+".pdf");
     
   }
 
