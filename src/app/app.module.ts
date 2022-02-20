@@ -89,9 +89,7 @@ import { RettaCalcoloComponent } from './_components/pagamenti/retta-calcolo/ret
 import { IscrizioniClasseCalcoloComponent } from './_components/classi/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 import { IscrizioniAlunnoListComponent } from './_components/classi/iscrizioni-alunno-list/iscrizioni-alunno-list.component';
 import { UserEditComponent } from './_components/users/user-edit/user-edit.component';
-
-
-
+import { ResetPasswordComponent } from './_user/reset-password/reset-password.component';
 
 
 @NgModule({
@@ -175,7 +173,7 @@ import { UserEditComponent } from './_components/users/user-edit/user-edit.compo
     IscrizioniClasseCalcoloComponent,
     IscrizioniAlunnoListComponent,
     UserEditComponent,
-
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

@@ -64,6 +64,8 @@ export class AppComponent implements OnInit{
   }
 
   refreshUserData () {
+    if(!this.currUser) return;
+
     this.svcUser.getFotoByUserID(this.currUser.userID).subscribe(
       val=> {
         this.imgAccount = val.foto; }
@@ -71,22 +73,12 @@ export class AppComponent implements OnInit{
     
     let currUser = Utility.getCurrentUser();
     this.userFullName = currUser.fullname;
-
   }
   
   logOut(){
 
-    //this.currUser = null;
     this.svcUser.Logout();
-
-    //this.svcUser.changeLoggedIn(false);
     this.router.navigate(['/user/login']);
-
   }
-
-  savePDF() {
-    
-  }
-
 
 }

@@ -2,7 +2,6 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 
 //components
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
@@ -39,7 +38,6 @@ export class ProfiloComponent implements OnInit {
     private fb:                   FormBuilder, 
     private svcUser:              UserService,
     public _dialog:               MatDialog,
-    private router:               Router,
     private eventEmitterService:  EventEmitterService,
     private _snackBar:            MatSnackBar
 ) { 

@@ -1,28 +1,23 @@
 
-<!-- <form #form='ngForm' class='mb-4' autocomplete="off" (submit)="onSubmit(form)"> -->
 <form [formGroup]="form" autocomplete="off" (submit)="onSubmit()" style="overflow-y: hidden" >
-    
     <div>
         <mat-form-field>
-            <input matInput required placeholder="user name" formControlName="UserName">
+            <input matInput required type="email" placeholder="Nome utente o Email" formControlName="UserName">
         </mat-form-field>
     </div>
-    <!-- <input class="form-control" #UserName="ngModel" name="UserName" [(ngModel)]="formModel.UserName" required> -->
     <div>
         <mat-form-field>
-            <input matInput required type="password" placeholder="password" formControlName="Password">
+            <input matInput required type="password" placeholder="Password" formControlName="Password">
         </mat-form-field>
         </div>
-    <!-- <input type="password" class="form-control" #Password="ngModel" name="Password" [(ngModel)]="formModel.Password" required> -->
     <div>
         <button type="submit" mat-stroked-button [disabled]="form.invalid">
         Login
         </button>
     </div>
-    <div class="mt20">
-        <a (click)="problemiLogin()">Dimenticata la password?</a>
-    </div>
-    <!-- <mat-spinner  class="myspinner" diameter="30" color="#ffffff" *ngIf="loading"></mat-spinner> -->
-    <!-- <div class="myspinner-space" *ngIf="!loading">&nbsp;</div> -->
 
+    <div class="mt20">
+        <button mat-flat-button [disabled]="form.invalid" (click)="forgotPassword($event)">Dimenticata la password?</button>
+    </div>
 </form>
+

@@ -70,8 +70,6 @@ export class UserEditComponent implements OnInit {
       this.emptyForm = true
 
     }
-
-
   }
 //#endregion
 
@@ -125,8 +123,24 @@ export class UserEditComponent implements OnInit {
         );
     }
 
+    var formDataPwd = {
+      userID:     this.idUser,   
+      Password:   this.form.controls.password.value
+    };
 
+    if(this.form.controls.password.dirty && this.form.controls.password.value != "" ){
 
+      console.log("Dirty Diana");
+
+      this.svcUser.ResetPassword(formDataPwd)
+        .subscribe( res=> {
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password modificata', panelClass: ['green-snackbar']});
+          this._dialogRef.close();
+        },
+        err=> (
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel cambio password', panelClass: ['red-snackbar']})
+        ));
+      }
 
     //   if (this.form.controls['id'].value == null) //ma non sarebbe == 0?
     //   this.svcAlunni.post(this.form.value)

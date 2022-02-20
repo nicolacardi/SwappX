@@ -30,19 +30,22 @@ import { UserRole } from './_user/Users';
 import { ProfiloComponent } from './_components/account/profilo/profilo.component';
 import { ChangePswComponent } from './_components/account/change-psw/change-psw.component';
 import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.component';
+import { ResetPasswordComponent } from './_user/reset-password/reset-password.component';
 
 
 const routes: Routes = [
 
-  { path:'' , redirectTo: 'user/login', pathMatch: 'full' },
-
-  { 
+   { path:'' , redirectTo: 'user/login', pathMatch: 'full' },
+   { 
     path:'user',              component: UserComponent,
     children:[
-    {path:'registration', component: RegisterComponent },
-    {path:'login', component: LoginComponent }
+      {path:'login', component: LoginComponent },
+      {path:'registration', component: RegisterComponent },
+      {path:'reset-password', component: ResetPasswordComponent }
     ]
-  },
+   },
+
+  
 
   { path:'home',              component: HomeComponent, canActivate:[AuthGuard]  },
 

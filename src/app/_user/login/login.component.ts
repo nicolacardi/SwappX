@@ -54,21 +54,11 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(){
-
-
     let obsUser$= this.svcUser.Login(this.form.value);
     const loadUser$ =this._loadingService.showLoaderUntilCompleted(obsUser$);
     
     loadUser$.subscribe(
       (res: any) => {
-
-        //console.log("login.component - onSubmit", res);
-
-        //  this.svcParametri.getByParName("AnnoCorrente").subscribe(
-        //      (par: any) => {
-        //        console.log("DEBUG1:", par);
-        //      }
-        //  )
 
         this.eventEmitterService.onAccountSaveProfile();
 
@@ -110,11 +100,62 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  problemiLogin(){
-    this._dialog.open(DialogOkComponent, {
-      width: '320px',
-      data: {titolo: "HAI DIMENTICATO LA PASSWORD?", sottoTitolo: "Bravo mona!"}
+
+  /*
+  public forgotPassword1 = (route: string, body: ForgotPasswordDto) => {
+    return this._http.post(this.createCompleteRoute(route, this._envUrl.urlAddress), body);
+  }
+  */
+
+  
+  forgotPassword(e: Event){
+
+    e.preventDefault();
+
+    console.log(this.validateEmail(this.form.controls.UserName.value));
+    if(!this.validateEmail(this.form.controls.UserName.value)){
+      this._snackBar.openFromComponent(SnackbarComponent, {
+        data: "Inserire una email valida"  , panelClass: ['red-snackbar']
+      });
+      return;
+    }
+
+    //invio mail di reset
+    //TODO 
+   
+    this._snackBar.openFromComponent(SnackbarComponent, {
+      data: "E' stata inviata una mail con un link di reset a " + this.form.controls.UserName.value , panelClass: ['green-snackbar']
     });
   }
+
+  validateEmail(email: string) {
+    const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regularExpression.test(String(email).toLowerCase());
+   }
+  /*
+    /* WS REST
+    https://code-maze.com/angular-password-reset-functionality-with-aspnet-identity/
+
+    [HttpPost("ForgotPassword")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest();
+        var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
+        if (user == null)
+            return BadRequest("Invalid Request");
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);         
+        var param = new Dictionary<string, string>
+        {
+            {"token", token },
+            {"email", forgotPasswordDto.Email }
+        };
+        var callback = QueryHelpers.AddQueryString(forgotPasswordDto.ClientURI, param);
+        var message = new Message(new string[] { user.Email }, "Reset password token", callback, null);
+        await _emailSender.SendEmailAsync(message);
+        return Ok();
+    }
+    */
+   
 }
 

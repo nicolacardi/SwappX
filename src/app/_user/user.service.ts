@@ -112,9 +112,14 @@ export class UserService {
     //http://213.215.231.4/swappX/api/ApplicationUser/b19efc9f-5502-4396-b076-45e6c3d9ef21
   }
 
+  getByUsername(userName: string): Observable<User>{
+    return this.http.get<User>(environment.apiBaseUrl+'ApplicationUser/GetByUsername' + userName);
+    //http://213.215.231.4/swappX/api/ApplicationUser/GetByUsername/a
+  }
+
 
   put(formData: any): Observable <any>{
-    console.log("user.service.put", formData);
+    //console.log("user.service.put", formData);
     return this.http.put(environment.apiBaseUrl +'ApplicationUser/'+ formData.userID, formData );
   }
 
@@ -126,6 +131,11 @@ export class UserService {
   ChangePassword(formData: any): Observable <any>{
     return  this.http.post(environment.apiBaseUrl +'ApplicationUser/ChangePassword?userID=' + formData.userID + "&currPassword=" + formData.currPassword + "&newPassword=" + formData.newPassword,formData);
     //https://213.215.231.4/swappX/api/ApplicationUser/ChangePassword?userID=75b01815-1282-4459-bbf5-61bc877a9100&currPassword=1234&newPassword=12345
+  }
+
+  ResetPassword(formData: any): Observable <any>{
+    return  this.http.post(environment.apiBaseUrl +'ApplicationUser/ResetPassword?userID=' + formData.userID + "&newPassword=" + formData.newPassword,formData);
+    //https://213.215.231.4/swappX/api/ApplicationUser/ResetPassword?userID=75b01815-1282-4459-bbf5-61bc877a9100&newPassword=12345
   }
   
   list(): Observable<User[]>{

@@ -25,7 +25,6 @@ export class AuthGuard implements CanActivate {
 
     //console.log("DEBUG: auth.guard - currentuser ", currentUser);
     if (currentUser) {
-      //console.log("DEBUG: auth.guard - currentuser.role ", currentUser.ruolo);
  
       // check if route is restricted by role
       //console.log("Auth Guard | Ruolo", currentUser.ruolo);
