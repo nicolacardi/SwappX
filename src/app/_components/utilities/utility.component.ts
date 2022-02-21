@@ -1,3 +1,4 @@
+import { AbstractControl, ValidationErrors } from "@angular/forms";
 import { User } from "src/app/_user/Users";
 
 export abstract class Utility {
@@ -62,6 +63,26 @@ export abstract class Utility {
     obj = JSON.parse(tmp!) as User;
     return obj;
   }
+
+
+  public static matchingPasswords(Password: string, ConfirmPassword: string) {
+    return (controls: AbstractControl) => {
+      if (controls) {
+        const Password = controls.get('Password')!.value;
+        const ConfirmPassword = controls.get('ConfirmPassword')!.value;
+        //console.log ("check what is passed to the validator", password, confirmPassword);
+        if (Password !== ConfirmPassword) { 
+          //this is an error set for a specific control which you can use in a mat-error
+          controls.get('ConfirmPassword')?.setErrors({not_the_same: true});  
+          //this is the returned error for the form normally used to disable a submit button
+          return {mismatchedPassword: true}  
+        }
+      }
+      return null;
+    }
+  }
+
+
 
 }
 

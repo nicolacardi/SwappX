@@ -27,9 +27,9 @@
             <!-- <mat-tab-group mat-align-tabs="center">
                 <mat-tab  label="Login"> -->
                     <div class="row center">
-                        <app-login *ngIf="routerPage=='user-login'"></app-login>
-                        <app-reset-password></app-reset-password>
-                        <app-register></app-register>
+                        <app-login *ngIf="routerPage=='login'"></app-login>
+                        <app-reset-password *ngIf="routerPage=='reset-password'"></app-reset-password>
+                        <app-register *ngIf="routerPage=='register'"></app-register>
                     </div>
                 <!-- </mat-tab> -->
                 <!-- <mat-tab  label="Registrazione">
