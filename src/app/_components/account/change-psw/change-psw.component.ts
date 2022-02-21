@@ -29,7 +29,7 @@ export class ChangePswComponent implements OnInit {
       repeatPassword:  ['', Validators.required]
     },
     {
-      validator: this.checkIfMatchingPasswords('newPassword', 'repeatPassword'),
+      validators: this.checkIfMatchingPasswords('newPassword', 'repeatPassword'),
       validator1: this.checkIfChangedPasswords('password', 'newPassword')       //NON FUNZIONA!!!!!!
     });
   }

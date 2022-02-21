@@ -65,7 +65,8 @@ export abstract class Utility {
   }
 
 
-  public static matchingPasswords(Password: string, ConfirmPassword: string) {
+  public static matchingPasswords() {
+  //public static matchingPasswords(Password: string, ConfirmPassword: string) {
     return (controls: AbstractControl) => {
       if (controls) {
         const Password = controls.get('Password')!.value;

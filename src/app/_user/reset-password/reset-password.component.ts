@@ -33,14 +33,17 @@ export class ResetPasswordComponent implements OnInit {
     private eventEmitterService:  EventEmitterService,
     public _dialog:         MatDialog,
     private _loadingService:  LoadingService,
-    private _snackBar:      MatSnackBar,
-  ) {
+    private _snackBar:      MatSnackBar  ) 
+  {
     this.form = this.fb.group(
       {
-      Password:                  ['', { validators:[ Validators.required, Validators.minLength(4), Validators.maxLength(19)]}],
-      ConfirmPassword:           ['', { validators:[ Validators.required, Validators.minLength(4), Validators.maxLength(19)]}]
+        Password:                  ['', { validators:[ Validators.required, Validators.minLength(4), Validators.maxLength(19)]}],
+        ConfirmPassword:           ['', { validators:[ Validators.required, Validators.minLength(4), Validators.maxLength(19)]}]
       },
-      {validators: Utility.matchingPasswords('Password', 'ConfirmPassword')}
+      {
+        //validators: Utility.matchingPasswords('Password', 'ConfirmPassword')
+        validators: Utility.matchingPasswords()
+      }
     )
   }
 
@@ -50,12 +53,6 @@ export class ResetPasswordComponent implements OnInit {
   onSubmit(){
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password modificata', panelClass: ['green-snackbar']});
   }
-
-
-
-
-
-
-   
+  
 }
 
