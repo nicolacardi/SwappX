@@ -36,6 +36,7 @@ import { ResetPasswordComponent } from './_user/reset-password/reset-password.co
 const routes: Routes = [
 
    { path:'' , redirectTo: 'user/login', pathMatch: 'full' },
+   { path:'user' , redirectTo: 'user/login', pathMatch: 'full' },
    { 
     path:'user',              component: UserComponent,
     children:[

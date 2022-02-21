@@ -65,18 +65,34 @@ export abstract class Utility {
   }
 
 
-  public static matchingPasswords() {
-  //public static matchingPasswords(Password: string, ConfirmPassword: string) {
+  public static matchingPasswords(PasswordField : string, ConfirmPasswordField: string) {
     return (controls: AbstractControl) => {
       if (controls) {
-        const Password = controls.get('Password')!.value;
-        const ConfirmPassword = controls.get('ConfirmPassword')!.value;
+        const Password = controls.get(PasswordField)!.value;
+        const ConfirmPassword = controls.get(ConfirmPasswordField)!.value;
         //console.log ("check what is passed to the validator", password, confirmPassword);
         if (Password !== ConfirmPassword) { 
           //this is an error set for a specific control which you can use in a mat-error
-          controls.get('ConfirmPassword')?.setErrors({not_the_same: true});  
+          controls.get(ConfirmPasswordField)?.setErrors({not_the_same: true});  
           //this is the returned error for the form normally used to disable a submit button
           return {mismatchedPassword: true}  
+        }
+      }
+      return null;
+    }
+  }
+
+  public static checkIfChangedPasswords(PasswordField : string, NewPasswordField: string) {
+    return (controls: AbstractControl) => {
+      if (controls) {
+        const Password = controls.get(PasswordField)!.value;
+        const NewPassword = controls.get(NewPasswordField)!.value;
+        //console.log ("check what is passed to the validator", password, confirmPassword);
+        if (Password == NewPassword) { 
+          //this is an error set for a specific control which you can use in a mat-error
+          controls.get(NewPasswordField)?.setErrors({not_changed: true});  
+          //this is the returned error for the form normally used to disable a submit button
+          return {notChangedPassword: true}  
         }
       }
       return null;

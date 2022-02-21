@@ -10,14 +10,16 @@
     <div class="center">
         <mat-form-field>
             <input matInput type="password" placeholder="Nuova Password" formControlName="newPassword">
-            <mat-error >Password tra 4 a 19 caratteri</mat-error>
+            <mat-error *ngIf="form.controls.newPassword.dirty && (form.controls.newPassword.hasError('minlength') || form.controls.newPassword.hasError('maxlength'))">Password tra 4 a 19 caratteri</mat-error>
+            <mat-error *ngIf="form.controls.newPassword.dirty && form.controls.newPassword.hasError('not_changed')">Nuova password uguale alla precedente</mat-error>
+
         </mat-form-field>
     </div>
 
     <div class="center">
         <mat-form-field>
-            <input matInput type="password" placeholder="Ripeti Password" formControlName="repeatPassword">
-            <mat-error >La password di conferma non coincide</mat-error>
+            <input matInput type="password" placeholder="Ripeti Password" formControlName="confirmPassword">
+            <mat-error *ngIf="form.controls.confirmPassword.dirty && form.controls.confirmPassword.hasError('not_the_same')">Le due password non corrispondono</mat-error>
         </mat-form-field>
     </div>
 </form>

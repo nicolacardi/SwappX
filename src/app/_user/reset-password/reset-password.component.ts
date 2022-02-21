@@ -41,8 +41,7 @@ export class ResetPasswordComponent implements OnInit {
         ConfirmPassword:           ['', { validators:[ Validators.required, Validators.minLength(4), Validators.maxLength(19)]}]
       },
       {
-        //validators: Utility.matchingPasswords('Password', 'ConfirmPassword')
-        validators: Utility.matchingPasswords()
+        validators: Utility.matchingPasswords('Password', 'ConfirmPassword')
       }
     )
   }
