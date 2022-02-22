@@ -116,7 +116,7 @@ export class ExcelService {
           dataMax = columnLength;
          }
            })
-           column.width = dataMax < 10 ? 10 : dataMax;
+           column.width = dataMax < 7 ? 7 : dataMax;
     });
 
     // let dataMax: number[];
