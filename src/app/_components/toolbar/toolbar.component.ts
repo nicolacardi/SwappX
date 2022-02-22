@@ -48,7 +48,7 @@ export class ToolbarComponent {
   }
 
   XLS() {
-    this._xlsx.generateExcel(this.rptData, this.rptFieldsToKeep, this.rptTitle );
+    this._xlsx.generateExcel(this.rptData, this.rptFieldsToKeep, this.rptTitle, this.rptFileName );
   }
 
   email() {

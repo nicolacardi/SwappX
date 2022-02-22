@@ -12,7 +12,7 @@ import { Cell } from 'jspdf-autotable';
 export class ExcelService {
   constructor(private datePipe: DatePipe) {
   }
-  generateExcel(toPrint :any, fieldsToKeep: string[], rptTitle: string) {
+  generateExcel(toPrint :any, fieldsToKeep: string[], rptTitle: string, fileName: string) {
     
     //Excel Title, Header, Data
     //const title = rptTitle;
@@ -69,7 +69,7 @@ export class ExcelService {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'FFFF0000' }, //colore dello sfondo (fgColor??)
+        fgColor: { argb: 'FF2273a3' }, //colore dello sfondo (fgColor??)
         bgColor: { argb: 'FFFFFFFF' } //una cella ha sia un fgcolor che un bgcolor entrambi di riempimento a quanto pare
       }
       cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
@@ -95,29 +95,29 @@ export class ExcelService {
     worksheet.getColumn(4).width = 30;
     worksheet.addRow([]);
     //Footer Row
-    let footerRow = worksheet.addRow(['This is system generated excel sheet.']);
-    footerRow.getCell(1).fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: 'FFCCFFE5' }
-    };
-    footerRow.getCell(1).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
+    // let footerRow = worksheet.addRow(['This is system generated excel sheet.']);
+    // footerRow.getCell(1).fill = {
+    //   type: 'pattern',
+    //   pattern: 'solid',
+    //   fgColor: { argb: 'FFCCFFE5' }
+    // };
+    // footerRow.getCell(1).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
     //Merge Cells
-    worksheet.mergeCells(`A${footerRow.number}:F${footerRow.number}`);
+    // worksheet.mergeCells(`A${footerRow.number}:F${footerRow.number}`);
 
 
 
 
-    worksheet.columns.forEach(function(column){
-      var dataMax = 0;
-      column.eachCell!({ includeEmpty: true }, function(cell){
-        var columnLength = cell.value?.toString().length || 0;	//si ferma qui
-        if (columnLength > dataMax) {
-          dataMax = columnLength;
-         }
-           })
-           column.width = dataMax < 7 ? 7 : dataMax;
-    });
+    // worksheet.columns.forEach(function(column){
+    //   var dataMax = 0;
+    //   column.eachCell!({ includeEmpty: true }, function(cell){
+    //     var columnLength = cell.value?.toString().length || 0;	//si ferma qui
+    //     if (columnLength > dataMax) {
+    //       dataMax = columnLength;
+    //      }
+    //        })
+    //        column.width = dataMax < 5 ? 5 : dataMax;
+    // });
 
     // let dataMax: number[];
     // let max: number;
@@ -134,7 +134,11 @@ export class ExcelService {
     //Generate Excel File with given name
     workbook.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      fs.saveAs(blob, 'CarData.xlsx');
+
+      const d = new Date();
+
+
+      fs.saveAs(blob, d.toISOString().split('T')[0]+"_"+fileName);
     })
   }
 
