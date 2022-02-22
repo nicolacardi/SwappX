@@ -90,6 +90,7 @@ import { IscrizioniClasseCalcoloComponent } from './_components/classi/iscrizion
 import { IscrizioniAlunnoListComponent } from './_components/classi/iscrizioni-alunno-list/iscrizioni-alunno-list.component';
 import { UserEditComponent } from './_components/users/user-edit/user-edit.component';
 import { ResetPasswordComponent } from './_user/reset-password/reset-password.component';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -188,6 +189,7 @@ import { ResetPasswordComponent } from './_user/reset-password/reset-password.co
 
   providers: [
     UserService,
+    DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     //{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },      //Roles

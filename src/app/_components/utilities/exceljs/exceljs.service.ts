@@ -12,47 +12,42 @@ import { Cell } from 'jspdf-autotable';
 export class ExcelService {
   constructor(private datePipe: DatePipe) {
   }
-  generateExcel() {
+  generateExcel(toPrint :any, fieldsToKeep: string[], rptTitle: string) {
     
     //Excel Title, Header, Data
-    const title = 'Car Sell Report';
-    const header = ["Year", "Month", "Make", "Model", "Quantity", "Pct"]
-    const data = [
-      [2007, 1, "Volkswagen ", "Volkswagen Passat", 1267, 10],
-      [2007, 1, "Toyota ", "Toyota Rav4", 819, 6.5],
-      [2007, 1, "Toyota ", "Toyota Avensis", 787, 6.2],
-      [2007, 1, "Volkswagen ", "Volkswagen Golf", 720, 5.7],
-      [2007, 1, "Toyota ", "Toyota Corolla", 691, 5.4],
-      [2007, 1, "Peugeot ", "Peugeot 307", 481, 3.8],
-      [2008, 1, "Toyota ", "Toyota Prius", 217, 2.2],
-      [2008, 1, "Skoda ", "Skoda Octavia", 216, 2.2],
-      [2008, 1, "Peugeot ", "Peugeot 308", 135, 1.4],
-      [2008, 2, "Ford ", "Ford Mondeo", 624, 5.9],
-      [2008, 2, "Volkswagen ", "Volkswagen Passat", 551, 5.2],
-      [2008, 2, "Volkswagen ", "Volkswagen Golf", 488, 4.6],
-      [2008, 2, "Volvo ", "Volvo V70", 392, 3.7],
-      [2008, 2, "Toyota ", "Toyota Auris", 342, 3.2],
-      [2008, 2, "Volkswagen ", "Volkswagen Tiguan", 340, 3.2],
-      [2008, 2, "Toyota ", "Toyota Avensis", 315, 3],
-      [2008, 2, "Nissan ", "Nissan Qashqai", 272, 2.6],
-      [2008, 2, "Nissan ", "Nissan X-Trail", 271, 2.6],
-      [2008, 2, "Mitsubishi ", "Mitsubishi Outlander", 257, 2.4],
-      [2008, 2, "Toyota ", "Toyota Rav4", 250, 2.4],
-      [2008, 2, "Ford ", "Ford Focus", 235, 2.2],
-      [2008, 2, "Skoda ", "Skoda Octavia", 225, 2.1],
-      [2008, 2, "Toyota ", "Toyota Yaris", 222, 2.1],
-      [2008, 2, "Honda ", "Honda CR-V", 219, 2.1],
-      [2008, 2, "Audi ", "Audi A4", 200, 1.9],
-      [2008, 2, "BMW ", "BMW 3-serie", 184, 1.7],
-      [2008, 2, "Toyota ", "Toyota Prius", 165, 1.6],
-      [2008, 2, "Peugeot ", "Peugeot 207", 144, 1.4]
-    ];
+    //const title = rptTitle;
+    //const header = rptFieldsToKeep;
+    console.log (toPrint);
+
+    //creo l'array per l'operazione di flattening
+    let flattened : any= [];
+
+    //con la funzione flattenObj schiaccio gli oggetti e li metto in flattened: i campi saranno del tipo alunno.nome
+    toPrint.forEach ((element: any) =>{
+      flattened.push(this.flattenObj(element))}
+    )
+
+    //quanto segue prende l'array flattened e NE ESTRAE solo i campi che si trovano descritti in fieldsToKeep (quindi dinamicamente)
+    let subsetFromFlattened = flattened.map((item: any) => {
+      const returnValue : any = {}
+      fieldsToKeep.forEach((key: string) => {
+        returnValue[key] = item[key]
+      })
+      return returnValue;
+    })
+
+    //Ora trasformo un array di objects in un array di arrays
+    let data = subsetFromFlattened.map((obj: { [s: string]: unknown; } | ArrayLike<unknown>) => Object.values(obj)); 
+
+    
     //Create workbook and worksheet
     let workbook = new Workbook();
-    let worksheet = workbook.addWorksheet('Car Data');
+    let worksheet = workbook.addWorksheet('Report');
+    worksheet.headerFooter.oddFooter = "Pag. &P di &N";
+
     //Add Row and formatting
-    let titleRow = worksheet.addRow([title]);
-    titleRow.font = { name: 'Comic Sans MS', family: 4, size: 16, underline: 'double', bold: true }
+    let titleRow = worksheet.addRow([rptTitle]);
+    titleRow.font = { name: 'Titillium-Web', family: 4, size: 16, underline: 'double', bold: true }
     worksheet.addRow([]);
     let subTitleRow = worksheet.addRow(['Date : ' + this.datePipe.transform(new Date(), 'medium')])
     //Add Image
@@ -62,30 +57,31 @@ export class ExcelService {
     // });
     //worksheet.addImage(logo, 'E1:F3');
 
-    worksheet.mergeCells('A1:D2');
+    //worksheet.mergeCells('A1:D2');
+    
     //Blank Row 
     worksheet.addRow([]);
     //Add Header Row
-    let headerRow = worksheet.addRow(header);
+    let headerRow = worksheet.addRow(fieldsToKeep);
     
     // Cell Style : Fill and Border
     headerRow.eachCell((cell, number) => {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'FFFFFF00' },
-        bgColor: { argb: 'FF0000FF' }
+        fgColor: { argb: 'FFFF0000' }, //colore dello sfondo (fgColor??)
+        bgColor: { argb: 'FFFFFFFF' } //una cella ha sia un fgcolor che un bgcolor entrambi di riempimento a quanto pare
       }
       cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
     })
     // worksheet.addRows(data);
     // Add Data and Conditional Formatting
-    data.forEach(d => {
+    data.forEach((d: any) => {
       let row = worksheet.addRow(d);
       let qty = row.getCell(5);
 
       let color = 'FF99FF99';
-      // if (+qty.value < 500) {
+      // if (qty.value < 500) {
       //   color = 'FF9999'
       // }
       qty.fill = {
@@ -108,10 +104,59 @@ export class ExcelService {
     footerRow.getCell(1).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
     //Merge Cells
     worksheet.mergeCells(`A${footerRow.number}:F${footerRow.number}`);
+
+
+
+
+    worksheet.columns.forEach(function(column){
+      var dataMax = 0;
+      column.eachCell!({ includeEmpty: true }, function(cell){
+        var columnLength = cell.value?.toString().length || 0;	//si ferma qui
+        if (columnLength > dataMax) {
+          dataMax = columnLength;
+         }
+           })
+           column.width = dataMax < 10 ? 10 : dataMax;
+    });
+
+    // let dataMax: number[];
+    // let max: number;
+    // columns.forEach((column: Column) => {
+    //     dataMax = [];
+    //     column.eachCell({includeEmpty: false}, (cell: Cell) => {
+    //         dataMax.push(cell.value?.toString().length || 0);
+    //     });
+    //     max = Math.max(...dataMax);
+    //     column.width = max < 10 ? 10 : max;
+    // });
+
+
     //Generate Excel File with given name
     workbook.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       fs.saveAs(blob, 'CarData.xlsx');
     })
   }
+
+  flattenObj (arrToFlatten: any){
+    //questa funzione serve per schiacciare un Object
+    //e restituire campi del tipo alunno.nome, alunno.cognome invece di alunno {nome:..., cognome:...}
+      let result : any = {};
+      for (const i in arrToFlatten) {
+          //se trova un oggetto allora chiama se stessa ricorsivamente
+          if ((typeof arrToFlatten[i]) === 'object' && !Array.isArray(arrToFlatten[i])) {
+              const temp = this.flattenObj(arrToFlatten[i]);
+              for (const j in temp) {
+                  //costruisce la stringa ricorsivamente
+                  result[i + '.' + j] = temp[j];
+              }
+          }
+          // altrimenti non gli fa nulla
+          else {
+              result[i] = arrToFlatten[i];
+          }
+      }
+      return result;
+    };
+  
 }

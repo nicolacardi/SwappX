@@ -4,8 +4,14 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 //components
 import { DialogOkComponent } from '../utilities/dialog-ok/dialog-ok.component';
 import { SceltaColonneComponent } from './scelta-colonne/scelta-colonne.component';
+
+//services
+import { ExcelService } from '../utilities/exceljs/exceljs.service';
 import { JspdfService } from '../utilities/jspdf/jspdf.service';
+
+//classes
 import { _UT_GridLayout, _UT_GridLayoutColumn } from 'src/app/_models/_UT_GridLayout';
+
 
 @Component({
   selector: 'app-toolbar',
@@ -27,8 +33,8 @@ export class ToolbarComponent {
 
   constructor(
     public _dialog:                MatDialog,
-    private _jspdf:                JspdfService
-
+    private _jspdf:                JspdfService,
+    private _xlsx:                 ExcelService
     ) { }
 
   PDF() {
@@ -42,10 +48,7 @@ export class ToolbarComponent {
   }
 
   XLS() {
-    this._dialog.open(DialogOkComponent, {
-      width: '320px',
-      data: {titolo: "CURIOSO!", sottoTitolo: "Abbi pazienza che facciamo anche questo!"}
-    });
+    this._xlsx.generateExcel(this.rptData, this.rptFieldsToKeep, this.rptTitle );
   }
 
   email() {
