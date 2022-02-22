@@ -433,6 +433,10 @@
         background-color: #044D7E !important;
     }
 
+    .btn:hover {
+        transform: scale(1.05);
+    }
+
     ._btn-text {
         color: white;
         background-color: #044D7E !important;
@@ -444,6 +448,11 @@
         top: 80px;
         right: 30px;
         background-color: #044D7E !important;
+        transition: transform .2s ease-in-out;
+    }
+
+    ._btn-add:hover{
+        transform: scale(1.05);
     }
 
     /* button di add dentro il modale di edit, ad es. dentro alunno-edit */
@@ -472,6 +481,10 @@
         background-color: #626262 !important;
     }
 
+    ._btn-toolbar:hover{
+        transform: scale(1.05);
+    }
+
     /* button di apertura filtri Avanzati sulla dx */
     ._btn-filter {
         z-index: 1000;
@@ -479,6 +492,10 @@
         top: 80px;
         right: 75px;
         background-color: #044D7E !important;
+    }
+
+    ._btn-filter:hover{
+        transform: scale(1.05);
     }
 
     ._btn-addYellow {
