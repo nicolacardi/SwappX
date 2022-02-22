@@ -11,7 +11,7 @@ import { Cell } from 'jspdf-autotable';
 export class ExcelService {
   constructor(private datePipe: DatePipe) {
   }
-  generateExcel(toPrint :any, fieldsToKeep: string[], rptTitle: string, fileName: string) {
+  generateExcel(toPrint :any, columnsNames: any, fieldsToKeep: string[], rptTitle: string, fileName: string) {
     
 
 //#region PREPARAZIONE DEI DATI ***************************************************************************
@@ -36,50 +36,55 @@ export class ExcelService {
     let data = subsetFromFlattened.map((obj: { [s: string]: unknown; } | ArrayLike<unknown>) => Object.values(obj)); 
 //#endregion FINE PREPARAZONE DEI DATI ********************************************************************
     
-    //Create workbook and worksheet
+    //creazione workbook e worksheet
     let workbook = new Workbook();
     let worksheet = workbook.addWorksheet('Report');
 
-    worksheet.headerFooter.oddFooter = "Pag. &P di &N";
 
-    //Add Row and formatting
+    //aggiunta riga e formattazione
     let titleRow = worksheet.addRow([rptTitle]);
-    titleRow.font = { name: 'Helvetica', family: 4, size: 16, underline: 'double', bold: true }
+    titleRow.font = { name: 'Titillium Web', family: 4, size: 16, bold: true }
+    //riga vuota
     worksheet.addRow([]);
+    //timestamp
     worksheet.addRow(['Date : ' + this.datePipe.transform(new Date(), 'medium')])
-    
-    //Blank Row 
+    //riga vuota
     worksheet.addRow([]);
-    //Add Header Row
-    let headerRow = worksheet.addRow(fieldsToKeep);
+
+    //intestazioni tabella
+    let headerRow = worksheet.addRow(columnsNames);
     
-    // Cell Style : Fill and Border
+    //stile celle
     headerRow.eachCell((cell, number) => {
-      cell.fill = {
+      cell.fill =       {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'FF2273a3' }, //colore dello sfondo (fgColor??)
-        bgColor: { argb: 'FFFFFFFF' } //una cella ha sia un fgcolor che un bgcolor entrambi di riempimento a quanto pare
+        fgColor:        { argb: 'FF2273a3' }, //colore dello sfondo (fgColor??)
+        bgColor:        { argb: 'FFFFFFFF' } //una cella ha sia un fgcolor che un bgcolor entrambi di riempimento a quanto pare
       }
-      cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
+      cell.border =     { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
+      cell.font =       { name: 'Titillium Web', color: { argb: 'FFFFFFFF' } }
     })
     
-    //costruisco un array di widths che contiene tanti elementi quanti data[0].length.
+    //costruisco un array di widths che contiene tanti elementi quanti fieldsToKeep.length.
     let widthsArr = [0]; //parto da un array che in prima posizione ha uno 0...
-    console.log ("data[0]", data[0]);
     fieldsToKeep.forEach(element => 
       widthsArr.push(element.length)//per ogni elemento del primo elemento di data aggiungo uno 0.
     )
 
     data.forEach((d: any) => {
-
+      //aggiorno la larghezza (servirà per fare l'autowidth) se trovo elementi più lunghi
       d.forEach((element: any, index: number) =>{
         let lenText = element ? element.length : 0;
         if (lenText > widthsArr[index + 1 ])  widthsArr[index + 1] = lenText; 
       })
 
-      let row = worksheet.addRow(d); //scrivo i dati
-      // let qty = row.getCell(5);
+      //SCRITTURA DEI DATI
+      let row = worksheet.addRow(d);
+      row.eachCell((cell) => {
+        cell.font =       { name: 'Titillium Web'}
+      })
+      let qty = row.getCell(5);
       // let color = 'FF99FF99';
       //       // if (qty.value < 500) {
       //       //   color = 'FF9999'
@@ -92,17 +97,28 @@ export class ExcelService {
       
     });
 
-    //widthsArr contiene la lunghezza dei testi della tabella
+    //widthsArr[] contiene la lunghezza dei testi della tabella
     for (let i = 1; i < widthsArr.length; i++) {
-      //in excel la larghezza impotata in pixels NON E' PROPORZIONALE a quella in punti!
+      //in excel la larghezza impostata in pixels NON E' PROPORZIONALE a quella in punti!
       //la relazione è wpunti = wpixels/6  -5/6 (infatti la lunghezza in pixel nonè mai minore di 5)
       //se uso ncaratteri per impostare la larghezza, questa sarà più stretta per numeri bassi e più alta per numeri alti...non va bene
       //infatti lui moltiplica i caratteri per 6 e ottiene la misura in pixels, ma questa si traduce poi in lunghezze non proporzionali
-      //voglio invece impostare la larghezza in maniera proporzionale al numero di caratteri
+      //voglio invece impostare la larghezza in maniera proporzionale al numero di caratteri quindi applico la formula inversa...
       worksheet.getColumn(i).width = (widthsArr[i]*6+5)/6;
     }
+    
+    //settings per la stampa
+    const lastColName =this.getExcelColumnName(fieldsToKeep.length)
+    const lastRowNum = Math.max(data.length + 5, 25); //al minimo 25 righe
+    worksheet.pageSetup.printArea = 'A1:'+lastColName+lastRowNum;
+    worksheet.pageSetup.printTitlesRow = '1:5';
+    worksheet.pageSetup.fitToPage = true;
+    worksheet.pageSetup.fitToWidth = 1;
+    worksheet.pageSetup.paperSize = 9;
+    worksheet.pageSetup.orientation = 'landscape';
+    worksheet.headerFooter.oddFooter = "Pag. &P di &N";
 
-    //Generate Excel File with given name
+    //Generazione del file excel
     workbook.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       const d = new Date();
@@ -130,5 +146,29 @@ export class ExcelService {
       }
       return result;
     };
+
+    getExcelColumnName(columnNumber: number)
+    {
+      let i = 0;
+      let i3, i4;
+      let text3 = "";
+      
+      var colArray = [""];
+      for (i3 = 0; i3 < 26; i3++) {
+        text3 = String.fromCharCode(65 + i3);
+        colArray[i] = text3;
+        i++;
+      }
+      for (i3 = 0; i3 < 26; i3++) {
+        for (i4 = 0; i4 < 26; i4++) {
+          text3 = String.fromCharCode(65 + i3) + String.fromCharCode(65 + i4);
+          colArray[i] = text3;
+          i++;
+        }
+      }
+
+      return colArray[columnNumber-1];
+      
+    } 
   
 }
