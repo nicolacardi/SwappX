@@ -12,13 +12,14 @@ export class JspdfService {
 
   constructor() { }
 
-  creaPdf(toPrint :any, columnsNames: any, fieldsToKeep: any, title: string, fileName: string) {
+  creaPdf(rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string) {
+
 
     const doc = new jsPDF('l', 'mm', [297, 210]);
     //console.log(doc.getFontList());
     doc.setFont('TitilliumWeb-Regular', 'normal');
     var width = doc.internal.pageSize.getWidth()
-    doc.text(title, width/2, 15, { align: 'center' });
+    doc.text(rptTitle, width/2, 15, { align: 'center' });
     
     //costruisco la data per il footer (vedi options di autoTable è oltre)
     var today = new Date();
@@ -37,13 +38,13 @@ export class JspdfService {
     //let allProperties = this.propertiesToArray(toPrint[0]);
     //console.log ("jspdf.service: elenco di tutte le proprietà e di quelle dei nested objects", allProperties);
 
-    console.log ("jspdf.service: fieldsToKeep sono i campi da tenere:", fieldsToKeep);
+    console.log ("jspdf.service: fieldsToKeep sono i campi da tenere:", rptFieldsToKeep);
 
     //creo l'array per l'operazione di flattening
     let flattened : any= [];
 
     //con la funzione flattenObj schiaccio gli oggetti e li metto in flattened: i campi saranno del tipo alunno.nome
-    toPrint.forEach ((element: any) =>{
+    rptData.forEach ((element: any) =>{
       flattened.push(this.flattenObj(element))}
     )
     console.log ("jspdf.service: arrResult prima di togliere i campi superflui", flattened);
@@ -71,7 +72,7 @@ export class JspdfService {
       //quanto segue prende l'array flattened e NE ESTRAE solo i campi che si trovano descritti in fieldsToKeep (quindi dinamicamente)
       let subsetFromFlattened = flattened.map((item: any) => {
         const returnValue : any = {}
-        fieldsToKeep.forEach((key: string) => {
+        rptFieldsToKeep.forEach((key: string) => {
           returnValue[key] = item[key]
         })
         return returnValue;
@@ -93,7 +94,7 @@ export class JspdfService {
 //#region PASSAGGIO A AUTOTABLE DEI DATI PREPARATI ********************************************************
     autoTable(doc, {
       startY: 20,
-      head: columnsNames,
+      head: rptColumnsNameArr,
       body: array,
       styles: {font: "TitilliumWeb-Regular"},
       willDrawCell: (HookData) => {  
@@ -139,7 +140,7 @@ export class JspdfService {
           : pageSize.getHeight();
 
         doc.text(str, data.settings.margin.left, pageHeight - 10);
-        doc.text(title, pageWidth - data.settings.margin.right, pageHeight - 10, { align: 'right' });
+        doc.text(rptTitle, pageWidth - data.settings.margin.right, pageHeight - 10, { align: 'right' });
         doc.text(nDate, width/2, 200, { align: 'center' });
       }
 
@@ -173,7 +174,7 @@ export class JspdfService {
     // doc.cell(110, 140, 70, 20, "alla fine è solo questione di dedicarci del tempo...ma si può fare quasi tutto quello che si vuole", 0, "left");
 
     const d = new Date();
-    doc.save(d.toISOString().split('T')[0]+"_"+fileName+".pdf");
+    doc.save(d.toISOString().split('T')[0]+"_"+rptFileName+".pdf");
     
   }
 

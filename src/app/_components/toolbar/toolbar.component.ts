@@ -48,7 +48,8 @@ export class ToolbarComponent {
   }
 
   XLS() {
-    this._xlsx.generateExcel(this.rptData, this.rptColumnsNameArr, this.rptFieldsToKeep, this.rptTitle, this.rptFileName );
+    //NB: a differenza di PDF, XLS usa rptColumnsNames e non rptColumnsNamesArr
+    this._xlsx.generateExcel(this.rptData, this.rptColumnsNames, this.rptFieldsToKeep, this.rptTitle, this.rptFileName );
   }
 
   email() {

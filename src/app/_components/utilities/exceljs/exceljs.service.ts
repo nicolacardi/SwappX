@@ -11,22 +11,22 @@ import { Cell } from 'jspdf-autotable';
 export class ExcelService {
   constructor(private datePipe: DatePipe) {
   }
-  generateExcel(toPrint :any, columnsNames: any, fieldsToKeep: string[], rptTitle: string, fileName: string) {
-    
+
+  generateExcel(rptData :any, rptColumnsNames: string[], rptFieldsToKeep: string[], rptTitle: string, rptFileName: string) {
 
 //#region PREPARAZIONE DEI DATI ***************************************************************************
     //creo l'array per l'operazione di flattening
     let flattened : any= [];
 
     //con la funzione flattenObj schiaccio gli oggetti e li metto in flattened: i campi saranno del tipo alunno.nome
-    toPrint.forEach ((element: any) =>{
+    rptData.forEach ((element: any) =>{
       flattened.push(this.flattenObj(element))}
     )
 
     //quanto segue prende l'array flattened e NE ESTRAE solo i campi che si trovano descritti in fieldsToKeep (quindi dinamicamente)
     let subsetFromFlattened = flattened.map((item: any) => {
       const returnValue : any = {}
-      fieldsToKeep.forEach((key: string) => {
+      rptFieldsToKeep.forEach((key: string) => {
         returnValue[key] = item[key]
       })
       return returnValue;
@@ -47,20 +47,29 @@ export class ExcelService {
     //riga vuota
     worksheet.addRow([]);
     //timestamp
-    worksheet.addRow(['Date : ' + this.datePipe.transform(new Date(), 'medium')])
+    worksheet.addRow(['Data del report : ' + this.datePipe.transform(new Date(), 'medium')])
     //riga vuota
     worksheet.addRow([]);
 
     //intestazioni tabella
-    let headerRow = worksheet.addRow(columnsNames);
+    let headerRow = worksheet.addRow(rptColumnsNames);
     
     //stile celle
     headerRow.eachCell((cell, number) => {
       cell.fill =       {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor:        { argb: 'FF2273a3' }, //colore dello sfondo (fgColor??)
-        bgColor:        { argb: 'FFFFFFFF' } //una cella ha sia un fgcolor che un bgcolor entrambi di riempimento a quanto pare
+        // type: 'pattern',
+        // pattern: 'solid',
+        // fgColor:        { argb: 'FF2273a3' }, //colore dello sfondo (fgColor??)
+
+        type: 'gradient',
+        gradient: 'angle',
+        degree: 90,
+        stops: [
+        {position:0, color:{argb:'FF2273a3'}},
+        {position:1, color:{argb:'FF0a3c59'}}
+        ]
+
+
       }
       cell.border =     { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
       cell.font =       { name: 'Titillium Web', color: { argb: 'FFFFFFFF' } }
@@ -68,11 +77,11 @@ export class ExcelService {
     
     //costruisco un array di widths che contiene tanti elementi quanti fieldsToKeep.length.
     let widthsArr = [0]; //parto da un array che in prima posizione ha uno 0...
-    fieldsToKeep.forEach(element => 
+    rptColumnsNames.forEach(element => 
       widthsArr.push(element.length)//per ogni elemento del primo elemento di data aggiungo uno 0.
     )
 
-    data.forEach((d: any) => {
+    data.forEach((d: any, index: number) => {
       //aggiorno la larghezza (servirà per fare l'autowidth) se trovo elementi più lunghi
       d.forEach((element: any, index: number) =>{
         let lenText = element ? element.length : 0;
@@ -84,16 +93,25 @@ export class ExcelService {
       row.eachCell((cell) => {
         cell.font =       { name: 'Titillium Web'}
       })
-      let qty = row.getCell(5);
-      // let color = 'FF99FF99';
-      //       // if (qty.value < 500) {
-      //       //   color = 'FF9999'
-      //       // }
-      // qty.fill = {
-      //   type: 'pattern',
-      //   pattern: 'solid',
-      //   fgColor: { argb: color }
+
+      //colorazione alternata delle righe
+      if (index % 2 == 1) {
+        row.eachCell((cell) => {
+          cell.fill =       {         
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor:        { argb: 'FFEEEEEE' }
+          }
+        })
+      }
+
+
+      //per "osservare" i valori
+      //let qty = row.getCell(5);
+      // if (qty.value < 500) {
+      //   ...color = 'FF9999'
       // }
+
       
     });
 
@@ -108,7 +126,7 @@ export class ExcelService {
     }
     
     //settings per la stampa
-    const lastColName =this.getExcelColumnName(fieldsToKeep.length)
+    const lastColName =this.getExcelColumnName(rptFieldsToKeep.length)
     const lastRowNum = Math.max(data.length + 5, 25); //al minimo 25 righe
     worksheet.pageSetup.printArea = 'A1:'+lastColName+lastRowNum;
     worksheet.pageSetup.printTitlesRow = '1:5';
@@ -122,7 +140,7 @@ export class ExcelService {
     workbook.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       const d = new Date();
-      fs.saveAs(blob, d.toISOString().split('T')[0]+"_"+fileName);
+      fs.saveAs(blob, d.toISOString().split('T')[0]+"_"+rptFileName);
     })
   }
 
