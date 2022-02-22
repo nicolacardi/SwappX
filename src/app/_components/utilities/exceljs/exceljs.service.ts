@@ -14,10 +14,8 @@ export class ExcelService {
   }
   generateExcel(toPrint :any, fieldsToKeep: string[], rptTitle: string, fileName: string) {
     
-    //Excel Title, Header, Data
-    //const title = rptTitle;
-    //const header = rptFieldsToKeep;
-    console.log (toPrint);
+
+//#region PREPARAZIONE DEI DATI ***************************************************************************
 
     //creo l'array per l'operazione di flattening
     let flattened : any= [];
@@ -38,6 +36,7 @@ export class ExcelService {
 
     //Ora trasformo un array di objects in un array di arrays
     let data = subsetFromFlattened.map((obj: { [s: string]: unknown; } | ArrayLike<unknown>) => Object.values(obj)); 
+//#endregion FINE PREPARAZONE DEI DATI ********************************************************************
 
     
     //Create workbook and worksheet
@@ -47,9 +46,9 @@ export class ExcelService {
 
     //Add Row and formatting
     let titleRow = worksheet.addRow([rptTitle]);
-    titleRow.font = { name: 'Titillium-Web', family: 4, size: 16, underline: 'double', bold: true }
+    titleRow.font = { name: 'Helvetica', family: 4, size: 16, underline: 'double', bold: true }
     worksheet.addRow([]);
-    let subTitleRow = worksheet.addRow(['Date : ' + this.datePipe.transform(new Date(), 'medium')])
+    worksheet.addRow(['Date : ' + this.datePipe.transform(new Date(), 'medium')])
     //Add Image
     // let logo = workbook.addImage({
     //   base64: logoFile.logoBase64,
@@ -72,23 +71,24 @@ export class ExcelService {
         fgColor: { argb: 'FF2273a3' }, //colore dello sfondo (fgColor??)
         bgColor: { argb: 'FFFFFFFF' } //una cella ha sia un fgcolor che un bgcolor entrambi di riempimento a quanto pare
       }
+
       cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
     })
     // worksheet.addRows(data);
     // Add Data and Conditional Formatting
     data.forEach((d: any) => {
       let row = worksheet.addRow(d);
-      let qty = row.getCell(5);
+      // let qty = row.getCell(5);
 
-      let color = 'FF99FF99';
-      // if (qty.value < 500) {
-      //   color = 'FF9999'
+      // let color = 'FF99FF99';
+      //       // if (qty.value < 500) {
+      //       //   color = 'FF9999'
+      //       // }
+      // qty.fill = {
+      //   type: 'pattern',
+      //   pattern: 'solid',
+      //   fgColor: { argb: color }
       // }
-      qty.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: color }
-      }
     }
     );
     worksheet.getColumn(3).width = 30;
