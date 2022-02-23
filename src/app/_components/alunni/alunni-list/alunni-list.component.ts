@@ -487,8 +487,53 @@ removeFromFamilyEmit(item: ALU_Alunno) {
   }
 //#endregion
 
+// test () {
+//   let timeoutId = setTimeout(this.myfunction, 2000, 'Nicola');
 
-}
+//   setTimeout (function run() {
+//     console.log('Hello')
+//     setTimeout(run, 100)
+//   }, 100)
+//   clearTimeout(timeoutId);
+// }
+
+
+
+
+// greet (name: string) {
+//   console.log ('Hello $(name)')
+// }
+
+// higherOrderFunction(callback: any) {
+//   const name = "Nicola"
+//   callback(name)
+// }
+
+// myfunction () {
+//   this.higherOrderFunction (this.greet);
+
+//   const promise = new Promise<string>((resolve, reject) => {
+//     setTimeout (() => { resolve('Hey sto portando le patatine') }, 5000)
+//   })
+
+//   const onFulfillment = (result: string) => {
+//     console.log (result)
+//     console.log ("preparo la tavola");
+//   }
+  
+//   const onRejection = (error: string) => {
+//     console.log (error)
+//     console.log ("butto la pasta");
+//   }
+
+//   promise.then (onFulfillment);
+//   promise.catch(onRejection);
+
+// }
+
+
+
+
 
 
 
@@ -503,3 +548,4 @@ removeFromFamilyEmit(item: ALU_Alunno) {
   //   return found!;
   // }
 
+}
