@@ -1,4 +1,5 @@
 export interface User {
+    id: string;  //NC 230222
         userID: string;
         fullname: string;
         email: string;

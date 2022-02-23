@@ -1,13 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { concat, Observable } from 'rxjs';
-import { concatMap, finalize, tap } from 'rxjs/operators';
+import { concatMap, finalize, pairwise, startWith, tap } from 'rxjs/operators';
 
 import { RuoliService } from 'src/app/_user/ruoli.service';
 import { UserService } from 'src/app/_user/user.service';
 import { Ruolo, User } from 'src/app/_user/Users';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
@@ -26,6 +28,10 @@ export class UserEditComponent implements OnInit {
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
 
+  previousMatSelect! :        number;
+  currUserRuolo!:             number;
+  currUserID!:                string;       //ID dell'utente loggato
+  userID!:                    string;       //ID dell'utente che si sta editando
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public idUser: string,
@@ -55,8 +61,27 @@ export class UserEditComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit() {
+
+    this.svcUser.obscurrentUser.subscribe(val => {
+        this.currUserRuolo = val.ruoloID;
+        this.currUserID = val.userID;
+    })
+
     this.loadData();
+
+    //salvo in una proprietà (previousMatSelect) il valore PRECEDENTE nella combo
+    this.form.controls.ruoloID.valueChanges.pipe(
+      startWith(this.form.controls.ruoloID.value),
+      pairwise()
+    ).subscribe(
+      ([old,value])=>{
+        this.previousMatSelect = old;
+        console.log (old);
+      }
+    )
   }
+
+  
 
   loadData() {
 
@@ -70,7 +95,7 @@ export class UserEditComponent implements OnInit {
       this.user$ = loadUser$.pipe(
           tap(utente => {
             this.form.patchValue(utente);
-            /*
+            this.userID = utente.id;            /*
             this.svcRuoli.list().pipe().subscribe();
             */
           })
@@ -105,6 +130,8 @@ export class UserEditComponent implements OnInit {
     });
   }
 
+ 
+
   save() {
 
     var formData = {
@@ -127,6 +154,7 @@ export class UserEditComponent implements OnInit {
     } else {
       this.svcUser.put(formData)
         .subscribe( ()=> {
+          console.log (formData);
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo utente salvato (MANCANO PASSWORD E RUOLO)', panelClass: ['green-snackbar']})}
         );
     }
@@ -150,5 +178,44 @@ export class UserEditComponent implements OnInit {
         ));
       }
   }
+
+
+
+  ruoloChange() {
+    if (this.currUserRuolo != 11 && this.previousMatSelect == 11) {
+        //impedisco  ai non SysAdmin di modificare il ruolo di quelli che sono SySAdmin
+        //un SySAdmin invece può cambiare tutti gli altri (non il suo, v. oltre)
+        //può cambiare anche il ruolo di un altro SysAdmin
+        this._dialog.open(DialogOkComponent, {
+          width: '320px',
+          data: {titolo: "ATTENZIONE!", sottoTitolo: "Non puoi impostare il ruolo per questo utente"}
+        });
+        this.form.controls['ruoloID'].setValue(this.previousMatSelect);
+        return;
+    }
+
+
+    if (this.currUserRuolo != 11 && this.form.controls.ruoloID.value == 11) {
+      //impedisco ai non SysAdmin di impostare alcuno come SySAdmin 
+      //altrimenti potrei portare un profilo di alunno a essere SysAdmin e poi con quel profilo modificare il profilo degli altri SysAdmin
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "Non puoi impostare questo ruolo"}
+      });
+      this.form.controls['ruoloID'].setValue(this.previousMatSelect);
+      return;
+    }
+
+    if (this.currUserID == this.userID) {
+      //impedisco di modificare il proprio ruolo a chiunque, compresi i SysAdmin
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "Non puoi modificare il tuo ruolo"}
+      });
+      this.form.controls['ruoloID'].setValue(this.previousMatSelect);
+      return;
+    }
+  }
+
 }
 

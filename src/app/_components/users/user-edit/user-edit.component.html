@@ -68,7 +68,7 @@
                 <mat-grid-tile colspan="2">
                     <mat-form-field>
                         <mat-label>Ruolo</mat-label>
-                        <mat-select formControlName="ruoloID">
+                        <mat-select formControlName="ruoloID" (selectionChange)="ruoloChange()">
                             <mat-option *ngFor="let element of (obsRuoli$|async)" [value]="element.id">
                             {{element.descrizione}}
                             </mat-option>
