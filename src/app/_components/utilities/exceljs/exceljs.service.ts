@@ -95,15 +95,15 @@ export class ExcelService {
       })
 
       //colorazione alternata delle righe
-      if (index % 2 == 1) {
-        row.eachCell((cell) => {
-          cell.fill =       {         
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor:        { argb: 'FFEEEEEE' }
-          }
-        })
-      }
+      // if (index % 2 == 1) {
+      //   row.eachCell((cell) => {
+      //     cell.fill =       {         
+      //       type: 'pattern',
+      //       pattern: 'solid',
+      //       fgColor:        { argb: 'FFEEEEEE' }
+      //     }
+      //   })
+      // }
 
 
       //per "osservare" i valori
