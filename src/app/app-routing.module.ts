@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouteConfigLoadEnd, RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 
@@ -27,10 +27,13 @@ import { UsersPageComponent } from './_components/users/users-page/users-page.co
 import { IscrizioniPageComponent } from './_components/classi/iscrizioni-page/iscrizioni-page.component';
 
 import { UserRole } from './_user/Users';
+import { Ruolo } from './_user/Users';
+
 import { ProfiloComponent } from './_components/account/profilo/profilo.component';
 import { ChangePswComponent } from './_components/account/change-psw/change-psw.component';
 import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.component';
 import { ResetPasswordComponent } from './_user/reset-password/reset-password.component';
+import { userInfo } from 'os';
 
 
 const routes: Routes = [
@@ -66,9 +69,9 @@ const routes: Routes = [
 
   { path: "rette",            component: RettePageComponent },
 
-  { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.Admin] } },
+  { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.SysAdmin, UserRole.IT_Manager,UserRole.Segreteria ] } },
   
-  { path: "impostazioni",     component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: [UserRole.Admin, UserRole.Segreteria] }  },
+  { path: "impostazioni",     component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: [UserRole.SysAdmin, UserRole.IT_Manager] }  },
 
 
   { path: "profilo",          component: ProfiloComponent, canActivate:[AuthGuard] },

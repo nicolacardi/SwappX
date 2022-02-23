@@ -30,8 +30,6 @@
             </div>
 
             <mat-grid-list class="no-overflowx mt50" [cols]="2" rowHeight="60px">
-
-         
                 <mat-grid-tile>
                     <mat-form-field>
                         <input matInput required type="text" placeholder="userName" 
@@ -70,18 +68,13 @@
                 <mat-grid-tile colspan="2">
                     <mat-form-field>
                         <mat-label>Ruolo</mat-label>
-                        <mat-select formControlName="ruolo">
-                            <mat-option *ngFor="let element of ruoli" [value]="element">
-                            {{element}}
+                        <mat-select formControlName="ruoloID">
+                            <mat-option *ngFor="let element of (obsRuoli$|async)" [value]="element.id">
+                            {{element.descrizione}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </mat-grid-tile>
-
-
-
-
-
 
             </mat-grid-list>
             <!-- {{obsClassi$ | async | json}} -->

@@ -96,8 +96,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
       const obsClasseSezioneAnno$: Observable<CLS_ClasseSezioneAnno> = this.svcClasseSezioneAnno.loadClasse(this.idClasseSezioneAnno);
       const loadClasseSezioneAnno$ = this._loadingService.showLoaderUntilCompleted(obsClasseSezioneAnno$);
       
-      this.classeSezioneAnno$ = loadClasseSezioneAnno$
-      .pipe(
+      this.classeSezioneAnno$ = loadClasseSezioneAnno$.pipe(
           tap(classe => {
             
             //this.form.patchValue(classe); //non funziona bene, perchè ci sono dei "sotto-oggetti"
@@ -107,8 +106,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
             this.form.controls['annoID'].setValue(classe.anno.id);
 
             let annoIDsucc=0;
-            this.svcAnni.getAnnoSucc(classe.anno.id) 
-            .pipe (
+            this.svcAnni.getAnnoSucc(classe.anno.id).pipe (
               tap ( val   =>  annoIDsucc= val.id),
               concatMap(() => this.obsClassiSezioniAnniSucc$ = this.svcClasseSezioneAnno.listByAnnoGroupByClasse(annoIDsucc))
             ).subscribe(
@@ -117,7 +115,6 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
               err=>{
                 this.obs.unsubscribe();  ///NC ??? serve nel caso di errore, ma qui dentro cosa accade se c'è un errore?
               }
-
             );
             this.form.controls['classeSezioneAnnoSuccID'].setValue(classe.ClasseSezioneAnnoSucc?.id); 
           })

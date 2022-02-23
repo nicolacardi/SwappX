@@ -83,7 +83,7 @@
         <ng-container matColumnDef="ruolo">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>ruolo</th>
             <!-- <td mat-cell *matCellDef="let element">{{element.badge}}</td> -->
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.ruolo | highlight:filterValue"></td>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.ruolo.descrizione | highlight:filterValue"></td>
         </ng-container>
 
         <!--

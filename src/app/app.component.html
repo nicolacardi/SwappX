@@ -113,13 +113,13 @@
 
             <mat-divider></mat-divider>
             <!-- Utenti -->
-            <a mat-list-item routerLink="users" (click)="start.close()" *ngIf="currUser && currUser.ruolo == 9">
+            <a mat-list-item routerLink="users" (click)="start.close()" *ngIf="currUser && currUser.ruoloID >= 10">
             <!-- <a mat-list-item routerLink="users" (click)="start.close()"> -->
                 <img class="iconaMenuSidenav" src="../assets/utentiList.svg">
                 <span>Gestione Utenti</span>
             </a> 
 
-            <a mat-list-item routerLink="impostazioni" (click)="start.close()"  style="position: absolute; bottom: 0;" *ngIf="currUser && currUser.ruolo >=4">
+            <a mat-list-item routerLink="impostazioni" (click)="start.close()"  style="position: absolute; bottom: 0;" *ngIf="currUser && (currUser.ruoloID == 5 || currUser.ruoloID >=10)">
                 <img class="iconaMenuSidenav" src="../assets/settings.svg">
                 <span>Impostazioni</span>
             </a>
