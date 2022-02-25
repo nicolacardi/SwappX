@@ -17,25 +17,45 @@
             </mat-card>
         </td>
         <td class="_columnright-dashboard">
-                <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addYellow" (click)="addAlunnoToClasse()" >
-                    <img class="iconaMenu" src="../../../../assets/empty.svg"
-                    [@openClose]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
-                </button>
-                <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="_btn-addRed" (click)="removeAlunnoFromClasse()">
-                    <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg">
-                </button>
-                <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="esportaPdf" class="_btn-addBlu" (click)="creaPdf()">
-                    <mat-icon>print</mat-icon>
-                </button>
-                <button mat-mini-fab aria-label="Promuovi alunni" matTooltip="Promuovi" class="_btn-addGreen" (click)="promuovi()">
-                    <img class="iconaMenu" src="../../../../assets/promuovi_white.svg">
-                </button>
-                <mat-card class=" card mat-elevation-z8" style="height: 100%">
-                    <div class="_table-container">
-                        <!--<app-alunni-list [context] = "'classi-dashboard'" [idClasse]="idClasse"></app-alunni-list> -->
-                        <app-iscrizioni-classe-list   [idClasse]="idClasse"></app-iscrizioni-classe-list>
-                    </div>
-                </mat-card>
+
+            <mat-tab-group>
+                <mat-tab  label="Alunni">
+                    <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addYellow" (click)="addAlunnoToClasse()" >
+                        <img class="iconaMenu" src="../../../../assets/empty.svg"
+                        [@openClose]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
+                    </button>
+                    <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="_btn-addRed" (click)="removeAlunnoFromClasse()">
+                        <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg">
+                    </button>
+                    <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="esportaPdf" class="_btn-addBlu" (click)="creaPdf()">
+                        <mat-icon>print</mat-icon>
+                    </button>
+                    <button mat-mini-fab aria-label="Promuovi alunni" matTooltip="Promuovi" class="_btn-addGreen" (click)="promuovi()">
+                        <img class="iconaMenu" src="../../../../assets/promuovi_white.svg">
+                    </button>
+                    <mat-card class=" card mat-elevation-z8" style="height: 100%">
+                        <div class="_table-container">
+                            <app-iscrizioni-classe-list   [idClasse]="idClasse"></app-iscrizioni-classe-list>
+                        </div>
+                    </mat-card>
+                </mat-tab>
+                <mat-tab  label="Docenti">
+                    <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addYellow" (click)="addAlunnoToClasse()" >
+                        <img class="iconaMenu" src="../../../../assets/empty.svg"
+                        [@openClose]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
+                    </button>
+                    <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="_btn-addRed" (click)="removeAlunnoFromClasse()">
+                        <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg">
+                    </button>
+
+                    <mat-card class=" card mat-elevation-z8" style="height: 100%">
+                        <div class="_table-container">
+                            <app-docenti-list   [idClasse]="idClasse"></app-docenti-list>
+                        </div>
+                    </mat-card>
+                </mat-tab>
+            </mat-tab-group>
+                
            <!-- ipotesi component di dettaglio dell'alunno
             <tr>
                 <mat-card class=" card mat-elevation-z8" style="height: 100%">

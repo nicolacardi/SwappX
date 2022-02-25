@@ -91,6 +91,7 @@ import { IscrizioniAlunnoListComponent } from './_components/classi/iscrizioni-a
 import { UserEditComponent } from './_components/users/user-edit/user-edit.component';
 import { ResetPasswordComponent } from './_user/reset-password/reset-password.component';
 import { DatePipe } from '@angular/common';
+import { DocentiListComponent } from './_components/persone/docenti-list/docenti-list.component';
 
 
 @NgModule({
@@ -174,7 +175,8 @@ import { DatePipe } from '@angular/common';
     IscrizioniClasseCalcoloComponent,
     IscrizioniAlunnoListComponent,
     UserEditComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    DocentiListComponent
   ],
   imports: [
     BrowserModule,
