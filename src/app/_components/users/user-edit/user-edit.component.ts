@@ -1,10 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSelectChange } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { concat, Observable } from 'rxjs';
-import { concatMap, finalize, pairwise, startWith, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { pairwise, startWith, tap } from 'rxjs/operators';
 
 import { RuoliService } from 'src/app/_user/ruoli.service';
 import { UserService } from 'src/app/_user/user.service';
@@ -50,9 +49,9 @@ export class UserEditComponent implements OnInit {
     this.form = this.fb.group({
       userName:         [''],
       fullName:         [''],
-      email:            [''],
+      email:            ['', Validators.email],
       badge:            [''],
-      password:         [''],
+      password:         ['', [Validators.minLength(4), Validators.maxLength(19)]],
       ruoloID:          [''],
     });
   }
@@ -108,6 +107,7 @@ export class UserEditComponent implements OnInit {
   //#endregion
 
   delete() {
+
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
@@ -118,7 +118,7 @@ export class UserEditComponent implements OnInit {
         .subscribe(
           ()=>{
             this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Record cancellato', panelClass: ['red-snackbar']}
+              {data: 'Record cancellato', panelClass: ['green-snackbar']}
             );
             this._dialogRef.close();
           },
@@ -140,10 +140,22 @@ export class UserEditComponent implements OnInit {
       Email:      this.form.controls.email.value,
       FullName:   this.form.controls.fullName.value,
       Badge:      this.form.controls.badge.value,
-      RuoloID:    this.form.controls.ruoloID.value
+      RuoloID:    this.form.controls.ruoloID.value,
+      Password:   this.form.controls.password.value
+      
     };
     
+
+
+
     if (formData.userID == "0") {
+      if (formData.Password == ""  || formData.Password == null || formData.Password == undefined) {
+        this._dialog.open(DialogOkComponent, {
+          width: '320px',
+          data: {titolo: "ATTENZIONE!", sottoTitolo: "Password obbligatoria"}
+        });
+        return;        
+      }
         this.svcUser.post(this.form.value)
              .subscribe(res=> {
                this._dialogRef.close();
@@ -155,20 +167,14 @@ export class UserEditComponent implements OnInit {
       this.svcUser.put(formData)
         .subscribe( ()=> {
           console.log (formData);
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo utente salvato (MANCANO PASSWORD E RUOLO)', panelClass: ['green-snackbar']})}
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo utente salvato', panelClass: ['green-snackbar']})}
         );
     }
 
-    var formDataPwd = {
-      userID:     this.idUser,   
-      Password:   this.form.controls.password.value
-    };
 
-    if(this.form.controls.password.dirty && this.form.controls.password.value != "" ){
-
-      console.log("Dirty Diana");
-
-      this.svcUser.ResetPassword(formDataPwd)
+    if(formData.userID != "0" && this.form.controls.password.dirty && this.form.controls.password.value != "" ){
+      
+      this.svcUser.ResetPassword(this.idUser, this.form.controls.password.value)
         .subscribe( res=> {
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password modificata', panelClass: ['green-snackbar']});
           this._dialogRef.close();
@@ -176,22 +182,22 @@ export class UserEditComponent implements OnInit {
         err=> (
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel cambio password', panelClass: ['red-snackbar']})
         ));
-      }
+    }
   }
 
 
 
   ruoloChange() {
     if (this.currUserRuolo != 11 && this.previousMatSelect == 11) {
-        //impedisco  ai non SysAdmin di modificare il ruolo di quelli che sono SySAdmin
-        //un SySAdmin invece può cambiare tutti gli altri (non il suo, v. oltre)
-        //può cambiare anche il ruolo di un altro SysAdmin
-        this._dialog.open(DialogOkComponent, {
-          width: '320px',
-          data: {titolo: "ATTENZIONE!", sottoTitolo: "Non puoi impostare il ruolo per questo utente"}
-        });
-        this.form.controls['ruoloID'].setValue(this.previousMatSelect);
-        return;
+      //impedisco  ai non SysAdmin di modificare il ruolo di quelli che sono SySAdmin
+      //un SySAdmin invece può cambiare tutti gli altri (non il suo, v. oltre)
+      //può cambiare anche il ruolo di un altro SysAdmin
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "Non puoi impostare il ruolo per questo utente"}
+      });
+      this.form.controls['ruoloID'].setValue(this.previousMatSelect);
+      return;
     }
 
 

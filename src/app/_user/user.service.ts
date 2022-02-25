@@ -124,6 +124,7 @@ export class UserService {
   }
 
   post(formData: any): Observable <any>{
+    console.log (formData);
     return  this.http.post(environment.apiBaseUrl +'ApplicationUser/Register', formData );
   }
 
@@ -133,9 +134,9 @@ export class UserService {
     //https://213.215.231.4/swappX/api/ApplicationUser/ChangePassword?userID=75b01815-1282-4459-bbf5-61bc877a9100&currPassword=1234&newPassword=12345
   }
 
-  ResetPassword(formData: any): Observable <any>{
-    return  this.http.post(environment.apiBaseUrl +'ApplicationUser/ResetPassword?userID=' + formData.userID + "&newPassword=" + formData.newPassword,formData);
-    //https://213.215.231.4/swappX/api/ApplicationUser/ResetPassword?userID=75b01815-1282-4459-bbf5-61bc877a9100&newPassword=12345
+  ResetPassword(userID: string, Password: string): Observable <any>{
+    return  this.http.post(environment.apiBaseUrl +'ApplicationUser/ResetPassword?userID=' + userID + "&newPassword=" + Password, null);
+    //https://213.215.231.4/swappX/api/ApplicationUser/ResetPassword?userID=75b01815-1282-4459-bbf5-61bc877a9100&Password=12345
   }
   
   list(): Observable<User[]>{
@@ -209,7 +210,6 @@ export class UserService {
 
   delete(id: string): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'ApplicationUser/' + id);    
-    //in questo momento il WS non funziona, provo a ipotizzare la delete sia così
   }
 }
 
