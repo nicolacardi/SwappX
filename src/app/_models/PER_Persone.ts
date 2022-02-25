@@ -21,7 +21,6 @@ export interface PER_Persona {
         dtUpd:                  string;
         userIns:                number;
         userUpd:                number;
-
 }
 
 
