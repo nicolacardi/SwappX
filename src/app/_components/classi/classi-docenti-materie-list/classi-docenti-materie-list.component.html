@@ -27,22 +27,9 @@
             </mat-cell>
         </ng-container>
    
-
-        <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >ID</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
-            <!-- <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></mat-cell> -->
-        </ng-container>
-
         <ng-container matColumnDef="materia">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Materia</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.materia.descrizione}}</mat-cell>
-            <!-- <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></mat-cell> -->
-        </ng-container>
-
-        <ng-container matColumnDef="docenteID">
-            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >ID Docente</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.docenteID}}</mat-cell>
             <!-- <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></mat-cell> -->
         </ng-container>
 
@@ -78,10 +65,10 @@
 
     <mat-menu #rightMenu="matMenu"> 
         <ng-template matMenuContent let-item="item"> 
-            <mat-label class="_titolo-filtri-avanzati">{{item.nome | uppercase}} {{item.cognome | uppercase}}</mat-label> 
+            <mat-label class="_titolo-filtri-avanzati">{{item.docente.persona.nome | uppercase}} {{item.docente.persona.cognome | uppercase}}</mat-label> 
             <!-- <button mat-menu-item routerLink="/genitori" [queryParams]="{ idAlunno: item.id }">Genitori/Tutori</button>  -->
             <!--<button mat-menu-item (click)="openGenitori(item)">Genitori/Tutori</button> --> 
-            <button mat-menu-item>Classi Frequentate</button>
+            <button mat-menu-item>Classi Insegnate</button>
             <button mat-menu-item>Pagelle</button>
             <!-- <button mat-menu-item (click)="openPagamenti(item.id)">Quote e Pagamenti</button> -->
         </ng-template> 

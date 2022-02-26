@@ -2,6 +2,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -47,12 +48,12 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
 //#region ----- ViewChild Input Output -------
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild(MatSort) sort!:                                  MatSort;
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
   @Input() idClasse!:                                         number;
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
 //#endregion
 
-  matMenuTrigger: any;
 
   constructor(
     private svcClassiDocentiMaterie:    ClassiDocentiMaterieService,
@@ -95,6 +96,7 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
 //#region ----- Right Click -------
 
   onRightClick(event: MouseEvent, element: CLS_ClasseDocenteMateria) { 
+
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
     this.menuTopLeftPosition.y = event.clientY + 'px'; 
