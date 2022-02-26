@@ -506,6 +506,20 @@
         background-color: #e0b20d !important;
     }
 
+    ._btn-addDocente {
+        z-index: 1000;
+        position: absolute !important;
+        left: 10px;
+        top: 5px;
+        background-color: #e0b20d !important;
+        /* background-image: url("./assets/plus.svg"); 
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 80%; /* Resize the background image to cover the entire container 
+        transition: transform 0.8s ease-in-out; */
+    }
+
+
     ._btn-addRed {
         z-index: 1000;
         position: absolute !important;

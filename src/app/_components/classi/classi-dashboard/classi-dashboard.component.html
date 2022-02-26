@@ -22,7 +22,7 @@
                 <mat-tab  label="Alunni">
                     <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addYellow" (click)="addAlunnoToClasse()" >
                         <img class="iconaMenu" src="../../../../assets/empty.svg"
-                        [@openClose]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
+                        [@openCloseAlu]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
                     </button>
                     <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="_btn-addRed" (click)="removeAlunnoFromClasse()">
                         <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg">
@@ -40,12 +40,12 @@
                     </mat-card>
                 </mat-tab>
                 <mat-tab  label="Docenti">
-                    <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addYellow" (click)="addAlunnoToClasse()" >
+                    <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addDocente" (click)="addAlunnoToClasse()" >
                         <img class="iconaMenu" src="../../../../assets/empty.svg"
-                        [@openClose]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
+                        [@openCloseDoc]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
                     </button>
                     <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="_btn-addRed" (click)="removeAlunnoFromClasse()">
-                        <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg">
+                        <img class="iconaMenu" src="../../../../assets/docenteMinus.svg">
                     </button>
 
                     <mat-card class=" card mat-elevation-z8" style="height: 100%">

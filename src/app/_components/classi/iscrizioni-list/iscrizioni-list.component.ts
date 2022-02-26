@@ -133,7 +133,8 @@ export class IscrizioniListComponent implements OnInit {
     private svcAnni:          AnniScolasticiService,
     private fb:               FormBuilder, 
     public _dialog:           MatDialog, 
-    private _loadingService:  LoadingService ) {
+    private _loadingService:  LoadingService 
+  ) {
 
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({

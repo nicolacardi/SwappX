@@ -27,7 +27,7 @@ import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 @Component({
   selector: 'app-classi-dashboard',
   animations: [
-    trigger('openClose', [
+    trigger('openCloseAlu', [
       // ...
       state('open', style({
         transform: 'rotate(0)',
@@ -37,6 +37,24 @@ import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
         transform: 'rotate(-360deg)',
         color: "black",
         backgroundImage: 'url("../../../../assets/alunnoPlus.svg")',
+      })),
+      transition('open => closed', [
+        animate('0.2s ease-in-out')
+      ]),
+      transition('closed => open', [
+        animate('0.2s ease-in-out')
+      ]),
+    ]),
+    trigger('openCloseDoc', [
+      // ...
+      state('open', style({
+        transform: 'rotate(0)',
+        backgroundImage: 'url("../../../../assets/plus.svg")',
+      })),
+      state('closed', style({
+        transform: 'rotate(-360deg)',
+        color: "black",
+        backgroundImage: 'url("../../../../assets/docentePlus.svg")',
       })),
       transition('open => closed', [
         animate('0.2s ease-in-out')

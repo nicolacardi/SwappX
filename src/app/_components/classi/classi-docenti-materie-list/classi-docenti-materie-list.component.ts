@@ -1,9 +1,14 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialogConfig } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
 import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
+import { LoadingService } from '../../utilities/loading/loading.service';
+import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
 
 @Component({
   selector: 'app-classi-docenti-materie-list',
@@ -13,21 +18,15 @@ import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMater
 export class ClassiDocentiMaterieListComponent implements OnInit {
 
 //#region ----- Variabili -------
-  matDataSource = new MatTableDataSource<CLS_ClasseDocenteMateria>();
+  matDataSource = new           MatTableDataSource<CLS_ClasseDocenteMateria>();
   storedFilterPredicate!:       any;
   filterValue = '';
 
   displayedColumns: string[] = [
-    "select",
-    "actionsColumn", 
-    "nome", 
-    "cognome", 
-    "email", 
-    "telefono",
-    "dtNascita", 
-    "stato",    //Stato Iscrizione
-
-];
+    "id",
+    "materia",
+    "docenteID"
+  ];
 
   selection = new SelectionModel<CLS_ClasseDocenteMateria>(true, []);   //rappresenta la selezione delle checkbox
 
@@ -43,20 +42,52 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
   showTableRibbon:              boolean = true;
   public swSoloAttivi :         boolean = true;
 
+//#region ----- ViewChild Input Output -------
+  @ViewChild(MatPaginator) paginator!:                        MatPaginator;
+  @ViewChild(MatSort) sort!:                                  MatSort;
+
   @Input() idClasse!:                                         number;
-  @Input('context') context! :                                string;
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
+//#endregion
+
+
+
 
   private _dialog: any;
   matMenuTrigger: any;
 
-  constructor() { }
+  constructor(
+    private svcClassiDocentiMaterie:    ClassiDocentiMaterieService,
+    private _loadingService:            LoadingService 
 
-  ngOnInit(): void {
+  ) { }
+
+//#region ----- LifeCycle Hooks e simili-------
+
+  ngOnInit(){
+    this.loadData();
   }
 
+  loadData () {
 
-  //#region ----- Right Click -------
+    let obsInsegnamenti$: Observable<CLS_ClasseDocenteMateria[]>;
+
+    obsInsegnamenti$= this.svcClassiDocentiMaterie.list();
+    let loadInsegnamenti$ =this._loadingService.showLoaderUntilCompleted(obsInsegnamenti$);
+
+    loadInsegnamenti$.subscribe(val =>  {
+        this.matDataSource.data = val;
+        //this.matDataSource.paginator = this.paginator;          
+        //this.sortCustom();
+        //this.matDataSource.sort = this.sort; 
+        //this.matDataSource.filterPredicate = this.filterPredicate();
+      }
+    );
+    
+  }
+//#endregion
+
+//#region ----- Right Click -------
 
   onRightClick(event: MouseEvent, element: CLS_ClasseDocenteMateria) { 
     event.preventDefault(); 
