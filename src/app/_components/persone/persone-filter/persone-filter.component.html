@@ -14,6 +14,18 @@
             <input matInput [formControl]="cognomeFilter">
         </mat-form-field>
 
+        <mat-form-field  class="ml12">
+            <mat-label>Tipo persona</mat-label>
+            <mat-select [formControl]="tipoPersonaFilter" #tipoPersona>
+                <mat-option [value]="null">
+                    
+                </mat-option>
+                <mat-option *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id">
+                    {{element.descrizione}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
         <mat-form-field class="ml12">
             <mat-label>Anno di Nascita</mat-label>
             <input matInput [formControl]="annoNascitaFilter">

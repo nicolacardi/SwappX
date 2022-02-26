@@ -1,14 +1,9 @@
-import { PER_Docente } from "./PER_Docente";
 import { PER_Persona } from "./PER_Persone";
 
-export interface CLS_ClasseDocenteMateria {
+export interface PER_Docente {
         id:                     number;
-
-        classeSezioneAnnoID:    number;
-        docenteID:              number;
-        materiaID:              number;
-
-     
+        personaID:              number;
+        ckAttivo:               boolean;
 
         note:                   string;
         dtIns:                  string;
@@ -16,7 +11,5 @@ export interface CLS_ClasseDocenteMateria {
         userIns:                number;
         userUpd:                number;
 
-        docente:                PER_Docente;
-
+        persona:                PER_Persona;
 }
-

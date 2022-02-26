@@ -48,6 +48,7 @@ export class PersoneListComponent implements OnInit {
   filterValues = {
     nome: '',
     cognome: '',
+    tipoPersona: '',
     annoNascita: '',
     indirizzo: '',
     comune: '',
@@ -63,6 +64,7 @@ export class PersoneListComponent implements OnInit {
   rptFieldsToKeep  = [
     "nome", 
     "cognome", 
+    "tipoPersona.descrizione",
     "dtNascita", 
     "indirizzo", 
     "comune", 
@@ -74,6 +76,7 @@ export class PersoneListComponent implements OnInit {
   rptColumnsNames  = [
     "nome", 
     "cognome", 
+    "tipo",
     "nato il", 
     "indirizzo", 
     "comune", 
@@ -101,8 +104,8 @@ export class PersoneListComponent implements OnInit {
   constructor(
     private svcPersone:       PersoneService,
     private _loadingService:  LoadingService,
-    public _dialog:           MatDialog ) {
-      
+    public _dialog:           MatDialog
+  ) {    
   }
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -140,9 +143,12 @@ export class PersoneListComponent implements OnInit {
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
 
+      let foundTipoPersona = (String(data.tipoPersonaID).indexOf(searchTerms.tipoPersona) !== -1);
+      if (searchTerms.tipoPersona == null) foundTipoPersona = true;
+
       let boolSx = String(data.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.tipo.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.tipoPersona.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.dtNascita).indexOf(searchTerms.filtrosx) !== -1
                 || String(data.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
@@ -153,7 +159,7 @@ export class PersoneListComponent implements OnInit {
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
       let boolDx = String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
                 && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
-                //&& String(data.tipo.descrizione).toLowerCase().indexOf(searchTerms.tipo) !== -1
+                && foundTipoPersona
                 && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
                 && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
                 && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1

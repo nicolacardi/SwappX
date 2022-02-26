@@ -15,8 +15,9 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import { PersoneService } from '../persone.service';
 
 //models
-import { PER_Persona } from 'src/app/_models/PER_Persone';
+import { PER_Persona, PER_TipoPersona } from 'src/app/_models/PER_Persone';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
+import { TipiPersonaService } from '../tipi-persona.service';
 
 
 @Component({
@@ -27,7 +28,10 @@ import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 export class PersonaEditComponent implements OnInit {
 
 //#region ----- Variabili -------
-  persona$!:                    Observable<PER_Persona>;
+
+  persona$!:                  Observable<PER_Persona>;
+  obsTipiPersona$!:           Observable<PER_TipoPersona[]>;
+
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
   filteredComuni$!:           Observable<_UT_Comuni[]>;
@@ -43,6 +47,7 @@ export class PersonaEditComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public idPersona: number,
     private fb:                           FormBuilder, 
     private svcPersone:                   PersoneService,
+    private svcTipiPersona:               TipiPersonaService,
     private svcComuni:                    ComuniService,
     public _dialog:                       MatDialog,
     private _snackBar:                    MatSnackBar,
@@ -55,6 +60,7 @@ export class PersonaEditComponent implements OnInit {
       id:                         [null],
       nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       cognome:                    ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+      tipoPersonaID:              ['', Validators.required],
       dtNascita:                  ['', Validators.required],
       comuneNascita:              ['', Validators.maxLength(50)],
       provNascita:                ['', Validators.maxLength(2)] ,
@@ -75,6 +81,11 @@ export class PersonaEditComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit() {
+
+    
+    this.obsTipiPersona$ = this.svcTipiPersona.list();
+
+
     this.loadData();
   }
 

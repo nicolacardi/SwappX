@@ -48,20 +48,16 @@
                             </mat-grid-tile>
 
                             <mat-grid-tile>
-                                <mat-form-field>
-                                    <input matInput
-                                    required
-                                    formControlName = "dtNascita"
-                                    [matDatepicker]= "dpDtNascita"
-                                    placeholder="Data di Nascita"
-                                    #date>
-                                    <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
-                                    <mat-datepicker #dpDtNascita  ></mat-datepicker>
-                                    <mat-error *ngIf="form.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
+                                <mat-form-field >
+                                    <mat-label>Tipo Personale</mat-label>
+                                    <mat-select matNativeControl formControlName="tipoPersonaID">
+                                        <mat-option *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id">
+                                            {{element.descrizione}}
+                                        </mat-option>
+                                    </mat-select>
                                 </mat-form-field>
-
-
                             </mat-grid-tile>
+
                         </mat-grid-list>
                         <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
                             <mat-grid-tile>
@@ -76,6 +72,20 @@
                                 <mat-form-field>
                                     <input matInput type="text" placeholder="Codice Fiscale" formControlName="cf">
                                     <mat-error>Campo errato</mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput
+                                    required
+                                    formControlName = "dtNascita"
+                                    [matDatepicker]= "dpDtNascita"
+                                    placeholder="Data di Nascita"
+                                    #date>
+                                    <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
+                                    <mat-datepicker #dpDtNascita  ></mat-datepicker>
+                                    <mat-error *ngIf="form.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
                                 </mat-form-field>
                             </mat-grid-tile>
                         </mat-grid-list>

@@ -1,12 +1,13 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
+import { PersonaEditComponent } from '../../persone/persona-edit/persona-edit.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
 
@@ -23,9 +24,10 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
   filterValue = '';
 
   displayedColumns: string[] = [
-    "id",
+    "actionsColumn",
     "materia",
-    "docenteID"
+    "docenteNome",
+    "docenteCognome"
   ];
 
   selection = new SelectionModel<CLS_ClasseDocenteMateria>(true, []);   //rappresenta la selezione delle checkbox
@@ -50,29 +52,32 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
 //#endregion
 
-
-
-
-  private _dialog: any;
   matMenuTrigger: any;
 
   constructor(
     private svcClassiDocentiMaterie:    ClassiDocentiMaterieService,
-    private _loadingService:            LoadingService 
-
+    private _loadingService:            LoadingService,
+    public _dialog:                     MatDialog
   ) { }
 
 //#region ----- LifeCycle Hooks e simili-------
 
+  ngOnChanges() {
+    if (this.idClasse != undefined) {
+      this.loadData();
+      //this.toggleChecks = false;
+    }
+  }
+
   ngOnInit(){
-    this.loadData();
+
   }
 
   loadData () {
 
     let obsInsegnamenti$: Observable<CLS_ClasseDocenteMateria[]>;
-
-    obsInsegnamenti$= this.svcClassiDocentiMaterie.list();
+    console.log ("this.idClasse", this.idClasse);
+    obsInsegnamenti$= this.svcClassiDocentiMaterie.listByClasseSezioneAnno(this.idClasse);
     let loadInsegnamenti$ =this._loadingService.showLoaderUntilCompleted(obsInsegnamenti$);
 
     loadInsegnamenti$.subscribe(val =>  {
@@ -140,20 +145,20 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
     */
   }
 
-  openDetail(recordID:number){
-    
+  openDetail(id:number){
+    //console.log ("recordID", recordID);
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
       height: '620px',
-      data: recordID
+      data: id
     };
-    // const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
-    // dialogRef.afterClosed().subscribe(
-    //   () => { 
-    //     this.loadData(); 
-    //   }
-    // );
+    const dialogRef = this._dialog.open(PersonaEditComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      () => { 
+        this.loadData(); 
+      }
+    );
   }
 
   drop(event: CdkDragDrop<string[]>) {

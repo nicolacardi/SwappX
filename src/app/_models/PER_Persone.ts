@@ -23,11 +23,11 @@ export interface PER_Persona {
         userIns:                number;
         userUpd:                number;
 
-        tipo:                   PER_Tipo;
+        tipoPersona:                   PER_TipoPersona;
 }
 
 
-export interface PER_Tipo {
+export interface PER_TipoPersona {
         id:                            number;
         descrizione:                   string;
 }
