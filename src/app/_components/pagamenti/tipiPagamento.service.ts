@@ -14,7 +14,7 @@ export class TipiPagamentoService {
 
   constructor(private http: HttpClient) { }
 
-  load(): Observable<PAG_TipoPagamento[]>{
+  list(): Observable<PAG_TipoPagamento[]>{
     return this.http.get<PAG_TipoPagamento[]>(environment.apiBaseUrl+'PAG_TipiPagamento');
   }
 

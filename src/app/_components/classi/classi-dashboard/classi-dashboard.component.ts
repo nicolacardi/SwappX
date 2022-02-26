@@ -22,6 +22,8 @@ import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/clas
 import { IscrizioniClasseCalcoloComponent } from '../iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 import { AlunnoEditComponent } from '../../alunni/alunno-edit/alunno-edit.component';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
+import { DocenzeAddComponent } from '../docenze-add/docenze-add.component';
+import { ClassiDocentiMaterieListComponent } from '../classi-docenti-materie-list/classi-docenti-materie-list.component';
 
 
 @Component({
@@ -85,6 +87,8 @@ export class ClassiDashboardComponent implements OnInit {
   //@ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
   @ViewChild(ClassiSezioniAnniListComponent) viewClassiSezioniAnni!: ClassiSezioniAnniListComponent; 
   @ViewChild(IscrizioniClasseListComponent) viewListIscrizioni!: IscrizioniClasseListComponent; 
+  @ViewChild(ClassiDocentiMaterieListComponent) viewClassiDocentiMaterieIscrizioni!: ClassiDocentiMaterieListComponent; 
+
   @Input () classeSezioneAnnoId!: number;
 //#endregion
 
@@ -190,6 +194,29 @@ export class ClassiDashboardComponent implements OnInit {
           }
     });
   }
+
+  addDocenteToClasse() {
+    console.log ("this.idAnno", this.idAnno);
+    if(this.idClasse<0) return;
+
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'app-full-bleed-dialog',
+      width: '400px',
+      minHeight: '300px',
+      data: {titolo: "Iscrivi alunno alla classe", 
+              idAnno:   this.idAnno,
+              idClasse: this.idClasse}
+    };
+
+    const dialogRef = this._dialog.open(DocenzeAddComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+        result => {
+          if(result == undefined){          
+          this.viewClassiDocentiMaterieIscrizioni.loadData()
+          }
+    });
+  }
+
 
   removeAlunnoFromClasse() {
     const objIdToRemove = this.viewListIscrizioni.getChecked();

@@ -188,7 +188,7 @@ export class RettaCalcoloComponent implements OnInit {
                 tap (val=> {
                   hasFratelloMaggiore = val;
                 }),  
-                concatMap(() => this.svcRette.loadByAlunnoAnno(iscrizione.alunnoID, annoID )))
+                concatMap(() => this.svcRette.listByAlunnoAnno(iscrizione.alunnoID, annoID )))
                   .subscribe( retteAnnoAlunno =>{
 
                     //se array vuoto, INSERT

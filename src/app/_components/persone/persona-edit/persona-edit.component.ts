@@ -96,7 +96,7 @@ export class PersonaEditComponent implements OnInit {
 
     if (this.idPersona && this.idPersona + '' != "0") {
 
-      const obsPersona$: Observable<PER_Persona> = this.svcPersone.loadPersona(this.idPersona);
+      const obsPersona$: Observable<PER_Persona> = this.svcPersone.get(this.idPersona);
       const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
 
       this.persona$ = loadPersona$

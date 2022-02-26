@@ -116,7 +116,7 @@ export class PersoneListComponent implements OnInit {
 
   loadData () {
     let obsPersone$: Observable<PER_Persona[]>;
-    obsPersone$= this.svcPersone.load();
+    obsPersone$= this.svcPersone.list();
     const loadPersone$ =this._loadingService.showLoaderUntilCompleted(obsPersone$);
     loadPersone$.subscribe(val => 
       {

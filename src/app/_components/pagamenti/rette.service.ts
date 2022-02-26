@@ -14,23 +14,23 @@ export class RetteService {
 
   constructor(private http: HttpClient) { }
 
-  load(): Observable<PAG_Retta[]>{
+  list(): Observable<PAG_Retta[]>{
     return this.http.get<PAG_Retta[]>(environment.apiBaseUrl+'PAG_Rette');
     //http://213.215.231.4/swappX/api/PAG_Rette
   }
 
-  loadByAnno(idAnno: number): Observable<PAG_Retta[]>{
+  listByAnno(idAnno: number): Observable<PAG_Retta[]>{
     return this.http.get<PAG_Retta[]>(environment.apiBaseUrl+'PAG_Rette/ListByAnno?idAnno='+idAnno);
     //http://213.215.231.4/swappX/api/PAG_Rette/ListByAnno?idAnno=1
   }
 
 
-  loadByID(idRetta: any): Observable<PAG_Retta>{
+  get(idRetta: any): Observable<PAG_Retta>{
     return this.http.get<PAG_Retta>(environment.apiBaseUrl+'PAG_Rette/'+idRetta);
     //http://213.215.231.4/swappX/api/PAG_Rette/5
   }
 
-  loadByAlunnoAnno(idAlunno: number, idAnno: number): Observable<PAG_Retta[]>{
+  listByAlunnoAnno(idAlunno: number, idAnno: number): Observable<PAG_Retta[]>{
     return this.http.get<PAG_Retta[]>(environment.apiBaseUrl+'PAG_Rette/ListByAlunnoAnno?idAlunno='+idAlunno+"&idAnno="+idAnno);
     //http://213.215.231.4/swappX/api/PAG_Rette/ListByAlunnoAnno?idAlunno=3&idAnno=1
   }
@@ -40,7 +40,7 @@ export class RetteService {
     //http://213.215.231.4/swappX/api/PAG_Rette/ListByAlunnoAnnoMese?idAlunno=3&idAnno=1&meseRetta=9
   }
 
-  loadSummary(idAnnoScolastico: any): Observable<PAG_RettePagamenti_Sum[]>{
+  listSummary(idAnnoScolastico: any): Observable<PAG_RettePagamenti_Sum[]>{
     return this.http.get<PAG_RettePagamenti_Sum[]>(environment.apiBaseUrl+'PAG_Rette/ListRettePagamenti_Sum/'+idAnnoScolastico);
     //http://213.215.231.4/swappX/api/PAG_Rette/ListRettePagamenti_Sum/2
   }

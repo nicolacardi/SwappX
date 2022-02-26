@@ -48,8 +48,8 @@ export class PagamentiFilterComponent implements OnInit {
 
   ngOnInit() {
 
-    this.causaliPagamento$ = this.svcCausaliPagamento.load();
-    this.tipiPagamento$ = this.svcTipiPagamento.load();
+    this.causaliPagamento$ = this.svcCausaliPagamento.list();
+    this.tipiPagamento$ = this.svcTipiPagamento.list();
 
     this.tipoPagamentoFilter.valueChanges
     .subscribe(

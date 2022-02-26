@@ -115,7 +115,7 @@ export class RettameseEditComponent implements OnInit{
     //console.log ("this.idRetta", this.idRetta);
     //this.idRetta = 0 nel caso di alunno che non ha quote
     if (this.idRetta && this.idRetta + '' != "0") {
-      const obsRetta$: Observable<PAG_Retta> = this.svcRette.loadByID(this.idRetta);
+      const obsRetta$: Observable<PAG_Retta> = this.svcRette.get(this.idRetta);
       //const loadRetta$ = this._loadingService.showLoaderUntilCompleted(obsRetta$);
       this.retta$ = obsRetta$
       .pipe(

@@ -18,7 +18,6 @@ import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 @Component({
   selector: 'app-iscrizioni-add',
   templateUrl: './iscrizioni-add.component.html',
-  //styleUrls: ['./dialog-add.component.css']
   styleUrls: ['./../classi.css']
 })
 

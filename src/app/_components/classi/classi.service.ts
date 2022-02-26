@@ -14,7 +14,7 @@ export class ClassiService {
 
   constructor(private http: HttpClient) { }
 
-  load(): Observable<CLS_Classe[]> {
+  list(): Observable<CLS_Classe[]> {
     //restituisce tutte le classiSezioniAnni di un certo Alunno
     return this.http.get<CLS_Classe[]>( environment.apiBaseUrl  + 'CLS_Classi');  
     //http://213.215.231.4/swappX/api/CLS_Classi

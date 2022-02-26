@@ -120,7 +120,7 @@ export class RettaEditComponent implements OnInit {
 
   loadData(){
 
-    this.obsRette$ = this.svcRette.loadByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
+    this.obsRette$ = this.svcRette.listByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
     const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
     loadRette$.pipe(
       //delayWhen(() => timer(5000)),

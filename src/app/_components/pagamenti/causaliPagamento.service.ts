@@ -14,7 +14,7 @@ export class CausaliPagamentoService {
 
   constructor(private http: HttpClient) { }
 
-  load(): Observable<PAG_CausalePagamento[]>{
+  list(): Observable<PAG_CausalePagamento[]>{
     return this.http.get<PAG_CausalePagamento[]>(environment.apiBaseUrl+'PAG_CausaliPagamento');
   }
 

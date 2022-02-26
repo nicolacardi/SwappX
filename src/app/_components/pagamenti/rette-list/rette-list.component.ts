@@ -166,7 +166,7 @@ export class RetteListComponent implements OnInit {
     
 
     let obsRette$: Observable<PAG_Retta[]>;
-    obsRette$= this.svcRette.loadByAnno(this.annoID);
+    obsRette$= this.svcRette.listByAnno(this.annoID);
     const loadRette$ =this._loadingService.showLoaderUntilCompleted(obsRette$);
 
     // NOTA PER PIU' AVANTI: 

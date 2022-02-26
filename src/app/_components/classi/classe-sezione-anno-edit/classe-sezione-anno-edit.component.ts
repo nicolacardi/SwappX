@@ -82,7 +82,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
   loadData(){
 
     this.obsAnni$= this.svcAnni.list();
-    this.obsClassi$= this.svcClassi.load();
+    this.obsClassi$= this.svcClassi.list();
     
     //TODO per ottenere l'elenco di tutte le classi dell'anno scolastico successivo 
     //forse bisogna prelevare l'id dell'anno della classe che si sta guardando, e poi prendere le classi

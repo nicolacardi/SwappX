@@ -1,0 +1,126 @@
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { debounceTime, delayWhen, finalize, switchMap, tap } from 'rxjs/operators';
+import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+//components
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+
+//services
+import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
+import { DocentiService } from '../../persone/docenti.service';
+import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
+
+//classi
+import { PER_Docente } from 'src/app/_models/PER_Docente';
+import { MAT_Materia } from 'src/app/_models/MAT_Materia';
+import { MaterieService } from 'src/app/_services/materie.service';
+import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+
+@Component({
+  selector: 'app-docenze-add',
+  templateUrl: './docenze-add.component.html',
+  styleUrls: ['./../classi.css']
+})
+
+export class DocenzeAddComponent implements OnInit {
+
+//#region ----- Variabili -------
+  form! :                     FormGroup;
+  obsFilteredDocenti$!:       Observable<PER_Docente[]>;
+  obsMaterie$!:               Observable<MAT_Materia[]>;
+  docentiIsLoading:           boolean = false;
+  classeSezioneAnno!:         CLS_ClasseSezioneAnno;
+  public docenteSelectedID!:         number;
+  public materiaSelectedID!:         number;
+//#endregion
+
+//#region ----- ViewChild Input Output -------
+  @ViewChild('nomeCognomeDocente') nomeCognomeDocente!: ElementRef<HTMLInputElement>;
+//#endregion
+
+  constructor(
+    private fb:                             FormBuilder,
+    private svcMaterie:                     MaterieService,
+    private svcDocenti:                     DocentiService,
+    private svcClasseSezioneAnno:           ClassiSezioniAnniService,
+    private svcClassiDocentiMaterie:        ClassiDocentiMaterieService,
+    public dialogRef:                       MatDialogRef<DocenzeAddComponent>,
+    private _snackBar:                      MatSnackBar,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) { 
+
+    this.form = this.fb.group({
+      nomeCognomeDocente:     [null],
+      selectMateria:          ['']
+    });
+  }
+
+//#region ----- LifeCycle Hooks e simili-------
+  ngOnInit(): void {
+
+    console.log ("this.matsel", this.materiaSelectedID);
+    this.svcClasseSezioneAnno.get(this.data.idClasse).subscribe(res => this.classeSezioneAnno = res)
+
+    this.obsFilteredDocenti$ = this.form.controls['nomeCognomeDocente'].valueChanges
+      .pipe(
+        tap(() => this.docentiIsLoading = true),
+        debounceTime(300),
+        //delayWhen(() => timer(2000)),
+        switchMap(val => 
+          this.svcDocenti.filterDocenti(this.form.value.nomeCognomeDocente)       
+              // .pipe(
+              //   map( val2 => val2.filter(val=>!this.idDocentiSelezionati.includes(val.id)) )//FANTASTICO!!! NON MOSTRA QUELLI GIA'SELEZIONATI! MEGLIO DI GOOGLE CHE LI RIMOSTRA!
+              // ) 
+        ),
+        // switchMap(() => 
+        //   this.svcAlunni.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
+        // )
+        tap(() => this.docentiIsLoading = false)
+    )
+
+    this.form.controls['selectMateria'].valueChanges
+          .subscribe(
+            val=> this.materiaSelectedID = val
+          )
+    this.obsMaterie$ = this.svcMaterie.list();
+    
+  }
+
+//#endregion
+docenteSelected(event: MatAutocompleteSelectedEvent): void {
+  this.docenteSelectedID = parseInt(event.option.id);
+  console.log ("selected" , this.docenteSelectedID);
+}
+
+//#region ----- Operazioni CRUD -------
+
+  save() {
+
+    let objInsegnamento = {
+      DocenteID: this.docenteSelectedID,
+      MateriaID: this.materiaSelectedID,
+      ClasseSezioneAnnoID: this.data.idClasse
+    };
+    this.svcClassiDocentiMaterie.post(objInsegnamento)
+      .pipe( finalize(()=>this.dialogRef.close()))
+      .subscribe(
+        val=>{
+          // console.log("iscrizioni-add.component.ts - save:Record Salvato:", val);
+        },
+        err =>{
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          console.log("iscrizioni-add.component.ts - errore:", err);
+        }
+      );
+
+  }
+
+//#endregion
+
+
+}

@@ -12,12 +12,12 @@ export class PersoneService {
   constructor(private http: HttpClient) { }
 
 
-  load(): Observable<PER_Persona[]>{
+  list(): Observable<PER_Persona[]>{
     return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone');
     //http://213.215.231.4/swappX/api/PER_Persone
   }
 
-  loadPersona(id: any): Observable<PER_Persona>{
+  get(id: any): Observable<PER_Persona>{
     return this.http.get<PER_Persona>(environment.apiBaseUrl+'PER_Persone/'+id);
     //http://213.215.231.4/swappX/api/PER_Persone/3
   }

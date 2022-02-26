@@ -33,6 +33,7 @@ export class ClassiDocentiMaterieService {
   }
 
   post(formData: any): Observable <any>{
+    console.log ("formData service", formData);
     formData.id = 0;
     return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie' , formData);  
   }
