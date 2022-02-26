@@ -6,11 +6,10 @@ export interface User {
         username: string;
         badge: string;
         token?: string;
-
         isLoggedIn?: boolean;
 
+        
         ruoloID: number;
-
         ruolo: Ruolo;
 
     }

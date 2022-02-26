@@ -14,6 +14,7 @@ export class PersoneFilterComponent implements OnInit {
 //#region ----- Variabili -------
   nomeFilter = new FormControl('');
   cognomeFilter = new FormControl('');
+  tipoFilter= new FormControl('');
   annoNascitaFilter = new FormControl('');
   indirizzoFilter = new FormControl('');
   comuneFilter = new FormControl('');
@@ -30,6 +31,18 @@ export class PersoneFilterComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit(): void {
+
+    this.tipi$ = this.svcTipiPersona.load();
+
+    this.tipoFilter.valueChanges
+    .subscribe(
+      val => {
+        //this.resetFilterSx();
+        this.pagamentiListComponent.filterValues.tipoPagamento = val;
+        this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
+      }
+    )
+
     this.nomeFilter.valueChanges
     .subscribe(
       val => {

@@ -33,6 +33,7 @@ export class PersoneListComponent implements OnInit {
     "actionsColumn", 
     "nome", 
     "cognome", 
+    "tipo",
     "dtNascita", 
     "indirizzo", 
     "comune", 
@@ -97,12 +98,12 @@ export class PersoneListComponent implements OnInit {
 //#endregion
 
 
-
   constructor(
     private svcPersone:       PersoneService,
     private _loadingService:  LoadingService,
-    public _dialog:           MatDialog, 
-  ) { }
+    public _dialog:           MatDialog ) {
+      
+  }
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
@@ -111,10 +112,10 @@ export class PersoneListComponent implements OnInit {
   }
 
   loadData () {
-    let obsAlunni$: Observable<PER_Persona[]>;
-    obsAlunni$= this.svcPersone.load();
-    const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
-    loadAlunni$.subscribe(val => 
+    let obsPersone$: Observable<PER_Persona[]>;
+    obsPersone$= this.svcPersone.load();
+    const loadPersone$ =this._loadingService.showLoaderUntilCompleted(obsPersone$);
+    loadPersone$.subscribe(val => 
       {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
@@ -141,6 +142,7 @@ export class PersoneListComponent implements OnInit {
 
       let boolSx = String(data.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.tipo.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.dtNascita).indexOf(searchTerms.filtrosx) !== -1
                 || String(data.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
@@ -151,6 +153,7 @@ export class PersoneListComponent implements OnInit {
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
       let boolDx = String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
                 && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+                //&& String(data.tipo.descrizione).toLowerCase().indexOf(searchTerms.tipo) !== -1
                 && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
                 && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
                 && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1

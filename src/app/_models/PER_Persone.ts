@@ -1,5 +1,6 @@
 export interface PER_Persona {
         id:                     number;
+        tipoID:                 number;
         nome:                   string;
         cognome:                string;
         genere:                 string;
@@ -21,6 +22,12 @@ export interface PER_Persona {
         dtUpd:                  string;
         userIns:                number;
         userUpd:                number;
+
+        tipo:                   PER_Tipo;
 }
 
 
+export interface PER_Tipo {
+        id:                            number;
+        descrizione:                   string;
+}
