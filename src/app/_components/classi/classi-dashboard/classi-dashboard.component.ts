@@ -24,6 +24,7 @@ import { AlunnoEditComponent } from '../../alunni/alunno-edit/alunno-edit.compon
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { DocenzeAddComponent } from '../docenze-add/docenze-add.component';
 import { ClassiDocentiMaterieListComponent } from '../classi-docenti-materie-list/classi-docenti-materie-list.component';
+import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
 
 
 @Component({
@@ -94,6 +95,7 @@ export class ClassiDashboardComponent implements OnInit {
 
   constructor(
     private svcIscrizioni:                IscrizioniService,
+    private svcClassiDocentiMaterie:      ClassiDocentiMaterieService,
     private _navigationService:           NavigationService,
     public _dialog:                       MatDialog,
     private _jspdf:                       JspdfService,
@@ -260,6 +262,54 @@ export class ClassiDashboardComponent implements OnInit {
 
             this.viewListIscrizioni.resetSelections();
             this.viewListIscrizioni.loadData();
+
+          }
+      })
+    }
+  }
+
+  removeDocenteFromClasse() {
+    const objIdToRemove = this.viewClassiDocentiMaterieIscrizioni.getChecked();
+
+    const selections = objIdToRemove.length;
+    if (selections <= 0) {
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "Selezionare almeno una docenza da cancellare"}
+      });
+    }
+    else{
+
+      const dialogRef = this._dialog.open(DialogYesNoComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE", sottoTitolo: "Si stanno cancellando "+selections+" docenze dalla classe. Continuare?"}
+      });
+      dialogRef.afterClosed().subscribe(
+        async result => {
+          if(!result) {
+            return; 
+          } else {
+            // objIdToRemove.forEach(val=>{
+              
+            //   this.svcIscrizioni.delete(val.id)
+            //     .subscribe(()=>{
+            //     })
+            // }); 
+            //per ragioni di sincronia (aggiornamento classiSezioniAnniList dopo il loop) usiamo la Promise()
+            for (const element of objIdToRemove) {
+              await this.svcClassiDocentiMaterie.delete(element.id)
+              .toPromise();
+            }
+
+            // let tmpclicked = this.viewClassiSezioniAnni.idClasseSezioneAnno;
+            // console.log (tmpclicked);
+            this.viewClassiDocentiMaterieIscrizioni.loadData()
+            // this.viewClassiSezioniAnni.rowclicked(tmpclicked.toString());
+            
+            this.router.navigate(['/classi-dashboard'], { queryParams: { idAnno: this.idAnno, idClasseSezioneAnno: this.idClasse } });
+
+            this.viewClassiDocentiMaterieIscrizioni.resetSelections();
+            this.viewClassiDocentiMaterieIscrizioni.loadData();
 
           }
       })

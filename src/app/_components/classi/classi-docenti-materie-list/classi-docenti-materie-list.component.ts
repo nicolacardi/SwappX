@@ -25,6 +25,7 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
   filterValue = '';
 
   displayedColumns: string[] = [
+    "select",
     "actionsColumn",
     "materia",
     "docenteNome",
@@ -167,4 +168,52 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
   }
 //#endregion
+
+//#region ----- Gestione Campo Checkbox -------
+  selectedRow(element: CLS_ClasseDocenteMateria) {
+    this.selection.toggle(element);
+  }
+
+  masterToggle() {
+    this.toggleChecks = !this.toggleChecks;
+
+    if (this.toggleChecks) 
+      this.selection.select(...this.matDataSource.data);
+    else 
+      this.resetSelections();
+  }
+
+  resetSelections() {
+    this.selection.clear();
+    this.matDataSource.data.forEach(row => this.selection.deselect(row));
+  }
+
+  toggleAttivi(){
+    this.swSoloAttivi = !this.swSoloAttivi;
+    this.loadData();
+  }
+
+  getChecked() {
+    //funzione usata da classi-dahsboard
+    return this.selection.selected;
+  }
+
+    //non so se serva questo metodo: genera un valore per l'aria-label...
+  //forse serve per poi pescare i valori selezionati?
+  checkboxLabel(row?: CLS_ClasseDocenteMateria): string {
+    if (!row) 
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    else
+      return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+  }
+
+  //questo metodo ritorna un booleano che dice se sono selezionati tutti i record o no
+  //per ora non lo utilizzo
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;   //conta il numero di elementi selezionati
+    const numRows = this.matDataSource.data.length;       //conta il numero di elementi del matDataSource
+    return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
+  }
+//#endregion
+
 }

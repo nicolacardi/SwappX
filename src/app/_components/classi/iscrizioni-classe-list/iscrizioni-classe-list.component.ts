@@ -284,12 +284,6 @@ export class IscrizioniClasseListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Emit per alunno-edit -------
-
-
-
-//#endregion
-
 //#region ----- Gestione Campo Checkbox -------
   selectedRow(element: CLS_Iscrizione) {
     this.selection.toggle(element);

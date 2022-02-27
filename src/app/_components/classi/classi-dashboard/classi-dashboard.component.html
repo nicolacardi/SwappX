@@ -33,26 +33,26 @@
                     <button mat-mini-fab aria-label="Promuovi alunni" matTooltip="Promuovi" class="_btn-addGreen" (click)="promuovi()">
                         <img class="iconaMenu" src="../../../../assets/promuovi_white.svg">
                     </button>
-                    <mat-card class=" card mat-elevation-z8" style="height: 100%">
+                    <!-- <mat-card class=" card mat-elevation-z8" style="height: 100%"> -->
                         <div class="_table-container">
                             <app-iscrizioni-classe-list   [idClasse]="idClasse"></app-iscrizioni-classe-list>
                         </div>
-                    </mat-card>
+                    <!-- </mat-card> -->
                 </mat-tab>
                 <mat-tab  label="Docenti">
-                    <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addDocente" (click)="addDocenteToClasse()" >
+                    <button mat-mini-fab aria-label="Aggiungi Docente alla Classe" class="_btn-addDocente" (click)="addDocenteToClasse()" >
                         <img class="iconaMenu" src="../../../../assets/empty.svg"
                         [@openCloseDoc]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
                     </button>
-                    <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="_btn-addRed" (click)="removeAlunnoFromClasse()">
+                    <button mat-mini-fab aria-label="Rimuovi docente dalla Classe" class="_btn-addRed" (click)="removeDocenteFromClasse()">
                         <img class="iconaMenu" src="../../../../assets/docenteMinus.svg">
                     </button>
 
-                    <mat-card class=" card mat-elevation-z8" style="height: 100%">
+                    <!-- <mat-card class=" card mat-elevation-z8" style="height: 100%"> -->
                         <div class="_table-container">
                             <app-classi-docenti-materie-list   [idClasse]="idClasse"></app-classi-docenti-materie-list>
                         </div>
-                    </mat-card>
+                    <!-- </mat-card> -->
                 </mat-tab>
             </mat-tab-group>
                 
