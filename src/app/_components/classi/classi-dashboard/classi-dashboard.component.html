@@ -2,7 +2,7 @@
 <table>
     <tr>
         <td class="_columnleft-dashboard">
-            <mat-card style="height: 100%;" class="card mat-elevation-z8">
+            <!-- <mat-card style="height: 100%;" class="card mat-elevation-z8"> -->
                 <div class="_table-container">
                     <!-- idAnnoInput è la proprietà che passiamo A classiSezioniAnniList -->
                     <!-- annoId è la proprietà che riceviamo DA classiSezioniAnniList -->
@@ -14,23 +14,24 @@
                         (classeId)="classeIdEmitted($event)">
                     </app-classi-sezioni-anni-list>
                 </div>
-            </mat-card>
+            <!-- </mat-card> -->
         </td>
         <td class="_columnright-dashboard">
 
             <mat-tab-group>
                 <mat-tab  label="Alunni">
-                    <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addYellow" (click)="addAlunnoToClasse()" >
-                        <img class="iconaMenu" src="../../../../assets/empty.svg"
-                        [@openCloseAlu]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
+                    <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addAlunno" (click)="addAlunnoToClasse()" >
+                        <img class="iconaMenu" src="../../../../assets/alunnoPlus.svg">
+                        <!-- <img class="iconaMenu" src="../../../../assets/empty.svg"
+                        [@openCloseAlu]="isOpen ? 'openAddAlu' : 'closedAddAlu'" (mouseover)="mouseOver()" (mouseout)="mouseOut()"> -->
                     </button>
-                    <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="_btn-addRed" (click)="removeAlunnoFromClasse()">
+                    <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="_btn-Red" (click)="removeAlunnoFromClasse()">
                         <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg">
                     </button>
-                    <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="esportaPdf" class="_btn-addBlu" (click)="creaPdf()">
-                        <mat-icon>print</mat-icon>
+                    <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="esporta Pdf" class="_btn-Blu" (click)="creaPdfIscrizioni()">
+                        <img class="iconaMenu" src="../../../../assets/PDFiconGreys.svg">
                     </button>
-                    <button mat-mini-fab aria-label="Promuovi alunni" matTooltip="Promuovi" class="_btn-addGreen" (click)="promuovi()">
+                    <button mat-mini-fab aria-label="Promuovi alunni" matTooltip="Promuovi" class="_btn-Green" (click)="promuovi()">
                         <img class="iconaMenu" src="../../../../assets/promuovi_white.svg">
                     </button>
                     <!-- <mat-card class=" card mat-elevation-z8" style="height: 100%"> -->
@@ -41,10 +42,14 @@
                 </mat-tab>
                 <mat-tab  label="Docenti">
                     <button mat-mini-fab aria-label="Aggiungi Docente alla Classe" class="_btn-addDocente" (click)="addDocenteToClasse()" >
-                        <img class="iconaMenu" src="../../../../assets/empty.svg"
-                        [@openCloseDoc]="isOpen ? 'open' : 'closed'" (mouseover)="mouseOver()" (mouseout)="mouseOut()">
+                        <img class="iconaMenu" src="../../../../assets/docentePlus.svg">
+                        <!-- <img class="iconaMenu" src="../../../../assets/empty.svg"
+                        [@openCloseDoc]="isOpen ? 'openAddDoc' : 'closedAddDoc'" (mouseover)="mouseOver()" (mouseout)="mouseOut()"> -->
                     </button>
-                    <button mat-mini-fab aria-label="Rimuovi docente dalla Classe" class="_btn-addRed" (click)="removeDocenteFromClasse()">
+                    <button mat-mini-fab aria-label="Stampa Lista Docenti della Classe" matTooltip="esporta Pdf" class="_btn-Blu" (click)="creaPdfDocenze()">
+                        <img class="iconaMenu" src="../../../../assets/PDFiconGreys.svg">
+                    </button>
+                    <button mat-mini-fab aria-label="Rimuovi docente dalla Classe" class="_btn-Red" (click)="removeDocenteFromClasse()">
                         <img class="iconaMenu" src="../../../../assets/docenteMinus.svg">
                     </button>
 

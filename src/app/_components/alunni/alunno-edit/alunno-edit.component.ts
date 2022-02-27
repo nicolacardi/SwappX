@@ -129,7 +129,7 @@ export class AlunnoEditComponent implements OnInit {
     
     if (this.idAlunno && this.idAlunno + '' != "0") {
 
-      const obsAlunno$: Observable<ALU_Alunno> = this.svcAlunni.loadAlunno(this.idAlunno);
+      const obsAlunno$: Observable<ALU_Alunno> = this.svcAlunni.get(this.idAlunno);
       const loadAlunno$ = this._loadingService.showLoaderUntilCompleted(obsAlunno$);
       //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
       this.alunno$ = loadAlunno$
@@ -252,7 +252,7 @@ export class AlunnoEditComponent implements OnInit {
     //ma con una condizione: la iif specifica proprio che SE il risultato della verifica è vuoto allora si può procedere con la post
     //altrimenti si mette in successione l'observable vuoto (of())
     
-    this.svcAlunni.getGenitoreAlunno(genitore.id, this.idAlunno)
+    this.svcAlunni.listByGenitoreAlunno(genitore.id, this.idAlunno)
     .pipe(
       concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(genitore.id, this.idAlunno), of() )
       )
@@ -267,7 +267,7 @@ export class AlunnoEditComponent implements OnInit {
 
   removeFromFamily(genitore: ALU_Genitore) {
     const alunnoID = this.idAlunno;
-    this.svcAlunni.deleteGenitoreAlunno(genitore.id, this.idAlunno).subscribe(
+    this.svcAlunni.deleteByGenitoreAlunno(genitore.id, this.idAlunno).subscribe(
       res=> {
           //console.log("addToFamily OK");
           this.genitoriFamigliaComponent.loadData();
@@ -329,7 +329,7 @@ export class AlunnoEditComponent implements OnInit {
   }
 
   removeFromAttended(classeSezioneAnno: CLS_ClasseSezioneAnno) {
-    this.svcIscrizioni.deleteByClasseAlunno(classeSezioneAnno.id , this.idAlunno).subscribe(
+    this.svcIscrizioni.deleteByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id , this.idAlunno).subscribe(
       res=> {
           this.classiAttendedComponent.loadData();
       },

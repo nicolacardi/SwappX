@@ -172,11 +172,11 @@ export class GenitoriListComponent implements OnInit {
     let obsGenitori$: Observable<ALU_Genitore[]>;
 
     if(this.context == "alunno-edit-famiglia"){
-      obsGenitori$= this.svcGenitori.loadByAlunno(this.alunnoId);
+      obsGenitori$= this.svcGenitori.listByAlunno(this.alunnoId);
       //.pipe(map(res=> res.filter(gen => gen._Figli.some(y => (y.id == this.alunnoId)))));  //BELLISSIMA Sembra giusta ma non funziona
     }
     else {
-      obsGenitori$= this.svcGenitori.loadWithChildren();
+      obsGenitori$= this.svcGenitori.listWithChildren();
     }
     const loadGenitori$ =this._loadingService.showLoaderUntilCompleted(obsGenitori$);
 

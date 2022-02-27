@@ -12,18 +12,18 @@ export class IscrizioniService {
 
   constructor(private http: HttpClient) { }
 
-  listByAnno(idAnno: number): Observable <any> {
-    //return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByClasseSezioneAnno?idClasseSezioneAnno='+idClasseSezioneAnno);  
-    return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByAnno/'+idAnno); 
-      //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByAnno/1
-  }
-
   listByClasseSezioneAnno(idClasseSezioneAnno: number): Observable <any> {
     //return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByClasseSezioneAnno?idClasseSezioneAnno='+idClasseSezioneAnno);  
     return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByClasseSezioneAnno/'+idClasseSezioneAnno); 
     //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByClasseSezioneAnno?idClasseSezioneAnno=5
   }
   
+  listByAnno(idAnno: number): Observable <any> {
+    //return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByClasseSezioneAnno?idClasseSezioneAnno='+idClasseSezioneAnno);  
+    return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByAnno/'+idAnno); 
+      //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByAnno/1
+  }
+
   listByAlunno(idAlunno: number): any {
     //restituisce tutte le classiSezioniAnni di un certo Alunno
     return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByAlunno/' + idAlunno);  
@@ -56,19 +56,14 @@ export class IscrizioniService {
   }
   //http://213.215.231.4/swappX/api/CLS_Iscrizioni/UpdateStato?id=5&CodiceStato=20
 
-  deleteByClasseAlunno(ClasseSezioneAnnoID: number, idAlunno: number): Observable <any>{
+  deleteByAlunnoAndClasseSezioneAnno(ClasseSezioneAnnoID: number, idAlunno: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'CLS_Iscrizioni/DeleteByAlunnoAndClasseSezioneAnno?idAlunno='+idAlunno+'&idClasseSezioneAnno='+ClasseSezioneAnnoID);
     //http://213.215.231.4/swappX/api/CLS_Iscrizioni/DeleteByAlunnoAndClasseSezioneAnno?idAlunno=3&idClasseSezioneAnno=243
   }
 
-  
   delete(id: number): Observable <any>{
+    console.log ("iscrizioni.delete", id);
     return this.http.delete( environment.apiBaseUrl  + 'CLS_Iscrizioni/' + id); 
   }
-      
-
-
-
-
       
 }

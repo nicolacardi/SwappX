@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { map } from 'rxjs/operators';
 
 import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
 
@@ -22,11 +21,12 @@ export class CausaliPagamentoService {
     return this.http.get<PAG_CausalePagamento>(environment.apiBaseUrl+'PAG_CausaliPagamento/'+idCausalePagamento);
   }
   
-  filter(searchstring: string): Observable<PAG_CausalePagamento[]>{
+  //************** METODO NON USATO *****************/ 
+  //filterList(searchstring: string): Observable<PAG_CausalePagamento[]>{
 
-    return this.http.get<PAG_CausalePagamento[]>(environment.apiBaseUrl+'PAG_CausaliPagamento')
-      .pipe (
-        map(val=> val.filter(val=>val.descrizione.toLowerCase().includes(searchstring))),
-      );
-  }
+  //   return this.http.get<PAG_CausalePagamento[]>(environment.apiBaseUrl+'PAG_CausaliPagamento')
+  //     .pipe (
+  //       map(val=> val.filter(val=>val.descrizione.toLowerCase().includes(searchstring))),
+  //     );
+  // }
 }

@@ -218,11 +218,11 @@ export class AlunniListComponent implements OnInit {
     
     if (this.context =="alunni-page") {
       if(this.swSoloAttivi){
-        obsAlunni$= this.svcAlunni.loadWithParents()
+        obsAlunni$= this.svcAlunni.listWithParents()
           .pipe(map(res=> res.filter((x) => x.ckAttivo == true)));
       }
       else {
-        obsAlunni$= this.svcAlunni.loadWithParents();
+        obsAlunni$= this.svcAlunni.listWithParents();
       }
 
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
@@ -237,7 +237,7 @@ export class AlunniListComponent implements OnInit {
     }
 
     if (this.context == "genitore-edit-list") {
-      obsAlunni$= this.svcAlunni.loadWithParents();
+      obsAlunni$= this.svcAlunni.listWithParents();
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
       loadAlunni$.subscribe(val => 
         {
@@ -250,7 +250,7 @@ export class AlunniListComponent implements OnInit {
     }
 
     if (this.context == "genitore-edit-famiglia") {
-      obsAlunni$= this.svcAlunni.loadByGenitore(this.genitoreId);
+      obsAlunni$= this.svcAlunni.listByGenitore(this.genitoreId);
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
       loadAlunni$.subscribe(val => 
         {

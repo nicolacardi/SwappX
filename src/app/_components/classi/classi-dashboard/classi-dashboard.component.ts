@@ -29,44 +29,46 @@ import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
 
 @Component({
   selector: 'app-classi-dashboard',
-  animations: [
-    trigger('openCloseAlu', [
-      // ...
-      state('open', style({
-        transform: 'rotate(0)',
-        backgroundImage: 'url("../../../../assets/plus.svg")',
-      })),
-      state('closed', style({
-        transform: 'rotate(-360deg)',
-        color: "black",
-        backgroundImage: 'url("../../../../assets/alunnoPlus.svg")',
-      })),
-      transition('open => closed', [
-        animate('0.2s ease-in-out')
-      ]),
-      transition('closed => open', [
-        animate('0.2s ease-in-out')
-      ]),
-    ]),
-    trigger('openCloseDoc', [
-      // ...
-      state('open', style({
-        transform: 'rotate(0)',
-        backgroundImage: 'url("../../../../assets/plus.svg")',
-      })),
-      state('closed', style({
-        transform: 'rotate(-360deg)',
-        color: "black",
-        backgroundImage: 'url("../../../../assets/docentePlus.svg")',
-      })),
-      transition('open => closed', [
-        animate('0.2s ease-in-out')
-      ]),
-      transition('closed => open', [
-        animate('0.2s ease-in-out')
-      ]),
-    ]),
-  ],
+//#region ----- animations -------
+  // animations: [
+  //   trigger('openCloseAlu', [
+  //     // ...
+  //     state('openAddAlu', style({
+  //       transform: 'rotate(0)',
+  //       backgroundImage: 'url("../../../../assets/plus.svg")',
+  //     })),
+  //     state('closedAddAlu', style({
+  //       transform: 'rotate(-360deg)',
+  //       color: "black",
+  //       backgroundImage: 'url("../../../../assets/alunnoPlus.svg")',
+  //     })),
+  //     transition('openAddAlu => closedAddAlu', [
+  //       animate('0.2s ease-in-out')
+  //     ]),
+  //     transition('closed => open', [
+  //       animate('0.2s ease-in-out')
+  //     ]),
+  //   ]),
+  //   trigger('openCloseDoc', [
+  //     // ...
+  //     state('openAddDoc', style({
+  //       transform: 'rotate(0)',
+  //       backgroundImage: 'url("../../../../assets/plus.svg")',
+  //     })),
+  //     state('closedAddDoc', style({
+  //       transform: 'rotate(-360deg)',
+  //       color: "black",
+  //       backgroundImage: 'url("../../../../assets/docentePlus.svg")',
+  //     })),
+  //     transition('openAddDoc => closedAddDoc', [
+  //       animate('0.2s ease-in-out')
+  //     ]),
+  //     transition('closed => open', [
+  //       animate('0.2s ease-in-out')
+  //     ]),
+  //   ]),
+  // ],
+//#endregion
   templateUrl: './classi-dashboard.component.html',
   styleUrls: ['./../classi.css']
 })
@@ -134,15 +136,31 @@ export class ClassiDashboardComponent implements OnInit {
 
 
 
-  creaPdf() {
+  creaPdfIscrizioni() {
     //elenco i campi da tenere
-    let fieldsToKeep = ['alunno.nome', 'alunno.cognome'];
+    let fieldsToKeep = ['alunno.nome', 'alunno.cognome', 'alunno.email', 'alunno.telefono', 'alunno.dtNascita'];
     //elenco i nomi delle colonne
-    let columnsNames = [['nome', 'cognome']];
-    this._jspdf.creaPdf(this.viewListIscrizioni.matDataSource.data, columnsNames, fieldsToKeep, "Classe", "ListaClassi");
+    let columnsNames = [['nome', 'cognome', 'email', 'telefono', 'nato il']];
+    this._jspdf.creaPdf(
+      this.viewListIscrizioni.matDataSource.data, 
+      columnsNames,
+      fieldsToKeep,
+      "Classe "+ this.viewListIscrizioni.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewListIscrizioni.classeSezioneAnno.classeSezione.sezione,
+       "ListaIscrizioni");
   }
 
-
+  creaPdfDocenze() {
+    //elenco i campi da tenere
+    let fieldsToKeep = ['materia.descrizione', 'docente.persona.nome', 'docente.persona.cognome'];
+    //elenco i nomi delle colonne
+    let columnsNames = [['materia', 'Nome Docente', 'Cognome Docente']];
+    this._jspdf.creaPdf(
+      this.viewClassiDocentiMaterieIscrizioni.matDataSource.data,
+      columnsNames,
+      fieldsToKeep,
+      "Docenti Classe "+ this.viewClassiDocentiMaterieIscrizioni.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewClassiDocentiMaterieIscrizioni.classeSezioneAnno.classeSezione.sezione,
+      "ListaDocenze");
+  }
 
 
   promuovi() {

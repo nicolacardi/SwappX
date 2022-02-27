@@ -81,7 +81,7 @@ export class DocenzeAddComponent implements OnInit {
               // ) 
         ),
         // switchMap(() => 
-        //   this.svcAlunni.filterAlunniAnnoSenzaClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
+        //   this.svcAlunni.listByAnnoNoClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
         // )
         tap(() => this.docentiIsLoading = false)
     )
@@ -113,7 +113,8 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
     //Bisogna verificare che già in questa classe non ci sia il maestro di questa materia
     //e anche che questo stesso maestro non sia già maestro di questa materia in questa classe
 
-    const checks$ = this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateria(this.data.idClasse, this.materiaSelectedID)
+    const checks$ = 
+    this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateriaAndDocente(this.data.idClasse, this.materiaSelectedID, this.docenteSelectedID)
     .pipe(
       //se trova che la stessa classe è già presente res.length è != 0 quindi non procede con la getByAlunnoAnno ma restituisce of()
       //se invece res.length == 0 dovrebbe proseguire e concatenare la verifica successiva ch è getByAlunnoAndAnno...
@@ -122,54 +123,56 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
           if (res != null) {
           this._dialog.open(DialogOkComponent, {
             width: '320px',
-            data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa Materia è già stata inserita per questa classe!"}
+            data: {titolo: "ATTENZIONE!", sottoTitolo: "Il docente insegna già questa materia in questa classe"}
           });
           
           } else {
-            console.log("la materia non è già insegnata per la classe in cui sto cercando di inserirla, posso procedere");
+            console.log("la materia non è già insegnata per la classe in cui sto cercando di inserirla da questo insegnante, posso procedere");
           }
         }
       ),
       concatMap( res => iif (()=> res == null,
-        this.svcClassiDocentiMaterie.getByClasseAndMateriaAndDocente(this.data.idClasse, this.materiaSelectedID, this.docenteSelectedID) , of() )
+        this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateria(this.data.idClasse, this.materiaSelectedID) , of() )
       ),
       tap(res=> {
         if (res != null) {
           this._dialog.open(DialogOkComponent, {
             width: '320px',
-            data: {titolo: "ATTENZIONE!", sottoTitolo: "Il docente insegna già questa materia in questa classe"}
+            data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa materia ha già una docenza assegnata in questa classe"}
           });
         } else {
-          console.log("la materia non è già insegnata per la classe in cui sto cercando di inserirla da questo insegnante, posso procedere");
+          console.log("la materia non è già insegnata per la classe in cui sto cercando di inserirla, posso procedere");
         }
       })
     )
 
 
-    // checks$
-    // .pipe(
-    //   concatMap( res => iif (()=> res == null, this.svcIscrizioni.post(objClasseSezioneAnnoAlunno) , of() )
-    //   )
-    // ).subscribe(
-    //   res=> {
-    //     //loadData del component attended
-    //     this.classiAttendedComponent.loadData();
+    checks$
+    .pipe(
+       concatMap( res => iif (()=> res == null, this.svcClassiDocentiMaterie.post(objInsegnamento) , of() )
+      )
+    ).subscribe(
+      res=> {
+        this.dialogRef.close()
+      },
+      err=> {
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        console.log("iscrizioni-add.component.ts - errore:", err);
+       }
+    )
+
+
+    // this.svcClassiDocentiMaterie.post(objInsegnamento)
+    // .pipe( finalize(()=>this.dialogRef.close()))
+    // .subscribe(
+    //   val=>{
+    //     // console.log("iscrizioni-add.component.ts - save:Record Salvato:", val);
     //   },
-    //   err=> { }
-    // )
-
-
-    this.svcClassiDocentiMaterie.post(objInsegnamento)
-      .pipe( finalize(()=>this.dialogRef.close()))
-      .subscribe(
-        val=>{
-          // console.log("iscrizioni-add.component.ts - save:Record Salvato:", val);
-        },
-        err =>{
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          console.log("iscrizioni-add.component.ts - errore:", err);
-        }
-      );
+    //   err =>{
+    //     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+    //     console.log("iscrizioni-add.component.ts - errore:", err);
+    //   }
+    // );
 
   }
 

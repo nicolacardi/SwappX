@@ -21,27 +21,27 @@ export class AlunniService {
     //http://213.215.231.4/swappX/api/ALU_Alunni
   }
   
-  loadByGenitore(idGenitore: any): Observable<ALU_Alunno[]>{
-    return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllByGenitore/'+idGenitore);
-    //http://213.215.231.4/swappX/api/ALU_Alunni/GetAllByGenitore/3
+  listByGenitore(idGenitore: any): Observable<ALU_Alunno[]>{
+    return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/ListByGenitore/'+idGenitore);
+    //http://213.215.231.4/swappX/api/ALU_Alunni/ListByGenitore/3
   }
 
-  loadByClasse(idClasse: any): Observable<ALU_Alunno[]>{
-    return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllByClasse/'+idClasse);
-    //http://213.215.231.4/swappX/api/ALU_Alunni/GetAllByClasse/3
+  listByClasseSezioneAnno(idClasse: any): Observable<ALU_Alunno[]>{
+    return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/ListByClasseSezioneAnno/'+idClasse);
+    //http://213.215.231.4/swappX/api/ALU_Alunni/ListByClasseSezioneAnno/3
   }
 
-  loadWithParents(): Observable<ALU_Alunno[]>{
-      return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/GetAllWithParents');
-      //http://213.215.231.4/swappX/api/ALU_Alunni/GetAllWithParents
+  listWithParents(): Observable<ALU_Alunno[]>{
+      return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/ListWithParents');
+      //http://213.215.231.4/swappX/api/ALU_Alunni/ListWithParents
   }
 
-  loadAlunno(id: any): Observable<ALU_Alunno>{
+  get(id: any): Observable<ALU_Alunno>{
     return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/'+id);
     //http://213.215.231.4/swappX/api/ALU_Alunni/3
   }
 
-  loadAlunnoWithParents(id: any): Observable<ALU_Alunno>{
+  getWithParents(id: any): Observable<ALU_Alunno>{
     return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/GetWithParents/'+id);
   }
 
@@ -97,11 +97,11 @@ export class AlunniService {
       }
   }
 
-  filterAlunniAnnoSenzaClasse(searchstring: string, idAnno: number): Observable<ALU_Alunno[]>{
+  listByAnnoNoClasse(searchstring: string, idAnno: number): Observable<ALU_Alunno[]>{
     //console.log("alunni.service.ts - filterAlunni - searchstring:", searchstring);
     if (searchstring != null && (typeof searchstring === 'string')) {
-      return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'CLS_Iscrizioni/GetByAnnoNoClasse/'+idAnno)
-      //http://213.215.231.4/swappX/api/CLS_Iscrizioni/GetByAnnoNoClasse/2
+      return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'CLS_Iscrizioni/ListByAnnoNoClasse/'+idAnno)
+      //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByAnnoNoClasse/2
         .pipe (
         map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
       );
@@ -128,9 +128,9 @@ export class AlunniService {
 //#region -- GenitoreAlunno
 
 
-  getGenitoreAlunno (genitoreID: number, alunnoID: number): Observable <any>{
-    return this.http.get( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/GetAllByGenitoreAlunno?idAlunno='+alunnoID+'&idGenitore='+genitoreID);
-    //http://213.215.231.4/swappX/api/ALU_GenitoriAlunni/GetAllByGenitoreAlunno?idAlunno=3&idGenitore=4
+  listByGenitoreAlunno (genitoreID: number, alunnoID: number): Observable <any>{
+    return this.http.get( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/ListByGenitoreAlunno?idAlunno='+alunnoID+'&idGenitore='+genitoreID);
+    //http://213.215.231.4/swappX/api/ALU_GenitoriAlunni/ListByGenitoreAlunno?idAlunno=3&idGenitore=4
   }
 
   postGenitoreAlunno (genitoreID: number, alunnoID: number): Observable <any>{
@@ -143,7 +143,7 @@ export class AlunniService {
     return this.http.post( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/' , parentela);
   }
 
-  deleteGenitoreAlunno (genitoreID: number, alunnoID: number) {
+  deleteByGenitoreAlunno (genitoreID: number, alunnoID: number) {
     //console.log ("genitoreID:", genitoreID, "alunnoID:", alunnoID)
     return this.http.delete( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/DeleteByGenitoreAlunno?idAlunno='+alunnoID+'&idGenitore='+genitoreID);
     //http://213.215.231.4/swappX/api/ALU_GenitoriAlunni/DeleteByGenitoreAlunno?idAlunno=3&idGenitore=4

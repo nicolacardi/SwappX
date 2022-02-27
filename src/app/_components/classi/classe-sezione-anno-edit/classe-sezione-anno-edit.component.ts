@@ -93,7 +93,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
     //********************* POPOLAMENTO FORM *******************
     if (this.idClasseSezioneAnno && this.idClasseSezioneAnno + '' != "0") {
 
-      const obsClasseSezioneAnno$: Observable<CLS_ClasseSezioneAnno> = this.svcClasseSezioneAnno.loadClasse(this.idClasseSezioneAnno);
+      const obsClasseSezioneAnno$: Observable<CLS_ClasseSezioneAnno> = this.svcClasseSezioneAnno.getWithClasseSezioneAnno(this.idClasseSezioneAnno);
       const loadClasseSezioneAnno$ = this._loadingService.showLoaderUntilCompleted(obsClasseSezioneAnno$);
       
       this.classeSezioneAnno$ = loadClasseSezioneAnno$.pipe(
@@ -133,7 +133,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
     var pSezione = this.form.controls['sezione'].value;
 
     if (this.form.controls['id'].value == null){
-      this.svcClasseSezione.loadByClasseSezione (piDClasse, pSezione) 
+      this.svcClasseSezione.getByClasseSezione (piDClasse, pSezione) 
         .pipe (
             tap ( val   =>   this.form.controls['classeSezioneID'].setValue(val.id)),
             concatMap(() => this.svcClasseSezioneAnno.post(this.form.value))
@@ -148,7 +148,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
       );
     }
     else{
-      this.svcClasseSezione.loadByClasseSezione (piDClasse, pSezione) 
+      this.svcClasseSezione.getByClasseSezione (piDClasse, pSezione) 
         .pipe (
             tap ( val   =>   this.form.controls['classeSezioneID'].setValue(val.id)),
             concatMap(() => this.svcClasseSezioneAnno.put(this.form.value))

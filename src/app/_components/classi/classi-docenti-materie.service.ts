@@ -23,17 +23,19 @@ export class ClassiDocentiMaterieService {
     //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/ListByClasseSezioneAnno/16
   }
 
-  //MANCA WS INTERO
-  getByClasseAndMateriaAndDocente(idClasseSezioneAnno: number, idMateria: number, idDocente: number): Observable <CLS_ClasseDocenteMateria> {
-    return this.http.get <CLS_ClasseDocenteMateria>( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/getByClasseAndMateriaAndDocente?idClasseSezioneAnno='+idClasseSezioneAnno+'&idMateria='+idMateria+'&idDocente='+idDocente);  
-      //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByAlunnoAndClasseSezioneAnno?idClasseSezioneAnno=3&idMateria=1&idDocente=1
-  }
-
   //MANCA PUBBLICARE WS
   getByClasseSezioneAnnoAndMateria(idClasseSezioneAnno: number, idMateria: number): Observable <CLS_ClasseDocenteMateria> {
-    return this.http.get <CLS_ClasseDocenteMateria>( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/getByClasseSezioneAnnoAndMateriaAndDocente?idClasseSezioneAnno='+idClasseSezioneAnno+'&idMateria='+idMateria);  
-      //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByAlunnoAndClasseSezioneAnno?idClasseSezioneAnno=3&idMateria=1
+    return this.http.get <CLS_ClasseDocenteMateria>( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateria?idClasseSezioneAnno='+idClasseSezioneAnno+'&idMateria='+idMateria);  
+      //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateria?idClasseSezioneAnno=16&idMateria=4
   }
+
+  //MANCA WS INTERO
+  getByClasseSezioneAnnoAndMateriaAndDocente(idClasseSezioneAnno: number, idMateria: number, idDocente: number): Observable <CLS_ClasseDocenteMateria> {
+    return this.http.get <CLS_ClasseDocenteMateria>( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateriaAndDocente?idClasseSezioneAnno='+idClasseSezioneAnno+'&idMateria='+idMateria+'&idDocente='+idDocente);  
+      //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateriaAndDocente?idClasseSezioneAnno=16&idMateria=4&idDocente=3
+  }
+
+
 
 
   loadPersona(id: any): Observable<CLS_ClasseDocenteMateria>{

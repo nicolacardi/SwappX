@@ -286,6 +286,10 @@
         width: 50%;
     }
 
+    .w70 {
+        width: 70%;
+    }
+
     .w80 {
         width: 80%;
     }
@@ -498,12 +502,16 @@
         transform: scale(1.05);
     }
 
-    ._btn-addYellow {
+    ._btn-addAlunno {
         z-index: 1000;
         position: absolute !important;
         left: 10px;
         top: 5px;
         background-color: #e0b20d !important;
+    }
+
+    ._btn-addAlunno:hover{
+        transform: scale(1.05);
     }
 
     ._btn-addDocente {
@@ -512,15 +520,13 @@
         left: 10px;
         top: 5px;
         background-color: #e0b20d !important;
-        /* background-image: url("./assets/plus.svg"); 
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 80%; /* Resize the background image to cover the entire container 
-        transition: transform 0.8s ease-in-out; */
     }
 
+    ._btn-addDocente:hover{
+        transform: scale(1.05);
+    }
 
-    ._btn-addRed {
+    ._btn-Red {
         z-index: 1000;
         position: absolute !important;
         left: 60px;
@@ -528,20 +534,32 @@
         background-color: #e00d0d !important;
     }
 
-    ._btn-addBlu {
+    ._btn-Red:hover{
+        transform: scale(1.05);
+    }
+
+    ._btn-Blu {
         z-index: 1000;
         position: absolute !important;
         left: 110px;
         top: 5px;
-        background-color: #1221af !important;
+        background-color: #044D7E !important;
     }
 
-    ._btn-addGreen {
+    ._btn-Blu:hover {
+        transform: scale(1.05);
+    }
+
+    ._btn-Green {
         z-index: 1000;
         position: absolute !important;
         left: 160px;
         top: 5px;
         background-color: #12af34 !important;
+    }
+    
+    ._btn-Green:hover {
+        transform: scale(1.05);
     }
 
     ._btn-toolbar-reload{
@@ -576,6 +594,8 @@
     ._btn-PDF:hover {
         background-image: url("./assets/PDFicon.svg"); 
     }
+
+
 
     ._btn-XLS {
         background-image: url("./assets/XLSiconGreys.svg"); 
@@ -818,6 +838,7 @@ mat-nav-list a img {
 .iconaMenu{
     height: 24px;
 }
+
 
 .iconaMenuBig{
     height: 60px;

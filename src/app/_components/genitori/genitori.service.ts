@@ -14,7 +14,7 @@ export class GenitoriService {
 
   constructor(private http: HttpClient) { }
 
-  load(): Observable<ALU_Genitore[]>{
+  list(): Observable<ALU_Genitore[]>{
   //loadGenitori(idAlunno?: any): Observable<ALU_Genitore[]>{
     //if (idAlunno == null || idAlunno == "")
       return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori');
@@ -23,17 +23,17 @@ export class GenitoriService {
     //http://213.215.231.4/swappX/api/ALU_Alunni
   }
 
-  loadByAlunno(idAlunno: any): Observable<ALU_Genitore[]>{
-      return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllByAlunno/'+idAlunno);
-      //http://213.215.231.4/swappX/api/ALU_Genitori/GetAllByAlunno/3
+  listByAlunno(idAlunno: any): Observable<ALU_Genitore[]>{
+      return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/ListByAlunno/'+idAlunno);
+      //http://213.215.231.4/swappX/api/ALU_Genitori/ListByAlunno/3
   }
 
-  loadWithChildren(): Observable<ALU_Genitore[]>{
-    return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllWithChildren');
-    //http://213.215.231.4/swappX/api/ALU_Genitori/GetAllWithChildren
+  listWithChildren(): Observable<ALU_Genitore[]>{
+    return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/ListWithChildren');
+    //http://213.215.231.4/swappX/api/ALU_Genitori/ListWithChildren
   }
 
-  loadGenitore(id: any): Observable<ALU_Genitore>{
+  get(id: any): Observable<ALU_Genitore>{
     return this.http.get<ALU_Genitore>(environment.apiBaseUrl+'ALU_Genitori/'+id);
     //http://213.215.231.4/swappX/api/ALU_Genitori/3
   }

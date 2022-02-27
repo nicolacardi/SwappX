@@ -25,9 +25,9 @@ export class ClassiSezioniAnniService {
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnnoGroupByClasse/1
   }
 
-  loadClasse(id: any): Observable<CLS_ClasseSezioneAnno>{
-    return  this.http.get<CLS_ClasseSezioneAnno>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/getWithClasseSezioneanno/'+id);
-    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/getwithClasseSezioneanno/1
+  getWithClasseSezioneAnno(id: any): Observable<CLS_ClasseSezioneAnno>{
+    return  this.http.get<CLS_ClasseSezioneAnno>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/GetWithClasseSezioneanno/'+id);
+    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/GetwithClasseSezioneanno/1
   } 
   
   put(formData: any): Observable <any>{
@@ -36,7 +36,6 @@ export class ClassiSezioniAnniService {
 
   post(formData: any): Observable <any>{
     formData.id = 0;
-
     return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni' , formData);  
   }
 
@@ -44,9 +43,6 @@ export class ClassiSezioniAnniService {
     return this.http.delete( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni/' + id);    
   }
 
-  postAlunnoInClasse(formData: any) {
-    formData.id = 0;
-    return this.http.post( environment.apiBaseUrl  + 'CLS_Iscrizioni' , formData);  
-  }
+
 
 }

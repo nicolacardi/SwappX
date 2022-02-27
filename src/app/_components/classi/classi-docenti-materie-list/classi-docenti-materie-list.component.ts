@@ -8,9 +8,11 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
+import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { PersonaEditComponent } from '../../persone/persona-edit/persona-edit.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
+import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 
 @Component({
   selector: 'app-classi-docenti-materie-list',
@@ -23,6 +25,7 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
   matDataSource = new           MatTableDataSource<CLS_ClasseDocenteMateria>();
   storedFilterPredicate!:       any;
   filterValue = '';
+  classeSezioneAnno!:           CLS_ClasseSezioneAnno;
 
   displayedColumns: string[] = [
     "select",
@@ -58,6 +61,7 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
 
   constructor(
     private svcClassiDocentiMaterie:    ClassiDocentiMaterieService,
+    private svcClasseSezioneAnno:       ClassiSezioniAnniService,
     private _loadingService:            LoadingService,
     public _dialog:                     MatDialog
   ) { }
@@ -68,6 +72,8 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
     if (this.idClasse != undefined) {
       this.loadData();
       //this.toggleChecks = false;
+      //parcheggio in classeSezioneAnno i dati della classe che servono a classi-dashboard (per il nome dell'export)
+      this.svcClasseSezioneAnno.get(this.idClasse).subscribe(res => this.classeSezioneAnno = res)
     }
   }
 

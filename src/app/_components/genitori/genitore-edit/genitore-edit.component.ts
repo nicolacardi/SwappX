@@ -114,7 +114,7 @@ export class GenitoreEditComponent implements OnInit {
     
     if (this.idGenitore && this.idGenitore + '' != "0") {
 
-      const obsGenitore$: Observable<ALU_Genitore> = this.svcGenitori.loadGenitore(this.idGenitore);
+      const obsGenitore$: Observable<ALU_Genitore> = this.svcGenitori.get(this.idGenitore);
       const loadGenitore$ = this._loadingService.showLoaderUntilCompleted(obsGenitore$);
       //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
       this.genitore$ = loadGenitore$
@@ -258,7 +258,7 @@ export class GenitoreEditComponent implements OnInit {
     //ma con una condizione: la iif specifica proprio che SE il risultato della verifica è vuoto allora si può procedere con la post
     //altrimenti si mette in successione l'observable vuoto (of())
     
-    this.svcAlunni.getGenitoreAlunno(this.idGenitore, figlio.id)
+    this.svcAlunni.listByGenitoreAlunno(this.idGenitore, figlio.id)
     .pipe(
       concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(this.idGenitore, figlio.id), of() )
       )
@@ -275,7 +275,7 @@ export class GenitoreEditComponent implements OnInit {
     //devo fare una verifica prima della post:
     //per caso è già figlio? In teoria dovremmo aver nascosto il genitore dalla lista da cui pescare, no?
     const genitoreID = this.idGenitore;
-    this.svcAlunni.deleteGenitoreAlunno(genitoreID, figlio.id).subscribe(
+    this.svcAlunni.deleteByGenitoreAlunno(genitoreID, figlio.id).subscribe(
       res=> {
           //console.log("addToFamily OK");
           this.alunniFamigliaComponent.loadData();

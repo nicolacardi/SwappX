@@ -25,6 +25,8 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
 
 //classes
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
+import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 
 @Component({
   selector:     'app-iscrizioni-classe-list',
@@ -39,7 +41,8 @@ export class IscrizioniClasseListComponent implements OnInit {
   matDataSource = new MatTableDataSource<CLS_Iscrizione>();
   storedFilterPredicate!:       any;
   filterValue = '';
-
+  classeSezioneAnno!:           CLS_ClasseSezioneAnno;
+  
   displayedColumns: string[] = [
       "select",
       "actionsColumn", 
@@ -101,11 +104,13 @@ export class IscrizioniClasseListComponent implements OnInit {
 
 //#endregion
 
-  constructor(private svcIscrizioni:    IscrizioniService,
-              private router:           Router,
-              public _dialog:           MatDialog, 
-              private _loadingService:  LoadingService,
-              private _navigationService:   NavigationService
+  constructor(private svcIscrizioni:          IscrizioniService,
+              private svcClasseSezioneAnno:   ClassiSezioniAnniService,
+
+              private router:                 Router,
+              public _dialog:                 MatDialog, 
+              private _loadingService:        LoadingService,
+              private _navigationService:     NavigationService
               ) {
   }
   
@@ -119,6 +124,8 @@ export class IscrizioniClasseListComponent implements OnInit {
         this.toggleChecks = false;
         this.resetSelections();
       }
+
+
   }
   
   ngOnInit () {
@@ -136,6 +143,9 @@ export class IscrizioniClasseListComponent implements OnInit {
 
     //if (this.context == "classi-dashboard" && this.idClasse != undefined) {
     if (this.idClasse != undefined) {
+      //parcheggio in classeSezioneAnno i dati della classe che servono a classi-dashboard (per il nome dell'export)
+      this.svcClasseSezioneAnno.get(this.idClasse).subscribe(res => this.classeSezioneAnno = res)
+
       obsIscrizioni$= this.svcIscrizioni.listByClasseSezioneAnno(this.idClasse);
       const loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
 
@@ -146,6 +156,8 @@ export class IscrizioniClasseListComponent implements OnInit {
           this.matDataSource.sort = this.sort; 
         }
       );
+
+
     } 
   }
 
