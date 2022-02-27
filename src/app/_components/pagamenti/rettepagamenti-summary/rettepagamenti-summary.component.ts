@@ -74,7 +74,7 @@ displayedColumnsRettePagamentiSummary: string[] = [
     this.displayedColumns = this.displayedColumnsRettePagamentiSummary;
     
     let obsSummary$: Observable<PAG_RettePagamenti_Sum[]>;
-    obsSummary$= this.svcRette.listSummary(this.form.controls['selectAnnoScolastico'].value);
+    obsSummary$= this.svcRette.listRettePagamenti_Sum(this.form.controls['selectAnnoScolastico'].value);
     const loadSummary$ =this._loadingService.showLoaderUntilCompleted(obsSummary$);
 
     loadSummary$.subscribe(val => {

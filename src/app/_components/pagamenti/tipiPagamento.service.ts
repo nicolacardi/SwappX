@@ -18,16 +18,12 @@ export class TipiPagamentoService {
     return this.http.get<PAG_TipoPagamento[]>(environment.apiBaseUrl+'PAG_TipiPagamento');
   }
 
-  // loadByID(idTipoPagamento: any): Observable<PAG_TipoPagamento>{  
-  //   return this.http.get<PAG_TipoPagamento>(environment.apiBaseUrl+'PAG_TipiPagamento/'+idTipoPagamento);
+//*************** METODO NON USATO ******************/  
+  // filterList(searchstring: string): Observable<PAG_TipoPagamento[]>{
+
+  //   return this.http.get<PAG_TipoPagamento[]>(environment.apiBaseUrl+'PAG_TipiPagamento')
+  //     .pipe (
+  //       map(val=> val.filter(val=>val.descrizione.toLowerCase().includes(searchstring))),
+  //     );
   // }
-
-  
-  filter(searchstring: string): Observable<PAG_TipoPagamento[]>{
-
-    return this.http.get<PAG_TipoPagamento[]>(environment.apiBaseUrl+'PAG_TipiPagamento')
-      .pipe (
-        map(val=> val.filter(val=>val.descrizione.toLowerCase().includes(searchstring))),
-      );
-  }
 }

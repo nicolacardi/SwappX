@@ -16,12 +16,14 @@ export class CausaliPagamentoService {
   list(): Observable<PAG_CausalePagamento[]>{
     return this.http.get<PAG_CausalePagamento[]>(environment.apiBaseUrl+'PAG_CausaliPagamento');
   }
-
-  loadByID(idCausalePagamento: any): Observable<PAG_CausalePagamento>{  
-    return this.http.get<PAG_CausalePagamento>(environment.apiBaseUrl+'PAG_CausaliPagamento/'+idCausalePagamento);
-  }
   
-  //************** METODO NON USATO *****************/ 
+ //************** METODI NON USATI *****************/ 
+
+
+  // loadByID(idCausalePagamento: any): Observable<PAG_CausalePagamento>{  
+  //   return this.http.get<PAG_CausalePagamento>(environment.apiBaseUrl+'PAG_CausaliPagamento/'+idCausalePagamento);
+  // }
+  
   //filterList(searchstring: string): Observable<PAG_CausalePagamento[]>{
 
   //   return this.http.get<PAG_CausalePagamento[]>(environment.apiBaseUrl+'PAG_CausaliPagamento')

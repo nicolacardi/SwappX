@@ -175,10 +175,10 @@ export class PagamentiListComponent implements OnInit {
 
     if (this.alunnoID == 0 ) return;
     if (this.alunnoID) {
-      obsPagamenti$= this.svcPagamenti.loadByAlunnoAnno(this.alunnoID, this.annoID);
+      obsPagamenti$= this.svcPagamenti.listByAlunnoAnno(this.alunnoID, this.annoID);
     } else {
       if (!this.annoID) this.annoID = this.form.controls['selectAnnoScolastico'].value;
-      obsPagamenti$= this.svcPagamenti.loadByAnno(this.annoID);
+      obsPagamenti$= this.svcPagamenti.listByAnno(this.annoID);
     }
     const loadPagamenti$ =this._loadingService.showLoaderUntilCompleted(obsPagamenti$);
 

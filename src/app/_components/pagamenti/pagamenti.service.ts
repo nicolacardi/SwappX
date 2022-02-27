@@ -14,24 +14,24 @@ export class PagamentiService {
 
   constructor(private http: HttpClient) { }
 
-  load(): Observable<PAG_Pagamento[]>{
+  list(): Observable<PAG_Pagamento[]>{
     return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti');
     //http://213.215.231.4/swappX/api/PAG_Pagamenti
   }
 
-  loadByID(idPagamento: any): Observable<PAG_Pagamento>{
+  get(idPagamento: any): Observable<PAG_Pagamento>{
     return this.http.get<PAG_Pagamento>(environment.apiBaseUrl+'PAG_Pagamenti/'+idPagamento);
     //http://213.215.231.4/swappX/api/PAG_Pagamenti/5
   }
 
-  loadByAnno(idAnno: number): Observable<PAG_Pagamento[]>{
-    return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti/GetAllByAnno?idAnno='+idAnno);
-    //http://213.215.231.4/swappX/api/PAG_Pagamenti/GetAllByAnno?idAnno=1
+  listByAnno(idAnno: number): Observable<PAG_Pagamento[]>{
+    return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti/ListByAnno?idAnno='+idAnno);
+    //http://213.215.231.4/swappX/api/PAG_Pagamenti/ListByAnno?idAnno=1
   }
 
-  loadByAlunnoAnno(idAlunno: number, idAnno: number): Observable<PAG_Pagamento[]>{
-    return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti/GetAllByAlunnoAnno?idAlunno='+idAlunno+'&idAnno='+idAnno);
-    //http://213.215.231.4/swappX/api/PAG_Pagamenti/GetAllByAlunnoAnno?idAlunno=3&idAnno=1
+  listByAlunnoAnno(idAlunno: number, idAnno: number): Observable<PAG_Pagamento[]>{
+    return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti/ListByAlunnoAnno?idAlunno='+idAlunno+'&idAnno='+idAnno);
+    //http://213.215.231.4/swappX/api/PAG_Pagamenti/ListByAlunnoAnno?idAlunno=3&idAnno=1
   }
 
   put(formData: any): Observable <any>{
@@ -48,18 +48,19 @@ export class PagamentiService {
     return this.http.delete(environment.apiBaseUrl  + 'PAG_Pagamenti/' + id);    
   }
 
-  filterPagamenti(searchstring: string): Observable<PAG_Pagamento[]>{
+//**************** METODI NON USATI ******************/
+  // filterPagamenti(searchstring: string): Observable<PAG_Pagamento[]>{
     
-    console.log("pagamenti.service.ts - filterPagamenti - searchstring:", searchstring);
+  //   console.log("pagamenti.service.ts - filterPagamenti - searchstring:", searchstring);
     
-    if (searchstring != null && (typeof searchstring === 'string')) {
-      return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti')
-            .pipe (
-            map(val=>val.filter(val=>(val.tipoPagamento.descrizione.toLowerCase() + ' ' + val.Causale.descrizione.toLowerCase()).includes(searchstring.toLowerCase()))),
-      );
-        } else {
-      return of()
-      }
-  }
+  //   if (searchstring != null && (typeof searchstring === 'string')) {
+  //     return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti')
+  //           .pipe (
+  //           map(val=>val.filter(val=>(val.tipoPagamento.descrizione.toLowerCase() + ' ' + val.Causale.descrizione.toLowerCase()).includes(searchstring.toLowerCase()))),
+  //     );
+  //       } else {
+  //     return of()
+  //     }
+  // }
 
 }

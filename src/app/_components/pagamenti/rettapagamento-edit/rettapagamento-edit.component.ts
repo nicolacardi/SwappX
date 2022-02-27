@@ -100,7 +100,7 @@ export class RettapagamentoEditComponent implements OnInit {
     if (this.causale.value == 1) {
       
       //ATTENZIONE: ASINCRONA! BISOGNA ASPETTARE CHE QUESTA RISPONDA PRIMA DI LANCIARE LA SUCCESSIVA post
-      this.svcRette.loadByAlunnoAnnoMese(this.alunnoID, this.annoID, (this.formRetta.controls['meseRetta'].value + 1))
+      this.svcRette.getByAlunnoAnnoMese(this.alunnoID, this.annoID, (this.formRetta.controls['meseRetta'].value + 1))
       .pipe (
         tap (val=> this.formRetta.controls['rettaID'].setValue(val.id)), //il valore in arrivo dalla load viene inserito nel form
         concatMap(() => this.svcPagamenti.post(this.formRetta.value)) //concatMap ATTENDE l'observable precedente prima di lanciare il successivo
