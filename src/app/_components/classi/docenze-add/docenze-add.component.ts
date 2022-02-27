@@ -113,7 +113,7 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
     //Bisogna verificare che già in questa classe non ci sia il maestro di questa materia
     //e anche che questo stesso maestro non sia già maestro di questa materia in questa classe
 
-    const checks$ = this.svcClassiDocentiMaterie.getByClasseAndMateria(this.data.idClasse, this.materiaSelectedID)
+    const checks$ = this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateria(this.data.idClasse, this.materiaSelectedID)
     .pipe(
       //se trova che la stessa classe è già presente res.length è != 0 quindi non procede con la getByAlunnoAnno ma restituisce of()
       //se invece res.length == 0 dovrebbe proseguire e concatenare la verifica successiva ch è getByAlunnoAndAnno...
