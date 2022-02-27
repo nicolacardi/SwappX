@@ -23,6 +23,19 @@ export class ClassiDocentiMaterieService {
     //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/ListByClasseSezioneAnno/16
   }
 
+  //MANCA WS
+  getByClasseAndMateriaAndDocente(idClasseSezioneAnno: number, idMateria: number, idDocente: number): Observable <CLS_ClasseDocenteMateria> {
+    return this.http.get <CLS_ClasseDocenteMateria>( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/getByClasseAndMateriaAndDocente?idClasseSezioneAnno='+idClasseSezioneAnno+'&idMateria='+idMateria+'&idDocente='+idDocente);  
+      //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByAlunnoAndClasseSezioneAnno?idClasseSezioneAnno=3&idMateria=1&idDocente=1
+  }
+
+  //MANCA WS
+  getByClasseAndMateria(idClasseSezioneAnno: number, idMateria: number): Observable <CLS_ClasseDocenteMateria> {
+    return this.http.get <CLS_ClasseDocenteMateria>( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/getByClasseAndMateriaAndDocente?idClasseSezioneAnno='+idClasseSezioneAnno+'&idMateria='+idMateria);  
+      //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByAlunnoAndClasseSezioneAnno?idClasseSezioneAnno=3&idMateria=1
+  }
+
+
   loadPersona(id: any): Observable<CLS_ClasseDocenteMateria>{
     return this.http.get<CLS_ClasseDocenteMateria>(environment.apiBaseUrl+'CLS_ClassiDocentiMaterie/'+id);
     //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/4

@@ -1,8 +1,8 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
-import { debounceTime, delayWhen, finalize, switchMap, tap } from 'rxjs/operators';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { iif, Observable, of } from 'rxjs';
+import { concatMap, debounceTime, delayWhen, finalize, switchMap, tap } from 'rxjs/operators';
 import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -20,6 +20,7 @@ import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 import { MaterieService } from 'src/app/_services/materie.service';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 @Component({
   selector: 'app-docenze-add',
@@ -51,6 +52,8 @@ export class DocenzeAddComponent implements OnInit {
     private svcClassiDocentiMaterie:        ClassiDocentiMaterieService,
     public dialogRef:                       MatDialogRef<DocenzeAddComponent>,
     private _snackBar:                      MatSnackBar,
+    public _dialog:                         MatDialog,
+
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) { 
 
@@ -106,6 +109,56 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
       MateriaID: this.materiaSelectedID,
       ClasseSezioneAnnoID: this.data.idClasse
     };
+
+    //Bisogna verificare che già in questa classe non ci sia il maestro di questa materia
+    //e anche che questo stesso maestro non sia già maestro di questa materia in questa classe
+
+    const checks$ = this.svcClassiDocentiMaterie.getByClasseAndMateria(this.data.idClasse, this.materiaSelectedID)
+    .pipe(
+      //se trova che la stessa classe è già presente res.length è != 0 quindi non procede con la getByAlunnoAnno ma restituisce of()
+      //se invece res.length == 0 dovrebbe proseguire e concatenare la verifica successiva ch è getByAlunnoAndAnno...
+      //invece "test" non compare mai...quindi? sta uscendo sempre con of()?
+      tap(res=> {
+          if (res != null) {
+          this._dialog.open(DialogOkComponent, {
+            width: '320px',
+            data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa Materia è già stata inserita per questa classe!"}
+          });
+          
+          } else {
+            console.log("la materia non è già insegnata per la classe in cui sto cercando di inserirla, posso procedere");
+          }
+        }
+      ),
+      concatMap( res => iif (()=> res == null,
+        this.svcClassiDocentiMaterie.getByClasseAndMateriaAndDocente(this.data.idClasse, this.materiaSelectedID, this.docenteSelectedID) , of() )
+      ),
+      tap(res=> {
+        if (res != null) {
+          this._dialog.open(DialogOkComponent, {
+            width: '320px',
+            data: {titolo: "ATTENZIONE!", sottoTitolo: "Il docente insegna già questa materia in questa classe"}
+          });
+        } else {
+          console.log("la materia non è già insegnata per la classe in cui sto cercando di inserirla da questo insegnante, posso procedere");
+        }
+      })
+    )
+
+
+    // checks$
+    // .pipe(
+    //   concatMap( res => iif (()=> res == null, this.svcIscrizioni.post(objClasseSezioneAnnoAlunno) , of() )
+    //   )
+    // ).subscribe(
+    //   res=> {
+    //     //loadData del component attended
+    //     this.classiAttendedComponent.loadData();
+    //   },
+    //   err=> { }
+    // )
+
+
     this.svcClassiDocentiMaterie.post(objInsegnamento)
       .pipe( finalize(()=>this.dialogRef.close()))
       .subscribe(
