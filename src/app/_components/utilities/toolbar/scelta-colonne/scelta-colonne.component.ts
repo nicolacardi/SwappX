@@ -3,7 +3,7 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { _UT_GridLayout, _UT_GridLayoutColumn } from 'src/app/_models/_UT_GridLayout';
 import { UserService } from 'src/app/_user/user.service';
-import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
+import { AlunniListComponent } from '../../../alunni/alunni-list/alunni-list.component';
 
 @Component({
   selector: 'app-scelta-colonne',

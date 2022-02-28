@@ -2,12 +2,12 @@ import { Component, ComponentRef, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 //components
-import { DialogOkComponent } from '../utilities/dialog-ok/dialog-ok.component';
+import { DialogOkComponent } from '../dialog-ok/dialog-ok.component';
 import { SceltaColonneComponent } from './scelta-colonne/scelta-colonne.component';
 
 //services
-import { ExcelService } from '../utilities/exceljs/exceljs.service';
-import { JspdfService } from '../utilities/jspdf/jspdf.service';
+import { ExcelService } from '../exceljs/exceljs.service';
+import { JspdfService } from '../jspdf/jspdf.service';
 
 //classes
 import { _UT_GridLayout, _UT_GridLayoutColumn } from 'src/app/_models/_UT_GridLayout';

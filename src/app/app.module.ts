@@ -68,8 +68,8 @@ import { MessaggiComponent } from './_components/messaggi/messaggi.component';
 import { ProfiloComponent } from './_components/account/profilo/profilo.component';
 import { ChangePswComponent } from './_components/account/change-psw/change-psw.component';
 
-import { ToolbarComponent } from './_components/toolbar/toolbar.component';
-import { SceltaColonneComponent } from './_components/toolbar/scelta-colonne/scelta-colonne.component';
+import { ToolbarComponent } from './_components/utilities/toolbar/toolbar.component';
+import { SceltaColonneComponent } from './_components/utilities/toolbar/scelta-colonne/scelta-colonne.component';
 
 import { DialogYesNoComponent } from './_components/utilities/dialog-yes-no/dialog-yes-no.component';
 import { DialogOkComponent } from './_components/utilities/dialog-ok/dialog-ok.component';
