@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PER_TipoPersona } from 'src/app/_models/PER_Persone';
 import { environment } from 'src/environments/environment';
 
+//classes
+import { PER_TipoPersona } from 'src/app/_models/PER_Persone';
 @Injectable({
   providedIn: 'root'
 })
