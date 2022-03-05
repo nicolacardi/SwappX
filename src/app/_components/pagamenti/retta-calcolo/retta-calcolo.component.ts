@@ -154,8 +154,8 @@ export class RettaCalcoloComponent implements OnInit {
     let anno1 = objClasseSezioneAnno.anno1;
     let anno2 = objClasseSezioneAnno.anno2;
 
-    var importoAnno =objClasseSezioneAnno.importo;
-    var importoAnno2 =objClasseSezioneAnno.importo2;
+    let importoAnno =objClasseSezioneAnno.importo;
+    let importoAnno2 =objClasseSezioneAnno.importo2;
 
     importoMeseRound = Math.floor(importoAnno/contaMesi);
     restoImportoMese = importoAnno - importoMeseRound * contaMesi;  //per applicare il resto alla prima quota devo essere sicuro che le quote vengano passate in ordine, quindi nel service metto una orderby
@@ -295,8 +295,8 @@ export class RettaCalcoloComponent implements OnInit {
 
     GET CLS_Classe
 
-    var importoMese;
-    var ImportoAnno;
+    let importoMese;
+    let ImportoAnno;
     
     foreach CLS_Iscrizione
       - stato iscrizione = ...
@@ -308,9 +308,9 @@ export class RettaCalcoloComponent implements OnInit {
       else
         importoAnno = importo;
 
-      var totMesi = count checkboxes mesi
+      let totMesi = count checkboxes mesi
       importoMese = round( importoAnno / totMesi )
-      var restoImporto = ImportoAnno - importoMese * totMesi ;
+      let restoImporto = ImportoAnno - importoMese * totMesi ;
 
       foreach( checkbox mese (DOM...) )
         

@@ -253,7 +253,7 @@ constructor(
       obsClassi$= this.svcClassiSezioniAnni.listByAnnoGroupByClasse(idAnno);
       // pipe(
       // map(res=> {
-      //   var ret = <CLS_ClasseSezioneAnno[]>res.json();
+      //   let ret = <CLS_ClasseSezioneAnno[]>res.json();
       //   ret.sort((a,b) => a.classeSezione.classe < b.classeSezione.classe ? -1 : 1);
       //   return ret;
       // })) ;

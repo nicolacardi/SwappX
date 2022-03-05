@@ -129,8 +129,8 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
   save(){
     //console.log ("form.id", this.form.controls['id'].value );
 
-    var piDClasse = this.form.controls['classeID'].value;
-    var pSezione = this.form.controls['sezione'].value;
+    let piDClasse = this.form.controls['classeID'].value;
+    let pSezione = this.form.controls['sezione'].value;
 
     if (this.form.controls['id'].value == null){
       this.svcClasseSezione.getByClasseSezione (piDClasse, pSezione) 

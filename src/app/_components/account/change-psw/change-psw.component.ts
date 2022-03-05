@@ -42,7 +42,7 @@ export class ChangePswComponent implements OnInit {
 
   save(){
     
-    var formData = {
+    let formData = {
       userID:       this.currUser.userID,
       currPassword:  this.form.controls.password.value,
       newPassword:  this.form.controls.newPassword.value

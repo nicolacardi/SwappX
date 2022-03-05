@@ -58,8 +58,8 @@ export abstract class Utility {
   }
 
   public static getCurrentUser() : User {
-    var obj: any;
-    var tmp = localStorage.getItem('currentUser');
+    let obj: any;
+    let tmp = localStorage.getItem('currentUser');
     obj = JSON.parse(tmp!) as User;
     return obj;
   }

@@ -98,7 +98,7 @@ export class UserService {
 
   Register()
   {
-    var body = {
+    let body = {
       UserName:   this.formModel.value.UserName,
       Email:      this.formModel.value.Email,
       FullName:   this.formModel.value.FullName,
@@ -166,7 +166,7 @@ export class UserService {
 //AS: VERIFICARE
   getUserProfile(appUser: string){
     //AS: sostituito da auth.interceptor
-    //var tokenHeader = new HttpHeaders({'Authorization':'Bearer '+ localStorage.getItem('token')});
+    //let tokenHeader = new HttpHeaders({'Authorization':'Bearer '+ localStorage.getItem('token')});
     //return tokenHeader;
 
     //return this.http.get(this.BaseURI + '/UserProfile', {headers: tokenHeader});
@@ -176,7 +176,7 @@ export class UserService {
     //return this.http.get(environment.apiBaseURI + '/UserProfile', );
     //return this.http.get(this.BaseURI  + '/UserProfile', );
     
-    //var localUser = localStorage.getItem('appUser');
+    //let localUser = localStorage.getItem('appUser');
 
     //console.log("DEBUG -getUserProfile:" + this.BaseURI  + '/ApplicationUser/'+ localUser );
     //return this.http.get(this.BaseURI  + '/ApplicationUser/' + this.formModel.value.UserName, );

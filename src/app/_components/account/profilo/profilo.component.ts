@@ -115,7 +115,7 @@ export class ProfiloComponent implements OnInit {
 
   save(){
 
-    var formData = {
+    let formData = {
       userID:     this.currUser.userID,   
       UserName:   this.form.controls.username.value,
       Email:      this.form.controls.email.value,

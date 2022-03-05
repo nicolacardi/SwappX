@@ -18,13 +18,13 @@ export class JspdfService {
     const doc = new jsPDF('l', 'mm', [297, 210]);
     //console.log(doc.getFontList());
     doc.setFont('TitilliumWeb-Regular', 'normal');
-    var width = doc.internal.pageSize.getWidth()
+    let width = doc.internal.pageSize.getWidth()
     doc.text(rptTitle, width/2, 15, { align: 'center' });
     
     //costruisco la data per il footer (vedi options di autoTable è oltre)
-    var today = new Date();
-    var monthpadded = String(today.getMonth()+1).padStart(2, '0');
-    var nDate = today.getDate() + '/' + monthpadded + '/' + today.getFullYear();
+    let today = new Date();
+    let monthpadded = String(today.getMonth()+1).padStart(2, '0');
+    let nDate = today.getDate() + '/' + monthpadded + '/' + today.getFullYear();
 
 //#region PREPARAZIONE DEI DATI ***************************************************************************
 
@@ -124,18 +124,18 @@ export class JspdfService {
         
 
         // Footer
-        var str = "Page " + data.pageNumber + "/" + data.pageCount;
+        let str = "Page " + data.pageNumber + "/" + data.pageCount;
 
         doc.setFontSize(9);
 
         // jsPDF 1.4+ uses getWidth, <1.4 uses .width
-        var pageSize = doc.internal.pageSize;
+        let pageSize = doc.internal.pageSize;
         
-        var pageWidth = pageSize.width
+        let pageWidth = pageSize.width
         ? pageSize.width
         : pageSize.getWidth();
 
-        var pageHeight = pageSize.height
+        let pageHeight = pageSize.height
           ? pageSize.height
           : pageSize.getHeight();
 
@@ -219,7 +219,7 @@ export class JspdfService {
       if (typeof path === 'string') {
         path = path.split('.');
       }
-      for (var i = 0; i < path.length - 1; i++) {
+      for (let i = 0; i < path.length - 1; i++) {
         obj = obj[path[i]];
         if (typeof obj === 'undefined') {
           return;
@@ -231,7 +231,7 @@ export class JspdfService {
   
   
     propertiesToArray(obj: any) {
-      //var keyNames = Object.keys(Object); //estrae solo i nomi delle prorietà di primo livello
+      //let keyNames = Object.keys(Object); //estrae solo i nomi delle prorietà di primo livello
       //questa routine estrae invece tutte le proprietà e sottoproprietà di un oggetto nella forma alunno.nome
       const isObject = (val: any) =>
         val && typeof val === 'object' && !Array.isArray(val);

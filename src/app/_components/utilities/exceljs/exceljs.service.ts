@@ -171,7 +171,7 @@ export class ExcelService {
       let i3, i4;
       let text3 = "";
       
-      var colArray = [""];
+      let colArray = [""];
       for (i3 = 0; i3 < 26; i3++) {
         text3 = String.fromCharCode(65 + i3);
         colArray[i] = text3;

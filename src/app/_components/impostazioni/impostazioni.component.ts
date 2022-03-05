@@ -125,7 +125,7 @@ export class ImpostazioniComponent implements OnInit {
   setMessage(n: number){
     this.arrElab[n]= true;
 
-    var tuttiTrue= true;
+    let tuttiTrue= true;
     this.arrElab.forEach(
       x=> {
         if(x == false) tuttiTrue = false; 

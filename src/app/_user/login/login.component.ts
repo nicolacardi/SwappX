@@ -141,17 +141,17 @@ export class LoginComponent implements OnInit {
     {
         if (!ModelState.IsValid)
             return BadRequest();
-        var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
+        let user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
         if (user == null)
             return BadRequest("Invalid Request");
-        var token = await _userManager.GeneratePasswordResetTokenAsync(user);         
-        var param = new Dictionary<string, string>
+        let token = await _userManager.GeneratePasswordResetTokenAsync(user);         
+        let param = new Dictionary<string, string>
         {
             {"token", token },
             {"email", forgotPasswordDto.Email }
         };
-        var callback = QueryHelpers.AddQueryString(forgotPasswordDto.ClientURI, param);
-        var message = new Message(new string[] { user.Email }, "Reset password token", callback, null);
+        let callback = QueryHelpers.AddQueryString(forgotPasswordDto.ClientURI, param);
+        let message = new Message(new string[] { user.Email }, "Reset password token", callback, null);
         await _emailSender.SendEmailAsync(message);
         return Ok();
     }
