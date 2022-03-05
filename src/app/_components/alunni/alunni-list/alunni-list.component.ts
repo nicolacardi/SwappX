@@ -22,6 +22,7 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
 
 //classes
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { promises, resolve } from 'dns';
 
 @Component({
   selector:     'app-alunni-list',
@@ -177,6 +178,8 @@ export class AlunniListComponent implements OnInit {
   }
   
   ngOnInit () {
+
+
     switch(this.context) {
       case 'alunni-page': 
         this.displayedColumns =  this.displayedColumnsAlunniList;
@@ -487,6 +490,15 @@ removeFromFamilyEmit(item: ALU_Alunno) {
   }
 //#endregion
 
+
+
+
+
+
+
+
+// ******************************** LE PROMISES: TENERE ***************************
+//******************primo modo di lavorare in maniera asincrona: setTimeOut e setInterval
 // test () {
 //   let timeoutId = setTimeout(this.myfunction, 2000, 'Nicola');
 
@@ -497,11 +509,10 @@ removeFromFamilyEmit(item: ALU_Alunno) {
 //   clearTimeout(timeoutId);
 // }
 
-
-
+//******************secondo modo: le callbacks
 
 // greet (name: string) {
-//   console.log ('Hello $(name)')
+//   console.log (`Hello $(name)`)
 // }
 
 // higherOrderFunction(callback: any) {
@@ -511,25 +522,157 @@ removeFromFamilyEmit(item: ALU_Alunno) {
 
 // myfunction () {
 //   this.higherOrderFunction (this.greet);
+// }
 
-//   const promise = new Promise<string>((resolve, reject) => {
-//     setTimeout (() => { resolve('Hey sto portando le patatine') }, 5000)
+//*******************il callback hell
+
+
+// fetchCurrentUser('api/user', function(result: any) {
+//   fetchFollowersByUserId(`api/followers/${result.userId}`, function (result:any) {
+//     fetchFollowerInterest(`api/followers/${result.followerId}`, function (result:any) {
+//       fetchInterestTags(`api/followers/${result.InterestId}`, function (result:any) {
+//         fetchTagDescription(`api/followers/${result.tagId}`, function (result:any) {
+//         })
+//       })
+//     })
+//   })
+// });
+
+
+//**********************nascono le promise
+
+// promises () {
+//   const promise = new Promise<void>((resolve, reject) => {
+//     setTimeout (() => { resolve()  }, 5000)
 //   })
 
-//   const onFulfillment = (result: string) => {
-//     console.log (result)
-//     console.log ("preparo la tavola");
-//   }
-  
-//   const onRejection = (error: string) => {
-//     console.log (error)
-//     console.log ("butto la pasta");
+//   const onFulfillment = () => {
+//     console.log ("ho comprato le patatine prepara la tavola");
 //   }
 
-//   promise.then (onFulfillment);
-//   promise.catch(onRejection);
+//   const onRejection = () => {
+//     console.log ("non ho trovato le patatine butta la pasta");
+//   }
+
+
+//   promise.then(onFulfillment)
+//   promise.catch(onRejection)
+// }
+
+
+//**********************ecco come si evita, dunque, il callback hel grazie alle promises
+// const promise = fetchCurrentUser('api/user');
+
+
+// promise.then(result=> fetchFollowerByUserId('api/followers/${result.userId}'))
+//   .then(result => fetchFollowerInterest('api/followers/${result.followerId}'))
+//   .then(result => fetchInterestTags('api/followers/${result.InterestId}'))
+//   .then(result => fetchTagDescription('api/followers/${result.tagId}'))
+//   .then(result => console.log('display the data', result))
+
+//   }
+// })
+
+
+//*********************promise.all, promise.allSettled, promise.race */
+
+
+// promiseall() {
+//   const promise1 = Promise.resolve(3);
+//   const promise2 = 42;
+//   const promise3 = new Promise ((resolve, reject) => {
+//     setTimeout(resolve, 100, 'foo');
+
+//   })
+//   Promise.all([promise1, promise2, promise3]).then ((values) => {
+//     console.log (values);
+//   })
 
 // }
+
+//************************async await 
+
+//le promise sono state ulteriormente perfezionate con async await
+// async greetasync() {
+
+//   let promise = new Promise((resolve, reject) => {
+//     setTimeout (() => resolve("Hello"), 1000)
+//   })
+//   let result = await promise;
+
+//   console.log(result)
+// }
+
+
+//con async await invece di
+
+// promise.then(result=> fetchFollowerByUserId('api/followers/${result.userId}'))
+//   .then(result => fetchFollowerInterest('api/followers/${result.followerId}'))
+//   .then(result => fetchInterestTags('api/followers/${result.InterestId}'))
+//   .then(result => fetchTagDescription('api/followers/${result.tagId}'))
+//   .then(result => console.log('display the data', result))
+
+
+//potremo scrivere come se fossero chiamate sincrone:
+
+// const user = await fetchCurrentUser('api/user')
+// const followers = await fetchFollowerByUserId(`api/followers/${result.userId}`)
+// const interests = await fetchFollowerInterest(`api/followers/${result.followerId}`)
+// const tags = await fetchInterestTags(`api/followers/${result.InterestId}`)
+// const description = await fetchTagDescription(`api/followers/${result.tagId}`)
+//  console.log ('display the data', result)
+
+//*******************sequentialStart concurrentStart parallel */
+//non ci ho capito molto
+
+// resolveHelloN() {
+//   return new Promise (resolve => {
+//     setTimeout (() => resolve("Hello Nicola"), 2000)
+//   })
+// }
+
+// resolveHelloA() {
+//   return new Promise (resolve => {
+//     setTimeout (() => resolve("Hello Andrea"), 3000)
+//   })
+// }
+
+// async sequentialStart() {
+
+//   const helloN = await this.resolveHelloA()
+//   console.log (helloN)
+
+//   const helloA = await this.resolveHelloN()
+//   console.log (helloA)
+
+// }
+
+// async concurrentStart() {
+
+//   const helloN = this.resolveHelloA()
+//   const helloA = this.resolveHelloN()
+//   console.log (await helloN)
+//   console.log (await helloA)
+
+
+// }
+
+// async parallel() {
+//   Promise.all([
+//     (async() => console.log (await this.resolveHelloA()))(),
+//     (async() => console.log (await this.resolveHelloN()))(),
+//   ])
+//   const helloN = this.resolveHelloA()
+//   const helloA = this.resolveHelloN()
+//   console.log (await helloN)
+//   console.log (await helloA)
+
+
+// }
+
+
+
+
 
 
 
@@ -547,5 +690,10 @@ removeFromFamilyEmit(item: ALU_Alunno) {
   //   //alla fine found conterrà true se almeno un genitore viene trovato e false altrimenti
   //   return found!;
   // }
+
+
+
+
+  
 
 }

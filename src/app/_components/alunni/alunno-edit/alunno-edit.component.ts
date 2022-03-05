@@ -296,7 +296,7 @@ export class AlunnoEditComponent implements OnInit {
           });
           
           } else {
-            console.log("l'alunno non frequenta la classe a cui sto cercando di iscriverlo, posso procedere");
+            //console.log("l'alunno non frequenta la classe a cui sto cercando di iscriverlo, posso procedere");
           }
         }
       ),
@@ -310,7 +310,7 @@ export class AlunnoEditComponent implements OnInit {
             data: {titolo: "ATTENZIONE!", sottoTitolo: "E' già stata inserita una classe in quest'anno!"}
           });
         } else {
-          console.log("l'alunno non frequenta alcuna classe nell'anno a cui sto cercando di iscriverlo, posso procedere");
+          //console.log("l'alunno non frequenta alcuna classe nell'anno a cui sto cercando di iscriverlo, posso procedere");
         }
       })
 

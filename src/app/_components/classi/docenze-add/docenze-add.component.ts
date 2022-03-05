@@ -127,7 +127,7 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
           });
           
           } else {
-            console.log("la materia non è già insegnata per la classe in cui sto cercando di inserirla da questo insegnante, posso procedere");
+            //console.log("la materia non è già insegnata per la classe in cui sto cercando di inserirla da questo insegnante, posso procedere");
           }
         }
       ),
@@ -141,7 +141,7 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
             data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa materia ha già una docenza assegnata in questa classe"}
           });
         } else {
-          console.log("la materia non è già insegnata per la classe in cui sto cercando di inserirla, posso procedere");
+          //console.log("la materia non è già insegnata per la classe in cui sto cercando di inserirla, posso procedere");
         }
       })
     )
