@@ -10,7 +10,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { DragDropModule} from '@angular/cdk/drag-drop';
 import { MaterialModule } from './_material/material.module';
+import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+import listPlugin from '@fullcalendar/list'; // a plugin!
+import timegridPlugin from '@fullcalendar/timegrid'; // a plugin!
 
+
+import interactionPlugin from '@fullcalendar/interaction'; // a plugin!
 
 import { AuthInterceptor } from './_user/auth/auth.interceptor';
 import { ErrorInterceptor } from './_user/auth/error.interceptor';
@@ -93,8 +99,15 @@ import { ResetPasswordComponent } from './_user/reset-password/reset-password.co
 import { DatePipe } from '@angular/common';
 import { ClassiDocentiMaterieListComponent } from './_components/classi/classi-docenti-materie-list/classi-docenti-materie-list.component';
 import { DocenzeAddComponent } from './_components/classi/docenze-add/docenze-add.component';
+import { CalendarioComponent } from './_components/calendario/calendario.component';
+import { EventoComponent } from './_components/calendario/evento/evento.component';
 
-
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  dayGridPlugin,
+  listPlugin,
+  timegridPlugin,
+  interactionPlugin
+]);
 @NgModule({
   declarations: [
     AppComponent,
@@ -177,7 +190,9 @@ import { DocenzeAddComponent } from './_components/classi/docenze-add/docenze-ad
     IscrizioniAlunnoListComponent,
     UserEditComponent,
     ResetPasswordComponent,
-    DocenzeAddComponent 
+    DocenzeAddComponent,
+    CalendarioComponent,
+    EventoComponent 
 
   ],
   imports: [
@@ -188,7 +203,9 @@ import { DocenzeAddComponent } from './_components/classi/docenze-add/docenze-ad
     MaterialModule,
     DragDropModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    FullCalendarModule
+
   ],
 
   providers: [

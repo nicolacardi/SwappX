@@ -25,6 +25,7 @@ import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { DocenzeAddComponent } from '../docenze-add/docenze-add.component';
 import { ClassiDocentiMaterieListComponent } from '../classi-docenti-materie-list/classi-docenti-materie-list.component';
 import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
+import { CalendarioComponent } from '../../calendario/calendario.component';
 
 
 @Component({
@@ -91,6 +92,7 @@ export class ClassiDashboardComponent implements OnInit {
   @ViewChild(ClassiSezioniAnniListComponent) viewClassiSezioniAnni!: ClassiSezioniAnniListComponent; 
   @ViewChild(IscrizioniClasseListComponent) viewListIscrizioni!: IscrizioniClasseListComponent; 
   @ViewChild(ClassiDocentiMaterieListComponent) viewClassiDocentiMaterieIscrizioni!: ClassiDocentiMaterieListComponent; 
+  @ViewChild(CalendarioComponent) viewCalendario!: CalendarioComponent; 
 
   @Input () classeSezioneAnnoId!: number;
 //#endregion
@@ -349,4 +351,28 @@ export class ClassiDashboardComponent implements OnInit {
   }
 //#endregion
   
+
+  rerenderCAL() {
+    //console.log("rerenderCAL");
+    this.viewCalendario.calendarDOM.getApi().render();
+    console.log("rerenderCAL");
+
+  }
+
+
+  selectedTabValue(event: any){
+    //senza questo espediente non fa il primo render correttamente
+    if (event.tab.textLabel == "Orario") {
+      this.viewCalendario.calendarDOM.getApi().render();
+    }
+
+  }
+
+
+
+
+
+
+
+
 }

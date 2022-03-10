@@ -18,7 +18,7 @@
         </td>
         <td class="_columnright-dashboard">
 
-            <mat-tab-group>
+            <mat-tab-group (selectedTabChange)="selectedTabValue($event)">
                 <mat-tab  label="Alunni">
                     <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addAlunno" (click)="addAlunnoToClasse()" >
                         <img class="iconaMenu" src="../../../../assets/alunnoPlus.svg">
@@ -58,6 +58,9 @@
                             <app-classi-docenti-materie-list   [idClasse]="idClasse"></app-classi-docenti-materie-list>
                         </div>
                     <!-- </mat-card> -->
+                </mat-tab>
+                <mat-tab  label="Orario" (selectedTabChange)="rerenderCAL()">
+                    <app-calendario #calendarDOM></app-calendario>
                 </mat-tab>
             </mat-tab-group>
                 
