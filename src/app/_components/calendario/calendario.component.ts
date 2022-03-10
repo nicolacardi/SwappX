@@ -16,10 +16,13 @@ export class CalendarioComponent implements OnInit {
 
   calendarOptions: CalendarOptions = {
     initialView: 'timeGridWeek',
+    slotMinTime: '08:00:00',
+    slotMaxTime: '17:00:00',
+    height: 500,
+    allDaySlot: true,
     locale: 'it',
     locales: [itLocale],
     weekends: false,
-    themeSystem: 'bootstrap',
     headerToolbar: {
       left: 'prev,next,today',
       center: 'title',
@@ -28,27 +31,46 @@ export class CalendarioComponent implements OnInit {
     editable: true,
     selectable: true,
     select: this.handleDateSelect.bind(this),
-    //eventClick: this.handleEventClick.bind(this),
-    slotMinTime: '08:00:00',
-    slotMaxTime: '17:00:00',
-    allDaySlot: false,
-    height: 500,
-    events: INITIAL_EVENTS,
-    //eventContent: { html: '<div><button>schiaccia il bottone</button></div>' }
-    eventContent: this.renderEventContent,
-    // views: {
-    //   timeGridWeek: {  //questo modifica TUTTI gli eventi in questa vista
-    //     eventContent: function (info) {
-    //       let eventWrapper = document.createElement('div');
-    //       eventWrapper.addEventListener("click",function(){ alert("Hello World!"); })
-    //       eventWrapper.innerText = 'test dayGridWeek';
 
-    //       var arrayOfDomNodes = [eventWrapper];
-    //       console.log ("eventWrapper", eventWrapper);
-    //       return { domNodes: arrayOfDomNodes };
-    //     }
-    //   },
-    // },
+
+    //eventClick: this.handleEventClick.bind(this),
+
+
+
+    events: INITIAL_EVENTS,
+
+  //   eventClick: function(event: any, element: any) {
+  //     element.html(event.title + '<span class="removeEvent glyphicon glyphicon-trash pull-right" id="Delete"></span>');
+  //  }
+    eventContent: { html: '<button mat-button onclick="myfunction()">mybutton</button>' },
+    //eventContent: this.renderEventContent,
+
+  //   eventClick: function (info) {
+  //     this.deleteEvent(info.event.id);
+  //  }
+
+
+    // eventClick: function(calEvent:any) {
+    //   let tg = calEvent.jsEvent.target.id;
+    //   tg.click(() => 
+
+    // }
+    
+    views: {
+      timeGridWeek: {  //questo modifica TUTTI gli eventi in questa vista
+        
+        eventContent: function (event: any, element: any) {
+          
+          let eventWrapper = document.createElement('div');
+          eventWrapper.addEventListener("click",function(event){ console.log(event); })
+        
+          eventWrapper.innerText = 'test dayGridWeek';
+          var arrayOfDomNodes = [eventWrapper];
+
+          return { domNodes: arrayOfDomNodes };
+        }
+      },
+    },
 
   };
 
@@ -57,19 +79,20 @@ export class CalendarioComponent implements OnInit {
     //eventInfo gli passa automaticamente i contenuti dell'evento tramite .event._def.extendedProps.
     //così si riesce a rendere dinamico
 
-    // var innerHtml;
-    // if (eventInfo.event._def.extendedProps.imageUrl) {
-    //  innerHtml = eventInfo.event._def.title+"<img style='width:100px;' src='"+eventInfo.event._def.extendedProps.imageUrl+"'>";
-    //  return createElement = { html: '<div>'+innerHtml+'</div>' }
-    // } else {
-    //   return null
-    // }
-    return createElement = { html: 
-     "<div><img class=\"iconaMenu\" src=\"../../assets/deleteWhite.svg\" onclick=\"alert(\'"+eventInfo.event._def.extendedProps.buttonMsg+"\')\"></div>"}
-    
+    let innerHtml;
+    //if (eventInfo.event._def.extendedProps.imageUrl) {
+     //innerHtml = eventInfo.event._def.title+"<img style='width:100px;' src='"+eventInfo.event._def.extendedProps.imageUrl+"'>";
+     //return createElement = { html: '<div>'+innerHtml+'</div>' }
 
+     //return createElement = { html: '<div>'+eventInfo.event._def.extendedProps.buttonMsg+'</div>' }
 
-    
+     return createElement = { html: '<button onclick="deleteEvent()"></button>' }
+    //} else {
+    //  return null
+    //}
+    // return createElement = { html: 
+    //  "<div><img class=\"iconaMenu\" src=\"../../assets/deleteWhite.svg\" onclick=\"alert(\'"+eventInfo.event._def.extendedProps.buttonMsg+"\')\"></div>"}
+
   }
 
 //https://stackoverflow.com/questions/56862498/in-angular-is-it-possible-to-apply-mattooltip-on-an-element-that-was-created-on/56880367#56880367
