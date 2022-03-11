@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/angular';
 import { INITIAL_EVENTS, createEventId } from './event.utils';
 import { FullCalendarComponent } from '@fullcalendar/angular';//-->serve per il ViewChild
@@ -15,39 +15,91 @@ export class CalendarioComponent implements OnInit {
 
 
   calendarOptions: CalendarOptions = {
-    initialView: 'timeGridWeek',
-    slotMinTime: '08:00:00',
-    slotMaxTime: '17:00:00',
-    height: 500,
-    allDaySlot: true,
-    locale: 'it',
-    locales: [itLocale],
-    weekends: false,
+
+    //PROPRIETA' BASE
+    initialView:  'timeGridWeek',
+    slotMinTime:  '08:00:00',
+    slotMaxTime:  '17:00:00',
+    height:       500,
+    allDaySlot:   false,
+    locale:       'it',
+    locales:      [itLocale],
+    weekends:     false,
     headerToolbar: {
       left: 'prev,next,today',
       center: 'title',
       right: 'timeGridWeek,timeGridDay,listWeek'
-    },     
-    editable: true,
-    selectable: true,
-    select: this.handleDateSelect.bind(this),
+    },  
+    
+    
+    //PROPRIETA' DI PERMESSI
+    editable:     true,                               //consente modifiche agli eventi presenti  
+    selectable:   true,                               //consente di creare eventi
 
 
-    //eventClick: this.handleEventClick.bind(this),
-
-
-
+    //AZIONI
+    select:       this.handleDateSelect.bind(this),   //quando si crea un evento...
+    
+    
+    //CARICAMENTO EVENTI
     events: INITIAL_EVENTS,
+    eventContent: { html: "<button class='ilMioButton'>mybutton</button>" },
+
+    // eventDidMount: function (el) {
+      
+    //   let buttons = el.el.querySelectorAll(".ilMioButton");
+    //   console.log (buttons);
+    //         buttons.forEach( (btn) =>{
+    //         btn.addEventListener("click", (e) => {
+    //           console.log ('cucu');
+    //           //this.deleteEvent()
+    //         });
+    //       })
+    // },
+
+
+    eventDidMount: function(arg) {
+      console.log (arg);
+      arg.el.onclick = function() {
+        //arg.el.style.backgroundColor = 'red'
+        //arg.event.remove();
+        
+      }
+
+
+
+    },
+
+//così lancio una funzione su click dell'evento. Potrei ad es. poi identificare se si tratta di un click sull'evento
+//o sul button
+
+  // eventClick: function (info) {
+  //   showdata(info.event.id);
+  // }
+
+    eventClick: this.handleEventClick.bind(this), 
 
   //   eventClick: function(event: any, element: any) {
   //     element.html(event.title + '<span class="removeEvent glyphicon glyphicon-trash pull-right" id="Delete"></span>');
   //  }
-    eventContent: { html: '<button mat-button onclick="myfunction()">mybutton</button>' },
+
+          // viewDidMount: function (info) {
+          // let buttons = document.querySelectorAll(".ilMioButton");
+          // console.log("buttons presenti", buttons);
+          // buttons.forEach( (btn) =>{
+          //   btn.addEventListener("click", (e) => {
+          //     console.log ('cucu');
+          //     this.deleteEvent()
+          //   });
+          // })
+          // }
     //eventContent: this.renderEventContent,
 
-  //   eventClick: function (info) {
-  //     this.deleteEvent(info.event.id);
-  //  }
+    // eventClick: function (info) {
+    //     console.log (info);
+    // }
+
+  
 
 
     // eventClick: function(calEvent:any) {
@@ -56,21 +108,21 @@ export class CalendarioComponent implements OnInit {
 
     // }
     
-    views: {
-      timeGridWeek: {  //questo modifica TUTTI gli eventi in questa vista
+    // views: {
+    //   timeGridWeek: {  //questo modifica TUTTI gli eventi in questa vista
         
-        eventContent: function (event: any, element: any) {
+    //     eventContent: function (event: any, element: any) {
           
-          let eventWrapper = document.createElement('div');
-          eventWrapper.addEventListener("click",function(event){ console.log(event); })
+    //       let eventWrapper = document.createElement('div');
+    //       eventWrapper.addEventListener("click",function(event){ console.log(event); })
         
-          eventWrapper.innerText = 'test dayGridWeek';
-          var arrayOfDomNodes = [eventWrapper];
+    //       eventWrapper.innerText = 'test dayGridWeek';
+    //       var arrayOfDomNodes = [eventWrapper];
 
-          return { domNodes: arrayOfDomNodes };
-        }
-      },
-    },
+    //       return { domNodes: arrayOfDomNodes };
+    //     }
+    //   },
+    // },
 
   };
 
@@ -107,7 +159,7 @@ export class CalendarioComponent implements OnInit {
 //     let referenceToAppendedComponent = bodyPortalHost.attach(componentToAppend);
 // }
 
-  deleteEvent (e: Event) {
+  deleteEvent () {
     console.log ("deleteEvent")
   }
 
@@ -135,6 +187,7 @@ export class CalendarioComponent implements OnInit {
 
 
   handleEventClick(clickInfo: EventClickArg) {
+    //if (clickInfo.jsEvent.target)
     // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
     //   clickInfo.event.remove();
     // }
@@ -146,5 +199,22 @@ export class CalendarioComponent implements OnInit {
   ngOnInit(): void {
 
   }
+
+  // ngAfterViewInit(): void {
+    // let buttons = document.querySelectorAll(".ilMioButton");
+    // console.log("buttons presenti", buttons);
+    // buttons.forEach( (btn) =>{
+    //   btn.addEventListener("click", (e) => {
+    //     console.log ('cucu');
+    //     this.deleteEvent();
+    //   });
+    // })
+
+    
+  // }
+
+
+
+  
 
 }
