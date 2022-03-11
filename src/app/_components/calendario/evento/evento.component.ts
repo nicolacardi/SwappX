@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -13,14 +14,26 @@ import { EventiService } from '../eventi.service';
 })
 export class EventoComponent implements OnInit {
 
+
+  form! :                     FormGroup;
+  
   constructor(
     public _dialogRef: MatDialogRef<EventoComponent>,
     @Inject(MAT_DIALOG_DATA) public idEvento: number,
+    private fb:                           FormBuilder, 
+
     private svcEventi:        EventiService,
     private _loadingService:  LoadingService,
 
 
-  ) { }
+  ) {
+
+    _dialogRef.disableClose = true;
+
+    this.form = this.fb.group({
+      id: [null]
+    });
+   }
 
   ngOnInit(): void {
 
