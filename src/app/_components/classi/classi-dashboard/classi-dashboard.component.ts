@@ -356,7 +356,6 @@ export class ClassiDashboardComponent implements OnInit {
     //console.log("rerenderCAL");
     this.viewCalendario.calendarDOM.getApi().render();
     console.log("rerenderCAL");
-
   }
 
 

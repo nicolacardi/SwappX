@@ -24,7 +24,8 @@ export class CalendarioComponent implements OnInit {
     allDaySlot:   false,
     locale:       'it',
     locales:      [itLocale],
-    weekends:     false,
+    // weekends:     false,
+    hiddenDays: [ 0 ],
     headerToolbar: {
       left: 'prev,next,today',
       center: 'title',
@@ -114,7 +115,7 @@ export class CalendarioComponent implements OnInit {
     //     eventContent: function (event: any, element: any) {
           
     //       let eventWrapper = document.createElement('div');
-    //       eventWrapper.addEventListener("click",function(event){ console.log(event); })
+    //       eventWrapper.addEventListener("click",function(event){ this.deleteEvent() })
         
     //       eventWrapper.innerText = 'test dayGridWeek';
     //       var arrayOfDomNodes = [eventWrapper];
@@ -200,18 +201,18 @@ export class CalendarioComponent implements OnInit {
 
   }
 
-  // ngAfterViewInit(): void {
-    // let buttons = document.querySelectorAll(".ilMioButton");
-    // console.log("buttons presenti", buttons);
-    // buttons.forEach( (btn) =>{
-    //   btn.addEventListener("click", (e) => {
-    //     console.log ('cucu');
-    //     this.deleteEvent();
-    //   });
-    // })
+  ngAfterViewInit(): void {
+    let buttons = document.querySelectorAll(".ilMioButton");
+    console.log("buttons presenti", buttons);
+    buttons.forEach( (btn) =>{
+      btn.addEventListener("click", (e) => {
+        console.log ('cucu');
+        this.deleteEvent();
+      });
+    })
 
     
-  // }
+  }
 
 
 
