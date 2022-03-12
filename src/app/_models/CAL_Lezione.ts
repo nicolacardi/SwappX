@@ -1,3 +1,5 @@
+import { PER_Docente } from "./PER_Docente";
+import { PER_Persona } from "./PER_Persone";
 
 export interface CAL_Lezione {
   id:                   number;
@@ -19,6 +21,8 @@ export interface CAL_Lezione {
   argomento:            string;
   compiti:              string;
   
+  docente:              PER_Docente;
+  persona:              PER_Persona;
 //   note:                 string;
 //   dtIns:                string;
 //   dtUpd:                string;

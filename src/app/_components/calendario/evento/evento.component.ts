@@ -14,9 +14,17 @@ import { EventiService } from '../eventi.service';
 })
 export class EventoComponent implements OnInit {
 
+//#region ----- Variabili -------
+
+  evento$!:                   Observable<CAL_Lezione>;
 
   form! :                     FormGroup;
-  
+  emptyForm :                 boolean = false;
+  loading:                    boolean = true;
+  breakpoint!:                number;
+
+//#endregion
+
   constructor(
     public _dialogRef: MatDialogRef<EventoComponent>,
     @Inject(MAT_DIALOG_DATA) public idEvento: number,
@@ -31,27 +39,68 @@ export class EventoComponent implements OnInit {
     _dialogRef.disableClose = true;
 
     this.form = this.fb.group({
-      id: [null]
+      id:                         [null],
+
+
+      // classeSezioneAnnoID:  number;
+      dtCalendario:               [''],
+    
+      //campi di FullCalendar
+      title:                      [''],
+      h_Ini:                      [''],     
+      h_end:                      [''],    
+      colore:                     [''],
+    
+      docente:                    [''],
+      materia:                    [''],
+      ckFirma:                    [''],
+      dtFirma:                    [''],
+      ckAssente:                  [''],
+      argomento:                  [''],
+      compiti:                    ['']
+
+
     });
    }
 
-  ngOnInit(): void {
+  ngOnInit () {
+    this.loadData();
+  }
 
+
+  loadData(): void {
+
+    this.breakpoint = (window.innerWidth <= 800) ? 2 : 2;
 
     if (this.idEvento && this.idEvento + '' != "0") {
-      // const obsEvento$: Observable<CAL_Lezione> = this.svcEventi.get(this.idEvento);
-      // const loadEvento$ = this._loadingService.showLoaderUntilCompleted(obsEvento$);
-      // this.evento$ = loadEvento$
-      // .pipe(
-      //     tap(
-      //       evento => this.form.patchValue(evento)
-      //     )
-      // );
+      const obsEvento$: Observable<CAL_Lezione> = this.svcEventi.get(this.idEvento);
+      const loadEvento$ = this._loadingService.showLoaderUntilCompleted(obsEvento$);
+      this.evento$ = loadEvento$
+      .pipe(
+          tap(
+            evento => {
+              this.form.patchValue(evento)
+              this.form.controls['docente'].setValue(evento.docente.persona.nome+" "+evento.docente.persona.cognome)
+            }
+          )
+      );
     } else {
-      // this.emptyForm = true
+      this.emptyForm = true
     }
 
 
   }
 
+
+
+
+
+  save() {
+
+
+  }
+
+  delete() {
+
+  }
 }

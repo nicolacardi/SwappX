@@ -84,7 +84,7 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
   loadData () {
 
     let obsInsegnamenti$: Observable<CLS_ClasseDocenteMateria[]>;
-    console.log ("this.idClasse", this.idClasse);
+  
     obsInsegnamenti$= this.svcClassiDocentiMaterie.listByClasseSezioneAnno(this.idClasse);
     let loadInsegnamenti$ =this._loadingService.showLoaderUntilCompleted(obsInsegnamenti$);
 

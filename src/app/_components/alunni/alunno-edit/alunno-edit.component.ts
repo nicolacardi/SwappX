@@ -44,11 +44,11 @@ export class AlunnoEditComponent implements OnInit {
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
   
-  caller_page!:               string;
-  caller_size!:               string;
-  caller_filter!:             string;
-  caller_sortField!:          string;
-  caller_sortDirection!:      string;
+  // caller_page!:               string;
+  // caller_size!:               string;
+  // caller_filter!:             string;
+  // caller_sortField!:          string;
+  // caller_sortDirection!:      string;
   
   filteredComuni$!:           Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:    Observable<_UT_Comuni[]>;

@@ -216,8 +216,8 @@ export class CalendarioComponent implements OnInit {
       const loadLezioni$ =this._loadingService.showLoaderUntilCompleted(obsLezioni$);
       loadLezioni$.subscribe(val => 
         {
-          console.log ("val", val)
-          console.log ("INITIAL_EVENTS", INITIAL_EVENTS);
+          //console.log ("val", val)
+          //console.log ("INITIAL_EVENTS", INITIAL_EVENTS);
           this.Events = val;
           this.calendarOptions.events = this.Events;
         }
@@ -242,8 +242,8 @@ export class CalendarioComponent implements OnInit {
 
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '850px',
-      height: '650px',
+      width: '500px',
+      height: '400px',
       data: clickInfo.event.id
     };
     const dialogRef = this._dialog.open(EventoComponent, dialogConfig);
