@@ -47,19 +47,19 @@ export class CalendarioComponent implements OnInit {
 
     //AZIONI
     select:       this.handleDateSelect.bind(this),   //quando si crea un evento...
-    //eventClick:   this.openDetail.bind(this), 
+    eventClick:   this.openDetail.bind(this), 
 
 
-    eventContent: function (event: any, element: any) {
+    // eventContent: function (event: any, element: any) {
           
-      let eventWrapper = document.createElement('div');
-      eventWrapper.addEventListener("click",function(event){ this.deleteEvent.bind(this) })
+    //   let eventWrapper = document.createElement('div');
+    //   eventWrapper.addEventListener("click",function(event){ this.deleteEvent.bind(this) })
     
-      //eventWrapper.innerText = 'test dayGridWeek';
-      var arrayOfDomNodes = [eventWrapper];
+    //   //eventWrapper.innerText = 'test dayGridWeek';
+    //   var arrayOfDomNodes = [eventWrapper];
 
-      return { domNodes: arrayOfDomNodes };
-    },
+    //   return { domNodes: arrayOfDomNodes };
+    // },
 
 
     eventDidMount: function(event) {
