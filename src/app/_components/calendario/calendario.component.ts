@@ -47,8 +47,32 @@ export class CalendarioComponent implements OnInit {
 
     //AZIONI
     select:       this.handleDateSelect.bind(this),   //quando si crea un evento...
-    eventClick:   this.openDetail.bind(this), 
+    //eventClick:   this.openDetail.bind(this), 
 
+
+    eventContent: function (event: any, element: any) {
+          
+      let eventWrapper = document.createElement('div');
+      eventWrapper.addEventListener("click",function(event){ this.deleteEvent.bind(this) })
+    
+      //eventWrapper.innerText = 'test dayGridWeek';
+      var arrayOfDomNodes = [eventWrapper];
+
+      return { domNodes: arrayOfDomNodes };
+    },
+
+
+    eventDidMount: function(event) {
+
+      //console.log(event);
+      console.log (event.el);
+      event.el.append('<button>Add</button>');
+
+      //$(event.el).closest('td[role="gridcell"]').find('.fc-daygrid-day-top').prepend('<button class="button button-secondary button-small">Add</button>');
+      //$(event.el).closest('td[role="gridcell"]').find('.fc-daygrid-day-top').append('<button class="button button-secondary button-small">Add</button>');
+
+  },
+    
     //CARICAMENTO EVENTI
     //events: INITIAL_EVENTS,
     
@@ -124,7 +148,7 @@ export class CalendarioComponent implements OnInit {
     //     eventContent: function (event: any, element: any) {
           
     //       let eventWrapper = document.createElement('div');
-    //       eventWrapper.addEventListener("click",function(event){ this.deleteEvent() })
+    //       eventWrapper.addEventListener("click",function(event){ (x: any) => x.bind.deleteEvent() })
         
     //       eventWrapper.innerText = 'test dayGridWeek';
     //       var arrayOfDomNodes = [eventWrapper];
