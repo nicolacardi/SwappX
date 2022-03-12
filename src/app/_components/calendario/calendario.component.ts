@@ -50,37 +50,33 @@ export class CalendarioComponent implements OnInit {
     eventClick:   this.openDetail.bind(this), 
 
 
-    // eventContent: function (event: any, element: any) {
-          
-    //   let eventWrapper = document.createElement('div');
-    //   eventWrapper.addEventListener("click",function(event){ this.deleteEvent.bind(this) })
-    
-    //   //eventWrapper.innerText = 'test dayGridWeek';
-    //   var arrayOfDomNodes = [eventWrapper];
-
-    //   return { domNodes: arrayOfDomNodes };
-    // },
-
-
-    eventDidMount: function(event) {
-
-      //console.log(event);
-      console.log (event.el);
-      event.el.append('<button>Add</button>');
-
-      //$(event.el).closest('td[role="gridcell"]').find('.fc-daygrid-day-top').prepend('<button class="button button-secondary button-small">Add</button>');
-      //$(event.el).closest('td[role="gridcell"]').find('.fc-daygrid-day-top').append('<button class="button button-secondary button-small">Add</button>');
-
-  },
-    
     //CARICAMENTO EVENTI
     //events: INITIAL_EVENTS,
     
 //#region ***********TENTATIVI E TEST
 
+    // eventContent: function (event: any, element: any) {
+    //   let eventWrapper = document.createElement('div');
+    //   eventWrapper.addEventListener("click",function(event){ this.deleteEvent.bind(this) })
+    //   //eventWrapper.innerText = 'test dayGridWeek';
+    //   var arrayOfDomNodes = [eventWrapper];
+    //   return { domNodes: arrayOfDomNodes };
+    // },
+
+    //******************* */
+
+      //   eventDidMount: function(event) {
+      //     console.log(event);
+      //     console.log (event.el);
+      //     event.el.prepend("<button>Add</button>");
+      //     //$(event.el).closest('td[role="gridcell"]').find('.fc-daygrid-day-top').prepend('<button class="button button-secondary button-small">Add</button>');
+      //     //$(event.el).closest('td[role="gridcell"]').find('.fc-daygrid-day-top').append('<button class="button button-secondary button-small">Add</button>');
+
+      // },
+  ///******************** */
     // eventContent: { html: "<button class='ilMioButton'>mybutton</button>" },
+  //***/
     // eventDidMount: function (el) {
-      
     //   let buttons = el.el.querySelectorAll(".ilMioButton");
     //   console.log (buttons);
     //         buttons.forEach( (btn) =>{
@@ -90,69 +86,55 @@ export class CalendarioComponent implements OnInit {
     //         });
     //       })
     // },
-
-
+  //********************* */
     // eventDidMount: function(arg) {
     //   console.log (arg);
     //   arg.el.onclick = function() {
     //     //arg.el.style.backgroundColor = 'red'
     //     //arg.event.remove();
-        
     //   }
-
-
-
     // },
+  //********************* */
 
-//così lancio una funzione su click dell'evento. Potrei ad es. poi identificare se si tratta di un click sull'evento
-//o sul button
-
-  // eventClick: function (info) {
-  //   showdata(info.event.id);
-  // }
-
-
-
-  //   eventClick: function(event: any, element: any) {
-  //     element.html(event.title + '<span class="removeEvent glyphicon glyphicon-trash pull-right" id="Delete"></span>');
-  //  }
-
-          // viewDidMount: function (info) {
-          // let buttons = document.querySelectorAll(".ilMioButton");
-          // console.log("buttons presenti", buttons);
-          // buttons.forEach( (btn) =>{
-          //   btn.addEventListener("click", (e) => {
-          //     console.log ('cucu');
-          //     this.deleteEvent()
-          //   });
-          // })
-          // }
+    //così lancio una funzione su click dell'evento. Potrei ad es. poi identificare se si tratta di un click sull'evento
+    //o sul button
+    // eventClick: function (info) {
+    //   showdata(info.event.id);
+    // }
+  //********************* */
+    //   eventClick: function(event: any, element: any) {
+    //     element.html(event.title + '<span class="removeEvent glyphicon glyphicon-trash pull-right" id="Delete"></span>');
+    //  }
+  //********************* */
+    // viewDidMount: function (info) {
+    // let buttons = document.querySelectorAll(".ilMioButton");
+    // console.log("buttons presenti", buttons);
+    // buttons.forEach( (btn) =>{
+    //   btn.addEventListener("click", (e) => {
+    //     console.log ('cucu');
+    //     this.deleteEvent()
+    //   });
+    // })
+    // }
+  //********************* */
     //eventContent: this.renderEventContent,
-
+  //********************* */
     // eventClick: function (info) {
     //     console.log (info);
     // }
-
-  
-
-
+  //********************* */
     // eventClick: function(calEvent:any) {
     //   let tg = calEvent.jsEvent.target.id;
     //   tg.click(() => 
-
     // }
-    
+  //********************* */
     // views: {
     //   timeGridWeek: {  //questo modifica TUTTI gli eventi in questa vista
-        
     //     eventContent: function (event: any, element: any) {
-          
     //       let eventWrapper = document.createElement('div');
     //       eventWrapper.addEventListener("click",function(event){ (x: any) => x.bind.deleteEvent() })
-        
     //       eventWrapper.innerText = 'test dayGridWeek';
     //       var arrayOfDomNodes = [eventWrapper];
-
     //       return { domNodes: arrayOfDomNodes };
     //     }
     //   },
