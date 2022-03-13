@@ -81,12 +81,26 @@ export class LezioneComponent implements OnInit {
    }
 
   ngOnInit () {
-
     
-    this.form.controls.selectMateria.valueChanges
-      .subscribe( val => console.log ("val", val))
+    this.form.controls.selectMateria.valueChanges.subscribe( 
+        val =>{
+//su campio materia --> recupero l'insegnate collegato
+//ATTENZIONE: SOLO su valuechanges utente, NON su caricamento (?)
+         console.log ("val", val);
 
+         this.obsDocenti$ = this.svcDocenti.listByMateria();
+         //const obsAlunno$: Observable<ALU_Alunno> = this.svcAlunni.get(this.idAlunno);
+        }
+      );
 
+      // this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
+      //   this.loadData();
+      //   this.annoIdEmitter.emit(val);
+      //   //vanno resettate le selezioni delle checkbox
+      //   this.resetSelections();
+      //   //e anche il masterToggle
+      //   this.toggleChecks = false;
+      // })
 
 
     this.loadData();
@@ -99,7 +113,6 @@ export class LezioneComponent implements OnInit {
 
     this.obsMaterie$ = this.svcMaterie.list();
     this.obsDocenti$ = this.svcDocenti.list();
-
 
     if (this.idLezione && this.idLezione + '' != "0") {
       const obsLezione$: Observable<CAL_Lezione> = this.svcLezioni.get(this.idLezione);
@@ -115,15 +128,12 @@ export class LezioneComponent implements OnInit {
               this.strDataOra = lezione.dtCalendario;
               this.strH_Ini = lezione.h_Ini;
               this.strH_end = lezione.h_End;
-
             }
           )
       );
     } else {
       this.emptyForm = true
     }
-
-
   }
 
 
