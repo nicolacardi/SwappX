@@ -10,7 +10,7 @@
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
-                <button *ngIf="idLezione" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10"
+                <button *ngIf="data.idLezione" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="loadData()" >
                     <mat-icon>restart_alt</mat-icon>
@@ -22,15 +22,15 @@
                     <mat-icon>save</mat-icon>
                 </button>
 
-                <button *ngIf="idLezione" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
+                <button *ngIf="data.idLezione" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="delete()" >
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
 
-            <mat-label class="center mt20" *ngIf="idLezione">{{strDataOra | date: 'dd/MM/yyyy'}}</mat-label>
-            <mat-label class="center" *ngIf="idLezione">dalle  {{strH_Ini}} - alle {{strH_end}}</mat-label>
+            <mat-label class="center mt20" *ngIf="data.idLezione || emptyForm">{{strDataOra | date: 'dd/MM/yyyy'}}</mat-label>
+            <mat-label class="center" *ngIf="data.idLezione || emptyForm">dalle  {{strH_Ini}} - alle {{strH_end}}</mat-label>
             <mat-grid-list class="no-overflowx mt20" [cols]="breakpoint" rowHeight="60px">
 
                 <!-- <mat-grid-tile>
@@ -56,7 +56,7 @@
                         <mat-label>Materia</mat-label>
                         <mat-select 
                         required
-                        formControlName="selectMateria">
+                        formControlName="materiaID">
                             <mat-option *ngFor="let element of (obsMaterie$ | async)" [value]="element.id">
                             {{element.descrizione}}
                             </mat-option>
@@ -69,7 +69,7 @@
                         <mat-label>Docente</mat-label>
                         <mat-select 
                         required
-                        formControlName="selectDocente"
+                        formControlName="docenteID"
                         >
                             <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
                             {{element.persona.nome}} {{element.persona.cognome}}
@@ -99,7 +99,7 @@
                         <mat-label>Supplente</mat-label>
                         <mat-select 
                         
-                        formControlName="selecSupplente">
+                        formControlName="supplenteID">
                             <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
                             {{element.persona.nome}} {{element.persona.cognome}}
                             </mat-option>

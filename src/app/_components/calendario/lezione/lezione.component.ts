@@ -1,14 +1,18 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 import { PER_Docente } from 'src/app/_models/PER_Docente';
 import { MaterieService } from 'src/app/_services/materie.service';
+import { ClassiDocentiMaterieService } from '../../classi/classi-docenti-materie.service';
 import { DocentiService } from '../../persone/docenti.service';
+import { DialogDataLezione, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { LezioniService } from '../lezioni.service';
 
 @Component({
@@ -31,23 +35,26 @@ export class LezioneComponent implements OnInit {
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
   breakpoint!:                number;
-
+  idClasseSezioneAnno!:       number;
 
 //#endregion
 
   constructor(
     public _dialogRef: MatDialogRef<LezioneComponent>,
-    @Inject(MAT_DIALOG_DATA) public idLezione: number,
-
+    @Inject(MAT_DIALOG_DATA) public data: DialogDataLezione,
+    
     private fb:                             FormBuilder, 
 
     private svcLezioni:                     LezioniService,
     private svcMaterie:                     MaterieService,
     private svcDocenti:                     DocentiService,
+    private svcClassiDocentiMaterie:        ClassiDocentiMaterieService,
 
+    public _dialog:                         MatDialog,
+    private _snackBar:                      MatSnackBar,
     private _loadingService:                LoadingService,
 
-
+    private cdRef : ChangeDetectorRef
   ) {
 
     _dialogRef.disableClose = true;
@@ -55,55 +62,49 @@ export class LezioneComponent implements OnInit {
     this.form = this.fb.group({
       id:                         [null],
 
-
-      // classeSezioneAnnoID:  number;
+      classeSezioneAnnoID:        [''],
       dtCalendario:               [''],
     
       //campi di FullCalendar
       title:                      [''],
       h_Ini:                      [''],     
-      h_end:                      [''],    
+      h_End:                      [''],    
       colore:                     [''],
     
-      docente:                    [''],
-      materia:                    [''],
+      docenteID:                  [''],
+      materiaID:                  [''],
       ckFirma:                    [''],
       dtFirma:                    [''],
       ckAssente:                  [''],
       argomento:                  [''],
       compiti:                    [''],
 
-      selectMateria:              [''],
-      selectDocente:              [''],
-      selecSupplente:              ['']
+      supplenteID:                ['']
 
     });
+
    }
 
+
+
   ngOnInit () {
-    
-    this.form.controls.selectMateria.valueChanges.subscribe( 
-        val =>{
-//su campio materia --> recupero l'insegnate collegato
-//ATTENZIONE: SOLO su valuechanges utente, NON su caricamento (?)
-         console.log ("val", val);
+    this.form.controls.materiaID.valueChanges.subscribe( 
+      val =>{
 
-         this.obsDocenti$ = this.svcDocenti.listByMateria();
-         //const obsAlunno$: Observable<ALU_Alunno> = this.svcAlunni.get(this.idAlunno);
+        if (this.form.controls.classeSezioneAnnoID.value != null && this.form.controls.classeSezioneAnnoID.value != undefined) {
+          this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateria(this.form.controls.classeSezioneAnnoID.value, val)
+          .subscribe(val => {
+            console.log ("val", val);
+            if (val)
+              this.form.controls['docenteID'].setValue(val.docenteID);
+            else 
+              this.form.controls['docenteID'].setValue("")
+          });
         }
-      );
-
-      // this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
-      //   this.loadData();
-      //   this.annoIdEmitter.emit(val);
-      //   //vanno resettate le selezioni delle checkbox
-      //   this.resetSelections();
-      //   //e anche il masterToggle
-      //   this.toggleChecks = false;
-      // })
-
-
+      }
+    );
     this.loadData();
+
   }
 
 
@@ -114,25 +115,44 @@ export class LezioneComponent implements OnInit {
     this.obsMaterie$ = this.svcMaterie.list();
     this.obsDocenti$ = this.svcDocenti.list();
 
-    if (this.idLezione && this.idLezione + '' != "0") {
-      const obsLezione$: Observable<CAL_Lezione> = this.svcLezioni.get(this.idLezione);
+    if (this.data.idLezione && this.data.idLezione + '' != "0") {
+      const obsLezione$: Observable<CAL_Lezione> = this.svcLezioni.get(this.data.idLezione);
       const loadLezione$ = this._loadingService.showLoaderUntilCompleted(obsLezione$);
       this.lezione$ = loadLezione$
       .pipe(
-          tap(
-            lezione => {
-              this.form.patchValue(lezione)
-              this.form.controls['docente'].setValue(lezione.docente.persona.nome+" "+lezione.docente.persona.cognome)
-              this.form.controls['selectMateria'].setValue(lezione.materiaID);  //in verità siamo fortunati che svcMaterie.list() è già arrivato...
-              this.form.controls['selectDocente'].setValue(lezione.docenteID);  //in verità siamo fortunati che svcDocentiMaterie.list() è già arrivato...
-              this.strDataOra = lezione.dtCalendario;
-              this.strH_Ini = lezione.h_Ini;
-              this.strH_end = lezione.h_End;
-            }
-          )
+        tap(
+          lezione => {
+            this.form.patchValue(lezione)
+            this.strDataOra = lezione.dtCalendario;
+            this.strH_Ini = lezione.h_Ini.substring(0,5);
+            this.strH_end = lezione.h_End.substring(0,5);
+          }
+        )
       );
     } else {
-      this.emptyForm = true
+      //caso nuova Lezione
+
+      this.emptyForm = true;
+      //LA RIGA QUI SOPRA DETERMINAVA UN ExpressionChangedAfterItHasBeenCheckedError...con il DetectChanges si risolve!  
+      //NON SO SE SIA IL METODO MIGLIORE MA FUNZIONA
+      this.cdRef.detectChanges();     
+
+      this.form.controls.classeSezioneAnnoID.setValue(this.data.idClasseSezioneAnno);
+      this.form.controls.dtCalendario.setValue(this.data.start.substring(0,10));
+
+      this.strH_Ini = this.data.start.substring(11,16);
+      this.form.controls.h_Ini.setValue(this.data.start.substring(11,19));
+
+      this.strDataOra = this.data.start;
+
+      //4 righe per aumentare start di un'ora
+      let dtStart = new Date (this.data.start);
+      let dtEnd = new Date (dtStart.setHours(dtStart.getHours() + 1));
+      let strDtEnd = dtEnd.toLocaleString('sv').replace(' ', 'T')
+
+      this.strH_end = strDtEnd.substring(11,16);
+      this.form.controls.h_End.setValue(strDtEnd.substring(11,19));
+
     }
   }
 
@@ -142,10 +162,56 @@ export class LezioneComponent implements OnInit {
 
   save() {
 
+    if (this.form.controls['id'].value == null)
+    {
+      console.log (this.form.value);
+      
+      this.svcLezioni.post(this.form.value)
+        .subscribe(res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        },
+        err=> (
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        )
+      );
+    } else 
+    {
+      this.svcLezioni.put(this.form.value)
+        .subscribe(res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        },
+        err=> (
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        )
+      );
+    }
+   
 
   }
 
   delete() {
-
+    const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+      width: '320px',
+      data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
+    });
+    dialogYesNo.afterClosed().subscribe(result => {
+      if(result){
+        this.svcLezioni.delete (this.data.idLezione)
+        .subscribe(
+          res=>{
+            this._snackBar.openFromComponent(SnackbarComponent,
+              {data: 'Record cancellato', panelClass: ['red-snackbar']}
+            );
+            this._dialogRef.close();
+          },
+          err=> (
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          )
+        );
+      }
+    });
+    
   }
 }

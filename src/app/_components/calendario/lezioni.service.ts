@@ -28,4 +28,21 @@ export class LezioniService {
     //http://213.215.231.4/swappX/api/CAL_Lezioni/4
   }
 
+
+  put(formData: any): Observable <any>{
+    console.log ("put formData", formData);
+    return this.http.put( environment.apiBaseUrl  + 'CAL_Lezioni/' + formData.id , formData);    
+  }
+
+  post(formData: any): Observable <any>{
+    formData.id = 0;
+    return this.http.post( environment.apiBaseUrl  + 'CAL_Lezioni' , formData);  
+  }
+
+  delete(id: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'CAL_Lezioni/' + id);    
+  }
+
+
+
 }

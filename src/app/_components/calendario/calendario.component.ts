@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { CalendarOptions, DateSelectArg, EventClickArg } from '@fullcalendar/angular';
+import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/angular';
 import { createEventId, INITIAL_EVENTS } from './event.utils';
 import { FullCalendarComponent } from '@fullcalendar/angular';//-->serve per il ViewChild
 import itLocale from '@fullcalendar/core/locales/it';
@@ -10,6 +10,9 @@ import { LoadingService } from '../utilities/loading/loading.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { LezioneComponent } from './lezione/lezione.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
+import { concatMap, tap } from 'rxjs/operators';
 
 
 @Component({
@@ -22,23 +25,35 @@ export class CalendarioComponent implements OnInit {
   @Input() idClasse!:                     number;
   @ViewChild('calendarDOM') calendarDOM!: FullCalendarComponent;
 
+  toggleDocentiMaterie = "materie";
   Events: any[] = [];
   calendarOptions: CalendarOptions = {
 
     //PROPRIETA' BASE
     initialView:  'timeGridWeek',
     slotMinTime:  '08:00:00',
-    slotMaxTime:  '17:00:00',
+    slotMaxTime:  '16:00:00',
     height:       500,
     allDaySlot:   false,
     locale:       'it',
     locales:      [itLocale],
+    forceEventDuration : true,
+    defaultTimedEventDuration : "01:00:00",
+    expandRows: true,
     // weekends:     false,
     hiddenDays: [ 0 ],
     headerToolbar: {
       left: 'prev,next,today',
       center: 'title',
-      right: 'timeGridWeek,timeGridDay,listWeek'
+      right: 'timeGridWeek,timeGridDay,listWeek, mostraDocenti'
+    },  
+
+    customButtons: {
+      mostraDocenti: {
+        text: 'Docenti',
+        click: this.mostraDocenti.bind(this)
+      }
+
     },  
     
     //PROPRIETA' DI PERMESSI
@@ -48,7 +63,7 @@ export class CalendarioComponent implements OnInit {
     //AZIONI
     select:       this.handleDateSelect.bind(this),   //quando si crea un evento...
     eventClick:   this.openDetail.bind(this), 
-
+    eventDrop:    this.handleDrop.bind(this),
 
     //CARICAMENTO EVENTI
     //events: INITIAL_EVENTS,
@@ -142,59 +157,14 @@ export class CalendarioComponent implements OnInit {
 //#endregion
   };
 
-  renderEventContent(eventInfo:any, createElement: any) {
-    //eventInfo gli passa automaticamente i contenuti dell'evento tramite .event._def.extendedProps.
-    //così si riesce a rendere dinamico
-    //let innerHtml;
-    //if (eventInfo.event._def.extendedProps.imageUrl) {
-     //innerHtml = eventInfo.event._def.title+"<img style='width:100px;' src='"+eventInfo.event._def.extendedProps.imageUrl+"'>";
-     //return createElement = { html: '<div>'+innerHtml+'</div>' }
-     //return createElement = { html: '<div>'+eventInfo.event._def.extendedProps.buttonMsg+'</div>' }
-    //} else {
-    //  return null
-    //}
-    return createElement = { html: '<button onclick="deleteEvent()"></button>' }
-  }
-
-//https://stackoverflow.com/questions/56862498/in-angular-is-it-possible-to-apply-mattooltip-on-an-element-that-was-created-on/56880367#56880367
-//   renderEventContentx (eventInfo:any): void {
-//     let bodyPortalHost = new DomPortalHost(
-//       eventInfo.el.querySelector('.fc-content'), // Target the element where you wish to append your component
-//       this.componentFactoryResolver,
-//       this.appRef,
-//       this.injector);
-//     let componentToAppend = new ComponentPortal(MyComponentThatHasTheElementWIthTooltip);
-//     let referenceToAppendedComponent = bodyPortalHost.attach(componentToAppend);
-// }
-
-  deleteEvent () {
-    console.log ("deleteEvent")
-  }
-
-  handleDateSelect(selectInfo: DateSelectArg) {
-    //INSERIMENTO NUOVO EVENTO
-    const title = prompt('Please enter a new title for your event');
-    const calendarApi = selectInfo.view.calendar;
-
-    calendarApi.unselect(); // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
-      });
-    }
-  }
 
 
 
   
   constructor(
-    private svcLezioni:        LezioniService,
+    private svcLezioni:       LezioniService,
     private _loadingService:  LoadingService,
+    private _snackBar:        MatSnackBar,
     public _dialog:           MatDialog, 
 
   ) { }
@@ -216,7 +186,7 @@ export class CalendarioComponent implements OnInit {
       const loadLezioni$ =this._loadingService.showLoaderUntilCompleted(obsLezioni$);
       loadLezioni$.subscribe(val => 
         {
-          //console.log ("val", val)
+          console.log ("val", val)
           //console.log ("INITIAL_EVENTS", INITIAL_EVENTS);
           this.Events = val;
           this.calendarOptions.events = this.Events;
@@ -253,7 +223,12 @@ export class CalendarioComponent implements OnInit {
       panelClass: 'add-DetailDialog',
       width: '500px',
       height: '400px',
-      data: clickInfo.event.id
+      data: {
+        idLezione: clickInfo.event.id,
+        start: clickInfo.event.start,
+        end: clickInfo.event.end,
+        idCLasseSezioneAnno: this.idClasse
+      }
     };
     const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
@@ -263,6 +238,136 @@ export class CalendarioComponent implements OnInit {
     );
 
 
+
+  }
+  
+
+
+  renderEventContent(eventInfo:any, createElement: any) {
+    //eventInfo gli passa automaticamente i contenuti dell'evento tramite .event._def.extendedProps.
+    //così si riesce a rendere dinamico
+    //let innerHtml;
+    //if (eventInfo.event._def.extendedProps.imageUrl) {
+     //innerHtml = eventInfo.event._def.title+"<img style='width:100px;' src='"+eventInfo.event._def.extendedProps.imageUrl+"'>";
+     //return createElement = { html: '<div>'+innerHtml+'</div>' }
+     //return createElement = { html: '<div>'+eventInfo.event._def.extendedProps.buttonMsg+'</div>' }
+    //} else {
+    //  return null
+    //}
+    return createElement = { html: '<button onclick="deleteEvent()"></button>' }
+  }
+
+//https://stackoverflow.com/questions/56862498/in-angular-is-it-possible-to-apply-mattooltip-on-an-element-that-was-created-on/56880367#56880367
+//   renderEventContentx (eventInfo:any): void {
+//     let bodyPortalHost = new DomPortalHost(
+//       eventInfo.el.querySelector('.fc-content'), // Target the element where you wish to append your component
+//       this.componentFactoryResolver,
+//       this.appRef,
+//       this.injector);
+//     let componentToAppend = new ComponentPortal(MyComponentThatHasTheElementWIthTooltip);
+//     let referenceToAppendedComponent = bodyPortalHost.attach(componentToAppend);
+// }
+
+  deleteEvent () {
+    console.log ("deleteEvent")
+  }
+
+  mostraDocenti () {
+    if (this.toggleDocentiMaterie == 'materie') {
+      this.toggleDocentiMaterie = 'docenti';
+      this.calendarOptions!.customButtons!.mostraDocenti.text = "Lezioni"
+      this.calendarOptions.eventContent = 
+        function(arg) {
+          let italicEl = document.createElement('i')
+            italicEl.innerHTML = arg.event.extendedProps.docente.persona.nome +  " " + arg.event.extendedProps.docente.persona.cognome;
+          let arrayOfDomNodes = [ italicEl ]
+          return { domNodes: arrayOfDomNodes }
+        }
+    } else {
+      this.toggleDocentiMaterie = 'materie'
+      delete this.calendarOptions.eventContent;
+      this.calendarOptions!.customButtons!.mostraDocenti.text = "Docenti"
+    } 
+  }
+
+  handleDateSelect(selectInfo: DateSelectArg) {
+    //INSERIMENTO NUOVO EVENTO
+    let dtStart: Date;
+    let dtEnd: Date;
+    dtStart = selectInfo.start;
+    dtEnd = selectInfo.end;
+
+    // console.log("toISOString", dtStart.toISOString());
+    // console.log("toUTCString", dtStart.toUTCString());
+    // console.log("dtLocaleString", dtStart.toLocaleDateString());
+    // console.log("toLocaleString", dtStart.toLocaleString());
+    // console.log("toLocaleTimedString", dtStart.toLocaleTimeString());
+
+    //https://stackoverflow.com/questions/12413243/javascript-date-format-like-iso-but-local
+    console.log("toLocaleString(sv)", dtStart.toLocaleString('sv').replace(' ', 'T'));
+    
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '500px',
+      height: '400px',
+      data: {
+        idLezione: 0,
+        start: dtStart.toLocaleString('sv').replace(' ', 'T'),
+        end: dtEnd.toLocaleString('sv').replace(' ', 'T'),
+        idClasseSezioneAnno: this.idClasse
+      }
+    };
+    const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      () => { 
+        this.loadData(); 
+      }
+    );
+
+    
+
+
+
+    const calendarApi = selectInfo.view.calendar;
+
+    calendarApi.unselect(); // clear date selection
+    //const title = prompt('Please enter a new title for your event');
+    // if (title) {
+    //   calendarApi.addEvent({
+    //     id: createEventId(),
+    //     title,
+    //     start: selectInfo.startStr,
+    //     end: selectInfo.endStr,
+    //     allDay: selectInfo.allDay
+    //   });
+    // }
+  }
+
+  handleDrop (dropInfo: EventDropArg) {
+    // const form = {
+    //   id: 16,
+    //   dtCalendario: '2022-03-09',
+    //   h_Ini: '08:00:00',
+
+    // };
+
+    let form: CAL_Lezione;
+
+    this.svcLezioni.get(dropInfo.event.id)
+    .pipe (
+      tap ( val   =>  {
+        form = val;
+        form.dtCalendario = dropInfo.event.start!.toString().substring(0,10);
+      }),
+      concatMap(() => this.svcLezioni.put(form))
+    ).subscribe(
+      res=>{
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+      },
+      err=>{
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      }
+    );
 
   }
   

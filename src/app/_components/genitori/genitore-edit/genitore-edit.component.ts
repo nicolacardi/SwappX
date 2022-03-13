@@ -161,6 +161,7 @@ export class GenitoreEditComponent implements OnInit {
           //console.log("return from post", res);
           //this.form.markAsPristine();
           this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
         err=> (
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
@@ -172,12 +173,12 @@ export class GenitoreEditComponent implements OnInit {
           //console.log("return from put", res);
           //this.form.markAsPristine();
           this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
         err=> (
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         )
     );
-    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
   }
 
   //NON PIU' UTILIZZATA IN QUANTO ORA SI USA SOLO COME DIALOG

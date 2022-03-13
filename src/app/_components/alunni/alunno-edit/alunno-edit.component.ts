@@ -109,6 +109,8 @@ export class AlunnoEditComponent implements OnInit {
   }
 
 //#region ----- LifeCycle Hooks e simili-------
+
+
   ngOnInit () {
     this.loadData();
   }
@@ -172,6 +174,7 @@ export class AlunnoEditComponent implements OnInit {
       this.svcAlunni.post(this.form.value)
         .subscribe(res=> {
           this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
         err=> (
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
@@ -181,12 +184,13 @@ export class AlunnoEditComponent implements OnInit {
       this.svcAlunni.put(this.form.value)
         .subscribe(res=> {
           this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
         err=> (
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         )
     );
-    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+
   }
 
   delete(){

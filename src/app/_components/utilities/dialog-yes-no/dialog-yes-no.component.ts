@@ -2,11 +2,18 @@ import {Component, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 export interface DialogData {
-  titolo: string;
-  sottoTitolo: string;
-  idAnno: number;
-  idClasse: number;
-  idAlunno: number;
+  titolo:               string;
+  sottoTitolo:          string;
+  idAnno:               number;
+  idClasse:             number;
+  idAlunno:             number;
+}
+
+export interface DialogDataLezione {
+  idLezione:            number;
+  start:                string;
+  end:                  string;
+  idClasseSezioneAnno:  number;
 }
 
 @Component({
