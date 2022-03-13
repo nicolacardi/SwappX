@@ -66,7 +66,7 @@ export class DocenzeAddComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
 
-    console.log ("this.matsel", this.materiaSelectedID);
+  
     this.svcClasseSezioneAnno.get(this.data.idClasse).subscribe(res => this.classeSezioneAnno = res)
 
     this.obsFilteredDocenti$ = this.form.controls['nomeCognomeDocente'].valueChanges

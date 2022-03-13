@@ -238,7 +238,7 @@ export class CalendarioComponent implements OnInit {
 
   openDetail(clickInfo: EventClickArg) {
 
-    // PER CANCELLARE UN EVENTO  clickInfo.event.remove();
+    // PER CANCELLARE UN EVENTO:  clickInfo.event.remove();
 
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
