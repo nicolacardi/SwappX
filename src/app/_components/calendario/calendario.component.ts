@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg } from '@fullcalendar/angular';
-import { createEventId } from './event.utils';
+import { createEventId, INITIAL_EVENTS } from './event.utils';
 import { FullCalendarComponent } from '@fullcalendar/angular';//-->serve per il ViewChild
 import itLocale from '@fullcalendar/core/locales/it';
 import { LezioniService } from './lezioni.service';
@@ -57,7 +57,7 @@ export class CalendarioComponent implements OnInit {
 
     // eventContent: function (event: any, element: any) {
     //   let eventWrapper = document.createElement('div');
-    //   eventWrapper.addEventListener("click",function(event){ this.deleteEvent.bind(this) })
+    //   eventWrapper.addEventListener("click",function(event){ return this })
     //   //eventWrapper.innerText = 'test dayGridWeek';
     //   var arrayOfDomNodes = [eventWrapper];
     //   return { domNodes: arrayOfDomNodes };
@@ -220,7 +220,16 @@ export class CalendarioComponent implements OnInit {
           //console.log ("INITIAL_EVENTS", INITIAL_EVENTS);
           this.Events = val;
           this.calendarOptions.events = this.Events;
+          // this.calendarOptions.eventContent =  function () { 
+            
+          //   let eventWrapper = document.createElement('a');
+          //   eventWrapper.addEventListener("onclick", function () { console.log ("ciao")})
+
+          //   let arrayOfDomNodes = [eventWrapper];
+          //   return { domNodes: arrayOfDomNodes };
+          // }
         }
+        
       );
   }
 
