@@ -1,15 +1,15 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/angular';
-import { INITIAL_EVENTS, createEventId } from './event.utils';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { CalendarOptions, DateSelectArg, EventClickArg } from '@fullcalendar/angular';
+import { createEventId } from './event.utils';
 import { FullCalendarComponent } from '@fullcalendar/angular';//-->serve per il ViewChild
 import itLocale from '@fullcalendar/core/locales/it';
-import { EventiService } from './eventi.service';
+import { LezioniService } from './lezioni.service';
 import { Observable } from 'rxjs';
 import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
 import { LoadingService } from '../utilities/loading/loading.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
-import { EventoComponent } from './evento/evento.component';
+import { LezioneComponent } from './lezione/lezione.component';
 
 
 @Component({
@@ -193,7 +193,7 @@ export class CalendarioComponent implements OnInit {
 
   
   constructor(
-    private svcEventi:        EventiService,
+    private svcLezioni:        LezioniService,
     private _loadingService:  LoadingService,
     public _dialog:           MatDialog, 
 
@@ -212,7 +212,7 @@ export class CalendarioComponent implements OnInit {
   loadData () {
     let obsLezioni$: Observable<CAL_Lezione[]>;
 
-    obsLezioni$= this.svcEventi.listByClasseSezioneAnno(this.idClasse);
+    obsLezioni$= this.svcLezioni.listByClasseSezioneAnno(this.idClasse);
       const loadLezioni$ =this._loadingService.showLoaderUntilCompleted(obsLezioni$);
       loadLezioni$.subscribe(val => 
         {
@@ -246,7 +246,7 @@ export class CalendarioComponent implements OnInit {
       height: '400px',
       data: clickInfo.event.id
     };
-    const dialogRef = this._dialog.open(EventoComponent, dialogConfig);
+    const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       () => { 
         this.loadData(); 

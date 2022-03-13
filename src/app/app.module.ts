@@ -100,7 +100,7 @@ import { DatePipe } from '@angular/common';
 import { ClassiDocentiMaterieListComponent } from './_components/classi/classi-docenti-materie-list/classi-docenti-materie-list.component';
 import { DocenzeAddComponent } from './_components/classi/docenze-add/docenze-add.component';
 import { CalendarioComponent } from './_components/calendario/calendario.component';
-import { EventoComponent } from './_components/calendario/evento/evento.component';
+import { LezioneComponent } from './_components/calendario/lezione/lezione.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -192,7 +192,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ResetPasswordComponent,
     DocenzeAddComponent,
     CalendarioComponent,
-    EventoComponent 
+    LezioneComponent 
 
   ],
   imports: [

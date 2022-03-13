@@ -1,6 +1,6 @@
 <mat-card class="form-card">
     <mat-card-content>
-        <form *ngIf="(evento$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
+        <form *ngIf="(lezione$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
             
 
             <!-- ********************************    BOTTONI     ************************************* -->
@@ -10,7 +10,7 @@
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
-                <button *ngIf="idEvento" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10"
+                <button *ngIf="idLezione" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="loadData()" >
                     <mat-icon>restart_alt</mat-icon>
@@ -22,16 +22,18 @@
                     <mat-icon>save</mat-icon>
                 </button>
 
-                <button *ngIf="idEvento" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
+                <button *ngIf="idLezione" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="delete()" >
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
 
+            <mat-label class="center mt20" *ngIf="idLezione">{{strDataOra | date: 'dd/MM/yyyy'}}</mat-label>
+            <mat-label class="center" *ngIf="idLezione">dalle  {{strH_Ini}} - alle {{strH_end}}</mat-label>
             <mat-grid-list class="no-overflowx mt20" [cols]="breakpoint" rowHeight="60px">
 
-                <mat-grid-tile>
+                <!-- <mat-grid-tile>
                     <mat-form-field class="w100">
                         <input matInput
                         required
@@ -44,15 +46,10 @@
                         <mat-datepicker #dpDtCalendario ></mat-datepicker>
                         <mat-error *ngIf="form.controls.dtCalendario.errors?.required"> Campo obbligatorio</mat-error>
                     </mat-form-field>
-                </mat-grid-tile>
+                </mat-grid-tile> -->
 
 
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <input matInput type="text" required placeholder="Docente" minlength= "3" formControlName="docente" #nome>
-                        <mat-error *ngIf="form.controls.docente.errors?.required"> Campo obbligatorio</mat-error>
-                    </mat-form-field>
-                </mat-grid-tile>
+
 
                 <mat-grid-tile>
                     <mat-form-field>
@@ -72,7 +69,8 @@
                         <mat-label>Docente</mat-label>
                         <mat-select 
                         required
-                        formControlName="selectDocente">
+                        formControlName="selectDocente"
+                        >
                             <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
                             {{element.persona.nome}} {{element.persona.cognome}}
                             </mat-option>
@@ -86,7 +84,28 @@
                     </mat-checkbox>
                 </mat-grid-tile>
 
-                
+                <mat-grid-tile>
+
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-checkbox color="primary" formControlName="ckAssente">
+                        Assenza
+                    </mat-checkbox>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <mat-label>Supplente</mat-label>
+                        <mat-select 
+                        
+                        formControlName="selecSupplente">
+                            <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
+                            {{element.persona.nome}} {{element.persona.cognome}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
     
             </mat-grid-list>
 

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -9,37 +9,39 @@ import { PER_Docente } from 'src/app/_models/PER_Docente';
 import { MaterieService } from 'src/app/_services/materie.service';
 import { DocentiService } from '../../persone/docenti.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
-import { EventiService } from '../eventi.service';
+import { LezioniService } from '../lezioni.service';
 
 @Component({
-  selector: 'app-evento',
-  templateUrl: './evento.component.html',
-  styleUrls: ['./evento.component.css']
+  selector: 'app-lezione',
+  templateUrl: './lezione.component.html',
+  styleUrls: ['../calendario.component.css']
 })
-export class EventoComponent implements OnInit {
+export class LezioneComponent implements OnInit {
 
 //#region ----- Variabili -------
 
   form! :                     FormGroup;
 
-  evento$!:                   Observable<CAL_Lezione>;
+  lezione$!:                  Observable<CAL_Lezione>;
   obsMaterie$!:               Observable<MAT_Materia[]>;
   obsDocenti$!:               Observable<PER_Docente[]>;
-
-
+  strDataOra!:                string;
+  strH_Ini!:                  string;
+  strH_end!:                  string;
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
   breakpoint!:                number;
 
+
 //#endregion
 
   constructor(
-    public _dialogRef: MatDialogRef<EventoComponent>,
-    @Inject(MAT_DIALOG_DATA) public idEvento: number,
+    public _dialogRef: MatDialogRef<LezioneComponent>,
+    @Inject(MAT_DIALOG_DATA) public idLezione: number,
 
     private fb:                             FormBuilder, 
 
-    private svcEventi:                      EventiService,
+    private svcLezioni:                     LezioniService,
     private svcMaterie:                     MaterieService,
     private svcDocenti:                     DocentiService,
 
@@ -72,7 +74,8 @@ export class EventoComponent implements OnInit {
       compiti:                    [''],
 
       selectMateria:              [''],
-      selectDocente:              ['']
+      selectDocente:              [''],
+      selecSupplente:              ['']
 
     });
    }
@@ -80,6 +83,11 @@ export class EventoComponent implements OnInit {
   ngOnInit () {
 
     
+    this.form.controls.selectMateria.valueChanges
+      .subscribe( val => console.log ("val", val))
+
+
+
 
     this.loadData();
   }
@@ -93,17 +101,20 @@ export class EventoComponent implements OnInit {
     this.obsDocenti$ = this.svcDocenti.list();
 
 
-    if (this.idEvento && this.idEvento + '' != "0") {
-      const obsEvento$: Observable<CAL_Lezione> = this.svcEventi.get(this.idEvento);
-      const loadEvento$ = this._loadingService.showLoaderUntilCompleted(obsEvento$);
-      this.evento$ = loadEvento$
+    if (this.idLezione && this.idLezione + '' != "0") {
+      const obsLezione$: Observable<CAL_Lezione> = this.svcLezioni.get(this.idLezione);
+      const loadLezione$ = this._loadingService.showLoaderUntilCompleted(obsLezione$);
+      this.lezione$ = loadLezione$
       .pipe(
           tap(
-            evento => {
-              this.form.patchValue(evento)
-              this.form.controls['docente'].setValue(evento.docente.persona.nome+" "+evento.docente.persona.cognome)
-              this.form.controls['selectMateria'].setValue(evento.materiaID);  //in verità siamo fortunati che svcMaterie.list() è già arrivato...
-              this.form.controls['selectDocente'].setValue(evento.docenteID);  //in verità siamo fortunati che svcDocenti.list() è già arrivato...
+            lezione => {
+              this.form.patchValue(lezione)
+              this.form.controls['docente'].setValue(lezione.docente.persona.nome+" "+lezione.docente.persona.cognome)
+              this.form.controls['selectMateria'].setValue(lezione.materiaID);  //in verità siamo fortunati che svcMaterie.list() è già arrivato...
+              this.form.controls['selectDocente'].setValue(lezione.docenteID);  //in verità siamo fortunati che svcDocentiMaterie.list() è già arrivato...
+              this.strDataOra = lezione.dtCalendario;
+              this.strH_Ini = lezione.h_Ini;
+              this.strH_end = lezione.h_End;
 
             }
           )

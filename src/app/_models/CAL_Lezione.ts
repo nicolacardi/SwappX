@@ -12,6 +12,8 @@ export interface CAL_Lezione {
   end:                  string;     //YYYY-MM-DDTHH:MM:SS
   colore:               string;
 
+  h_Ini:                string;
+  h_End:                string;
   docenteID:            number;
   materiaID:            number;
   supplenteID:          number;
