@@ -14,6 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
 import { concatMap, tap } from 'rxjs/operators';
 import { EventResizeDoneArg } from '@fullcalendar/interaction';
+import { CalendarioUtilsComponent } from './calendario-utils/calendario-utils.component';
 
 
 @Component({
@@ -56,11 +57,13 @@ export class CalendarioComponent implements OnInit {
         click: this.mostraDocenti.bind(this)
       },
       settings: {
-        icon: 'gear',
-        click: this.mostraDocenti.bind(this)
+        icon: 'settings-icon',
+        click: this.openCalendarioUtils.bind(this)
       }
 
     },  
+
+    //dayHeaderContent: { html: "<button></button>"},
     
     //PROPRIETA' DI PERMESSI
     editable:     true,                               //consente modifiche agli eventi presenti  
@@ -247,6 +250,20 @@ export class CalendarioComponent implements OnInit {
 
   }
   
+  openCalendarioUtils () {
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '500px',
+      height: '400px',
+      data: 0
+    };
+    const dialogRef = this._dialog.open(CalendarioUtilsComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      () => { 
+        this.loadData(); 
+      }
+    );
+  }
 
 
   renderEventContent(eventInfo:any, createElement: any) {
@@ -263,35 +280,35 @@ export class CalendarioComponent implements OnInit {
     return createElement = { html: '<button onclick="deleteEvent()"></button>' }
   }
 
-//https://stackoverflow.com/questions/56862498/in-angular-is-it-possible-to-apply-mattooltip-on-an-element-that-was-created-on/56880367#56880367
-//   renderEventContentx (eventInfo:any): void {
-//     let bodyPortalHost = new DomPortalHost(
-//       eventInfo.el.querySelector('.fc-content'), // Target the element where you wish to append your component
-//       this.componentFactoryResolver,
-//       this.appRef,
-//       this.injector);
-//     let componentToAppend = new ComponentPortal(MyComponentThatHasTheElementWIthTooltip);
-//     let referenceToAppendedComponent = bodyPortalHost.attach(componentToAppend);
-// }
-
-  deleteEvent () {
-    console.log ("deleteEvent")
-  }
-
   mostraDocenti () {
     if (this.toggleDocentiMaterie == 'materie') {
       this.toggleDocentiMaterie = 'docenti';
       this.calendarOptions!.customButtons!.mostraDocenti.text = "Lezioni"
       this.calendarOptions.eventContent = 
         function(arg) {
-          console.log ("arg", arg);
           let timeText = document.createElement('div')
             timeText.className = "fc-event-time";
             timeText.innerHTML = arg.timeText;
           let docenteText = document.createElement('i')
             docenteText.className = "fc-event-title";
             docenteText.innerHTML = arg.event.extendedProps.docente.persona.nome +  " " + arg.event.extendedProps.docente.persona.cognome;
-          let arrayOfDomNodes = [ timeText, docenteText ]
+          
+          let img = document.createElement('img');
+          if (arg.event.extendedProps.ckFirma == true) {
+            console.log (arg.event.extendedProps.ckfirma)
+            img.src = '../../assets/sign_YES.svg';
+          } else {
+            img.src = '../../assets/sign_NO.svg';
+          }
+          img.className = "_iconFirma";
+
+          img.addEventListener("click", function (e: Event) {
+            e.stopPropagation();
+            
+            
+          })
+
+          let arrayOfDomNodes = [ timeText, docenteText, img ]
           return { domNodes: arrayOfDomNodes }
         }
     } else {
@@ -307,12 +324,6 @@ export class CalendarioComponent implements OnInit {
     let dtEnd: Date;
     dtStart = selectInfo.start;
     dtEnd = selectInfo.end;
-
-    // console.log("toISOString", dtStart.toISOString());
-    // console.log("toUTCString", dtStart.toUTCString());
-    // console.log("dtLocaleString", dtStart.toLocaleDateString());
-    // console.log("toLocaleString", dtStart.toLocaleString());
-    // console.log("toLocaleTimedString", dtStart.toLocaleTimeString());
 
     //https://stackoverflow.com/questions/12413243/javascript-date-format-like-iso-but-local
     console.log("toLocaleString(sv)", dtStart.toLocaleString('sv').replace(' ', 'T'));
@@ -334,24 +345,8 @@ export class CalendarioComponent implements OnInit {
         this.loadData(); 
       }
     );
-
-    
-
-
-
     const calendarApi = selectInfo.view.calendar;
-
-    calendarApi.unselect(); // clear date selection
-    //const title = prompt('Please enter a new title for your event');
-    // if (title) {
-    //   calendarApi.addEvent({
-    //     id: createEventId(),
-    //     title,
-    //     start: selectInfo.startStr,
-    //     end: selectInfo.endStr,
-    //     allDay: selectInfo.allDay
-    //   });
-    // }
+    calendarApi.unselect(); 
   }
 
   handleResize (resizeInfo: EventResizeDoneArg) {
@@ -361,9 +356,7 @@ export class CalendarioComponent implements OnInit {
     .pipe (
       tap ( val   =>  {
         form = val;
-        //let dtISOLocaleStart = resizeInfo.event.start!.toLocaleString('sv').replace(' ', 'T');
-        //form.dtCalendario = dtISOLocaleStart.substring(0,10);
-        //form.h_Ini = dtISOLocaleStart.substring(11,19);
+
         let dtISOLocaleEnd = resizeInfo.event.end!.toLocaleString('sv').replace(' ', 'T');
         form.h_End = dtISOLocaleEnd.substring(11,19);
       }),
@@ -406,3 +399,5 @@ export class CalendarioComponent implements OnInit {
   
 
 }
+
+

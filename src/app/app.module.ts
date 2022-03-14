@@ -101,6 +101,7 @@ import { ClassiDocentiMaterieListComponent } from './_components/classi/classi-d
 import { DocenzeAddComponent } from './_components/classi/docenze-add/docenze-add.component';
 import { CalendarioComponent } from './_components/calendario/calendario.component';
 import { LezioneComponent } from './_components/calendario/lezione/lezione.component';
+import { CalendarioUtilsComponent } from './_components/calendario/calendario-utils/calendario-utils.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -192,7 +193,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ResetPasswordComponent,
     DocenzeAddComponent,
     CalendarioComponent,
-    LezioneComponent 
+    LezioneComponent,
+    CalendarioUtilsComponent 
 
   ],
   imports: [
