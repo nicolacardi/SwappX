@@ -138,25 +138,24 @@ export class PersonaEditComponent implements OnInit {
 
     if (this.form.controls['id'].value == null) 
       this.svcPersone.post(this.form.value)
-        .subscribe(res=> {
-          //console.log("return from post", res);
-          //this.form.markAsPristine();
-          this._dialogRef.close();
-        },
-        err=> (
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
+      .subscribe(res=> {
+        //this.form.markAsPristine();
+        this._dialogRef.close();
+      },
+      err=> (
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      )
+      
     );
     else 
       this.svcPersone.put(this.form.value)
-        .subscribe(res=> {
-          //console.log("return from put", res);
-          //this.form.markAsPristine();
-          this._dialogRef.close();
-        },
-        err=> (
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
+      .subscribe(res=> {
+        //this.form.markAsPristine();
+        this._dialogRef.close();
+      },
+      err=> (
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      )
     );
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
   }

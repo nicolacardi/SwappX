@@ -13,6 +13,7 @@ import { LezioneComponent } from './lezione/lezione.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
 import { concatMap, tap } from 'rxjs/operators';
+import { EventResizeDoneArg } from '@fullcalendar/interaction';
 
 
 @Component({
@@ -46,7 +47,7 @@ export class CalendarioComponent implements OnInit {
     headerToolbar: {
       left: 'prev,next,today',
       center: 'title',
-      right: 'timeGridWeek,timeGridDay,listWeek, mostraDocenti'
+      right: 'timeGridWeek,timeGridDay,listWeek mostraDocenti,settings'
     },  
 
     customButtons: {
@@ -55,7 +56,7 @@ export class CalendarioComponent implements OnInit {
         click: this.mostraDocenti.bind(this)
       },
       settings: {
-        icon: 'chevron-left',
+        icon: 'gear',
         click: this.mostraDocenti.bind(this)
       }
 
@@ -69,7 +70,7 @@ export class CalendarioComponent implements OnInit {
     select:       this.handleDateSelect.bind(this),   //quando si crea un evento...
     eventClick:   this.openDetail.bind(this), 
     eventDrop:    this.handleDrop.bind(this),
-
+    eventResize:  this.handleResize.bind(this),
     //CARICAMENTO EVENTI
     //events: INITIAL_EVENTS,
     
@@ -283,9 +284,14 @@ export class CalendarioComponent implements OnInit {
       this.calendarOptions!.customButtons!.mostraDocenti.text = "Lezioni"
       this.calendarOptions.eventContent = 
         function(arg) {
-          let italicEl = document.createElement('i')
-            italicEl.innerHTML = arg.event.extendedProps.docente.persona.nome +  " " + arg.event.extendedProps.docente.persona.cognome;
-          let arrayOfDomNodes = [ italicEl ]
+          console.log ("arg", arg);
+          let timeText = document.createElement('div')
+            timeText.className = "fc-event-time";
+            timeText.innerHTML = arg.timeText;
+          let docenteText = document.createElement('i')
+            docenteText.className = "fc-event-title";
+            docenteText.innerHTML = arg.event.extendedProps.docente.persona.nome +  " " + arg.event.extendedProps.docente.persona.cognome;
+          let arrayOfDomNodes = [ timeText, docenteText ]
           return { domNodes: arrayOfDomNodes }
         }
     } else {
@@ -348,13 +354,31 @@ export class CalendarioComponent implements OnInit {
     // }
   }
 
-  handleDrop (dropInfo: EventDropArg) {
-    // const form = {
-    //   id: 16,
-    //   dtCalendario: '2022-03-09',
-    //   h_Ini: '08:00:00',
+  handleResize (resizeInfo: EventResizeDoneArg) {
+    let form: CAL_Lezione;
 
-    // };
+    this.svcLezioni.get(resizeInfo.event.id)
+    .pipe (
+      tap ( val   =>  {
+        form = val;
+        //let dtISOLocaleStart = resizeInfo.event.start!.toLocaleString('sv').replace(' ', 'T');
+        //form.dtCalendario = dtISOLocaleStart.substring(0,10);
+        //form.h_Ini = dtISOLocaleStart.substring(11,19);
+        let dtISOLocaleEnd = resizeInfo.event.end!.toLocaleString('sv').replace(' ', 'T');
+        form.h_End = dtISOLocaleEnd.substring(11,19);
+      }),
+      concatMap(() => this.svcLezioni.put(form))
+    ).subscribe(
+      res=>{
+        //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+      },
+      err=>{
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      }
+    );
+  }
+
+  handleDrop (dropInfo: EventDropArg) {
 
     let form: CAL_Lezione;
 
@@ -362,12 +386,16 @@ export class CalendarioComponent implements OnInit {
     .pipe (
       tap ( val   =>  {
         form = val;
-        form.dtCalendario = dropInfo.event.start!.toString().substring(0,10);
+        let dtISOLocaleStart = dropInfo.event.start!.toLocaleString('sv').replace(' ', 'T');
+        form.dtCalendario = dtISOLocaleStart.substring(0,10);
+        form.h_Ini = dtISOLocaleStart.substring(11,19);
+        let dtISOLocaleEnd = dropInfo.event.end!.toLocaleString('sv').replace(' ', 'T');
+        form.h_End = dtISOLocaleEnd.substring(11,19);
       }),
       concatMap(() => this.svcLezioni.put(form))
     ).subscribe(
       res=>{
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
       },
       err=>{
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
