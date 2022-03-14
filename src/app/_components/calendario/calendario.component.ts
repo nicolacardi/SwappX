@@ -37,6 +37,7 @@ export class CalendarioComponent implements OnInit {
     allDaySlot:   false,
     locale:       'it',
     locales:      [itLocale],
+    themeSystem:  'bootstrap5',
     forceEventDuration : true,
     defaultTimedEventDuration : "01:00:00",
     expandRows: true,
@@ -51,6 +52,10 @@ export class CalendarioComponent implements OnInit {
     customButtons: {
       mostraDocenti: {
         text: 'Docenti',
+        click: this.mostraDocenti.bind(this)
+      },
+      settings: {
+        icon: 'chevron-left',
         click: this.mostraDocenti.bind(this)
       }
 
