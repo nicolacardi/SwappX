@@ -145,7 +145,7 @@
     }
 
     .mb10 {
-        margin-bottom: 10px;
+        margin-bottom: 10px !important;
     }
 
     .mb20 {
@@ -349,6 +349,14 @@
 
     .w300px {
         width: 300px;
+    }
+
+    .w350px {
+        width: 300px;
+    }
+
+    .w400px {
+        width: 400px;
     }
 
     ::ng-deep .mat-formfield-wrapper{

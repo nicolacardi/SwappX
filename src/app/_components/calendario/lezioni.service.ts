@@ -28,6 +28,9 @@ export class LezioniService {
     //http://213.215.231.4/swappX/api/CAL_Lezioni/4
   }
 
+  copyAllEventsFromDateToDate (dtCopyFrom: any, dtCopyTo: any) {
+    return this.http.get( environment.apiBaseUrl  + 'CAL_Lezioni/' + dtCopyFrom +'/' +dtCopyTo);   //cos'è questa? una get?
+  }
 
   put(formData: any): Observable <any>{
     console.log ("put formData", formData);

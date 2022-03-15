@@ -1,24 +1,32 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+
+//components
+import { DialogDataLezione, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+
+//services
+import { MaterieService } from 'src/app/_services/materie.service';
+import { ClassiDocentiMaterieService } from '../../classi/classi-docenti-materie.service';
+import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
+import { DocentiService } from '../../persone/docenti.service';
+import { LoadingService } from '../../utilities/loading/loading.service';
+import { LezioniService } from '../lezioni.service';
+
+//models
 import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 import { PER_Docente } from 'src/app/_models/PER_Docente';
-import { MaterieService } from 'src/app/_services/materie.service';
-import { ClassiDocentiMaterieService } from '../../classi/classi-docenti-materie.service';
-import { DocentiService } from '../../persone/docenti.service';
-import { DialogDataLezione, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { LezioniService } from '../lezioni.service';
 
 @Component({
   selector: 'app-lezione',
   templateUrl: './lezione.component.html',
-  styleUrls: ['../calendario.component.css']
+  styleUrls: ['../calendario.component.css'],
+
 })
 export class LezioneComponent implements OnInit {
 
@@ -32,6 +40,7 @@ export class LezioneComponent implements OnInit {
   strDataOra!:                string;
   strH_Ini!:                  string;
   strH_end!:                  string;
+  strClasseSezioneAnno!:       string;
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
   breakpoint!:                number;
@@ -49,6 +58,7 @@ export class LezioneComponent implements OnInit {
     private svcMaterie:                     MaterieService,
     private svcDocenti:                     DocentiService,
     private svcClassiDocentiMaterie:        ClassiDocentiMaterieService,
+    private svcClasseSezioneAnno:           ClassiSezioniAnniService,
 
     public _dialog:                         MatDialog,
     private _snackBar:                      MatSnackBar,
@@ -56,12 +66,10 @@ export class LezioneComponent implements OnInit {
 
     private cdRef : ChangeDetectorRef
   ) {
-
     _dialogRef.disableClose = true;
 
     this.form = this.fb.group({
       id:                         [null],
-
       classeSezioneAnnoID:        [''],
       dtCalendario:               [''],
     
@@ -70,7 +78,7 @@ export class LezioneComponent implements OnInit {
       h_Ini:                      [''],     
       h_End:                      [''],    
       colore:                     [''],
-    
+  
       docenteID:                  [''],
       materiaID:                  [''],
       ckFirma:                    [''],
@@ -78,14 +86,10 @@ export class LezioneComponent implements OnInit {
       ckAssente:                  [''],
       argomento:                  [''],
       compiti:                    [''],
-
       supplenteID:                ['']
-
     });
 
-   }
-
-
+  }
 
   ngOnInit () {
     this.form.controls.materiaID.valueChanges.subscribe( 
@@ -94,7 +98,6 @@ export class LezioneComponent implements OnInit {
         if (this.form.controls.classeSezioneAnnoID.value != null && this.form.controls.classeSezioneAnnoID.value != undefined) {
           this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateria(this.form.controls.classeSezioneAnnoID.value, val)
           .subscribe(val => {
-            console.log ("val", val);
             if (val)
               this.form.controls['docenteID'].setValue(val.docenteID);
             else 
@@ -103,6 +106,17 @@ export class LezioneComponent implements OnInit {
         }
       }
     );
+
+    if (this.data.idClasseSezioneAnno != null && this.data.idClasseSezioneAnno != undefined) {
+      this.svcClasseSezioneAnno.get(this.data.idClasseSezioneAnno)
+      .subscribe(
+        (val) => {
+          console.log ("val", val);
+          this.strClasseSezioneAnno = val.classeSezione.classe.descrizione2 + " " + val.classeSezione.sezione;
+        }
+      );
+    }
+
     this.loadData();
 
   }
@@ -111,7 +125,6 @@ export class LezioneComponent implements OnInit {
   loadData(): void {
 
     this.breakpoint = (window.innerWidth <= 800) ? 2 : 2;
-
     this.obsMaterie$ = this.svcMaterie.list();
     this.obsDocenti$ = this.svcDocenti.list();
 
@@ -155,10 +168,6 @@ export class LezioneComponent implements OnInit {
 
     }
   }
-
-
-
-
 
   save() {
 

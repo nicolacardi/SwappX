@@ -1,6 +1,5 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/angular';
-import { createEventId, INITIAL_EVENTS } from './event.utils';
 import { FullCalendarComponent } from '@fullcalendar/angular';//-->serve per il ViewChild
 import itLocale from '@fullcalendar/core/locales/it';
 import { LezioniService } from './lezioni.service';
@@ -17,6 +16,7 @@ import { EventResizeDoneArg } from '@fullcalendar/interaction';
 import { CalendarioUtilsComponent } from './calendario-utils/calendario-utils.component';
 
 
+
 @Component({
   selector: 'app-calendario',
   templateUrl: './calendario.component.html',
@@ -29,6 +29,9 @@ export class CalendarioComponent implements OnInit {
 
   toggleDocentiMaterie = "materie";
   Events: any[] = [];
+
+
+
   calendarOptions: CalendarOptions = {
 
     //PROPRIETA' BASE
@@ -54,7 +57,7 @@ export class CalendarioComponent implements OnInit {
     customButtons: {
       mostraDocenti: {
         text: 'Docenti',
-        click: this.mostraDocenti.bind(this)
+        click: this.mostraDocenti.bind(this, this.msgtest())
       },
       settings: {
         icon: 'settings-icon',
@@ -175,9 +178,17 @@ export class CalendarioComponent implements OnInit {
     private _loadingService:  LoadingService,
     private _snackBar:        MatSnackBar,
     public _dialog:           MatDialog, 
+    public appRef:            ApplicationRef
+
+
 
   ) { }
 
+
+
+  msgtest() {
+
+  }
   ngOnChanges() {
     if (this.idClasse != undefined) {
       this.loadData();
@@ -195,8 +206,6 @@ export class CalendarioComponent implements OnInit {
       const loadLezioni$ =this._loadingService.showLoaderUntilCompleted(obsLezioni$);
       loadLezioni$.subscribe(val => 
         {
-          console.log ("val", val)
-          //console.log ("INITIAL_EVENTS", INITIAL_EVENTS);
           this.Events = val;
           this.calendarOptions.events = this.Events;
           // this.calendarOptions.eventContent =  function () { 
@@ -236,9 +245,11 @@ export class CalendarioComponent implements OnInit {
         idLezione: clickInfo.event.id,
         start: clickInfo.event.start,
         end: clickInfo.event.end,
-        idCLasseSezioneAnno: this.idClasse
+        idClasseSezioneAnno: this.idClasse
       }
     };
+
+    console.log (dialogConfig);
     const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       () => { 
@@ -254,8 +265,8 @@ export class CalendarioComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '500px',
-      height: '400px',
-      data: 0
+      height: '500px',
+      data: this.calendarDOM.getApi().getDate()
     };
     const dialogRef = this._dialog.open(CalendarioUtilsComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
@@ -284,38 +295,57 @@ export class CalendarioComponent implements OnInit {
     if (this.toggleDocentiMaterie == 'materie') {
       this.toggleDocentiMaterie = 'docenti';
       this.calendarOptions!.customButtons!.mostraDocenti.text = "Lezioni"
+
+
+      
       this.calendarOptions.eventContent = 
-        function(arg) {
-          let timeText = document.createElement('div')
-            timeText.className = "fc-event-time";
-            timeText.innerHTML = arg.timeText;
-          let docenteText = document.createElement('i')
-            docenteText.className = "fc-event-title";
-            docenteText.innerHTML = arg.event.extendedProps.docente.persona.nome +  " " + arg.event.extendedProps.docente.persona.cognome;
+        //function(arg: any, $scope: any) {
+        //$scope.anotherMethod;  //NON FUNZIONA MA LO RICONOSCE!+
+        
+        (arg: any)  =>//arg è l'oggetto che contiene l'evento con tutte le sue proprietà
+        { 
           
-          let img = document.createElement('img');
-          if (arg.event.extendedProps.ckFirma == true) {
-            console.log (arg.event.extendedProps.ckfirma)
-            img.src = '../../assets/sign_YES.svg';
-          } else {
-            img.src = '../../assets/sign_NO.svg';
-          }
-          img.className = "_iconFirma";
-
-          img.addEventListener("click", function (e: Event) {
-            e.stopPropagation();
+            //show the time
+            let timeText = document.createElement('div')
+              timeText.className = "fc-event-time";
+              timeText.innerHTML = arg.timeText;
+            //include additional info
+            let docenteText = document.createElement('i')
+              docenteText.className = "fc-event-title";
+              docenteText.innerHTML = arg.event.extendedProps.docente.persona.nome +  " " + arg.event.extendedProps.docente.persona.cognome;
+            //include img/icon that should work as a button
+            let img = document.createElement('img');
+            if (arg.event.extendedProps.ckFirma == true) {
+              img.src = '../../assets/sign_YES.svg';
+            } else {
+              img.src = '../../assets/sign_NO.svg';
+            }
+            img.className = "_iconFirma";
             
-            
-          })
 
-          let arrayOfDomNodes = [ timeText, docenteText, img ]
-          return { domNodes: arrayOfDomNodes }
+            img.addEventListener("click", (e: Event) => {
+              e.stopPropagation();
+              this.anotherMethod();
+              
+            })
+
+            let arrayOfDomNodes = [ timeText, docenteText, img ]
+            return { domNodes: arrayOfDomNodes }
+          
         }
+
+
+
+
     } else {
       this.toggleDocentiMaterie = 'materie'
       delete this.calendarOptions.eventContent;
       this.calendarOptions!.customButtons!.mostraDocenti.text = "Docenti"
     } 
+  }
+
+  anotherMethod () {
+    console.log ("fat-to");
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
