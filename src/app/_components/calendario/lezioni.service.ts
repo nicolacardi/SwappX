@@ -14,7 +14,7 @@ export class LezioniService {
 
 
   list(): Observable<CAL_Lezione[]>{
-    return this.http.get<CAL_Lezione[]>(environment.apiBaseUrl+'CAL_Lezioni');
+    return this.http.get<CAL_Lezione[]>(environment.apiBaseUrl+'CAL_Lezioni');   //NON FUNZIONA
     //http://213.215.231.4/swappX/api/CAL_Lezioni
   }
 
@@ -28,12 +28,18 @@ export class LezioniService {
     //http://213.215.231.4/swappX/api/CAL_Lezioni/4
   }
 
+  impostaEpoca (idLezione: number) {
+    let formData = {
+      id: idLezione
+    }
+    return this.http.put( environment.apiBaseUrl  + 'CAL_Lezioni/ImpostaEpoca/' + idLezione, formData);
+  }
+
   copyAllEventsFromDateToDate (dtCopyFrom: any, dtCopyTo: any) {
     return this.http.get( environment.apiBaseUrl  + 'CAL_Lezioni/' + dtCopyFrom +'/' +dtCopyTo);   //cos'è questa? una get?
   }
 
   put(formData: any): Observable <any>{
-    console.log ("put formData", formData);
     return this.http.put( environment.apiBaseUrl  + 'CAL_Lezioni/' + formData.id , formData);    
   }
 
