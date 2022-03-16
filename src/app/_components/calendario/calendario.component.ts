@@ -241,7 +241,6 @@ export class CalendarioComponent implements OnInit {
   }
 //#endregion
 
-
 //#region ----- Add Edit Eventi -------
 
   openDetail(clickInfo: EventClickArg) {
