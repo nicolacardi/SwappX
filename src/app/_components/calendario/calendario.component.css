@@ -21,3 +21,11 @@
       z-index: 1000;
   }
 
+::ng-deep ._iconEpoca {
+  width: 20px;
+  position: absolute;
+  top: 2px;
+  right: 25px;
+  z-index: 1000;
+}
+

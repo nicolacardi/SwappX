@@ -17,6 +17,7 @@ export interface CAL_Lezione {
   docenteID:            number;
   materiaID:            number;
   supplenteID:          number;
+  ckEpoca:              number;
   ckFirma:              number;
   dtFirma:              string;
   ckAssente:            number;

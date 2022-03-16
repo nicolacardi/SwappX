@@ -81,6 +81,7 @@ export class LezioneComponent implements OnInit {
   
       docenteID:                  [''],
       materiaID:                  [''],
+      ckEpoca:                    [''],
       ckFirma:                    [''],
       dtFirma:                    [''],
       ckAssente:                  [''],
