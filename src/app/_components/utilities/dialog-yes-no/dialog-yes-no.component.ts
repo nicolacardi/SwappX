@@ -16,6 +16,13 @@ export interface DialogDataLezione {
   idClasseSezioneAnno:  number;
 }
 
+export interface DialogDataCalendarioUtils {
+  start:                Date;
+  idClasseSezioneAnno:  number;
+}
+
+
+
 @Component({
   selector: 'app-dialog-yes-no',
   templateUrl: './dialog-yes-no.component.html',

@@ -48,7 +48,7 @@ export class CalendarioComponent implements OnInit {
     headerToolbar: {
       left: 'prev,next,today',
       center: 'title',
-      right: 'timeGridWeek,timeGridDay,listWeek mostraDocenti,settings'
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek mostraDocenti,settings'
     },  
 
     customButtons: {
@@ -232,7 +232,7 @@ export class CalendarioComponent implements OnInit {
 
         img2.addEventListener("click", (e: Event) => {
           e.stopPropagation();                                    //impedisce che scatti anche il click sull'evento
-          this.impostaEpoca(arg.event.id);                        //collega il metodo all'immagine
+          this.toggleEpoca(arg.event.id);                        //collega il metodo all'immagine
         })
 
         let arrayOfDomNodes = [ timeText, titleText, img, img2];     //prepara il set di Nodes
@@ -268,9 +268,12 @@ export class CalendarioComponent implements OnInit {
   openCalendarioUtils () {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '500px',
-      height: '500px',
-      data: this.calendarDOM.getApi().getDate()
+      width: '650px',
+      height: '425px',
+      data:  {
+        start: this.calendarDOM.getApi().getDate(),
+        idClasseSezioneAnno: this.idClasse
+      }
     };
     const dialogRef = this._dialog.open(CalendarioUtilsComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
@@ -323,9 +326,9 @@ export class CalendarioComponent implements OnInit {
     } 
   }
 
-  impostaEpoca(idLezione: number) {
+  toggleEpoca(idLezione: number) {
     console.log (idLezione);
-    this.svcLezioni.impostaEpoca(idLezione);
+    this.svcLezioni.toggleEpoca(idLezione).subscribe(() => this.loadData());
   }
 
   anotherMethod () {

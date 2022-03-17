@@ -9,28 +9,18 @@
 
             <div class="mt50">
                 <div class="center  mt10 ">
-                    <button type="button" mat-button matSuffix class="w400px ma mt10 mb10" mat-stroked-button>
+                    <button type="button" mat-button matSuffix class="w500px ma mt10 mb10" mat-stroked-button>
                         Propaga materie di epoca del lunedì agli altri giorni
                     </button>
 
                 </div>
-
-                <div class="center  mt10 ">
-                    <button type="button" mat-button matSuffix class="w400px ma mt10 mb10" mat-stroked-button>
-                        Cancella Orario della settimana Corrente
-                    </button>
-                </div>
                 <mat-divider></mat-divider>
-                <div class="center mt10 ">
-                    <button type="button" mat-button matSuffix class="w400px ma mt10" (click)="copiaDa()" mat-stroked-button>
-                        Copia alla settimana corrente orario della settimana...
-                    </button>
-
+                <div class="center  mt10 ">
                     <mat-form-field >
                         <mat-label>Seleziona una settimana</mat-label>
                         <mat-date-range-input [rangePicker]="picker1">
-                            <input matStartDate placeholder="Data Inizio" formControlName = "picker1start">
-                            <input matEndDate placeholder="Data Fine" formControlName = "picker1end">
+                            <input matStartDate placeholder="Data Inizio" required formControlName = "picker1start">
+                            <input matEndDate placeholder="Data Fine" required formControlName = "picker1end">
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker1></mat-date-range-picker>
@@ -40,24 +30,24 @@
                         Tutte le Classi
                     </mat-checkbox>
                 </div>
-                <mat-divider></mat-divider>
                 <div class="center mt10 ">
-                    <button type="button" mat-button matSuffix class="w400px ma mt10" (click)="copiaFinoA()" mat-stroked-button>
-                        Copia orario della settimana corrente fino alla settimana...
+                    <button type="button" mat-button matSuffix class="w500px ma mt10 mt10" (click)="deleteByClasseSezioneAnnoAndDate()" [disabled]="!form.valid" mat-stroked-button>
+                        Cancella la settimana selezionata
                     </button>
-                    <mat-form-field >
-                        <mat-label>Seleziona una settimana</mat-label>
-                        <mat-date-range-input [rangePicker]="picker2">
-                            <input matStartDate placeholder="Data Inizio" formControlName = "picker2start">
-                            <input matEndDate placeholder="Data Fine" formControlName = "picker2end">
-                        </mat-date-range-input>
-                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                        <mat-date-range-picker #picker2></mat-date-range-picker>
-                    </mat-form-field>
+                </div>
 
-                    <mat-checkbox color="primary" formControlName="ckTutteleClassi2">
-                        Tutte le Classi
-                    </mat-checkbox>
+                <div class="center mt10 ">
+                    <button type="button" mat-button matSuffix class="w500px ma mt10" (click)="copiaDa()" [disabled]="!form.valid" mat-stroked-button>
+                        Copia la settimana selezionata nella settimana che inizia il {{currMonday | date: "dd/MM/yyyy" }} 
+                    </button>
+
+
+                </div>
+
+                <div class="center mt10 ">
+                    <button type="button" mat-button matSuffix class="w500px ma mt10" (click)="copiaFinoA()" [disabled]="!form.valid" mat-stroked-button>
+                        Copia la settimana che inizia il {{currMonday | date: "dd/MM/yyyy" }} fino alla settimana selezionata
+                    </button>
                 </div>
             </div>
         </form>

@@ -28,15 +28,28 @@ export class LezioniService {
     //http://213.215.231.4/swappX/api/CAL_Lezioni/4
   }
 
-  impostaEpoca (idLezione: number) {
-    let formData = {
-      id: idLezione
-    }
-    return this.http.put( environment.apiBaseUrl  + 'CAL_Lezioni/ImpostaEpoca/' + idLezione, formData);
+  toggleEpoca (idLezione: number) {
+    return this.http.get( environment.apiBaseUrl  + 'CAL_Lezioni/ToggleEpoca/' + idLezione);
+    //http://213.215.231.4/swappX/api/CAL_Lezioni/4
+
   }
 
-  copyAllEventsFromDateToDate (dtCopyFrom: any, dtCopyTo: any) {
-    return this.http.get( environment.apiBaseUrl  + 'CAL_Lezioni/' + dtCopyFrom +'/' +dtCopyTo);   //cos'è questa? una get?
+  copyByClasseSezioneAnnoToDate (idClasseSezioneAnno: number, dtFromStart: any, dtFromEnd: any, dtToStart: any) {
+    let formData = {};
+    return this.http.post( environment.apiBaseUrl  + 'CAL_Lezioni/CopyByClasseSezioneAnnoToDate?IDClasseSezioneAnno=' + idClasseSezioneAnno + '&dtFromStart=' + dtFromStart + '&dtFromEnd=' + dtFromEnd + '&dtToStart=' + dtToStart, formData);
+  //http://213.215.231.4/SwappX/api/CAL_Lezioni/CopyByClasseSezioneAnnoAndDate?IDClasseSezioneAnno=16&dtFromStart=2022-03-14&dtFromEnd=2022-03-19&dtToStart=2022-03-21
+  }
+
+  copyToDate (dtFromStart: any, dtFromEnd: any, dtToStart: any) {
+    let formData = {};
+    return this.http.post( environment.apiBaseUrl  + 'CAL_Lezioni/copyToDate?dtFromStart=' + dtFromStart + '&dtFromEnd=' + dtFromEnd + '&dtToStart=' + dtToStart, formData);
+  //http://213.215.231.4/SwappX/api/CAL_Lezioni/copyToDate?dtFromStart=2022-03-14&dtFromEnd=2022-03-19&dtToStart=2022-03-21
+  }
+
+  copyByClasseSezioneAnnoUntilDate (idClasseSezioneAnno: number, dtFromStart: any, dtFromEnd: any, dtUntilStart: any) {
+    let formData = {};
+    return this.http.post( environment.apiBaseUrl  + 'CAL_Lezioni/copyByClasseSezioneAnnoUntilDate?IDClasseSezioneAnno=' + idClasseSezioneAnno + '&dtFromStart=' + dtFromStart + '&dtFromEnd=' + dtFromEnd + '&dtUntilStart=' + dtUntilStart, formData);
+  //http://213.215.231.4/SwappX/api/CAL_Lezioni/copyByClasseSezioneAnnoUntilDate?IDClasseSezioneAnno=16&dtFromStart=2022-03-14&dtFromEnd=2022-03-19&dtUntilStart=2022-03-21
   }
 
   put(formData: any): Observable <any>{
@@ -50,6 +63,14 @@ export class LezioniService {
 
   delete(id: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'CAL_Lezioni/' + id);    
+  }
+
+  deleteByClasseSezioneAnnoAndDate (idClasseSezioneAnno: number, dtStart: any, dtEnd: any) {
+    return this.http.delete( environment.apiBaseUrl  + 'CAL_Lezioni/DeleteByClasseSezioneAnnoAndDate?IDClasseSezioneAnno=' + idClasseSezioneAnno + '&dtStart=' + dtStart + '&dtEnd=' + dtEnd);
+  }
+
+  deleteByDate (dtStart: any, dtEnd: any) {
+    return this.http.delete( environment.apiBaseUrl  + 'CAL_Lezioni/DeleteByDate?dtStart=' + dtStart + '&dtEnd=' + dtEnd);
   }
 
 

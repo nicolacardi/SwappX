@@ -1,8 +1,11 @@
 import { Component, Inject, Injectable, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { DateRange, MatDateRangeSelectionStrategy, MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DialogDataCalendarioUtils } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { LezioniService } from '../lezioni.service';
 
 //components
@@ -28,12 +31,12 @@ import { LezioniService } from '../lezioni.service';
 
     //selectionFinished governa cosa accade quando si clicca per ritornare il valore del range
     selectionFinished(activeDate: D | null, currentRange: DateRange<D>): DateRange<D> {
+      let offset: number;
       let { start, end } = currentRange;
       if (start == null || (start && end)) {
-          start = activeDate;
-          end = null;
-      } else if (end == null) {
-        let offset: number;
+        start = activeDate;
+        end = null;
+      } else if (end == null) {     
         offset = -(this._dateAdapter.getDayOfWeek(start) - 1 );
         start = this._dateAdapter.addCalendarDays(start, offset);
         end = this._dateAdapter.addCalendarDays(start, 5);
@@ -82,80 +85,139 @@ export class CalendarioUtilsComponent implements OnInit {
 //#region ----- Variabili -------
 
   form!:                     FormGroup;
-
+  currMonday!:               Date;
 
 //#endregion
 
   constructor(
     public _dialogRef: MatDialogRef<CalendarioUtilsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Date,
+    @Inject(MAT_DIALOG_DATA) public data: DialogDataCalendarioUtils,
     private fb:                           FormBuilder, 
     private _dateAdapter:                 DateAdapter<Date>,
-    private svcLezioni:                   LezioniService
+    private svcLezioni:                   LezioniService,
+    private _snackBar:                    MatSnackBar,
+
   ) {
     _dialogRef.disableClose = true;
 
     this.form = this.fb.group({
-      picker1start:                  [null],
-      picker1end:                    [null],
-      picker2start:                  [null],
-      picker2end:                    [null],
+      picker1start:                  [null, Validators.required],
+      picker1end:                    [null, Validators.required],
       ckTutteleClassi1:              [null],
-      ckTutteleClassi2:              [null] 
-
     });
+
+
    }
 
   ngOnInit(): void {
+
+    let currDate :Date = this.data.start;
+    let offset:number = -(this._dateAdapter.getDayOfWeek(currDate) - 1 );
+    this.currMonday = this._dateAdapter.addCalendarDays(currDate, offset);
+    //this.currMonday = dtCopyToStart.toLocaleString('sv').replace(' ', 'T').substring(0,10);
+
+
   }
 
 
+  deleteByClasseSezioneAnnoAndDate() {
+    
+    let ckTutteleClassi1 = this.form.controls.ckTutteleClassi1.value;
+    let dtStart: Date;
+    dtStart = this.form.controls.picker1start.value;
+    let dtStartYYYY_MM_DD = dtStart.toLocaleString('sv').replace(' ', 'T').substring(0,10);
+
+    let dtEnd: Date;
+    dtEnd = this.form.controls.picker1end.value;
+    let dtEndYYYY_MM_DD = dtEnd.toLocaleString('sv').replace(' ', 'T').substring(0,10);
+
+    if (ckTutteleClassi1 == false  || ckTutteleClassi1 == null) {
+      console.log ("deleteByClasseSezioneAnnoAndDate");
+      this.svcLezioni.deleteByClasseSezioneAnnoAndDate(this.data.idClasseSezioneAnno, dtStartYYYY_MM_DD, dtEndYYYY_MM_DD)
+        .subscribe(
+          res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
+          err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
+        );
+    } else {
+      console.log ("deleteByDate");
+      this.svcLezioni.deleteByDate(dtStartYYYY_MM_DD, dtEndYYYY_MM_DD)
+      .subscribe(
+        res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
+        err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
+      );
+    }
+  }
+
   copiaFinoA() {
 
+    let ckTutteleClassi1 = this.form.controls.ckTutteleClassi1.value;
+
+
+    let currDate :Date = this.data.start;
+    let offset:number = -(this._dateAdapter.getDayOfWeek(currDate) - 1 );
+    let dtFromStart:Date = this._dateAdapter.addCalendarDays(currDate, offset);
+    let dtFromStartYYYY_MM_DD = dtFromStart.toLocaleString('sv').replace(' ', 'T').substring(0,10);
+
+    let dtFromEnd: Date;
+    dtFromEnd = this._dateAdapter.addCalendarDays(dtFromStart, 5);
+    let dtFromEndYYYY_MM_DD = dtFromEnd.toLocaleString('sv').replace(' ', 'T').substring(0,10);
+
+    let dtUntilStart: Date;
+    dtUntilStart = this.form.controls.picker1start.value;
+    let dtUntilStartYYYY_MM_DD = dtUntilStart.toLocaleString('sv').replace(' ', 'T').substring(0,10);
+
+    
+    if (ckTutteleClassi1 == true) {
+      // this.svcLezioni.copyToDate(dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtCopyToStartYYYY_MM_DD)
+      // .subscribe(
+      //   res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
+      //   err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
+      // );
+    } else {
+      console.log ("this.data.idClasseSezioneAnno, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD", this.data.idClasseSezioneAnno, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD);
+
+      this.svcLezioni.copyByClasseSezioneAnnoToDate(this.data.idClasseSezioneAnno, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD)
+      .subscribe(
+        res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
+        err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
+      );
+    }
+    
+
+    
   }
 
   copiaDa() {
     
     let ckTutteleClassi1 = this.form.controls.ckTutteleClassi1.value;
 
-    let dtStart: Date;
-    dtStart = this.form.controls.picker1start.value;
-    //let dtStartYYYY_MM_DD = dtStart.toLocaleString('sv').replace(' ', 'T').substring(0,10);
+    let dtFromStart: Date;
+    dtFromStart = this.form.controls.picker1start.value;
+    let dtFromStartYYYY_MM_DD = dtFromStart.toLocaleString('sv').replace(' ', 'T').substring(0,10);
 
-    // let dtEnd: Date;
-    // dtEnd = this.form.controls.picker1end.value;
-    // let dtEndYYYY_MM_DD = dtEnd.toLocaleString('sv').replace(' ', 'T').substring(0,10);
+    let dtFromEnd: Date;
+    dtFromEnd = this.form.controls.picker1end.value;
+    let dtFromEndYYYY_MM_DD = dtFromEnd.toLocaleString('sv').replace(' ', 'T').substring(0,10);
     
-    
-    let dtCopyFrom: Date;
-    let dtCopyTo: Date;
-    let dtCopyFromYYYY_MM_DD: string;
-    let dtCopyToYYYY_MM_DD: string;
-
-    //let currDate: Date;
-
-    let currDate :Date = this.data;
+    let currDate :Date = this.data.start;
     let offset:number = -(this._dateAdapter.getDayOfWeek(currDate) - 1 );
-    let currMonday:Date = this._dateAdapter.addCalendarDays(currDate, offset);
-    for (let i = 0; i <= 5; i++) {
-      dtCopyFrom = this._dateAdapter.addCalendarDays(dtStart, i);
-      dtCopyFromYYYY_MM_DD = dtCopyFrom.toLocaleString('sv').replace(' ', 'T').substring(0,10)
-      console.log ( "copia da", dtCopyFromYYYY_MM_DD );
-      
- 
-      //console.log(currMonday);
-      dtCopyTo = this._dateAdapter.addCalendarDays(currMonday, i);
-      dtCopyToYYYY_MM_DD = dtCopyTo.toLocaleString('sv').replace(' ', 'T').substring(0,10)
-      console.log ( "copia a", dtCopyToYYYY_MM_DD );
-      if (ckTutteleClassi1 == true) {
-        //ciclo for su tutte le classi: che sia il caso di selezionarle con delle checkbox in un form per dire "questa classe sì, questa no"?
-      } else {
-        this.svcLezioni.copyAllEventsFromDateToDate(dtCopyFrom, dtCopyTo);
-      }
-      
+    let dtCopyToStart:Date = this._dateAdapter.addCalendarDays(currDate, offset);
+    let dtCopyToStartYYYY_MM_DD = dtCopyToStart.toLocaleString('sv').replace(' ', 'T').substring(0,10);
 
+    if (ckTutteleClassi1 == true) {
+      this.svcLezioni.copyToDate(dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtCopyToStartYYYY_MM_DD)
+      .subscribe(
+        res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
+        err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
+      );
+    } else {
+      this.svcLezioni.copyByClasseSezioneAnnoToDate(this.data.idClasseSezioneAnno, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtCopyToStartYYYY_MM_DD)
+      .subscribe(
+        res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
+        err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
+      );
     }
-
+    
   }
 
 }

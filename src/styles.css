@@ -359,6 +359,10 @@
         width: 400px;
     }
 
+    .w500px {
+        width: 500px;
+    }
+
     ::ng-deep .mat-formfield-wrapper{
         width:2000px;
     }
