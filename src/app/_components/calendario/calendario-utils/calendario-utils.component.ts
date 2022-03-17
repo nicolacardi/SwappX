@@ -176,7 +176,7 @@ export class CalendarioUtilsComponent implements OnInit {
     } else {
       console.log ("this.data.idClasseSezioneAnno, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD", this.data.idClasseSezioneAnno, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD);
 
-      this.svcLezioni.copyByClasseSezioneAnnoToDate(this.data.idClasseSezioneAnno, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD)
+      this.svcLezioni.copyByClasseSezioneAnnoUntilDate(this.data.idClasseSezioneAnno, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD)
       .subscribe(
         res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
         err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}

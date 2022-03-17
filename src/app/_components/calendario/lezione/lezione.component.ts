@@ -21,6 +21,7 @@ import { LezioniService } from '../lezioni.service';
 import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 import { PER_Docente } from 'src/app/_models/PER_Docente';
+import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
 
 @Component({
   selector: 'app-lezione',
@@ -36,6 +37,7 @@ export class LezioneComponent implements OnInit {
 
   lezione$!:                  Observable<CAL_Lezione>;
   obsMaterie$!:               Observable<MAT_Materia[]>;
+  obsClassiDocentiMaterie$!:  Observable<CLS_ClasseDocenteMateria[]>;
   obsDocenti$!:               Observable<PER_Docente[]>;
   strDataOra!:                string;
   strH_Ini!:                  string;
@@ -126,7 +128,8 @@ export class LezioneComponent implements OnInit {
   loadData(): void {
 
     this.breakpoint = (window.innerWidth <= 800) ? 2 : 2;
-    this.obsMaterie$ = this.svcMaterie.list();
+    this.obsClassiDocentiMaterie$ = this.svcClassiDocentiMaterie.listByClasseSezioneAnno(this.data.idClasseSezioneAnno);
+    this.obsMaterie$ = this.svcMaterie.list();  //questo forse non servirà più
     this.obsDocenti$ = this.svcDocenti.list();
 
     if (this.data.idLezione && this.data.idLezione + '' != "0") {

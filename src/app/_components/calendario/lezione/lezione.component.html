@@ -62,8 +62,8 @@
                         <mat-select 
                         required
                         formControlName="materiaID">
-                            <mat-option *ngFor="let element of (obsMaterie$ | async)" [value]="element.id">
-                            {{element.descrizione}}
+                            <mat-option *ngFor="let element of (obsClassiDocentiMaterie$ | async)" [value]="element.materiaID">
+                            {{element.materia.descrizione}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
