@@ -189,7 +189,6 @@ export class CalendarioComponent implements OnInit {
         
         this.Events = val;
         this.calendarOptions.events = this.Events;
-        console.log("this.Events", this.Events);
         this.setEventiDefault('title');
       }
     );
@@ -252,6 +251,9 @@ export class CalendarioComponent implements OnInit {
         idLezione: clickInfo.event.id,
         start: clickInfo.event.start,
         end: clickInfo.event.end,
+        dtCalendario: clickInfo.event.extendedProps.dtCalendario,
+        h_Ini: clickInfo.event.extendedProps.h_Ini,
+        h_End: clickInfo.event.extendedProps.h_End,
         idClasseSezioneAnno: this.idClasse
       }
     };
@@ -342,8 +344,9 @@ export class CalendarioComponent implements OnInit {
     dtStart = selectInfo.start;
     dtEnd = selectInfo.end;
 
+
     //https://stackoverflow.com/questions/12413243/javascript-date-format-like-iso-but-local
-    console.log("toLocaleString(sv)", dtStart.toLocaleString('sv').replace(' ', 'T'));
+    //console.log("toLocaleString(sv)", dtStart.toLocaleString('sv').replace(' ', 'T'));
     
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -353,6 +356,9 @@ export class CalendarioComponent implements OnInit {
         idLezione: 0,
         start: dtStart.toLocaleString('sv').replace(' ', 'T'),
         end: dtEnd.toLocaleString('sv').replace(' ', 'T'),
+        dtCalendario: dtStart.toLocaleString('sv').replace(' ', 'T').substring(0,10),
+        h_Ini: dtStart.toLocaleString('sv').replace(' ', 'T').substring(11,19),
+        h_End: dtEnd.toLocaleString('sv').replace(' ', 'T').substring(11,19),
         idClasseSezioneAnno: this.idClasse
       }
     };

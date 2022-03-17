@@ -13,6 +13,9 @@ export interface DialogDataLezione {
   idLezione:            number;
   start:                string;
   end:                  string;
+  dtCalendario:         string;
+  h_Ini:                string;
+  h_End:                string;
   idClasseSezioneAnno:  number;
 }
 

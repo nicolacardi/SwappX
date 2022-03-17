@@ -23,6 +23,12 @@ export class LezioniService {
     //http://213.215.231.4/swappX/api/CAL_Lezioni/ListByClasseSezioneAnno/16
   }
 
+  listByDocenteAndOra(idDocente: number, dtCalendario: string, h_Ini: string, h_End: string): Observable<CAL_Lezione[]>{
+    console.log ("listByDocenteAndOra", environment.apiBaseUrl+'CAL_Lezioni/ListByDocenteAndOra?idDocente=' + idDocente + '&dtCalendario=' + dtCalendario + '&h_Ini=' + h_Ini + '&h_End=' + h_End);
+    return this.http.get<CAL_Lezione[]>(environment.apiBaseUrl+'CAL_Lezioni/ListByDocenteAndOra?idDocente=' + idDocente + '&dtCalendario=' + dtCalendario + '&h_Ini=' + h_Ini + '&h_End=' + h_End)
+    //http://213.215.231.4/SwappX/api/CAL_Lezioni/ListByDocenteAndOra?idDocente=3&dtCalendario=2022-03-14&h_Ini=08:00:00&h_End=09:00:00
+  }
+
   get(id: any): Observable<CAL_Lezione>{
     return this.http.get<CAL_Lezione>(environment.apiBaseUrl+'CAL_Lezioni/'+id);
     //http://213.215.231.4/swappX/api/CAL_Lezioni/4
@@ -51,6 +57,7 @@ export class LezioniService {
     return this.http.post( environment.apiBaseUrl  + 'CAL_Lezioni/copyByClasseSezioneAnnoUntilDate?IDClasseSezioneAnno=' + idClasseSezioneAnno + '&dtFromStart=' + dtFromStart + '&dtFromEnd=' + dtFromEnd + '&dtUntilStart=' + dtUntilStart, formData);
   //http://213.215.231.4/SwappX/api/CAL_Lezioni/copyByClasseSezioneAnnoUntilDate?IDClasseSezioneAnno=16&dtFromStart=2022-03-14&dtFromEnd=2022-03-19&dtUntilStart=2022-03-21
   }
+
 
   put(formData: any): Observable <any>{
     return this.http.put( environment.apiBaseUrl  + 'CAL_Lezioni/' + formData.id , formData);    

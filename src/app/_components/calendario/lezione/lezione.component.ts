@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { concatMap, tap } from 'rxjs/operators';
 
 //components
 import { DialogDataLezione, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
@@ -99,6 +99,10 @@ export class LezioneComponent implements OnInit {
       val =>{
 
         if (this.form.controls.classeSezioneAnnoID.value != null && this.form.controls.classeSezioneAnnoID.value != undefined) {
+
+          //verifica se già non è impegnato in quest'ora o FRAZIONI DI ORA in qualche altro posto.
+          
+
           this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateria(this.form.controls.classeSezioneAnnoID.value, val)
           .subscribe(val => {
             if (val)
@@ -140,9 +144,9 @@ export class LezioneComponent implements OnInit {
         tap(
           lezione => {
             this.form.patchValue(lezione)
-            this.strDataOra = lezione.dtCalendario;
-            this.strH_Ini = lezione.h_Ini.substring(0,5);
-            this.strH_end = lezione.h_End.substring(0,5);
+            this.strDataOra = lezione.dtCalendario;         //c'era anche in this.data.dtCalendario
+            this.strH_Ini = lezione.h_Ini.substring(0,5);   //c'era anche in this.data.h_Ini
+            this.strH_end = lezione.h_End.substring(0,5);   //c'era anche in this.data.h_End?
           }
         )
       );
@@ -174,32 +178,47 @@ export class LezioneComponent implements OnInit {
   }
 
   save() {
+    let dtStart = new Date (this.data.start);
+    let dtEnd = new Date (dtStart.setHours(dtStart.getHours() + 1));
+    let strDtEnd = dtEnd.toLocaleString('sv').replace(' ', 'T')
+    this.strH_end = strDtEnd.substring(11,19);
 
-    if (this.form.controls['id'].value == null)
-    {
-      console.log (this.form.value);
-      
-      this.svcLezioni.post(this.form.value)
-        .subscribe(res=> {
-          this._dialogRef.close();
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-        },
-        err=> (
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
-      );
-    } else 
-    {
-      this.svcLezioni.put(this.form.value)
-        .subscribe(res=> {
-          this._dialogRef.close();
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-        },
-        err=> (
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
-      );
-    }
+
+
+    const promise  = this.svcLezioni.listByDocenteAndOra (this.form.controls['docenteID'].value, this.data.start.substring(0,10), this.data.start.substring(11,19), this.strH_end)
+      .toPromise();
+
+    
+    promise.then( (val) => {
+
+      console.log ("lista concomitanze", val);
+
+        if (this.form.controls['id'].value == null)
+        {
+          console.log (this.form.value);
+          
+          this.svcLezioni.post(this.form.value)
+            .subscribe(res=> {
+              this._dialogRef.close();
+              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+            },
+            err=> (
+              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+            )
+          );
+        } else 
+        {
+          this.svcLezioni.put(this.form.value)
+            .subscribe(res=> {
+              this._dialogRef.close();
+              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+            },
+            err=> (
+              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+            )
+          );
+        }
+    });
    
 
   }
