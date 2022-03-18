@@ -394,8 +394,24 @@ export class CalendarioComponent implements OnInit {
     );
   }
 
-  handleDrop (dropInfo: EventDropArg) {
 
+  checkDisponibilita (docenteID: number, dtCalendario: string, strH_INI: string, strH_END: string) {
+    this.svcLezioni.listByDocenteAndOra (docenteID, dtCalendario, strH_INI, strH_END)
+      .subscribe ( val => {
+        return (val)
+      }
+      )
+  }
+  handleDrop (dropInfo: EventDropArg) {
+    
+    // if (this.checkDisponibilita(
+    //       dropInfo.event.extendedProps.docenteID,
+    //       dropInfo.event.extendedProps.dtCalendario,
+    //       dropInfo.event.extendedProps.h_Ini,
+    //       dropInfo.event.extendedProps.h_End,
+
+    //       ))
+    
     let form: CAL_Lezione;
 
     this.svcLezioni.get(dropInfo.event.id)
