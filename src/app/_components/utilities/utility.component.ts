@@ -4,6 +4,17 @@ import { User } from "src/app/_user/Users";
 export abstract class Utility {
      
 
+  //AS: verificare se esiste una funzione standard per formattare le chiamate a URL
+
+  public static URL_FormatHour( ora: string ): string{
+    
+    //+ h_Ini.replace(":", "%3A").replace(":", "%3A")
+    return ora.replace(":", "%3A").replace(":", "%3A");
+
+
+    //TODO: usare regex
+  }
+
   public static IscrizioneAlunno( idClasseSezioneAnno: number, idAlunno: string){
 
     /* Check
