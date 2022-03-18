@@ -37,6 +37,7 @@ export class CalendarioComponent implements OnInit {
 
     //PROPRIETA' BASE
     initialView:  'timeGridWeek',
+    
     slotMinTime:  '08:00:00',
     slotMaxTime:  '16:00:00',
     height:       500,
