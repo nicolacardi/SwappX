@@ -8,13 +8,23 @@ export abstract class Utility {
 
   public static URL_FormatHour( ora: string ): string{
     
-    //+ h_Ini.replace(":", "%3A").replace(":", "%3A")
     return ora.replace(":", "%3A").replace(":", "%3A");
-
 
     //TODO: usare regex
   }
 
+  ///Formatta una data dal formato al formato [2022-03-17T11:30:00.000Z] al formato [yyyy-mm-dd]
+  public static UT_FormatDate( data: any ): string {
+    let dtISOLocaleStart = data.toLocaleString('sv').replace(' ', 'T');
+    return dtISOLocaleStart.substring(0,10);
+  }
+  ///Formatta una data dal formato al formato [2022-03-17T11:30:00.000Z] al formato ORA [HH:MM:SS]
+  public static UT_FormatHour( data: any ): string {
+    let dtISOLocaleStart = data.toLocaleString('sv').replace(' ', 'T');
+    return dtISOLocaleStart.substring(11,19);
+  }
+
+  
   public static IscrizioneAlunno( idClasseSezioneAnno: number, idAlunno: string){
 
     /* Check

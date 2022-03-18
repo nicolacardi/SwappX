@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-
+import { Utility } from '../utilities/utility.component';
 
 @Injectable({
   providedIn: 'root'
@@ -24,15 +24,14 @@ export class LezioniService {
   }
 
   listByDocenteAndOraOverlap(idDocente: number, dtCalendario: string, h_Ini: string, h_End: string): Observable<CAL_Lezione[]>{
-    //sostituiamo ":" con "%3A" DUE VOLTE in h_Ini e DUE VOLTE in h_End.
-    let strQuery = environment.apiBaseUrl+'CAL_Lezioni/ListByDocenteAndOraOverlap?idDocente=' + idDocente + '&dtCalendario=' + dtCalendario + '&strH_INI=' + h_Ini.replace(":", "%3A").replace(":", "%3A") + '&strH_END=' + h_End.replace(":", "%3A").replace(":", "%3A");
-    console.log (strQuery);
+    let strQuery = environment.apiBaseUrl+'CAL_Lezioni/ListByDocenteAndOraOverlap?idDocente=' + idDocente + '&dtCalendario=' + dtCalendario + '&strH_INI=' + Utility.URL_FormatHour(h_Ini) + '&strH_END=' + Utility.URL_FormatHour( h_End);
+    //console.log (strQuery);
     return this.http.get<CAL_Lezione[]>(strQuery);
     //http://213.215.231.4/SwappX/api/CAL_Lezioni/ListByDocenteAndOra?idDocente=3&dtCalendario=2022-03-14&strH_INI=08%3A00%3A00&strH_END=09%3A00%3A00
-
   }
 
   get(id: any): Observable<CAL_Lezione>{
+
     return this.http.get<CAL_Lezione>(environment.apiBaseUrl+'CAL_Lezioni/'+id);
     //http://213.215.231.4/swappX/api/CAL_Lezioni/4
   }
@@ -63,6 +62,9 @@ export class LezioniService {
 
 
   put(formData: any): Observable <any>{
+
+    console.log("lezioni.service formData:", formData);
+
     return this.http.put( environment.apiBaseUrl  + 'CAL_Lezioni/' + formData.id , formData);    
   }
 

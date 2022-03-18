@@ -67,8 +67,8 @@ export class LezioneComponent implements OnInit {
     private _snackBar:                      MatSnackBar,
     private _loadingService:                LoadingService,
 
-    private cdRef : ChangeDetectorRef
-  ) {
+    private cdRef : ChangeDetectorRef  ) {
+
     _dialogRef.disableClose = true;
 
     this.form = this.fb.group({
@@ -188,7 +188,7 @@ export class LezioneComponent implements OnInit {
       .toPromise();
 
     promise.then( (val: CAL_Lezione[]) => {
-      if (val.length != 0) {
+      if (val.length > 0) {
         //console.log (val);
         let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
         val.forEach (x =>
