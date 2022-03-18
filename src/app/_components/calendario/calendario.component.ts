@@ -37,7 +37,7 @@ export class CalendarioComponent implements OnInit {
 
     //PROPRIETA' BASE
     initialView:  'timeGridWeek',
-    
+
     slotMinTime:  '08:00:00',
     slotMaxTime:  '16:00:00',
     height:       500,
@@ -376,49 +376,72 @@ export class CalendarioComponent implements OnInit {
   }
 
   handleResize (resizeInfo: EventResizeDoneArg) {
+
+    let dt : Date | null   = resizeInfo.event.start;
+    console.log("dropInfo.event.start",dt?.getDate());
+
+    let dtCalendario =Utility.UT_FormatDate(resizeInfo.event.start);
+    let strH_INI =Utility.UT_FormatHour(resizeInfo.event.start);
+    let strH_END =Utility.UT_FormatHour(resizeInfo.event.end);
+
+    console.log("dtCalendario", dtCalendario);
+    console.log("strH_INI", strH_INI);
+    console.log("strH_END", strH_END);
+    console.log("dropInfo.event.id", resizeInfo.event.id);
+    
     let form: CAL_Lezione;
 
-    this.svcLezioni.get(resizeInfo.event.id)
-    .pipe (
-      tap ( val   =>  {
-        form = val;
+    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (parseInt(resizeInfo.event.id), resizeInfo.event.extendedProps.docenteID, dtCalendario, strH_INI, strH_END)
+      .toPromise();
 
-        let dtISOLocaleEnd = resizeInfo.event.end!.toLocaleString('sv').replace(' ', 'T');
-        form.h_End = dtISOLocaleEnd.substring(11,19);
-      }),
-      concatMap(() => this.svcLezioni.put(form))
-    ).subscribe(
-      res=>{
-        //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-      },
-      err=>{
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+    promise.then( 
+      (val: CAL_Lezione[]) => {
+
+        if (val.length > 0) {
+          console.log("Trovato");
+
+          let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
+          val.forEach (x =>
+            {strMsg = strMsg + "\n - " + x.classeSezioneAnno.classeSezione.classe.descrizione2 + ' ' + x.classeSezioneAnno.classeSezione.sezione;}
+          )
+
+          this._dialog.open(DialogOkComponent, {
+            width: '320px',
+            data: {titolo: "ATTENZIONE!", sottoTitolo: strMsg}
+          });
+
+          resizeInfo.revert();
+
+        }
+        else {
+          this.svcLezioni.get(resizeInfo.event.id)
+          .pipe (
+            tap ( val   =>  {
+              form = val;
+      
+              let dtISOLocaleEnd = resizeInfo.event.end!.toLocaleString('sv').replace(' ', 'T');
+              form.h_End = dtISOLocaleEnd.substring(11,19);
+            }),
+            concatMap(() => this.svcLezioni.put(form))
+          ).subscribe(
+            res=>{
+              //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+            },
+            err=>{
+              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+            }
+          );
+        }
       }
-    );
+    )
+
+
+    
   }
 
 
-  // checkDisponibilita (docenteID: number, dtCalendario: string, strH_INI: string, strH_END: string): any  {
-
-  //   this.svcLezioni.listByDocenteAndOraOverlap (docenteID, dtCalendario, strH_INI, strH_END)
-  //     .subscribe ( val => {
-  //       console.log("checkDisponibilita", val);
-  //       return (val)
-  //     },
-  //     err=> {
-  //       console.log("checkDisponibilita - err", err);
-  //       return null;
-  //     }
-  //   )
-  // }
-
   handleDrop (dropInfo: EventDropArg) {
     
-    // let dt : Date = new Date();
-    // dt = dropInfo.event.extendedProps.dtCalendario;
-    // //let dt : Date = dropInfo.event.extendedProps.dtCalendario;
-    // console.log("dt", dt );
-
     let dt : Date | null   = dropInfo.event.start;
     console.log("dropInfo.event.start",dt?.getDate());
 
@@ -426,16 +449,10 @@ export class CalendarioComponent implements OnInit {
     let strH_INI =Utility.UT_FormatHour(dropInfo.event.start);
     let strH_END =Utility.UT_FormatHour(dropInfo.event.end);
 
-    console.log("dtCalendario", dtCalendario);
-    console.log("strH_INI", strH_INI);
-    console.log("strH_END", strH_END);
-    console.log("dropInfo.event.id", dropInfo.event.id);
-    
-    let form: CAL_Lezione;
-
     const promise  = this.svcLezioni.listByDocenteAndOraOverlap (parseInt(dropInfo.event.id), dropInfo.event.extendedProps.docenteID, dtCalendario, strH_INI, strH_END)
       .toPromise();
 
+      let form: CAL_Lezione;
     promise.then( 
       (val: CAL_Lezione[]) => {
 
