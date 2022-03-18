@@ -428,10 +428,11 @@ export class CalendarioComponent implements OnInit {
     console.log("dtCalendario", dtCalendario);
     console.log("strH_INI", strH_INI);
     console.log("strH_END", strH_END);
+    console.log("dropInfo.event.id", dropInfo.event.id);
     
     let form: CAL_Lezione;
 
-    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (dropInfo.event.extendedProps.docenteID, dtCalendario, strH_INI, strH_END)
+    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (parseInt(dropInfo.event.id), dropInfo.event.extendedProps.docenteID, dtCalendario, strH_INI, strH_END)
       .toPromise();
 
     promise.then( 

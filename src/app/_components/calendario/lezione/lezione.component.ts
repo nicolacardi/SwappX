@@ -180,11 +180,18 @@ export class LezioneComponent implements OnInit {
 
   save() {
     let dtStart = new Date (this.data.start);
+    let strData = dtStart.toLocaleString('sv').substring(0,10);
     let dtEnd = new Date (dtStart.setHours(dtStart.getHours() + 1));
     let strDtEnd = dtEnd.toLocaleString('sv').replace(' ', 'T')
     this.strH_end = strDtEnd.substring(11,19);
+    let idLezione: number;
+    
+    if (this.data.idLezione)
+      idLezione = this.data.idLezione;
+    else
+      idLezione = 0;
 
-    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (this.form.controls['docenteID'].value, this.data.start.substring(0,10), this.data.start.substring(11,19), this.strH_end)
+    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (idLezione, this.form.controls['docenteID'].value, strData, this.data.start.substring(11,19), this.strH_end)
       .toPromise();
 
     promise.then( (val: CAL_Lezione[]) => {
