@@ -184,7 +184,7 @@ export class LezioneComponent implements OnInit {
     let strDtEnd = dtEnd.toLocaleString('sv').replace(' ', 'T')
     this.strH_end = strDtEnd.substring(11,19);
 
-    const promise  = this.svcLezioni.listByDocenteAndOra (this.form.controls['docenteID'].value, this.data.start.substring(0,10), this.data.start.substring(11,19), this.strH_end)
+    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (this.form.controls['docenteID'].value, this.data.start.substring(0,10), this.data.start.substring(11,19), this.strH_end)
       .toPromise();
 
     promise.then( (val: CAL_Lezione[]) => {

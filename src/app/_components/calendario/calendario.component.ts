@@ -396,7 +396,7 @@ export class CalendarioComponent implements OnInit {
 
 
   checkDisponibilita (docenteID: number, dtCalendario: string, strH_INI: string, strH_END: string) {
-    this.svcLezioni.listByDocenteAndOra (docenteID, dtCalendario, strH_INI, strH_END)
+    this.svcLezioni.listByDocenteAndOraOverlap (docenteID, dtCalendario, strH_INI, strH_END)
       .subscribe ( val => {
         return (val)
       }

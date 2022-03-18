@@ -23,9 +23,9 @@ export class LezioniService {
     //http://213.215.231.4/swappX/api/CAL_Lezioni/ListByClasseSezioneAnno/16
   }
 
-  listByDocenteAndOra(idDocente: number, dtCalendario: string, h_Ini: string, h_End: string): Observable<CAL_Lezione[]>{
+  listByDocenteAndOraOverlap(idDocente: number, dtCalendario: string, h_Ini: string, h_End: string): Observable<CAL_Lezione[]>{
     //sostituiamo ":" con "%3A" DUE VOLTE in h_Ini e DUE VOLTE in h_End.
-    let strQuery = environment.apiBaseUrl+'CAL_Lezioni/ListByDocenteAndOra?idDocente=' + idDocente + '&dtCalendario=' + dtCalendario + '&strH_INI=' + h_Ini.replace(":", "%3A").replace(":", "%3A") + '&strH_END=' + h_End.replace(":", "%3A").replace(":", "%3A");
+    let strQuery = environment.apiBaseUrl+'CAL_Lezioni/ListByDocenteAndOraOverlap?idDocente=' + idDocente + '&dtCalendario=' + dtCalendario + '&strH_INI=' + h_Ini.replace(":", "%3A").replace(":", "%3A") + '&strH_END=' + h_End.replace(":", "%3A").replace(":", "%3A");
     console.log (strQuery);
     return this.http.get<CAL_Lezione[]>(strQuery);
     //http://213.215.231.4/SwappX/api/CAL_Lezioni/ListByDocenteAndOra?idDocente=3&dtCalendario=2022-03-14&strH_INI=08%3A00%3A00&strH_END=09%3A00%3A00
