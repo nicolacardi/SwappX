@@ -8,6 +8,7 @@ import { concatMap, tap } from 'rxjs/operators';
 //components
 import { DialogDataLezione, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { Utility } from '../../utilities/utility.component';
 
 //services
 import { MaterieService } from 'src/app/_services/materie.service';
@@ -180,23 +181,16 @@ export class LezioneComponent implements OnInit {
 
   save() {
     let dtStart = new Date (this.data.start);
-    let strData = dtStart.toLocaleString('sv').substring(0,10);
+    let strData = Utility.UT_FormatDate(this.data.start);
+    let strH_Ini = Utility.UT_FormatHour (this.data.start);
     let dtEnd = new Date (dtStart.setHours(dtStart.getHours() + 1));
-    let strDtEnd = dtEnd.toLocaleString('sv').replace(' ', 'T')
-    this.strH_end = strDtEnd.substring(11,19);
-    let idLezione: number;
-    
-    if (this.data.idLezione)
-      idLezione = this.data.idLezione;
-    else
-      idLezione = 0;
+    this.strH_end = Utility.UT_FormatHour(dtEnd);
 
-    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (idLezione, this.form.controls['docenteID'].value, strData, this.data.start.substring(11,19), this.strH_end)
+    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (this.data.idLezione? this.data.idLezione: 0 , this.form.controls['docenteID'].value, strData, strH_Ini, this.strH_end)
       .toPromise();
 
     promise.then( (val: CAL_Lezione[]) => {
       if (val.length > 0) {
-        //console.log (val);
         let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
         val.forEach (x =>
           {strMsg = strMsg + "\n - " + x.classeSezioneAnno.classeSezione.classe.descrizione2 + ' ' + x.classeSezioneAnno.classeSezione.sezione;}
