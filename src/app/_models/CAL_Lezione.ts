@@ -1,3 +1,4 @@
+import { CLS_ClasseSezioneAnno } from "./CLS_ClasseSezioneAnno";
 import { PER_Docente } from "./PER_Docente";
 import { PER_Persona } from "./PER_Persone";
 
@@ -26,6 +27,7 @@ export interface CAL_Lezione {
   
   docente:              PER_Docente;
   persona:              PER_Persona;
+  classeSezioneAnno:    CLS_ClasseSezioneAnno;
 //   note:                 string;
 //   dtIns:                string;
 //   dtUpd:                string;

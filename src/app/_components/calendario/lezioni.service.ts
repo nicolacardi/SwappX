@@ -24,9 +24,12 @@ export class LezioniService {
   }
 
   listByDocenteAndOra(idDocente: number, dtCalendario: string, h_Ini: string, h_End: string): Observable<CAL_Lezione[]>{
-    console.log ("listByDocenteAndOra", environment.apiBaseUrl+'CAL_Lezioni/ListByDocenteAndOra?idDocente=' + idDocente + '&dtCalendario=' + dtCalendario + '&h_Ini=' + h_Ini + '&h_End=' + h_End);
-    return this.http.get<CAL_Lezione[]>(environment.apiBaseUrl+'CAL_Lezioni/ListByDocenteAndOra?idDocente=' + idDocente + '&dtCalendario=' + dtCalendario + '&h_Ini=' + h_Ini + '&h_End=' + h_End)
-    //http://213.215.231.4/SwappX/api/CAL_Lezioni/ListByDocenteAndOra?idDocente=3&dtCalendario=2022-03-14&h_Ini=08:00:00&h_End=09:00:00
+    //sostituiamo ":" con "%3A" DUE VOLTE in h_Ini e DUE VOLTE in h_End.
+    let strQuery = environment.apiBaseUrl+'CAL_Lezioni/ListByDocenteAndOra?idDocente=' + idDocente + '&dtCalendario=' + dtCalendario + '&strH_INI=' + h_Ini.replace(":", "%3A").replace(":", "%3A") + '&strH_END=' + h_End.replace(":", "%3A").replace(":", "%3A");
+    console.log (strQuery);
+    return this.http.get<CAL_Lezione[]>(strQuery);
+    //http://213.215.231.4/SwappX/api/CAL_Lezioni/ListByDocenteAndOra?idDocente=3&dtCalendario=2022-03-14&strH_INI=08%3A00%3A00&strH_END=09%3A00%3A00
+
   }
 
   get(id: any): Observable<CAL_Lezione>{

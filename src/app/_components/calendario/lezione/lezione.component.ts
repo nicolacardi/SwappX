@@ -22,6 +22,7 @@ import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 import { PER_Docente } from 'src/app/_models/PER_Docente';
 import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 @Component({
   selector: 'app-lezione',
@@ -183,19 +184,26 @@ export class LezioneComponent implements OnInit {
     let strDtEnd = dtEnd.toLocaleString('sv').replace(' ', 'T')
     this.strH_end = strDtEnd.substring(11,19);
 
-
-
     const promise  = this.svcLezioni.listByDocenteAndOra (this.form.controls['docenteID'].value, this.data.start.substring(0,10), this.data.start.substring(11,19), this.strH_end)
       .toPromise();
 
-    
-    promise.then( (val) => {
+    promise.then( (val: CAL_Lezione[]) => {
+      if (val.length != 0) {
+        //console.log (val);
+        let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
+        val.forEach (x =>
+          {strMsg = strMsg + "\n - " + x.classeSezioneAnno.classeSezione.classe.descrizione2 + ' ' + x.classeSezioneAnno.classeSezione.sezione;}
+        )
 
-      console.log ("lista concomitanze", val);
+        this._dialog.open(DialogOkComponent, {
+          width: '320px',
+          data: {titolo: "ATTENZIONE!", sottoTitolo: strMsg}
+        });
+      } else {
 
         if (this.form.controls['id'].value == null)
         {
-          console.log (this.form.value);
+          //console.log (this.form.value);
           
           this.svcLezioni.post(this.form.value)
             .subscribe(res=> {
@@ -218,6 +226,7 @@ export class LezioneComponent implements OnInit {
             )
           );
         }
+      }
     });
    
 
