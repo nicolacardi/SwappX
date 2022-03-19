@@ -29,37 +29,35 @@
                 </button>
             </div>
 
-            <mat-label class="center mt20" *ngIf="data.idLezione || emptyForm">{{strDataOra | date: 'dd/MM/yyyy'}}</mat-label>
-            <mat-label class="center" *ngIf="data.idLezione || emptyForm">dalle  {{strH_Ini}} - alle {{strH_end}}</mat-label>
+            <mat-label class="center mt20 fs16" *ngIf="data.idLezione || emptyForm">- {{strDtStart | date: 'dd/LL/yyyy'}} -</mat-label>
+            <!-- <mat-label class="center" *ngIf="data.idLezione || emptyForm">dalle  {{strH_Ini}} - alle {{strH_end}}</mat-label> -->
             <mat-grid-list class="no-overflowx mt20" [cols]="breakpoint" rowHeight="60px">
 
                 <mat-grid-tile>
-                    <mat-form-field class="w100">
+                    <mat-form-field >
                         <input matInput
                         required
-                        formControlName = "dtStart"
-                        [matDatepicker]= "dpDtCalendario"
-                        type="datetime-local"
-                        placeholder="Data Lezione"
-                        #date>
-                        <mat-datepicker-toggle matSuffix [for]="dpDtCalendario" ></mat-datepicker-toggle>
-                        <mat-datepicker #dpDtCalendario ></mat-datepicker>
-                        <mat-error *ngIf="form.controls.dtCalendario.errors?.required"> Campo obbligatorio</mat-error>
+                        formControlName = "h_Ini"
+                        type="time"
+                        placeholder="Ora Inizio"
+                        (change)="dp1Change()"
+                        >
+                        <mat-datepicker ></mat-datepicker>
+                        <!-- <mat-error *ngIf="form.controls.start.errors?.required"> Campo obbligatorio</mat-error> -->
                     </mat-form-field>
                 </mat-grid-tile>
 
                 <mat-grid-tile>
-                    <mat-form-field class="w100">
+                    <mat-form-field >
                         <input matInput
                         required
-                        formControlName = "dtEnd"
-                        [matDatepicker]= "dpDtCalendario"
-                        type="datetime-local"
-                        placeholder="Data Lezione"
-                        #date>
-                        <mat-datepicker-toggle matSuffix [for]="dpDtCalendario" ></mat-datepicker-toggle>
-                        <mat-datepicker #dpDtCalendario ></mat-datepicker>
-                        <mat-error *ngIf="form.controls.dtCalendario.errors?.required"> Campo obbligatorio</mat-error>
+                        formControlName = "h_End"
+                        type="time"
+                        placeholder="Ora Fine"
+                        (change)="dp2Change()"
+                        >
+                        <mat-datepicker #dpEnd ></mat-datepicker>
+                        <!-- <mat-error *ngIf="form.controls.end.errors?.required"> Campo obbligatorio</mat-error> -->
                     </mat-form-field>
                 </mat-grid-tile>
 
@@ -105,13 +103,14 @@
                 </mat-grid-tile>
 
                 <mat-grid-tile class="tileCk ml15">
-                    <mat-checkbox color="primary" formControlName="ckAssente">
+                    <mat-checkbox color="primary" formControlName="ckAssente" #ckAssente (change)="ckAssenteChange()">
                         Assenza
                     </mat-checkbox>
                 </mat-grid-tile>
 
                 <mat-grid-tile>
-                    <mat-form-field>
+                    
+                    <mat-form-field *ngIf="ckAssente.checked">
                         <mat-label>Supplente</mat-label>
                         <mat-select 
                         

@@ -63,13 +63,20 @@ export class LezioniService {
 
   put(formData: any): Observable <any>{
 
-    console.log("lezioni.service formData:", formData);
+    //formData.h_Ini = formData.start.substring(11,16)+":00";
+    //formData.h_End = formData.end.substring(11,16)+":00";
+
 
     return this.http.put( environment.apiBaseUrl  + 'CAL_Lezioni/' + formData.id , formData);    
   }
 
   post(formData: any): Observable <any>{
     formData.id = 0;
+
+    //formData.h_Ini = formData.start.substring(11,16)+":00";
+    //formData.h_End = formData.end.substring(11,16)+":00";
+
+    console.log ("post formData", formData);
     return this.http.post( environment.apiBaseUrl  + 'CAL_Lezioni' , formData);  
   }
 

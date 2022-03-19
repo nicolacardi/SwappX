@@ -41,14 +41,26 @@ export class LezioneComponent implements OnInit {
   obsMaterie$!:               Observable<MAT_Materia[]>;
   obsClassiDocentiMaterie$!:  Observable<CLS_ClasseDocenteMateria[]>;
   obsDocenti$!:               Observable<PER_Docente[]>;
-  strDataOra!:                string;
+  strDtStart!:                string;
+  strDtEnd!:                string;
+
   strH_Ini!:                  string;
-  strH_end!:                  string;
+  strH_End!:                  string;
+
+  dtStart!:                   Date;
+  dtEnd!:                     Date;
   strClasseSezioneAnno!:       string;
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
   breakpoint!:                number;
   idClasseSezioneAnno!:       number;
+
+
+  myFilter = (d: Date | null): boolean => {
+    const day = (d || new Date()).getDay();
+    // Prevent Saturday and Sunday from being selected.
+    return day !== 0 && day !== 6;
+  };
 
 //#endregion
 
@@ -91,10 +103,14 @@ export class LezioneComponent implements OnInit {
       ckAssente:                  [''],
       argomento:                  [''],
       compiti:                    [''],
-      supplenteID:                ['']
+      supplenteID:                [''],
+      start:                      [''],
+      end:                        ['']
     });
 
   }
+
+
 
   ngOnInit () {
     this.form.controls.materiaID.valueChanges.subscribe( 
@@ -107,11 +123,18 @@ export class LezioneComponent implements OnInit {
 
           this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateria(this.form.controls.classeSezioneAnnoID.value, val)
           .subscribe(val => {
-            if (val)
+            if (val) {
               this.form.controls['docenteID'].setValue(val.docenteID);
-            else 
+              //ora devo estrarre i supplenti: i docenti che per l'ora selezionata NON sono già impegnati
+              this.svcDocenti.listSupplentiByDocenteAndOra(val.docenteID, this.data.dtCalendario, this.data.h_Ini, this.data.h_End);
+              }
+            else {
               this.form.controls['docenteID'].setValue("")
+            }
           });
+
+          
+
         }
       }
     );
@@ -120,7 +143,6 @@ export class LezioneComponent implements OnInit {
       this.svcClasseSezioneAnno.get(this.data.idClasseSezioneAnno)
       .subscribe(
         (val) => {
-          console.log ("val", val);
           this.strClasseSezioneAnno = val.classeSezione.classe.descrizione2 + " " + val.classeSezione.sezione;
         }
       );
@@ -138,6 +160,7 @@ export class LezioneComponent implements OnInit {
     this.obsMaterie$ = this.svcMaterie.list();  //questo forse non servirà più
     this.obsDocenti$ = this.svcDocenti.list();
 
+
     if (this.data.idLezione && this.data.idLezione + '' != "0") {
       const obsLezione$: Observable<CAL_Lezione> = this.svcLezioni.get(this.data.idLezione);
       const loadLezione$ = this._loadingService.showLoaderUntilCompleted(obsLezione$);
@@ -145,10 +168,16 @@ export class LezioneComponent implements OnInit {
       .pipe(
         tap(
           lezione => {
+            //lezione.start = lezione.start.substring(0,16);
             this.form.patchValue(lezione)
-            this.strDataOra = lezione.dtCalendario;         //c'era anche in this.data.dtCalendario
-            this.strH_Ini = lezione.h_Ini.substring(0,5);   //c'era anche in this.data.h_Ini
-            this.strH_end = lezione.h_End.substring(0,5);   //c'era anche in this.data.h_End?
+
+            //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
+            this.dtStart = new Date (this.data.start);
+            this.strDtStart = Utility.UT_FormatDate(this.dtStart);
+            this.strH_Ini = Utility.UT_FormatHour(this.dtStart);
+
+            this.dtEnd = new Date (this.data.end);
+            this.strH_End = Utility.UT_FormatHour(this.dtEnd);
           }
         )
       );
@@ -157,36 +186,32 @@ export class LezioneComponent implements OnInit {
 
       this.emptyForm = true;
       //LA RIGA QUI SOPRA DETERMINAVA UN ExpressionChangedAfterItHasBeenCheckedError...con il DetectChanges si risolve!  
-      //NON SO SE SIA IL METODO MIGLIORE MA FUNZIONA
       this.cdRef.detectChanges();     
 
+
+      this.dtStart = new Date (this.data.start);
+      this.strDtStart = Utility.UT_FormatDate(this.dtStart);
+      this.strH_Ini = Utility.UT_FormatHour(this.dtStart);
+
+      this.dtEnd = new Date (this.dtStart.setHours(this.dtStart.getHours() + 1));  //in caso di nuova lezione per default impostiamo la durata a un'ora
+      this.strDtEnd = Utility.UT_FormatDate(this.dtEnd);
+      this.strH_End = Utility.UT_FormatHour(this.dtEnd);
+
+
       this.form.controls.classeSezioneAnnoID.setValue(this.data.idClasseSezioneAnno);
-      this.form.controls.dtCalendario.setValue(this.data.start.substring(0,10));
-
-      this.strH_Ini = this.data.start.substring(11,16);
-      this.form.controls.h_Ini.setValue(this.data.start.substring(11,19));
-
-      this.strDataOra = this.data.start;
-
-      //4 righe per aumentare start di un'ora
-      let dtStart = new Date (this.data.start);
-      let dtEnd = new Date (dtStart.setHours(dtStart.getHours() + 1));
-      let strDtEnd = dtEnd.toLocaleString('sv').replace(' ', 'T')
-
-      this.strH_end = strDtEnd.substring(11,16);
-      this.form.controls.h_End.setValue(strDtEnd.substring(11,19));
+      this.form.controls.dtCalendario.setValue(this.dtStart);
+      this.form.controls.h_Ini.setValue(this.strH_Ini);
+      this.form.controls.h_End.setValue(this.strH_End);
 
     }
   }
 
   save() {
-    let dtStart = new Date (this.data.start);
-    let strData = Utility.UT_FormatDate(this.data.start);
-    let strH_Ini = Utility.UT_FormatHour (this.data.start);
-    let dtEnd = new Date (dtStart.setHours(dtStart.getHours() + 1));
-    this.strH_end = Utility.UT_FormatHour(dtEnd);
 
-    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (this.data.idLezione? this.data.idLezione: 0 , this.form.controls['docenteID'].value, strData, strH_Ini, this.strH_end)
+    this.strH_Ini = this.form.controls.h_Ini.value;
+    this.strH_End = this.form.controls.h_End.value;
+
+    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (this.data.idLezione? this.data.idLezione: 0 , this.form.controls['docenteID'].value, this.strDtStart, this.strH_Ini, this.strH_End)
       .toPromise();
 
     promise.then( (val: CAL_Lezione[]) => {
@@ -256,4 +281,73 @@ export class LezioneComponent implements OnInit {
     });
     
   }
+
+  dp1Change() {
+
+    //prendo la data corrente
+    let dtTMP = new Date (this.data.start);
+
+    //ci metto l'H_End
+    dtTMP.setHours(this.form.controls.h_End.value.substring(0,2));
+    dtTMP.setMinutes(this.form.controls.h_End.value.substring(3,5));
+
+    let setHours = 0;
+    let setMinutes = 0;
+
+    //tolgo un'ora, ma se vado sotto le 8 devo impostare le 8
+    if ((dtTMP.getHours() - 1) < 8) { 
+      setHours = 8;
+      setMinutes = 0;
+    } else { 
+      setHours = (dtTMP.getHours() - 1)
+      setMinutes = (dtTMP.getMinutes())
+    }
+
+    let dtTMP2 = new Date (dtTMP.setHours(setHours));
+    dtTMP2.setMinutes(setMinutes);
+    let dtISO = dtTMP2.toLocaleString();
+    let dtTimeNew = dtISO.substring(11,19);   //tutto quanto sopra per arrivare a questa dtTimeNew da impostare nel caso 3 sottostante
+
+    if (this.form.controls.h_Ini.value < "08:00") {this.form.controls.h_Ini.setValue ("08:00") }
+    if (this.form.controls.h_Ini.value > "15:59") {this.form.controls.h_Ini.setValue ("15:00") }
+    if (this.form.controls.h_Ini.value >= this.form.controls.h_End.value) { this.form.controls.h_Ini.setValue (dtTimeNew) }
+  }
+
+  dp2Change() {
+
+    //prendo la data corrente
+    let dtTMP = new Date (this.data.start);
+
+    //ci metto l'H_Ini
+    dtTMP.setHours(this.form.controls.h_Ini.value.substring(0,2));
+    dtTMP.setMinutes(this.form.controls.h_Ini.value.substring(3,5));
+
+    let setHours = 0;
+    let setMinutes = 0;
+
+    //tolgo un'ora, ma se vado sopra le 15 devo impostare le 15
+    if ((dtTMP.getHours() - 1) > 15) { 
+      setHours = 15;
+      setMinutes = 0;
+    } else { 
+      setHours = (dtTMP.getHours() + 1)
+      setMinutes = (dtTMP.getMinutes())
+    }
+    let dtTMP2 = new Date (dtTMP.setHours(setHours));
+    dtTMP2.setMinutes(setMinutes);
+    let dtISO = dtTMP2.toLocaleString();
+    let dtTimeNew = dtISO.substring(11,19); //tutto quanto sopra per arrivare a questa dtTimeNew da impostare nel caso 3 sottostante
+
+    if (this.form.controls.h_End.value < "08:00") {this.form.controls.h_End.setValue ("08:01") }
+    if (this.form.controls.h_End.value > "16:00") {this.form.controls.h_End.setValue ("16:00") }
+    if (this.form.controls.h_End.value <= this.form.controls.h_Ini.value) { this.form.controls.h_End.setValue (dtTimeNew) }
+
+  }
+
+  ckAssenteChange() {
+    if (this.form.controls.ckAssente.value != true) {
+      this.form.controls.supplenteID.setValue("");
+    }
+  }
+
 }

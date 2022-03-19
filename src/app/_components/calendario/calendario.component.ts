@@ -249,7 +249,7 @@ export class CalendarioComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '500px',
-      height: '450px',
+      height: '500px',
       data: {
         idLezione: clickInfo.event.id,
         start: clickInfo.event.start,
@@ -261,7 +261,6 @@ export class CalendarioComponent implements OnInit {
       }
     };
 
-    console.log (dialogConfig);
     const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       () => { 
@@ -332,7 +331,6 @@ export class CalendarioComponent implements OnInit {
   }
 
   toggleEpoca(idLezione: number) {
-    console.log (idLezione);
     this.svcLezioni.toggleEpoca(idLezione).subscribe(() => this.loadData());
   }
 
@@ -354,7 +352,7 @@ export class CalendarioComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '500px',
-      height: '450px',
+      height: '500px',
       data: {
         idLezione: 0,
         start: dtStart.toLocaleString('sv').replace(' ', 'T'),
@@ -378,16 +376,11 @@ export class CalendarioComponent implements OnInit {
   handleResize (resizeInfo: EventResizeDoneArg) {
 
     let dt : Date | null   = resizeInfo.event.start;
-    console.log("dropInfo.event.start",dt?.getDate());
 
     let dtCalendario =Utility.UT_FormatDate(resizeInfo.event.start);
     let strH_INI =Utility.UT_FormatHour(resizeInfo.event.start);
     let strH_END =Utility.UT_FormatHour(resizeInfo.event.end);
 
-    console.log("dtCalendario", dtCalendario);
-    console.log("strH_INI", strH_INI);
-    console.log("strH_END", strH_END);
-    console.log("dropInfo.event.id", resizeInfo.event.id);
     
     let form: CAL_Lezione;
 
@@ -398,8 +391,6 @@ export class CalendarioComponent implements OnInit {
       (val: CAL_Lezione[]) => {
 
         if (val.length > 0) {
-          console.log("Trovato");
-
           let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
           val.forEach (x =>
             {strMsg = strMsg + "\n - " + x.classeSezioneAnno.classeSezione.classe.descrizione2 + ' ' + x.classeSezioneAnno.classeSezione.sezione;}
@@ -443,8 +434,6 @@ export class CalendarioComponent implements OnInit {
   handleDrop (dropInfo: EventDropArg) {
     
     let dt : Date | null   = dropInfo.event.start;
-    console.log("dropInfo.event.start",dt?.getDate());
-
     let dtCalendario =Utility.UT_FormatDate(dropInfo.event.start);
     let strH_INI =Utility.UT_FormatHour(dropInfo.event.start);
     let strH_END =Utility.UT_FormatHour(dropInfo.event.end);
@@ -457,7 +446,6 @@ export class CalendarioComponent implements OnInit {
       (val: CAL_Lezione[]) => {
 
         if (val.length > 0) {
-          console.log("Trovato");
 
           let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
           val.forEach (x =>
