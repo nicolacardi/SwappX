@@ -41,8 +41,10 @@ export class LezioneComponent implements OnInit {
   obsMaterie$!:               Observable<MAT_Materia[]>;
   obsClassiDocentiMaterie$!:  Observable<CLS_ClasseDocenteMateria[]>;
   obsDocenti$!:               Observable<PER_Docente[]>;
+  obsSupplenti$!:             Observable<PER_Docente[]>;
+
   strDtStart!:                string;
-  strDtEnd!:                string;
+  strDtEnd!:                  string;
 
   strH_Ini!:                  string;
   strH_End!:                  string;
@@ -119,14 +121,10 @@ export class LezioneComponent implements OnInit {
         if (this.form.controls.classeSezioneAnnoID.value != null && this.form.controls.classeSezioneAnnoID.value != undefined) {
 
           //verifica se già non è impegnato in quest'ora o FRAZIONI DI ORA in qualche altro posto.
-          
-
           this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateria(this.form.controls.classeSezioneAnnoID.value, val)
           .subscribe(val => {
             if (val) {
               this.form.controls['docenteID'].setValue(val.docenteID);
-              //ora devo estrarre i supplenti: i docenti che per l'ora selezionata NON sono già impegnati
-              this.svcDocenti.listSupplentiByDocenteAndOra(val.docenteID, this.data.dtCalendario, this.data.h_Ini, this.data.h_End);
               }
             else {
               this.form.controls['docenteID'].setValue("")
@@ -138,6 +136,18 @@ export class LezioneComponent implements OnInit {
         }
       }
     );
+
+    this.form.controls.docenteID.valueChanges.subscribe( 
+      val =>{
+        console.log ("val", val);
+        //ora devo estrarre i supplenti: i docenti che per l'ora selezionata NON sono già impegnati
+        this.obsSupplenti$ = this.svcDocenti.listSupplentiDisponibili(val, this.data.dtCalendario, this.data.h_Ini, this.data.h_End)
+        .pipe(
+          tap (x=> console.log ("supplenti", x))
+        );
+      }
+    );
+
 
     if (this.data.idClasseSezioneAnno != null && this.data.idClasseSezioneAnno != undefined) {
       this.svcClasseSezioneAnno.get(this.data.idClasseSezioneAnno)

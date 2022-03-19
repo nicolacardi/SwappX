@@ -22,10 +22,10 @@ export class DocentiService {
   }
 
 
-  listSupplentiByDocenteAndOra(idDocente: number, dtCalendario: string, h_Ini: string, h_End: string) : Observable<PER_Docente[]>{
-    console.log (environment.apiBaseUrl+'PER_Docenti/ListSupplentiDi?idDocente=' + idDocente + '&dtCalendario=' + dtCalendario + '&strH_INI=' + Utility.URL_FormatHour(h_Ini) + '&strH_END=' + Utility.URL_FormatHour( h_End));
-    return this.http.get<PER_Docente[]>(environment.apiBaseUrl+'PER_Docenti/ListSupplentiDi?idDocente=' + idDocente + '&dtCalendario=' + dtCalendario + '&strH_INI=' + Utility.URL_FormatHour(h_Ini) + '&strH_END=' + Utility.URL_FormatHour( h_End));
-    //http://213.215.231.4/SwappX/api/PER_Docenti/ListSupplentiDi?idDocente=3&dtCalendario=2022-03-15T00:00:00&strH_INI=12%3A06%3A00&strH_END=13%3A06%3A00
+  listSupplentiDisponibili(idDocente: number, dtCalendario: string, h_Ini: string, h_End: string) : Observable<PER_Docente[]>{
+    console.log (environment.apiBaseUrl+'PER_Docenti/ListSupplentiDisponibili?idDocente=' + idDocente + '&dtCalendario=' + Utility.UT_FormatDate(dtCalendario) + '&strH_INI=' + Utility.URL_FormatHour(h_Ini) + '&strH_END=' + Utility.URL_FormatHour( h_End));
+    return this.http.get<PER_Docente[]>(environment.apiBaseUrl+'PER_Docenti/ListSupplentiDisponibili?idDocente=' + idDocente + '&dtCalendario=' + Utility.UT_FormatDate(dtCalendario) + '&strH_INI=' + Utility.URL_FormatHour(h_Ini) + '&strH_END=' + Utility.URL_FormatHour( h_End));
+    //http://213.215.231.4/SwappX/api/PER_Docenti/ListSupplentiDisponibili?idDocente=3&dtCalendario=2022-03-16&strH_INI=11%3A06%3A00&strH_END=12%3A06%3A00
   }
 
   filterDocenti(searchstring: string): Observable<PER_Docente[]>{

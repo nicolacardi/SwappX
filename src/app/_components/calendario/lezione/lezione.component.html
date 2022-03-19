@@ -42,7 +42,7 @@
                         placeholder="Ora Inizio"
                         (change)="dp1Change()"
                         >
-                        <mat-datepicker ></mat-datepicker>
+                        <mat-datepicker></mat-datepicker>
                         <!-- <mat-error *ngIf="form.controls.start.errors?.required"> Campo obbligatorio</mat-error> -->
                     </mat-form-field>
                 </mat-grid-tile>
@@ -115,7 +115,7 @@
                         <mat-select 
                         
                         formControlName="supplenteID">
-                            <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
+                            <mat-option *ngFor="let element of (obsSupplenti$ | async)" [value]="element.id">
                             {{element.persona.nome}} {{element.persona.cognome}}
                             </mat-option>
                         </mat-select>

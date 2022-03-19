@@ -16,6 +16,7 @@ import { EventResizeDoneArg } from '@fullcalendar/interaction';
 import { CalendarioUtilsComponent } from './calendario-utils/calendario-utils.component';
 import { Utility } from '../utilities/utility.component';
 import { DialogOkComponent } from '../utilities/dialog-ok/dialog-ok.component';
+import { TagContentType } from '@angular/compiler';
 
 
 
@@ -56,8 +57,9 @@ export class CalendarioComponent implements OnInit {
 
     customButtons: {
       mostraDocenti: {
-        text: 'Docenti',
-        click: this.mostraDocenti.bind(this)
+        text: 'Mostra Docenti',
+        click: this.mostraDocenti.bind(this),
+        
       },
       settings: {
         icon: 'settings-icon',
@@ -176,6 +178,13 @@ export class CalendarioComponent implements OnInit {
   ngOnChanges() {
     if (this.idClasse != undefined) {
       this.loadData();
+
+      // if bottone = mostra Lezione {
+      //   mostra this.svcLezioni
+      // } else {
+      //   mostra docenti
+      // }
+
     }
   }
 
@@ -192,7 +201,7 @@ export class CalendarioComponent implements OnInit {
         
         this.Events = val;
         this.calendarOptions.events = this.Events;
-        this.setEventiDefault('title');
+        //this.setEventiDefault('title');
       }
     );
   }
@@ -289,43 +298,42 @@ export class CalendarioComponent implements OnInit {
 
 
   mostraDocenti () {
-    if (this.toggleDocentiMaterie == 'materie') {
-      this.toggleDocentiMaterie = 'docenti';
-      this.calendarOptions!.customButtons!.mostraDocenti.text = "Lezioni"
+
+    if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Docenti') {
+      this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Lezioni"
 
       this.calendarOptions.eventContent =         
       (arg: any)  =>//arg è l'oggetto che contiene l'evento con tutte le sue proprietà
       { 
-          //mostra l'ora
-          let timeText = document.createElement('div')
-            timeText.className = "fc-event-time";
-            timeText.innerHTML = arg.timeText;
-          //include Info aggiuntive
-          let docenteText = document.createElement('i')
-            docenteText.className = "fc-event-title";
-            docenteText.innerHTML = arg.event.extendedProps.docente.persona.nome +  " " + arg.event.extendedProps.docente.persona.cognome;
-          //include img/icon che lavorerà come fosse un button
-          let img = document.createElement('img');
-          if (arg.event.extendedProps.ckFirma == true) {
-            img.src = '../../assets/sign_YES.svg';
-          } else {
-            img.src = '../../assets/sign_NO.svg';
-          }
-          img.className = "_iconFirma";
-          
+        //mostra l'ora
+        let timeText = document.createElement('div')
+          timeText.className = "fc-event-time";
+          timeText.innerHTML = arg.timeText;
+        //include Info aggiuntive
+        let docenteText = document.createElement('i')
+          docenteText.className = "fc-event-title";
+          docenteText.innerHTML = arg.event.extendedProps.docente.persona.nome +  " " + arg.event.extendedProps.docente.persona.cognome;
+        //include img/icon che lavorerà come fosse un button
+        let img = document.createElement('img');
+        if (arg.event.extendedProps.ckFirma == true) {
+          img.src = '../../assets/sign_YES.svg';
+        } else {
+          img.src = '../../assets/sign_NO.svg';
+        }
+        img.className = "_iconFirma";
+        
 
-          img.addEventListener("click", (e: Event) => {
-            e.stopPropagation();                                    //impedisce che scatti anche il click sull'evento
-            this.anotherMethod();                                   //collega il metodo all'immagine
-          })
+        img.addEventListener("click", (e: Event) => {
+          e.stopPropagation();                                    //impedisce che scatti anche il click sull'evento
+          this.anotherMethod();                                   //collega il metodo all'immagine
+        })
 
-          let arrayOfDomNodes = [ timeText, docenteText, img ];     //prepara il set di Nodes
-          return { domNodes: arrayOfDomNodes }
+        let arrayOfDomNodes = [ timeText, docenteText, img ];     //prepara il set di Nodes
+        return { domNodes: arrayOfDomNodes }
       }
 
     } else {
-      this.toggleDocentiMaterie = 'materie'
-      this.calendarOptions!.customButtons!.mostraDocenti.text = "Docenti"
+      this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Docenti"
       this.setEventiDefault('title');
     } 
   }
