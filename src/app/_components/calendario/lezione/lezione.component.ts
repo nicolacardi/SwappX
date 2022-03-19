@@ -308,8 +308,8 @@ export class LezioneComponent implements OnInit {
     let dtISO = dtTMP2.toLocaleString();
     let dtTimeNew = dtISO.substring(11,19);   //tutto quanto sopra per arrivare a questa dtTimeNew da impostare nel caso 3 sottostante
 
-    if (this.form.controls.h_Ini.value < "08:00") {this.form.controls.h_Ini.setValue ("08:00") }
-    if (this.form.controls.h_Ini.value > "15:59") {this.form.controls.h_Ini.setValue ("15:00") }
+    if (this.form.controls.h_Ini.value < "08:00") {this.form.controls.h_Ini.setValue ("08:00") }   //ora min di inizio 08:00:  sarà parametrica
+    if (this.form.controls.h_Ini.value > "15:30") {this.form.controls.h_Ini.setValue ("15:30") }   //ora max di inizio 15:30: sarà parametrica
     if (this.form.controls.h_Ini.value >= this.form.controls.h_End.value) { this.form.controls.h_Ini.setValue (dtTimeNew) }
   }
 
@@ -338,8 +338,8 @@ export class LezioneComponent implements OnInit {
     let dtISO = dtTMP2.toLocaleString();
     let dtTimeNew = dtISO.substring(11,19); //tutto quanto sopra per arrivare a questa dtTimeNew da impostare nel caso 3 sottostante
 
-    if (this.form.controls.h_End.value < "08:00") {this.form.controls.h_End.setValue ("08:01") }
-    if (this.form.controls.h_End.value > "16:00") {this.form.controls.h_End.setValue ("16:00") }
+    if (this.form.controls.h_End.value < "08:30") {this.form.controls.h_End.setValue ("08:30") } //ora min di fine 08:30:  sarà parametrica
+    if (this.form.controls.h_End.value > "16:00") {this.form.controls.h_End.setValue ("16:00") } //ora max di fine 16:00:  sarà parametrica
     if (this.form.controls.h_End.value <= this.form.controls.h_Ini.value) { this.form.controls.h_End.setValue (dtTimeNew) }
 
   }
