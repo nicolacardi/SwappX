@@ -141,7 +141,7 @@ export class LezioneComponent implements OnInit {
       val =>{
         console.log ("val", val);
         //ora devo estrarre i supplenti: i docenti che per l'ora selezionata NON sono già impegnati
-        this.obsSupplenti$ = this.svcDocenti.listSupplentiDisponibili(val, this.data.dtCalendario, this.data.h_Ini, this.data.h_End)
+        this.obsSupplenti$ = this.svcDocenti.listSupplentiDisponibili(this.data.idLezione? this.data.idLezione: 0, val, this.data.dtCalendario, this.data.h_Ini, this.data.h_End)
         .pipe(
           tap (x=> console.log ("supplenti", x))
         );

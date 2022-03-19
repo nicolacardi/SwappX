@@ -201,12 +201,18 @@ export class CalendarioComponent implements OnInit {
         
         this.Events = val;
         this.calendarOptions.events = this.Events;
-        //this.setEventiDefault('title');
+
+        if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni') {
+          this.setEventiDocenti();
+        } else {
+          this.setEventiLezioni();
+        } 
+
       }
     );
   }
 
-  setEventiDefault(cosaMostrare: string) {
+  setEventiLezioni() {
     this.calendarOptions.eventContent =         
     (arg: any)  =>//arg è l'oggetto che contiene l'evento con tutte le sue proprietà
     { 
@@ -217,7 +223,7 @@ export class CalendarioComponent implements OnInit {
         //include Info aggiuntive
         let titleText = document.createElement('div')
           titleText.className = "fc-event-title";
-          titleText.innerHTML = arg.event[cosaMostrare];
+          titleText.innerHTML = arg.event['title'];
         //include img/icon che lavorerà come fosse un button
         let img = document.createElement('img');
         if (arg.event.extendedProps.ckFirma == true) {
@@ -250,6 +256,43 @@ export class CalendarioComponent implements OnInit {
         return { domNodes: arrayOfDomNodes }
     }
   }
+
+
+  setEventiDocenti() {
+    this.calendarOptions.eventContent =         
+    (arg: any)  =>//arg è l'oggetto che contiene l'evento con tutte le sue proprietà
+    { 
+      //mostra l'ora
+      let timeText = document.createElement('div')
+        timeText.className = "fc-event-time";
+        timeText.innerHTML = arg.timeText;
+      //include Info aggiuntive
+      let docenteText = document.createElement('i')
+        docenteText.className = "fc-event-title";
+        docenteText.innerHTML = arg.event.extendedProps.docente.persona.nome +  " " + arg.event.extendedProps.docente.persona.cognome;
+      //include img/icon che lavorerà come fosse un button
+      let img = document.createElement('img');
+      if (arg.event.extendedProps.ckFirma == true) {
+        img.src = '../../assets/sign_YES.svg';
+      } else {
+        img.src = '../../assets/sign_NO.svg';
+      }
+      img.className = "_iconFirma";
+      
+
+      img.addEventListener("click", (e: Event) => {
+        e.stopPropagation();                                    //impedisce che scatti anche il click sull'evento
+        this.anotherMethod();                                   //collega il metodo all'immagine
+      })
+
+      let arrayOfDomNodes = [ timeText, docenteText, img ];     //prepara il set di Nodes
+      return { domNodes: arrayOfDomNodes }
+    }
+  }
+
+
+
+
 //#endregion
 
 //#region ----- Add Edit Eventi -------
@@ -301,40 +344,10 @@ export class CalendarioComponent implements OnInit {
 
     if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Docenti') {
       this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Lezioni"
-
-      this.calendarOptions.eventContent =         
-      (arg: any)  =>//arg è l'oggetto che contiene l'evento con tutte le sue proprietà
-      { 
-        //mostra l'ora
-        let timeText = document.createElement('div')
-          timeText.className = "fc-event-time";
-          timeText.innerHTML = arg.timeText;
-        //include Info aggiuntive
-        let docenteText = document.createElement('i')
-          docenteText.className = "fc-event-title";
-          docenteText.innerHTML = arg.event.extendedProps.docente.persona.nome +  " " + arg.event.extendedProps.docente.persona.cognome;
-        //include img/icon che lavorerà come fosse un button
-        let img = document.createElement('img');
-        if (arg.event.extendedProps.ckFirma == true) {
-          img.src = '../../assets/sign_YES.svg';
-        } else {
-          img.src = '../../assets/sign_NO.svg';
-        }
-        img.className = "_iconFirma";
-        
-
-        img.addEventListener("click", (e: Event) => {
-          e.stopPropagation();                                    //impedisce che scatti anche il click sull'evento
-          this.anotherMethod();                                   //collega il metodo all'immagine
-        })
-
-        let arrayOfDomNodes = [ timeText, docenteText, img ];     //prepara il set di Nodes
-        return { domNodes: arrayOfDomNodes }
-      }
-
+      this.setEventiDocenti();
     } else {
       this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Docenti"
-      this.setEventiDefault('title');
+      this.setEventiLezioni();
     } 
   }
 
