@@ -6,6 +6,7 @@ import { map, catchError } from 'rxjs/operators';
 
 
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup, CLS_ClasseSezioneAnno_Sum } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { IscrizioniAddComponent } from './iscrizioni-add/iscrizioni-add.component';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,14 @@ export class ClassiSezioniAnniService {
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/1
   } 
 
+  //Sostituita dalla successiva, con parametro idDocente null oppure 0
   listByAnnoGroupByClasse(idAnnoScolastico: any): Observable<CLS_ClasseSezioneAnnoGroup[]>{
     return this.http.get<CLS_ClasseSezioneAnnoGroup[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoGroupByClasse/'+idAnnoScolastico);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnnoGroupByClasse/1
+  }
+  listByAnnoDocenteGroupByClasse(idAnnoScolastico: any, idDocente: any): Observable<CLS_ClasseSezioneAnnoGroup[]>{
+    return this.http.get<CLS_ClasseSezioneAnnoGroup[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoDocenteGroupByClasse/'+idAnnoScolastico+"/"+idDocente);
+    //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnnoDocenteGroupByClasse/1/3
   }
 
   getWithClasseSezioneAnno(id: any): Observable<CLS_ClasseSezioneAnno>{

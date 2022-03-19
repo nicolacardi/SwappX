@@ -29,8 +29,8 @@ import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-
-
+import { PER_Docente } from 'src/app/_models/PER_Docente';
+import { DocentiService } from '../../persone/docenti.service';
 
 
 @Component({
@@ -122,7 +122,10 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   showSelect:                         boolean = true;
   showPageTitle:                      boolean = true;
   showTableRibbon:                    boolean = true;
+
   obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  obsDocenti$!:                       Observable<PER_Docente[]>;
+
   form! :                             FormGroup;
   public showProgress=                false;
   selectedRowIndex = -1;
@@ -153,25 +156,27 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   //@ViewChildren ('ckSelected' ) ckSelected!:QueryList<any>;
   @Output('annoId') annoIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
   @Output('classeId') classeIdEmitter = new EventEmitter<number>(); //classeId viene EMESSO quando si clicca su una classe
+  @Output('docenteId') docenteIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un docente dalla select
+
   @Output('addToAttended') addToAttended = new EventEmitter<CLS_ClasseSezioneAnnoGroup>(); //EMESSO quando si clicca sul (+) di aggiunta alle classi frequentate
 
 //#endregion
 
 constructor(
     private svcClassiSezioniAnni:         ClassiSezioniAnniService,
-    private svcIscrizioni:                IscrizioniService,
     private svcAnni:                      AnniScolasticiService,
+    private svcDocenti:                   DocentiService,
     private _loadingService:              LoadingService,
     private fb:                           FormBuilder, 
     public _dialog:                       MatDialog, 
     private actRoute:                     ActivatedRoute,
-    private _snackBar:                    MatSnackBar
-    ) { 
+    private _snackBar:                    MatSnackBar ) { 
 
     let obj = localStorage.getItem('AnnoCorrente');
 
     this.form = this.fb.group({
-      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
+      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue,
+      selectDocente: '0'
     });
   }
 
@@ -185,26 +190,34 @@ constructor(
           this.idClasseInput = params['idClasseSezioneAnno'];  
     });
 
+    this.obsAnni$ = this.svcAnni.list().pipe(
+      finalize( () => {
+        if (this.idAnnoInput) { //se arrivo da home
+          this.form.controls.selectAnnoScolastico.setValue(parseInt(this.idAnnoInput));
+        }
+      })
+    );
+
     this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
       this.loadData();
       this.annoIdEmitter.emit(val);
-      //vanno resettate le selezioni delle checkbox
+      //vanno resettate le selezioni delle checkbox e masterToggle
       this.resetSelections();
-      //e anche il masterToggle
       this.toggleChecks = false;
-    })
-
-    this.obsAnni$ = this.svcAnni.list()
-      .pipe(
-        finalize( () => {
-          if (this.idAnnoInput) { //se arrivo da home
-            this.form.controls.selectAnnoScolastico.setValue(parseInt(this.idAnnoInput));
-          }
-        }),
-      );
-
+    });
     this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);
 
+    this.obsDocenti$ = this.svcDocenti.list();
+
+    this.form.controls['selectDocente'].valueChanges.subscribe(val => {
+      this.loadData();
+      this.docenteIdEmitter.emit(val);
+      //vanno resettate le selezioni delle checkbox e masterToggle
+      this.resetSelections();
+      this.toggleChecks = false;
+    });
+    this.docenteIdEmitter.emit(this.form.controls["selectDocente"].value);
+   
     this.loadData();
     
     switch(this.dove) {
@@ -249,18 +262,30 @@ constructor(
     let idAnno: number;
     idAnno = this.form.controls["selectAnnoScolastico"].value;
 
-      let obsClassi$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
-      obsClassi$= this.svcClassiSezioniAnni.listByAnnoGroupByClasse(idAnno);
-      // pipe(
-      // map(res=> {
-      //   let ret = <CLS_ClasseSezioneAnno[]>res.json();
-      //   ret.sort((a,b) => a.classeSezione.classe < b.classeSezione.classe ? -1 : 1);
-      //   return ret;
-      // })) ;
+    let idDocente: number;
+    idDocente = this.form.controls["selectDocente"].value;
+
+    let obsClassi$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
+    //obsClassi$= this.svcClassiSezioniAnni.listByAnnoGroupByClasse(idAnno);
+
+    console.log("idAnno: ", idAnno);
+    console.log("idDocente: ", idDocente);
+
+
+    obsClassi$= this.svcClassiSezioniAnni.listByAnnoDocenteGroupByClasse(idAnno, idDocente);
+    // pipe(
+    // map(res=> {
+    //   let ret = <CLS_ClasseSezioneAnno[]>res.json();
+    //   ret.sort((a,b) => a.classeSezione.classe < b.classeSezione.classe ? -1 : 1);
+    //   return ret;
+    // })) ;
 
       const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
       loadClassi$.subscribe(val =>   {
+
+        console.log("BELLA MERDA: ", val.length);
+
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
   

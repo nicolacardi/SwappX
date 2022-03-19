@@ -1,19 +1,34 @@
 <h1 *ngIf="showPageTitle" class="_titolo-pagina">Elenco Classi</h1>
 
     <form [formGroup] = "form">
-        <mat-form-field  class="ml20 mt20 topZIndex" *ngIf="showSelect">
-            <mat-label>Anno Scolastico</mat-label>
-            <mat-select formControlName="selectAnnoScolastico">
-                <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
-                {{element.annoscolastico}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+        <div>
+            <mat-form-field  class="ml20 mt20 topZIndex" *ngIf="showSelect">
+                <mat-label>Anno Scolastico</mat-label>
+                <mat-select formControlName="selectAnnoScolastico">
+                    <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
+                    {{element.annoscolastico}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field  class="ml20 mt20 topZIndex" *ngIf="showSelect" >
+                <mat-label>Docente</mat-label>
+                <mat-select formControlName="selectDocente">
+                    <mat-option value="0">-Tutti i docenti-</mat-option>
+                    <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
+                        {{element.persona.cognome + ' '+ element.persona.nome }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
 <!-- **************************   FILTER   ******************* -->
         <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
             <mat-label>Filtro</mat-label>
             <input matInput (keyup)="applyFilter($event)" placeholder="Classe, sezione" #filterInput>
         </mat-form-field>
+
+
 
     </form>
 
@@ -196,14 +211,11 @@
     <!-- **************************   MAT-ROW   ******************* -->
     <tr mat-row *matRowDef="let element;columns: displayedColumns"
         class="element-row"
-        (click)="rowclicked(element.id)"
+        
         [ngClass]="{
-        '_table-row-selected-highlight': selectedRowIndex == element.id && dove == 'classi-dashboard',
-        '_row-pointercursor': dove == 'classi-dashboard'
-        }"
-
-        >
+            '_table-row-selected-highlight': selectedRowIndex == element.id && dove == 'classi-dashboard',
+            '_row-pointercursor': dove == 'classi-dashboard'
+            }"
+        (click)="rowclicked(element.id)" >
     </tr>
-    
-    <!-- [ngClass]="{'_table-row-selected-highlight': selectedRowIndex == element.id}" -->
 </table>
