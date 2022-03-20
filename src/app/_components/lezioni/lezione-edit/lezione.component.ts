@@ -1,9 +1,9 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { concatMap, tap } from 'rxjs/operators';
+import { concatMap, take, tap } from 'rxjs/operators';
 
 //components
 import { DialogDataLezione, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
@@ -24,6 +24,7 @@ import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 import { PER_Docente } from 'src/app/_models/PER_Docente';
 import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 @Component({
   selector: 'app-lezione',
@@ -54,22 +55,20 @@ export class LezioneComponent implements OnInit {
   strClasseSezioneAnno!:       string;
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
+  public docenteView: boolean = false;
   breakpoint!:                number;
   idClasseSezioneAnno!:       number;
 
 
-  myFilter = (d: Date | null): boolean => {
-    const day = (d || new Date()).getDay();
-    // Prevent Saturday and Sunday from being selected.
-    return day !== 0 && day !== 6;
-  };
+  @ViewChild('autosize') autosize!: CdkTextareaAutosize;
+
 
 //#endregion
 
   constructor(
     public _dialogRef: MatDialogRef<LezioneComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogDataLezione,
-    
+
     private fb:                             FormBuilder, 
 
     private svcLezioni:                     LezioniService,
@@ -82,9 +81,17 @@ export class LezioneComponent implements OnInit {
     private _snackBar:                      MatSnackBar,
     private _loadingService:                LoadingService,
 
-    private cdRef : ChangeDetectorRef  ) {
+    private cdRef :                         ChangeDetectorRef,
+    
+    private _ngZone:                        NgZone
+    ) {
 
     _dialogRef.disableClose = true;
+
+    // form = new FormGroup({
+    //   first: new FormControl({value: 'Nancy', disabled: true}, Validators.required),
+    //   last: new FormControl('Drew', Validators.required)
+    // });
 
     this.form = this.fb.group({
       id:                         [null],
@@ -97,7 +104,7 @@ export class LezioneComponent implements OnInit {
       h_End:                      [''],    
       colore:                     [''],
   
-      docenteID:                  [''],
+      docenteID:                  [{value: '', disabled: true}],
       materiaID:                  [''],
       ckEpoca:                    [''],
       ckFirma:                    [''],
@@ -169,6 +176,24 @@ export class LezioneComponent implements OnInit {
     this.obsMaterie$ = this.svcMaterie.list();  //questo forse non servirà più
     this.obsDocenti$ = this.svcDocenti.list();
 
+
+    if (this.data.dove == "orario") {
+
+      this.form.controls.ckFirma.disable();
+      this.form.controls.compiti.disable();
+      this.form.controls.argomento.disable();
+
+
+    } else {
+
+      this.form.controls.h_Ini.disable();
+      this.form.controls.h_End.disable();
+      this.form.controls.materiaID.disable();
+      this.form.controls.supplenteID.disable();
+      this.form.controls.ckEpoca.disable();
+
+
+    }
 
     if (this.data.idLezione && this.data.idLezione + '' != "0") {
       const obsLezione$: Observable<CAL_Lezione> = this.svcLezioni.get(this.data.idLezione);
@@ -357,6 +382,11 @@ export class LezioneComponent implements OnInit {
     if (this.form.controls.ckAssente.value != true) {
       this.form.controls.supplenteID.setValue("");
     }
+  }
+
+  triggerResize() {
+    // Wait for changes to be applied, then trigger textarea resize.
+    this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
 }

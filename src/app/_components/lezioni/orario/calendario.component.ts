@@ -27,9 +27,8 @@ export class CalendarioComponent implements OnInit {
 //#region ----- Variabili -------
   toggleDocentiMaterie = "materie";
   Events: any[] = [];
-
-  showWarn: boolean = false;
-
+  
+  showWarn:           boolean = false;
   calendarOptions: CalendarOptions = {
 
     //PROPRIETA' BASE
@@ -50,6 +49,55 @@ export class CalendarioComponent implements OnInit {
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek mostraDocenti,settings'
     },  
+
+    views: {
+      timeGridDay: {  //questo modifica TUTTI gli eventi in questa vista
+        eventContent: (event: any, element: any) => {
+          { 
+
+            console.log (event);
+            //mostra l'ora
+            let timeText = document.createElement('div');
+            timeText.className = "fc-event-time";
+            timeText.innerHTML = event.timeText;
+            //include Info aggiuntive
+            let titleText = document.createElement('div');
+            titleText.className = "fc-event-title";
+            titleText.innerHTML = '[<span class="fs10">Mat: </span><b>'
+                +event.event._def.title +' '
+                + '</b>] [<span class="fs10">Doc: </span><b>'
+                + event.event._def.extendedProps.docente.persona.nome + ' '
+                + event.event._def.extendedProps.docente.persona.cognome + ' '
+                + '</b>] [<span class="fs10">Arg: </span>'
+                + (event.event._def.extendedProps.argomento? event.event._def.extendedProps.argomento: "") + ' '
+                + '] [<span class="fs10">Comp: </span>'
+                + (event.event._def.extendedProps.compiti? event.event._def.extendedProps.compiti: "") + '] '
+            
+            //Aggiungo icona firma
+            let img = document.createElement('img');
+            if (event.event._def.extendedProps.ckFirma == true) 
+              img.src = '../../assets/sign_YES.svg';
+            else 
+              img.src = '../../assets/sign_NO.svg';
+            
+            img.className = "_iconFirma";
+
+            //Aggiungo icona epoca
+            let img2 = document.createElement('img');
+            if (event.event._def.extendedProps.ckEpoca == true) 
+              img2.src = '../../assets/epoca_YES.svg';
+            else 
+              img2.src = '../../assets/epoca_NO.svg';
+            
+            img2.className = "_iconEpoca";
+
+
+            let arrayOfDomNodes = [ timeText, titleText, img2, img];     //prepara il set di Nodes
+            return { domNodes: arrayOfDomNodes }
+        }
+        }
+      },
+    },
 
 
 
@@ -88,6 +136,8 @@ export class CalendarioComponent implements OnInit {
   ngOnChanges() {
     if (this.idClasse != undefined  && this.dove != undefined) 
       this.loadData();
+
+
   }
 
   ngOnInit(){
@@ -208,10 +258,10 @@ export class CalendarioComponent implements OnInit {
           img.src = '../../assets/sign_NO.svg';
 
         img.className = "_iconFirma";
-        img.addEventListener("click", (e: Event) => {
-          e.stopPropagation();                                    //impedisce che scatti anche il click sull'evento
-          this.anotherMethod();                                   //collega il metodo all'immagine
-        })
+        // img.addEventListener("click", (e: Event) => {
+        //   e.stopPropagation();                                    //impedisce che scatti anche il click sull'evento
+        //   this.anotherMethod();                                   //collega il metodo all'immagine
+        // })
 
         //Aggiungo icona epoca
         let img2 = document.createElement('img');
@@ -252,12 +302,27 @@ export class CalendarioComponent implements OnInit {
       
       img.className = "_iconFirma";
   
-      img.addEventListener("click", (e: Event) => {
+      // img.addEventListener("click", (e: Event) => {
+      //   e.stopPropagation();                                    //impedisce che scatti anche il click sull'evento
+      //   this.anotherMethod();                                   //collega il metodo all'immagine
+      // })
+
+      //Aggiungo icona epoca
+      let img2 = document.createElement('img');
+      if (arg.event.extendedProps.ckEpoca == true) 
+        img2.src = '../../assets/epoca_YES.svg';
+      else 
+        img2.src = '../../assets/epoca_NO.svg';
+      
+      img2.className = "_iconEpoca";
+      img2.addEventListener("click", (e: Event) => {
         e.stopPropagation();                                    //impedisce che scatti anche il click sull'evento
-        this.anotherMethod();                                   //collega il metodo all'immagine
+        this.toggleEpoca(arg.event.id);                        //collega il metodo all'immagine
       })
 
-      let arrayOfDomNodes = [ timeText, docenteText, img ];     //prepara il set di Nodes
+
+
+      let arrayOfDomNodes = [ timeText, docenteText, img, img2 ];     //prepara il set di Nodes
       return { domNodes: arrayOfDomNodes }
     }
   }
@@ -273,7 +338,6 @@ export class CalendarioComponent implements OnInit {
       //include Info aggiuntive
       let classeText = document.createElement('div');
         classeText.className = "fc-event-title";
-        classeText.className = "classe-color";
         classeText.innerHTML =  
             arg.event.extendedProps.classeSezioneAnno.classeSezione.classe.descrizioneBreve + ' ' + 
             arg.event.extendedProps.classeSezioneAnno.classeSezione.sezione;
@@ -286,12 +350,25 @@ export class CalendarioComponent implements OnInit {
       
       img.className = "_iconFirma";
   
-      img.addEventListener("click", (e: Event) => {
+      // img.addEventListener("click", (e: Event) => {
+      //   e.stopPropagation();                                    //impedisce che scatti anche il click sull'evento
+      //   this.anotherMethod();                                   //collega il metodo all'immagine
+      // })
+
+      //Aggiungo icona epoca
+      let img2 = document.createElement('img');
+      if (arg.event.extendedProps.ckEpoca == true) 
+        img2.src = '../../assets/epoca_YES.svg';
+      else 
+        img2.src = '../../assets/epoca_NO.svg';
+      
+      img2.className = "_iconEpoca";
+      img2.addEventListener("click", (e: Event) => {
         e.stopPropagation();                                    //impedisce che scatti anche il click sull'evento
-        this.anotherMethod();                                   //collega il metodo all'immagine
+        this.toggleEpoca(arg.event.id);                        //collega il metodo all'immagine
       })
 
-      let arrayOfDomNodes = [ timeText, classeText, img ];     //prepara il set di Nodes
+      let arrayOfDomNodes = [ timeText, classeText, img, img2 ];     //prepara il set di Nodes
       return { domNodes: arrayOfDomNodes }
     }
   }
@@ -304,7 +381,7 @@ export class CalendarioComponent implements OnInit {
 
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '500px',
+      width: '900px',
       height: '500px',
       data: {
         idLezione: clickInfo.event.id,
@@ -313,8 +390,8 @@ export class CalendarioComponent implements OnInit {
         dtCalendario: clickInfo.event.extendedProps.dtCalendario,
         h_Ini: clickInfo.event.extendedProps.h_Ini,
         h_End: clickInfo.event.extendedProps.h_End,
-        idClasseSezioneAnno: clickInfo.event.extendedProps.classeSezioneAnnoID
-        //idClasseSezioneAnno: this.idClasse
+        idClasseSezioneAnno: clickInfo.event.extendedProps.classeSezioneAnnoID,
+        dove: this.dove
       }
     };
 
@@ -325,6 +402,42 @@ export class CalendarioComponent implements OnInit {
     );
   }
   
+
+  addEvento(selectInfo: DateSelectArg) {
+    //INSERIMENTO NUOVO EVENTO
+    let dtStart: Date;
+    let dtEnd: Date;
+    dtStart = selectInfo.start;
+    dtEnd = selectInfo.end;
+
+    //https://stackoverflow.com/questions/12413243/javascript-date-format-like-iso-but-local
+    //console.log("toLocaleString(sv)", dtStart.toLocaleString('sv').replace(' ', 'T'));
+    
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '900px',
+      height: '500px',
+      data: {
+        idLezione: 0,
+        start: dtStart.toLocaleString('sv').replace(' ', 'T'),
+        end: dtEnd.toLocaleString('sv').replace(' ', 'T'),
+        dtCalendario: dtStart.toLocaleString('sv').replace(' ', 'T').substring(0,10),
+        h_Ini: dtStart.toLocaleString('sv').replace(' ', 'T').substring(11,19),
+        h_End: dtEnd.toLocaleString('sv').replace(' ', 'T').substring(11,19),
+        idClasseSezioneAnno: this.idClasse,
+        dove: this.dove
+      }
+    };
+    const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() => { 
+        this.loadData(); 
+      }
+    );
+    const calendarApi = selectInfo.view.calendar;
+    calendarApi.unselect(); 
+  }
+
+
   openCalendarioUtils () {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -366,6 +479,7 @@ export class CalendarioComponent implements OnInit {
   }
 
   toggleEpoca(idLezione: number) {
+    if (this.dove == 'orario')
     this.svcLezioni.toggleEpoca(idLezione).subscribe(() => this.loadData());
   }
 
@@ -373,38 +487,7 @@ export class CalendarioComponent implements OnInit {
     console.log ("fat-to");
   }
 
-  addEvento(selectInfo: DateSelectArg) {
-    //INSERIMENTO NUOVO EVENTO
-    let dtStart: Date;
-    let dtEnd: Date;
-    dtStart = selectInfo.start;
-    dtEnd = selectInfo.end;
-
-    //https://stackoverflow.com/questions/12413243/javascript-date-format-like-iso-but-local
-    //console.log("toLocaleString(sv)", dtStart.toLocaleString('sv').replace(' ', 'T'));
-    
-    const dialogConfig : MatDialogConfig = {
-      panelClass: 'add-DetailDialog',
-      width: '500px',
-      height: '500px',
-      data: {
-        idLezione: 0,
-        start: dtStart.toLocaleString('sv').replace(' ', 'T'),
-        end: dtEnd.toLocaleString('sv').replace(' ', 'T'),
-        dtCalendario: dtStart.toLocaleString('sv').replace(' ', 'T').substring(0,10),
-        h_Ini: dtStart.toLocaleString('sv').replace(' ', 'T').substring(11,19),
-        h_End: dtEnd.toLocaleString('sv').replace(' ', 'T').substring(11,19),
-        idClasseSezioneAnno: this.idClasse
-      }
-    };
-    const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(() => { 
-        this.loadData(); 
-      }
-    );
-    const calendarApi = selectInfo.view.calendar;
-    calendarApi.unselect(); 
-  }
+  
 
   handleResize (resizeInfo: EventResizeDoneArg) {
 

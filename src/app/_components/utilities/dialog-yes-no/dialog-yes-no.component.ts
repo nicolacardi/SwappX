@@ -17,6 +17,7 @@ export interface DialogDataLezione {
   h_Ini:                string;
   h_End:                string;
   idClasseSezioneAnno:  number;
+  dove:                 string;
 }
 
 export interface DialogDataCalendarioUtils {

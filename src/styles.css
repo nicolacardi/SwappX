@@ -376,6 +376,15 @@
     }
 
     /* pixels */
+    
+    .h75px {
+        height: 75px;
+    }
+
+    .h80px {
+        height: 80px;
+    }
+
     .h100px {
         height: 100px;
     }
@@ -390,6 +399,10 @@
 
     .h200px {
         height: 200px;
+    }
+
+    .h250px {
+        height: 250px;
     }
 
 /*#endregion ***************************/
@@ -1224,4 +1237,14 @@ div.inner img {
     }
 
     .classe-color {
+    }
+
+
+    ._align-top .mat-figure{
+        justify-content: flex-start !important ;
+        align-items: flex-start !important;
+    }
+
+    ._noresize {
+        resize: none !important;
     }

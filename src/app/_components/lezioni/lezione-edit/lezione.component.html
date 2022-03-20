@@ -31,7 +31,7 @@
 
             <mat-label class="center mt20 fs16" *ngIf="data.idLezione || emptyForm">- {{strDtStart | date: 'dd/LL/yyyy'}} -</mat-label>
             <!-- <mat-label class="center" *ngIf="data.idLezione || emptyForm">dalle  {{strH_Ini}} - alle {{strH_end}}</mat-label> -->
-            <mat-grid-list class="no-overflowx mt20" [cols]="breakpoint" rowHeight="60px">
+            <mat-grid-list class="no-overflowx mt20" [cols]="4" rowHeight="60px">
 
                 <mat-grid-tile>
                     <mat-form-field >
@@ -60,6 +60,14 @@
                         <!-- <mat-error *ngIf="form.controls.end.errors?.required"> Campo obbligatorio</mat-error> -->
                     </mat-form-field>
                 </mat-grid-tile>
+
+                <mat-grid-tile class="_align-top" colspan="2" rowspan ="3">
+                    <mat-form-field class="w100 _argomento border-left pl5" appearance="outline">
+                        <mat-label>Argomenti della Lezione</mat-label>
+                        <textarea class="w300px h125px _noresize" matInput formControlName="argomento"></textarea>
+                    </mat-form-field>
+                </mat-grid-tile>
+
 
                 <mat-grid-tile>
                     <mat-form-field>
@@ -94,6 +102,7 @@
                         <mat-select 
                         required
                         formControlName="docenteID"
+                        
                         >
                             <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
                             {{element.persona.nome}} {{element.persona.cognome}}
@@ -101,6 +110,8 @@
                         </mat-select>
                     </mat-form-field>
                 </mat-grid-tile>
+
+
 
                 <mat-grid-tile class="tileCk ml15">
                     <mat-checkbox color="primary" formControlName="ckAssente" #ckAssente (change)="ckAssenteChange()">
@@ -119,6 +130,13 @@
                             {{element.persona.nome}} {{element.persona.cognome}}
                             </mat-option>
                         </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile class="_align-top" colspan="2" rowspan ="2">
+                    <mat-form-field class="w100 _argomento border-left pl5" appearance="outline">
+                        <mat-label>Compiti Assegnati</mat-label>
+                        <textarea class="w300px h75px _noresize" formControlName="compiti" matInput></textarea>
                     </mat-form-field>
                 </mat-grid-tile>
 
