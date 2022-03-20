@@ -113,11 +113,9 @@ export class IscrizioniAddComponent implements OnInit {
           .pipe( finalize(()=>this.dialogRef.close()))
           .subscribe(
             val=>{
-             // console.log("iscrizioni-add.component.ts - save:Record Salvato:", val);
             },
             err =>{
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-              console.log("iscrizioni-add.component.ts - errore:", err);
             }
           );
       });

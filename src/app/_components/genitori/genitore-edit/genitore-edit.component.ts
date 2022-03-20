@@ -158,8 +158,6 @@ export class GenitoreEditComponent implements OnInit {
     if (this.form.controls['id'].value == null) 
       this.svcGenitori.post(this.form.value)
         .subscribe(res=> {
-          //console.log("return from post", res);
-          //this.form.markAsPristine();
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
@@ -170,8 +168,6 @@ export class GenitoreEditComponent implements OnInit {
     else 
       this.svcGenitori.put(this.form.value)
         .subscribe(res=> {
-          //console.log("return from put", res);
-          //this.form.markAsPristine();
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
@@ -278,11 +274,9 @@ export class GenitoreEditComponent implements OnInit {
     const genitoreID = this.idGenitore;
     this.svcAlunni.deleteByGenitoreAlunno(genitoreID, figlio.id).subscribe(
       res=> {
-          //console.log("addToFamily OK");
           this.alunniFamigliaComponent.loadData();
       },
       err=> {
-        //console.log("addToFamily KO");
       }
     )
   }

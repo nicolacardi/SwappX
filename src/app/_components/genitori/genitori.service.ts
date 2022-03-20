@@ -63,7 +63,6 @@ export class GenitoriService {
   }
 
   filterGenitori(searchstring: string): Observable<ALU_Genitore[]>{
-    console.log("genitori.service.ts - filtergenitori - searchstring:", searchstring);
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori')
             .pipe (

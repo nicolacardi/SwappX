@@ -142,7 +142,6 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
               this._dialogRef.close();
             },
             err=> (
-              console.log("ERRORE POST" ),
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
             )
       );
@@ -157,7 +156,6 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
               this._dialogRef.close();
             },
             err=> (
-              console.log("ERRORE PUT" ),
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
             )
       );
@@ -195,7 +193,6 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 
   updateAnnoSucc(selectedAnno: number) {
 
-    console.log("SELECTED ANNO: " , selectedAnno);
 
     //su modifica della combo dell'anno deve cambiare l'eleco delle classi successive disponibili...e che si fa del valore eventualmente già selezionato? lo si pone a null?
     //comunque? anche se è un valore che sarebbe valido lo perdiamo in caso di modifica dell'anno selezionato?

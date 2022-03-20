@@ -40,7 +40,6 @@ export class PagamentiService {
 
   post(formData: any): Observable <any>{
     formData.id = 0;
-    console.log("pagamenti.service.ts post() : formData", formData);
     return this.http.post(environment.apiBaseUrl  + 'PAG_Pagamenti' , formData);  
   }
 

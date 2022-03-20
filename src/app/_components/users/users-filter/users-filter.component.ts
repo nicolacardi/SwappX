@@ -63,26 +63,18 @@ export class UsersFilterComponent implements OnInit {
       // this.usersListComponent.filterValue = '';
       // this.usersListComponent.filterValues.filtrosx = ''; 
       // this.usersListComponent.filterInput.nativeElement.value = '';
-      console.log(this.usersListComponent.filterValues);
-
   }
 
   resetAllInputs() {
     this.fullnameFilter.setValue('', {emitEvent:false});
     this.emailFilter.setValue('', {emitEvent:false});
     this.badgeFilter.setValue('', {emitEvent:false});
-
-    console.log(this.usersListComponent.filterValues);
-
   }
 
   resetAllInputsAndClearFilters() {
     this.fullnameFilter.setValue('');
     this.emailFilter.setValue('');
     this.badgeFilter.setValue('');
-
-    console.log(this.usersListComponent.filterValues);
-
   }
 //#endregion
 }

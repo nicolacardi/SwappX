@@ -98,7 +98,6 @@ export class AlunniService {
   }
 
   listByAnnoNoClasse(searchstring: string, idAnno: number): Observable<ALU_Alunno[]>{
-    //console.log("alunni.service.ts - filterAlunni - searchstring:", searchstring);
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'CLS_Iscrizioni/ListByAnnoNoClasse/'+idAnno)
       //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByAnnoNoClasse/2
@@ -134,12 +133,10 @@ export class AlunniService {
   }
 
   postGenitoreAlunno (genitoreID: number, alunnoID: number): Observable <any>{
-    //console.log("formData", formData);
     const parentela = <ALU_GenitoreAlunno>{};
     parentela.id = 0;
     parentela.alunnoID = alunnoID;
     parentela.genitoreID = genitoreID;
-    //console.log("parentela - post a ALU_GenitoriAlunni",parentela);
     return this.http.post( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/' , parentela);
   }
 

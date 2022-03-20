@@ -110,8 +110,6 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   }
 
   openGestioneClasse(item: CLS_ClasseSezioneAnno) {
-    //console.log("classisezioniannisummary - openGestioneClasse - item di cui id passata a classisezioniannilist", item);
-    //((console.log("classisezioniannisummary - openGestioneClasse - anno passato a classisezioniannilist", this.form.controls['selectAnnoScolastico'].value);
     this.router.navigate(['/classi-dashboard'], { queryParams: { idAnno: this.form.controls['selectAnnoScolastico'].value, idClasseSezioneAnno: item.id } });
   }
 //#endregion

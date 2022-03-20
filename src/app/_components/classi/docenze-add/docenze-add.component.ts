@@ -127,7 +127,7 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
           });
           
           } else {
-            //console.log("la materia non è già insegnata per la classe in cui sto cercando di inserirla da questo insegnante, posso procedere");
+            //la materia non è già insegnata per la classe in cui sto cercando di inserirla da questo insegnante, posso procedere
           }
         }
       ),
@@ -141,7 +141,7 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
             data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa materia ha già una docenza assegnata in questa classe"}
           });
         } else {
-          //console.log("la materia non è già insegnata per la classe in cui sto cercando di inserirla, posso procedere");
+          //la materia non è già insegnata per la classe in cui sto cercando di inserirla, posso procedere
         }
       })
     )
@@ -157,7 +157,6 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
       },
       err=> {
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        console.log("iscrizioni-add.component.ts - errore:", err);
        }
     )
 
@@ -166,11 +165,9 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
     // .pipe( finalize(()=>this.dialogRef.close()))
     // .subscribe(
     //   val=>{
-    //     // console.log("iscrizioni-add.component.ts - save:Record Salvato:", val);
     //   },
     //   err =>{
     //     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    //     console.log("iscrizioni-add.component.ts - errore:", err);
     //   }
     // );
 

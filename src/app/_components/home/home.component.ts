@@ -18,16 +18,12 @@ export class HomeComponent implements OnInit {
   constructor( private svcUser:       UserService) {
 
     this.currUser = svcUser.currentUser;
-    //console.log("Currente user: " , this.currUser);
     //this.userFullName = this.user.fullname;
   }
 
 
   ngOnInit(): void {
-  
-    //console.log("ANDREA: ",this.svcUser);
-    //this.userFullName= this.svcUser.currUser.fullname;
-
+      //this.userFullName= this.svcUser.currUser.fullname;
   }
 
 

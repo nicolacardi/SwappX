@@ -119,7 +119,6 @@ export class UserService {
 
 
   put(formData: any): Observable <any>{
-    //console.log("user.service.put", formData);
     return this.http.put(environment.apiBaseUrl +'ApplicationUser/'+ formData.userID, formData );
   }
 

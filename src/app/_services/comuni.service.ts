@@ -16,7 +16,6 @@ export class ComuniService {
     return this.http.get<_UT_Comuni[]>(environment.apiBaseUrl+'_UT_Comuni')
       .pipe (
         map(val=> val.filter(val=>val.comune.toLowerCase().includes(searchstring))),
-        //tap((val)=> console.log("ho finito nel service", val))
       );
   }
 }

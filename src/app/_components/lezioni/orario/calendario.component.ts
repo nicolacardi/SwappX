@@ -25,9 +25,10 @@ import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component
 export class CalendarioComponent implements OnInit {
 
 //#region ----- Variabili -------
-
   toggleDocentiMaterie = "materie";
   Events: any[] = [];
+
+  showWarn: boolean = false;
 
   calendarOptions: CalendarOptions = {
 
@@ -50,23 +51,11 @@ export class CalendarioComponent implements OnInit {
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek mostraDocenti,settings'
     },  
 
-    customButtons: {
-      mostraDocenti: {
-        text: 'Mostra Docenti',
-        click: this.mostraDocenti.bind(this),
-        
-      },
-      settings: {
-        icon: 'settings-icon',
-        click: this.openCalendarioUtils.bind(this)
-      }
-    },  
+
 
     //dayHeaderContent: { html: "<button></button>"},
     
-    //PROPRIETA' DI PERMESSI
-    editable:     true,                         //consente modifiche agli eventi presenti   :  da gestire sulla base del ruolo
-    selectable:   true,                         //consente di creare eventi                 :  da gestire sulla base del ruolo
+
 
     //AZIONI
     select:       this.addEvento.bind(this),          //quando si crea un evento...
@@ -85,22 +74,18 @@ export class CalendarioComponent implements OnInit {
   @ViewChild('calendarDOM') calendarDOM!: FullCalendarComponent;
 //#endregion
   
-  constructor(  private svcLezioni:       LezioniService,
-                private _loadingService:  LoadingService,
-                private _snackBar:        MatSnackBar,
-                public _dialog:           MatDialog, 
-                public appRef:            ApplicationRef) { 
-
-  }
+  constructor(  
+    private svcLezioni:       LezioniService,
+    private _loadingService:  LoadingService,
+    private _snackBar:        MatSnackBar,
+    public _dialog:           MatDialog, 
+    public appRef:            ApplicationRef
+  ) {}
 
 
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-
-    console.log ("calendario component ngOnChanges - this.idDocente=", this.idDocente);
-
-
     if (this.idClasse != undefined  && this.dove != undefined) 
       this.loadData();
   }
@@ -110,36 +95,96 @@ export class CalendarioComponent implements OnInit {
 
   loadData () {
     let obsLezioni$: Observable<CAL_Lezione[]>;
-
-    console.log ("calendario component loadData - this.idDocente=", this.idDocente);
-
+    this.showWarn = false;
     if (this.dove == "orario") {
+
+      
       if (this.idDocente != undefined && this.idDocente > 0) {
+        //se c'è un Docente selezionato allora filtro anche per lui
+
+
         obsLezioni$= this.svcLezioni.listByDocenteClasseSezioneAnno(this.idDocente, this.idClasse);
       } else {
+        //se non c'è un docente seleziono non filtro anche per lui
+
+
         obsLezioni$= this.svcLezioni.listByClasseSezioneAnno(this.idClasse);
       }
     } else {
+      //qui ("orario per Docente) non conta la classe ma solo l'IDDocente
       if (this.idDocente != undefined && this.idDocente > 0) {
+
+
         obsLezioni$= this.svcLezioni.listByDocente(this.idDocente);
       } else {
-        obsLezioni$= of();
+
+        this.showWarn = true;
+
+        obsLezioni$= this.svcLezioni.listByDocente(0);
       }
     }
 
 
     const loadLezioni$ =this._loadingService.showLoaderUntilCompleted(obsLezioni$);
     loadLezioni$.subscribe(val =>   {
-        
         this.Events = val;
         this.calendarOptions.events = this.Events;
-
-        if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni') 
-          this.setEventiDocenti();
-        else 
-          this.setEventiLezioni();
       }
     );
+
+
+    if (this.dove == "orario") {
+
+      this.calendarOptions.customButtons = {
+        mostraDocenti: {
+          text: 'Mostra Docenti',
+          click: this.mostraDocenti.bind(this),
+        },
+        settings: {
+          icon: 'settings-icon',
+          click: this.openCalendarioUtils.bind(this)
+        }
+      }  
+
+      this.calendarOptions.editable =             true;             //consente modifiche agli eventi presenti   :  da gestire sulla base del ruolo
+      this.calendarOptions.selectable =           true;             //consente di creare eventi                 :  da gestire sulla base del ruolo
+      this.calendarOptions.eventStartEditable =   true;             //consente di draggare eventi               :  da gestire sulla base del ruolo
+      this.calendarOptions.eventDurationEditable =true;            //consente di modificare la lunghezza eventi:  da gestire sulla base del ruolo
+
+   
+
+      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni') {
+        this.setEventiDocenti();
+      } else {
+        this.setEventiLezioni();
+      }
+    } else {
+
+      this.calendarOptions.customButtons = {
+        mostraDocenti: {
+          text: 'Mostra Lezioni',
+          click: this.mostraDocenti.bind(this),
+        },
+        settings: {
+          icon: 'settings-icon',
+          click: this.openCalendarioUtils.bind(this)
+        }
+      }  
+
+      this.calendarOptions.editable =             true;             //consente modifiche agli eventi presenti   :  da gestire sulla base del ruolo
+      this.calendarOptions.selectable =           false;            //consente di creare eventi                 :  da gestire sulla base del ruolo
+      this.calendarOptions.eventStartEditable =   false;            //consente di draggare eventi               :  da gestire sulla base del ruolo
+      this.calendarOptions.eventDurationEditable =false;            //consente di modificare la lunghezza eventi:  da gestire sulla base del ruolo
+
+
+      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni') {
+        this.setEventiClassi();
+      } else {
+        this.setEventiLezioni();
+      }
+    }
+
+
   }
 
   setEventiLezioni() {
@@ -217,11 +262,46 @@ export class CalendarioComponent implements OnInit {
     }
   }
 
+  setEventiClassi() {
+    this.calendarOptions.eventContent =         
+    (arg: any)  =>//arg è l'oggetto che contiene l'evento con tutte le sue proprietà
+    { 
+      //mostra l'ora
+      let timeText = document.createElement('div');
+        timeText.className = "fc-event-time";
+        timeText.innerHTML = arg.timeText;
+      //include Info aggiuntive
+      let classeText = document.createElement('div');
+        classeText.className = "fc-event-title";
+        classeText.className = "classe-color";
+        classeText.innerHTML =  
+            arg.event.extendedProps.classeSezioneAnno.classeSezione.classe.descrizioneBreve + ' ' + 
+            arg.event.extendedProps.classeSezioneAnno.classeSezione.sezione;
+      //Aggiungo icona firma
+      let img = document.createElement('img');
+      if (arg.event.extendedProps.ckFirma == true) 
+        img.src = '../../assets/sign_YES.svg';
+      else 
+        img.src = '../../assets/sign_NO.svg';
+      
+      img.className = "_iconFirma";
+  
+      img.addEventListener("click", (e: Event) => {
+        e.stopPropagation();                                    //impedisce che scatti anche il click sull'evento
+        this.anotherMethod();                                   //collega il metodo all'immagine
+      })
+
+      let arrayOfDomNodes = [ timeText, classeText, img ];     //prepara il set di Nodes
+      return { domNodes: arrayOfDomNodes }
+    }
+  }
+
 //#endregion
 
 //#region ----- Add Edit Eventi -------
 
   openDetail(clickInfo: EventClickArg) {
+
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '500px',
@@ -233,7 +313,8 @@ export class CalendarioComponent implements OnInit {
         dtCalendario: clickInfo.event.extendedProps.dtCalendario,
         h_Ini: clickInfo.event.extendedProps.h_Ini,
         h_End: clickInfo.event.extendedProps.h_End,
-        idClasseSezioneAnno: this.idClasse
+        idClasseSezioneAnno: clickInfo.event.extendedProps.classeSezioneAnnoID
+        //idClasseSezioneAnno: this.idClasse
       }
     };
 
@@ -263,14 +344,25 @@ export class CalendarioComponent implements OnInit {
 
   mostraDocenti () {
 
-    if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Docenti') {
-      this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Lezioni"
-      this.setEventiDocenti();
-    } 
-    else {
-      this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Docenti"
-      this.setEventiLezioni();
-    } 
+    if (this.dove == 'orario') {
+      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Docenti') {
+        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Lezioni"
+        this.setEventiDocenti();
+      } 
+      else {
+        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Docenti"
+        this.setEventiLezioni();
+      } 
+    } else {
+      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Classi') {
+        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Lezioni"
+        this.setEventiClassi();
+      } 
+      else {
+        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Classi"
+        this.setEventiLezioni();
+      } 
+    }
   }
 
   toggleEpoca(idLezione: number) {
@@ -421,8 +513,6 @@ export class CalendarioComponent implements OnInit {
     //******************* */
 
       //   eventDidMount: function(event) {
-      //     console.log(event);
-      //     console.log (event.el);
       //     event.el.prepend("<button>Add</button>");
       //     //$(event.el).closest('td[role="gridcell"]').find('.fc-daygrid-day-top').prepend('<button class="button button-secondary button-small">Add</button>');
       //     //$(event.el).closest('td[role="gridcell"]').find('.fc-daygrid-day-top').append('<button class="button button-secondary button-small">Add</button>');
@@ -456,7 +546,6 @@ export class CalendarioComponent implements OnInit {
   //********************* */
     // viewDidMount: function (info) {
     // let buttons = document.querySelectorAll(".ilMioButton");
-    // console.log("buttons presenti", buttons);
     // buttons.forEach( (btn) =>{
     //   btn.addEventListener("click", (e) => {
     //     console.log ('cucu');

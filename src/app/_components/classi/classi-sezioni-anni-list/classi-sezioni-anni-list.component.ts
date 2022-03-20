@@ -146,6 +146,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   @Input('dove') dove! :                                          string;
   @Input('alunnoId') alunnoId! :                                  number;
   @Input() classiSezioniAnniFilterComponent!:                     ClassiSezioniAnniFilterComponent;
+  
 
   @ViewChild(MatPaginator) paginator!:                            MatPaginator;
   @ViewChild(MatSort) sort!:                                      MatSort;
@@ -276,9 +277,6 @@ constructor(
 
     let obsClassi$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
     //obsClassi$= this.svcClassiSezioniAnni.listByAnnoGroupByClasse(idAnno);
-
-    console.log("idAnno: ", idAnno);
-    console.log("idDocente: ", idDocente);
 
 
     obsClassi$= this.svcClassiSezioniAnni.listByAnnoDocenteGroupByClasse(idAnno, idDocente);

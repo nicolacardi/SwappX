@@ -42,8 +42,6 @@ export class PagamentiPageComponent implements OnInit {
     //AS: problema: il tipoPAgamento è un oggetto
     // this.pagamentiFilterComponent.tipoPagamentoFilter.setValue('');
     // this.pagamentiFilterComponent.causaleFilter.setValue('');
-
-    console.log("AAA3");
   }
 //#endregion
 

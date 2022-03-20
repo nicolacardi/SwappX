@@ -79,7 +79,6 @@ export class PhotocropComponent implements OnInit {
     let element = event.source.getRootElement();
     let boundingClientRect = element.getBoundingClientRect();
     let parentPosition = this.getPosition(element);
-    console.log('x: ' + (boundingClientRect.x - parentPosition.left), 'y: ' + (boundingClientRect.y - parentPosition.top));        
   }
   
   getPosition(el: any) {

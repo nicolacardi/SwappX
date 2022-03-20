@@ -248,8 +248,6 @@ export class RettaCalcoloComponent implements OnInit {
                       } 
                     }
                     else {
-                      //console.log("UPDATE - retteAnnoAlunno", retteAnnoAlunno);
-
                       retteAnnoAlunno.forEach((rettaMese) => {
                         mese = rettaMese.meseRetta;
 

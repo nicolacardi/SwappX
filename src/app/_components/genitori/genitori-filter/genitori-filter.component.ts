@@ -123,7 +123,6 @@ export class GenitoriFilterComponent implements OnInit {
     //this.genitoriListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
     //this.genitoriListComponent.filterValues.filtrosx = ''; 
     //this.genitoriListComponent.filterInput.nativeElement.value = '';
-    //console.log(this.genitoriListComponent.filterValues);
   }
 
   resetAllInputs() {

@@ -238,17 +238,6 @@ export class GenitoriListComponent implements OnInit {
                 && String(data.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
                 && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
                 && foundAlunno;
-
-                // console.log(data, searchTerms, boolSx, boolDx);
-                // console.log("nome",String(data.nome).toLowerCase().indexOf(searchTerms.nome));
-                // console.log("cognome",String(data.cognome).toLowerCase().indexOf(searchTerms.cognome));
-                // console.log("dtNacsita",String(dtNascitaddmmyyyy).indexOf(searchTerms.dtNascita));
-                // console.log("indirizzo",String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo));
-                // console.log("comune", String(data.comune).toLowerCase().indexOf(searchTerms.comune));
-                // console.log("prov",String(data.prov).toLowerCase().indexOf(searchTerms.prov));
-                // console.log("telefono",String(data.telefono).toLowerCase().indexOf(searchTerms.telefono));
-                // console.log("email",String(data.email).toLowerCase().indexOf(searchTerms.email));
-                // console.log("foundAlunno",foundAlunno);
       return boolSx && boolDx;
 
     }

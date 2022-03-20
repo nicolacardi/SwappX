@@ -31,7 +31,6 @@ export class AnniScolasticiService {
   }
 
   filterAnniScolastici(searchstring: string): Observable<ASC_AnnoScolastico[]>{
-    console.log("anni-scolastici.service.ts - filterAnniScolastici - searchstring:", searchstring);
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<ASC_AnnoScolastico[]>(environment.apiBaseUrl+'ASC_Anni')
             .pipe (

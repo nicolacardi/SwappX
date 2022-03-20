@@ -252,7 +252,6 @@ export class RetteListComponent implements OnInit {
     )         //fine mergeMap
 
       .subscribe(val => {
-        //console.log("Risultato dei vari map & mergeMap:", val);
         this.matDataSource.data = val;
         this.filterPredicateCustom();
         this.matDataSource.paginator = this.paginator;

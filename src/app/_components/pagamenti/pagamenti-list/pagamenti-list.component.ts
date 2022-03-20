@@ -395,7 +395,6 @@ export class PagamentiListComponent implements OnInit {
 
 //#region ----- Altri metodi -------
   hoverRow(id: number) {
-    //console.log(id);
     this.pagamentoEmitter.emit(id);
   }
 

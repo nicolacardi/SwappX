@@ -41,14 +41,11 @@ export class LoadingService {
     }
     
     loadingOn() {
-        //console.log("this.loadingSubject - LoadingOn: sta per essere portato a true", this.loadingSubject.getValue());
         this.loadingSubject.next(true);
 
     }
 
     loadingOff() {
-        //console.log("this.loadingSubject - LoadingOff: sta per essere portato a false", this.loadingSubject.getValue());
         this.loadingSubject.next(false);
-
     }
 }

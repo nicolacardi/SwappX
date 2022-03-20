@@ -273,17 +273,14 @@ export class AlunnoEditComponent implements OnInit {
     const alunnoID = this.idAlunno;
     this.svcAlunni.deleteByGenitoreAlunno(genitore.id, this.idAlunno).subscribe(
       res=> {
-          //console.log("addToFamily OK");
           this.genitoriFamigliaComponent.loadData();
       },
       err=> {
-        //console.log("addToFamily KO");
       }
     )
   }
 
   addToAttended(classeSezioneAnno: CLS_ClasseSezioneAnnoGroup) {
-    console.log("sto per aggiungere la classe" , classeSezioneAnno);
     //così come ho fatto in dialog-add mi costruisco un oggetto "stile" form e lo passo alla postClasseSezioneAnnoAlunno
     //avrei potuto anche passare i valori uno ad uno, ma è già pronta così avendola usata in dialog-add
     let objClasseSezioneAnnoAlunno = {AlunnoID: this.idAlunno, ClasseSezioneAnnoID: classeSezioneAnno.id};
@@ -300,7 +297,7 @@ export class AlunnoEditComponent implements OnInit {
           });
           
           } else {
-            //console.log("l'alunno non frequenta la classe a cui sto cercando di iscriverlo, posso procedere");
+            //l'alunno non frequenta la classe a cui sto cercando di iscriverlo, posso procedere
           }
         }
       ),
@@ -314,7 +311,7 @@ export class AlunnoEditComponent implements OnInit {
             data: {titolo: "ATTENZIONE!", sottoTitolo: "E' già stata inserita una classe in quest'anno!"}
           });
         } else {
-          //console.log("l'alunno non frequenta alcuna classe nell'anno a cui sto cercando di iscriverlo, posso procedere");
+          //console.log("l'alunno non frequenta alcuna classe nell'anno a cui sto cercando di iscriverlo, posso procedere
         }
       })
 
@@ -338,7 +335,6 @@ export class AlunnoEditComponent implements OnInit {
           this.classiAttendedComponent.loadData();
       },
       err=> {
-        //console.log("removeFromAttended KO");
       }
     )
   }

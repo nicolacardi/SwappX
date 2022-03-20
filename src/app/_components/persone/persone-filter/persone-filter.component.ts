@@ -133,8 +133,6 @@ export class PersoneFilterComponent implements OnInit {
       //this.personeListComponent.filterValue = '';
       //this.personeListComponent.filterValues.filtrosx = ''; 
       //this.personeListComponent.filterInput.nativeElement.value = '';
-      console.log(this.personeListComponent.filterValues);
-
   }
 
   resetAllInputs() {

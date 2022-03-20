@@ -16,7 +16,6 @@ export class JspdfService {
 
 
     const doc = new jsPDF('l', 'mm', [297, 210]);
-    //console.log(doc.getFontList());
     doc.setFont('TitilliumWeb-Regular', 'normal');
     let width = doc.internal.pageSize.getWidth()
     doc.text(rptTitle, width/2, 15, { align: 'center' });
@@ -89,7 +88,6 @@ export class JspdfService {
   //e serve a trasformare un array di objects in un array di arrays
   //infatti autotable richiede che il body sia un array di arrays
   let array = subsetFromFlattened.map((obj: { [s: string]: unknown; } | ArrayLike<unknown>) => Object.values(obj)); 
-  //console.log("outputData", array);
 
 //#region PASSAGGIO A AUTOTABLE DEI DATI PREPARATI ********************************************************
     autoTable(doc, {

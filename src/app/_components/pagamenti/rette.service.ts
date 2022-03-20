@@ -45,7 +45,6 @@ export class RetteService {
   }
 
   put(obj: PAG_Retta): Observable <any>{
-    //console.log("rette.service.ts - put - formData=", obj, obj.id);
     return this.http.put(environment.apiBaseUrl  + 'PAG_Rette/' + obj.id , obj);    
   }
 

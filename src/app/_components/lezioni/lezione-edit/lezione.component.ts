@@ -139,7 +139,6 @@ export class LezioneComponent implements OnInit {
 
     this.form.controls.docenteID.valueChanges.subscribe( 
       val =>{
-        console.log ("val", val);
         //ora devo estrarre i supplenti: i docenti che per l'ora selezionata NON sono già impegnati
         this.obsSupplenti$ = this.svcDocenti.listSupplentiDisponibili(this.data.idLezione? this.data.idLezione: 0, val, this.data.dtCalendario, this.data.h_Ini, this.data.h_End)
         .pipe(

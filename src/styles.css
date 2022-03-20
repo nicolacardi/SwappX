@@ -1209,3 +1209,19 @@ div.inner img {
     ._floatleft {
         float: left;
     }
+
+    ._warnCentroSchermo {
+        position: absolute;
+        width: 20%;
+        left: 40%;
+        top: 30%;
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 10px;
+        border: grey 1px solid;
+        text-align: center;
+        z-index: 1000;
+    }
+
+    .classe-color {
+    }

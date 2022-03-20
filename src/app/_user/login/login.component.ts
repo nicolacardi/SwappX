@@ -46,9 +46,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if(localStorage.getItem('token') != null){
-      
-      //console.log("Token: " , localStorage.getItem('token'));
-
       this.router.navigateByUrl('/home');
     }
   }
@@ -72,8 +69,6 @@ export class LoginComponent implements OnInit {
       },
       err=> {
         this.loading = false;
-
-        //console.log("DEBUG - err: ", err);
 
         this._snackBar.openFromComponent(SnackbarComponent, {
           data: err, panelClass: ['red-snackbar']
@@ -112,7 +107,7 @@ export class LoginComponent implements OnInit {
 
     e.preventDefault();
 
-    console.log(this.validateEmail(this.form.controls.UserName.value));
+    //console.log(this.validateEmail(this.form.controls.UserName.value));
     if(!this.validateEmail(this.form.controls.UserName.value)){
       this._snackBar.openFromComponent(SnackbarComponent, {
         data: "Inserire una email valida"  , panelClass: ['red-snackbar']

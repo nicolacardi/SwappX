@@ -27,6 +27,7 @@ import { ClassiDocentiMaterieListComponent } from '../classi-docenti-materie-lis
 import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
 import { CalendarioComponent } from '../../lezioni/orario/calendario.component';
 import { timeout } from 'rxjs/operators';
+import { MatTabGroup } from '@angular/material/tabs';
 
 
 @Component({
@@ -84,7 +85,6 @@ export class ClassiDashboardComponent implements OnInit {
   public idClasse!:             number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public idAnno!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public idDocente!:            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
-
   public idClasseInput!:        string;   //valore ricevuto (routed) dal ruoting
   public idAnnoInput!:          string;   //valore ricevuto (routed) dal ruoting
   isOpen = true;
@@ -97,7 +97,7 @@ export class ClassiDashboardComponent implements OnInit {
   @ViewChild(ClassiDocentiMaterieListComponent) viewClassiDocentiMaterieIscrizioni!: ClassiDocentiMaterieListComponent; 
   @ViewChild('orarioLezioniDOM') viewOrarioLezioni!: CalendarioComponent; 
   @ViewChild('orarioDocenteDOM') viewOrarioDocente!: CalendarioComponent; 
-
+  @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
 
   @Input () classeSezioneAnnoId!: number;
 //#endregion
@@ -355,7 +355,6 @@ export class ClassiDashboardComponent implements OnInit {
   }
 
   docenteIdEmitted(docenteId: number) {
-    console.log ("sto emettendo id Docente= ", docenteId)
     this.idDocente = docenteId;
   }
 
@@ -365,14 +364,16 @@ export class ClassiDashboardComponent implements OnInit {
 
   selectedTabValue(event: any){
     //senza questo espediente non fa il primo render correttamente
-    if (event.tab.textLabel == "Orario") {
+
+
+    if (this.tabGroup.selectedIndex == 2) {
       this.viewOrarioLezioni.calendarDOM.getApi().render();
       this.viewOrarioLezioni.loadData();
     }
-    console.log ("click");
-    if (event.tab.textLabel == "Orario Docente") {
+    if (this.tabGroup.selectedIndex == 3) {
       this.viewOrarioDocente.calendarDOM.getApi().render();
       this.viewOrarioDocente.loadData()
+
     }
 
   }
