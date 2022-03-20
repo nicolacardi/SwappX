@@ -156,7 +156,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   //@ViewChildren ('ckSelected' ) ckSelected!:QueryList<any>;
   @Output('annoId') annoIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
   @Output('classeId') classeIdEmitter = new EventEmitter<number>(); //classeId viene EMESSO quando si clicca su una classe
-  @Output('docenteId') docenteIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un docente dalla select
+  @Output('docenteId') docenteIdEmitter = new EventEmitter<number>(); //docenteId viene EMESSO quando si seleziona un docente dalla select
 
   @Output('addToAttended') addToAttended = new EventEmitter<CLS_ClasseSezioneAnnoGroup>(); //EMESSO quando si clicca sul (+) di aggiunta alle classi frequentate
 
@@ -198,28 +198,12 @@ constructor(
       })
     );
 
-    this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
-      this.loadData();
-      this.annoIdEmitter.emit(val);
-      //vanno resettate le selezioni delle checkbox e masterToggle
-      this.resetSelections();
-      this.toggleChecks = false;
-    });
-    this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);
 
-    this.obsDocenti$ = this.svcDocenti.list();
-
-    this.form.controls['selectDocente'].valueChanges.subscribe(val => {
-      this.loadData();
-      this.docenteIdEmitter.emit(val);
-      //vanno resettate le selezioni delle checkbox e masterToggle
-      this.resetSelections();
-      this.toggleChecks = false;
-    });
-    this.docenteIdEmitter.emit(this.form.controls["selectDocente"].value);
    
     this.loadData();
-    
+    this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);
+    this.docenteIdEmitter.emit(this.form.controls["selectDocente"].value);
+
     switch(this.dove) {
       case 'alunno-edit-list':
         this.displayedColumns = this.displayedColumnsAlunnoEditList;
@@ -250,6 +234,31 @@ constructor(
           break;
       default: this.displayedColumns = this.displayedColumnsClassiDashboard;
     }
+
+
+    this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
+      this.loadData();
+      this.annoIdEmitter.emit(val);
+      //vanno resettate le selezioni delle checkbox e masterToggle
+      this.resetSelections();
+      this.toggleChecks = false;
+    });
+
+
+    this.obsDocenti$ = this.svcDocenti.list();
+
+    this.form.controls['selectDocente'].valueChanges.subscribe(val => {
+      this.loadData();
+      console.log ("", val);
+      this.docenteIdEmitter.emit(val);
+      //vanno resettate le selezioni delle checkbox e masterToggle
+      this.resetSelections();
+      this.toggleChecks = false;
+    });
+
+
+
+
   }
 
   ngOnChanges() {
@@ -284,7 +293,6 @@ constructor(
 
       loadClassi$.subscribe(val =>   {
 
-        console.log("BELLA MERDA: ", val.length);
 
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
@@ -321,6 +329,8 @@ constructor(
       this.selectedRowIndex = this.matDataSource.data[0].id;
 
     this.classeIdEmitter.emit(this.selectedRowIndex);
+
+
   }
 
 

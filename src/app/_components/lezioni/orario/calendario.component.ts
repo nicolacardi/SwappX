@@ -2,25 +2,25 @@ import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/co
 import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/angular';
 import { FullCalendarComponent } from '@fullcalendar/angular';//-->serve per il ViewChild
 import itLocale from '@fullcalendar/core/locales/it';
-import { LezioniService } from './lezioni.service';
-import { Observable } from 'rxjs';
+import { LezioniService } from '../lezioni.service';
+import { Observable, of } from 'rxjs';
 import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
-import { LoadingService } from '../utilities/loading/loading.service';
+import { LoadingService } from '../../utilities/loading/loading.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
-import { LezioneComponent } from './lezione/lezione.component';
+import { LezioneComponent } from '../lezione-edit/lezione.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { concatMap, tap } from 'rxjs/operators';
 import { EventResizeDoneArg } from '@fullcalendar/interaction';
-import { CalendarioUtilsComponent } from './calendario-utils/calendario-utils.component';
-import { Utility } from '../utilities/utility.component';
-import { DialogOkComponent } from '../utilities/dialog-ok/dialog-ok.component';
+import { CalendarioUtilsComponent } from '../calendario-utils/calendario-utils.component';
+import { Utility } from '../../utilities/utility.component';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 @Component({
   selector: 'app-calendario',
   templateUrl: './calendario.component.html',
-  styleUrls: ['./calendario.component.css']
+  styleUrls: ['../lezioni.component.css']
 })
 export class CalendarioComponent implements OnInit {
 
@@ -80,6 +80,8 @@ export class CalendarioComponent implements OnInit {
 //#region ----- ViewChild Input Output -------
 
   @Input() idClasse!:                     number;
+  @Input() idDocente!:                    number;
+  @Input() dove!:                         string;
   @ViewChild('calendarDOM') calendarDOM!: FullCalendarComponent;
 //#endregion
   
@@ -95,7 +97,11 @@ export class CalendarioComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-    if (this.idClasse != undefined) 
+
+    console.log ("calendario component ngOnChanges - this.idDocente=", this.idDocente);
+
+
+    if (this.idClasse != undefined  && this.dove != undefined) 
       this.loadData();
   }
 
@@ -105,7 +111,23 @@ export class CalendarioComponent implements OnInit {
   loadData () {
     let obsLezioni$: Observable<CAL_Lezione[]>;
 
-    obsLezioni$= this.svcLezioni.listByClasseSezioneAnno(this.idClasse);
+    console.log ("calendario component loadData - this.idDocente=", this.idDocente);
+
+    if (this.dove == "orario") {
+      if (this.idDocente != undefined && this.idDocente > 0) {
+        obsLezioni$= this.svcLezioni.listByDocenteClasseSezioneAnno(this.idDocente, this.idClasse);
+      } else {
+        obsLezioni$= this.svcLezioni.listByClasseSezioneAnno(this.idClasse);
+      }
+    } else {
+      if (this.idDocente != undefined && this.idDocente > 0) {
+        obsLezioni$= this.svcLezioni.listByDocente(this.idDocente);
+      } else {
+        obsLezioni$= of();
+      }
+    }
+
+
     const loadLezioni$ =this._loadingService.showLoaderUntilCompleted(obsLezioni$);
     loadLezioni$.subscribe(val =>   {
         

@@ -99,9 +99,9 @@ import { ResetPasswordComponent } from './_user/reset-password/reset-password.co
 import { DatePipe } from '@angular/common';
 import { ClassiDocentiMaterieListComponent } from './_components/classi/classi-docenti-materie-list/classi-docenti-materie-list.component';
 import { DocenzeAddComponent } from './_components/classi/docenze-add/docenze-add.component';
-import { CalendarioComponent } from './_components/calendario/calendario.component';
-import { LezioneComponent } from './_components/calendario/lezione/lezione.component';
-import { CalendarioUtilsComponent } from './_components/calendario/calendario-utils/calendario-utils.component';
+import { CalendarioComponent } from './_components/lezioni/orario/calendario.component';
+import { LezioneComponent } from './_components/lezioni/lezione-edit/lezione.component';
+import { CalendarioUtilsComponent } from './_components/lezioni/calendario-utils/calendario-utils.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,

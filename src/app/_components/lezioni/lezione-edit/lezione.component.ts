@@ -28,7 +28,7 @@ import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component
 @Component({
   selector: 'app-lezione',
   templateUrl: './lezione.component.html',
-  styleUrls: ['../calendario.component.css'],
+  styleUrls: ['../lezioni.component.css'],
 
 })
 export class LezioneComponent implements OnInit {

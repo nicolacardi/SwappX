@@ -72,7 +72,7 @@ import { LezioniService } from '../lezioni.service';
 @Component({
   selector: 'app-calendario-utils',
   templateUrl: './calendario-utils.component.html',
-  styleUrls: ['./calendario-utils.component.css'],
+  styleUrls: ['../lezioni.component.css'],
   providers: [
     {
       provide: MAT_DATE_RANGE_SELECTION_STRATEGY,

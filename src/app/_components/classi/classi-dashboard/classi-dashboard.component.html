@@ -11,7 +11,9 @@
                     <app-classi-sezioni-anni-list 
                         [dove] = "'classi-dashboard'"
                         (annoId)="annoIdEmitted($event)"
-                        (classeId)="classeIdEmitted($event)">
+                        (classeId)="classeIdEmitted($event)"
+                        (docenteId)="docenteIdEmitted($event)"
+                        >
                     </app-classi-sezioni-anni-list>
                 </div>
             <!-- </mat-card> -->
@@ -61,8 +63,10 @@
                 </mat-tab>
                 <!-- <mat-tab  label="Orario" (selectedTabChange)="rerenderCAL()"> -->
                 <mat-tab  label="Orario">
-
-                    <app-calendario [idClasse]="idClasse" #calendarDOM></app-calendario>
+                    <app-calendario [idClasse]="idClasse" [idDocente] = "idDocente" [dove]="'orario'" #orarioLezioniDOM></app-calendario>
+                </mat-tab>
+                <mat-tab  label="Orario Docente">
+                    <app-calendario [idClasse]="idClasse" [idDocente] = "idDocente" [dove]="'orarioDocente'" #orarioDocenteDOM></app-calendario>
                 </mat-tab>
             </mat-tab-group>
                 

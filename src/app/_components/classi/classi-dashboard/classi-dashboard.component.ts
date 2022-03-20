@@ -25,7 +25,8 @@ import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { DocenzeAddComponent } from '../docenze-add/docenze-add.component';
 import { ClassiDocentiMaterieListComponent } from '../classi-docenti-materie-list/classi-docenti-materie-list.component';
 import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
-import { CalendarioComponent } from '../../calendario/calendario.component';
+import { CalendarioComponent } from '../../lezioni/orario/calendario.component';
+import { timeout } from 'rxjs/operators';
 
 
 @Component({
@@ -82,6 +83,8 @@ export class ClassiDashboardComponent implements OnInit {
 //#region ----- Variabili -------
   public idClasse!:             number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public idAnno!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
+  public idDocente!:            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
+
   public idClasseInput!:        string;   //valore ricevuto (routed) dal ruoting
   public idAnnoInput!:          string;   //valore ricevuto (routed) dal ruoting
   isOpen = true;
@@ -92,7 +95,9 @@ export class ClassiDashboardComponent implements OnInit {
   @ViewChild(ClassiSezioniAnniListComponent) viewClassiSezioniAnni!: ClassiSezioniAnniListComponent; 
   @ViewChild(IscrizioniClasseListComponent) viewListIscrizioni!: IscrizioniClasseListComponent; 
   @ViewChild(ClassiDocentiMaterieListComponent) viewClassiDocentiMaterieIscrizioni!: ClassiDocentiMaterieListComponent; 
-  @ViewChild(CalendarioComponent) viewCalendario!: CalendarioComponent; 
+  @ViewChild('orarioLezioniDOM') viewOrarioLezioni!: CalendarioComponent; 
+  @ViewChild('orarioDocenteDOM') viewOrarioDocente!: CalendarioComponent; 
+
 
   @Input () classeSezioneAnnoId!: number;
 //#endregion
@@ -342,27 +347,32 @@ export class ClassiDashboardComponent implements OnInit {
     //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
     //serve per la successiva assegnazione ad una classe...in quanto il modale che va ad aggiungere
     //le classi ha bisogno di conoscere anche l'idAnno per fare le proprie verifiche
-    
     this.idAnno = annoId;
   }
 
   classeIdEmitted(classeId: number) {
     this.idClasse = classeId;
   }
+
+  docenteIdEmitted(docenteId: number) {
+    console.log ("sto emettendo id Docente= ", docenteId)
+    this.idDocente = docenteId;
+  }
+
 //#endregion
   
-
-  rerenderCAL() {
-    //console.log("rerenderCAL");
-    this.viewCalendario.calendarDOM.getApi().render();
-    console.log("rerenderCAL");
-  }
 
 
   selectedTabValue(event: any){
     //senza questo espediente non fa il primo render correttamente
     if (event.tab.textLabel == "Orario") {
-      this.viewCalendario.calendarDOM.getApi().render();
+      this.viewOrarioLezioni.calendarDOM.getApi().render();
+      this.viewOrarioLezioni.loadData();
+    }
+    console.log ("click");
+    if (event.tab.textLabel == "Orario Docente") {
+      this.viewOrarioDocente.calendarDOM.getApi().render();
+      this.viewOrarioDocente.loadData()
     }
 
   }

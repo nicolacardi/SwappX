@@ -34,7 +34,7 @@ import { ChangePswComponent } from './_components/account/change-psw/change-psw.
 import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.component';
 import { ResetPasswordComponent } from './_user/reset-password/reset-password.component';
 import { userInfo } from 'os';
-import { CalendarioComponent } from './_components/calendario/calendario.component';
+import { CalendarioComponent } from './_components/lezioni/orario/calendario.component';
 
 
 const routes: Routes = [
