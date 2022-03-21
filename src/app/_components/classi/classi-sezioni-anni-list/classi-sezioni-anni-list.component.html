@@ -1,8 +1,8 @@
 <h1 *ngIf="showPageTitle" class="_titolo-pagina">Elenco Classi</h1>
 
     <form [formGroup] = "form">
-        <div>
-            <mat-form-field  class="ml20 mt10 topZIndex noBottomPadding" *ngIf="showSelect" appearance="outline">
+
+            <mat-form-field  class="ml20 mt10 topZIndex noBottomPadding" *ngIf="showSelect" >
                 <mat-label>Anno Scolastico</mat-label>
                 <mat-select formControlName="selectAnnoScolastico">
                     <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
@@ -10,9 +10,8 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field  class="ml20 topZIndex" *ngIf="showSelect" appearance="outline">
+        <div *ngIf="showSelect && showSelectDocente">
+            <mat-form-field  class="ml20 topZIndex"  >
                 <mat-label>Docente</mat-label>
                 <mat-select formControlName="selectDocente">
                     <mat-option value="0">-Tutti i docenti-</mat-option>
@@ -21,6 +20,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+
         </div>
 <!-- **************************   FILTER   ******************* -->
         <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">

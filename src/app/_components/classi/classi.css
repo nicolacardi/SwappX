@@ -88,7 +88,7 @@
 
   
 ::ng-deep .noBottomPadding .mat-form-field-wrapper {
-  padding-bottom: 0px !important;
+  /* padding-bottom: 0px !important; */
 }
 
 ::ng-deep .headerColored .mat-header-row {

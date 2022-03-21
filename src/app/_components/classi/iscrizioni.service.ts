@@ -37,7 +37,7 @@ export class IscrizioniService {
 
   getByAlunnoAndAnno(idAnno: number, idAlunno: number): Observable <CLS_Iscrizione> {
     return this.http.get <CLS_Iscrizione>( environment.apiBaseUrl  + 'CLS_Iscrizioni/GetByAlunnoAndAnno?idAlunno='+idAlunno+'&idAnno='+idAnno);  
-      //http://213.215.231.4/swappX/api/CLS_Iscrizioni/GetByAlunnoAndAnno?idAlunno=3&idAnno=1
+    //http://213.215.231.4/swappX/api/CLS_Iscrizioni/GetByAlunnoAndAnno?idAlunno=3&idAnno=2
   }
 
   post(formData: any): Observable <any>{

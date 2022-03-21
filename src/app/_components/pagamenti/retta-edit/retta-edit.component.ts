@@ -25,6 +25,7 @@ import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
 import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
+import { RettaCalcoloAlunnoComponent } from '../retta-calcolo-alunno/retta-calcolo-alunno.component';
 
 @Component({
   selector: 'app-retta-edit',
@@ -62,6 +63,7 @@ export class RettaEditComponent implements OnInit {
   @ViewChildren(RettameseEditComponent) ChildrenRettaMese!:QueryList<RettameseEditComponent>;
   @ViewChild(PagamentiListComponent) ChildPagamenti!: PagamentiListComponent;
   @ViewChild(RettapagamentoEditComponent) ChildRettapagamentoEdit!: RettapagamentoEditComponent;
+  @ViewChild(RettaCalcoloAlunnoComponent) ChildRettaCalcoloAlunno!: RettaCalcoloAlunnoComponent;
   @ViewChild(MatAutocomplete) matAutocomplete!: MatAutocomplete;
 //#endregion
 
@@ -204,6 +206,15 @@ export class RettaEditComponent implements OnInit {
       childRettaMese!.ngOnChanges();
     }
     
+  }
+
+  ricalcoloRetteArrivato() {
+    //è stato effettuato un ricalcolo delle rette calcolate: ora bisogna fare la refresh di tutti i 12 rettamese
+
+    for (let i = 0; i < 12; i++) {
+      let childRettaMese = this.ChildrenRettaMese.find(childRettaMese => childRettaMese.indice == i);
+      childRettaMese!.ngOnChanges();
+    }
   }
 
   hoverPagamentoArrivato(id: number) {

@@ -1,27 +1,22 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { concatMap, debounceTime, switchMap, tap } from 'rxjs/operators';
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { concatMap, tap } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 //components
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { RettameseEditComponent } from '../rettamese-edit/rettamese-edit.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 //services
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { AlunniService } from '../../alunni/alunni.service';
-import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { ParametriService } from 'src/app/_services/parametri.service';
 import { IscrizioniService } from '../../classi/iscrizioni.service';
 import { RetteService } from '../rette.service';
-
 
 //classes
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
@@ -29,8 +24,6 @@ import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_mode
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
-import { AttachSession } from 'protractor/built/driverProviders';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 @Component({
   selector: 'app-retta-calcolo',
@@ -59,8 +52,7 @@ export class RettaCalcoloComponent implements OnInit {
 
   constructor(
     public _dialogRef:                    MatDialogRef<RettaCalcoloComponent>,
-    //private svcAnni:                      AnniScolasticiService,
-    //private svcClasseSezioneAnno:         ClassiSezioniAnniService,
+
     private svcIscrizioni:                IscrizioniService,
     private svcRette:                     RetteService,
     private svcAlunni:                    AlunniService,
@@ -84,23 +76,8 @@ export class RettaCalcoloComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
   }
 
-  loadData ( ) {
-
-  }
-
-  blur() {
-  
-  }
-  
-  enterAlunnoInput(){
-
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-  }
 
   calcola() {
     if (this.viewListClassi.isNoneSelected()) {
@@ -287,6 +264,19 @@ export class RettaCalcoloComponent implements OnInit {
       }
     )
   }
+
+  // selected(event: MatAutocompleteSelectedEvent): void {
+  // }
+
+  // loadData ( ) {
+  // }
+
+  // blur() {
+  // }
+  
+  // enterAlunnoInput(){
+  // }
+
 
   /*
   foreach CLS_ClasseSezioneAnno -->classeSezioneAnnoID

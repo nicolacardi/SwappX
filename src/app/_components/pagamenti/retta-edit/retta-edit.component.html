@@ -87,13 +87,13 @@
                             </div>
                             <app-rettamese-edit>
 
-                                                <!-- [inputPagamenti] ="totPagamenti[anno]"
-                                                [idRetta] ="idRette[anno]"
-                                                [indice] ="i"
+                                <!-- [inputPagamenti] ="totPagamenti[anno]"
+                                [idRetta] ="idRette[anno]"
+                                [indice] ="i"
 
-                                                (mesePagamentoClicked) = "mesePagamentoClicked($event)" -->
-                                                >
-                                                <!--[toHighlight] = "idToHighlight"  -->
+                                (mesePagamentoClicked) = "mesePagamentoClicked($event)" -->
+                                >
+                                <!--[toHighlight] = "idToHighlight"  -->
                             </app-rettamese-edit>
                         </div>
                     </mat-grid-tile>
@@ -103,11 +103,20 @@
                             <div class="center">
                                 <mat-label>{{placeholderMeseArr[i]}}</mat-label>
                             </div>
-                            <app-rettamese-edit [inputPagamenti] ="totPagamenti[mese]"
-                                                [idRetta] ="idRette[mese]"
-                                                [indice] ="i"
-                                                (mesePagamentoClicked) = "mesePagamentoClicked($event)"  >
-                                                <!--[toHighlight] = "idToHighlight"  -->
+
+                            <!-- ************ PARAMETRI PASSATI AD OGNI CHILD: rettamese-edit *************************     -->
+                            <!-- inputPagamenti: passa al component il tot Pagamenti del mese : serve per le                -->
+                            <!--    _highlightPag2 di quelli che hanno quota concordata > dei pagamenti                     -->
+                            <!-- idRetta: è l'id della retta                                                                -->
+                            <!-- indice: serve a questo component (retta-edit) per riferirsi all'n-esimo component child    -->
+                            <!--    in quanto deve uno ad uno lanciarne il metodo ngOnChanges                               -->
+
+                            <app-rettamese-edit 
+                                [inputPagamenti] ="totPagamenti[mese]"
+                                [idRetta] ="idRette[mese]"
+                                [indice] ="i"
+                                (mesePagamentoClicked) = "mesePagamentoClicked($event)"  >
+                                <!--[toHighlight] = "idToHighlight"  -->
                             </app-rettamese-edit>
                         </div>
                     </mat-grid-tile>
@@ -116,18 +125,17 @@
 
                     <mat-tab label="Gestione Pagamenti">
                         <mat-label class="frameLabel"> Nuovo Pagamento </mat-label>
-                        <app-rettapagamento-edit
-                                                [alunnoID]="data.idAlunno"
-                                                [annoID]="data.idAnno"
-                                                (nuovoPagamento) = "nuovoPagamentoArrivato($event)">
-                        </app-rettapagamento-edit>
+                            <app-rettapagamento-edit
+                                [alunnoID]="data.idAlunno"
+                                [annoID]="data.idAnno"
+                                (nuovoPagamento) = "nuovoPagamentoArrivato($event)">
+                            </app-rettapagamento-edit>
                         <mat-label class="frameLabel"> Elenco Pagamenti </mat-label>
                         <div class="_pagamenti-container cellBordered mt10">
-                            <app-pagamenti-list [dove]="'retta-edit'" 
-                                                [alunnoID]="data.idAlunno"
-                                                [annoID]="data.idAnno"
-                                                
-                                                >
+                            <app-pagamenti-list 
+                                [dove]="'retta-edit'" 
+                                [alunnoID]="data.idAlunno"
+                                [annoID]="data.idAnno">
                                                 <!-- (hoverPagamento) = "hoverPagamentoArrivato($event)" -->
                             </app-pagamenti-list>
                         </div>
@@ -137,7 +145,12 @@
                     <mat-tab label="Utilities Rette">
                         <mat-label class="frameLabel"> Utilities per la definizione rapida delle rette </mat-label>
                         <div class="_utilities-container cellBordered mt10">
-                            
+                            <app-retta-calcolo-alunno 
+                                [annoID]="data.idAnno"
+                                [alunnoID]="data.idAlunno"
+                                (ricalcoloRette) = "ricalcoloRetteArrivato()"
+                                >
+                            </app-retta-calcolo-alunno>
                         </div>
                         
                     </mat-tab>

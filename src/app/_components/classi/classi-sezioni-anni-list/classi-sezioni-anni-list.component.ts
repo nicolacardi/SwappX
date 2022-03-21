@@ -120,6 +120,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   classeSezioneAnno!:                 CLS_ClasseSezioneAnno;
   public idAnnoScolastico!:           number;
   showSelect:                         boolean = true;
+  showSelectDocente:                  boolean = true;
+
   showPageTitle:                      boolean = true;
   showTableRibbon:                    boolean = true;
 
@@ -210,6 +212,7 @@ constructor(
         this.displayedColumns = this.displayedColumnsAlunnoEditList;
         this.showPageTitle = false;
         this.showTableRibbon = false;
+        this.showSelectDocente = false;
         break;
       // case 'alunno-edit-attended': 
       //   this.displayedColumns = this.displayedColumnsAlunnoEditAttended;
@@ -226,11 +229,14 @@ constructor(
       case 'classi-page':
           this.displayedColumns = this.displayedColumnsClassiPage;
           this.matDataSource.sort = this.sort;
+          this.showSelectDocente = false;
           break;
       case 'retta-calcolo':
           this.displayedColumns = this.displayedColumnsRettaCalcolo;
           this.showPageTitle = false;
           this.showTableRibbon = false;
+          this.showSelectDocente = false;
+
           //this.matDataSource.sort = this.sort; TODO
           break;
       default: this.displayedColumns = this.displayedColumnsClassiDashboard;
