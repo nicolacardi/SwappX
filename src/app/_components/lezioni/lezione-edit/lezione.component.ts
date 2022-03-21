@@ -261,10 +261,16 @@ export class LezioneComponent implements OnInit {
         });
       } else {
 
+          //https://thecodemon.com/angular-get-value-from-disabled-form-control-while-submitting/
+          //i campi disabled non vengono più passati al form!
+          //va prima lanciato questo loop che "ripopola" il form anche con i valori dei campi disabled
+          for (const prop in this.form.controls) {
+            this.form.value[prop] = this.form.controls[prop].value;
+          }
+
+
         if (this.form.controls['id'].value == null)
-        {
-          //console.log (this.form.value);
-          
+        {          
           this.svcLezioni.post(this.form.value)
             .subscribe(res=> {
               this._dialogRef.close();

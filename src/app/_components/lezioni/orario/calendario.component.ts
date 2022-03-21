@@ -136,8 +136,6 @@ export class CalendarioComponent implements OnInit {
   ngOnChanges() {
     if (this.idClasse != undefined  && this.dove != undefined) 
       this.loadData();
-
-
   }
 
   ngOnInit(){
@@ -201,8 +199,6 @@ export class CalendarioComponent implements OnInit {
       this.calendarOptions.eventStartEditable =   true;             //consente di draggare eventi               :  da gestire sulla base del ruolo
       this.calendarOptions.eventDurationEditable =true;            //consente di modificare la lunghezza eventi:  da gestire sulla base del ruolo
 
-   
-
       if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni') {
         this.setEventiDocenti();
       } else {
@@ -225,7 +221,6 @@ export class CalendarioComponent implements OnInit {
       this.calendarOptions.selectable =           false;            //consente di creare eventi                 :  da gestire sulla base del ruolo
       this.calendarOptions.eventStartEditable =   false;            //consente di draggare eventi               :  da gestire sulla base del ruolo
       this.calendarOptions.eventDurationEditable =false;            //consente di modificare la lunghezza eventi:  da gestire sulla base del ruolo
-
 
       if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni') {
         this.setEventiClassi();

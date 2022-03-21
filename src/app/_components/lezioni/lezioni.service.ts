@@ -76,7 +76,7 @@ export class LezioniService {
     //formData.h_Ini = formData.start.substring(11,16)+":00";
     //formData.h_End = formData.end.substring(11,16)+":00";
 
-
+    //console.log ("lezioni.service - put - formData", formData);
     return this.http.put( environment.apiBaseUrl  + 'CAL_Lezioni/' + formData.id , formData);    
   }
 
@@ -86,7 +86,7 @@ export class LezioniService {
     //formData.h_Ini = formData.start.substring(11,16)+":00";
     //formData.h_End = formData.end.substring(11,16)+":00";
 
-    console.log ("post formData", formData);
+    //console.log ("post formData", formData);
     return this.http.post( environment.apiBaseUrl  + 'CAL_Lezioni' , formData);  
   }
 

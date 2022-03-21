@@ -250,7 +250,6 @@ constructor(
 
     this.form.controls['selectDocente'].valueChanges.subscribe(val => {
       this.loadData();
-      console.log ("", val);
       this.docenteIdEmitter.emit(val);
       //vanno resettate le selezioni delle checkbox e masterToggle
       this.resetSelections();
