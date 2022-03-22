@@ -70,7 +70,6 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
         if(x.parValue == "true") this.QuoteRidotteFratelli = true;
       });
 
-
       this.form = this.fb.group({
         quotaConcordata:                [null, Validators.required],
       });

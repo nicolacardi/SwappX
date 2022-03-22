@@ -28,39 +28,41 @@ export class RettaannoEditComponent implements OnInit {
 //#region ----- ViewChild Input Output -------
   @Input() alunnoID!:       number;
   @Input() annoID!:         number;
+  @Input() public quotaConcordataAnno!: number; 
+  @Input() public quotaDefaultAnno!: number; 
+  @Input() public totPagamentiAnno!: number; 
+
 //#endregion
 
-  constructor(
-    private fb:               FormBuilder,
-    private svcRette:         RetteService,
-    private _loadingService:  LoadingService  
+  constructor( private fb:               FormBuilder,
+               private svcRette:         RetteService,
+               private _loadingService:  LoadingService ) {
 
-
-  ) {
     this.form = this.fb.group({
-      totDefault:           [null],
-      totConcordate:        [null],
-      totPagamenti:         [null],
+      quotaDefaultAnno:           [null],
+      quotaConcordataAnno:        [null],
+      totPagamentiAnno:         [null],
     });
    }
 
    ngOnChanges() {
-    if (this.alunnoID && this.alunnoID + '' != "0") {
+    if (this.alunnoID && this.alunnoID + '' != "0" && this.quotaDefaultAnno > 0) 
       this.loadData();
-    } else {
+    else {
       this.emptyForm = true;
       this.form.reset(); 
     }
   }
 
-
   loadData(){
 
+    this.form.controls['quotaDefaultAnno'].setValue(this.quotaDefaultAnno);
+    this.form.controls['quotaConcordataAnno'].setValue(this.quotaConcordataAnno);
+    this.form.controls['totPagamentiAnno'].setValue(this.totPagamentiAnno);
+    /*
     const obsRetta$: Observable<PAG_Retta[]> = this.svcRette.listByAlunnoAnno(this.alunnoID, this.annoID);
     const loadRette$ =this._loadingService.showLoaderUntilCompleted(obsRetta$);
-
     this.retta$ = loadRette$.pipe(
-
       tap(
         (retta: PAG_Retta[]) => {
           this.totPagamenti = 0;
@@ -85,7 +87,7 @@ export class RettaannoEditComponent implements OnInit {
         }
       )
     );
-    
+    */
 
 
   }

@@ -52,9 +52,10 @@ export class RettaEditComponent implements OnInit {
   quoteConcordate:            number[] = [];
   quoteDefault:               number[] = [];
   totPagamenti:               number[] = [];
-  quoteConcordateAnno!:       number;
-  quoteDefaultAnno!:          number;
-  totPagamentiAnno!:          number;
+  quotaConcordataAnno:        number=0;
+  quotaDefaultAnno:           number=0;
+  totPagamentiAnno:           number=0;
+
   nPagamenti:                 number[] = [];
   idRette:                    number[] = [];
   idToHighlight!:             number;
@@ -130,6 +131,9 @@ export class RettaEditComponent implements OnInit {
 
   loadData(){
 
+    this.quotaConcordataAnno=0;
+    this.quotaDefaultAnno=0;
+    this.totPagamentiAnno=0;
 
     this.obsRette$ = this.svcRette.listByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
     const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
@@ -140,26 +144,19 @@ export class RettaEditComponent implements OnInit {
         //in particolare passo l'idRetta ORDINATAMENTE a ognuno dei 12 component
         if (obj.length!= 0 ) {
 
+          this.anno = obj[0].anno!;
           this.alunno = obj[0].alunno!;
           this.formRetta.controls['nomeCognomeAlunno'].setValue(this.alunno.nome+" "+this.alunno.cognome);
 
-          this.anno = obj[0].anno!;
-
           obj.forEach((val, i)=>{
-
             this.idRette[obj[i].meseRetta-1] = obj[i].id;
 
-
-            //****In precedenza passavamo al chil retta mese edit la quota concordata, la quota default, il totale pagamenti
-            //****estraendoli da questo array
-            //****In verità non serve questa parte in quanto ciascun rettameseedit se li va a pescare da solo quei dati
-            //****Teniamo però quanto segue perchè mostra come entrare dentro un array per estrarne info
             //this.mesi[obj[i].meseRetta - 1] = obj[i].meseRetta;
             this.quoteConcordate[obj[i].meseRetta - 1] = obj[i].quotaConcordata;
-            this.quoteConcordateAnno += obj[i].quotaConcordata;
+            this.quotaConcordataAnno += obj[i].quotaConcordata;
 
             this.quoteDefault[obj[i].meseRetta - 1] = obj[i].quotaDefault;
-            this.quoteDefaultAnno += obj[i].quotaDefault;
+            this.quotaDefaultAnno += obj[i].quotaDefault;
 
             //ora calcolo il totale dei pagamenti per ciascun mese e lo metto nell'array totPagamenti sommandolo 
             this.totPagamenti[obj[i].meseRetta-1] = 0;
@@ -170,20 +167,13 @@ export class RettaEditComponent implements OnInit {
               //this.nPagamenti[obj[i].meseRetta-1] = this.nPagamenti[obj[i].meseRetta-1] + 1;
               this.totPagamentiAnno += x.importo;
             });
-
-            
-
           })
         } else {
           //obj.length è = 0 quando non c'è alcun obj, cioè quando si vuole inserire un "nuovo pagamento" da zero
           //la differenza in questo caso è che non c'è un anno e quindi lo dobbiamo forzare
           //creo un oggetto vuoto di tipo ASC_Annoscolastico, lo assegno a this.anno e poi ci setto il valor di default
-          const tmpObj = <ASC_AnnoScolastico>{};
-          this.anno = tmpObj;
-
-          //QUI!!!!! BELLA MERDA!!!! TODO!!!!!
-          this.anno.annoscolastico ="2019-20"; //ovviamente questo sarà un parametro, per ora lo "cablo" dentro
-          //this.anno.annoscolastico = ;
+          // const tmpObj = <ASC_AnnoScolastico>{};
+          // this.anno = tmpObj;
 
           //this.formRetta.controls['nomeCognomeAlunno'].setValue("");
           //retta.edit passa i valori a 12 children, uno per mese, che si chiamano rettamese-edit:
@@ -191,18 +181,16 @@ export class RettaEditComponent implements OnInit {
           for (let i = 0; i <= 11; i++) {
             //idRette[da 0 a 11] è il valore dirà ad ognuno dei 12 child che si tratta di un nuovo pagamento
             this.idRette[i] = 0; 
-            // this.quoteConcordate[i]=0;
-            // this.quoteDefault[i]=0;
-            // this.nPagamenti[i] = 0;
-            // this.totPagamenti[i] = 0;
+
+            this.quotaConcordataAnno=0;
+            this.quotaDefaultAnno=0;
+            this.totPagamentiAnno=0;
           }
         }
       })
-    )
-    .subscribe( () => { 
-    })
-    
+    ).subscribe( )
   }
+
 //#endregion
 
 //#region ----- Interazioni Varie Interfaccia -------

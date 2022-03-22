@@ -87,8 +87,10 @@
                             </div>
                             <app-rettaanno-edit
                                 [annoID]="data.idAnno"
-                                [alunnoID]="data.idAlunno"
-                                >
+                                [alunnoID]="data.idAlunno" 
+                                [quotaDefaultAnno] ="quotaDefaultAnno"
+                                [quotaConcordataAnno] ="quotaConcordataAnno"
+                                [totPagamentiAnno] = "totPagamentiAnno">
                             </app-rettaanno-edit>
                         </div>
                     </mat-grid-tile>
@@ -141,14 +143,13 @@
 
                     </mat-tab>
 
-                    <mat-tab label="Utilities Rette">
+                    <mat-tab label="Utilities Rette" *ngIf="data.idAlunno">
                         <mat-label class="frameLabel"> Utilities per la definizione rapida delle rette </mat-label>
                         <div class="_utilities-container cellBordered mt10">
                             <app-retta-calcolo-alunno 
                                 [annoID]="data.idAnno"
                                 [alunnoID]="data.idAlunno"
-                                (ricalcoloRette) = "ricalcoloRetteArrivato()"
-                                >
+                                (ricalcoloRette) = "ricalcoloRetteArrivato()"   >
                             </app-retta-calcolo-alunno>
                         </div>
                         
