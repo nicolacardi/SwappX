@@ -155,8 +155,6 @@ export class RettaCalcoloComponent implements OnInit {
                 () => this.viewListClassi.loadData()
               );
 
-            
-
             let hasFratelloMaggiore= false;
             this.svcAlunni.hasFratelloMaggiore(annoID, iscrizione.alunnoID )
               .pipe (
