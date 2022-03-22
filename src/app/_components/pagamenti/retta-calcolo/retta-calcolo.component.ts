@@ -1,6 +1,4 @@
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { concatMap, tap } from 'rxjs/operators';
@@ -41,7 +39,7 @@ export class RettaCalcoloComponent implements OnInit {
   obsRette$!:                         Observable<PAG_Retta[]>;
   // obsFilteredAlunni$!:                Observable<ALU_Alunno[]>;
 
-  form! :                             FormGroup;
+  //form! :                             FormGroup;
   public mesiArr =                    [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=          ["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
   public QuoteDefault =               "000000000000";

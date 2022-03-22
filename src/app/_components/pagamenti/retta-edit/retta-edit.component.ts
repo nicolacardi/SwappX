@@ -67,15 +67,17 @@ export class RettaEditComponent implements OnInit {
   @ViewChild(MatAutocomplete) matAutocomplete!: MatAutocomplete;
 //#endregion
 
-  constructor(public _dialogRef: MatDialogRef<RettaEditComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private fb:             FormBuilder, 
-              private svcRette:       RetteService,
-              private svcAlunni:      AlunniService,
-              private svcAnni:        AnniScolasticiService,
-              public _dialog:         MatDialog,
-              private _snackBar:      MatSnackBar,
-              private _loadingService:  LoadingService  ) 
+  constructor(
+    public _dialogRef: MatDialogRef<RettaEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private fb:             FormBuilder, 
+    private svcRette:       RetteService,
+    private svcAlunni:      AlunniService,
+    private svcAnni:        AnniScolasticiService,
+    public _dialog:         MatDialog,
+    private _snackBar:      MatSnackBar,
+    private _loadingService:  LoadingService  
+  ) 
   { 
     _dialogRef.disableClose = true;
 
