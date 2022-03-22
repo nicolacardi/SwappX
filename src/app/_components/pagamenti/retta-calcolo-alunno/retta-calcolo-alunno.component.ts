@@ -36,6 +36,8 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
 
   public hasFratelloMaggiore  : boolean = false;
   public anno!:                        ASC_AnnoScolastico;
+  public strDescrizione!:              string;
+  public strDescrizioneClasse!:              string;
 
 //#endregion
 
@@ -82,9 +84,13 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
     this.svcIscrizioni.getByAlunnoAndAnno(this.annoID, this.alunnoID).pipe (
       concatMap( (iscrizione: CLS_Iscrizione) => this.svcAlunni.hasFratelloMaggiore(this.annoID, this.alunnoID).pipe(
         tap ( val =>  {
+          this.strDescrizioneClasse= "Di seguito la quota annuale prevista per la classe "+ iscrizione.classeSezioneAnno.classeSezione.classe.descrizione2;
           if (val && this.QuoteRidotteFratelli) {
+            this.strDescrizione = "L'alunno ha almeno un fratello maggiore";
+            
             this.form.controls.quotaConcordata.setValue(iscrizione.classeSezioneAnno.classeSezione.classe.importo2);
           } else {
+            this.strDescrizione = "L'alunno non ha alcun fratello maggiore";
             this.form.controls.quotaConcordata.setValue(iscrizione.classeSezioneAnno.classeSezione.classe.importo);
           }
         })
