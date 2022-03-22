@@ -158,7 +158,7 @@ export class RettaCalcoloComponent implements OnInit {
             
 
             let hasFratelloMaggiore= false;
-            this.svcAlunni.hasFratelloMaggiore(iscrizione.alunnoID )
+            this.svcAlunni.hasFratelloMaggiore(annoID, iscrizione.alunnoID )
               .pipe (
                 tap (val=> {
                   hasFratelloMaggiore = val;

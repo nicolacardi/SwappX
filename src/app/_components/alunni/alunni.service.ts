@@ -117,9 +117,10 @@ export class AlunniService {
       )
   }
 
-  hasFratelloMaggiore(alunnoID: number): Observable<boolean> {
-    return this.http.get<boolean>( environment.apiBaseUrl  + 'ALU_Alunni/HasFratelloMaggiore/'+alunnoID);
-    //http://213.215.231.4/swappX/api/ALU_Alunni/HasFratelloMaggiore/3 
+  hasFratelloMaggiore(annoID: number, alunnoID: number): Observable<boolean> {
+    //return this.http.get<boolean>( environment.apiBaseUrl  + 'ALU_Alunni/HasFratelloMaggiore/'+alunnoID);
+    return this.http.get<boolean>( environment.apiBaseUrl  + 'ALU_Alunni/HasFratelloMaggiore/'+annoID+"/"+alunnoID);
+    //http://213.215.231.4/swappX/api/ALU_Alunni/HasFratelloMaggiore/2/3 
   }
 
 

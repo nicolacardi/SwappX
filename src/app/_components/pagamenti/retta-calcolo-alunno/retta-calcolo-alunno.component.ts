@@ -80,7 +80,7 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
 
   caricaQuotaConcordataDefault() {
     this.svcIscrizioni.getByAlunnoAndAnno(this.annoID, this.alunnoID).pipe (
-      concatMap( (iscrizione: CLS_Iscrizione) => this.svcAlunni.hasFratelloMaggiore(this.alunnoID).pipe(
+      concatMap( (iscrizione: CLS_Iscrizione) => this.svcAlunni.hasFratelloMaggiore(this.annoID, this.alunnoID).pipe(
         tap ( val =>  {
           if (val && this.QuoteRidotteFratelli) {
             this.form.controls.quotaConcordata.setValue(iscrizione.classeSezioneAnno.classeSezione.classe.importo2);
