@@ -398,10 +398,10 @@ export class RetteListComponent implements OnInit {
 
 //#region ----- Add Edit Drop -------
   addRecord(){
-    this.editRecord(0, this.annoID);
+    this.openDetail(0, this.annoID);
   }
 
-  editRecord(alunno: number, anno: number){
+  openDetail(alunno: number, anno: number){
     const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
         width: '850px',

@@ -39,7 +39,8 @@ export class RettameseEditComponent implements OnInit{
 //#region ----- ViewChild Input Output -------
 
   @Input() public idRetta!: number; 
-  @Input() public inputPagamenti!: number; 
+  // @Input() public inputPagamenti!: number; 
+
   @Input() public indice!: number; //serve per poter azionare la save di ciascuna istanza di questo component
   //@Input() public toHighlight!: number; 
 
@@ -47,11 +48,11 @@ export class RettameseEditComponent implements OnInit{
   clickOnpagamentoEmitter = new EventEmitter<number>();
 //#endregion
 
-
-  constructor(private fb:             FormBuilder,
-              private svcRette:       RetteService,
-              public _dialog:         MatDialog,
-              ) { 
+  constructor(
+    private fb:             FormBuilder,
+    private svcRette:       RetteService,
+    public _dialog:         MatDialog,
+  ) { 
 
     this.form = this.fb.group({
       id:                     [null],
@@ -101,7 +102,7 @@ export class RettameseEditComponent implements OnInit{
           this.emptyForm = false;
         }
         else { 
-          //di qua passa se è un Nuvo Pagamento oppure se ho selezionato un Alunno senza quote
+          //di qua passa se è un Nuovo Pagamento oppure se ho selezionato un Alunno senza quote
           this.emptyForm = true;
           this.form.reset(); 
         }
@@ -112,25 +113,25 @@ export class RettameseEditComponent implements OnInit{
   
   loadData(){
     //per di qua in caso di nuovo pagamento non passa nemmeno una volta -> non esiste retta$
-    //console.log ("this.idRetta", this.idRetta);
     //this.idRetta = 0 nel caso di alunno che non ha quote
     if (this.idRetta && this.idRetta + '' != "0") {
       const obsRetta$: Observable<PAG_Retta> = this.svcRette.get(this.idRetta);
-      //const loadRetta$ = this._loadingService.showLoaderUntilCompleted(obsRetta$);
       this.retta$ = obsRetta$
       .pipe(
           tap(
             retta => {
               this.form.patchValue(retta);
-              let totPagamenti = 0;
+              this.totPagamenti = 0;
               retta.pagamenti?.forEach( val=>{
-                totPagamenti = totPagamenti + val.importo;
+                this.totPagamenti = this.totPagamenti + val.importo;
               })
-              this.form.controls['totPagamenti'].setValue(totPagamenti);
+              this.form.controls['totPagamenti'].setValue(this.totPagamenti);
             }
           )
       );
     }
+
+
   }
 //#endregion
 

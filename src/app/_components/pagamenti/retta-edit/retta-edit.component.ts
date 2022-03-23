@@ -124,39 +124,42 @@ export class RettaEditComponent implements OnInit {
 
   loadData(){
 
+
     this.obsRette$ = this.svcRette.listByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
     const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
     loadRette$.pipe(
       map(obj => { 
         //obsRette$ è un Observable<PAG_Retta[]> quindi è un elenco/lista/array di 12 oggetti di tipo PAG_Rette
         //prendo CIASCUNO di questi 12 oggetti e ci popolo vari array di numeri in cui l'indice va da 0 a 11
-        //ed in particolare è obj[n].meseRetta
-        //questi array nell'html li uso per passare ORDINATAMENTE a ognuno dei 12 component rettamese la quotaconcordata, la quotadefault, l'idRetta
+        //in particolare passo l'idRetta ORDINATAMENTE a ognuno dei 12 component
         if (obj.length!= 0 ) {
-          let n = 0;
 
           this.alunno = obj[0].alunno!;
           this.formRetta.controls['nomeCognomeAlunno'].setValue(this.alunno.nome+" "+this.alunno.cognome);
 
-          this.anno = obj[0].anno!;
-          //this.formRetta.controls['annoscolastico'].setValue(this.anno.id);
-          //console.log ("obj", obj);
-          obj.forEach(()=>{
-            this.mesi[obj[n].meseRetta - 1] = obj[n].meseRetta;
-            this.quoteConcordate[obj[n].meseRetta - 1] = obj[n].quotaConcordata;
-            this.quoteDefault[obj[n].meseRetta - 1] = obj[n].quotaDefault;
+          //this.anno = obj[0].anno!;
+
+          obj.forEach((val, i)=>{
+
+            this.idRette[obj[i].meseRetta-1] = obj[i].id;
+
+
+            //****In precedenza passavamo al chil retta mese edit la quota concordata, la quota default, il totale pagamenti
+            //****estraendoli da questo array
+            //****In verità non serve questa parte in quanto ciascun rettameseedit se li va a pescare da solo quei dati
+            //****Teniamo però quanto segue perchè mostra come entrare dentro un array per estrarne info
+            //this.mesi[obj[i].meseRetta - 1] = obj[i].meseRetta;
+            //this.quoteConcordate[obj[i].meseRetta - 1] = obj[i].quotaConcordata;
+            //this.quoteDefault[obj[i].meseRetta - 1] = obj[i].quotaDefault;
 
             //ora calcolo il totale dei pagamenti per ciascun mese e lo metto nell'array totPagamenti sommandolo 
-            //foreach pagamento trovato
-            this.totPagamenti[obj[n].meseRetta-1] = 0;
-            this.nPagamenti[obj[n].meseRetta-1] = 0;
-            this.idRette[obj[n].meseRetta-1] = obj[n].id;
-            obj[n].pagamenti?.forEach(x=>{
-              //console.log (x.importo);
-              this.totPagamenti[obj[n].meseRetta-1] = this.totPagamenti[obj[n].meseRetta-1] + x.importo;
-              this.nPagamenti[obj[n].meseRetta-1] = this.nPagamenti[obj[n].meseRetta-1] + 1;
-            });
-            n++;
+            //this.totPagamenti[obj[i].meseRetta-1] = 0;
+            //this.nPagamenti[obj[i].meseRetta-1] = 0;
+
+            // obj[i].pagamenti?.forEach(x=>{
+            //   this.totPagamenti[obj[i].meseRetta-1] = this.totPagamenti[obj[i].meseRetta-1] + x.importo;
+            //   this.nPagamenti[obj[i].meseRetta-1] = this.nPagamenti[obj[i].meseRetta-1] + 1;
+            // });
           })
         } else {
           //obj.length è = 0 quando non c'è alcun obj, cioè quando si vuole inserire un "nuovo pagamento" da zero
@@ -184,10 +187,6 @@ export class RettaEditComponent implements OnInit {
       })
     )
     .subscribe( () => { 
-      // console.log (this.mesi);
-      // console.log (this.quoteConcordate);
-      // console.log (this.quoteDefault);
-      // console.log (this.totPagamenti);
     })
     
   }
