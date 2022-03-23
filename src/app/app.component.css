@@ -300,7 +300,7 @@
 
   .hidden-header{
     display: none !important;
-    visibility: hidden !important;
+    /* visibility: hidden !important; */
   }
 
 
