@@ -14,6 +14,7 @@ import { RetteService } from '../rette.service';
 
 //models
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
+import { LoadingService } from '../../utilities/loading/loading.service';
 
 @Component({
   selector: 'app-rettamese-edit',
@@ -49,9 +50,10 @@ export class RettameseEditComponent implements OnInit{
 //#endregion
 
   constructor(
-    private fb:             FormBuilder,
-    private svcRette:       RetteService,
-    public _dialog:         MatDialog,
+    private fb:               FormBuilder,
+    private svcRette:         RetteService,
+    public _dialog:           MatDialog,
+    private _loadingService:  LoadingService  
   ) { 
 
     this.form = this.fb.group({
@@ -78,10 +80,18 @@ export class RettameseEditComponent implements OnInit{
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-    //non vogliamo che venga lanciata la loadData fin che idRetta è undefined
-    //per questo motivo abbiamo introdotto un behaviorSubject
-    if (this.idRetta != undefined) { 
-        this.idRettaSubject.next(this.idRetta);
+    // NC 220323
+    // //non vogliamo che venga lanciata la loadData fin che idRetta è undefined
+    // //per questo motivo abbiamo introdotto un behaviorSubject
+    // if (this.idRetta != undefined) { 
+    //     this.idRettaSubject.next(this.idRetta);
+    // }
+
+    if (this.idRetta && this.idRetta + '' != "0") {
+      this.loadData();
+    } else {
+      this.emptyForm = true;
+      this.form.reset(); 
     }
 
     //if (this.toHighlight == this.idRetta && this.toHighlight!= null) {this.evidenzia = true} else { this.evidenzia = false}
@@ -89,29 +99,29 @@ export class RettameseEditComponent implements OnInit{
 
   ngOnInit(): void {
 
-    //E' stato creato un behaviorSubject per valorizzarlo quando opportuno (con .next su ngOnChanges)
-    //in questo modo solo all'arrivo di idRetta si fa scattare la loadData
-    //La load Data non deve però scattare quando si tratta di nuovo Pagamento 
-    //oppure se l'alunno non ha pagamenti (in entrambi i casi idRettaObs emette 0)
-    this.idRettaObs$.pipe(
-      tap( val=> {
-        if (val!=0) {
-          this.loadData()
-          this.emptyForm = false;
-        }
-        else { 
-          //di qua passa se è un Nuovo Pagamento oppure se ho selezionato un Alunno senza quote
-          this.emptyForm = true;
-          this.form.reset(); 
-        }
-      })
-    )
-    .subscribe()
+    // NC 220323
+
+    // //E' stato creato un behaviorSubject per valorizzarlo quando opportuno (con .next su ngOnChanges)
+    // //in questo modo solo all'arrivo di idRetta si fa scattare la loadData
+    // //La load Data non deve però scattare quando si tratta di nuovo Pagamento 
+    // //oppure se l'alunno non ha pagamenti (in entrambi i casi idRettaObs emette 0)
+    // this.idRettaObs$.pipe(
+    //   tap( val=> {
+    //     if (val!=0) {
+    //       this.loadData()
+    //       this.emptyForm = false;
+    //     }
+    //     else { 
+    //       //di qua passa se è un Nuovo Pagamento oppure se ho selezionato un Alunno senza quote
+    //       this.emptyForm = true;
+    //       this.form.reset(); 
+    //     }
+    //   })
+    // )
+    // .subscribe()
 
 
-    // if (this.idRetta && this.idRetta + '' != "0") {
-    //   this.loadData();
-    // }
+
 
   }
   
@@ -120,7 +130,9 @@ export class RettameseEditComponent implements OnInit{
     //this.idRetta = 0 nel caso di alunno che non ha quote
     if (this.idRetta && this.idRetta + '' != "0") {
       const obsRetta$: Observable<PAG_Retta> = this.svcRette.get(this.idRetta);
-      this.retta$ = obsRetta$
+      const loadRette$ =this._loadingService.showLoaderUntilCompleted(obsRetta$);
+
+      this.retta$ = loadRette$
       .pipe(
           tap(
             retta => {

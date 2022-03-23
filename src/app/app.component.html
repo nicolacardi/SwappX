@@ -1,3 +1,5 @@
+<loading></loading>
+
 <mat-sidenav-container fullscreen >
 
     <mat-toolbar [ngClass]="{'hidden-header': !isLoggedIn}">
@@ -152,7 +154,9 @@
     
     <hr style="height: 48px"  [ngClass]="{'hidden-header': !isLoggedIn}"> 
 
-    <loading></loading>
     <router-outlet class="mt80"></router-outlet>
 </mat-sidenav-container>
+
+
+
 
