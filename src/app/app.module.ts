@@ -103,6 +103,7 @@ import { CalendarioComponent } from './_components/lezioni/orario/calendario.com
 import { LezioneComponent } from './_components/lezioni/lezione-edit/lezione.component';
 import { CalendarioUtilsComponent } from './_components/lezioni/calendario-utils/calendario-utils.component';
 import { RettaCalcoloAlunnoComponent } from './_components/pagamenti/retta-calcolo-alunno/retta-calcolo-alunno.component';
+import { RettaannoEditComponent } from './_components/pagamenti/rettaanno-edit/rettaanno-edit.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -196,7 +197,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     CalendarioComponent,
     LezioneComponent,
     CalendarioUtilsComponent,
-    RettaCalcoloAlunnoComponent 
+    RettaCalcoloAlunnoComponent,
+    RettaannoEditComponent 
 
   ],
   imports: [

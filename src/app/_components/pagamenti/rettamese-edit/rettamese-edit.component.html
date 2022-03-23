@@ -13,13 +13,6 @@
         #inpQuotaC>
         
     </mat-form-field>
-    
-    <!-- <mat-form-field class="cellRetta center" [ngClass]="{'_highlightPag2': inputPagamenti < ConvertToNumber(inpQuotaC.value), 'highlightHover': evidenzia}">
-        <input matInput type="number"
-        [value] = "inputPagamenti? inputPagamenti : 0"
-        
-        readonly>
-    </mat-form-field> -->
 
     <mat-form-field class="cellRetta center" [ngClass]="{'_highlightPag2': totPagamenti < ConvertToNumber(inpQuotaC.value), 'highlightHover': evidenzia}">
         <input matInput type="number"
@@ -27,5 +20,5 @@
         (click) = "clickOnPagamento()"
         readonly>
     </mat-form-field>
-    
+    <!-- [value] = "inputPagamenti? inputPagamenti : 0" -->
 </form>

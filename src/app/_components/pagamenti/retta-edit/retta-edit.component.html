@@ -85,16 +85,11 @@
                             <div class="center">
                                 <mat-label>Anno</mat-label>
                             </div>
-                            <app-rettamese-edit>
-
-                                <!-- [inputPagamenti] ="totPagamenti[anno]"
-                                [idRetta] ="idRette[anno]"
-                                [indice] ="i"
-
-                                (mesePagamentoClicked) = "mesePagamentoClicked($event)" -->
+                            <app-rettaanno-edit
+                                [annoID]="data.idAnno"
+                                [alunnoID]="data.idAlunno"
                                 >
-                                <!--[toHighlight] = "idToHighlight"  -->
-                            </app-rettamese-edit>
+                            </app-rettaanno-edit>
                         </div>
                     </mat-grid-tile>
 

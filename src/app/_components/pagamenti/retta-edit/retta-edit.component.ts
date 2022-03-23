@@ -26,6 +26,7 @@ import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { RettaCalcoloAlunnoComponent } from '../retta-calcolo-alunno/retta-calcolo-alunno.component';
+import { RettaannoEditComponent } from '../rettaanno-edit/rettaanno-edit.component';
 
 @Component({
   selector: 'app-retta-edit',
@@ -43,6 +44,7 @@ export class RettaEditComponent implements OnInit {
   filteredAlunni$!:           Observable<ALU_Alunno[]>;
   formRetta! :                FormGroup;
   formAlunno! :               FormGroup;
+
   alunno!:                    ALU_Alunno;
   anno!:                      ASC_AnnoScolastico;
 
@@ -61,6 +63,7 @@ export class RettaEditComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
   @ViewChildren(RettameseEditComponent) ChildrenRettaMese!:QueryList<RettameseEditComponent>;
+  @ViewChild(RettaannoEditComponent) ChildRettaAnno!: RettaannoEditComponent;
   @ViewChild(PagamentiListComponent) ChildPagamenti!: PagamentiListComponent;
   @ViewChild(RettapagamentoEditComponent) ChildRettapagamentoEdit!: RettapagamentoEditComponent;
   @ViewChild(RettaCalcoloAlunnoComponent) ChildRettaCalcoloAlunno!: RettaCalcoloAlunnoComponent;
@@ -137,7 +140,7 @@ export class RettaEditComponent implements OnInit {
           this.alunno = obj[0].alunno!;
           this.formRetta.controls['nomeCognomeAlunno'].setValue(this.alunno.nome+" "+this.alunno.cognome);
 
-          //this.anno = obj[0].anno!;
+          this.anno = obj[0].anno!;
 
           obj.forEach((val, i)=>{
 

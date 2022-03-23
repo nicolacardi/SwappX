@@ -2,8 +2,8 @@
 
 import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, timer } from 'rxjs';
+import { delayWhen, tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 
 //components
@@ -60,19 +60,13 @@ export class RettameseEditComponent implements OnInit{
       id:                     [null],
       annoID:                 [null],
       alunnoID:               [null],
-      //alunno?:                 ALU_Alunno;
-      
+
       annoRetta:              [null],
       meseRetta:              [null],
       quotaDefault:           [null],
       quotaConcordata:        [null],
       totPagamenti:           [null],
       
-      note:                   [null],
-      dtIns:                  [null],
-      dtUpd:                  [null],
-      userIns:                [null],
-      userUpd:                [null]
     });
 
   }
@@ -119,33 +113,29 @@ export class RettameseEditComponent implements OnInit{
     //   })
     // )
     // .subscribe()
-
-
-
-
   }
   
   loadData(){
     //per di qua in caso di nuovo pagamento non passa nemmeno una volta -> non esiste retta$
     //this.idRetta = 0 nel caso di alunno che non ha quote
-    if (this.idRetta && this.idRetta + '' != "0") {
+    //if (this.idRetta && this.idRetta + '' != "0") {
       const obsRetta$: Observable<PAG_Retta> = this.svcRette.get(this.idRetta);
-      const loadRette$ =this._loadingService.showLoaderUntilCompleted(obsRetta$);
+      const loadRette$ =this._loadingService.showLoaderUntilCompleted(obsRetta$);  //non sembra funzionare qui lo showLoader
 
-      this.retta$ = loadRette$
-      .pipe(
-          tap(
-            retta => {
-              this.form.patchValue(retta);
-              this.totPagamenti = 0;
-              retta.pagamenti?.forEach( val=>{
-                this.totPagamenti = this.totPagamenti + val.importo;
-              })
-              this.form.controls['totPagamenti'].setValue(this.totPagamenti);
-            }
-          )
+      this.retta$ = loadRette$.pipe(
+        //delayWhen(() => timer(2000)),
+        tap(
+          retta => {
+            this.form.patchValue(retta);
+            this.totPagamenti = 0;
+            retta.pagamenti?.forEach( val=>{
+              this.totPagamenti = this.totPagamenti + val.importo;
+            })
+            this.form.controls['totPagamenti'].setValue(this.totPagamenti);
+          }
+        )
       );
-    }
+    //}
 
 
   }

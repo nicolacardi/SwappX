@@ -1000,6 +1000,9 @@ mat-nav-list a img {
     border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
 }
 
+.backgrey {
+    background-color: rgba(86, 86, 86, 0.279);
+}
 
 /* tutte le actionsColumn saranno larghe il 5%*/
 .mat-column-actionsColumn {
@@ -1165,6 +1168,7 @@ mat-nav-list a img {
 .bordered-bottom {
     border-bottom: 1px solid grey;
 }
+
 
 .big-border {
     border: 60px solid rgba(0,0,0, .3);
