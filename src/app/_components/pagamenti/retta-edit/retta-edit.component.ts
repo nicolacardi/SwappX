@@ -52,6 +52,9 @@ export class RettaEditComponent implements OnInit {
   quoteConcordate:            number[] = [];
   quoteDefault:               number[] = [];
   totPagamenti:               number[] = [];
+  quoteConcordateAnno!:       number;
+  quoteDefaultAnno!:          number;
+  totPagamentiAnno!:          number;
   nPagamenti:                 number[] = [];
   idRette:                    number[] = [];
   idToHighlight!:             number;
@@ -152,17 +155,24 @@ export class RettaEditComponent implements OnInit {
             //****In verità non serve questa parte in quanto ciascun rettameseedit se li va a pescare da solo quei dati
             //****Teniamo però quanto segue perchè mostra come entrare dentro un array per estrarne info
             //this.mesi[obj[i].meseRetta - 1] = obj[i].meseRetta;
-            //this.quoteConcordate[obj[i].meseRetta - 1] = obj[i].quotaConcordata;
-            //this.quoteDefault[obj[i].meseRetta - 1] = obj[i].quotaDefault;
+            this.quoteConcordate[obj[i].meseRetta - 1] = obj[i].quotaConcordata;
+            this.quoteConcordateAnno += obj[i].quotaConcordata;
+
+            this.quoteDefault[obj[i].meseRetta - 1] = obj[i].quotaDefault;
+            this.quoteDefaultAnno += obj[i].quotaDefault;
 
             //ora calcolo il totale dei pagamenti per ciascun mese e lo metto nell'array totPagamenti sommandolo 
-            //this.totPagamenti[obj[i].meseRetta-1] = 0;
+            this.totPagamenti[obj[i].meseRetta-1] = 0;
             //this.nPagamenti[obj[i].meseRetta-1] = 0;
 
-            // obj[i].pagamenti?.forEach(x=>{
-            //   this.totPagamenti[obj[i].meseRetta-1] = this.totPagamenti[obj[i].meseRetta-1] + x.importo;
-            //   this.nPagamenti[obj[i].meseRetta-1] = this.nPagamenti[obj[i].meseRetta-1] + 1;
-            // });
+            obj[i].pagamenti?.forEach(x=>{
+              this.totPagamenti[obj[i].meseRetta-1] += x.importo;
+              //this.nPagamenti[obj[i].meseRetta-1] = this.nPagamenti[obj[i].meseRetta-1] + 1;
+              this.totPagamentiAnno += x.importo;
+            });
+
+            
+
           })
         } else {
           //obj.length è = 0 quando non c'è alcun obj, cioè quando si vuole inserire un "nuovo pagamento" da zero

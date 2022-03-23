@@ -29,7 +29,7 @@ export class RettameseEditComponent implements OnInit{
   idRettaObs$: Observable<number> = this.idRettaSubject.asObservable();
   // quotaConcordata!:           number;
   // quotaDefault!:              number;
-  totPagamenti!:              number;
+  //totPagamenti!:              number;
   retta$!:                    Observable<PAG_Retta>;
   obsIdRetta$!:               Observable<number>;
   form! :                     FormGroup;
@@ -40,6 +40,11 @@ export class RettameseEditComponent implements OnInit{
 //#region ----- ViewChild Input Output -------
 
   @Input() public idRetta!: number; 
+  @Input() public quotaConcordata!: number; 
+  @Input() public quotaDefault!: number; 
+  @Input() public totPagamenti!: number; 
+
+
   // @Input() public inputPagamenti!: number; 
 
   @Input() public indice!: number; //serve per poter azionare la save di ciascuna istanza di questo component
@@ -116,26 +121,30 @@ export class RettameseEditComponent implements OnInit{
   }
   
   loadData(){
-    //per di qua in caso di nuovo pagamento non passa nemmeno una volta -> non esiste retta$
-    //this.idRetta = 0 nel caso di alunno che non ha quote
-    //if (this.idRetta && this.idRetta + '' != "0") {
-      const obsRetta$: Observable<PAG_Retta> = this.svcRette.get(this.idRetta);
-      const loadRette$ =this._loadingService.showLoaderUntilCompleted(obsRetta$);  //non sembra funzionare qui lo showLoader
+    // //per di qua in caso di nuovo pagamento non passa nemmeno una volta -> non esiste retta$
+    // //this.idRetta = 0 nel caso di alunno che non ha quote
+    // //if (this.idRetta && this.idRetta + '' != "0") {
+    //   const obsRetta$: Observable<PAG_Retta> = this.svcRette.get(this.idRetta);
+    //   const loadRette$ =this._loadingService.showLoaderUntilCompleted(obsRetta$);  //non sembra funzionare qui lo showLoader
 
-      this.retta$ = loadRette$.pipe(
-        //delayWhen(() => timer(2000)),
-        tap(
-          retta => {
-            this.form.patchValue(retta);
-            this.totPagamenti = 0;
-            retta.pagamenti?.forEach( val=>{
-              this.totPagamenti = this.totPagamenti + val.importo;
-            })
-            this.form.controls['totPagamenti'].setValue(this.totPagamenti);
-          }
-        )
-      );
-    //}
+    //   this.retta$ = loadRette$.pipe(
+    //     //delayWhen(() => timer(2000)),
+    //     tap(
+    //       retta => {
+    //         this.form.patchValue(retta);
+    //         this.totPagamenti = 0;
+    //         retta.pagamenti?.forEach( val=>{
+    //           this.totPagamenti = this.totPagamenti + val.importo;
+    //         })
+    //         this.form.controls['totPagamenti'].setValue(this.totPagamenti);
+    //       }
+    //     )
+    //   );
+    // //}
+    this.form.controls['quotaDefault'].setValue(this.quotaDefault);
+    this.form.controls['quotaConcordata'].setValue(this.quotaConcordata);
+    this.form.controls['totPagamenti'].setValue(this.totPagamenti);
+
 
 
   }
