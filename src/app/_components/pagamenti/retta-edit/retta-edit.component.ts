@@ -127,7 +127,6 @@ export class RettaEditComponent implements OnInit {
     this.obsRette$ = this.svcRette.listByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
     const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
     loadRette$.pipe(
-      //delayWhen(() => timer(5000)),
       map(obj => { 
         //obsRette$ è un Observable<PAG_Retta[]> quindi è un elenco/lista/array di 12 oggetti di tipo PAG_Rette
         //prendo CIASCUNO di questi 12 oggetti e ci popolo vari array di numeri in cui l'indice va da 0 a 11
