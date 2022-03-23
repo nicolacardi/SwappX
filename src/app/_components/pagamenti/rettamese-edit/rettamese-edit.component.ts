@@ -88,8 +88,6 @@ export class RettameseEditComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    // const tmpRetta: Observable <PAG_Retta> =  of();
-    // this.retta$ = tmpRetta;
 
     //E' stato creato un behaviorSubject per valorizzarlo quando opportuno (con .next su ngOnChanges)
     //in questo modo solo all'arrivo di idRetta si fa scattare la loadData
@@ -109,6 +107,12 @@ export class RettameseEditComponent implements OnInit{
       })
     )
     .subscribe()
+
+
+    // if (this.idRetta && this.idRetta + '' != "0") {
+    //   this.loadData();
+    // }
+
   }
   
   loadData(){
