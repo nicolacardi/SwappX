@@ -302,3 +302,13 @@
     display: none !important;
     visibility: hidden !important;
   }
+
+
+
+
+  /* mat-sidenav:not(.mat-drawer-opened) {
+    transform: translate3d(0, 0, 0) !important;
+    visibility: visible !important;
+    width: 60px !important;
+    overflow: hidden;
+  } */
