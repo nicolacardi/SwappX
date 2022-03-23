@@ -1,6 +1,6 @@
 <mat-sidenav-container fullscreen >
 
-    <mat-toolbar class="position-fixed" [ngClass]="{'hidden-header': !isLoggedIn}">
+    <mat-toolbar [ngClass]="{'hidden-header': !isLoggedIn}">
         <button mat-icon-button (click)="start.open()" >
             <mat-icon>menu</mat-icon>
         </button>
