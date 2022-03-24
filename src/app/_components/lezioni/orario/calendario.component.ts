@@ -99,11 +99,8 @@ export class CalendarioComponent implements OnInit {
       },
     },
 
-
-
     //dayHeaderContent: { html: "<button></button>"},
     
-
 
     //AZIONI
     select:       this.addEvento.bind(this),          //quando si crea un evento...
@@ -122,13 +119,13 @@ export class CalendarioComponent implements OnInit {
   @ViewChild('calendarDOM') calendarDOM!: FullCalendarComponent;
 //#endregion
   
-  constructor(  
-    private svcLezioni:       LezioniService,
-    private _loadingService:  LoadingService,
-    private _snackBar:        MatSnackBar,
-    public _dialog:           MatDialog, 
-    public appRef:            ApplicationRef
-  ) {}
+  constructor( private svcLezioni:       LezioniService,
+               private _loadingService:  LoadingService,
+               private _snackBar:        MatSnackBar,
+               public _dialog:           MatDialog, 
+               public appRef:            ApplicationRef ) {
+
+  }
 
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -145,33 +142,22 @@ export class CalendarioComponent implements OnInit {
     let obsLezioni$: Observable<CAL_Lezione[]>;
     this.showWarn = false;
     if (this.dove == "orario") {
-
-      
+      //se c'è un Docente selezionato allora filtro anche per lui
       if (this.idDocente != undefined && this.idDocente > 0) {
-        //se c'è un Docente selezionato allora filtro anche per lui
-
-
         obsLezioni$= this.svcLezioni.listByDocenteClasseSezioneAnno(this.idDocente, this.idClasse);
       } else {
         //se non c'è un docente seleziono non filtro anche per lui
-
-
         obsLezioni$= this.svcLezioni.listByClasseSezioneAnno(this.idClasse);
       }
     } else {
       //qui ("orario per Docente) non conta la classe ma solo l'IDDocente
       if (this.idDocente != undefined && this.idDocente > 0) {
-
-
         obsLezioni$= this.svcLezioni.listByDocente(this.idDocente);
       } else {
-
         this.showWarn = true;
-
         obsLezioni$= this.svcLezioni.listByDocente(0);
       }
     }
-
 
     const loadLezioni$ =this._loadingService.showLoaderUntilCompleted(obsLezioni$);
     loadLezioni$.subscribe(val =>   {
@@ -179,7 +165,6 @@ export class CalendarioComponent implements OnInit {
         this.calendarOptions.events = this.Events;
       }
     );
-
 
     if (this.dove == "orario") {
 
@@ -199,12 +184,13 @@ export class CalendarioComponent implements OnInit {
       this.calendarOptions.eventStartEditable =   true;             //consente di draggare eventi               :  da gestire sulla base del ruolo
       this.calendarOptions.eventDurationEditable =true;            //consente di modificare la lunghezza eventi:  da gestire sulla base del ruolo
 
-      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni') {
+      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni') 
         this.setEventiDocenti();
-      } else {
+      else 
         this.setEventiLezioni();
-      }
-    } else {
+
+    } 
+    else {
 
       this.calendarOptions.customButtons = {
         mostraDocenti: {
@@ -222,20 +208,17 @@ export class CalendarioComponent implements OnInit {
       this.calendarOptions.eventStartEditable =   false;            //consente di draggare eventi               :  da gestire sulla base del ruolo
       this.calendarOptions.eventDurationEditable =false;            //consente di modificare la lunghezza eventi:  da gestire sulla base del ruolo
 
-      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni') {
+      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni')
         this.setEventiClassi();
-      } else {
+      else 
         this.setEventiLezioni();
-      }
+      
     }
-
-
   }
 
   setEventiLezioni() {
-    this.calendarOptions.eventContent =         
-    (arg: any)  =>//arg è l'oggetto che contiene l'evento con tutte le sue proprietà
-    { 
+    this.calendarOptions.eventContent = (arg: any)  =>//arg è l'oggetto che contiene l'evento con tutte le sue proprietà
+      { 
         //mostra l'ora
         let timeText = document.createElement('div');
         timeText.className = "fc-event-time";
@@ -314,8 +297,6 @@ export class CalendarioComponent implements OnInit {
         e.stopPropagation();                                    //impedisce che scatti anche il click sull'evento
         this.toggleEpoca(arg.event.id);                        //collega il metodo all'immagine
       })
-
-
 
       let arrayOfDomNodes = [ timeText, docenteText, img, img2 ];     //prepara il set di Nodes
       return { domNodes: arrayOfDomNodes }
@@ -396,7 +377,6 @@ export class CalendarioComponent implements OnInit {
       }
     );
   }
-  
 
   addEvento(selectInfo: DateSelectArg) {
     //INSERIMENTO NUOVO EVENTO
@@ -431,7 +411,6 @@ export class CalendarioComponent implements OnInit {
     const calendarApi = selectInfo.view.calendar;
     calendarApi.unselect(); 
   }
-
 
   openCalendarioUtils () {
     const dialogConfig : MatDialogConfig = {
@@ -481,8 +460,6 @@ export class CalendarioComponent implements OnInit {
   anotherMethod () {
     console.log ("fat-to");
   }
-
-  
 
   handleResize (resizeInfo: EventResizeDoneArg) {
 

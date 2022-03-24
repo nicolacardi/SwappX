@@ -65,33 +65,23 @@ export class LezioneComponent implements OnInit {
 
 //#endregion
 
-  constructor(
-    public _dialogRef: MatDialogRef<LezioneComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogDataLezione,
+  constructor( public _dialogRef: MatDialogRef<LezioneComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: DialogDataLezione,
 
-    private fb:                             FormBuilder, 
+              private fb:                             FormBuilder, 
+              private svcLezioni:                     LezioniService,
+              private svcMaterie:                     MaterieService,
+              private svcDocenti:                     DocentiService,
+              private svcClassiDocentiMaterie:        ClassiDocentiMaterieService,
+              private svcClasseSezioneAnno:           ClassiSezioniAnniService,
 
-    private svcLezioni:                     LezioniService,
-    private svcMaterie:                     MaterieService,
-    private svcDocenti:                     DocentiService,
-    private svcClassiDocentiMaterie:        ClassiDocentiMaterieService,
-    private svcClasseSezioneAnno:           ClassiSezioniAnniService,
-
-    public _dialog:                         MatDialog,
-    private _snackBar:                      MatSnackBar,
-    private _loadingService:                LoadingService,
-
-    private cdRef :                         ChangeDetectorRef,
-    
-    private _ngZone:                        NgZone
-    ) {
+              public _dialog:                         MatDialog,
+              private _snackBar:                      MatSnackBar,
+              private _loadingService:                LoadingService,
+              private cdRef :                         ChangeDetectorRef,
+              private _ngZone:                        NgZone ) {
 
     _dialogRef.disableClose = true;
-
-    // form = new FormGroup({
-    //   first: new FormControl({value: 'Nancy', disabled: true}, Validators.required),
-    //   last: new FormControl('Drew', Validators.required)
-    // });
 
     this.form = this.fb.group({
       id:                         [null],
@@ -116,30 +106,22 @@ export class LezioneComponent implements OnInit {
       start:                      [''],
       end:                        ['']
     });
-
   }
 
-
-
   ngOnInit () {
+
     this.form.controls.materiaID.valueChanges.subscribe( 
       val =>{
 
         if (this.form.controls.classeSezioneAnnoID.value != null && this.form.controls.classeSezioneAnnoID.value != undefined) {
-
           //verifica se già non è impegnato in quest'ora o FRAZIONI DI ORA in qualche altro posto.
           this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateria(this.form.controls.classeSezioneAnnoID.value, val)
           .subscribe(val => {
-            if (val) {
+            if (val) 
               this.form.controls['docenteID'].setValue(val.docenteID);
-              }
-            else {
+            else 
               this.form.controls['docenteID'].setValue("")
-            }
           });
-
-          
-
         }
       }
     );
@@ -165,7 +147,6 @@ export class LezioneComponent implements OnInit {
     }
 
     this.loadData();
-
   }
 
 
@@ -176,23 +157,19 @@ export class LezioneComponent implements OnInit {
     this.obsMaterie$ = this.svcMaterie.list();  //questo forse non servirà più
     this.obsDocenti$ = this.svcDocenti.list();
 
-
     if (this.data.dove == "orario") {
 
       this.form.controls.ckFirma.disable();
       this.form.controls.compiti.disable();
       this.form.controls.argomento.disable();
 
-
-    } else {
-
+    } 
+    else {
       this.form.controls.h_Ini.disable();
       this.form.controls.h_End.disable();
       this.form.controls.materiaID.disable();
       this.form.controls.supplenteID.disable();
       this.form.controls.ckEpoca.disable();
-
-
     }
 
     if (this.data.idLezione && this.data.idLezione + '' != "0") {
@@ -202,7 +179,6 @@ export class LezioneComponent implements OnInit {
       .pipe(
         tap(
           lezione => {
-            //lezione.start = lezione.start.substring(0,16);
             this.form.patchValue(lezione)
 
             //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
@@ -215,13 +191,13 @@ export class LezioneComponent implements OnInit {
           }
         )
       );
-    } else {
+    } 
+    else {
       //caso nuova Lezione
 
       this.emptyForm = true;
       //LA RIGA QUI SOPRA DETERMINAVA UN ExpressionChangedAfterItHasBeenCheckedError...con il DetectChanges si risolve!  
       this.cdRef.detectChanges();     
-
 
       this.dtStart = new Date (this.data.start);
       this.strDtStart = Utility.UT_FormatDate(this.dtStart);
@@ -230,7 +206,6 @@ export class LezioneComponent implements OnInit {
       this.dtEnd = new Date (this.dtStart.setHours(this.dtStart.getHours() + 1));  //in caso di nuova lezione per default impostiamo la durata a un'ora
       this.strDtEnd = Utility.UT_FormatDate(this.dtEnd);
       this.strH_End = Utility.UT_FormatHour(this.dtEnd);
-
 
       this.form.controls.classeSezioneAnnoID.setValue(this.data.idClasseSezioneAnno);
       this.form.controls.dtCalendario.setValue(this.dtStart);
@@ -259,18 +234,18 @@ export class LezioneComponent implements OnInit {
           width: '320px',
           data: {titolo: "ATTENZIONE!", sottoTitolo: strMsg}
         });
-      } else {
+      } 
+      else {
 
-          //https://thecodemon.com/angular-get-value-from-disabled-form-control-while-submitting/
-          //i campi disabled non vengono più passati al form!
-          //va prima lanciato questo loop che "ripopola" il form anche con i valori dei campi disabled
-          for (const prop in this.form.controls) {
-            this.form.value[prop] = this.form.controls[prop].value;
-          }
+        //https://thecodemon.com/angular-get-value-from-disabled-form-control-while-submitting/
+        //i campi disabled non vengono più passati al form!
+        //va prima lanciato questo loop che "ripopola" il form anche con i valori dei campi disabled
+        for (const prop in this.form.controls) {
+          this.form.value[prop] = this.form.controls[prop].value;
+        }
 
 
-        if (this.form.controls['id'].value == null)
-        {          
+        if (this.form.controls['id'].value == null) {          
           this.svcLezioni.post(this.form.value)
             .subscribe(res=> {
               this._dialogRef.close();
@@ -280,8 +255,8 @@ export class LezioneComponent implements OnInit {
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
             )
           );
-        } else 
-        {
+        } 
+        else  {
           this.svcLezioni.put(this.form.value)
             .subscribe(res=> {
               this._dialogRef.close();
@@ -294,8 +269,6 @@ export class LezioneComponent implements OnInit {
         }
       }
     });
-   
-
   }
 
   delete() {
@@ -305,12 +278,9 @@ export class LezioneComponent implements OnInit {
     });
     dialogYesNo.afterClosed().subscribe(result => {
       if(result){
-        this.svcLezioni.delete (this.data.idLezione)
-        .subscribe(
+        this.svcLezioni.delete (this.data.idLezione).subscribe(
           res=>{
-            this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Record cancellato', panelClass: ['red-snackbar']}
-            );
+            this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
             this._dialogRef.close();
           },
           err=> (
@@ -319,7 +289,6 @@ export class LezioneComponent implements OnInit {
         );
       }
     });
-    
   }
 
   dp1Change() {
@@ -385,9 +354,8 @@ export class LezioneComponent implements OnInit {
   }
 
   ckAssenteChange() {
-    if (this.form.controls.ckAssente.value != true) {
+    if (this.form.controls.ckAssente.value != true) 
       this.form.controls.supplenteID.setValue("");
-    }
   }
 
   triggerResize() {
