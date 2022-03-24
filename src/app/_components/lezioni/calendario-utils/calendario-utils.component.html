@@ -12,8 +12,8 @@
                     <button type="button" mat-button matSuffix class="w500px ma mt10 mb10" mat-stroked-button>
                         Propaga materie di epoca del lunedì agli altri giorni
                     </button>
-
                 </div>
+                
                 <mat-divider></mat-divider>
                 <div class="center  mt10 ">
                     <mat-form-field >
@@ -40,8 +40,6 @@
                     <button type="button" mat-button matSuffix class="w500px ma mt10" (click)="copiaDa()" [disabled]="!form.valid" mat-stroked-button>
                         Copia la settimana selezionata nella settimana che inizia il {{currMonday | date: "dd/MM/yyyy" }} 
                     </button>
-
-
                 </div>
 
                 <div class="center mt10 ">

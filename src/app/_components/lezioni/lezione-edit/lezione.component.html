@@ -1,7 +1,6 @@
 <mat-card class="form-card">
     <mat-card-content>
         <form *ngIf="(lezione$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
-            
 
             <!-- ********************************    BOTTONI     ************************************* -->
             <div class="center">
@@ -36,12 +35,11 @@
                 <mat-grid-tile>
                     <mat-form-field >
                         <input matInput
-                        required
-                        formControlName = "h_Ini"
-                        type="time"
-                        placeholder="Ora Inizio"
-                        (change)="dp1Change()"
-                        >
+                            required
+                            formControlName = "h_Ini"
+                            type="time"
+                            placeholder="Ora Inizio"
+                            (change)="dp1Change()">
                         <mat-datepicker></mat-datepicker>
                         <!-- <mat-error *ngIf="form.controls.start.errors?.required"> Campo obbligatorio</mat-error> -->
                     </mat-form-field>
@@ -50,12 +48,11 @@
                 <mat-grid-tile>
                     <mat-form-field >
                         <input matInput
-                        required
-                        formControlName = "h_End"
-                        type="time"
-                        placeholder="Ora Fine"
-                        (change)="dp2Change()"
-                        >
+                            required
+                            formControlName = "h_End"
+                            type="time"
+                            placeholder="Ora Fine"
+                            (change)="dp2Change()">
                         <mat-datepicker #dpEnd ></mat-datepicker>
                         <!-- <mat-error *ngIf="form.controls.end.errors?.required"> Campo obbligatorio</mat-error> -->
                     </mat-form-field>
@@ -68,7 +65,6 @@
                     </mat-form-field>
                 </mat-grid-tile>
 
-
                 <mat-grid-tile>
                     <mat-form-field>
                         <mat-label>Classe - Sezione</mat-label>
@@ -76,13 +72,10 @@
                     </mat-form-field>
                 </mat-grid-tile>
 
-
                 <mat-grid-tile>
                     <mat-form-field>
                         <mat-label>Materia</mat-label>
-                        <mat-select 
-                        required
-                        formControlName="materiaID">
+                        <mat-select required formControlName="materiaID">
                             <mat-option *ngFor="let element of (obsClassiDocentiMaterie$ | async)" [value]="element.materiaID">
                             {{element.materia.descrizione}}
                             </mat-option>
@@ -99,19 +92,13 @@
                 <mat-grid-tile>
                     <mat-form-field>
                         <mat-label>Docente</mat-label>
-                        <mat-select 
-                        required
-                        formControlName="docenteID"
-                        
-                        >
+                        <mat-select required formControlName="docenteID">
                             <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
                             {{element.persona.nome}} {{element.persona.cognome}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </mat-grid-tile>
-
-
 
                 <mat-grid-tile class="tileCk ml15">
                     <mat-checkbox color="primary" formControlName="ckAssente" #ckAssente (change)="ckAssenteChange()">
@@ -120,12 +107,9 @@
                 </mat-grid-tile>
 
                 <mat-grid-tile>
-                    
                     <mat-form-field *ngIf="ckAssente.checked">
                         <mat-label>Supplente</mat-label>
-                        <mat-select 
-                        
-                        formControlName="supplenteID">
+                        <mat-select formControlName="supplenteID">
                             <mat-option *ngFor="let element of (obsSupplenti$ | async)" [value]="element.id">
                             {{element.persona.nome}} {{element.persona.cognome}}
                             </mat-option>
@@ -146,9 +130,6 @@
                     </mat-checkbox>
                 </mat-grid-tile>
             </mat-grid-list>
-
-
-
         </form>
     </mat-card-content>
 
