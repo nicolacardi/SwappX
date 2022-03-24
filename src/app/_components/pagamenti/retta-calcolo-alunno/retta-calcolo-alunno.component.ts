@@ -146,14 +146,11 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
     );
 
 
+    this.svcRette.listByAlunnoAnno(this.alunnoID, this.annoID ).subscribe(async retteAnnoAlunno =>{
 
-
-
-
-
-    console.log("qui 1");
-    this.svcRette.listByAlunnoAnno(this.alunnoID, this.annoID ).subscribe(retteAnnoAlunno =>{
+      console.log ("retteAnnoAlunno", retteAnnoAlunno);
       //se array vuoto, INSERT
+
       if(retteAnnoAlunno.length == 0){
 
 
@@ -215,10 +212,30 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
 
 
 
+// const arr = [1, 2, 3];
+
+// arr.forEach(async (i) => {
+// 	// each element takes a different amount of time to complete
+// 	await sleep(10 - i);
+// 	console.log(i);
+// });
+
+
+// const arr = [1, 2, 3];
+
+// await Promise.all(arr.map(async (i) => {
+// 	await sleep(10 - i);
+// 	console.log(i);
+// }));
+
 
         //await retteAnnoAlunno.reduce(async (memo, i) => {
+        for (let rettaMese of retteAnnoAlunno) {
+          await new Promise ((resolve, reject)=> {
+          
         //await Promise.all(retteAnnoAlunno.map(async (rettaMese) => {
-        retteAnnoAlunno.forEach( rettaMese => {
+        //retteAnnoAlunno.forEach( rettaMese => {
+            console.log ("inizio await promise");
             mese = rettaMese.meseRetta;
 
             if (mese <= 8) 
@@ -240,30 +257,41 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
             rettaMese.quotaDefault = importoMese;
 
             this.svcRette.put(rettaMese).subscribe(
-              res=>  {
-                console.log("res");
-                this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']})
-              },
-              err =>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore durante l\'inserimento delle rette', panelClass: ['red-snackbar']})
+              () => {
+                console.log ("resolve");
+                //resolve;
+              }
             );
 
             console.log("fuori dalla await");
 
 
-        });
+          })
+        }
+        
+        // )).then (()=> {
+        console.log ("sto per lanciare l'emit1");
+        this.ricalcoloRetteEmitter.emit();
+          
+        //   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']})
+        
+        // })
+
+        
         //);
 
-        console.log("fuori da tutto");
-        this.ricalcoloRetteEmitter.emit();  //questa deve partire solo a put terminate (await)
+
+         //questa deve partire solo a put terminate (await)
 
         //https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/   NON FUNZIONA QUI
-        
 
 
 
                 
       }
     });
+
+
   
 
 
