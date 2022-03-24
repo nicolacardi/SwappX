@@ -36,6 +36,8 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
 
   public hasFratelloMaggiore  : boolean = false;
   public anno!:                        ASC_AnnoScolastico;
+  public iscrizione!:                  CLS_Iscrizione;
+
   public strDescrizione!:              string;
   public strDescrizioneClasse!:              string;
 
@@ -76,11 +78,16 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
    }
 
   ngOnInit(): void {
+
+    //estraggo anno e iscrizione, utili per quando dovrò procedere con la put
+    this.svcAnni.get(this.annoID).subscribe (anno => this.anno = anno);  
+
     this.caricaQuotaConcordataDefault();
   }
 
   caricaQuotaConcordataDefault() {
     this.svcIscrizioni.getByAlunnoAndAnno(this.annoID, this.alunnoID).pipe (
+      tap((iscrizione: CLS_Iscrizione) => this.iscrizione = iscrizione),
       concatMap( (iscrizione: CLS_Iscrizione) => this.svcAlunni.hasFratelloMaggiore(this.annoID, this.alunnoID).pipe(
         tap ( val =>  {
           this.strDescrizioneClasse= "Di seguito la quota annuale prevista per la classe "+ iscrizione.classeSezioneAnno.classeSezione.classe.descrizione2;
@@ -99,8 +106,11 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
 
   inserisciRetteConcordate(){
 
+
     //********************************************************************************************************************************************************
     //ATTENZIONE! DEVO ESSERE SICURO CHE SE C'è UNA RETTA IN UN MESE CI SIA IN TUTTI I 12 MESI ALTRIMENTI LA UPDATE NON FUNZIONA CORRETTAMENTE! ASSICURARSENE!
+
+    //ho creato in ngOnInit l'oggetto anno e  in caricaQuotaConcordataDefault l'oggetto iscrizione, ora vado a usarli
 
     let annoRetta = 0;
     let importoMese  = 0;
@@ -113,118 +123,153 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
     let contaMesi = 0;
 
     let arrCheckMesi = this.QuoteList.toArray();
-    for( i=1; i<=12; i++)
-      if (arrCheckMesi[i-1].checked == true) contaMesi++;
+    for( i=1; i<=12; i++) if (arrCheckMesi[i-1].checked == true) contaMesi++;
+  
+    let anno1 = this.anno.anno1;
+    let anno2 = this.anno.anno2;
+
+    let importoAnno = this.form.controls.quotaConcordata.value;
+
+    importoMeseRound = Math.floor(importoAnno/contaMesi);
+    restoImportoMese = importoAnno - importoMeseRound * contaMesi;  //per applicare il resto alla prima quota devo essere sicuro che le quote vengano passate in ordine, quindi nel service metto una orderby
+
+    let primaQuota =  true;
+
+    //aggiorno lo status inserendo il codice 20
+    let formData = {
+      id: this.iscrizione.id,
+      codiceStato: 20
+    }
+    this.svcIscrizioni.updateStato(formData)
+      .subscribe(
+        //() => this.viewListClassi.loadData()
+    );
+
+
+
+
+
+
+
+    console.log("qui 1");
+    this.svcRette.listByAlunnoAnno(this.alunnoID, this.annoID ).subscribe(retteAnnoAlunno =>{
+      //se array vuoto, INSERT
+      if(retteAnnoAlunno.length == 0){
+
+
+        const d = new Date();
+        d.setSeconds(0,0);
+        let dateNow = d.toISOString().split('.')[0];
+
+        //loop per i 12 mesi, i primi quattro dell'anno1, gli altri dell'anno2
+        for( i=1; i<=12; i++){
+          if (i <= 4) {
+            mese = i + 8;
+            annoRetta = anno1;
+          } 
+          else {
+            mese = i - 4;
+            annoRetta = anno2;
+          }
+
+          if (arrCheckMesi[i-1].checked == false) 
+            importoMese = 0;             
+          else {
+              if (primaQuota) {
+                importoMese = importoMeseRound + restoImportoMese;
+                primaQuota = false;
+              } 
+              else  importoMese = importoMeseRound;
+            // }
+          }
+
+          let rettaMese: PAG_Retta = {
+            id : 0,
+            iscrizioneID:           this.iscrizione.id,
+            annoID:                 this.annoID,
+            alunnoID:               this.alunnoID,
+            annoRetta:              annoRetta,
+            meseRetta:              mese,
+            quotaDefault:           importoMese,
+            quotaConcordata:        importoMese,
+            
+            note:                   '',
+            dtIns:                  dateNow,
+            dtUpd:                  dateNow,
+            userIns:                1,
+            userUpd:                1
+          };
+          this.svcRette.post(rettaMese).subscribe(
+            res=>   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']}),
+            err =>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore durante l\'inserimento delle rette', panelClass: ['red-snackbar']})
+          );
+          this.ricalcoloRetteEmitter.emit();  //questa deve partire solo a post terminata  TODO DA TESTARE CHE ACCADA COSI'
+
+        } 
+      } else {
+
+
+        // const Loop = async (retteAnnoAlunno: any) => {
+        //   retteAnnoAlunno.map(async (rettaMese: PAG_Retta) => {
+        // //   //
+
+
+
+
+        //await retteAnnoAlunno.reduce(async (memo, i) => {
+        //await Promise.all(retteAnnoAlunno.map(async (rettaMese) => {
+        retteAnnoAlunno.forEach( rettaMese => {
+            mese = rettaMese.meseRetta;
+
+            if (mese <= 8) 
+              i = mese + 3;
+            else 
+              i = mese - 9;
+            
+            if (arrCheckMesi[i].checked == false) 
+              importoMese = 0;
+            else {
+                if (primaQuota) {
+                  importoMese = importoMeseRound + restoImportoMese;
+                  primaQuota = false;
+                } 
+                else importoMese = importoMeseRound;
+            }
+
+            rettaMese.quotaConcordata = importoMese;
+            rettaMese.quotaDefault = importoMese;
+
+            this.svcRette.put(rettaMese).subscribe(
+              res=>  {
+                console.log("res");
+                this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']})
+              },
+              err =>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore durante l\'inserimento delle rette', panelClass: ['red-snackbar']})
+            );
+
+            console.log("fuori dalla await");
+
+
+        });
+        //);
+
+        console.log("fuori da tutto");
+        this.ricalcoloRetteEmitter.emit();  //questa deve partire solo a put terminate (await)
+
+        //https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/   NON FUNZIONA QUI
+        
+
+
+
+                
+      }
+    });
   
 
-    const annoPromise = this.svcAnni.get(this.annoID).toPromise();
-    annoPromise.then (anno => {
 
-      const iscrizionePromise = this.svcIscrizioni.getByAlunnoAndAnno(anno.id, this.alunnoID).toPromise();
-      iscrizionePromise.then ( (iscrizione: CLS_Iscrizione) => {
-        
-        let anno1 = anno.anno1;
-        let anno2 = anno.anno2;
-
-        let importoAnno = this.form.controls.quotaConcordata.value;
-
-        importoMeseRound = Math.floor(importoAnno/contaMesi);
-        restoImportoMese = importoAnno - importoMeseRound * contaMesi;  //per applicare il resto alla prima quota devo essere sicuro che le quote vengano passate in ordine, quindi nel service metto una orderby
-
-        let primaQuota =  true;
-
-        let formData = {
-          id: iscrizione.id,
-          codiceStato: 20
-        }
-        this.svcIscrizioni.updateStato(formData)
-          .subscribe(
-            //() => this.viewListClassi.loadData()
-        );
-
-        this.svcRette.listByAlunnoAnno(this.alunnoID, this.annoID ).subscribe( retteAnnoAlunno =>{
-            //se array vuoto, INSERT
-            if(retteAnnoAlunno.length == 0){
-              const d = new Date();
-              d.setSeconds(0,0);
-              let dateNow = d.toISOString().split('.')[0];
-
-              //loop per i 12 mesi, i primi quattro dell'anno1, gli altri dell'anno2
-              for( i=1; i<=12; i++){
-                if (i <= 4) {
-                  mese = i + 8;
-                  annoRetta = anno1;
-                } 
-                else {
-                  mese = i - 4;
-                  annoRetta = anno2;
-                }
-
-                if (arrCheckMesi[i-1].checked == false) 
-                  importoMese = 0;             
-                else {
-                    if (primaQuota) {
-                      importoMese = importoMeseRound + restoImportoMese;
-                      primaQuota = false;
-                    } 
-                    else  importoMese = importoMeseRound;
-                  // }
-                }
-
-                let rettaMese: PAG_Retta = {
-                  id : 0,
-                  iscrizioneID:           iscrizione.id,
-                  annoID:                 this.annoID,
-                  alunnoID:               this.alunnoID,
-                  annoRetta:              annoRetta,
-                  meseRetta:              mese,
-                  quotaDefault:           importoMese,
-                  quotaConcordata:        importoMese,
-                  
-                  note:                   '',
-                  dtIns:                  dateNow,
-                  dtUpd:                  dateNow,
-                  userIns:                1,
-                  userUpd:                1
-                };
-                this.svcRette.post(rettaMese).subscribe(
-                  res=>   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']}),
-                  err =>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore durante l\'inserimento delle rette', panelClass: ['red-snackbar']})
-                );
-              } 
-            } else {
-              retteAnnoAlunno.forEach((rettaMese) => {
-                mese = rettaMese.meseRetta;
-
-                if (mese <= 8) 
-                  i = mese + 3;
-                else 
-                  i = mese - 9;
-                
-                if (arrCheckMesi[i].checked == false) 
-                  importoMese = 0;
-                else {
-                    if (primaQuota) {
-                      importoMese = importoMeseRound + restoImportoMese;
-                      primaQuota = false;
-                    } 
-                    else importoMese = importoMeseRound;
-                }
-
-                rettaMese.quotaConcordata = importoMese;
-                rettaMese.quotaDefault = importoMese;
-
-                this.svcRette.put(rettaMese).subscribe(
-                  res=>   {
-                    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']})
-                    this.ricalcoloRetteEmitter.emit();
-                  },
-                  err =>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore durante l\'inserimento delle rette', panelClass: ['red-snackbar']})
-                );
-              });
-            }
-        });
-      });
-    });
   }
 }
+function sleep(arg0: number) {
+  throw new Error('Function not implemented.');
+}
+

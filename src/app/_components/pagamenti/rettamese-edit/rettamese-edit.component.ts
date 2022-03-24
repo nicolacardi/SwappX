@@ -43,6 +43,8 @@ export class RettameseEditComponent implements OnInit{
   @Input() public quotaConcordata!: number; 
   @Input() public quotaDefault!: number; 
   @Input() public totPagamenti!: number; 
+  @Input() public mese!: number; 
+
 
 
   // @Input() public inputPagamenti!: number; 
@@ -180,7 +182,7 @@ export class RettameseEditComponent implements OnInit{
   }
 
   clickOnPagamento() {
-    this.clickOnpagamentoEmitter.emit(this.form.controls['meseRetta'].value);
+    this.clickOnpagamentoEmitter.emit(this.mese);
   }
 //#endregion
 }

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, HostListener, Inject, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -151,7 +151,7 @@ export class RettaEditComponent implements OnInit {
           obj.forEach((val, i)=>{
             this.idRette[obj[i].meseRetta-1] = obj[i].id;
 
-            //this.mesi[obj[i].meseRetta - 1] = obj[i].meseRetta;
+            this.mesi[obj[i].meseRetta - 1] = obj[i].meseRetta;
             this.quoteConcordate[obj[i].meseRetta - 1] = obj[i].quotaConcordata;
             this.quotaConcordataAnno += obj[i].quotaConcordata;
 
@@ -196,33 +196,33 @@ export class RettaEditComponent implements OnInit {
 //#region ----- Interazioni Varie Interfaccia -------
 
   nuovoPagamentoArrivato(str: string) {
-    //è stato inserito un nuovo pagamento: devo fare il refresh dei child: della lista (ChildPagamenti)
+    //è stato inserito un nuovo pagamento: devo fare il refresh dei child: della lista (ChildPagamenti) e di retta edit che in cascata passa i totali aggiornati ai vari
+    //retta-mese edit e retta-anno-edit
     this.ChildPagamenti.loadData();
-
-    //ora dovrei fare il refresh del solo component rettamese interessato...quindi dovrei passare qui l'indice del component rettamese corretto
-    //ma provo per ora a fare il refresh di tutti e 12 i component rettamese
-    //ora bisogna fare la refresh di tutti i 12 rettamese
-    for (let i = 0; i < 12; i++) {
-      let childRettaMese = this.ChildrenRettaMese.find(childRettaMese => childRettaMese.indice == i);
-      childRettaMese!.ngOnChanges();
-    }
+    this.loadData();
     
   }
 
+  pagamentoEliminatoArrivato () {
+    this.loadData();
+  }
+
   ricalcoloRetteArrivato() {
-    //è stato effettuato un ricalcolo delle rette calcolate: ora bisogna fare la refresh di tutti i 12 rettamese
+    // //è stato effettuato un ricalcolo delle rette calcolate: ora bisogna fare la refresh di tutti i 12 rettamese
 
-    for (let i = 0; i < 12; i++) {
-      let childRettaMese = this.ChildrenRettaMese.find(childRettaMese => childRettaMese.indice == i);
-      childRettaMese!.ngOnChanges();
-    }
+    // for (let i = 0; i < 12; i++) {
+    //   let childRettaMese = this.ChildrenRettaMese.find(childRettaMese => childRettaMese.indice == i);
+    //   childRettaMese!.ngOnChanges();
+    // }
+
+    this.loadData()
   }
 
-  hoverPagamentoArrivato(id: number) {
-    //console.log ("arrivato", id);
-    this.idToHighlight = id;
-    //this.ChildPagamenti.refresh();
-  }
+  // hoverPagamentoArrivato(id: number) {
+  //   //console.log ("arrivato", id);
+  //   this.idToHighlight = id;
+  //   //this.ChildPagamenti.refresh();
+  // }
 
 
   enterAlunnoInput () {
@@ -239,26 +239,35 @@ export class RettaEditComponent implements OnInit {
 
 
   selected(event: MatAutocompleteSelectedEvent): void {
+    //evento triggered su selezione di una voce tra quelle proposte
+    console.log ("selected", event.option.id);
     this.data.idAlunno = parseInt(event.option.id);
     this.formRetta.controls['alunnoID'].setValue(parseInt(event.option.id));
     this.loadData();
   }
 
 
+
   blur() {
+    //evento che dovrebbe essere triggered su click fuori dall'elenco proposto. Va però in conflitto con selected:
+    //nel senso che spesso parte anche quando uno seleziona una voce dall'elenco.
+    console.log ("blur");
+    return;
+    console.log (this.matAutocomplete.options.first);
      //l'unico caso che al momento non possiamo gestire è se non c'è alcun elemento nella dropdown (se p.e. utente scrive "hh")
      //e anzi per non incorrere in errori in quel caso bisogna uscire dalla routine
     if (!this.matAutocomplete.options.first) return; 
 
     const stored = this.matAutocomplete.options.first.viewValue;
-    //console.log ("stored", stored);
+    console.log ("stored", stored);
     const idstored = this.matAutocomplete.options.first.id;
-    //console.log("idstored", idstored);
+    console.log("idstored", idstored);
     //se uno cancella tutto si ritrova selezionato il primo della lista
     if (this.formRetta.controls['nomeCognomeAlunno'].value == "") {
       this.matAutocomplete.options.first.select();
     }
 
+    //se non trova in base a quello che uno ha scritto seleziona il primo dell'elenco
     this.svcAlunni.filterAlunniExact(this.formRetta.value.nomeCognomeAlunno).subscribe(val=>
       {
         if (!val) {

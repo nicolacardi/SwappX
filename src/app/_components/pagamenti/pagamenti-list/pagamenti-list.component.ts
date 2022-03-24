@@ -126,6 +126,8 @@ export class PagamentiListComponent implements OnInit {
   @Input() annoID!:         number;
   @Input() pagamentiFilterComponent!: PagamentiFilterComponent;
 
+  @Output('pagamentoEliminato')
+  pagamentoEliminatoEmitter = new EventEmitter<string>();
   //@Output('hoverPagamento');
 
 //#endregion
@@ -381,6 +383,7 @@ export class PagamentiListComponent implements OnInit {
             );
             //this._dialogRef.close();
             this.loadData();
+            this.pagamentoEliminatoEmitter.emit();
             //AS: attenzione: se non faccio refresh la griglia non si aggiorna: perchè ???
           },
           err=> (
@@ -394,13 +397,13 @@ export class PagamentiListComponent implements OnInit {
 //#endregion
 
 //#region ----- Altri metodi -------
-  hoverRow(id: number) {
-    this.pagamentoEmitter.emit(id);
-  }
+  // hoverRow(id: number) {
+  //   this.pagamentoEmitter.emit(id);
+  // }
 
-  hoverLeave() {
-    this.pagamentoEmitter.emit(0);
-  }
+  // hoverLeave() {
+  //   this.pagamentoEmitter.emit(0);
+  // }
 //#endregion
 
 
