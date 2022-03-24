@@ -125,10 +125,10 @@
     <!-- **************************   MAT-ROW   ******************* -->
     <tr mat-row *matRowDef="let element;columns: displayedColumns"
         class="element-row"
-        (contextmenu)="onRightClick($event, element)" 
-        (mouseover) = "hoverRow(element.rettaID)"
-        (mouseleave) = "hoverLeave()"
-        >
+        (contextmenu)="onRightClick($event, element)" >
+        <!-- (mouseover) = "hoverRow(element.rettaID)" -->
+        <!-- (mouseleave) = "hoverLeave()" -->
+        
 </tr>
 
 </table>

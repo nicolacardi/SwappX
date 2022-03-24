@@ -138,13 +138,13 @@ export class RetteListComponent implements OnInit {
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 //#endregion
 
-  constructor(private svcRette:         RetteService,
-              private svcAnni:          AnniScolasticiService,
-              private _loadingService:  LoadingService,
-              private fb:               FormBuilder, 
-              public _dialog:           MatDialog) {
-
-
+  constructor(
+    private svcRette:         RetteService,
+    private svcAnni:          AnniScolasticiService,
+    private _loadingService:  LoadingService,
+    private fb:               FormBuilder, 
+    public _dialog:           MatDialog) 
+  {
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
