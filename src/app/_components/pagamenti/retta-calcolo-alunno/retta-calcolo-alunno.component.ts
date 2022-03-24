@@ -146,9 +146,18 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
     );
 
 
-    this.svcRette.listByAlunnoAnno(this.alunnoID, this.annoID ).subscribe(async retteAnnoAlunno =>{
 
-      console.log ("retteAnnoAlunno", retteAnnoAlunno);
+
+
+    // listByAlunnoAnno = this.svcRette.listByAlunnoAnno(this.alunnoID, this.annoID )
+    //.toPromise();
+    //questo assomiglia molto alla subscribe sottostante...
+    //listByAlunnoAnno.then( async retteAnnoAlunno => {
+    //this.svcRette.listByAlunnoAnno(this.alunnoID, this.annoID ).subscribe(async retteAnnoAlunno =>{
+
+    this.svcRette.listByAlunnoAnno(this.alunnoID, this.annoID )
+    .subscribe ((retteAnnoAlunno) => {
+    
       //se array vuoto, INSERT
 
       if(retteAnnoAlunno.length == 0){
@@ -212,26 +221,26 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
 
 
 
-// const arr = [1, 2, 3];
+        // const arr = [1, 2, 3];
 
-// arr.forEach(async (i) => {
-// 	// each element takes a different amount of time to complete
-// 	await sleep(10 - i);
-// 	console.log(i);
-// });
+        // arr.forEach(async (i) => {
+        // 	// each element takes a different amount of time to complete
+        // 	await sleep(10 - i);
+        // 	console.log(i);
+        // });
 
 
-// const arr = [1, 2, 3];
+        // const arr = [1, 2, 3];
 
-// await Promise.all(arr.map(async (i) => {
-// 	await sleep(10 - i);
-// 	console.log(i);
-// }));
+        // await Promise.all(arr.map(async (i) => {
+        // 	await sleep(10 - i);
+        // 	console.log(i);
+        // }));
 
 
         //await retteAnnoAlunno.reduce(async (memo, i) => {
         for (let rettaMese of retteAnnoAlunno) {
-          await new Promise ((resolve, reject)=> {
+          new Promise ((resolve, reject)=> {
           
         //await Promise.all(retteAnnoAlunno.map(async (rettaMese) => {
         //retteAnnoAlunno.forEach( rettaMese => {
@@ -262,42 +271,19 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
                 //resolve;
               }
             );
-
             console.log("fuori dalla await");
-
-
           })
         }
-        
-        // )).then (()=> {
-        console.log ("sto per lanciare l'emit1");
-        this.ricalcoloRetteEmitter.emit();
-          
-        //   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']})
-        
-        // })
 
         
-        //);
-
-
-         //questa deve partire solo a put terminate (await)
-
-        //https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/   NON FUNZIONA QUI
-
-
-
-                
       }
     });
-
-
-  
-
+      
+    console.log ("sto per lanciare l'emit1");
+    this.ricalcoloRetteEmitter.emit();
+      
+    //https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/   NON FUNZIONA QUI
 
   }
-}
-function sleep(arg0: number) {
-  throw new Error('Function not implemented.');
 }
 
