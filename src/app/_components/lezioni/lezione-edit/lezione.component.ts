@@ -244,7 +244,6 @@ export class LezioneComponent implements OnInit {
           this.form.value[prop] = this.form.controls[prop].value;
         }
 
-
         if (this.form.controls['id'].value == null) {          
           this.svcLezioni.post(this.form.value)
             .subscribe(res=> {
