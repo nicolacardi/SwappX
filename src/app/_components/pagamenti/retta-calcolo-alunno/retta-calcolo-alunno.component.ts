@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { concatMap, tap } from 'rxjs/operators';
+import { concatMap, last, take, tap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 //components
@@ -17,6 +17,7 @@ import { ParametriService } from 'src/app/_services/parametri.service';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-retta-calcolo-alunno',
@@ -149,14 +150,10 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
 
 
 
-    // listByAlunnoAnno = this.svcRette.listByAlunnoAnno(this.alunnoID, this.annoID )
-    //.toPromise();
-    //questo assomiglia molto alla subscribe sottostante...
-    //listByAlunnoAnno.then( async retteAnnoAlunno => {
-    //this.svcRette.listByAlunnoAnno(this.alunnoID, this.annoID ).subscribe(async retteAnnoAlunno =>{
+
 
     this.svcRette.listByAlunnoAnno(this.alunnoID, this.annoID )
-    .subscribe ((retteAnnoAlunno) => {
+    .subscribe (async (retteAnnoAlunno) => {
     
       //se array vuoto, INSERT
 
@@ -209,81 +206,123 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
             res=>   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']}),
             err =>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore durante l\'inserimento delle rette', panelClass: ['red-snackbar']})
           );
-          this.ricalcoloRetteEmitter.emit();  //questa deve partire solo a post terminata  TODO DA TESTARE CHE ACCADA COSI'
+          
 
         } 
       } else {
 
+        //problema: dobbiamo attendere le chiamate asincrone (put) dentro il ciclo prima di passare oltre alla emit come fare?
+        //soluzione la promiseAll sostituisce la forEach, la quale è inadatta perchè si possano aspettare le funzioni asincrone che contiene
+        //è necessario attendere la promiseAll (await) e quindi dichiarare la funzione "padre" 
+        //this.svcRette.listByAlunnoAnno come async"
 
-        // const Loop = async (retteAnnoAlunno: any) => {
-        //   retteAnnoAlunno.map(async (rettaMese: PAG_Retta) => {
-        // //   //
+        //ma non basta: ANCHE le chiamate asincrone (put) interne devono essere attese e quindi a loro volta
+        //trasformate in promise e awaited. Solo se entrambe (la promiseAll e quelle interne)
+        //sono awaited allora si attende che tutte siano risolte
 
-
-
-        // const arr = [1, 2, 3];
-
-        // arr.forEach(async (i) => {
-        // 	// each element takes a different amount of time to complete
-        // 	await sleep(10 - i);
-        // 	console.log(i);
-        // });
-
-
-        // const arr = [1, 2, 3];
-
-        // await Promise.all(arr.map(async (i) => {
-        // 	await sleep(10 - i);
-        // 	console.log(i);
-        // }));
-
-
-        //await retteAnnoAlunno.reduce(async (memo, i) => {
-        for (let rettaMese of retteAnnoAlunno) {
-          new Promise ((resolve, reject)=> {
-          
-        //await Promise.all(retteAnnoAlunno.map(async (rettaMese) => {
-        //retteAnnoAlunno.forEach( rettaMese => {
-            console.log ("inizio await promise");
-            mese = rettaMese.meseRetta;
-
-            if (mese <= 8) 
-              i = mese + 3;
-            else 
-              i = mese - 9;
-            
-            if (arrCheckMesi[i].checked == false) 
-              importoMese = 0;
-            else {
-                if (primaQuota) {
-                  importoMese = importoMeseRound + restoImportoMese;
-                  primaQuota = false;
-                } 
-                else importoMese = importoMeseRound;
-            }
-
-            rettaMese.quotaConcordata = importoMese;
-            rettaMese.quotaDefault = importoMese;
-
-            this.svcRette.put(rettaMese).subscribe(
-              () => {
-                console.log ("resolve");
-                //resolve;
-              }
+          await Promise.all(retteAnnoAlunno.map( async rettaMese=> {   
+                    mese = rettaMese.meseRetta;  //rettaMese
+                    if (mese <= 8) 
+                      i = mese + 3;
+                    else 
+                      i = mese - 9;
+                    
+                    if (arrCheckMesi[i].checked == false)
+                      importoMese = 0;
+                    else {
+                      if (primaQuota) {
+                        importoMese = importoMeseRound + restoImportoMese;
+                        primaQuota = false;
+                      } 
+                      else importoMese = importoMeseRound;
+                    }
+                    rettaMese.quotaConcordata = importoMese;
+                    rettaMese.quotaDefault = importoMese;
+            //ecco qui: non la subscribe ma una toPromise poi awaited e "thenned"
+            const miaput = this.svcRette.put(rettaMese).toPromise();
+            await miaput.then(
+            //  () => console.log ("put singola")
             );
-            console.log("fuori dalla await");
-          })
-        }
-
-        
+                          
+          })).then(() => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']}));
+          
+          //console.log ("finito tutto");
+          this.ricalcoloRetteEmitter.emit();
       }
+    
     });
       
-    console.log ("sto per lanciare l'emit1");
-    this.ricalcoloRetteEmitter.emit();
+ 
+    
       
-    //https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/   NON FUNZIONA QUI
-
+    //https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/   NON FUNZIONA QUI DA NOI
+    //https://codeburst.io/javascript-async-await-with-foreach-b6ba62bbf404                 SPIEGA PERCHE' NON PASSA PER ALCUNI PEZZI PERO' NON FUNZIONA
   }
+  
+
+
+
+
+  async testForEachAsync () {
+    let arr =[410,411,412]
+        const promiseall = await Promise.all(arr.map( async id=> {
+            const myget = this.svcRette.get(id).toPromise();
+            await myget.then (val => console.log(val));
+            // await myget.then( val => console.log (val));
+          
+        }));
+  
+  console.log ("ho finito");
+
+
+
+
+    // const arr = [1, 2, 3];
+
+    // await Promise.all(arr.map(async (i) => {
+    //   await setTimeout(() => {
+    //     console.log("a")
+    //   }, 10-i);
+
+    //   console.log(i);
+    // }));
+    
+    // console.log("Finished async");
+
+    //3
+    //2
+    //1
+    //Finished async
+    //a
+    //a
+    //a NON FUNZIONA
+
+
+
+
+
+    // let promise = new Promise ((resolve, reject) => {
+    //   setTimeout (() => {
+    //     resolve ("done");
+    //     console.log ("done");
+    // }, 1000)
+    // });
+
+    // console.log ("await");
+    // let result = await promise;
+    // console.log ("dopo await");
+
+    // //done
+    // //await
+    // //dopo await
+
+    // //FUNZIONA MA SOLO UN CICLO, NON C'E' UN FOR
 }
+
+}
+
+
+
+
+
 
