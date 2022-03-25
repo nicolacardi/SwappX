@@ -709,7 +709,18 @@ removeFromFamilyEmit(item: ALU_Alunno) {
   // // record
   // // ciao
 
-
+  // //ecco come fare un foreach con delle chiamate asincrone MA con la sicurezza che ho finito arriva DOPO che le chiamate asincrone sono risolte
+  // async testForEachAsync () {
+  //   let arr =[410,411,412]
+  //   const promiseall = await Promise.all(arr.map( async id=> {
+  //       const myget = this.svcRette.get(id).toPromise();
+  //       await myget.then (val => console.log(val));
+  //       // await myget.then( val => console.log (val));
+      
+  //   }));
+  
+  //   console.log ("ho finito");
+  // }
 
   
 

@@ -212,7 +212,8 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
       } else {
 
         //problema: dobbiamo attendere le chiamate asincrone (put) dentro il ciclo prima di passare oltre alla emit come fare?
-        //soluzione la promiseAll sostituisce la forEach, la quale è inadatta perchè si possano aspettare le funzioni asincrone che contiene
+        //soluzione la promiseAll sostituisce la forEach oppure un ciclo for of,
+        //la forEach è inadatta perchè si possano aspettare le funzioni asincrone che contiene
         //è necessario attendere la promiseAll (await) e quindi dichiarare la funzione "padre" 
         //this.svcRette.listByAlunnoAnno come async"
 
@@ -220,7 +221,8 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
         //trasformate in promise e awaited. Solo se entrambe (la promiseAll e quelle interne)
         //sono awaited allora si attende che tutte siano risolte
 
-          await Promise.all(retteAnnoAlunno.map( async rettaMese=> {   
+          //await Promise.all(retteAnnoAlunno.map( async rettaMese=> {  
+          for (let rettaMese of retteAnnoAlunno) { 
                     mese = rettaMese.meseRetta;  //rettaMese
                     if (mese <= 8) 
                       i = mese + 3;
@@ -241,11 +243,12 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
             //ecco qui: non la subscribe ma una toPromise poi awaited e "thenned"
             const miaput = this.svcRette.put(rettaMese).toPromise();
             await miaput.then(
-            //  () => console.log ("put singola")
-            );
-                          
-          })).then(() => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']}));
+              //() => console.log ("put singola")
+            );      
+          };
+          //));
           
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']})
           //console.log ("finito tutto");
           this.ricalcoloRetteEmitter.emit();
       }
@@ -257,6 +260,7 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
       
     //https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/   NON FUNZIONA QUI DA NOI
     //https://codeburst.io/javascript-async-await-with-foreach-b6ba62bbf404                 SPIEGA PERCHE' NON PASSA PER ALCUNI PEZZI PERO' NON FUNZIONA
+    //https://masteringjs.io/tutorials/fundamentals/async-foreach
   }
   
 
@@ -264,6 +268,8 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
 
 
   async testForEachAsync () {
+
+    //ecco il ciclo foreach riscritto per attendere la risoluzione delle chiamate asincrone in esso contenute
     let arr =[410,411,412]
         const promiseall = await Promise.all(arr.map( async id=> {
             const myget = this.svcRette.get(id).toPromise();
@@ -272,7 +278,7 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
           
         }));
   
-  console.log ("ho finito");
+    console.log ("ho finito");
 
 
 
