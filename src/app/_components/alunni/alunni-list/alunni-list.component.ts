@@ -694,6 +694,23 @@ removeFromFamilyEmit(item: ALU_Alunno) {
 
 
 
+
+  //IMPORTANTE:
+  //const myget = this.svcRette.get(410).toPromise();
+  //myget.then( val => console.log (val));
+  //console.log ("ciao");
+  // // ciao
+  // // record
+
+    //IMPORTANTE:
+  //const myget = this.svcRette.get(410).toPromise();
+  //await myget.then( val => console.log (val));
+  //console.log ("ciao");
+  // // record
+  // // ciao
+
+
+
   
 
 }

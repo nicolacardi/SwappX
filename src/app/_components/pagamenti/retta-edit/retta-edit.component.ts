@@ -130,7 +130,7 @@ export class RettaEditComponent implements OnInit {
   }
 
   loadData(){
-    console.log ("loadData di retta Edit");
+    
     this.quotaConcordataAnno=0;
     this.quotaDefaultAnno=0;
     this.totPagamentiAnno=0;
