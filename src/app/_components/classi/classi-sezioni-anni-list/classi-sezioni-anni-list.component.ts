@@ -157,6 +157,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   @ViewChildren("endedIcons", { read: ElementRef }) endedIcons!:  QueryList<ElementRef>   //elenco delle icone di fine procedura
   //@ViewChildren("ckSelected", { read: ElementRef }) ckSelected!:  QueryList<ElementRef>   //elenco delle icone di fine procedura)
   //@ViewChildren ('ckSelected' ) ckSelected!:QueryList<any>;
+
   @Output('annoId') annoIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
   @Output('classeId') classeIdEmitter = new EventEmitter<number>(); //classeId viene EMESSO quando si clicca su una classe
   @Output('docenteId') docenteIdEmitter = new EventEmitter<number>(); //docenteId viene EMESSO quando si seleziona un docente dalla select
@@ -200,8 +201,6 @@ constructor(
         }
       })
     );
-
-
    
     this.loadData();
     this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);
@@ -332,8 +331,6 @@ constructor(
       this.selectedRowIndex = this.matDataSource.data[0].id;
 
     this.classeIdEmitter.emit(this.selectedRowIndex);
-
-
   }
 
 

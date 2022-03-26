@@ -57,8 +57,14 @@ export class IscrizioniClasseListComponent implements OnInit {
       // "cap", 
       // "prov"
   ];
+  displayedColumnsPagella: string[] = [
+      "select",
+      "nome", 
+      "cognome"
+  ];
 
   selection = new SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
+  selectedRowIndex=-1;
 
   matSortActive!:               string;
   matSortDirection!:            string;
@@ -98,9 +104,12 @@ export class IscrizioniClasseListComponent implements OnInit {
 
   @Input() idClasse!:                                         number;
   //@Input() alunniFilterComponent!:                            IscrizioniFilterComponent;    //TODO!!!
-  @Input('context') context! :                                string;
+  @Input('dove') dove! :                                string;
+
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
+  @Output('iscrizioneId') iscrizioneIdEmitter = new EventEmitter<number>();  
+ 
 
 //#endregion
 
@@ -110,8 +119,7 @@ export class IscrizioniClasseListComponent implements OnInit {
               private router:                 Router,
               public _dialog:                 MatDialog, 
               private _loadingService:        LoadingService,
-              private _navigationService:     NavigationService
-              ) {
+              private _navigationService:     NavigationService  ) {
   }
   
 
@@ -119,13 +127,25 @@ export class IscrizioniClasseListComponent implements OnInit {
 
   ngOnChanges() {
 
-      if (this.context != ''){
+    switch(this.dove) {
+      case 'pagella':
+        this.displayedColumns = this.displayedColumnsPagella;
+        this.showPageTitle = true;
+
         this.loadData();
-        this.toggleChecks = false;
-        this.resetSelections();
-      }
+        break;
+     
+      default:
+        this.displayedColumns = this.displayedColumns;
+        this.showPageTitle = true;
 
+        this.loadData();
+        break;  
+    }
 
+    this.toggleChecks = false;
+    this.showTableRibbon = false;
+    this.resetSelections();
   }
   
   ngOnInit () {
@@ -160,6 +180,33 @@ export class IscrizioniClasseListComponent implements OnInit {
 
     } 
   }
+
+  rowclicked(Iscrizione: CLS_Iscrizione ){
+    //console.log ("idClasseSezioneAnno", parseInt(idClasseSezioneAnno!));
+    //il click su una classe deve essere trasmesso su al parent
+    
+    console.log("BELLA MERDA", Iscrizione);
+
+    this.selectedRowIndex = Iscrizione.id;
+
+    this.iscrizioneIdEmitter.emit(Iscrizione.id);
+
+    
+    /*
+    this.idIscrizioneSezioneAnno = idClasseSezioneAnno!;
+    //per potermi estrarre seq in iscrizioni-classe-calcolo mi preparo qui il valore della classe
+    if (idClasseSezioneAnno) {this.svcClassiSezioniAnni.get(parseInt(this.idClasseSezioneAnno)).subscribe(val=>this.classeSezioneAnno = val);} 
+
+
+    if(idClasseSezioneAnno!= undefined && idClasseSezioneAnno != null)
+      this.selectedRowIndex = parseInt(idClasseSezioneAnno);
+    else 
+      this.selectedRowIndex = this.matDataSource.data[0].id;
+
+    this.classeIdEmitter.emit(this.selectedRowIndex);
+    */
+  }
+
 
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {

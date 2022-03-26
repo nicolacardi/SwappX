@@ -85,6 +85,8 @@ export class ClassiDashboardComponent implements OnInit {
   public idClasse!:             number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public idAnno!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public idDocente!:            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
+  public idIscrizione!:         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
+  
   public idClasseInput!:        string;   //valore ricevuto (routed) dal ruoting
   public idAnnoInput!:          string;   //valore ricevuto (routed) dal ruoting
   isOpen = true;
@@ -358,13 +360,16 @@ export class ClassiDashboardComponent implements OnInit {
     this.idDocente = docenteId;
   }
 
-//#endregion
+  iscrizioneIdEmitted(iscrizioneId: number) {
+    this.idIscrizione = iscrizioneId;
+  }
+
+  //#endregion
   
 
 
   selectedTabValue(event: any){
     //senza questo espediente non fa il primo render correttamente
-
 
     if (this.tabGroup.selectedIndex == 2) {
       this.viewOrarioLezioni.calendarDOM.getApi().render();

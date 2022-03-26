@@ -12,8 +12,7 @@
                         [dove] = "'classi-dashboard'"
                         (annoId)="annoIdEmitted($event)"
                         (classeId)="classeIdEmitted($event)"
-                        (docenteId)="docenteIdEmitted($event)"
-                        >
+                        (docenteId)="docenteIdEmitted($event)" >
                     </app-classi-sezioni-anni-list>
                 </div>
             <!-- </mat-card> -->
@@ -67,6 +66,22 @@
                 </mat-tab>
                 <mat-tab  label="Orario Per Docente">
                     <app-lezioni-calendario [idClasse]="idClasse" [idDocente] = "idDocente" [dove]="'orarioDocente'" #orarioDocenteDOM></app-lezioni-calendario>
+                </mat-tab>
+
+                <mat-tab  label="Pagelle">
+                    <table>
+                        <tr>
+                            <td>
+                                <app-iscrizioni-classe-list   [idClasse]="idClasse"  
+                                    [dove]="'pagella'"
+                                    (iscrizioneId)="iscrizioneIdEmitted($event)">
+                                </app-iscrizioni-classe-list>
+                            </td>
+                            <td>
+                                <app-pagella-edit [idIscrizione]="idIscrizione"></app-pagella-edit>
+                            </td>
+                        </tr>
+                    </table>
                 </mat-tab>
             </mat-tab-group>
                 
