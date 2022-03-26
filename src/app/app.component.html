@@ -126,7 +126,17 @@
                 <span>Gestione Utenti</span>
             </a> 
 
-            <a mat-list-item routerLink="impostazioni" (click)="start.close()"  style="position: absolute; bottom: 0;" *ngIf="currUser && (currUser.ruoloID == 5 || currUser.ruoloID >=10)">
+            <a mat-list-item (click)="start.close()">
+                <img class="iconaMenuSidenav" src="../assets/verbaliList.svg">
+                <span>Verbali</span>
+            </a>
+
+            <a mat-list-item (click)="start.close()">
+                <img class="iconaMenuSidenav" src="../assets/tutorialsList.svg">
+                <span>Tutorials</span>
+            </a>
+            
+            <a mat-list-item class="_pos-absolute _border-top _grey-background" routerLink="impostazioni" (click)="start.close()"  style="z-index: 100000!important; bottom: 0;" *ngIf="currUser && (currUser.ruoloID == 5 || currUser.ruoloID >=10)">
                 <img class="iconaMenuSidenav" src="../assets/settings.svg">
                 <span>Impostazioni</span>
             </a>

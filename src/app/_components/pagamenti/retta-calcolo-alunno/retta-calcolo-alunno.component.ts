@@ -211,36 +211,39 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
         } 
       } else {
 
-        //problema: dobbiamo attendere le chiamate asincrone (put) dentro il ciclo prima di passare oltre alla emit come fare?
-        //soluzione la promiseAll sostituisce la forEach oppure un ciclo for of,
-        //la forEach è inadatta perchè si possano aspettare le funzioni asincrone che contiene
-        //è necessario attendere la promiseAll (await) e quindi dichiarare la funzione "padre" 
-        //this.svcRette.listByAlunnoAnno come async"
+        //problema: dobbiamo attendere le chiamate asincrone (put) che si trovano dentro il ciclo 
+        //PRIMA di passare oltre, alla emit: una forEach impedisce di lavorare forzando delle sincronie
+        //soluzione la promiseAll oppure un ciclo for of sostituisce la forEach
+        //la forEach è inadatta perchè si possano aspettare le funzioni asincrone che essa contiene
+        //Se si usa una PromiseAll è necessario attenderla (await) [e quindi tra l'altro dichiarare la funzione "padre" 
+        //this.svcRette.listByAlunnoAnno come async]
 
-        //ma non basta: ANCHE le chiamate asincrone (put) interne devono essere attese e quindi a loro volta
-        //trasformate in promise e awaited. Solo se entrambe (la promiseAll e quelle interne)
-        //sono awaited allora si attende che tutte siano risolte
+        //ma quanto sopra NON BASTA: ANCHE le singole chiamate asincrone (put) interne al ciclo devono essere attese e quindi a loro volta
+        //trasformate in promise e awaited [il che comporta, nel caso for of, comunque che this.svcRette.listByAlunnoAnno sia async
+        //e che, nel caso di PromiseAll questa sia async].
+        //Solo se entrambe (promiseAll/for of e chiamate interne)
+        //sono awaited allora si attende che tutte siano risolte prima della emit
 
           //await Promise.all(retteAnnoAlunno.map( async rettaMese=> {  
           for (let rettaMese of retteAnnoAlunno) { 
-                    mese = rettaMese.meseRetta;  //rettaMese
-                    if (mese <= 8) 
-                      i = mese + 3;
-                    else 
-                      i = mese - 9;
-                    
-                    if (arrCheckMesi[i].checked == false)
-                      importoMese = 0;
-                    else {
-                      if (primaQuota) {
-                        importoMese = importoMeseRound + restoImportoMese;
-                        primaQuota = false;
-                      } 
-                      else importoMese = importoMeseRound;
-                    }
-                    rettaMese.quotaConcordata = importoMese;
-                    rettaMese.quotaDefault = importoMese;
-            //ecco qui: non la subscribe ma una toPromise poi awaited e "thenned"
+            mese = rettaMese.meseRetta;  //rettaMese
+            if (mese <= 8) 
+              i = mese + 3;
+            else 
+              i = mese - 9;
+            
+            if (arrCheckMesi[i].checked == false)
+              importoMese = 0;
+            else {
+              if (primaQuota) {
+                importoMese = importoMeseRound + restoImportoMese;
+                primaQuota = false;
+              } 
+              else importoMese = importoMeseRound;
+            }
+            rettaMese.quotaConcordata = importoMese;
+            rettaMese.quotaDefault = importoMese;
+            //ecco qui: non una subscribe ma una toPromise poi awaited e "thenned"
             const miaput = this.svcRette.put(rettaMese).toPromise();
             await miaput.then(
               //() => console.log ("put singola")
