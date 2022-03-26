@@ -21,6 +21,12 @@ export class MaterieService {
     //http://213.215.231.4/swappX/api/MAT_Materie
   }
 
+  listOrario(): Observable<MAT_Materia[]>{
+    return this.http.get<MAT_Materia[]>(environment.apiBaseUrl+'MAT_Materie');
+    //http://213.215.231.4/swappX/api/MAT_Materie/ListOrario
+  }
+
+
 
   get(id: any): Observable<MAT_Materia>{
     return this.http.get<MAT_Materia>(environment.apiBaseUrl+'MAT_Materie/'+id);

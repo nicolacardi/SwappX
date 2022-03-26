@@ -90,7 +90,7 @@ export class DocenzeAddComponent implements OnInit {
           .subscribe(
             val=> this.materiaSelectedID = val
           )
-    this.obsMaterie$ = this.svcMaterie.list();
+    this.obsMaterie$ = this.svcMaterie.listOrario();
     
   }
 

@@ -154,7 +154,7 @@ export class LezioneComponent implements OnInit {
 
     this.breakpoint = (window.innerWidth <= 800) ? 2 : 2;
     this.obsClassiDocentiMaterie$ = this.svcClassiDocentiMaterie.listByClasseSezioneAnno(this.data.idClasseSezioneAnno);
-    this.obsMaterie$ = this.svcMaterie.list();  //questo forse non servirà più
+    this.obsMaterie$ = this.svcMaterie.listOrario();  //questo forse non servirà più
     this.obsDocenti$ = this.svcDocenti.list();
 
     if (this.data.dove == "orario") {
