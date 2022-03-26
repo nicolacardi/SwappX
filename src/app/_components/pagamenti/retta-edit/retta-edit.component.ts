@@ -21,8 +21,6 @@ import { AlunniService } from '../../alunni/alunni.service';
 //models
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
-import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { RettaCalcoloAlunnoComponent } from '../retta-calcolo-alunno/retta-calcolo-alunno.component';

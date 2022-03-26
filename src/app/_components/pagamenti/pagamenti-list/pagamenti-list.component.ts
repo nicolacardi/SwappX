@@ -259,9 +259,6 @@ export class PagamentiListComponent implements OnInit {
     return filterFunction;
   }
 
-
-
-
   // filterPredicateCustom(){
   //   //questa funzione consente il filtro ANCHE sugli oggetti della classe
   //   //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
@@ -303,17 +300,9 @@ export class PagamentiListComponent implements OnInit {
         case 'alunno.nome':                 return item.alunno.nome;
         case 'alunno.cognome':              return item.alunno.cognome;
         case 'importo':                     return item.importo;
-        //case 'retta.meseRetta':             return item.retta.meseRetta;      
-        //case 'retta.quotaConcordata':       return item.retta.quotaConcordata;    //NON FUNZIONA PERCHE' CI SONO 'ANCHE' RECORD SENZA retta
-        
         case 'dtPagamento':                 return parseInt(item.dtPagamento.toString());
         default: return item[property]
-        //default: return item.alunno.cognome;
-        //default: return Number(item.dtPagamento.toString());
-        //default: return Number(item.dtPagamento);
-        //default: return item.dtPagamento;
-        //default: return item.dtPagamento.toString();
-        //default: return item.alunno.cognome
+
       }
     };
   }
@@ -392,7 +381,6 @@ export class PagamentiListComponent implements OnInit {
         );
       }
     });
-    
   }
 //#endregion
 
@@ -405,7 +393,5 @@ export class PagamentiListComponent implements OnInit {
   //   this.pagamentoEmitter.emit(0);
   // }
 //#endregion
-
-
 
 }

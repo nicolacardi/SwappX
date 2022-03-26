@@ -1,9 +1,7 @@
 //TODO ngOnChanges scatta un numero enorme di volte su hover della lista pagamenti
-
 import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BehaviorSubject, Observable, timer } from 'rxjs';
-import { delayWhen, tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 
 //components
@@ -25,16 +23,15 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 export class RettameseEditComponent implements OnInit{
 
 //#region ----- Variabili -------
-  private idRettaSubject = new BehaviorSubject<number>(0);
-  idRettaObs$: Observable<number> = this.idRettaSubject.asObservable();
-  // quotaConcordata!:           number;
-  // quotaDefault!:              number;
-  //totPagamenti!:              number;
-  retta$!:                    Observable<PAG_Retta>;
-  obsIdRetta$!:               Observable<number>;
   form! :                     FormGroup;
+
+  //private idRettaSubject = new BehaviorSubject<number>(0);
+  //idRettaObs$: Observable<number> = this.idRettaSubject.asObservable();
+
+  retta$!:                    Observable<PAG_Retta>;
+  //obsIdRetta$!:               Observable<number>;
+  
   emptyForm :                 boolean = false;
-  evidenzia:                  boolean = false;
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -44,11 +41,6 @@ export class RettameseEditComponent implements OnInit{
   @Input() public quotaDefault!: number; 
   @Input() public totPagamenti!: number; 
   @Input() public mese!: number; 
-
-
-
-  // @Input() public inputPagamenti!: number; 
-
   @Input() public indice!: number; //serve per poter azionare la save di ciascuna istanza di questo component
   //@Input() public toHighlight!: number; 
 
@@ -73,20 +65,12 @@ export class RettameseEditComponent implements OnInit{
       quotaDefault:           [null],
       quotaConcordata:        [null],
       totPagamenti:           [null],
-      
     });
-
   }
 
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-    // NC 220323
-    // //non vogliamo che venga lanciata la loadData fin che idRetta è undefined
-    // //per questo motivo abbiamo introdotto un behaviorSubject
-    // if (this.idRetta != undefined) { 
-    //     this.idRettaSubject.next(this.idRetta);
-    // }
 
     if (this.idRetta && this.idRetta + '' != "0") {
       this.loadData();
@@ -94,69 +78,26 @@ export class RettameseEditComponent implements OnInit{
       this.emptyForm = true;
       this.form.reset(); 
     }
-
     //if (this.toHighlight == this.idRetta && this.toHighlight!= null) {this.evidenzia = true} else { this.evidenzia = false}
   }
 
   ngOnInit(): void {
 
-    // NC 220323
-
-    // //E' stato creato un behaviorSubject per valorizzarlo quando opportuno (con .next su ngOnChanges)
-    // //in questo modo solo all'arrivo di idRetta si fa scattare la loadData
-    // //La load Data non deve però scattare quando si tratta di nuovo Pagamento 
-    // //oppure se l'alunno non ha pagamenti (in entrambi i casi idRettaObs emette 0)
-    // this.idRettaObs$.pipe(
-    //   tap( val=> {
-    //     if (val!=0) {
-    //       this.loadData()
-    //       this.emptyForm = false;
-    //     }
-    //     else { 
-    //       //di qua passa se è un Nuovo Pagamento oppure se ho selezionato un Alunno senza quote
-    //       this.emptyForm = true;
-    //       this.form.reset(); 
-    //     }
-    //   })
-    // )
-    // .subscribe()
   }
   
   loadData(){
-    // //per di qua in caso di nuovo pagamento non passa nemmeno una volta -> non esiste retta$
-    // //this.idRetta = 0 nel caso di alunno che non ha quote
-    // //if (this.idRetta && this.idRetta + '' != "0") {
-    //   const obsRetta$: Observable<PAG_Retta> = this.svcRette.get(this.idRetta);
-    //   const loadRette$ =this._loadingService.showLoaderUntilCompleted(obsRetta$);  //non sembra funzionare qui lo showLoader
-
-    //   this.retta$ = loadRette$.pipe(
-    //     //delayWhen(() => timer(2000)),
-    //     tap(
-    //       retta => {
-    //         this.form.patchValue(retta);
-    //         this.totPagamenti = 0;
-    //         retta.pagamenti?.forEach( val=>{
-    //           this.totPagamenti = this.totPagamenti + val.importo;
-    //         })
-    //         this.form.controls['totPagamenti'].setValue(this.totPagamenti);
-    //       }
-    //     )
-    //   );
-    // //}
     this.form.controls['quotaDefault'].setValue(this.quotaDefault);
     this.form.controls['quotaConcordata'].setValue(this.quotaConcordata);
     this.form.controls['totPagamenti'].setValue(this.totPagamenti);
-
-
-
   }
+
 //#endregion
 
 //#region ----- Operazioni CRUD -------
   save(): boolean{
     
     if (this.idRetta && this.form.dirty) {
-        this.svcRette.put(this.form.value)
+        this.svcRette.put(this.form.value)        
           .subscribe(res=> {
             //return true;
           },
