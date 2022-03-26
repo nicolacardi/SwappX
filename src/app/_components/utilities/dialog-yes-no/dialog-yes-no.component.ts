@@ -20,7 +20,7 @@ export interface DialogDataLezione {
   dove:                 string;
 }
 
-export interface DialogDataCalendarioUtils {
+export interface DialogDataLezioniUtils {
   start:                Date;
   idClasseSezioneAnno:  number;
 }

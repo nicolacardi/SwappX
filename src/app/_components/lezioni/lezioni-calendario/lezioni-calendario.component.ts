@@ -13,16 +13,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { concatMap, tap } from 'rxjs/operators';
 import { EventResizeDoneArg } from '@fullcalendar/interaction';
-import { CalendarioUtilsComponent } from '../calendario-utils/calendario-utils.component';
+import { LezioniUtilsComponent } from '../lezioni-utils/lezioni-utils.component';
 import { Utility } from '../../utilities/utility.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 @Component({
-  selector: 'app-calendario',
-  templateUrl: './calendario.component.html',
+  selector: 'app-lezioni-calendario',
+  templateUrl: './lezioni-calendario.component.html',
   styleUrls: ['../lezioni.component.css']
 })
-export class CalendarioComponent implements OnInit {
+export class LezioniCalendarioComponent implements OnInit {
 
 //#region ----- Variabili -------
   toggleDocentiMaterie = "materie";
@@ -175,7 +175,7 @@ export class CalendarioComponent implements OnInit {
         },
         settings: {
           icon: 'settings-icon',
-          click: this.openCalendarioUtils.bind(this)
+          click: this.openLezioniUtils.bind(this)
         }
       }  
 
@@ -199,7 +199,7 @@ export class CalendarioComponent implements OnInit {
         },
         settings: {
           icon: 'settings-icon',
-          click: this.openCalendarioUtils.bind(this)
+          click: this.openLezioniUtils.bind(this)
         }
       }  
 
@@ -412,7 +412,7 @@ export class CalendarioComponent implements OnInit {
     calendarApi.unselect(); 
   }
 
-  openCalendarioUtils () {
+  openLezioniUtils () {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '650px',
@@ -422,7 +422,7 @@ export class CalendarioComponent implements OnInit {
         idClasseSezioneAnno: this.idClasse
       }
     };
-    const dialogRef = this._dialog.open(CalendarioUtilsComponent, dialogConfig);
+    const dialogRef = this._dialog.open(LezioniUtilsComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() => { 
         this.loadData(); 
       }

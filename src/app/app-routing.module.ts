@@ -34,7 +34,7 @@ import { ChangePswComponent } from './_components/account/change-psw/change-psw.
 import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.component';
 import { ResetPasswordComponent } from './_user/reset-password/reset-password.component';
 import { userInfo } from 'os';
-import { CalendarioComponent } from './_components/lezioni/orario/calendario.component';
+import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
 
 
 const routes: Routes = [
@@ -54,7 +54,7 @@ const routes: Routes = [
 
   { path:'home',              component: HomeComponent, canActivate:[AuthGuard]  },
 
-  { path: "calendario",       component: CalendarioComponent, canActivate:[AuthGuard]},
+  { path: "calendario",       component: LezioniCalendarioComponent, canActivate:[AuthGuard]},
 
   { path: "alunni",           component: AlunniPageComponent, canActivate:[AuthGuard]},
 

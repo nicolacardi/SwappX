@@ -99,9 +99,9 @@ import { ResetPasswordComponent } from './_user/reset-password/reset-password.co
 import { DatePipe } from '@angular/common';
 import { ClassiDocentiMaterieListComponent } from './_components/classi/classi-docenti-materie-list/classi-docenti-materie-list.component';
 import { DocenzeAddComponent } from './_components/classi/docenze-add/docenze-add.component';
-import { CalendarioComponent } from './_components/lezioni/orario/calendario.component';
+import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
 import { LezioneComponent } from './_components/lezioni/lezione-edit/lezione.component';
-import { CalendarioUtilsComponent } from './_components/lezioni/calendario-utils/calendario-utils.component';
+import { LezioniUtilsComponent } from './_components/lezioni/lezioni-utils/lezioni-utils.component';
 import { RettaCalcoloAlunnoComponent } from './_components/pagamenti/retta-calcolo-alunno/retta-calcolo-alunno.component';
 import { RettaannoEditComponent } from './_components/pagamenti/rettaanno-edit/rettaanno-edit.component';
 
@@ -194,9 +194,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     UserEditComponent,
     ResetPasswordComponent,
     DocenzeAddComponent,
-    CalendarioComponent,
+    LezioniCalendarioComponent,
     LezioneComponent,
-    CalendarioUtilsComponent,
+    LezioniUtilsComponent,
     RettaCalcoloAlunnoComponent,
     RettaannoEditComponent 
 

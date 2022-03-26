@@ -6,7 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 //components
-import { DialogDataCalendarioUtils } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogDataLezioniUtils } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 //services
@@ -67,11 +67,9 @@ import { LezioniService } from '../lezioni.service';
 
 //#endregion
 
-
-
 @Component({
-  selector: 'app-calendario-utils',
-  templateUrl: './calendario-utils.component.html',
+  selector: 'app-lezioni-utils',
+  templateUrl: './lezioni-utils.component.html',
   styleUrls: ['../lezioni.component.css'],
   providers: [
     {
@@ -81,7 +79,7 @@ import { LezioniService } from '../lezioni.service';
   ],
 })
 
-export class CalendarioUtilsComponent implements OnInit {
+export class LezioniUtilsComponent implements OnInit {
 
 //#region ----- Variabili -------
 
@@ -90,9 +88,9 @@ export class CalendarioUtilsComponent implements OnInit {
 
 //#endregion
 
-  constructor( public _dialogRef: MatDialogRef<CalendarioUtilsComponent>,
+  constructor( public _dialogRef: MatDialogRef<LezioniUtilsComponent>,
                private svcLezioni:                   LezioniService,         
-               @Inject(MAT_DIALOG_DATA) public data: DialogDataCalendarioUtils,
+               @Inject(MAT_DIALOG_DATA) public data: DialogDataLezioniUtils,
                private fb:                           FormBuilder, 
                private _dateAdapter:                 DateAdapter<Date>,
                private _snackBar:                    MatSnackBar  ) {

@@ -25,7 +25,7 @@ import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { DocenzeAddComponent } from '../docenze-add/docenze-add.component';
 import { ClassiDocentiMaterieListComponent } from '../classi-docenti-materie-list/classi-docenti-materie-list.component';
 import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
-import { CalendarioComponent } from '../../lezioni/orario/calendario.component';
+import { LezioniCalendarioComponent } from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
 import { timeout } from 'rxjs/operators';
 import { MatTabGroup } from '@angular/material/tabs';
 
@@ -95,8 +95,8 @@ export class ClassiDashboardComponent implements OnInit {
   @ViewChild(ClassiSezioniAnniListComponent) viewClassiSezioniAnni!: ClassiSezioniAnniListComponent; 
   @ViewChild(IscrizioniClasseListComponent) viewListIscrizioni!: IscrizioniClasseListComponent; 
   @ViewChild(ClassiDocentiMaterieListComponent) viewClassiDocentiMaterieIscrizioni!: ClassiDocentiMaterieListComponent; 
-  @ViewChild('orarioLezioniDOM') viewOrarioLezioni!: CalendarioComponent; 
-  @ViewChild('orarioDocenteDOM') viewOrarioDocente!: CalendarioComponent; 
+  @ViewChild('orarioLezioniDOM') viewOrarioLezioni!: LezioniCalendarioComponent; 
+  @ViewChild('orarioDocenteDOM') viewOrarioDocente!: LezioniCalendarioComponent; 
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
 
   @Input () classeSezioneAnnoId!: number;
