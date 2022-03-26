@@ -1000,6 +1000,10 @@ mat-nav-list a img {
     border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
 }
 
+._border-top {
+    border-top: 0.5px solid rgba(86, 86, 86, 0.279) !important;
+}
+
 .backgrey {
     background-color: rgba(86, 86, 86, 0.279);
 }
