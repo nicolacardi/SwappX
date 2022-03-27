@@ -4,12 +4,9 @@ import { MatSort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
 import { MatTableDataSource} from '@angular/material/table';
 import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
-import { map } from 'rxjs/operators';
-import { Pipe, PipeTransform } from '@angular/core';
 
 //components
 //import { IscrizioneEditComponent } from '../iscrizione-edit/iscrizione-edit.component';           //TODO!!!
@@ -115,8 +112,6 @@ export class IscrizioniClasseListComponent implements OnInit {
 
   constructor(private svcIscrizioni:          IscrizioniService,
               private svcClasseSezioneAnno:   ClassiSezioniAnniService,
-
-              private router:                 Router,
               public _dialog:                 MatDialog, 
               private _loadingService:        LoadingService,
               private _navigationService:     NavigationService  ) {
@@ -176,35 +171,13 @@ export class IscrizioniClasseListComponent implements OnInit {
           this.matDataSource.sort = this.sort; 
         }
       );
-
-
     } 
   }
 
   rowclicked(Iscrizione: CLS_Iscrizione ){
-    //console.log ("idClasseSezioneAnno", parseInt(idClasseSezioneAnno!));
-    //il click su una classe deve essere trasmesso su al parent
-    
-    console.log("BELLA MERDA", Iscrizione);
-
+    //il click su una riga deve essere trasmesso su al parent
     this.selectedRowIndex = Iscrizione.id;
-
     this.iscrizioneIdEmitter.emit(Iscrizione.id);
-
-    
-    /*
-    this.idIscrizioneSezioneAnno = idClasseSezioneAnno!;
-    //per potermi estrarre seq in iscrizioni-classe-calcolo mi preparo qui il valore della classe
-    if (idClasseSezioneAnno) {this.svcClassiSezioniAnni.get(parseInt(this.idClasseSezioneAnno)).subscribe(val=>this.classeSezioneAnno = val);} 
-
-
-    if(idClasseSezioneAnno!= undefined && idClasseSezioneAnno != null)
-      this.selectedRowIndex = parseInt(idClasseSezioneAnno);
-    else 
-      this.selectedRowIndex = this.matDataSource.data[0].id;
-
-    this.classeIdEmitter.emit(this.selectedRowIndex);
-    */
   }
 
 
@@ -309,6 +282,7 @@ export class IscrizioniClasseListComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
   }
+
 //#endregion
 
 //#region ----- Right Click -------
