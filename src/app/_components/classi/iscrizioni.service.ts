@@ -18,9 +18,9 @@ export class IscrizioniService {
     //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByClasseSezioneAnno?idClasseSezioneAnno=5
   }
   
-  listByAnno(idAnno: number): Observable <any> {
+  listByAnno(annoID: number): Observable <any> {
     //return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByClasseSezioneAnno?idClasseSezioneAnno='+idClasseSezioneAnno);  
-    return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByAnno/'+idAnno); 
+    return this.http.get( environment.apiBaseUrl  + 'CLS_Iscrizioni/ListByAnno/'+annoID); 
       //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByAnno/1
   }
 
@@ -35,8 +35,8 @@ export class IscrizioniService {
       //http://213.215.231.4/swappX/api/CLS_Iscrizioni/GetByAlunnoAndClasseSezioneAnno?idAlunno=3&idClasseSezioneAnno=1
   }
 
-  getByAlunnoAndAnno(idAnno: number, idAlunno: number): Observable <CLS_Iscrizione> {
-    return this.http.get <CLS_Iscrizione>( environment.apiBaseUrl  + 'CLS_Iscrizioni/GetByAlunnoAndAnno?idAlunno='+idAlunno+'&idAnno='+idAnno);  
+  getByAlunnoAndAnno(annoID: number, alunnoID: number): Observable <CLS_Iscrizione> {
+    return this.http.get <CLS_Iscrizione>( environment.apiBaseUrl  + 'CLS_Iscrizioni/GetByAlunnoAndAnno?idAlunno='+alunnoID+'&idAnno='+annoID);  
     //http://213.215.231.4/swappX/api/CLS_Iscrizioni/GetByAlunnoAndAnno?idAlunno=3&idAnno=2
   }
 

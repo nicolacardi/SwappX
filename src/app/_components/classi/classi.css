@@ -58,9 +58,9 @@
   /*colonna di sx classi dashboard*/ 
   ._columnleft-dashboard {
     /* width:315px; */
-    width:25%px;
+    width:25%;
     height: 85% ;
-    position: absolute;
+    /* position: absolute; */
     top: 75px;
     left: 8px;
   }

@@ -10,7 +10,7 @@
                     [idClasseInput] = "idClasseInput" -->
                     <app-classi-sezioni-anni-list 
                         [dove] = "'classi-dashboard'"
-                        (annoId)="annoIdEmitted($event)"
+                        (annoID)="annoIdEmitted($event)"
                         (classeId)="classeIdEmitted($event)"
                         (docenteId)="docenteIdEmitted($event)" >
                     </app-classi-sezioni-anni-list>
@@ -37,7 +37,10 @@
                     </button>
                     <!-- <mat-card class=" card mat-elevation-z8" style="height: 100%"> -->
                         <div class="_table-container">
-                            <app-iscrizioni-classe-list   [idClasse]="idClasse"></app-iscrizioni-classe-list>
+                            <app-iscrizioni-classe-list  
+                                [dove]="'lista-alunni'" 
+                                [idClasse]="idClasse">
+                            </app-iscrizioni-classe-list>
                         </div>
                     <!-- </mat-card> -->
                 </mat-tab>
@@ -71,14 +74,17 @@
                 <mat-tab  label="Pagelle">
                     <table>
                         <tr>
-                            <td>
-                                <app-iscrizioni-classe-list   [idClasse]="idClasse"  
+                            <td class="w300px">
+                                <app-iscrizioni-classe-list   
+                                    [idClasse]="idClasse"  
                                     [dove]="'pagella'"
                                     (iscrizioneId)="iscrizioneIdEmitted($event)">
                                 </app-iscrizioni-classe-list>
                             </td>
-                            <td>
-                                <app-pagella-edit [idIscrizione]="idIscrizione"></app-pagella-edit>
+                            <td class="_cell-align-top">
+                                <app-pagella-edit 
+                                    [idIscrizione]="idIscrizione">
+                                </app-pagella-edit>
                             </td>
                         </tr>
                     </table>

@@ -122,25 +122,34 @@ export class IscrizioniClasseListComponent implements OnInit {
 
   ngOnChanges() {
 
-    switch(this.dove) {
-      case 'pagella':
-        this.displayedColumns = this.displayedColumnsPagella;
-        this.showPageTitle = true;
 
-        this.loadData();
-        break;
-     
-      default:
-        this.displayedColumns = this.displayedColumns;
-        this.showPageTitle = true;
+      switch(this.dove) {
+        case 'pagella':
+          this.displayedColumns = this.displayedColumnsPagella;
+          this.showPageTitle = true;
+          this.loadData();         
+          break;
+        case 'lista-alunni':
+          this.displayedColumns = this.displayedColumns;
+          this.showPageTitle = true;
 
-        this.loadData();
-        break;  
-    }
+          this.loadData();
+        // default:
+        //   this.displayedColumns = this.displayedColumns;
+        //   this.showPageTitle = true;
 
-    this.toggleChecks = false;
-    this.showTableRibbon = false;
-    this.resetSelections();
+        //   this.loadData();
+          break;  
+        default:
+          console.log ("passo di qua");
+
+          break;
+      }
+
+      this.toggleChecks = false;
+      this.showTableRibbon = false;
+      this.resetSelections();
+    
   }
   
   ngOnInit () {
@@ -169,6 +178,12 @@ export class IscrizioniClasseListComponent implements OnInit {
           this.matDataSource.paginator = this.paginator;
           this.sortCustom(); 
           this.matDataSource.sort = this.sort; 
+          if (val.length != 0) {
+            this.rowclicked(this.matDataSource.data[0]); 
+          } else {
+            this.iscrizioneIdEmitter.emit(0);
+          }
+          
         }
       );
     } 

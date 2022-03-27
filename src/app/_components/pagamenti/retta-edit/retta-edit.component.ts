@@ -115,11 +115,11 @@ export class RettaEditComponent implements OnInit {
 
     this.obsAnni$ = this.svcAnni.list();
 
-    this.formRetta.controls['selectAnnoScolastico'].setValue(this.data.idAnno);
+    this.formRetta.controls['selectAnnoScolastico'].setValue(this.data.annoID);
     this.formRetta.controls['selectAnnoScolastico'].valueChanges.subscribe(
       val=> {
         if (val) {
-          this.data.idAnno = val;
+          this.data.annoID = val;
           this.loadData();
         }
       }
@@ -133,7 +133,7 @@ export class RettaEditComponent implements OnInit {
     this.quotaDefaultAnno=0;
     this.totPagamentiAnno=0;
 
-    this.obsRette$ = this.svcRette.listByAlunnoAnno(this.data.idAlunno, this.data.idAnno);  
+    this.obsRette$ = this.svcRette.listByAlunnoAnno(this.data.idAlunno, this.data.annoID);  
     const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
     loadRette$.pipe(
       map(obj => { 

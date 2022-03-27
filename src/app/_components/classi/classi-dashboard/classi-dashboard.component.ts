@@ -1,7 +1,5 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import jsPDF from 'jspdf';
 import { ActivatedRoute, Router } from '@angular/router';
 
 //components
@@ -14,19 +12,14 @@ import { IscrizioniAddComponent } from '../iscrizioni-add/iscrizioni-add.compone
 
 //services
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
 import { IscrizioniService } from '../iscrizioni.service';
-import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { IscrizioniClasseCalcoloComponent } from '../iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
-import { AlunnoEditComponent } from '../../alunni/alunno-edit/alunno-edit.component';
-import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { DocenzeAddComponent } from '../docenze-add/docenze-add.component';
 import { ClassiDocentiMaterieListComponent } from '../classi-docenti-materie-list/classi-docenti-materie-list.component';
 import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
 import { LezioniCalendarioComponent } from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
-import { timeout } from 'rxjs/operators';
 import { MatTabGroup } from '@angular/material/tabs';
 
 
@@ -345,11 +338,11 @@ export class ClassiDashboardComponent implements OnInit {
 //#endregion
 
 //#region ----- ricezione emit -------
-  annoIdEmitted(annoId: number) {
+  annoIdEmitted(annoID: number) {
     //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
     //serve per la successiva assegnazione ad una classe...in quanto il modale che va ad aggiungere
     //le classi ha bisogno di conoscere anche l'idAnno per fare le proprie verifiche
-    this.idAnno = annoId;
+    this.idAnno = annoID;
   }
 
   classeIdEmitted(classeId: number) {
