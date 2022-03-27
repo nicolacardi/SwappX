@@ -87,7 +87,7 @@
                                 <mat-label>Anno</mat-label>
                             </div>
                             <app-rettaanno-edit
-                                [annoID]="data.idAnno"
+                                [annoID]="data.annoID"
                                 [alunnoID]="data.idAlunno" 
                                 [quotaDefaultAnno] ="quotaDefaultAnno"
                                 [quotaConcordataAnno] ="quotaConcordataAnno"
@@ -129,7 +129,7 @@
                         <mat-label class="frameLabel"> Nuovo Pagamento </mat-label>
                             <app-rettapagamento-edit
                                 [alunnoID]="data.idAlunno"
-                                [annoID]="data.idAnno"
+                                [annoID]="data.annoID"
                                 (nuovoPagamento) = "nuovoPagamentoArrivato($event)">
                             </app-rettapagamento-edit>
                         <mat-label class="frameLabel"> Elenco Pagamenti </mat-label>
@@ -137,7 +137,7 @@
                             <app-pagamenti-list 
                                 [dove]="'retta-edit'" 
                                 [alunnoID]="data.idAlunno"
-                                [annoID]="data.idAnno"
+                                [annoID]="data.annoID"
                                 (pagamentoEliminato) = "pagamentoEliminatoArrivato()">
                                                 <!-- (hoverPagamento) = "hoverPagamentoArrivato($event)" -->
                             </app-pagamenti-list>
@@ -149,7 +149,7 @@
                         <mat-label class="frameLabel"> Utilities per la definizione rapida delle rette </mat-label>
                         <div class="_utilities-container cellBordered mt10">
                             <app-retta-calcolo-alunno 
-                                [annoID]="data.idAnno"
+                                [annoID]="data.annoID"
                                 [alunnoID]="data.idAlunno"
                                 (ricalcoloRette) = "ricalcoloRetteArrivato()"   >
                             </app-retta-calcolo-alunno>

@@ -60,7 +60,7 @@ export class IscrizioniAddComponent implements OnInit {
         debounceTime(300),
         //delayWhen(() => timer(2000)),
         switchMap(val => 
-          this.svcAlunni.listByAnnoNoClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
+          this.svcAlunni.listByAnnoNoClasse(this.form.value.nomeCognomeAlunno, this.data.annoID)
               .pipe(
                 map( val2 => val2.filter(val=>!this.idAlunniSelezionati.includes(val.id)) )//FANTASTICO!!! NON MOSTRA QUELLI GIA'SELEZIONATI! MEGLIO DI GOOGLE CHE LI RIMOSTRA!
               ) 

@@ -1,21 +1,29 @@
 import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/angular';
 import { FullCalendarComponent } from '@fullcalendar/angular';//-->serve per il ViewChild
-import itLocale from '@fullcalendar/core/locales/it';
-import { LezioniService } from '../lezioni.service';
-import { Observable, of } from 'rxjs';
-import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-
-import { LezioneComponent } from '../lezione-edit/lezione.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { concatMap, tap } from 'rxjs/operators';
 import { EventResizeDoneArg } from '@fullcalendar/interaction';
+
+import itLocale from '@fullcalendar/core/locales/it';
+import { Observable, of } from 'rxjs';
+import { concatMap, tap } from 'rxjs/operators';
+
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+//components
+import { LezioneComponent } from '../lezione-edit/lezione.component';
+import { LoadingService } from '../../utilities/loading/loading.service';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { LezioniUtilsComponent } from '../lezioni-utils/lezioni-utils.component';
 import { Utility } from '../../utilities/utility.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+
+//services
+import { LezioniService } from '../lezioni.service';
+
+//classes
+import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
+
 
 @Component({
   selector: 'app-lezioni-calendario',
@@ -29,6 +37,8 @@ export class LezioniCalendarioComponent implements OnInit {
   Events: any[] = [];
   
   showWarn:           boolean = false;
+
+
   calendarOptions: CalendarOptions = {
 
     //PROPRIETA' BASE
@@ -112,7 +122,6 @@ export class LezioniCalendarioComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-
   @Input() idClasse!:                     number;
   @Input() idDocente!:                    number;
   @Input() dove!:                         string;

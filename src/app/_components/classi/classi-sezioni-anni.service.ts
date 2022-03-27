@@ -22,12 +22,12 @@ export class ClassiSezioniAnniService {
   } 
 
   //Sostituita dalla successiva, con parametro idDocente null oppure 0
-  listByAnnoGroupByClasse(idAnnoScolastico: any): Observable<CLS_ClasseSezioneAnnoGroup[]>{
-    return this.http.get<CLS_ClasseSezioneAnnoGroup[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoGroupByClasse/'+idAnnoScolastico);
+  listByAnnoGroupByClasse(annoScolasticoID: any): Observable<CLS_ClasseSezioneAnnoGroup[]>{
+    return this.http.get<CLS_ClasseSezioneAnnoGroup[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoGroupByClasse/'+annoScolasticoID);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnnoGroupByClasse/1
   }
-  listByAnnoDocenteGroupByClasse(idAnnoScolastico: any, idDocente: any): Observable<CLS_ClasseSezioneAnnoGroup[]>{
-    return this.http.get<CLS_ClasseSezioneAnnoGroup[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoDocenteGroupByClasse/'+idAnnoScolastico+"/"+idDocente);
+  listByAnnoDocenteGroupByClasse(annoScolasticoID: any, idDocente: any): Observable<CLS_ClasseSezioneAnnoGroup[]>{
+    return this.http.get<CLS_ClasseSezioneAnnoGroup[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoDocenteGroupByClasse/'+annoScolasticoID+"/"+idDocente);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnnoDocenteGroupByClasse/1/3
   }
 

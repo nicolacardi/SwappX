@@ -386,15 +386,15 @@ export class AlunniListComponent implements OnInit {
   }
 
   openPagamenti(alunnoID: number){
-
-    let anno = 1; //TODO questa sarà un default da mettere nei parametri
+    //TODO   no! non anno =1 !
+    let annoID = 1; //TODO questa sarà un default da mettere nei parametri
     const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
         width: '850px',
         height: '700px',
         data: {
           idAlunno: alunnoID,
-          idAnno: anno
+          annoID: annoID
         }
     };
 

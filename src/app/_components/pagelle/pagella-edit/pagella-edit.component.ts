@@ -10,7 +10,7 @@ export class PagellaEditComponent implements OnInit  {
   
 //#region ----- ViewChild Input Output -------
 
-@Input('idIscrizione') idIscrizione!:                             number;
+@Input('idIscrizione') idIscrizione!:          number;
 
 
 //#endregion
@@ -22,7 +22,7 @@ export class PagellaEditComponent implements OnInit  {
   }
 
   ngOnChanges() {
-
+    
    // console.log();
   }
 }

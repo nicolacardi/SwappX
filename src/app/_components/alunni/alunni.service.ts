@@ -97,9 +97,9 @@ export class AlunniService {
       }
   }
 
-  listByAnnoNoClasse(searchstring: string, idAnno: number): Observable<ALU_Alunno[]>{
+  listByAnnoNoClasse(searchstring: string, annoID: number): Observable<ALU_Alunno[]>{
     if (searchstring != null && (typeof searchstring === 'string')) {
-      return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'CLS_Iscrizioni/ListByAnnoNoClasse/'+idAnno)
+      return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'CLS_Iscrizioni/ListByAnnoNoClasse/'+annoID)
       //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByAnnoNoClasse/2
         .pipe (
         map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
