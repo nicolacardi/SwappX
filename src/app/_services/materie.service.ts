@@ -22,7 +22,7 @@ export class MaterieService {
   }
 
   listOrario(): Observable<MAT_Materia[]>{
-    return this.http.get<MAT_Materia[]>(environment.apiBaseUrl+'MAT_Materie');
+    return this.http.get<MAT_Materia[]>(environment.apiBaseUrl+'MAT_Materie/ListOrario/');
     //http://213.215.231.4/swappX/api/MAT_Materie/ListOrario
   }
 
