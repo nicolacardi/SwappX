@@ -273,6 +273,10 @@
     .pl5 {
         padding-left: 5px;
     }
+
+    .pl10 {
+        padding-left: 10px;
+    }
 /*#endregion ***************************/
 
 /*#region ********** WIDTH *************/
@@ -361,6 +365,10 @@
 
     .w500px {
         width: 500px;
+    }
+
+    .w600px {
+        width: 600px;
     }
 
     ::ng-deep .mat-formfield-wrapper{

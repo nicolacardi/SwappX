@@ -1,2 +1,40 @@
-<p>pagella-edit works!</p>
-{{idIscrizione}}
+<h1 *ngIf="showPageTitle" class="_titolo-pagina">Pagella</h1>
+    <!-- **************************   MAT-TABLE   ******************* -->
+    <table mat-table class="_table-row-low transparent w100" [dataSource]="matDataSource"
+        matSort
+        cdkDropList
+        cdkDropListOrientation="horizontal"
+        (cdkDropListDropped)="drop($event)">
+
+        <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+   
+        <ng-container matColumnDef="materia">
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header class="w125px">Materia</th>
+            <td mat-cell *matCellDef="let element">{{element.materia.descrizione}}</td>
+            <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></td> -->
+        </ng-container>
+
+        <ng-container matColumnDef="votoFinale">
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header class="w80px">Voto</th>
+            <td mat-cell *matCellDef="let element">{{element.votoFinale}}</td>
+            <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></td> -->
+        </ng-container>
+
+        <ng-container matColumnDef="giudizio1">
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Giudizio</th>
+            <td mat-cell *matCellDef="let element">{{element.giudizio1}}</td>
+            <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></td> -->
+        </ng-container>
+
+        <!-- **************************   MAT-HEADER-ROW   ******************* -->
+        <tr mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></tr>  
+
+        <!-- **************************   MAT-ROW   ******************* -->
+        <tr mat-row *matRowDef="let element;columns: displayedColumns"
+            class="element-row">
+        </tr>
+
+    </table>
+
+    {{idIscrizione}}
+    

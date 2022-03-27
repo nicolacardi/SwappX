@@ -17,7 +17,7 @@
                 </div>
             <!-- </mat-card> -->
         </td>
-        <td class="_columnright-dashboard">
+        <td class="_columnright-dashboard border-left">
 
             <mat-tab-group (selectedTabChange)="selectedTabValue($event)">
                 <mat-tab  label="Alunni">
@@ -74,15 +74,15 @@
                 <mat-tab  label="Pagelle">
                     <table>
                         <tr>
-                            <td class="w300px">
+                            <td class="_cell-align-top w300px">
                                 <app-iscrizioni-classe-list   
                                     [idClasse]="idClasse"  
                                     [dove]="'pagella'"
                                     (iscrizioneId)="iscrizioneIdEmitted($event)">
                                 </app-iscrizioni-classe-list>
                             </td>
-                            <td class="_cell-align-top">
-                                <app-pagella-edit 
+                            <td class="_cell-align-top pl10 border-left w600px">
+                                <app-pagella-edit
                                     [idIscrizione]="idIscrizione">
                                 </app-pagella-edit>
                             </td>

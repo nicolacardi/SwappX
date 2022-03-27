@@ -1,6 +1,4 @@
 import { ALU_Genitore } from './ALU_Genitore';
-
-
 export interface ALU_Alunno {
 
         id:                     number;
