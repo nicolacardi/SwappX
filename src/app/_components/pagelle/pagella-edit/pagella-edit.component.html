@@ -1,5 +1,6 @@
 <h1 *ngIf="showPageTitle" class="_titolo-pagina">Pagella</h1>
     <!-- **************************   MAT-TABLE   ******************* -->
+
     <table mat-table class="_table-row-low transparent w100" [dataSource]="matDataSource"
         matSort
         cdkDropList
@@ -14,15 +15,32 @@
             <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></td> -->
         </ng-container>
 
-        <ng-container matColumnDef="votoFinale">
+        <ng-container matColumnDef="voto1">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header class="w80px">Voto</th>
-            <td mat-cell *matCellDef="let element">{{element.votoFinale}}</td>
+            <td mat-cell *matCellDef="let element">
+                <input matInput type="number" placeholder="voto" [value]="element.voto1" (change)="change(element, voto.value)" maxlength="2" #voto>
+            </td>
             <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></td> -->
         </ng-container>
 
-        <ng-container matColumnDef="giudizio1">
+        <ng-container matColumnDef="tipoGiudizio1ID">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Giudizio</th>
-            <td mat-cell *matCellDef="let element">{{element.giudizio1}}</td>
+            <!-- <td mat-cell *matCellDef="let element">{{element.tipoGiudizio1ID}}</td> -->
+            <td mat-cell *matCellDef="let element">
+                <mat-select *ngIf="obsTipiGiudizio$ | async">
+                    <mat-option *ngFor="let giudizio of (obsTipiGiudizio$ | async)" [value]="element.tipoGiudizio1ID">
+                        {{giudizio.descrizione}}
+                    </mat-option>
+                </mat-select>
+            </td>
+            <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></td> -->
+        </ng-container>
+
+        <ng-container matColumnDef="note1">
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Note</th>
+            <td mat-cell *matCellDef="let element">
+                
+            </td>
             <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></td> -->
         </ng-container>
 
