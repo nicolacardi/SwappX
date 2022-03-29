@@ -323,6 +323,10 @@
         width: 50px;
     }
 
+    .w80px {
+        width: 80px;
+    }
+
     .w100px {
         width: 100px;
     }
@@ -371,6 +375,14 @@
         width: 600px;
     }
 
+    .w700px {
+        width: 700px;
+    }
+
+    .w750px {
+        width: 750px;
+    }
+
     ::ng-deep .mat-formfield-wrapper{
         width:2000px;
     }
@@ -384,7 +396,18 @@
     }
 
     /* pixels */
-    
+    .h50px {
+        height: 50px;
+    }
+
+    .h60px {
+        height: 60px;
+    }
+
+    .h70px {
+        height: 70px;
+    }
+
     .h75px {
         height: 75px;
     }
@@ -1266,3 +1289,5 @@ div.inner img {
     ._noresize {
         resize: none !important;
     }
+
+

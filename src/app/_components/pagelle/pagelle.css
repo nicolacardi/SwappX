@@ -1,0 +1,18 @@
+._td-note1 {
+    padding-right: 2px !important;
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+
+._text-area-note1 {
+
+    border-radius: 2px;
+    border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
+}
+
+.toggleQ {
+    width: 40px;
+    height: 40px;
+    padding-top: 0px;
+    padding-bottom: 5px;
+}

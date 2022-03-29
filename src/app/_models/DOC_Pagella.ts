@@ -8,23 +8,36 @@ export interface DOC_Pagella {
 
         ckFrequenza:            boolean;
         ckAmmesso:              boolean;
-        votoFinale:             string;
+        voto1?:                 number;
+        voto2?:                 number;
+
         dt1:                    string;
         dt2:                    string;
-        giudizio1:              string;
-        giudizio2:              string;
+        tipoGiudizio1ID?:       number;
+        tipoGiudizio2ID?:       number;
         n_assenze1:             number;
         n_assenze2:             number;
 
-        note:                   string;
-        dtIns:                  string;
-        dtUpd:                  string;
-        userIns:                number;
-        userUpd:                number;
+        note1?:                 string;
+        note2?:                 string;
 
-        materia:                MAT_Materia;
-        iscrizione:             CLS_Iscrizione;
+        dtIns?:                  string;
+        dtUpd?:                  string;
+        userIns?:                number;
+        userUpd?:                number;
+
+        materia?:               MAT_Materia;
+        iscrizione?:            CLS_Iscrizione
+        tipoGiudizio1?:         DOC_TipoGiudizio;
+        tipoGiudizio2?:         DOC_TipoGiudizio; 
 }
+
+export interface DOC_TipoGiudizio {
+        id:                     number;
+        descrizione:           number;
+        descrizione2:              number;
+}
+
 
 
 
