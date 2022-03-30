@@ -90,8 +90,8 @@ export class DocenzeAddComponent implements OnInit {
           .subscribe(
             val=> this.materiaSelectedID = val
           )
-    this.obsMaterie$ = this.svcMaterie.listOrario();
-    
+    //this.obsMaterie$ = this.svcMaterie.listOrario(); //AS [30mar2022]: sostituita dal metodo listByClasseSezioneAnno
+    this.obsMaterie$ = this.svcMaterie.listByClasseSezioneAnno(this.data.idClasse); 
   }
 
 //#endregion
