@@ -38,12 +38,7 @@ export class PagellaEditComponent implements OnInit  {
     private svcPagella:                   PagelleService,
     private _loadingService:              LoadingService,
     private _snackBar:                    MatSnackBar,
-
-
-
   ) { 
-
-
   }
 
   ngOnChanges() {
@@ -77,12 +72,11 @@ export class PagellaEditComponent implements OnInit  {
     
   }
 
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
-  }
 
 
   changeSelectGiudizio(formData: DOC_Pagella, tipoGiudizioID: number, quad: number) {
+
+    console.log ("tipoGiudizioID", tipoGiudizioID);
     if (quad == 1) {
       formData.tipoGiudizio1ID = tipoGiudizioID;
       if (formData.tipoGiudizio2ID == null) 
@@ -93,6 +87,7 @@ export class PagellaEditComponent implements OnInit  {
           formData.tipoGiudizio1ID = 1;
     }
     let formData2 = Object.assign({}, formData);
+    console.log ("formData2", formData2);
     this.postput(formData2)
   }
 
