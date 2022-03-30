@@ -90,6 +90,7 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
 
     loadInsegnamenti$.subscribe(val =>  {
         this.matDataSource.data = val;
+        console.log ("classidocentimaterie", val);
         //this.matDataSource.paginator = this.paginator;          
         //this.sortCustom();
         //this.matDataSource.sort = this.sort; 
