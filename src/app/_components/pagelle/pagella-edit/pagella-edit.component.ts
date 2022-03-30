@@ -75,8 +75,6 @@ export class PagellaEditComponent implements OnInit  {
 
 
   changeSelectGiudizio(formData: DOC_Pagella, tipoGiudizioID: number, quad: number) {
-
-    console.log ("tipoGiudizioID", tipoGiudizioID);
     if (quad == 1) {
       formData.tipoGiudizio1ID = tipoGiudizioID;
       if (formData.tipoGiudizio2ID == null) 
@@ -87,7 +85,6 @@ export class PagellaEditComponent implements OnInit  {
           formData.tipoGiudizio1ID = 1;
     }
     let formData2 = Object.assign({}, formData);
-    console.log ("formData2", formData2);
     this.postput(formData2)
   }
 
@@ -110,7 +107,6 @@ export class PagellaEditComponent implements OnInit  {
   }
 
   changeNote(formData: DOC_Pagella, note: string, quad: number) {
-
     if (quad == 1) {
       formData.note1 = note;
     } else {
@@ -128,7 +124,7 @@ export class PagellaEditComponent implements OnInit  {
   postput (formInput: DOC_Pagella) {
     delete formInput.iscrizione;
     delete formInput.materia;
-    console.log (formInput);
+
     if (formInput.id == 0) {
       //post
       this.svcPagella.post(formInput).subscribe(
