@@ -32,7 +32,9 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
     "actionsColumn",
     "materia",
     "docenteNome",
-    "docenteCognome"
+    "docenteCognome",
+    "ckOrario",
+    "ckPagella"
   ];
 
   selection = new SelectionModel<CLS_ClasseDocenteMateria>(true, []);   //rappresenta la selezione delle checkbox

@@ -51,7 +51,7 @@
         <ng-container matColumnDef="actionsColumn">
             <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
             <mat-cell  *matCellDef="let element;  let j = index;"> 
-                <img (click)="openDetail(element.docenteID)" class="iconaMenu pointer" src="../assets/docente_edit.svg">
+                <img (click)="openDetail(element.docente.persona.id)" class="iconaMenu pointer" src="../assets/docente_edit.svg">
             </mat-cell>
         </ng-container>
    
@@ -71,6 +71,15 @@
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Cognome Docente</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.docente.persona.cognome}}</mat-cell>
             <!-- <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></mat-cell> -->
+        </ng-container>
+
+        <ng-container matColumnDef="ckOrario">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Orario</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.ckOrario}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="ckPagella">
+            <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Pagella</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.ckPagella}}</mat-cell>
         </ng-container>
 
         <!-- **************************   MAT-HEADER-ROW   ******************* -->

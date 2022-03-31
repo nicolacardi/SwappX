@@ -18,8 +18,8 @@ export class ClassiDocentiMaterieService {
   //   //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie
   // }
 
-  listByClasseSezioneAnno(id: number): Observable<CLS_ClasseDocenteMateria[]>{
-    return this.http.get<CLS_ClasseDocenteMateria[]>(environment.apiBaseUrl+'CLS_ClassiDocentiMaterie/ListByClasseSezioneAnno/'+id);
+  listByClasseSezioneAnno(classeSezioneAnnoID: number): Observable<CLS_ClasseDocenteMateria[]>{
+    return this.http.get<CLS_ClasseDocenteMateria[]>(environment.apiBaseUrl+'CLS_ClassiDocentiMaterie/ListByClasseSezioneAnno/'+classeSezioneAnnoID);
     //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/ListByClasseSezioneAnno/16
   }
 
@@ -37,8 +37,6 @@ export class ClassiDocentiMaterieService {
     return this.http.get <CLS_ClasseDocenteMateria>( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateriaAndDocente?idClasseSezioneAnno='+idClasseSezioneAnno+'&idMateria='+idMateria+'&idDocente='+idDocente);  
       //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateriaAndDocente?idClasseSezioneAnno=16&idMateria=4&idDocente=3
   }
-
-
 
 
 

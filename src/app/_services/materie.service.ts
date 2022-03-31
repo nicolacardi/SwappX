@@ -21,11 +21,6 @@ export class MaterieService {
     //http://213.215.231.4/swappX/api/MAT_Materie
   }
 
-  listOrario(): Observable<MAT_Materia[]>{
-    return this.http.get<MAT_Materia[]>(environment.apiBaseUrl+'MAT_Materie/ListOrario/');
-    //http://213.215.231.4/swappX/api/MAT_Materie/ListOrario
-  }
-
   listByClasseSezioneAnno(id: any): Observable<MAT_Materia[]>{
     return this.http.get<MAT_Materia[]>(environment.apiBaseUrl+'MAT_Materie/ListMaterieByClasseSezioneAnno/'+id);
     //http://213.215.231.4/swappX/api/MAT_Materie/ListMaterieByClasseSezioneAnno/2

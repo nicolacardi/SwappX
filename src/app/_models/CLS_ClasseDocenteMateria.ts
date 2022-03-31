@@ -9,7 +9,8 @@ export interface CLS_ClasseDocenteMateria {
         docenteID:              number;
         materiaID:              number;
 
-     
+        ckOrario:               boolean;
+        ckPagella:              boolean;
 
         note:                   string;
         dtIns:                  string;
@@ -19,6 +20,5 @@ export interface CLS_ClasseDocenteMateria {
 
         docente:                PER_Docente;
         materia:                MAT_Materia;
-
 }
 
