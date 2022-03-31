@@ -207,4 +207,22 @@ export class LezioniUtilsComponent implements OnInit {
     }
   }
 
+  propagaEpocaClasse() {
+
+    let currDate :Date = this.data.start;
+    let offset:number = -(this._dateAdapter.getDayOfWeek(currDate) - 1 );
+    let dtFrom:Date = this._dateAdapter.addCalendarDays(currDate, offset);
+    let dtFromYYYY_MM_DD = dtFrom.toLocaleString('sv').replace(' ', 'T').substring(0,10);  //la data del lunedi della settimana corrente
+    let dtToEnd:Date = this._dateAdapter.addCalendarDays(currDate, 5);                     //la data del venerdi della settimana corrente
+    let dtToEndYYYY_MM_DD = dtToEnd.toLocaleString('sv').replace(' ', 'T').substring(0,10);  //la data del lunedi della settimana corrente
+
+
+      this.svcLezioni.propagaEpocaByClasseSezioneAnnoUntilDate(this.data.idClasseSezioneAnno, dtFromYYYY_MM_DD, dtToEndYYYY_MM_DD)
+        .subscribe(
+          res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
+          err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
+        );
+    
+  }
+
 }

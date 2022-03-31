@@ -401,6 +401,23 @@
     }
 
     /* pixels */
+    .h20px {
+        height: 20px;
+    }
+
+    .h30px {
+        height: 30px;
+    }
+
+    .h35px {
+        height: 35px !important;
+    }
+
+    .h40px {
+        height: 40px;
+    }
+
+
     .h50px {
         height: 50px;
     }
@@ -913,7 +930,7 @@ mat-nav-list a img {
 
 
 .iconaMenuSidenav{
-    width: 40px;
+    width: 35px;
 }
 /* .miniButton {
     width: 5px !important;

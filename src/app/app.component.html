@@ -33,42 +33,42 @@
 
         <mat-nav-list >
 
-            <div mat-list-item>
+            <div mat-list-item >
                 <img  class="logo-img ml15 mt10" src="../assets/logoscrittaazzurro.svg">
             </div>
-            <a mat-list-item routerLink="home" (click)="start.close()" >
+            <a mat-list-item class="h35px" routerLink="home" (click)="start.close()" >
                 <img class="iconaMenuSidenav" src="../assets/home.svg">
                 <span>Home</span>
             </a>
 
-            <a mat-list-item routerLink="calendario" (click)="start.close()">
+            <a mat-list-item class="h35px" routerLink="calendario" (click)="start.close()">
                 <img class="iconaMenuSidenav" src="../assets/calendar.svg">
                 <span>Calendario</span>
             </a>
 
             <mat-divider></mat-divider>
-            <a mat-list-item routerLink="alunni" (click)="start.close()" >
+            <a mat-list-item class="h35px" routerLink="alunni" (click)="start.close()" >
                 <img class="iconaMenuSidenav" src="../assets/alunniList.svg">
                 <span>Alunni</span>
             </a>
 
-            <a mat-list-item routerLink="iscrizioni" (click)="start.close()" >
+            <a mat-list-item class="h35px" routerLink="iscrizioni" (click)="start.close()" >
                 <img class="iconaMenuSidenav" src="../assets/iscrizioniList.svg">
                 <span>Iscrizioni</span>
             </a>
 
-            <a mat-list-item routerLink="genitori" (click)="start.close()">
+            <a mat-list-item class="h35px" routerLink="genitori" (click)="start.close()">
                 <img class="iconaMenuSidenav" src="../assets/genitoriList.svg">
                 <span>Genitori</span>
             </a>  
 
-            <a mat-list-item routerLink="persone" (click)="start.close()">
+            <a mat-list-item class="h35px" routerLink="persone" (click)="start.close()">
                 <img class="iconaMenuSidenav" src="../assets/docentiList.svg">
                 <span>Personale</span>
             </a>
 
             <mat-expansion-panel class="mat-elevation-z0">
-                <mat-expansion-panel-header class="sidenav-expansion-panel-header">
+                <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
                   <mat-panel-title>
                     <img class="iconaMenuSidenav mr10" src="../assets/classiMenu.svg">
                     <span class="fs16">Classi</span>
@@ -78,12 +78,12 @@
 
                 <mat-divider></mat-divider>
                 
-                <a mat-list-item routerLink="classi" (click)="start.close()">
+                <a mat-list-item class="h35px" routerLink="classi" (click)="start.close()">
                     <img class="iconaMenuSidenav" src="../assets/classiList.svg">
                     <span>Elenco Classi</span>
                 </a> 
 
-                <a mat-list-item routerLink="classi-dashboard" (click)="start.close()">
+                <a mat-list-item class="h35px" routerLink="classi-dashboard" (click)="start.close()">
                     <img class="iconaMenuSidenav" src="../assets/classiDashboard.svg">
                     <span>Gestione Classi</span>
                 </a>
@@ -91,7 +91,7 @@
             </mat-expansion-panel>
 
               <mat-expansion-panel class="mat-elevation-z0">
-                <mat-expansion-panel-header class="sidenav-expansion-panel-header">
+                <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
                   <mat-panel-title>
                     <img class="iconaMenuSidenav mr10" src="../assets/money.svg">
                     <span class="fs16">Ricavi</span>
@@ -100,11 +100,12 @@
                   </mat-panel-description>
                 </mat-expansion-panel-header>
                 <mat-divider></mat-divider>
-                <a mat-list-item routerLink="pagamenti" (click)="start.close()">
+
+                <a mat-list-item class="h35px" routerLink="pagamenti" (click)="start.close()">
                     <img class="iconaMenuSidenav" src="../assets/pagamenti.svg">
                     <span>Elenco Pagamenti</span>
                 </a> 
-                <a mat-list-item routerLink="rette" (click)="start.close()">
+                <a mat-list-item class="h35px" routerLink="rette" (click)="start.close()">
                     <img class="iconaMenuSidenav" src="../assets/retteList.svg">
                     <span>Rette</span>
                 </a> 
@@ -120,18 +121,18 @@
 
             <mat-divider></mat-divider>
             <!-- Utenti -->
-            <a mat-list-item routerLink="users" (click)="start.close()" *ngIf="currUser && currUser.ruoloID >= 10">
+            <a mat-list-item class="h35px" routerLink="users" (click)="start.close()" *ngIf="currUser && currUser.ruoloID >= 10">
             <!-- <a mat-list-item routerLink="users" (click)="start.close()"> -->
                 <img class="iconaMenuSidenav" src="../assets/utentiList.svg">
                 <span>Gestione Utenti</span>
             </a> 
 
-            <a mat-list-item (click)="start.close()">
+            <a mat-list-item class="h35px" (click)="start.close()">
                 <img class="iconaMenuSidenav" src="../assets/verbaliList.svg">
                 <span>Verbali</span>
             </a>
 
-            <a mat-list-item (click)="start.close()">
+            <a mat-list-item class="h35px" (click)="start.close()">
                 <img class="iconaMenuSidenav" src="../assets/tutorialsList.svg">
                 <span>Tutorials</span>
             </a>

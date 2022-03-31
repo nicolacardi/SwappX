@@ -70,6 +70,13 @@ export class LezioniService {
   //http://213.215.231.4/SwappX/api/CAL_Lezioni/copyByClasseSezioneAnnoUntilDate?IDClasseSezioneAnno=16&dtFromStart=2022-03-14&dtFromEnd=2022-03-19&dtUntilStart=2022-03-21
   }
 
+  propagaEpocaByClasseSezioneAnnoUntilDate (classeSezioneAnnoID: number, dtFromStart: any, dtUntilEnd: any) {
+    console.log ("parametri passati alla propagaEpocaByClasseSezioneAnnoUntilDate", classeSezioneAnnoID, dtFromStart, dtUntilEnd);
+    let formData = {};
+    return this.http.post( environment.apiBaseUrl  + 'CAL_Lezioni/propagaEpocaByClasseSezioneAnnoUntilDate?ClasseSezioneAnnoID=' + classeSezioneAnnoID + '&dtFromStart=' + dtFromStart + '&dtUntilEnd=' + dtUntilEnd, formData);
+  //http://213.215.231.4/SwappX/api/CAL_Lezioni/propagaEpocaByClasseSezioneAnnoUntilDate?IDClasseSezioneAnno=16&dtFromStart=2022-03-28&dtUntilEnd=2022-04-01
+  }
+
 
   put(formData: any): Observable <any>{
 
