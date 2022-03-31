@@ -103,10 +103,13 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
 
   save() {
 
-    let objInsegnamento = {
+    let objDocenza = {
       DocenteID: this.docenteSelectedID,
       MateriaID: this.materiaSelectedID,
-      ClasseSezioneAnnoID: this.data.idClasse
+      ClasseSezioneAnnoID: this.data.idClasse,
+
+      ckOrario: true,
+      ckPagella: true
     };
 
     //Bisogna verificare che già in questa classe non ci sia il maestro di questa materia
@@ -148,7 +151,7 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
 
     checks$
     .pipe(
-       concatMap( res => iif (()=> res == null, this.svcClassiDocentiMaterie.post(objInsegnamento) , of() )
+       concatMap( res => iif (()=> res == null, this.svcClassiDocentiMaterie.post(objDocenza) , of() )
       )
     ).subscribe(
       res=> {
@@ -160,15 +163,6 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
     )
 
 
-    // this.svcClassiDocentiMaterie.post(objInsegnamento)
-    // .pipe( finalize(()=>this.dialogRef.close()))
-    // .subscribe(
-    //   val=>{
-    //   },
-    //   err =>{
-    //     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    //   }
-    // );
 
   }
 

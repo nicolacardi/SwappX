@@ -1,4 +1,4 @@
-<h1 *ngIf="showPageTitle" class="_titolo-pagina">Elenco Materie e Docenti</h1>
+<h1 *ngIf="showPageTitle" class="_titolo-pagina">Materie e Docenti per Classe</h1>
 
     <!-- **************************   FILTER   ******************* -->
    <!--
@@ -51,7 +51,7 @@
         <ng-container matColumnDef="actionsColumn">
             <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
             <mat-cell  *matCellDef="let element;  let j = index;"> 
-                <img (click)="openDetail(element.docente.persona.id)" class="iconaMenu pointer" src="../assets/docente_edit.svg">
+                <img (click)="openDetail(element.id)" class="iconaMenu pointer" src="../assets/docenza_edit.svg">
             </mat-cell>
         </ng-container>
    
@@ -75,11 +75,16 @@
 
         <ng-container matColumnDef="ckOrario">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Orario</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.ckOrario}}</mat-cell>
+            <mat-cell *matCellDef="let element">
+                <mat-checkbox [checked]="element.ckOrario" color="primary" disabled>
+            </mat-checkbox></mat-cell>
         </ng-container>
+
         <ng-container matColumnDef="ckPagella">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Pagella</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.ckPagella}}</mat-cell>
+            <mat-cell *matCellDef="let element">
+                <mat-checkbox [checked]="element.ckPagella" color="primary" disabled>
+            </mat-checkbox></mat-cell>
         </ng-container>
 
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
@@ -103,7 +108,7 @@
     <mat-menu #rightMenu="matMenu"> 
         <ng-template matMenuContent let-item="item"> 
             <mat-label class="_titolo-filtri-avanzati">{{item.docente.persona.nome | uppercase}} {{item.docente.persona.cognome | uppercase}}</mat-label> 
-            <button mat-menu-item>Classi Insegnate</button>
-            <button mat-menu-item>Pagelle</button>
+            <button mat-menu-item (click)="openDocente(item.docente.persona.id)">Scheda Insegnante</button> 
+
         </ng-template> 
     </mat-menu> 

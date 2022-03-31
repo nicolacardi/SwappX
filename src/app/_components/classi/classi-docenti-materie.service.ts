@@ -41,6 +41,7 @@ export class ClassiDocentiMaterieService {
 
 
   put(formData: any): Observable <any>{
+    console.log ("formData put", formData);
     return this.http.put( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/' + formData.id , formData);    
   }
 

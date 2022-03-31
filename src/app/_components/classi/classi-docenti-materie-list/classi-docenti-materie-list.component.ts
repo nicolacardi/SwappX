@@ -13,6 +13,7 @@ import { PersonaEditComponent } from '../../persone/persona-edit/persona-edit.co
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
+import { DocenzaEditComponent } from '../docenza-edit/docenza-edit.component';
 
 @Component({
   selector: 'app-classi-docenti-materie-list',
@@ -135,6 +136,26 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
     });
   }
   */
+
+  openDocente (docenteID: any) {
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '850px',
+      height: '620px',
+      data: docenteID
+    };
+
+    const dialogRef = this._dialog.open(PersonaEditComponent, dialogConfig);
+    dialogRef.afterClosed()
+      .subscribe(
+        () => {
+          this.loadData();
+    });
+  }
+
+
+
+
 //#endregion
 
   //#region ----- Add Edit Drop -------
@@ -158,14 +179,14 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
   }
 
   openDetail(id:number){
-    //console.log ("recordID", recordID);
+
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '850px',
-      height: '620px',
+      width: '400px',
+      height: '440px',
       data: id
     };
-    const dialogRef = this._dialog.open(PersonaEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(DocenzaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       () => { 
         this.loadData(); 
@@ -224,5 +245,6 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
     return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
   }
 //#endregion
+
 
 }
