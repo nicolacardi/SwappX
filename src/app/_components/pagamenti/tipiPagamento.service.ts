@@ -16,6 +16,7 @@ export class TipiPagamentoService {
 
   list(): Observable<PAG_TipoPagamento[]>{
     return this.http.get<PAG_TipoPagamento[]>(environment.apiBaseUrl+'PAG_TipiPagamento');
+        //http://213.215.231.4/swappX/api/PAG_TipiPagamento
   }
 
 //*************** METODO NON USATO ******************/  

@@ -28,14 +28,14 @@ export class ClassiDocentiMaterieService {
     //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/4
   }
   
-  getByClasseSezioneAnnoAndMateria(idClasseSezioneAnno: number, idMateria: number): Observable <CLS_ClasseDocenteMateria> {
-    return this.http.get <CLS_ClasseDocenteMateria>( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateria?idClasseSezioneAnno='+idClasseSezioneAnno+'&idMateria='+idMateria);  
-      //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateria?idClasseSezioneAnno=16&idMateria=4
+  getByClasseSezioneAnnoAndMateria(classeSezioneAnnoID: number, materiaID: number): Observable <CLS_ClasseDocenteMateria> {
+    return this.http.get <CLS_ClasseDocenteMateria>( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateria/'+classeSezioneAnnoID+'/'+materiaID);  
+      //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateria/16/4
   }
 
-  getByClasseSezioneAnnoAndMateriaAndDocente(idClasseSezioneAnno: number, idMateria: number, idDocente: number): Observable <CLS_ClasseDocenteMateria> {
-    return this.http.get <CLS_ClasseDocenteMateria>( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateriaAndDocente?idClasseSezioneAnno='+idClasseSezioneAnno+'&idMateria='+idMateria+'&idDocente='+idDocente);  
-      //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateriaAndDocente?idClasseSezioneAnno=16&idMateria=4&idDocente=3
+  getByClasseSezioneAnnoAndMateriaAndDocente(classeSezioneAnnoID: number, materiaID: number, docenteID: number): Observable <CLS_ClasseDocenteMateria> {
+    return this.http.get <CLS_ClasseDocenteMateria>( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateriaAndDocente/'+classeSezioneAnnoID+'/'+materiaID+'/'+docenteID);  
+      //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateriaAndDocente/16/4/3
   }
 
 

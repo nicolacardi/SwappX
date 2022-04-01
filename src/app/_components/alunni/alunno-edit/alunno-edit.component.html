@@ -47,7 +47,7 @@
 
                     <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
-                    <button *ngIf="idAlunno" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10"
+                    <button *ngIf="alunnoID" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10"
                             [disabled]= "!form.valid" 
                             (click)="loadData()" >
                         <mat-icon>restart_alt</mat-icon>
@@ -59,7 +59,7 @@
                         <mat-icon>save</mat-icon>
                     </button>
 
-                    <button *ngIf="idAlunno" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
+                    <button *ngIf="alunnoID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
                             [disabled]= "!form.valid" 
                             (click)="delete()" >
                         <mat-icon>delete</mat-icon>
@@ -282,7 +282,7 @@
                         </button>
                         <mat-label class="frameLabel">i genitori/tutori di {{nome.value}} </mat-label>
                         <div class="_genitori-container cellBordered mt10">
-                            <app-genitori-list [context]="'alunno-edit-famiglia'"[alunnoId]="idAlunno"  (removeFromFamily) = "removeFromFamily($event)" #genitoriFamiglia></app-genitori-list>
+                            <app-genitori-list [context]="'alunno-edit-famiglia'"[alunnoID]="alunnoID"  (removeFromFamily) = "removeFromFamily($event)" #genitoriFamiglia></app-genitori-list>
                         </div>
                         <mat-accordion>
                             <mat-expansion-panel hideToggle>
@@ -309,7 +309,7 @@
                                 <td>
                                     <mat-label class="frameLabel">Le classi frequentate da {{nome.value}} </mat-label>
                                     <div class="_classi-attended-container cellBordered mt10">
-                                        <app-iscrizioni-alunno-list [alunnoId] = "idAlunno" 
+                                        <app-iscrizioni-alunno-list [alunnoID] = "alunnoID" 
                                         (removeFromAttended) = "removeFromAttended($event)"
                                         #iscrizioniAlunno >
                                         </app-iscrizioni-alunno-list>

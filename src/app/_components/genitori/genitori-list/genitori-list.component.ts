@@ -118,7 +118,7 @@ export class GenitoriListComponent implements OnInit {
 
   @Input() genitoriFilterComponent!: GenitoriFilterComponent;
   @Input('context') context! :                                string;
-  @Input('alunnoId') alunnoId! :                              number;
+  @Input('alunnoID') alunnoID! :                              number;
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('addToFamily') addToFamily = new EventEmitter<ALU_Genitore>();
@@ -172,8 +172,8 @@ export class GenitoriListComponent implements OnInit {
     let obsGenitori$: Observable<ALU_Genitore[]>;
 
     if(this.context == "alunno-edit-famiglia"){
-      obsGenitori$= this.svcGenitori.listByAlunno(this.alunnoId);
-      //.pipe(map(res=> res.filter(gen => gen._Figli.some(y => (y.id == this.alunnoId)))));  //BELLISSIMA Sembra giusta ma non funziona
+      obsGenitori$= this.svcGenitori.listByAlunno(this.alunnoID);
+      //.pipe(map(res=> res.filter(gen => gen._Figli.some(y => (y.id == this.alunnoID)))));  //BELLISSIMA Sembra giusta ma non funziona
     }
     else {
       obsGenitori$= this.svcGenitori.listWithChildren();
@@ -328,7 +328,7 @@ export class GenitoriListComponent implements OnInit {
     this._navigationService.getAlunno()
       .subscribe(
         val=>{
-        this.idAlunno = val;
+        this.alunnoID = val;
         this.refresh();
     });
     */

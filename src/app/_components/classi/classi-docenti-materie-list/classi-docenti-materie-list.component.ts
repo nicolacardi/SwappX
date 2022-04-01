@@ -57,7 +57,7 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
-  @Input() idClasse!:                                         number;
+  @Input() classeSezioneAnnoID!:                                         number;
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
 //#endregion
 
@@ -72,11 +72,11 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-    if (this.idClasse != undefined) {
+    if (this.classeSezioneAnnoID != undefined) {
       this.loadData();
       //this.toggleChecks = false;
       //parcheggio in classeSezioneAnno i dati della classe che servono a classi-dashboard (per il nome dell'export)
-      this.svcClasseSezioneAnno.get(this.idClasse).subscribe(res => this.classeSezioneAnno = res)
+      this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID).subscribe(res => this.classeSezioneAnno = res)
     }
   }
 
@@ -88,7 +88,7 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
 
     let obsInsegnamenti$: Observable<CLS_ClasseDocenteMateria[]>;
   
-    obsInsegnamenti$= this.svcClassiDocentiMaterie.listByClasseSezioneAnno(this.idClasse);
+    obsInsegnamenti$= this.svcClassiDocentiMaterie.listByClasseSezioneAnno(this.classeSezioneAnnoID);
     let loadInsegnamenti$ =this._loadingService.showLoaderUntilCompleted(obsInsegnamenti$);
 
     loadInsegnamenti$.subscribe(val =>  {

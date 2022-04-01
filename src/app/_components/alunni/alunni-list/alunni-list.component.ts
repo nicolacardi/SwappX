@@ -131,10 +131,10 @@ export class AlunniListComponent implements OnInit {
   @ViewChild("filterInput") filterInput!:                     ElementRef;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
-  @Input() idClasse!:                                         number;
+  //@Input() classeSezioneAnnoID!:                                         number;
   @Input() alunniFilterComponent!:                            AlunniFilterComponent;
   @Input('context') context! :                                string;
-  @Input('genitoreId') genitoreId! :                          number;
+  @Input('genitoreID') genitoreID! :                          number;
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('addToFamily') addToFamily = new EventEmitter<ALU_Alunno>();
@@ -153,21 +153,21 @@ export class AlunniListComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnChanges() {
-    //mentre classiDashboard ripassa per ngOnChanges quando idClasse gli arriva (è una @Input)
+    //mentre classiDashboard ripassa per ngOnChanges quando classeSezioneAnnoID gli arriva (è una @Input)
     //alunniList non ci ripassa.
     //il problema è che this.page potrebbe essere ancora undefined 
     //(perchè poi? visto che viene settato sia da alunniPage che da classiDahsboard su ngOnInit come prima cosa?)
 
-    //ngOnChanges serve perchè quando listAlunni è child di classiDashboard gli viene passato il valore di idClasse
+    //ngOnChanges serve perchè quando listAlunni è child di classiDashboard gli viene passato il valore di classeSezioneAnnoID
     // e devo "sentire" in questo modo che deve refreshare
 
     //if (this.page == 'classiDashboard'  ) {
 
       //lanciamo loadData SOLO una volta che sia arrivata la this.page.
       //this.page non arriva, nel caso in cui page = ClassiDashboard
-      //fintanto che la @Input idClasse non è stata settata
+      //fintanto che la @Input classeSezioneAnnoID non è stata settata
       //se non mettessimo questa if la loadData partirebbe una volta con this.page = undefined
-      //e POI una seconda volta quando idClasse è stato settato e quindi anche this.page: non andrebbe bene
+      //e POI una seconda volta quando classeSezioneAnnoID è stato settato e quindi anche this.page: non andrebbe bene
 
       if (this.context != ''){
         this.loadData();
@@ -253,7 +253,7 @@ export class AlunniListComponent implements OnInit {
     }
 
     if (this.context == "genitore-edit-famiglia") {
-      obsAlunni$= this.svcAlunni.listByGenitore(this.genitoreId);
+      obsAlunni$= this.svcAlunni.listByGenitore(this.genitoreID);
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
       loadAlunni$.subscribe(val => 
         {
@@ -393,7 +393,7 @@ export class AlunniListComponent implements OnInit {
         width: '850px',
         height: '580px',
         data: {
-          idAlunno: alunnoID,
+          alunnoID: alunnoID,
           annoID: annoID
         }
     };

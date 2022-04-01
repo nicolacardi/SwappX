@@ -323,7 +323,7 @@ export class PagamentiListComponent implements OnInit {
         width: '850px',
         height: '580px',
         data: {
-          idAlunno: alunnoID,
+          alunnoID: alunnoID,
           annoID: annoID
         }
     };

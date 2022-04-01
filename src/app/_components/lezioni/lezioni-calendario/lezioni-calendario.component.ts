@@ -122,7 +122,7 @@ export class LezioniCalendarioComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-  @Input() idClasse!:                     number;
+  @Input() classeSezioneAnnoID!:                     number;
   @Input() idDocente!:                    number;
   @Input() dove!:                         string;
   @ViewChild('calendarDOM') calendarDOM!: FullCalendarComponent;
@@ -140,7 +140,7 @@ export class LezioniCalendarioComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-    if (this.idClasse != undefined  && this.dove != undefined) 
+    if (this.classeSezioneAnnoID != undefined  && this.dove != undefined) 
       this.loadData();
   }
 
@@ -153,10 +153,10 @@ export class LezioniCalendarioComponent implements OnInit {
     if (this.dove == "orario") {
       //se c'è un Docente selezionato allora filtro anche per lui
       if (this.idDocente != undefined && this.idDocente > 0) {
-        obsLezioni$= this.svcLezioni.listByDocenteClasseSezioneAnno(this.idDocente, this.idClasse);
+        obsLezioni$= this.svcLezioni.listByDocenteClasseSezioneAnno(this.idDocente, this.classeSezioneAnnoID);
       } else {
         //se non c'è un docente seleziono non filtro anche per lui
-        obsLezioni$= this.svcLezioni.listByClasseSezioneAnno(this.idClasse);
+        obsLezioni$= this.svcLezioni.listByClasseSezioneAnno(this.classeSezioneAnnoID);
       }
     } else {
       //qui ("orario per Docente) non conta la classe ma solo l'IDDocente
@@ -375,7 +375,7 @@ export class LezioniCalendarioComponent implements OnInit {
         dtCalendario: clickInfo.event.extendedProps.dtCalendario,
         h_Ini: clickInfo.event.extendedProps.h_Ini,
         h_End: clickInfo.event.extendedProps.h_End,
-        idClasseSezioneAnno: clickInfo.event.extendedProps.classeSezioneAnnoID,
+        classeSezioneAnnoID: clickInfo.event.extendedProps.classeSezioneAnnoID,
         dove: this.dove
       }
     };
@@ -408,7 +408,7 @@ export class LezioniCalendarioComponent implements OnInit {
         dtCalendario: dtStart.toLocaleString('sv').replace(' ', 'T').substring(0,10),
         h_Ini: dtStart.toLocaleString('sv').replace(' ', 'T').substring(11,19),
         h_End: dtEnd.toLocaleString('sv').replace(' ', 'T').substring(11,19),
-        idClasseSezioneAnno: this.idClasse,
+        classeSezioneAnnoID: this.classeSezioneAnnoID,
         dove: this.dove
       }
     };
@@ -428,7 +428,7 @@ export class LezioniCalendarioComponent implements OnInit {
       height: '425px',
       data:  {
         start: this.calendarDOM.getApi().getDate(),
-        idClasseSezioneAnno: this.idClasse
+        classeSezioneAnnoID: this.classeSezioneAnnoID
       }
     };
     const dialogRef = this._dialog.open(LezioniUtilsComponent, dialogConfig);

@@ -1,5 +1,3 @@
-LoadAlunno e simili diventano LoadByID
-uniformare idAlunno e alunnoId idCorso /Corso ID ecc e Svcxxxx / xxxxSvc
 
 
 #### AlunnoEdit - panel Famiglia

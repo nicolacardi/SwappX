@@ -14,9 +14,9 @@ export class ClassiSezioniService {
 
   constructor(private http: HttpClient) { }
 
-  getByClasseSezione(idClasse: number, Sezione: string): Observable<CLS_ClasseSezione> {
+  getByClasseSezione(classeID: number, Sezione: string): Observable<CLS_ClasseSezione> {
     //restituisce l'oggetto ClasseSezione 
-    return this.http.get <CLS_ClasseSezione>( environment.apiBaseUrl  + 'CLS_ClassiSezioni/GetByClasseSezione/' + idClasse + "/" + Sezione );  
+    return this.http.get <CLS_ClasseSezione>( environment.apiBaseUrl  + 'CLS_ClassiSezioni/GetByClasseSezione/' + classeID + "/" + Sezione );  
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioni/GetByClasseSezione/6/A
   }
  

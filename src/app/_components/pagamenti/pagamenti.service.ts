@@ -19,8 +19,8 @@ export class PagamentiService {
     //http://213.215.231.4/swappX/api/PAG_Pagamenti
   }
 
-  get(idPagamento: any): Observable<PAG_Pagamento>{
-    return this.http.get<PAG_Pagamento>(environment.apiBaseUrl+'PAG_Pagamenti/'+idPagamento);
+  get(pagamentoID: any): Observable<PAG_Pagamento>{
+    return this.http.get<PAG_Pagamento>(environment.apiBaseUrl+'PAG_Pagamenti/'+pagamentoID);
     //http://213.215.231.4/swappX/api/PAG_Pagamenti/5
   }
 
@@ -29,8 +29,8 @@ export class PagamentiService {
     //http://213.215.231.4/swappX/api/PAG_Pagamenti/ListByAnno/1
   }
 
-  listByAlunnoAnno(idAlunno: number, annoID: number): Observable<PAG_Pagamento[]>{
-    return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti/ListByAlunnoAnno/'+idAlunno+'/'+annoID);
+  listByAlunnoAnno(alunnoID: number, annoID: number): Observable<PAG_Pagamento[]>{
+    return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti/ListByAlunnoAnno/'+alunnoID+'/'+annoID);
     //http://213.215.231.4/swappX/api/PAG_Pagamenti/ListByAlunnoAnno/3/1
   }
 

@@ -120,7 +120,7 @@ export class IscrizioniListComponent implements OnInit {
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
   @Input() annoID!:                                           number;
-  @Input('alunnoId') alunnoId! :                              number;
+  @Input('alunnoID') alunnoID! :                              number;
   @Input() iscrizioniFilterComponent!:                        IscrizioniFilterComponent;
   @Input('dove') dove! :                                      string;
 
@@ -323,7 +323,7 @@ export class IscrizioniListComponent implements OnInit {
         width: '850px',
         height: '580px',
         data: {
-          idAlunno: alunnoID,
+          alunnoID: alunnoID,
           annoID: annoID
         }
     };

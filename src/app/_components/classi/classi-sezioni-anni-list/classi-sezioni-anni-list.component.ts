@@ -115,8 +115,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   public swSoloAttivi :               boolean = true;
 
   annoIDrouted!:                       string; //Da routing
-  idClasseInput!:                     string; //Da routing
-  idClasseSezioneAnno!:               string;
+  classeSezioneAnnoIDrouted!:         number; //Da routing
+  classeSezioneAnnoID!:               number;
   classeSezioneAnno!:                 CLS_ClasseSezioneAnno;
   showSelect:                         boolean = true;
   showSelectDocente:                  boolean = true;
@@ -145,7 +145,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 //#region ----- ViewChild Input Output -------
 
   @Input('dove') dove! :                                          string;
-  @Input('alunnoId') alunnoId! :                                  number;
+  @Input('alunnoID') alunnoID! :                                  number;
   @Input() classiSezioniAnniFilterComponent!:                     ClassiSezioniAnniFilterComponent;
   
 
@@ -158,7 +158,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   //@ViewChildren ('ckSelected' ) ckSelected!:QueryList<any>;
 
   @Output('annoID') annoIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
-  @Output('classeId') classeIdEmitter = new EventEmitter<number>(); //classeId viene EMESSO quando si clicca su una classe
+  @Output('classeSezioneAnnoID') classeSezioneAnnoIDEmitter = new EventEmitter<number>(); //classeId viene EMESSO quando si clicca su una classe
   @Output('docenteId') docenteIdEmitter = new EventEmitter<number>(); //docenteId viene EMESSO quando si seleziona un docente dalla select
 
   @Output('addToAttended') addToAttended = new EventEmitter<CLS_ClasseSezioneAnnoGroup>(); //EMESSO quando si clicca sul (+) di aggiunta alle classi frequentate
@@ -190,8 +190,9 @@ constructor(
     this.actRoute.queryParams.subscribe(
       params => {
           this.annoIDrouted = params['annoID'];     
-          this.idClasseInput = params['idClasseSezioneAnno'];  
+          this.classeSezioneAnnoIDrouted = params['classeSezioneAnnoID'];  
     });
+    
 
     this.obsAnni$ = this.svcAnni.list().pipe(
       finalize( () => {
@@ -300,30 +301,29 @@ constructor(
           this.matDataSource.filterPredicate = this.filterPredicate();
           
           if(this.matDataSource.data.length >0)
-            if (this.idClasseInput) 
-              this.rowclicked(this.idClasseInput);  
+            if (this.classeSezioneAnnoIDrouted) 
+              this.rowclicked(this.classeSezioneAnnoIDrouted);  
             else
-              this.rowclicked(this.matDataSource.data[0].id.toString()); //seleziona per default la prima riga DA TESTARE
+              this.rowclicked(this.matDataSource.data[0].id); //seleziona per default la prima riga DA TESTARE
           else
             this.rowclicked(undefined);
         }
       );
   }
 
-  rowclicked(idClasseSezioneAnno?: string ){
-    //console.log ("idClasseSezioneAnno", parseInt(idClasseSezioneAnno!));
+  rowclicked(classeSezioneAnnoID?: number ){
     //il click su una classe deve essere trasmesso su al parent
-    this.idClasseSezioneAnno = idClasseSezioneAnno!;
+    this.classeSezioneAnnoID = classeSezioneAnnoID!;
     //per potermi estrarre seq in iscrizioni-classe-calcolo mi preparo qui il valore della classe
-    if (idClasseSezioneAnno) {this.svcClassiSezioniAnni.get(parseInt(this.idClasseSezioneAnno)).subscribe(val=>this.classeSezioneAnno = val);} 
+    if (classeSezioneAnnoID) {this.svcClassiSezioniAnni.get(this.classeSezioneAnnoID).subscribe(val=>this.classeSezioneAnno = val);} 
 
 
-    if(idClasseSezioneAnno!= undefined && idClasseSezioneAnno != null)
-      this.selectedRowIndex = parseInt(idClasseSezioneAnno);
+    if(classeSezioneAnnoID!= undefined && classeSezioneAnnoID != null)
+      this.selectedRowIndex = classeSezioneAnnoID;
     else 
       this.selectedRowIndex = this.matDataSource.data[0].id;
 
-    this.classeIdEmitter.emit(this.selectedRowIndex);
+    this.classeSezioneAnnoIDEmitter.emit(this.selectedRowIndex);
   }
 
 
@@ -427,12 +427,12 @@ sortCustom() {
     });
   }
 
-  openDetail(id:any) {
+  openDetail(classeSezioneAnnoID:any) {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '380px',
       height: '450px',
-      data: id
+      data: classeSezioneAnnoID
     };
 
     const dialogRef = this._dialog.open(ClasseSezioneAnnoEditComponent, dialogConfig);

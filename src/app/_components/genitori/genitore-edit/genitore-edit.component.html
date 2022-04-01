@@ -11,7 +11,7 @@
 
                     <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
-                    <button *ngIf="idGenitore" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
+                    <button *ngIf="genitoreID" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
                     [disabled]= "!form.valid" 
                     (click)="loadData()" >
                         <mat-icon>restart_alt</mat-icon>
@@ -23,7 +23,7 @@
                         <mat-icon>save</mat-icon>
                     </button>
 
-                    <button *ngIf="idGenitore" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
+                    <button *ngIf="genitoreID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
                     [disabled]= "!form.valid" 
                     (click)="delete()" >
                         <mat-icon>delete</mat-icon>
@@ -182,8 +182,12 @@
                         </button>
                         <mat-label class="frameLabel">i figli di {{nome.value}}</mat-label>
                         <div class="_alunni-container cellBordered mt10">
-                            <!-- <app-alunni-list [dove]="'genitore-edit-famiglia'"[genitoreId]="idGenitore"  (removeFromFamily) = "removeFromFamily($event)" #figliFamiglia></app-alunni-list> -->
-                            <app-alunni-list [context]="'genitore-edit-famiglia'" [genitoreId] ="idGenitore" (removeFromFamily) = "removeFromFamily($event)" #alunniFamiglia></app-alunni-list>
+                            <app-alunni-list 
+                                [context]="'genitore-edit-famiglia'" 
+                                [genitoreID] ="genitoreID" 
+                                (removeFromFamily) = "removeFromFamily($event)" 
+                                #alunniFamiglia>
+                            </app-alunni-list>
                         </div>
                         <mat-accordion>
                             <mat-expansion-panel hideToggle>
@@ -198,7 +202,10 @@
                                 <mat-label class="frameLabel">Elenco degli alunni </mat-label>
                                 <div class="_alunni-list-container cellBordered mt10">
                                     <!-- <app-alunni-list [dove]="'genitore-edit-list'" (addToFamily) = "addToFamily($event)"></app-alunni-list> -->
-                                    <app-alunni-list [context]="'genitore-edit-list'" (addToFamily) = "addToFamily($event)"></app-alunni-list>
+                                    <app-alunni-list 
+                                        [context]="'genitore-edit-list'" 
+                                        (addToFamily) = "addToFamily($event)">
+                                    </app-alunni-list>
                                 </div>
                             </mat-expansion-panel>
                         </mat-accordion>

@@ -6,13 +6,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 //components
-import { DialogDataLezioniUtils } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 //services
 import { LezioniService } from '../lezioni.service';
 
 //models
+import { DialogDataLezioniUtils } from 'src/app/_models/DialogData';
 
 
 //#region Injectable per la selezione dell'intervallo nel matdatepicker
@@ -125,7 +125,7 @@ export class LezioniUtilsComponent implements OnInit {
 
     if (ckTutteleClassi1 == false  || ckTutteleClassi1 == null) {
       //console.log ("deleteByClasseSezioneAnnoAndDate");
-      this.svcLezioni.deleteByClasseSezioneAnnoAndDate(this.data.idClasseSezioneAnno, dtStartYYYY_MM_DD, dtEndYYYY_MM_DD)
+      this.svcLezioni.deleteByClasseSezioneAnnoAndDate(this.data.classeSezioneAnnoID, dtStartYYYY_MM_DD, dtEndYYYY_MM_DD)
         .subscribe(
           res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
           err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
@@ -165,9 +165,9 @@ export class LezioniUtilsComponent implements OnInit {
       // );
     } 
     else {
-      //console.log ("this.data.idClasseSezioneAnno, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD", this.data.idClasseSezioneAnno, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD);
+      //console.log ("this.data.classeSezioneAnnoID, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD", this.data.classeSezioneAnnoID, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD);
 
-      this.svcLezioni.copyByClasseSezioneAnnoUntilDate(this.data.idClasseSezioneAnno, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD)
+      this.svcLezioni.copyByClasseSezioneAnnoUntilDate(this.data.classeSezioneAnnoID, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD)
         .subscribe(
           res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
           err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
@@ -199,7 +199,7 @@ export class LezioniUtilsComponent implements OnInit {
           err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
         );
     } else {
-      this.svcLezioni.copyByClasseSezioneAnnoToDate(this.data.idClasseSezioneAnno, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtCopyToStartYYYY_MM_DD)
+      this.svcLezioni.copyByClasseSezioneAnnoToDate(this.data.classeSezioneAnnoID, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtCopyToStartYYYY_MM_DD)
         .subscribe(
           res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
           err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
@@ -217,7 +217,7 @@ export class LezioniUtilsComponent implements OnInit {
     let dtToEndYYYY_MM_DD = dtToEnd.toLocaleString('sv').replace(' ', 'T').substring(0,10);  //la data del lunedi della settimana corrente
 
 
-      this.svcLezioni.propagaEpocaByClasseSezioneAnnoUntilDate(this.data.idClasseSezioneAnno, dtFromYYYY_MM_DD, dtToEndYYYY_MM_DD)
+      this.svcLezioni.propagaEpocaByClasseSezioneAnnoUntilDate(this.data.classeSezioneAnnoID, dtFromYYYY_MM_DD, dtToEndYYYY_MM_DD)
         .subscribe(
           res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
           err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}

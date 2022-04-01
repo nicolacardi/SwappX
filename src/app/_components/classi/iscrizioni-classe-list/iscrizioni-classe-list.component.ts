@@ -99,7 +99,7 @@ export class IscrizioniClasseListComponent implements OnInit {
   @ViewChild("filterInput") filterInput!:                     ElementRef;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
-  @Input() idClasse!:                                         number;
+  @Input() classeSezioneAnnoID!:                                         number;
   //@Input() alunniFilterComponent!:                            IscrizioniFilterComponent;    //TODO!!!
   @Input('dove') dove! :                                string;
 
@@ -165,12 +165,12 @@ export class IscrizioniClasseListComponent implements OnInit {
   loadData () {
     let obsIscrizioni$: Observable<CLS_Iscrizione[]>;
 
-    //if (this.context == "classi-dashboard" && this.idClasse != undefined) {
-    if (this.idClasse != undefined) {
+    //if (this.context == "classi-dashboard" && this.classeSezioneAnnoID != undefined) {
+    if (this.classeSezioneAnnoID != undefined) {
       //parcheggio in classeSezioneAnno i dati della classe che servono a classi-dashboard (per il nome dell'export)
-      this.svcClasseSezioneAnno.get(this.idClasse).subscribe(res => this.classeSezioneAnno = res)
+      this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID).subscribe(res => this.classeSezioneAnno = res)
 
-      obsIscrizioni$= this.svcIscrizioni.listByClasseSezioneAnno(this.idClasse);
+      obsIscrizioni$= this.svcIscrizioni.listByClasseSezioneAnno(this.classeSezioneAnnoID);
       const loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
 
       loadIscrizioni$.subscribe(val =>  {
@@ -318,7 +318,7 @@ export class IscrizioniClasseListComponent implements OnInit {
         width: '850px',
         height: '580px',
         data: {
-          idAlunno: alunnoID,
+          alunnoID: alunnoID,
           annoID: annoID
         }
     };

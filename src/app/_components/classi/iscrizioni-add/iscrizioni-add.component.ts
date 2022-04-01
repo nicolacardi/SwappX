@@ -4,7 +4,6 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { debounceTime, finalize, map, switchMap, tap } from 'rxjs/operators';
-import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 //services
 import { AlunniService } from 'src/app/_components/alunni/alunni.service';
@@ -14,6 +13,7 @@ import { IscrizioniService } from '../iscrizioni.service';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { DialogData } from 'src/app/_models/DialogData';
 
 @Component({
   selector: 'app-iscrizioni-add',
@@ -31,7 +31,7 @@ export class IscrizioniAddComponent implements OnInit {
   removable =               true;
   selectable =              true;
   alunniIsLoading:          boolean = false;
-  idClasse!:                number;
+  classeSezioneAnnoID!:                number;
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -53,7 +53,7 @@ export class IscrizioniAddComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
 
-    this.idClasse = this.data.idClasse;
+    this.classeSezioneAnnoID = this.data.classeSezioneAnnoID;
     this.filteredAlunni$ = this.form.controls['nomeCognomeAlunno'].valueChanges
       .pipe(
         tap(() => this.alunniIsLoading = true),
@@ -80,12 +80,12 @@ export class IscrizioniAddComponent implements OnInit {
 
     this.nomeCognomeAlunno.nativeElement.value = '';
     const alunnoToAdd = event.option.viewValue;
-    const idAlunnoToAdd = parseInt(event.option.id);
+    const alunnoIDToAdd = parseInt(event.option.id);
 
     //in verità dopo la miglioria per cui non si vede più quanto giù selezionato questa if non servirebbe
     if (!this.alunniSelezionati.includes(alunnoToAdd)) { 
       this.alunniSelezionati.push(alunnoToAdd);
-      this.idAlunniSelezionati.push(idAlunnoToAdd);
+      this.idAlunniSelezionati.push(alunnoIDToAdd);
     }
   }
 
@@ -107,7 +107,7 @@ export class IscrizioniAddComponent implements OnInit {
       val=>{
         let objIscrizione = {
           AlunnoID: val,
-          ClasseSezioneAnnoID: this.data.idClasse
+          ClasseSezioneAnnoID: this.data.classeSezioneAnnoID
         };
         this.svcIscrizioni.post(objIscrizione)
           .pipe( finalize(()=>this.dialogRef.close()))

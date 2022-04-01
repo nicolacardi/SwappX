@@ -37,7 +37,7 @@ export class IscrizioniAlunnoListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild(MatSort) sort!:                                  MatSort;
 
-  @Input('alunnoId') alunnoId! :                              number;
+  @Input('alunnoID') alunnoID! :                              number;
   @Output('removeFromAttended') removeFromAttended = new EventEmitter<CLS_ClasseSezioneAnno>(); //EMESSO quando si clicca sul (-) del rimuovi da classi frequentate
 
   constructor(
@@ -61,7 +61,7 @@ export class IscrizioniAlunnoListComponent implements OnInit {
 
     let obsIscrizioni$: Observable<CLS_Iscrizione[]>;
 
-    obsIscrizioni$= this.svcIscrizioni.listByAlunno(this.alunnoId);
+    obsIscrizioni$= this.svcIscrizioni.listByAlunno(this.alunnoID);
     let loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
 
     loadIscrizioni$.subscribe(val =>  {

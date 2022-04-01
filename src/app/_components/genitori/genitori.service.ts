@@ -15,16 +15,16 @@ export class GenitoriService {
   constructor(private http: HttpClient) { }
 
   list(): Observable<ALU_Genitore[]>{
-  //loadGenitori(idAlunno?: any): Observable<ALU_Genitore[]>{
-    //if (idAlunno == null || idAlunno == "")
+  //loadGenitori(alunnoID?: any): Observable<ALU_Genitore[]>{
+    //if (alunnoID == null || alunnoID == "")
       return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori');
     //else 
-    //  return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllByAlunno/'+idAlunno);
+    //  return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllByAlunno/'+alunnoID);
     //http://213.215.231.4/swappX/api/ALU_Alunni
   }
 
-  listByAlunno(idAlunno: any): Observable<ALU_Genitore[]>{
-      return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/ListByAlunno/'+idAlunno);
+  listByAlunno(alunnoID: any): Observable<ALU_Genitore[]>{
+      return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/ListByAlunno/'+alunnoID);
       //http://213.215.231.4/swappX/api/ALU_Genitori/ListByAlunno/3
   }
 
@@ -73,7 +73,7 @@ export class GenitoriService {
       }
   }
 
-  findIdGenitore(searchstring: string) : Observable<any>{
+  findGenitoreID(searchstring: string) : Observable<any>{
     return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori')
       .pipe(
         map(val => val.find(val => (val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase())== searchstring.toLowerCase())),

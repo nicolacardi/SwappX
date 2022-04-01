@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { iif, Observable, of } from 'rxjs';
 import { concatMap, debounceTime, delayWhen, finalize, switchMap, tap } from 'rxjs/operators';
-import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 //components
@@ -21,6 +20,7 @@ import { MaterieService } from 'src/app/_services/materie.service';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { DialogData } from 'src/app/_models/DialogData';
 
 @Component({
   selector: 'app-docenze-add',
@@ -67,7 +67,7 @@ export class DocenzeAddComponent implements OnInit {
   ngOnInit(): void {
 
   
-    this.svcClasseSezioneAnno.get(this.data.idClasse).subscribe(res => this.classeSezioneAnno = res)
+    this.svcClasseSezioneAnno.get(this.data.classeSezioneAnnoID).subscribe(res => this.classeSezioneAnno = res)
 
     this.obsFilteredDocenti$ = this.form.controls['nomeCognomeDocente'].valueChanges
       .pipe(
@@ -106,7 +106,7 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
     let objDocenza = {
       DocenteID: this.docenteSelectedID,
       MateriaID: this.materiaSelectedID,
-      ClasseSezioneAnnoID: this.data.idClasse,
+      ClasseSezioneAnnoID: this.data.classeSezioneAnnoID,
 
       ckOrario: true,
       ckPagella: true
@@ -116,7 +116,7 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
     //e anche che questo stesso maestro non sia già maestro di questa materia in questa classe
 
     const checks$ = 
-    this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateriaAndDocente(this.data.idClasse, this.materiaSelectedID, this.docenteSelectedID)
+    this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateriaAndDocente(this.data.classeSezioneAnnoID, this.materiaSelectedID, this.docenteSelectedID)
     .pipe(
       //se trova che la stessa classe è già presente res.length è != 0 quindi non procede con la getByAlunnoAnno ma restituisce of()
       //se invece res.length == 0 dovrebbe proseguire e concatenare la verifica successiva ch è getByAlunnoAndAnno...
@@ -134,7 +134,7 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
         }
       ),
       concatMap( res => iif (()=> res == null,
-        this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateria(this.data.idClasse, this.materiaSelectedID) , of() )
+        this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateria(this.data.classeSezioneAnnoID, this.materiaSelectedID) , of() )
       ),
       tap(res=> {
         if (res != null) {

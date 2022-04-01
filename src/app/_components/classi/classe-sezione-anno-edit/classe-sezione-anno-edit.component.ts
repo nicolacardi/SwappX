@@ -49,7 +49,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 //#endregion
 
   constructor( 
-    @Inject(MAT_DIALOG_DATA) public idClasseSezioneAnno: number,
+    @Inject(MAT_DIALOG_DATA) public classeSezioneAnnoID: number,
     public _dialogRef:                          MatDialogRef<ClasseSezioneAnnoEditComponent>,
     private fb:                                 FormBuilder,
     private svcClasseSezioneAnno:               ClassiSezioniAnniService,
@@ -91,9 +91,9 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
     //dell'anno successivo e con quello fare la loadClassiByAnnoScolastico....
 
     //********************* POPOLAMENTO FORM *******************
-    if (this.idClasseSezioneAnno && this.idClasseSezioneAnno + '' != "0") {
+    if (this.classeSezioneAnnoID && this.classeSezioneAnnoID + '' != "0") {
 
-      const obsClasseSezioneAnno$: Observable<CLS_ClasseSezioneAnno> = this.svcClasseSezioneAnno.getWithClasseSezioneAnno(this.idClasseSezioneAnno);
+      const obsClasseSezioneAnno$: Observable<CLS_ClasseSezioneAnno> = this.svcClasseSezioneAnno.getWithClasseSezioneAnno(this.classeSezioneAnnoID);
       const loadClasseSezioneAnno$ = this._loadingService.showLoaderUntilCompleted(obsClasseSezioneAnno$);
       
       this.classeSezioneAnno$ = loadClasseSezioneAnno$.pipe(
@@ -129,11 +129,11 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
   save(){
     //console.log ("form.id", this.form.controls['id'].value );
 
-    let piDClasse = this.form.controls['classeID'].value;
-    let pSezione = this.form.controls['sezione'].value;
+    let classeID = this.form.controls['classeID'].value;
+    let sezione = this.form.controls['sezione'].value;
 
     if (this.form.controls['id'].value == null){
-      this.svcClasseSezione.getByClasseSezione (piDClasse, pSezione) 
+      this.svcClasseSezione.getByClasseSezione (classeID, sezione) 
         .pipe (
             tap ( val   =>   this.form.controls['classeSezioneID'].setValue(val.id)),
             concatMap(() => this.svcClasseSezioneAnno.post(this.form.value))
@@ -147,7 +147,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
       );
     }
     else{
-      this.svcClasseSezione.getByClasseSezione (piDClasse, pSezione) 
+      this.svcClasseSezione.getByClasseSezione (classeID, sezione) 
         .pipe (
             tap ( val   =>   this.form.controls['classeSezioneID'].setValue(val.id)),
             concatMap(() => this.svcClasseSezioneAnno.put(this.form.value))
@@ -166,14 +166,13 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
   }
 
   delete(){
-    //console.log ("this.idClasseSezioneAnno", this.idClasseSezioneAnno);
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
     dialogYesNo.afterClosed().subscribe(result => {
       if(result){
-        this.svcClasseSezioneAnno.delete(Number(this.idClasseSezioneAnno))
+        this.svcClasseSezioneAnno.delete(Number(this.classeSezioneAnnoID))
         .subscribe(
           res=>{
             this._snackBar.openFromComponent(SnackbarComponent,

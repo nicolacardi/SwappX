@@ -407,7 +407,7 @@ export class RetteListComponent implements OnInit {
         width: '850px',
         height: '580px',
         data: {
-          idAlunno: alunno,
+          alunnoID: alunno,
           annoID: annoID
         }
     };
@@ -426,7 +426,7 @@ export class RetteListComponent implements OnInit {
       width: '850px',
       height: '580px',
       data: {
-        //idAlunno: alunno,
+        //alunnoID: alunno,
         annoID:  this.annoID  //questo in verità non viene poi usato
       }
     };

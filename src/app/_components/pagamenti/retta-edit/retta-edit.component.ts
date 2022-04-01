@@ -4,7 +4,6 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, timer } from 'rxjs';
 import { debounceTime, delayWhen, map, switchMap, tap } from 'rxjs/operators';
-import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 //components
@@ -25,6 +24,7 @@ import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { RettaCalcoloAlunnoComponent } from '../retta-calcolo-alunno/retta-calcolo-alunno.component';
 import { RettaannoEditComponent } from '../rettaanno-edit/rettaanno-edit.component';
+import { DialogData } from 'src/app/_models/DialogData';
 
 @Component({
   selector: 'app-retta-edit',
@@ -133,7 +133,7 @@ export class RettaEditComponent implements OnInit {
     this.quotaDefaultAnno=0;
     this.totPagamentiAnno=0;
 
-    this.obsRette$ = this.svcRette.listByAlunnoAnno(this.data.idAlunno, this.data.annoID);  
+    this.obsRette$ = this.svcRette.listByAlunnoAnno(this.data.alunnoID, this.data.annoID);  
     const loadRette$ =this._loadingService.showLoaderUntilCompleted(this.obsRette$);
     loadRette$.pipe(
       map(obj => { 
@@ -230,7 +230,7 @@ export class RettaEditComponent implements OnInit {
     if (this.formRetta.controls['nomeCognomeAlunno'].value != '') {
       this.matAutocomplete.options.first.select();
       //Questo è il valore che devo cercare: this.matAutocomplete.options.first.viewValue;
-      this.svcAlunni.findIdAlunno(this.matAutocomplete.options.first.viewValue)
+      this.svcAlunni.findAlunnoID(this.matAutocomplete.options.first.viewValue)
       .subscribe();
     }
   }
@@ -239,7 +239,7 @@ export class RettaEditComponent implements OnInit {
   selected(event: MatAutocompleteSelectedEvent): void {
     //evento triggered su selezione di una voce tra quelle proposte
     console.log ("selected", event.option.id);
-    this.data.idAlunno = parseInt(event.option.id);
+    this.data.alunnoID = parseInt(event.option.id);
     this.formRetta.controls['alunnoID'].setValue(parseInt(event.option.id));
     this.loadData();
   }
@@ -269,7 +269,7 @@ export class RettaEditComponent implements OnInit {
     this.svcAlunni.filterAlunniExact(this.formRetta.value.nomeCognomeAlunno).subscribe(val=>
       {
         if (!val) {
-          this.data.idAlunno = parseInt(idstored);
+          this.data.alunnoID = parseInt(idstored);
           this.formRetta.controls['nomeCognomeAlunno'].setValue(stored)
           this.formRetta.controls['alunnoID'].setValue(parseInt(idstored));
           this.loadData();

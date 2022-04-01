@@ -56,7 +56,7 @@ export class GenitoreEditComponent implements OnInit {
 
   constructor(
     public _dialogRef: MatDialogRef<GenitoreEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public idGenitore: number,
+    @Inject(MAT_DIALOG_DATA) public genitoreID: number,
     private fb:             FormBuilder, 
     private route:          ActivatedRoute,
     private router:         Router,
@@ -101,7 +101,7 @@ export class GenitoreEditComponent implements OnInit {
 
   loadData(){
 
-    // this.idGenitore = this.route.snapshot.params['id'];  
+    // this.genitoreID = this.route.snapshot.params['id'];  
     // this.caller_page = this.route.snapshot.queryParams["page"];
     // this.caller_size = this.route.snapshot.queryParams["size"];
     // this.caller_filter = this.route.snapshot.queryParams["filter"];
@@ -112,9 +112,9 @@ export class GenitoreEditComponent implements OnInit {
     //********************* POPOLAMENTO FORM *******************
     //serve distinguere tra form vuoto e form popolato in arrivo da lista alunni
     
-    if (this.idGenitore && this.idGenitore + '' != "0") {
+    if (this.genitoreID && this.genitoreID + '' != "0") {
 
-      const obsGenitore$: Observable<ALU_Genitore> = this.svcGenitori.get(this.idGenitore);
+      const obsGenitore$: Observable<ALU_Genitore> = this.svcGenitori.get(this.genitoreID);
       const loadGenitore$ = this._loadingService.showLoaderUntilCompleted(obsGenitore$);
       //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
       this.genitore$ = loadGenitore$
@@ -211,7 +211,7 @@ export class GenitoreEditComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.svcGenitori.delete(Number(this.idGenitore))
+        this.svcGenitori.delete(Number(this.genitoreID))
         // .pipe (
         //   finalize(()=>this.router.navigate(['/alunni']))
         // )
@@ -255,9 +255,9 @@ export class GenitoreEditComponent implements OnInit {
     //ma con una condizione: la iif specifica proprio che SE il risultato della verifica è vuoto allora si può procedere con la post
     //altrimenti si mette in successione l'observable vuoto (of())
     
-    this.svcAlunni.listByGenitoreAlunno(this.idGenitore, figlio.id)
+    this.svcAlunni.listByGenitoreAlunno(this.genitoreID, figlio.id)
     .pipe(
-      concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(this.idGenitore, figlio.id), of() )
+      concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(this.genitoreID, figlio.id), of() )
       )
     ).subscribe(
       res=> {
@@ -271,7 +271,7 @@ export class GenitoreEditComponent implements OnInit {
   removeFromFamily(figlio: ALU_Alunno) {
     //devo fare una verifica prima della post:
     //per caso è già figlio? In teoria dovremmo aver nascosto il genitore dalla lista da cui pescare, no?
-    const genitoreID = this.idGenitore;
+    const genitoreID = this.genitoreID;
     this.svcAlunni.deleteByGenitoreAlunno(genitoreID, figlio.id).subscribe(
       res=> {
           this.alunniFamigliaComponent.loadData();

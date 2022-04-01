@@ -77,13 +77,13 @@ export class ClassiDashboardComponent implements OnInit {
 
 
 //#region ----- Variabili -------
-  public idClasse!:             number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
+  public classeSezioneAnnoID!:  number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public annoID!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public idDocente!:            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public idIscrizione!:         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
   
-  public idClasseInput!:        string;   //valore ricevuto (routed) dal ruoting
-  public annoIDrouted!:          string;   //valore ricevuto (routed) dal ruoting
+  public classeSezioneAnnoIDrouted!:        string;   //valore ricevuto (routed) dal ruoting
+  public annoIDrouted!:         string;   //valore ricevuto (routed) dal ruoting
   isOpen = true;
 //#endregion
 
@@ -96,7 +96,7 @@ export class ClassiDashboardComponent implements OnInit {
   @ViewChild('orarioDocenteDOM') viewOrarioDocente!: LezioniCalendarioComponent; 
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
 
-  @Input () classeSezioneAnnoId!: number;
+  //@Input () classeSezioneAnnoId!: number;
 //#endregion
 
   constructor(
@@ -115,7 +115,7 @@ export class ClassiDashboardComponent implements OnInit {
 
   ngOnInit() {
 
-    //annoID e idClasse sono due queryParams che arrivano a classi-dashboard ad es. quando si naviga da ClassiSezioniAnniSummary con right click
+    //annoID e classeSezioneAnnoID sono due queryParams che arrivano a classi-dashboard ad es. quando si naviga da ClassiSezioniAnniSummary con right click
     //ora vanno passati al Child ClassiSezioniAnniList perchè quello deve settarsi su questo anno e su questa classe
     //l'annoID ClassiSezioniAnniList lo prende dalla select che a sua volta lo prende dal local storage (anno di default)
     //bisogna fare in modo che annoID in arrivo da home component "vinca" rispetto all'annoID impostato per default
@@ -123,7 +123,7 @@ export class ClassiDashboardComponent implements OnInit {
     this.actRoute.queryParams.subscribe(
       params => {
           this.annoIDrouted = params['annoID'];     
-          this.idClasseInput = params['idclasseSezioneAnno'];  
+          this.classeSezioneAnnoIDrouted = params['classeSezioneAnnoID'];  
     });
 
 
@@ -186,7 +186,7 @@ export class ClassiDashboardComponent implements OnInit {
       data: {
         annoID:               this.annoID,
         classeSezioneAnno:    this.viewClassiSezioniAnni.classeSezioneAnno,
-        idClasseSezioneAnno:  this.idClasse,
+        classeSezioneAnnoID:  this.classeSezioneAnnoID,
         arrAlunniChecked:     this.viewListIscrizioni.getChecked(),
 
       }
@@ -200,7 +200,7 @@ export class ClassiDashboardComponent implements OnInit {
 //#region ----- add/remove to/from Classe-------
 
   addAlunnoToClasse() {
-    if(this.idClasse<0) return;
+    if(this.classeSezioneAnnoID<0) return;
 
     const dialogConfig : MatDialogConfig = {
       panelClass: 'app-full-bleed-dialog',
@@ -208,7 +208,7 @@ export class ClassiDashboardComponent implements OnInit {
       minHeight: '300px',
       data: {titolo: "Iscrivi alunno alla classe", 
               annoID:   this.annoID,
-              idClasse: this.idClasse}
+              classeSezioneAnnoID: this.classeSezioneAnnoID}
     };
 
     const dialogRef = this._dialog.open(IscrizioniAddComponent, dialogConfig);
@@ -221,7 +221,7 @@ export class ClassiDashboardComponent implements OnInit {
   }
 
   addDocenteToClasse() {
-    if(this.idClasse<0) return;
+    if(this.classeSezioneAnnoID<0) return;
 
     const dialogConfig : MatDialogConfig = {
       panelClass: 'app-full-bleed-dialog',
@@ -229,7 +229,7 @@ export class ClassiDashboardComponent implements OnInit {
       minHeight: '300px',
       data: {titolo: "Iscrivi alunno alla classe", 
               annoID:   this.annoID,
-              idClasse: this.idClasse}
+              classeSezioneAnnoID: this.classeSezioneAnnoID}
     };
 
     const dialogRef = this._dialog.open(DocenzeAddComponent, dialogConfig);
@@ -283,12 +283,12 @@ export class ClassiDashboardComponent implements OnInit {
               );
             }
 
-            // let tmpclicked = this.viewClassiSezioniAnni.idClasseSezioneAnno;
+            // let tmpclicked = this.viewClassiSezioniAnni.classeSezioneAnnoID;
             // console.log (tmpclicked);
             this.viewClassiSezioniAnni.loadData()
             // this.viewClassiSezioniAnni.rowclicked(tmpclicked.toString());
             
-            this.router.navigate(['/classi-dashboard'], { queryParams: { annoID: this.annoID, idClasseSezioneAnno: this.idClasse } });
+            this.router.navigate(['/classi-dashboard'], { queryParams: { annoID: this.annoID, classeSezioneAnnoID: this.classeSezioneAnnoID } });
 
             this.viewListIscrizioni.resetSelections();
             this.viewListIscrizioni.loadData();
@@ -331,12 +331,9 @@ export class ClassiDashboardComponent implements OnInit {
               .toPromise();
             }
 
-            // let tmpclicked = this.viewClassiSezioniAnni.idClasseSezioneAnno;
-            // console.log (tmpclicked);
             this.viewClassiDocentiMaterieIscrizioni.loadData()
-            // this.viewClassiSezioniAnni.rowclicked(tmpclicked.toString());
             
-            this.router.navigate(['/classi-dashboard'], { queryParams: { annoID: this.annoID, idClasseSezioneAnno: this.idClasse } });
+            this.router.navigate(['/classi-dashboard'], { queryParams: { annoID: this.annoID, classeSezioneAnnoID: this.classeSezioneAnnoID } });
 
             this.viewClassiDocentiMaterieIscrizioni.resetSelections();
             this.viewClassiDocentiMaterieIscrizioni.loadData();
@@ -355,8 +352,8 @@ export class ClassiDashboardComponent implements OnInit {
     this.annoID = annoID;
   }
 
-  classeIdEmitted(classeId: number) {
-    this.idClasse = classeId;
+  classeSezioneAnnoIDEmitted(classeSezioneAnnoID: number) {
+    this.classeSezioneAnnoID = classeSezioneAnnoID;
   }
 
   docenteIdEmitted(docenteId: number) {

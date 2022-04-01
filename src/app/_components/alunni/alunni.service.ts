@@ -21,13 +21,13 @@ export class AlunniService {
     //http://213.215.231.4/swappX/api/ALU_Alunni
   }
   
-  listByGenitore(idGenitore: any): Observable<ALU_Alunno[]>{
-    return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/ListByGenitore/'+idGenitore);
+  listByGenitore(genitoreID: any): Observable<ALU_Alunno[]>{
+    return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/ListByGenitore/'+genitoreID);
     //http://213.215.231.4/swappX/api/ALU_Alunni/ListByGenitore/3
   }
 
-  listByClasseSezioneAnno(idClasse: any): Observable<ALU_Alunno[]>{
-    return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/ListByClasseSezioneAnno/'+idClasse);
+  listByClasseSezioneAnno(classeSezioneAnnoID: any): Observable<ALU_Alunno[]>{
+    return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/ListByClasseSezioneAnno/'+classeSezioneAnnoID);
     //http://213.215.231.4/swappX/api/ALU_Alunni/ListByClasseSezioneAnno/3
   }
 
@@ -110,7 +110,7 @@ export class AlunniService {
   }
 
   //Recupera l'id da nome cognome  
-  findIdAlunno(searchstring: string) : Observable<any>{
+  findAlunnoID(searchstring: string) : Observable<any>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni')
       .pipe(
         map(val => val.find(val => (val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase())== searchstring.toLowerCase())),
@@ -128,8 +128,8 @@ export class AlunniService {
 
 
   listByGenitoreAlunno (genitoreID: number, alunnoID: number): Observable <any>{
-    return this.http.get( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/ListByGenitoreAlunno?idAlunno='+alunnoID+'&idGenitore='+genitoreID);
-    //http://213.215.231.4/swappX/api/ALU_GenitoriAlunni/ListByGenitoreAlunno?idAlunno=3&idGenitore=4
+    return this.http.get( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/ListByGenitoreAlunno/'+alunnoID+'/'+genitoreID);
+    //http://213.215.231.4/swappX/api/ALU_GenitoriAlunni/ListByGenitoreAlunno/3/4
   }
 
   postGenitoreAlunno (genitoreID: number, alunnoID: number): Observable <any>{
@@ -142,8 +142,8 @@ export class AlunniService {
 
   deleteByGenitoreAlunno (genitoreID: number, alunnoID: number) {
     //console.log ("genitoreID:", genitoreID, "alunnoID:", alunnoID)
-    return this.http.delete( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/DeleteByGenitoreAlunno?idAlunno='+alunnoID+'&idGenitore='+genitoreID);
-    //http://213.215.231.4/swappX/api/ALU_GenitoriAlunni/DeleteByGenitoreAlunno?idAlunno=3&idGenitore=4
+    return this.http.delete( environment.apiBaseUrl  + 'ALU_GenitoriAlunni/DeleteByGenitoreAlunno/'+genitoreID+'/'+alunnoID);
+    //http://213.215.231.4/swappX/api/ALU_GenitoriAlunni/DeleteByGenitoreAlunno/4/3
   }
 
 //#endregion

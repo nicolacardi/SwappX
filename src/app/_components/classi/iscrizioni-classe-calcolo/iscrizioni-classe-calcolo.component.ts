@@ -22,7 +22,7 @@ import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 export interface DialogData {
   annoID:               number;
   classeSezioneAnno:    CLS_ClasseSezioneAnno;
-  idClasseSezioneAnno:  number;
+  classeSezioneAnnoID:  number;
   arrAlunniChecked:     CLS_Iscrizione[];
 }
 
@@ -69,7 +69,7 @@ export class IscrizioniClasseCalcoloComponent implements OnInit {
     const seq = this.data.classeSezioneAnno.classeSezione.classe.seq; //questo è il valore seq della classe a cui è iscritto...vale uguale o +1
     
     console.log ("data:", this.data);
-    const obsClasseSezioneAnno$: Observable<CLS_ClasseSezioneAnno> = this.svcClasseSezioneAnno.getWithClasseSezioneAnno(this.data.idClasseSezioneAnno);
+    const obsClasseSezioneAnno$: Observable<CLS_ClasseSezioneAnno> = this.svcClasseSezioneAnno.getWithClasseSezioneAnno(this.data.classeSezioneAnnoID);
     obsClasseSezioneAnno$.subscribe(
       val => this.classeSezioneAnno = val
     );

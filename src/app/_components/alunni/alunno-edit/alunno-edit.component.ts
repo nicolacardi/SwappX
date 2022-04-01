@@ -66,7 +66,7 @@ export class AlunnoEditComponent implements OnInit {
 
   constructor(
     public _dialogRef: MatDialogRef<AlunnoEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public idAlunno: number,
+    @Inject(MAT_DIALOG_DATA) public alunnoID: number,
     private fb:                           FormBuilder, 
     private svcIscrizioni:                IscrizioniService,
     private svcAlunni:                    AlunniService,
@@ -117,7 +117,7 @@ export class AlunnoEditComponent implements OnInit {
 
   loadData(){
 
-    //this.idAlunno = this.route.snapshot.params['id'];  
+    //this.alunnoID = this.route.snapshot.params['id'];  
     // this.caller_page = this.route.snapshot.queryParams["page"];
     // this.caller_size = this.route.snapshot.queryParams["size"];
     // this.caller_filter = this.route.snapshot.queryParams["filter"];
@@ -129,9 +129,9 @@ export class AlunnoEditComponent implements OnInit {
     //********************* POPOLAMENTO FORM *******************
     //serve distinguere tra form vuoto e form popolato in arrivo da lista alunni
     
-    if (this.idAlunno && this.idAlunno + '' != "0") {
+    if (this.alunnoID && this.alunnoID + '' != "0") {
 
-      const obsAlunno$: Observable<ALU_Alunno> = this.svcAlunni.get(this.idAlunno);
+      const obsAlunno$: Observable<ALU_Alunno> = this.svcAlunni.get(this.alunnoID);
       const loadAlunno$ = this._loadingService.showLoaderUntilCompleted(obsAlunno$);
       //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
       this.alunno$ = loadAlunno$
@@ -201,7 +201,7 @@ export class AlunnoEditComponent implements OnInit {
     });
     dialogYesNo.afterClosed().subscribe(result => {
       if(result){
-        this.svcAlunni.delete(Number(this.idAlunno))
+        this.svcAlunni.delete(Number(this.alunnoID))
         //.pipe (
         //  finalize(()=>this.router.navigate(['/alunni']))
         //)
@@ -256,9 +256,9 @@ export class AlunnoEditComponent implements OnInit {
     //ma con una condizione: la iif specifica proprio che SE il risultato della verifica è vuoto allora si può procedere con la post
     //altrimenti si mette in successione l'observable vuoto (of())
     
-    this.svcAlunni.listByGenitoreAlunno(genitore.id, this.idAlunno)
+    this.svcAlunni.listByGenitoreAlunno(genitore.id, this.alunnoID)
     .pipe(
-      concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(genitore.id, this.idAlunno), of() )
+      concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(genitore.id, this.alunnoID), of() )
       )
     ).subscribe(
       res=> {
@@ -270,8 +270,8 @@ export class AlunnoEditComponent implements OnInit {
   }
 
   removeFromFamily(genitore: ALU_Genitore) {
-    const alunnoID = this.idAlunno;
-    this.svcAlunni.deleteByGenitoreAlunno(genitore.id, this.idAlunno).subscribe(
+    const alunnoID = this.alunnoID;
+    this.svcAlunni.deleteByGenitoreAlunno(genitore.id, this.alunnoID).subscribe(
       res=> {
           this.genitoriFamigliaComponent.loadData();
       },
@@ -283,8 +283,8 @@ export class AlunnoEditComponent implements OnInit {
   addToAttended(classeSezioneAnno: CLS_ClasseSezioneAnnoGroup) {
     //così come ho fatto in dialog-add mi costruisco un oggetto "stile" form e lo passo alla postClasseSezioneAnnoAlunno
     //avrei potuto anche passare i valori uno ad uno, ma è già pronta così avendola usata in dialog-add
-    let objClasseSezioneAnnoAlunno = {AlunnoID: this.idAlunno, ClasseSezioneAnnoID: classeSezioneAnno.id};
-    const checks$ = this.svcIscrizioni.getByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id, this.idAlunno)
+    let objClasseSezioneAnnoAlunno = {AlunnoID: this.alunnoID, ClasseSezioneAnnoID: classeSezioneAnno.id};
+    const checks$ = this.svcIscrizioni.getByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id, this.alunnoID)
     .pipe(
       //se trova che la stessa classe è già presente res.length è != 0 quindi non procede con la getByAlunnoAnno ma restituisce of()
       //se invece res.length == 0 dovrebbe proseguire e concatenare la verifica successiva ch è getByAlunnoAndAnno...
@@ -302,7 +302,7 @@ export class AlunnoEditComponent implements OnInit {
         }
       ),
       concatMap( res => iif (()=> res == null,
-        this.svcIscrizioni.getByAlunnoAndAnno(classeSezioneAnno.annoID, this.idAlunno) , of() )
+        this.svcIscrizioni.getByAlunnoAndAnno(classeSezioneAnno.annoID, this.alunnoID) , of() )
       ),
       tap(res=> {
         if (res != null) {
@@ -330,7 +330,7 @@ export class AlunnoEditComponent implements OnInit {
   }
 
   removeFromAttended(classeSezioneAnno: CLS_ClasseSezioneAnno) {
-    this.svcIscrizioni.deleteByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id , this.idAlunno).subscribe(
+    this.svcIscrizioni.deleteByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id , this.alunnoID).subscribe(
       res=> {
           this.classiAttendedComponent.loadData();
       },

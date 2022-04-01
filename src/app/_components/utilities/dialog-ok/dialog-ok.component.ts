@@ -5,8 +5,8 @@ export interface DialogData {
     titolo: string;
     sottoTitolo: string;
     annoID: number;
-    idClasse: number;
-    idAlunno: number;
+    classeSezioneAnnoID: number;
+    alunnoID: number;
 }
 
 @Component({

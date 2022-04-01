@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { concatMap, take, tap } from 'rxjs/operators';
 
 //components
-import { DialogDataLezione, DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { Utility } from '../../utilities/utility.component';
 
@@ -25,6 +25,7 @@ import { PER_Docente } from 'src/app/_models/PER_Docente';
 import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { DialogDataLezione } from 'src/app/_models/DialogData';
 
 @Component({
   selector: 'app-lezione',
@@ -57,7 +58,7 @@ export class LezioneComponent implements OnInit {
   loading:                    boolean = true;
   public docenteView: boolean = false;
   breakpoint!:                number;
-  idClasseSezioneAnno!:       number;
+  classeSezioneAnnoID!:       number;
 
 
   @ViewChild('autosize') autosize!: CdkTextareaAutosize;
@@ -137,8 +138,8 @@ export class LezioneComponent implements OnInit {
     );
 
 
-    if (this.data.idClasseSezioneAnno != null && this.data.idClasseSezioneAnno != undefined) {
-      this.svcClasseSezioneAnno.get(this.data.idClasseSezioneAnno)
+    if (this.data.classeSezioneAnnoID != null && this.data.classeSezioneAnnoID != undefined) {
+      this.svcClasseSezioneAnno.get(this.data.classeSezioneAnnoID)
       .subscribe(
         (val) => {
           this.strClasseSezioneAnno = val.classeSezione.classe.descrizione2 + " " + val.classeSezione.sezione;
@@ -153,10 +154,10 @@ export class LezioneComponent implements OnInit {
   loadData(): void {
 
     this.breakpoint = (window.innerWidth <= 800) ? 2 : 2;
-    this.obsClassiDocentiMaterie$ = this.svcClassiDocentiMaterie.listByClasseSezioneAnno(this.data.idClasseSezioneAnno);
+    this.obsClassiDocentiMaterie$ = this.svcClassiDocentiMaterie.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
     
     //this.obsMaterie$ = this.svcMaterie.listOrario(); //AS [30mar2022]: sostituita dal metodo listByClasseSezioneAnno
-    this.obsMaterie$ = this.svcMaterie.listByClasseSezioneAnno(this.idClasseSezioneAnno); 
+    this.obsMaterie$ = this.svcMaterie.listByClasseSezioneAnno(this.classeSezioneAnnoID); 
     this.obsDocenti$ = this.svcDocenti.list();
 
     if (this.data.dove == "orario") {
@@ -209,7 +210,7 @@ export class LezioneComponent implements OnInit {
       this.strDtEnd = Utility.UT_FormatDate(this.dtEnd);
       this.strH_End = Utility.UT_FormatHour(this.dtEnd);
 
-      this.form.controls.classeSezioneAnnoID.setValue(this.data.idClasseSezioneAnno);
+      this.form.controls.classeSezioneAnnoID.setValue(this.data.classeSezioneAnnoID);
       this.form.controls.dtCalendario.setValue(this.dtStart);
       this.form.controls.h_Ini.setValue(this.strH_Ini);
       this.form.controls.h_End.setValue(this.strH_End);

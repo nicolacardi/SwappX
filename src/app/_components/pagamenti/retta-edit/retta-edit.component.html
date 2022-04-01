@@ -88,7 +88,7 @@
                             </div>
                             <app-rettaanno-edit
                                 [annoID]="data.annoID"
-                                [alunnoID]="data.idAlunno" 
+                                [alunnoID]="data.alunnoID" 
                                 [quotaDefaultAnno] ="quotaDefaultAnno"
                                 [quotaConcordataAnno] ="quotaConcordataAnno"
                                 [totPagamentiAnno] = "totPagamentiAnno">
@@ -128,7 +128,7 @@
                     <mat-tab label="Gestione Pagamenti">
                         <mat-label class="frameLabel"> Nuovo Pagamento </mat-label>
                             <app-rettapagamento-edit
-                                [alunnoID]="data.idAlunno"
+                                [alunnoID]="data.alunnoID"
                                 [annoID]="data.annoID"
                                 (nuovoPagamento) = "nuovoPagamentoArrivato($event)">
                             </app-rettapagamento-edit>
@@ -136,7 +136,7 @@
                         <div class="_pagamenti-container cellBordered mt10">
                             <app-pagamenti-list 
                                 [dove]="'retta-edit'" 
-                                [alunnoID]="data.idAlunno"
+                                [alunnoID]="data.alunnoID"
                                 [annoID]="data.annoID"
                                 (pagamentoEliminato) = "pagamentoEliminatoArrivato()">
                                                 <!-- (hoverPagamento) = "hoverPagamentoArrivato($event)" -->
@@ -145,12 +145,12 @@
 
                     </mat-tab>
 
-                    <mat-tab label="Utilities Rette" *ngIf="data.idAlunno">
+                    <mat-tab label="Utilities Rette" *ngIf="data.alunnoID">
                         <mat-label class="frameLabel"> Utilities per la definizione rapida delle rette </mat-label>
                         <div class="_utilities-container cellBordered mt10">
                             <app-retta-calcolo-alunno 
                                 [annoID]="data.annoID"
-                                [alunnoID]="data.idAlunno"
+                                [alunnoID]="data.alunnoID"
                                 (ricalcoloRette) = "ricalcoloRetteArrivato()"   >
                             </app-retta-calcolo-alunno>
                         </div>

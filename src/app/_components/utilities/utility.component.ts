@@ -25,7 +25,7 @@ export abstract class Utility {
   }
 
   
-  public static IscrizioneAlunno( idClasseSezioneAnno: number, idAlunno: string){
+  public static IscrizioneAlunno( classeSezioneAnnoID: number, alunnoID: string){
 
     /* Check
     - verifica che l'alunno non sia già iscritto ad una classe per l'anno
@@ -36,7 +36,7 @@ export abstract class Utility {
 
   }
 
-  public static CalcoloRette(annoID: number, idAlunno: string){
+  public static CalcoloRette(annoID: number, alunnoID: string){
 
     //Fratelli
 

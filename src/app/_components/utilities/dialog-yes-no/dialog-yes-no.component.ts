@@ -1,32 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-
-export interface DialogData {
-  titolo:               string;
-  sottoTitolo:          string;
-  annoID:               number;
-  idClasse:             number;
-  idAlunno:             number;
-}
-
-export interface DialogDataLezione {
-  idLezione:            number;
-  start:                string;
-  end:                  string;
-  dtCalendario:         string;
-  h_Ini:                string;
-  h_End:                string;
-  idClasseSezioneAnno:  number;
-  dove:                 string;
-}
-
-export interface DialogDataLezioniUtils {
-  start:                Date;
-  idClasseSezioneAnno:  number;
-}
-
-
-
+import { DialogData } from 'src/app/_models/DialogData';
 @Component({
   selector: 'app-dialog-yes-no',
   templateUrl: './dialog-yes-no.component.html',
