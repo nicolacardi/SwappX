@@ -3,7 +3,7 @@
 
 
     <mat-toolbar [ngClass]="{'hidden-header': !isLoggedIn}">
-        <button mat-icon-button (click)="isPinned? null : (isExpanded = !isExpanded)" >
+        <button mat-icon-button [ngClass]="{'invisible': isPinned}" (click)="isPinned? null : (isExpanded = !isExpanded)" >
             <mat-icon>menu</mat-icon>
         </button>
         
