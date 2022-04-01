@@ -62,7 +62,6 @@ export class IscrizioniService {
   }
 
   delete(id: number): Observable <any>{
-    console.log ("iscrizioni.delete", id);
     return this.http.delete( environment.apiBaseUrl  + 'CLS_Iscrizioni/' + id); 
   }
       

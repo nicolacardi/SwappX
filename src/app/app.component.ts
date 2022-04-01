@@ -10,6 +10,7 @@ import { Utility } from  './_components/utilities/utility.component';
 
 //models
 import { User } from './_user/Users';
+import { MatExpansionPanel } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ import { User } from './_user/Users';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-
+  isPinned = false;
+  isExpanded = false;
 //#region ----- Variabili -------
   //isLoggedIn?: boolean;
   public isLoggedIn?:  boolean = false;
@@ -33,6 +35,10 @@ export class AppComponent implements OnInit{
 
 //#region ----- ViewChild Input Output -------
   @ViewChild('end') public rightSidenav!: MatSidenav;
+
+  @ViewChild('expansion1') public expansion1!: MatExpansionPanel;
+  @ViewChild('expansion2') public expansion2!: MatExpansionPanel;
+
 //#endregion
   constructor(private svcUser:              UserService,
               private router:               Router,
@@ -80,5 +86,16 @@ export class AppComponent implements OnInit{
     this.svcUser.Logout();
     this.router.navigate(['/user/login']);
   }
+
+  expandExpansion1() {
+    console.log ("apro");
+    setTimeout(() => this.expansion1.expanded = true, 10);
+  }
+
+  expandExpansion2() {
+    console.log ("apro");
+    setTimeout(() => this.expansion2.expanded = true, 10);
+  }
+
 
 }

@@ -21,6 +21,8 @@ import { ClassiDocentiMaterieListComponent } from '../classi-docenti-materie-lis
 import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
 import { LezioniCalendarioComponent } from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
 import { MatTabGroup } from '@angular/material/tabs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 
 @Component({
@@ -104,7 +106,9 @@ export class ClassiDashboardComponent implements OnInit {
     public _dialog:                       MatDialog,
     private _jspdf:                       JspdfService,
     private actRoute:                     ActivatedRoute,
-    private router:                       Router          
+    private router:                       Router,        
+    private _snackBar:                    MatSnackBar
+  
     ) {}
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -204,7 +208,7 @@ export class ClassiDashboardComponent implements OnInit {
       width: '400px',
       minHeight: '300px',
       data: {titolo: "Iscrivi alunno alla classe", 
-              idAnno:   this.idAnno,
+              annoID:   this.idAnno,
               idClasse: this.idClasse}
     };
 
@@ -269,8 +273,16 @@ export class ClassiDashboardComponent implements OnInit {
             // }); 
             //per ragioni di sincronia (aggiornamento classiSezioniAnniList dopo il loop) usiamo la Promise()
             for (const element of objIdToRemove) {
-              await this.svcIscrizioni.delete(element.id)
-              .toPromise();
+              // await this.svcIscrizioni.delete(element.id)
+              // .toPromise();
+              this.svcIscrizioni.delete(element.id).subscribe(
+                res=>{},
+                err=>{
+                  console.log ("err",err);
+                  this._snackBar.openFromComponent(SnackbarComponent, {data: err, panelClass: ['red-snackbar']});
+                }
+
+              );
             }
 
             // let tmpclicked = this.viewClassiSezioniAnni.idClasseSezioneAnno;

@@ -1,9 +1,9 @@
 <loading></loading>
 
-<mat-sidenav-container fullscreen >
+
 
     <mat-toolbar [ngClass]="{'hidden-header': !isLoggedIn}">
-        <button mat-icon-button (click)="start.open()" >
+        <button mat-icon-button (click)="isPinned? null : (isExpanded = !isExpanded)" >
             <mat-icon>menu</mat-icon>
         </button>
         
@@ -29,122 +29,6 @@
     -->
     </mat-toolbar>
 
-    <mat-sidenav #start class="leftSidenav">
-
-        <mat-nav-list >
-
-            <div mat-list-item >
-                <img  class="logo-img ml15 mt10" src="../assets/logoscrittaazzurro.svg">
-            </div>
-            <a mat-list-item class="h35px" routerLink="home" (click)="start.close()" >
-                <img class="iconaMenuSidenav" src="../assets/home.svg">
-                <span>Home</span>
-            </a>
-
-            <a mat-list-item class="h35px" routerLink="calendario" (click)="start.close()">
-                <img class="iconaMenuSidenav" src="../assets/calendar.svg">
-                <span>Calendario</span>
-            </a>
-
-            <mat-divider></mat-divider>
-            <a mat-list-item class="h35px" routerLink="alunni" (click)="start.close()" >
-                <img class="iconaMenuSidenav" src="../assets/alunniList.svg">
-                <span>Alunni</span>
-            </a>
-
-            <a mat-list-item class="h35px" routerLink="iscrizioni" (click)="start.close()" >
-                <img class="iconaMenuSidenav" src="../assets/iscrizioniList.svg">
-                <span>Iscrizioni</span>
-            </a>
-
-            <a mat-list-item class="h35px" routerLink="genitori" (click)="start.close()">
-                <img class="iconaMenuSidenav" src="../assets/genitoriList.svg">
-                <span>Genitori</span>
-            </a>  
-
-            <a mat-list-item class="h35px" routerLink="persone" (click)="start.close()">
-                <img class="iconaMenuSidenav" src="../assets/docentiList.svg">
-                <span>Personale</span>
-            </a>
-
-            <mat-expansion-panel class="mat-elevation-z0">
-                <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
-                  <mat-panel-title>
-                    <img class="iconaMenuSidenav mr10" src="../assets/classiMenu.svg">
-                    <span class="fs16">Classi</span>
-                  </mat-panel-title>
-                  <mat-panel-description> </mat-panel-description>
-                </mat-expansion-panel-header>
-
-                <mat-divider></mat-divider>
-                
-                <a mat-list-item class="h35px" routerLink="classi" (click)="start.close()">
-                    <img class="iconaMenuSidenav" src="../assets/classiList.svg">
-                    <span>Elenco Classi</span>
-                </a> 
-
-                <a mat-list-item class="h35px" routerLink="classi-dashboard" (click)="start.close()">
-                    <img class="iconaMenuSidenav" src="../assets/classiDashboard.svg">
-                    <span>Gestione Classi</span>
-                </a>
-                <mat-divider></mat-divider>
-            </mat-expansion-panel>
-
-              <mat-expansion-panel class="mat-elevation-z0">
-                <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
-                  <mat-panel-title>
-                    <img class="iconaMenuSidenav mr10" src="../assets/money.svg">
-                    <span class="fs16">Ricavi</span>
-                  </mat-panel-title>
-                  <mat-panel-description>
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-                <mat-divider></mat-divider>
-
-                <a mat-list-item class="h35px" routerLink="pagamenti" (click)="start.close()">
-                    <img class="iconaMenuSidenav" src="../assets/pagamenti.svg">
-                    <span>Elenco Pagamenti</span>
-                </a> 
-                <a mat-list-item class="h35px" routerLink="rette" (click)="start.close()">
-                    <img class="iconaMenuSidenav" src="../assets/retteList.svg">
-                    <span>Rette</span>
-                </a> 
-                <mat-divider></mat-divider>
-              </mat-expansion-panel>
-
-
-            <!-- <a mat-list-item routerLink="genitoreDetails">
-            <mat-icon>person</mat-icon>
-            <span>Genitore</span>
-        </a>  -->
-
-
-            <mat-divider></mat-divider>
-            <!-- Utenti -->
-            <a mat-list-item class="h35px" routerLink="users" (click)="start.close()" *ngIf="currUser && currUser.ruoloID >= 10">
-            <!-- <a mat-list-item routerLink="users" (click)="start.close()"> -->
-                <img class="iconaMenuSidenav" src="../assets/utentiList.svg">
-                <span>Gestione Utenti</span>
-            </a> 
-
-            <a mat-list-item class="h35px" (click)="start.close()">
-                <img class="iconaMenuSidenav" src="../assets/verbaliList.svg">
-                <span>Verbali</span>
-            </a>
-
-            <a mat-list-item class="h35px" (click)="start.close()">
-                <img class="iconaMenuSidenav" src="../assets/tutorialsList.svg">
-                <span>Tutorials</span>
-            </a>
-            
-            <a mat-list-item class="_pos-absolute _border-top _grey-background" routerLink="impostazioni" (click)="start.close()"  style="z-index: 100000!important; bottom: 0;" *ngIf="currUser && (currUser.ruoloID == 5 || currUser.ruoloID >=10)">
-                <img class="iconaMenuSidenav" src="../assets/settings.svg">
-                <span>Impostazioni</span>
-            </a>
-
-        </mat-nav-list>
-    </mat-sidenav>
-
     <mat-menu #menu  >
         <button mat-menu-item routerLink="profilo"  >
             <mat-icon>account_box</mat-icon>
@@ -161,6 +45,139 @@
             <span>Logout</span>
         </button>
     </mat-menu>
+
+<mat-sidenav-container fullscreen autosize>
+    <mat-sidenav *ngIf="isLoggedIn"  #start class="leftSidenav" mode="side" opened="true">
+
+        <mat-nav-list >
+
+            <!-- <div mat-list-item>
+                <img  class="logo-img ml15 mt50" src="../assets/logoscrittaazzurro.svg">
+            </div> -->
+
+            <a mat-list-item *ngIf="isExpanded" class="_pinIconContainer h20px mt60" >
+                <img *ngIf="!isPinned" class="_pinIcon" src="../assets/pinMenu.svg" (click)="isPinned = true" >
+                <img *ngIf="isPinned" class="_pinIcon" src="../assets/unpinMenu.svg" (click)="isPinned = false; isExpanded = false;" >
+            </a>
+
+
+            <a mat-list-item class="h35px mt60" routerLink="home" (click)="!isPinned? (isExpanded = false): null" >
+                <img class="iconaMenuSidenav" src="../assets/home.svg">
+                <span *ngIf="isExpanded">Home</span>
+            </a>
+
+            <a mat-list-item class="h35px" routerLink="calendario" (click)="!isPinned? (isExpanded = false): null">
+                <img class="iconaMenuSidenav" src="../assets/calendar.svg">
+                <span *ngIf="isExpanded">Calendario</span>
+            </a>
+
+            <mat-divider></mat-divider>
+            <a mat-list-item class="h35px" routerLink="alunni" (click)="!isPinned? (isExpanded = false): null" >
+                <img class="iconaMenuSidenav" src="../assets/alunniList.svg">
+                <span *ngIf="isExpanded">Alunni</span>
+            </a>
+
+            <a mat-list-item class="h35px" routerLink="iscrizioni" (click)="!isPinned? (isExpanded = false): null" >
+                <img class="iconaMenuSidenav" src="../assets/iscrizioniList.svg">
+                <span *ngIf="isExpanded">Iscrizioni</span>
+            </a>
+
+            <a mat-list-item class="h35px" routerLink="genitori" (click)="!isPinned? (isExpanded = false): null">
+                <img class="iconaMenuSidenav" src="../assets/genitoriList.svg">
+                <span *ngIf="isExpanded">Genitori</span>
+            </a>  
+
+            <a mat-list-item class="h35px" routerLink="persone" (click)="!isPinned? (isExpanded = false): null">
+                <img class="iconaMenuSidenav" src="../assets/docentiList.svg">
+                <span *ngIf="isExpanded">Personale</span>
+            </a>
+
+            <a mat-list-item class="h35px" *ngIf="!isExpanded" (click)="isExpanded = true; expandExpansion1()">
+                <img class="iconaMenuSidenav" src="../assets/classiMenu_expand.svg">
+            </a>
+
+            <mat-expansion-panel *ngIf="isExpanded" class="mat-elevation-z0" #expansion1>
+                <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
+                  <mat-panel-title>
+                    <img class="iconaMenuSidenav mr10" src="../assets/classiMenu.svg">
+                    <span class="fs16" >Classi</span>
+                  </mat-panel-title>
+                  <mat-panel-description> </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <mat-divider></mat-divider>
+                
+                <a mat-list-item class="h35px" routerLink="classi" (click)="!isPinned? (isExpanded = false): null">
+                    <img class="iconaMenuSidenav" src="../assets/classiList.svg">
+                    <span>Elenco Classi</span>
+                </a> 
+
+                <a mat-list-item class="h35px" routerLink="classi-dashboard" (click)="!isPinned? (isExpanded = false): null">
+                    <img class="iconaMenuSidenav" src="../assets/classiDashboard.svg">
+                    <span>Gestione Classi</span>
+                </a>
+                <mat-divider></mat-divider>
+            </mat-expansion-panel>
+
+            <a mat-list-item class="h35px" *ngIf="!isExpanded" (click)="isExpanded = true; expandExpansion2()">
+                <img class="iconaMenuSidenav" src="../assets/money_expand.svg">
+            </a>
+            <mat-expansion-panel *ngIf="isExpanded" class="mat-elevation-z0" #expansion2>
+            <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
+                <mat-panel-title>
+                <img class="iconaMenuSidenav mr10" src="../assets/money.svg">
+                <span class="fs16" *ngIf="isExpanded">Ricavi</span>
+                </mat-panel-title>
+                <mat-panel-description>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-divider></mat-divider>
+
+            <a mat-list-item class="h35px" routerLink="pagamenti" (click)="!isPinned? (isExpanded = false): null">
+                <img class="iconaMenuSidenav" src="../assets/pagamenti.svg">
+                <span>Elenco Pagamenti</span>
+            </a> 
+            <a mat-list-item class="h35px" routerLink="rette" (click)="!isPinned? (isExpanded = false): null">
+                <img class="iconaMenuSidenav" src="../assets/retteList.svg">
+                <span>Rette</span>
+            </a> 
+            <mat-divider></mat-divider>
+            </mat-expansion-panel>
+
+
+            <!-- <a mat-list-item routerLink="genitoreDetails">
+            <mat-icon>person</mat-icon>
+            <span>Genitore</span>
+        </a>  -->
+
+
+            <mat-divider></mat-divider>
+            <!-- Utenti -->
+            <a mat-list-item class="h35px" routerLink="users" (click)="!isPinned? (isExpanded = false): null" *ngIf="currUser && currUser.ruoloID >= 10">
+            <!-- <a mat-list-item routerLink="users" (click)="isExpanded = false"> -->
+                <img class="iconaMenuSidenav" src="../assets/utentiList.svg">
+                <span *ngIf="isExpanded">Gestione Utenti</span>
+            </a> 
+
+            <a mat-list-item class="h35px" (click)="!isPinned? (isExpanded = false): null">
+                <img class="iconaMenuSidenav" src="../assets/verbaliList.svg">
+                <span *ngIf="isExpanded">Verbali</span>
+            </a>
+
+            <a mat-list-item class="h35px" (click)="!isPinned? (isExpanded = false): null">
+                <img class="iconaMenuSidenav" src="../assets/tutorialsList.svg">
+                <span *ngIf="isExpanded">Tutorials</span>
+            </a>
+            
+            <a mat-list-item class="_pos-absolute _border-top _grey-background" routerLink="impostazioni" (click)="!isPinned? (isExpanded = false): null"  style="z-index: 100000!important; bottom: 0;" *ngIf="currUser && (currUser.ruoloID == 5 || currUser.ruoloID >=10)">
+                <img class="iconaMenuSidenav" src="../assets/settings.svg">
+                <span *ngIf="isExpanded">Impostazioni</span>
+            </a>
+
+        </mat-nav-list>
+    </mat-sidenav>
+
+
 
     
     <hr style="height: 48px"  [ngClass]="{'hidden-header': !isLoggedIn}"> 
