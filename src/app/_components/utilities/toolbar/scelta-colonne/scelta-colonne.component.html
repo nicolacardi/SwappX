@@ -35,7 +35,7 @@
                     <div cdkDropList class="list" [cdkDropListData]="basket"(cdkDropListDropped)="drop($event)">
                         <div class="box" *ngFor="let item of basket" cdkDrag>{{item}}</div>
                     </div> -->
-
+                    
                     <div cdkDropList #VisibleList="cdkDropList" class="list"  [cdkDropListData]="lstVisible"  (cdkDropListDropped)="drop($event)">
                         <div class="box" *ngFor="let column of lstVisible" cdkDrag [cdkDragDisabled]="column.disabled" >{{column.columnName}}</div>
                     </div>

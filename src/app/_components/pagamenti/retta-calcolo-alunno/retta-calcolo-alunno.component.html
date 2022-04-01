@@ -1,4 +1,4 @@
-<mat-grid-list class="ma w50 bordered-grey p5 mt30" [cols]="12" rowHeight="20px">
+<mat-grid-list class="ma w50 bordered-grey p5 mt20" [cols]="12" rowHeight="20px">
     <mat-grid-tile *ngFor="let mese of mesiArr; let i = index" >
         <mat-label>{{placeholderMeseArr[i]}}</mat-label>
     </mat-grid-tile>
@@ -6,7 +6,7 @@
         <mat-checkbox color="warn" #QuoteListElement [checked]="!!+QuoteDefault.substring(i,i+1)"></mat-checkbox>
     </mat-grid-tile>
 </mat-grid-list>
-<div class="center mt20">
+<div class="center mt10">
     <mat-label>
         {{strDescrizione}}
         iscritto allo stesso anno.

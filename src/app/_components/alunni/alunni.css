@@ -8,13 +8,13 @@
 
   /* elenco tutti i genitori da cui attingere */
   ._genitori-list-container {
-    height: 260px;
+    height: 240px;
     overflow: auto;
   }
 
   /* elenco classi frequentate */
   ._classi-attended-container {
-    height: 450px;
+    height: 400px;
     width: 380px;
     overflow: auto;
   }
@@ -40,15 +40,15 @@
   ._rotated-accordion {
     display: block;
     transform-origin: top left;
-    transform: rotate(-90deg) translateX(-450px); /* rotate and position it; translateX value corresponds to panel height */
-    width: 450px;                                 /* this will be the height of the accordion (inversed due to rotation) */
+    transform: rotate(-90deg) translateX(-400px); /* rotate and position it; translateX value corresponds to panel height */
+    width: 400px;                                 /* this will be the height of the accordion (inversed due to rotation) */
   }
 
   ._panel-content {
     transform-origin: top left;
     transform: rotate(90deg); /* rotate back Questo è un espediente per avere l'accordion verticale e il panel prizzontale*/
     margin-left: 100%;        /* position it */
-    height: 448px;            /* real height of the content */
+    height: 398px;            /* real height of the content */
     width: 280px;             /* real width of the content */
   }
 
@@ -69,6 +69,10 @@
   :host ::ng-deep .mat-tab-label, :host ::ng-deep.mat-tab-label-active{
     min-width: 15%!important;
     padding: 3px!important;
+  }
+
+  .mat-card {
+    padding-bottom: 0px;
   }
 
 

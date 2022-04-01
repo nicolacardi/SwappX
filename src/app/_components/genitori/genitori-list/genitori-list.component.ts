@@ -253,7 +253,7 @@ export class GenitoriListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
-      height: '620px',
+      height: '580px',
       data: 0
     };
 
@@ -269,7 +269,7 @@ export class GenitoriListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
-      height: '620px',
+      height: '580px',
       data: id
     };
 

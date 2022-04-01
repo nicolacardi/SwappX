@@ -7,8 +7,8 @@
   }
 
   /* elenco tutti i figli potenziali da cui attingere */
-  _.alunni-list-container{
-    height: 300px;
+  ._alunni-list-container{
+    height: 240px;
     overflow: auto;
   }
 
@@ -16,3 +16,9 @@
     padding: 0px !important;
   }
 
+
+  .mat-card {
+    padding-bottom: 0px;
+  }
+
+  

@@ -317,14 +317,14 @@ export class PagamentiListComponent implements OnInit {
 
   editRecord(alunnoID: number){
 
-    let anno = this.annoID;
+    let annoID = this.annoID;
     const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
         width: '850px',
-        height: '700px',
+        height: '580px',
         data: {
           idAlunno: alunnoID,
-          idAnno: anno
+          annoID: annoID
         }
     };
 

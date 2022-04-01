@@ -34,6 +34,8 @@ export class AppComponent implements OnInit{
 //#endregion
 
 //#region ----- ViewChild Input Output -------
+  @ViewChild('start') public leftSidenav!: MatSidenav;
+
   @ViewChild('end') public rightSidenav!: MatSidenav;
 
   @ViewChild('expansion1') public expansion1!: MatExpansionPanel;
@@ -97,5 +99,32 @@ export class AppComponent implements OnInit{
     setTimeout(() => this.expansion2.expanded = true, 10);
   }
 
+  clickMenuItem() {
+    if (!this.isPinned) {
+      this.isExpanded = false
+      this.leftSidenav.mode = "side";
+    }
+  }
 
+  clickHamburger() {
+    if (!this.isPinned) {
+      this.isExpanded = !this.isExpanded
+    }
+    if(this.isExpanded) {
+      this.leftSidenav.mode = "over";
+    } else {
+      this.leftSidenav.mode = "side";
+    }
+  }
+
+  clickPin() {
+    this.isPinned = true
+    this.leftSidenav.mode = "side";
+  }
+
+  clikUnPin() {
+    this.isPinned = false; 
+    this.isExpanded = false;
+    this.leftSidenav.mode = "side";
+  }
 }

@@ -64,7 +64,7 @@ export class ToolbarComponent {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
-      height: '620px',
+      height: '580px',
       //data: component.displayedColumns
       data:this.buildLayout()
     };

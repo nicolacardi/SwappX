@@ -266,7 +266,7 @@ export class IscrizioniClasseListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
-      height: '620px',
+      height: '580px',
       data: 0
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
@@ -283,7 +283,7 @@ export class IscrizioniClasseListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
-      height: '620px',
+      height: '580px',
       data: recordID
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
@@ -316,7 +316,7 @@ export class IscrizioniClasseListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
         width: '850px',
-        height: '700px',
+        height: '580px',
         data: {
           idAlunno: alunnoID,
           idAnno: anno

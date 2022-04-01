@@ -172,13 +172,13 @@
 
     /*elenco pagamenti in retta-edit*/
     ._pagamenti-container {
-        height: 240px;
+        height: 170px;
         overflow: auto;
     }
 
     /*utilities suddivisione rette in retta-edit*/
     ._utilities-container {
-        height: 330px;
+        height: 260px;
     }
 
     /*usato p.e. in retta-calcolo per vedere elenco classi*/
@@ -220,6 +220,14 @@
     }
 
 
+::ng-deep ._no-padding-bottom .mat-form-field-wrapper {
+        padding-bottom: 0px !important;
+    }
+
+
+    .mat-card {
+        padding-bottom: 0px;
+      }
 
 
 
