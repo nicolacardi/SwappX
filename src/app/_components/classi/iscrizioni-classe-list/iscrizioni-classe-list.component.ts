@@ -312,14 +312,14 @@ export class IscrizioniClasseListComponent implements OnInit {
 
   openPagamenti(alunnoID: number){
 
-    let anno = 1; //TODO questa sarà un default da mettere nei parametri
+    let annoID = 1; //TODO questa sarà un default da mettere nei parametri
     const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
         width: '850px',
         height: '580px',
         data: {
           idAlunno: alunnoID,
-          idAnno: anno
+          annoID: annoID
         }
     };
 

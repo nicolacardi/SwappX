@@ -77,7 +77,7 @@
     <mat-menu #rightMenu="matMenu"> 
         <ng-template matMenuContent let-item="item"> 
             <mat-label class="_titolo-filtri-avanzati">{{item.classe | uppercase}} {{item.sezione | uppercase}}</mat-label>
-            <!-- <button mat-menu-item routerLink="/classi-dashboard" [queryParams]="{ idAnno: item.anno }">Gestione Classe</button> -->
+            <!-- <button mat-menu-item routerLink="/classi-dashboard" [queryParams]="{ annoID: item.anno }">Gestione Classe</button> -->
             <button mat-menu-item (click)="openGestioneClasse(item)">Gestione Classe</button> 
             <button mat-menu-item>Pagelle</button>
             <button mat-menu-item>Quote e Pagamenti</button>

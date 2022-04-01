@@ -27,7 +27,6 @@ export class RettepagamentiSummaryComponent implements OnInit {
 
 matDataSource = new MatTableDataSource<PAG_RettePagamenti_Sum>();
 
-public idAnnoScolastico!:           number;
 obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
 
 form! :                             FormGroup;

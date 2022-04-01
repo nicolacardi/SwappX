@@ -41,7 +41,7 @@ export class AnniScolasticiService {
       }
   }
 
-  findIdAnnoScolastico(searchstring: string) : Observable<any>{
+  findAnnoID(searchstring: string) : Observable<any>{
     return this.http.get<ASC_AnnoScolastico[]>(environment.apiBaseUrl+'ASC_Anni')
       .pipe(
         map(val => val.find(val => (val.annoscolastico.toLowerCase())== searchstring.toLowerCase())),

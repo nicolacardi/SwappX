@@ -2,8 +2,8 @@ import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from 
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Observable, timer } from 'rxjs';
-import { debounceTime, delayWhen, finalize, map, switchMap, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { debounceTime, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { DialogData } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 //services
@@ -66,7 +66,7 @@ export class IscrizioniAddComponent implements OnInit {
               ) 
         ),
         // switchMap(() => 
-        //   this.svcAlunni.listByAnnoNoClasse(this.form.value.nomeCognomeAlunno, this.data.idAnno)
+        //   this.svcAlunni.listByAnnoNoClasse(this.form.value.nomeCognomeAlunno, this.data.annoID)
         // )
         tap(() => this.alunniIsLoading = false)
     )

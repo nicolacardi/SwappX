@@ -28,7 +28,6 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
 
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnnoGroup>();
 
-  //public idAnnoScolastico!:           number;
   obsAnni$!:                            Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
 
   form! :                             FormGroup;
@@ -110,7 +109,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   }
 
   openGestioneClasse(item: CLS_ClasseSezioneAnno) {
-    this.router.navigate(['/classi-dashboard'], { queryParams: { idAnno: this.form.controls['selectAnnoScolastico'].value, idClasseSezioneAnno: item.id } });
+    this.router.navigate(['/classi-dashboard'], { queryParams: { annoID: this.form.controls['selectAnnoScolastico'].value, idClasseSezioneAnno: item.id } });
   }
 //#endregion
 }

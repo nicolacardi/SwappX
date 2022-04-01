@@ -114,28 +114,6 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
     this.matMenuTrigger.menuData = {item: element}   
     this.matMenuTrigger.openMenu(); 
   }
-  /*
-  openPagamenti(alunnoID: number){
-
-    let anno = 1; //TODO questa sarà un default da mettere nei parametri
-    const dialogConfig : MatDialogConfig = {
-        panelClass: 'add-DetailDialog',
-        width: '850px',
-        height: '580px',
-        data: {
-          idAlunno: alunnoID,
-          idAnno: anno
-        }
-    };
-
-    const dialogRef = this._dialog.open(RettaEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
-  }
-  */
 
   openDocente (docenteID: any) {
     const dialogConfig : MatDialogConfig = {

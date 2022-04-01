@@ -36,7 +36,7 @@ export abstract class Utility {
 
   }
 
-  public static CalcoloRette(idAnnoScolastico: number, idAlunno: string){
+  public static CalcoloRette(annoID: number, idAlunno: string){
 
     //Fratelli
 

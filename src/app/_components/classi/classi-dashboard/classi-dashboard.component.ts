@@ -78,12 +78,12 @@ export class ClassiDashboardComponent implements OnInit {
 
 //#region ----- Variabili -------
   public idClasse!:             number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
-  public idAnno!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
+  public annoID!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public idDocente!:            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public idIscrizione!:         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
   
   public idClasseInput!:        string;   //valore ricevuto (routed) dal ruoting
-  public idAnnoInput!:          string;   //valore ricevuto (routed) dal ruoting
+  public annoIDrouted!:          string;   //valore ricevuto (routed) dal ruoting
   isOpen = true;
 //#endregion
 
@@ -115,14 +115,14 @@ export class ClassiDashboardComponent implements OnInit {
 
   ngOnInit() {
 
-    //idAnno e idClasse sono due queryParams che arrivano a classi-dashboard ad es. quando si naviga da ClassiSezioniAnniSummary con right click
+    //annoID e idClasse sono due queryParams che arrivano a classi-dashboard ad es. quando si naviga da ClassiSezioniAnniSummary con right click
     //ora vanno passati al Child ClassiSezioniAnniList perchè quello deve settarsi su questo anno e su questa classe
-    //l'idAnno ClassiSezioniAnniList lo rpende dalla select che a sua volta lo prende dal local storage (anno di default)
-    //bisogna fare in modo che idAnno in arrivo da home component "vinca" rispetto all'idAnno impostato per default
+    //l'annoID ClassiSezioniAnniList lo prende dalla select che a sua volta lo prende dal local storage (anno di default)
+    //bisogna fare in modo che annoID in arrivo da home component "vinca" rispetto all'annoID impostato per default
 
     this.actRoute.queryParams.subscribe(
       params => {
-          this.idAnnoInput = params['idAnno'];     
+          this.annoIDrouted = params['annoID'];     
           this.idClasseInput = params['idclasseSezioneAnno'];  
     });
 
@@ -184,7 +184,7 @@ export class ClassiDashboardComponent implements OnInit {
       width: '300px',
       height: '335px',
       data: {
-        idAnno:               this.idAnno,
+        annoID:               this.annoID,
         classeSezioneAnno:    this.viewClassiSezioniAnni.classeSezioneAnno,
         idClasseSezioneAnno:  this.idClasse,
         arrAlunniChecked:     this.viewListIscrizioni.getChecked(),
@@ -200,7 +200,6 @@ export class ClassiDashboardComponent implements OnInit {
 //#region ----- add/remove to/from Classe-------
 
   addAlunnoToClasse() {
-    console.log ("this.idAnno", this.idAnno);
     if(this.idClasse<0) return;
 
     const dialogConfig : MatDialogConfig = {
@@ -208,7 +207,7 @@ export class ClassiDashboardComponent implements OnInit {
       width: '400px',
       minHeight: '300px',
       data: {titolo: "Iscrivi alunno alla classe", 
-              annoID:   this.idAnno,
+              annoID:   this.annoID,
               idClasse: this.idClasse}
     };
 
@@ -222,7 +221,6 @@ export class ClassiDashboardComponent implements OnInit {
   }
 
   addDocenteToClasse() {
-    console.log ("this.idAnno", this.idAnno);
     if(this.idClasse<0) return;
 
     const dialogConfig : MatDialogConfig = {
@@ -230,7 +228,7 @@ export class ClassiDashboardComponent implements OnInit {
       width: '400px',
       minHeight: '300px',
       data: {titolo: "Iscrivi alunno alla classe", 
-              idAnno:   this.idAnno,
+              annoID:   this.annoID,
               idClasse: this.idClasse}
     };
 
@@ -290,7 +288,7 @@ export class ClassiDashboardComponent implements OnInit {
             this.viewClassiSezioniAnni.loadData()
             // this.viewClassiSezioniAnni.rowclicked(tmpclicked.toString());
             
-            this.router.navigate(['/classi-dashboard'], { queryParams: { idAnno: this.idAnno, idClasseSezioneAnno: this.idClasse } });
+            this.router.navigate(['/classi-dashboard'], { queryParams: { annoID: this.annoID, idClasseSezioneAnno: this.idClasse } });
 
             this.viewListIscrizioni.resetSelections();
             this.viewListIscrizioni.loadData();
@@ -338,7 +336,7 @@ export class ClassiDashboardComponent implements OnInit {
             this.viewClassiDocentiMaterieIscrizioni.loadData()
             // this.viewClassiSezioniAnni.rowclicked(tmpclicked.toString());
             
-            this.router.navigate(['/classi-dashboard'], { queryParams: { idAnno: this.idAnno, idClasseSezioneAnno: this.idClasse } });
+            this.router.navigate(['/classi-dashboard'], { queryParams: { annoID: this.annoID, idClasseSezioneAnno: this.idClasse } });
 
             this.viewClassiDocentiMaterieIscrizioni.resetSelections();
             this.viewClassiDocentiMaterieIscrizioni.loadData();
@@ -353,8 +351,8 @@ export class ClassiDashboardComponent implements OnInit {
   annoIdEmitted(annoID: number) {
     //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
     //serve per la successiva assegnazione ad una classe...in quanto il modale che va ad aggiungere
-    //le classi ha bisogno di conoscere anche l'idAnno per fare le proprie verifiche
-    this.idAnno = annoID;
+    //le classi ha bisogno di conoscere anche l'annoID per fare le proprie verifiche
+    this.annoID = annoID;
   }
 
   classeIdEmitted(classeId: number) {

@@ -19,14 +19,14 @@ export class RetteService {
     //http://213.215.231.4/swappX/api/PAG_Rette
   }
 
-  listByAnno(idAnno: number): Observable<PAG_Retta[]>{
-    return this.http.get<PAG_Retta[]>(environment.apiBaseUrl+'PAG_Rette/ListByAnno?idAnno='+idAnno);
-    //http://213.215.231.4/swappX/api/PAG_Rette/ListByAnno?idAnno=1
+  listByAnno(annoID: number): Observable<PAG_Retta[]>{
+    return this.http.get<PAG_Retta[]>(environment.apiBaseUrl+'PAG_Rette/ListByAnno/'+annoID);
+    //http://213.215.231.4/swappX/api/PAG_Rette/ListByAnno/1
   }
 
-  listByAlunnoAnno(idAlunno: number, idAnno: number): Observable<PAG_Retta[]>{
-    return this.http.get<PAG_Retta[]>(environment.apiBaseUrl+'PAG_Rette/ListByAlunnoAnno?idAlunno='+idAlunno+"&idAnno="+idAnno);
-    //http://213.215.231.4/swappX/api/PAG_Rette/ListByAlunnoAnno?idAlunno=3&idAnno=1
+  listByAlunnoAnno(idAlunno: number, annoID: number): Observable<PAG_Retta[]>{
+    return this.http.get<PAG_Retta[]>(environment.apiBaseUrl+'PAG_Rette/ListByAlunnoAnno/'+idAlunno+"/"+annoID);
+    //http://213.215.231.4/swappX/api/PAG_Rette/ListByAlunnoAnno/3/1
   }
 
   get(idRetta: any): Observable<PAG_Retta>{
@@ -34,13 +34,13 @@ export class RetteService {
     //http://213.215.231.4/swappX/api/PAG_Rette/5
   }
 
-  getByAlunnoAnnoMese(idAlunno: number, idAnno: number, meseRetta: number): Observable<PAG_Retta>{
-    return this.http.get<PAG_Retta>(environment.apiBaseUrl+'PAG_Rette/GetByAlunnoAnnoMese?idAlunno='+idAlunno+'&idAnno='+idAnno+'&meseRetta='+meseRetta);
-    //http://213.215.231.4/swappX/api/PAG_Rette/GetByAlunnoAnnoMese?idAlunno=3&idAnno=1&meseRetta=9
+  getByAlunnoAnnoMese(idAlunno: number, annoID: number, meseRetta: number): Observable<PAG_Retta>{
+    return this.http.get<PAG_Retta>(environment.apiBaseUrl+'PAG_Rette/GetByAlunnoAnnoMese/'+idAlunno+'/'+annoID+'/'+meseRetta);
+    //http://213.215.231.4/swappX/api/PAG_Rette/GetByAlunnoAnnoMese/3/2/9
   }
 
-  listRettePagamenti_Sum(idAnnoScolastico: any): Observable<PAG_RettePagamenti_Sum[]>{
-    return this.http.get<PAG_RettePagamenti_Sum[]>(environment.apiBaseUrl+'PAG_Rette/ListRettePagamenti_Sum/'+idAnnoScolastico);
+  listRettePagamenti_Sum(annoID: any): Observable<PAG_RettePagamenti_Sum[]>{
+    return this.http.get<PAG_RettePagamenti_Sum[]>(environment.apiBaseUrl+'PAG_Rette/ListRettePagamenti_Sum/'+annoID);
     //http://213.215.231.4/swappX/api/PAG_Rette/ListRettePagamenti_Sum/2
   }
 

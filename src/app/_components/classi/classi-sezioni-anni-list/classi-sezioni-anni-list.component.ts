@@ -114,11 +114,10 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   toggleChecks:                       boolean = false;
   public swSoloAttivi :               boolean = true;
 
-  idAnnoInput!:                       string; //Da routing
+  annoIDrouted!:                       string; //Da routing
   idClasseInput!:                     string; //Da routing
   idClasseSezioneAnno!:               string;
   classeSezioneAnno!:                 CLS_ClasseSezioneAnno;
-  public idAnnoScolastico!:           number;
   showSelect:                         boolean = true;
   showSelectDocente:                  boolean = true;
 
@@ -190,14 +189,14 @@ constructor(
     // console.log ("endedIcons", arrEndedIcons);
     this.actRoute.queryParams.subscribe(
       params => {
-          this.idAnnoInput = params['idAnno'];     
+          this.annoIDrouted = params['annoID'];     
           this.idClasseInput = params['idClasseSezioneAnno'];  
     });
 
     this.obsAnni$ = this.svcAnni.list().pipe(
       finalize( () => {
-        if (this.idAnnoInput) { //se arrivo da home
-          this.form.controls.selectAnnoScolastico.setValue(parseInt(this.idAnnoInput));
+        if (this.annoIDrouted) { //se arrivo da home
+          this.form.controls.selectAnnoScolastico.setValue(parseInt(this.annoIDrouted));
         }
       })
     );
@@ -261,29 +260,23 @@ constructor(
       this.toggleChecks = false;
     });
 
-
-
-
   }
 
   ngOnChanges() {
-
   }
 
 
   loadData ( ) {
    
-    let idAnno: number;
-    idAnno = this.form.controls["selectAnnoScolastico"].value;
+    let annoID: number;
+    annoID = this.form.controls["selectAnnoScolastico"].value;
 
     let idDocente: number;
     idDocente = this.form.controls["selectDocente"].value;
 
     let obsClassi$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
-    //obsClassi$= this.svcClassiSezioniAnni.listByAnnoGroupByClasse(idAnno);
 
-
-    obsClassi$= this.svcClassiSezioniAnni.listByAnnoDocenteGroupByClasse(idAnno, idDocente);
+    obsClassi$= this.svcClassiSezioniAnni.listByAnnoDocenteGroupByClasse(annoID, idDocente);
     // pipe(
     // map(res=> {
     //   let ret = <CLS_ClasseSezioneAnno[]>res.json();

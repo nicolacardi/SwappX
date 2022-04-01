@@ -24,14 +24,14 @@ export class PagamentiService {
     //http://213.215.231.4/swappX/api/PAG_Pagamenti/5
   }
 
-  listByAnno(idAnno: number): Observable<PAG_Pagamento[]>{
-    return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti/ListByAnno?idAnno='+idAnno);
-    //http://213.215.231.4/swappX/api/PAG_Pagamenti/ListByAnno?idAnno=1
+  listByAnno(annoID: number): Observable<PAG_Pagamento[]>{
+    return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti/ListByAnno/'+annoID);
+    //http://213.215.231.4/swappX/api/PAG_Pagamenti/ListByAnno/1
   }
 
-  listByAlunnoAnno(idAlunno: number, idAnno: number): Observable<PAG_Pagamento[]>{
-    return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti/ListByAlunnoAnno?idAlunno='+idAlunno+'&idAnno='+idAnno);
-    //http://213.215.231.4/swappX/api/PAG_Pagamenti/ListByAlunnoAnno?idAlunno=3&idAnno=1
+  listByAlunnoAnno(idAlunno: number, annoID: number): Observable<PAG_Pagamento[]>{
+    return this.http.get<PAG_Pagamento[]>(environment.apiBaseUrl+'PAG_Pagamenti/ListByAlunnoAnno/'+idAlunno+'/'+annoID);
+    //http://213.215.231.4/swappX/api/PAG_Pagamenti/ListByAlunnoAnno/3/1
   }
 
   put(formData: any): Observable <any>{

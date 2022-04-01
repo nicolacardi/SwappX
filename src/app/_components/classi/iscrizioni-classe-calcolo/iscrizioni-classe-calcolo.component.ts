@@ -20,7 +20,7 @@ import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 export interface DialogData {
-  idAnno:               number;
+  annoID:               number;
   classeSezioneAnno:    CLS_ClasseSezioneAnno;
   idClasseSezioneAnno:  number;
   arrAlunniChecked:     CLS_Iscrizione[];
@@ -75,7 +75,7 @@ export class IscrizioniClasseCalcoloComponent implements OnInit {
     );
  
     
-    this.obsClassiAnniSucc$ = this.svcAnni.getAnnoSucc(this.data.idAnno)
+    this.obsClassiAnniSucc$ = this.svcAnni.getAnnoSucc(this.data.annoID)
       .pipe (
         tap( val => {
             this.annoSucc =  val;

@@ -424,10 +424,10 @@ export class RetteListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
-      height: '680px',
+      height: '580px',
       data: {
         //idAlunno: alunno,
-        idAnno:  this.annoID
+        annoID:  this.annoID  //questo in verità non viene poi usato
       }
     };
 
