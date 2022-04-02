@@ -17,8 +17,8 @@ export class MessaggiService {
     //http://213.215.231.4/swappX/api/_UT_Messages
   }
 
-  get(idMessage: any): Observable<_UT_Message>{
-    return this.http.get<_UT_Message>(environment.apiBaseUrl+'_UT_Messages/'+idMessage);
+  get(messageID: any): Observable<_UT_Message>{
+    return this.http.get<_UT_Message>(environment.apiBaseUrl+'_UT_Messages/'+messageID);
     //http://213.215.231.4/swappX/api/_UT_Messages/5
   }
 
@@ -36,7 +36,7 @@ export class MessaggiService {
     return this.http.post(environment.apiBaseUrl  + '_UT_Messages' , formData);  
   }
 
-  delete(id: number): Observable <any>{
-    return this.http.delete(environment.apiBaseUrl  + '_UT_Messages/' + id);    
+  delete(messageID: number): Observable <any>{
+    return this.http.delete(environment.apiBaseUrl  + '_UT_Messages/' + messageID);    
   }
 }

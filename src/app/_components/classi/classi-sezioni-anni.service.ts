@@ -16,23 +16,23 @@ export class ClassiSezioniAnniService {
 
   constructor(private http: HttpClient) { }
 
-  get(id: any): Observable<CLS_ClasseSezioneAnno>{
-    return  this.http.get<CLS_ClasseSezioneAnno>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/'+id);
+  get(classeSezioneAnnoID: any): Observable<CLS_ClasseSezioneAnno>{
+    return  this.http.get<CLS_ClasseSezioneAnno>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/'+classeSezioneAnnoID);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/1
   } 
 
-  //Sostituita dalla successiva, con parametro idDocente null oppure 0
-  listByAnnoGroupByClasse(annoScolasticoID: any): Observable<CLS_ClasseSezioneAnnoGroup[]>{
-    return this.http.get<CLS_ClasseSezioneAnnoGroup[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoGroupByClasse/'+annoScolasticoID);
+  //Sostituita dalla successiva, con parametro docenteID null oppure 0
+  listByAnnoGroupByClasse(annoID: any): Observable<CLS_ClasseSezioneAnnoGroup[]>{
+    return this.http.get<CLS_ClasseSezioneAnnoGroup[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoGroupByClasse/'+annoID);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnnoGroupByClasse/1
   }
-  listByAnnoDocenteGroupByClasse(annoScolasticoID: any, idDocente: any): Observable<CLS_ClasseSezioneAnnoGroup[]>{
-    return this.http.get<CLS_ClasseSezioneAnnoGroup[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoDocenteGroupByClasse/'+annoScolasticoID+"/"+idDocente);
+  listByAnnoDocenteGroupByClasse(annoID: any, docenteID: any): Observable<CLS_ClasseSezioneAnnoGroup[]>{
+    return this.http.get<CLS_ClasseSezioneAnnoGroup[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListByAnnoDocenteGroupByClasse/'+annoID+"/"+docenteID);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/ListByAnnoDocenteGroupByClasse/1/3
   }
 
-  getWithClasseSezioneAnno(id: any): Observable<CLS_ClasseSezioneAnno>{
-    return  this.http.get<CLS_ClasseSezioneAnno>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/GetWithClasseSezioneanno/'+id);
+  getWithClasseSezioneAnno(classeSezioneAnnoID: any): Observable<CLS_ClasseSezioneAnno>{
+    return  this.http.get<CLS_ClasseSezioneAnno>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/GetWithClasseSezioneanno/'+classeSezioneAnnoID);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/GetwithClasseSezioneanno/1
   } 
   
@@ -45,8 +45,8 @@ export class ClassiSezioniAnniService {
     return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni' , formData);  
   }
 
-  delete(id: number): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni/' + id);    
+  delete(classeSezioneAnnoID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni/' + classeSezioneAnnoID);    
   }
 
 

@@ -272,12 +272,12 @@ constructor(
     let annoID: number;
     annoID = this.form.controls["selectAnnoScolastico"].value;
 
-    let idDocente: number;
-    idDocente = this.form.controls["selectDocente"].value;
+    let docenteID: number;
+    docenteID = this.form.controls["selectDocente"].value;
 
     let obsClassi$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
 
-    obsClassi$= this.svcClassiSezioniAnni.listByAnnoDocenteGroupByClasse(annoID, idDocente);
+    obsClassi$= this.svcClassiSezioniAnni.listByAnnoDocenteGroupByClasse(annoID, docenteID);
     // pipe(
     // map(res=> {
     //   let ret = <CLS_ClasseSezioneAnno[]>res.json();

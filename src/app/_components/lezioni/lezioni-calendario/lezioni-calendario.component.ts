@@ -123,7 +123,7 @@ export class LezioniCalendarioComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
   @Input() classeSezioneAnnoID!:                     number;
-  @Input() idDocente!:                    number;
+  @Input() docenteID!:                    number;
   @Input() dove!:                         string;
   @ViewChild('calendarDOM') calendarDOM!: FullCalendarComponent;
 //#endregion
@@ -152,16 +152,16 @@ export class LezioniCalendarioComponent implements OnInit {
     this.showWarn = false;
     if (this.dove == "orario") {
       //se c'è un Docente selezionato allora filtro anche per lui
-      if (this.idDocente != undefined && this.idDocente > 0) {
-        obsLezioni$= this.svcLezioni.listByDocenteClasseSezioneAnno(this.idDocente, this.classeSezioneAnnoID);
+      if (this.docenteID != undefined && this.docenteID > 0) {
+        obsLezioni$= this.svcLezioni.listByDocenteClasseSezioneAnno(this.docenteID, this.classeSezioneAnnoID);
       } else {
         //se non c'è un docente seleziono non filtro anche per lui
         obsLezioni$= this.svcLezioni.listByClasseSezioneAnno(this.classeSezioneAnnoID);
       }
     } else {
-      //qui ("orario per Docente) non conta la classe ma solo l'IDDocente
-      if (this.idDocente != undefined && this.idDocente > 0) {
-        obsLezioni$= this.svcLezioni.listByDocente(this.idDocente);
+      //qui ("orario per Docente) non conta la classe ma solo il docenteID
+      if (this.docenteID != undefined && this.docenteID > 0) {
+        obsLezioni$= this.svcLezioni.listByDocente(this.docenteID);
       } else {
         this.showWarn = true;
         obsLezioni$= this.svcLezioni.listByDocente(0);

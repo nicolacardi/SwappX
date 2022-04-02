@@ -17,8 +17,8 @@ export class PersoneService {
     //http://213.215.231.4/swappX/api/PER_Persone
   }
 
-  get(id: any): Observable<PER_Persona>{
-    return this.http.get<PER_Persona>(environment.apiBaseUrl+'PER_Persone/'+id);
+  get(personaID: any): Observable<PER_Persona>{
+    return this.http.get<PER_Persona>(environment.apiBaseUrl+'PER_Persone/'+personaID);
     //http://213.215.231.4/swappX/api/PER_Persone/3
   }
 
@@ -32,8 +32,8 @@ export class PersoneService {
     return this.http.post( environment.apiBaseUrl  + 'PER_Persone' , formData);  
   }
 
-  delete(id: number): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'PER_Persone/' + id);    
+  delete(personaID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'PER_Persone/' + personaID);    
   }
 
 

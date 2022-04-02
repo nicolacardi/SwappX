@@ -54,13 +54,13 @@ export class IscrizioniService {
   }
   //http://213.215.231.4/swappX/api/CLS_Iscrizioni/UpdateStato?id=5&CodiceStato=20
 
-  deleteByAlunnoAndClasseSezioneAnno(ClasseSezioneAnnoID: number, alunnoID: number): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'CLS_Iscrizioni/DeleteByAlunnoAndClasseSezioneAnno/'+alunnoID+'/'+ClasseSezioneAnnoID);
+  deleteByAlunnoAndClasseSezioneAnno(classeSezioneAnnoID: number, alunnoID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'CLS_Iscrizioni/DeleteByAlunnoAndClasseSezioneAnno/'+alunnoID+'/'+classeSezioneAnnoID);
     //http://213.215.231.4/swappX/api/CLS_Iscrizioni/DeleteByAlunnoAndClasseSezioneAnno/3/243
   }
 
-  delete(id: number): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'CLS_Iscrizioni/' + id); 
+  delete(iscrizioneID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'CLS_Iscrizioni/' + iscrizioneID); 
   }
       
 }

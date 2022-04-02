@@ -18,8 +18,8 @@ export class TipiPersonaService {
     //http://213.215.231.4/swappX/api/PER_TipiPersona
   }
 
-  get(id: any): Observable<PER_TipoPersona>{
-    return this.http.get<PER_TipoPersona>(environment.apiBaseUrl+'PER_TipiPersona/'+id);
+  get(tipoPersonaID: any): Observable<PER_TipoPersona>{
+    return this.http.get<PER_TipoPersona>(environment.apiBaseUrl+'PER_TipiPersona/'+tipoPersonaID);
     //http://213.215.231.4/swappX/api/PER_TipiPersona/3
   }
 
@@ -32,8 +32,8 @@ export class TipiPersonaService {
     return this.http.post( environment.apiBaseUrl  + 'PER_TipiPersona' , formData);  
   }
 
-  delete(id: number): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'PER_TipiPersona/' + id);    
+  delete(tipoPersonaID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'PER_TipiPersona/' + tipoPersonaID);    
   }
 
 

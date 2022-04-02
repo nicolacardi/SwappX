@@ -6,7 +6,6 @@ import { filter, map} from 'rxjs/operators';
 
 import { ALU_Alunno} from 'src/app/_models/ALU_Alunno';
 import { ALU_GenitoreAlunno } from 'src/app/_models/ALU_GenitoreAlunno';
-import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 
 @Injectable({
   providedIn: 'root'
@@ -36,13 +35,13 @@ export class AlunniService {
       //http://213.215.231.4/swappX/api/ALU_Alunni/ListWithParents
   }
 
-  get(id: any): Observable<ALU_Alunno>{
-    return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/'+id);
+  get(classeSezioneAnnoID: any): Observable<ALU_Alunno>{
+    return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/'+classeSezioneAnnoID);
     //http://213.215.231.4/swappX/api/ALU_Alunni/3
   }
 
-  getWithParents(id: any): Observable<ALU_Alunno>{
-    return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/GetWithParents/'+id);
+  getWithParents(classeSezioneAnnoID: any): Observable<ALU_Alunno>{
+    return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/GetWithParents/'+classeSezioneAnnoID);
   }
 
 
@@ -56,8 +55,8 @@ export class AlunniService {
     return this.http.post( environment.apiBaseUrl  + 'ALU_Alunni' , formData);  
   }
 
-  delete(id: number): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'ALU_Alunni/' + id);    
+  delete(classeSezioneAnnoID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'ALU_Alunni/' + classeSezioneAnnoID);    
   }
 
   filterAlunni(searchstring: string): Observable<ALU_Alunno[]>{

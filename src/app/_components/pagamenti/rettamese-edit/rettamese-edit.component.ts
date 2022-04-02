@@ -25,18 +25,18 @@ export class RettameseEditComponent implements OnInit{
 //#region ----- Variabili -------
   form! :                     FormGroup;
 
-  //private idRettaSubject = new BehaviorSubject<number>(0);
-  //idRettaObs$: Observable<number> = this.idRettaSubject.asObservable();
+  //private rettaIDSubject = new BehaviorSubject<number>(0);
+  //rettaIDObs$: Observable<number> = this.rettaIDSubject.asObservable();
 
   retta$!:                    Observable<PAG_Retta>;
-  //obsIdRetta$!:               Observable<number>;
+  //obsRettaID$!:               Observable<number>;
   
   emptyForm :                 boolean = false;
 //#endregion
 
 //#region ----- ViewChild Input Output -------
 
-  @Input() public idRetta!: number; 
+  @Input() public rettaID!: number; 
   @Input() public quotaConcordata!: number; 
   @Input() public quotaDefault!: number; 
   @Input() public totPagamenti!: number; 
@@ -72,13 +72,13 @@ export class RettameseEditComponent implements OnInit{
 
   ngOnChanges() {
 
-    if (this.idRetta && this.idRetta + '' != "0") {
+    if (this.rettaID && this.rettaID + '' != "0") {
       this.loadData();
     } else {
       this.emptyForm = true;
       this.form.reset(); 
     }
-    //if (this.toHighlight == this.idRetta && this.toHighlight!= null) {this.evidenzia = true} else { this.evidenzia = false}
+    //if (this.toHighlight == this.rettaID && this.toHighlight!= null) {this.evidenzia = true} else { this.evidenzia = false}
   }
 
   ngOnInit(): void {
@@ -96,7 +96,7 @@ export class RettameseEditComponent implements OnInit{
 //#region ----- Operazioni CRUD -------
   save(): boolean{
     
-    if (this.idRetta && this.form.dirty) {
+    if (this.rettaID && this.form.dirty) {
         this.svcRette.put(this.form.value)        
           .subscribe(res=> {
             //return true;

@@ -61,10 +61,10 @@
                 </mat-tab>
                 <!-- <mat-tab  label="Orario" (selectedTabChange)="rerenderCAL()"> -->
                 <mat-tab  label="Orario Per Classe">
-                    <app-lezioni-calendario [classeSezioneAnnoID]="classeSezioneAnnoID" [idDocente] = "idDocente" [dove]="'orario'" #orarioLezioniDOM></app-lezioni-calendario>
+                    <app-lezioni-calendario [classeSezioneAnnoID]="classeSezioneAnnoID" [docenteID] = "docenteID" [dove]="'orario'" #orarioLezioniDOM></app-lezioni-calendario>
                 </mat-tab>
                 <mat-tab  label="Orario Per Docente">
-                    <app-lezioni-calendario [classeSezioneAnnoID]="classeSezioneAnnoID" [idDocente] = "idDocente" [dove]="'orarioDocente'" #orarioDocenteDOM></app-lezioni-calendario>
+                    <app-lezioni-calendario [classeSezioneAnnoID]="classeSezioneAnnoID" [docenteID] = "docenteID" [dove]="'orarioDocente'" #orarioDocenteDOM></app-lezioni-calendario>
                 </mat-tab>
 
                 <mat-tab  label="Pagelle">

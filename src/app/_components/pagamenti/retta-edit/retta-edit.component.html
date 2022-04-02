@@ -105,12 +105,12 @@
                             <!-- ************ PARAMETRI PASSATI AD OGNI CHILD: rettamese-edit *************************     -->
                             <!-- inputPagamenti: passa al component il tot Pagamenti del mese : serve per le                -->
                             <!--    _highlightPag2 di quelli che hanno quota concordata > dei pagamenti                     -->
-                            <!-- idRetta: è l'id della retta                                                                -->
+                            <!-- rettaID: è l'id della retta                                                                -->
                             <!-- indice: serve a questo component (retta-edit) per riferirsi all'n-esimo component child    -->
                             <!--    in quanto deve uno ad uno lanciarne il metodo ngOnChanges                               -->
 
                             <app-rettamese-edit 
-                                [idRetta] ="idRette[mese]"
+                                [rettaID] ="retteID[mese]"
                                 [quotaDefault] ="quoteDefault[mese]"
                                 [quotaConcordata] ="quoteConcordate[mese]"
                                 [totPagamenti] ="totPagamenti[mese]"

@@ -107,8 +107,8 @@ export class UserService {
     return  this.http.post(environment.apiBaseUrl +'ApplicationUser/Register', body );
   }
 
-  get(id: string): Observable<User>{
-    return this.http.get<User>(environment.apiBaseUrl+'ApplicationUser/' + id);
+  get(userID: string): Observable<User>{
+    return this.http.get<User>(environment.apiBaseUrl+'ApplicationUser/' + userID);
     //http://213.215.231.4/swappX/api/ApplicationUser/b19efc9f-5502-4396-b076-45e6c3d9ef21
   }
 
@@ -207,8 +207,8 @@ export class UserService {
   }
 
 
-  delete(id: string): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'ApplicationUser/' + id);    
+  delete(userID: string): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'ApplicationUser/' + userID);    
   }
 }
 

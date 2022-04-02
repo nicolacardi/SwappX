@@ -353,7 +353,7 @@ export class PagamentiListComponent implements OnInit {
 //#endregion
 
 //#region ----- Add Delete Edit Drop -------
-  delete(idPagamento: number){
+  delete(pagamentoID: number){
 
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
@@ -361,7 +361,7 @@ export class PagamentiListComponent implements OnInit {
     });
     dialogYesNo.afterClosed().subscribe(result => {
       if(result){
-        this.svcPagamenti.delete(Number(idPagamento))
+        this.svcPagamenti.delete(Number(pagamentoID))
         //.pipe (
         //  finalize(()=>this.router.navigate(['/alunni']))
         //)

@@ -79,7 +79,7 @@ export class ClassiDashboardComponent implements OnInit {
 //#region ----- Variabili -------
   public classeSezioneAnnoID!:  number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public annoID!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
-  public idDocente!:            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
+  public docenteID!:            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public idIscrizione!:         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
   
   public classeSezioneAnnoIDrouted!:        string;   //valore ricevuto (routed) dal ruoting
@@ -357,7 +357,7 @@ export class ClassiDashboardComponent implements OnInit {
   }
 
   docenteIdEmitted(docenteId: number) {
-    this.idDocente = docenteId;
+    this.docenteID = docenteId;
   }
 
   iscrizioneIdEmitted(iscrizioneId: number) {

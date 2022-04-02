@@ -43,8 +43,8 @@ export class PagamentiService {
     return this.http.post(environment.apiBaseUrl  + 'PAG_Pagamenti' , formData);  
   }
 
-  delete(id: number): Observable <any>{
-    return this.http.delete(environment.apiBaseUrl  + 'PAG_Pagamenti/' + id);    
+  delete(pagamentoID: number): Observable <any>{
+    return this.http.delete(environment.apiBaseUrl  + 'PAG_Pagamenti/' + pagamentoID);    
   }
 
 //**************** METODI NON USATI ******************/

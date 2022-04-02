@@ -22,9 +22,9 @@ export class DocentiService {
   }
 
 
-  listSupplentiDisponibili(idLezione: number, idDocente: number, dtCalendario: string, h_Ini: string, h_End: string) : Observable<PER_Docente[]>{
-    return this.http.get<PER_Docente[]>(environment.apiBaseUrl+'PER_Docenti/ListSupplentiDisponibili?idLezione=' + idLezione + '&idDocente=' + idDocente + '&dtCalendario=' + Utility.UT_FormatDate(dtCalendario) + '&strH_INI=' + Utility.URL_FormatHour(h_Ini) + '&strH_END=' + Utility.URL_FormatHour( h_End));
-    //http://213.215.231.4/SwappX/api/PER_Docenti/ListSupplentiDisponibili?idDocente=3&dtCalendario=2022-03-16&strH_INI=11%3A06%3A00&strH_END=12%3A06%3A00
+  listSupplentiDisponibili(lezioneID: number, docenteID: number, dtCalendario: string, h_Ini: string, h_End: string) : Observable<PER_Docente[]>{
+    return this.http.get<PER_Docente[]>(environment.apiBaseUrl+'PER_Docenti/ListSupplentiDisponibili/' + lezioneID + '/' + docenteID + '/' + Utility.UT_FormatDate(dtCalendario) + '/' + Utility.URL_FormatHour(h_Ini) + '/' + Utility.URL_FormatHour( h_End));
+    //http://213.215.231.4/SwappX/api/PER_Docenti/ListSupplentiDisponibili/160/3/2022-03-16/11%3A00%3A00/12%3A00%3A00
   }
 
   filterDocenti(searchstring: string): Observable<PER_Docente[]>{
@@ -51,8 +51,8 @@ export class DocentiService {
     // }
   }
 
-  get(id: any): Observable<PER_Docente>{
-    return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/'+id);
+  get(docenteID: any): Observable<PER_Docente>{
+    return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/'+docenteID);
     //http://213.215.231.4/swappX/api/PER_Docenti/3
   }
 
@@ -65,8 +65,8 @@ export class DocentiService {
     return this.http.post( environment.apiBaseUrl  + 'PER_Docenti' , formData);  
   }
 
-  delete(id: number): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'PER_Docenti/' + id);    
+  delete(docenteID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'PER_Docenti/' + docenteID);    
   }
 
 

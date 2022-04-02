@@ -17,8 +17,8 @@ export class RuoliService {
     //http://213.215.231.4/swappX/api/_UT_Ruoli
   }
 
-  get(idMessage: any): Observable<Ruolo>{
-    return this.http.get<Ruolo>(environment.apiBaseUrl+'_UT_Ruoli/'+idMessage);
+  get(ruoloID: any): Observable<Ruolo>{
+    return this.http.get<Ruolo>(environment.apiBaseUrl+'_UT_Ruoli/'+ruoloID);
     //http://213.215.231.4/swappX/api/_UT_Ruoli/5
   }
  
@@ -31,7 +31,7 @@ export class RuoliService {
     return this.http.post(environment.apiBaseUrl  + '_UT_Ruoli' , formData);  
   }
 
-  delete(id: number): Observable <any>{
-    return this.http.delete(environment.apiBaseUrl  + '_UT_Ruoli/' + id);    
+  delete(ruoloID: number): Observable <any>{
+    return this.http.delete(environment.apiBaseUrl  + '_UT_Ruoli/' + ruoloID);    
   }
 }

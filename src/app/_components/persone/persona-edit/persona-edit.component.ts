@@ -44,7 +44,7 @@ export class PersonaEditComponent implements OnInit {
 
   constructor(
     public _dialogRef: MatDialogRef<PersonaEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public idPersona: number,
+    @Inject(MAT_DIALOG_DATA) public personaID: number,
     private fb:                           FormBuilder, 
     private svcPersone:                   PersoneService,
     private svcTipiPersona:               TipiPersonaService,
@@ -94,9 +94,9 @@ export class PersonaEditComponent implements OnInit {
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
-    if (this.idPersona && this.idPersona + '' != "0") {
+    if (this.personaID && this.personaID + '' != "0") {
 
-      const obsPersona$: Observable<PER_Persona> = this.svcPersone.get(this.idPersona);
+      const obsPersona$: Observable<PER_Persona> = this.svcPersone.get(this.personaID);
       const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
 
       this.persona$ = loadPersona$
@@ -168,7 +168,7 @@ export class PersonaEditComponent implements OnInit {
     });
     dialogYesNo.afterClosed().subscribe(result => {
       if(result){
-        this.svcPersone.delete(Number(this.idPersona))
+        this.svcPersone.delete(Number(this.personaID))
         //.pipe (
         //  finalize(()=>this.router.navigate(['/alunni']))
         //)

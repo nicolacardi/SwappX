@@ -21,13 +21,13 @@ export class MaterieService {
     //http://213.215.231.4/swappX/api/MAT_Materie
   }
 
-  listByClasseSezioneAnno(id: any): Observable<MAT_Materia[]>{
-    return this.http.get<MAT_Materia[]>(environment.apiBaseUrl+'MAT_Materie/ListMaterieByClasseSezioneAnno/'+id);
+  listByClasseSezioneAnno(materiaID: any): Observable<MAT_Materia[]>{
+    return this.http.get<MAT_Materia[]>(environment.apiBaseUrl+'MAT_Materie/ListMaterieByClasseSezioneAnno/'+materiaID);
     //http://213.215.231.4/swappX/api/MAT_Materie/ListMaterieByClasseSezioneAnno/2
   }
 
-  get(id: any): Observable<MAT_Materia>{
-    return this.http.get<MAT_Materia>(environment.apiBaseUrl+'MAT_Materie/'+id);
+  get(materiaID: any): Observable<MAT_Materia>{
+    return this.http.get<MAT_Materia>(environment.apiBaseUrl+'MAT_Materie/'+materiaID);
     //http://213.215.231.4/swappX/api/MAT_Materie/3
   }
 
@@ -40,8 +40,8 @@ export class MaterieService {
     return this.http.post( environment.apiBaseUrl  + 'MAT_Materie' , formData);  
   }
 
-  delete(id: number): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'MAT_Materie/' + id);    
+  delete(materiaID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'MAT_Materie/' + materiaID);    
   }
 
 

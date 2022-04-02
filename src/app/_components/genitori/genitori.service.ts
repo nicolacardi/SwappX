@@ -15,11 +15,7 @@ export class GenitoriService {
   constructor(private http: HttpClient) { }
 
   list(): Observable<ALU_Genitore[]>{
-  //loadGenitori(alunnoID?: any): Observable<ALU_Genitore[]>{
-    //if (alunnoID == null || alunnoID == "")
       return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori');
-    //else 
-    //  return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/GetAllByAlunno/'+alunnoID);
     //http://213.215.231.4/swappX/api/ALU_Alunni
   }
 
@@ -33,8 +29,8 @@ export class GenitoriService {
     //http://213.215.231.4/swappX/api/ALU_Genitori/ListWithChildren
   }
 
-  get(id: any): Observable<ALU_Genitore>{
-    return this.http.get<ALU_Genitore>(environment.apiBaseUrl+'ALU_Genitori/'+id);
+  get(genitoreID: any): Observable<ALU_Genitore>{
+    return this.http.get<ALU_Genitore>(environment.apiBaseUrl+'ALU_Genitori/'+genitoreID);
     //http://213.215.231.4/swappX/api/ALU_Genitori/3
   }
   
@@ -58,8 +54,8 @@ export class GenitoriService {
     return this.http.post( environment.apiBaseUrl  + 'ALU_Genitori' , formData);  
   }
 
-  delete(id: number): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'ALU_Genitori/' + id);    
+  delete(genitoreID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'ALU_Genitori/' + genitoreID);    
   }
 
   filterGenitori(searchstring: string): Observable<ALU_Genitore[]>{

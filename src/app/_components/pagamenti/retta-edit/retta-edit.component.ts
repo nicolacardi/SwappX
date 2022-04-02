@@ -55,7 +55,7 @@ export class RettaEditComponent implements OnInit {
   totPagamentiAnno:           number=0;
 
   nPagamenti:                 number[] = [];
-  idRette:                    number[] = [];
+  retteID:                    number[] = [];
   idToHighlight!:             number;
 
   //public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2));
@@ -139,7 +139,7 @@ export class RettaEditComponent implements OnInit {
       map(obj => { 
         //obsRette$ è un Observable<PAG_Retta[]> quindi è un elenco/lista/array di 12 oggetti di tipo PAG_Rette
         //prendo CIASCUNO di questi 12 oggetti e ci popolo vari array di numeri in cui l'indice va da 0 a 11
-        //in particolare passo l'idRetta ORDINATAMENTE a ognuno dei 12 component
+        //in particolare passo il rettaID ORDINATAMENTE a ognuno dei 12 component
         if (obj.length!= 0 ) {
 
           this.anno = obj[0].anno!;
@@ -147,7 +147,7 @@ export class RettaEditComponent implements OnInit {
           this.formRetta.controls['nomeCognomeAlunno'].setValue(this.alunno.nome+" "+this.alunno.cognome);
 
           obj.forEach((val, i)=>{
-            this.idRette[obj[i].meseRetta-1] = obj[i].id;
+            this.retteID[obj[i].meseRetta-1] = obj[i].id;
 
             this.mesi[obj[i].meseRetta - 1] = obj[i].meseRetta;
             this.quoteConcordate[obj[i].meseRetta - 1] = obj[i].quotaConcordata;
@@ -178,7 +178,7 @@ export class RettaEditComponent implements OnInit {
           //nel caso di "nuovo pagamento" impostiamo a 0 tutti i valori trasmessi ai child
           for (let i = 0; i <= 11; i++) {
             //idRette[da 0 a 11] è il valore dirà ad ognuno dei 12 child che si tratta di un nuovo pagamento
-            this.idRette[i] = 0; 
+            this.retteID[i] = 0; 
 
             this.quotaConcordataAnno=0;
             this.quotaDefaultAnno=0;

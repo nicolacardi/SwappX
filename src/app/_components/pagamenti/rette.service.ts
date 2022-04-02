@@ -29,8 +29,8 @@ export class RetteService {
     //http://213.215.231.4/swappX/api/PAG_Rette/ListByAlunnoAnno/3/1
   }
 
-  get(idRetta: any): Observable<PAG_Retta>{
-    return this.http.get<PAG_Retta>(environment.apiBaseUrl+'PAG_Rette/'+idRetta);
+  get(rettaID: any): Observable<PAG_Retta>{
+    return this.http.get<PAG_Retta>(environment.apiBaseUrl+'PAG_Rette/'+rettaID);
     //http://213.215.231.4/swappX/api/PAG_Rette/5
   }
 
@@ -53,7 +53,7 @@ export class RetteService {
     return this.http.post(environment.apiBaseUrl  + 'PAG_Rette' , obj);  
   }
 
-  delete(id: number): Observable <any>{
-    return this.http.delete(environment.apiBaseUrl  + 'PAG_Rette/' + id);    
+  delete(rettaID: number): Observable <any>{
+    return this.http.delete(environment.apiBaseUrl  + 'PAG_Rette/' + rettaID);    
   }
 }
