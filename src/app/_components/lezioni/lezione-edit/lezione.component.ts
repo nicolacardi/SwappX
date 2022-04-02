@@ -130,7 +130,7 @@ export class LezioneComponent implements OnInit {
     this.form.controls.docenteID.valueChanges.subscribe( 
       val =>{
         //ora devo estrarre i supplenti: i docenti che per l'ora selezionata NON sono già impegnati
-        this.obsSupplenti$ = this.svcDocenti.listSupplentiDisponibili(this.data.idLezione? this.data.idLezione: 0, val, this.data.dtCalendario, this.data.h_Ini, this.data.h_End)
+        this.obsSupplenti$ = this.svcDocenti.listSupplentiDisponibili(this.data.lezioneID? this.data.lezioneID: 0, val, this.data.dtCalendario, this.data.h_Ini, this.data.h_End)
         .pipe(
           tap (x=> console.log ("supplenti", x))
         );
@@ -175,15 +175,14 @@ export class LezioneComponent implements OnInit {
       this.form.controls.ckEpoca.disable();
     }
 
-    if (this.data.idLezione && this.data.idLezione + '' != "0") {
-      const obsLezione$: Observable<CAL_Lezione> = this.svcLezioni.get(this.data.idLezione);
+    if (this.data.lezioneID && this.data.lezioneID + '' != "0") {
+      const obsLezione$: Observable<CAL_Lezione> = this.svcLezioni.get(this.data.lezioneID);
       const loadLezione$ = this._loadingService.showLoaderUntilCompleted(obsLezione$);
       this.lezione$ = loadLezione$
       .pipe(
         tap(
           lezione => {
             this.form.patchValue(lezione)
-
             //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
             this.dtStart = new Date (this.data.start);
             this.strDtStart = Utility.UT_FormatDate(this.dtStart);
@@ -223,7 +222,7 @@ export class LezioneComponent implements OnInit {
     this.strH_Ini = this.form.controls.h_Ini.value;
     this.strH_End = this.form.controls.h_End.value;
 
-    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (this.data.idLezione? this.data.idLezione: 0 , this.form.controls['docenteID'].value, this.strDtStart, this.strH_Ini, this.strH_End)
+    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (this.data.lezioneID? this.data.lezioneID: 0 , this.form.controls['docenteID'].value, this.strDtStart, this.strH_Ini, this.strH_End)
       .toPromise();
 
     promise.then( (val: CAL_Lezione[]) => {
@@ -246,7 +245,6 @@ export class LezioneComponent implements OnInit {
         for (const prop in this.form.controls) {
           this.form.value[prop] = this.form.controls[prop].value;
         }
-
         if (this.form.controls['id'].value == null) {          
           this.svcLezioni.post(this.form.value)
             .subscribe(res=> {
@@ -280,7 +278,7 @@ export class LezioneComponent implements OnInit {
     });
     dialogYesNo.afterClosed().subscribe(result => {
       if(result){
-        this.svcLezioni.delete (this.data.idLezione).subscribe(
+        this.svcLezioni.delete (this.data.lezioneID).subscribe(
           res=>{
             this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
             this._dialogRef.close();

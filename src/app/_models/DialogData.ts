@@ -7,7 +7,7 @@ export interface DialogData {
       }
       
 export interface DialogDataLezione {
-        idLezione:            number;
+        lezioneID:            number;
         start:                string;
         end:                  string;
         dtCalendario:         string;

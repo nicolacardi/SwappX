@@ -9,7 +9,7 @@
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
-                <button *ngIf="data.idLezione" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10"
+                <button *ngIf="data.lezioneID" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="loadData()" >
                     <mat-icon>restart_alt</mat-icon>
@@ -21,15 +21,15 @@
                     <mat-icon>save</mat-icon>
                 </button>
 
-                <button *ngIf="data.idLezione" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
+                <button *ngIf="data.lezioneID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="delete()" >
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
 
-            <mat-label class="center mt20 fs16" *ngIf="data.idLezione || emptyForm">- {{strDtStart | date: 'dd/LL/yyyy'}} -</mat-label>
-            <!-- <mat-label class="center" *ngIf="data.idLezione || emptyForm">dalle  {{strH_Ini}} - alle {{strH_end}}</mat-label> -->
+            <mat-label class="center mt20 fs16" *ngIf="data.lezioneID || emptyForm">- {{strDtStart | date: 'dd/LL/yyyy'}} -</mat-label>
+            <!-- <mat-label class="center" *ngIf="data.lezioneID || emptyForm">dalle  {{strH_Ini}} - alle {{strH_end}}</mat-label> -->
             <mat-grid-list class="no-overflowx mt20" [cols]="4" rowHeight="60px">
 
                 <mat-grid-tile>

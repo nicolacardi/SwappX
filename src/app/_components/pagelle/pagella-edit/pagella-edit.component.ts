@@ -26,6 +26,7 @@ export class PagellaEditComponent implements OnInit  {
     "materia", 
     "voto1", 
     "tipoGiudizio1ID", 
+    "obiettivi",
     "note1"
   ];
 //#endregion  
@@ -153,6 +154,7 @@ export class PagellaEditComponent implements OnInit  {
         "materia", 
         "voto1", 
         "tipoGiudizio1ID", 
+        "obiettivi",
         "note1"
       ];
     } else {
@@ -160,9 +162,14 @@ export class PagellaEditComponent implements OnInit  {
         "materia", 
         "voto2", 
         "tipoGiudizio2ID", 
+        "obiettivi",
         "note2"
       ];
     }
+
+  }
+
+  openObiettivi(element: DOC_Pagella) {
 
   }
 }

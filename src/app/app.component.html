@@ -84,13 +84,13 @@
             </a>
 
             <a mat-list-item class="h35px" *ngIf="!isExpanded" (click)="isExpanded = true; expandExpansion1()">
-                <img class="iconaMenuSidenav" src="../assets/classiMenu_expand.svg">
+                <img class="iconaMenuSidenav" src="../assets/classiSezioniAnni_expand.svg">
             </a>
 
             <mat-expansion-panel *ngIf="isExpanded" class="mat-elevation-z0" #expansion1>
                 <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
                   <mat-panel-title>
-                    <img class="iconaMenuSidenav mr10"  src="../assets/classiMenu.svg">
+                    <img class="iconaMenuSidenav mr10"  src="../assets/classiSezioniAnni.svg">
                     <span class="fs16" >Classi</span>
                   </mat-panel-title>
                   <mat-panel-description> </mat-panel-description>
@@ -99,12 +99,12 @@
                 <mat-divider></mat-divider>
                 
                 <a mat-list-item class="h35px" routerLink="classi" (click)="clickMenuItem()">
-                    <img class="iconaMenuSidenav" src="../assets/classiList.svg">
+                    <img class="iconaMenuSidenav" src="../assets/classiSezioniAnniList.svg">
                     <span>Elenco Classi</span>
                 </a> 
 
                 <a mat-list-item class="h35px" routerLink="classi-dashboard" (click)="clickMenuItem()">
-                    <img class="iconaMenuSidenav" src="../assets/classiDashboard.svg">
+                    <img class="iconaMenuSidenav" src="../assets/classiSezioniAnniDashboard.svg">
                     <span>Gestione Classi</span>
                 </a>
                 <mat-divider></mat-divider>
@@ -132,11 +132,18 @@
                 <img class="iconaMenuSidenav" src="../assets/retteList.svg">
                 <span>Rette</span>
             </a> 
-            <mat-divider></mat-divider>
+
             </mat-expansion-panel>
 
 
             <mat-divider></mat-divider>
+
+            <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.ruoloID >= 10">
+                <img class="iconaMenuSidenav" src="../assets/classi.svg">
+                <span *ngIf="isExpanded">Setup Classi</span>
+            </a> 
+
+
             <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.ruoloID >= 10">
                 <img class="iconaMenuSidenav" src="../assets/utente.svg">
                 <span *ngIf="isExpanded">Gestione Utenti</span>
@@ -160,8 +167,8 @@
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
-    <hr style="height: 48px"  [ngClass]="{'hidden-header': !isLoggedIn}"> 
-    <router-outlet class="mt80"></router-outlet>
+        <hr style="height: 48px"  [ngClass]="{'hidden-header': !isLoggedIn}"> 
+        <router-outlet class="mt80"></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>
 

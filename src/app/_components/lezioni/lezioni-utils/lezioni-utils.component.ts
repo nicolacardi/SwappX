@@ -124,7 +124,6 @@ export class LezioniUtilsComponent implements OnInit {
     let dtEndYYYY_MM_DD = dtEnd.toLocaleString('sv').replace(' ', 'T').substring(0,10);
 
     if (ckTutteleClassi1 == false  || ckTutteleClassi1 == null) {
-      //console.log ("deleteByClasseSezioneAnnoAndDate");
       this.svcLezioni.deleteByClasseSezioneAnnoAndDate(this.data.classeSezioneAnnoID, dtStartYYYY_MM_DD, dtEndYYYY_MM_DD)
         .subscribe(
           res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
@@ -158,11 +157,11 @@ export class LezioniUtilsComponent implements OnInit {
     let dtUntilStartYYYY_MM_DD = dtUntilStart.toLocaleString('sv').replace(' ', 'T').substring(0,10);
 
     if (ckTutteleClassi1 == true) {
-      // this.svcLezioni.copyToDate(dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtCopyToStartYYYY_MM_DD)
-      // .subscribe(
-      //   res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
-      //   err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
-      // );
+      this.svcLezioni.copyUntilDate(dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD)
+        .subscribe(
+          res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
+          err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
+        );
     } 
     else {
       //console.log ("this.data.classeSezioneAnnoID, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD", this.data.classeSezioneAnnoID, dtFromStartYYYY_MM_DD, dtFromEndYYYY_MM_DD, dtUntilStartYYYY_MM_DD);
@@ -213,9 +212,9 @@ export class LezioniUtilsComponent implements OnInit {
     let offset:number = -(this._dateAdapter.getDayOfWeek(currDate) - 1 );
     let dtFrom:Date = this._dateAdapter.addCalendarDays(currDate, offset);
     let dtFromYYYY_MM_DD = dtFrom.toLocaleString('sv').replace(' ', 'T').substring(0,10);  //la data del lunedi della settimana corrente
-    let dtToEnd:Date = this._dateAdapter.addCalendarDays(currDate, 5);                     //la data del venerdi della settimana corrente
-    let dtToEndYYYY_MM_DD = dtToEnd.toLocaleString('sv').replace(' ', 'T').substring(0,10);  //la data del lunedi della settimana corrente
-
+    let dtToEnd:Date = this._dateAdapter.addCalendarDays(dtFrom, 5);                     //la data del venerdi della settimana corrente
+    let dtToEndYYYY_MM_DD = dtToEnd.toLocaleString('sv').replace(' ', 'T').substring(0,10);  //la data del venerdì della settimana corrente
+    console.log(dtFromYYYY_MM_DD, dtToEndYYYY_MM_DD );
 
       this.svcLezioni.propagaEpocaByClasseSezioneAnnoUntilDate(this.data.classeSezioneAnnoID, dtFromYYYY_MM_DD, dtToEndYYYY_MM_DD)
         .subscribe(

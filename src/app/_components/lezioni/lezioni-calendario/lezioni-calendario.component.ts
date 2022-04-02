@@ -369,7 +369,7 @@ export class LezioniCalendarioComponent implements OnInit {
       width: '900px',
       height: '500px',
       data: {
-        idLezione: clickInfo.event.id,
+        lezioneID: clickInfo.event.id,
         start: clickInfo.event.start,
         end: clickInfo.event.end,
         dtCalendario: clickInfo.event.extendedProps.dtCalendario,
@@ -402,7 +402,7 @@ export class LezioniCalendarioComponent implements OnInit {
       width: '900px',
       height: '500px',
       data: {
-        idLezione: 0,
+        lezioneID: 0,
         start: dtStart.toLocaleString('sv').replace(' ', 'T'),
         end: dtEnd.toLocaleString('sv').replace(' ', 'T'),
         dtCalendario: dtStart.toLocaleString('sv').replace(' ', 'T').substring(0,10),
@@ -461,9 +461,9 @@ export class LezioniCalendarioComponent implements OnInit {
     }
   }
 
-  toggleEpoca(idLezione: number) {
+  toggleEpoca(lezioneID: number) {
     if (this.dove == 'orario')
-    this.svcLezioni.toggleEpoca(idLezione).subscribe(() => this.loadData());
+    this.svcLezioni.toggleEpoca(lezioneID).subscribe(() => this.loadData());
   }
 
   anotherMethod () {
