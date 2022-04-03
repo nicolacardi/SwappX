@@ -1,15 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
-import { MaterieService } from 'src/app/_components/materie/materie.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+
+//components
 import { MateriaEditComponent } from '../materia-edit/materia-edit.component';
 
+//services
+import { MaterieService } from 'src/app/_components/materie/materie.service';
+import { LoadingService } from '../../utilities/loading/loading.service';
+
+//classes
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
-import { MAT_MacroMateria } from 'src/app/_models/MAT_MacroMateria';
-import { MacroMaterieService } from '../macromaterie.service';
 
 @Component({
   selector: 'app-materie-list',
@@ -50,7 +53,7 @@ export class MaterieListComponent implements OnInit {
   }
 //#endregion
 //#region ----- ViewChild Input Output -------
-  @ViewChild(MatSort) sort!:                                  MatSort;
+  @ViewChild(MatSort) sort!:                MatSort;
 //#endregion
 
   constructor(
@@ -77,8 +80,8 @@ export class MaterieListComponent implements OnInit {
 
     loadMaterie$.subscribe(val =>   {
       this.matDataSource.data = val;
-      console.log (val);
       this.matDataSource.sort = this.sort; 
+      this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
     }
   );
 
@@ -88,8 +91,8 @@ export class MaterieListComponent implements OnInit {
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '850px',
-      height: '580px',
+      width: '400px',
+      height: '300px',
       data: 0
     };
     const dialogRef = this._dialog.open(MateriaEditComponent, dialogConfig);
@@ -101,11 +104,10 @@ export class MaterieListComponent implements OnInit {
   }
 
   openDetail(materiaID:any){
-    console.log (materiaID);
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '850px',
-      height: '580px',
+      width: '400px',
+      height: '300px',
       data: materiaID
     };
     const dialogRef = this._dialog.open(MateriaEditComponent, dialogConfig);
@@ -123,6 +125,19 @@ export class MaterieListComponent implements OnInit {
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
     //if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
+  }
+
+  filterPredicate(): (data: any, filter: string) => boolean {
+    let filterFunction = function(data: any, filter: any): boolean {
+      
+      let searchTerms = JSON.parse(filter);
+
+      let boolSx = String(data.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.macroMateria.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+      return boolSx;
+
+    }
+    return filterFunction;
   }
 //#endregion
 

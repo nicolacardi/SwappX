@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { MAT_Obiettivo } from '../_models/MAT_Obiettivo';
+import { MAT_Obiettivo } from '../../_models/MAT_Obiettivo';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,8 @@ export class ObiettiviService {
   constructor(private http: HttpClient) { }
 
   list(): Observable<MAT_Obiettivo[]>{
-    return this.http.get<MAT_Obiettivo[]>(environment.apiBaseUrl+'MAT_Materie');
-    //http://213.215.231.4/swappX/api/MAT_Obiettivo
+    return this.http.get<MAT_Obiettivo[]>(environment.apiBaseUrl+'MAT_Obiettivi');
+    //http://213.215.231.4/swappX/api/MAT_Obiettivi
   }
 
   listByClasse(classeID: number): Observable<MAT_Obiettivo[]>{

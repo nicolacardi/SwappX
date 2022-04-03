@@ -36,6 +36,7 @@ import { ResetPasswordComponent } from './_user/reset-password/reset-password.co
 import { userInfo } from 'os';
 import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
 import { MateriePageComponent } from './_components/materie/materie-page/materie-page.component';
+import { ObiettiviPageComponent } from './_components/obiettivi/obiettivi-page/obiettivi-page.component';
 
 
 const routes: Routes = [
@@ -74,6 +75,9 @@ const routes: Routes = [
   { path: "rette",            component: RettePageComponent },
 
   { path: "materie",          component: MateriePageComponent },
+
+  { path: "obiettivi",        component: ObiettiviPageComponent },
+
 
   { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.SysAdmin, UserRole.IT_Manager,UserRole.Segreteria ] } },
   

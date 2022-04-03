@@ -143,6 +143,10 @@
                 <span *ngIf="isExpanded">Materie</span>
             </a> 
 
+            <a mat-list-item class="h35px" routerLink="obiettivi" (click)="clickMenuItem()" *ngIf="currUser && currUser.ruoloID >= 10">
+                <img class="iconaMenuSidenav" src="../assets/obiettivo.svg">
+                <span *ngIf="isExpanded">Obiettivi</span>
+            </a> 
 
             <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.ruoloID >= 10">
                 <img class="iconaMenuSidenav" src="../assets/utente.svg">

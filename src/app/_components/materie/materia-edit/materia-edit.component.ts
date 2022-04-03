@@ -4,13 +4,20 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { MAT_MacroMateria } from 'src/app/_models/MAT_MacroMateria';
-import { MAT_Materia } from 'src/app/_models/MAT_Materia';
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { LoadingService } from '../../utilities/loading/loading.service';
+
+//components
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+
+//services
+import { LoadingService } from '../../utilities/loading/loading.service';
 import { MacroMaterieService } from '../macromaterie.service';
 import { MaterieService } from '../materie.service';
+
+//classes
+import { MAT_MacroMateria } from 'src/app/_models/MAT_MacroMateria';
+import { MAT_Materia } from 'src/app/_models/MAT_Materia';
+
 
 @Component({
   selector: 'app-materia-edit',

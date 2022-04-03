@@ -50,6 +50,9 @@ import { IscrizioniClasseListComponent } from './_components/classi/iscrizioni-c
 import { IscrizioniPageComponent } from './_components/classi/iscrizioni-page/iscrizioni-page.component';
 import { IscrizioniListComponent } from './_components/classi/iscrizioni-list/iscrizioni-list.component';
 import { IscrizioniFilterComponent } from './_components/classi/iscrizioni-filter/iscrizioni-filter.component';
+import { IscrizioniClasseCalcoloComponent } from './_components/classi/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
+import { IscrizioniAlunnoListComponent } from './_components/classi/iscrizioni-alunno-list/iscrizioni-alunno-list.component';
+import { ClassiDocentiMaterieListComponent } from './_components/classi/classi-docenti-materie-list/classi-docenti-materie-list.component';
 
 
 import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
@@ -61,6 +64,28 @@ import { RetteListComponent } from './_components/pagamenti/rette-list/rette-lis
 import { RettaEditComponent } from './_components/pagamenti/retta-edit/retta-edit.component';
 import { RettameseEditComponent } from './_components/pagamenti/rettamese-edit/rettamese-edit.component';
 import { RettapagamentoEditComponent } from './_components/pagamenti/rettapagamento-edit/rettapagamento-edit.component';
+import { RettaCalcoloAlunnoComponent } from './_components/pagamenti/retta-calcolo-alunno/retta-calcolo-alunno.component';
+import { RettaCalcoloComponent } from './_components/pagamenti/retta-calcolo/retta-calcolo.component';
+import { RettaannoEditComponent } from './_components/pagamenti/rettaanno-edit/rettaanno-edit.component';
+
+
+import { MaterieListComponent } from './_components/materie/materie-list/materie-list.component';
+import { MateriePageComponent } from './_components/materie/materie-page/materie-page.component';
+import { MateriaEditComponent } from './_components/materie/materia-edit/materia-edit.component';
+
+import { ObiettiviPageComponent } from './_components/obiettivi/obiettivi-page/obiettivi-page.component';
+import { ObiettiviListComponent } from './_components/obiettivi/obiettivi-list/obiettivi-list.component';
+
+import { PagellaEditComponent } from './_components/pagelle/pagella-edit/pagella-edit.component';
+
+import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
+import { LezioneComponent } from './_components/lezioni/lezione-edit/lezione.component';
+import { LezioniUtilsComponent } from './_components/lezioni/lezioni-utils/lezioni-utils.component';
+
+import { DocenzeAddComponent } from './_components/classi/docenze-add/docenze-add.component';
+import { DocenzaEditComponent } from './_components/classi/docenza-edit/docenza-edit.component';
+
+
 
 import { UserService } from './_user/user.service';
 import { UserComponent } from './_user/user.component';
@@ -69,6 +94,8 @@ import { RegisterComponent } from './_user/register/register.component';
 import { UsersPageComponent } from './_components/users/users-page/users-page.component';
 import { UsersListComponent } from './_components/users/users-list/users-list.component';
 import { UsersFilterComponent } from './_components/users/users-filter/users-filter.component';
+import { UserEditComponent } from './_components/users/user-edit/user-edit.component';
+
 
 import { MessaggiComponent } from './_components/messaggi/messaggi.component';
 import { ProfiloComponent } from './_components/account/profilo/profilo.component';
@@ -85,30 +112,19 @@ import { LoadingComponent } from './_components/utilities/loading/loading.compon
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomMatPaginatorIntl } from './_components/utilities/paginator-custom/custom-mat-paginator-int';
 import { HighlightPipe } from './_components/utilities/highlight/highlight.pipe';
-
 import { HighlightDatePipe } from './_components/utilities/highlight/highlightDate.pipe';
 import { PhotocropComponent } from './_components/utilities/photocrop/photocrop.component';
 import { EventEmitterService } from './_services/event-emitter.service';
 import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.component';
+
 import { ResizeColumnDirective } from './_components/utilities/resize-column/resize-column.directive';
-import { RettaCalcoloComponent } from './_components/pagamenti/retta-calcolo/retta-calcolo.component';
-import { IscrizioniClasseCalcoloComponent } from './_components/classi/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
-import { IscrizioniAlunnoListComponent } from './_components/classi/iscrizioni-alunno-list/iscrizioni-alunno-list.component';
-import { UserEditComponent } from './_components/users/user-edit/user-edit.component';
+
 import { ResetPasswordComponent } from './_user/reset-password/reset-password.component';
 import { DatePipe } from '@angular/common';
-import { ClassiDocentiMaterieListComponent } from './_components/classi/classi-docenti-materie-list/classi-docenti-materie-list.component';
-import { DocenzeAddComponent } from './_components/classi/docenze-add/docenze-add.component';
-import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
-import { LezioneComponent } from './_components/lezioni/lezione-edit/lezione.component';
-import { LezioniUtilsComponent } from './_components/lezioni/lezioni-utils/lezioni-utils.component';
-import { RettaCalcoloAlunnoComponent } from './_components/pagamenti/retta-calcolo-alunno/retta-calcolo-alunno.component';
-import { RettaannoEditComponent } from './_components/pagamenti/rettaanno-edit/rettaanno-edit.component';
-import { PagellaEditComponent } from './_components/pagelle/pagella-edit/pagella-edit.component';
-import { DocenzaEditComponent } from './_components/classi/docenza-edit/docenza-edit.component';
-import { MaterieListComponent } from './_components/materie/materie-list/materie-list.component';
-import { MateriePageComponent } from './_components/materie/materie-page/materie-page.component';
-import { MateriaEditComponent } from './_components/materie/materia-edit/materia-edit.component';
+import { ObiettivoEditComponent } from './_components/obiettivi/obiettivo-edit/obiettivo-edit.component';
+
+
+
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -208,7 +224,10 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     DocenzaEditComponent,
     MaterieListComponent,
     MateriePageComponent,
-    MateriaEditComponent 
+    MateriaEditComponent,
+    ObiettiviListComponent,
+    ObiettiviPageComponent,
+    ObiettivoEditComponent 
 
   ],
   imports: [
