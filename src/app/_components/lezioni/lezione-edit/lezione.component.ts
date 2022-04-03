@@ -11,7 +11,7 @@ import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { Utility } from '../../utilities/utility.component';
 
 //services
-import { MaterieService } from 'src/app/_services/materie.service';
+import { MaterieService } from 'src/app/_components/materie/materie.service';
 import { ClassiDocentiMaterieService } from '../../classi/classi-docenti-materie.service';
 import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
 import { DocentiService } from '../../persone/docenti.service';

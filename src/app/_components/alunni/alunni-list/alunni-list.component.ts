@@ -143,10 +143,10 @@ export class AlunniListComponent implements OnInit {
 //#endregion
 
   constructor(
-    private svcAlunni:        AlunniService,
-    private router:           Router,
-    public _dialog:           MatDialog, 
-    private _loadingService:  LoadingService,
+    private svcAlunni:            AlunniService,
+    private router:               Router,
+    public _dialog:               MatDialog, 
+    private _loadingService:      LoadingService,
     private _navigationService:   NavigationService
   ) {}
   

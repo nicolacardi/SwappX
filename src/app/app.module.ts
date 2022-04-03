@@ -106,6 +106,9 @@ import { RettaCalcoloAlunnoComponent } from './_components/pagamenti/retta-calco
 import { RettaannoEditComponent } from './_components/pagamenti/rettaanno-edit/rettaanno-edit.component';
 import { PagellaEditComponent } from './_components/pagelle/pagella-edit/pagella-edit.component';
 import { DocenzaEditComponent } from './_components/classi/docenza-edit/docenza-edit.component';
+import { MaterieListComponent } from './_components/materie/materie-list/materie-list.component';
+import { MateriePageComponent } from './_components/materie/materie-page/materie-page.component';
+import { MateriaEditComponent } from './_components/materie/materia-edit/materia-edit.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -202,7 +205,10 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     RettaCalcoloAlunnoComponent,
     RettaannoEditComponent,
     PagellaEditComponent,
-    DocenzaEditComponent 
+    DocenzaEditComponent,
+    MaterieListComponent,
+    MateriePageComponent,
+    MateriaEditComponent 
 
   ],
   imports: [

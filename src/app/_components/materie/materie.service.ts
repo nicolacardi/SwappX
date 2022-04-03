@@ -1,10 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { PER_Docente } from 'src/app/_models/PER_Docente';
 import { environment } from 'src/environments/environment';
-import { MAT_Materia } from '../_models/MAT_Materia';
+import { MAT_Materia } from '../../_models/MAT_Materia';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +10,6 @@ import { MAT_Materia } from '../_models/MAT_Materia';
 export class MaterieService {
 
   constructor(private http: HttpClient) { }
-
-
-  //***************************************************************MANCA TUTTO SULL'EF??? */
 
   list(): Observable<MAT_Materia[]>{
     return this.http.get<MAT_Materia[]>(environment.apiBaseUrl+'MAT_Materie');
@@ -37,6 +32,8 @@ export class MaterieService {
 
   post(formData: any): Observable <any>{
     formData.id = 0;
+    formData.macroMateriaID = 1; 
+    console.log ("formData", formData);
     return this.http.post( environment.apiBaseUrl  + 'MAT_Materie' , formData);  
   }
 

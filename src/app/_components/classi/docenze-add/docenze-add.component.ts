@@ -16,7 +16,7 @@ import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 //classi
 import { PER_Docente } from 'src/app/_models/PER_Docente';
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
-import { MaterieService } from 'src/app/_services/materie.service';
+import { MaterieService } from 'src/app/_components/materie/materie.service';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
