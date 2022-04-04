@@ -5,12 +5,12 @@ import { CLS_ClasseSezione } from './CLS_ClasseSezione';
 export interface CLS_ClasseSezioneAnno {
         id:                       number;
         sezione:                  string;
-        
-        classeSezione:            CLS_ClasseSezione;
+        annoID:                   number;
+        classeSezione:            CLS_ClasseSezione;    //TODO Maiuscolo
         
         classeSezioneAnnoSuccID:  number;
         ClasseSezioneAnnoSucc:    CLS_ClasseSezioneAnno;
-        anno:                     ASC_AnnoScolastico;   //FORSE VA MINUSCOLO??
+        anno:                     ASC_AnnoScolastico;   //TODO Maiuscolo
         numAlunni:                number;
 }
 
