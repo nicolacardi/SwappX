@@ -32,4 +32,5 @@ export class PagelleService {
     //http://213.215.231.4/swappX/api/DOC_TipiGiudizio
   }
 
+
 }

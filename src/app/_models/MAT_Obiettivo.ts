@@ -1,13 +1,17 @@
+import { ASC_AnnoScolastico } from "./ASC_AnnoScolastico";
+import { CLS_Classe } from "./CLS_Classe";
 import { CLS_ClasseSezioneAnno } from "./CLS_ClasseSezioneAnno";
 import { MAT_Materia } from "./MAT_Materia";
 
 export interface MAT_Obiettivo {
         id:                     number;
-        classeSezioneAnnoID:    number;
+        classeID:               number;
+        annoID:                 number;
         materiaID:              number;
         titolo:                 string;
         descrizione:            string;
 
         materia?:               MAT_Materia;
-        classeSezioneAnno?:     CLS_ClasseSezioneAnno        
+        classe?:                CLS_Classe;
+        anno?:                  ASC_AnnoScolastico;        
 }

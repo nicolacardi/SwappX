@@ -2,6 +2,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
@@ -9,6 +10,7 @@ import { DOC_Pagella, DOC_TipoGiudizio } from 'src/app/_models/DOC_Pagella';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { PagelleService } from '../pagelle.service';
+import { VotiObiettiviEditComponent } from '../voti-obiettivi-edit/voti-obiettivi-edit.component';
 
 @Component({
   selector: 'app-pagella-edit',
@@ -39,6 +41,8 @@ export class PagellaEditComponent implements OnInit  {
     private svcPagella:                   PagelleService,
     private _loadingService:              LoadingService,
     private _snackBar:                    MatSnackBar,
+    public _dialog:                       MatDialog, 
+
   ) { 
   }
 
@@ -170,6 +174,27 @@ export class PagellaEditComponent implements OnInit  {
   }
 
   openObiettivi(element: DOC_Pagella) {
+    console.log ("open obiettivi 1", element.iscrizione!.classeSezioneAnno.classeSezione.classe.id);
+    console.log ("open obiettivi 2", element.iscrizione!.classeSezioneAnno.annoID);
+
+    const dialogConfig : MatDialogConfig = {
+    panelClass: 'add-DetailDialog',
+    width: '850px',
+    height: '580px',
+    data: {
+      classeID: element.iscrizione!.classeSezioneAnno.classeSezione.classe.id,
+      annoID: element.iscrizione!.classeSezioneAnno.annoID,
+      materiaID: element.materiaID
+      }
+
+    }
+    
+    const dialogRef = this._dialog.open(VotiObiettiviEditComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      () => { 
+        this.loadData(); 
+      }
+    );
 
   }
 }

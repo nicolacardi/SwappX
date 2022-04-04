@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { CLS_Classe } from 'src/app/_models/CLS_Classe';
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 
@@ -14,6 +15,7 @@ import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 
 //classes
 import { MAT_Obiettivo } from 'src/app/_models/MAT_Obiettivo';
+import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { ClassiService } from '../../classi/classi.service';
 import { MaterieService } from '../../materie/materie.service';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
@@ -32,6 +34,8 @@ export class ObiettivoEditComponent implements OnInit {
 
 obiettivo$!:                Observable<MAT_Obiettivo>;
 obsClassi$!:                Observable<CLS_Classe[]>;
+obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;
+
 obsMaterie$!:               Observable<MAT_Materia[]>;
 
 
@@ -45,6 +49,7 @@ constructor(
   @Inject(MAT_DIALOG_DATA) public obiettivoID: number,
   private svcObiettivi:                   ObiettiviService,
   private svcClassi:                      ClassiService,
+  private svcAnni:                        AnniScolasticiService,
   private svcMaterie:                     MaterieService,
 
 
@@ -60,6 +65,7 @@ constructor(
     id:                         [null],
     descrizione:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
     classeID:                   [''],
+    annoID:                     [''],
     materiaID:                  ['']
   });
 
@@ -74,8 +80,9 @@ ngOnInit(): void {
 loadData(){
 
 
-  this.obsClassi$ = this.svcClassi.list()
-  this.obsMaterie$ = this.svcMaterie.list()
+  this.obsClassi$ = this.svcClassi.list();
+  this.obsAnni$= this.svcAnni.list();
+  this.obsMaterie$ = this.svcMaterie.list();
 
   if (this.obiettivoID && this.obiettivoID + '' != "0") {
 

@@ -122,6 +122,7 @@ import { ResizeColumnDirective } from './_components/utilities/resize-column/res
 import { ResetPasswordComponent } from './_user/reset-password/reset-password.component';
 import { DatePipe } from '@angular/common';
 import { ObiettivoEditComponent } from './_components/obiettivi/obiettivo-edit/obiettivo-edit.component';
+import { VotiObiettiviEditComponent } from './_components/pagelle/voti-obiettivi-edit/voti-obiettivi-edit.component';
 
 
 
@@ -227,7 +228,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MateriaEditComponent,
     ObiettiviListComponent,
     ObiettiviPageComponent,
-    ObiettivoEditComponent 
+    ObiettivoEditComponent,
+    VotiObiettiviEditComponent 
 
   ],
   imports: [

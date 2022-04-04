@@ -24,8 +24,9 @@ obsObiettivi$!:               Observable<MAT_Obiettivo[]>;
 displayedColumns: string[] = [
     "actionsColumn", 
     "classe",
+    "anno",
     "materia",
-    "descrizione"
+    "descrizione",
 
 ];
 
@@ -33,18 +34,20 @@ displayedColumns: string[] = [
 rptTitle = 'Lista Obiettivi';
 rptFileName = 'ListaObiettivi';
 rptFieldsToKeep  = [
-  "titolo",
-  "descrizione",
+
+  "classe",
+  "anno",
   "materia",
-  "classe"
+  "descrizione",
+
 
 ];
 
 rptColumnsNames  = [
-  "titolo",
-  "descrizione",
+  "classe",
+  "anno",
   "materia",
-  "classe"
+  "descrizione",
 ];
 
 filterValue = '';       //Filtro semplice
@@ -94,7 +97,7 @@ addRecord(){
   const dialogConfig : MatDialogConfig = {
     panelClass: 'add-DetailDialog',
     width: '400px',
-    height: '350px',
+    height: '430px',
     data: 0
   };
   const dialogRef = this._dialog.open(ObiettivoEditComponent, dialogConfig);
@@ -109,7 +112,7 @@ openDetail(obiettivoID:any){
   const dialogConfig : MatDialogConfig = {
     panelClass: 'add-DetailDialog',
     width: '400px',
-    height: '350px',
+    height: '430px',
     data: obiettivoID
   };
   const dialogRef = this._dialog.open(ObiettivoEditComponent, dialogConfig);

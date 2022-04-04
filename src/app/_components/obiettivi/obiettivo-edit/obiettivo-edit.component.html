@@ -50,13 +50,34 @@
                         </mat-select>
                     </mat-form-field>
                 </mat-grid-tile>
-
                 <mat-grid-tile>
                     <mat-form-field>
-                        <input matInput type="text" required placeholder="Descrizione" minlength= "3" formControlName="descrizione" #nome>
-                        <mat-error *ngIf="form.controls.descrizione.errors?.required"> Campo obbligatorio</mat-error>
+                        <mat-label>a.s.</mat-label>
+                        <mat-select required formControlName="annoID">
+                            <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
+                            {{element.annoscolastico}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </mat-grid-tile>
+                
+                
+                <!-- <input matInput type="text" required placeholder="Descrizione" minlength= "3" formControlName="descrizione"> -->
+
+            </mat-grid-list>
+            <mat-grid-list [cols]="3">
+
+                <mat-grid-tile [colspan] = "3">
+                    <mat-form-field class="mt20 w100">
+                        <mat-label >Descrizione Obiettivo</mat-label>
+                        <textarea class="_noresize" matInput formControlName="descrizione"></textarea>
+
+                        
+                        <mat-error *ngIf="form.controls.descrizione.errors?.required"> Campo obbligatorio</mat-error>
+                    </mat-form-field>
+
+                </mat-grid-tile>
+
 
             </mat-grid-list>
 

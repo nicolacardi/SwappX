@@ -21,3 +21,10 @@ export interface DialogDataLezioniUtils {
         start:                Date;
         classeSezioneAnnoID:  number;
       }
+
+
+export interface DialogDataVotiObiettivi {
+        classeID:             number;
+        annoID:               number;
+        mteriaID:             number;
+      }
