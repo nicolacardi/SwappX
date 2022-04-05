@@ -8,20 +8,20 @@ import { tap } from 'rxjs/operators';
 
 //services
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { MaterieService } from '../../materie/materie.service';
-import { ClassiAnniMaterieService } from '../classi-anni-materie.service';
-import { ClassiService } from '../classi.service';
+import { MaterieService } from '../../../materie/materie.service';
+import { ClassiAnniMaterieService } from '../../classi-anni-materie.service';
+import { ClassiService } from '../../classi.service';
 
 //classes
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { CLS_Classe } from 'src/app/_models/CLS_Classe';
 import { CLS_ClasseAnnoMateria } from 'src/app/_models/CLS_ClasseAnnoMateria';
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
-import { LoadingService } from '../../utilities/loading/loading.service';
+import { LoadingService } from '../../../utilities/loading/loading.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { TipiVotoService } from '../tipi-voti.service';
+import { SnackbarComponent } from '../../../utilities/snackbar/snackbar.component';
+import { DialogYesNoComponent } from '../../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { TipiVotoService } from '../../tipi-voti.service';
 import { CLS_TipoVoto } from 'src/app/_models/CLS_TipoVoto';
 
 
@@ -29,7 +29,7 @@ import { CLS_TipoVoto } from 'src/app/_models/CLS_TipoVoto';
 @Component({
   selector: 'app-classe-anno-materia-edit',
   templateUrl: './classe-anno-materia-edit.component.html',
-  styleUrls: ['../classi.css']
+  styleUrls: ['../../classi.css']
 })
 export class ClasseAnnoMateriaEditComponent implements OnInit {
 

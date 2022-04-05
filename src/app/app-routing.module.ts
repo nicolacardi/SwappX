@@ -37,8 +37,8 @@ import { userInfo } from 'os';
 import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
 import { MateriePageComponent } from './_components/materie/materie-page/materie-page.component';
 import { ObiettiviPageComponent } from './_components/obiettivi/obiettivi-page/obiettivi-page.component';
-import { ClassiAnniMaterieListComponent } from './_components/classi/classi-anni-materie-list/classi-anni-materie-list.component';
-import { ClassiAnniMateriePageComponent } from './_components/classi/classi-anni-materie-page/classi-anni-materie-page.component';
+import { ClassiAnniMaterieListComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-list/classi-anni-materie-list.component';
+import { ClassiAnniMateriePageComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-page/classi-anni-materie-page.component';
 
 
 const routes: Routes = [

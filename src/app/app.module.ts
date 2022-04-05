@@ -52,7 +52,7 @@ import { IscrizioniListComponent } from './_components/classi/iscrizioni-list/is
 import { IscrizioniFilterComponent } from './_components/classi/iscrizioni-filter/iscrizioni-filter.component';
 import { IscrizioniClasseCalcoloComponent } from './_components/classi/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 import { IscrizioniAlunnoListComponent } from './_components/classi/iscrizioni-alunno-list/iscrizioni-alunno-list.component';
-import { ClassiDocentiMaterieListComponent } from './_components/classi/classi-docenti-materie-list/classi-docenti-materie-list.component';
+import { ClassiDocentiMaterieListComponent } from './_components/classi/docenze/docenze-list/classi-docenti-materie-list.component';
 
 
 import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
@@ -82,8 +82,8 @@ import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calend
 import { LezioneComponent } from './_components/lezioni/lezione-edit/lezione.component';
 import { LezioniUtilsComponent } from './_components/lezioni/lezioni-utils/lezioni-utils.component';
 
-import { DocenzeAddComponent } from './_components/classi/docenze-add/docenze-add.component';
-import { DocenzaEditComponent } from './_components/classi/docenza-edit/docenza-edit.component';
+import { DocenzeAddComponent } from './_components/classi/docenze/docenze-add/docenze-add.component';
+import { DocenzaEditComponent } from './_components/classi/docenze/docenza-edit/docenza-edit.component';
 
 
 
@@ -123,9 +123,9 @@ import { ResetPasswordComponent } from './_user/reset-password/reset-password.co
 import { DatePipe } from '@angular/common';
 import { ObiettivoEditComponent } from './_components/obiettivi/obiettivo-edit/obiettivo-edit.component';
 import { VotiObiettiviEditComponent } from './_components/pagelle/voti-obiettivi-edit/voti-obiettivi-edit.component';
-import { ClassiAnniMaterieListComponent } from './_components/classi/classi-anni-materie-list/classi-anni-materie-list.component';
-import { ClassiAnniMateriePageComponent } from './_components/classi/classi-anni-materie-page/classi-anni-materie-page.component';
-import { ClasseAnnoMateriaEditComponent } from './_components/classi/classe-anno-materia-edit/classe-anno-materia-edit.component';
+import { ClassiAnniMaterieListComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-list/classi-anni-materie-list.component';
+import { ClassiAnniMateriePageComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-page/classi-anni-materie-page.component';
+import { ClasseAnnoMateriaEditComponent } from './_components/classi/classi-anni-materie/classe-anno-materia-edit/classe-anno-materia-edit.component';
 import { ObiettiviFilterComponent } from './_components/obiettivi/obiettivi-filter/obiettivi-filter.component';
 
 

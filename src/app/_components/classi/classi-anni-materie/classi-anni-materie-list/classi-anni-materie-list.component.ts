@@ -4,14 +4,14 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { CLS_ClasseAnnoMateria } from 'src/app/_models/CLS_ClasseAnnoMateria';
-import { LoadingService } from '../../utilities/loading/loading.service';
+import { LoadingService } from '../../../utilities/loading/loading.service';
 import { ClasseAnnoMateriaEditComponent } from '../classe-anno-materia-edit/classe-anno-materia-edit.component';
-import { ClassiAnniMaterieService } from '../classi-anni-materie.service';
+import { ClassiAnniMaterieService } from '../../classi-anni-materie.service';
 
 @Component({
   selector: 'app-classi-anni-materie-list',
   templateUrl: './classi-anni-materie-list.component.html',
-  styleUrls: ['../classi.css']
+  styleUrls: ['../../classi.css']
 })
 export class ClassiAnniMaterieListComponent implements OnInit {
 
@@ -24,42 +24,40 @@ obsClassiAnniMaterie$!:               Observable<CLS_ClasseAnnoMateria[]>;
 
 displayedColumns: string[] = [
     "actionsColumn", 
-    "classe",
     "anno",
+    "classe",
     "materia",
-    "tipoVoto",
-
+    "tipoVoto"
 ];
 
-
-rptTitle = 'Lista Classi Anni Materie';
-rptFileName = 'ListaClassiAnniMaterie';
+rptTitle = 'Lista Tipi Voto';
+rptFileName = 'ListaTipiVoto';
 rptFieldsToKeep  = [
-
   "classe",
   "anno",
   "materia",
-  "tipoVoti",
-
-
+  "tipoVoto"
 ];
 
 rptColumnsNames  = [
   "classe",
   "anno",
   "materia",
-  "tipoVoti",
+  "tipoVoto"
 ];
 
 filterValue = '';       //Filtro semplice
 
 filterValues = {
-  classe: '',
   anno: '',
+  classe: '',
   materia: '',
+  tipoVoto: '',
   filtrosx: ''
 }
+
 //#endregion
+
 //#region ----- ViewChild Input Output -------
 @ViewChild(MatSort) sort!:                MatSort;
 //#endregion
@@ -67,12 +65,10 @@ filterValues = {
   constructor(
 
     private svcClassiAnniMaterie:                   ClassiAnniMaterieService,
-
-
     private _loadingService:                LoadingService,
-    public _dialog:                         MatDialog, 
-
-  ) { }
+    public _dialog:                         MatDialog ) {
+      
+     }
 
   ngOnInit(): void {
     this.loadData();
@@ -132,11 +128,12 @@ filterValues = {
 
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {
+    
       switch(property) {
-        case 'classe':                      return item.classe.descrizione2;
         case 'anno':                        return item.anno.anno1;
+        case 'classe':                      return item.classe.descrizione2;
         case 'materia':                     return item.materia.descrizione;
-        case 'descrizione':                 return item.descrizione;
+        case 'tipoVoto':                    return item.tipoVoto.descrizione;
 
         default: return item[property]
       }
@@ -156,9 +153,10 @@ filterValues = {
       
       let searchTerms = JSON.parse(filter);
 
-      let boolSx =   String(data.materia.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                    || String(data.classe.descrizione2).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                    || String(data.anno.annoscolastico).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+      let boolSx = String(data.anno.annoscolastico).toLowerCase().indexOf(searchTerms.filtrosx) !== -1  
+                    || String(data.classe.descrizione2).toLowerCase().indexOf(searchTerms.filtrosx) !== -1               
+                    || String(data.materia.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                    || String(data.tipoVoto.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                     
       return boolSx;
 

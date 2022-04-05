@@ -28,6 +28,16 @@
 
             <mat-grid-list class="mt20" [cols]="1" rowHeight="60px" >
 
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <mat-label>Anno scolastico</mat-label>
+                        <mat-select required formControlName="annoID">
+                            <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
+                            {{element.annoscolastico}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
 
                 <mat-grid-tile>
                     <mat-form-field>
@@ -50,20 +60,7 @@
                         </mat-select>
                     </mat-form-field>
                 </mat-grid-tile>
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <mat-label>a.s.</mat-label>
-                        <mat-select required formControlName="annoID">
-                            <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
-                            {{element.annoscolastico}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
-                
-                
                 <!-- <input matInput type="text" required placeholder="Descrizione" minlength= "3" formControlName="descrizione"> -->
-
 
                 <mat-grid-tile>
                     <mat-form-field>
@@ -75,10 +72,7 @@
                         </mat-select>
                     </mat-form-field>
                 </mat-grid-tile>
-
-
             </mat-grid-list>
-
         </form>
     </mat-card-content>
 </mat-card>

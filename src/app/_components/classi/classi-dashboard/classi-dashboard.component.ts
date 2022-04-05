@@ -16,8 +16,8 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
 import { IscrizioniService } from '../iscrizioni.service';
 import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { IscrizioniClasseCalcoloComponent } from '../iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
-import { DocenzeAddComponent } from '../docenze-add/docenze-add.component';
-import { ClassiDocentiMaterieListComponent } from '../classi-docenti-materie-list/classi-docenti-materie-list.component';
+import { DocenzeAddComponent } from '../docenze/docenze-add/docenze-add.component';
+import { ClassiDocentiMaterieListComponent } from '../docenze/docenze-list/classi-docenti-materie-list.component';
 import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
 import { LezioniCalendarioComponent } from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
 import { MatTabGroup } from '@angular/material/tabs';

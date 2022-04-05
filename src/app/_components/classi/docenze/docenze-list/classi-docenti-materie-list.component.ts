@@ -10,13 +10,13 @@ import { Observable } from 'rxjs';
 
 //components
 import { DocenzaEditComponent } from '../docenza-edit/docenza-edit.component';
-import { PersonaEditComponent } from '../../persone/persona-edit/persona-edit.component';
+import { PersonaEditComponent } from '../../../persone/persona-edit/persona-edit.component';
 
 
 //services
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
-import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
+import { LoadingService } from '../../../utilities/loading/loading.service';
+import { ClassiDocentiMaterieService } from '../../classi-docenti-materie.service';
+import { ClassiSezioniAnniService } from '../../classi-sezioni-anni.service';
 
 //classes
 import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
@@ -25,7 +25,7 @@ import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 @Component({
   selector: 'app-classi-docenti-materie-list',
   templateUrl: './classi-docenti-materie-list.component.html',
-  styleUrls: ['../classi.css']
+  styleUrls: ['../../classi.css']
 })
 export class ClassiDocentiMaterieListComponent implements OnInit {
 

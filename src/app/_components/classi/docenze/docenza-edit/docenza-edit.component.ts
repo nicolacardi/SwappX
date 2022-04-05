@@ -5,14 +5,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
+import { LoadingService } from '../../../utilities/loading/loading.service';
+import { SnackbarComponent } from '../../../utilities/snackbar/snackbar.component';
+import { ClassiDocentiMaterieService } from '../../classi-docenti-materie.service';
 
 @Component({
   selector: 'app-docenza-edit',
   templateUrl: './docenza-edit.component.html',
-  styleUrls: ['../classi.css']
+  styleUrls: ['../../classi.css']
 })
 export class DocenzaEditComponent implements OnInit {
 

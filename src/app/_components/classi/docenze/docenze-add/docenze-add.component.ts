@@ -6,12 +6,12 @@ import { concatMap, debounceTime, delayWhen, finalize, switchMap, tap } from 'rx
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 //components
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { SnackbarComponent } from '../../../utilities/snackbar/snackbar.component';
 
 //services
-import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
-import { DocentiService } from '../../persone/docenti.service';
-import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
+import { ClassiDocentiMaterieService } from '../../classi-docenti-materie.service';
+import { DocentiService } from '../../../persone/docenti.service';
+import { ClassiSezioniAnniService } from '../../classi-sezioni-anni.service';
 
 //classi
 import { PER_Docente } from 'src/app/_models/PER_Docente';
@@ -19,13 +19,13 @@ import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 import { MaterieService } from 'src/app/_components/materie/materie.service';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { DialogOkComponent } from '../../../utilities/dialog-ok/dialog-ok.component';
 import { DialogData } from 'src/app/_models/DialogData';
 
 @Component({
   selector: 'app-docenze-add',
   templateUrl: './docenze-add.component.html',
-  styleUrls: ['./../classi.css']
+  styleUrls: ['./../../classi.css']
 })
 
 export class DocenzeAddComponent implements OnInit {

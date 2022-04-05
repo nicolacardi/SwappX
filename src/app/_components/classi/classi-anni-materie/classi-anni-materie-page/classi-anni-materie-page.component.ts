@@ -4,7 +4,7 @@ import { ClassiAnniMaterieListComponent } from '../classi-anni-materie-list/clas
 @Component({
   selector: 'app-classi-anni-materie-page',
   templateUrl: './classi-anni-materie-page.component.html',
-  styleUrls: ['../classi.css']
+  styleUrls: ['../../classi.css']
 })
 export class ClassiAnniMateriePageComponent implements OnInit {
 
