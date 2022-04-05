@@ -67,7 +67,7 @@ export class PagellaEditComponent implements OnInit  {
 
     loadPagella$.subscribe(val =>  {
         this.matDataSource.data = val;
-        
+        console.log (val)
         //this.matDataSource.paginator = this.paginator;          
         //this.sortCustom();
         //this.matDataSource.sort = this.sort; 

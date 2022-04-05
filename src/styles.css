@@ -871,7 +871,8 @@ in fase di creazione della Dialog addAlunno*/
 
 .leftSidenav {
     /* width:  250px; */
-    background-color: rgba(255,255,255,1);
+    background-color: rgb(85, 85, 85);
+    color: white;
 }
 
 .rightSidenav {
@@ -894,8 +895,37 @@ font-size: 10px;
 }
 
 mat-nav-list a{
-    color: rgb(10,10,10) !important;
+    /* color: rgb(10,10,10) !important; */
+    color: rgb(255, 255, 255) !important;
+}
 
+mat-nav-list a:hover{
+    /* color: rgb(10,10,10) !important; */
+    background: rgb(137, 136, 136) !important;
+}
+
+mat-nav-list mat-expansion-panel mat-panel-title{
+    /* color: rgb(10,10,10) !important; */
+    color: rgb(255, 255, 255) !important;
+}
+
+mat-nav-list mat-expansion-panel:hover{
+    /* color: rgb(10,10,10) !important; */
+    background: rgb(137, 136, 136) !important;
+}
+
+::ng-deep .mat-expansion-indicator::after{
+    color: white !important;
+}
+
+.expansionMainMenu
+.mat-expansion-panel-header-description, 
+.mat-expansion-indicator::after {
+    color: white;
+}
+
+.mat-drawer-backdrop.mat-drawer-shown {
+    background-color: rgba(0,0,0,0.2);
 }
 
 mat-nav-list a mat-icon {
@@ -953,6 +983,7 @@ mat-nav-list a img {
 .transparent {
     background: none;
 }
+
 .invisible {
     visibility: hidden;
 }
