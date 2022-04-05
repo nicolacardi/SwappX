@@ -7,13 +7,20 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
-import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+
+//components
+import { DocenzaEditComponent } from '../docenza-edit/docenza-edit.component';
 import { PersonaEditComponent } from '../../persone/persona-edit/persona-edit.component';
+
+
+//services
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
-import { DocenzaEditComponent } from '../docenza-edit/docenza-edit.component';
+
+//classes
+import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
+import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 
 @Component({
   selector: 'app-classi-docenti-materie-list',
@@ -46,11 +53,11 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
   public page!:                 string;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
-  //idAlunniChecked:              number[] = [];
+  
   toggleChecks:                 boolean = false;
   showPageTitle:                boolean = true;
   showTableRibbon:              boolean = true;
-  public swSoloAttivi :         boolean = true;
+  public ckSoloAttivi :         boolean = true;
 
 //#region ----- ViewChild Input Output -------
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
@@ -197,7 +204,7 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
   }
 
   toggleAttivi(){
-    this.swSoloAttivi = !this.swSoloAttivi;
+    this.ckSoloAttivi = !this.ckSoloAttivi;
     this.loadData();
   }
 

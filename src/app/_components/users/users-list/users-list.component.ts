@@ -72,7 +72,7 @@ export class UsersListComponent implements OnInit {
   toggleChecks:                 boolean = false;
   showPageTitle:                boolean = true;
   showTableRibbon:              boolean = true;
-  public swSoloAttivi :         boolean = true;
+  public ckSoloAttivi :         boolean = true;
 
   filterValue = '';       //Filtro semplice
 
@@ -141,7 +141,7 @@ export class UsersListComponent implements OnInit {
     //if (this.dove =="users-page") {
       obsUsers$= this.svcUsers.list();
       /*
-      if(this.swSoloAttivi){
+      if(this.ckSoloAttivi){
         obsUsers$= this.svcUsers.list()
           .pipe(map(res=> res.filter((x) => x.ckAttivo == true)));
       }
@@ -281,7 +281,7 @@ export class UsersListComponent implements OnInit {
   }
 
   toggleAttivi(){
-    this.swSoloAttivi = !this.swSoloAttivi;
+    this.ckSoloAttivi = !this.ckSoloAttivi;
     this.loadData();
   }
 

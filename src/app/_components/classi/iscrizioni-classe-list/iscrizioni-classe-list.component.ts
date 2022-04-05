@@ -74,7 +74,7 @@ export class IscrizioniClasseListComponent implements OnInit {
   toggleChecks:                 boolean = false;
   showPageTitle:                boolean = true;
   showTableRibbon:              boolean = true;
-  public swSoloAttivi :         boolean = true;
+  public ckSoloAttivi :         boolean = true;
 
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
   /*
@@ -352,7 +352,7 @@ export class IscrizioniClasseListComponent implements OnInit {
   }
 
   toggleAttivi(){
-    this.swSoloAttivi = !this.swSoloAttivi;
+    this.ckSoloAttivi = !this.ckSoloAttivi;
     this.loadData();
   }
 

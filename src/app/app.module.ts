@@ -123,6 +123,9 @@ import { ResetPasswordComponent } from './_user/reset-password/reset-password.co
 import { DatePipe } from '@angular/common';
 import { ObiettivoEditComponent } from './_components/obiettivi/obiettivo-edit/obiettivo-edit.component';
 import { VotiObiettiviEditComponent } from './_components/pagelle/voti-obiettivi-edit/voti-obiettivi-edit.component';
+import { ClassiAnniMaterieListComponent } from './_components/classi/classi-anni-materie-list/classi-anni-materie-list.component';
+import { ClassiAnniMateriePageComponent } from './_components/classi/classi-anni-materie-page/classi-anni-materie-page.component';
+import { ClasseAnnoMateriaEditComponent } from './_components/classi/classe-anno-materia-edit/classe-anno-materia-edit.component';
 
 
 
@@ -229,7 +232,10 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ObiettiviListComponent,
     ObiettiviPageComponent,
     ObiettivoEditComponent,
-    VotiObiettiviEditComponent 
+    VotiObiettiviEditComponent,
+    ClassiAnniMaterieListComponent,
+    ClassiAnniMateriePageComponent,
+    ClasseAnnoMateriaEditComponent 
 
   ],
   imports: [

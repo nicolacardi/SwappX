@@ -80,6 +80,7 @@ export class MaterieListComponent implements OnInit {
 
     loadMaterie$.subscribe(val =>   {
       this.matDataSource.data = val;
+      this.sortCustom(); 
       this.matDataSource.sort = this.sort; 
       this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
     }
@@ -120,6 +121,17 @@ export class MaterieListComponent implements OnInit {
 //#endregion
 
 //#region ----- Filtri & Sort -------
+
+  sortCustom() {
+    this.matDataSource.sortingDataAccessor = (item:any, property) => {
+      switch(property) {
+        case 'descrizione':                 return item.descrizione;
+        case 'macroMateria':                return item.macroMateria.descrizione;
+        default: return item[property]
+      }
+    };
+  }
+
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();

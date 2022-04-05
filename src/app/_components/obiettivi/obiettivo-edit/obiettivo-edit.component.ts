@@ -73,89 +73,88 @@ constructor(
 
 //#region ----- LifeCycle Hooks e simili-------
 
-ngOnInit(): void {
-  this.loadData();
-}
-
-loadData(){
-
-
-  this.obsClassi$ = this.svcClassi.list();
-  this.obsAnni$= this.svcAnni.list();
-  this.obsMaterie$ = this.svcMaterie.list();
-
-  if (this.obiettivoID && this.obiettivoID + '' != "0") {
-
-    const obsObiettivo$: Observable<MAT_Obiettivo> = this.svcObiettivi.get(this.obiettivoID);
-    const loadObiettivo$ = this._loadingService.showLoaderUntilCompleted(obsObiettivo$);
-    //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
-    this.obiettivo$ = loadObiettivo$
-    .pipe(
-        tap(
-          obiettivo => {
-            this.form.patchValue(obiettivo)
-          }
-        )
-    );
-  } else {
-    this.emptyForm = true
+  ngOnInit(): void {
+    this.loadData();
   }
 
-}
+  loadData(){
+
+
+    this.obsClassi$ = this.svcClassi.list();
+    this.obsAnni$= this.svcAnni.list();
+    this.obsMaterie$ = this.svcMaterie.list();
+
+    if (this.obiettivoID && this.obiettivoID + '' != "0") {
+
+      const obsObiettivo$: Observable<MAT_Obiettivo> = this.svcObiettivi.get(this.obiettivoID);
+      const loadObiettivo$ = this._loadingService.showLoaderUntilCompleted(obsObiettivo$);
+      this.obiettivo$ = loadObiettivo$
+      .pipe(
+          tap(
+            obiettivo => {
+              this.form.patchValue(obiettivo)
+            }
+          )
+      );
+    } else {
+      this.emptyForm = true
+    }
+
+  }
 //#endregion
 
 //#region ----- Operazioni CRUD -------
 
-save(){
+  save(){
 
-  if (this.form.controls['id'].value == null) 
-    this.svcObiettivi.post(this.form.value)
-      .subscribe(res=> {
-        this._dialogRef.close();
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-      },
-      err=> (
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
-  );
-  else 
-    this.svcObiettivi.put(this.form.value)
-      .subscribe(res=> {
-        this._dialogRef.close();
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-      },
-      err=> (
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
-  );
-}
-
-delete(){
-
-  const dialogRef = this._dialog.open(DialogYesNoComponent, {
-    width: '320px',
-    data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
-  });
-  dialogRef.afterClosed().subscribe(result => {
-    if(result){
-      this.svcObiettivi.delete(Number(this.obiettivoID))
-      // .pipe (
-      //   finalize(()=>this.router.navigate(['/alunni']))
-      // )
-      .subscribe(
-        res=>{
-          this._snackBar.openFromComponent(SnackbarComponent,
-            {data: 'Record cancellato', panelClass: ['red-snackbar']}
-          );
+    if (this.form.controls['id'].value == null) 
+      this.svcObiettivi.post(this.form.value)
+        .subscribe(res=> {
           this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
         err=> (
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         )
-      );
-    }
-  });
-}
+    );
+    else 
+      this.svcObiettivi.put(this.form.value)
+        .subscribe(res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        },
+        err=> (
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        )
+    );
+  }
+
+  delete(){
+
+    const dialogRef = this._dialog.open(DialogYesNoComponent, {
+      width: '320px',
+      data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.svcObiettivi.delete(Number(this.obiettivoID))
+        // .pipe (
+        //   finalize(()=>this.router.navigate(['/alunni']))
+        // )
+        .subscribe(
+          res=>{
+            this._snackBar.openFromComponent(SnackbarComponent,
+              {data: 'Record cancellato', panelClass: ['red-snackbar']}
+            );
+            this._dialogRef.close();
+          },
+          err=> (
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          )
+        );
+      }
+    });
+  }
 //#endregion
 
 }

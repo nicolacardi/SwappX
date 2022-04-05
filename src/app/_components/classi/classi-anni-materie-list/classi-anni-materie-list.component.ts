@@ -3,42 +3,43 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
-import { MAT_Obiettivo } from 'src/app/_models/MAT_Obiettivo';
+import { CLS_ClasseAnnoMateria } from 'src/app/_models/CLS_ClasseAnnoMateria';
 import { LoadingService } from '../../utilities/loading/loading.service';
-import { ObiettiviService } from '../obiettivi.service';
-import { ObiettivoEditComponent } from '../obiettivo-edit/obiettivo-edit.component';
+import { ClasseAnnoMateriaEditComponent } from '../classe-anno-materia-edit/classe-anno-materia-edit.component';
+import { ClassiAnniMaterieService } from '../classi-anni-materie.service';
 
 @Component({
-  selector: 'app-obiettivi-list',
-  templateUrl: './obiettivi-list.component.html',
-  styleUrls: ['../obiettivi.css']
+  selector: 'app-classi-anni-materie-list',
+  templateUrl: './classi-anni-materie-list.component.html',
+  styleUrls: ['../classi.css']
 })
-export class ObiettiviListComponent implements OnInit {
+export class ClassiAnniMaterieListComponent implements OnInit {
+
 
 //#region ----- Variabili -------
 
-matDataSource = new MatTableDataSource<MAT_Obiettivo>();
+matDataSource = new MatTableDataSource<CLS_ClasseAnnoMateria>();
 
-obsObiettivi$!:               Observable<MAT_Obiettivo[]>;
+obsClassiAnniMaterie$!:               Observable<CLS_ClasseAnnoMateria[]>;
 
 displayedColumns: string[] = [
     "actionsColumn", 
     "classe",
     "anno",
     "materia",
-    "descrizione",
+    "tipoVoto",
 
 ];
 
 
-rptTitle = 'Lista Obiettivi';
-rptFileName = 'ListaObiettivi';
+rptTitle = 'Lista Classi Anni Materie';
+rptFileName = 'ListaClassiAnniMaterie';
 rptFieldsToKeep  = [
 
   "classe",
   "anno",
   "materia",
-  "descrizione",
+  "tipoVoti",
 
 
 ];
@@ -47,13 +48,15 @@ rptColumnsNames  = [
   "classe",
   "anno",
   "materia",
-  "descrizione",
+  "tipoVoti",
 ];
 
 filterValue = '';       //Filtro semplice
 
 filterValues = {
-  descrizione: '',
+  classe: '',
+  anno: '',
+  materia: '',
   filtrosx: ''
 }
 //#endregion
@@ -61,16 +64,15 @@ filterValues = {
 @ViewChild(MatSort) sort!:                MatSort;
 //#endregion
 
-constructor(
-  private svcObiettivi:                   ObiettiviService,
+  constructor(
 
-  private _loadingService:                LoadingService,
-  public _dialog:                         MatDialog, 
+    private svcClassiAnniMaterie:                   ClassiAnniMaterieService,
 
 
-) { }
+    private _loadingService:                LoadingService,
+    public _dialog:                         MatDialog, 
 
-
+  ) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -79,19 +81,19 @@ constructor(
   loadData() {
 
     
-    this.obsObiettivi$ = this.svcObiettivi.list();  
+    this.obsClassiAnniMaterie$ = this.svcClassiAnniMaterie.list();  
 
-    const loadObiettivi$ =this._loadingService.showLoaderUntilCompleted(this.obsObiettivi$);
+    const loadClassiAnniMaterie$ =this._loadingService.showLoaderUntilCompleted(this.obsClassiAnniMaterie$);
 
-    loadObiettivi$.subscribe(val =>   {
+    loadClassiAnniMaterie$.subscribe(val =>   {
       this.matDataSource.data = val;
       this.sortCustom(); 
       this.matDataSource.sort = this.sort; 
       this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
     }
   );
+  }
 
-}
 
 //#region ----- Add Edit Drop -------
   addRecord(){
@@ -101,7 +103,7 @@ constructor(
       height: '430px',
       data: 0
     };
-    const dialogRef = this._dialog.open(ObiettivoEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(ClasseAnnoMateriaEditComponent, dialogConfig);
     dialogRef.afterClosed()
       .subscribe(
         () => {
@@ -116,7 +118,7 @@ constructor(
       height: '430px',
       data: obiettivoID
     };
-    const dialogRef = this._dialog.open(ObiettivoEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(ClasseAnnoMateriaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       () => { 
         this.loadData(); 
@@ -154,9 +156,9 @@ constructor(
       
       let searchTerms = JSON.parse(filter);
 
-      let boolSx = String(data.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                    || String(data.materia.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+      let boolSx =   String(data.materia.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                     || String(data.classe.descrizione2).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                    || String(data.anno.annoscolastico).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                     
       return boolSx;
 
@@ -164,6 +166,4 @@ constructor(
     return filterFunction;
   }
 //#endregion
-
-
 }

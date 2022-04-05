@@ -359,7 +359,7 @@ export class IscrizioniListComponent implements OnInit {
   }
 
   // toggleAttivi(){
-  //   this.swSoloAttivi = !this.swSoloAttivi;
+  //   this.ckSoloAttivi = !this.ckSoloAttivi;
   //   this.loadData();
   // }
 

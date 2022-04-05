@@ -2,13 +2,12 @@ import { ASC_AnnoScolastico } from "./ASC_AnnoScolastico";
 import { CLS_Classe } from "./CLS_Classe";
 import { MAT_Materia } from "./MAT_Materia";
 
-export interface MAT_Obiettivo {
+export interface CLS_ClasseAnnoMateria {
         id:                     number;
         classeID:               number;
         annoID:                 number;
         materiaID:              number;
-        titolo:                 string;
-        descrizione:            string;
+        tipoVotoID:             number;
 
         materia?:               MAT_Materia;
         classe?:                CLS_Classe;

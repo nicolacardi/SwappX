@@ -33,7 +33,7 @@ export class PagellaEditComponent implements OnInit  {
   ];
 //#endregion  
 //#region ----- ViewChild Input Output -------
-  @Input('idIscrizione') idIscrizione!:          number;
+  @Input('iscrizioneID') iscrizioneID!:          number;
 //#endregion
 
 
@@ -47,7 +47,7 @@ export class PagellaEditComponent implements OnInit  {
   }
 
   ngOnChanges() {
-    if (this.idIscrizione != undefined) {
+    if (this.iscrizioneID != undefined) {
       this.loadData();
     }
    // console.log();
@@ -62,7 +62,7 @@ export class PagellaEditComponent implements OnInit  {
 
     let obsPagella$: Observable<DOC_Pagella[]>;
 
-    obsPagella$= this.svcPagella.listPagellaByIscrizione(this.idIscrizione);
+    obsPagella$= this.svcPagella.listPagellaByIscrizione(this.iscrizioneID);
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
 
     loadPagella$.subscribe(val =>  {
@@ -174,13 +174,14 @@ export class PagellaEditComponent implements OnInit  {
   }
 
   openObiettivi(element: DOC_Pagella) {
-    console.log ("open obiettivi 1", element.iscrizione!.classeSezioneAnno.classeSezione.classe.id);
-    console.log ("open obiettivi 2", element.iscrizione!.classeSezioneAnno.annoID);
+    console.log ("open classeID 1", element.iscrizione!.classeSezioneAnno.classeSezione.classe.id);
+    console.log ("open annoID 2", element.iscrizione!.classeSezioneAnno.annoID);
+    console.log ("open materiaID 3", element.materiaID);
 
     const dialogConfig : MatDialogConfig = {
     panelClass: 'add-DetailDialog',
-    width: '850px',
-    height: '580px',
+    width: '400px',
+    height: '300px',
     data: {
       classeID: element.iscrizione!.classeSezioneAnno.classeSezione.classe.id,
       annoID: element.iscrizione!.classeSezioneAnno.annoID,

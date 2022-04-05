@@ -101,13 +101,13 @@ export class AlunniListComponent implements OnInit {
   public page!:                 string;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
-  idAlunniChecked:              number[] = [];
+  //idAlunniChecked:              number[] = [];
   
   toggleChecks:                 boolean = false;
 
   showPageTitle:                boolean = true;
   showTableRibbon:              boolean = true;
-  public swSoloAttivi :         boolean = true;
+  public ckSoloAttivi :         boolean = true;
 
   filterValue = '';       //Filtro semplice
 
@@ -220,7 +220,7 @@ export class AlunniListComponent implements OnInit {
     let obsAlunni$: Observable<ALU_Alunno[]>;
     
     if (this.context =="alunni-page") {
-      if(this.swSoloAttivi){
+      if(this.ckSoloAttivi){
         obsAlunni$= this.svcAlunni.listWithParents()
           .pipe(map(res=> res.filter((x) => x.ckAttivo == true)));
       }
@@ -438,7 +438,7 @@ removeFromFamilyEmit(item: ALU_Alunno) {
   }
 
   toggleAttivi(){
-    this.swSoloAttivi = !this.swSoloAttivi;
+    this.ckSoloAttivi = !this.ckSoloAttivi;
     this.loadData();
   }
 

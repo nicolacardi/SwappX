@@ -112,7 +112,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   selection = new SelectionModel<CLS_ClasseSezioneAnnoGroup>(true, []);   //rappresenta la selezione delle checkbox
   
   toggleChecks:                       boolean = false;
-  public swSoloAttivi :               boolean = true;
+  public ckSoloAttivi :               boolean = true;
 
   annoIDrouted!:                       string; //Da routing
   classeSezioneAnnoIDrouted!:         number; //Da routing
@@ -394,20 +394,20 @@ constructor(
 //   };
 // }
 
-sortCustom() {
-  this.matDataSource.sortingDataAccessor = (item:any, property) => {
-    switch(property) {
-      //case 'annoscolastico':              return item.annoScolastico;
-      case 'sezione':                     return item.sezione;
-      case 'descrizione':                 return item.descrizione2;
-      case 'descrizioneBreve':            return item.descrizioneBreve;
-      case 'numAlunni':                   return item.numAlunni;
+  sortCustom() {
+    this.matDataSource.sortingDataAccessor = (item:any, property) => {
+      switch(property) {
+        //case 'annoscolastico':              return item.annoScolastico;
+        case 'sezione':                     return item.sezione;
+        case 'descrizione':                 return item.descrizione2;
+        case 'descrizioneBreve':            return item.descrizioneBreve;
+        case 'numAlunni':                   return item.numAlunni;
 
-      //case 'seq':                         return item.classeSezione.classe.seq;
-      default: return item[property]
-    }
-  };
-}
+        //case 'seq':                         return item.classeSezione.classe.seq;
+        default: return item[property]
+      }
+    };
+  }
 //#endregion
 
 //#region ----- Add Edit Drop -------
@@ -476,7 +476,7 @@ sortCustom() {
   }
 
   toggleAttivi(){
-    this.swSoloAttivi = !this.swSoloAttivi;
+    this.ckSoloAttivi = !this.ckSoloAttivi;
     this.loadData();
   }
 

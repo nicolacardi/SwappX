@@ -41,20 +41,17 @@ export class VotiObiettiviEditComponent implements OnInit {
 
     ) { }
 
-  ngOnChanges() {
-    if (this.data.classeID != undefined) {
-      this.loadData();
-    }
-  }
 
   ngOnInit(): void {
-
+    this.loadData();
   }
 
   loadData() {
+
+    console.log("test");
     let obsObiettivi$: Observable<MAT_Obiettivo[]>;
 
-    obsObiettivi$= this.svcObiettivi.listByMateriaAndClasseAndAnno(this.data.mteriaID, this.data.classeID, this.data.annoID);
+    obsObiettivi$= this.svcObiettivi.listByMateriaAndClasseAndAnno(this.data.materiaID, this.data.classeID, this.data.annoID);
     let loadObiettivi$ =this._loadingService.showLoaderUntilCompleted(obsObiettivi$);
 
     loadObiettivi$.subscribe(val =>  {
