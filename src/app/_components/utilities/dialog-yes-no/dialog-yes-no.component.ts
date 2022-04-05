@@ -10,10 +10,7 @@ import { DialogData } from 'src/app/_models/DialogData';
 export class DialogYesNoComponent   {
 
   constructor( public dialogRef: MatDialogRef<DialogYesNoComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData) {
-
+              @Inject(MAT_DIALOG_DATA) public data: DialogData) {
 
     }
-
-
 }

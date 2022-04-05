@@ -9,8 +9,8 @@ import { tap } from 'rxjs/operators';
 //services
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { MaterieService } from '../../../materie/materie.service';
-import { ClassiAnniMaterieService } from '../../classi-anni-materie.service';
 import { ClassiService } from '../../classi.service';
+import { TipiVotoService } from '../../tipi-voti.service';
 
 //classes
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
@@ -21,9 +21,9 @@ import { LoadingService } from '../../../utilities/loading/loading.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../../utilities/snackbar/snackbar.component';
 import { DialogYesNoComponent } from '../../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { TipiVotoService } from '../../tipi-voti.service';
-import { CLS_TipoVoto } from 'src/app/_models/CLS_TipoVoto';
 
+import { CLS_TipoVoto } from 'src/app/_models/CLS_TipoVoto';
+import { ClasseAnnoMateriaService } from '../../classe-anno-materia.service';
 
 
 @Component({
@@ -41,7 +41,6 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
   obsMaterie$!:               Observable<MAT_Materia[]>;
   obsTipiVoto$!:              Observable<CLS_TipoVoto[]>;
 
-
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
@@ -50,18 +49,16 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
   constructor(
     public _dialogRef: MatDialogRef<ClasseAnnoMateriaEditComponent>,
     @Inject(MAT_DIALOG_DATA) public classeAnnoMateriaID: number,
-    private svcClassiAnniMaterie:           ClassiAnniMaterieService,
     private svcClassi:                      ClassiService,
     private svcAnni:                        AnniScolasticiService,
     private svcMaterie:                     MaterieService,
+    private svcClassiAnniMaterie:           ClasseAnnoMateriaService,
     private svcTipiVoto:                    TipiVotoService,
-
 
     private _loadingService :               LoadingService,
     private fb:                             FormBuilder, 
     public _dialog:                         MatDialog,
-    private _snackBar:                      MatSnackBar,
-  ) { 
+    private _snackBar:                      MatSnackBar) { 
 
     _dialogRef.disableClose = true;
   
@@ -71,9 +68,7 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
       annoID:                     [''],
       materiaID:                  [''],
       tipoVotoID:                 ['', { validators:[ Validators.required, Validators.maxLength(50)]}]
-
     });
-  
   }
 
   ngOnInit(): void {
@@ -82,12 +77,10 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
   
   loadData(){
   
-  
     this.obsClassi$ = this.svcClassi.list();
     this.obsAnni$= this.svcAnni.list();
     this.obsMaterie$ = this.svcMaterie.list();
     this.obsTipiVoto$ = this.svcTipiVoto.list();
-
   
     if (this.classeAnnoMateriaID && this.classeAnnoMateriaID + '' != "0") {
   

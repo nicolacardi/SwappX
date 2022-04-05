@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { CLS_ClasseAnnoMateria } from 'src/app/_models/CLS_ClasseAnnoMateria';
 import { LoadingService } from '../../../utilities/loading/loading.service';
 import { ClasseAnnoMateriaEditComponent } from '../classe-anno-materia-edit/classe-anno-materia-edit.component';
-import { ClassiAnniMaterieService } from '../../classi-anni-materie.service';
+import { ClasseAnnoMateriaService } from '../../classe-anno-materia.service';
 
 @Component({
   selector: 'app-classi-anni-materie-list',
@@ -64,7 +64,7 @@ filterValues = {
 
   constructor(
 
-    private svcClassiAnniMaterie:                   ClassiAnniMaterieService,
+    private svcClasseAnnoMateria:           ClasseAnnoMateriaService,
     private _loadingService:                LoadingService,
     public _dialog:                         MatDialog ) {
       
@@ -76,18 +76,16 @@ filterValues = {
 
   loadData() {
 
-    
-    this.obsClassiAnniMaterie$ = this.svcClassiAnniMaterie.list();  
-
+    this.obsClassiAnniMaterie$ = this.svcClasseAnnoMateria.list();  
     const loadClassiAnniMaterie$ =this._loadingService.showLoaderUntilCompleted(this.obsClassiAnniMaterie$);
 
     loadClassiAnniMaterie$.subscribe(val =>   {
-      this.matDataSource.data = val;
-      this.sortCustom(); 
-      this.matDataSource.sort = this.sort; 
-      this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
-    }
-  );
+        this.matDataSource.data = val;
+        this.sortCustom(); 
+        this.matDataSource.sort = this.sort; 
+        this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
+      }
+    );
   }
 
 

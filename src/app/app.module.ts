@@ -125,11 +125,9 @@ import { DatePipe } from '@angular/common';
 import { ObiettivoEditComponent } from './_components/obiettivi/obiettivo-edit/obiettivo-edit.component';
 import { VotiObiettiviEditComponent } from './_components/pagelle/voti-obiettivi-edit/voti-obiettivi-edit.component';
 import { ClassiAnniMaterieListComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-list/classi-anni-materie-list.component';
-import { ClassiAnniMateriePageComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-page/classi-anni-materie-page.component';
+import { TipiVotoPageComponent } from './_components/classi/classi-anni-materie/tipi-voto-page/tipi-voto-page.component';
 import { ClasseAnnoMateriaEditComponent } from './_components/classi/classi-anni-materie/classe-anno-materia-edit/classe-anno-materia-edit.component';
 import { ObiettiviFilterComponent } from './_components/obiettivi/obiettivi-filter/obiettivi-filter.component';
-
-
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -236,9 +234,11 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ObiettiviPageComponent,
     ObiettivoEditComponent,
     VotiObiettiviEditComponent,
+
     ClassiAnniMaterieListComponent,
-    ClassiAnniMateriePageComponent,
+    TipiVotoPageComponent,
     ClasseAnnoMateriaEditComponent,
+
     ObiettiviFilterComponent 
 
   ],
