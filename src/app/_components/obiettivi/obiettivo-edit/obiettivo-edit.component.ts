@@ -35,7 +35,6 @@ export class ObiettivoEditComponent implements OnInit {
 obiettivo$!:                Observable<MAT_Obiettivo>;
 obsClassi$!:                Observable<CLS_Classe[]>;
 obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;
-
 obsMaterie$!:               Observable<MAT_Materia[]>;
 
 
@@ -63,7 +62,7 @@ constructor(
   
   this.form = this.fb.group({
     id:                         [null],
-    descrizione:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+    descrizione:                ['', { validators:[ Validators.required, Validators.maxLength(100)]}],
     classeID:                   [''],
     annoID:                     [''],
     materiaID:                  ['']

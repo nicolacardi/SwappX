@@ -1,12 +1,20 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
-import { MAT_Obiettivo } from 'src/app/_models/MAT_Obiettivo';
+
+//components
+import { ObiettivoEditComponent } from '../obiettivo-edit/obiettivo-edit.component';
+import { ObiettiviFilterComponent } from '../obiettivi-filter/obiettivi-filter.component';
+
+//services
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { ObiettiviService } from '../obiettivi.service';
-import { ObiettivoEditComponent } from '../obiettivo-edit/obiettivo-edit.component';
+
+//classes
+import { MAT_Obiettivo } from 'src/app/_models/MAT_Obiettivo';
+
 
 @Component({
   selector: 'app-obiettivi-list',
@@ -54,10 +62,16 @@ filterValue = '';       //Filtro semplice
 
 filterValues = {
   descrizione: '',
+  classeID: '',
+  annoID: '',
+  materiaID: '',
   filtrosx: ''
 }
 //#endregion
 //#region ----- ViewChild Input Output -------
+
+@Input() obiettiviFilterComponent!:                            ObiettiviFilterComponent;
+
 @ViewChild(MatSort) sort!:                MatSort;
 //#endregion
 
@@ -156,9 +170,14 @@ constructor(
 
       let boolSx = String(data.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                     || String(data.materia.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                    || String(data.classe.descrizione2).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                    || String(data.classe.descrizione2).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
+
+      let boolDx = String(data.classeID).toLowerCase().indexOf(searchTerms.classeID) !== -1
+                    && String(data.materiaID).toLowerCase().indexOf(searchTerms.materiaID) !== -1
+                    && String(data.annoID).toLowerCase().indexOf(searchTerms.annoID) !== -1;
+
                     
-      return boolSx;
+      return boolSx  && boolDx;
 
     }
     return filterFunction;

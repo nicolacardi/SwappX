@@ -534,10 +534,21 @@
         z-index: 1000;
         position: absolute !important;
         top: 80px;
-        right: 30px;
         background-color: #044D7E !important;
-        transition: transform .2s ease-in-out;
     }
+
+    ._btn-pos-right-1 {
+        right: 30px;
+    }
+
+    ._btn-pos-right-2 {
+        right: 75px;
+    }
+
+    ._btn-pos-right-3 {
+        right: 120px;
+    }
+
 
     ._btn-add:hover{
         transform: scale(1.05);
@@ -573,18 +584,6 @@
         transform: scale(1.05);
     }
 
-    /* button di apertura filtri Avanzati sulla dx */
-    ._btn-filter {
-        z-index: 1000;
-        position: absolute !important;
-        top: 80px;
-        right: 75px;
-        background-color: #044D7E !important;
-    }
-
-    ._btn-filter:hover{
-        transform: scale(1.05);
-    }
 
     ._btn-addAlunno {
         z-index: 1000;

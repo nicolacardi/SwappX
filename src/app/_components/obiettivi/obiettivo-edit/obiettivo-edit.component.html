@@ -42,16 +42,6 @@
 
                 <mat-grid-tile>
                     <mat-form-field>
-                        <mat-label>Materia</mat-label>
-                        <mat-select required formControlName="materiaID">
-                            <mat-option *ngFor="let element of (obsMaterie$ | async)" [value]="element.id">
-                            {{element.descrizione}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                    <mat-form-field>
                         <mat-label>a.s.</mat-label>
                         <mat-select required formControlName="annoID">
                             <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
@@ -60,6 +50,18 @@
                         </mat-select>
                     </mat-form-field>
                 </mat-grid-tile>
+                
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <mat-label>Materia</mat-label>
+                        <mat-select required formControlName="materiaID">
+                            <mat-option *ngFor="let element of (obsMaterie$ | async)" [value]="element.id">
+                            {{element.descrizione}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+
                 
                 
                 <!-- <input matInput type="text" required placeholder="Descrizione" minlength= "3" formControlName="descrizione"> -->

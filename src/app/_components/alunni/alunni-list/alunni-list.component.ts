@@ -408,13 +408,13 @@ export class AlunniListComponent implements OnInit {
 //#endregion
 
 //#region ----- Emit per alunno-edit -------
-addToFamilyEmit(item: ALU_Alunno) {
-  this.addToFamily.emit(item);
-}
+  addToFamilyEmit(item: ALU_Alunno) {
+    this.addToFamily.emit(item);
+  }
 
-removeFromFamilyEmit(item: ALU_Alunno) {
-  this.removeFromFamily.emit(item);
-}
+  removeFromFamilyEmit(item: ALU_Alunno) {
+    this.removeFromFamily.emit(item);
+  }
 
 //#endregion
 

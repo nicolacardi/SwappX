@@ -39,7 +39,7 @@
 
         <ng-container matColumnDef="tipoVoto">
             <th mat-header-cell *matHeaderCellDef  mat-sort-header >tipo Voti</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.tipoVotoID | highlight:filterValue"></td>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.tipoVoto.descrizione | highlight:filterValue"></td>
         </ng-container>
 
 

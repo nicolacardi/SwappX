@@ -126,6 +126,7 @@ import { VotiObiettiviEditComponent } from './_components/pagelle/voti-obiettivi
 import { ClassiAnniMaterieListComponent } from './_components/classi/classi-anni-materie-list/classi-anni-materie-list.component';
 import { ClassiAnniMateriePageComponent } from './_components/classi/classi-anni-materie-page/classi-anni-materie-page.component';
 import { ClasseAnnoMateriaEditComponent } from './_components/classi/classe-anno-materia-edit/classe-anno-materia-edit.component';
+import { ObiettiviFilterComponent } from './_components/obiettivi/obiettivi-filter/obiettivi-filter.component';
 
 
 
@@ -235,7 +236,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     VotiObiettiviEditComponent,
     ClassiAnniMaterieListComponent,
     ClassiAnniMateriePageComponent,
-    ClasseAnnoMateriaEditComponent 
+    ClasseAnnoMateriaEditComponent,
+    ObiettiviFilterComponent 
 
   ],
   imports: [

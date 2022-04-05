@@ -21,6 +21,8 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { TipiVotoService } from '../tipi-voti.service';
+import { CLS_TipoVoto } from 'src/app/_models/CLS_TipoVoto';
 
 
 
@@ -37,6 +39,7 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
   obsClassi$!:                Observable<CLS_Classe[]>;
   obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;
   obsMaterie$!:               Observable<MAT_Materia[]>;
+  obsTipiVoto$!:              Observable<CLS_TipoVoto[]>;
 
 
   form! :                     FormGroup;
@@ -51,6 +54,8 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
     private svcClassi:                      ClassiService,
     private svcAnni:                        AnniScolasticiService,
     private svcMaterie:                     MaterieService,
+    private svcTipiVoto:                    TipiVotoService,
+
 
     private _loadingService :               LoadingService,
     private fb:                             FormBuilder, 
@@ -81,6 +86,8 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
     this.obsClassi$ = this.svcClassi.list();
     this.obsAnni$= this.svcAnni.list();
     this.obsMaterie$ = this.svcMaterie.list();
+    this.obsTipiVoto$ = this.svcTipiVoto.list();
+
   
     if (this.classeAnnoMateriaID && this.classeAnnoMateriaID + '' != "0") {
   

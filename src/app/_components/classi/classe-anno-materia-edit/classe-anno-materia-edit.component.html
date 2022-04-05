@@ -67,12 +67,13 @@
 
                 <mat-grid-tile>
                     <mat-form-field>
-                        <mat-label >tipo voto</mat-label>
-                            <input matInput type="number" required placeholder="Descrizione" max-length= "1" formControlName="tipoVotoID">
-
-                        <mat-error *ngIf="form.controls.tipoVotoID.errors?.required"> Campo obbligatorio</mat-error>
+                        <mat-label>Tipo Voto</mat-label>
+                        <mat-select required formControlName="tipoVotoID">
+                            <mat-option *ngFor="let element of (obsTipiVoto$ | async)" [value]="element.id">
+                            {{element.descrizione}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
-
                 </mat-grid-tile>
 
 
