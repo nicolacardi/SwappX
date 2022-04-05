@@ -10,7 +10,8 @@ import { tap } from 'rxjs/operators';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { MaterieService } from '../../../materie/materie.service';
 import { ClassiService } from '../../classi.service';
-import { TipiVotoService } from '../../tipi-voti.service';
+import { TipiVotoService } from '../tipi-voto.service';
+import { ClasseAnnoMateriaService } from '../../classe-anno-materia.service';
 
 //classes
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
@@ -23,7 +24,7 @@ import { SnackbarComponent } from '../../../utilities/snackbar/snackbar.componen
 import { DialogYesNoComponent } from '../../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 import { CLS_TipoVoto } from 'src/app/_models/CLS_TipoVoto';
-import { ClasseAnnoMateriaService } from '../../classe-anno-materia.service';
+
 
 
 @Component({
