@@ -12,7 +12,7 @@ import { Utility } from '../../utilities/utility.component';
 
 //services
 import { MaterieService } from 'src/app/_components/materie/materie.service';
-import { ClassiDocentiMaterieService } from '../../classi/classi-docenti-materie.service';
+import { DocenzeService } from '../../classi/docenze/docenze.service';
 import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
 import { DocentiService } from '../../persone/docenti.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
@@ -73,7 +73,7 @@ export class LezioneComponent implements OnInit {
               private svcLezioni:                     LezioniService,
               private svcMaterie:                     MaterieService,
               private svcDocenti:                     DocentiService,
-              private svcClassiDocentiMaterie:        ClassiDocentiMaterieService,
+              private svcDocenze:                     DocenzeService,
               private svcClasseSezioneAnno:           ClassiSezioniAnniService,
 
               public _dialog:                         MatDialog,
@@ -116,7 +116,7 @@ export class LezioneComponent implements OnInit {
 
         if (this.form.controls.classeSezioneAnnoID.value != null && this.form.controls.classeSezioneAnnoID.value != undefined) {
           //verifica se già non è impegnato in quest'ora o FRAZIONI DI ORA in qualche altro posto.
-          this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateria(this.form.controls.classeSezioneAnnoID.value, val)
+          this.svcDocenze.getByClasseSezioneAnnoAndMateria(this.form.controls.classeSezioneAnnoID.value, val)
           .subscribe(val => {
             if (val) 
               this.form.controls['docenteID'].setValue(val.docenteID);
@@ -154,7 +154,7 @@ export class LezioneComponent implements OnInit {
   loadData(): void {
 
     this.breakpoint = (window.innerWidth <= 800) ? 2 : 2;
-    this.obsClassiDocentiMaterie$ = this.svcClassiDocentiMaterie.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
+    this.obsClassiDocentiMaterie$ = this.svcDocenze.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
     
     //this.obsMaterie$ = this.svcMaterie.listOrario(); //AS [30mar2022]: sostituita dal metodo listByClasseSezioneAnno
     this.obsMaterie$ = this.svcMaterie.listByClasseSezioneAnno(this.classeSezioneAnnoID); 

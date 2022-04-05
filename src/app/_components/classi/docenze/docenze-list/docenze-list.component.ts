@@ -15,7 +15,7 @@ import { PersonaEditComponent } from '../../../persone/persona-edit/persona-edit
 
 //services
 import { LoadingService } from '../../../utilities/loading/loading.service';
-import { ClassiDocentiMaterieService } from '../../classi-docenti-materie.service';
+import { DocenzeService } from '../docenze.service';
 import { ClassiSezioniAnniService } from '../../classi-sezioni-anni.service';
 
 //classes
@@ -23,11 +23,12 @@ import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMater
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 
 @Component({
-  selector: 'app-classi-docenti-materie-list',
-  templateUrl: './classi-docenti-materie-list.component.html',
+  selector: 'app-docenze-list',
+  templateUrl: './docenze-list.component.html',
   styleUrls: ['../../classi.css']
 })
-export class ClassiDocentiMaterieListComponent implements OnInit {
+
+export class DocenzeListComponent implements OnInit {
 
 //#region ----- Variabili -------
   matDataSource = new           MatTableDataSource<CLS_ClasseDocenteMateria>();
@@ -70,7 +71,7 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
 
 
   constructor(
-    private svcClassiDocentiMaterie:    ClassiDocentiMaterieService,
+    private svcDocenze:                 DocenzeService,
     private svcClasseSezioneAnno:       ClassiSezioniAnniService,
     private _loadingService:            LoadingService,
     public _dialog:                     MatDialog
@@ -95,7 +96,7 @@ export class ClassiDocentiMaterieListComponent implements OnInit {
 
     let obsInsegnamenti$: Observable<CLS_ClasseDocenteMateria[]>;
   
-    obsInsegnamenti$= this.svcClassiDocentiMaterie.listByClasseSezioneAnno(this.classeSezioneAnnoID);
+    obsInsegnamenti$= this.svcDocenze.listByClasseSezioneAnno(this.classeSezioneAnnoID);
     let loadInsegnamenti$ =this._loadingService.showLoaderUntilCompleted(obsInsegnamenti$);
 
     loadInsegnamenti$.subscribe(val =>  {

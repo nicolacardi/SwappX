@@ -17,8 +17,8 @@ import { IscrizioniService } from '../iscrizioni.service';
 import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { IscrizioniClasseCalcoloComponent } from '../iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 import { DocenzeAddComponent } from '../docenze/docenze-add/docenze-add.component';
-import { ClassiDocentiMaterieListComponent } from '../docenze/docenze-list/classi-docenti-materie-list.component';
-import { ClassiDocentiMaterieService } from '../classi-docenti-materie.service';
+import { DocenzeListComponent } from '../docenze/docenze-list/docenze-list.component';
+import { DocenzeService } from '../docenze/docenze.service';
 import { LezioniCalendarioComponent } from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
 import { MatTabGroup } from '@angular/material/tabs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -91,7 +91,7 @@ export class ClassiDashboardComponent implements OnInit {
   //@ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
   @ViewChild(ClassiSezioniAnniListComponent) viewClassiSezioniAnni!: ClassiSezioniAnniListComponent; 
   @ViewChild(IscrizioniClasseListComponent) viewListIscrizioni!: IscrizioniClasseListComponent; 
-  @ViewChild(ClassiDocentiMaterieListComponent) viewClassiDocentiMaterieIscrizioni!: ClassiDocentiMaterieListComponent; 
+  @ViewChild(DocenzeListComponent) viewDocenzeList!: DocenzeListComponent; 
   @ViewChild('orarioLezioniDOM') viewOrarioLezioni!: LezioniCalendarioComponent; 
   @ViewChild('orarioDocenteDOM') viewOrarioDocente!: LezioniCalendarioComponent; 
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
@@ -101,7 +101,7 @@ export class ClassiDashboardComponent implements OnInit {
 
   constructor(
     private svcIscrizioni:                IscrizioniService,
-    private svcClassiDocentiMaterie:      ClassiDocentiMaterieService,
+    private svcDocenze:                   DocenzeService,
     private _navigationService:           NavigationService,
     public _dialog:                       MatDialog,
     private _jspdf:                       JspdfService,
@@ -161,10 +161,10 @@ export class ClassiDashboardComponent implements OnInit {
     //elenco i nomi delle colonne
     let columnsNames = [['materia', 'Nome Docente', 'Cognome Docente']];
     this._jspdf.creaPdf(
-      this.viewClassiDocentiMaterieIscrizioni.matDataSource.data,
+      this.viewDocenzeList.matDataSource.data,
       columnsNames,
       fieldsToKeep,
-      "Docenti Classe "+ this.viewClassiDocentiMaterieIscrizioni.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewClassiDocentiMaterieIscrizioni.classeSezioneAnno.classeSezione.sezione,
+      "Docenti Classe "+ this.viewDocenzeList.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewDocenzeList.classeSezioneAnno.classeSezione.sezione,
       "ListaDocenze");
   }
 
@@ -235,9 +235,8 @@ export class ClassiDashboardComponent implements OnInit {
     const dialogRef = this._dialog.open(DocenzeAddComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
         result => {
-          if(result == undefined){          
-          this.viewClassiDocentiMaterieIscrizioni.loadData()
-          }
+          if(result == undefined)          
+            this.viewDocenzeList.loadData()
     });
   }
 
@@ -299,7 +298,7 @@ export class ClassiDashboardComponent implements OnInit {
   }
 
   removeDocenteFromClasse() {
-    const objIdToRemove = this.viewClassiDocentiMaterieIscrizioni.getChecked();
+    const objIdToRemove = this.viewDocenzeList.getChecked();
 
     const selections = objIdToRemove.length;
     if (selections <= 0) {
@@ -327,17 +326,16 @@ export class ClassiDashboardComponent implements OnInit {
             // }); 
             //per ragioni di sincronia (aggiornamento classiSezioniAnniList dopo il loop) usiamo la Promise()
             for (const element of objIdToRemove) {
-              await this.svcClassiDocentiMaterie.delete(element.id)
+              await this.svcDocenze.delete(element.id)
               .toPromise();
             }
 
-            this.viewClassiDocentiMaterieIscrizioni.loadData()
+            this.viewDocenzeList.loadData()
             
             this.router.navigate(['/classi-dashboard'], { queryParams: { annoID: this.annoID, classeSezioneAnnoID: this.classeSezioneAnnoID } });
 
-            this.viewClassiDocentiMaterieIscrizioni.resetSelections();
-            this.viewClassiDocentiMaterieIscrizioni.loadData();
-
+            this.viewDocenzeList.resetSelections();
+            this.viewDocenzeList.loadData();
           }
       })
     }

@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
 import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
 import { LoadingService } from '../../../utilities/loading/loading.service';
 import { SnackbarComponent } from '../../../utilities/snackbar/snackbar.component';
-import { ClassiDocentiMaterieService } from '../../classi-docenti-materie.service';
+import { DocenzeService } from '../docenze.service';
 
 @Component({
   selector: 'app-docenza-edit',
@@ -29,7 +29,7 @@ export class DocenzaEditComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public idDocenza: number,
     public _dialogRef:                          MatDialogRef<DocenzaEditComponent>,
-    private svcClassiDocentiMaterie:            ClassiDocentiMaterieService,
+    private svcDocenze:                         DocenzeService,
     private _loadingService :                   LoadingService,
     private fb:                                 FormBuilder,
     private _snackBar:                          MatSnackBar,
@@ -55,7 +55,7 @@ export class DocenzaEditComponent implements OnInit {
 
     if (this.idDocenza && this.idDocenza + '' != "0") {
 
-      const obsDocenza$: Observable<CLS_ClasseDocenteMateria> = this.svcClassiDocentiMaterie.get(this.idDocenza);
+      const obsDocenza$: Observable<CLS_ClasseDocenteMateria> = this.svcDocenze.get(this.idDocenza);
       const loadDocenza$ = this._loadingService.showLoaderUntilCompleted(obsDocenza$);
       
       this.docenza$ = loadDocenza$.pipe(
@@ -97,7 +97,7 @@ export class DocenzaEditComponent implements OnInit {
     //          (di norma così sarebbe, perchè non ha senso che si voglia togliere dalla pagella di una I A e non della I C...) 
     //          (attenzione, stiamo parlando di quelle uguali dello stesso anno)
 
-      this.svcClassiDocentiMaterie.put(this.form.value)
+      this.svcDocenze.put(this.form.value)
         .subscribe(res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
@@ -106,12 +106,10 @@ export class DocenzaEditComponent implements OnInit {
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         )
       );
-
-    
   }
 
   delete() {
-    this.svcClassiDocentiMaterie.delete(this.form.controls.id.value)
+    this.svcDocenze.delete(this.form.controls.id.value)
     .subscribe(res=> {
       this._dialogRef.close();
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record Elieminato', panelClass: ['green-snackbar']});
@@ -119,7 +117,7 @@ export class DocenzaEditComponent implements OnInit {
     err=> (
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore durante la cancellazione', panelClass: ['red-snackbar']})
     )
-  );
+    );
   }
 
 }

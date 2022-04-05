@@ -45,6 +45,7 @@ import { ClasseSezioneAnnoEditComponent } from './_components/classi/classe-sezi
 import { ClassiSezioniAnniFilterComponent } from './_components/classi/classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
 import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
+
 import { IscrizioniAddComponent } from './_components/classi/iscrizioni-add/iscrizioni-add.component';
 import { IscrizioniClasseListComponent } from './_components/classi/iscrizioni-classe-list/iscrizioni-classe-list.component';
 import { IscrizioniPageComponent } from './_components/classi/iscrizioni-page/iscrizioni-page.component';
@@ -52,8 +53,8 @@ import { IscrizioniListComponent } from './_components/classi/iscrizioni-list/is
 import { IscrizioniFilterComponent } from './_components/classi/iscrizioni-filter/iscrizioni-filter.component';
 import { IscrizioniClasseCalcoloComponent } from './_components/classi/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 import { IscrizioniAlunnoListComponent } from './_components/classi/iscrizioni-alunno-list/iscrizioni-alunno-list.component';
-import { ClassiDocentiMaterieListComponent } from './_components/classi/docenze/docenze-list/classi-docenti-materie-list.component';
 
+import { DocenzeListComponent } from './_components/classi/docenze/docenze-list/docenze-list.component';
 
 import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
 import { PagamentiListComponent } from './_components/pagamenti/pagamenti-list/pagamenti-list.component';
@@ -166,7 +167,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ClassiSezioniAnniFilterComponent,
     ClassiSezioniAnniListComponent,
     ClassiDashboardComponent,
-    ClassiDocentiMaterieListComponent,
+    
+    DocenzeListComponent,
 
     IscrizioniClasseListComponent,
     IscrizioniAddComponent,

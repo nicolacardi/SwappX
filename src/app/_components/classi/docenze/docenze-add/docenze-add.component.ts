@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../../utilities/snackbar/snackbar.component';
 
 //services
-import { ClassiDocentiMaterieService } from '../../classi-docenti-materie.service';
+import { DocenzeService } from '../docenze.service';
 import { DocentiService } from '../../../persone/docenti.service';
 import { ClassiSezioniAnniService } from '../../classi-sezioni-anni.service';
 
@@ -49,7 +49,7 @@ export class DocenzeAddComponent implements OnInit {
     private svcMaterie:                     MaterieService,
     private svcDocenti:                     DocentiService,
     private svcClasseSezioneAnno:           ClassiSezioniAnniService,
-    private svcClassiDocentiMaterie:        ClassiDocentiMaterieService,
+    private svcDocenze:                     DocenzeService,
     public dialogRef:                       MatDialogRef<DocenzeAddComponent>,
     private _snackBar:                      MatSnackBar,
     public _dialog:                         MatDialog,
@@ -116,7 +116,7 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
     //e anche che questo stesso maestro non sia già maestro di questa materia in questa classe
 
     const checks$ = 
-    this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateriaAndDocente(this.data.classeSezioneAnnoID, this.materiaSelectedID, this.docenteSelectedID)
+    this.svcDocenze.getByClasseSezioneAnnoAndMateriaAndDocente(this.data.classeSezioneAnnoID, this.materiaSelectedID, this.docenteSelectedID)
     .pipe(
       //se trova che la stessa classe è già presente res.length è != 0 quindi non procede con la getByAlunnoAnno ma restituisce of()
       //se invece res.length == 0 dovrebbe proseguire e concatenare la verifica successiva ch è getByAlunnoAndAnno...
@@ -134,7 +134,7 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
         }
       ),
       concatMap( res => iif (()=> res == null,
-        this.svcClassiDocentiMaterie.getByClasseSezioneAnnoAndMateria(this.data.classeSezioneAnnoID, this.materiaSelectedID) , of() )
+        this.svcDocenze.getByClasseSezioneAnnoAndMateria(this.data.classeSezioneAnnoID, this.materiaSelectedID) , of() )
       ),
       tap(res=> {
         if (res != null) {
@@ -151,7 +151,7 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
 
     checks$
     .pipe(
-       concatMap( res => iif (()=> res == null, this.svcClassiDocentiMaterie.post(objDocenza) , of() )
+       concatMap( res => iif (()=> res == null, this.svcDocenze.post(objDocenza) , of() )
       )
     ).subscribe(
       res=> {
@@ -161,9 +161,6 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
        }
     )
-
-
-
   }
 
 //#endregion

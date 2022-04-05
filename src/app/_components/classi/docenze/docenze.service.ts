@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class ClassiDocentiMaterieService {
+export class DocenzeService {
 
   constructor(private http: HttpClient) { }
 
