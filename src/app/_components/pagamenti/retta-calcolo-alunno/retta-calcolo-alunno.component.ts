@@ -9,7 +9,7 @@ import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 //services
 import { AlunniService } from '../../alunni/alunni.service';
 import { RetteService } from '../rette.service';
-import { IscrizioniService } from '../../classi/iscrizioni.service';
+import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { ParametriService } from 'src/app/_services/parametri.service';
 

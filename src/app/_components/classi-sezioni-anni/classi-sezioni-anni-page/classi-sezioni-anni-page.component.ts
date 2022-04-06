@@ -3,9 +3,9 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 
 @Component({
-  selector: 'app-classi-page',
-  templateUrl: './classi-page.component.html',
-  styleUrls: ['./../classi.css']
+  selector: 'app-classi-sezioni-anni-page',
+  templateUrl: './classi-sezioni-anni-page.component.html',
+  styleUrls: ['./../classi-sezioni-anni.css']
 })
 export class ClassiPageComponent implements OnInit {
 

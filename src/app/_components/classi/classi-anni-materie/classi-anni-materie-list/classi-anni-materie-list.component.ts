@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { CLS_ClasseAnnoMateria } from 'src/app/_models/CLS_ClasseAnnoMateria';
 import { LoadingService } from '../../../utilities/loading/loading.service';
 import { ClasseAnnoMateriaEditComponent } from '../classe-anno-materia-edit/classe-anno-materia-edit.component';
-import { ClasseAnnoMateriaService } from '../../classe-anno-materia.service';
+import { ClasseAnnoMateriaService } from '../classe-anno-materia.service';
 
 @Component({
   selector: 'app-classi-anni-materie-list',

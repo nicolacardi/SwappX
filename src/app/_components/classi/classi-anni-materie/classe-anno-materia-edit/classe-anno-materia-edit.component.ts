@@ -11,7 +11,7 @@ import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service
 import { MaterieService } from '../../../materie/materie.service';
 import { ClassiService } from '../../classi.service';
 import { TipiVotoService } from '../tipi-voto.service';
-import { ClasseAnnoMateriaService } from '../../classe-anno-materia.service';
+import { ClasseAnnoMateriaService } from '../classe-anno-materia.service';
 
 //classes
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';

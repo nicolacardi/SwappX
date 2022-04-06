@@ -6,14 +6,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 //components
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
-import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { ClassiSezioniAnniListComponent } from '../../classi-sezioni-anni/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 //services
 import { AlunniService } from '../../alunni/alunni.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { ParametriService } from 'src/app/_services/parametri.service';
-import { IscrizioniService } from '../../classi/iscrizioni.service';
+import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
 import { RetteService } from '../rette.service';
 
 //classes

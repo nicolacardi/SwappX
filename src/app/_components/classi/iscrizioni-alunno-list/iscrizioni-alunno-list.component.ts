@@ -9,7 +9,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 //services
 import { LoadingService } from '../../utilities/loading/loading.service';
-import { IscrizioniService } from '../iscrizioni.service';
+import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
 
 //models
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';

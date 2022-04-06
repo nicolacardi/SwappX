@@ -7,7 +7,7 @@ import { IscrizioniListComponent } from '../iscrizioni-list/iscrizioni-list.comp
 @Component({
   selector: 'app-iscrizioni-filter',
   templateUrl: './iscrizioni-filter.component.html',
-  styleUrls: ['./../classi.css']
+  styleUrls: ['./../iscrizioni.css']
 })
 export class IscrizioniFilterComponent implements OnInit {
 

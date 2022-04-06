@@ -25,14 +25,14 @@ import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/
 
 import { RettePageComponent } from './_components/pagamenti/rette-page/rette-page.component';
 import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
-import { ClassiPageComponent } from './_components/classi/classi-page/classi-page.component';
+import { ClassiPageComponent } from './_components/classi-sezioni-anni/classi-sezioni-anni-page/classi-sezioni-anni-page.component';
 import { UsersPageComponent } from './_components/users/users-page/users-page.component';
-import { IscrizioniPageComponent } from './_components/classi/iscrizioni-page/iscrizioni-page.component';
+import { IscrizioniPageComponent } from './_components/iscrizioni/iscrizioni-page/iscrizioni-page.component';
 import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
 import { MateriePageComponent } from './_components/materie/materie-page/materie-page.component';
 import { ObiettiviPageComponent } from './_components/obiettivi/obiettivi-page/obiettivi-page.component';
 
-import { TipiVotoPageComponent } from './_components/classi/classi-anni-materie/tipi-voto-page/tipi-voto-page.component';
+import { ClassiAnniMateriePageComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-page/classi-anni-materie-page.component';
 
 const routes: Routes = [
 
@@ -69,11 +69,6 @@ const routes: Routes = [
 
   { path: "rette",            component: RettePageComponent },
 
-  { path: "materie",          component: MateriePageComponent },
-
-  { path: "obiettivi",        component: ObiettiviPageComponent },
-
-  { path: "tipiVoto",         component: TipiVotoPageComponent },
 
   { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.SysAdmin, UserRole.IT_Manager,UserRole.Segreteria ] } },
   

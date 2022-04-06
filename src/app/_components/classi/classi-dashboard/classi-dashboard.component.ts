@@ -13,8 +13,8 @@ import { IscrizioniAddComponent } from '../iscrizioni-add/iscrizioni-add.compone
 //services
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
-import { IscrizioniService } from '../iscrizioni.service';
-import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
+import { ClassiSezioniAnniListComponent } from '../../classi-sezioni-anni/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { IscrizioniClasseCalcoloComponent } from '../iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 import { DocenzeAddComponent } from '../docenze/docenze-add/docenze-add.component';
 import { DocenzeListComponent } from '../docenze/docenze-list/docenze-list.component';

@@ -533,7 +533,6 @@
     ._btn-add {
         z-index: 1000;
         position: absolute !important;
-        top: 80px;
         background-color: #044D7E !important;
     }
 
@@ -547,6 +546,14 @@
 
     ._btn-pos-right-3 {
         right: 120px;
+    }
+
+    ._btn-pos-top-1 {
+        top: 80px;
+    }
+
+    ._btn-pos-top-0 {
+        top: 15px;
     }
 
 
@@ -575,7 +582,6 @@
     ._btn-toolbar {
         z-index: 1000;
         position: absolute !important;
-        top: 80px;
         left: 10px;
         background-color: #626262 !important;
     }

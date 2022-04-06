@@ -27,7 +27,7 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 @Component({
   selector:     'app-iscrizioni-list',
   templateUrl:  './iscrizioni-list.component.html',
-  styleUrls:    ['../classi.css']
+  styleUrls:    ['../iscrizioni.css']
 })
 
 export class IscrizioniListComponent implements OnInit {

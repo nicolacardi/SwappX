@@ -7,7 +7,7 @@ import { debounceTime, finalize, map, switchMap, tap } from 'rxjs/operators';
 
 //services
 import { AlunniService } from 'src/app/_components/alunni/alunni.service';
-import { IscrizioniService } from '../iscrizioni.service';
+import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
 
 //classi
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';

@@ -138,20 +138,7 @@
 
             <mat-divider></mat-divider>
 
-            <a mat-list-item class="h35px" routerLink="materie" (click)="clickMenuItem()" *ngIf="currUser && currUser.ruoloID >= 10">
-                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/materia.svg">
-                <span *ngIf="isExpanded">Materie</span>
-            </a> 
 
-            <a mat-list-item class="h35px" routerLink="obiettivi" (click)="clickMenuItem()" *ngIf="currUser && currUser.ruoloID >= 10">
-                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/obiettivo.svg">
-                <span *ngIf="isExpanded">Obiettivi</span>
-            </a> 
-
-            <a mat-list-item class="h35px" routerLink="classiAnniMaterie" (click)="clickMenuItem()" *ngIf="currUser && currUser.ruoloID >= 10">
-                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/classeannomateria.svg">
-                <span *ngIf="isExpanded">Tipi Voto</span>
-            </a> 
 
 
             <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.ruoloID >= 10">
