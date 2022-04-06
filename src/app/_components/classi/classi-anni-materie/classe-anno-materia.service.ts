@@ -19,6 +19,17 @@ export class ClasseAnnoMateriaService {
     //http://213.215.231.4/swappX/api/CLS_ClassiAnniMaterie/1
   } 
 
+
+  duplicaClassiAnniMaterie (annoIDFrom: number, annoIDTo: number) {
+    let formData = {};
+    console.log(environment.apiBaseUrl  + 'CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterie/' + annoIDFrom + '/' + annoIDTo);
+    return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterie/' + annoIDFrom + '/' + annoIDTo, formData);
+  //http://213.215.231.4/SwappX/api/CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterie/2/3
+
+  //api/CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterie/2/3
+  //api/CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterie/2/3 da console.log
+  }
+
   list(): Observable<CLS_ClasseAnnoMateria[]>{
     return this.http.get<CLS_ClasseAnnoMateria[]>(environment.apiBaseUrl+'CLS_ClassiAnniMaterie');
     //http://213.215.231.4/swappX/api/CLS_ClassiAnniMaterie
