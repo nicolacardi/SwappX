@@ -30,7 +30,7 @@ import { CLS_TipoVoto } from 'src/app/_models/CLS_TipoVoto';
 @Component({
   selector: 'app-classe-anno-materia-edit',
   templateUrl: './classe-anno-materia-edit.component.html',
-  styleUrls: ['../../classi.css']
+  styleUrls: ['../classi-anni-materie.css']
 })
 export class ClasseAnnoMateriaEditComponent implements OnInit {
 

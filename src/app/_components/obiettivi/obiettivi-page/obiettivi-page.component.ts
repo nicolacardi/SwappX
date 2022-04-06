@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatDrawer } from '@angular/material/sidenav';
+import { ObiettiviDuplicaComponent } from '../obiettivi-duplica/obiettivi-duplica.component';
 import { ObiettiviFilterComponent } from '../obiettivi-filter/obiettivi-filter.component';
 import { ObiettiviListComponent } from '../obiettivi-list/obiettivi-list.component';
 
@@ -16,7 +18,9 @@ export class ObiettiviPageComponent implements OnInit {
   @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
 
   
-  constructor() { }
+  constructor(
+    public _dialog:                         MatDialog, 
+  ) { }
 
   ngOnInit(): void {
   }
@@ -34,6 +38,21 @@ export class ObiettiviPageComponent implements OnInit {
 //#region ----- Altri metodi -------
   openDrawer() {
     this.drawerFiltriAvanzati.open();
+  }
+
+  openDuplica() {
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '400px',
+      height: '430px',
+      data: 0
+    };
+    const dialogRef = this._dialog.open(ObiettiviDuplicaComponent, dialogConfig);
+    dialogRef.afterClosed()
+      .subscribe(
+        () => {
+          this.obiettiviList.loadData();
+    });
   }
 //#endregion
 

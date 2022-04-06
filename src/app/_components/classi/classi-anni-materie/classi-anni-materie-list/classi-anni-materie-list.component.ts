@@ -11,7 +11,7 @@ import { ClasseAnnoMateriaService } from '../classe-anno-materia.service';
 @Component({
   selector: 'app-classi-anni-materie-list',
   templateUrl: './classi-anni-materie-list.component.html',
-  styleUrls: ['../../classi.css']
+  styleUrls: ['../classi-anni-materie.css']
 })
 export class ClassiAnniMaterieListComponent implements OnInit {
 

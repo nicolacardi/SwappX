@@ -128,6 +128,8 @@ import { ClassiAnniMaterieListComponent } from './_components/classi/classi-anni
 import { ClassiAnniMateriePageComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-page/classi-anni-materie-page.component';
 import { ClasseAnnoMateriaEditComponent } from './_components/classi/classi-anni-materie/classe-anno-materia-edit/classe-anno-materia-edit.component';
 import { ObiettiviFilterComponent } from './_components/obiettivi/obiettivi-filter/obiettivi-filter.component';
+import { ObiettiviDuplicaComponent } from './_components/obiettivi/obiettivi-duplica/obiettivi-duplica.component';
+import { ClassiAnniMaterieDuplicaComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-duplica/classi-anni-materie-duplica.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -239,7 +241,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ClassiAnniMateriePageComponent,
     ClasseAnnoMateriaEditComponent,
 
-    ObiettiviFilterComponent 
+    ObiettiviFilterComponent,
+    ObiettiviDuplicaComponent,
+    ClassiAnniMaterieDuplicaComponent,
 
   ],
   imports: [

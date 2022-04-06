@@ -529,6 +529,10 @@
         color: white;
         background-color: #044D7E !important;
     }
+
+    ._btn-text-container .mat-button-disabled{
+        background-color: rgba(100, 100, 100, 0.2) !important;
+    }
     /* button di add*/
     ._btn-add {
         z-index: 1000;
@@ -571,7 +575,7 @@
     }
 
     ._btn-calcolo-rette{
-        background-image: url("./assets/toolbar/calcolo-rette.svg"); 
+        background-image: url("./assets/calcolo-rette.svg"); 
         background-color: #044D7E !important ;
         position: absolute !important;
         top: 80px;
@@ -661,7 +665,7 @@
         
     }
     ._btn-toolbar-close{
-        background-image: url("./assets/toolbar/toolbar-close-black.svg"); 
+        background-image: url("./assets/toolbar-close-black.svg"); 
         background-color: transparent !important ;
         background-repeat: no-repeat;
         position: absolute ! important;
