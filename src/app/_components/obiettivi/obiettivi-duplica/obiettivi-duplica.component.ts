@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -6,13 +6,14 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 //components
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
-
 //services
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-
+import { ObiettiviService } from '../obiettivi.service';
 
 //classes
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 
 @Component({
@@ -25,10 +26,13 @@ export class ObiettiviDuplicaComponent implements OnInit {
   form!:                FormGroup;
 
   constructor(
-    public _dialogRef: MatDialogRef<ObiettiviDuplicaComponent>,
-    private svcAnni: AnniScolasticiService,
-    private fb: FormBuilder,
-    public _dialog: MatDialog,
+    public _dialogRef:                      MatDialogRef<ObiettiviDuplicaComponent>,
+    private svcAnni:                        AnniScolasticiService,
+    private svcObiettivi:                   ObiettiviService,
+    private fb:                             FormBuilder,
+    public _dialog:                         MatDialog,
+    private _snackBar:                      MatSnackBar
+
   ) {
     _dialogRef.disableClose = true;
 
@@ -50,8 +54,12 @@ export class ObiettiviDuplicaComponent implements OnInit {
       });
       return;
     };
-
-    this._dialogRef.close();
+    this.svcObiettivi.duplicaObiettivi(this.form.controls.selectAnnoFrom.value, this.form.controls.selectAnnoTo.value).subscribe(
+      res => {
+        this._dialogRef.close();
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record duplicati', panelClass: ['green-snackbar']});
+      }
+    );
   }
 
 }

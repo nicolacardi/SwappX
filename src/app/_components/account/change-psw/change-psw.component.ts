@@ -18,9 +18,10 @@ export class ChangePswComponent implements OnInit {
   form! :              FormGroup;
   public currUser!:    User;
 
-  constructor(private fb:                   FormBuilder, 
-              private svcUser:              UserService,
-              private _snackBar:            MatSnackBar
+  constructor(
+    private fb:                   FormBuilder, 
+    private svcUser:              UserService,
+    private _snackBar:            MatSnackBar
     ) { 
 
     this.form = this.fb.group({

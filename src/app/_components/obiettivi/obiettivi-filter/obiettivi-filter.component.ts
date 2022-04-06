@@ -38,7 +38,6 @@ export class ObiettiviFilterComponent implements OnInit {
 //#endregion
 
   constructor(
-    private svcObiettivi:                   ObiettiviService,
     private svcClassi:                      ClassiService,
     private svcAnni:                        AnniScolasticiService,
     private svcMaterie:                     MaterieService,

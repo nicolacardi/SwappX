@@ -50,6 +50,13 @@ export class ObiettiviService {
     return this.http.put( environment.apiBaseUrl  + 'MAT_Obiettivi/' + formData.id , formData);    
   }
 
+  duplicaObiettivi (annoIDFrom: number, annoIDTo: number) {
+    let formData = {};
+    console.log(environment.apiBaseUrl  + 'MAT_Obiettivi/DuplicaObiettivi/' + annoIDFrom + '/' + annoIDTo);
+    return this.http.post( environment.apiBaseUrl  + 'MAT_Obiettivi/DuplicaObiettivi/' + annoIDFrom + '/' + annoIDTo, formData);
+  //http://213.215.231.4/SwappX/api/MAT_Obiettivi/DuplicaObiettivi/2/3
+  }
+
   post(formData: any): Observable <any>{
     formData.id = 0;
     return this.http.post( environment.apiBaseUrl  + 'MAT_Obiettivi' , formData);  

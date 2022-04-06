@@ -13,6 +13,8 @@ import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service
 //classes
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { ClasseAnnoMateriaService } from '../classe-anno-materia.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
 
 
 @Component({
@@ -31,6 +33,8 @@ export class ClassiAnniMaterieDuplicaComponent implements OnInit {
     private svcClassiAnniMaterie: ClasseAnnoMateriaService,
     private fb:                   FormBuilder,
     public _dialog:               MatDialog,
+    private _snackBar:            MatSnackBar
+
   ) {
     _dialogRef.disableClose = true;
 
@@ -53,9 +57,14 @@ export class ClassiAnniMaterieDuplicaComponent implements OnInit {
       return;
     };
 
-    this.svcClassiAnniMaterie.duplicaClassiAnniMaterie(this.form.controls.selectAnnoFrom.value, this.form.controls.selectAnnoTo.value);
+    this.svcClassiAnniMaterie.duplicaClassiAnniMaterie(this.form.controls.selectAnnoFrom.value, this.form.controls.selectAnnoTo.value).subscribe(
+      res => {
+        this._dialogRef.close();
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record duplicati', panelClass: ['green-snackbar']});
+      }
+    );
 
-    this._dialogRef.close();
+    
   }
 
 }
