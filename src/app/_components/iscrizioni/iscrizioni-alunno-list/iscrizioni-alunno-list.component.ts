@@ -9,7 +9,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 //services
 import { LoadingService } from '../../utilities/loading/loading.service';
-import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
+import { IscrizioniService } from '../iscrizioni.service';
 
 //models
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
@@ -18,7 +18,7 @@ import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 @Component({
   selector: 'app-iscrizioni-alunno-list',
   templateUrl: './iscrizioni-alunno-list.component.html',
-  styleUrls: ['../classi.css']
+  styleUrls: ['../iscrizioni.css']
 })
 export class IscrizioniAlunnoListComponent implements OnInit {
 

@@ -4,18 +4,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 //components
 //import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
-import { IscrizioniClasseListComponent } from '../iscrizioni-classe-list/iscrizioni-classe-list.component';
+import { IscrizioniClasseListComponent } from '../../iscrizioni/iscrizioni-classe-list/iscrizioni-classe-list.component';
 
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { IscrizioniAddComponent } from '../iscrizioni-add/iscrizioni-add.component';
+import { IscrizioniAddComponent } from '../../iscrizioni/iscrizioni-add/iscrizioni-add.component';
 
 //services
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
 import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
 import { ClassiSezioniAnniListComponent } from '../../classi-sezioni-anni/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { IscrizioniClasseCalcoloComponent } from '../iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
+import { IscrizioniClasseCalcoloComponent } from '../../iscrizioni/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 import { DocenzeAddComponent } from '../docenze/docenze-add/docenze-add.component';
 import { DocenzeListComponent } from '../docenze/docenze-list/docenze-list.component';
 import { DocenzeService } from '../docenze/docenze.service';
@@ -70,8 +70,6 @@ import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
   templateUrl: './classi-dashboard.component.html',
   styleUrls: ['./../classi.css']
 })
-
-
 
 export class ClassiDashboardComponent implements OnInit {
 

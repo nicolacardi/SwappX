@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -46,13 +47,13 @@ import { ClassiSezioniAnniFilterComponent } from './_components/classi-sezioni-a
 import { ClassiSezioniAnniListComponent } from './_components/classi-sezioni-anni/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
 
-import { IscrizioniAddComponent } from './_components/classi/iscrizioni-add/iscrizioni-add.component';
-import { IscrizioniClasseListComponent } from './_components/classi/iscrizioni-classe-list/iscrizioni-classe-list.component';
+import { IscrizioniAddComponent } from './_components/iscrizioni/iscrizioni-add/iscrizioni-add.component';
+import { IscrizioniClasseListComponent } from './_components/iscrizioni/iscrizioni-classe-list/iscrizioni-classe-list.component';
 import { IscrizioniPageComponent } from './_components/iscrizioni/iscrizioni-page/iscrizioni-page.component';
 import { IscrizioniListComponent } from './_components/iscrizioni/iscrizioni-list/iscrizioni-list.component';
 import { IscrizioniFilterComponent } from './_components/iscrizioni/iscrizioni-filter/iscrizioni-filter.component';
-import { IscrizioniClasseCalcoloComponent } from './_components/classi/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
-import { IscrizioniAlunnoListComponent } from './_components/classi/iscrizioni-alunno-list/iscrizioni-alunno-list.component';
+import { IscrizioniClasseCalcoloComponent } from './_components/iscrizioni/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
+import { IscrizioniAlunnoListComponent } from './_components/iscrizioni/iscrizioni-alunno-list/iscrizioni-alunno-list.component';
 
 import { DocenzeListComponent } from './_components/classi/docenze/docenze-list/docenze-list.component';
 
@@ -121,7 +122,7 @@ import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.c
 import { ResizeColumnDirective } from './_components/utilities/resize-column/resize-column.directive';
 
 import { ResetPasswordComponent } from './_user/reset-password/reset-password.component';
-import { DatePipe } from '@angular/common';
+
 import { ObiettivoEditComponent } from './_components/obiettivi/obiettivo-edit/obiettivo-edit.component';
 import { VotiObiettiviEditComponent } from './_components/pagelle/voti-obiettivi-edit/voti-obiettivi-edit.component';
 import { ClassiAnniMaterieListComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-list/classi-anni-materie-list.component';

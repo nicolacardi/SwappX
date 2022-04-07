@@ -1,24 +1,26 @@
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, finalize, map, switchMap, tap } from 'rxjs/operators';
 
 //services
 import { AlunniService } from 'src/app/_components/alunni/alunni.service';
-import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
+import { IscrizioniService } from '../iscrizioni.service';
 
-//classi
+//models
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { MatSnackBar } from '@angular/material/snack-bar';
+
+//components
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { DialogData } from 'src/app/_models/DialogData';
 
 @Component({
   selector: 'app-iscrizioni-add',
   templateUrl: './iscrizioni-add.component.html',
-  styleUrls: ['./../classi.css']
+  styleUrls: ['./../iscrizioni.css']
 })
 
 export class IscrizioniAddComponent implements OnInit {
@@ -38,12 +40,12 @@ export class IscrizioniAddComponent implements OnInit {
   @ViewChild('nomeCognomeAlunno') nomeCognomeAlunno!: ElementRef<HTMLInputElement>;
 //#endregion
 
-  constructor(private fb:                             FormBuilder,
-                      private svcAlunni:              AlunniService,
-                      private svcIscrizioni:          IscrizioniService,
-                      public dialogRef:               MatDialogRef<IscrizioniAddComponent>,
-                      private _snackBar:              MatSnackBar,
-                      @Inject(MAT_DIALOG_DATA) public data: DialogData) { 
+  constructor(private fb:                     FormBuilder,
+              private svcAlunni:              AlunniService,
+              private svcIscrizioni:          IscrizioniService,
+              public dialogRef:               MatDialogRef<IscrizioniAddComponent>,
+              private _snackBar:              MatSnackBar,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData) { 
 
     this.form = this.fb.group({
       nomeCognomeAlunno:     [null]
@@ -112,8 +114,7 @@ export class IscrizioniAddComponent implements OnInit {
         this.svcIscrizioni.post(objIscrizione)
           .pipe( finalize(()=>this.dialogRef.close()))
           .subscribe(
-            val=>{
-            },
+            val=>{},
             err =>{
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
             }

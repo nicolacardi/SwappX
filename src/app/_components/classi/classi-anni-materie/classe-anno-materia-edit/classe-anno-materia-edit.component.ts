@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -13,25 +14,24 @@ import { ClassiService } from '../../classi.service';
 import { TipiVotoService } from '../tipi-voto.service';
 import { ClasseAnnoMateriaService } from '../classe-anno-materia.service';
 
-//classes
+//models
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { CLS_Classe } from 'src/app/_models/CLS_Classe';
 import { CLS_ClasseAnnoMateria } from 'src/app/_models/CLS_ClasseAnnoMateria';
+import { CLS_TipoVoto } from 'src/app/_models/CLS_TipoVoto';
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
+
+//utilities
 import { LoadingService } from '../../../utilities/loading/loading.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../../utilities/snackbar/snackbar.component';
 import { DialogYesNoComponent } from '../../../utilities/dialog-yes-no/dialog-yes-no.component';
-
-import { CLS_TipoVoto } from 'src/app/_models/CLS_TipoVoto';
-
-
 
 @Component({
   selector: 'app-classe-anno-materia-edit',
   templateUrl: './classe-anno-materia-edit.component.html',
   styleUrls: ['../classi-anni-materie.css']
 })
+
 export class ClasseAnnoMateriaEditComponent implements OnInit {
 
   //#region ----- Variabili -------
@@ -47,19 +47,18 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
   loading:                    boolean = true;
 //#endregion
 
-  constructor(
-    public _dialogRef: MatDialogRef<ClasseAnnoMateriaEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public classeAnnoMateriaID: number,
-    private svcClassi:                      ClassiService,
-    private svcAnni:                        AnniScolasticiService,
-    private svcMaterie:                     MaterieService,
-    private svcClassiAnniMaterie:           ClasseAnnoMateriaService,
-    private svcTipiVoto:                    TipiVotoService,
+  constructor(public _dialogRef: MatDialogRef<ClasseAnnoMateriaEditComponent>,
+              @Inject(MAT_DIALOG_DATA) public classeAnnoMateriaID: number,
+              private svcClassi:                      ClassiService,
+              private svcAnni:                        AnniScolasticiService,
+              private svcMaterie:                     MaterieService,
+              private svcClassiAnniMaterie:           ClasseAnnoMateriaService,
+              private svcTipiVoto:                    TipiVotoService,
 
-    private _loadingService :               LoadingService,
-    private fb:                             FormBuilder, 
-    public _dialog:                         MatDialog,
-    private _snackBar:                      MatSnackBar) { 
+              private _loadingService :               LoadingService,
+              private fb:                             FormBuilder, 
+              public _dialog:                         MatDialog,
+              private _snackBar:                      MatSnackBar) { 
 
     _dialogRef.disableClose = true;
   
@@ -84,21 +83,19 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
     this.obsTipiVoto$ = this.svcTipiVoto.list();
   
     if (this.classeAnnoMateriaID && this.classeAnnoMateriaID + '' != "0") {
-  
       const obsClasseAnnoMateria$: Observable<CLS_ClasseAnnoMateria> = this.svcClassiAnniMaterie.get(this.classeAnnoMateriaID);
       const loadObiettivo$ = this._loadingService.showLoaderUntilCompleted(obsClasseAnnoMateria$);
       this.classeAnnoMateria$ = loadObiettivo$
-      .pipe(
-          tap(
+      .pipe( tap(
             classeAnnoMateria => {
               this.form.patchValue(classeAnnoMateria)
             }
           )
       );
-    } else {
+    } 
+    else {
       this.emptyForm = true
     }
-  
   }
 
 
@@ -116,7 +113,8 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         )
     );
-    else 
+    else {
+      
       this.svcClassiAnniMaterie.put(this.form.value)
         .subscribe(res=> {
           this._dialogRef.close();
@@ -125,7 +123,8 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
         err=> (
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         )
-    );
+      );
+    }
   }
 
   delete(){

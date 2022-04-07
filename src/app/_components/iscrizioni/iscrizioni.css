@@ -1,0 +1,49 @@
+
+  ._table-container {
+    position: relative;
+    min-height: 200px;
+    max-height: 100%;
+    overflow: auto;
+}
+
+/* Bordo inferiore nelle checkbox */
+th.mat-header-cell._no-bottom-border, td.mat-cell._no-bottom-border {
+  border-bottom-width: 0px !important;
+}
+
+/*colonna di sx classi dashboard*/ 
+._columnleft-dashboard {
+  /* width:315px; */
+  width:25%;
+  height: 85% ;
+  /* position: absolute; */
+  top: 75px;
+  left: 8px;
+}
+
+  /*colonna di dx classi dashboard*/ 
+._columnright-dashboard {
+  width:75%;
+  height: 83%;
+  position: absolute;
+  top: 75px;
+  left: 330px
+}
+
+
+.prgBar {
+  margin-top: 10px;
+}
+
+._highlightStato{
+  color: red;
+  font-weight: bold;
+}
+
+::ng-deep .noBottomPadding .mat-form-field-wrapper {
+/* padding-bottom: 0px !important; */
+}
+
+::ng-deep .headerColored .mat-header-row {
+background-color: #f9f9f9;
+}

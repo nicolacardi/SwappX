@@ -14,23 +14,22 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { AlunnoEditComponent } from '../../alunni/alunno-edit/alunno-edit.component';
 import { RettaEditComponent } from '../../pagamenti/retta-edit/retta-edit.component';
 
-
-//models
-import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
+//services
+import { IscrizioniService } from '../iscrizioni.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
+import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
 
-//classes
+//models
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
+
 
 @Component({
   selector:     'app-iscrizioni-classe-list',
   templateUrl:  './iscrizioni-classe-list.component.html',
-  styleUrls:    ['../classi.css']
+  styleUrls:    ['../iscrizioni.css']
 })
-
 
 export class IscrizioniClasseListComponent implements OnInit {
 
@@ -99,10 +98,9 @@ export class IscrizioniClasseListComponent implements OnInit {
   @ViewChild("filterInput") filterInput!:                     ElementRef;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
-  @Input() classeSezioneAnnoID!:                                         number;
-  //@Input() alunniFilterComponent!:                            IscrizioniFilterComponent;    //TODO!!!
-  @Input('dove') dove! :                                string;
-
+  @Input() classeSezioneAnnoID!:                              number;
+  //@Input() alunniFilterComponent!:                          IscrizioniFilterComponent;    //TODO!!!
+  @Input('dove') dove! :                                      string;
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('iscrizioneId') iscrizioneIdEmitter = new EventEmitter<number>();  
@@ -121,7 +119,6 @@ export class IscrizioniClasseListComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-
 
       switch(this.dove) {
         case 'pagella':
@@ -149,7 +146,6 @@ export class IscrizioniClasseListComponent implements OnInit {
       this.toggleChecks = false;
       this.showTableRibbon = false;
       this.resetSelections();
-    
   }
   
   ngOnInit () {
@@ -178,12 +174,10 @@ export class IscrizioniClasseListComponent implements OnInit {
           this.matDataSource.paginator = this.paginator;
           this.sortCustom(); 
           this.matDataSource.sort = this.sort; 
-          if (val.length != 0) {
+          if (val.length != 0) 
             this.rowclicked(this.matDataSource.data[0]); 
-          } else {
+          else 
             this.iscrizioneIdEmitter.emit(0);
-          }
-          
         }
       );
     } 
@@ -194,7 +188,6 @@ export class IscrizioniClasseListComponent implements OnInit {
     this.selectedRowIndex = Iscrizione.id;
     this.iscrizioneIdEmitter.emit(Iscrizione.id);
   }
-
 
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {

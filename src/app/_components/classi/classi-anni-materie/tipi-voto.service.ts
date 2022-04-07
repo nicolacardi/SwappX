@@ -17,7 +17,5 @@ export class TipiVotoService {
     return this.http.get<CLS_TipoVoto[]>(environment.apiBaseUrl+'CLS_TipiVoto');
     //http://213.215.231.4/swappX/api/CLS_TipiVoto
   }
-
-
-
+  
 }

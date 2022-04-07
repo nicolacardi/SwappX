@@ -8,19 +8,19 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 
-//components
-import { DocenzaEditComponent } from '../docenza-edit/docenza-edit.component';
-import { PersonaEditComponent } from '../../../persone/persona-edit/persona-edit.component';
-
-
 //services
 import { LoadingService } from '../../../utilities/loading/loading.service';
 import { DocenzeService } from '../docenze.service';
 import { ClassiSezioniAnniService } from '../../classi-sezioni-anni.service';
 
-//classes
+//models
 import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+
+//components
+import { DocenzaEditComponent } from '../docenza-edit/docenza-edit.component';
+import { PersonaEditComponent } from '../../../persone/persona-edit/persona-edit.component';
+
 
 @Component({
   selector: 'app-docenze-list',
@@ -70,12 +70,12 @@ export class DocenzeListComponent implements OnInit {
 //#endregion
 
 
-  constructor(
-    private svcDocenze:                 DocenzeService,
-    private svcClasseSezioneAnno:       ClassiSezioniAnniService,
-    private _loadingService:            LoadingService,
-    public _dialog:                     MatDialog
-  ) { }
+  constructor(private svcDocenze:                 DocenzeService,
+              private svcClasseSezioneAnno:       ClassiSezioniAnniService,
+              private _loadingService:            LoadingService,
+              public _dialog:                     MatDialog ) {
+            
+  }
 
 //#region ----- LifeCycle Hooks e simili-------
 
@@ -101,7 +101,6 @@ export class DocenzeListComponent implements OnInit {
 
     loadInsegnamenti$.subscribe(val =>  {
         this.matDataSource.data = val;
-        console.log ("classidocentimaterie", val);
         //this.matDataSource.paginator = this.paginator;          
         //this.sortCustom();
         //this.matDataSource.sort = this.sort; 
@@ -133,14 +132,10 @@ export class DocenzeListComponent implements OnInit {
 
     const dialogRef = this._dialog.open(PersonaEditComponent, dialogConfig);
     dialogRef.afterClosed()
-      .subscribe(
-        () => {
+      .subscribe(() => {
           this.loadData();
-    });
+       });
   }
-
-
-
 
 //#endregion
 
@@ -173,8 +168,7 @@ export class DocenzeListComponent implements OnInit {
       data: id
     };
     const dialogRef = this._dialog.open(DocenzaEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-      () => { 
+    dialogRef.afterClosed().subscribe( () => { 
         this.loadData(); 
       }
     );

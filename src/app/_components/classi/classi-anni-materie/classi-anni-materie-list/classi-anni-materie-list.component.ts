@@ -3,10 +3,16 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
-import { CLS_ClasseAnnoMateria } from 'src/app/_models/CLS_ClasseAnnoMateria';
-import { LoadingService } from '../../../utilities/loading/loading.service';
-import { ClasseAnnoMateriaEditComponent } from '../classe-anno-materia-edit/classe-anno-materia-edit.component';
+
+//services
 import { ClasseAnnoMateriaService } from '../classe-anno-materia.service';
+
+//models
+import { CLS_ClasseAnnoMateria } from 'src/app/_models/CLS_ClasseAnnoMateria';
+
+//components
+import { ClasseAnnoMateriaEditComponent } from '../classe-anno-materia-edit/classe-anno-materia-edit.component';
+import { LoadingService } from '../../../utilities/loading/loading.service';
 
 @Component({
   selector: 'app-classi-anni-materie-list',
@@ -62,13 +68,11 @@ filterValues = {
 @ViewChild(MatSort) sort!:                MatSort;
 //#endregion
 
-  constructor(
-
-    private svcClasseAnnoMateria:           ClasseAnnoMateriaService,
-    private _loadingService:                LoadingService,
-    public _dialog:                         MatDialog ) {
-      
-     }
+  constructor(private svcClasseAnnoMateria:           ClasseAnnoMateriaService,
+              private _loadingService:                LoadingService,
+              public _dialog:                         MatDialog ) {
+              
+  }
 
   ngOnInit(): void {
     this.loadData();
@@ -123,7 +127,6 @@ filterValues = {
 
 //#region ----- Filtri & Sort -------
 
-
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {
     
@@ -137,7 +140,6 @@ filterValues = {
       }
     };
   }
-
 
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;

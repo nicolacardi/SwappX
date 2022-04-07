@@ -21,7 +21,6 @@ export class ClasseAnnoMateriaService {
 
   duplicaClassiAnniMaterie (annoIDFrom: number, annoIDTo: number) {
     let formData = {};
-    console.log(environment.apiBaseUrl  + 'CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterie/' + annoIDFrom + '/' + annoIDTo);
 
     return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterie/' + annoIDFrom + '/' + annoIDTo, formData);
   //http://213.215.231.4/SwappX/api/CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterie/2/3
@@ -33,7 +32,7 @@ export class ClasseAnnoMateriaService {
   }
   
   put(formData: any): Observable <any>{
-    return this.http.put( environment.apiBaseUrl  + 'CLS_ClassiAnniMaterie/' + formData.id , formData);    
+    return this.http.put( environment.apiBaseUrl  + 'CLS_ClassiAnniMaterie/' + formData.id , formData);  
   }
 
   post(formData: any): Observable <any>{

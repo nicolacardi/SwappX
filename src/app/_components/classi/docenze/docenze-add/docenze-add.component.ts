@@ -2,23 +2,23 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { iif, Observable, of } from 'rxjs';
-import { concatMap, debounceTime, delayWhen, finalize, switchMap, tap } from 'rxjs/operators';
+import { concatMap, debounceTime, switchMap, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-//components
-import { SnackbarComponent } from '../../../utilities/snackbar/snackbar.component';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 //services
 import { DocenzeService } from '../docenze.service';
 import { DocentiService } from '../../../persone/docenti.service';
 import { ClassiSezioniAnniService } from '../../classi-sezioni-anni.service';
+import { MaterieService } from 'src/app/_components/materie/materie.service';
 
-//classi
+//models
 import { PER_Docente } from 'src/app/_models/PER_Docente';
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
-import { MaterieService } from 'src/app/_components/materie/materie.service';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+
+//components
+import { SnackbarComponent } from '../../../utilities/snackbar/snackbar.component';
 import { DialogOkComponent } from '../../../utilities/dialog-ok/dialog-ok.component';
 import { DialogData } from 'src/app/_models/DialogData';
 
@@ -44,18 +44,15 @@ export class DocenzeAddComponent implements OnInit {
   @ViewChild('nomeCognomeDocente') nomeCognomeDocente!: ElementRef<HTMLInputElement>;
 //#endregion
 
-  constructor(
-    private fb:                             FormBuilder,
-    private svcMaterie:                     MaterieService,
-    private svcDocenti:                     DocentiService,
-    private svcClasseSezioneAnno:           ClassiSezioniAnniService,
-    private svcDocenze:                     DocenzeService,
-    public dialogRef:                       MatDialogRef<DocenzeAddComponent>,
-    private _snackBar:                      MatSnackBar,
-    public _dialog:                         MatDialog,
-
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) { 
+  constructor(private fb:                             FormBuilder,
+              private svcMaterie:                     MaterieService,
+              private svcDocenti:                     DocentiService,
+              private svcClasseSezioneAnno:           ClassiSezioniAnniService,
+              private svcDocenze:                     DocenzeService,
+              public dialogRef:                       MatDialogRef<DocenzeAddComponent>,
+              private _snackBar:                      MatSnackBar,
+              public _dialog:                         MatDialog,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData ) { 
 
     this.form = this.fb.group({
       nomeCognomeDocente:     [null],
@@ -65,7 +62,6 @@ export class DocenzeAddComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
-
   
     this.svcClasseSezioneAnno.get(this.data.classeSezioneAnnoID).subscribe(res => this.classeSezioneAnno = res)
 
@@ -87,16 +83,14 @@ export class DocenzeAddComponent implements OnInit {
     )
 
     this.form.controls['selectMateria'].valueChanges
-          .subscribe(
-            val=> this.materiaSelectedID = val
-          )
+          .subscribe( val=> this.materiaSelectedID = val );
+
     this.obsMaterie$ = this.svcMaterie.list();
   }
 
 //#endregion
 docenteSelected(event: MatAutocompleteSelectedEvent): void {
   this.docenteSelectedID = parseInt(event.option.id);
-  console.log ("selected" , this.docenteSelectedID);
 }
 
 //#region ----- Operazioni CRUD -------
@@ -123,14 +117,14 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
       //invece "test" non compare mai...quindi? sta uscendo sempre con of()?
       tap(res=> {
           if (res != null) {
-          this._dialog.open(DialogOkComponent, {
-            width: '320px',
-            data: {titolo: "ATTENZIONE!", sottoTitolo: "Il docente insegna già questa materia in questa classe"}
-          });
-          
-          } else {
-            //la materia non è già insegnata per la classe in cui sto cercando di inserirla da questo insegnante, posso procedere
-          }
+            this._dialog.open(DialogOkComponent, {
+              width: '320px',
+              data: {titolo: "ATTENZIONE!", sottoTitolo: "Il docente insegna già questa materia in questa classe"}
+            });
+          } 
+          // else {
+          //   //la materia non è già insegnata per la classe in cui sto cercando di inserirla da questo insegnante, posso procedere
+          // }
         }
       ),
       concatMap( res => iif (()=> res == null,
@@ -142,12 +136,12 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
             width: '320px',
             data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa materia ha già una docenza assegnata in questa classe"}
           });
-        } else {
-          //la materia non è già insegnata per la classe in cui sto cercando di inserirla, posso procedere
-        }
+        } 
+        // else {
+        //   //la materia non è già insegnata per la classe in cui sto cercando di inserirla, posso procedere
+        // }
       })
     )
-
 
     checks$
     .pipe(

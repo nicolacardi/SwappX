@@ -6,10 +6,6 @@
       overflow: auto;
   }
 
-
-
-
-
   /* Bordo inferiore nelle checkbox */
   th.mat-header-cell._no-bottom-border, td.mat-cell._no-bottom-border {
     border-bottom-width: 0px !important;
@@ -83,9 +79,6 @@
     color: red;
     font-weight: bold;
   }
-
-
-
   
 ::ng-deep .noBottomPadding .mat-form-field-wrapper {
   /* padding-bottom: 0px !important; */
