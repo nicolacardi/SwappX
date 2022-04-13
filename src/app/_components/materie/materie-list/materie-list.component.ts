@@ -30,7 +30,8 @@ export class MaterieListComponent implements OnInit {
   displayedColumns: string[] = [
       "actionsColumn", 
       "descrizione", 
-      "macroMateria"
+      "macroMateria",
+
   ];
 
 
@@ -108,7 +109,7 @@ export class MaterieListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '400px',
-      height: '300px',
+      height: '340px',
       data: materiaID
     };
     const dialogRef = this._dialog.open(MateriaEditComponent, dialogConfig);

@@ -45,8 +45,15 @@
                     </mat-form-field>
                 </mat-grid-tile>
 
-                
+                <mat-grid-tile>
+
+                    <button type="button" class="_btnColorPicker" 
+                    (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
+
+                </mat-grid-tile>
             </mat-grid-list>
+
+            
 
         </form>
     </mat-card-content>

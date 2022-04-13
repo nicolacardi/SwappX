@@ -1362,3 +1362,10 @@ div.inner img {
         word-wrap: break-word;
         text-decoration: underline;
     }
+
+    ._btnColorPicker {
+        background: lightblue;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+    } 

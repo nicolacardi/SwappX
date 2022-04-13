@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -17,6 +17,7 @@ import { MaterieService } from '../materie.service';
 //classes
 import { MAT_MacroMateria } from 'src/app/_models/MAT_MacroMateria';
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
+import { ColorPickerComponent } from '../../color-picker/color-picker.component';
 
 
 @Component({
@@ -56,7 +57,8 @@ export class MateriaEditComponent implements OnInit {
     this.form = this.fb.group({
       id:                         [null],
       descrizione:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-      macroMateriaID:             ['']
+      macroMateriaID:             [''],
+      color:             ['']
     });
 
   }
@@ -144,6 +146,24 @@ export class MateriaEditComponent implements OnInit {
         );
       }
     });
+  }
+
+  openColorPicker() {
+
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '400px',
+      height: '450px',
+      data: 0
+    };
+    const dialogRef = this._dialog.open(ColorPickerComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      () => { 
+        this.loadData(); 
+      }
+    );
+
+
   }
 //#endregion
 

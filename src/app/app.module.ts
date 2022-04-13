@@ -131,6 +131,7 @@ import { ClasseAnnoMateriaEditComponent } from './_components/classi/classi-anni
 import { ObiettiviFilterComponent } from './_components/obiettivi/obiettivi-filter/obiettivi-filter.component';
 import { ObiettiviDuplicaComponent } from './_components/obiettivi/obiettivi-duplica/obiettivi-duplica.component';
 import { ClassiAnniMaterieDuplicaComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-duplica/classi-anni-materie-duplica.component';
+import { ColorPickerModule } from './color-picker/color-picker.module';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -245,6 +246,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ObiettiviFilterComponent,
     ObiettiviDuplicaComponent,
     ClassiAnniMaterieDuplicaComponent,
+    
 
   ],
   imports: [
@@ -256,7 +258,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     DragDropModule,
     ReactiveFormsModule,
     FormsModule,
-    FullCalendarModule
+    FullCalendarModule,
+    ColorPickerModule
 
   ],
 
