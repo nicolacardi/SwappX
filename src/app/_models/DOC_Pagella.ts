@@ -1,3 +1,6 @@
+import { CLS_Classe } from "./CLS_Classe";
+import { CLS_ClasseAnnoMateria } from "./CLS_ClasseAnnoMateria";
+import { CLS_ClasseSezioneAnno } from "./CLS_ClasseSezioneAnno";
 import { CLS_Iscrizione } from "./CLS_Iscrizione";
 import { MAT_Materia } from "./MAT_Materia";
 
@@ -30,6 +33,8 @@ export interface DOC_Pagella {
         iscrizione?:            CLS_Iscrizione
         tipoGiudizio1?:         DOC_TipoGiudizio;
         tipoGiudizio2?:         DOC_TipoGiudizio; 
+
+        classeAnnoMateria:      CLS_ClasseAnnoMateria;
 }
 
 export interface DOC_TipoGiudizio {

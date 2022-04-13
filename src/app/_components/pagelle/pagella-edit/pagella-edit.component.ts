@@ -26,9 +26,10 @@ export class PagellaEditComponent implements OnInit  {
 
   displayedColumns: string[] = [
     "materia", 
-    "voto1", 
-    "tipoGiudizio1ID", 
-    "obiettivi",
+    // "voto1", 
+    // "tipoGiudizio1ID", 
+    // "obiettivi",
+    "multiVoto1",
     "note1"
   ];
 //#endregion  
@@ -156,17 +157,19 @@ export class PagellaEditComponent implements OnInit  {
     if (e.value == 1) {
       this.displayedColumns = [
         "materia", 
-        "voto1", 
-        "tipoGiudizio1ID", 
-        "obiettivi",
+        // "voto1", 
+        // "tipoGiudizio1ID", 
+        // "obiettivi",
+        "multiVoto1",
         "note1"
       ];
     } else {
       this.displayedColumns = [
         "materia", 
-        "voto2", 
-        "tipoGiudizio2ID", 
-        "obiettivi",
+        // "voto2", 
+        // "tipoGiudizio2ID", 
+        // "obiettivi",
+        "multiVoto2",
         "note2"
       ];
     }
@@ -174,8 +177,8 @@ export class PagellaEditComponent implements OnInit  {
   }
 
   openObiettivi(element: DOC_Pagella) {
-    console.log ("open classeID 1", element.iscrizione!.classeSezioneAnno.classeSezione.classe.id);
-    console.log ("open annoID 2", element.iscrizione!.classeSezioneAnno.annoID);
+    console.log ("open classeID 1", element.classeAnnoMateria.classeID);
+    console.log ("open annoID 2", element.classeAnnoMateria.annoID);
     console.log ("open materiaID 3", element.materiaID);
 
     const dialogConfig : MatDialogConfig = {
@@ -183,8 +186,8 @@ export class PagellaEditComponent implements OnInit  {
     width: '400px',
     height: '300px',
     data: {
-      classeID: element.iscrizione!.classeSezioneAnno.classeSezione.classe.id,
-      annoID: element.iscrizione!.classeSezioneAnno.annoID,
+      classeID: element.classeAnnoMateria.classeID,
+      annoID: element.classeAnnoMateria.annoID,
       materiaID: element.materiaID
       }
 

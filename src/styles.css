@@ -1356,3 +1356,9 @@ div.inner img {
     }
 
 
+    ._warning {
+        color: red;
+        font-size: 12px;
+        word-wrap: break-word;
+        text-decoration: underline;
+    }

@@ -21,6 +21,25 @@
         </ng-container>
 
 <!--#region  Primo Quadrimestre **************************************** -->
+        <ng-container matColumnDef="multiVoto1">
+            <th mat-header-cell *matHeaderCellDef class="w125px">Voto</th>
+            <td mat-cell *matCellDef="let element">
+                
+                
+                <input *ngIf="element.classeAnnoMateria?.tipoVotoID == 1" 
+                matInput type="number" placeholder="voto" [value]="element.voto1" (change)="changeVoto(element, voto1.value, 1)" maxlength="2" #voto1>
+
+                <mat-select  *ngIf="element.classeAnnoMateria?.tipoVotoID == 2"  [value]="element.tipoGiudizio1ID? element.tipoGiudizio1ID : 1" placeholder="giudizio"  (selectionChange)="changeSelectGiudizio(element, selectGiudizio1.value, 1)" #selectGiudizio1> 
+                    <mat-option *ngFor="let giudizio of (obsTipiGiudizio$ | async)"  [value]="giudizio.id">
+                        {{giudizio.descrizione}}
+                    </mat-option>
+                </mat-select>
+                <mat-icon *ngIf="element.classeAnnoMateria?.tipoVotoID == 3" class="pointer" (click) = "openObiettivi(element)">add_circle_outline</mat-icon>
+            
+                <mat-label class="_warning" *ngIf="element.classeAnnoMateria == null">Indicazione<br>tipo voto<br> mancante</mat-label>
+            </td>
+        </ng-container>
+
 
         <ng-container matColumnDef="voto1">
             <th mat-header-cell *matHeaderCellDef class="w50px">Voto</th>
@@ -53,6 +72,27 @@
 
 <!--#region  Secondo Quadrimestre ************************************* -->
 
+        <ng-container matColumnDef="multiVoto2">
+            <th mat-header-cell *matHeaderCellDef class="w125px">Voto</th>
+            <td mat-cell *matCellDef="let element">
+                
+                
+                <input *ngIf="element.classeAnnoMateria?.tipoVotoID == 1" 
+                matInput type="number" placeholder="voto" [value]="element.voto2" (change)="changeVoto(element, voto2.value, 1)" maxlength="2" #voto2>
+
+                <mat-select  *ngIf="element.classeAnnoMateria?.tipoVotoID == 2"  [value]="element.tipoGiudizio2ID? element.tipoGiudizio2ID : 1" placeholder="giudizio"  (selectionChange)="changeSelectGiudizio(element, selectGiudizio2.value, 1)" #selectGiudizio2> 
+                    <mat-option *ngFor="let giudizio of (obsTipiGiudizio$ | async)"  [value]="giudizio.id">
+                        {{giudizio.descrizione}}
+                    </mat-option>
+                </mat-select>
+
+                <mat-icon *ngIf="element.classeAnnoMateria?.tipoVotoID == 3" class="pointer" (click) = "openObiettivi(element)">add_circle_outline</mat-icon>
+
+                <mat-label class="_warning" *ngIf="element.classeAnnoMateria == null">Indicazione<br>tipo voto<br> mancante</mat-label>
+
+            </td>
+        </ng-container>
+
         <ng-container matColumnDef="voto2">
             <th mat-header-cell *matHeaderCellDef  class="w50px">Voto</th>
             <td mat-cell *matCellDef="let element">
@@ -83,7 +123,7 @@
         <ng-container matColumnDef="obiettivi">
             <th mat-header-cell *matHeaderCellDef  >Obiettivi</th>
             <td mat-cell class="h60px center" *matCellDef="let element">
-                <mat-icon class="pointer" (click) = "openObiettivi(element)">add_circle_outline</mat-icon>
+                
             </td>
         </ng-container>
 
