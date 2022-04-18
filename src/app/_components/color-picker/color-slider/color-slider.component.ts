@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-color-slider',
@@ -10,9 +10,15 @@ export class ColorSliderComponent implements OnInit {
   @ViewChild('canvas')
   canvas!: ElementRef<HTMLCanvasElement>;
 
-  @Output()
-  color: EventEmitter<string> = new EventEmitter()
+  // @Output()
+  // color: EventEmitter<string> = new EventEmitter()
 
+  @Output()
+  color: EventEmitter<number[]> = new EventEmitter()
+
+
+
+  
   
   private ctx!: CanvasRenderingContext2D;
   private mousedown: boolean = false;
@@ -28,6 +34,8 @@ export class ColorSliderComponent implements OnInit {
   }
 
 draw() {
+  console.log ("colorslider draw before this.ctx")
+
   if (!this.ctx) {
     this.ctx = this.canvas.nativeElement.getContext('2d')!;
   }
@@ -73,13 +81,25 @@ onMouseMove(evt: MouseEvent) {
 }
 
 emitColor(x: number, y: number) {
-  const rgbaColor = this.getColorAtPosition(x, y);
-  this.color.emit(rgbaColor);
+  //const rgbaColor = this.getColorAtPosition(x, y);
+  //this.color.emit(rgbaColor);
+  //const ascColor = this.getColorAtPosition(x, y);
+  //this.color.emit(ascColor);
+  const arrColor = this.getColorAtPosition(x, y);
+  this.color.emit(arrColor);
+
 }
 
 getColorAtPosition(x: number, y: number) {
   const imageData = this.ctx.getImageData(x, y, 1, 1).data;
-  return 'rgba(' + imageData[0] + ',' + imageData[1] + ',' + imageData[2] + ',1)';
+  //return 'rgba(' + imageData[0] + ',' + imageData[1] + ',' + imageData[2] + ',1)';
+  //return '#'+imageData[0].toString(16)+imageData[1].toString(16)+imageData[2].toString(16);
+
+  let arrColor = [0,0,0];
+  arrColor[0] = imageData[0];
+  arrColor[1] = imageData[1];
+  arrColor[2] = imageData[2];
+  return arrColor;
 }
 
 }

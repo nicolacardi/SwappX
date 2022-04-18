@@ -28,3 +28,8 @@ export interface DialogDataVotiObiettivi {
         annoID:               number;
         materiaID:             number;
       }
+
+export interface DialogDataColoreMateria {
+        ascRGB:             string;
+      }
+

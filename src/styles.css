@@ -255,6 +255,9 @@
         margin-top: 70px;
     }
 
+    .t10 {
+        top: 10px;
+    }
 
 
 /*#endregion ***************************/
@@ -561,6 +564,8 @@
     }
 
 
+
+
     ._btn-add:hover{
         transform: scale(1.05);
     }
@@ -669,8 +674,8 @@
         background-color: transparent !important ;
         background-repeat: no-repeat;
         position: absolute ! important;
-        right: 0px;
-        top: 0px;
+        right: 5px;
+        top: 5px;
         height: 25px !important;
         width: 25px !important;
         transition: transform .2s ease-in-out;
@@ -814,7 +819,7 @@ in fase di creazione della Dialog addAlunno*/
 
 /*Buttons Yes/No*/
 .mat-dialog-buttonsContainer button {
-    width: 70px;
+    width: 100px;
     margin-left: 5px;
 }
 
@@ -1364,8 +1369,23 @@ div.inner img {
     }
 
     ._btnColorPicker {
-        background: lightblue;
+        /* background-image: url("./assets/toolbar-close-black.svg"); */
+        background: transparent;
         border-radius: 50%;
         width: 30px;
         height: 30px;
     } 
+
+    .color-div {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid rgb(220, 220, 220);
+      }
+
+    ._color-div-mini {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 1px solid rgb(220, 220, 220);
+    }

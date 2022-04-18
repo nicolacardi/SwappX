@@ -1,19 +1,41 @@
+<div class="p5 center">
+  <button
+    mat-icon-button
+    aria-label="Back"
+    matTooltip="Chiudi"
+    class="_btn-toolbar-close t10"
+    mat-dialog-close
+  ></button>
 
+  <div class="color-wrapper">
+    <!-- <app-color-palette [hue]="ascHue" (color)="color = $event"></app-color-palette> -->
+    <app-color-palette
+      [ascHue]="ascHue"
+      (color)="colorPaletteEmitted($event)"
+    ></app-color-palette>
 
-
-<div class="color-wrapper">
-    <app-color-palette [hue]="hue" (color)="color = $event"></app-color-palette>
     <app-color-slider
-        (color)="colorSliderEmitted($event)"
-      style="margin-left:16px"
+      (color)="colorSliderEmitted($event)"
+      style="margin-left: 16px"
     ></app-color-slider>
     <!-- (color)="hue=$event" -->
   </div>
   <div class="input-wrapper">
-    <span class="text">{{color}}</span>
+    <span class="text">{{ ascColor }}</span>
     <div
       class="color-div"
-      [ngStyle]="{'background-color': color || 'white'}"
+      [ngStyle]="{ 'background-color': color || 'white' }"
     ></div>
   </div>
 
+  <div mat-dialog-actions class="_btn-text-container mat-dialog-buttonsContainer">
+    <button
+      class="_btn-text"
+      mat-button
+      cdkFocusInitial
+      [mat-dialog-close]="ascColor"
+    >
+      Seleziona
+    </button>
+  </div>
+</div>

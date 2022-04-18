@@ -46,10 +46,6 @@ export class MateriaEditComponent implements OnInit {
     public _dialog:                         MatDialog,
     private _snackBar:                      MatSnackBar,
     private svcMacroMaterie:                MacroMaterieService,
-
-
-
-
     
   ) { 
     _dialogRef.disableClose = true;
@@ -58,7 +54,7 @@ export class MateriaEditComponent implements OnInit {
       id:                         [null],
       descrizione:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       macroMateriaID:             [''],
-      color:             ['']
+      color:                      ['']
     });
 
   }
@@ -149,17 +145,21 @@ export class MateriaEditComponent implements OnInit {
   }
 
   openColorPicker() {
-
+    console.log( "passo", this.form.controls.color.value);
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '400px',
-      height: '450px',
-      data: 0
+      width: '405px',
+      height: '460px',
+      data: {ascRGB: this.form.controls.color.value},
     };
     const dialogRef = this._dialog.open(ColorPickerComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
-      () => { 
-        this.loadData(); 
+      result => { 
+        //devo valorizzare il campo color
+        if (result) {
+          this.form.controls.color.setValue(result);
+        }
+        //this.loadData(); 
       }
     );
 
