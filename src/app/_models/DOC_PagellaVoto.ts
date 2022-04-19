@@ -4,9 +4,9 @@ import { CLS_ClasseSezioneAnno } from "./CLS_ClasseSezioneAnno";
 import { CLS_Iscrizione } from "./CLS_Iscrizione";
 import { MAT_Materia } from "./MAT_Materia";
 
-export interface DOC_Pagella {
+export interface DOC_PagellaVoto {
         id:                     number;
-        iscrizioneID:           number;
+        iscrizioneID:           number;                 //ATTENZIONE: da modificare il legame! (DOC_Pagella)
         materiaID:              number;
 
         ckFrequenza:            boolean;

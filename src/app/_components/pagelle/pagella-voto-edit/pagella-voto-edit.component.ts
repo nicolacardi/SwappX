@@ -6,7 +6,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
-import { DOC_Pagella, DOC_TipoGiudizio } from 'src/app/_models/DOC_Pagella';
+import { DOC_PagellaVoto, DOC_TipoGiudizio } from 'src/app/_models/DOC_PagellaVoto';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { PagellaVotiService } from '../pagella-voti.service';
@@ -20,7 +20,7 @@ import { VotiObiettiviEditComponent } from '../voti-obiettivi-edit/voti-obiettiv
 
 export class PagellaVotoEditComponent implements OnInit  {
 //#region ----- Variabili -------
-  matDataSource = new           MatTableDataSource<DOC_Pagella>();
+  matDataSource = new           MatTableDataSource<DOC_PagellaVoto>();
 
   obsTipiGiudizio$!:            Observable<DOC_TipoGiudizio[]>;
   showPageTitle:                boolean = true;
@@ -38,14 +38,10 @@ export class PagellaVotoEditComponent implements OnInit  {
   @Input('iscrizioneID') iscrizioneID!:          number;
 //#endregion
 
-
-  constructor(
-    private svcPagellaVoti:               PagellaVotiService,
-    private _loadingService:              LoadingService,
-    private _snackBar:                    MatSnackBar,
-    public _dialog:                       MatDialog, 
-
-  ) { 
+  constructor( private svcPagellaVoti:               PagellaVotiService,
+               private _loadingService:              LoadingService,
+               private _snackBar:                    MatSnackBar,
+               public _dialog:                       MatDialog  ) { 
   }
 
   ngOnChanges() {
@@ -62,7 +58,7 @@ export class PagellaVotoEditComponent implements OnInit  {
 
     this.obsTipiGiudizio$= this.svcPagellaVoti.listTipiGiudizio();
 
-    let obsPagella$: Observable<DOC_Pagella[]>;
+    let obsPagella$: Observable<DOC_PagellaVoto[]>;
 
     obsPagella$= this.svcPagellaVoti.listByIscrizione(this.iscrizioneID);
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
@@ -76,12 +72,9 @@ export class PagellaVotoEditComponent implements OnInit  {
         //this.matDataSource.filterPredicate = this.filterPredicate();
       }
     );
-    
   }
 
-
-
-  changeSelectGiudizio(formData: DOC_Pagella, tipoGiudizioID: number, quad: number) {
+  changeSelectGiudizio(formData: DOC_PagellaVoto, tipoGiudizioID: number, quad: number) {
     if (quad == 1) {
       formData.tipoGiudizio1ID = tipoGiudizioID;
       if (formData.tipoGiudizio2ID == null) 
@@ -95,15 +88,15 @@ export class PagellaVotoEditComponent implements OnInit  {
     this.postput(formData2)
   }
 
-  changeVoto(formData: DOC_Pagella, voto: any, quad: number) {
+  changeVoto(formData: DOC_PagellaVoto, voto: any, quad: number) {
     let votoN = parseInt(voto);
     if (votoN >10 ) votoN = 10
     if (votoN <0 )  votoN = 0
-    if (quad == 1) {
+    if (quad == 1) 
       formData.voto1 = votoN;
-    } else {
+    else 
       formData.voto2 = votoN;
-    }
+
     //nel caso di post l'ID del giudizio va messo a 1
     if (formData.tipoGiudizio1ID == null) 
         formData.tipoGiudizio1ID = 1;
@@ -113,12 +106,12 @@ export class PagellaVotoEditComponent implements OnInit  {
     this.postput(formData2)
   }
 
-  changeNote(formData: DOC_Pagella, note: string, quad: number) {
-    if (quad == 1) {
+  changeNote(formData: DOC_PagellaVoto, note: string, quad: number) {
+    if (quad == 1)
       formData.note1 = note;
-    } else {
+    else 
       formData.note2 = note;
-    }
+    
     //nel caso di post l'ID del giudizio va messo a 1
     if (formData.tipoGiudizio1ID == null) 
         formData.tipoGiudizio1ID = 1;
@@ -128,7 +121,7 @@ export class PagellaVotoEditComponent implements OnInit  {
     this.postput(formData2)
   }
   
-  postput (formInput: DOC_Pagella) {
+  postput (formInput: DOC_PagellaVoto) {
     delete formInput.iscrizione;
     delete formInput.materia;
 
@@ -174,10 +167,9 @@ export class PagellaVotoEditComponent implements OnInit  {
         "note2"
       ];
     }
-
   }
 
-  openObiettivi(element: DOC_Pagella) {
+  openObiettivi(element: DOC_PagellaVoto) {
     console.log ("open classeID 1", element.classeAnnoMateria.classeID);
     console.log ("open annoID 2", element.classeAnnoMateria.annoID);
     console.log ("open materiaID 3", element.materiaID);
@@ -191,7 +183,6 @@ export class PagellaVotoEditComponent implements OnInit  {
       annoID: element.classeAnnoMateria.annoID,
       materiaID: element.materiaID
       }
-
     }
     
     const dialogRef = this._dialog.open(VotiObiettiviEditComponent, dialogConfig);
@@ -199,6 +190,5 @@ export class PagellaVotoEditComponent implements OnInit  {
         this.loadData(); 
       }
     );
-
   }
 }

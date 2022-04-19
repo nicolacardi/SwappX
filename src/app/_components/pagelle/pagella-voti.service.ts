@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DOC_Pagella, DOC_TipoGiudizio } from 'src/app/_models/DOC_Pagella';
+import { DOC_PagellaVoto, DOC_TipoGiudizio } from 'src/app/_models/DOC_PagellaVoto';
 
 import { environment } from 'src/environments/environment';
 
@@ -13,8 +13,8 @@ export class PagellaVotiService {
   constructor(private http: HttpClient) { }
 
   
-  listByIscrizione(iscrizioneID: number): Observable<DOC_Pagella[]>{
-    return this.http.get<DOC_Pagella[]>(environment.apiBaseUrl+'DOC_PagellaVoti/ListByIscrizione/'+iscrizioneID);   
+  listByIscrizione(iscrizioneID: number): Observable<DOC_PagellaVoto[]>{
+    return this.http.get<DOC_PagellaVoto[]>(environment.apiBaseUrl+'DOC_PagellaVoti/ListByIscrizione/'+iscrizioneID);   
     //http://213.215.231.4/swappX/api/DOC_PagellaVoti/ListByIscrizione/285
   }
 
