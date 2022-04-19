@@ -78,7 +78,7 @@ import { MateriaEditComponent } from './_components/materie/materia-edit/materia
 import { ObiettiviPageComponent } from './_components/obiettivi/obiettivi-page/obiettivi-page.component';
 import { ObiettiviListComponent } from './_components/obiettivi/obiettivi-list/obiettivi-list.component';
 
-import { PagellaEditComponent } from './_components/pagelle/pagella-edit/pagella-edit.component';
+import { PagellaVotoEditComponent } from './_components/pagelle/pagella-voto-edit/pagella-voto-edit.component';
 
 import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
 import { LezioneComponent } from './_components/lezioni/lezione-edit/lezione.component';
@@ -229,7 +229,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     LezioniUtilsComponent,
     RettaCalcoloAlunnoComponent,
     RettaannoEditComponent,
-    PagellaEditComponent,
+    PagellaVotoEditComponent,
     DocenzaEditComponent,
     MaterieListComponent,
     MateriePageComponent,

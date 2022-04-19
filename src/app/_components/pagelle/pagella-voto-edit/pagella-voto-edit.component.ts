@@ -9,15 +9,16 @@ import { Observable } from 'rxjs';
 import { DOC_Pagella, DOC_TipoGiudizio } from 'src/app/_models/DOC_Pagella';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { PagelleService } from '../pagelle.service';
+import { PagellaVotiService } from '../pagella-voti.service';
 import { VotiObiettiviEditComponent } from '../voti-obiettivi-edit/voti-obiettivi-edit.component';
 
 @Component({
-  selector: 'app-pagella-edit',
-  templateUrl: './pagella-edit.component.html',
+  selector: 'app-pagella-voto-edit',
+  templateUrl: './pagella-voto-edit.component.html',
   styleUrls: ['../pagelle.css']
 })
-export class PagellaEditComponent implements OnInit  {
+
+export class PagellaVotoEditComponent implements OnInit  {
 //#region ----- Variabili -------
   matDataSource = new           MatTableDataSource<DOC_Pagella>();
 
@@ -39,7 +40,7 @@ export class PagellaEditComponent implements OnInit  {
 
 
   constructor(
-    private svcPagella:                   PagelleService,
+    private svcPagellaVoti:               PagellaVotiService,
     private _loadingService:              LoadingService,
     private _snackBar:                    MatSnackBar,
     public _dialog:                       MatDialog, 
@@ -59,11 +60,11 @@ export class PagellaEditComponent implements OnInit  {
 
   loadData () {
 
-    this.obsTipiGiudizio$= this.svcPagella.listTipiGiudizio();
+    this.obsTipiGiudizio$= this.svcPagellaVoti.listTipiGiudizio();
 
     let obsPagella$: Observable<DOC_Pagella[]>;
 
-    obsPagella$= this.svcPagella.listPagellaByIscrizione(this.iscrizioneID);
+    obsPagella$= this.svcPagellaVoti.listByIscrizione(this.iscrizioneID);
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
 
     loadPagella$.subscribe(val =>  {
@@ -133,7 +134,7 @@ export class PagellaEditComponent implements OnInit  {
 
     if (formInput.id == 0) {
       //post
-      this.svcPagella.post(formInput).subscribe(
+      this.svcPagellaVoti.post(formInput).subscribe(
         res => {
         //  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Voto Salvato post', panelClass: ['green-snackbar']})
         this.loadData();
@@ -142,7 +143,7 @@ export class PagellaEditComponent implements OnInit  {
       )
     } else {
       //put
-      this.svcPagella.put(formInput).subscribe(
+      this.svcPagellaVoti.put(formInput).subscribe(
         res => {
         //  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Voto Salvato put', panelClass: ['green-snackbar']})
         //this.loadData();
@@ -194,8 +195,7 @@ export class PagellaEditComponent implements OnInit  {
     }
     
     const dialogRef = this._dialog.open(VotiObiettiviEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-      () => { 
+    dialogRef.afterClosed().subscribe( () => { 
         this.loadData(); 
       }
     );

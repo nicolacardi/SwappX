@@ -8,23 +8,23 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class PagelleService {
+export class PagellaVotiService {
 
   constructor(private http: HttpClient) { }
 
   
-  listPagellaByIscrizione(iscrizioneID: number): Observable<DOC_Pagella[]>{
-    return this.http.get<DOC_Pagella[]>(environment.apiBaseUrl+'DOC_Pagelle/ListPagellaByIscrizione/'+iscrizioneID);   
-    //http://213.215.231.4/swappX/api/DOC_Pagelle/ListPagellaByIscrizione/285
+  listByIscrizione(iscrizioneID: number): Observable<DOC_Pagella[]>{
+    return this.http.get<DOC_Pagella[]>(environment.apiBaseUrl+'DOC_PagellaVoti/ListByIscrizione/'+iscrizioneID);   
+    //http://213.215.231.4/swappX/api/DOC_PagellaVoti/ListByIscrizione/285
   }
 
   put(formData: any): Observable <any>{
-    return this.http.put( environment.apiBaseUrl  + 'DOC_Pagelle/' + formData.id , formData);    
+    return this.http.put( environment.apiBaseUrl  + 'DOC_PagellaVoti/' + formData.id , formData);    
   }
 
   post(formData: any): Observable <any>{
     delete formData.id;
-    return this.http.post( environment.apiBaseUrl  + 'DOC_Pagelle' , formData);  
+    return this.http.post( environment.apiBaseUrl  + 'DOC_PagellaVoti' , formData);  
   }
 
   listTipiGiudizio(): Observable<DOC_TipoGiudizio[]>{
