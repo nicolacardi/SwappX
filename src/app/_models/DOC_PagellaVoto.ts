@@ -1,6 +1,4 @@
-import { CLS_Classe } from "./CLS_Classe";
 import { CLS_ClasseAnnoMateria } from "./CLS_ClasseAnnoMateria";
-import { CLS_ClasseSezioneAnno } from "./CLS_ClasseSezioneAnno";
 import { CLS_Iscrizione } from "./CLS_Iscrizione";
 import { MAT_Materia } from "./MAT_Materia";
 
@@ -24,10 +22,10 @@ export interface DOC_PagellaVoto {
         note1?:                 string;
         note2?:                 string;
 
-        dtIns?:                  string;
-        dtUpd?:                  string;
-        userIns?:                number;
-        userUpd?:                number;
+        dtIns?:                 string;
+        dtUpd?:                 string;
+        userIns?:               number;
+        userUpd?:               number;
 
         materia?:               MAT_Materia;
         iscrizione?:            CLS_Iscrizione
@@ -39,8 +37,8 @@ export interface DOC_PagellaVoto {
 
 export interface DOC_TipoGiudizio {
         id:                     number;
-        descrizione:           number;
-        descrizione2:              number;
+        descrizione:            number;
+        descrizione2:           number;
 }
 
 
