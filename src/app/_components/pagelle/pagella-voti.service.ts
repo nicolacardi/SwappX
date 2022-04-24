@@ -12,18 +12,20 @@ export class PagellaVotiService {
 
   constructor(private http: HttpClient) { }
 
-  
-  listByIscrizione(iscrizioneID: number): Observable<DOC_PagellaVoto[]>{
-    return this.http.get<DOC_PagellaVoto[]>(environment.apiBaseUrl+'DOC_PagellaVoti/ListByIscrizione/'+iscrizioneID);   
-    //http://213.215.231.4/swappX/api/DOC_PagellaVoti/ListByIscrizione/285
+  listByAnnoClassePagella(annoID: number, classeID: number, pagellaID: number): Observable<DOC_PagellaVoto[]>{
+    return this.http.get<DOC_PagellaVoto[]>(environment.apiBaseUrl+'DOC_PagellaVoti/ListByAnnoClassePagella/'+annoID+'/'+classeID+'/'+pagellaID);   
+    //http://213.215.231.4/swappX/api/DOC_PagellaVoti/ListByAnnoClassePagella/2/1/2
   }
-
+  
   put(formData: any): Observable <any>{
+    console.log ("put formData", formData);
     return this.http.put( environment.apiBaseUrl  + 'DOC_PagellaVoti/' + formData.id , formData);    
   }
 
   post(formData: any): Observable <any>{
     delete formData.id;
+    console.log ("post formData", formData);
+
     return this.http.post( environment.apiBaseUrl  + 'DOC_PagellaVoti' , formData);  
   }
 

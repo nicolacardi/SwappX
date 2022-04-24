@@ -1,11 +1,4 @@
-<h1 *ngIf="showPageTitle" class="_titolo-pagina">Pagella
-    <span class="fs16"><mat-button-toggle-group name="quadrimestre" value="1" (change)="quadClick($event)">
-        <mat-button-toggle class="toggleQ" value="1" selected>1°</mat-button-toggle>
-        <mat-button-toggle class="toggleQ" value="2">2°</mat-button-toggle>
-    </mat-button-toggle-group>
-    </span>
-    Quadrimestre
-</h1>
+ {{pagellaID}} {{classeSezioneAnnoID}}
     <!-- **************************   MAT-TABLE   ******************* -->
 
 
@@ -21,48 +14,48 @@
         </ng-container>
 
 <!--#region  Primo Quadrimestre **************************************** -->
-        <ng-container matColumnDef="multiVoto1">
+        <ng-container matColumnDef="multiVoto">
             <th mat-header-cell *matHeaderCellDef class="w125px">Voto</th>
             <td mat-cell *matCellDef="let element">
-                
-                
-                <input *ngIf="element.classeAnnoMateria?.tipoVotoID == 1" 
-                matInput type="number" placeholder="voto" [value]="element.voto1" (change)="changeVoto(element, voto1.value, 1)" maxlength="2" #voto1>
 
-                <mat-select  *ngIf="element.classeAnnoMateria?.tipoVotoID == 2"  [value]="element.tipoGiudizio1ID? element.tipoGiudizio1ID : 1" placeholder="giudizio"  (selectionChange)="changeSelectGiudizio(element, selectGiudizio1.value, 1)" #selectGiudizio1> 
+                
+                <input *ngIf="element.tipoVotoID == 1" 
+                matInput type="number" placeholder="voto" [value]="element.voto" (change)="changeVoto(element, voto.value, 1)" maxlength="2" #voto>
+
+                <mat-select  *ngIf="element.tipoVotoID == 2"  [value]="element.tipoGiudizioID? element.tipoGiudizioID : 1" placeholder="giudizio"  (selectionChange)="changeSelectGiudizio(element, selectGiudizio.value, 1)" #selectGiudizio> 
                     <mat-option *ngFor="let giudizio of (obsTipiGiudizio$ | async)"  [value]="giudizio.id">
                         {{giudizio.descrizione}}
                     </mat-option>
                 </mat-select>
-                <mat-icon *ngIf="element.classeAnnoMateria?.tipoVotoID == 3" class="pointer" (click) = "openObiettivi(element)">add_circle_outline</mat-icon>
+                <mat-icon *ngIf="element.tipoVotoID == 3" class="pointer" (click) = "openObiettivi(element)">add_circle_outline</mat-icon>
             
-                <mat-label class="_warning" *ngIf="element.classeAnnoMateria == null">Indicazione<br>tipo voto<br> mancante</mat-label>
+                <mat-label class="_warning" *ngIf="element.tipoVotoID == null">Indicazione<br>tipo voto<br> mancante</mat-label>
             </td>
         </ng-container>
 
 
-        <ng-container matColumnDef="voto1">
+        <!-- <ng-container matColumnDef="voto">
             <th mat-header-cell *matHeaderCellDef class="w50px">Voto</th>
             <td mat-cell *matCellDef="let element">
-                <input matInput type="number" placeholder="voto" [value]="element.voto1" (change)="changeVoto(element, voto1.value, 1)" maxlength="2" #voto1>
+                <input matInput type="number" placeholder="voto" [value]="element.voto" (change)="changeVoto(element, voto.value, 1)" maxlength="2" #voto>
             </td>
         </ng-container>
 
-        <ng-container matColumnDef="tipoGiudizio1ID">
+        <ng-container matColumnDef="tipoGiudizioID">
             <th mat-header-cell *matHeaderCellDef  class="w125px">Giudizio</th>
             <td mat-cell *matCellDef="let element">
-                <mat-select  [value]="element.tipoGiudizio1ID? element.tipoGiudizio1ID : 1" placeholder="giudizio"  (selectionChange)="changeSelectGiudizio(element, selectGiudizio1.value, 1)" #selectGiudizio1> 
+                <mat-select  [value]="element.tipoGiudizioID? element.tipoGiudizioID : 1" placeholder="giudizio"  (selectionChange)="changeSelectGiudizio(element, selectGiudizio.value, 1)" #selectGiudizio> 
                     <mat-option *ngFor="let giudizio of (obsTipiGiudizio$ | async)"  [value]="giudizio.id">
                         {{giudizio.descrizione}}
                     </mat-option>
                 </mat-select>
             </td>
-        </ng-container>
+        </ng-container> -->
 
-        <ng-container matColumnDef="note1">
+        <ng-container matColumnDef="note">
             <th mat-header-cell *matHeaderCellDef  >Note</th>
             <td mat-cell class="h60px _td-note1" *matCellDef="let element">
-                <textarea class="h50px _noresize _text-area-note1" matInput (change)="changeNote(element, note1.value, 1)" #note1>{{element.note1}}</textarea>
+                <textarea class="h50px _noresize _text-area-note1" matInput (change)="changeNote(element, note.value, 1)" #note>{{element.note}}</textarea>
             </td>
         </ng-container>
 
@@ -70,55 +63,6 @@
         
 <!--#endregion  ******************************************************* -->
 
-<!--#region  Secondo Quadrimestre ************************************* -->
-
-        <ng-container matColumnDef="multiVoto2">
-            <th mat-header-cell *matHeaderCellDef class="w125px">Voto</th>
-            <td mat-cell *matCellDef="let element">
-                
-                
-                <input *ngIf="element.classeAnnoMateria?.tipoVotoID == 1" 
-                matInput type="number" placeholder="voto" [value]="element.voto2" (change)="changeVoto(element, voto2.value, 1)" maxlength="2" #voto2>
-
-                <mat-select  *ngIf="element.classeAnnoMateria?.tipoVotoID == 2"  [value]="element.tipoGiudizio2ID? element.tipoGiudizio2ID : 1" placeholder="giudizio"  (selectionChange)="changeSelectGiudizio(element, selectGiudizio2.value, 1)" #selectGiudizio2> 
-                    <mat-option *ngFor="let giudizio of (obsTipiGiudizio$ | async)"  [value]="giudizio.id">
-                        {{giudizio.descrizione}}
-                    </mat-option>
-                </mat-select>
-
-                <mat-icon *ngIf="element.classeAnnoMateria?.tipoVotoID == 3" class="pointer" (click) = "openObiettivi(element)">add_circle_outline</mat-icon>
-
-                <mat-label class="_warning" *ngIf="element.classeAnnoMateria == null">Indicazione<br>tipo voto<br> mancante</mat-label>
-
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="voto2">
-            <th mat-header-cell *matHeaderCellDef  class="w50px">Voto</th>
-            <td mat-cell *matCellDef="let element">
-                <input matInput type="number" placeholder="voto" [value]="element.voto2" (change)="changeVoto(element, voto2.value, 2)" maxlength="2" #voto2>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="tipoGiudizio2ID">
-            <th mat-header-cell *matHeaderCellDef  class="w125px">Giudizio</th>
-            <td mat-cell *matCellDef="let element">
-                <mat-select  [value]="element.tipoGiudizio2ID? element.tipoGiudizio2ID : 1" (selectionChange)="changeSelectGiudizio(element, selectGiudizio2.value, 2)" #selectGiudizio2> 
-                    <mat-option *ngFor="let giudizio of (obsTipiGiudizio$ | async)" [value]="giudizio.id">
-                        {{giudizio.descrizione}}
-                    </mat-option>
-                    
-                </mat-select>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="note2">
-            <th mat-header-cell *matHeaderCellDef  >Note</th>
-            <td mat-cell class="h60px _td-note1" *matCellDef="let element">
-                <textarea class="h50px _noresize _text-area-note1" matInput (change)="changeNote(element, note2.value, 2)" #note2>{{element.note2}}</textarea>
-            </td>
-        </ng-container>
-<!--#endregion  ******************************************************* -->
 
         <ng-container matColumnDef="obiettivi">
             <th mat-header-cell *matHeaderCellDef  >Obiettivi</th>

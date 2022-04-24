@@ -4,33 +4,29 @@ import { MAT_Materia } from "./MAT_Materia";
 
 export interface DOC_PagellaVoto {
         id:                     number;
-        iscrizioneID:           number;                 //ATTENZIONE: da modificare il legame! (DOC_Pagella)
+        pagellaID:              number;
         materiaID:              number;
 
         ckFrequenza:            boolean;
         ckAmmesso:              boolean;
-        voto1?:                 number;
-        voto2?:                 number;
+        voto?:                  number;
+        dtVoto:                 string;
+        tipoGiudizioID?:        number;
+        n_assenze:              number;
 
-        dt1:                    string;
-        dt2:                    string;
-        tipoGiudizio1ID?:       number;
-        tipoGiudizio2ID?:       number;
-        n_assenze1:             number;
-        n_assenze2:             number;
-
-        note1?:                 string;
-        note2?:                 string;
+        note?:                  string;
 
         dtIns?:                 string;
         dtUpd?:                 string;
         userIns?:               number;
         userUpd?:               number;
 
+        tipoVotoID?:            number;
+
+
         materia?:               MAT_Materia;
         iscrizione?:            CLS_Iscrizione
-        tipoGiudizio1?:         DOC_TipoGiudizio;
-        tipoGiudizio2?:         DOC_TipoGiudizio; 
+        tipoGiudizio?:          DOC_TipoGiudizio;
 
         classeAnnoMateria:      CLS_ClasseAnnoMateria;
 }

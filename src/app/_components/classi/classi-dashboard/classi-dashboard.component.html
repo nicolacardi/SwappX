@@ -78,9 +78,11 @@
                                 </app-iscrizioni-classe-list>
                             </td>
                             <td class="_cell-align-top pl10 border-left w750px">
-                                <app-pagella-voto-edit
-                                    [iscrizioneID]="iscrizioneID">
-                                </app-pagella-voto-edit>
+                                <app-pagelle-edit
+                                    [iscrizioneID]="iscrizioneID"
+                                    [classeSezioneAnnoID]="classeSezioneAnnoID" 
+                                    >
+                                </app-pagelle-edit>
                             </td>
                         </tr>
                     </table>

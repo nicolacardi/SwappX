@@ -90,12 +90,10 @@ export class AppComponent implements OnInit{
   }
 
   expandExpansion1() {
-    console.log ("apro");
     setTimeout(() => this.expansion1.expanded = true, 10);
   }
 
   expandExpansion2() {
-    console.log ("apro");
     setTimeout(() => this.expansion2.expanded = true, 10);
   }
 
