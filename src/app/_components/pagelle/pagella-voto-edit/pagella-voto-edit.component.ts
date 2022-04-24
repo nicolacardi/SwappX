@@ -6,7 +6,11 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
+import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+
 import { DOC_PagellaVoto, DOC_TipoGiudizio } from 'src/app/_models/DOC_PagellaVoto';
+import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { PagellaVotiService } from '../pagella-voti.service';
@@ -27,28 +31,27 @@ export class PagellaVotoEditComponent implements OnInit  {
 
   displayedColumns: string[] = [
     "materia", 
-    // "voto1", 
-    // "tipoGiudizio1ID", 
-    // "obiettivi",
-    "multiVoto1",
-    "note1"
+    "multiVoto",
+    "note"
   ];
 //#endregion  
 //#region ----- ViewChild Input Output -------
-  @Input('iscrizioneID') iscrizioneID!:          number;
+  @Input('pagellaID') pagellaID!:                       number;
+  @Input('classeSezioneAnnoID') classeSezioneAnnoID!:   number;
 //#endregion
 
-  constructor( private svcPagellaVoti:               PagellaVotiService,
-               private _loadingService:              LoadingService,
-               private _snackBar:                    MatSnackBar,
-               public _dialog:                       MatDialog  ) { 
+  constructor( 
+    private svcPagellaVoti:               PagellaVotiService,
+    private svcClasseSezioneAnno:         ClassiSezioniAnniService,
+    private _loadingService:              LoadingService,
+    private _snackBar:                    MatSnackBar,
+    public _dialog:                       MatDialog  ) { 
   }
 
   ngOnChanges() {
-    if (this.iscrizioneID != undefined) {
+    if (this.pagellaID != undefined) {
       this.loadData();
     }
-   // console.log();
   }
 
   ngOnInit(): void {
@@ -60,30 +63,33 @@ export class PagellaVotoEditComponent implements OnInit  {
 
     let obsPagella$: Observable<DOC_PagellaVoto[]>;
 
-    obsPagella$= this.svcPagellaVoti.listByIscrizione(this.iscrizioneID);
+
+    obsPagella$ = this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID)
+      .pipe (
+        concatMap( val => this.svcPagellaVoti.listByAnnoClassePagella(val.annoID, val.classeSezione.classeID, this.pagellaID)
+      )
+      );
+
+    //obsPagella$= this.svcPagellaVoti.listByAnnoClassePagella(2, 16, this.pagellaID);
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
 
     loadPagella$.subscribe(val =>  {
         this.matDataSource.data = val;
-        //console.log (val)
-        //this.matDataSource.paginator = this.paginator;          
-        //this.sortCustom();
-        //this.matDataSource.sort = this.sort; 
-        //this.matDataSource.filterPredicate = this.filterPredicate();
+        console.log ("matdatasurce val", val);
       }
     );
   }
 
   changeSelectGiudizio(formData: DOC_PagellaVoto, tipoGiudizioID: number, quad: number) {
-    if (quad == 1) {
-      formData.tipoGiudizio1ID = tipoGiudizioID;
-      if (formData.tipoGiudizio2ID == null) 
-          formData.tipoGiudizio2ID = 1;
-    } else {
-      formData.tipoGiudizio2ID = tipoGiudizioID;
-      if (formData.tipoGiudizio1ID == null) 
-          formData.tipoGiudizio1ID = 1;
-    }
+    // if (quad == 1) {
+    //   formData.tipoGiudizio1ID = tipoGiudizioID;
+    //   if (formData.tipoGiudizio2ID == null) 
+    //       formData.tipoGiudizio2ID = 1;
+    // } else {
+    //   formData.tipoGiudizio2ID = tipoGiudizioID;
+    //   if (formData.tipoGiudizio1ID == null) 
+    //       formData.tipoGiudizio1ID = 1;
+    // }
     let formData2 = Object.assign({}, formData);
     this.postput(formData2)
   }
@@ -92,31 +98,27 @@ export class PagellaVotoEditComponent implements OnInit  {
     let votoN = parseInt(voto);
     if (votoN >10 ) votoN = 10
     if (votoN <0 )  votoN = 0
-    if (quad == 1) 
-      formData.voto1 = votoN;
-    else 
-      formData.voto2 = votoN;
-
+    formData.voto = votoN;
+    
     //nel caso di post l'ID del giudizio va messo a 1
-    if (formData.tipoGiudizio1ID == null) 
-        formData.tipoGiudizio1ID = 1;
-    if (formData.tipoGiudizio2ID == null) 
-        formData.tipoGiudizio2ID = 1;
+    if (formData.tipoGiudizioID == null) 
+        formData.tipoGiudizioID = 1;
+
     let formData2 = Object.assign({}, formData);
     this.postput(formData2)
   }
 
   changeNote(formData: DOC_PagellaVoto, note: string, quad: number) {
-    if (quad == 1)
-      formData.note1 = note;
-    else 
-      formData.note2 = note;
+    // if (quad == 1)
+    //   formData.note1 = note;
+    // else 
+    //   formData.note2 = note;
     
     //nel caso di post l'ID del giudizio va messo a 1
-    if (formData.tipoGiudizio1ID == null) 
-        formData.tipoGiudizio1ID = 1;
-    if (formData.tipoGiudizio2ID == null) 
-        formData.tipoGiudizio2ID = 1;
+    // if (formData.tipoGiudizio1ID == null) 
+    //     formData.tipoGiudizio1ID = 1;
+    // if (formData.tipoGiudizio2ID == null) 
+    //     formData.tipoGiudizio2ID = 1;
     let formData2 = Object.assign({}, formData);
     this.postput(formData2)
   }
@@ -124,6 +126,9 @@ export class PagellaVotoEditComponent implements OnInit  {
   postput (formInput: DOC_PagellaVoto) {
     delete formInput.iscrizione;
     delete formInput.materia;
+    delete formInput.tipoGiudizio;
+
+
 
     if (formInput.id == 0) {
       //post
@@ -146,28 +151,7 @@ export class PagellaVotoEditComponent implements OnInit  {
     }
   }
 
-  quadClick(e: MatButtonToggleChange) {
-    console.log (e.value);
-    if (e.value == 1) {
-      this.displayedColumns = [
-        "materia", 
-        // "voto1", 
-        // "tipoGiudizio1ID", 
-        // "obiettivi",
-        "multiVoto1",
-        "note1"
-      ];
-    } else {
-      this.displayedColumns = [
-        "materia", 
-        // "voto2", 
-        // "tipoGiudizio2ID", 
-        // "obiettivi",
-        "multiVoto2",
-        "note2"
-      ];
-    }
-  }
+
 
   openObiettivi(element: DOC_PagellaVoto) {
     console.log ("open classeID 1", element.classeAnnoMateria.classeID);
