@@ -12,7 +12,8 @@ import { PagelleService } from '../pagelle.service';
   styleUrls: ['../pagelle.css']
 })
 export class PagellaEditComponent implements OnInit {
-
+  periodo!:                                      number;
+  dtIns!:                                        string;
   toggleQuadVal!:                                number;
   pagellaID!:                                    number; 
   @Input('iscrizioneID') iscrizioneID!:          number;
@@ -29,6 +30,7 @@ export class PagellaEditComponent implements OnInit {
   ngOnChanges() {
     if (this.iscrizioneID != undefined) {
       this.loadData(1);
+
     }
   }
 
@@ -36,6 +38,8 @@ export class PagellaEditComponent implements OnInit {
   }
 
   loadData(toggleQuad: number) {
+
+    this.periodo = toggleQuad;
 
 
     let obsPagelle$: Observable<DOC_Pagella[]>;
@@ -48,10 +52,14 @@ export class PagellaEditComponent implements OnInit {
       map(val=>val.filter(val=>(val.periodo == toggleQuad)))
     )
     .subscribe(val =>  {
-        if (val.length != 0)  
-          this.pagellaID = val[0].id;
-        else
+        if (val.length != 0)  {
+          this.pagellaID = val[0].id!;
+          this.dtIns = val[0].dtIns!;
+        }
+        else {
           this.pagellaID = -1;
+          this.dtIns = '';
+        }
       }
     );
 
@@ -61,26 +69,7 @@ export class PagellaEditComponent implements OnInit {
   quadClick(e: MatButtonToggleChange) {
 
     this.loadData(e.value);
-
-    // if (e.value == 1) {
-    //   this.displayedColumns = [
-    //     "materia", 
-    //     // "voto1", 
-    //     // "tipoGiudizio1ID", 
-    //     // "obiettivi",
-    //     "multiVoto1",
-    //     "note1"
-    //   ];
-    // } else {
-    //   this.displayedColumns = [
-    //     "materia", 
-    //     // "voto2", 
-    //     // "tipoGiudizio2ID", 
-    //     // "obiettivi",
-    //     "multiVoto2",
-    //     "note2"
-    //   ];
-    // }
+    this.periodo = e.value;
   }
   
 }

@@ -28,7 +28,7 @@ export interface DOC_PagellaVoto {
         iscrizione?:            CLS_Iscrizione
         tipoGiudizio?:          DOC_TipoGiudizio;
 
-        classeAnnoMateria:      CLS_ClasseAnnoMateria;
+        //classeAnnoMateria?:      CLS_ClasseAnnoMateria;
 }
 
 export interface DOC_TipoGiudizio {

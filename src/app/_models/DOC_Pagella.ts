@@ -1,9 +1,9 @@
 export interface DOC_Pagella {
-        id:                     number;
+        id?:                     number;
         iscrizioneID:           number;
         periodo:                number;
 
-        fileID:                 number;
+        fileID?:                 number;
 
         note?:                 string;
         dtIns?:                 string;

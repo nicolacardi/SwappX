@@ -8,12 +8,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
 
 import { DOC_PagellaVoto, DOC_TipoGiudizio } from 'src/app/_models/DOC_PagellaVoto';
 import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { PagellaVotiService } from '../pagella-voti.service';
+import { PagelleService } from '../pagelle.service';
 import { VotiObiettiviEditComponent } from '../voti-obiettivi-edit/voti-obiettivi-edit.component';
 
 @Component({
@@ -37,10 +39,13 @@ export class PagellaVotoEditComponent implements OnInit  {
 //#endregion  
 //#region ----- ViewChild Input Output -------
   @Input('pagellaID') pagellaID!:                       number;
+  @Input('iscrizioneID') iscrizioneID!:                 number;
+  @Input('periodo') periodo!:                           number;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:   number;
 //#endregion
 
   constructor( 
+    private svcPagella:                   PagelleService,
     private svcPagellaVoti:               PagellaVotiService,
     private svcClasseSezioneAnno:         ClassiSezioniAnniService,
     private _loadingService:              LoadingService,
@@ -81,25 +86,22 @@ export class PagellaVotoEditComponent implements OnInit  {
   }
 
   changeSelectGiudizio(formData: DOC_PagellaVoto, tipoGiudizioID: number, quad: number) {
-    // if (quad == 1) {
-    //   formData.tipoGiudizio1ID = tipoGiudizioID;
-    //   if (formData.tipoGiudizio2ID == null) 
-    //       formData.tipoGiudizio2ID = 1;
-    // } else {
-    //   formData.tipoGiudizio2ID = tipoGiudizioID;
-    //   if (formData.tipoGiudizio1ID == null) 
-    //       formData.tipoGiudizio1ID = 1;
-    // }
+
+    if (formData.tipoGiudizioID == null) 
+        formData.tipoGiudizioID = 1;
+
+    formData.pagellaID = this.pagellaID;
     let formData2 = Object.assign({}, formData);
     this.postput(formData2)
   }
 
   changeVoto(formData: DOC_PagellaVoto, voto: any, quad: number) {
+
     let votoN = parseInt(voto);
     if (votoN >10 ) votoN = 10
     if (votoN <0 )  votoN = 0
     formData.voto = votoN;
-    
+    formData.pagellaID = this.pagellaID;
     //nel caso di post l'ID del giudizio va messo a 1
     if (formData.tipoGiudizioID == null) 
         formData.tipoGiudizioID = 1;
@@ -109,24 +111,33 @@ export class PagellaVotoEditComponent implements OnInit  {
   }
 
   changeNote(formData: DOC_PagellaVoto, note: string, quad: number) {
-    // if (quad == 1)
-    //   formData.note1 = note;
-    // else 
-    //   formData.note2 = note;
-    
-    //nel caso di post l'ID del giudizio va messo a 1
-    // if (formData.tipoGiudizio1ID == null) 
-    //     formData.tipoGiudizio1ID = 1;
-    // if (formData.tipoGiudizio2ID == null) 
-    //     formData.tipoGiudizio2ID = 1;
+
+    formData.note = note;
+    formData.pagellaID = this.pagellaID;
+    if (formData.tipoGiudizioID == null) 
+        formData.tipoGiudizioID = 1;
+
     let formData2 = Object.assign({}, formData);
     this.postput(formData2)
   }
   
   postput (formInput: DOC_PagellaVoto) {
+
+    //nel caso la pagella ancora non sia stata creata, va inserita
+    if (this.pagellaID == -1) {
+      let formDataPagella: DOC_Pagella = {
+        iscrizioneID:           this.iscrizioneID,
+        periodo:                this.periodo
+      };
+      this.svcPagella.post(formDataPagella)
+    }
+
     delete formInput.iscrizione;
     delete formInput.materia;
     delete formInput.tipoGiudizio;
+    
+    
+
 
 
 
@@ -154,8 +165,8 @@ export class PagellaVotoEditComponent implements OnInit  {
 
 
   openObiettivi(element: DOC_PagellaVoto) {
-    console.log ("open classeID 1", element.classeAnnoMateria.classeID);
-    console.log ("open annoID 2", element.classeAnnoMateria.annoID);
+    //console.log ("open classeID 1", element.classeAnnoMateria!.classeID);
+    //console.log ("open annoID 2", element.classeAnnoMateria!.annoID);
     console.log ("open materiaID 3", element.materiaID);
 
     const dialogConfig : MatDialogConfig = {
@@ -163,8 +174,8 @@ export class PagellaVotoEditComponent implements OnInit  {
     width: '400px',
     height: '300px',
     data: {
-      classeID: element.classeAnnoMateria.classeID,
-      annoID: element.classeAnnoMateria.annoID,
+      //classeID: element.classeAnnoMateria!.classeID,
+      //annoID: element.classeAnnoMateria!.annoID,
       materiaID: element.materiaID
       }
     }

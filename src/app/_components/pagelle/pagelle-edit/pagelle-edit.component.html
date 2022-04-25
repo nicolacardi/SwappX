@@ -1,5 +1,5 @@
-<!-- {{iscrizioneID}} -->
-<h1 class="_titolo-pagina">Pagella
+{{iscrizioneID}}
+<h1 class="_titolo-pagina">Pagella {{dtIns}}
     <span class="fs16"><mat-button-toggle-group name="quadrimestre" value="1" (change)="quadClick($event)" #toggleQuad>
         <mat-button-toggle class="toggleQ" value="1" selected>1°</mat-button-toggle>
         <mat-button-toggle class="toggleQ" value="2">2°</mat-button-toggle>
@@ -8,5 +8,10 @@
     Quadrimestre
 </h1>
 
-<app-pagella-voto-edit [pagellaID]="pagellaID" [classeSezioneAnnoID]=" classeSezioneAnnoID"></app-pagella-voto-edit>
+<app-pagella-voto-edit 
+    [pagellaID]="pagellaID" 
+    [classeSezioneAnnoID]="classeSezioneAnnoID" 
+    [iscrizioneID]="iscrizioneID"
+    [periodo] = "periodo">
+</app-pagella-voto-edit>
 
