@@ -29,6 +29,7 @@ export class VotiObiettiviEditComponent implements OnInit {
 
   displayedColumns: string[] = [
     "descrizione", 
+    "livello"
   ];
 
 //#endregion  
