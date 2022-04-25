@@ -5,8 +5,8 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
+import { iif, Observable } from 'rxjs';
+import { concatMap, tap } from 'rxjs/operators';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
 
@@ -67,22 +67,16 @@ export class PagellaVotoEditComponent implements OnInit  {
     this.obsTipiGiudizio$= this.svcPagellaVoti.listTipiGiudizio();
 
     let obsPagella$: Observable<DOC_PagellaVoto[]>;
-
-
     obsPagella$ = this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID)
       .pipe (
         concatMap( val => this.svcPagellaVoti.listByAnnoClassePagella(val.annoID, val.classeSezione.classeID, this.pagellaID)
-      )
-      );
+      ) );
 
-    //obsPagella$= this.svcPagellaVoti.listByAnnoClassePagella(2, 16, this.pagellaID);
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
 
     loadPagella$.subscribe(val =>  {
         this.matDataSource.data = val;
-        console.log ("matdatasurce val", val);
-      }
-    );
+      });
   }
 
   changeSelectGiudizio(formData: DOC_PagellaVoto, tipoGiudizioID: number, quad: number) {
@@ -123,51 +117,64 @@ export class PagellaVotoEditComponent implements OnInit  {
   
   postput (formInput: DOC_PagellaVoto) {
 
-    //nel caso la pagella ancora non sia stata creata, va inserita
-    if (this.pagellaID == -1) {
-      let formDataPagella: DOC_Pagella = {
-        iscrizioneID:           this.iscrizioneID,
-        periodo:                this.periodo
-      };
-      this.svcPagella.post(formDataPagella)
-    }
-
+    //pulizia forminput da oggetti composti
     delete formInput.iscrizione;
     delete formInput.materia;
     delete formInput.tipoGiudizio;
-    
-    
 
+    //nel caso la pagella ancora non sia stata creata, va inserita
+    if (this.pagellaID == -1) {
+      const d = new Date();
+      d.setSeconds(0,0);
+      let dateNow = d.toISOString().split('.')[0];
 
+      let formDataPagella: DOC_Pagella = {
+        iscrizioneID:           this.iscrizioneID,
+        periodo:                this.periodo,
+        dtIns:                  dateNow
+        //....
+         
+      };
+      
+      this.svcPagella.post(formDataPagella)
+        .pipe (
+          tap( x =>  {
+            console.log("x", x);
+            formInput.pagellaID = x.id! 
+          } ),
+          concatMap( () =>   
+            iif( () => formInput.id == 0 || formInput.id == undefined,
+              this.svcPagellaVoti.post(formInput),
+              this.svcPagellaVoti.put(formInput)
+          )
+        ))
+        .subscribe(
+          res => {},
+          err => {}
+        )
+    }
+    else {    //caso pagella già presente
 
-
-    if (formInput.id == 0) {
-      //post
-      this.svcPagellaVoti.post(formInput).subscribe(
-        res => {
-        //  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Voto Salvato post', panelClass: ['green-snackbar']})
-        this.loadData();
-        },
-        err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})}
-      )
-    } else {
-      //put
-      this.svcPagellaVoti.put(formInput).subscribe(
-        res => {
-        //  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Voto Salvato put', panelClass: ['green-snackbar']})
-        //this.loadData();
-        },
-        err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})}
-      )
+      if (formInput.id == 0) {
+      
+        //post
+        this.svcPagellaVoti.post(formInput).subscribe(
+          res => { this.loadData();  },
+          err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})}
+        )
+      } else {
+        //put
+        this.svcPagellaVoti.put(formInput).subscribe(
+          res => {  },
+          err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})}
+        )
+      }
     }
   }
 
-
-
   openObiettivi(element: DOC_PagellaVoto) {
-    //console.log ("open classeID 1", element.classeAnnoMateria!.classeID);
-    //console.log ("open annoID 2", element.classeAnnoMateria!.annoID);
-    console.log ("open materiaID 3", element.materiaID);
+
+    //console.log ("open materiaID 3", element.materiaID);
 
     const dialogConfig : MatDialogConfig = {
     panelClass: 'add-DetailDialog',
@@ -187,3 +194,5 @@ export class PagellaVotoEditComponent implements OnInit  {
     );
   }
 }
+ 
+

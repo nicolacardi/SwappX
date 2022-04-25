@@ -19,14 +19,12 @@ export class PagelleService {
   }
 
   put(formData: any): Observable <any>{
-    return this.http.put( environment.apiBaseUrl  + 'DOC_Pagella/' + formData.id , formData);    
+    return this.http.put( environment.apiBaseUrl  + 'DOC_Pagelle/' + formData.id , formData);    
   }
 
-  post(formData: any): Observable <any>{
+  post(formData: any): Observable <DOC_Pagella>{
     delete formData.id;
-    return this.http.post( environment.apiBaseUrl  + 'DOC_Pagella' , formData);  
+    return this.http.post<DOC_Pagella>( environment.apiBaseUrl  + 'DOC_Pagelle' , formData);  
   }
-
-
 
 }

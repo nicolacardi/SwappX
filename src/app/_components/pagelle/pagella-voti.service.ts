@@ -18,14 +18,11 @@ export class PagellaVotiService {
   }
   
   put(formData: any): Observable <any>{
-    console.log ("put formData", formData);
     return this.http.put( environment.apiBaseUrl  + 'DOC_PagellaVoti/' + formData.id , formData);    
   }
 
   post(formData: any): Observable <any>{
     delete formData.id;
-    console.log ("post formData", formData);
-
     return this.http.post( environment.apiBaseUrl  + 'DOC_PagellaVoti' , formData);  
   }
 
@@ -33,6 +30,4 @@ export class PagellaVotiService {
     return this.http.get<DOC_TipoGiudizio[]>(environment.apiBaseUrl+'DOC_TipiGiudizio/');   
     //http://213.215.231.4/swappX/api/DOC_TipiGiudizio
   }
-
-
 }
