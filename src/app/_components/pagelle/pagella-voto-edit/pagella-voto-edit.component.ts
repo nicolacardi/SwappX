@@ -18,6 +18,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 //classes
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
 import { DOC_PagellaVoto, DOC_TipoGiudizio } from 'src/app/_models/DOC_PagellaVoto';
+
 @Component({
   selector: 'app-pagella-voto-edit',
   templateUrl: './pagella-voto-edit.component.html',
@@ -37,6 +38,7 @@ export class PagellaVotoEditComponent implements OnInit  {
     "note"
   ];
 //#endregion  
+
 //#region ----- ViewChild Input Output -------
   @Input('pagellaID') pagellaID!:                       number;
   @Input('iscrizioneID') iscrizioneID!:                 number;
@@ -73,12 +75,12 @@ export class PagellaVotoEditComponent implements OnInit  {
     obsPagella$ = this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID)
       .pipe (
         concatMap( val => this.svcPagellaVoti.listByAnnoClassePagella(val.annoID, val.classeSezione.classeID, this.pagellaID)
-      ) );
+      ));
 
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
 
     loadPagella$.subscribe(val =>  {
-        console.log ("lista dei pagellaVoti", val)
+        //console.log ("lista dei pagellaVoti", val)
         this.matDataSource.data = val;
       });
   }
@@ -90,7 +92,7 @@ export class PagellaVotoEditComponent implements OnInit  {
 
     formData.pagellaID = this.pagellaID;
     let formData2 = Object.assign({}, formData);
-    this.postput(formData2)
+    this.save(formData2)
   }
 
   changeVoto(formData: DOC_PagellaVoto, voto: any, quad: number) {
@@ -105,7 +107,7 @@ export class PagellaVotoEditComponent implements OnInit  {
         formData.tipoGiudizioID = 1;
 
     let formData2 = Object.assign({}, formData);
-    this.postput(formData2)
+    this.save(formData2)
   }
 
   changeNote(formData: DOC_PagellaVoto, note: string, quad: number) {
@@ -116,10 +118,10 @@ export class PagellaVotoEditComponent implements OnInit  {
         formData.tipoGiudizioID = 1;
 
     let formData2 = Object.assign({}, formData);
-    this.postput(formData2)
+    this.save(formData2)
   }
   
-  postput (formInput: DOC_PagellaVoto) {
+  save (formInput: DOC_PagellaVoto) {
 
     //pulizia forminput da oggetti composti
     delete formInput.iscrizione;
@@ -178,7 +180,6 @@ export class PagellaVotoEditComponent implements OnInit  {
 
   openObiettivi(element: DOC_PagellaVoto) {
 
-
     const dialogConfig : MatDialogConfig = {
     panelClass: 'add-DetailDialog',
     width: '500px',
@@ -190,7 +191,6 @@ export class PagellaVotoEditComponent implements OnInit  {
         pagellaVotoID:        element.id,
         materiaID:            element.materiaID,
         classeSezioneAnnoID:  this.classeSezioneAnnoID
-        
       }
     }
     
@@ -198,8 +198,7 @@ export class PagellaVotoEditComponent implements OnInit  {
     dialogRef.afterClosed().subscribe( () => { 
         this.reloadParent.emit();
         this.loadData(); 
-      }
-    );
+      });
   }
 }
  
