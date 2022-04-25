@@ -13,6 +13,8 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import { MAT_Obiettivo } from 'src/app/_models/MAT_Obiettivo';
 import { DialogDataVotiObiettivi } from 'src/app/_models/DialogData';
 import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
+import { DOC_PagellaVotoObiettivo } from 'src/app/_models/DOC_PagellaVotoObiettivo';
+import { PagellaVotoObiettiviService } from '../pagella-voto-obiettivi.service';
 
 
 @Component({
@@ -23,7 +25,7 @@ import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.servi
 export class VotiObiettiviEditComponent implements OnInit {
 //#region ----- Variabili -------
 
-  matDataSource = new           MatTableDataSource<MAT_Obiettivo>();
+  matDataSource = new           MatTableDataSource<DOC_PagellaVotoObiettivo>();
 
   displayedColumns: string[] = [
     "descrizione", 
@@ -35,9 +37,9 @@ export class VotiObiettiviEditComponent implements OnInit {
 //#endregion
 
   constructor(    
-    public _dialogRef: MatDialogRef<VotiObiettiviEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogDataVotiObiettivi,
-    private svcObiettivi:                   ObiettiviService,
+    public _dialogRef: MatDialogRef         <VotiObiettiviEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data:   DialogDataVotiObiettivi,
+    private svcPagellaVotoObiettivi:        PagellaVotoObiettiviService,
     private svcClasseSezioneAnno:           ClassiSezioniAnniService,
     private _loadingService:                LoadingService,
 
@@ -51,16 +53,15 @@ export class VotiObiettiviEditComponent implements OnInit {
   loadData() {
 
 
-    let obsObiettivi$: Observable<MAT_Obiettivo[]>;
+    let obsPagellaVotoObiettivi$: Observable<DOC_PagellaVotoObiettivo[]>;
 
     //obsObiettivi$= this.svcObiettivi.listByMateriaAndClasseAndAnno(this.data.materiaID, this.data.classeSezioneAnnoID);
-    obsObiettivi$= this.svcObiettivi.listByMateriaAndClasseSezioneAnno(this.data.materiaID, this.data.classeSezioneAnnoID);
+    obsPagellaVotoObiettivi$= this.svcPagellaVotoObiettivi.ListByPagellaMateriaClasseSezioneAnno(this.data.pagellaVotoID, this.data.materiaID, this.data.classeSezioneAnnoID);
 
-    let loadObiettivi$ =this._loadingService.showLoaderUntilCompleted(obsObiettivi$);
+    let loadObiettivi$ =this._loadingService.showLoaderUntilCompleted(obsPagellaVotoObiettivi$);
 
     loadObiettivi$.subscribe(val =>  {
         this.matDataSource.data = val;
-        console.log ("obiettivi", val);
         //this.matDataSource.paginator = this.paginator;          
         //this.sortCustom();
         //this.matDataSource.sort = this.sort; 

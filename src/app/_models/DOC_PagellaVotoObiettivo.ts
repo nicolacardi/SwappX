@@ -1,0 +1,21 @@
+import { MAT_Obiettivo } from "./MAT_Obiettivo";
+
+export interface DOC_PagellaVotoObiettivo {
+        id:                     number;
+        pagellaVotoID:          number;
+        obiettivoID:            number;
+        livello:                number;
+
+        dtIns?:                 string;
+        dtUpd?:                 string;
+        userIns?:               number;
+        userUpd?:               number;
+
+        Obiettivo:              MAT_Obiettivo;
+}
+
+
+
+
+
+

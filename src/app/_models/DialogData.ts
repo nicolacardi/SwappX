@@ -24,9 +24,9 @@ export interface DialogDataLezioniUtils {
 
 
 export interface DialogDataVotiObiettivi {
-
+        pagellaVotoID:        number;
         classeSezioneAnnoID:  number;
-        materiaID:             number;
+        materiaID:            number;
       }
 
 export interface DialogDataColoreMateria {

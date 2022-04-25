@@ -174,15 +174,15 @@ export class PagellaVotoEditComponent implements OnInit  {
 
   openObiettivi(element: DOC_PagellaVoto) {
 
-    //console.log ("open materiaID 3", element.materiaID);
 
     const dialogConfig : MatDialogConfig = {
     panelClass: 'add-DetailDialog',
     width: '400px',
     height: '300px',
     data: {
-      materiaID: element.materiaID,
-      classeSezioneAnnoID: this.classeSezioneAnnoID
+      pagellaVotoID:        element.id,
+      materiaID:            element.materiaID,
+      classeSezioneAnnoID:  this.classeSezioneAnnoID
       }
     }
     
