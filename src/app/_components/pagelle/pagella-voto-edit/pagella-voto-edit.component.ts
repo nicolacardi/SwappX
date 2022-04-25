@@ -1,23 +1,23 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { iif, Observable } from 'rxjs';
 import { concatMap, tap } from 'rxjs/operators';
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
 
-import { DOC_PagellaVoto, DOC_TipoGiudizio } from 'src/app/_models/DOC_PagellaVoto';
-import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
+//components
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { PagellaVotiService } from '../pagella-voti.service';
-import { PagelleService } from '../pagelle.service';
 import { VotiObiettiviEditComponent } from '../voti-obiettivi-edit/voti-obiettivi-edit.component';
 
+//services
+import { PagellaVotiService } from '../pagella-voti.service';
+import { PagelleService } from '../pagelle.service';
+import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
+import { LoadingService } from '../../utilities/loading/loading.service';
+
+//classes
+import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
+import { DOC_PagellaVoto, DOC_TipoGiudizio } from 'src/app/_models/DOC_PagellaVoto';
 @Component({
   selector: 'app-pagella-voto-edit',
   templateUrl: './pagella-voto-edit.component.html',
@@ -181,9 +181,8 @@ export class PagellaVotoEditComponent implements OnInit  {
     width: '400px',
     height: '300px',
     data: {
-      //classeID: element.classeAnnoMateria!.classeID,
-      //annoID: element.classeAnnoMateria!.annoID,
-      materiaID: element.materiaID
+      materiaID: element.materiaID,
+      classeSezioneAnnoID: this.classeSezioneAnnoID
       }
     }
     

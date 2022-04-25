@@ -26,12 +26,12 @@ export class ObiettiviService {
     //http://213.215.231.4/swappX/api/MAT_Obiettivi/listByClasse/16
   }
 
-  listByMaterialAndClasse(materiaID: number, classeID: number): Observable<MAT_Obiettivo[]>{
+  listByMateriaAndClasse(materiaID: number, classeID: number): Observable<MAT_Obiettivo[]>{
     return this.http.get<MAT_Obiettivo[]>(environment.apiBaseUrl+'MAT_Obiettivi/ListByMateriaAndClasse/'+materiaID+'/'+classeID);
     //http://213.215.231.4/swappX/api/MAT_Obiettivi/ListByMaterialAndClasse/4/1
   }
 
-  listByMaterialAndClasseSezioneAnno(materiaID: number, classeSezioneAnnoID: number): Observable<MAT_Obiettivo[]>{
+  listByMateriaAndClasseSezioneAnno(materiaID: number, classeSezioneAnnoID: number): Observable<MAT_Obiettivo[]>{
     return this.http.get<MAT_Obiettivo[]>(environment.apiBaseUrl+'MAT_Obiettivi/ListByMateriaAndClasseSezioneAnno/'+materiaID+'/'+classeSezioneAnnoID);
     //http://213.215.231.4/swappX/api/MAT_Obiettivi/ListByMateriaAndClasseSezioneAnno/4/16
   }
@@ -40,6 +40,9 @@ export class ObiettiviService {
     return this.http.get<MAT_Obiettivo[]>(environment.apiBaseUrl+'MAT_Obiettivi/ListByMateriaAndClasseAndAnno/'+materiaID+'/'+classeID+'/'+annoID);
     //http://213.215.231.4/swappX/api/MAT_Obiettivi/ListByMateriaAndClasseAndAnno/4/1/2
   }
+
+
+
 
   get(obiettivoID: any): Observable<MAT_Obiettivo>{
     return this.http.get<MAT_Obiettivo>(environment.apiBaseUrl+'MAT_Obiettivi/'+obiettivoID);

@@ -12,6 +12,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 //classes
 import { MAT_Obiettivo } from 'src/app/_models/MAT_Obiettivo';
 import { DialogDataVotiObiettivi } from 'src/app/_models/DialogData';
+import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
 
 
 @Component({
@@ -37,6 +38,7 @@ export class VotiObiettiviEditComponent implements OnInit {
     public _dialogRef: MatDialogRef<VotiObiettiviEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogDataVotiObiettivi,
     private svcObiettivi:                   ObiettiviService,
+    private svcClasseSezioneAnno:           ClassiSezioniAnniService,
     private _loadingService:                LoadingService,
 
     ) { }
@@ -48,10 +50,12 @@ export class VotiObiettiviEditComponent implements OnInit {
 
   loadData() {
 
-    console.log("test");
+
     let obsObiettivi$: Observable<MAT_Obiettivo[]>;
 
-    obsObiettivi$= this.svcObiettivi.listByMateriaAndClasseAndAnno(this.data.materiaID, this.data.classeID, this.data.annoID);
+    //obsObiettivi$= this.svcObiettivi.listByMateriaAndClasseAndAnno(this.data.materiaID, this.data.classeSezioneAnnoID);
+    obsObiettivi$= this.svcObiettivi.listByMateriaAndClasseSezioneAnno(this.data.materiaID, this.data.classeSezioneAnnoID);
+
     let loadObiettivi$ =this._loadingService.showLoaderUntilCompleted(obsObiettivi$);
 
     loadObiettivi$.subscribe(val =>  {

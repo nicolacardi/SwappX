@@ -2,9 +2,13 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatButtonToggle, MatButtonToggleChange } from '@angular/material/button-toggle';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
+
+//services
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { PagelleService } from '../pagelle.service';
+
+//classes
+import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
 
 @Component({
   selector: 'app-pagelle-edit',
@@ -12,15 +16,17 @@ import { PagelleService } from '../pagelle.service';
   styleUrls: ['../pagelle.css']
 })
 export class PagellaEditComponent implements OnInit {
+//#region ----- Variabili -------
   periodo!:                                      number;
   dtIns!:                                        string;
   toggleQuadVal!:                                number;
   pagellaID!:                                    number; 
+//#endregion  
+//#region ----- ViewChild Input Output -------
   @Input('iscrizioneID') iscrizioneID!:          number;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:          number;
-
   @ViewChild('toggleQuad') toggleQuad!:           MatButtonToggle;
-
+//#endregion  
 
   constructor(
     private svcPagelle:               PagelleService,
@@ -30,7 +36,6 @@ export class PagellaEditComponent implements OnInit {
   ngOnChanges() {
     if (this.iscrizioneID != undefined) {
       this.loadData(1);
-
     }
   }
 
@@ -40,10 +45,7 @@ export class PagellaEditComponent implements OnInit {
   loadData(toggleQuad: number) {
 
     this.periodo = toggleQuad;
-
-
     let obsPagelle$: Observable<DOC_Pagella[]>;
-
     obsPagelle$= this.svcPagelle.listByIscrizione(this.iscrizioneID);
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagelle$);
 
@@ -62,12 +64,9 @@ export class PagellaEditComponent implements OnInit {
         }
       }
     );
-
   }
 
-
   quadClick(e: MatButtonToggleChange) {
-
     this.loadData(e.value);
     this.periodo = e.value;
   }
