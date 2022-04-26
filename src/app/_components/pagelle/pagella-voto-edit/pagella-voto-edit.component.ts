@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
@@ -42,6 +42,9 @@ export class PagellaVotoEditComponent implements OnInit  {
   @Input('iscrizioneID') iscrizioneID!:                 number;
   @Input('periodo') periodo!:                           number;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:   number;
+
+  @Output('reloadParent') reloadParent = new EventEmitter(); //EMESSO quando si clicca sul (+) di aggiunta alle classi frequentate
+
 //#endregion
 
   constructor( 
@@ -75,6 +78,7 @@ export class PagellaVotoEditComponent implements OnInit  {
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
 
     loadPagella$.subscribe(val =>  {
+        console.log ("lista dei pagellaVoti", val)
         this.matDataSource.data = val;
       });
   }
@@ -177,17 +181,22 @@ export class PagellaVotoEditComponent implements OnInit  {
 
     const dialogConfig : MatDialogConfig = {
     panelClass: 'add-DetailDialog',
-    width: '400px',
+    width: '500px',
     height: '300px',
     data: {
-      pagellaVotoID:        element.id,
-      materiaID:            element.materiaID,
-      classeSezioneAnnoID:  this.classeSezioneAnnoID
+        iscrizioneID:         this.iscrizioneID,
+        pagellaID:            this.pagellaID,
+        periodo:              this.periodo,
+        pagellaVotoID:        element.id,
+        materiaID:            element.materiaID,
+        classeSezioneAnnoID:  this.classeSezioneAnnoID
+        
       }
     }
     
     const dialogRef = this._dialog.open(VotiObiettiviEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe( () => { 
+        this.reloadParent.emit();
         this.loadData(); 
       }
     );

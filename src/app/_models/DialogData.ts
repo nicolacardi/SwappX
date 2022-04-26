@@ -24,7 +24,10 @@ export interface DialogDataLezioniUtils {
 
 
 export interface DialogDataVotiObiettivi {
+        iscrizioneID:         number
+        pagellaID:            number;
         pagellaVotoID:        number;
+        periodo:              number;
         classeSezioneAnnoID:  number;
         materiaID:            number;
       }
