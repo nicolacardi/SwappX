@@ -9,6 +9,8 @@ import { PagelleService } from '../pagelle.service';
 
 //classes
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
+import { JspdfService } from '../../utilities/jspdf/jspdf.service';
+import { PagellaVotoEditComponent } from '../pagella-voto-edit/pagella-voto-edit.component';
 
 @Component({
   selector: 'app-pagelle-edit',
@@ -26,11 +28,15 @@ export class PagellaEditComponent implements OnInit {
   @Input('iscrizioneID') iscrizioneID!:          number;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:          number;
   @ViewChild('toggleQuad') toggleQuad!:           MatButtonToggle;
+  @ViewChild(PagellaVotoEditComponent) viewPagellaVotoEdit!: PagellaVotoEditComponent; 
+
 //#endregion  
 
   constructor(
     private svcPagelle:               PagelleService,
     private _loadingService:          LoadingService,
+    private _jspdf:                   JspdfService,
+
   ) { }
 
   ngOnChanges() {
@@ -69,6 +75,19 @@ export class PagellaEditComponent implements OnInit {
   quadClick(e: MatButtonToggleChange) {
     this.loadData(e.value);
     this.periodo = e.value;
+  }
+
+  creaPdfPagella() {
+        //elenco i campi da tenere
+        let fieldsToKeep = ['materia'];
+        //elenco i nomi delle colonne
+        let columnsNames = [['materia']];
+        this._jspdf.creaPdf(
+          this.viewPagellaVotoEdit.matDataSource.data, 
+          columnsNames,
+          fieldsToKeep,
+          "Report Pagelle",
+          "Report Pagelle");
   }
   
 }

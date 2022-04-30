@@ -547,6 +547,10 @@
         background-color: #044D7E !important;
     }
 
+    ._btn-pos-top-0 {
+        top: 15px;
+    }
+
     ._btn-pos-right-1 {
         right: 30px;
     }
@@ -563,10 +567,11 @@
         top: 80px;
     }
 
-    ._btn-pos-top-0 {
-        top: 15px;
-    }
 
+
+    ._btn-pos-left-4 {
+        left: 320px;
+    }
 
 
 
