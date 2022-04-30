@@ -12,20 +12,28 @@ export class JspdfService {
 
   constructor() { }
 
-  creaPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string)  {
-    let doc = this.generaPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle, rptFileName);
-    return doc
-    doc.save(d.toISOString().split('T')[0]+"_"+rptFileName+".pdf");
-
-  }
-  salvaPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string) {
-    this.generaPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle, rptFileName);
-
-    return 
+  public creaPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string): jsPDF  {
+    
+    let doc = this.buildPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle);
+    return doc;
   }
 
-  generaPdf(rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string) {
+  public salvaPdf (doc :jsPDF ,  fileName: string, addDateToName: boolean = true ) {
+    
+    if(addDateToName){
+      const d = new Date();
+      fileName = d.toISOString().split('T')[0]+"_"+ fileName+".pdf";
+    }
+    doc.save(fileName);
+  }
 
+  public downloadPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string)  {
+    
+    let doc = this.buildPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle);
+    this.salvaPdf(doc,rptFileName);
+  }
+
+  private buildPdf(rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string) {
 
     const doc = new jsPDF('l', 'mm', [297, 210]);
     doc.setFont('TitilliumWeb-Regular', 'normal');
@@ -183,7 +191,7 @@ export class JspdfService {
     // doc.setFillColor(0,0,200);
     // doc.cell(110, 140, 70, 20, "alla fine è solo questione di dedicarci del tempo...ma si può fare quasi tutto quello che si vuole", 0, "left");
 
-    const d = new Date();
+    //const d = new Date();
     return doc;
     
     

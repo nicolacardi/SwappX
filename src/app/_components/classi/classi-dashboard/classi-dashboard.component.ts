@@ -23,6 +23,7 @@ import { LezioniCalendarioComponent } from '../../lezioni/lezioni-calendario/lez
 import { MatTabGroup } from '@angular/material/tabs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import jsPDF from 'jspdf';
 
 
 @Component({
@@ -145,12 +146,20 @@ export class ClassiDashboardComponent implements OnInit {
     let fieldsToKeep = ['alunno.nome', 'alunno.cognome', 'alunno.email', 'alunno.telefono', 'alunno.dtNascita'];
     //elenco i nomi delle colonne
     let columnsNames = [['nome', 'cognome', 'email', 'telefono', 'nato il']];
-    this._jspdf.creaPdf(
+    this._jspdf.downloadPdf(
       this.viewListIscrizioni.matDataSource.data, 
       columnsNames,
       fieldsToKeep,
       "Classe "+ this.viewListIscrizioni.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewListIscrizioni.classeSezioneAnno.classeSezione.sezione,
        "ListaIscrizioni");
+
+     this._jspdf.downloadPdf(
+      this.viewListIscrizioni.matDataSource.data, 
+      columnsNames,
+      fieldsToKeep,
+      "Classe "+ this.viewListIscrizioni.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewListIscrizioni.classeSezioneAnno.classeSezione.sezione,
+       "ListaIscrizioni");
+
   }
 
   creaPdfDocenze() {
@@ -158,7 +167,7 @@ export class ClassiDashboardComponent implements OnInit {
     let fieldsToKeep = ['materia.descrizione', 'docente.persona.nome', 'docente.persona.cognome'];
     //elenco i nomi delle colonne
     let columnsNames = [['materia', 'Nome Docente', 'Cognome Docente']];
-    this._jspdf.creaPdf(
+    this._jspdf.downloadPdf(
       this.viewDocenzeList.matDataSource.data,
       columnsNames,
       fieldsToKeep,

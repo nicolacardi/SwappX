@@ -44,7 +44,7 @@ export class ToolbarComponent {
     // console.log ("toolbar.component : this.rptData", this.rptData);
     //i columnsNames sono uno strano array con un array dentro... così vuole jspdf
     this.rptColumnsNameArr = [this.rptColumnsNames]; 
-    this._jspdf.creaPdf(this.rptData, this.rptColumnsNameArr, this.rptFieldsToKeep, this.rptTitle, this.rptFileName);    
+    this._jspdf.downloadPdf(this.rptData, this.rptColumnsNameArr, this.rptFieldsToKeep, this.rptTitle, this.rptFileName);    
   }
 
   XLS() {
