@@ -149,9 +149,7 @@ export class UserService {
     //http://213.215.231.4/swappX/api/_UT_UsersFoto/GetByUserID/75b01815-1282-4459-bbf5-61bc877a9100
   }
  
-  //questo metodo si chiama postputFoto e non post o put come i metodi relativo nel WS perchè lo abbiamo messo nel service user
-  //e non in un service Foto e in più perchè fa sia una post che una put
-  postputFoto(formData: any): Observable<any>{    
+  save(formData: any): Observable<any>{    
     if(formData.id == null || formData.id <= 0)
       return this.http.post(environment.apiBaseUrl+'_UT_UsersFoto', formData);
     else

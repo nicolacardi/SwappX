@@ -34,13 +34,11 @@ export class ProfiloComponent implements OnInit {
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
   @ViewChild('canvasDOM', {static: false}) canvasDOM!: ElementRef;
 
-  constructor(
-    private fb:                   FormBuilder, 
-    private svcUser:              UserService,
-    public _dialog:               MatDialog,
-    private eventEmitterService:  EventEmitterService,
-    private _snackBar:            MatSnackBar
-) { 
+  constructor(private fb:                   FormBuilder, 
+              private svcUser:              UserService,
+              public _dialog:               MatDialog,
+              private eventEmitterService:  EventEmitterService,
+              private _snackBar:            MatSnackBar) { 
 
     this.form = this.fb.group({
       file:           ['' , [Validators.required]],
@@ -139,8 +137,7 @@ export class ProfiloComponent implements OnInit {
       this.fotoObj.userID = this.currUser.userID;
       this.fotoObj.foto = this.immagineDOM.nativeElement.src;
 
-      this.svcUser.postputFoto(this.fotoObj)
-      .subscribe(() => {
+      this.svcUser.save(this.fotoObj).subscribe(() => {
           this.eventEmitterService.onAccountSaveProfile();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo salvato', panelClass: ['green-snackbar']});
         }

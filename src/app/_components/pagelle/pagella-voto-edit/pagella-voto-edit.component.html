@@ -1,14 +1,9 @@
- {{pagellaID}} {{classeSezioneAnnoID}} {{iscrizioneID}} {{periodo}}
-    <!-- **************************   MAT-TABLE   ******************* -->
+ <!-- {{pagellaID}} {{classeSezioneAnnoID}} {{iscrizioneID}} {{periodo}} -->
 
-
-
-
+ <!-- **************************   MAT-TABLE   ******************* -->
     <table mat-table class="_table-row-low transparent w100" [dataSource]="matDataSource">
 
-
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
-   
         <ng-container matColumnDef="materia">
             <th mat-header-cell *matHeaderCellDef  class="w125px">Materia</th>
             <td mat-cell *matCellDef="let element">{{element.materia.descrizione}}</td>
@@ -41,7 +36,6 @@
             </td>
         </ng-container>
 
-
         <!-- <ng-container matColumnDef="voto">
             <th mat-header-cell *matHeaderCellDef class="w50px">Voto</th>
             <td mat-cell *matCellDef="let element">
@@ -71,12 +65,9 @@
         
 <!--#endregion  ******************************************************* -->
 
-
         <ng-container matColumnDef="obiettivi">
             <th mat-header-cell *matHeaderCellDef  >Obiettivi</th>
-            <td mat-cell class="h60px center" *matCellDef="let element">
-                
-            </td>
+            <td mat-cell class="h60px center" *matCellDef="let element"></td>
         </ng-container>
 
 
@@ -90,5 +81,4 @@
 
     </table>
 
-    <!-- {{iscrizioneID}} -->
     

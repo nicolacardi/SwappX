@@ -1,24 +1,26 @@
 <!-- {{iscrizioneID}} -->
 <h1 class="_titolo-pagina">Pagella 
-    <span class="fs16"><mat-button-toggle-group name="quadrimestre" value="1" (change)="quadClick($event)" #toggleQuad>
-        <mat-button-toggle class="toggleQ" value="1" selected>1°</mat-button-toggle>
-        <mat-button-toggle class="toggleQ" value="2">2°</mat-button-toggle>
-    </mat-button-toggle-group>
+    <span class="fs16">
+        <mat-button-toggle-group name="quadrimestre" value="1" (change)="quadClick($event)" #toggleQuad>
+            <mat-button-toggle class="toggleQ" value="1" selected>1°</mat-button-toggle>
+            <mat-button-toggle class="toggleQ" value="2">2°</mat-button-toggle>
+        </mat-button-toggle-group>
     </span>
     Quadrimestre 
-    <mat-form-field class="ml50 fs14 center w100px" appearance="outline">
+
+    <mat-form-field *ngIf="dtIns!=''" class="ml50 fs14 center w100px" appearance="outline">
         <mat-label>Data Pagella</mat-label>
         <input matInput placeholder="data Pagella" [value]="dtIns|date:'dd/MM/yyyy'">
     </mat-form-field>
     <!-- <div class="fs12">Data pagella: {{dtIns|date:"dd/MM/yyyy"}}</div>    -->
-
-    <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="esporta Pdf" class="_btn-Blu" >
-        <!-- (click)="creaPdfIscrizioni()" -->
-        <img class="iconaMenu" src="../../../../assets/PDFiconGreys.svg">
-    </button>
+     
+    
+        <button class="ml50 fs14 center w100px"  mat-mini-fab aria-label="Stampa Pagella" matTooltip="Stampa Pagella" class="_btn-Blu" >
+            <!-- (click)="creaPdfIscrizioni()" -->
+            <img class="iconaMenu" src="../../../../assets/PDFiconGreys.svg">
+        </button>
+            
 </h1>
-
-
 
 <app-pagella-voto-edit 
     [pagellaID]="pagellaID" 
