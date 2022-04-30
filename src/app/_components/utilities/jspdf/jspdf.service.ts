@@ -12,7 +12,19 @@ export class JspdfService {
 
   constructor() { }
 
-  creaPdf(rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string) {
+  creaPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string)  {
+    let doc = this.generaPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle, rptFileName);
+    return doc
+    doc.save(d.toISOString().split('T')[0]+"_"+rptFileName+".pdf");
+
+  }
+  salvaPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string) {
+    this.generaPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle, rptFileName);
+
+    return 
+  }
+
+  generaPdf(rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string) {
 
 
     const doc = new jsPDF('l', 'mm', [297, 210]);
@@ -172,7 +184,8 @@ export class JspdfService {
     // doc.cell(110, 140, 70, 20, "alla fine è solo questione di dedicarci del tempo...ma si può fare quasi tutto quello che si vuole", 0, "left");
 
     const d = new Date();
-    doc.save(d.toISOString().split('T')[0]+"_"+rptFileName+".pdf");
+    return doc;
+    
     
   }
 
