@@ -1,11 +1,12 @@
 export interface DOC_Pagella {
-        id?:                     number;
+        id?:                    number;
         iscrizioneID:           number;
         periodo:                number;
+        ckStampato?:            boolean; //indica se i dati in database e la pagella salvata sono allineati con quelli dell'ultima stampa
 
-        fileID?:                 number;
+        fileID?:                number;
 
-        note?:                 string;
+        note?:                  string;
         dtIns?:                 string;
         dtUpd?:                 string;
         userIns?:               number;

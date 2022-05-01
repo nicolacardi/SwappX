@@ -40,9 +40,7 @@ export class PagellaVotoEditComponent implements OnInit  {
 //#endregion  
 
 //#region ----- ViewChild Input Output -------
-  @Input('pagellaID') pagellaID!:                       number;
-  @Input('iscrizioneID') iscrizioneID!:                 number;
-  @Input('periodo') periodo!:                           number;
+  @Input('objPagella') objPagella!:                     DOC_Pagella;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:   number;
 
   @Output('reloadParent') reloadParent = new EventEmitter(); //EMESSO quando si clicca sul (+) di aggiunta alle classi frequentate
@@ -59,7 +57,7 @@ export class PagellaVotoEditComponent implements OnInit  {
   }
 
   ngOnChanges() {
-    if (this.pagellaID != undefined) {
+    if (this.objPagella != undefined) {
       this.loadData();
     }
   }
@@ -74,7 +72,7 @@ export class PagellaVotoEditComponent implements OnInit  {
     let obsPagella$: Observable<DOC_PagellaVoto[]>;
     obsPagella$ = this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID)
       .pipe (
-        concatMap( val => this.svcPagellaVoti.listByAnnoClassePagella(val.annoID, val.classeSezione.classeID, this.pagellaID)
+        concatMap( val => this.svcPagellaVoti.listByAnnoClassePagella(val.annoID, val.classeSezione.classeID, this.objPagella.id!)
       ));
 
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
@@ -90,9 +88,11 @@ export class PagellaVotoEditComponent implements OnInit  {
     if (formData.tipoGiudizioID == null) 
         formData.tipoGiudizioID = 1;
 
-    formData.pagellaID = this.pagellaID;
+    formData.pagellaID = this.objPagella.id;
     let formData2 = Object.assign({}, formData);
     this.save(formData2)
+
+    if (this.objPagella.ckStampato) this.resetStampato();
   }
 
   changeVoto(formData: DOC_PagellaVoto, voto: any, quad: number) {
@@ -101,24 +101,28 @@ export class PagellaVotoEditComponent implements OnInit  {
     if (votoN >10 ) votoN = 10
     if (votoN <0 )  votoN = 0
     formData.voto = votoN;
-    formData.pagellaID = this.pagellaID;
+    formData.pagellaID = this.objPagella.id;
     //nel caso di post l'ID del giudizio va messo a 1
     if (formData.tipoGiudizioID == null) 
         formData.tipoGiudizioID = 1;
 
     let formData2 = Object.assign({}, formData);
     this.save(formData2)
+
+    if (this.objPagella.ckStampato) this.resetStampato();
   }
 
   changeNote(formData: DOC_PagellaVoto, note: string, quad: number) {
 
     formData.note = note;
-    formData.pagellaID = this.pagellaID;
+    formData.pagellaID = this.objPagella.id;;
     if (formData.tipoGiudizioID == null) 
         formData.tipoGiudizioID = 1;
 
     let formData2 = Object.assign({}, formData);
     this.save(formData2)
+
+    if (this.objPagella.ckStampato) this.resetStampato();
   }
   
   save (formInput: DOC_PagellaVoto) {
@@ -127,24 +131,23 @@ export class PagellaVotoEditComponent implements OnInit  {
     delete formInput.iscrizione;
     delete formInput.materia;
     delete formInput.tipoGiudizio;
-
+    console.log ("A", this.objPagella);
     //nel caso la pagella ancora non sia stata creata, va inserita
-    if (this.pagellaID == -1) {
-      const d = new Date();
-      d.setSeconds(0,0);
-      let dateNow = d.toISOString().split('.')[0];
+    if (this.objPagella.id == -1) {
+      console.log ("B");
 
-      let formDataPagella: DOC_Pagella = {
-        iscrizioneID:           this.iscrizioneID,
-        periodo:                this.periodo,
-        dtIns:                  dateNow
-        //....
+      // let formDataPagella: DOC_Pagella = {
+      //   iscrizioneID:           this.iscrizioneID,
+      //   periodo:                this.periodo,
+      //   dtIns:                  dateNow
+      //   //....
          
-      };
+      // };
       
-      this.svcPagella.post(formDataPagella)
+      this.svcPagella.post(this.objPagella)
         .pipe (
           tap( x =>  {
+            console.log ("C");
             console.log("x", x);
             formInput.pagellaID = x.id! 
           } ),
@@ -162,7 +165,7 @@ export class PagellaVotoEditComponent implements OnInit  {
     else {    //caso pagella già presente
 
       if (formInput.id == 0) {
-      
+        console.log ("D");
         //post
         this.svcPagellaVoti.post(formInput).subscribe(
           res => { this.loadData();  },
@@ -185,9 +188,9 @@ export class PagellaVotoEditComponent implements OnInit  {
     width: '500px',
     height: '300px',
     data: {
-        iscrizioneID:         this.iscrizioneID,
-        pagellaID:            this.pagellaID,
-        periodo:              this.periodo,
+        iscrizioneID:         this.objPagella.iscrizioneID,
+        pagellaID:            this.objPagella.id,
+        periodo:              this.objPagella.periodo,
         pagellaVotoID:        element.id,
         materiaID:            element.materiaID,
         classeSezioneAnnoID:  this.classeSezioneAnnoID
@@ -199,6 +202,11 @@ export class PagellaVotoEditComponent implements OnInit  {
         this.reloadParent.emit();
         this.loadData(); 
       });
+  }
+
+
+  resetStampato() {
+    this.svcPagella.setStampato(this.objPagella.id!, false).subscribe();
   }
 }
  

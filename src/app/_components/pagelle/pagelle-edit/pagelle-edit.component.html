@@ -10,7 +10,7 @@
 
     <mat-form-field *ngIf="dtIns!=''" class="ml50 fs14 center w100px" appearance="outline">
         <mat-label>Data Pagella</mat-label>
-        <input matInput placeholder="data Pagella" [value]="dtIns|date:'dd/MM/yyyy'">
+        <input matInput placeholder="data Pagella" [value]="dtIns|date:'dd/MM/yyyy'" (change)="aggiornaData()">
     </mat-form-field>
     <!-- <div class="fs12">Data pagella: {{dtIns|date:"dd/MM/yyyy"}}</div>    -->
      
@@ -22,10 +22,18 @@
 </h1>
 
 <app-pagella-voto-edit 
-    [pagellaID]="pagellaID" 
+
+
     [classeSezioneAnnoID]="classeSezioneAnnoID" 
-    [iscrizioneID]="iscrizioneID"
-    [periodo] = "periodo"
+
+    [objPagella] = "objPagella"
+    
+
     (reloadParent)="loadData(1)" >
 </app-pagella-voto-edit>
 
+<!-- [pagellaID]="pagellaID" 
+[ckStampato] = "ckStampato"
+[iscrizioneID]="iscrizioneID"
+
+[periodo] = "periodo"-->
