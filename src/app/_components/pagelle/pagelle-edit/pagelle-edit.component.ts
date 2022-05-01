@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatButtonToggle, MatButtonToggleChange } from '@angular/material/button-toggle';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { jsPDF } from 'jspdf';
 
@@ -92,14 +92,38 @@ export class PagellaEditComponent implements OnInit {
       fieldsToKeep,
       "Report Pagelle");
 
-    let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});
-    let blobURL = URL.createObjectURL(blobPDF);
 
+      let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});
+      
+      //let file : File;
+      
+      //let rer : Observable<string>;
+      
+      const result = new ReplaySubject<string>(1);
+      const reader = new FileReader();
+      reader.readAsBinaryString(blobPDF);
+      reader.onload = (x) => result.next(btoa(x.target!.result!.toString()));
+      
+      result.subscribe(base64 => {
+        let risultato = base64;
+        console.log (risultato);
+      });
+      
+
+
+    /*
+    let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});
+    console.log ("blobPDF", blobPDF);
+    //let blobURL = URL.createObjectURL(blobPDF);
+    //console.log ("blobPDF", blobURL);
       const reader = new FileReader();
       reader.readAsDataURL(blobPDF);
 
       console.log("BELLA MERDA: " ,reader);
-/*
+    */
+
+
+    /*
       reader.onload = () => {
         this.imgFile = reader.result as string;
 
@@ -109,7 +133,8 @@ export class PagellaEditComponent implements OnInit {
                   });
       };
     }
-      */
+    */
+
     }
   
   
