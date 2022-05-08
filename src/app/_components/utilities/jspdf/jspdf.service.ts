@@ -3,6 +3,7 @@ import { jsPDF } from 'jspdf';
 
 import '../../../../assets/fonts/TitilliumWeb-Regular-normal.js';
 import autoTable from 'jspdf-autotable';
+import { DOC_Pagella } from 'src/app/_models/DOC_Pagella.js';
 
 
 @Injectable({
@@ -13,13 +14,16 @@ export class JspdfService {
   constructor() { }
 
   public creaPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string): jsPDF  {
-    
-    let doc = this.buildPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle);
+    let doc = this.buildReportPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle);
     return doc;
   }
 
+  public downloadPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string)  {
+    let doc = this.buildReportPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle);
+    this.salvaPdf(doc,rptFileName);
+  }
+
   public salvaPdf (doc :jsPDF ,  fileName: string, addDateToName: boolean = true ) {
-    
     if(addDateToName){
       const d = new Date();
       fileName = d.toISOString().split('T')[0]+"_"+ fileName+".pdf";
@@ -27,17 +31,26 @@ export class JspdfService {
     doc.save(fileName);
   }
 
-  public downloadPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string)  {
-    
-    let doc = this.buildPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle);
-    this.salvaPdf(doc,rptFileName);
-  }
+  public creaPagellaPdf (objPagella: DOC_Pagella): jsPDF {
+    const doc = new jsPDF('l', 'mm', [297, 210]);
+    doc.setFont('TitilliumWeb-Regular', 'normal');
+    let width = doc.internal.pageSize.getWidth();
 
-  private buildPdf(rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string) {
+
+    doc.text(objPagella.iscrizione!.alunno.nome+" "+objPagella.iscrizione!.alunno.cognome, width/2, 15, { align: 'center' });
+    doc.text(objPagella.dtIns!, width/2, 30, { align: 'center' });
+    doc.text(objPagella.iscrizione!.classeSezioneAnno.classeSezione.classe.descrizione, width/2, 45, { align: 'center' });
+
+    return doc;
+  }
+  
+   
+  
+  private buildReportPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string) {
 
     const doc = new jsPDF('l', 'mm', [297, 210]);
     doc.setFont('TitilliumWeb-Regular', 'normal');
-    let width = doc.internal.pageSize.getWidth()
+    let width = doc.internal.pageSize.getWidth();
     doc.text(rptTitle, width/2, 15, { align: 'center' });
     
     //costruisco la data per il footer (vedi options di autoTable è oltre)

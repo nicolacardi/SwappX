@@ -117,8 +117,14 @@ export class PagellaEditComponent implements OnInit {
     
     this.svcFiles.getByDocAndTipo(this.objPagella.id,"Pagella").subscribe(
         res => {
-console.log("base64: ", res.fileBase64);
+          console.log("base64: ", res.fileBase64);
 
+          //si crea un elemento fittizio che scarica il file di tipo base64 che gli viene assegnato
+          const source = `data:application/pdf;base64,${res.fileBase64}`;
+          const link = document.createElement("a");
+          link.href = source;
+          link.download = `${"test"}.pdf`
+          link.click();
         },
         err => {}
       );
@@ -129,16 +135,13 @@ console.log("base64: ", res.fileBase64);
 
   savePdfPagella() {
 
-    //elenco i campi da tenere
-    let fieldsToKeep = ['materia'];
-    //elenco i nomi delle colonne
-    let columnsNames = [['materia']];
     
-    let rpt :jsPDF  = this._jspdf.creaPdf(
-      this.viewPagellaVotoEdit.matDataSource.data, 
-      columnsNames,
-      fieldsToKeep,
-      "Report Pagelle");
+    if (this.objPagella.id == -1 ){
+      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella inesistente - inserire almeno un voto', panelClass: ['red-snackbar']});
+      return;
+    }
+    
+    let rpt :jsPDF  = this._jspdf.creaPagellaPdf(this.objPagella);
 
       //Preparazione Blob con il contenuto base64 del pdf
       let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});
@@ -155,12 +158,6 @@ console.log("base64: ", res.fileBase64);
         estensione:       "pdf"
       };
 
-
-      // result
-      // .subscribe(base64 => {
-      //   let risultato = base64;
-      // });
-      
 
       result
       .pipe (

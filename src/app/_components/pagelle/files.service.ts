@@ -25,6 +25,7 @@ export class FilesService {
   
   put(formData: any): Observable <any>{
     console.log ("sto per spedire in put:", formData);
+    formData.estensione = "cic";
     return this.http.put( environment.apiBaseUrl  + 'DOC_Files/' + formData.id , formData);    
   }
 

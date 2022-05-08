@@ -1,3 +1,5 @@
+import { CLS_Iscrizione } from "./CLS_Iscrizione";
+
 export interface DOC_Pagella {
         id?:                    number;
         iscrizioneID:           number;
@@ -9,6 +11,8 @@ export interface DOC_Pagella {
         dtUpd?:                 string;
         userIns?:               number;
         userUpd?:               number;
+
+        iscrizione?:             CLS_Iscrizione;
 }
 
 
