@@ -1,12 +1,12 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatButtonToggle, MatButtonToggleChange } from '@angular/material/button-toggle';
-import { Observable, ReplaySubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { iif, Observable, ReplaySubject } from 'rxjs';
+import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { jsPDF } from 'jspdf';
 
 //services
 import { PagelleService } from '../pagelle.service';
-import { FilesService } from '../files-service';
+import { FilesService } from '../files.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 
 //classes
@@ -15,6 +15,7 @@ import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { PagellaVotoEditComponent } from '../pagella-voto-edit/pagella-voto-edit.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { DOC_File } from 'src/app/_models/DOC_File';
 
 @Component({
   selector: 'app-pagelle-edit',
@@ -31,7 +32,7 @@ export class PagellaEditComponent implements OnInit {
   toggleQuadVal!:                                number;
   
   ckStampato!:                                   boolean;  
-    
+  formDataFile! :                                 DOC_File;
 //#endregion  
 
 //#region ----- ViewChild Input Output -------
@@ -147,12 +148,44 @@ console.log("base64: ", res.fileBase64);
       reader.readAsBinaryString(blobPDF);
       reader.onload = (x) => result.next(btoa(x.target!.result!.toString()));
       
-      result.subscribe(base64 => {
-        let risultato = base64;
-        //console.log ("BLOB:" , risultato);
-      });
+
+      this.formDataFile = {
+        tipoDoc:         "Pagella",
+        docID:           this.objPagella.id!,
+        estensione:       "pdf"
+      };
+
+
+      // result
+      // .subscribe(base64 => {
+      //   let risultato = base64;
+      // });
       
-      //TODO .... chiamare WS
+
+      result
+      .pipe (
+        tap(val=> this.formDataFile.fileBase64 = val),
+        
+        //ora cerca se esiste già un record nei file...
+        concatMap(() => this.svcFiles.getByDocAndTipo(this.objPagella.id, "pagella")),
+
+        //a seconda del risultato fa una post o una put
+        switchMap(res => {
+          if (res == null) {
+            console.log ("non ha trovato=> esegue una post")
+            return this.svcFiles.post(this.formDataFile)
+          } else {
+            console.log ("ha trovato=> valorizza l'id e esegue una put")
+            this.formDataFile.id = res.id
+            return this.svcFiles.put(this.formDataFile)
+          }
+        }),
+      )
+      .subscribe(
+        res => ( this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella salvata in Database', panelClass: ['green-snackbar']})),
+        err =>  {}
+      );
+
       
       this.svcPagelle.setStampato(this.objPagella.id!, true).subscribe();
     }

@@ -5,20 +5,17 @@
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 300 300"
 	 style="enable-background:new 0 0 300 300;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#FFFFFF;stroke-width:10;stroke-miterlimit:10;}
-	.st1{fill:#6EB52C;stroke:#FFFFFF;stroke-width:10;stroke-miterlimit:10;}
-	.st2{fill:#FFFFFF;}
-	.st3{fill:none;}
+	.st0{fill:#FFFFFF;}
 </style>
-<path class="st0" d="M200.9,30H75.5c-11.6,0-21,9.4-21,21v111.1c8.3-3.4,17.3-5.2,26.7-5.2c39.2,0,71.1,31.9,71.1,71.1
-	c0,15.7-5.1,30.3-13.8,42.1h86c11.6,0,21-9.4,21-21V74.6L200.9,30z"/>
 <sodipodi:namedview  bordercolor="#666666" borderopacity="1.0" fit-margin-bottom="0" fit-margin-left="0" fit-margin-right="0" fit-margin-top="0" id="base" inkscape:current-layer="g899" inkscape:cx="122.12727" inkscape:cy="167.02823" inkscape:document-units="mm" inkscape:object-nodes="false" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:snap-others="false" inkscape:snap-page="false" inkscape:window-height="705" inkscape:window-maximized="1" inkscape:window-width="1366" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:zoom="0.98994949" pagecolor="#ffffff" showgrid="false">
 	</sodipodi:namedview>
-<line class="st1" x1="92" y1="87.3" x2="214" y2="87.3"/>
-<line class="st1" x1="92" y1="119.3" x2="214" y2="119.3"/>
-<line class="st1" x1="92" y1="151.3" x2="214" y2="151.3"/>
-<path class="st2" d="M81.2,166.8c-33.7,0-61.1,27.4-61.1,61.1S47.5,289,81.2,289s61.1-27.4,61.1-61.1S115,166.8,81.2,166.8z
-	 M121.1,207L81,259.8c-0.9,1.1-2.2,1.9-3.6,2c-0.1,0-0.3,0-0.4,0c-1.3,0-2.5-0.5-3.5-1.4L46.2,234c-2-1.9-2-5.1-0.1-7.1
-	c1.9-2,5.1-2,7.1-0.1l23.3,22.5l36.7-48.3c1.7-2.2,4.8-2.6,7-1C122.4,201.7,122.8,204.8,121.1,207z"/>
-<polygon class="st3" points="200.9,30 245.7,74.8 200.9,74.8 "/>
+<g>
+	<path class="st0" d="M200.9,30H75.5c-11.6,0-21,9.4-21,21v111.1c8.3-3.4,17.3-5.2,26.7-5.2c39.2,0,71.1,31.9,71.1,71.1
+		c0,15.7-5.1,30.3-13.8,42.1h86c11.6,0,21-9.4,21-21V74.6L200.9,30z M214,150.5H92c-2.8,0-5-2.2-5-5c0-2.8,2.2-5,5-5h122
+		c2.8,0,5,2.2,5,5C219,148.3,216.8,150.5,214,150.5z M214,121.4H92c-2.8,0-5-2.2-5-5s2.2-5,5-5h122c2.8,0,5,2.2,5,5
+		S216.8,121.4,214,121.4z M214,92.3H92c-2.8,0-5-2.2-5-5s2.2-5,5-5h122c2.8,0,5,2.2,5,5S216.8,92.3,214,92.3z"/>
+</g>
+<path class="st0" d="M81.2,166.8c-33.7,0-61.1,27.4-61.1,61.1S47.5,289,81.2,289s61.1-27.4,61.1-61.1S115,166.8,81.2,166.8z
+	 M119.2,211.2l-39.9,49.7c-1.3,1.6-3.2,2.6-5.2,2.8c-0.2,0-0.4,0-0.6,0c-1.8,0-3.6-0.7-5-1.9l-24.3-21.5c-3.1-2.7-3.4-7.5-0.6-10.6
+	c2.7-3.1,7.5-3.4,10.6-0.6l18.4,16.3l35-43.6c2.6-3.2,7.3-3.7,10.5-1.2C121.3,203.2,121.8,207.9,119.2,211.2z"/>
 </svg>
