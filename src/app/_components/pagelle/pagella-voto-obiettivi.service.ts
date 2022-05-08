@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+
 export class PagellaVotoObiettiviService {
 
   constructor(private http: HttpClient) { }
@@ -20,7 +21,7 @@ export class PagellaVotoObiettiviService {
   }
   
   put(formData: any): Observable <any>{
-    console.log ("formdata", formData );
+    //console.log ("formdata", formData );
     return this.http.put( environment.apiBaseUrl  + 'DOC_PagellaVotoObiettivi/' + formData.id , formData);    
   }
 

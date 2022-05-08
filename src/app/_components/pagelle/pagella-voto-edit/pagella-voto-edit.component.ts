@@ -57,9 +57,8 @@ export class PagellaVotoEditComponent implements OnInit  {
   }
 
   ngOnChanges() {
-    if (this.objPagella != undefined) {
+    if (this.objPagella != undefined) 
       this.loadData();
-    }
   }
 
   ngOnInit(): void {
@@ -70,17 +69,12 @@ export class PagellaVotoEditComponent implements OnInit  {
     this.obsTipiGiudizio$= this.svcPagellaVoti.listTipiGiudizio();
 
     let obsPagella$: Observable<DOC_PagellaVoto[]>;
-    obsPagella$ = this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID)
-      .pipe (
+    obsPagella$ = this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID).pipe (
         concatMap( val => this.svcPagellaVoti.listByAnnoClassePagella(val.annoID, val.classeSezione.classeID, this.objPagella.id!)
       ));
 
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
-
-    loadPagella$.subscribe(val =>  {
-        //console.log ("lista dei pagellaVoti", val)
-        this.matDataSource.data = val;
-      });
+    loadPagella$.subscribe(val => this.matDataSource.data = val );
   }
 
   changeSelectGiudizio(formData: DOC_PagellaVoto, tipoGiudizioID: number, quad: number) {
@@ -131,19 +125,10 @@ export class PagellaVotoEditComponent implements OnInit  {
     delete formInput.iscrizione;
     delete formInput.materia;
     delete formInput.tipoGiudizio;
-    console.log ("A", this.objPagella);
+
     //nel caso la pagella ancora non sia stata creata, va inserita
     if (this.objPagella.id == -1) {
-      console.log ("B");
 
-      // let formDataPagella: DOC_Pagella = {
-      //   iscrizioneID:           this.iscrizioneID,
-      //   periodo:                this.periodo,
-      //   dtIns:                  dateNow
-      //   //....
-         
-      // };
-      
       this.svcPagella.post(this.objPagella)
         .pipe (
           tap( x =>  {
@@ -165,7 +150,6 @@ export class PagellaVotoEditComponent implements OnInit  {
     else {    //caso pagella già presente
 
       if (formInput.id == 0) {
-        console.log ("D");
         //post
         this.svcPagellaVoti.post(formInput).subscribe(
           res => { this.loadData();  },
