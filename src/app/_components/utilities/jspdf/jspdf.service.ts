@@ -32,7 +32,7 @@ export class JspdfService {
   }
 
   public creaPagellaPdf (objPagella: DOC_Pagella): jsPDF {
-    const doc = new jsPDF('l', 'mm', [297, 210]);
+    const doc = new jsPDF('l', 'mm', [420, 297]);
     doc.setFont('TitilliumWeb-Regular', 'normal');
     let width = doc.internal.pageSize.getWidth();
 
