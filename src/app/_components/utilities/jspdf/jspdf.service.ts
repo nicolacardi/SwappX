@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { jsPDF } from 'jspdf';
+import { Utility } from  '../utility.component';
+
 
 import '../../../../assets/fonts/TitilliumWeb-Regular-normal.js';
+import '../../../../assets/fonts/TitilliumWeb-SemiBold-normal.js';
+
 import autoTable from 'jspdf-autotable';
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella.js';
 
@@ -33,14 +37,48 @@ export class JspdfService {
 
   public creaPagellaPdf (objPagella: DOC_Pagella): jsPDF {
     const doc = new jsPDF('l', 'mm', [420, 297]);
+
+
+
+    let w = doc.internal.pageSize.getWidth();     //w =           larghezza pagine tot
+    let w_pag1 = w/2;                             //w_pag1 =      larghezza pagina 1
+    let center_pos1 = w_pag1/2;                   //center_pos1 = centro pagina 1
+    let center_pos2 = w_pag1/2*3;                 //center_pos2 = centro pagina 2
+    let h = doc.internal.pageSize.getHeight();     //h =           altezza pagine tot
+    let row = h / 45;
+    let margins = 10;
+
+    doc.setDrawColor("#C04F94");
+    doc.roundedRect(w_pag1+margins, margins, w_pag1 - margins*2, h - margins*2, 3, 3, "S");
+    doc.roundedRect(margins, margins, w_pag1 - margins*2, h - margins*2, 3, 3, "S");
+
+    var img = new Image()
+    img.src = '../../assets/photos/logodefViola.png';
+
+    //Fa esplodere la dimensione del file da 34Kb a 1,4 Mb pur essendo il logo da 30Kb: undefined e FAST riducono drasticamente
+    doc.addImage(img, 'png', w_pag1 + 50, 50, 90, 60, undefined,'FAST'); 
+
+    doc.setFont('TitilliumWeb-SemiBold', 'normal');
+    doc.setTextColor("#C04F94");
+
+    doc.text("Documento di Valutazione", center_pos2, row*20, { align: 'center' });
+
     doc.setFont('TitilliumWeb-Regular', 'normal');
-    let width = doc.internal.pageSize.getWidth();
+    doc.text("Anno Scolastico "+objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico, center_pos2, row*21, { align: 'center' });
+    doc.text("Alunno", center_pos2, row*24, { align: 'center' });
+    
+    doc.setFont('TitilliumWeb-SemiBold', 'normal');
+    doc.text(objPagella.iscrizione!.alunno.nome+" "+objPagella.iscrizione!.alunno.cognome, center_pos2, row*26, { align: 'center' });
+
+    doc.setFont('TitilliumWeb-Regular', 'normal');
+    doc.text("C.F."+objPagella.iscrizione?.alunno.cf, center_pos2, row*27, { align: 'center' });
+    doc.text("Nato a "+objPagella.iscrizione?.alunno.comuneNascita+" ("+objPagella.iscrizione?.alunno.provNascita+") il "+Utility.UT_FormatDate2(objPagella.iscrizione?.alunno.dtNascita), center_pos2, row*28, { align: 'center' });
+
+    doc.setFont('TitilliumWeb-SemiBold', 'normal');
+    doc.text("Classe "+objPagella.iscrizione!.classeSezioneAnno.classeSezione.classe.descrizione2+ " Sez."+objPagella.iscrizione!.classeSezioneAnno.classeSezione.sezione, center_pos2, row*29, { align: 'center' });
 
 
-    doc.text(objPagella.iscrizione!.alunno.nome+" "+objPagella.iscrizione!.alunno.cognome, width/2, 15, { align: 'center' });
-    doc.text(objPagella.dtIns!, width/2, 30, { align: 'center' });
-    doc.text(objPagella.iscrizione!.classeSezioneAnno.classeSezione.classe.descrizione, width/2, 45, { align: 'center' });
-
+    doc.addPage();
     return doc;
   }
   

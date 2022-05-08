@@ -13,15 +13,27 @@ export abstract class Utility {
     //TODO: usare regex
   }
 
-  ///Formatta una data dal formato al formato [2022-03-17T11:30:00.000Z] al formato [yyyy-mm-dd]
+  ///Formatta una data dal formato [2022-03-17T11:30:00.000Z] al formato [yyyy-mm-dd]
   public static UT_FormatDate( data: any ): string {
     let dtISOLocaleStart = data.toLocaleString('sv').replace(' ', 'T');
     return dtISOLocaleStart.substring(0,10);
   }
-  ///Formatta una data dal formato al formato [2022-03-17T11:30:00.000Z] al formato ORA [HH:MM:SS]
+  ///Formatta una data dal formato [2022-03-17T11:30:00.000Z] al formato ORA [HH:MM:SS]
   public static UT_FormatHour( data: any ): string {
     let dtISOLocaleStart = data.toLocaleString('sv').replace(' ', 'T');
     return dtISOLocaleStart.substring(11,19);
+  }
+  ///Formatta una data dal formato [2022-03-17T11:30:00.000Z] al formato ORA [dd/mm/yyyy]
+
+  public static UT_FormatDate2( data: any ): string {
+
+    var year = data.substring(0,4);
+
+    var month = data.substring(5,7);
+
+    let day = data.substring(8,10);
+
+    return day + '/' + month + '/' + year;
   }
 
   
