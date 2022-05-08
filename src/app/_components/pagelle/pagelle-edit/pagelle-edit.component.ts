@@ -115,7 +115,10 @@ export class PagellaEditComponent implements OnInit {
     }
     
     this.svcFiles.getByDocAndTipo(this.objPagella.id,"Pagella").subscribe(
-        res => {},
+        res => {
+console.log("base64: ", res.fileBase64);
+
+        },
         err => {}
       );
      
@@ -148,6 +151,8 @@ export class PagellaEditComponent implements OnInit {
         let risultato = base64;
         //console.log ("BLOB:" , risultato);
       });
+      
+      //TODO .... chiamare WS
       
       this.svcPagelle.setStampato(this.objPagella.id!, true).subscribe();
     }
