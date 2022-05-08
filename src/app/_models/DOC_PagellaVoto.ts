@@ -3,8 +3,8 @@ import { CLS_Iscrizione } from "./CLS_Iscrizione";
 import { MAT_Materia } from "./MAT_Materia";
 
 export interface DOC_PagellaVoto {
-        id?:                     number;
-        pagellaID?:              number;
+        id?:                    number;
+        pagellaID?:             number;
         materiaID:              number;
 
         ckFrequenza:            boolean;
@@ -29,6 +29,8 @@ export interface DOC_PagellaVoto {
         tipoGiudizio?:          DOC_TipoGiudizio;
 
         //classeAnnoMateria?:      CLS_ClasseAnnoMateria;
+        countVotiObiettivi?:    number;
+        countTotObiettivi?:     number;        
 }
 
 export interface DOC_TipoGiudizio {
