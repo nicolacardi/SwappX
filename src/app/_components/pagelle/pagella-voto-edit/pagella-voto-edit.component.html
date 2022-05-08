@@ -15,7 +15,6 @@
             <th mat-header-cell *matHeaderCellDef class="w125px">Voto</th>
             <td mat-cell *matCellDef="let element">    
                 
-                
                 <input *ngIf="element.tipoVotoID == 1" 
                         matInput type="number" placeholder="voto" 
                         [value]="element.voto" 
@@ -30,7 +29,6 @@
 
                 <mat-icon *ngIf="element.tipoVotoID == 3" class="pointer" (click) = "openObiettivi(element)">add_circle_outline</mat-icon>
                 <!-- <mat-label class="fs10" *ngIf="element.tipoVotoID == 3" >3/3</mat-label> -->
-
             
                 <mat-label class="_warning" *ngIf="element.tipoVotoID == null">Indicazione<br>tipo voto<br> mancante</mat-label>
             </td>
@@ -61,15 +59,12 @@
             </td>
         </ng-container>
 
-
-        
 <!--#endregion  ******************************************************* -->
 
         <ng-container matColumnDef="obiettivi">
             <th mat-header-cell *matHeaderCellDef  >Obiettivi</th>
             <td mat-cell class="h60px center" *matCellDef="let element"></td>
         </ng-container>
-
 
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
         <tr mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></tr>  

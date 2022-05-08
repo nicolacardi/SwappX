@@ -568,11 +568,15 @@
     }
 
 
-
-    ._btn-pos-left-4 {
+    ._btn-pos-left-3 {
         left: 320px;
     }
-
+    ._btn-pos-left-4 {
+        left: 370px;
+    }
+    ._btn-pos-left-5 {
+        left: 420px;
+    }
 
 
     ._btn-add:hover{

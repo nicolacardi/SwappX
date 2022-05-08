@@ -5,14 +5,16 @@ import { map } from 'rxjs/operators';
 import { jsPDF } from 'jspdf';
 
 //services
-import { LoadingService } from '../../utilities/loading/loading.service';
 import { PagelleService } from '../pagelle.service';
+import { FilesService } from '../files-service';
+import { LoadingService } from '../../utilities/loading/loading.service';
 
 //classes
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { PagellaVotoEditComponent } from '../pagella-voto-edit/pagella-voto-edit.component';
-import { read } from 'fs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 @Component({
   selector: 'app-pagelle-edit',
@@ -20,33 +22,35 @@ import { read } from 'fs';
   styleUrls: ['../pagelle.css']
 })
 export class PagellaEditComponent implements OnInit {
+
 //#region ----- Variabili -------
-  periodo!:                                      number;
+  public objPagella!:                            DOC_Pagella;  
   dtIns!:                                        string;
+
+  periodo!:                                      number;
   toggleQuadVal!:                                number;
-  pagellaID!:                                    number;
+  
   ckStampato!:                                   boolean;  
-  public objPagella!:                                   DOC_Pagella;    
+    
 //#endregion  
+
 //#region ----- ViewChild Input Output -------
   @Input('iscrizioneID') iscrizioneID!:          number;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:          number;
   @ViewChild('toggleQuad') toggleQuad!:           MatButtonToggle;
   @ViewChild(PagellaVotoEditComponent) viewPagellaVotoEdit!: PagellaVotoEditComponent; 
-
 //#endregion  
 
-  constructor(
-    private svcPagelle:               PagelleService,
-    private _loadingService:          LoadingService,
-    private _jspdf:                   JspdfService,
-
-  ) { }
+  constructor(private svcPagelle:               PagelleService,
+              private svcFiles:                 FilesService,
+              private _loadingService:          LoadingService,
+              private _snackBar:                MatSnackBar ,
+              private _jspdf:                   JspdfService ) {
+  }
 
   ngOnChanges() {
-    if (this.iscrizioneID != undefined) {
+    if (this.iscrizioneID != undefined) 
       this.loadData(1);
-    }
   }
 
   ngOnInit(): void {
@@ -59,25 +63,21 @@ export class PagellaEditComponent implements OnInit {
     obsPagelle$= this.svcPagelle.listByIscrizione(this.iscrizioneID);
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagelle$);
 
-    loadPagella$
-    .pipe (
+    loadPagella$.pipe (
       map(val=>val.filter(val=>(val.periodo == toggleQuad)))
-    )
-    .subscribe(val =>  {
+    ).subscribe(val =>  {
+
         if (val.length != 0)  {
           this.objPagella = val[0];
           this.dtIns = val[0].dtIns!;
         }
         else {
-
           const d = new Date();
           d.setSeconds(0,0);
           let dateNow = d.toISOString().split('.')[0];
-
           
           this.objPagella = <DOC_Pagella>{};
           this.objPagella.id = -1;
-          //this.pagellaID = -1;
           this.objPagella.iscrizioneID = this.iscrizioneID;
           this.objPagella.periodo = this.periodo;
           this.objPagella.dtIns = dateNow;
@@ -93,7 +93,37 @@ export class PagellaEditComponent implements OnInit {
     this.periodo = e.value;
   }
 
-  creaPdfPagella() {
+  aggiornaData () {
+
+    let formData = <DOC_Pagella>{
+      //id: this.pagellaID,
+      id: this.objPagella.id!,
+      iscrizioneID: this.iscrizioneID
+    }
+  }
+
+  openPdfPagella(){
+
+    //api get 
+    //api/DOC_Files/GetByDocAndTipo/id/Pagella
+
+    console.log("this.objPagella: ", this.objPagella);
+
+    if(this.objPagella == null || this.objPagella.id! <0) {
+      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella non ancora generata', panelClass: ['red-snackbar']})
+      return;
+    }
+    
+    this.svcFiles.getByDocAndTipo(this.objPagella.id,"Pagella").subscribe(
+        res => {},
+        err => {}
+      );
+     
+
+
+  }
+
+  savePdfPagella() {
 
     //elenco i campi da tenere
     let fieldsToKeep = ['materia'];
@@ -106,12 +136,8 @@ export class PagellaEditComponent implements OnInit {
       fieldsToKeep,
       "Report Pagelle");
 
-
+      //Preparazione Blob con il contenuto base64 del pdf
       let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});
-      
-      //let file : File;
-      
-      //let rer : Observable<string>;
       
       const result = new ReplaySubject<string>(1);
       const reader = new FileReader();
@@ -120,46 +146,9 @@ export class PagellaEditComponent implements OnInit {
       
       result.subscribe(base64 => {
         let risultato = base64;
-        console.log (risultato);
+        //console.log ("BLOB:" , risultato);
       });
       
-      this.svcPagelle.setStampato(this.pagellaID, true).subscribe();
-
-    /*
-    let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});
-    console.log ("blobPDF", blobPDF);
-    //let blobURL = URL.createObjectURL(blobPDF);
-    //console.log ("blobPDF", blobURL);
-      const reader = new FileReader();
-      reader.readAsDataURL(blobPDF);
-
-      console.log("BELLA MERDA: " ,reader);
-    */
-
-
-    /*
-      reader.onload = () => {
-        this.imgFile = reader.result as string;
-
-        Utility.compressImage( this.imgFile, 200, 200)
-                  .then(compressed => {
-                    this.immagineDOM.nativeElement.src = compressed
-                  });
-      };
+      this.svcPagelle.setStampato(this.objPagella.id!, true).subscribe();
     }
-    */
-
-    }
-
-    aggiornaData () {
-
-      let formData = <DOC_Pagella>{
-        id: this.pagellaID,
-        iscrizioneID: this.iscrizioneID,
-
-      }
-
-    }
-  
-  
 }

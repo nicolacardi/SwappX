@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+
 export class PagellaVotiService {
 
   constructor(private http: HttpClient) { }
