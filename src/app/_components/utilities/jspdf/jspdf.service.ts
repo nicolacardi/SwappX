@@ -56,7 +56,7 @@ export class JspdfService {
     img.src = '../../assets/photos/logodefViola.png';
 
     //Fa esplodere la dimensione del file da 34Kb a 1,4 Mb pur essendo il logo da 30Kb: undefined e FAST riducono drasticamente
-    doc.addImage(img, 'png', w_pag1 + 50, 50, 90, 60, undefined,'FAST'); 
+    doc.addImage(img, 'png', w_pag1 + 50, 50, 90, 60, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
 
     doc.setFont('TitilliumWeb-SemiBold', 'normal');
     doc.setTextColor("#C04F94");
