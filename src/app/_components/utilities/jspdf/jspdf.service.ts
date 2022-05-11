@@ -35,10 +35,45 @@ export class JspdfService {
     doc.save(fileName);
   }
 
+  private addImage(docPDF: jsPDF, filePath: string, x: number, y: number,w: number, h: number ){
+    var img = new Image()
+    img.src = filePath;
+
+    //Fa esplodere la dimensione del file da 34Kb a 1,4 Mb pur essendo il logo da 30Kb: undefined e FAST riducono drasticamente
+    docPDF.addImage(img, 'png', x,y,w,h, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
+
+  }
+
+  /*
+  function readImageFile(file) {
+    var reader = new FileReader(); // CREATE AN NEW INSTANCE.
+
+    reader.onload = function (e) {
+        var img = new Image();      
+        img.src = e.target.result;
+
+        img.onload = function () {
+            var w = this.width;
+            var h = this.height;
+
+            document.getElementById('fileInfo').innerHTML =
+                document.getElementById('fileInfo').innerHTML + '<br /> ' +
+                    'Name: <b>' + file.name + '</b> <br />' +
+                    'File Extension: <b>' + fileExtension + '</b> <br />' +
+                    'Size: <b>' + Math.round((file.size / 1024)) + '</b> KB <br />' +
+                    'Width: <b>' + w + '</b> <br />' +
+                    'Height: <b>' + h + '</b> <br />' +
+                    'Type: <b>' + file.type + '</b> <br />' +
+                    'Last Modified: <b>' + file.lastModifiedDate + '</b> <br />';
+        }
+    };
+    reader.readAsDataURL(file);
+}
+*/
+
   public creaPagellaPdf (objPagella: DOC_Pagella): jsPDF {
+
     const doc = new jsPDF('l', 'mm', [420, 297]);
-
-
 
     let w = doc.internal.pageSize.getWidth();     //w =           larghezza pagine tot
     let w_pag1 = w/2;                             //w_pag1 =      larghezza pagina 1
@@ -52,15 +87,31 @@ export class JspdfService {
     doc.roundedRect(w_pag1+margins, margins, w_pag1 - margins*2, h - margins*2, 3, 3, "S");
     doc.roundedRect(margins, margins, w_pag1 - margins*2, h - margins*2, 3, 3, "S");
 
-    var img = new Image()
-    img.src = '../../assets/photos/logodefViola.png';
+    //var img = new Image()
+    //img.src = '../../assets/photos/logodefViola.png';
 
     //Fa esplodere la dimensione del file da 34Kb a 1,4 Mb pur essendo il logo da 30Kb: undefined e FAST riducono drasticamente
-    doc.addImage(img, 'png', w_pag1 + 50, 50, 90, 60, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
+    //doc.addImage(img, 'png', w_pag1 + 50, 50, 90, 60, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
+    //AS:
+    //bisogna aprire il file in un 'canvas' o un oggetto da cui leggere la proporzione tra h e w
+    const ImageUrl = "../../assets/photos/logodefViola.png";
+
+    let image = ImageUrl;
+
+    // const determineDimensions = (ImageUrl) => {   
+    //   const img = new Image();
+    //   img.onload = function(){
+    //       console.log(this.width, this.height);
+    //   };
+    //   img.src = ImageUrl;
+    //   }
+
+
+    this.addImage(doc,"../../assets/photos/logodefViola.png",w_pag1+50,50,90,60);
+
 
     doc.setFont('TitilliumWeb-SemiBold', 'normal');
     doc.setTextColor("#C04F94");
-
     doc.text("Documento di Valutazione", center_pos2, row*20, { align: 'center' });
 
     doc.setFont('TitilliumWeb-Regular', 'normal');
@@ -80,6 +131,7 @@ export class JspdfService {
 
     doc.addPage();
     return doc;
+
   }
   
    

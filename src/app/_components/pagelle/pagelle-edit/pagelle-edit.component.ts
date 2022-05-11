@@ -117,7 +117,7 @@ export class PagellaEditComponent implements OnInit {
     
     this.svcFiles.getByDocAndTipo(this.objPagella.id,"Pagella").subscribe(
         res => {
-          console.log("base64: ", res.fileBase64);
+          //console.log("base64: ", res.fileBase64);
 
           //si crea un elemento fittizio che scarica il file di tipo base64 che gli viene assegnato
           const source = `data:application/pdf;base64,${res.fileBase64}`;
