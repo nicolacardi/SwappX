@@ -108,7 +108,7 @@ export class PagellaEditComponent implements OnInit {
     //api get 
     //api/DOC_Files/GetByDocAndTipo/id/Pagella
 
-    console.log("this.objPagella: ", this.objPagella);
+    console.log("[openPdfPagella] - this.objPagella: ", this.objPagella);
 
     if(this.objPagella == null || this.objPagella.id! <0) {
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella non ancora generata', panelClass: ['red-snackbar']})
@@ -117,16 +117,25 @@ export class PagellaEditComponent implements OnInit {
     
     this.svcFiles.getByDocAndTipo(this.objPagella.id,"Pagella").subscribe(
         res => {
-          //console.log("base64: ", res.fileBase64);
+          //console.log("[openPdfPagella] - base64: ", res.fileBase64);
 
           //si crea un elemento fittizio che scarica il file di tipo base64 che gli viene assegnato
           const source = `data:application/pdf;base64,${res.fileBase64}`;
           const link = document.createElement("a");
+
           link.href = source;
+
           link.download = `${"test"}.pdf`
+          //link.download = "test.pdf";
           link.click();
+
+          console.log("FINITO: ");
+
         },
-        err => {}
+        err => {
+
+          console.log("ERRORE: ", err);
+        }
       );
      
 

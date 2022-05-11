@@ -8,6 +8,7 @@ import '../../../../assets/fonts/TitilliumWeb-SemiBold-normal.js';
 
 import autoTable from 'jspdf-autotable';
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella.js';
+import { ContentObserver } from '@angular/cdk/observers';
 
 
 @Injectable({
@@ -35,45 +36,56 @@ export class JspdfService {
     doc.save(fileName);
   }
 
-  private addImage(docPDF: jsPDF, filePath: string, x: number, y: number,w: number, h: number ){
-    var img = new Image()
-    img.src = filePath;
+  private addImage(docPDF: jsPDF, filePath: string, x: number, y: number,w: number, h: number ): jsPDF{
 
-    //Fa esplodere la dimensione del file da 34Kb a 1,4 Mb pur essendo il logo da 30Kb: undefined e FAST riducono drasticamente
-    docPDF.addImage(img, 'png', x,y,w,h, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
+    console.log("Inizio addImage");
+
+    const img = new Image();
+    img.onload = function(){
+      console.log("Dimensioni immagine: " , img.width, img.height);
+
+
+      alert("Height: " + img.height);
+
+      //docPDF.addImage(img, 'png', x,y,w,h, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
+
+      console.log("Fine Dimensioni immagine");
+    }
+    img.src = filePath;
+    
+    //docPDF.addImage(img, 'png', x,y,w,w/(img.width*img.height), undefined,'FAST');
+    docPDF.addImage(img, 'png', x,y,w,h, undefined,'FAST');
+
+    console.log("Fine addImage");
+    
+    return docPDF;
+
+    /*
+    
+    const img = new Image();
+    
+    img.onload = function(){
+      console.log("Dimensioni immagine: " , img.width, img.height);
+
+      //Fa esplodere la dimensione del file da 34Kb a 1,4 Mb pur essendo il logo da 30Kb: undefined e FAST riducono drasticamente
+      docPDF.addImage(img, 'png', x,y,w,h, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
+      //docPDF.addImage(img, 'png', x,y,w,w/(img.width*img.height) , undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
+
+      console.log("Fine addImage");
+    }
+    img.src = filePath;
+    
+    return docPDF;
+  */
+
+
 
   }
 
-  /*
-  function readImageFile(file) {
-    var reader = new FileReader(); // CREATE AN NEW INSTANCE.
-
-    reader.onload = function (e) {
-        var img = new Image();      
-        img.src = e.target.result;
-
-        img.onload = function () {
-            var w = this.width;
-            var h = this.height;
-
-            document.getElementById('fileInfo').innerHTML =
-                document.getElementById('fileInfo').innerHTML + '<br /> ' +
-                    'Name: <b>' + file.name + '</b> <br />' +
-                    'File Extension: <b>' + fileExtension + '</b> <br />' +
-                    'Size: <b>' + Math.round((file.size / 1024)) + '</b> KB <br />' +
-                    'Width: <b>' + w + '</b> <br />' +
-                    'Height: <b>' + h + '</b> <br />' +
-                    'Type: <b>' + file.type + '</b> <br />' +
-                    'Last Modified: <b>' + file.lastModifiedDate + '</b> <br />';
-        }
-    };
-    reader.readAsDataURL(file);
-}
-*/
 
   public creaPagellaPdf (objPagella: DOC_Pagella): jsPDF {
 
-    const doc = new jsPDF('l', 'mm', [420, 297]);
+    let doc = new jsPDF('l', 'mm', [420, 297]);
 
     let w = doc.internal.pageSize.getWidth();     //w =           larghezza pagine tot
     let w_pag1 = w/2;                             //w_pag1 =      larghezza pagina 1
@@ -94,20 +106,76 @@ export class JspdfService {
     //doc.addImage(img, 'png', w_pag1 + 50, 50, 90, 60, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
     //AS:
     //bisogna aprire il file in un 'canvas' o un oggetto da cui leggere la proporzione tra h e w
+   
+    console.log("creaPagellaPdf: step1");
+
     const ImageUrl = "../../assets/photos/logodefViola.png";
 
-    let image = ImageUrl;
+    //let image = ImageUrl;
 
-    // const determineDimensions = (ImageUrl) => {   
-    //   const img = new Image();
-    //   img.onload = function(){
-    //       console.log(this.width, this.height);
-    //   };
-    //   img.src = ImageUrl;
-    //   }
+    //Versione Nik (OK)
+    /*
+    const img = new Image();
+    img.src = ImageUrl;
+    doc.addImage(img, 'png', w_pag1+50,50,90,60, undefined,'FAST');
+    */
+
+/*
+    let imgWidth = 0;
+    let imgHeight = 0;
+    img.onload = function(){
+      console.log("Dimensioni immagine: " , img.width, img.height);
+      imgWidth = img.width;
+      imgHeight = img.height;
+
+      //Fa esplodere la dimensione del file da 34Kb a 1,4 Mb pur essendo il logo da 30Kb: undefined e FAST riducono drasticamente
+      //docPDF.addImage(img, 'png', x,y,w,h, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
+      //docPDF.addImage(img, 'png', x,y,w,w/(img.width*img.height) , undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
+
+      console.log("Fine addImage");
+    }
+    img.src = ImageUrl;
+
+    console.log("Size: ", imgWidth, imgHeight);
+*/
+    
+
+    doc = this.addImage(doc,ImageUrl,w_pag1+50,50,90,60);
 
 
-    this.addImage(doc,"../../assets/photos/logodefViola.png",w_pag1+50,50,90,60);
+    //TEST ANDREA
+    //https://stackoverflow.com/questions/2342132/waiting-for-image-to-load-in-javascript
+
+    const loadImage = (src: string) =>
+      new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+      });
+
+    loadImage(ImageUrl).then(image => 
+      console.log("ANDREA image: ", image)
+      //doc.addImage(image, 'png', w_pag1+50,50,90,60, undefined,'FAST')
+    );
+
+    /*
+    img.onload = function(){
+      console.log("Dimensioni immagine: " , img.width, img.height);
+
+      //Fa esplodere la dimensione del file da 34Kb a 1,4 Mb pur essendo il logo da 30Kb: undefined e FAST riducono drasticamente
+      doc.addImage(img, 'png', w_pag1+50,50,90,60, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
+      //docPDF.addImage(img, 'png', x,y,w,w/(img.width*img.height) , undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
+
+      console.log("Fine addImage");
+    }
+    img.src = ImageUrl;
+    */
+    
+    
+
+
+    //doc = this.addImage(doc,"../../assets/photos/logodefViola.png",w_pag1+50,50,90,60);
 
 
     doc.setFont('TitilliumWeb-SemiBold', 'normal');
