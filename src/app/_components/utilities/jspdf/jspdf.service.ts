@@ -9,6 +9,7 @@ import '../../../../assets/fonts/TitilliumWeb-SemiBold-normal.js';
 import autoTable from 'jspdf-autotable';
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella.js';
 import { ContentObserver } from '@angular/cdk/observers';
+import { waitForAsync } from '@angular/core/testing';
 
 
 @Injectable({
@@ -35,6 +36,7 @@ export class JspdfService {
     }
     doc.save(fileName);
   }
+
 
   private addImage(docPDF: jsPDF, filePath: string, x: number, y: number,w: number, h: number ): jsPDF{
 
@@ -108,30 +110,48 @@ export class JspdfService {
 
   }
 
-  public creaPagellaPdf (objPagella: DOC_Pagella): jsPDF {
+
+  private addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number  ){
+
+    docPDF.setFont(fontName, fontStyle);
+    docPDF.setTextColor(fontColor);
+    docPDF.setFontSize(fontSize);
+
+    docPDF.text(text, X, Y, { align: 'center' });
+
+  }
+
+  public async creaPagellaPdf (objPagella: DOC_Pagella): Promise<jsPDF> {
+
 
     let doc = new jsPDF('l', 'mm', [420, 297]);
 
+    //Setup variabili
     let w = doc.internal.pageSize.getWidth();     //w =           larghezza pagine tot
     let w_pag1 = w/2;                             //w_pag1 =      larghezza pagina 1
     let center_pos1 = w_pag1/2;                   //center_pos1 = centro pagina 1
     let center_pos2 = w_pag1/2*3;                 //center_pos2 = centro pagina 2
-    let h = doc.internal.pageSize.getHeight();     //h =           altezza pagine tot
-    let row = h / 45;
+    let h_page = doc.internal.pageSize.getHeight();     //h =          altezza pagina
+    let row_height = h_page / 45;
     let margins = 10;
+    let currY=0;
 
+    let fontName= 'TitilliumWeb-SemiBold';
+    let fontStyle= 'normal';
+    let fontColor= "#C04F94";
+    let fontSize= 9;
+    let drawColor= "#C04F94";
+    
+    //TODO
+    doc.setFont('TitilliumWeb-SemiBold', 'normal');
+    doc.setTextColor("#C04F94");
     doc.setDrawColor("#C04F94");
-    doc.roundedRect(w_pag1+margins, margins, w_pag1 - margins*2, h - margins*2, 3, 3, "S");
-    doc.roundedRect(margins, margins, w_pag1 - margins*2, h - margins*2, 3, 3, "S");
+    doc.roundedRect(w_pag1+margins, margins, w_pag1 - margins*2, h_page - margins*2, 3, 3, "S");
+    doc.roundedRect(margins, margins, w_pag1 - margins*2, h_page - margins*2, 3, 3, "S");
 
-    //var img = new Image()
-    //img.src = '../../assets/photos/logodefViola.png';
 
-    //Fa esplodere la dimensione del file da 34Kb a 1,4 Mb pur essendo il logo da 30Kb: undefined e FAST riducono drasticamente
-    //doc.addImage(img, 'png', w_pag1 + 50, 50, 90, 60, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
-    //AS:
-    //bisogna aprire il file in un 'canvas' o un oggetto da cui leggere la proporzione tra h e w
-   
+    currY = 50;
+//#region [Image Logo]
 
     const ImageUrl = "../../assets/photos/logodefViola.png";
     let imgWidth = 0;
@@ -139,14 +159,6 @@ export class JspdfService {
 
     let img = new Image();
     img.src = ImageUrl;
-
-    let w1 = this.calcImageSize(ImageUrl).then(
-      () =>{
-      console.log("w1- dentro la then ", w1);
-      }
-    );
-
-    console.log("w1- dubito", w1);
 
     const loadImage = (src: string) => new Promise((resolve, reject) => {
       const imgTmp = new Image();
@@ -158,93 +170,40 @@ export class JspdfService {
       }
       //imgTmp.onerror = reject;
     });
-
-    loadImage(ImageUrl).then(image => {
+    
+    await loadImage(ImageUrl).then(image => {
         console.log("4- Size: ", imgWidth, imgHeight);
         const w = 90;
+        const x = (w_pag1 /2) - (w/2);
 
-        doc.addImage(img, 'png', w_pag1+50,50,w,w/(imgWidth*imgHeight), undefined,'FAST')
-
-
+        doc.addImage(img, 'png', x,currY,w,w*(imgHeight/imgWidth), undefined,'FAST')
       }
     );
 
-    console.log("5- Size: ", imgWidth, imgHeight);
+    currY = currY + imgHeight;
+//#endregion
+
 
     
-    //doc.addImage(img, 'png', w_pag1+50,50,90,60, undefined,'FAST');
-    
+    this.addText(doc,"Documento di Valutazione",center_pos2,currY +row_height,fontName,fontStyle,fontColor,fontSize  );
 
-    //doc = this.addImage(doc,ImageUrl,w_pag1+50,50,90,60);
-
-
-        // img.onload = function(){
-    //   console.log("Dimensioni immagine: " , img.width, img.height);
-    //   imgWidth = img.width;
-    //   imgHeight = img.height;
-
-    //   //Fa esplodere la dimensione del file da 34Kb a 1,4 Mb pur essendo il logo da 30Kb: undefined e FAST riducono drasticamente
-    //   //docPDF.addImage(img, 'png', x,y,w,h, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
-    //   //docPDF.addImage(img, 'png', x,y,w,w/(img.width*img.height) , undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
-
-    //   console.log("Fine addImage");
-    // }
-
-
-/*
-    //TEST ANDREA
-    //https://stackoverflow.com/questions/2342132/waiting-for-image-to-load-in-javascript
-
-    const loadImage = (src: string) =>
-      new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = reject;
-        img.src = src;
-      });
-
-    loadImage(ImageUrl).then(image => 
-      console.log("ANDREA image: ", image)
-      //doc.addImage(image, 'png', w_pag1+50,50,90,60, undefined,'FAST')
-    );
-*/
-
-    /*
-    img.onload = function(){
-      console.log("Dimensioni immagine: " , img.width, img.height);
-
-      //Fa esplodere la dimensione del file da 34Kb a 1,4 Mb pur essendo il logo da 30Kb: undefined e FAST riducono drasticamente
-      doc.addImage(img, 'png', w_pag1+50,50,90,60, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
-      //docPDF.addImage(img, 'png', x,y,w,w/(img.width*img.height) , undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
-
-      console.log("Fine addImage");
-    }
-    img.src = ImageUrl;
-    */
-    
-    
-
-
-    //doc = this.addImage(doc,"../../assets/photos/logodefViola.png",w_pag1+50,50,90,60);
-
-
-    doc.setFont('TitilliumWeb-SemiBold', 'normal');
-    doc.setTextColor("#C04F94");
-    doc.text("Documento di Valutazione", center_pos2, row*20, { align: 'center' });
+    // doc.setFont('TitilliumWeb-SemiBold', 'normal');
+    // doc.setTextColor("#C04F94");
+    // doc.text("Documento di Valutazione", center_pos2, row*20, { align: 'center' });
 
     doc.setFont('TitilliumWeb-Regular', 'normal');
-    doc.text("Anno Scolastico "+objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico, center_pos2, row*21, { align: 'center' });
-    doc.text("Alunno", center_pos2, row*24, { align: 'center' });
+    doc.text("Anno Scolastico "+objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico, center_pos2, row_height*21, { align: 'center' });
+    doc.text("Alunno", center_pos2, row_height*24, { align: 'center' });
     
     doc.setFont('TitilliumWeb-SemiBold', 'normal');
-    doc.text(objPagella.iscrizione!.alunno.nome+" "+objPagella.iscrizione!.alunno.cognome, center_pos2, row*26, { align: 'center' });
+    doc.text(objPagella.iscrizione!.alunno.nome+" "+objPagella.iscrizione!.alunno.cognome, center_pos2, row_height*26, { align: 'center' });
 
     doc.setFont('TitilliumWeb-Regular', 'normal');
-    doc.text("C.F."+objPagella.iscrizione?.alunno.cf, center_pos2, row*27, { align: 'center' });
-    doc.text("Nato a "+objPagella.iscrizione?.alunno.comuneNascita+" ("+objPagella.iscrizione?.alunno.provNascita+") il "+Utility.UT_FormatDate2(objPagella.iscrizione?.alunno.dtNascita), center_pos2, row*28, { align: 'center' });
+    doc.text("C.F."+objPagella.iscrizione?.alunno.cf, center_pos2, row_height*27, { align: 'center' });
+    doc.text("Nato a "+objPagella.iscrizione?.alunno.comuneNascita+" ("+objPagella.iscrizione?.alunno.provNascita+") il "+Utility.UT_FormatDate2(objPagella.iscrizione?.alunno.dtNascita), center_pos2, row_height*28, { align: 'center' });
 
     doc.setFont('TitilliumWeb-SemiBold', 'normal');
-    doc.text("Classe "+objPagella.iscrizione!.classeSezioneAnno.classeSezione.classe.descrizione2+ " Sez."+objPagella.iscrizione!.classeSezioneAnno.classeSezione.sezione, center_pos2, row*29, { align: 'center' });
+    doc.text("Classe "+objPagella.iscrizione!.classeSezioneAnno.classeSezione.classe.descrizione2+ " Sez."+objPagella.iscrizione!.classeSezioneAnno.classeSezione.sezione, center_pos2, row_height*29, { align: 'center' });
 
 
     doc.addPage();

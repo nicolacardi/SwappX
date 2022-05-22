@@ -142,7 +142,7 @@ export class PagellaEditComponent implements OnInit {
 
   }
 
-  savePdfPagella() {
+  async savePdfPagella() {
 
     
     if (this.objPagella.id == -1 ){
@@ -150,7 +150,8 @@ export class PagellaEditComponent implements OnInit {
       return;
     }
     
-    let rpt :jsPDF  =   this._jspdf.creaPagellaPdf(this.objPagella);
+    //let rpt :jsPDF  =   this._jspdf.creaPagellaPdf(this.objPagella);
+    let rpt :jsPDF  = await this._jspdf.creaPagellaPdf(this.objPagella);
 
       //Preparazione Blob con il contenuto base64 del pdf
       let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});
