@@ -179,10 +179,10 @@ export class PagellaEditComponent implements OnInit {
         //a seconda del risultato fa una post o una put
         switchMap(res => {
           if (res == null) {
-            console.log ("non ha trovato=> esegue una post")
+            //console.log ("non ha trovato=> esegue una post")
             return this.svcFiles.post(this.formDataFile)
           } else {
-            console.log ("ha trovato=> valorizza l'id e esegue una put")
+            //console.log ("ha trovato=> valorizza l'id e esegue una put")
             this.formDataFile.id = res.id
             return this.svcFiles.put(this.formDataFile)
           }
