@@ -82,6 +82,31 @@ export class JspdfService {
 
   }
 
+  private async calcImageSize(src: string ): Promise<number>{
+    let pass: number;
+    pass= 0;
+    /*
+    const loadImage = (src: string) => new Promise((resolve, reject) => {
+      const imgTmp = new Image();
+      imgTmp.src = src;
+      imgTmp.onload = () =>{          
+         //imgWidth = imgTmp.width;
+         //imgHeight = imgTmp.height;
+         resolve(imgTmp);           //importante, senza questo non funzia
+         return imgTmp.width;
+      }
+      //imgTmp.onerror = reject;
+    });
+    */
+    const imgTmp = new Image();
+    imgTmp.src = src;
+   
+    console.log("imgtmp.width ", imgTmp.width);
+
+    console.log("loadImage:", pass);
+    return imgTmp.width;
+
+  }
 
   public creaPagellaPdf (objPagella: DOC_Pagella): jsPDF {
 
@@ -107,42 +132,66 @@ export class JspdfService {
     //AS:
     //bisogna aprire il file in un 'canvas' o un oggetto da cui leggere la proporzione tra h e w
    
-    console.log("creaPagellaPdf: step1");
 
     const ImageUrl = "../../assets/photos/logodefViola.png";
-
-    //let image = ImageUrl;
-
-    //Versione Nik (OK)
-    /*
-    const img = new Image();
-    img.src = ImageUrl;
-    doc.addImage(img, 'png', w_pag1+50,50,90,60, undefined,'FAST');
-    */
-
-/*
     let imgWidth = 0;
     let imgHeight = 0;
-    img.onload = function(){
-      console.log("Dimensioni immagine: " , img.width, img.height);
-      imgWidth = img.width;
-      imgHeight = img.height;
 
-      //Fa esplodere la dimensione del file da 34Kb a 1,4 Mb pur essendo il logo da 30Kb: undefined e FAST riducono drasticamente
-      //docPDF.addImage(img, 'png', x,y,w,h, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
-      //docPDF.addImage(img, 'png', x,y,w,w/(img.width*img.height) , undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
-
-      console.log("Fine addImage");
-    }
+    let img = new Image();
     img.src = ImageUrl;
 
-    console.log("Size: ", imgWidth, imgHeight);
-*/
+    let w1 = this.calcImageSize(ImageUrl).then(
+      () =>{
+      console.log("w1- dentro la then ", w1);
+      }
+    );
+
+    console.log("w1- dubito", w1);
+
+    const loadImage = (src: string) => new Promise((resolve, reject) => {
+      const imgTmp = new Image();
+      imgTmp.src = src;
+      imgTmp.onload = () =>{          
+         imgWidth = imgTmp.width;
+         imgHeight = imgTmp.height;
+         resolve(imgTmp);           //importante, senza questo non funzia
+      }
+      //imgTmp.onerror = reject;
+    });
+
+    loadImage(ImageUrl).then(image => {
+        console.log("4- Size: ", imgWidth, imgHeight);
+        const w = 90;
+
+        doc.addImage(img, 'png', w_pag1+50,50,w,w/(imgWidth*imgHeight), undefined,'FAST')
+
+
+      }
+    );
+
+    console.log("5- Size: ", imgWidth, imgHeight);
+
+    
+    //doc.addImage(img, 'png', w_pag1+50,50,90,60, undefined,'FAST');
     
 
-    doc = this.addImage(doc,ImageUrl,w_pag1+50,50,90,60);
+    //doc = this.addImage(doc,ImageUrl,w_pag1+50,50,90,60);
 
 
+        // img.onload = function(){
+    //   console.log("Dimensioni immagine: " , img.width, img.height);
+    //   imgWidth = img.width;
+    //   imgHeight = img.height;
+
+    //   //Fa esplodere la dimensione del file da 34Kb a 1,4 Mb pur essendo il logo da 30Kb: undefined e FAST riducono drasticamente
+    //   //docPDF.addImage(img, 'png', x,y,w,h, undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
+    //   //docPDF.addImage(img, 'png', x,y,w,w/(img.width*img.height) , undefined,'FAST'); //COME SI FA A IMPOSTARE SOLO L'ALTEZZA E AVERE LA WIDTH PROPORZIONALE?
+
+    //   console.log("Fine addImage");
+    // }
+
+
+/*
     //TEST ANDREA
     //https://stackoverflow.com/questions/2342132/waiting-for-image-to-load-in-javascript
 
@@ -158,6 +207,7 @@ export class JspdfService {
       console.log("ANDREA image: ", image)
       //doc.addImage(image, 'png', w_pag1+50,50,90,60, undefined,'FAST')
     );
+*/
 
     /*
     img.onload = function(){
