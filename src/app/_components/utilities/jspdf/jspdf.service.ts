@@ -37,12 +37,10 @@ export class JspdfService {
   }
 
 
+  //#region --- Funzioni private ---
 
   private  async addImage(docPDF: jsPDF, ImageUrl: string, x: number, y: number,w: number ){
 
-    console.log("Inizio addImage");
-
-    //const ImageUrl = "../../assets/photos/logodefViola.png";
     let imgWidth = 0;
     let imgHeight = 0;
 
@@ -61,31 +59,26 @@ export class JspdfService {
     });
     
     await loadImage(ImageUrl).then(image => {
-        console.log("addImage - Size: ", imgWidth, imgHeight);
-        //const w = 90;
-        //const x = (w_page1 /2) - (w/2);
-
         docPDF.addImage(img, 'png', x,y,w,w*(imgHeight/imgWidth), undefined,'FAST')
-
-        console.log("[dentro addImage] - ", "x=", x, "y=",y,"w=",w,"imgHeight=",imgHeight,"imgWidth=",imgWidth );
       }
     );
-
-    console.log("Fine addImage");
-    //console.log("1- CurrY: ", currY);
-    //currY =   w_page*(imgHeight/imgWidth);
-
-    //console.log("2- CurrY: ", currY);
+    //console.log("Fine addImage");
   }
 
-  private addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number  ){
+  private async addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number  ){
 
     docPDF.setFont(fontName, fontStyle);
     docPDF.setTextColor(fontColor);
     docPDF.setFontSize(fontSize);
 
     docPDF.text(text, X, Y, { align: 'center' });
+
+    //Restituisce l'altezza del testo
+    //docPDF.getTextDimensions(text);
+    var dim = docPDF.getTextDimensions(text);
   }
+
+  //#endregion
 
   public async creaPagellaPdf (objPagella: DOC_Pagella): Promise<jsPDF> {
 
@@ -98,7 +91,6 @@ export class JspdfService {
 
     let center_pos1 = w_page1/2;                   //center_pos1 = centro pagina sx
     let center_pos2 = w_page1/2*3;                 //center_pos2 = centro pagina dx
-
 
     let row_height = h_page / 45;
     let margins = 10;
@@ -119,21 +111,16 @@ export class JspdfService {
     doc.roundedRect(margins, margins, w_page1 - margins*2, h_page - margins*2, 3, 3, "S");
     doc.roundedRect(w_page1+margins, margins, w_page1 - margins*2, h_page - margins*2, 3, 3, "S");
 
-    currY = 50;
+    
 
     const ImageUrl = "../../assets/photos/logodefViola.png";
     await  this.addImage(doc,ImageUrl, 60,50,90);
-
-    currY = currY +row_height;
-
-    //console.log("3- CurrY: ", currY);
-    //console.log("creaPagellaPdf - currY:", currY);
 
     currY = 139;
     this.addText(doc,"Anno Scolastico " +objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico,center_pos2,currY,fontName,fontStyle,fontColor,20  );
      
     currY = currY +row_height;
-    this.addText(doc,"Documento di Valutazione",center_pos2,currY,fontNameBold,fontStyle,fontColor,fontSize  );
+    this.addText(doc,"Documento di Valutazione",center_pos2,currY,fontNameBold,fontStyle,fontColor,20  );
     currY = currY +row_height;
     
     this.addText(doc,"Anno Scolastico " +objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico,center_pos2,currY,fontName,fontStyle,fontColor,fontSize  );
@@ -175,8 +162,7 @@ export class JspdfService {
 
   }
   
-   
-  
+
   private buildReportPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string) {
 
     const doc = new jsPDF('l', 'mm', [297, 210]);
