@@ -151,7 +151,11 @@ export class PagellaEditComponent implements OnInit {
     }
     
     //let rpt :jsPDF  =   this._jspdf.creaPagellaPdf(this.objPagella);
-    let rpt :jsPDF  = await this._jspdf.creaPagellaPdf(this.objPagella);
+    //let rpt :jsPDF  = await this._jspdf.creaPagellaPdf(this.objPagella);
+
+    let rpt :jsPDF  = await this._jspdf.dynamicRpt(this.objPagella) ;
+    console.log("E QUESTO?");
+    
 
       //Preparazione Blob con il contenuto base64 del pdf
       let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});

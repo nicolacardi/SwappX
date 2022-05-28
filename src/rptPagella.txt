@@ -1,0 +1,15 @@
+[sheetSize]=[297,210]
+[font]='TitilliumWeb-Regular', 'normal'
+[font1]='TitilliumWeb-Bold', 'normal'
+
+
+[text]='Documento di Valutazione', font1,x,y
+
+[text]={$objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico}, font,x,y
+
+[text]={$nomeAlunno}, font,x,y
+
+[text]={$cognomeAlunno}, font,x,y
+
+
+[text]={$classe}, font,x,y

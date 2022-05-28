@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { jsPDF } from 'jspdf';
 import { Utility } from  '../utility.component';
+import autoTable from 'jspdf-autotable';
+import { HttpClient } from '@angular/common/http';
 
 
 import '../../../../assets/fonts/TitilliumWeb-Regular-normal.js';
 import '../../../../assets/fonts/TitilliumWeb-SemiBold-normal.js';
 
-import autoTable from 'jspdf-autotable';
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella.js';
-import { ColorSliderComponent } from '../../color-picker/color-slider/color-slider.component';
+
+import { RptLineTemplate1 } from 'src/app/_reports/rptPagella';
+
+
 
 
 @Injectable({
@@ -16,7 +20,9 @@ import { ColorSliderComponent } from '../../color-picker/color-slider/color-slid
 })
 export class JspdfService {
 
-  constructor() { }
+  constructor(private http: HttpClient) {
+
+   }
 
   public creaPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string): jsPDF  {
     let doc = this.buildReportPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle);
@@ -39,13 +45,15 @@ export class JspdfService {
 
   //#region --- Funzioni private ---
 
-  private  async addImage(docPDF: jsPDF, ImageUrl: string, x: number, y: number,w: number ){
+  private async  addImage(docPDF: jsPDF, ImageUrl: string, x: number, y: number,w: number ) {
 
     let imgWidth = 0;
     let imgHeight = 0;
 
     let img = new Image();
     img.src = ImageUrl;
+    
+    console.log("[addImage] - Inizio addImage");
 
     const loadImage = (src: string) => new Promise((resolve, reject) => {
       const imgTmp = new Image();
@@ -58,11 +66,15 @@ export class JspdfService {
       //imgTmp.onerror = reject;
     });
     
+    //console.log("ImageURL: ", ImageUrl);
+
     await loadImage(ImageUrl).then(image => {
-        docPDF.addImage(img, 'png', x,y,w,w*(imgHeight/imgWidth), undefined,'FAST')
+        docPDF.addImage(img, 'png', x,y,w,w*(imgHeight/imgWidth), undefined,'FAST');
+        console.log("[addImage] - Fine dentro l'await");
       }
     );
-    //console.log("Fine addImage");
+
+    console.log("[addImage] - Fine addImage");
   }
 
   private async addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number  ){
@@ -76,13 +88,101 @@ export class JspdfService {
     //Restituisce l'altezza del testo
     //docPDF.getTextDimensions(text);
     var dim = docPDF.getTextDimensions(text);
+    console.log("dimensioni testo: ", dim);
   }
 
   //#endregion
 
+
+  public async dynamicRpt(objPagella: DOC_Pagella) : Promise<jsPDF> {
+
+    //import { LoadingService } from '../../utilities/loading/loading.service';
+
+    const rptUrl = "../../assets/report/rptPagella.txt";
+    let doc = new jsPDF;
+    //('l', 'mm', [420, 297]);   //A3
+    
+    //apri file/rpt source
+
+    // const ImageUrl = "../../assets/photos/logodefViola.png";
+    // await  this.addImage(doc,ImageUrl, 60,50,90);
+
+    await Promise.all( RptLineTemplate1.map(async (element: any) => {
+      
+      //RptLineTemplate1.forEach(async (element: any) => {
+        console.log("RptLineTemplate1:",element);
+
+        switch(element.tipo){
+          case "SheetSize":
+            doc = new jsPDF('l', 'mm', [element.X , element.Y]);   //A3
+            //const ImageUrl1 = "../../assets/photos/logodefViola.png";
+            //await  this.addImage(doc,ImageUrl1, 60,50,90);
+
+            break;
+
+          case "Image":
+            console.log("IMMAGINE INIZIO");
+
+            const ImageUrl = "../../assets/photos/" + element.value;
+            //await  this.addImage(doc,ImageUrl, element.X,element.Y,element.W);
+            await this.addImage(doc,ImageUrl, element.X,element.Y,element.W).then(
+              x =>  console.log("IMMAGINE THEN")
+            );
+            console.log("IMMAGINE FINE");
+            /*
+            await loadImage(ImageUrl).then(image => {
+          docPDF.addImage(img, 'png', x,y,w,w*(imgHeight/imgWidth), undefined,'FAST');
+          console.log("Fine dentro l'await");
+        }
+            */
+            break;
+          case "Text":
+
+            this.addText(doc,element.value,element.X,element.Y,element.font,"regular","#C04F94",20  );
+            //this.addText(doc,"Anno Scolastico " +objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico,element.X,element.Y,element.font,"regular","#C04F94",20  );
+            //currY = currY +row_height;    
+            break;
+        }
+      }
+    ));
+
+    console.log("FINE FOREACH");
+    return doc;
+
+    let tag: string;
+
+    //loop sulle righe
+
+/*
+    //switch tag
+    switch (tag){
+      case "[sheetSize]":
+        let doc = new jsPDF('l', 'mm', [420, 297]);   //A3
+        break;
+      case "[font]":
+        let fontName= 'TitilliumWeb-Regular';
+        let fontStyle= 'normal';
+        break;
+      case "[text]":
+        this.addText(doc,"Anno Scolastico " +objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico,center_pos2,currY,fontName,fontStyle,fontColor,fontSize  );
+        currY = currY +row_height;    
+        break;
+    }
+*/
+
+//[text]='Documento di Valutazione', font1,x,y
+  }
+
+
   public async creaPagellaPdf (objPagella: DOC_Pagella): Promise<jsPDF> {
 
-    let doc = new jsPDF('l', 'mm', [420, 297]);
+    let doc = new jsPDF('l', 'mm', [420, 297]);   //A3
+
+    //------- TEST
+    return this.dynamicRpt(objPagella);
+    //return doc;
+    //---------------
+
 
     //Setup variabili
     let h_page = doc.internal.pageSize.getHeight();     //altezza pagina
@@ -111,15 +211,13 @@ export class JspdfService {
     doc.roundedRect(margins, margins, w_page1 - margins*2, h_page - margins*2, 3, 3, "S");
     doc.roundedRect(w_page1+margins, margins, w_page1 - margins*2, h_page - margins*2, 3, 3, "S");
 
-    
-
     const ImageUrl = "../../assets/photos/logodefViola.png";
     await  this.addImage(doc,ImageUrl, 60,50,90);
 
     currY = 139;
     this.addText(doc,"Anno Scolastico " +objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico,center_pos2,currY,fontName,fontStyle,fontColor,20  );
-     
     currY = currY +row_height;
+
     this.addText(doc,"Documento di Valutazione",center_pos2,currY,fontNameBold,fontStyle,fontColor,20  );
     currY = currY +row_height;
     
