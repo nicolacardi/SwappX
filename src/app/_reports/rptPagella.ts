@@ -4,23 +4,51 @@ export const RptLineTemplate1: any = [
 		"tipo": "SheetSize",
 		"width": 420,
 		"heigth": 297,
-		"defaultColor":"#C04F94"
+		"defaultColor":"#C04F94",
+		"defaultFontType": "TitilliumWeb-Regular",
+		"defaultFontSize": 16
 	},
 	{
 		"tipo": "Text",
 		"value": "Documento di Valutazione",
-		"font": "TitilliumWeb-Regular",
-		"X": 100,
-		"Y": 100,
+		"fontSize": 24,
+		"X": 315,
+		"Y": 122,
 		"align": "center"
 	},
 	{
-		"tipo": "Data",
-		"value": "objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico",
-		"font": "TitilliumWeb-Regular",
-		"X": 210,
-		"Y":150,
+		"tipo": "Text",
+		"value": "Anno scolastico: %%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%%",
+		"X": 315,
+		"Y": 140,
 		"align": "center" 
+	},
+	{
+		"tipo": "Text",
+		"value": "Classe %%objPagella.iscrizione?.classeSezioneAnno.classeSezione.classe.descrizione%% %%objPagella.iscrizione?.classeSezioneAnno.classeSezione.sezione%%",
+		"X": 315,
+		"Y": 150,
+		"align": "center" 
+	},
+	{
+		"tipo": "Text",
+		"value": "Alunno %%objPagella.iscrizione?.alunno.cognome%% %%objPagella.iscrizione?.alunno.nome%%",
+		"color":"#000000",
+		"font": "Courier",
+		"defaultFontSize": 18,
+		"X": 315,
+		"Y": 200,
+		"align": "center" 
+	},
+	{
+		"tipo": "Rect",
+		"thickness": 0.5,
+		"color":"#0584E2",
+		"X": 260,
+		"Y": 190,
+		"W": 110,
+		"H": 20,
+		"borderRadius":2
 	},
 	{
 		"tipo": "Image",
@@ -37,25 +65,6 @@ export const RptLineTemplate1: any = [
 		"Y1": 10,
 		"X2": 210,
 		"Y2": 287
-	},
-	{
-		"tipo": "Rect",
-		"thickness": 1,
-		"color":"#C04F94",
-		"X": 110,
-		"Y": 50,
-		"W": 50,
-		"H": 50,
-		"borderRadius":5
-	},
-	{
-		"tipo": "Rect",
-		"thickness": 0,
-		"color":"#C04F94",
-		"X": 210,
-		"Y": 90,
-		"W": 90,
-		"H": 50,
-		"borderRadius":0
 	}
+
 ]
