@@ -144,60 +144,49 @@ export class PagellaEditComponent implements OnInit {
 
   async savePdfPagella() {
 
-    
     if (this.objPagella.id == -1 ){
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella inesistente - inserire almeno un voto', panelClass: ['red-snackbar']});
       return;
     }
-    
-    //let rpt :jsPDF  =   this._jspdf.creaPagellaPdf(this.objPagella);
-    //let rpt :jsPDF  = await this._jspdf.creaPagellaPdf(this.objPagella);
 
+    //Chiamata al motore di stampa
     let rpt :jsPDF  = await this._jspdf.dynamicRpt(this.objPagella) ;
-    console.log("E QUESTO?");
+
+    //Preparazione Blob con il contenuto base64 del pdf
+    let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});
     
+    const result = new ReplaySubject<string>(1);
+    const reader = new FileReader();
+    reader.readAsBinaryString(blobPDF);
+    reader.onload = (x) => result.next(btoa(x.target!.result!.toString()));
+    
+    this.formDataFile = {
+      tipoDoc:         "Pagella",
+      docID:           this.objPagella.id!,
+      estensione:       "pdf"
+    };
 
-      //Preparazione Blob con il contenuto base64 del pdf
-      let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});
+    result.pipe (
+      tap(val=> this.formDataFile.fileBase64 = val),
       
-      const result = new ReplaySubject<string>(1);
-      const reader = new FileReader();
-      reader.readAsBinaryString(blobPDF);
-      reader.onload = (x) => result.next(btoa(x.target!.result!.toString()));
-      
+      //ora cerca se esiste già un record nei file...
+      concatMap(() => this.svcFiles.getByDocAndTipo(this.objPagella.id, "pagella")),
 
-      this.formDataFile = {
-        tipoDoc:         "Pagella",
-        docID:           this.objPagella.id!,
-        estensione:       "pdf"
-      };
-
-
-      result
-      .pipe (
-        tap(val=> this.formDataFile.fileBase64 = val),
-        
-        //ora cerca se esiste già un record nei file...
-        concatMap(() => this.svcFiles.getByDocAndTipo(this.objPagella.id, "pagella")),
-
-        //a seconda del risultato fa una post o una put
-        switchMap(res => {
-          if (res == null) {
-            //console.log ("non ha trovato=> esegue una post")
-            return this.svcFiles.post(this.formDataFile)
-          } else {
-            //console.log ("ha trovato=> valorizza l'id e esegue una put")
-            this.formDataFile.id = res.id
-            return this.svcFiles.put(this.formDataFile)
-          }
-        }),
-      )
-      .subscribe(
-        res => ( this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella salvata in Database', panelClass: ['green-snackbar']})),
-        err =>  {}
-      );
-
-      
-      this.svcPagelle.setStampato(this.objPagella.id!, true).subscribe();
-    }
+      //a seconda del risultato fa una post o una put
+      switchMap(res => {
+        if (res == null) {
+          //console.log ("non ha trovato=> esegue una post")
+          return this.svcFiles.post(this.formDataFile)
+        } else {
+          //console.log ("ha trovato=> valorizza l'id e esegue una put")
+          this.formDataFile.id = res.id
+          return this.svcFiles.put(this.formDataFile)
+        }
+      }),
+    ).subscribe(
+      res => ( this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella salvata in Database', panelClass: ['green-snackbar']})),
+      err =>  {}
+    );
+    this.svcPagelle.setStampato(this.objPagella.id!, true).subscribe();
+  }
 }

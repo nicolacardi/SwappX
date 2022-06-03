@@ -13,12 +13,12 @@ import { DOC_Pagella } from 'src/app/_models/DOC_Pagella.js';
 import { RptLineTemplate1 } from 'src/app/_reports/rptPagella';
 
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class JspdfService {
+
+  defaultColor!:  string;
 
   constructor(private http: HttpClient) {
 
@@ -45,7 +45,7 @@ export class JspdfService {
 
   //#region --- Funzioni private ---
 
-  private async  addImage(docPDF: jsPDF, ImageUrl: string, x: number, y: number,w: number ) {
+  private async  addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
 
     let imgWidth = 0;
     let imgHeight = 0;
@@ -69,26 +69,48 @@ export class JspdfService {
     //console.log("ImageURL: ", ImageUrl);
 
     await loadImage(ImageUrl).then(image => {
-        docPDF.addImage(img, 'png', x,y,w,w*(imgHeight/imgWidth), undefined,'FAST');
-        console.log("[addImage] - Fine dentro l'await");
-      }
-    );
+        docPDF.addImage(img, 'png', parseFloat(x), parseFloat(y), parseFloat(w), parseFloat(w)*(imgHeight/imgWidth), undefined,'FAST');
+    });
 
-    console.log("[addImage] - Fine addImage");
+    //console.log("[addImage] - Fine addImage");
   }
 
   private async addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number  ){
 
     docPDF.setFont(fontName, fontStyle);
-    docPDF.setTextColor(fontColor);
+    if(fontColor == null || fontColor == "")
+      fontColor = this.defaultColor;
+
+      docPDF.setTextColor(fontColor);
     docPDF.setFontSize(fontSize);
 
     docPDF.text(text, X, Y, { align: 'center' });
 
     //Restituisce l'altezza del testo
     //docPDF.getTextDimensions(text);
-    var dim = docPDF.getTextDimensions(text);
-    console.log("dimensioni testo: ", dim);
+    //var dim = docPDF.getTextDimensions(text);
+    //console.log("dimensioni testo: ", dim);
+  }
+
+  private async addLine(docPDF: jsPDF, X1: string, Y1: string, X2: string, Y2: string, lineColor:string, lineWidth: string  ){
+
+    docPDF.setDrawColor(lineColor);
+    docPDF.setLineWidth (parseFloat( lineWidth));
+
+    docPDF.line(parseFloat(X1),parseFloat(Y1),parseFloat(X2),parseFloat(Y2));
+  }
+
+  private async addRect(docPDF: jsPDF, X1: string, Y1: string, W: string, H: string, lineColor:string, lineWidth: string, borderRadius: string  ){
+
+    docPDF.setDrawColor(lineColor);
+    docPDF.setLineWidth (parseFloat( lineWidth));
+    let rx: number=0;
+    if(borderRadius != '' && parseFloat(borderRadius)> 0){
+      rx=parseFloat( borderRadius);
+      docPDF.roundedRect(parseFloat(X1),parseFloat(Y1),parseFloat(W),parseFloat(H), rx, rx );
+    }
+    else
+      docPDF.rect(parseFloat(X1),parseFloat(Y1),parseFloat(W),parseFloat(H) );
   }
 
   //#endregion
@@ -96,96 +118,66 @@ export class JspdfService {
 
   public async dynamicRpt(objPagella: DOC_Pagella) : Promise<jsPDF> {
 
-    //import { LoadingService } from '../../utilities/loading/loading.service';
-
-    const rptUrl = "../../assets/report/rptPagella.txt";
-    let doc = new jsPDF;
-    //('l', 'mm', [420, 297]);   //A3
+    //##############  determina le dimensioni della pagina
+    let pageW: number = 0;
+    let pageH: number = 0;
     
-    //apri file/rpt source
-
-    //const ImageUrl = "../../assets/photos/logodefViola.png";
-    //await  this.addImage(doc,ImageUrl, 20,50,90);
-
     await Promise.all( RptLineTemplate1.map(async (element: any) => {
-      
-      //RptLineTemplate1.forEach(async (element: any) => {
-        console.log("RptLineTemplate1:",element);
+      switch(element.tipo){
+        case "SheetSize":
+          pageW= parseInt(element.width);
+          pageH= parseInt(element.heigth);
+          this.defaultColor = element.defaultColor;
+          break;
+      }
+    }));
+    if(pageH <=0 || pageW <=0){
+      let doc : jsPDF  = new jsPDF('l', 'mm', [100 , 100]);  
+      doc.text("ERRORE: manca il tag [SheetSize] in rptPagella",10, 50);
+      return doc;
+    }
+    let doc : jsPDF  = new jsPDF('l', 'mm', [pageW , pageH]);   //A3
 
-        switch(element.tipo){
-          case "SheetSize":
-            doc = new jsPDF('l', 'mm', [element.X , element.Y]);   //A3
-            //const ImageUrl1 = "../../assets/photos/logodefViola.png";
-            //await  this.addImage(doc,ImageUrl1, 60,50,90);
+    //############### lettura file/rpt source e loop sui tags
+    await Promise.all( RptLineTemplate1.map(async (element: any) => {      
 
-            break;
+      switch(element.tipo){
 
           case "Image":
-            console.log("IMMAGINE INIZIO: ", element.value);
-
-
             const ImageUrl = "../../assets/photos/" + element.value;
-            //await  this.addImage(doc,ImageUrl, element.X,element.Y,element.W);
-            await this.addImage(doc,ImageUrl, element.X,element.Y,element.W).then(
-              x =>  console.log("IMMAGINE THEN")
-            );
-            console.log("IMMAGINE FINE");
-            /*
-            await loadImage(ImageUrl).then(image => {
-          docPDF.addImage(img, 'png', x,y,w,w*(imgHeight/imgWidth), undefined,'FAST');
-          console.log("Fine dentro l'await");
-        }
-            */
+            await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
+            
             break;
           case "Text":
-
-            this.addText(doc,element.value,element.X,element.Y,element.font,"regular","#C04F94",20  );
-            //this.addText(doc,"Anno Scolastico " +objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico,element.X,element.Y,element.font,"regular","#C04F94",20  );
-            //currY = currY +row_height;    
+            this.addText(doc,element.value,element.X,element.Y,element.font,"regular",element.color,20  );
             break;
+          case "Line":
+            this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
+            break;
+          case "Rect":
+            this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
+            break;  
+
+                    
         }
       }
     ));
-
-    console.log("FINE FOREACH");
     return doc;
-
-    let tag: string;
-
-    //loop sulle righe
-
-/*
-    //switch tag
-    switch (tag){
-      case "[sheetSize]":
-        let doc = new jsPDF('l', 'mm', [420, 297]);   //A3
-        break;
-      case "[font]":
-        let fontName= 'TitilliumWeb-Regular';
-        let fontStyle= 'normal';
-        break;
-      case "[text]":
-        this.addText(doc,"Anno Scolastico " +objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico,center_pos2,currY,fontName,fontStyle,fontColor,fontSize  );
-        currY = currY +row_height;    
-        break;
-    }
-*/
-
-//[text]='Documento di Valutazione', font1,x,y
   }
 
 
+
+  //############### TEST ######################
+
+  
+/*
   public async creaPagellaPdf (objPagella: DOC_Pagella): Promise<jsPDF> {
 
-    let doc = new jsPDF('l', 'mm', [420, 297]);   //A3
-
-    //------- TEST
     return this.dynamicRpt(objPagella);
-    //return doc;
-    //---------------
 
 
     //Setup variabili
+    
     let h_page = doc.internal.pageSize.getHeight();     //altezza pagina
     let w_page = doc.internal.pageSize.getWidth();      //larghezza pagina (ATTENZIONE: doppia!)
     let w_page1 = w_page/2;                             //larghezza pagina mezza
@@ -213,7 +205,7 @@ export class JspdfService {
     doc.roundedRect(w_page1+margins, margins, w_page1 - margins*2, h_page - margins*2, 3, 3, "S");
 
     const ImageUrl = "../../assets/photos/logodefViola.png";
-    await  this.addImage(doc,ImageUrl, 60,50,90);
+    //await  this.addImage(doc,ImageUrl, 60,50,90);
 
     currY = 139;
     this.addText(doc,"Anno Scolastico " +objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico,center_pos2,currY,fontName,fontStyle,fontColor,20  );
@@ -240,8 +232,6 @@ export class JspdfService {
     this.addText(doc,"Classe " + objPagella.iscrizione!.classeSezioneAnno.classeSezione.classe.descrizione2+ " Sez."+objPagella.iscrizione!.classeSezioneAnno.classeSezione.sezione,center_pos2,currY,fontNameBold,fontStyle,fontColor,fontSize  );
     currY = currY +row_height;
 
-
-
     // doc.setFont('TitilliumWeb-Regular', 'normal');
     // doc.text("Anno Scolastico "+objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico, center_pos2, row_height*21, { align: 'center' });
     
@@ -258,9 +248,8 @@ export class JspdfService {
 
     doc.addPage();
     return doc;
-
   }
-  
+  */
 
   private buildReportPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string) {
 
@@ -369,7 +358,6 @@ export class JspdfService {
         doc.setTextColor(40);
         //doc.text(title, data.settings.margin.left, 10);
         
-
         // Footer
         let str = "Page " + data.pageNumber + "/" + data.pageCount;
 
