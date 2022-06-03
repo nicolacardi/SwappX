@@ -2,6 +2,7 @@
 [font]='TitilliumWeb-Regular', 'normal'
 [font1]='TitilliumWeb-Bold', 'normal'
 
+[Image]='logodefViola.png'
 
 [text]='Documento di Valutazione', font1,x,y
 
@@ -10,6 +11,5 @@
 [text]={$nomeAlunno}, font,x,y
 
 [text]={$cognomeAlunno}, font,x,y
-
 
 [text]={$classe}, font,x,y

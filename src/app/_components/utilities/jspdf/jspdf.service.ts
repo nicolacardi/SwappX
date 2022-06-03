@@ -104,8 +104,8 @@ export class JspdfService {
     
     //apri file/rpt source
 
-    // const ImageUrl = "../../assets/photos/logodefViola.png";
-    // await  this.addImage(doc,ImageUrl, 60,50,90);
+    //const ImageUrl = "../../assets/photos/logodefViola.png";
+    //await  this.addImage(doc,ImageUrl, 20,50,90);
 
     await Promise.all( RptLineTemplate1.map(async (element: any) => {
       
@@ -121,7 +121,8 @@ export class JspdfService {
             break;
 
           case "Image":
-            console.log("IMMAGINE INIZIO");
+            console.log("IMMAGINE INIZIO: ", element.value);
+
 
             const ImageUrl = "../../assets/photos/" + element.value;
             //await  this.addImage(doc,ImageUrl, element.X,element.Y,element.W);
