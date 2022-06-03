@@ -11,14 +11,16 @@ export const RptLineTemplate1: any = [
 		"value": "Documento di Valutazione",
 		"font": "TitilliumWeb-Regular",
 		"X": 100,
-		"Y": 100
+		"Y": 100,
+		"align": "center"
 	},
 	{
 		"tipo": "Data",
 		"value": "objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico",
 		"font": "TitilliumWeb-Regular",
 		"X": 210,
-		"Y":150
+		"Y":150,
+		"align": "center" 
 	},
 	{
 		"tipo": "Image",

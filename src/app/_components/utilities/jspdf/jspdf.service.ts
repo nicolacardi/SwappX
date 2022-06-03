@@ -76,7 +76,7 @@ export class JspdfService {
     //console.log("[addImage] - Fine addImage");
   }
 
-  private async addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number  ){
+  private async addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, align: any  ){
 
     docPDF.setFont(fontName, fontStyle);
     if(fontColor == null || fontColor == "")
@@ -85,7 +85,7 @@ export class JspdfService {
       docPDF.setTextColor(fontColor);
     docPDF.setFontSize(fontSize);
 
-    docPDF.text(text, X, Y, { align: 'center' });
+    docPDF.text(text, X, Y, { align: align });
 
     //Restituisce l'altezza del testo
     //docPDF.getTextDimensions(text);
@@ -137,8 +137,12 @@ export class JspdfService {
       doc.text("ERRORE: manca il tag [SheetSize] in rptPagella",10, 50);
       return doc;
     }
+
+    
     let doc : jsPDF  = new jsPDF('l', 'mm', [pageW , pageH]);   //A3
 
+    doc.setFont('TitilliumWeb-Regular', 'normal');
+    
     //############### lettura file/rpt source e loop sui tags
     await Promise.all( RptLineTemplate1.map(async (element: any) => {      
 
@@ -149,7 +153,7 @@ export class JspdfService {
             await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
             break;
           case "Text":
-            this.addText(doc,element.value,element.X,element.Y,element.font,"regular",element.color,20  );
+            this.addText(doc,element.value,element.X,element.Y,element.font,"regular",element.color,20, element.align );
             break;
           case "Line":
             this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
@@ -158,7 +162,7 @@ export class JspdfService {
             this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
             break;
           case "Data":
-            this.addText(doc,eval(element.value),element.X,element.Y,element.font,"regular",element.color,20  );
+            this.addText(doc,eval(element.value),element.X,element.Y,element.font,"regular",element.color,20, element.align  );
             break;
         }
       }
