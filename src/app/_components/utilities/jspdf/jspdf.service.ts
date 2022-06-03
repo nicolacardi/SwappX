@@ -20,20 +20,21 @@ export class JspdfService {
 
   defaultColor!:  string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) {}
 
-   }
-
+  //costruisce il report
   public creaPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string): jsPDF  {
     let doc = this.buildReportPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle);
     return doc;
   }
 
+  //costruisce il report e lancia il salvataggio
   public downloadPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string)  {
     let doc = this.buildReportPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle);
     this.salvaPdf(doc,rptFileName);
   }
 
+  //salva il report
   public salvaPdf (doc :jsPDF ,  fileName: string, addDateToName: boolean = true ) {
     if(addDateToName){
       const d = new Date();
@@ -146,7 +147,6 @@ export class JspdfService {
           case "Image":
             const ImageUrl = "../../assets/photos/" + element.value;
             await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
-            
             break;
           case "Text":
             this.addText(doc,element.value,element.X,element.Y,element.font,"regular",element.color,20  );
@@ -156,9 +156,10 @@ export class JspdfService {
             break;
           case "Rect":
             this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
-            break;  
-
-                    
+            break;
+          case "Data":
+            this.addText(doc,eval(element.value),element.X,element.Y,element.font,"regular",element.color,20  );
+            break;
         }
       }
     ));
@@ -251,6 +252,8 @@ export class JspdfService {
   }
   */
 
+
+  //crea e scarica il report con la tabella dei dati della pagina
   private buildReportPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string) {
 
     const doc = new jsPDF('l', 'mm', [297, 210]);

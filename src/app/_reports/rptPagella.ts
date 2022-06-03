@@ -15,9 +15,8 @@ export const RptLineTemplate1: any = [
 	},
 	{
 		"tipo": "Data",
-		"value": "{%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%}",
+		"value": "objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico",
 		"font": "TitilliumWeb-Regular",
-		"color": "",
 		"X": 210,
 		"Y":150
 	},
