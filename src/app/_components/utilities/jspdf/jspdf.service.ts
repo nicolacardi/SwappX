@@ -181,8 +181,10 @@ export class JspdfService {
                 riga += eval(element);
             });
 
-            //let tmp1 = this.buildTextRiga(element.value);
-            //console.log("Dopo buildTextRiga: ", tmp1);
+            //riga = element.value;
+            //let tmp1 = await this.buildTextRiga(element.value);
+            //this.buildTextRiga(riga);
+            //console.log("Dopo buildTextRiga: ", riga);
 
             this.addText(doc, riga,element.X,element.Y,element.font,"normal",element.color,element.fontSize, element.align  );
             //this.addText(doc, this.buildTextRiga(element.value),element.X,element.Y,element.font,"normal",element.color,element.fontSize, element.align  );
@@ -192,17 +194,23 @@ export class JspdfService {
       }
     ));
 
+    doc.cell(10,10,190,15,'Area storico geografica',0,'center');
+
+    doc.cell(10,0,50,50,'Storia',1,'center');
+    doc.cell(10,0,140,50,'alunno scemo ma antipatico e con un pochino di puzza al naso',1,'center');
+    doc.cell(10,0,50,50,'Geografia',2,'center');
+    doc.cell(50,20,140,50,'terza riga',3,'center');
     
     return doc;
   }
 
   //AS: NON VA !!!
-  private async buildTextRiga(rptTextRiga: string): Promise<string>{
-    
+  //private async buildTextRiga(rptTextRiga: string): Promise<string> {
+  private async buildTextRiga(rptTextRiga: string){    
     let riga: string="";
     let arr = rptTextRiga.split("%%");
 
-    //console.log("[buildTextRiga]: ", rptTextRiga);
+    console.log("[inizio buildTextRiga]: ", rptTextRiga);
 
     arr.forEach((element: string,i:number) => {
       if(i%2==0)
@@ -210,8 +218,10 @@ export class JspdfService {
       else
         riga += eval(element);
     });
-    console.log("[buildTextRiga] riga=", riga);
-    return riga;
+    console.log("[Fine buildTextRiga] riga=", riga);
+
+    rptTextRiga = riga
+    //return riga;
   }
 
 
