@@ -11,6 +11,7 @@ import '../../../../assets/fonts/TitilliumWeb-SemiBold-normal.js';
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella.js';
 
 import { RptLineTemplate1 } from 'src/app/_reports/rptPagella';
+import { runInThisContext } from 'vm';
 
 
 @Injectable({
@@ -82,7 +83,7 @@ export class JspdfService {
     if(fontColor == null || fontColor == "")
       fontColor = this.defaultColor;
 
-      docPDF.setTextColor(fontColor);
+    docPDF.setTextColor(fontColor);
     docPDF.setFontSize(fontSize);
 
     docPDF.text(text, X, Y, { align: align });
@@ -93,7 +94,44 @@ export class JspdfService {
     //console.log("dimensioni testo: ", dim);
   }
 
+  private async addTextData(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, align: any  ){
+    docPDF.setFont(fontName, fontStyle);
+
+    if(fontColor == null || fontColor == "")
+      fontColor = this.defaultColor;
+
+    docPDF.setTextColor(fontColor);
+    docPDF.setFontSize(fontSize);
+
+    docPDF.text(text, X, Y, { align: align });
+
+    //Restituisce l'altezza del testo
+    //docPDF.getTextDimensions(text);
+    //var dim = docPDF.getTextDimensions(text);
+    //console.log("dimensioni testo: ", dim);
+  }
+
+  private async addCell(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, lines: number, align: any  ){
+    docPDF.setFont(fontName, fontStyle);
+
+    if(fontColor == null || fontColor == "")
+      fontColor = this.defaultColor;
+
+    if(lineColor == null || lineColor == "")
+      lineColor = this.defaultColor;
+
+    docPDF.setTextColor(fontColor);
+    docPDF.setDrawColor(lineColor);
+    docPDF.setFontSize(fontSize);
+
+    docPDF.cell(X, Y, W, H, text, lines, align);
+
+  }
+
   private async addLine(docPDF: jsPDF, X1: string, Y1: string, X2: string, Y2: string, lineColor:string, lineWidth: string  ){
+
+    if(lineColor == null || lineColor == "")
+      lineColor = this.defaultColor;
 
     docPDF.setDrawColor(lineColor);
     docPDF.setLineWidth (parseFloat( lineWidth));
@@ -102,6 +140,9 @@ export class JspdfService {
   }
 
   private async addRect(docPDF: jsPDF, X1: string, Y1: string, W: string, H: string, lineColor:string, lineWidth: string, borderRadius: string  ){
+
+    if(lineColor == null || lineColor == "")
+      lineColor = this.defaultColor;
 
     docPDF.setDrawColor(lineColor);
     docPDF.setLineWidth (parseFloat( lineWidth));
@@ -155,6 +196,14 @@ export class JspdfService {
           case "Text":
             this.addText(doc,element.value,element.X,element.Y,element.font,"normal",element.color,20, element.align );
             break;
+          case "TextData":
+            let tmp = this.splitTextData(element.value);
+            console.log ("tmp", tmp);
+            this.addText(doc,this.splitTextData(element.value),element.X,element.Y,element.font,"normal",element.color,20, element.align );
+            break;
+          case "Cell":
+            this.addCell(doc,element.value,element.X,element.Y,element.W, element.H, element.font,"normal",element.color,20, element.lineColor, element.lines, element.align );
+            break;
           case "Line":
             this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
             break;
@@ -170,91 +219,21 @@ export class JspdfService {
     return doc;
   }
 
-
-
-  //############### TEST ######################
-
-  
-/*
-  public async creaPagellaPdf (objPagella: DOC_Pagella): Promise<jsPDF> {
-
-    return this.dynamicRpt(objPagella);
-
-
-    //Setup variabili
-    
-    let h_page = doc.internal.pageSize.getHeight();     //altezza pagina
-    let w_page = doc.internal.pageSize.getWidth();      //larghezza pagina (ATTENZIONE: doppia!)
-    let w_page1 = w_page/2;                             //larghezza pagina mezza
-
-    let center_pos1 = w_page1/2;                   //center_pos1 = centro pagina sx
-    let center_pos2 = w_page1/2*3;                 //center_pos2 = centro pagina dx
-
-    let row_height = h_page / 45;
-    let margins = 10;
-    let currY=0;
-
-    let fontName= 'TitilliumWeb-Regular';
-    let fontNameBold= 'TitilliumWeb-SemiBold';
-    let fontStyle= 'normal';
-    let fontColor= "#C04F94";
-    let fontSize= 12;
-    let drawColor= "#C04F94";
-    
-    //doc.setFont('TitilliumWeb-SemiBold', 'normal');
-    doc.setTextColor(fontColor);
-    doc.setDrawColor(fontColor);
-
-    //Bordi e sfondi
-    doc.roundedRect(margins, margins, w_page1 - margins*2, h_page - margins*2, 3, 3, "S");
-    doc.roundedRect(w_page1+margins, margins, w_page1 - margins*2, h_page - margins*2, 3, 3, "S");
-
-    const ImageUrl = "../../assets/photos/logodefViola.png";
-    //await  this.addImage(doc,ImageUrl, 60,50,90);
-
-    currY = 139;
-    this.addText(doc,"Anno Scolastico " +objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico,center_pos2,currY,fontName,fontStyle,fontColor,20  );
-    currY = currY +row_height;
-
-    this.addText(doc,"Documento di Valutazione",center_pos2,currY,fontNameBold,fontStyle,fontColor,20  );
-    currY = currY +row_height;
-    
-    this.addText(doc,"Anno Scolastico " +objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico,center_pos2,currY,fontName,fontStyle,fontColor,fontSize  );
-    currY = currY +row_height;
-    
-    this.addText(doc,"Alunno" ,center_pos2,currY,fontName,fontStyle,fontColor,fontSize  );
-    currY = currY +row_height;
-
-    this.addText(doc,objPagella.iscrizione!.alunno.nome+" "+objPagella.iscrizione!.alunno.cognome,center_pos2,currY,fontNameBold,fontStyle,fontColor,fontSize  );
-    currY = currY +row_height;
-
-    this.addText(doc,"C.F. " +objPagella.iscrizione?.alunno.cf,center_pos2,currY,fontName,fontStyle,fontColor,fontSize  );
-    currY = currY +row_height;
-
-    this.addText(doc,"Nato a " +objPagella.iscrizione?.alunno.comuneNascita+" ("+objPagella.iscrizione?.alunno.provNascita+") il "+Utility.UT_FormatDate2(objPagella.iscrizione?.alunno.dtNascita),center_pos2,currY,fontName,fontStyle,fontColor,fontSize  );
-    currY = currY +row_height;
-
-    this.addText(doc,"Classe " + objPagella.iscrizione!.classeSezioneAnno.classeSezione.classe.descrizione2+ " Sez."+objPagella.iscrizione!.classeSezioneAnno.classeSezione.sezione,center_pos2,currY,fontNameBold,fontStyle,fontColor,fontSize  );
-    currY = currY +row_height;
-
-    // doc.setFont('TitilliumWeb-Regular', 'normal');
-    // doc.text("Anno Scolastico "+objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico, center_pos2, row_height*21, { align: 'center' });
-    
-    // doc.text("Alunno", center_pos2, row_height*24, { align: 'center' });
-    //doc.setFont('TitilliumWeb-SemiBold', 'normal');
-    //doc.text(objPagella.iscrizione!.alunno.nome+" "+objPagella.iscrizione!.alunno.cognome, center_pos2, row_height*26, { align: 'center' });
-
-    // doc.setFont('TitilliumWeb-Regular', 'normal');
-    // doc.text("C.F."+objPagella.iscrizione?.alunno.cf, center_pos2, row_height*27, { align: 'center' });
-    // doc.text("Nato a "+objPagella.iscrizione?.alunno.comuneNascita+" ("+objPagella.iscrizione?.alunno.provNascita+") il "+Utility.UT_FormatDate2(objPagella.iscrizione?.alunno.dtNascita), center_pos2, row_height*28, { align: 'center' });
-
-    //doc.setFont('TitilliumWeb-SemiBold', 'normal');
-    //doc.text("Classe "+objPagella.iscrizione!.classeSezioneAnno.classeSezione.classe.descrizione2+ " Sez."+objPagella.iscrizione!.classeSezioneAnno.classeSezione.sezione, center_pos2, row_height*29, { align: 'center' });
-
-    doc.addPage();
-    return doc;
+  private splitTextData (text: string) : string{
+    let retString : string;
+    retString = "";
+    let textArr = text.split("%%");
+    textArr.forEach((txt,index) => 
+      {
+        if (index % 2 == 0){
+          retString = retString + txt;
+        } else {
+          retString = retString + eval(txt);
+        }
+      }
+    ) ;
+    return retString;
   }
-  */
 
 
   //crea e scarica il report con la tabella dei dati della pagina
@@ -498,3 +477,103 @@ export class JspdfService {
 
 
 }
+
+
+
+
+ 
+/*
+  public async creaPagellaPdf (objPagella: DOC_Pagella): Promise<jsPDF> {
+
+    return this.dynamicRpt(objPagella);
+
+
+    //Setup variabili
+    
+    let h_page = doc.internal.pageSize.getHeight();     //altezza pagina
+    let w_page = doc.internal.pageSize.getWidth();      //larghezza pagina (ATTENZIONE: doppia!)
+    let w_page1 = w_page/2;                             //larghezza pagina mezza
+
+    let center_pos1 = w_page1/2;                   //center_pos1 = centro pagina sx
+    let center_pos2 = w_page1/2*3;                 //center_pos2 = centro pagina dx
+
+    let row_height = h_page / 45;
+    let margins = 10;
+    let currY=0;
+
+    let fontName= 'TitilliumWeb-Regular';
+    let fontNameBold= 'TitilliumWeb-SemiBold';
+    let fontStyle= 'normal';
+    let fontColor= "#C04F94";
+    let fontSize= 12;
+    let drawColor= "#C04F94";
+    
+    //doc.setFont('TitilliumWeb-SemiBold', 'normal');
+    doc.setTextColor(fontColor);
+    doc.setDrawColor(fontColor);
+
+    //Bordi e sfondi
+    doc.roundedRect(margins, margins, w_page1 - margins*2, h_page - margins*2, 3, 3, "S");
+    doc.roundedRect(w_page1+margins, margins, w_page1 - margins*2, h_page - margins*2, 3, 3, "S");
+
+    const ImageUrl = "../../assets/photos/logodefViola.png";
+    //await  this.addImage(doc,ImageUrl, 60,50,90);
+
+    currY = 139;
+    this.addText(doc,"Anno Scolastico " +objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico,center_pos2,currY,fontName,fontStyle,fontColor,20  );
+    currY = currY +row_height;
+
+    this.addText(doc,"Documento di Valutazione",center_pos2,currY,fontNameBold,fontStyle,fontColor,20  );
+    currY = currY +row_height;
+    
+    this.addText(doc,"Anno Scolastico " +objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico,center_pos2,currY,fontName,fontStyle,fontColor,fontSize  );
+    currY = currY +row_height;
+    
+    this.addText(doc,"Alunno" ,center_pos2,currY,fontName,fontStyle,fontColor,fontSize  );
+    currY = currY +row_height;
+
+    this.addText(doc,objPagella.iscrizione!.alunno.nome+" "+objPagella.iscrizione!.alunno.cognome,center_pos2,currY,fontNameBold,fontStyle,fontColor,fontSize  );
+    currY = currY +row_height;
+
+    this.addText(doc,"C.F. " +objPagella.iscrizione?.alunno.cf,center_pos2,currY,fontName,fontStyle,fontColor,fontSize  );
+    currY = currY +row_height;
+
+    this.addText(doc,"Nato a " +objPagella.iscrizione?.alunno.comuneNascita+" ("+objPagella.iscrizione?.alunno.provNascita+") il "+Utility.UT_FormatDate2(objPagella.iscrizione?.alunno.dtNascita),center_pos2,currY,fontName,fontStyle,fontColor,fontSize  );
+    currY = currY +row_height;
+
+    this.addText(doc,"Classe " + objPagella.iscrizione!.classeSezioneAnno.classeSezione.classe.descrizione2+ " Sez."+objPagella.iscrizione!.classeSezioneAnno.classeSezione.sezione,center_pos2,currY,fontNameBold,fontStyle,fontColor,fontSize  );
+    currY = currY +row_height;
+
+    // doc.setFont('TitilliumWeb-Regular', 'normal');
+    // doc.text("Anno Scolastico "+objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico, center_pos2, row_height*21, { align: 'center' });
+    
+    // doc.text("Alunno", center_pos2, row_height*24, { align: 'center' });
+    //doc.setFont('TitilliumWeb-SemiBold', 'normal');
+    //doc.text(objPagella.iscrizione!.alunno.nome+" "+objPagella.iscrizione!.alunno.cognome, center_pos2, row_height*26, { align: 'center' });
+
+    // doc.setFont('TitilliumWeb-Regular', 'normal');
+    // doc.text("C.F."+objPagella.iscrizione?.alunno.cf, center_pos2, row_height*27, { align: 'center' });
+    // doc.text("Nato a "+objPagella.iscrizione?.alunno.comuneNascita+" ("+objPagella.iscrizione?.alunno.provNascita+") il "+Utility.UT_FormatDate2(objPagella.iscrizione?.alunno.dtNascita), center_pos2, row_height*28, { align: 'center' });
+
+    //doc.setFont('TitilliumWeb-SemiBold', 'normal');
+    //doc.text("Classe "+objPagella.iscrizione!.classeSezioneAnno.classeSezione.classe.descrizione2+ " Sez."+objPagella.iscrizione!.classeSezioneAnno.classeSezione.sezione, center_pos2, row_height*29, { align: 'center' });
+
+    doc.addPage();
+    return doc;
+  }
+  */
+
+
+
+  /*
+
+
+Metodo interessante: c'è la possibilità di sapere quanto largo viene il testo e quindi fare degli offset
+  var centeredText = function(text, y) {
+    var textWidth = doc.getStringUnitWidth(text) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+    var textOffset = (doc.internal.pageSize.width - textWidth) / 2;
+    doc.text(textOffset, y, text);
+}
+
+
+  */

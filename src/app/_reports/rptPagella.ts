@@ -9,25 +9,35 @@ export const RptLineTemplate1: any = [
 	{
 		"tipo": "Text",
 		"value": "Documento di Valutazione",
-		"font": "TitilliumWeb-Regular",
-		"X": 100,
-		"Y": 100,
+		"font": "TitilliumWeb-SemiBold",
+		"X": 315,
+		"Y": 120,
 		"align": "center"
 	},
+
 	{
 		"tipo": "Data",
 		"value": "objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico",
 		"font": "TitilliumWeb-Regular",
-		"X": 210,
+		"X": 315,
 		"Y": 150,
 		"align": "center" 
 	},
 	{
+		"tipo": "TextData",
+		"value": "annoscolastico %%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%%",
+		"font": "TitilliumWeb-Regular",
+		"X": 315,
+		"Y": 150,
+		"align": "center" 
+	},
+
+	{
 		"tipo": "Image",
 		"value": "logodefViola.png",
-		"X": 270,
-		"Y": 50,
-		"W": 90
+		"X": 275,
+		"Y": 30,
+		"W": 80
 	},
 	{
 		"tipo": "Line",
@@ -38,16 +48,8 @@ export const RptLineTemplate1: any = [
 		"X2": 210,
 		"Y2": 287
 	},
-	{
-		"tipo": "Rect",
-		"thickness": 1,
-		"color":"#C04F94",
-		"X": 110,
-		"Y": 50,
-		"W": 50,
-		"H": 50,
-		"borderRadius":5
-	},
+	/*
+	,
 	{
 		"tipo": "Rect",
 		"thickness": 0,
@@ -58,4 +60,21 @@ export const RptLineTemplate1: any = [
 		"H": 50,
 		"borderRadius":0
 	}
+	*/
+	/*
+	,
+	{
+		"tipo": "Cell",
+		"value": "Documento di Valutazione",
+		"font": "TitilliumWeb-Regular",
+		"X": 220,
+		"Y": 100,
+		"W": 190,
+		"H": 10,
+		"color":"#C04F94",
+		"lineColor":"#C04F94",
+		"lines": 2,
+		"align": "center"
+	},
+	*/
 ]
