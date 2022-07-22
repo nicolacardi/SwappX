@@ -19,7 +19,7 @@ export const RptLineTemplate1: any = [
 		"value": "objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico",
 		"font": "TitilliumWeb-Regular",
 		"X": 210,
-		"Y":150,
+		"Y": 150,
 		"align": "center" 
 	},
 	{

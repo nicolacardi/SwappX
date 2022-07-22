@@ -77,8 +77,8 @@ export class JspdfService {
   }
 
   private async addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, align: any  ){
-
     docPDF.setFont(fontName, fontStyle);
+
     if(fontColor == null || fontColor == "")
       fontColor = this.defaultColor;
 
@@ -153,7 +153,7 @@ export class JspdfService {
             await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
             break;
           case "Text":
-            this.addText(doc,element.value,element.X,element.Y,element.font,"regular",element.color,20, element.align );
+            this.addText(doc,element.value,element.X,element.Y,element.font,"normal",element.color,20, element.align );
             break;
           case "Line":
             this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
@@ -162,7 +162,7 @@ export class JspdfService {
             this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
             break;
           case "Data":
-            this.addText(doc,eval(element.value),element.X,element.Y,element.font,"regular",element.color,20, element.align  );
+            this.addText(doc,eval(element.value),element.X,element.Y,element.font,"normal",element.color,20, element.align  );
             break;
         }
       }
