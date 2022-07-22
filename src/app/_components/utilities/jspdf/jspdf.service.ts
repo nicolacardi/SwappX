@@ -193,13 +193,11 @@ export class JspdfService {
             const ImageUrl = "../../assets/photos/" + element.value;
             await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
             break;
-          case "Text":
-            this.addText(doc,element.value,element.X,element.Y,element.font,"normal",element.color,20, element.align );
-            break;
+          // case "Text":
+          //   this.addText(doc,element.value,element.X,element.Y,element.font,"normal",element.color,20, element.align );
+          //   break;
           case "TextData":
-            let tmp = this.splitTextData(element.value);
-            console.log ("tmp", tmp);
-            this.addText(doc,this.splitTextData(element.value),element.X,element.Y,element.font,"normal",element.color,20, element.align );
+            this.addText(doc,this.splitTextData(objPagella, element.value),element.X,element.Y,element.font,"normal",element.color,20, element.align );
             break;
           case "Cell":
             this.addCell(doc,element.value,element.X,element.Y,element.W, element.H, element.font,"normal",element.color,20, element.lineColor, element.lines, element.align );
@@ -210,16 +208,16 @@ export class JspdfService {
           case "Rect":
             this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
             break;
-          case "Data":
-            this.addText(doc,eval(element.value),element.X,element.Y,element.font,"normal",element.color,20, element.align  );
-            break;
+          // case "Data":
+          //   this.addText(doc,eval(element.value),element.X,element.Y,element.font,"normal",element.color,20, element.align  );
+          //   break;
         }
       }
     ));
     return doc;
   }
 
-  private splitTextData (text: string) : string{
+  private splitTextData (objPagella: DOC_Pagella, text: string) : string{
     let retString : string;
     retString = "";
     let textArr = text.split("%%");

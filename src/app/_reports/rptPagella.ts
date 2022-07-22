@@ -7,7 +7,7 @@ export const RptLineTemplate1: any = [
 		"defaultColor":"#C04F94"
 	},
 	{
-		"tipo": "Text",
+		"tipo": "TextData",
 		"value": "Documento di Valutazione",
 		"font": "TitilliumWeb-SemiBold",
 		"X": 315,
@@ -15,20 +15,20 @@ export const RptLineTemplate1: any = [
 		"align": "center"
 	},
 
-	{
-		"tipo": "Data",
-		"value": "objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico",
-		"font": "TitilliumWeb-Regular",
-		"X": 315,
-		"Y": 150,
-		"align": "center" 
-	},
+	// {
+	// 	"tipo": "Data",
+	// 	"value": "objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico",
+	// 	"font": "TitilliumWeb-Regular",
+	// 	"X": 315,
+	// 	"Y": 150,
+	// 	"align": "center" 
+	// },
 	{
 		"tipo": "TextData",
-		"value": "annoscolastico %%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%%",
+		"value": "annoscolastico %%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%%", //i campi Dati vanno separati prima e dopo con %%
 		"font": "TitilliumWeb-Regular",
 		"X": 315,
-		"Y": 150,
+		"Y": 130,
 		"align": "center" 
 	},
 
