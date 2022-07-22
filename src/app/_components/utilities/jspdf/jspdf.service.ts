@@ -20,6 +20,8 @@ import { runInThisContext } from 'vm';
 export class JspdfService {
 
   defaultColor!:  string;
+  defaultFontSize!:  number;
+  defaultFontName!: string;
 
   constructor(private http: HttpClient) {}
 
@@ -78,11 +80,11 @@ export class JspdfService {
   }
 
   private async addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, align: any  ){
+    if(fontName == null || fontName == "") fontName = this.defaultFontName;
+    if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
+    if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
+
     docPDF.setFont(fontName, fontStyle);
-
-    if(fontColor == null || fontColor == "")
-      fontColor = this.defaultColor;
-
     docPDF.setTextColor(fontColor);
     docPDF.setFontSize(fontSize);
 
@@ -95,11 +97,11 @@ export class JspdfService {
   }
 
   private async addTextData(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, align: any  ){
+    if(fontName == null || fontName == "") fontName = this.defaultFontName;
+    if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
+    if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
+
     docPDF.setFont(fontName, fontStyle);
-
-    if(fontColor == null || fontColor == "")
-      fontColor = this.defaultColor;
-
     docPDF.setTextColor(fontColor);
     docPDF.setFontSize(fontSize);
 
@@ -112,14 +114,12 @@ export class JspdfService {
   }
 
   private async addCell(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, lines: number, align: any  ){
+    if(fontName == null || fontName == "") fontName = this.defaultFontName;
+    if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
+    if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
+    if(lineColor == null || lineColor == "") lineColor = this.defaultColor;
+
     docPDF.setFont(fontName, fontStyle);
-
-    if(fontColor == null || fontColor == "")
-      fontColor = this.defaultColor;
-
-    if(lineColor == null || lineColor == "")
-      lineColor = this.defaultColor;
-
     docPDF.setTextColor(fontColor);
     docPDF.setDrawColor(lineColor);
     docPDF.setFontSize(fontSize);
@@ -129,9 +129,7 @@ export class JspdfService {
   }
 
   private async addLine(docPDF: jsPDF, X1: string, Y1: string, X2: string, Y2: string, lineColor:string, lineWidth: string  ){
-
-    if(lineColor == null || lineColor == "")
-      lineColor = this.defaultColor;
+    if(lineColor == null || lineColor == "") lineColor = this.defaultColor;
 
     docPDF.setDrawColor(lineColor);
     docPDF.setLineWidth (parseFloat( lineWidth));
@@ -141,8 +139,7 @@ export class JspdfService {
 
   private async addRect(docPDF: jsPDF, X1: string, Y1: string, W: string, H: string, lineColor:string, lineWidth: string, borderRadius: string  ){
 
-    if(lineColor == null || lineColor == "")
-      lineColor = this.defaultColor;
+    if(lineColor == null || lineColor == "") lineColor = this.defaultColor;
 
     docPDF.setDrawColor(lineColor);
     docPDF.setLineWidth (parseFloat( lineWidth));
@@ -170,6 +167,9 @@ export class JspdfService {
           pageW= parseInt(element.width);
           pageH= parseInt(element.heigth);
           this.defaultColor = element.defaultColor;
+          this.defaultFontSize = element.defaultFontSize;
+          this.defaultFontName = element.defaultFontName;
+
           break;
       }
     }));
@@ -193,14 +193,13 @@ export class JspdfService {
             const ImageUrl = "../../assets/photos/" + element.value;
             await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
             break;
-          // case "Text":
-          //   this.addText(doc,element.value,element.X,element.Y,element.font,"normal",element.color,20, element.align );
-          //   break;
           case "TextData":
-            this.addText(doc,this.splitTextData(objPagella, element.value),element.X,element.Y,element.font,"normal",element.color,20, element.align );
+            
+            //console.log ("test qui", eval("objPagella.iscrizione.alunno.provNascita"));
+            this.addText(doc,this.splitTextData(objPagella, element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align );
             break;
           case "Cell":
-            this.addCell(doc,element.value,element.X,element.Y,element.W, element.H, element.font,"normal",element.color,20, element.lineColor, element.lines, element.align );
+            this.addCell(doc,element.value,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.lines, element.align );
             break;
           case "Line":
             this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
@@ -208,6 +207,9 @@ export class JspdfService {
           case "Rect":
             this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
             break;
+          // case "Text":
+          //   this.addText(doc,element.value,element.X,element.Y,element.font,"normal",element.color,20, element.align );
+          //   break;
           // case "Data":
           //   this.addText(doc,eval(element.value),element.X,element.Y,element.font,"normal",element.color,20, element.align  );
           //   break;

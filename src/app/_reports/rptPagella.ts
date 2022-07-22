@@ -4,34 +4,59 @@ export const RptLineTemplate1: any = [
 		"tipo": "SheetSize",
 		"width": 420,
 		"heigth": 297,
-		"defaultColor":"#C04F94"
+		"defaultFontName": "TitilliumWeb-Regular",
+		"defaultColor":"#C04F94",
+		"defaultFontSize":20
 	},
 	{
 		"tipo": "TextData",
 		"value": "Documento di Valutazione",
-		"font": "TitilliumWeb-SemiBold",
+		"fontName": "TitilliumWeb-SemiBold",
 		"X": 315,
 		"Y": 120,
 		"align": "center"
 	},
-
-	// {
-	// 	"tipo": "Data",
-	// 	"value": "objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico",
-	// 	"font": "TitilliumWeb-Regular",
-	// 	"X": 315,
-	// 	"Y": 150,
-	// 	"align": "center" 
-	// },
 	{
 		"tipo": "TextData",
-		"value": "annoscolastico %%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%%", //i campi Dati vanno separati prima e dopo con %%
-		"font": "TitilliumWeb-Regular",
+		"value": "Annoscolastico %%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%%", //i campi Dati vanno separati prima e dopo con %%
 		"X": 315,
 		"Y": 130,
 		"align": "center" 
 	},
+	{
+		"tipo": "TextData",
+		"value": "Alunno",
+		"X": 315,
+		"Y": 140,
+		"fontSize": 14,
+		"align": "center" 
+	},
+	{
+		"tipo": "TextData",
+		"value": "%%objPagella.iscrizione.alunno.nome%% %%objPagella.iscrizione.alunno.cognome%%",
+		"fontName": "TitilliumWeb-SemiBold",
+		"X": 315,
+		"Y": 150,
+		"align": "center" 
+	},
+	{
+		"tipo": "TextData",
+		"value": "C.F.%%objPagella.iscrizione.alunno.cf%%",
+		"X": 315,
+		"Y": 160,
+		"fontSize": 16,
+		"align": "center" 
+	},
+	{
+		"tipo": "TextData",
+//		Utility non funziona "value": "nato a %%objPagella.iscrizione.alunno.comuneNascita%% (%%objPagella.iscrizione.alunno.provNascita%%) il %%Utility.UT_FormatDate2(objPagella.iscrizione.alunno.dtNascita)%%",
+		"value": "nato a %%objPagella.iscrizione.alunno.comuneNascita%% (%%objPagella.iscrizione.alunno.provNascita%%) il %%objPagella.iscrizione.alunno.dtNascita%%",
 
+		"X": 315,
+		"Y": 168,
+		"fontSize": 16,
+		"align": "center" 
+	},
 	{
 		"tipo": "Image",
 		"value": "logodefViola.png",
