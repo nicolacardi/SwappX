@@ -6,7 +6,8 @@ export const RptLineTemplate1: any = [
 		"heigth": 297,
 		"defaultFontName": "TitilliumWeb-Regular",
 		"defaultColor":"#C04F94",
-		"defaultFontSize":20
+		"defaultFontSize":20,
+		"defaultMaxWidth": 190
 	},
 	{
 		"tipo": "TextData",
@@ -49,10 +50,17 @@ export const RptLineTemplate1: any = [
 	},
 	{
 		"tipo": "TextData",
-		"value": "nato a %<objPagella.iscrizione.alunno.comuneNascita>% (%<objPagella.iscrizione.alunno.provNascita>%) il %<Utility.UT_FormatDate(objPagella.iscrizione.alunno.dtNascita, 'dd/mm/yyyy')>%",
-
+		"value": "nato a %<objPagella.iscrizione.alunno.comuneNascita>% (%<objPagella.iscrizione.alunno.provNascita>%) il %<this.UT_FormatDate(objPagella.iscrizione.alunno.dtNascita, 'dd/mm/yyyy')>%",
 		"X": 315,
 		"Y": 168,
+		"fontSize": 16,
+		"align": "center" 
+	},
+	{
+		"tipo": "TextData",
+		"value": "La donzelletta vien dalla campagna in sul calar del sol omnia gallia in tres partes divisa est faccio la prova con un testo lungo per vedere cosa accade e se va a capo come deve",
+		"X": 315,
+		"Y": 188,
 		"fontSize": 16,
 		"align": "center" 
 	},

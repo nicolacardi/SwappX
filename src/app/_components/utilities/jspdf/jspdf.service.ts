@@ -4,15 +4,12 @@ import { Utility } from  '../utility.component';
 import autoTable from 'jspdf-autotable';
 import { HttpClient } from '@angular/common/http';
 
-
 import '../../../../assets/fonts/TitilliumWeb-Regular-normal.js';
 import '../../../../assets/fonts/TitilliumWeb-SemiBold-normal.js';
 
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella.js';
 
 import { RptLineTemplate1 } from 'src/app/_reports/rptPagella';
-import { runInThisContext } from 'vm';
-
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +19,7 @@ export class JspdfService {
   defaultColor!:  string;
   defaultFontSize!:  number;
   defaultFontName!: string;
+  defaultMaxWidth!: number;
 
   constructor(private http: HttpClient) {}
 
@@ -46,100 +44,7 @@ export class JspdfService {
     doc.save(fileName);
   }
 
-
-  //#region --- Funzioni private ---
-
-  private async  addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
-
-    let imgWidth = 0;
-    let imgHeight = 0;
-
-    let img = new Image();
-    img.src = ImageUrl;
-    
-    console.log("[addImage] - Inizio addImage");
-
-    const loadImage = (src: string) => new Promise((resolve, reject) => {
-      const imgTmp = new Image();
-      imgTmp.src = src;
-      imgTmp.onload = () =>{          
-         imgWidth = imgTmp.width;
-         imgHeight = imgTmp.height;
-         resolve(imgTmp);           //importante, senza questo non funzia
-      }
-      //imgTmp.onerror = reject;
-    });
-    
-    //console.log("ImageURL: ", ImageUrl);
-
-    await loadImage(ImageUrl).then(image => {
-        docPDF.addImage(img, 'png', parseFloat(x), parseFloat(y), parseFloat(w), parseFloat(w)*(imgHeight/imgWidth), undefined,'FAST');
-    });
-
-    //console.log("[addImage] - Fine addImage");
-  }
-
-  private async addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, align: any  ){
-    if(fontName == null || fontName == "") fontName = this.defaultFontName;
-    if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
-    if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
-
-    docPDF.setFont(fontName, fontStyle);
-    docPDF.setTextColor(fontColor);
-    docPDF.setFontSize(fontSize);
-
-    docPDF.text(text, X, Y, { align: align });
-
-    //Restituisce l'altezza del testo
-    //docPDF.getTextDimensions(text);
-    //var dim = docPDF.getTextDimensions(text);
-    //console.log("dimensioni testo: ", dim);
-  }
-
-  private async addCell(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, lines: number, align: any  ){
-    if(fontName == null || fontName == "") fontName = this.defaultFontName;
-    if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
-    if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
-    if(lineColor == null || lineColor == "") lineColor = this.defaultColor;
-
-    docPDF.setFont(fontName, fontStyle);
-    docPDF.setTextColor(fontColor);
-    docPDF.setDrawColor(lineColor);
-    docPDF.setFontSize(fontSize);
-
-    docPDF.cell(X, Y, W, H, text, lines, align);
-
-  }
-
-  private async addLine(docPDF: jsPDF, X1: string, Y1: string, X2: string, Y2: string, lineColor:string, lineWidth: string  ){
-    if(lineColor == null || lineColor == "") lineColor = this.defaultColor;
-
-    docPDF.setDrawColor(lineColor);
-    docPDF.setLineWidth (parseFloat( lineWidth));
-
-    docPDF.line(parseFloat(X1),parseFloat(Y1),parseFloat(X2),parseFloat(Y2));
-  }
-
-  private async addRect(docPDF: jsPDF, X1: string, Y1: string, W: string, H: string, lineColor:string, lineWidth: string, borderRadius: string  ){
-
-    if(lineColor == null || lineColor == "") lineColor = this.defaultColor;
-
-    docPDF.setDrawColor(lineColor);
-    docPDF.setLineWidth (parseFloat( lineWidth));
-    let rx: number=0;
-    if(borderRadius != '' && parseFloat(borderRadius)> 0){
-      rx=parseFloat( borderRadius);
-      docPDF.roundedRect(parseFloat(X1),parseFloat(Y1),parseFloat(W),parseFloat(H), rx, rx );
-    }
-    else
-      docPDF.rect(parseFloat(X1),parseFloat(Y1),parseFloat(W),parseFloat(H) );
-  }
-
-  //#endregion
-
-
   public async dynamicRpt(objPagella: DOC_Pagella) : Promise<jsPDF> {
-
     //##############  determina le dimensioni della pagina
     let pageW: number = 0;
     let pageH: number = 0;
@@ -152,6 +57,7 @@ export class JspdfService {
           this.defaultColor = element.defaultColor;
           this.defaultFontSize = element.defaultFontSize;
           this.defaultFontName = element.defaultFontName;
+          this.defaultMaxWidth = element.defaultMaxWidth;
 
           break;
       }
@@ -238,6 +144,96 @@ export class JspdfService {
   }
 
 
+//#region ADDTEXT ADDCELL ADDIMAGE ADDLINE ADDRECT ###################################################################################
+
+  private async addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, align: any  ){
+    if(fontName == null || fontName == "") fontName = this.defaultFontName;
+    if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
+    if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
+
+    docPDF.setFont(fontName, fontStyle);
+    docPDF.setTextColor(fontColor);
+    docPDF.setFontSize(fontSize);
+    //var splitTitle = docPDF.splitTextToSize(text, 190); //in questo modo NON esco dalla pagina!!! va a capo quando deve!!! splitTitle è un array passabile a .text
+    docPDF.text(text, X, Y, { align: align, maxWidth: this.defaultMaxWidth }); //altro metodo: maxWidth SPEZZA in n righe. Esiste anche lineHeightFactor che definisce l'altezza della riga.
+    //docPDF.text(text, X, Y, { align: align });
+
+    //Restituisce l'altezza del testo
+    //docPDF.getTextDimensions(text);
+    //var dim = docPDF.getTextDimensions(text);
+    //console.log("dimensioni testo: ", dim);
+  }
+
+  private async addCell(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, lines: number, align: any  ){
+    if(fontName == null || fontName == "") fontName = this.defaultFontName;
+    if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
+    if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
+    if(lineColor == null || lineColor == "") lineColor = this.defaultColor;
+
+    docPDF.setFont(fontName, fontStyle);
+    docPDF.setTextColor(fontColor);
+    docPDF.setDrawColor(lineColor);
+    docPDF.setFontSize(fontSize);
+
+    docPDF.cell(X, Y, W, H, text, lines, align);
+  }
+
+  private async  addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
+
+    let imgWidth = 0;
+    let imgHeight = 0;
+
+    let img = new Image();
+    img.src = ImageUrl;
+    
+    //console.log("[addImage] - Inizio addImage");
+
+    const loadImage = (src: string) => new Promise((resolve, reject) => {
+      const imgTmp = new Image();
+      imgTmp.src = src;
+      imgTmp.onload = () =>{          
+        imgWidth = imgTmp.width;
+        imgHeight = imgTmp.height;
+        resolve(imgTmp);           //importante, senza questo non funzia
+      }
+      //imgTmp.onerror = reject;
+    });
+    
+    //console.log("ImageURL: ", ImageUrl);
+
+    await loadImage(ImageUrl).then(image => {
+        docPDF.addImage(img, 'png', parseFloat(x), parseFloat(y), parseFloat(w), parseFloat(w)*(imgHeight/imgWidth), undefined,'FAST');
+    });
+
+    //console.log("[addImage] - Fine addImage");
+  }
+
+  private async addLine(docPDF: jsPDF, X1: string, Y1: string, X2: string, Y2: string, lineColor:string, lineWidth: string  ){
+    if(lineColor == null || lineColor == "") lineColor = this.defaultColor;
+
+    docPDF.setDrawColor(lineColor);
+    docPDF.setLineWidth (parseFloat( lineWidth));
+
+    docPDF.line(parseFloat(X1),parseFloat(Y1),parseFloat(X2),parseFloat(Y2));
+  }
+
+  private async addRect(docPDF: jsPDF, X1: string, Y1: string, W: string, H: string, lineColor:string, lineWidth: string, borderRadius: string  ){
+
+    if(lineColor == null || lineColor == "") lineColor = this.defaultColor;
+
+    docPDF.setDrawColor(lineColor);
+    docPDF.setLineWidth (parseFloat( lineWidth));
+    let rx: number=0;
+    if(borderRadius != '' && parseFloat(borderRadius)> 0){
+      rx=parseFloat( borderRadius);
+      docPDF.roundedRect(parseFloat(X1),parseFloat(Y1),parseFloat(W),parseFloat(H), rx, rx );
+    }
+    else
+      docPDF.rect(parseFloat(X1),parseFloat(Y1),parseFloat(W),parseFloat(H) );
+  }
+
+//#endregion
+
 
 
   public UT_FormatDate ( data: any, formato: string): string {
@@ -258,33 +254,7 @@ export class JspdfService {
 
   }
 
-  // private splitTextData (objPagella: DOC_Pagella, text: string) : string{
-  //   let retString : string;
-  //   retString = "";
-  //   let textArr = text.split("%%");
-  //   textArr.forEach((txt,index) => 
-  //     {
-  //       if (index % 2 == 0){
-  //         retString = retString + txt;
-  //       } else {
-  //         if (txt.startsWith("FNC_")){
-  //           let finoa = txt.indexOf("(");
-  //           switch (txt.substring(0,finoa)) {
-  //             case "DATEFORMAT":
-  //               Utility.UT_FormatDate()
-  //             break;
-  //           }
-
-  //         }
-  //         retString = retString + eval(txt);
-  //       }
-  //     }
-  //   ) ;
-  //   return retString;
-  // }
-
-
-  //crea e scarica il report con la tabella dei dati della pagina
+  //crea e scarica il report con la tabella dei dati della pagina   Metodo che include AUTOTABLE
   private buildReportPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string) {
 
     const doc = new jsPDF('l', 'mm', [297, 210]);
