@@ -202,30 +202,86 @@ export class JspdfService {
     return doc;
   }
 
+  
+  // private splitTextData (objPagella: DOC_Pagella, text: string) : string{
+  //   let retString : string;
+  //   retString = "";
+  //   let textArr = text.split("%%");
+  //   textArr.forEach((txt,index) => 
+  //     {
+  //       if (index % 2 == 0){
+  //         retString = retString + txt;
+  //       } else {
+          
+  //         retString = retString + eval(txt);
+  //       }
+  //     }
+  //   ) ;
+  //   return retString;
+  // }
+
   private splitTextData (objPagella: DOC_Pagella, text: string) : string{
     let retString : string;
     retString = "";
-    let textArr = text.split("%%");
+    let textArr3: any = [];
+    let textArr = text.split(">%");
+
     textArr.forEach((txt,index) => 
       {
-        if (index % 2 == 0){
-          retString = retString + txt;
-        } else {
-          if (txt.startsWith("FNC_")){
-            let finoa = txt.indexOf("(");
-            switch (txt.substring(0,finoa)) {
-              case "DATEFORMAT":
-                Utility.UT_FormatDate()
-              break;
-            }
-
-          }
-          retString = retString + eval(txt);
-        }
+        let textArr2 = txt.split("%<");
+        textArr3.push(textArr2[0]);
+        textArr3.push(eval(textArr2[1]));
       }
     ) ;
+    retString = textArr3.join('');
     return retString;
   }
+
+
+
+
+  public UT_FormatDate ( data: any, formato: string): string {
+    let retDate= data;
+    switch (formato) {
+      case "yyyy-mm-dd":
+        let dtISOLocaleStart = data.toLocaleString('sv').replace(' ', 'T');
+        retDate = dtISOLocaleStart.substring(0,10);
+        break;
+      case "dd/mm/yyyy":
+        var year = data.substring(0,4);
+        var month = data.substring(5,7);
+        let day = data.substring(8,10);
+        retDate = day + '/' + month + '/' + year;
+        break;
+    }
+    return retDate;
+
+  }
+
+  // private splitTextData (objPagella: DOC_Pagella, text: string) : string{
+  //   let retString : string;
+  //   retString = "";
+  //   let textArr = text.split("%%");
+  //   textArr.forEach((txt,index) => 
+  //     {
+  //       if (index % 2 == 0){
+  //         retString = retString + txt;
+  //       } else {
+  //         if (txt.startsWith("FNC_")){
+  //           let finoa = txt.indexOf("(");
+  //           switch (txt.substring(0,finoa)) {
+  //             case "DATEFORMAT":
+  //               Utility.UT_FormatDate()
+  //             break;
+  //           }
+
+  //         }
+  //         retString = retString + eval(txt);
+  //       }
+  //     }
+  //   ) ;
+  //   return retString;
+  // }
 
 
   //crea e scarica il report con la tabella dei dati della pagina
