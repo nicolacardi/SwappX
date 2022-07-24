@@ -473,7 +473,7 @@ export class LezioniCalendarioComponent implements OnInit {
   handleResize (resizeInfo: EventResizeDoneArg) {
 
     //let dt : Date | null   = resizeInfo.event.start;
-    let dtCalendario =Utility.UT_FormatDate(resizeInfo.event.start);
+    let dtCalendario =Utility.UT_FormatDate(resizeInfo.event.start, "yyyy-mm-dd");
     let strH_INI =Utility.UT_FormatHour(resizeInfo.event.start);
     let strH_END =Utility.UT_FormatHour(resizeInfo.event.end);
     let form: CAL_Lezione;
@@ -518,7 +518,7 @@ export class LezioniCalendarioComponent implements OnInit {
   handleDrop (dropInfo: EventDropArg) {
     
     //let dt : Date | null   = dropInfo.event.start;
-    let dtCalendario =Utility.UT_FormatDate(dropInfo.event.start);
+    let dtCalendario =Utility.UT_FormatDate(dropInfo.event.start, "yyyy-mm-dd");
     let strH_INI =Utility.UT_FormatHour(dropInfo.event.start);
     let strH_END =Utility.UT_FormatHour(dropInfo.event.end);
 

@@ -96,23 +96,6 @@ export class JspdfService {
     //console.log("dimensioni testo: ", dim);
   }
 
-  private async addTextData(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, align: any  ){
-    if(fontName == null || fontName == "") fontName = this.defaultFontName;
-    if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
-    if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
-
-    docPDF.setFont(fontName, fontStyle);
-    docPDF.setTextColor(fontColor);
-    docPDF.setFontSize(fontSize);
-
-    docPDF.text(text, X, Y, { align: align });
-
-    //Restituisce l'altezza del testo
-    //docPDF.getTextDimensions(text);
-    //var dim = docPDF.getTextDimensions(text);
-    //console.log("dimensioni testo: ", dim);
-  }
-
   private async addCell(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, lines: number, align: any  ){
     if(fontName == null || fontName == "") fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
@@ -228,6 +211,15 @@ export class JspdfService {
         if (index % 2 == 0){
           retString = retString + txt;
         } else {
+          if (txt.startsWith("FNC_")){
+            let finoa = txt.indexOf("(");
+            switch (txt.substring(0,finoa)) {
+              case "DATEFORMAT":
+                Utility.UT_FormatDate()
+              break;
+            }
+
+          }
           retString = retString + eval(txt);
         }
       }

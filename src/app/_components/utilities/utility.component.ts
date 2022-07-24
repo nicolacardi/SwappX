@@ -13,29 +13,30 @@ export abstract class Utility {
     //TODO: usare regex
   }
 
-  ///Formatta una data dal formato [2022-03-17T11:30:00.000Z] al formato [yyyy-mm-dd]
-  public static UT_FormatDate( data: any ): string {
-    let dtISOLocaleStart = data.toLocaleString('sv').replace(' ', 'T');
-    return dtISOLocaleStart.substring(0,10);
-  }
+
   ///Formatta una data dal formato [2022-03-17T11:30:00.000Z] al formato ORA [HH:MM:SS]
   public static UT_FormatHour( data: any ): string {
     let dtISOLocaleStart = data.toLocaleString('sv').replace(' ', 'T');
     return dtISOLocaleStart.substring(11,19);
   }
-  ///Formatta una data dal formato [2022-03-17T11:30:00.000Z] al formato ORA [dd/mm/yyyy]
+  ///Formatta una data dal formato [2022-03-17T11:30:00.000Z] al formato [dd/mm/yyyy] o [yyyy-mm-dd]
+  public static UT_FormatDate ( data: any, formato: string): string {
+    let retDate= data;
+    switch (formato) {
+      case "yyyy-mm-dd":
+        let dtISOLocaleStart = data.toLocaleString('sv').replace(' ', 'T');
+        retDate = dtISOLocaleStart.substring(0,10);
+        break;
+      case "dd/mm/yyyy":
+        var year = data.substring(0,4);
+        var month = data.substring(5,7);
+        let day = data.substring(8,10);
+        retDate = day + '/' + month + '/' + year;
+        break;
+    }
+    return retDate;
 
-  public static UT_FormatDate2( data: any ): string {
-
-    var year = data.substring(0,4);
-
-    var month = data.substring(5,7);
-
-    let day = data.substring(8,10);
-
-    return day + '/' + month + '/' + year;
   }
-
   
   public static IscrizioneAlunno( classeSezioneAnnoID: number, alunnoID: string){
 

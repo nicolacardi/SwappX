@@ -185,7 +185,7 @@ export class LezioneComponent implements OnInit {
             this.form.patchValue(lezione)
             //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
             this.dtStart = new Date (this.data.start);
-            this.strDtStart = Utility.UT_FormatDate(this.dtStart);
+            this.strDtStart = Utility.UT_FormatDate(this.dtStart, "yyyy-mm-dd");
             this.strH_Ini = Utility.UT_FormatHour(this.dtStart);
 
             this.dtEnd = new Date (this.data.end);
@@ -202,11 +202,11 @@ export class LezioneComponent implements OnInit {
       this.cdRef.detectChanges();     
 
       this.dtStart = new Date (this.data.start);
-      this.strDtStart = Utility.UT_FormatDate(this.dtStart);
+      this.strDtStart = Utility.UT_FormatDate(this.dtStart, "yyyy-mm-dd");
       this.strH_Ini = Utility.UT_FormatHour(this.dtStart);
 
       this.dtEnd = new Date (this.dtStart.setHours(this.dtStart.getHours() + 1));  //in caso di nuova lezione per default impostiamo la durata a un'ora
-      this.strDtEnd = Utility.UT_FormatDate(this.dtEnd);
+      this.strDtEnd = Utility.UT_FormatDate(this.dtEnd, "yyyy-mm-dd");
       this.strH_End = Utility.UT_FormatHour(this.dtEnd);
 
       this.form.controls.classeSezioneAnnoID.setValue(this.data.classeSezioneAnnoID);

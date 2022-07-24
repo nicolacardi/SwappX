@@ -50,7 +50,7 @@ export const RptLineTemplate1: any = [
 	{
 		"tipo": "TextData",
 //		Utility non funziona "value": "nato a %%objPagella.iscrizione.alunno.comuneNascita%% (%%objPagella.iscrizione.alunno.provNascita%%) il %%Utility.UT_FormatDate2(objPagella.iscrizione.alunno.dtNascita)%%",
-		"value": "nato a %%objPagella.iscrizione.alunno.comuneNascita%% (%%objPagella.iscrizione.alunno.provNascita%%) il %%objPagella.iscrizione.alunno.dtNascita%%",
+		"value": "nato a %%objPagella.iscrizione.alunno.comuneNascita%% (%%objPagella.iscrizione.alunno.provNascita%%) il %%FNC_DATEFORMAT(objPagella.iscrizione.alunno.dtNascita)%%",
 
 		"X": 315,
 		"Y": 168,
