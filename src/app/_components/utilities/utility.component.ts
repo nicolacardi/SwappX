@@ -38,6 +38,8 @@ export abstract class Utility {
 
   }
   
+
+
   public static IscrizioneAlunno( classeSezioneAnnoID: number, alunnoID: string){
 
     /* Check

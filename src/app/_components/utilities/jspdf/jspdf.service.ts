@@ -179,7 +179,7 @@ export class JspdfService {
           case "TextData":
             
             //console.log ("test qui", eval("objPagella.iscrizione.alunno.provNascita"));
-            this.addText(doc,this.splitTextData(objPagella, element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align );
+            this.addText(doc,this.splitTaggedText(objPagella, element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align );
             break;
           case "Cell":
             this.addCell(doc,element.value,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.lines, element.align );
@@ -220,7 +220,7 @@ export class JspdfService {
   //   return retString;
   // }
 
-  private splitTextData (objPagella: DOC_Pagella, text: string) : string{
+  private splitTaggedText (objPagella: DOC_Pagella, text: string) : string{
     let retString : string;
     retString = "";
     let textArr3: any = [];

@@ -18,7 +18,7 @@ export const RptLineTemplate1: any = [
 	},
 	{
 		"tipo": "TextData",
-		"value": "Annoscolastico %%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%%", //i campi Dati vanno separati prima e dopo con %%
+		"value": "Annoscolastico %<objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico>%", //i campi Dati vanno separati prima e dopo con %%
 		"X": 315,
 		"Y": 130,
 		"align": "center" 
@@ -33,7 +33,7 @@ export const RptLineTemplate1: any = [
 	},
 	{
 		"tipo": "TextData",
-		"value": "%%objPagella.iscrizione.alunno.nome%% %%objPagella.iscrizione.alunno.cognome%%",
+		"value": "%<objPagella.iscrizione.alunno.nome>% %<objPagella.iscrizione.alunno.cognome>%",
 		"fontName": "TitilliumWeb-SemiBold",
 		"X": 315,
 		"Y": 150,
@@ -41,7 +41,7 @@ export const RptLineTemplate1: any = [
 	},
 	{
 		"tipo": "TextData",
-		"value": "C.F.%%objPagella.iscrizione.alunno.cf%%",
+		"value": "C.F.%<objPagella.iscrizione.alunno.cf>%",
 		"X": 315,
 		"Y": 160,
 		"fontSize": 16,
@@ -49,8 +49,7 @@ export const RptLineTemplate1: any = [
 	},
 	{
 		"tipo": "TextData",
-//		Utility non funziona "value": "nato a %%objPagella.iscrizione.alunno.comuneNascita%% (%%objPagella.iscrizione.alunno.provNascita%%) il %%Utility.UT_FormatDate2(objPagella.iscrizione.alunno.dtNascita)%%",
-		"value": "nato a %%objPagella.iscrizione.alunno.comuneNascita%% (%%objPagella.iscrizione.alunno.provNascita%%) il %%FNC_DATEFORMAT(objPagella.iscrizione.alunno.dtNascita)%%",
+		"value": "nato a %<objPagella.iscrizione.alunno.comuneNascita>% (%<objPagella.iscrizione.alunno.provNascita>%) il %<Utility.UT_FormatDate(objPagella.iscrizione.alunno.dtNascita, 'dd/mm/yyyy')>%",
 
 		"X": 315,
 		"Y": 168,
