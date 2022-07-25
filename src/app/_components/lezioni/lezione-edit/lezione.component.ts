@@ -8,7 +8,7 @@ import { concatMap, take, tap } from 'rxjs/operators';
 //components
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { Utility } from '../../utilities/utility.component';
+import { FormatoData, Utility } from '../../utilities/utility.component';
 
 //services
 import { MaterieService } from 'src/app/_components/materie/materie.service';
@@ -185,11 +185,11 @@ export class LezioneComponent implements OnInit {
             this.form.patchValue(lezione)
             //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
             this.dtStart = new Date (this.data.start);
-            this.strDtStart = Utility.UT_FormatDate(this.dtStart, "yyyy-mm-dd");
-            this.strH_Ini = Utility.UT_FormatHour(this.dtStart);
+            this.strDtStart = Utility.formatDate(this.dtStart, FormatoData.yyyy_mm_dd);
+            this.strH_Ini = Utility.formatHour(this.dtStart);
 
             this.dtEnd = new Date (this.data.end);
-            this.strH_End = Utility.UT_FormatHour(this.dtEnd);
+            this.strH_End = Utility.formatHour(this.dtEnd);
           }
         )
       );
@@ -202,12 +202,14 @@ export class LezioneComponent implements OnInit {
       this.cdRef.detectChanges();     
 
       this.dtStart = new Date (this.data.start);
-      this.strDtStart = Utility.UT_FormatDate(this.dtStart, "yyyy-mm-dd");
-      this.strH_Ini = Utility.UT_FormatHour(this.dtStart);
+      //this.strDtStart = Utility.UT_FormatDate(this.dtStart, "yyyy-mm-dd");
+      this.strDtStart = Utility.formatDate(this.dtStart,  FormatoData.yyyy_mm_dd);
+      this.strH_Ini = Utility.formatHour(this.dtStart);
 
       this.dtEnd = new Date (this.dtStart.setHours(this.dtStart.getHours() + 1));  //in caso di nuova lezione per default impostiamo la durata a un'ora
-      this.strDtEnd = Utility.UT_FormatDate(this.dtEnd, "yyyy-mm-dd");
-      this.strH_End = Utility.UT_FormatHour(this.dtEnd);
+      //this.strDtEnd = Utility.UT_FormatDate(this.dtEnd, "yyyy-mm-dd");
+      this.strDtEnd = Utility.formatDate(this.dtEnd, FormatoData.yyyy_mm_dd);
+      this.strH_End = Utility.formatHour(this.dtEnd);
 
       this.form.controls.classeSezioneAnnoID.setValue(this.data.classeSezioneAnnoID);
       this.form.controls.dtCalendario.setValue(this.dtStart);

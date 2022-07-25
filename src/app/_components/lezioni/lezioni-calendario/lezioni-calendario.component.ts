@@ -15,7 +15,7 @@ import { LezioneComponent } from '../lezione-edit/lezione.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { LezioniUtilsComponent } from '../lezioni-utils/lezioni-utils.component';
-import { Utility } from '../../utilities/utility.component';
+import { FormatoData, Utility } from '../../utilities/utility.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 //services
@@ -473,9 +473,9 @@ export class LezioniCalendarioComponent implements OnInit {
   handleResize (resizeInfo: EventResizeDoneArg) {
 
     //let dt : Date | null   = resizeInfo.event.start;
-    let dtCalendario =Utility.UT_FormatDate(resizeInfo.event.start, "yyyy-mm-dd");
-    let strH_INI =Utility.UT_FormatHour(resizeInfo.event.start);
-    let strH_END =Utility.UT_FormatHour(resizeInfo.event.end);
+    let dtCalendario =Utility.formatDate(resizeInfo.event.start, FormatoData.yyyy_mm_dd);
+    let strH_INI =Utility.formatHour(resizeInfo.event.start);
+    let strH_END =Utility.formatHour(resizeInfo.event.end);
     let form: CAL_Lezione;
 
     const promise  = this.svcLezioni.listByDocenteAndOraOverlap (parseInt(resizeInfo.event.id), resizeInfo.event.extendedProps.docenteID, dtCalendario, strH_INI, strH_END)
@@ -518,9 +518,9 @@ export class LezioniCalendarioComponent implements OnInit {
   handleDrop (dropInfo: EventDropArg) {
     
     //let dt : Date | null   = dropInfo.event.start;
-    let dtCalendario =Utility.UT_FormatDate(dropInfo.event.start, "yyyy-mm-dd");
-    let strH_INI =Utility.UT_FormatHour(dropInfo.event.start);
-    let strH_END =Utility.UT_FormatHour(dropInfo.event.end);
+    let dtCalendario =Utility.formatDate(dropInfo.event.start, FormatoData.yyyy_mm_dd);
+    let strH_INI =Utility.formatHour(dropInfo.event.start);
+    let strH_END =Utility.formatHour(dropInfo.event.end);
 
     const promise  = this.svcLezioni.listByDocenteAndOraOverlap (parseInt(dropInfo.event.id), dropInfo.event.extendedProps.docenteID, dtCalendario, strH_INI, strH_END)
       .toPromise();

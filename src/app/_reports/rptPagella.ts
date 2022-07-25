@@ -9,23 +9,26 @@ export const RptLineTemplate1: any = [
 		"defaultFontSize":20,
 		"defaultMaxWidth": 190
 	},
+	
 	{
-		"tipo": "TextData",
+		"tipo": "Text",
 		"value": "Documento di Valutazione",
 		"fontName": "TitilliumWeb-SemiBold",
 		"X": 315,
 		"Y": 120,
 		"align": "center"
 	},
+	
 	{
-		"tipo": "TextData",
-		"value": "Annoscolastico %<objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico>%", //i campi Dati vanno separati prima e dopo con %%
+		"tipo": "Text",
+		"value": "Annoscolastico <%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%> uno due <%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%> tre !", //i campi Dati vanno separati prima e dopo con %%
 		"X": 315,
 		"Y": 130,
 		"align": "center" 
 	},
+
 	{
-		"tipo": "TextData",
+		"tipo": "Text",
 		"value": "Alunno",
 		"X": 315,
 		"Y": 140,
@@ -33,31 +36,39 @@ export const RptLineTemplate1: any = [
 		"align": "center" 
 	},
 	{
-		"tipo": "TextData",
-		"value": "%<objPagella.iscrizione.alunno.nome>% %<objPagella.iscrizione.alunno.cognome>%",
+		"tipo": "Text",
+		"value": "<%objPagella.iscrizione.alunno.nome%> <%objPagella.iscrizione.alunno.cognome%>",
 		"fontName": "TitilliumWeb-SemiBold",
 		"X": 315,
 		"Y": 150,
 		"align": "center" 
 	},
 	{
-		"tipo": "TextData",
-		"value": "C.F.%<objPagella.iscrizione.alunno.cf>%",
+		"tipo": "Text",
+		"value": "C.F.<%objPagella.iscrizione.alunno.cf%>",
 		"X": 315,
 		"Y": 160,
 		"fontSize": 16,
 		"align": "center" 
 	},
 	{
-		"tipo": "TextData",
-		"value": "nato a %<objPagella.iscrizione.alunno.comuneNascita>% (%<objPagella.iscrizione.alunno.provNascita>%) il %<this.UT_FormatDate(objPagella.iscrizione.alunno.dtNascita, 'dd/mm/yyyy')>%",
+		"tipo": "Text",
+		"value": "nato a <%objPagella.iscrizione.alunno.comuneNascita%> (<%objPagella.iscrizione.alunno.provNascita%>) il <%this.FormatDate(objPagella.iscrizione.alunno.dtNascita, 'dd/mm/yyyy')%>",
 		"X": 315,
 		"Y": 168,
 		"fontSize": 16,
 		"align": "center" 
 	},
 	{
-		"tipo": "TextData",
+		"tipo": "Text1",
+		"value": "Campo data: <%FormatDate(objPagella.dtIns, 'dd/mm/yyyy')%>",
+		"X": 315,
+		"Y": 180,
+		"fontSize": 14,
+		"align": "center" 
+	},
+	{
+		"tipo": "Text",
 		"value": "La donzelletta vien dalla campagna in sul calar del sol omnia gallia in tres partes divisa est faccio la prova con un testo lungo per vedere cosa accade e se va a capo come deve",
 		"X": 315,
 		"Y": 188,
@@ -81,7 +92,6 @@ export const RptLineTemplate1: any = [
 		"Y2": 287
 	},
 	/*
-	,
 	{
 		"tipo": "Rect",
 		"thickness": 0,
@@ -92,8 +102,6 @@ export const RptLineTemplate1: any = [
 		"H": 50,
 		"borderRadius":0
 	}
-	*/
-	/*
 	,
 	{
 		"tipo": "Cell",

@@ -1,26 +1,32 @@
 import { AbstractControl, ValidationErrors } from "@angular/forms";
 import { User } from "src/app/_user/Users";
 
+export enum FormatoData {
+  yyyy_mm_dd =  "yyyy-mm-dd",
+  dd_mm_yyyy = "dd/mm/yyyy"
+}
+
 export abstract class Utility {
      
 
   //AS: verificare se esiste una funzione standard per formattare le chiamate a URL
-
   public static URL_FormatHour( ora: string ): string{
     
     return ora.replace(":", "%3A").replace(":", "%3A");
 
-    //TODO: usare regex
+    //TODO: usare regex oppure encodeURIComponent
+    //var p1 = encodeURIComponent("http://example.org/?a=12&b=55")
   }
 
 
   ///Formatta una data dal formato [2022-03-17T11:30:00.000Z] al formato ORA [HH:MM:SS]
-  public static UT_FormatHour( data: any ): string {
-    let dtISOLocaleStart = data.toLocaleString('sv').replace(' ', 'T');
+  public static formatHour( fullDataWithHour: any ): string {
+    let dtISOLocaleStart = fullDataWithHour.toLocaleString('sv').replace(' ', 'T');
     return dtISOLocaleStart.substring(11,19);
   }
+
   ///Formatta una data dal formato [2022-03-17T11:30:00.000Z] al formato [dd/mm/yyyy] o [yyyy-mm-dd]
-  public static UT_FormatDate ( data: any, formato: string): string {
+  public static formatDate ( data: any, formato: FormatoData): string {
     let retDate= data;
     switch (formato) {
       case "yyyy-mm-dd":
@@ -35,31 +41,8 @@ export abstract class Utility {
         break;
     }
     return retDate;
-
   }
   
-
-
-  public static IscrizioneAlunno( classeSezioneAnnoID: number, alunnoID: string){
-
-    /* Check
-    - verifica che l'alunno non sia già iscritto ad una classe per l'anno
-    - salto anno
-    */
-    //insert class-sezioni-anni-alunno
-
-
-  }
-
-  public static CalcoloRette(annoID: number, alunnoID: string){
-
-    //Fratelli
-
-
-    
-  }
-
-
   //Utility per comprimere le dimensioni dell'immagine del profilo (o dell'alunno)
   public static compressImage(src: any, newX: number, newY: number) {
 
@@ -100,7 +83,6 @@ export abstract class Utility {
     return obj;
   }
 
-
   public static matchingPasswords(PasswordField : string, ConfirmPasswordField: string) {
     return (controls: AbstractControl) => {
       if (controls) {
@@ -134,9 +116,6 @@ export abstract class Utility {
       return null;
     }
   }
-
-
-
 }
 
   

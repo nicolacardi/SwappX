@@ -14,12 +14,15 @@ import { RptLineTemplate1 } from 'src/app/_reports/rptPagella';
 @Injectable({
   providedIn: 'root'
 })
+
 export class JspdfService {
 
   defaultColor!:  string;
   defaultFontSize!:  number;
   defaultFontName!: string;
   defaultMaxWidth!: number;
+
+  rptPagella: DOC_Pagella | undefined;
 
   constructor(private http: HttpClient) {}
 
@@ -44,7 +47,12 @@ export class JspdfService {
     doc.save(fileName);
   }
 
+  
+  
   public async dynamicRpt(objPagella: DOC_Pagella) : Promise<jsPDF> {
+
+    this.rptPagella = objPagella;
+
     //##############  determina le dimensioni della pagina
     let pageW: number = 0;
     let pageH: number = 0;
@@ -67,7 +75,6 @@ export class JspdfService {
       doc.text("ERRORE: manca il tag [SheetSize] in rptPagella",10, 50);
       return doc;
     }
-
     
     let doc : jsPDF  = new jsPDF('l', 'mm', [pageW , pageH]);   //A3
 
@@ -82,10 +89,9 @@ export class JspdfService {
             const ImageUrl = "../../assets/photos/" + element.value;
             await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
             break;
-          case "TextData":
-            
-            //console.log ("test qui", eval("objPagella.iscrizione.alunno.provNascita"));
-            this.addText(doc,this.splitTaggedText(objPagella, element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align );
+          case "Text":
+            //this.addText(doc,this.splitTaggedText(objPagella, element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align );
+            this.addText(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align );
             break;
           case "Cell":
             this.addCell(doc,element.value,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.lines, element.align );
@@ -96,19 +102,17 @@ export class JspdfService {
           case "Rect":
             this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
             break;
-          // case "Text":
-          //   this.addText(doc,element.value,element.X,element.Y,element.font,"normal",element.color,20, element.align );
-          //   break;
-          // case "Data":
-          //   this.addText(doc,eval(element.value),element.X,element.Y,element.font,"normal",element.color,20, element.align  );
-          //   break;
+          default:
+            //this.addText(doc,"[## WRONG TAG ###]",element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align );
+            //this.addText(doc,this.parseTextValue( "[WRONG TAG"),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align );
+            break;
         }
       }
     ));
     return doc;
   }
 
-  
+  //Rel.1
   // private splitTextData (objPagella: DOC_Pagella, text: string) : string{
   //   let retString : string;
   //   retString = "";
@@ -126,23 +130,55 @@ export class JspdfService {
   //   return retString;
   // }
 
-  private splitTaggedText (objPagella: DOC_Pagella, text: string) : string{
-    let retString : string;
-    retString = "";
-    let textArr3: any = [];
-    let textArr = text.split(">%");
+  //Rel.2 --> sostituito da parseTextValue
+  // private splitTaggedText (objPagella  : DOC_Pagella, text: string) : string{
+  //   let retString : string;
+  //   retString = "";
+  //   let textArr3: any = [];
+  //   let textArr = text.split("%>");
 
-    textArr.forEach((txt,index) => 
-      {
-        let textArr2 = txt.split("%<");
-        textArr3.push(textArr2[0]);
-        textArr3.push(eval(textArr2[1]));
-      }
-    ) ;
-    retString = textArr3.join('');
+  //   textArr.forEach((txt,index) => 
+  //     {
+  //       let textArr2 = txt.split("<%");
+  //       textArr3.push(textArr2[0]);
+  //       textArr3.push(eval(textArr2[1]));
+  //     }
+  //   ) ;
+  //   retString = textArr3.join('');
+  //   return retString;
+  // }
+
+  private parseTextValue ( text: string) : string {
+
+    let retString = "";
+    let outArr: any = [];
+
+    if(text.indexOf("%>") <= 0){
+      retString = text;
+    }
+    else{
+      let textArr = text.split("%>");
+
+      textArr.forEach((txt,index) => {
+          let tmpArr = txt.split("<%");
+
+          outArr.push(tmpArr[0]);
+          if(tmpArr[1] != undefined){
+            
+            //objPagella deve diventare -->  this.rptPagella 
+            let fieldRef = tmpArr[1].replace("obj", "this.rpt");
+            if(fieldRef.toLocaleLowerCase().startsWith("format")) 
+              fieldRef = "this." + fieldRef; 
+            console.log("AS: " , fieldRef);
+            
+            outArr.push(eval(fieldRef));
+          }
+        }
+      );
+      retString = outArr.join('');
+    }
     return retString;
   }
-
 
 //#region ADDTEXT ADDCELL ADDIMAGE ADDLINE ADDRECT ###################################################################################
 
@@ -235,8 +271,9 @@ export class JspdfService {
 //#endregion
 
 
+ 
 
-  public UT_FormatDate ( data: any, formato: string): string {
+  public FormatDate ( data: any, formato: string): string {
     let retDate= data;
     switch (formato) {
       case "yyyy-mm-dd":
@@ -251,7 +288,6 @@ export class JspdfService {
         break;
     }
     return retDate;
-
   }
 
   //crea e scarica il report con la tabella dei dati della pagina   Metodo che include AUTOTABLE
