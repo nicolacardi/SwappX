@@ -10,6 +10,7 @@ import '../../../../assets/fonts/TitilliumWeb-SemiBold-normal.js';
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella.js';
 
 import { RptLineTemplate1 } from 'src/app/_reports/rptPagella';
+import * as internal from 'stream';
 
 @Injectable({
   providedIn: 'root'
@@ -70,6 +71,7 @@ export class JspdfService {
           break;
       }
     }));
+
     if(pageH <=0 || pageW <=0){
       let doc : jsPDF  = new jsPDF('l', 'mm', [100 , 100]);  
       doc.text("ERRORE: manca il tag [SheetSize] in rptPagella",10, 50);
@@ -84,78 +86,46 @@ export class JspdfService {
     await Promise.all( RptLineTemplate1.map(async (element: any) => {      
 
       switch(element.tipo){
-
-          case "Image":
+          case "SheetSize":
+            break;
+          case "Image":{
             const ImageUrl = "../../assets/photos/" + element.value;
             await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
             break;
-          case "Text":
-            //this.addText(doc,this.splitTaggedText(objPagella, element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align );
-            this.addText(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align );
+          }
+          case "Text":{
+            this.addText(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align, element.maxWidth );
             break;
-          case "Cell":
+          }
+          case "Cell":{
             this.addCell(doc,element.value,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.lines, element.align );
             break;
-          case "Line":
+          }
+          case "Line":{
             this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
             break;
-          case "Rect":
+          }
+          case "Rect":{
             this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
             break;
-          default:
-            //this.addText(doc,"[## WRONG TAG ###]",element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align );
-            //this.addText(doc,this.parseTextValue( "[WRONG TAG"),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align );
+          }
+          default:{
+            this.addText(doc,"[## WRONG TAG ##]",element.X,element.Y,"TitilliumWeb-SemiBold","normal",'#FF0000',24, element.align );
             break;
+          }
         }
       }
     ));
     return doc;
   }
 
-  //Rel.1
-  // private splitTextData (objPagella: DOC_Pagella, text: string) : string{
-  //   let retString : string;
-  //   retString = "";
-  //   let textArr = text.split("%%");
-  //   textArr.forEach((txt,index) => 
-  //     {
-  //       if (index % 2 == 0){
-  //         retString = retString + txt;
-  //       } else {
-          
-  //         retString = retString + eval(txt);
-  //       }
-  //     }
-  //   ) ;
-  //   return retString;
-  // }
-
-  //Rel.2 --> sostituito da parseTextValue
-  // private splitTaggedText (objPagella  : DOC_Pagella, text: string) : string{
-  //   let retString : string;
-  //   retString = "";
-  //   let textArr3: any = [];
-  //   let textArr = text.split("%>");
-
-  //   textArr.forEach((txt,index) => 
-  //     {
-  //       let textArr2 = txt.split("<%");
-  //       textArr3.push(textArr2[0]);
-  //       textArr3.push(eval(textArr2[1]));
-  //     }
-  //   ) ;
-  //   retString = textArr3.join('');
-  //   return retString;
-  // }
-
   private parseTextValue ( text: string) : string {
 
     let retString = "";
     let outArr: any = [];
 
-    if(text.indexOf("%>") <= 0){
+    if(text.indexOf("%>") <= 0)
       retString = text;
-    }
     else{
       let textArr = text.split("%>");
 
@@ -167,10 +137,14 @@ export class JspdfService {
             
             //objPagella deve diventare -->  this.rptPagella 
             let fieldRef = tmpArr[1].replace("obj", "this.rpt");
-            if(fieldRef.toLocaleLowerCase().startsWith("format")) 
-              fieldRef = "this." + fieldRef; 
-            console.log("AS: " , fieldRef);
             
+            if(fieldRef.toLocaleLowerCase().startsWith("formatdate")) 
+              fieldRef = "this." + fieldRef; 
+
+            if(fieldRef.toLocaleLowerCase().startsWith("formatnumber")) 
+              fieldRef = "this." + fieldRef; 
+
+            //console.log("parseTextValue: " , fieldRef);
             outArr.push(eval(fieldRef));
           }
         }
@@ -182,11 +156,12 @@ export class JspdfService {
 
 //#region ADDTEXT ADDCELL ADDIMAGE ADDLINE ADDRECT ###################################################################################
 
-  private async addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, align: any  ){
+  private async addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, align: any, maxWidth: number  ){
     if(fontName == null || fontName == "") fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
     if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
 
+    
     docPDF.setFont(fontName, fontStyle);
     docPDF.setTextColor(fontColor);
     docPDF.setFontSize(fontSize);
@@ -289,6 +264,11 @@ export class JspdfService {
     }
     return retDate;
   }
+  public FormatNumber ( data: any, n_dec: number): string {
+
+    return Number(data).toFixed(n_dec);
+     
+  }
 
   //crea e scarica il report con la tabella dei dati della pagina   Metodo che include AUTOTABLE
   private buildReportPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string) {
@@ -315,7 +295,7 @@ export class JspdfService {
     //let allProperties = this.propertiesToArray(toPrint[0]);
     //console.log ("jspdf.service: elenco di tutte le proprietà e di quelle dei nested objects", allProperties);
 
-    console.log ("jspdf.service: fieldsToKeep sono i campi da tenere:", rptFieldsToKeep);
+    //console.log ("jspdf.service: fieldsToKeep sono i campi da tenere:", rptFieldsToKeep);
 
     //creo l'array per l'operazione di flattening
     let flattened : any= [];
@@ -324,7 +304,7 @@ export class JspdfService {
     rptData.forEach ((element: any) =>{
       flattened.push(this.flattenObj(element))}
     )
-    console.log ("jspdf.service: arrResult prima di togliere i campi superflui", flattened);
+    //console.log ("jspdf.service: arrResult prima di togliere i campi superflui", flattened);
 
 
     // //per ogni proprietà nella mappa vado a vedere se sono incluse nell'array di quelle da tenere

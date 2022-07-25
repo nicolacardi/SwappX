@@ -1,5 +1,4 @@
 export const RptLineTemplate1: any = [
-
 	{
 		"tipo": "SheetSize",
 		"width": 420,
@@ -9,7 +8,6 @@ export const RptLineTemplate1: any = [
 		"defaultFontSize":20,
 		"defaultMaxWidth": 190
 	},
-	
 	{
 		"tipo": "Text",
 		"value": "Documento di Valutazione",
@@ -21,12 +19,11 @@ export const RptLineTemplate1: any = [
 	
 	{
 		"tipo": "Text",
-		"value": "Annoscolastico <%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%> uno due <%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%> tre !", //i campi Dati vanno separati prima e dopo con %%
+		"value": "Annoscolastico <%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%>", //i campi Dati vanno separati prima e dopo con %%
 		"X": 315,
 		"Y": 130,
 		"align": "center" 
 	},
-
 	{
 		"tipo": "Text",
 		"value": "Alunno",
@@ -53,27 +50,38 @@ export const RptLineTemplate1: any = [
 	},
 	{
 		"tipo": "Text",
-		"value": "nato a <%objPagella.iscrizione.alunno.comuneNascita%> (<%objPagella.iscrizione.alunno.provNascita%>) il <%this.FormatDate(objPagella.iscrizione.alunno.dtNascita, 'dd/mm/yyyy')%>",
+		"value": "nato a <%objPagella.iscrizione.alunno.comuneNascita%> (<%this.rptPagella.iscrizione.alunno.provNascita%>) il <%this.FormatDate(objPagella.iscrizione.alunno.dtNascita, 'dd/mm/yyyy')%>",
 		"X": 315,
 		"Y": 168,
 		"fontSize": 16,
 		"align": "center" 
 	},
+	/*
 	{
-		"tipo": "Text1",
+		"tipo": "Text",
 		"value": "Campo data: <%FormatDate(objPagella.dtIns, 'dd/mm/yyyy')%>",
 		"X": 315,
-		"Y": 180,
+		"Y": 175,
 		"fontSize": 14,
 		"align": "center" 
 	},
+	{
+		"tipo": "Text",
+		"value": "FormatNumber: <%FormatNumber(objPagella.periodo, 3)%>",
+		"X": 315,
+		"Y": 180,
+		"fontSize": 12,
+		"align": "center" 
+	},
+	*/
 	{
 		"tipo": "Text",
 		"value": "La donzelletta vien dalla campagna in sul calar del sol omnia gallia in tres partes divisa est faccio la prova con un testo lungo per vedere cosa accade e se va a capo come deve",
 		"X": 315,
 		"Y": 188,
 		"fontSize": 16,
-		"align": "center" 
+		"align": "center" ,
+		"maxWidth": 100
 	},
 	{
 		"tipo": "Image",
@@ -101,8 +109,7 @@ export const RptLineTemplate1: any = [
 		"W": 90,
 		"H": 50,
 		"borderRadius":0
-	}
-	,
+	},*/
 	{
 		"tipo": "Cell",
 		"value": "Documento di Valutazione",
@@ -116,5 +123,5 @@ export const RptLineTemplate1: any = [
 		"lines": 2,
 		"align": "center"
 	},
-	*/
+	 
 ]

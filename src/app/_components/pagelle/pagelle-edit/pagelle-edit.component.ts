@@ -107,8 +107,7 @@ export class PagellaEditComponent implements OnInit {
 
     //api get 
     //api/DOC_Files/GetByDocAndTipo/id/Pagella
-
-    console.log("[openPdfPagella] - this.objPagella: ", this.objPagella);
+    //console.log("[openPdfPagella] - this.objPagella: ", this.objPagella);
 
     if(this.objPagella == null || this.objPagella.id! <0) {
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella non ancora generata', panelClass: ['red-snackbar']})
@@ -128,18 +127,11 @@ export class PagellaEditComponent implements OnInit {
           link.download = `${"test"}.pdf`
           //link.download = "test.pdf";
           link.click();
-
-          console.log("FINITO: ");
-
         },
         err => {
-
           console.log("ERRORE: ", err);
         }
       );
-     
-
-
   }
 
   async savePdfPagella() {
