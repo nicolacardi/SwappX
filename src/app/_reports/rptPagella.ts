@@ -9,13 +9,7 @@ export const RptLineTemplate1: any = [
 		"defaultFontSize":20,
 		"defaultMaxWidth": 190
 	},
-	{
-		"tipo": "Image",
-		"value": "logodefViola.png",
-		"X": 275,
-		"Y": 30,
-		"W": 80
-	},
+	
 	//#########################     COPERTINA     #########################
 	{
 		"tipo": "Text",
@@ -73,7 +67,13 @@ export const RptLineTemplate1: any = [
 		"align": "center" ,
 		"maxWidth": 100
 	},
-
+	{
+		"tipo": "Image",
+		"value": "logodefViola.png",
+		"X": 275,
+		"Y": 30,
+		"W": 80
+	},
 	{
 		"tipo": "Line",
 		"thickness": 0.2,
@@ -88,14 +88,14 @@ export const RptLineTemplate1: any = [
 		"tipo": "Page"
 	},
 	{
-		"tipo": "Image1__",
+		"tipo": "Image",
 		"value": "logodefViola.png",
 		"X": 10,
 		"Y": 10,
 		"W": 30
 	},
 	{
-		"tipo": "Image1___",
+		"tipo": "Image",
 		"value": "logodefViola.png",
 		"X": 380,
 		"Y": 10,
@@ -118,7 +118,8 @@ export const RptLineTemplate1: any = [
 		"Y": 25,
 		"fontSize": 16,
 		"align": "center" 
-	},
+	}
+,
 
 	{
 		"tipo": "Text",
