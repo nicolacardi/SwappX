@@ -1,4 +1,5 @@
 export const RptLineTemplate1: any = [
+	//#########################     IMPOSTAZIONI     #########################
 	{
 		"tipo": "SheetSize",
 		"width": 420,
@@ -8,6 +9,8 @@ export const RptLineTemplate1: any = [
 		"defaultFontSize":20,
 		"defaultMaxWidth": 190
 	},
+	
+	//#########################     COPERTINA     #########################
 	{
 		"tipo": "Text",
 		"value": "Documento di Valutazione",
@@ -16,10 +19,9 @@ export const RptLineTemplate1: any = [
 		"Y": 120,
 		"align": "center"
 	},
-	
 	{
 		"tipo": "Text",
-		"value": "Annoscolastico <%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%>", //i campi Dati vanno separati prima e dopo con %%
+		"value": "Annoscolastico <%objPagella.iscrizione?.classeSezioneAnno.anno.annoscolastico%>",
 		"X": 315,
 		"Y": 130,
 		"align": "center" 
@@ -56,24 +58,6 @@ export const RptLineTemplate1: any = [
 		"fontSize": 16,
 		"align": "center" 
 	},
-	/*
-	{
-		"tipo": "Text",
-		"value": "Campo data: <%FormatDate(objPagella.dtIns, 'dd/mm/yyyy')%>",
-		"X": 315,
-		"Y": 175,
-		"fontSize": 14,
-		"align": "center" 
-	},
-	{
-		"tipo": "Text",
-		"value": "FormatNumber: <%FormatNumber(objPagella.periodo, 3)%>",
-		"X": 315,
-		"Y": 180,
-		"fontSize": 12,
-		"align": "center" 
-	},
-	*/
 	{
 		"tipo": "Text",
 		"value": "La donzelletta vien dalla campagna in sul calar del sol omnia gallia in tres partes divisa est faccio la prova con un testo lungo per vedere cosa accade e se va a capo come deve",
@@ -99,6 +83,87 @@ export const RptLineTemplate1: any = [
 		"X2": 210,
 		"Y2": 287
 	},
+	//#########################    PAGINA 2 E 3    #########################
+	{
+		"tipo": "Page"
+	},
+	{
+		"tipo": "Image",
+		"value": "logodefViola.png",
+		"X": 10,
+		"Y": 10,
+		"W": 30
+	},
+	{
+		"tipo": "Image",
+		"value": "logodefViola.png",
+		"X": 380,
+		"Y": 10,
+		"W": 30
+	},
+	{
+		"tipo": "Text",
+		"value": "- PRIMO QUADRIMESTRE -",
+		"fontName": "TitilliumWeb-SemiBold",
+		"X": 105,
+		"Y": 25,
+		"fontSize": 16,
+		"align": "center" 
+	},
+	{
+		"tipo": "Text",
+		"value": "- SECONDO QUADRIMESTRE -",
+		"fontName": "TitilliumWeb-SemiBold",
+		"X": 315,
+		"Y": 25,
+		"fontSize": 16,
+		"align": "center" 
+	}
+,
+
+	{
+		"tipo": "Text",
+		"value": "- SECONDO QUADRIMESTRE -",
+		"fontName": "TitilliumWeb-SemiBold",
+		"X": 315,
+		"Y": 25,
+		"fontSize": 16,
+		"align": "center" 
+	}
+
+
+
+	 
+]
+
+
+
+
+
+
+
+
+
+
+	/*
+	{
+		"tipo": "Text",
+		"value": "Campo data: <%FormatDate(objPagella.dtIns, 'dd/mm/yyyy')%>",
+		"X": 315,
+		"Y": 175,
+		"fontSize": 14,
+		"align": "center" 
+	},
+	{
+		"tipo": "Text",
+		"value": "FormatNumber: <%FormatNumber(objPagella.periodo, 3)%>",
+		"X": 315,
+		"Y": 180,
+		"fontSize": 12,
+		"align": "center" 
+	},
+	*/
+
 	/*
 	{
 		"tipo": "Rect",
@@ -110,18 +175,16 @@ export const RptLineTemplate1: any = [
 		"H": 50,
 		"borderRadius":0
 	},*/
-	{
-		"tipo": "Cell",
-		"value": "Documento di Valutazione",
-		"font": "TitilliumWeb-Regular",
-		"X": 220,
-		"Y": 100,
-		"W": 190,
-		"H": 10,
-		"color":"#C04F94",
-		"lineColor":"#C04F94",
-		"lines": 2,
-		"align": "center"
-	},
-	 
-]
+	// {
+	// 	"tipo": "Cell",
+	// 	"value": "Documento di Valutazione",
+	// 	"font": "TitilliumWeb-Regular",
+	// 	"X": 220,
+	// 	"Y": 100,
+	// 	"W": 190,
+	// 	"H": 10,
+	// 	"color":"#C04F94",
+	// 	"lineColor":"#C04F94",
+	// 	"lines": 2,
+	// 	"align": "center"
+	// },

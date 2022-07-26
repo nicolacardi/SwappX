@@ -8,9 +8,11 @@ import '../../../../assets/fonts/TitilliumWeb-Regular-normal.js';
 import '../../../../assets/fonts/TitilliumWeb-SemiBold-normal.js';
 
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella.js';
+import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto.js';
 
 import { RptLineTemplate1 } from 'src/app/_reports/rptPagella';
 import * as internal from 'stream';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +25,9 @@ export class JspdfService {
   defaultFontName!: string;
   defaultMaxWidth!: number;
 
-  rptPagella: DOC_Pagella | undefined;
+  rptPagella!: DOC_Pagella ;
+  rptPagellaVoti!: DOC_PagellaVoto[];
+
 
   constructor(private http: HttpClient) {}
 
@@ -50,7 +54,8 @@ export class JspdfService {
 
   
   
-  public async dynamicRpt(objPagella: DOC_Pagella) : Promise<jsPDF> {
+  public async dynamicRptPagella(objPagella: DOC_Pagella) : Promise<jsPDF> {
+
 
     this.rptPagella = objPagella;
 
@@ -109,8 +114,12 @@ export class JspdfService {
             this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
             break;
           }
+          case "Page":{
+            doc.addPage()
+            break;
+          }
           default:{
-            this.addText(doc,"[## WRONG TAG ##]",element.X,element.Y,"TitilliumWeb-SemiBold","normal",'#FF0000',24, element.align );
+            this.addText(doc,"[## WRONG TAG ##]",element.X,element.Y,"TitilliumWeb-SemiBold","normal",'#FF0000',24, element.align, element.maxWidth );
             break;
           }
         }
@@ -160,13 +169,14 @@ export class JspdfService {
     if(fontName == null || fontName == "") fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
     if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
+    if(maxWidth == null || maxWidth == 0) maxWidth = this.defaultMaxWidth;
 
     
     docPDF.setFont(fontName, fontStyle);
     docPDF.setTextColor(fontColor);
     docPDF.setFontSize(fontSize);
     //var splitTitle = docPDF.splitTextToSize(text, 190); //in questo modo NON esco dalla pagina!!! va a capo quando deve!!! splitTitle è un array passabile a .text
-    docPDF.text(text, X, Y, { align: align, maxWidth: this.defaultMaxWidth }); //altro metodo: maxWidth SPEZZA in n righe. Esiste anche lineHeightFactor che definisce l'altezza della riga.
+    docPDF.text(text, X, Y, { align: align, maxWidth: maxWidth}); //altro metodo: maxWidth SPEZZA in n righe. Esiste anche lineHeightFactor che definisce l'altezza della riga.
     //docPDF.text(text, X, Y, { align: align });
 
     //Restituisce l'altezza del testo
@@ -189,7 +199,7 @@ export class JspdfService {
     docPDF.cell(X, Y, W, H, text, lines, align);
   }
 
-  private async  addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
+  private async addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
 
     let imgWidth = 0;
     let imgHeight = 0;
@@ -387,8 +397,8 @@ export class JspdfService {
         let pageSize = doc.internal.pageSize;
         
         let pageWidth = pageSize.width
-        ? pageSize.width
-        : pageSize.getWidth();
+          ? pageSize.width
+          : pageSize.getWidth();
 
         let pageHeight = pageSize.height
           ? pageSize.height
@@ -519,7 +529,7 @@ export class JspdfService {
 /*
   public async creaPagellaPdf (objPagella: DOC_Pagella): Promise<jsPDF> {
 
-    return this.dynamicRpt(objPagella);
+    return this.dynamicRptPagella(objPagella);
 
 
     //Setup variabili

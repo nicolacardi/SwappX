@@ -12,7 +12,7 @@ export interface DOC_Pagella {
         userIns?:               number;
         userUpd?:               number;
 
-        iscrizione?:             CLS_Iscrizione;
+        iscrizione?:            CLS_Iscrizione;
 }
 
 

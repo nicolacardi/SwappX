@@ -142,7 +142,7 @@ export class PagellaEditComponent implements OnInit {
     }
 
     //Chiamata al motore di stampa
-    let rpt :jsPDF  = await this._jspdf.dynamicRpt(this.objPagella) ;
+    let rpt :jsPDF  = await this._jspdf.dynamicRptPagella(this.objPagella) ;
 
     //Preparazione Blob con il contenuto base64 del pdf
     let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});
