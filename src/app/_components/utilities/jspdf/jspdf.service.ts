@@ -28,6 +28,12 @@ export class JspdfService {
   rptPagella!: DOC_Pagella ;
   rptPagellaVoti!: DOC_PagellaVoto[];
 
+  call = undefined;
+  notifyImageCompleted: any;
+  resolveWhenImageIsReady = new Promise(
+    resolve => (this.notifyImageCompleted = resolve)
+  );
+
 
   constructor(private http: HttpClient) {}
 
@@ -88,14 +94,21 @@ export class JspdfService {
     doc.setFont('TitilliumWeb-Regular', 'normal');
     
     //############### lettura file/rpt source e loop sui tags
-    await Promise.all( RptLineTemplate1.map(async (element: any) => {      
-
+    await Promise.all( RptLineTemplate1.map(async (element: any) => {  //NICK!!!! é QUI IL PROBLEMA!!!!    
+    
+    //await Promise.all( RptLineTemplate1.map( (element: any) => {      //TEST ANDREA
+    //RptLineTemplate1.map( (element: any) => {     //TEST ANDREA
       switch(element.tipo){
           case "SheetSize":
             break;
           case "Image":{
             const ImageUrl = "../../assets/photos/" + element.value;
-            await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
+            // this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
+            this.addImageSync(doc,ImageUrl, element.X ,element.Y, element.W);
+            
+            //console.log("resolveWhenImageIsReady -", "inizio");
+            //await this.resolveWhenImageIsReady;
+            //console.log("resolveWhenImageIsReady -", "finito");
             break;
           }
           case "Text":{
@@ -166,12 +179,14 @@ export class JspdfService {
 //#region ADDTEXT ADDCELL ADDIMAGE ADDLINE ADDRECT ###################################################################################
 
   private async addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, align: any, maxWidth: number  ){
+    
     if(fontName == null || fontName == "") fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
     if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
     if(maxWidth == null || maxWidth == 0) maxWidth = this.defaultMaxWidth;
 
-    
+    console.log("[addText] - ", text);
+
     docPDF.setFont(fontName, fontStyle);
     docPDF.setTextColor(fontColor);
     docPDF.setFontSize(fontSize);
@@ -207,7 +222,7 @@ export class JspdfService {
     let img = new Image();
     img.src = ImageUrl;
     
-    //console.log("[addImage] - Inizio addImage");
+    console.log("[addImage] - Inizio addImage");
 
     const loadImage = (src: string) => new Promise((resolve, reject) => {
       const imgTmp = new Image();
@@ -226,7 +241,38 @@ export class JspdfService {
         docPDF.addImage(img, 'png', parseFloat(x), parseFloat(y), parseFloat(w), parseFloat(w)*(imgHeight/imgWidth), undefined,'FAST');
     });
 
-    //console.log("[addImage] - Fine addImage");
+    console.log("[addImage] - Fine addImage");
+  }
+
+  private addImageSync(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
+
+    let imgWidth = 0;
+    let imgHeight = 0;
+
+    let img = new Image();
+    img.src = ImageUrl;
+    
+    console.log("[addImage] - Inizio addImage");
+
+    const loadImage = (src: string) => new Promise((resolve, reject) => {
+      const imgTmp = new Image();
+      imgTmp.src = src;
+      imgTmp.onload = () =>{          
+        imgWidth = imgTmp.width;
+        imgHeight = imgTmp.height;
+        resolve(imgTmp);           //importante, senza questo non funzia
+      }
+      //imgTmp.onerror = reject;
+    });
+    
+    //console.log("ImageURL: ", ImageUrl);
+
+    loadImage(ImageUrl).then(image => {
+        docPDF.addImage(img, 'png', parseFloat(x), parseFloat(y), parseFloat(w), parseFloat(w)*(imgHeight/imgWidth), undefined,'FAST');
+    });
+
+    console.log("[addImage] - Fine addImage");
+    this.notifyImageCompleted();
   }
 
   private async addLine(docPDF: jsPDF, X1: string, Y1: string, X2: string, Y2: string, lineColor:string, lineWidth: string  ){
