@@ -24,6 +24,11 @@ export class JspdfService {
   defaultFontSize!:  number;
   defaultFontName!: string;
   defaultMaxWidth!: number;
+  defaultLineColor!:  string;
+  defaultFillColor!:  string;
+  defaultLineWidth!:  number;
+
+
 
   rptPagella!: DOC_Pagella ;
   rptPagellaVoti!: DOC_PagellaVoto[];
@@ -70,6 +75,11 @@ export class JspdfService {
     this.defaultFontSize = element.defaultFontSize;
     this.defaultFontName = element.defaultFontName;
     this.defaultMaxWidth = element.defaultMaxWidth;
+    this.defaultFillColor = element.defaultFillColor;
+    this.defaultLineColor = element.defaultLineColor;
+    this.defaultLineWidth = element.defaultLineWidth;
+
+
 
     if(element.tipo != "SheetSize"){
       let doc : jsPDF  = new jsPDF('l', 'mm', [100 , 100]);  
@@ -107,7 +117,7 @@ export class JspdfService {
           break;
         }
         case "Cell":{
-          this.addCell(doc,element.value,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.line, element.align );
+          this.addCell(doc,element.value,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.fillColor, element.lineWidth, element.line, element.align );
           break;
         }
         case "Line":{
@@ -186,13 +196,17 @@ export class JspdfService {
     //docPDF.getTextDimensions(text);
     //var dim = docPDF.getTextDimensions(text);
     //console.log("dimensioni testo: ", dim);
+
   }
 
-  private async addCell(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, line: number, align: any  ){
+  private async addCell(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, fillColor: string, lineWidth: number, line: number, align: any  ){
     if(fontName == null || fontName == "") fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
     if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
-    if(lineColor == null || lineColor == "") lineColor = this.defaultColor;
+    if(lineColor == null || lineColor == "") lineColor = this.defaultLineColor;
+    if(fillColor == null || fillColor == "") fillColor = this.defaultFillColor;
+    if(lineWidth == null || lineWidth == 0) lineWidth = this.defaultLineWidth;
+
 
     docPDF.setFont(fontName, fontStyle);
     docPDF.setTextColor(fontColor);
@@ -201,11 +215,31 @@ export class JspdfService {
 
     console.log ("textsize, W",docPDF.getStringUnitWidth(text) * docPDF.getFontSize() / docPDF.internal.scaleFactor, W );
 
-    docPDF.text("ciaoR",50,100,{align: 'right'});
-    docPDF.text("ciaoL",50,120,{align: 'left'});
-    docPDF.text("ciaoC",50,140,{align: 'center'});
-    docPDF.cell(X, Y, W, H, text, line, 'center');
+    //docPDF.text("ciaoR",50,100,{align: 'right'});
+    //docPDF.text("ciaoL",50,120,{align: 'left'});
+    //docPDF.text("ciaoC",50,140,{align: 'center'});
+    //docPDF.cell(X, Y, W, H, text, line, 'center');
+    
+    
 
+    autoTable(docPDF, {
+      //startY: Y,
+      margin: {top: Y, right: 0, bottom: 0, left: X},
+      tableWidth: W,
+      tableLineColor: lineColor,
+      tableLineWidth: lineWidth,
+      body: [
+        [{ 
+          content: text,
+          styles: { 
+            cellWidth: W,
+            halign: align,
+            valign: 'middle',
+            fillColor: fillColor
+          }
+        }],
+      ],
+    })
 
   }
 
@@ -259,7 +293,7 @@ export class JspdfService {
 
   private async addRect(docPDF: jsPDF, X1: string, Y1: string, W: string, H: string, lineColor:string, lineWidth: string, borderRadius: string  ){
 
-    if(lineColor == null || lineColor == "") lineColor = this.defaultColor;
+    if(lineColor == null || lineColor == "") lineColor = this.defaultLineColor;
 
     docPDF.setDrawColor(lineColor);
     docPDF.setLineWidth (parseFloat( lineWidth));
