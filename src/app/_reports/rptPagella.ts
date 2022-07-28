@@ -129,8 +129,21 @@ export const RptLineTemplate1: any = [
 		"Y": 25,
 		"fontSize": 16,
 		"align": "center" 
-	}
+	},
 
+	{
+		"tipo": "Cell",
+		"value": "Documento di Valutazione",
+		"font": "TitilliumWeb-Regular",
+		"X": 220,
+		"Y": 100,
+		"W": 190,
+		"H": 10,
+		"color":"#C04F94",
+		"lineColor":"#C04F94",
+		"lines": 2,
+		"align": "right"
+	},
 
 
 	 

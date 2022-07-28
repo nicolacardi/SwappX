@@ -59,72 +59,75 @@ export class JspdfService {
 
     this.rptPagella = objPagella;
 
-    //##############  determina le dimensioni della pagina
+    //Il primo elemento di RptLineTemplate1 DEVE essere SheetSize
     let pageW: number = 0;
     let pageH: number = 0;
     
-    await Promise.all( RptLineTemplate1.map(async (element: any) => {
-      switch(element.tipo){
-        case "SheetSize":
-          pageW= parseInt(element.width);
-          pageH= parseInt(element.heigth);
-          this.defaultColor = element.defaultColor;
-          this.defaultFontSize = element.defaultFontSize;
-          this.defaultFontName = element.defaultFontName;
-          this.defaultMaxWidth = element.defaultMaxWidth;
+    let element = RptLineTemplate1[0]
+    pageW= parseInt(element.width);
+    pageH= parseInt(element.heigth);
+    this.defaultColor = element.defaultColor;
+    this.defaultFontSize = element.defaultFontSize;
+    this.defaultFontName = element.defaultFontName;
+    this.defaultMaxWidth = element.defaultMaxWidth;
 
-          break;
-      }
-    }));
-
-    if(pageH <=0 || pageW <=0){
+    if(element.tipo != "SheetSize"){
       let doc : jsPDF  = new jsPDF('l', 'mm', [100 , 100]);  
       doc.text("ERRORE: manca il tag [SheetSize] in rptPagella",10, 50);
       return doc;
     }
-    
+  
     let doc : jsPDF  = new jsPDF('l', 'mm', [pageW , pageH]);   //A3
-
     doc.setFont('TitilliumWeb-Regular', 'normal');
+    //a questo punto ho impostato il documento
+
+
     
     //############### lettura file/rpt source e loop sui tags
-    await Promise.all( RptLineTemplate1.map(async (element: any) => {      
-
+    
+    //LA PROMISE.ALL NON SI COMPORTA COME SE CHIAMASSE TUTTE LE FUNZIONI IN MANIERA SINCRONA
+    //MA SEMPLICEMENTE NON FA PROCEDERE IL CODICE OLTRE PRIMA CHE TUTTE LE SUE PROMISE (AWAITED) SIANO TERMINATE
+    //MA QUESTE RESTANO SINGOLARMENTE ASINCRONE, QUINDI FINISCO IN ORDINE "SPARSO"
+    //IL CICLO FOR, INVECE, INSIEME CON IL COMANDO AWAIT FUNZIONA IN MANIERA SINCRONA
+    
+    //await Promise.all( RptLineTemplate1.map(async (element: any) => { QUESTA LA PROMISE.ALL FALLACE     
+    
+    for (let i = 1; i < RptLineTemplate1.length; i++) {
+      let element = RptLineTemplate1[i];
       switch(element.tipo){
-          case "SheetSize":
-            break;
-          case "Image":{
-            const ImageUrl = "../../assets/photos/" + element.value;
-            await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
-            break;
-          }
-          case "Text":{
-            this.addText(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align, element.maxWidth );
-            break;
-          }
-          case "Cell":{
-            this.addCell(doc,element.value,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.lines, element.align );
-            break;
-          }
-          case "Line":{
-            this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
-            break;
-          }
-          case "Rect":{
-            this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
-            break;
-          }
-          case "Page":{
-            doc.addPage()
-            break;
-          }
-          default:{
-            this.addText(doc,"[## WRONG TAG ##]",element.X,element.Y,"TitilliumWeb-SemiBold","normal",'#FF0000',24, element.align, element.maxWidth );
-            break;
-          }
+        case "SheetSize":
+          break;
+        case "Image":{
+          const ImageUrl = "../../assets/photos/" + element.value;
+          await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
+          break;
+        }
+        case "Text":{
+          this.addText(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align, element.maxWidth );
+          break;
+        }
+        case "Cell":{
+          this.addCell(doc,element.value,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.lines, element.align );
+          break;
+        }
+        case "Line":{
+          this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
+          break;
+        }
+        case "Rect":{
+          this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
+          break;
+        }
+        case "Page":{
+          doc.addPage()
+          break;
+        }
+        default:{
+          this.addText(doc,"[## WRONG TAG ##]",element.X,element.Y,"TitilliumWeb-SemiBold","normal",'#FF0000',24, element.align, element.maxWidth );
+          break;
         }
       }
-    ));
+    }
     return doc;
   }
 
@@ -204,27 +207,36 @@ export class JspdfService {
     let imgWidth = 0;
     let imgHeight = 0;
 
+    //creo l'oggetto img che passerò a docPDF.addImage corredandolo dei parametri di w e h corretti
     let img = new Image();
     img.src = ImageUrl;
     
-    //console.log("[addImage] - Inizio addImage");
+    // console.log("01 [addImage] - Inizio addImage");
 
+    //costruisco la mia funzione promise custom (genero l'asincronia necessaria)
+    //serve per creare un'altra Img (imgTmp) ed estrarne le dimensioni
     const loadImage = (src: string) => new Promise((resolve, reject) => {
       const imgTmp = new Image();
       imgTmp.src = src;
       imgTmp.onload = () =>{          
         imgWidth = imgTmp.width;
         imgHeight = imgTmp.height;
-        resolve(imgTmp);           //importante, senza questo non funzia
+        //resolve(imgTmp);
+        resolve ("hey");           //importante, senza questo non funzia
       }
       //imgTmp.onerror = reject;
-    });
-    
-    //console.log("ImageURL: ", ImageUrl);
 
-    await loadImage(ImageUrl).then(image => {
-        docPDF.addImage(img, 'png', parseFloat(x), parseFloat(y), parseFloat(w), parseFloat(w)*(imgHeight/imgWidth), undefined,'FAST');
+      // console.log("02 [addImage] - dentro la loadImage");
+
     });
+
+    let stop = await loadImage(ImageUrl);
+    docPDF.addImage(img, 'png', parseFloat(x), parseFloat(y), parseFloat(w), parseFloat(w)*(imgHeight/imgWidth), undefined,'FAST');
+
+    // await loadImage(ImageUrl).then(val => {
+    //     console.log("05 [addImage] - imageUrl, pronto per la addImage", ImageUrl, imgWidth, imgHeight);
+    //     docPDF.addImage(img, 'png', parseFloat(x), parseFloat(y), parseFloat(w), parseFloat(w)*(imgHeight/imgWidth), undefined,'FAST');
+    // });
 
     //console.log("[addImage] - Fine addImage");
   }
@@ -345,7 +357,7 @@ export class JspdfService {
         return returnValue;
       })
 
-    console.log ("jspdf.service: selectionFromFlattened dopo aver aggiunto i campi fieldsToKeep", subsetFromFlattened);
+    //console.log ("jspdf.service: selectionFromFlattened dopo aver aggiunto i campi fieldsToKeep", subsetFromFlattened);
 
 
 
@@ -518,6 +530,11 @@ export class JspdfService {
       return paths(obj);
     }
 
+   
+
+
+
+
 
 
 }
@@ -621,3 +638,55 @@ Metodo interessante: c'è la possibilità di sapere quanto largo viene il testo 
 
 
   */
+
+
+
+
+
+//NICOLA
+
+// function loadAsset (url: string, type: any, callback: any) {
+//   let xhr= new XMLHttpRequest();
+//   xhr.open('GET', url);
+//   xhr.responseType = type;
+
+//   xhr.onload = function () {
+//     callback(xhr.response);
+//   }
+
+//   xhr.send;
+// }
+
+// function displayImage(blob: any) {
+//   let objectURL = URL.createObjectURL(blob)
+//   let image = document.createElement('img');
+//   image.src = objectURL;
+//   document.body.appendChild(image);
+
+// }
+// loadAsset("URLdell'immagine", 'blob', displayImage);
+
+
+// fetch ("URL dell'immagine")
+// .then (response=> {
+//   if (!response.ok) {
+//     throw new Error("error:"+ response.status)
+//   } else {
+//     return response.blob();
+//   }
+// }).then (myBlob => {
+//   let objectURL = URL.createObjectURL(myBlob);
+//   let image = document. createElement('img');
+//   image.src = objectURL;
+//   document. body.appendChild(image);
+// }).catch(e => {
+//   console.log ('Fetch problem'+ e.message);
+// })
+
+// let timeoutpromise = new Promise((resolve, reject) => {
+
+//     resolve('success');
+
+// });
+
+
