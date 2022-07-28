@@ -116,8 +116,8 @@ export class JspdfService {
           this.addText(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align, element.maxWidth );
           break;
         }
-        case "Cell":{
-          this.addCell(doc,element.value,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.fillColor, element.lineWidth, element.line, element.align );
+        case "Table":{
+          this.addTable(doc,element.data,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.fillColor, element.lineWidth, element.line, element.align );
           break;
         }
         case "Line":{
@@ -176,7 +176,7 @@ export class JspdfService {
     return retString;
   }
 
-//#region ADDTEXT ADDCELL ADDIMAGE ADDLINE ADDRECT ###################################################################################
+//#region ADDTEXT ADDTABLE ADDIMAGE ADDLINE ADDRECT ###################################################################################
 
   private async addText(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, align: any, maxWidth: number  ){
     if(fontName == null || fontName == "") fontName = this.defaultFontName;
@@ -199,7 +199,7 @@ export class JspdfService {
 
   }
 
-  private async addCell(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, fillColor: string, lineWidth: number, line: number, align: any  ){
+  private async addTable(docPDF: jsPDF, data: any, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, fillColor: string, lineWidth: number, line: number, align: any  ){
     if(fontName == null || fontName == "")    fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "")  fontColor = this.defaultColor;
     if(fontSize == null || fontSize == 0)     fontSize = this.defaultFontSize;
@@ -213,32 +213,36 @@ export class JspdfService {
     docPDF.setDrawColor(lineColor);
     docPDF.setFontSize(fontSize);
 
-    console.log ("textsize, W",docPDF.getStringUnitWidth(text) * docPDF.getFontSize() / docPDF.internal.scaleFactor, W );
+    //console.log ("textsize, W",docPDF.getStringUnitWidth(text) * docPDF.getFontSize() / docPDF.internal.scaleFactor, W );
 
     //docPDF.text("ciaoR",50,100,{align: 'right'});
     //docPDF.text("ciaoL",50,120,{align: 'left'});
     //docPDF.text("ciaoC",50,140,{align: 'center'});
     //docPDF.cell(X, Y, W, H, text, line, 'center');
     
+    //let data =[['David', 'david@example.com', 'Sweden'],['Nick', 'david@example.com', 'Sweden']];
     autoTable(docPDF, {
       //startY: Y,
       margin: {top: Y, right: 0, bottom: 0, left: X},
       tableWidth: W,
       tableLineColor: lineColor,
       tableLineWidth: lineWidth,
-      body: [
-        [{ 
-          content: text,
-          styles: { 
-            cellWidth: W,
-            halign: align,
-            valign: 'middle',
-            fillColor: fillColor,
-            minCellHeight: H,
+      body: data,
+      styles: {      
+              cellWidth: W/ data[0].length,
+              halign: align,
+              valign: 'middle',
+              fillColor: fillColor,
+              minCellHeight: H,
+      }
 
-          }
-        }],
-      ],
+      //body: [
+      //   [{ 
+      //     content: "ciao",
+      //     styles: { 
+      //     }
+      //   }],
+      // ],
     })
 
   }
