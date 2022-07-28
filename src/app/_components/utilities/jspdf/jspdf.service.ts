@@ -107,7 +107,7 @@ export class JspdfService {
           break;
         }
         case "Cell":{
-          this.addCell(doc,element.value,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.lines, element.align );
+          this.addCell(doc,element.value,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.line, element.align );
           break;
         }
         case "Line":{
@@ -188,7 +188,7 @@ export class JspdfService {
     //console.log("dimensioni testo: ", dim);
   }
 
-  private async addCell(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, lines: number, align: any  ){
+  private async addCell(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, line: number, align: any  ){
     if(fontName == null || fontName == "") fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
     if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
@@ -199,7 +199,14 @@ export class JspdfService {
     docPDF.setDrawColor(lineColor);
     docPDF.setFontSize(fontSize);
 
-    docPDF.cell(X, Y, W, H, text, lines, align);
+    console.log ("textsize, W",docPDF.getStringUnitWidth(text) * docPDF.getFontSize() / docPDF.internal.scaleFactor, W );
+
+    docPDF.text("ciaoR",50,100,{align: 'right'});
+    docPDF.text("ciaoL",50,120,{align: 'left'});
+    docPDF.text("ciaoC",50,140,{align: 'center'});
+    docPDF.cell(X, Y, W, H, text, line, 'center');
+
+
   }
 
   private async addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
