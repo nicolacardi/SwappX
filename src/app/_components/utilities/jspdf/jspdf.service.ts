@@ -221,6 +221,10 @@ export class JspdfService {
     //docPDF.cell(X, Y, W, H, text, line, 'center');
     
     //let data =[['David', 'david@example.com', 'Sweden'],['Nick', 'david@example.com', 'Sweden']];
+    
+    eval(data)
+QUI!!!
+
     autoTable(docPDF, {
       //startY: Y,
       margin: {top: Y, right: 0, bottom: 0, left: X},

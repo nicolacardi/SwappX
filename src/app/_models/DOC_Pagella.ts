@@ -13,6 +13,9 @@ export interface DOC_Pagella {
         userUpd?:               number;
 
         iscrizione?:            CLS_Iscrizione;
+
+        //pagellaVoti ...
+        
 }
 
 

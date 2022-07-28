@@ -138,7 +138,11 @@ export const RptLineTemplate1: any = [
 	{
 		"tipo": "Table",
 		//"data": [['David', '<%objPagella.iscrizione.alunno.comuneNascita%>', 'Sweden'],['Nick', 'david@example.com', 'Sweden']],
-		"data": "<%objpagellapescamateriaintera(Italiano)%>",
+		//"data": "<%objPagella.PagellaVoti%>",
+		"head":  ['materia','obiettivi', 'livello'],
+		"data":  "<%objPagella.PagellaVoti.materia%>",
+		"data1":  "['italiano',<%objPagella.PagellaVoti.obiettivi%>, <%objPagella.PagellaVoti.livello%>]",
+
 		"font": "TitilliumWeb-Regular",
 		"X": 10,
 		"Y": 40,
