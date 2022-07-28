@@ -7,7 +7,11 @@ export const RptLineTemplate1: any = [
 		"defaultFontName": "TitilliumWeb-Regular",
 		"defaultColor":"#C04F94",
 		"defaultFontSize":20,
-		"defaultMaxWidth": 190
+		"defaultMaxWidth": 190,
+		"defaultLineColor": "#000000",
+		"defaultFillColor": "#CCCCCC",
+		"defaultLineWidth": "0.4",
+
 	},
 	
 	//#########################     COPERTINA     #########################
@@ -135,14 +139,16 @@ export const RptLineTemplate1: any = [
 		"tipo": "Cell",
 		"value": "pippo",
 		"font": "TitilliumWeb-Regular",
-		"X": 220,
-		"Y": 100,
-		"W": 200,
+		"X": 10,
+		"Y": 40,
+		"W": 190,
 		"H": 10,
 		"color":"#C04F94",
-		"lineColor":"#C04F94",
+		"lineColor":"#222222",
+		"fillColor":"#CCCCCC",
+		"lineWidth": 0.3,
 		"line": 1,
-		"align": "left"
+		"align": "center"
 	},
 
 
