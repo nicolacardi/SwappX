@@ -222,8 +222,8 @@ export class JspdfService {
     
     //let data =[['David', 'david@example.com', 'Sweden'],['Nick', 'david@example.com', 'Sweden']];
     
-    eval(data)
-QUI!!!
+    
+
 
     autoTable(docPDF, {
       //startY: Y,
