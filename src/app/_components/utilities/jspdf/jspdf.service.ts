@@ -117,7 +117,7 @@ export class JspdfService {
           break;
         }
         case "Table":{
-          this.addTable(doc,element.data,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.fillColor, element.lineWidth, element.line, element.align );
+          this.addTable(doc,element.data,element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.fillColor, element.lineWidth, element.line, element.align );
           break;
         }
         case "Line":{
@@ -199,7 +199,7 @@ export class JspdfService {
 
   }
 
-  private async addTable(docPDF: jsPDF, data: any, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, fillColor: string, lineWidth: number, line: number, align: any  ){
+  private async addTable(docPDF: jsPDF, data: any, colWidths: any, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, fillColor: string, lineWidth: number, line: number, align: any  ){
     if(fontName == null || fontName == "")    fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "")  fontColor = this.defaultColor;
     if(fontSize == null || fontSize == 0)     fontSize = this.defaultFontSize;
@@ -221,8 +221,23 @@ export class JspdfService {
     //docPDF.cell(X, Y, W, H, text, line, 'center');
     
     //let data =[['David', 'david@example.com', 'Sweden'],['Nick', 'david@example.com', 'Sweden']];
-    
-    
+
+
+    let columnStylesObj= <any>{};
+    W = 0;
+    for (let i = 0; i < colWidths.length; i++) {
+      columnStylesObj[i] = {}
+      columnStylesObj[i]["cellWidth"] = colWidths[i];
+      W = W + colWidths[i];
+    }
+
+    let dataObj= <any>{}
+
+
+
+
+
+  
 
 
     autoTable(docPDF, {
@@ -231,14 +246,26 @@ export class JspdfService {
       tableWidth: W,
       tableLineColor: lineColor,
       tableLineWidth: lineWidth,
-      body: data,
+//      body: data,
+      body: [
+        [
+          {content: data[0][0]},
+          {content: data[0][1]},
+          {content: data[0][2]},
+          {content: data[1][0]},
+          {content: data[1][1]},
+          {content: data[1][2]}
+        ]
+      ],
+      
       styles: {      
               cellWidth: W/ data[0].length,
               halign: align,
               valign: 'middle',
               fillColor: fillColor,
               minCellHeight: H,
-      }
+      },
+      columnStyles: columnStylesObj
 
       //body: [
       //   [{ 
