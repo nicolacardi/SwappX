@@ -233,7 +233,9 @@ export class JspdfService {
 
     let dataObj= <any>{}
 
-
+    for (let i = 0; i < data[0].length; i++) {
+      dataObj = data.map
+    }
 
 
 
@@ -247,16 +249,22 @@ export class JspdfService {
       tableLineColor: lineColor,
       tableLineWidth: lineWidth,
 //      body: data,
-      body: [
-        [
-          {content: data[0][0]},
-          {content: data[0][1]},
-          {content: data[0][2]},
-          {content: data[1][0]},
-          {content: data[1][1]},
-          {content: data[1][2]}
-        ]
-      ],
+      // body: data.map((obj:any) => {
+      //   return [obj[0], obj[1], obj[2]];
+      // }),  //questo funziona, ma so a priori quanti elementi ha il nested obj
+      // body: [
+
+
+        
+      //   [
+      //     {content: data[0][0]},
+      //     {content: data[0][1]},
+      //     {content: data[0][2]},
+      //     {content: data[1][0]},
+      //     {content: data[1][1]},
+      //     {content: data[1][2]}
+      //   ]
+      // ],
       
       styles: {      
               cellWidth: W/ data[0].length,
