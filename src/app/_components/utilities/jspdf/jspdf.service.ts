@@ -24,6 +24,7 @@ export class JspdfService {
   defaultFontSize!:  number;
   defaultFontName!: string;
   defaultMaxWidth!: number;
+  defaultCellLineColor!: string;
   defaultLineColor!:  string;
   defaultFillColor!:  string;
   defaultLineWidth!:  number;
@@ -77,6 +78,8 @@ export class JspdfService {
     this.defaultMaxWidth = element.defaultMaxWidth;
     this.defaultFillColor = element.defaultFillColor;
     this.defaultLineColor = element.defaultLineColor;
+    this.defaultCellLineColor = element.defaultCellLineColor;
+
     this.defaultLineWidth = element.defaultLineWidth;
 
 
@@ -117,7 +120,7 @@ export class JspdfService {
           break;
         }
         case "Table":{
-          this.addTable(doc,element.data,element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.fillColor, element.lineWidth, element.line, element.align );
+          this.addTable(doc, element.head, element.body, element.cellLineWidths, element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.cellLineColor, element.cellFills, element.fillColor, element.lineWidth, element.line, element.align, element.colSpans, element.rowSpans);
           break;
         }
         case "Line":{
@@ -199,28 +202,27 @@ export class JspdfService {
 
   }
 
-  private async addTable(docPDF: jsPDF, data: any, colWidths: any, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, fillColor: string, lineWidth: number, line: number, align: any  ){
+  private async addTable(docPDF: jsPDF, head:any, body: any, cellLineWidths: any, colWidths: any, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, cellLineColor: string, cellFills: any, fillColor: string, lineWidth: number, line: number, align: any, colSpans: any, rowSpans: any  ){
+    
+
+    
     if(fontName == null || fontName == "")    fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "")  fontColor = this.defaultColor;
     if(fontSize == null || fontSize == 0)     fontSize = this.defaultFontSize;
     if(lineColor == null || lineColor == "")  lineColor = this.defaultLineColor;
+    if(cellLineColor == null || cellLineColor == "")  cellLineColor = this.defaultCellLineColor;
     if(fillColor == null || fillColor == "")  fillColor = this.defaultFillColor;
     if(lineWidth == null || lineWidth == 0)   lineWidth = this.defaultLineWidth;
 
 
-    docPDF.setFont(fontName, fontStyle);
+    // console.log ("lineColor", lineColor);
+    // console.log ("fillColor", fillColor);
+    // console.log ("cellLineColor", cellLineColor);
+    //docPDF.setFont(fontName, fontStyle); //non sembra funzionare
+
     docPDF.setTextColor(fontColor);
     docPDF.setDrawColor(lineColor);
     docPDF.setFontSize(fontSize);
-
-    //console.log ("textsize, W",docPDF.getStringUnitWidth(text) * docPDF.getFontSize() / docPDF.internal.scaleFactor, W );
-
-    //docPDF.text("ciaoR",50,100,{align: 'right'});
-    //docPDF.text("ciaoL",50,120,{align: 'left'});
-    //docPDF.text("ciaoC",50,140,{align: 'center'});
-    //docPDF.cell(X, Y, W, H, text, line, 'center');
-    
-    //let data =[['David', 'david@example.com', 'Sweden'],['Nick', 'david@example.com', 'Sweden']];
 
 
     let columnStylesObj= <any>{};
@@ -231,31 +233,76 @@ export class JspdfService {
       W = W + colWidths[i];
     }
 
-    let dataObj= <any>{}
+    
+    let headObj: { content: any, styles:any  }[][] = [];
+    //let dataObj: { content: any;[key: string]: any }[][] = []; //in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects
+    let bodyObj: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = [];
+    //let dataObj= <any>[[{}]]; //così pensavo io...
+    let cellLineWidth : number; 
+    let cellFill: any;
+    let colSpan: any;
+    let rowSpan: any;
 
-    for (let i = 0; i < data[0].length; i++) {
-      dataObj = data.map
+    for (let i = 0; i < head.length; i++) {
+      headObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
+      for (let j = 0; j < head[i].length; j++) {
+        
+        // //estraggo lo spessore del bordo cella
+        // if (cellLineWidths == undefined || cellLineWidths == null || cellLineWidths == [] || cellLineWidths[i][j] == null || cellLineWidths [i][j] == undefined) cellLineWidth = 0.1;
+        // else cellLineWidth = cellLineWidths[i][j];
+                
+        headObj[i].push({ content: head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
+        //dataObj[i][j].content = data[i][j];//popola il primo e poi uncaught in promise Cannot set properties of undefined (setting 'content') ma solo da 0,1
+      }
+    }
+    
+
+
+    for (let i = 0; i < body.length; i++) {
+      bodyObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
+      for (let j = 0; j < body[i].length; j++) {
+        
+        //estraggo lo spessore del bordo cella
+        if (cellLineWidths == undefined || cellLineWidths == null || cellLineWidths == [] || cellLineWidths[i][j] == null || cellLineWidths [i][j] == undefined) cellLineWidth = 0.1;
+        else cellLineWidth = cellLineWidths[i][j];
+        
+        //estraggo se la cella va riempita del colore di default di riempimento
+        if (cellFills == undefined || cellFills == null || cellFills == [] || cellFills[i][j] == null || cellFills [i][j] == undefined || cellFills[i][j] ==0) cellFill = null;
+        else cellFill = this.defaultFillColor.substring(1);  //Bruttissima ma qui i colori non hanno il # davanti
+        
+        //estraggo i colSpans
+        if (colSpans == undefined || colSpans == null || colSpans == [] || colSpans[i][j] == null || colSpans [i][j] == undefined || colSpans[i][j] ==1) colSpan = 1;
+        else colSpan = colSpans[i][j];
+
+        //estraggo i rowSpans
+        if (rowSpans == undefined || rowSpans == null || rowSpans == [] || rowSpans[i][j] == null || rowSpans [i][j] == undefined || rowSpans[i][j] ==1) rowSpan = 1;
+        else rowSpan = rowSpans[i][j];
+        
+        bodyObj[i].push({ content: body[i][j], colSpan: colSpan, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+        //dataObj[i][j].content = data[i][j];//popola il primo e poi uncaught in promise Cannot set properties of undefined (setting 'content') ma solo da 0,1
+      }
     }
 
 
 
-  
-
-
+    
     autoTable(docPDF, {
       //startY: Y,
       margin: {top: Y, right: 0, bottom: 0, left: X},
       tableWidth: W,
-      tableLineColor: lineColor,
-      tableLineWidth: lineWidth,
-//      body: data,
-      // body: data.map((obj:any) => {
-      //   return [obj[0], obj[1], obj[2]];
-      // }),  //questo funziona, ma so a priori quanti elementi ha il nested obj
+      //tableLineColor: lineColor,
+      //tableLineWidth: lineWidth,  //Attenzione: attivando questa cambia il bordo ESTERNO della tabella
+      head: headObj, //Header eventualmente di più linee
+      body: bodyObj,
+
+      // **************** ALTRI MODI DI PASSARE I DATI *****************
+      // body: [[
+      //     { content: "ciao", styles: { halign: 'center', cellWidth: 10 }}, 
+      //     { content: "ciao2", rowSpan: 2, styles: { halign: 'center', lineWidth: {top: 10, right: 1, bottom: 5, left: 2} , cellWidth: 200} },
+      //     { content: "ciao2", rowSpan: 2, styles: { halign: 'center', lineWidth: 1 , cellWidth: 50} }], 
+      //       [{ content: 'nuova riga', styles: { halign: 'center', cellWidth: 10 } }]],
+
       // body: [
-
-
-        
       //   [
       //     {content: data[0][0]},
       //     {content: data[0][1]},
@@ -267,21 +314,22 @@ export class JspdfService {
       // ],
       
       styles: {      
-              cellWidth: W/ data[0].length,
+              //cellWidth: W/ data[0].length,
               halign: align,
               valign: 'middle',
               fillColor: fillColor,
               minCellHeight: H,
       },
-      columnStyles: columnStylesObj
-
-      //body: [
-      //   [{ 
-      //     content: "ciao",
-      //     styles: { 
-      //     }
-      //   }],
-      // ],
+      columnStyles: columnStylesObj,
+      headStyles: {
+        lineWidth: 0.1,
+      },
+      // didDrawCell: (data) => {
+      //   if (data.section === 'head') {
+      //     docPDF.text("ciao",10,10);
+      //   }
+      // },
+      
     })
 
   }
