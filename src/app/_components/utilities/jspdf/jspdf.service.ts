@@ -11,8 +11,7 @@ import { DOC_Pagella } from 'src/app/_models/DOC_Pagella.js';
 import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto.js';
 
 import { RptLineTemplate1 } from 'src/app/_reports/rptPagella';
-import * as internal from 'stream';
-import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -29,11 +28,8 @@ export class JspdfService {
   defaultFillColor!:  string;
   defaultLineWidth!:  number;
 
-
-
   rptPagella!: DOC_Pagella ;
   rptPagellaVoti!: DOC_PagellaVoto[];
-
 
   constructor(private http: HttpClient) {}
 
@@ -57,21 +53,24 @@ export class JspdfService {
     }
     doc.save(fileName);
   }
-
-  
   
   public async dynamicRptPagella(objPagella: DOC_Pagella) : Promise<jsPDF> {
 
+    //[### AS ### todo!] aggiungere riferimento a Doc_PagellaVoto in DOC_Pagella
 
     this.rptPagella = objPagella;
 
     //Il primo elemento di RptLineTemplate1 DEVE essere SheetSize
+    
+    //[### AS ### todo!] trap errore
+
     let pageW: number = 0;
     let pageH: number = 0;
     
     let element = RptLineTemplate1[0]
     pageW= parseInt(element.width);
     pageH= parseInt(element.heigth);
+
     this.defaultColor = element.defaultColor;
     this.defaultFontSize = element.defaultFontSize;
     this.defaultFontName = element.defaultFontName;
@@ -79,10 +78,7 @@ export class JspdfService {
     this.defaultFillColor = element.defaultFillColor;
     this.defaultLineColor = element.defaultLineColor;
     this.defaultCellLineColor = element.defaultCellLineColor;
-
     this.defaultLineWidth = element.defaultLineWidth;
-
-
 
     if(element.tipo != "SheetSize"){
       let doc : jsPDF  = new jsPDF('l', 'mm', [100 , 100]);  
@@ -94,8 +90,6 @@ export class JspdfService {
     doc.setFont('TitilliumWeb-Regular', 'normal');
     //a questo punto ho impostato il documento
 
-
-    
     //############### lettura file/rpt source e loop sui tags
     
     //LA PROMISE.ALL NON SI COMPORTA COME SE CHIAMASSE TUTTE LE FUNZIONI IN MANIERA SINCRONA
@@ -120,6 +114,13 @@ export class JspdfService {
           break;
         }
         case "Table":{
+          console.log("DEBUG AS - element.data: " ,element.data);
+
+          console.log("DEBUG AS - objPagella: " ,objPagella);
+          console.log("DEBUG AS - eval(element.data): " ,eval(element.data));
+          //console.log("parseTextValue: " , fieldRef);
+
+
           this.addTable(doc, element.head, element.body, element.cellLineWidths, element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.cellLineColor, element.cellFills, element.fillColor, element.lineWidth, element.line, element.align, element.colSpans, element.rowSpans);
           break;
         }
@@ -144,40 +145,6 @@ export class JspdfService {
     return doc;
   }
 
-  private parseTextValue ( text: string) : string {
-
-    let retString = "";
-    let outArr: any = [];
-
-    if(text.indexOf("%>") <= 0)
-      retString = text;
-    else{
-      let textArr = text.split("%>");
-
-      textArr.forEach((txt,index) => {
-          let tmpArr = txt.split("<%");
-
-          outArr.push(tmpArr[0]);
-          if(tmpArr[1] != undefined){
-            
-            //objPagella deve diventare -->  this.rptPagella 
-            let fieldRef = tmpArr[1].replace("obj", "this.rpt");
-            
-            if(fieldRef.toLocaleLowerCase().startsWith("formatdate")) 
-              fieldRef = "this." + fieldRef; 
-
-            if(fieldRef.toLocaleLowerCase().startsWith("formatnumber")) 
-              fieldRef = "this." + fieldRef; 
-
-            //console.log("parseTextValue: " , fieldRef);
-            outArr.push(eval(fieldRef));
-          }
-        }
-      );
-      retString = outArr.join('');
-    }
-    return retString;
-  }
 
 //#region ADDTEXT ADDTABLE ADDIMAGE ADDLINE ADDRECT ###################################################################################
 
@@ -187,7 +154,6 @@ export class JspdfService {
     if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
     if(maxWidth == null || maxWidth == 0) maxWidth = this.defaultMaxWidth;
 
-    
     docPDF.setFont(fontName, fontStyle);
     docPDF.setTextColor(fontColor);
     docPDF.setFontSize(fontSize);
@@ -204,8 +170,6 @@ export class JspdfService {
 
   private async addTable(docPDF: jsPDF, head:any, body: any, cellLineWidths: any, colWidths: any, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, cellLineColor: string, cellFills: any, fillColor: string, lineWidth: number, line: number, align: any, colSpans: any, rowSpans: any  ){
     
-
-    
     if(fontName == null || fontName == "")    fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "")  fontColor = this.defaultColor;
     if(fontSize == null || fontSize == 0)     fontSize = this.defaultFontSize;
@@ -213,7 +177,6 @@ export class JspdfService {
     if(cellLineColor == null || cellLineColor == "")  cellLineColor = this.defaultCellLineColor;
     if(fillColor == null || fillColor == "")  fillColor = this.defaultFillColor;
     if(lineWidth == null || lineWidth == 0)   lineWidth = this.defaultLineWidth;
-
 
     // console.log ("lineColor", lineColor);
     // console.log ("fillColor", fillColor);
@@ -224,7 +187,6 @@ export class JspdfService {
     docPDF.setDrawColor(lineColor);
     docPDF.setFontSize(fontSize);
 
-
     let columnStylesObj= <any>{};
     W = 0;
     for (let i = 0; i < colWidths.length; i++) {
@@ -233,7 +195,6 @@ export class JspdfService {
       W = W + colWidths[i];
     }
 
-    
     let headObj: { content: any, styles:any  }[][] = [];
     //let dataObj: { content: any;[key: string]: any }[][] = []; //in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects
     let bodyObj: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = [];
@@ -245,18 +206,11 @@ export class JspdfService {
 
     for (let i = 0; i < head.length; i++) {
       headObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
-      for (let j = 0; j < head[i].length; j++) {
-        
+      for (let j = 0; j < head[i].length; j++) {        
         // //estraggo lo spessore del bordo cella
-        // if (cellLineWidths == undefined || cellLineWidths == null || cellLineWidths == [] || cellLineWidths[i][j] == null || cellLineWidths [i][j] == undefined) cellLineWidth = 0.1;
-        // else cellLineWidth = cellLineWidths[i][j];
-                
         headObj[i].push({ content: head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
-        //dataObj[i][j].content = data[i][j];//popola il primo e poi uncaught in promise Cannot set properties of undefined (setting 'content') ma solo da 0,1
       }
     }
-    
-
 
     for (let i = 0; i < body.length; i++) {
       bodyObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
@@ -279,13 +233,9 @@ export class JspdfService {
         else rowSpan = rowSpans[i][j];
         
         bodyObj[i].push({ content: body[i][j], colSpan: colSpan, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
-        //dataObj[i][j].content = data[i][j];//popola il primo e poi uncaught in promise Cannot set properties of undefined (setting 'content') ma solo da 0,1
       }
     }
 
-
-
-    
     autoTable(docPDF, {
       //startY: Y,
       margin: {top: Y, right: 0, bottom: 0, left: X},
@@ -331,7 +281,6 @@ export class JspdfService {
       // },
       
     })
-
   }
 
   private async addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
@@ -401,6 +350,40 @@ export class JspdfService {
 
 
  
+private parseTextValue ( text: string) : string {
+
+  let retString = "";
+  let outArr: any = [];
+
+  if(text.indexOf("%>") <= 0)
+    retString = text;
+  else{
+    let textArr = text.split("%>");
+
+    textArr.forEach((txt,index) => {
+        let tmpArr = txt.split("<%");
+
+        outArr.push(tmpArr[0]);
+        if(tmpArr[1] != undefined){
+          
+          //objPagella deve diventare -->  this.rptPagella 
+          let fieldRef = tmpArr[1].replace("obj", "this.rpt");
+          
+          if(fieldRef.toLocaleLowerCase().startsWith("formatdate")) 
+            fieldRef = "this." + fieldRef; 
+
+          if(fieldRef.toLocaleLowerCase().startsWith("formatnumber")) 
+            fieldRef = "this." + fieldRef; 
+
+          //console.log("parseTextValue: " , fieldRef);
+          outArr.push(eval(fieldRef));
+        }
+      }
+    );
+    retString = outArr.join('');
+  }
+  return retString;
+}
 
   public FormatDate ( data: any, formato: string): string {
     let retDate= data;
@@ -418,10 +401,9 @@ export class JspdfService {
     }
     return retDate;
   }
-  public FormatNumber ( data: any, n_dec: number): string {
 
+  public FormatNumber ( data: any, n_dec: number): string {
     return Number(data).toFixed(n_dec);
-     
   }
 
   //crea e scarica il report con la tabella dei dati della pagina   Metodo che include AUTOTABLE
@@ -556,9 +538,6 @@ export class JspdfService {
     })
 //#endregion FINE AUTOTABLE ***************************************************************
 
-
-
-
     // doc.text("jspdf funziona + o - come fpdf che io uso, ma ha moltissimi metodi suoi", 10, 10);
     // doc.text("In questo punto scrivo quello che mi pare", 100, 100);
     // doc.text("E anche in questo punto qui", 60, 110);
@@ -589,7 +568,7 @@ export class JspdfService {
   }
 
 
-  flattenObj (arrToFlatten: any){
+    flattenObj (arrToFlatten: any){
     //questa funzione serve per schiacciare un Object
     //e restituire campi del tipo alunno.nome, alunno.cognome invece di alunno {nome:..., cognome:...}
       let result : any = {};
@@ -610,16 +589,13 @@ export class JspdfService {
       return result;
     };
   
-  
-  
     flatDeep(arr: any, d = 1) {
       //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
       //questa funzione schiaccia un array (non un object, attenzione)
       return d > 0 ? arr.reduce((acc: any, val: any) => acc.concat(Array.isArray(val) ? this.flatDeep(val, d - 1) : val), [])
                    : arr.slice();
     };
-  
-  
+
     deletePropertyPath (obj: any, path: any) {
       //https://stackoverflow.com/questions/40712249/deleting-nested-property-in-javascript-object
       //questa funzione cancella una nested property passandogli il percorso da eliminare in forma: alunno.nome
@@ -637,8 +613,6 @@ export class JspdfService {
       }
       delete obj[path.pop()];
     };
-  
-  
   
     propertiesToArray(obj: any) {
       //let keyNames = Object.keys(Object); //estrae solo i nomi delle prorietà di primo livello
@@ -661,12 +635,6 @@ export class JspdfService {
       }
       return paths(obj);
     }
-
-   
-
-
-
-
 
 
 }

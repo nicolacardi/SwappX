@@ -12,7 +12,6 @@ export const RptLineTemplate1: any = [
 		"defaultCellLineColor": "000000",
 		"defaultFillColor": "#CCCCCC",
 		"defaultLineWidth": "0.4",
-
 	},
 	
 	//#########################     COPERTINA     #########################
@@ -123,9 +122,7 @@ export const RptLineTemplate1: any = [
 		"Y": 25,
 		"fontSize": 16,
 		"align": "center" 
-	}
-,
-
+	},
 	{
 		"tipo": "Text",
 		"value": "- SECONDO QUADRIMESTRE -",
@@ -135,17 +132,20 @@ export const RptLineTemplate1: any = [
 		"fontSize": 16,
 		"align": "center" 
 	},
-
 	{
 		"tipo": "Table",
 		//"data": [['David', '<%objPagella.iscrizione.alunno.comuneNascita%>', 'Sweden'],['Nick', 'david@example.com', 'Sweden']],
 		//"data": "<%objPagella.PagellaVoti%>",
 		"head":  [['Materia', '', 'Obiettivi di Apprendimento','','Livello Raggiunto', '',  'Giudizio Descrittivo']],
-		//"data":  "<%objPagella.PagellaVoti.materia%>",
+		"data":  "objPagella.PagellaVoti",
 		//"data1":  "['italiano',<%objPagella.PagellaVoti.obiettivi%>, <%objPagella.PagellaVoti.livello%>]",
-		"body":  			[['Italiano', '', 'ascoltare e comprendere narrazioni o letture orali cogliendone il senso globale e le informazioni principali.','', 'Avanzato', '', "Nel corso dell'anno Alice ha mostrato interesse e curiosità per la lettura e la scrittura. Interviene volentieri e in modo appropriato rivelando un linguaggio fluido e preciso. Nella scrittura il gesto è sicuro, pulito e ordinato. Riconosce e sa usare i grafemi in stampato maiuscolo."],
-		['', 'partecipare a una conversazione, rispettando le regole della comunicazione, intervenendo in modo pertinente.', '', 'Avanzato', ''],
-		['', 'riconoscere i grafemi in stampato maiuscolo e associarli correttamente ai fonemi.', '', 'Base', '']],
+
+		"body":  			[
+			['Italiano', '', 'ascoltare e comprendere narrazioni o letture orali cogliendone il senso globale e le informazioni principali.','', 'Avanzato', '', "Nel corso dell'anno Alice ha mostrato interesse e curiosità per la lettura e la scrittura. Interviene volentieri e in modo appropriato rivelando un linguaggio fluido e preciso. Nella scrittura il gesto è sicuro, pulito e ordinato. Riconosce e sa usare i grafemi in stampato maiuscolo."],
+			['', 'partecipare a una conversazione, rispettando le regole della comunicazione, intervenendo in modo pertinente.', '', 'Avanzato', ''],
+			['', 'riconoscere i grafemi in stampato maiuscolo e associarli correttamente ai fonemi.', '', 'Base', '']
+		],
+		
 		"cellLineWidths": 	[[0.1,0,0.1,0,0.1,0, 0.1],[0,0.1,0,0.1,0,0.1], [0,0.1,0,0.1,0, 0.1]],  //ATTENZIONE: il bordo finisce "sotto" alla cella.Meglio tenerlo sottile
 		"cellFills": 		[[0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0]],
 		"colSpans": 		[[1,1,1,1,1,1,1], [1,1,1,1,1,1,1], [1,1,1,1,1,1,1]],

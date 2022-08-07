@@ -1,4 +1,5 @@
 import { CLS_Iscrizione } from "./CLS_Iscrizione";
+import { DOC_PagellaVoto } from "./DOC_PagellaVoto";
 
 export interface DOC_Pagella {
         id?:                    number;
@@ -13,9 +14,7 @@ export interface DOC_Pagella {
         userUpd?:               number;
 
         iscrizione?:            CLS_Iscrizione;
-
-        //pagellaVoti ...
-        
+        PagellaVoti?:           DOC_PagellaVoto[];
 }
 
 
