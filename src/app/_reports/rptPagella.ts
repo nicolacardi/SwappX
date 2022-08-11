@@ -139,7 +139,7 @@ export const RptLineTemplate1: any = [
 
 		//"data": [['David', '<%objPagella.iscrizione.alunno.comuneNascita%>', 'Sweden'],['Nick', 'david@example.com', 'Sweden']],
 		//"data": "<%objPagella.PagellaVoti%>",
-		"head":  [['Materia', '', 'Obiettivi di Apprendimento','','Livello Raggiunto', '',  'Giudizio Descrittivo']],
+		//"head":  [['Materia', '', 'Obiettivi di Apprendimento','','Livello Raggiunto', '',  'Giudizio Descrittivo']],
 		//"data":  "<%objPagella.PagellaVoti.materia%>",
 		//"data1":  "['italiano',<%objPagella.PagellaVoti.obiettivi%>, <%objPagella.PagellaVoti.livello%>]",
 
