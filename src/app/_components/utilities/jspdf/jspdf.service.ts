@@ -120,7 +120,7 @@ export class JspdfService {
           break;
         }
         case "Table":{
-          this.addTable(doc, element.head, element.body, element.cellLineWidths, element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.cellLineColor, element.cellFills, element.fillColor, element.lineWidth, element.line, element.align, element.colSpans, element.rowSpans);
+          this.addTable(doc, element.head, element.headEmptyRow, element.body, element.cellLineWidths, element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.cellLineColor, element.cellFills, element.fillColor, element.lineWidth, element.line, element.align, element.colSpans, element.rowSpans);
           break;
         }
         case "Line":{
@@ -202,7 +202,7 @@ export class JspdfService {
 
   }
 
-  private async addTable(docPDF: jsPDF, head:any, body: any, cellLineWidths: any, colWidths: any, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, cellLineColor: string, cellFills: any, fillColor: string, lineWidth: number, line: number, align: any, colSpans: any, rowSpans: any  ){
+  private async addTable(docPDF: jsPDF, head:any, headEmptyRow: number, body: any, cellLineWidths: any, colWidths: any, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, cellLineColor: string, cellFills: any, fillColor: string, lineWidth: number, line: number, align: any, colSpans: any, rowSpans: any  ){
     
 
     
@@ -235,41 +235,63 @@ export class JspdfService {
 
     
     let headObj: { content: any, styles:any  }[][] = [];
-    //let dataObj: { content: any;[key: string]: any }[][] = []; //in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects
-    let bodyObj: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = [];
-    //let dataObj= <any>[[{}]]; //così pensavo io...
+    let bodyObj: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = []; ///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects    //let dataObj= <any>[[{}]]; //così pensavo io...ma non funzionava
     let cellLineWidth : number; 
     let cellFill: any;
     let colSpan: any;
     let rowSpan: any;
+    let i: number; //serve definirlo fuori dal ciclo for perchè poi serve tenere l'ultimo valore
 
-    for (let i = 0; i < head.length; i++) {
+    for (i = 0; i < head.length; i++) {
       headObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
       for (let j = 0; j < head[i].length; j++) {
-        
-        // //estraggo lo spessore del bordo cella
-        // if (cellLineWidths == undefined || cellLineWidths == null || cellLineWidths == [] || cellLineWidths[i][j] == null || cellLineWidths [i][j] == undefined) cellLineWidth = 0.1;
-        // else cellLineWidth = cellLineWidths[i][j];
-                
         headObj[i].push({ content: head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
-        //dataObj[i][j].content = data[i][j];//popola il primo e poi uncaught in promise Cannot set properties of undefined (setting 'content') ma solo da 0,1
       }
     }
-    
 
+    //aggiunta riga vuota dopo l'header
+    if (headEmptyRow ==1) {
+      headObj.push([]);
+      for (let j = 0; j < head[0].length; j++) {
+        headObj[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
+      }
+    }
 
     for (let i = 0; i < body.length; i++) {
       bodyObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
       for (let j = 0; j < body[i].length; j++) {
-        
+
         //estraggo lo spessore del bordo cella
         if (cellLineWidths == undefined || cellLineWidths == null || cellLineWidths == [] || cellLineWidths[i][j] == null || cellLineWidths [i][j] == undefined) cellLineWidth = 0.1;
         else cellLineWidth = cellLineWidths[i][j];
+
+        //estraggo il riempimento: NB nell'array di array sta solo scritto se riempire (1) o no (0). Il colore va preso dal colore di default
+        if (cellFills == undefined || cellFills == null || cellFills == [] || cellFills[i][j] == null || cellFills[i][j] == undefined || cellFills[i][j] == 0) cellFill = null;
+        else cellFill = this.defaultFillColor.substring(1);
         
+
         //estraggo se la cella va riempita del colore di default di riempimento
-        if (cellFills == undefined || cellFills == null || cellFills == [] || cellFills[i][j] == null || cellFills [i][j] == undefined || cellFills[i][j] ==0) cellFill = null;
-        else cellFill = this.defaultFillColor.substring(1);  //Bruttissima ma qui i colori non hanno il # davanti
+        // if (cellFills[i] != undefined) {                        //se la riga i-esima è stato passata
+        //   if (cellFills [i][j] == null || cellFills[i][j] == 0)
+        //       {cellFill = null;
+        //       //console.log ("1")
+        //       }                                //nel caso la riga ci sia ma vuota o con 0
+        //   else 
+        //       {cellFill = this.defaultFillColor.substring(1);
+        //       //  console.log ("2")
+        //       }  //se la riga c'è e non è vuota nè 0
+        // } else {
+        //   if (cellFills[0][j]!=0)                               //se la riga i-esima non è stata passata vado a vedere la prima
+        //       {this.defaultFillColor.substring(1);
+        //       //  console.log ("3")
+        //       }
+        //   else                                                  //se anche la prima è = 0...
+        //       {cellFill = null;
+        //       //  console.log ("4")
+        //       }
+        // } 
         
+
         //estraggo i colSpans
         if (colSpans == undefined || colSpans == null || colSpans == [] || colSpans[i][j] == null || colSpans [i][j] == undefined || colSpans[i][j] ==1) colSpan = 1;
         else colSpan = colSpans[i][j];
@@ -279,13 +301,12 @@ export class JspdfService {
         else rowSpan = rowSpans[i][j];
         
         bodyObj[i].push({ content: body[i][j], colSpan: colSpan, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
-        //dataObj[i][j].content = data[i][j];//popola il primo e poi uncaught in promise Cannot set properties of undefined (setting 'content') ma solo da 0,1
       }
     }
 
 
 
-    
+    console.log ("bodyObj", bodyObj);
     autoTable(docPDF, {
       //startY: Y,
       margin: {top: Y, right: 0, bottom: 0, left: X},
@@ -329,6 +350,22 @@ export class JspdfService {
       //     docPDF.text("ciao",10,10);
       //   }
       // },
+      willDrawCell: (data) => {
+
+        let cellContent = '';
+        for (let i = 0; i < data.cell.text.length; i++) {
+          cellContent = cellContent + data.cell.text[i];
+        }
+
+         //if (data.section === 'body' && data.cell.text[0].substring(0,3)== "R90" ) {
+        if (data.section === 'body' && cellContent.substring(0,3)== "R90" ) {
+          docPDF.setFontSize(16);
+          docPDF.text(cellContent.substring(3), data.cell.x + data.cell.width /2 + 2 , data.cell.y + data.cell.height - 5, {angle:90});
+          for (let k = 0; k < data.cell.text.length; k++) {
+            data.cell.text[k] = '';
+          }
+         }
+      },
       
     })
 
