@@ -13,8 +13,8 @@
 
             <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
             <ng-container matColumnDef="descrizione">
-                <th mat-header-cell *matHeaderCellDef  class="w125px">Obiettivo</th>
-                <td mat-cell *matCellDef="let element">{{element.obiettivo.descrizione}}</td>
+                <th mat-header-cell *matHeaderCellDef  class="w300px">Obiettivo</th>
+                <td mat-cell class="mw300px" *matCellDef="let element" matTooltip="{{element.obiettivo.descrizione}}">{{element.obiettivo.descrizione}}</td>
             </ng-container>
 
             <ng-container matColumnDef="livello">

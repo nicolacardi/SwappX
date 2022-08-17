@@ -169,7 +169,7 @@ export class PagellaVotoEditComponent implements OnInit  {
 
     const dialogConfig : MatDialogConfig = {
     panelClass: 'add-DetailDialog',
-    width: '500px',
+    width: '600px',
     height: '300px',
     data: {
         iscrizioneID:         this.objPagella.iscrizioneID,
