@@ -9,6 +9,7 @@
         </ng-container>
 
 <!--#region  Primo Quadrimestre **************************************** -->
+<!--A seconda del tipo di voto (1,2,3) compare la input, la mat select oppure l'icona del (+) che apre la finestra di dialogo degli obiettivi-->
         <ng-container matColumnDef="multiVoto">
             <th mat-header-cell *matHeaderCellDef class="w125px">Voto</th>
             <td mat-cell *matCellDef="let element">    
@@ -26,7 +27,7 @@
                 </mat-select>
 
                 <mat-icon *ngIf="element.tipoVotoID == 3" class="pointer" (click) = "openObiettivi(element)">add_circle_outline</mat-icon>
-                <mat-label class="fs10" *ngIf="element.tipoVotoID == 3" >{{element.countVotiObiettivi}}/{{element.countTotObiettivi}} </mat-label> 
+                <mat-label class="fs10" *ngIf="element.tipoVotoID == 3" [ngClass]="{'_col-red': element.countVotiObiettivi<element.countTotObiettivi}">{{element.countVotiObiettivi}}/{{element.countTotObiettivi}} </mat-label> 
             
                 <mat-label class="_warning" *ngIf="element.tipoVotoID == null">Indicazione<br>tipo voto<br> mancante</mat-label>
             </td>

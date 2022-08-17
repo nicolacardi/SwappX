@@ -1406,3 +1406,12 @@ div.inner img {
         border-radius: 50%;
         border: 1px solid rgb(220, 220, 220);
     }
+
+    ._col-red {
+        color:white;
+        background-color: red;
+        padding-right: 5px;
+        padding-left: 5px;
+        
+        border-radius: 2px;
+    }
