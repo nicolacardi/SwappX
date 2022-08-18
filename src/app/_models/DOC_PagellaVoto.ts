@@ -4,7 +4,7 @@ import { MAT_Materia } from "./MAT_Materia";
 
 export interface DOC_PagellaVoto {
         id?:                    number;
-        pagellaID?:             number;
+        pagellaID?:             number;                         //verificare nullable ????
         materiaID:              number;
 
         ckFrequenza:            boolean;
@@ -22,7 +22,6 @@ export interface DOC_PagellaVoto {
         userUpd?:               number;
 
         tipoVotoID?:            number;
-
 
         materia?:               MAT_Materia;
         iscrizione?:            CLS_Iscrizione

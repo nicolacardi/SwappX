@@ -12,10 +12,11 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 //classes
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
-import { PagellaVotoEditComponent } from '../pagella-voto-edit/pagella-voto-edit.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { DOC_File } from 'src/app/_models/DOC_File';
+import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto';
+import { PagellaVotiService } from '../pagella-voti.service';
 
 @Component({
   selector: 'app-pagelle-edit',
@@ -26,23 +27,28 @@ export class PagellaEditComponent implements OnInit {
 
 //#region ----- Variabili -------
   public objPagella!:                            DOC_Pagella;  
+  lstPagellaVoti!:                               DOC_PagellaVoto[];
+
   dtIns!:                                        string;
 
   periodo!:                                      number;
   toggleQuadVal!:                                number;
   
   ckStampato!:                                   boolean;  
-  formDataFile! :                                 DOC_File;
+  formDataFile! :                                DOC_File;
 //#endregion  
 
 //#region ----- ViewChild Input Output -------
   @Input('iscrizioneID') iscrizioneID!:          number;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:          number;
+
   @ViewChild('toggleQuad') toggleQuad!:           MatButtonToggle;
-  @ViewChild(PagellaVotoEditComponent) viewPagellaVotoEdit!: PagellaVotoEditComponent; 
+  //@ViewChild(PagellaVotoEditComponent) viewPagellaVotoEdit!: PagellaVotoEditComponent; 
+
 //#endregion  
 
   constructor(private svcPagelle:               PagelleService,
+              private svcPagellaVoti:           PagellaVotiService,
               private svcFiles:                 FilesService,
               private _loadingService:          LoadingService,
               private _snackBar:                MatSnackBar ,
@@ -65,27 +71,33 @@ export class PagellaEditComponent implements OnInit {
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagelle$);
 
     loadPagella$.pipe (
-      map(val=>val.filter(val=>(val.periodo == toggleQuad)))
-    ).subscribe(val =>  {
-
-        if (val.length != 0)  {
-          this.objPagella = val[0];
-          this.dtIns = val[0].dtIns!;
-        }
-        else {
-          const d = new Date();
-          d.setSeconds(0,0);
-          let dateNow = d.toISOString().split('.')[0];
+      map(val=>val.filter(val=>(val.periodo == toggleQuad))))
+        .subscribe(val =>  {
+          if (val.length != 0)  {
+            this.objPagella = val[0];
+            this.dtIns = val[0].dtIns!;
+          }
+          else {
+            const d = new Date();
+            d.setSeconds(0,0);
+            let dateNow = d.toISOString().split('.')[0];
+            
+            this.objPagella = <DOC_Pagella>{};
+            this.objPagella.id = -1;
+            this.objPagella.iscrizioneID = this.iscrizioneID;
+            this.objPagella.periodo = this.periodo;
+            this.objPagella.dtIns = dateNow;
+            this.ckStampato = false;
+            this.dtIns = '';
+          }
           
-          this.objPagella = <DOC_Pagella>{};
-          this.objPagella.id = -1;
-          this.objPagella.iscrizioneID = this.iscrizioneID;
-          this.objPagella.periodo = this.periodo;
-          this.objPagella.dtIns = dateNow;
-          this.ckStampato = false;
-          this.dtIns = '';
+          if(this.objPagella.iscrizione != undefined){
+            this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnno.classeSezione.classeID,this.objPagella.id! )
+              .subscribe(
+                res => this.lstPagellaVoti = res
+              );
+          }
         }
-      }
     );
   }
 
@@ -141,8 +153,21 @@ export class PagellaEditComponent implements OnInit {
       return;
     }
 
+    
+/*
+    let PagellaVoti: DOC_PagellaVoto[];
+    this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnnoID!,this.objPagella.id! )
+      .subscribe( res =>{
+        PagellaVoti = res
+        }
+      );
+      */
+
     //Chiamata al motore di stampa
-    let rpt :jsPDF  = await this._jspdf.dynamicRptPagella(this.objPagella) ;
+    //let rpt :jsPDF  = await this._jspdf.dynamicRptPagella(this.objPagella);
+    let rpt :jsPDF  = await this._jspdf.dynamicRptPagella(this.objPagella, this.lstPagellaVoti);
+
+   
 
     //Preparazione Blob con il contenuto base64 del pdf
     let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});

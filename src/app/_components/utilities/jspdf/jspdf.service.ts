@@ -54,10 +54,11 @@ export class JspdfService {
     doc.save(fileName);
   }
   
-  public async dynamicRptPagella(objPagella: DOC_Pagella) : Promise<jsPDF> {
+  public async dynamicRptPagella(objPagella: DOC_Pagella, lstPagellaVoti: DOC_PagellaVoto[]) : Promise<jsPDF> {
 
-    //[### AS ### todo!] aggiungere riferimento a Doc_PagellaVoto in DOC_Pagella
+    //TODO: lstPagellaVoti
 
+    
     this.rptPagella = objPagella;
 
     //Il primo elemento di RptLineTemplate1 DEVE essere SheetSize
