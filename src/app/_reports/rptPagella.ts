@@ -1,7 +1,8 @@
 export const RptLineTemplate1: any = [
+	
 	//#########################     IMPOSTAZIONI     #########################
 	{
-		"tipo": "SheetSize",
+		"tipo": "SheetDefault",
 		"width": 420,
 		"heigth": 297,
 		"defaultFontName": "TitilliumWeb-Regular",

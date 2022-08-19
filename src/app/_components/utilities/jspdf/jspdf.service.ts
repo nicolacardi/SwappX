@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { jsPDF } from 'jspdf';
-import { Utility } from  '../utility.component';
 import autoTable from 'jspdf-autotable';
 import { HttpClient } from '@angular/common/http';
 
@@ -56,11 +55,11 @@ export class JspdfService {
   
   public async dynamicRptPagella(objPagella: DOC_Pagella, lstPagellaVoti: DOC_PagellaVoto[]) : Promise<jsPDF> {
 
-    //TODO: lstPagellaVoti
-
-    
     this.rptPagella = objPagella;
+    this.rptPagellaVoti = lstPagellaVoti;
 
+    console.log("rptPagellaVoti : ", this.rptPagellaVoti)
+    
     //Il primo elemento di RptLineTemplate1 DEVE essere SheetSize
     
     //[### AS ### todo!] trap errore
@@ -69,6 +68,13 @@ export class JspdfService {
     let pageH: number = 0;
     
     let element = RptLineTemplate1[0]
+
+    if(element.tipo != "SheetDefault"){
+      let doc : jsPDF  = new jsPDF('l', 'mm', [100 , 100]);  
+      doc.text("ERRORE: manca il tag [SheetDefault] in rptPagella",10, 50);
+      return doc;
+    }
+
     pageW= parseInt(element.width);
     pageH= parseInt(element.heigth);
 
@@ -80,12 +86,6 @@ export class JspdfService {
     this.defaultLineColor = element.defaultLineColor;
     this.defaultCellLineColor = element.defaultCellLineColor;
     this.defaultLineWidth = element.defaultLineWidth;
-
-    if(element.tipo != "SheetSize"){
-      let doc : jsPDF  = new jsPDF('l', 'mm', [100 , 100]);  
-      doc.text("ERRORE: manca il tag [SheetSize] in rptPagella",10, 50);
-      return doc;
-    }
   
     let doc : jsPDF  = new jsPDF('l', 'mm', [pageW , pageH]);   //A3
     doc.setFont('TitilliumWeb-Regular', 'normal');
@@ -103,7 +103,7 @@ export class JspdfService {
     for (let i = 1; i < RptLineTemplate1.length; i++) {
       let element = RptLineTemplate1[i];
       switch(element.tipo){
-        case "SheetSize":
+        case "SheetDefault":
           break;
         case "Image":{
           const ImageUrl = "../../assets/photos/" + element.value;
@@ -115,6 +115,7 @@ export class JspdfService {
           break;
         }
         case "Table":{
+
           this.addTable(doc, element.head, element.headEmptyRow, element.body, element.cellLineWidths, element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.cellLineColor, element.cellFills, element.fillColor, element.lineWidth, element.line, element.align, element.colSpans, element.rowSpans);
           break;
         }
@@ -678,8 +679,6 @@ private parseTextValue ( text: string) : string {
       }
       return paths(obj);
     }
-
-
 }
 
 
@@ -766,9 +765,6 @@ private parseTextValue ( text: string) : string {
     return doc;
   }
   */
-
-
-
   /*
 
 
