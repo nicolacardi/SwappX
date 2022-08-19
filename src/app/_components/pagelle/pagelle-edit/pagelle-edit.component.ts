@@ -91,14 +91,16 @@ export class PagellaEditComponent implements OnInit {
             this.dtIns = '';
           }
           
-          if(this.objPagella.iscrizione != undefined){
-            this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnno.classeSezione.classeID,this.objPagella.id! )
-              .subscribe(
-                res => this.lstPagellaVoti = res
-              );
-          }
+          // if(this.objPagella.iscrizione != undefined){
+          //   this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnno.classeSezione.classeID,this.objPagella.id! )
+          //     .subscribe(
+          //       res => {this.lstPagellaVoti = res; }
+
+          //     );
+          // }
         }
     );
+    
   }
 
   quadClick(e: MatButtonToggleChange) {
@@ -126,6 +128,7 @@ export class PagellaEditComponent implements OnInit {
       return;
     }
     
+
     this.svcFiles.getByDocAndTipo(this.objPagella.id,"Pagella").subscribe(
         res => {
           //console.log("[openPdfPagella] - base64: ", res.fileBase64);
@@ -153,6 +156,8 @@ export class PagellaEditComponent implements OnInit {
       return;
     }
 
+
+    
     
 /*
     let PagellaVoti: DOC_PagellaVoto[];
@@ -165,6 +170,23 @@ export class PagellaEditComponent implements OnInit {
 
     //Chiamata al motore di stampa
     //let rpt :jsPDF  = await this._jspdf.dynamicRptPagella(this.objPagella);
+
+
+    //costruiamo una promise per attendere il caricamento della lista voti
+    const reloadLstPagellaVoti = () => new Promise((resolve, reject) => {
+        if(this.objPagella.iscrizione != undefined){
+          this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnno.classeSezione.classeID,this.objPagella.id! )
+            .subscribe(
+              (res: DOC_PagellaVoto[]) => {
+                this.lstPagellaVoti = res;
+                resolve ("messaggio eventuale");
+              }
+            );
+        }
+      });
+    
+    await reloadLstPagellaVoti();
+
     let rpt :jsPDF  = await this._jspdf.dynamicRptPagella(this.objPagella, this.lstPagellaVoti);
 
    
@@ -206,4 +228,17 @@ export class PagellaEditComponent implements OnInit {
     );
     this.svcPagelle.setStampato(this.objPagella.id!, true).subscribe();
   }
+
+
+     // let promise = new Promise ((resolve, reject) => {
+    //   setTimeout (() => {
+    //     resolve ("done");
+    //     console.log ("done");
+    // }, 1000)
+    // });
+
+
+
+
+
 }

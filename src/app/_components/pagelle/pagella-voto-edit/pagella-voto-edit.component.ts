@@ -77,19 +77,20 @@ export class PagellaVotoEditComponent implements OnInit  {
     loadPagella$.subscribe(val => this.matDataSource.data = val );
   }
 
-  changeSelectGiudizio(formData: DOC_PagellaVoto, tipoGiudizioID: number, quad: number) {
+  changeSelectGiudizio(formData: DOC_PagellaVoto, tipoGiudizioID: number) {
 
     if (formData.tipoGiudizioID == null) 
         formData.tipoGiudizioID = 1;
 
     formData.pagellaID = this.objPagella.id;
+    formData.tipoGiudizioID = tipoGiudizioID;
     let formData2 = Object.assign({}, formData);
     this.save(formData2)
 
     if (this.objPagella.ckStampato) this.resetStampato();
   }
 
-  changeVoto(formData: DOC_PagellaVoto, voto: any, quad: number) {
+  changeVoto(formData: DOC_PagellaVoto, voto: any) {
 
     let votoN = parseInt(voto);
     if (votoN >10 ) votoN = 10
@@ -106,7 +107,7 @@ export class PagellaVotoEditComponent implements OnInit  {
     if (this.objPagella.ckStampato) this.resetStampato();
   }
 
-  changeNote(formData: DOC_PagellaVoto, note: string, quad: number) {
+  changeNote(formData: DOC_PagellaVoto, note: string) {
 
     formData.note = note;
     formData.pagellaID = this.objPagella.id;;

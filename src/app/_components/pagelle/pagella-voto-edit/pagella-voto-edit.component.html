@@ -17,10 +17,10 @@
                 <input *ngIf="element.tipoVotoID == 1" 
                         matInput type="number" placeholder="voto" 
                         [value]="element.voto" 
-                        (change)="changeVoto(element, voto.value, 1)" 
+                        (change)="changeVoto(element, voto.value)" 
                         maxlength="2" #voto>
                 
-                <mat-select  *ngIf="element.tipoVotoID == 2"  [value]="element.tipoGiudizioID? element.tipoGiudizioID : 1" placeholder="giudizio"  (selectionChange)="changeSelectGiudizio(element, selectGiudizio.value, 1)" #selectGiudizio> 
+                <mat-select  *ngIf="element.tipoVotoID == 2"  [value]="element.tipoGiudizioID? element.tipoGiudizioID : 1" placeholder="giudizio"  (selectionChange)="changeSelectGiudizio(element, selectGiudizio.value)" #selectGiudizio> 
                     <mat-option *ngFor="let giudizio of (obsTipiGiudizio$ | async)"  [value]="giudizio.id">
                         {{giudizio.descrizione}}
                     </mat-option>
@@ -54,7 +54,7 @@
         <ng-container matColumnDef="note">
             <th mat-header-cell *matHeaderCellDef  >Note</th>
             <td mat-cell class="h60px _td-note1" *matCellDef="let element">
-                <textarea class="h50px _noresize _text-area-note1" matInput (change)="changeNote(element, note.value, 1)" #note>{{element.note}}</textarea>
+                <textarea class="h50px _noresize _text-area-note1" matInput (change)="changeNote(element, note.value)" #note>{{element.note}}</textarea>
             </td>
         </ng-container>
 

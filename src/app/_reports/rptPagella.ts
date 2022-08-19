@@ -145,10 +145,11 @@ export const RptLineTemplate1: any = [
 		//"data1":  "['italiano',<%objPagella.PagellaVoti.obiettivi%>, <%objPagella.PagellaVoti.livello%>]",
 
 		"body":  			[
-			['Italiano', '', 'ascoltare e comprendere narrazioni o letture orali cogliendone il senso globale e le informazioni principali.','', 'Avanzato', '', "Nel corso dell'anno Alice ha mostrato interesse e curiosità per la lettura e la scrittura. Interviene volentieri e in modo appropriato rivelando un linguaggio fluido e preciso. Nella scrittura il gesto è sicuro, pulito e ordinato. Riconosce e sa usare i grafemi in stampato maiuscolo."],
+			['<%rptPagellaVoti.materia.descrizione%>', '', 'ascoltare e comprendere narrazioni o letture orali cogliendone il senso globale e le informazioni principali.','', 'Avanzato', '', "Nel corso dell'anno Alice ha mostrato interesse e curiosità per la lettura e la scrittura. Interviene volentieri e in modo appropriato rivelando un linguaggio fluido e preciso. Nella scrittura il gesto è sicuro, pulito e ordinato. Riconosce e sa usare i grafemi in stampato maiuscolo."],
 			['', 'partecipare a una conversazione, rispettando le regole della comunicazione, intervenendo in modo pertinente.', '', 'Avanzato', ''],
 			['', 'riconoscere i grafemi in stampato maiuscolo e associarli correttamente ai fonemi.', '', 'Base', '']
 		],
+
 		
 		"cellLineWidths": 	[[0.1,0,0.1,0,0.1,0, 0.1],[0,0.1,0,0.1,0,0.1], [0,0.1,0,0.1,0, 0.1]],  //ATTENZIONE: il bordo finisce "sotto" alla cella.Meglio tenerlo sottile
 		"cellFills": 		[[0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0]],
@@ -170,6 +171,39 @@ export const RptLineTemplate1: any = [
 		"line": 1,
 		"align": "center"
 	},
+
+	{
+		"tipo": "Table",
+		"head":  [['Materia', '', 'Voto','','Note']],
+		"headEmptyRow": 1,
+
+		"body":  			[
+			['<%rptPagellaVoti.materia.descrizione%>', '', '<%rptPagellaVoti.voto%>', '', '<%rptPagellaVoti.note%>']
+		],
+
+		
+		"cellLineWidths": 	[[0.1,0,0.1,0,0.1]],  //ATTENZIONE: il bordo finisce "sotto" alla cella.Meglio tenerlo sottile
+		"cellFills": 		[[0,0,0,0,0]],
+		"colSpans": 		[[1,1,1,1,1]],
+		//"rowSpans": 		[[1,1,1,1,1]],
+
+		"colWidths": 		[15, 2, 80, 2, 20],
+
+		"fontName": "TitilliumWeb-Regular",
+		"X": 10,
+		"Y": 100,
+		//"W": 200,
+		"H": 10,
+		"color":"#C04F94",
+		"lineColor":"#000000",
+		"cellLineColor":"000000",
+		"fillColor":"#CCCCCC",
+		"lineWidth": 0.3,
+		"line": 1,
+		"align": "center"
+	},
+
+
 
 
 

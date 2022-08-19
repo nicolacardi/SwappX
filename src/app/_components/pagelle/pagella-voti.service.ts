@@ -14,10 +14,6 @@ export class PagellaVotiService {
   constructor(private http: HttpClient) { }
 
   listByAnnoClassePagella(annoID: number, classeID: number, pagellaID: number): Observable<DOC_PagellaVoto[]>{
-
-    console.log("listByAnnoClassePagella - classeID: ", classeID);
-    console.log("listByAnnoClassePagella - pagellaID: ", pagellaID);
-
     return this.http.get<DOC_PagellaVoto[]>(environment.apiBaseUrl+'DOC_PagellaVoti/ListByAnnoClassePagella/'+annoID+'/'+classeID+'/'+pagellaID);   
     //http://213.215.231.4/swappX/api/DOC_PagellaVoti/ListByAnnoClassePagella/2/1/2
   }

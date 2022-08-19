@@ -115,7 +115,6 @@ export class JspdfService {
           break;
         }
         case "Table":{
-
           this.addTable(doc, element.head, element.headEmptyRow, element.body, element.cellLineWidths, element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.cellLineColor, element.cellFills, element.fillColor, element.lineWidth, element.line, element.align, element.colSpans, element.rowSpans);
           break;
         }
@@ -258,9 +257,9 @@ export class JspdfService {
         else rowSpan = rowSpans[i][j];
         
         bodyObj[i].push({ content: body[i][j], colSpan: colSpan, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+        
       }
     }
-
 
 
     console.log ("bodyObj", bodyObj);
@@ -314,7 +313,6 @@ export class JspdfService {
           cellContent = cellContent + data.cell.text[i];
         }
 
-         //if (data.section === 'body' && data.cell.text[0].substring(0,3)== "R90" ) {
         if (data.section === 'body' && cellContent.substring(0,3)== "R90" ) {
           docPDF.setFontSize(16);
           docPDF.text(cellContent.substring(3), data.cell.x + data.cell.width /2 + 2 , data.cell.y + data.cell.height - 5, {angle:90});
@@ -322,10 +320,138 @@ export class JspdfService {
             data.cell.text[k] = '';
           }
          }
-      },
-      
+      } 
     })
   }
+
+
+
+  private async addTableDinamica(docPDF: jsPDF, head:any, headEmptyRow: number, body: any, cellLineWidths: any, colWidths: any, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, cellLineColor: string, cellFills: any, fillColor: string, lineWidth: number, line: number, align: any, colSpans: any, rowSpans: any  ){
+    
+    if(fontName == null || fontName == "")    fontName = this.defaultFontName;
+    if(fontColor == null || fontColor == "")  fontColor = this.defaultColor;
+    if(fontSize == null || fontSize == 0)     fontSize = this.defaultFontSize;
+    if(lineColor == null || lineColor == "")  lineColor = this.defaultLineColor;
+    if(cellLineColor == null || cellLineColor == "")  cellLineColor = this.defaultCellLineColor;
+    if(fillColor == null || fillColor == "")  fillColor = this.defaultFillColor;
+    if(lineWidth == null || lineWidth == 0)   lineWidth = this.defaultLineWidth;
+
+    // console.log ("lineColor", lineColor);
+    // console.log ("fillColor", fillColor);
+    // console.log ("cellLineColor", cellLineColor);
+    //docPDF.setFont(fontName, fontStyle); //non sembra funzionare
+
+    docPDF.setTextColor(fontColor);
+    docPDF.setDrawColor(lineColor);
+    docPDF.setFontSize(fontSize);
+
+    let columnStylesObj= <any>{};
+    W = 0;
+    for (let i = 0; i < colWidths.length; i++) {
+      columnStylesObj[i] = {}
+      columnStylesObj[i]["cellWidth"] = colWidths[i];
+      W = W + colWidths[i];
+    }
+
+    let headObj: { content: any, styles:any  }[][] = [];
+    let bodyObj: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = []; ///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects    //let dataObj= <any>[[{}]]; //così pensavo io...ma non funzionava
+    let cellLineWidth : number; 
+    let cellFill: any;
+    let colSpan: any;
+    let rowSpan: any;
+    let i: number; //serve definirlo fuori dal ciclo for perchè poi serve tenere l'ultimo valore
+
+    for (i = 0; i < head.length; i++) {
+      headObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
+      for (let j = 0; j < head[i].length; j++) {        
+        // //estraggo lo spessore del bordo cella
+        headObj[i].push({ content: head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
+      }
+    }
+
+    //aggiunta riga vuota dopo l'header
+    if (headEmptyRow ==1) {
+      headObj.push([]);
+      for (let j = 0; j < head[0].length; j++) {
+        headObj[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
+      }
+    }
+
+    //qui arriva un generico array di una riga da trasformare in un array di n record
+
+    this.rptPagellaVoti.forEach ((record:DOC_PagellaVoto) =>{
+      bodyObj.push([]);
+      for (let j = 0; j < body[0].length; j++) {
+        console.log (body[0][j]);
+        console.log (eval(body[0][j]));
+        //bodyObj[i].push({ content: , colSpan: 1, rowSpan: 1, styles: {font: fontName, lineWidth: "0.1", fillColor: "#CCCCCC", lineColor: "000000"} })
+      }
+    })
+
+
+    console.log ("bodyObj", bodyObj);
+    // autoTable(docPDF, {
+    //   //startY: Y,
+    //   margin: {top: Y, right: 0, bottom: 0, left: X},
+    //   tableWidth: W,
+    //   //tableLineColor: lineColor,
+    //   //tableLineWidth: lineWidth,  //Attenzione: attivando questa cambia il bordo ESTERNO della tabella
+    //   head: headObj, //Header eventualmente di più linee
+    //   body: bodyObj,
+
+    //   // **************** ALTRI MODI DI PASSARE I DATI *****************
+    //   // body: [[
+    //   //     { content: "ciao", styles: { halign: 'center', cellWidth: 10 }}, 
+    //   //     { content: "ciao2", rowSpan: 2, styles: { halign: 'center', lineWidth: {top: 10, right: 1, bottom: 5, left: 2} , cellWidth: 200} },
+    //   //     { content: "ciao2", rowSpan: 2, styles: { halign: 'center', lineWidth: 1 , cellWidth: 50} }], 
+    //   //       [{ content: 'nuova riga', styles: { halign: 'center', cellWidth: 10 } }]],
+
+    //   // body: [
+    //   //   [
+    //   //     {content: data[0][0]},
+    //   //     {content: data[0][1]},
+    //   //     {content: data[0][2]},
+    //   //     {content: data[1][0]},
+    //   //     {content: data[1][1]},
+    //   //     {content: data[1][2]}
+    //   //   ]
+    //   // ],
+      
+    //   styles: {      
+    //           //cellWidth: W/ data[0].length,
+    //           halign: align,
+    //           valign: 'middle',
+    //           fillColor: fillColor,
+    //           minCellHeight: H,
+    //   },
+    //   columnStyles: columnStylesObj,
+    //   headStyles: {
+    //     lineWidth: 0.1,
+    //   },
+    //   // didDrawCell: (data) => {
+    //   //   if (data.section === 'head') {
+    //   //     docPDF.text("ciao",10,10);
+    //   //   }
+    //   // },
+    //   willDrawCell: (data) => {
+
+    //     let cellContent = '';
+    //     for (let i = 0; i < data.cell.text.length; i++) {
+    //       cellContent = cellContent + data.cell.text[i];
+    //     }
+
+    //     if (data.section === 'body' && cellContent.substring(0,3)== "R90" ) {
+    //       docPDF.setFontSize(16);
+    //       docPDF.text(cellContent.substring(3), data.cell.x + data.cell.width /2 + 2 , data.cell.y + data.cell.height - 5, {angle:90});
+    //       for (let k = 0; k < data.cell.text.length; k++) {
+    //         data.cell.text[k] = '';
+    //       }
+    //      }
+    //   } 
+    // })
+  }
+
+
 
   private async addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
 
@@ -335,8 +461,6 @@ export class JspdfService {
     //creo l'oggetto img che passerò a docPDF.addImage corredandolo dei parametri di w e h corretti
     let img = new Image();
     img.src = ImageUrl;
-    
-    // console.log("01 [addImage] - Inizio addImage");
 
     //costruisco la mia funzione promise custom (genero l'asincronia necessaria)
     //serve per creare un'altra Img (imgTmp) ed estrarne le dimensioni
@@ -350,20 +474,10 @@ export class JspdfService {
         resolve ("hey");           //importante, senza questo non funzia
       }
       //imgTmp.onerror = reject;
-
-      // console.log("02 [addImage] - dentro la loadImage");
-
     });
 
-    let stop = await loadImage(ImageUrl);
+    await loadImage(ImageUrl);
     docPDF.addImage(img, 'png', parseFloat(x), parseFloat(y), parseFloat(w), parseFloat(w)*(imgHeight/imgWidth), undefined,'FAST');
-
-    // await loadImage(ImageUrl).then(val => {
-    //     console.log("05 [addImage] - imageUrl, pronto per la addImage", ImageUrl, imgWidth, imgHeight);
-    //     docPDF.addImage(img, 'png', parseFloat(x), parseFloat(y), parseFloat(w), parseFloat(w)*(imgHeight/imgWidth), undefined,'FAST');
-    // });
-
-    //console.log("[addImage] - Fine addImage");
   }
 
   private async addLine(docPDF: jsPDF, X1: string, Y1: string, X2: string, Y2: string, lineColor:string, lineWidth: string  ){
