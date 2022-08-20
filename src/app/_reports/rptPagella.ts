@@ -145,7 +145,7 @@ export const RptLineTemplate1: any = [
 		//"data1":  "['italiano',<%objPagella.PagellaVoti.obiettivi%>, <%objPagella.PagellaVoti.livello%>]",
 
 		"body":  			[
-			['<%rptPagellaVoti.materia.descrizione%>', '', 'ascoltare e comprendere narrazioni o letture orali cogliendone il senso globale e le informazioni principali.','', 'Avanzato', '', "Nel corso dell'anno Alice ha mostrato interesse e curiosità per la lettura e la scrittura. Interviene volentieri e in modo appropriato rivelando un linguaggio fluido e preciso. Nella scrittura il gesto è sicuro, pulito e ordinato. Riconosce e sa usare i grafemi in stampato maiuscolo."],
+			['Italiano', '', 'ascoltare e comprendere narrazioni o letture orali cogliendone il senso globale e le informazioni principali.','', 'Avanzato', '', "Nel corso dell'anno Alice ha mostrato interesse e curiosità per la lettura e la scrittura. Interviene volentieri e in modo appropriato rivelando un linguaggio fluido e preciso. Nella scrittura il gesto è sicuro, pulito e ordinato. Riconosce e sa usare i grafemi in stampato maiuscolo."],
 			['', 'partecipare a una conversazione, rispettando le regole della comunicazione, intervenendo in modo pertinente.', '', 'Avanzato', ''],
 			['', 'riconoscere i grafemi in stampato maiuscolo e associarli correttamente ai fonemi.', '', 'Base', '']
 		],
@@ -172,14 +172,21 @@ export const RptLineTemplate1: any = [
 		"align": "center"
 	},
 
+
+
+
 	{
-		"tipo": "Table",
-		"head":  [['Materia', '', 'Voto','','Note']],
+		"tipo": "TableD",
+		"head":  [['Materia', 'Voto', 'Note']],
 		"headEmptyRow": 1,
 
 		"body":  			[
-			['<%rptPagellaVoti.materia.descrizione%>', '', '<%rptPagellaVoti.voto%>', '', '<%rptPagellaVoti.note%>']
+			['Pagella.materia.descrizione', 'Pagella.voto', 'Pagella.note']
 		],
+
+		// "body":  			[
+		// 	['1', '', '2', '', '3']
+		// ],
 
 		
 		"cellLineWidths": 	[[0.1,0,0.1,0,0.1]],  //ATTENZIONE: il bordo finisce "sotto" alla cella.Meglio tenerlo sottile

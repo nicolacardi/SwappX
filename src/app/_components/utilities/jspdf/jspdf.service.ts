@@ -118,6 +118,10 @@ export class JspdfService {
           this.addTable(doc, element.head, element.headEmptyRow, element.body, element.cellLineWidths, element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.cellLineColor, element.cellFills, element.fillColor, element.lineWidth, element.line, element.align, element.colSpans, element.rowSpans);
           break;
         }
+        case "TableD":{
+          this.addTableDinamica(doc, element.head, element.headEmptyRow, element.body, element.cellLineWidths, element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.cellLineColor, element.cellFills, element.fillColor, element.lineWidth, element.line, element.align, element.colSpans, element.rowSpans);
+          break;
+        }
         case "Line":{
           this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
           break;
@@ -262,7 +266,7 @@ export class JspdfService {
     }
 
 
-    console.log ("bodyObj", bodyObj);
+    //console.log ("bodyObj", bodyObj);
     autoTable(docPDF, {
       //startY: Y,
       margin: {top: Y, right: 0, bottom: 0, left: X},
@@ -336,10 +340,6 @@ export class JspdfService {
     if(fillColor == null || fillColor == "")  fillColor = this.defaultFillColor;
     if(lineWidth == null || lineWidth == 0)   lineWidth = this.defaultLineWidth;
 
-    // console.log ("lineColor", lineColor);
-    // console.log ("fillColor", fillColor);
-    // console.log ("cellLineColor", cellLineColor);
-    //docPDF.setFont(fontName, fontStyle); //non sembra funzionare
 
     docPDF.setTextColor(fontColor);
     docPDF.setDrawColor(lineColor);
@@ -354,7 +354,9 @@ export class JspdfService {
     }
 
     let headObj: { content: any, styles:any  }[][] = [];
-    let bodyObj: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = []; ///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects    //let dataObj= <any>[[{}]]; //così pensavo io...ma non funzionava
+    //let bodyObjD: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = []; ///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects    //let dataObj= <any>[[{}]]; //così pensavo io...ma non funzionava
+    let bodyObjD: { content: any } [][] = []///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects    //let dataObj= <any>[[{}]]; //così pensavo io...ma non funzionava
+
     let cellLineWidth : number; 
     let cellFill: any;
     let colSpan: any;
@@ -364,91 +366,57 @@ export class JspdfService {
     for (i = 0; i < head.length; i++) {
       headObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
       for (let j = 0; j < head[i].length; j++) {        
-        // //estraggo lo spessore del bordo cella
-        headObj[i].push({ content: head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
+        
+        headObj[i].push({ content: head[i][j], styles: {font: fontName, lineColor: "#000000"} })
       }
     }
 
-    //aggiunta riga vuota dopo l'header
-    if (headEmptyRow ==1) {
-      headObj.push([]);
-      for (let j = 0; j < head[0].length; j++) {
-        headObj[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
-      }
-    }
+    // //aggiunta riga vuota dopo l'header
+    // if (headEmptyRow ==1) {
+    //   headObj.push([]);
+    //   for (let j = 0; j < head[0].length; j++) {
+    //     headObj[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
+    //   }
+    // }
 
     //qui arriva un generico array di una riga da trasformare in un array di n record
 
-    this.rptPagellaVoti.forEach ((record:DOC_PagellaVoto) =>{
-      bodyObj.push([]);
+    this.rptPagellaVoti.forEach ((Pagella:DOC_PagellaVoto) =>{
+      bodyObjD.push([]);
       for (let j = 0; j < body[0].length; j++) {
-        console.log (body[0][j]);
-        console.log (eval(body[0][j]));
-        //bodyObj[i].push({ content: , colSpan: 1, rowSpan: 1, styles: {font: fontName, lineWidth: "0.1", fillColor: "#CCCCCC", lineColor: "000000"} })
+        //console.log ("body[0][j] :", body[0][j]);
+        console.log ("eval body[0][j]", eval(body[0][j]));
+        //bodyObjD.push({ content: eval(body[0][j]), colSpan: 1, rowSpan: 1, styles: {font: fontName, lineWidth: "0.1", fillColor: "#CCCCCC", lineColor: "000000"} });
+        //bodyObjD[bodyObjD.length].push({ content: eval(body[0][j]), colSpan: 1, rowSpan: 1, styles: {font: fontName, lineWidth: "0.1", fillColor: "#CCCCCC", lineColor: "000000"} })
+        console.log ("bodyObjD.length", bodyObjD.length);
+        bodyObjD[bodyObjD.length - 1].push({ content: eval(body[0][j])});
       }
     })
 
 
-    console.log ("bodyObj", bodyObj);
-    // autoTable(docPDF, {
-    //   //startY: Y,
-    //   margin: {top: Y, right: 0, bottom: 0, left: X},
-    //   tableWidth: W,
-    //   //tableLineColor: lineColor,
-    //   //tableLineWidth: lineWidth,  //Attenzione: attivando questa cambia il bordo ESTERNO della tabella
-    //   head: headObj, //Header eventualmente di più linee
-    //   body: bodyObj,
+    console.log ("bodyObjD", bodyObjD);
+    autoTable(docPDF, {
+      //startY: Y,
+      margin: {top: Y, right: 0, bottom: 0, left: X},
+      tableWidth: W,
+      //tableLineColor: lineColor,
+      //tableLineWidth: lineWidth,  //Attenzione: attivando questa cambia il bordo ESTERNO della tabella
+      head: headObj, //Header eventualmente di più linee
+      body: bodyObjD,
 
-    //   // **************** ALTRI MODI DI PASSARE I DATI *****************
-    //   // body: [[
-    //   //     { content: "ciao", styles: { halign: 'center', cellWidth: 10 }}, 
-    //   //     { content: "ciao2", rowSpan: 2, styles: { halign: 'center', lineWidth: {top: 10, right: 1, bottom: 5, left: 2} , cellWidth: 200} },
-    //   //     { content: "ciao2", rowSpan: 2, styles: { halign: 'center', lineWidth: 1 , cellWidth: 50} }], 
-    //   //       [{ content: 'nuova riga', styles: { halign: 'center', cellWidth: 10 } }]],
-
-    //   // body: [
-    //   //   [
-    //   //     {content: data[0][0]},
-    //   //     {content: data[0][1]},
-    //   //     {content: data[0][2]},
-    //   //     {content: data[1][0]},
-    //   //     {content: data[1][1]},
-    //   //     {content: data[1][2]}
-    //   //   ]
-    //   // ],
       
-    //   styles: {      
-    //           //cellWidth: W/ data[0].length,
-    //           halign: align,
-    //           valign: 'middle',
-    //           fillColor: fillColor,
-    //           minCellHeight: H,
-    //   },
-    //   columnStyles: columnStylesObj,
-    //   headStyles: {
-    //     lineWidth: 0.1,
-    //   },
-    //   // didDrawCell: (data) => {
-    //   //   if (data.section === 'head') {
-    //   //     docPDF.text("ciao",10,10);
-    //   //   }
-    //   // },
-    //   willDrawCell: (data) => {
-
-    //     let cellContent = '';
-    //     for (let i = 0; i < data.cell.text.length; i++) {
-    //       cellContent = cellContent + data.cell.text[i];
-    //     }
-
-    //     if (data.section === 'body' && cellContent.substring(0,3)== "R90" ) {
-    //       docPDF.setFontSize(16);
-    //       docPDF.text(cellContent.substring(3), data.cell.x + data.cell.width /2 + 2 , data.cell.y + data.cell.height - 5, {angle:90});
-    //       for (let k = 0; k < data.cell.text.length; k++) {
-    //         data.cell.text[k] = '';
-    //       }
-    //      }
-    //   } 
-    // })
+      styles: {      
+              //cellWidth: W/ data[0].length,
+              halign: align,
+              valign: 'middle',
+              fillColor: fillColor,
+              minCellHeight: H,
+      },
+      columnStyles: columnStylesObj,
+      headStyles: {
+        lineWidth: 0.1,
+      },
+    })
   }
 
 
