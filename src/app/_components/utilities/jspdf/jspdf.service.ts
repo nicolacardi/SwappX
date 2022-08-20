@@ -384,11 +384,9 @@ export class JspdfService {
     this.rptPagellaVoti.forEach ((Pagella:DOC_PagellaVoto) =>{
       bodyObjD.push([]);
       for (let j = 0; j < body[0].length; j++) {
-        //console.log ("body[0][j] :", body[0][j]);
         console.log ("eval body[0][j]", eval(body[0][j]));
         //bodyObjD.push({ content: eval(body[0][j]), colSpan: 1, rowSpan: 1, styles: {font: fontName, lineWidth: "0.1", fillColor: "#CCCCCC", lineColor: "000000"} });
         //bodyObjD[bodyObjD.length].push({ content: eval(body[0][j]), colSpan: 1, rowSpan: 1, styles: {font: fontName, lineWidth: "0.1", fillColor: "#CCCCCC", lineColor: "000000"} })
-        console.log ("bodyObjD.length", bodyObjD.length);
         bodyObjD[bodyObjD.length - 1].push({ content: eval(body[0][j])});
       }
     })
