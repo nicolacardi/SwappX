@@ -134,7 +134,7 @@ export const RptLineTemplate1: any = [
 		"align": "center" 
 	},
 	{
-		"tipo": "Table",
+		"tipo": "TableStatica",
 		"head":  [['Materia', '', 'Obiettivi di Apprendimento','','Livello Raggiunto', '',  'Giudizio Descrittivo']],
 		"headEmptyRow": 1,
 
@@ -172,16 +172,13 @@ export const RptLineTemplate1: any = [
 		"align": "center"
 	},
 
-
-
-
 	{
-		"tipo": "TableD",
-		"head":  [['Materia', 'Voto', 'Note']],
+		"tipo": "TableDinamica",
+		"head":  [['Materia', 'Voto', 'Note', 'DtVoto']],
 		"headEmptyRow": 1,
 
 		"body":  			[
-			['Pagella.materia.descrizione', 'Pagella.voto', 'Pagella.note']
+			['Pagella.materia.descrizione', 'Pagella.voto', 'Pagella.note', 'Pagella.dtVoto']
 		],
 
 		// "body":  			[
@@ -194,7 +191,7 @@ export const RptLineTemplate1: any = [
 		"colSpans": 		[[1,1,1,1,1]],
 		//"rowSpans": 		[[1,1,1,1,1]],
 
-		"colWidths": 		[90, 40, 60],
+		"colWidths": 		[50, 40, 60, 40],
 
 		"fontName": "TitilliumWeb-Regular",
 		"X": 10,

@@ -114,11 +114,11 @@ export class JspdfService {
           this.addText(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align, element.maxWidth );
           break;
         }
-        case "Table":{
-          this.addTable(doc, element.head, element.headEmptyRow, element.body, element.cellLineWidths, element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.cellLineColor, element.cellFills, element.fillColor, element.lineWidth, element.line, element.align, element.colSpans, element.rowSpans);
+        case "TableStatica":{
+          this.addTableStatica(doc, element.head, element.headEmptyRow, element.body, element.cellLineWidths, element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.cellLineColor, element.cellFills, element.fillColor, element.lineWidth, element.line, element.align, element.colSpans, element.rowSpans);
           break;
         }
-        case "TableD":{
+        case "TableDinamica":{
           this.addTableDinamica(doc, element.head, element.headEmptyRow, element.body, element.cellLineWidths, element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.cellLineColor, element.cellFills, element.fillColor, element.lineWidth, element.line, element.align, element.colSpans, element.rowSpans);
           break;
         }
@@ -166,7 +166,7 @@ export class JspdfService {
 
   }
 
-  private async addTable(docPDF: jsPDF, head:any, headEmptyRow: number, body: any, cellLineWidths: any, colWidths: any, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, cellLineColor: string, cellFills: any, fillColor: string, lineWidth: number, line: number, align: any, colSpans: any, rowSpans: any  ){
+  private async addTableStatica(docPDF: jsPDF, head:any, headEmptyRow: number, body: any, cellLineWidths: any, colWidths: any, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, cellLineColor: string, cellFills: any, fillColor: string, lineWidth: number, line: number, align: any, colSpans: any, rowSpans: any  ){
     
     if(fontName == null || fontName == "")    fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "")  fontColor = this.defaultColor;
@@ -384,6 +384,7 @@ export class JspdfService {
     this.rptPagellaVoti.forEach ((Pagella:DOC_PagellaVoto) =>{
       bodyObjD.push([]);
       for (let j = 0; j < body[0].length; j++) {
+        //console.log ("eval body[0]", eval(body[0]));
         console.log ("eval body[0][j]", eval(body[0][j]));
         
         if (eval(body[0][j]) == null) {
