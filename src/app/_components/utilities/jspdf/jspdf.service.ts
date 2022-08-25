@@ -380,14 +380,20 @@ export class JspdfService {
     // }
 
     //qui arriva un generico array di una riga da trasformare in un array di n record
-
+    let content : string;
     this.rptPagellaVoti.forEach ((Pagella:DOC_PagellaVoto) =>{
       bodyObjD.push([]);
       for (let j = 0; j < body[0].length; j++) {
         console.log ("eval body[0][j]", eval(body[0][j]));
+        
+        if (eval(body[0][j]) == null) {
+          content = "";
+        } else {
+          content = eval(body[0][j]);
+        }
         //bodyObjD.push({ content: eval(body[0][j]), colSpan: 1, rowSpan: 1, styles: {font: fontName, lineWidth: "0.1", fillColor: "#CCCCCC", lineColor: "000000"} });
         //bodyObjD[bodyObjD.length].push({ content: eval(body[0][j]), colSpan: 1, rowSpan: 1, styles: {font: fontName, lineWidth: "0.1", fillColor: "#CCCCCC", lineColor: "000000"} })
-        bodyObjD[bodyObjD.length - 1].push({ content: eval(body[0][j])});
+        bodyObjD[bodyObjD.length - 1].push({ content: content});
       }
     })
 

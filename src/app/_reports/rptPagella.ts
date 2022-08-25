@@ -194,7 +194,7 @@ export const RptLineTemplate1: any = [
 		"colSpans": 		[[1,1,1,1,1]],
 		//"rowSpans": 		[[1,1,1,1,1]],
 
-		"colWidths": 		[15, 2, 80, 2, 20],
+		"colWidths": 		[90, 40, 60],
 
 		"fontName": "TitilliumWeb-Regular",
 		"X": 10,
