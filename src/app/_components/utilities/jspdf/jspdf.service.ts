@@ -115,11 +115,11 @@ export class JspdfService {
           break;
         }
         case "TableStatica":{
-          this.addTableStatica(doc, element.head, element.headEmptyRow, element.body, element.cellLineWidths, element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.cellLineColor, element.cellFills, element.fillColor, element.lineWidth, element.line, element.align, element.colSpans, element.rowSpans);
+          this.addTableStatica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge ,element.cellFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
           break;
         }
         case "TableDinamica":{
-          this.addTableDinamica(doc, element.head, element.headEmptyRow, element.body, element.cellLineWidths, element.colWidths,element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,20, element.lineColor, element.cellLineColor, element.cellFills, element.fillColor, element.lineWidth, element.line, element.align, element.colSpans, element.rowSpans);
+          this.addTableDinamica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge, element.cellFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
           break;
         }
         case "Line":{
@@ -166,19 +166,44 @@ export class JspdfService {
 
   }
 
-  private async addTableStatica(docPDF: jsPDF, head:any, headEmptyRow: number, body: any, cellLineWidths: any, colWidths: any, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, cellLineColor: string, cellFills: any, fillColor: string, lineWidth: number, line: number, align: any, colSpans: any, rowSpans: any  ){
-    
-    if(fontName == null || fontName == "")    fontName = this.defaultFontName;
-    if(fontColor == null || fontColor == "")  fontColor = this.defaultColor;
-    if(fontSize == null || fontSize == 0)     fontSize = this.defaultFontSize;
-    if(lineColor == null || lineColor == "")  lineColor = this.defaultLineColor;
-    if(cellLineColor == null || cellLineColor == "")  cellLineColor = this.defaultCellLineColor;
-    if(fillColor == null || fillColor == "")  fillColor = this.defaultFillColor;
-    if(lineWidth == null || lineWidth == 0)   lineWidth = this.defaultLineWidth;
 
-    // console.log ("lineColor", lineColor);
-    // console.log ("fillColor", fillColor);
-    // console.log ("cellLineColor", cellLineColor);
+//****************************************** STATICA ***************************************
+//****************************************** STATICA ***************************************
+//****************************************** STATICA ***************************************
+
+  private async addTableStatica(
+    docPDF: jsPDF, 
+    head:any, 
+    headEmptyRow: number, 
+    body: any, 
+    colWidths: any, 
+    cellBorders: any, 
+    rowsMerge: any,  
+    cellFills: any, 
+    fontName: string, 
+    X: number, 
+    Y: number, 
+    W: number, 
+    H: number, 
+    fontStyle: string , 
+    fontColor:string, 
+    fontSize: number, 
+    lineColor: string, 
+    cellLineColor: string, 
+    fillColor: string, 
+    lineWidth: number, 
+    align: any, 
+    colSpans: any
+){
+    
+    if(fontName == null || fontName == "")            fontName = this.defaultFontName;
+    if(fontColor == null || fontColor == "")          fontColor = this.defaultColor;
+    if(fontSize == null || fontSize == 0)             fontSize = this.defaultFontSize;
+    if(lineColor == null || lineColor == "")          lineColor = this.defaultLineColor;
+    if(cellLineColor == null || cellLineColor == "")  cellLineColor = this.defaultCellLineColor;
+    if(fillColor == null || fillColor == "")          fillColor = this.defaultFillColor;
+    if(lineWidth == null || lineWidth == 0)           lineWidth = this.defaultLineWidth;
+
     //docPDF.setFont(fontName, fontStyle); //non sembra funzionare
 
     docPDF.setTextColor(fontColor);
@@ -194,17 +219,17 @@ export class JspdfService {
     }
 
     let headObj: { content: any, styles:any  }[][] = [];
-    let bodyObj: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = []; ///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects    //let dataObj= <any>[[{}]]; //così pensavo io...ma non funzionava
+    let bodyObj: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = []; ///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects
     let cellLineWidth : number; 
     let cellFill: any;
     let colSpan: any;
     let rowSpan: any;
     let i: number; //serve definirlo fuori dal ciclo for perchè poi serve tenere l'ultimo valore
 
+    //****************   HEADER
     for (i = 0; i < head.length; i++) {
       headObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
       for (let j = 0; j < head[i].length; j++) {        
-        // //estraggo lo spessore del bordo cella
         headObj[i].push({ content: head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
       }
     }
@@ -216,52 +241,29 @@ export class JspdfService {
         headObj[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
       }
     }
+    //****************   FINE HEADER
+
 
     for (let i = 0; i < body.length; i++) {
       bodyObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
       for (let j = 0; j < body[i].length; j++) {
-
-        //estraggo lo spessore del bordo cella
-        if (cellLineWidths == undefined || cellLineWidths == null || cellLineWidths == [] || cellLineWidths[i][j] == null || cellLineWidths [i][j] == undefined) cellLineWidth = 0.1;
-        else cellLineWidth = cellLineWidths[i][j];
-
-        //estraggo il riempimento: NB nell'array di array sta solo scritto se riempire (1) o no (0). Il colore va preso dal colore di default
-        if (cellFills == undefined || cellFills == null || cellFills == [] || cellFills[i][j] == null || cellFills[i][j] == undefined || cellFills[i][j] == 0) cellFill = null;
+        
+        //estraggo il riempimento
+        if (cellFills == undefined || cellFills == null || cellFills == [] || cellFills[j] == null || cellFills[j] == undefined || cellFills[j] == 0) cellFill = null;
         else cellFill = this.defaultFillColor.substring(1);
-        
-
-        //estraggo se la cella va riempita del colore di default di riempimento
-        // if (cellFills[i] != undefined) {                        //se la riga i-esima è stato passata
-        //   if (cellFills [i][j] == null || cellFills[i][j] == 0)
-        //       {cellFill = null;
-        //       //console.log ("1")
-        //       }                                //nel caso la riga ci sia ma vuota o con 0
-        //   else 
-        //       {cellFill = this.defaultFillColor.substring(1);
-        //       //  console.log ("2")
-        //       }  //se la riga c'è e non è vuota nè 0
-        // } else {
-        //   if (cellFills[0][j]!=0)                               //se la riga i-esima non è stata passata vado a vedere la prima
-        //       {this.defaultFillColor.substring(1);
-        //       //  console.log ("3")
-        //       }
-        //   else                                                  //se anche la prima è = 0...
-        //       {cellFill = null;
-        //       //  console.log ("4")
-        //       }
-        // } 
-        
-
-        //estraggo i colSpans
-        if (colSpans == undefined || colSpans == null || colSpans == [] || colSpans[i][j] == null || colSpans [i][j] == undefined || colSpans[i][j] ==1) colSpan = 1;
-        else colSpan = colSpans[i][j];
+               
+        //estraggo lo spessore del bordo cella
+        if (cellBorders == undefined || cellBorders == null || cellBorders == [] || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
+        else cellLineWidth = this.defaultLineWidth;
 
         //estraggo i rowSpans
-        if (rowSpans == undefined || rowSpans == null || rowSpans == [] || rowSpans[i][j] == null || rowSpans [i][j] == undefined || rowSpans[i][j] ==1) rowSpan = 1;
-        else rowSpan = rowSpans[i][j];
-        
-        bodyObj[i].push({ content: body[i][j], colSpan: colSpan, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
-        
+        if (rowsMerge == undefined || rowsMerge == null || rowsMerge == [] || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
+        else rowSpan = body.length;
+
+        if ((i==0) || (i!=0 && rowsMerge[j] == 0)){
+          bodyObj[i].push({ content: body[0][j], colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+        }
+
       }
     }
 
@@ -329,17 +331,43 @@ export class JspdfService {
   }
 
 
+//****************************************** DINAMICA ***************************************
+//****************************************** DINAMICA ***************************************
+//****************************************** DINAMICA ***************************************
 
-  private async addTableDinamica(docPDF: jsPDF, head:any, headEmptyRow: number, body: any, cellLineWidths: any, colWidths: any, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, lineColor: string, cellLineColor: string, cellFills: any, fillColor: string, lineWidth: number, line: number, align: any, colSpans: any, rowSpans: any  ){
-    
-    if(fontName == null || fontName == "")    fontName = this.defaultFontName;
-    if(fontColor == null || fontColor == "")  fontColor = this.defaultColor;
-    if(fontSize == null || fontSize == 0)     fontSize = this.defaultFontSize;
-    if(lineColor == null || lineColor == "")  lineColor = this.defaultLineColor;
+  private async addTableDinamica(
+    docPDF: jsPDF,
+    head:any,
+    headEmptyRow: number,
+    body: any,
+    colWidths: any,
+    cellBorders: any,
+    rowsMerge: any,  
+    cellFills: any,
+    fontName: string,
+    X: number,
+    Y: number,
+    W: number,
+    H: number,
+    fontStyle: string ,
+    fontColor:string,
+    fontSize: number,
+    lineColor: string,
+    cellLineColor: string,
+    fillColor: string,
+    lineWidth: number,
+    align: any,
+    colSpans: any,
+ ){
+
+
+    if(fontName == null || fontName == "")            fontName = this.defaultFontName;
+    if(fontColor == null || fontColor == "")          fontColor = this.defaultColor;
+    if(fontSize == null || fontSize == 0)             fontSize = this.defaultFontSize;
+    if(lineColor == null || lineColor == "")          lineColor = this.defaultLineColor;
     if(cellLineColor == null || cellLineColor == "")  cellLineColor = this.defaultCellLineColor;
-    if(fillColor == null || fillColor == "")  fillColor = this.defaultFillColor;
-    if(lineWidth == null || lineWidth == 0)   lineWidth = this.defaultLineWidth;
-
+    if(fillColor == null || fillColor == "")          fillColor = this.defaultFillColor;
+    if(lineWidth == null || lineWidth == 0)           lineWidth = this.defaultLineWidth;
 
     docPDF.setTextColor(fontColor);
     docPDF.setDrawColor(lineColor);
@@ -354,8 +382,8 @@ export class JspdfService {
     }
 
     let headObj: { content: any, styles:any  }[][] = [];
-    //let bodyObjD: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = []; ///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects    //let dataObj= <any>[[{}]]; //così pensavo io...ma non funzionava
-    let bodyObjD: { content: any } [][] = []///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects    //let dataObj= <any>[[{}]]; //così pensavo io...ma non funzionava
+    //let bodyObjD: { content: any } [][] = []///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects    //let dataObj= <any>[[{}]]; //così pensavo io...ma non funzionava
+    let bodyObj: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = []; ///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects
 
     let cellLineWidth : number; 
     let cellFill: any;
@@ -363,43 +391,63 @@ export class JspdfService {
     let rowSpan: any;
     let i: number; //serve definirlo fuori dal ciclo for perchè poi serve tenere l'ultimo valore
 
+    //****************   HEADER
     for (i = 0; i < head.length; i++) {
       headObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
       for (let j = 0; j < head[i].length; j++) {        
-        
-        headObj[i].push({ content: head[i][j], styles: {font: fontName, lineColor: "#000000"} })
+        headObj[i].push({ content: head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
       }
     }
 
-    // //aggiunta riga vuota dopo l'header
-    // if (headEmptyRow ==1) {
-    //   headObj.push([]);
-    //   for (let j = 0; j < head[0].length; j++) {
-    //     headObj[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
-    //   }
-    // }
+    //aggiunta riga vuota dopo l'header
+    if (headEmptyRow ==1) {
+      headObj.push([]);
+      for (let j = 0; j < head[0].length; j++) {
+        headObj[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
+      }
+    }
+    //****************   FINE HEADER
 
     //qui arriva un generico array di una riga da trasformare in un array di n record
     let content : string;
-    this.rptPagellaVoti.forEach ((Pagella:DOC_PagellaVoto) =>{
-      bodyObjD.push([]);
+    this.rptPagellaVoti.forEach ((Pagella:DOC_PagellaVoto, i: number) =>{
+      bodyObj.push([]);
       for (let j = 0; j < body[0].length; j++) {
-        //console.log ("eval body[0]", eval(body[0]));
-        console.log ("eval body[0][j]", eval(body[0][j]));
+
+        //estraggo il riempimento
+        if (cellFills == undefined || cellFills == null || cellFills == [] || cellFills[j] == null || cellFills[j] == undefined || cellFills[j] == 0) cellFill = null;
+        else cellFill = this.defaultFillColor.substring(1);
+
+        //estraggo lo spessore del bordo cella
+        if (cellBorders == undefined || cellBorders == null || cellBorders == [] || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
+        else cellLineWidth = this.defaultLineWidth;
+
+        //estraggo i rowSpans
+        if (rowsMerge == undefined || rowsMerge == null || rowsMerge == [] || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
+        else rowSpan = this.rptPagellaVoti.length;
+
+        //console.log ("eval body[0][j]", eval(body[0][j]));
         
         if (eval(body[0][j]) == null) {
           content = "";
         } else {
           content = eval(body[0][j]);
         }
-        //bodyObjD.push({ content: eval(body[0][j]), colSpan: 1, rowSpan: 1, styles: {font: fontName, lineWidth: "0.1", fillColor: "#CCCCCC", lineColor: "000000"} });
-        //bodyObjD[bodyObjD.length].push({ content: eval(body[0][j]), colSpan: 1, rowSpan: 1, styles: {font: fontName, lineWidth: "0.1", fillColor: "#CCCCCC", lineColor: "000000"} })
-        bodyObjD[bodyObjD.length - 1].push({ content: content});
+
+        //bodyObj[bodyObj.length - 1].push({ content: content});
+
+
+        if ((i==0) || (i!=0 && rowsMerge[j] == 0)){
+          bodyObj[i].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+        }
+
+
+        
       }
     })
 
 
-    console.log ("bodyObjD", bodyObjD);
+    console.log ("bodyObj", bodyObj);
     autoTable(docPDF, {
       //startY: Y,
       margin: {top: Y, right: 0, bottom: 0, left: X},
@@ -407,7 +455,7 @@ export class JspdfService {
       //tableLineColor: lineColor,
       //tableLineWidth: lineWidth,  //Attenzione: attivando questa cambia il bordo ESTERNO della tabella
       head: headObj, //Header eventualmente di più linee
-      body: bodyObjD,
+      body: bodyObj,
 
       
       styles: {      
