@@ -12,7 +12,7 @@ export const RptLineTemplate1: any = [
 		"defaultLineColor": "#000000",
 		"defaultCellLineColor": "000000",
 		"defaultFillColor": "#CCCCCC",
-		"defaultLineWidth": "0.4",
+		"defaultLineWidth": 0.1,
 	},
 	
 	//#########################     COPERTINA     #########################
@@ -133,6 +133,11 @@ export const RptLineTemplate1: any = [
 		"fontSize": 16,
 		"align": "center" 
 	},
+
+//****************************************** STATICA ***************************************
+//****************************************** STATICA ***************************************
+//****************************************** STATICA ***************************************
+
 	{
 		"tipo": "TableStatica",
 		"head":  [['Materia', '', 'Obiettivi di Apprendimento','','Livello Raggiunto', '',  'Giudizio Descrittivo']],
@@ -146,17 +151,16 @@ export const RptLineTemplate1: any = [
 
 		"body":  			[
 			['Italiano', '', 'ascoltare e comprendere narrazioni o letture orali cogliendone il senso globale e le informazioni principali.','', 'Avanzato', '', "Nel corso dell'anno Alice ha mostrato interesse e curiosità per la lettura e la scrittura. Interviene volentieri e in modo appropriato rivelando un linguaggio fluido e preciso. Nella scrittura il gesto è sicuro, pulito e ordinato. Riconosce e sa usare i grafemi in stampato maiuscolo."],
-			['', 'partecipare a una conversazione, rispettando le regole della comunicazione, intervenendo in modo pertinente.', '', 'Avanzato', ''],
-			['', 'riconoscere i grafemi in stampato maiuscolo e associarli correttamente ai fonemi.', '', 'Base', '']
+			['Italiano', '', 'partecipare a una conversazione, rispettando le regole della comunicazione, intervenendo in modo pertinente.', '', 'Avanzato', '', ''],
+			['Italiano', '', 'riconoscere i grafemi in stampato maiuscolo e associarli correttamente ai fonemi.', '', 'Base', '', '']
 		],
 
-		
-		"cellLineWidths": 	[[0.1,0,0.1,0,0.1,0, 0.1],[0,0.1,0,0.1,0,0.1], [0,0.1,0,0.1,0, 0.1]],  //ATTENZIONE: il bordo finisce "sotto" alla cella.Meglio tenerlo sottile
-		"cellFills": 		[[0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0]],
-		"colSpans": 		[[1,1,1,1,1,1,1], [1,1,1,1,1,1,1], [1,1,1,1,1,1,1]],
-		"rowSpans": 		[[3,1,1,1,1,1,3], [1,1,1,1,1,1,1], [1,1,1,1,1,1,1]],
 
-		"colWidths": 		[15, 2, 80, 2, 20, 2, 69],
+		"colWidths": 		[  		15, 	2,     80, 		2, 	   20, 	    2,     69],
+		"cellBorders": 		[		1,	    0,		1,		0,		1,		0,		1], //Indica se TUTTE le celle in questa colonna hanno o meno il bordo (speci di SI/NO)
+		//"rowSpans": 		[		3,	    1,		1,		1,		1,		1,		3], //NON PIU' USATO: si usa ROWSMERGE
+		"rowsMerge": 		[		1,	    0,		0,		0,		0,		0,		1], //Indica se TUTTE le righe della tabella in questa colonna vanno unite
+		"cellFills": 		[		0,		0,		0,		0,		0,		0,		0],
 
 		"fontName": "TitilliumWeb-Regular",
 		"X": 10,
@@ -168,10 +172,13 @@ export const RptLineTemplate1: any = [
 		"cellLineColor":"000000",
 		"fillColor":"#CCCCCC",
 		"lineWidth": 0.3,
-		"line": 1,
 		"align": "center"
 	},
 
+
+//****************************************** DINAMICA ***************************************
+//****************************************** DINAMICA ***************************************
+//****************************************** DINAMICA ***************************************
 	{
 		"tipo": "TableDinamica",
 		"head":  [['Materia', 'Voto', 'Note', 'DtVoto']],
@@ -181,17 +188,10 @@ export const RptLineTemplate1: any = [
 			['Pagella.materia.descrizione', 'Pagella.voto', 'Pagella.note', 'Pagella.dtVoto']
 		],
 
-		// "body":  			[
-		// 	['1', '', '2', '', '3']
-		// ],
-
-		
-		"cellLineWidths": 	[[0.1,0,0.1,0,0.1]],  //ATTENZIONE: il bordo finisce "sotto" alla cella.Meglio tenerlo sottile
-		"cellFills": 		[[0,0,0,0,0]],
-		"colSpans": 		[[1,1,1,1,1]],
-		//"rowSpans": 		[[1,1,1,1,1]],
-
-		"colWidths": 		[50, 40, 60, 40],
+		"colWidths": 		[  	   50, 	   40,     60, 	   40],
+		"cellBorders": 		[		1,	    1,		1,		1], //non mette bordi su seconda col
+		"rowsMerge": 		[		0,	    0,		0,		0], //unisce tutte le celle prima colonna
+		"cellFills": 		[		0,		0,		0,		0], // riempie celle ultima colonna
 
 		"fontName": "TitilliumWeb-Regular",
 		"X": 10,
@@ -203,7 +203,6 @@ export const RptLineTemplate1: any = [
 		"cellLineColor":"000000",
 		"fillColor":"#CCCCCC",
 		"lineWidth": 0.3,
-		"line": 1,
 		"align": "center"
 	},
 
