@@ -115,11 +115,11 @@ export class JspdfService {
           break;
         }
         case "TableStatica":{
-          this.addTableStatica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge ,element.cellFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
+          this.addTableStatica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge ,element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
           break;
         }
         case "TableDinamica":{
-          this.addTableDinamica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge, element.cellFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
+          this.addTableDinamica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge, element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
           break;
         }
         case "Line":{
@@ -179,7 +179,7 @@ export class JspdfService {
     colWidths: any, 
     cellBorders: any, 
     rowsMerge: any,  
-    cellFills: any, 
+    colFills: any, 
     fontName: string, 
     X: number, 
     Y: number, 
@@ -243,13 +243,12 @@ export class JspdfService {
     }
     //****************   FINE HEADER
 
-
     for (let i = 0; i < body.length; i++) {
       bodyObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
       for (let j = 0; j < body[i].length; j++) {
         
         //estraggo il riempimento
-        if (cellFills == undefined || cellFills == null || cellFills == [] || cellFills[j] == null || cellFills[j] == undefined || cellFills[j] == 0) cellFill = null;
+        if (colFills == undefined || colFills == null || colFills == [] || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
         else cellFill = this.defaultFillColor.substring(1);
                
         //estraggo lo spessore del bordo cella
@@ -260,7 +259,7 @@ export class JspdfService {
         if (rowsMerge == undefined || rowsMerge == null || rowsMerge == [] || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
         else rowSpan = body.length;
 
-        if ((i==0) || (i!=0 && rowsMerge[j] == 0)){
+        if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
           bodyObj[i].push({ content: body[0][j], colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
         }
 
@@ -343,7 +342,7 @@ export class JspdfService {
     colWidths: any,
     cellBorders: any,
     rowsMerge: any,  
-    cellFills: any,
+    colFills: any,
     fontName: string,
     X: number,
     Y: number,
@@ -410,12 +409,16 @@ export class JspdfService {
 
     //qui arriva un generico array di una riga da trasformare in un array di n record
     let content : string;
+
+    //for (let i = 0; i < this.rptPagellaVoti.length; i++) {
+      console.log ("rowsMergeD", rowsMerge);
+
     this.rptPagellaVoti.forEach ((Pagella:DOC_PagellaVoto, i: number) =>{
       bodyObj.push([]);
       for (let j = 0; j < body[0].length; j++) {
 
         //estraggo il riempimento
-        if (cellFills == undefined || cellFills == null || cellFills == [] || cellFills[j] == null || cellFills[j] == undefined || cellFills[j] == 0) cellFill = null;
+        if (colFills == undefined || colFills == null || colFills == [] || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
         else cellFill = this.defaultFillColor.substring(1);
 
         //estraggo lo spessore del bordo cella
@@ -437,7 +440,7 @@ export class JspdfService {
         //bodyObj[bodyObj.length - 1].push({ content: content});
 
 
-        if ((i==0) || (i!=0 && rowsMerge[j] == 0)){
+        if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
           bodyObj[i].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
         }
 

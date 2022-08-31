@@ -160,7 +160,7 @@ export const RptLineTemplate1: any = [
 		"cellBorders": 		[		1,	    0,		1,		0,		1,		0,		1], //Indica se TUTTE le celle in questa colonna hanno o meno il bordo (speci di SI/NO)
 		//"rowSpans": 		[		3,	    1,		1,		1,		1,		1,		3], //NON PIU' USATO: si usa ROWSMERGE
 		"rowsMerge": 		[		1,	    0,		0,		0,		0,		0,		1], //Indica se TUTTE le righe della tabella in questa colonna vanno unite
-		"cellFills": 		[		0,		0,		0,		0,		0,		0,		0],
+		"colFills": 		[		0,		0,		0,		0,		0,		0,		0],
 
 		"fontName": "TitilliumWeb-Regular",
 		"X": 10,
@@ -190,8 +190,8 @@ export const RptLineTemplate1: any = [
 
 		"colWidths": 		[  	   50, 	   40,     60, 	   40],
 		"cellBorders": 		[		1,	    1,		1,		1], //non mette bordi su seconda col
-		"rowsMerge": 		[		0,	    0,		0,		0], //unisce tutte le celle prima colonna
-		"cellFills": 		[		0,		0,		0,		0], // riempie celle ultima colonna
+		"rowsMerge": 		[		0,	    0,		0,      0], //unisce tutte le celle della colonna
+		"colFills": 		[		0,		0,		0,		0], // riempie celle della colonna
 
 		"fontName": "TitilliumWeb-Regular",
 		"X": 10,
