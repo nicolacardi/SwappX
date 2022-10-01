@@ -248,15 +248,15 @@ export class JspdfService {
       for (let j = 0; j < body[i].length; j++) {
         
         //estraggo il riempimento
-        if (colFills == undefined || colFills == null || colFills == [] || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
+        if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
         else cellFill = this.defaultFillColor.substring(1);
                
         //estraggo lo spessore del bordo cella
-        if (cellBorders == undefined || cellBorders == null || cellBorders == [] || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
+        if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
         else cellLineWidth = this.defaultLineWidth;
 
         //estraggo i rowSpans
-        if (rowsMerge == undefined || rowsMerge == null || rowsMerge == [] || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
+        if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
         else rowSpan = body.length;
 
         if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
@@ -418,15 +418,15 @@ export class JspdfService {
       for (let j = 0; j < body[0].length; j++) {
 
         //estraggo il riempimento
-        if (colFills == undefined || colFills == null || colFills == [] || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
+        if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
         else cellFill = this.defaultFillColor.substring(1);
 
         //estraggo lo spessore del bordo cella
-        if (cellBorders == undefined || cellBorders == null || cellBorders == [] || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
+        if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
         else cellLineWidth = this.defaultLineWidth;
 
         //estraggo i rowSpans
-        if (rowsMerge == undefined || rowsMerge == null || rowsMerge == [] || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
+        if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
         else rowSpan = this.rptPagellaVoti.length;
 
         //console.log ("eval body[0][j]", eval(body[0][j]));
