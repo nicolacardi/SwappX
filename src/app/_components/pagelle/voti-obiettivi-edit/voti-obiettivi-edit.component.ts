@@ -17,7 +17,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 //models
 import { DialogDataVotiObiettivi } from 'src/app/_models/DialogData';
 import { DOC_PagellaVotoObiettivo } from 'src/app/_models/DOC_PagellaVotoObiettivo';
-import { DOC_TipoLivelloObiettivo } from 'src/app/_models/DOC_TipoLivelloObiettivo';
+import { MAT_LivelloObiettivo } from 'src/app/_models/MAT_LivelloObiettivo';
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
 import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto';
 
@@ -31,7 +31,7 @@ export class VotiObiettiviEditComponent implements OnInit {
 //#region ----- Variabili -------
 
   matDataSource = new                   MatTableDataSource<DOC_PagellaVotoObiettivo>();
-  obsTipiLivelloObiettivo$!:            Observable<DOC_TipoLivelloObiettivo[]>;
+  obsTipiLivelloObiettivo$!:            Observable<MAT_LivelloObiettivo[]>;
 
   displayedColumns: string[] = [
     "descrizione", 
@@ -62,13 +62,14 @@ export class VotiObiettiviEditComponent implements OnInit {
 
     this.obsTipiLivelloObiettivo$= this.svcPagellaVotoObiettivi.listTipiLivelliObiettivo();
     let obsPagellaVotoObiettivi$: Observable<DOC_PagellaVotoObiettivo[]>;
+    console.log("voti-obiettivi-edit pagellaVotoID, materiaID, classeSezioneAnnoID", this.data.pagellaVotoID, this.data.materiaID, this.data.classeSezioneAnnoID);
     obsPagellaVotoObiettivi$= this.svcPagellaVotoObiettivi.ListByPagellaMateriaClasseSezioneAnno(this.data.pagellaVotoID, this.data.materiaID, this.data.classeSezioneAnnoID);
 
     let loadObiettivi$ =this._loadingService.showLoaderUntilCompleted(obsPagellaVotoObiettivi$);
 
     loadObiettivi$.subscribe(val =>  {
         this.matDataSource.data = val;
-        //console.log ("val", val);
+        console.log ("val", val);
         //this.matDataSource.paginator = this.paginator;          
         //this.sortCustom();
         //this.matDataSource.sort = this.sort; 
@@ -79,14 +80,14 @@ export class VotiObiettiviEditComponent implements OnInit {
 
   changeSelectObiettivo(element: DOC_PagellaVotoObiettivo, valLivello: number) {
     //console.log ("element", element);
-    //console.log ("val", valLivello);
+    console.log ("valLivello", valLivello);
     if (element.id !=0) {
 
       let formDataPagella: DOC_PagellaVotoObiettivo = {
         id:           element.id,
         pagellaVotoID:element.pagellaVotoID,
         obiettivoID:  element.obiettivoID,
-        livello:      valLivello,
+        livelloObiettivoID:   valLivello,
       };
       
       this.svcPagellaVotoObiettivi.put(formDataPagella)
@@ -124,7 +125,7 @@ export class VotiObiettiviEditComponent implements OnInit {
       
       let formDataPagellaVotoObiettivo: DOC_PagellaVotoObiettivo = {
         obiettivoID:         element.obiettivoID,
-        livello:             valLivello,
+        livelloObiettivoID:  valLivello,
         dtIns:               dateNow
         //....
       };
