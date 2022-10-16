@@ -29,7 +29,8 @@ export interface DOC_PagellaVoto {
 
         //classeAnnoMateria?:      CLS_ClasseAnnoMateria;
         countVotiObiettivi?:    number;
-        countTotObiettivi?:     number;        
+        countTotObiettivi?:     number;
+        _ObiettiviCompleti?:     DOC_ObiettivoCompleto[];
 }
 
 export interface DOC_TipoGiudizio {
@@ -38,6 +39,18 @@ export interface DOC_TipoGiudizio {
         descrizione2:           number;
 }
 
+
+export interface DOC_ObiettivoCompleto {
+        id:                     number;
+        annoID:                 number;
+        classeID:               number;
+        descrizione:            string;
+        livelloObiettivoID:     number;
+        materiaID:              number;
+        obiettivoID:            number;
+        pagellaVotoID:          number;
+        votoObiettivoID:        number;
+}
 
 
 
