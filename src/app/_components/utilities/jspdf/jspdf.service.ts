@@ -417,40 +417,121 @@ export class JspdfService {
     // console.log ("jspdf.service.ts - addTableDinamica - this.rptPagellaVoti:", this.rptPagellaVoti);
 
     this.rptPagellaVoti.forEach ((Pagella:DOC_PagellaVoto, i: number) =>{
+      if (body.join().indexOf("[n]")>0 ) {
+        Pagella!._ObiettiviCompleti!.forEach(element => {
+          bodyObj.push([]);
+          for (let j = 0; j < body[0].length; j++) {
 
-      bodyObj.push([]);
-      for (let j = 0; j < body[0].length; j++) {
+            //estraggo il riempimento
+            if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
+            else cellFill = this.defaultFillColor.substring(1);
 
-        //estraggo il riempimento
-        if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
-        else cellFill = this.defaultFillColor.substring(1);
+            //estraggo lo spessore del bordo cella
+            if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
+            else cellLineWidth = this.defaultLineWidth;
 
-        //estraggo lo spessore del bordo cella
-        if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
-        else cellLineWidth = this.defaultLineWidth;
+            //estraggo i rowSpans
+            if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
+            else rowSpan = this.rptPagellaVoti.length;
 
-        //estraggo i rowSpans
-        if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
-        else rowSpan = this.rptPagellaVoti.length;
+            console.log ("body[k][j]", body[0][j]);
+            try {
 
-        //console.log ("eval body[0][j]", eval(body[0][j]));
+              if (eval(body[0][j]) == null) {
+                content = "";
+              } else {
+                content = eval(body[0][j]);
+              }
+            }
+            catch {
+              content = "";
+            }
+            if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
+              bodyObj[i].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+            }
+          }
+        })
+          
         
-        if (eval(body[0][j]) == null) {
-          content = "";
-        } else {
-          content = eval(body[0][j]);
+      } else {
+
+        bodyObj.push([]);
+        for (let j = 0; j < body[0].length; j++) {
+
+          //estraggo il riempimento
+          if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
+          else cellFill = this.defaultFillColor.substring(1);
+
+          //estraggo lo spessore del bordo cella
+          if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
+          else cellLineWidth = this.defaultLineWidth;
+
+          //estraggo i rowSpans
+          if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
+          else rowSpan = this.rptPagellaVoti.length;
+
+          console.log ("body[k][j]", body[0][j]);
+          try {
+
+            if (eval(body[0][j]) == null) {
+              content = "";
+            } else {
+              content = eval(body[0][j]);
+            }
+          }
+          catch {
+            content = "";
+          }
+
+          //bodyObj[bodyObj.length - 1].push({ content: content});
+
+
+          if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
+            bodyObj[i].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+          }
         }
-
-        //bodyObj[bodyObj.length - 1].push({ content: content});
-
-
-        if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
-          bodyObj[i].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
-        }
-
-
-        
       }
+        
+      //}
+
+
+
+      // for (let j = 0; j < body[0].length; j++) {
+
+      //   //estraggo il riempimento
+      //   if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
+      //   else cellFill = this.defaultFillColor.substring(1);
+
+      //   //estraggo lo spessore del bordo cella
+      //   if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
+      //   else cellLineWidth = this.defaultLineWidth;
+
+      //   //estraggo i rowSpans
+      //   if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
+      //   else rowSpan = this.rptPagellaVoti.length;
+
+      //   console.log ("body[0][j]", body[0][j]);
+      //   try {
+      //     if (eval(body[0][j]) == null) {
+      //       content = "";
+      //     } else {
+      //       content = eval(body[0][j]);
+      //     }
+      //   }
+      //   catch {
+      //     content = "";
+      //   }
+
+      //   //bodyObj[bodyObj.length - 1].push({ content: content});
+
+
+      //   if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
+      //     bodyObj[i].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+      //   }
+
+
+        
+      // }
     })
 
 
