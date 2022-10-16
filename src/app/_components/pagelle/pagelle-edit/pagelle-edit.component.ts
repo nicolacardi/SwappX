@@ -155,11 +155,8 @@ export class PagellaEditComponent implements OnInit {
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella inesistente - inserire almeno un voto', panelClass: ['red-snackbar']});
       return;
     }
-
-
     
-    
-/*
+    /*
     let PagellaVoti: DOC_PagellaVoto[];
     this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnnoID!,this.objPagella.id! )
       .subscribe( res =>{
@@ -171,25 +168,24 @@ export class PagellaEditComponent implements OnInit {
     //Chiamata al motore di stampa
     //let rpt :jsPDF  = await this._jspdf.dynamicRptPagella(this.objPagella);
 
-
     //costruiamo una promise per attendere il caricamento della lista voti
     const reloadLstPagellaVoti = () => new Promise((resolve, reject) => {
-        if(this.objPagella.iscrizione != undefined){
-          this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnno.classeSezione.classeID,this.objPagella.id! )
-            .subscribe(
-              (res: DOC_PagellaVoto[]) => {
-                this.lstPagellaVoti = res;
-                resolve ("messaggio eventuale");
-              }
-            );
-        }
-      });
+      if(this.objPagella.iscrizione != undefined){
+        this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnno.classeSezione.classeID,this.objPagella.id! )
+          .subscribe(
+            (res: DOC_PagellaVoto[]) => {
+              this.lstPagellaVoti = res;
+              console.log ("pagelle.edit.component.ts - savePdfPagella - lstPagellaVoti", res);
+              resolve ("messaggio eventuale");
+            }
+          );
+      }
+    });
     
     await reloadLstPagellaVoti();
 
     let rpt :jsPDF  = await this._jspdf.dynamicRptPagella(this.objPagella, this.lstPagellaVoti);
 
-   
 
     //Preparazione Blob con il contenuto base64 del pdf
     let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});

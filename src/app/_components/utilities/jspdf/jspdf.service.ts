@@ -360,7 +360,7 @@ export class JspdfService {
  ){
 
 
-    if(fontName == null || fontName == "")            fontName = this.defaultFontName;
+  if(fontName == null || fontName == "")            fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "")          fontColor = this.defaultColor;
     if(fontSize == null || fontSize == 0)             fontSize = this.defaultFontSize;
     if(lineColor == null || lineColor == "")          lineColor = this.defaultLineColor;
@@ -413,7 +413,11 @@ export class JspdfService {
     //for (let i = 0; i < this.rptPagellaVoti.length; i++) {
       console.log ("rowsMergeD", rowsMerge);
 
+    // console.log ("jspdf.service.ts - addTableDinamica - body:", body);
+    // console.log ("jspdf.service.ts - addTableDinamica - this.rptPagellaVoti:", this.rptPagellaVoti);
+
     this.rptPagellaVoti.forEach ((Pagella:DOC_PagellaVoto, i: number) =>{
+
       bodyObj.push([]);
       for (let j = 0; j < body[0].length; j++) {
 

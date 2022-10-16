@@ -63,7 +63,7 @@ export class VotiObiettiviEditComponent implements OnInit {
     this.obsTipiLivelloObiettivo$= this.svcPagellaVotoObiettivi.listTipiLivelliObiettivo();
     let obsPagellaVotoObiettivi$: Observable<DOC_PagellaVotoObiettivo[]>;
     console.log("voti-obiettivi-edit pagellaVotoID, materiaID, classeSezioneAnnoID", this.data.pagellaVotoID, this.data.materiaID, this.data.classeSezioneAnnoID);
-    obsPagellaVotoObiettivi$= this.svcPagellaVotoObiettivi.ListByPagellaMateriaClasseSezioneAnno(this.data.pagellaVotoID, this.data.materiaID, this.data.classeSezioneAnnoID);
+    obsPagellaVotoObiettivi$= this.svcPagellaVotoObiettivi.ListByPagellavotoMateriaCsa(this.data.pagellaVotoID, this.data.materiaID, this.data.classeSezioneAnnoID);
 
     let loadObiettivi$ =this._loadingService.showLoaderUntilCompleted(obsPagellaVotoObiettivi$);
 
