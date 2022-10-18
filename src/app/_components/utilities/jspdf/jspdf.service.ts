@@ -360,7 +360,7 @@ export class JspdfService {
  ){
 
 
-  if(fontName == null || fontName == "")            fontName = this.defaultFontName;
+    if(fontName == null || fontName == "")            fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "")          fontColor = this.defaultColor;
     if(fontSize == null || fontSize == 0)             fontSize = this.defaultFontSize;
     if(lineColor == null || lineColor == "")          lineColor = this.defaultLineColor;
@@ -415,26 +415,30 @@ export class JspdfService {
 
     // console.log ("jspdf.service.ts - addTableDinamica - body:", body);
     // console.log ("jspdf.service.ts - addTableDinamica - this.rptPagellaVoti:", this.rptPagellaVoti);
-
+    let objIndex = -1;
     this.rptPagellaVoti.forEach ((Pagella:DOC_PagellaVoto, i: number) =>{
-      if (body.join().indexOf("[n]")>0 ) {
-        Pagella!._ObiettiviCompleti!.forEach(element => {
-          bodyObj.push([]);
+      if (body.join().indexOf("[el]")>0 ) {
+        
+        Pagella!._ObiettiviCompleti!.forEach((element, el: number) => {
+
+          bodyObj.push([]);  
+          objIndex++;
           for (let j = 0; j < body[0].length; j++) {
+                        //estraggo il riempimento
+                        if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
+                        else cellFill = this.defaultFillColor.substring(1);
 
-            //estraggo il riempimento
-            if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
-            else cellFill = this.defaultFillColor.substring(1);
+                        //estraggo lo spessore del bordo cella
+                        if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
+                        else cellLineWidth = this.defaultLineWidth;
 
-            //estraggo lo spessore del bordo cella
-            if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
-            else cellLineWidth = this.defaultLineWidth;
-
-            //estraggo i rowSpans
-            if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
-            else rowSpan = this.rptPagellaVoti.length;
-
-            console.log ("body[k][j]", body[0][j]);
+                        //estraggo i rowSpans
+                        if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
+                        else rowSpan = this.rptPagellaVoti.length;
+                        console.log ("-------");
+            console.log ("body[0][j]", body[0][j]);
+            console.log ("el", el, "j", j);
+            console.log ("eval(body[0][j])", eval(body[0][j]));
             try {
 
               if (eval(body[0][j]) == null) {
@@ -446,9 +450,11 @@ export class JspdfService {
             catch {
               content = "";
             }
+            console.log ("objIndex", objIndex);
             if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
-              bodyObj[i].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+              bodyObj[objIndex].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
             }
+            
           }
         })
           
@@ -491,7 +497,7 @@ export class JspdfService {
           }
         }
       }
-        
+      console.log ("bodyObj", bodyObj);
       //}
 
 

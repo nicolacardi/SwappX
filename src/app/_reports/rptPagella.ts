@@ -239,9 +239,7 @@ export const RptLineTemplate1: any = [
 		"headEmptyRow": 1,
 
 		"body":  			[
-			// ['Pagella.materia.descrizione', 'Pagella._ObiettiviCompleti[0].livelloObiettivoID', 'Pagella._ObiettiviCompleti[0].descrizione', 'Pagella.dtVoto'],
-			['Pagella.materia.descrizione', 'Pagella._ObiettiviCompleti.livelloObiettivoID', 'Pagella._ObiettiviCompleti.descrizione', 'Pagella.dtVoto']
-
+			['Pagella.materia.descrizione', 'Pagella._ObiettiviCompleti[el].livelloObiettivoID', 'Pagella._ObiettiviCompleti[el].descrizione', 'Pagella.dtVoto']
 		],
 
 		"colWidths": 		[  	   50, 	   40,     60, 	   40],
