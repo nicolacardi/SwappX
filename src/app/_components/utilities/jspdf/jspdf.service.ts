@@ -123,7 +123,10 @@ export class JspdfService {
           break;
         }
         case "TableDinamicaPagella":{
-          this.addTableDinamicaPagella(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge, element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
+          //this.addTableDinamicaPagella(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge, element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
+          //this.addTableDinamicaPagella(doc, element.template1, element.template2,element.template3, element.fontName, element.fontColor, element.fontSize,  element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.X,element.Y,element.W, element.H);
+          this.addTableDinamicaPagella(doc, element);
+
           break;
         }
         case "Line":{
@@ -530,31 +533,26 @@ export class JspdfService {
 
 //*****************************************************************
   private async addTableDinamicaPagella(
-    docPDF: jsPDF,
-    head:any,
-    headEmptyRow: number,
-    body: any,
-    colWidths: any,
-    cellBorders: any,
-    rowsMerge: any,  
-    colFills: any,
-    fontName: string,
-    X: number,
-    Y: number,
-    W: number,
-    H: number,
-    fontStyle: string ,
-    fontColor:string,
-    fontSize: number,
-    lineColor: string,
-    cellLineColor: string,
-    fillColor: string,
-    lineWidth: number,
-    align: any,
-    colSpans: any,
- ){
+                  docPDF: jsPDF,
+                  element: any)
 
+                  // template1: any,
+                  // template2: any,
+                  // template3: any,
+                  // fontName: string,
+                  // fontColor: string,
+                  // fontSize: number,
+                  // lineColor: string,
+                  // cellLineColor: string,
+                  // fillColor: string,
+                  // lineWidth:number,
+                  // X: number,
+                  // Y: number,
+                  // W: number,
+                  // H: number  )  
+                   {
 
+/*
     if(fontName == null || fontName == "")            fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "")          fontColor = this.defaultColor;
     if(fontSize == null || fontSize == 0)             fontSize = this.defaultFontSize;
@@ -566,46 +564,117 @@ export class JspdfService {
     docPDF.setTextColor(fontColor);
     docPDF.setDrawColor(lineColor);
     docPDF.setFontSize(fontSize);
-
-    let columnStylesObj= <any>{};
-    W = 0;
-    for (let i = 0; i < colWidths.length; i++) {
-      columnStylesObj[i] = {}
-      columnStylesObj[i]["cellWidth"] = colWidths[i];
-      W = W + colWidths[i];
-    }
-
-    let headObj: { content: any, styles:any  }[][] = [];
-    let bodyObj: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = [];
+*/
+    //let headObj: { content: any, styles:any  }[][] = [];
+    //let bodyObj: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = [];
 
     let cellLineWidth : number; 
     let cellFill: any;
     let colSpan: any;
     let rowSpan: any;
     let i: number; //serve definirlo fuori dal ciclo for perchè poi serve tenere l'ultimo valore
+    let content : string;
 
-    //****************   HEADER
-    for (i = 0; i < head.length; i++) {
-      headObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
-      for (let j = 0; j < head[i].length; j++) {        
-        headObj[i].push({ content: head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
-      }
+    //#region #### Template1 ####
+    let headObj1: { content: any, styles:any  }[][] = [];
+    let bodyObj1: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = [];
+
+    let columnStylesObj1= <any>{};
+    W = 0;
+    for (let i = 0; i < template1.colWidths.length; i++) {
+      columnStylesObj1[i] = {}
+      columnStylesObj1[i]["cellWidth"] = template1.colWidths[i];
+      W = W + template1.colWidths[i];
     }
 
+    // HEADER
+    for (i = 0; i < template1.head.length; i++) {
+      headObj1.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
+      for (let j = 0; j < template1.head[i].length; j++) {        
+        headObj1[i].push({ content: template1.head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
+      }
+    }
     //aggiunta riga vuota dopo l'header
-    if (headEmptyRow ==1) {
-      headObj.push([]);
-      for (let j = 0; j < head[0].length; j++) {
-        headObj[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
+    if (template1.headEmptyRow ==1) {
+      headObj1.push([]);
+      for (let j = 0; j < template1.head[0].length; j++) {
+        headObj1[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
+      }
+    }
+    // FINE HEADER
+    //#endregion
+
+    //#region #### Template2 ####
+    let headObj2: { content: any, styles:any  }[][] = [];
+    let bodyObj2: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = [];
+
+    let columnStylesObj2= <any>{};
+    W = 0;
+    for (let i = 0; i < template2.colWidths.length; i++) {
+      columnStylesObj2[i] = {}
+      columnStylesObj2[i]["cellWidth"] = template2.colWidths[i];
+      W = W + template2.colWidths[i];
+    }
+
+    // HEADER
+    for (i = 0; i < template2.head.length; i++) {
+      headObj2.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
+      for (let j = 0; j < template2.head[i].length; j++) {        
+        headObj2[i].push({ content: template2.head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
+      }
+    }
+    //aggiunta riga vuota dopo l'header
+    if (template2.headEmptyRow ==1) {
+      headObj2.push([]);
+      for (let j = 0; j < template2.head[0].length; j++) {
+        headObj2[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
       }
     }
     //****************   FINE HEADER
+    //#endregion
+
+    //#region #### Template3 ####
+    let headObj3: { content: any, styles:any  }[][] = [];
+    let bodyObj3: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = [];
+
+    let columnStylesObj3= <any>{};
+    W = 0;
+    for (let i = 0; i < template3.colWidths.length; i++) {
+      columnStylesObj3[i] = {}
+      columnStylesObj3[i]["cellWidth"] = template3.colWidths[i];
+      W = W + template3.colWidths[i];
+    }
+
+    // HEADER
+    for (i = 0; i < template3.head.length; i++) {
+      headObj3.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
+      for (let j = 0; j < template3.head[i].length; j++) {        
+        headObj3[i].push({ content: template3.head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
+      }
+    }
+    //aggiunta riga vuota dopo l'header
+    if (template3.headEmptyRow ==1) {
+      headObj3.push([]);
+      for (let j = 0; j < template3.head[0].length; j++) {
+        headObj3[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
+      }
+    }
+    //****************   FINE HEADER
+    //#endregion
+
+    
+
+
+ 
+
+ 
+    //****************   FINE HEADER
 
     //qui arriva un generico array di una riga da trasformare in un array di n record
-    let content : string;
+   
 
     //for (let i = 0; i < this.rptPagellaVoti.length; i++) {
-      console.log ("rowsMergeD", rowsMerge);
+    //  console.log ("rowsMergeD", rowsMerge);
 
     // console.log ("jspdf.service.ts - addTableDinamica - body:", body);
     // console.log ("jspdf.service.ts - addTableDinamica - this.rptPagellaVoti:", this.rptPagellaVoti);
@@ -660,9 +729,11 @@ export class JspdfService {
     })
   }
 
-  // private stampaRigaObiettivo (bodyObj: any, obiettiviCompleti: <ObiettiviCompleti[]> ) {
+   private stampaRigaObiettivo (bodyObj: any, obiettiviCompleti: any ) {
 
-  // }
+
+
+  }
 
   private async addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
 

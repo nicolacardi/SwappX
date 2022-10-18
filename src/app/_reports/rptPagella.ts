@@ -263,29 +263,49 @@ export const RptLineTemplate1: any = [
 	
 	{
 		"tipo": "TableDinamicaPagella",
-		"head":  [['Materia', 'Obiettivi', 'Livello Raggiunto']],
-		"headEmptyRow": 1,
-
-		"body":  			[
-			['Pagella.materia.descrizione', 'Pagella._ObiettiviCompleti[el].livelloObiettivoID/Pagella.voto/Pagella.tipoGiudizio.descrizione', 'Pagella._ObiettiviCompleti[el].descrizione']
-		],
-
-		"colWidths": 		[  	   50, 	   40,     60, 	   40],
-		"cellBorders": 		[		1,	    1,		1,		1], //non mette bordi su seconda col
-		"rowsMerge": 		[		0,	    0,		0,      0], //unisce tutte le celle della colonna
-		"colFills": 		[		0,		0,		0,		0], // riempie celle della colonna
-
-		"fontName": "TitilliumWeb-Regular",
 		"X": 10,
 		"Y": 100,
 		//"W": 200,
 		"H": 10,
-		"color":"#C04F94",
+
+		// "body":  			[
+		// 	['Pagella.materia.descrizione', 'Pagella.Voto', 'Pagella.Note'],
+		// 	['Pagella.materia.descrizione', 'Pagella._ObiettiviCompleti[el].livelloObiettivoID/Pagella.voto/Pagella.tipoGiudizio.descrizione', 'Pagella._ObiettiviCompleti[el].descrizione'],
+		// ],
+
+		"fontName": "TitilliumWeb-Regular",
+		//"fontColor"
+		//"fontSize"
 		"lineColor":"#000000",
 		"cellLineColor":"000000",
 		"fillColor":"#CCCCCC",
 		"lineWidth": 0.3,
-		"align": "center"
+
+		//"head":  [['Materia', 'Obiettivi', 'Livello Raggiunto']],
+		"head":  [['Materia', 'Obiettivi', 'Livello Raggiunto', 'DtVoto']],
+		"headEmptyRow": 1,
+		
+		"colWidths": 		[  	   90, 	   60,     40],
+		"cellBorders": 		[		1,	    1,		1], //non mette bordi su seconda col
+			
+		"rowTemplate1":{
+			"body": ['Pagella.materia.descrizione', 'Pagella.Voto', 'Pagella.Note'],
+			"rowsMerge": 		[		0,	    0,		0], //unisce tutte le celle della colonna
+			
+			//"colFills": 		[		0,		0,		0], // riempie celle della colonna
+			//"color":"#C04F94",
+			//"align": "center"
+		},
+			
+		"rowTemplate2":{
+			"body": ['Pagella.materia.descrizione', 'Pagella.Voto', 'Pagella.Note'],
+			"rowsMerge": 		[		0,	    0,		0], //unisce tutte le celle della colonna
+			
+			//"colFills": 		[		0,		0,		0], // riempie celle della colonna
+			//"color":"#C04F94",
+			//"align": "center"
+		},
+	 
 	},
 
 
