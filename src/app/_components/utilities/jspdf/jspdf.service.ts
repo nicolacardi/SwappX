@@ -122,6 +122,10 @@ export class JspdfService {
           this.addTableDinamica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge, element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
           break;
         }
+        case "TableDinamicaPagella":{
+          this.addTableDinamicaPagella(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge, element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
+          break;
+        }
         case "Line":{
           this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
           break;
@@ -416,29 +420,28 @@ export class JspdfService {
     // console.log ("jspdf.service.ts - addTableDinamica - body:", body);
     // console.log ("jspdf.service.ts - addTableDinamica - this.rptPagellaVoti:", this.rptPagellaVoti);
     let objIndex = -1;
-    this.rptPagellaVoti.forEach ((Pagella:DOC_PagellaVoto, i: number) =>{
-      if (body.join().indexOf("[el]")>0 ) {
-        
-        Pagella!._ObiettiviCompleti!.forEach((element, el: number) => {
 
+    console.log ("jspdf.service.ts - addTableDinamica - rptPagellaVoti", this.rptPagellaVoti)
+    this.rptPagellaVoti.forEach ((Pagella:DOC_PagellaVoto, i: number) =>{
+
+
+      if (body.join().indexOf("[el]")>0 ) { //se ci trova scritto [el] capisce di dover entrare dentro gli obiettivi e fare una riga per ogni obiettivo  
+        Pagella!._ObiettiviCompleti!.forEach((element, el: number) => {
           bodyObj.push([]);  
           objIndex++;
           for (let j = 0; j < body[0].length; j++) {
-                        //estraggo il riempimento
-                        if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
-                        else cellFill = this.defaultFillColor.substring(1);
+            //estraggo il riempimento
+            if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
+            else cellFill = this.defaultFillColor.substring(1);
 
-                        //estraggo lo spessore del bordo cella
-                        if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
-                        else cellLineWidth = this.defaultLineWidth;
+            //estraggo lo spessore del bordo cella
+            if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
+            else cellLineWidth = this.defaultLineWidth;
 
-                        //estraggo i rowSpans
-                        if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
-                        else rowSpan = this.rptPagellaVoti.length;
-                        console.log ("-------");
-            console.log ("body[0][j]", body[0][j]);
-            console.log ("el", el, "j", j);
-            console.log ("eval(body[0][j])", eval(body[0][j]));
+            //estraggo i rowSpans
+            if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
+            else rowSpan = this.rptPagellaVoti.length;
+
             try {
 
               if (eval(body[0][j]) == null) {
@@ -450,18 +453,17 @@ export class JspdfService {
             catch {
               content = "";
             }
-            console.log ("objIndex", objIndex);
+
             if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
               bodyObj[objIndex].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
-            }
-            
+            }  
           }
         })
-          
         
       } else {
 
         bodyObj.push([]);
+        objIndex++;
         for (let j = 0; j < body[0].length; j++) {
 
           //estraggo il riempimento
@@ -491,53 +493,13 @@ export class JspdfService {
 
           //bodyObj[bodyObj.length - 1].push({ content: content});
 
-
           if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
-            bodyObj[i].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+            //bodyObj[i].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+            bodyObj[objIndex].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
           }
         }
       }
-      console.log ("bodyObj", bodyObj);
-      //}
-
-
-
-      // for (let j = 0; j < body[0].length; j++) {
-
-      //   //estraggo il riempimento
-      //   if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
-      //   else cellFill = this.defaultFillColor.substring(1);
-
-      //   //estraggo lo spessore del bordo cella
-      //   if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
-      //   else cellLineWidth = this.defaultLineWidth;
-
-      //   //estraggo i rowSpans
-      //   if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
-      //   else rowSpan = this.rptPagellaVoti.length;
-
-      //   console.log ("body[0][j]", body[0][j]);
-      //   try {
-      //     if (eval(body[0][j]) == null) {
-      //       content = "";
-      //     } else {
-      //       content = eval(body[0][j]);
-      //     }
-      //   }
-      //   catch {
-      //     content = "";
-      //   }
-
-      //   //bodyObj[bodyObj.length - 1].push({ content: content});
-
-
-      //   if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
-      //     bodyObj[i].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
-      //   }
-
-
-        
-      // }
+      //console.log ("bodyObj", bodyObj);
     })
 
 
@@ -566,6 +528,214 @@ export class JspdfService {
     })
   }
 
+//*****************************************************************
+  private async addTableDinamicaPagella(
+    docPDF: jsPDF,
+    head:any,
+    headEmptyRow: number,
+    body: any,
+    colWidths: any,
+    cellBorders: any,
+    rowsMerge: any,  
+    colFills: any,
+    fontName: string,
+    X: number,
+    Y: number,
+    W: number,
+    H: number,
+    fontStyle: string ,
+    fontColor:string,
+    fontSize: number,
+    lineColor: string,
+    cellLineColor: string,
+    fillColor: string,
+    lineWidth: number,
+    align: any,
+    colSpans: any,
+ ){
+
+
+    if(fontName == null || fontName == "")            fontName = this.defaultFontName;
+    if(fontColor == null || fontColor == "")          fontColor = this.defaultColor;
+    if(fontSize == null || fontSize == 0)             fontSize = this.defaultFontSize;
+    if(lineColor == null || lineColor == "")          lineColor = this.defaultLineColor;
+    if(cellLineColor == null || cellLineColor == "")  cellLineColor = this.defaultCellLineColor;
+    if(fillColor == null || fillColor == "")          fillColor = this.defaultFillColor;
+    if(lineWidth == null || lineWidth == 0)           lineWidth = this.defaultLineWidth;
+
+    docPDF.setTextColor(fontColor);
+    docPDF.setDrawColor(lineColor);
+    docPDF.setFontSize(fontSize);
+
+    let columnStylesObj= <any>{};
+    W = 0;
+    for (let i = 0; i < colWidths.length; i++) {
+      columnStylesObj[i] = {}
+      columnStylesObj[i]["cellWidth"] = colWidths[i];
+      W = W + colWidths[i];
+    }
+
+    let headObj: { content: any, styles:any  }[][] = [];
+    //let bodyObjD: { content: any } [][] = []///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects    //let dataObj= <any>[[{}]]; //così pensavo io...ma non funzionava
+    let bodyObj: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = []; ///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects
+
+    let cellLineWidth : number; 
+    let cellFill: any;
+    let colSpan: any;
+    let rowSpan: any;
+    let i: number; //serve definirlo fuori dal ciclo for perchè poi serve tenere l'ultimo valore
+
+    //****************   HEADER
+    for (i = 0; i < head.length; i++) {
+      headObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
+      for (let j = 0; j < head[i].length; j++) {        
+        headObj[i].push({ content: head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
+      }
+    }
+
+    //aggiunta riga vuota dopo l'header
+    if (headEmptyRow ==1) {
+      headObj.push([]);
+      for (let j = 0; j < head[0].length; j++) {
+        headObj[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
+      }
+    }
+    //****************   FINE HEADER
+
+    //qui arriva un generico array di una riga da trasformare in un array di n record
+    let content : string;
+
+    //for (let i = 0; i < this.rptPagellaVoti.length; i++) {
+      console.log ("rowsMergeD", rowsMerge);
+
+    // console.log ("jspdf.service.ts - addTableDinamica - body:", body);
+    // console.log ("jspdf.service.ts - addTableDinamica - this.rptPagellaVoti:", this.rptPagellaVoti);
+    let objIndex = -1;
+
+    console.log ("jspdf.service.ts - addTableDinamica - rptPagellaVoti", this.rptPagellaVoti)
+    this.rptPagellaVoti.forEach ((Pagella:DOC_PagellaVoto, i: number) =>{
+      //IN QUESTO CASO COMANDA rptPagellaVoti
+      //SE tipoVotoID == 3 -> obiettivi   serve come template quello a tre record per ciascun Voto con il merge sulla sinistra
+      //SE tipoVotoID == 2 -> Giudizi     serve come template quello con un solo record per ciascun Voto
+      //SE TipoVotoID == 1 -> Voti        serve come template quello con un solo record per ciascun Voto
+      let tipoVotoID = Pagella.tipoVotoID;
+      switch (tipoVotoID) {
+        case 3:
+          
+          break;
+        case 2:
+          
+          break;
+        case 1:
+
+          break;
+        default:
+
+      }
+
+
+      if (body.join().indexOf("[el]")>0 ) { //se ci trova scritto [el] capisce di dover entrare dentro gli obiettivi e fare una riga per ogni obiettivo  
+        Pagella!._ObiettiviCompleti!.forEach((element, el: number) => {
+          bodyObj.push([]);  
+          objIndex++;
+          for (let j = 0; j < body[0].length; j++) {
+            //estraggo il riempimento
+            if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
+            else cellFill = this.defaultFillColor.substring(1);
+
+            //estraggo lo spessore del bordo cella
+            if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
+            else cellLineWidth = this.defaultLineWidth;
+
+            //estraggo i rowSpans
+            if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
+            else rowSpan = this.rptPagellaVoti.length;
+
+            try {
+
+              if (eval(body[0][j]) == null) {
+                content = "";
+              } else {
+                content = eval(body[0][j]);
+              }
+            }
+            catch {
+              content = "";
+            }
+
+            if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
+              bodyObj[objIndex].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+            }  
+          }
+        })
+        
+      } else {
+
+        bodyObj.push([]);
+        objIndex++;
+        for (let j = 0; j < body[0].length; j++) {
+
+          //estraggo il riempimento
+          if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
+          else cellFill = this.defaultFillColor.substring(1);
+
+          //estraggo lo spessore del bordo cella
+          if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
+          else cellLineWidth = this.defaultLineWidth;
+
+          //estraggo i rowSpans
+          if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
+          else rowSpan = this.rptPagellaVoti.length;
+
+          console.log ("body[k][j]", body[0][j]);
+          try {
+
+            if (eval(body[0][j]) == null) {
+              content = "";
+            } else {
+              content = eval(body[0][j]);
+            }
+          }
+          catch {
+            content = "";
+          }
+
+          //bodyObj[bodyObj.length - 1].push({ content: content});
+
+          if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
+            //bodyObj[i].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+            bodyObj[objIndex].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+          }
+        }
+      }
+      //console.log ("bodyObj", bodyObj);
+    })
+
+
+    console.log ("bodyObj", bodyObj);
+    autoTable(docPDF, {
+      //startY: Y,
+      margin: {top: Y, right: 0, bottom: 0, left: X},
+      tableWidth: W,
+      //tableLineColor: lineColor,
+      //tableLineWidth: lineWidth,  //Attenzione: attivando questa cambia il bordo ESTERNO della tabella
+      head: headObj, //Header eventualmente di più linee
+      body: bodyObj,
+
+      
+      styles: {      
+              //cellWidth: W/ data[0].length,
+              halign: align,
+              valign: 'middle',
+              fillColor: fillColor,
+              minCellHeight: H,
+      },
+      columnStyles: columnStylesObj,
+      headStyles: {
+        lineWidth: 0.1,
+      },
+    })
+  }
 
 
   private async addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
