@@ -576,8 +576,7 @@ export class JspdfService {
     }
 
     let headObj: { content: any, styles:any  }[][] = [];
-    //let bodyObjD: { content: any } [][] = []///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects    //let dataObj= <any>[[{}]]; //così pensavo io...ma non funzionava
-    let bodyObj: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = []; ///in questo modo suggerisce https://stackoverflow.com/questions/73258283/populate-an-array-of-array-of-objects
+    let bodyObj: { content: any, colSpan: any, rowSpan: any, styles:any  }[][] = [];
 
     let cellLineWidth : number; 
     let cellFill: any;
@@ -621,94 +620,18 @@ export class JspdfService {
       let tipoVotoID = Pagella.tipoVotoID;
       switch (tipoVotoID) {
         case 3:
-          
+          this.stampaRigaObiettivo(bodyObj, Pagella._ObiettiviCompleti);
           break;
         case 2:
-          
+          //this.stampaRigaGiudizio();
           break;
         case 1:
-
+          //this.stampaRigaVoto();
           break;
         default:
 
       }
 
-
-      if (body.join().indexOf("[el]")>0 ) { //se ci trova scritto [el] capisce di dover entrare dentro gli obiettivi e fare una riga per ogni obiettivo  
-        Pagella!._ObiettiviCompleti!.forEach((element, el: number) => {
-          bodyObj.push([]);  
-          objIndex++;
-          for (let j = 0; j < body[0].length; j++) {
-            //estraggo il riempimento
-            if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
-            else cellFill = this.defaultFillColor.substring(1);
-
-            //estraggo lo spessore del bordo cella
-            if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
-            else cellLineWidth = this.defaultLineWidth;
-
-            //estraggo i rowSpans
-            if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
-            else rowSpan = this.rptPagellaVoti.length;
-
-            try {
-
-              if (eval(body[0][j]) == null) {
-                content = "";
-              } else {
-                content = eval(body[0][j]);
-              }
-            }
-            catch {
-              content = "";
-            }
-
-            if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
-              bodyObj[objIndex].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
-            }  
-          }
-        })
-        
-      } else {
-
-        bodyObj.push([]);
-        objIndex++;
-        for (let j = 0; j < body[0].length; j++) {
-
-          //estraggo il riempimento
-          if (colFills == undefined || colFills == null || colFills[j] == null || colFills[j] == undefined || colFills[j] == 0) cellFill = null;
-          else cellFill = this.defaultFillColor.substring(1);
-
-          //estraggo lo spessore del bordo cella
-          if (cellBorders == undefined || cellBorders == null || cellBorders[j] == null || cellBorders [j] == undefined || cellBorders [j] == 0) cellLineWidth = 0;
-          else cellLineWidth = this.defaultLineWidth;
-
-          //estraggo i rowSpans
-          if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
-          else rowSpan = this.rptPagellaVoti.length;
-
-          console.log ("body[k][j]", body[0][j]);
-          try {
-
-            if (eval(body[0][j]) == null) {
-              content = "";
-            } else {
-              content = eval(body[0][j]);
-            }
-          }
-          catch {
-            content = "";
-          }
-
-          //bodyObj[bodyObj.length - 1].push({ content: content});
-
-          if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
-            //bodyObj[i].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
-            bodyObj[objIndex].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
-          }
-        }
-      }
-      //console.log ("bodyObj", bodyObj);
     })
 
 
@@ -737,6 +660,9 @@ export class JspdfService {
     })
   }
 
+  // private stampaRigaObiettivo (bodyObj: any, obiettiviCompleti: <ObiettiviCompleti[]> ) {
+
+  // }
 
   private async addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
 
