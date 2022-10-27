@@ -175,7 +175,7 @@ export class PagellaEditComponent implements OnInit {
           .subscribe(
             (res: DOC_PagellaVoto[]) => {
               this.lstPagellaVoti = res;
-              console.log ("pagelle.edit.component.ts - savePdfPagella - lstPagellaVoti", res);
+              //console.log ("pagelle.edit.component.ts - savePdfPagella - lstPagellaVoti", res);
               resolve ("messaggio eventuale");
             }
           );

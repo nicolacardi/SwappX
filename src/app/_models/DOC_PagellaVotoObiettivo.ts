@@ -11,7 +11,7 @@ export interface DOC_PagellaVotoObiettivo {
         userIns?:               number;
         userUpd?:               number;
 
-        Obiettivo?:              MAT_Obiettivo;
+        Obiettivo?:              MAT_Obiettivo; //CI VA?
 }
 
 

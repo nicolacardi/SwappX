@@ -1,4 +1,4 @@
-export const RptLineTemplate1: any = [
+export const rptPagella: any = [
 	
 	//#########################     IMPOSTAZIONI     #########################
 	{
@@ -57,7 +57,7 @@ export const RptLineTemplate1: any = [
 	},
 	{
 		"tipo": "Text",
-		"value": "nato a <%objPagella.iscrizione.alunno.comuneNascita%> (<%this.rptPagella.iscrizione.alunno.provNascita%>) il <%this.FormatDate(objPagella.iscrizione.alunno.dtNascita, 'dd/mm/yyyy')%>",
+		"value": "nato a <%objPagella.iscrizione.alunno.comuneNascita%> (<%objPagella.iscrizione.alunno.provNascita%>) il <%this.FormatDate(objPagella.iscrizione.alunno.dtNascita, 'dd/mm/yyyy')%>",
 		"X": 315,
 		"Y": 168,
 		"fontSize": 16,
@@ -134,51 +134,50 @@ export const RptLineTemplate1: any = [
 		"align": "center" 
 	},
 
-//****************************************** STATICA ***************************************
-//****************************************** STATICA ***************************************
-//****************************************** STATICA ***************************************
+//#region ----- STATICA -----
 
-	{
-		"tipo": "TableStatica",
-		"head":  [['Materia', '', 'Obiettivi di Apprendimento','','Livello Raggiunto', '',  'Giudizio Descrittivo']],
-		"headEmptyRow": 1,
+	// {
+	// 	"tipo": "TableStatica",
+	// 	"head":  [['Materia', '', 'Obiettivi di Apprendimento','','Livello Raggiunto', '',  'Giudizio Descrittivo']],
+	// 	"headEmptyRow": 1,
 
-		//"data": [['David', '<%objPagella.iscrizione.alunno.comuneNascita%>', 'Sweden'],['Nick', 'david@example.com', 'Sweden']],
-		//"data": "<%objPagella.PagellaVoti%>",
-		//"head":  [['Materia', '', 'Obiettivi di Apprendimento','','Livello Raggiunto', '',  'Giudizio Descrittivo']],
-		//"data":  "<%objPagella.PagellaVoti.materia%>",
-		//"data1":  "['italiano',<%objPagella.PagellaVoti.obiettivi%>, <%objPagella.PagellaVoti.livello%>]",
+	// 	//"data": [['David', '<%objPagella.iscrizione.alunno.comuneNascita%>', 'Sweden'],['Nick', 'david@example.com', 'Sweden']],
+	// 	//"data": "<%objPagella.PagellaVoti%>",
+	// 	//"head":  [['Materia', '', 'Obiettivi di Apprendimento','','Livello Raggiunto', '',  'Giudizio Descrittivo']],
+	// 	//"data":  "<%objPagella.PagellaVoti.materia%>",
+	// 	//"data1":  "['italiano',<%objPagella.PagellaVoti.obiettivi%>, <%objPagella.PagellaVoti.livello%>]",
 
-		"body":  			[
-			['Italiano', '', 'ascoltare e comprendere narrazioni o letture orali cogliendone il senso globale e le informazioni principali.','', 'Avanzato', '', "Nel corso dell'anno Alice ha mostrato interesse e curiosità per la lettura e la scrittura. Interviene volentieri e in modo appropriato rivelando un linguaggio fluido e preciso. Nella scrittura il gesto è sicuro, pulito e ordinato. Riconosce e sa usare i grafemi in stampato maiuscolo."],
-			['Italiano', '', 'partecipare a una conversazione, rispettando le regole della comunicazione, intervenendo in modo pertinente.', '', 'Avanzato', '', ''],
-			['Italiano', '', 'riconoscere i grafemi in stampato maiuscolo e associarli correttamente ai fonemi.', '', 'Base', '', '']
-		],
+	// 	"body":  			[
+	// 		['Italiano', '', 'ascoltare e comprendere narrazioni o letture orali cogliendone il senso globale e le informazioni principali.','', 'Avanzato', '', "Nel corso dell'anno Alice ha mostrato interesse e curiosità per la lettura e la scrittura. Interviene volentieri e in modo appropriato rivelando un linguaggio fluido e preciso. Nella scrittura il gesto è sicuro, pulito e ordinato. Riconosce e sa usare i grafemi in stampato maiuscolo."],
+	// 		['Italiano', '', 'partecipare a una conversazione, rispettando le regole della comunicazione, intervenendo in modo pertinente.', '', 'Avanzato', '', ''],
+	// 		['Italiano', '', 'riconoscere i grafemi in stampato maiuscolo e associarli correttamente ai fonemi.', '', 'Base', '', '']
+	// 	],
 
 
-		"colWidths": 		[  		15, 	2,     80, 		2, 	   20, 	    2,     69],
-		"cellBorders": 		[		1,	    0,		1,		0,		1,		0,		1], //Indica se TUTTE le celle in questa colonna hanno o meno il bordo (speci di SI/NO)
-		//"rowSpans": 		[		3,	    1,		1,		1,		1,		1,		3], //NON PIU' USATO: si usa ROWSMERGE
-		"rowsMerge": 		[		1,	    0,		0,		0,		0,		0,		1], //Indica se TUTTE le righe della tabella in questa colonna vanno unite
-		"colFills": 		[		0,		0,		0,		0,		0,		0,		0],
+	// 	"colWidths": 		[  		15, 	2,     80, 		2, 	   20, 	    2,     69],
+	// 	"cellBorders": 		[		1,	    0,		1,		0,		1,		0,		1], //Indica se TUTTE le celle in questa colonna hanno o meno il bordo (speci di SI/NO)
+	// 	//"rowSpans": 		[		3,	    1,		1,		1,		1,		1,		3], //NON PIU' USATO: si usa ROWSMERGE
+	// 	"rowsMerge": 		[		1,	    0,		0,		0,		0,		0,		1], //Indica se TUTTE le righe della tabella in questa colonna vanno unite
+	// 	"colFills": 		[		0,		0,		0,		0,		0,		0,		0],
 
-		"fontName": "TitilliumWeb-Regular",
-		"X": 10,
-		"Y": 40,
-		//"W": 200,
-		"H": 10,
-		"color":"#C04F94",
-		"lineColor":"#000000",
-		"cellLineColor":"000000",
-		"fillColor":"#CCCCCC",
-		"lineWidth": 0.3,
-		"align": "center"
-	},
+	// 	"fontName": "TitilliumWeb-Regular",
+	// 	"X": 10,
+	// 	"Y": 40,
+	// 	//"W": 200,
+	// 	"H": 10,
+	// 	"color":"#C04F94",
+	// 	"lineColor":"#000000",
+	// 	"cellLineColor":"000000",
+	// 	"fillColor":"#CCCCCC",
+	// 	"lineWidth": 0.3,
+	// 	"align": "center"
+	// },
+//#endregion
+
+//#region ----- DINAMICA -----
 
 
-//****************************************** DINAMICA ***************************************
-//****************************************** DINAMICA ***************************************
-//****************************************** DINAMICA ***************************************
+
 	// {
 	// 	"tipo": "TableDinamica",
 	// 	"head":  [['Materia', 'Voto', 'Note', 'DtVoto']],
@@ -233,6 +232,9 @@ export const RptLineTemplate1: any = [
 	// 	"align": "center"
 	// },
 
+//#endregion
+	
+//#region ----- DINAMICA 2 -----
 	// {
 	// 	"tipo": "TableDinamica",
 	// 	"head":  [['Materia', 'Obiettivi', 'Livello Raggiunto', 'DtVoto']],
@@ -260,55 +262,51 @@ export const RptLineTemplate1: any = [
 	// 	"align": "center"
 	// },
 
-	
+//#endregion
+
+//#region ----- TableDinamicaPagella -----
 	{
 		"tipo": "TableDinamicaPagella",
+		"head":  [
+			['Materia', 'Livello Raggiunto', 'Obiettivo']
+		],
+		"headEmptyRow": 1,
+		"body": 			[
+			['PagellaVoto.materia.descrizione', 'PagellaVoto.voto', 'PagellaVoto.note'],
+			['PagellaVoto.materia.descrizione', 'PagellaVoto.tipoGiudizio.descrizione', 'PagellaVoto.note'],
+			['PagellaVoto.materia.descrizione', 'PagellaVoto._ObiettiviCompleti[el].livelloObiettivo.descrizione', 'PagellaVoto._ObiettiviCompleti[el].descrizione'],
+							],
+
+		"colWidths": 		[  	   90, 	   60,     40],
+		"cellBorders": 		[		1,	    1,		1],
+		"colSpans": 		[
+			[		1,      2],
+			[		1,      2],
+			[		1,	    1,		1]
+		],
+		"rowsMerge": 		[
+				[		0,	    0,		0],
+				[		0,	    0,		0],
+				[		1,	    0,		0]
+			],
+		"colFills": 		[		0,		0,		0,		0],
+
+		"fontName": "TitilliumWeb-Regular",
 		"X": 10,
-		"Y": 100,
+		"Y": 30,
 		//"W": 200,
 		"H": 10,
 
-		// "body":  			[
-		// 	['Pagella.materia.descrizione', 'Pagella.Voto', 'Pagella.Note'],
-		// 	['Pagella.materia.descrizione', 'Pagella._ObiettiviCompleti[el].livelloObiettivoID/Pagella.voto/Pagella.tipoGiudizio.descrizione', 'Pagella._ObiettiviCompleti[el].descrizione'],
-		// ],
-
-		"fontName": "TitilliumWeb-Regular",
-		//"fontColor"
-		//"fontSize"
+		"color":"#C04F94",
 		"lineColor":"#000000",
 		"cellLineColor":"000000",
 		"fillColor":"#CCCCCC",
 		"lineWidth": 0.3,
-
-		//"head":  [['Materia', 'Obiettivi', 'Livello Raggiunto']],
-		"head":  [['Materia', 'Obiettivi', 'Livello Raggiunto', 'DtVoto']],
-		"headEmptyRow": 1,
-		
-		"colWidths": 		[  	   90, 	   60,     40],
-		"cellBorders": 		[		1,	    1,		1], //non mette bordi su seconda col
-			
-		"rowTemplate1":{
-			"body": ['Pagella.materia.descrizione', 'Pagella.Voto', 'Pagella.Note'],
-			"rowsMerge": 		[		0,	    0,		0], //unisce tutte le celle della colonna
-			
-			//"colFills": 		[		0,		0,		0], // riempie celle della colonna
-			//"color":"#C04F94",
-			//"align": "center"
-		},
-			
-		"rowTemplate2":{
-			"body": ['Pagella.materia.descrizione', 'Pagella.Voto', 'Pagella.Note'],
-			"rowsMerge": 		[		0,	    0,		0], //unisce tutte le celle della colonna
-			
-			//"colFills": 		[		0,		0,		0], // riempie celle della colonna
-			//"color":"#C04F94",
-			//"align": "center"
-		},
+		"align": "center"
 	 
 	},
 
-
+//#endregion
 	 
 ]
 

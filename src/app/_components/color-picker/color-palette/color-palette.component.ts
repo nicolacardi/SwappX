@@ -47,15 +47,15 @@ export class ColorPaletteComponent implements AfterViewInit, OnChanges {
 
   draw() {
     
-    console.log ("colorpalette 0000")
+    //console.log ("colorpalette 0000")
     if (!this.ctx) {
-      console.log ("colorpalette 000")
+      //console.log ("colorpalette 000")
 
       this.ctx = this.canvas.nativeElement.getContext('2d')!
     }
-    console.log ("colorpalette 0")
+    //console.log ("colorpalette 0")
     const width = this.canvas.nativeElement.width
-    console.log ("colorpalette 1")
+    //console.log ("colorpalette 1")
     const height = this.canvas.nativeElement.height
     
     this.ctx.fillStyle = this.hue || 'rgba(255,255,255,1)'

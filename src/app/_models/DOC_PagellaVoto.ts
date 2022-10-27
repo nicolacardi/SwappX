@@ -1,5 +1,6 @@
 import { CLS_ClasseAnnoMateria } from "./CLS_ClasseAnnoMateria";
 import { CLS_Iscrizione } from "./CLS_Iscrizione";
+import { MAT_LivelloObiettivo } from "./MAT_LivelloObiettivo";
 import { MAT_Materia } from "./MAT_Materia";
 
 export interface DOC_PagellaVoto {
@@ -50,6 +51,7 @@ export interface DOC_ObiettivoCompleto {
         obiettivoID:            number;
         pagellaVotoID:          number;
         votoObiettivoID:        number;
+        livelloObiettivo?:      MAT_LivelloObiettivo;
 }
 
 
