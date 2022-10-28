@@ -277,19 +277,21 @@ export const rptPagella: any = [
 			['PagellaVoto.materia.descrizione', 'PagellaVoto._ObiettiviCompleti[el].livelloObiettivo.descrizione', 'PagellaVoto._ObiettiviCompleti[el].descrizione'],
 							],
 
-		"colWidths": 		[  	   90, 	   60,     40],
-		"cellBorders": 		[		1,	    1,		1],
+						
+		"cellPadding": 		[  	   10, 	   10,     10],
+		"colWidths": 		[  	   90, 	   56,     40],
+		"cellBorders": 		[		1,	    1,      1],
 		"colSpans": 		[
 			[		1,      2],
 			[		1,      2],
-			[		1,	    1,		1]
+			[		1,	    1,	    1]
 		],
 		"rowsMerge": 		[
 				[		0,	    0,		0],
 				[		0,	    0,		0],
 				[		1,	    0,		0]
 			],
-		"colFills": 		[		0,		0,		0,		0],
+		"colFills": 		[		0,		0,		0],
 
 		"fontName": "TitilliumWeb-Regular",
 		"X": 10,

@@ -571,6 +571,14 @@ export class JspdfService {
           break;
         default:
       }
+       console.log (this.objIndex, bodyObj);
+
+      //inserisco una riga vuota dopo il voto/giudizio o dopo la serie di livelli di apprendimento
+       bodyObj.push([]);
+       this.objIndex++;
+       bodyObj[this.objIndex].push({ content: "", colSpan: rptPagella.body[0].length, rowSpan: 1, styles: {font: rptPagella.fontName, fontSize: 5, lineWidth: 0, fillColor: false, minCellHeight: 0, cellPadding: 0}});
+       docPDF.setFontSize(rptPagella.fontSize);
+
     }
 
 
@@ -605,7 +613,7 @@ export class JspdfService {
 
   private stampaRigaVoto (bodyObj: any, rptPagella: any, PagellaVoto: any , i: number): any {
     let content: any;
-    console.log ("stampaRigaVoto : rptPagella", rptPagella);
+    //console.log ("stampaRigaVoto : rptPagella", rptPagella);
 
     bodyObj.push([]);
     this.objIndex++;
@@ -639,7 +647,7 @@ export class JspdfService {
       }
 
       if ((i==0) || (i!=0 && rptPagella.rowsMerge == undefined) || (i!=0 && rptPagella.rowSpan == 1)){
-        bodyObj[this.objIndex].push({ content: content, colSpan: rptPagella.colSpan, rowSpan: rptPagella.rowSpan, styles: {font: rptPagella.fontName, lineWidth: rptPagella.cellLineWidth, fillColor: rptPagella.cellFill, lineColor: rptPagella.cellLineColor} })
+        bodyObj[this.objIndex].push({ content: content, colSpan: rptPagella.colSpan, rowSpan: rptPagella.rowSpan, styles: {font: rptPagella.fontName, lineWidth: rptPagella.cellLineWidth, fillColor: rptPagella.cellFill, lineColor: rptPagella.cellLineColor, cellPadding: 0} })
       }
     }
     return bodyObj;
@@ -651,7 +659,7 @@ export class JspdfService {
 
 private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i: number): any {
   let content: any;
-  console.log ("stampaRigaGiudizio : rptPagella", rptPagella);
+  //console.log ("stampaRigaGiudizio : rptPagella", rptPagella);
 
   bodyObj.push([]);
   this.objIndex++;
@@ -685,7 +693,7 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
     }
 
     if ((i==0) || (i!=0 && rptPagella.rowsMerge == undefined) || (i!=0 && rptPagella.rowSpan == 1)){
-      bodyObj[this.objIndex].push({ content: content, colSpan: rptPagella.colSpan, rowSpan: rptPagella.rowSpan, styles: {font: rptPagella.fontName, lineWidth: rptPagella.cellLineWidth, fillColor: rptPagella.cellFill, lineColor: rptPagella.cellLineColor} })
+      bodyObj[this.objIndex].push({ content: content, colSpan: rptPagella.colSpan, rowSpan: rptPagella.rowSpan, styles: {font: rptPagella.fontName, lineWidth: rptPagella.cellLineWidth, fillColor: rptPagella.cellFill, lineColor: rptPagella.cellLineColor, cellPadding: 0} })
     }
   }
   return bodyObj;
@@ -697,7 +705,7 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
   
   private stampaRigaObiettivo (bodyObj: any, rptPagella: any, PagellaVoto: any , i: number): any {
     let content: any;
-    console.log ("stampaRigaObiettivo : rptPagella", rptPagella);
+    //console.log ("stampaRigaObiettivo : rptPagella", rptPagella);
 
     for (let el = 0; el < PagellaVoto._ObiettiviCompleti.length; el++) { //per ragioni di sincronia meglio usare sempre un ciclo for
 
@@ -735,8 +743,9 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
           content = "";
         }
 
+
         if ((el==0) || (el!=0 && rptPagella.rowsMerge == undefined) || (el!=0 && rptPagella.rowSpan == 1)){
-          bodyObj[this.objIndex].push({ content: content, colSpan: rptPagella.colSpan, rowSpan: rptPagella.rowSpan, styles: {font: rptPagella.fontName, lineWidth: rptPagella.cellLineWidth, fillColor: rptPagella.cellFill, lineColor: rptPagella.cellLineColor} })
+          bodyObj[this.objIndex].push({ content: content, colSpan: rptPagella.colSpan, rowSpan: rptPagella.rowSpan, styles: {font: rptPagella.fontName, lineWidth: rptPagella.cellLineWidth, fillColor: rptPagella.cellFill, lineColor: rptPagella.cellLineColor, cellPadding: 0} })
         }  
 
       }
