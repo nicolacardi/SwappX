@@ -24,6 +24,8 @@ export class PagellaVotiService {
 
   post(formData: any): Observable <any>{
     delete formData.id;
+    if(formData.voto == null) formData.voto = 0;
+
     return this.http.post( environment.apiBaseUrl  + 'DOC_PagellaVoti' , formData);  
   }
 

@@ -16,27 +16,19 @@ import { rptPagella } from 'src/app/_reports/rptPagella';
   providedIn: 'root'
 })
 
-export class JspdfService {
+export class JspdfService { defaultColor!:          string;
+                            defaultFontSize!:       number;
+                            defaultFontName!:       string;
+                            defaultMaxWidth!:       number;
+                            defaultCellLineColor!:  string;
+                            defaultLineColor!:      string;
+                            defaultFillColor!:      string;
+                            defaultLineWidth!:      number;
+                            objIndex!:              number;
+                            Pagella!:               DOC_Pagella ;  //rptPagella è l'oggetto che carica il file di testo, mentre questo - Pagella - è l'oggetto con i dati della pagella
+                            PagellaVoti!:           DOC_PagellaVoto[];  
 
-  defaultColor!:          string;
-  defaultFontSize!:       number;
-  defaultFontName!:       string;
-  defaultMaxWidth!:       number;
-  defaultCellLineColor!:  string;
-  defaultLineColor!:      string;
-  defaultFillColor!:      string;
-  defaultLineWidth!:      number;
-  objIndex!:              number;
-  Pagella!:               DOC_Pagella ;  //rptPagella è l'oggetto che carica il file di testo, mentre questo - Pagella - è l'oggetto con i dati della pagella
-  PagellaVoti!:           DOC_PagellaVoto[];  
-
-  constructor(private http: HttpClient) {}
-
-  //costruisce il report STANDARD
-  public creaPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string): jsPDF  {
-    let doc = this.buildReportPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle);
-    return doc;
-  }
+  constructor() {}
 
   //costruisce il report STANDARD e lancia il salvataggio
   public downloadPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string)  {
@@ -45,7 +37,7 @@ export class JspdfService {
   }
 
   //salva il report
-  public salvaPdf (doc :jsPDF ,  fileName: string, addDateToName: boolean = true ) {
+  private salvaPdf (doc :jsPDF ,  fileName: string, addDateToName: boolean = true ) {
     if(addDateToName){
       const d = new Date();
       fileName = d.toISOString().split('T')[0]+"_"+ fileName+".pdf";
@@ -64,7 +56,7 @@ export class JspdfService {
 
     this.Pagella = objPagella;          //  DOC_Pagella
     this.PagellaVoti = lstPagellaVoti;  //  DOC_PagellaVoto[] contiene i voti da inserire nel report
-    console.log ("jspdf.service.ts - dynamicRptPagella - PagellaVoti", this.PagellaVoti)
+    //console.log ("jspdf.service.ts - dynamicRptPagella - PagellaVoti", this.PagellaVoti)
 
     //Il primo elemento di rptPagella DEVE essere SheetDefault
     let element = rptPagella[0]         //  rptPagella è stato valorizzato nelle dichiarazioni in apertura
@@ -151,30 +143,29 @@ export class JspdfService {
 
 //#region ----- addTableStatica -----
 
-  private async addTableStatica(
-    docPDF: jsPDF, 
-    head:any, 
-    headEmptyRow: number, 
-    body: any, 
-    colWidths: any, 
-    cellBorders: any, 
-    rowsMerge: any,  
-    colFills: any, 
-    fontName: string, 
-    X: number, 
-    Y: number, 
-    W: number, 
-    H: number, 
-    fontStyle: string , 
-    fontColor:string, 
-    fontSize: number, 
-    lineColor: string, 
-    cellLineColor: string, 
-    fillColor: string, 
-    lineWidth: number, 
-    align: any, 
-    colSpans: any
-){
+  private async addTableStatica(docPDF: jsPDF, 
+                                head:any, 
+                                headEmptyRow: number, 
+                                body: any, 
+                                colWidths: any, 
+                                cellBorders: any, 
+                                rowsMerge: any,  
+                                colFills: any, 
+                                fontName: string, 
+                                X: number, 
+                                Y: number, 
+                                W: number, 
+                                H: number, 
+                                fontStyle: string , 
+                                fontColor:string, 
+                                fontSize: number, 
+                                lineColor: string, 
+                                cellLineColor: string, 
+                                fillColor: string, 
+                                lineWidth: number, 
+                                align: any, 
+                                colSpans: any)
+{
     
     if(fontName == null || fontName == "")            fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "")          fontColor = this.defaultColor;
@@ -209,15 +200,14 @@ export class JspdfService {
     //****************   HEADER
     for (i = 0; i < head.length; i++) {
       headObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
-      for (let j = 0; j < head[i].length; j++) {        
+      for (let j = 0; j < head[i].length; j++) {       
         headObj[i].push({ content: head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
-      }
     }
 
     //aggiunta riga vuota dopo l'header
     if (headEmptyRow ==1) {
       headObj.push([]);
-      for (let j = 0; j < head[0].length; j++) {
+      for (let j = 0; j < head[0].length; j++) 
         headObj[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
       }
     }
@@ -239,15 +229,11 @@ export class JspdfService {
         if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
         else rowSpan = body.length;
 
-        if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
-          bodyObj[i].push({ content: body[0][j], colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
-        }
-
+        if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0))
+          bodyObj[i].push({ content: body[0][j], colSpan: 1, rowSpan: rowSpan, styles:{font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
       }
     }
 
-
-    //console.log ("bodyObj", bodyObj);
     autoTable(docPDF, {
       //startY: Y,
       margin: {top: Y, right: 0, bottom: 0, left: X},
@@ -294,16 +280,14 @@ export class JspdfService {
       willDrawCell: (data) => {
 
         let cellContent = '';
-        for (let i = 0; i < data.cell.text.length; i++) {
+        for (let i = 0; i < data.cell.text.length; i++) 
           cellContent = cellContent + data.cell.text[i];
-        }
 
         if (data.section === 'body' && cellContent.substring(0,3)== "R90" ) {
           docPDF.setFontSize(16);
           docPDF.text(cellContent.substring(3), data.cell.x + data.cell.width /2 + 2 , data.cell.y + data.cell.height - 5, {angle:90});
-          for (let k = 0; k < data.cell.text.length; k++) {
+          for (let k = 0; k < data.cell.text.length; k++) 
             data.cell.text[k] = '';
-          }
          }
       } 
     })
@@ -313,30 +297,28 @@ export class JspdfService {
 //#region ----- addTableDinamica -------
 
   private async addTableDinamica(
-    docPDF: jsPDF,
-    head:any,
-    headEmptyRow: number,
-    body: any,
-    colWidths: any,
-    cellBorders: any,
-    rowsMerge: any,  
-    colFills: any,
-    fontName: string,
-    X: number,
-    Y: number,
-    W: number,
-    H: number,
-    fontStyle: string ,
-    fontColor:string,
-    fontSize: number,
-    lineColor: string,
-    cellLineColor: string,
-    fillColor: string,
-    lineWidth: number,
-    align: any,
-    colSpans: any,
- ){
-
+                docPDF: jsPDF,
+                head:any,
+                headEmptyRow: number,
+                body: any,
+                colWidths: any,
+                cellBorders: any,
+                rowsMerge: any,  
+                colFills: any,
+                fontName: string,
+                X: number,
+                Y: number,
+                W: number,
+                H: number,
+                fontStyle: string ,
+                fontColor:string,
+                fontSize: number,
+                lineColor: string,
+                cellLineColor: string,
+                fillColor: string,
+                lineWidth: number,
+                align: any,
+                colSpans: any) {
 
     if(fontName == null || fontName == "")            fontName = this.defaultFontName;
     if(fontColor == null || fontColor == "")          fontColor = this.defaultColor;
@@ -379,9 +361,8 @@ export class JspdfService {
     //aggiunta riga vuota dopo l'header
     if (headEmptyRow ==1) {
       headObj.push([]);
-      for (let j = 0; j < head[0].length; j++) {
+      for (let j = 0; j < head[0].length; j++) 
         headObj[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
-      }
     }
     //****************   FINE HEADER
 
@@ -389,15 +370,11 @@ export class JspdfService {
     let content : string;
 
     //for (let i = 0; i < this.PagellaVoti.length; i++) {
-      console.log ("rowsMergeD", rowsMerge);
 
-    // console.log ("jspdf.service.ts - addTableDinamica - body:", body);
-    // console.log ("jspdf.service.ts - addTableDinamica - this.PagellaVoti:", this.PagellaVoti);
     let objIndex = -1;
 
-    console.log ("jspdf.service.ts - addTableDinamica - PagellaVoti", this.PagellaVoti)
+    //console.log ("jspdf.service.ts - addTableDinamica - PagellaVoti", this.PagellaVoti)
     this.PagellaVoti.forEach ((Pagella:DOC_PagellaVoto, i: number) =>{
-
 
       if (body.join().indexOf("[el]")>0 ) { //se ci trova scritto [el] capisce di dover entrare dentro gli obiettivi e fare una riga per ogni obiettivo  
         Pagella!._ObiettiviCompleti!.forEach((element, el: number) => {
@@ -417,23 +394,21 @@ export class JspdfService {
             else rowSpan = this.PagellaVoti.length;
 
             try {
-              if (eval(body[0][j]) == null) {
+              if (eval(body[0][j]) == null) 
                 content = "";
-              } else {
+              else 
                 content = eval(body[0][j]);
-              }
             }
             catch {
               content = "";
             }
 
-            if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0)){
+            if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0))
               bodyObj[objIndex].push({ content: content, colSpan: 1, rowSpan: rowSpan, styles: {font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
-            }  
           }
         })
-        
-      } else {
+      } 
+      else {
 
         bodyObj.push([]);
         objIndex++;
@@ -451,14 +426,13 @@ export class JspdfService {
           if (rowsMerge == undefined || rowsMerge == null || rowsMerge[j] == null || rowsMerge[j] == undefined || rowsMerge[j] ==0 || i != 0) rowSpan = 1;
           else rowSpan = this.PagellaVoti.length;
 
-          console.log ("body[k][j]", body[0][j]);
+          //console.log ("body[k][j]", body[0][j]);
           try {
 
-            if (eval(body[0][j]) == null) {
+            if (eval(body[0][j]) == null) 
               content = "";
-            } else {
+            else 
               content = eval(body[0][j]);
-            }
           }
           catch {
             content = "";
@@ -473,8 +447,7 @@ export class JspdfService {
       //console.log ("bodyObj", bodyObj);
     })
 
-
-    console.log ("bodyObj", bodyObj);
+    //console.log ("bodyObj", bodyObj);
     autoTable(docPDF, {
       //startY: Y,
       margin: {top: Y, right: 0, bottom: 0, left: X},
@@ -483,8 +456,6 @@ export class JspdfService {
       //tableLineWidth: lineWidth,  //Attenzione: attivando questa cambia il bordo ESTERNO della tabella
       head: headObj, //Header eventualmente di più linee
       body: bodyObj,
-
-      
       styles: {      
               //cellWidth: W/ data[0].length,
               halign: align,
@@ -571,7 +542,7 @@ export class JspdfService {
           break;
         default:
       }
-       console.log (this.objIndex, bodyObj);
+      // console.log (this.objIndex, bodyObj);
 
       //inserisco una riga vuota dopo il voto/giudizio o dopo la serie di livelli di apprendimento
        bodyObj.push([]);
@@ -582,7 +553,7 @@ export class JspdfService {
     }
 
 
-    console.log ("bodyObj", bodyObj);
+    //console.log ("bodyObj", bodyObj);
     autoTable(docPDF, {
       //startY: Y,
       margin: {top: rptPagella.Y, right: 0, bottom: 0, left: rptPagella.X},
@@ -774,7 +745,6 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
     //docPDF.getTextDimensions(text);
     //var dim = docPDF.getTextDimensions(text);
     //console.log("dimensioni testo: ", dim);
-
   }  
 
   private async addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
@@ -830,66 +800,8 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
 
 //#endregion
 
-//#region ----- Funzioni di appoggio -----
-  
-  private parseTextValue ( text: string) : string {
-
-    let retString = "";
-    let outArr: any = [];
-
-    if(text.indexOf("%>") <= 0)
-      retString = text;
-    else{
-      let textArr = text.split("%>");
-
-      textArr.forEach((txt,index) => {
-          let tmpArr = txt.split("<%");
-
-          outArr.push(tmpArr[0]);
-          if(tmpArr[1] != undefined){
-            
-            //objPagella deve diventare -->  this.Pagella 
-            let fieldRef = tmpArr[1].replace("obj", "this.");
-            
-            if(fieldRef.toLocaleLowerCase().startsWith("formatdate")) 
-              fieldRef = "this." + fieldRef; 
-
-            if(fieldRef.toLocaleLowerCase().startsWith("formatnumber")) 
-              fieldRef = "this." + fieldRef; 
-
-            //console.log("parseTextValue: " , fieldRef);
-            outArr.push(eval(fieldRef));
-          }
-        }
-      );
-      retString = outArr.join('');
-    }
-    return retString;
-  }
-
-  public FormatDate ( data: any, formato: string): string {
-    let retDate= data;
-    switch (formato) {
-      case "yyyy-mm-dd":
-        let dtISOLocaleStart = data.toLocaleString('sv').replace(' ', 'T');
-        retDate = dtISOLocaleStart.substring(0,10);
-        break;
-      case "dd/mm/yyyy":
-        var year = data.substring(0,4);
-        var month = data.substring(5,7);
-        let day = data.substring(8,10);
-        retDate = day + '/' + month + '/' + year;
-        break;
-    }
-    return retDate;
-  }
-
-  public FormatNumber ( data: any, n_dec: number): string {
-    return Number(data).toFixed(n_dec);
-  }
-//#endregion
-
 //#region ----- costruisce e stampa Report STANDARD -----
+
   //crea e scarica il report con la tabella dei dati della pagina   Metodo che include AUTOTABLE
   private buildReportPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string) {
 
@@ -1052,74 +964,84 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
   }
 //#endregion
 
-//#region ----- altre Funzioni di appoggio -----
-    flattenObj (arrToFlatten: any){
-    //questa funzione serve per schiacciare un Object
-    //e restituire campi del tipo alunno.nome, alunno.cognome invece di alunno {nome:..., cognome:...}
-      let result : any = {};
-      for (const i in arrToFlatten) {
-          //se trova un oggetto allora chiama se stessa ricorsivamente
-          if ((typeof arrToFlatten[i]) === 'object' && !Array.isArray(arrToFlatten[i])) {
-              const temp = this.flattenObj(arrToFlatten[i]);
-              for (const j in temp) {
-                  //costruisce la stringa ricorsivamente
-                  result[i + '.' + j] = temp[j];
-              }
-          }
-          // altrimenti non gli fa nulla
-          else {
-              result[i] = arrToFlatten[i];
-          }
-      }
-      return result;
-    };
-  
-    flatDeep(arr: any, d = 1) {
-      //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
-      //questa funzione schiaccia un array (non un object, attenzione)
-      return d > 0 ? arr.reduce((acc: any, val: any) => acc.concat(Array.isArray(val) ? this.flatDeep(val, d - 1) : val), [])
-                   : arr.slice();
-    };
+//#region ----- Funzioni di appoggio -----
 
-    deletePropertyPath (obj: any, path: any) {
-      //https://stackoverflow.com/questions/40712249/deleting-nested-property-in-javascript-object
-      //questa funzione cancella una nested property passandogli il percorso da eliminare in forma: alunno.nome
-      if (!obj || !path) {
-        return;
-      }
-      if (typeof path === 'string') {
-        path = path.split('.');
-      }
-      for (let i = 0; i < path.length - 1; i++) {
-        obj = obj[path[i]];
-        if (typeof obj === 'undefined') {
-          return;
+private parseTextValue ( text: string) : string {
+
+  let retString = "";
+  let outArr: any = [];
+
+  if(text.indexOf("%>") <= 0)
+    retString = text;
+  else {
+
+    let textArr = text.split("%>");
+
+    textArr.forEach((txt,index) => {
+        let tmpArr = txt.split("<%");
+
+        outArr.push(tmpArr[0]);
+        if(tmpArr[1] != undefined){
+          
+          //objPagella deve diventare -->  this.Pagella 
+          let fieldRef = tmpArr[1].replace("obj", "this.");
+          
+          if(fieldRef.toLocaleLowerCase().startsWith("formatdate")) 
+            fieldRef = "this." + fieldRef; 
+
+          if(fieldRef.toLocaleLowerCase().startsWith("formatnumber")) 
+            fieldRef = "this." + fieldRef; 
+
+          outArr.push(eval(fieldRef));
         }
       }
-      delete obj[path.pop()];
-    };
-  
-    propertiesToArray(obj: any) {
-      //let keyNames = Object.keys(Object); //estrae solo i nomi delle prorietà di primo livello
-      //questa routine estrae invece tutte le proprietà e sottoproprietà di un oggetto nella forma alunno.nome
-      const isObject = (val: any) =>
-        val && typeof val === 'object' && !Array.isArray(val);
-    
-      const addDelimiter = (a: any, b: any) =>
-        a ? `${a}.${b}` : b;
-    
-      const paths: any = (obj = {}, head = '') => {
-        return Object.entries(obj)
-          .reduce((product, [key, value]) => 
-            {
-              let fullPath = addDelimiter(head, key)
-              return isObject(value) ?
-                product.concat(paths(value, fullPath))
-              : product.concat(fullPath)
-            }, []);
-      }
-      return paths(obj);
+    );
+    retString = outArr.join('');
+  }
+  return retString;
+}
+
+public FormatDate ( data: any, formato: string): string {
+  let retDate= data;
+  switch (formato) {
+    case "yyyy-mm-dd":
+      let dtISOLocaleStart = data.toLocaleString('sv').replace(' ', 'T');
+      retDate = dtISOLocaleStart.substring(0,10);
+      break;
+    case "dd/mm/yyyy":
+      var year = data.substring(0,4);
+      var month = data.substring(5,7);
+      let day = data.substring(8,10);
+      retDate = day + '/' + month + '/' + year;
+      break;
+  }
+  return retDate;
+}
+
+public FormatNumber ( data: any, n_dec: number): string {
+  return Number(data).toFixed(n_dec);
+}
+
+flattenObj (arrToFlatten: any){
+  //questa funzione serve per schiacciare un Object
+  //e restituire campi del tipo alunno.nome, alunno.cognome invece di alunno {nome:..., cognome:...}
+    let result : any = {};
+    for (const i in arrToFlatten) {
+        //se trova un oggetto allora chiama se stessa ricorsivamente
+        if ((typeof arrToFlatten[i]) === 'object' && !Array.isArray(arrToFlatten[i])) {
+            const temp = this.flattenObj(arrToFlatten[i]);
+            for (const j in temp) {
+                //costruisce la stringa ricorsivamente
+                result[i + '.' + j] = temp[j];
+            }
+        }
+        // altrimenti non gli fa nulla
+        else {
+            result[i] = arrToFlatten[i];
+        }
     }
+    return result;
+  };
 
 //#endregion
 
@@ -1134,6 +1056,43 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
 
  
 /*
+
+ //costruisce il report STANDARD
+  public creaPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string): jsPDF  {
+    let doc = this.buildReportPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle);
+    return doc;
+  }
+
+propertiesToArray(obj: any) {
+  //let keyNames = Object.keys(Object); //estrae solo i nomi delle prorietà di primo livello
+  //questa routine estrae invece tutte le proprietà e sottoproprietà di un oggetto nella forma alunno.nome
+  const isObject = (val: any) =>
+    val && typeof val === 'object' && !Array.isArray(val);
+
+  const addDelimiter = (a: any, b: any) =>
+    a ? `${a}.${b}` : b;
+
+  const paths: any = (obj = {}, head = '') => {
+    return Object.entries(obj)
+      .reduce((product, [key, value]) => 
+        {
+          let fullPath = addDelimiter(head, key)
+          return isObject(value) ?
+            product.concat(paths(value, fullPath))
+          : product.concat(fullPath)
+        }, []);
+  }
+  return paths(obj);
+}
+
+flatDeep(arr: any, d = 1) {
+  //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
+  //questa funzione schiaccia un array (non un object, attenzione)
+  return d > 0 ? arr.reduce((acc: any, val: any) => acc.concat(Array.isArray(val) ? this.flatDeep(val, d - 1) : val), [])
+                : arr.slice();
+};
+
+
   public async creaPagellaPdf (objPagella: DOC_Pagella): Promise<jsPDF> {
 
     return this.dynamicRptPagella(objPagella);

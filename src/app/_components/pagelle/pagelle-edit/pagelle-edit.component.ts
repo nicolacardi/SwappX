@@ -32,10 +32,11 @@ export class PagellaEditComponent implements OnInit {
   dtIns!:                                        string;
 
   periodo!:                                      number;
-  toggleQuadVal!:                                number;
-  
+  quadrimestre = 1;
+
   ckStampato!:                                   boolean;  
   formDataFile! :                                DOC_File;
+
 //#endregion  
 
 //#region ----- ViewChild Input Output -------
@@ -57,21 +58,21 @@ export class PagellaEditComponent implements OnInit {
 
   ngOnChanges() {
     if (this.iscrizioneID != undefined) 
-      this.loadData(1);
+      this.loadData();
   }
 
   ngOnInit(): void {
   }
 
-  loadData(toggleQuad: number) {
+  loadData() {
 
-    this.periodo = toggleQuad;
+    //this.periodo = this.toggleQuad;
     let obsPagelle$: Observable<DOC_Pagella[]>;
     obsPagelle$= this.svcPagelle.listByIscrizione(this.iscrizioneID);
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagelle$);
 
     loadPagella$.pipe (
-      map(val=>val.filter(val=>(val.periodo == toggleQuad))))
+      map(val=>val.filter(val=>(val.periodo == this.quadrimestre))))
         .subscribe(val =>  {
           if (val.length != 0)  {
             this.objPagella = val[0];
@@ -85,7 +86,8 @@ export class PagellaEditComponent implements OnInit {
             this.objPagella = <DOC_Pagella>{};
             this.objPagella.id = -1;
             this.objPagella.iscrizioneID = this.iscrizioneID;
-            this.objPagella.periodo = this.periodo;
+            //this.objPagella.periodo = this.periodo;
+            this.objPagella.periodo = this.quadrimestre;
             this.objPagella.dtIns = dateNow;
             this.ckStampato = false;
             this.dtIns = '';
@@ -95,17 +97,15 @@ export class PagellaEditComponent implements OnInit {
           //   this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnno.classeSezione.classeID,this.objPagella.id! )
           //     .subscribe(
           //       res => {this.lstPagellaVoti = res; }
-
           //     );
           // }
         }
     );
-    
   }
 
   quadClick(e: MatButtonToggleChange) {
-    this.loadData(e.value);
-    this.periodo = e.value;
+    this.quadrimestre = e.value;
+    this.loadData();
   }
 
   aggiornaData () {
@@ -119,32 +119,23 @@ export class PagellaEditComponent implements OnInit {
 
   openPdfPagella(){
 
-    //api get 
-    //api/DOC_Files/GetByDocAndTipo/id/Pagella
-    //console.log("[openPdfPagella] - this.objPagella: ", this.objPagella);
-
     if(this.objPagella == null || this.objPagella.id! <0) {
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella non ancora generata', panelClass: ['red-snackbar']})
       return;
     }
-    
 
     this.svcFiles.getByDocAndTipo(this.objPagella.id,"Pagella").subscribe(
         res => {
-          //console.log("[openPdfPagella] - base64: ", res.fileBase64);
-
           //si crea un elemento fittizio che scarica il file di tipo base64 che gli viene assegnato
           const source = `data:application/pdf;base64,${res.fileBase64}`;
           const link = document.createElement("a");
 
           link.href = source;
-
           link.download = `${"test"}.pdf`
-          //link.download = "test.pdf";
           link.click();
         },
         err => {
-          console.log("ERRORE: ", err);
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di caricamento', panelClass: ['red-snackbar']})
         }
       );
   }
@@ -155,18 +146,6 @@ export class PagellaEditComponent implements OnInit {
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella inesistente - inserire almeno un voto', panelClass: ['red-snackbar']});
       return;
     }
-    
-    /*
-    let PagellaVoti: DOC_PagellaVoto[];
-    this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnnoID!,this.objPagella.id! )
-      .subscribe( res =>{
-        PagellaVoti = res
-        }
-      );
-      */
-
-    //Chiamata al motore di stampa
-    //let rpt :jsPDF  = await this._jspdf.dynamicRptPagella(this.objPagella);
 
     //costruiamo una promise per attendere il caricamento della lista voti
     const reloadLstPagellaVoti = () => new Promise((resolve, reject) => {
@@ -175,19 +154,26 @@ export class PagellaEditComponent implements OnInit {
           .subscribe(
             (res: DOC_PagellaVoto[]) => {
               this.lstPagellaVoti = res;
-              //console.log ("pagelle.edit.component.ts - savePdfPagella - lstPagellaVoti", res);
-              resolve ("messaggio eventuale");
+              resolve ("Lista voti caricata");
             }
           );
       }
     });
-    
     await reloadLstPagellaVoti();
 
+    //Chiamata al motore di stampa e salvataggio
     let rpt :jsPDF  = await this._jspdf.dynamicRptPagella(this.objPagella, this.lstPagellaVoti);
+    let retcode = this.svcFiles.saveFilePagella(rpt,this.objPagella.id!);
 
+    if(retcode == true)
+      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella salvata in Database', panelClass: ['green-snackbar']});
+    else
+      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']});
+      
+    this.svcPagelle.setStampato(this.objPagella.id!, true).subscribe();
 
-    //Preparazione Blob con il contenuto base64 del pdf
+ /* 29/10/2022 - sostituito da svcFiles.saveFilePagella
+    //Preparazione Blob con il contenuto base64 del pdf e salvataggio su DB
     let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});
     
     const result = new ReplaySubject<string>(1);
@@ -223,18 +209,6 @@ export class PagellaEditComponent implements OnInit {
       err =>  {}
     );
     this.svcPagelle.setStampato(this.objPagella.id!, true).subscribe();
+    */
   }
-
-
-     // let promise = new Promise ((resolve, reject) => {
-    //   setTimeout (() => {
-    //     resolve ("done");
-    //     console.log ("done");
-    // }, 1000)
-    // });
-
-
-
-
-
 }

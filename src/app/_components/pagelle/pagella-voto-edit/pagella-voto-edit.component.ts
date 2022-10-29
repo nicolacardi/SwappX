@@ -109,12 +109,15 @@ export class PagellaVotoEditComponent implements OnInit  {
 
   changeNote(formData: DOC_PagellaVoto, note: string) {
 
+    
+
     formData.note = note;
     formData.pagellaID = this.objPagella.id;;
     if (formData.tipoGiudizioID == null) 
         formData.tipoGiudizioID = 1;
 
     let formData2 = Object.assign({}, formData);
+
     this.save(formData2)
 
     if (this.objPagella.ckStampato) this.resetStampato();
@@ -128,13 +131,17 @@ export class PagellaVotoEditComponent implements OnInit  {
     delete formInput.tipoGiudizio;
 
     //nel caso la pagella ancora non sia stata creata, va inserita
+
+    console.log("BELLA MERDA", formInput);
+
     if (this.objPagella.id == -1) {
 
+      //console.log("INSERT - objPagella: ", this.objPagella);
+    
       this.svcPagella.post(this.objPagella)
         .pipe (
           tap( x =>  {
-            console.log ("C");
-            console.log("x", x);
+            //console.log("x", x);
             formInput.pagellaID = x.id! 
           } ),
           concatMap( () =>   
@@ -152,6 +159,8 @@ export class PagellaVotoEditComponent implements OnInit  {
 
       if (formInput.id == 0) {
         //post
+
+        console.log("formInput", formInput);
         this.svcPagellaVoti.post(formInput).subscribe(
           res => { this.loadData();  },
           err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})}
