@@ -198,10 +198,7 @@ export class PagellaVotoEditComponent implements OnInit  {
       });
   }
 
-
   resetStampato() {
     this.svcPagella.setStampato(this.objPagella.id!, false).subscribe();
   }
 }
- 
-
