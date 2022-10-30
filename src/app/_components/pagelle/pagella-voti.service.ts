@@ -19,13 +19,16 @@ export class PagellaVotiService {
   }
   
   put(formData: any): Observable <any>{
+    //console.log ("pagellavoto.put", formData);
     return this.http.put( environment.apiBaseUrl  + 'DOC_PagellaVoti/' + formData.id , formData);    
   }
 
   post(formData: any): Observable <any>{
+    //console.log ("pagellavoto.post", formData);
+
     delete formData.id;
     if(formData.voto == null) formData.voto = 0;
-
+    //if(formData.tipoGiudizioID == null) formData.tipoGiudizioID = 1;
     return this.http.post( environment.apiBaseUrl  + 'DOC_PagellaVoti' , formData);  
   }
 
