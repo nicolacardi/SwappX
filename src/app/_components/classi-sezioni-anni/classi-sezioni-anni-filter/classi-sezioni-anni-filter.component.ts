@@ -24,8 +24,7 @@ export class ClassiSezioniAnniFilterComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit() {
 
-    this.classeFilter.valueChanges
-    .subscribe(
+    this.classeFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.classiSezioniAnniListComponent.filterValues.classe = val.toLowerCase();
@@ -33,16 +32,13 @@ export class ClassiSezioniAnniFilterComponent implements OnInit {
       }
     )
 
-    this.sezioneFilter.valueChanges
-    .subscribe(
+    this.sezioneFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.classiSezioniAnniListComponent.filterValues.sezione = val.toLowerCase();
         this.classiSezioniAnniListComponent.matDataSource.filter = JSON.stringify(this.classiSezioniAnniListComponent.filterValues);
       }
     )
-
-
   }
 //#endregion
 

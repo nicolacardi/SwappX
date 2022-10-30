@@ -148,12 +148,8 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
        concatMap( res => iif (()=> res == null, this.svcDocenze.post(objDocenza) , of() )
       )
     ).subscribe(
-      res=> {
-        this.dialogRef.close()
-      },
-      err=> {
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-       }
+      res=> { this.dialogRef.close() },
+      err=> { this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']}) }
     )
   }
 

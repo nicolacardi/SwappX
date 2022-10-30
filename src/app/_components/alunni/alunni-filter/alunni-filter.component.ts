@@ -5,7 +5,6 @@ import { FormControl } from '@angular/forms';
 import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 
 
-
 @Component({
   selector: 'app-alunni-filter',
   templateUrl: './alunni-filter.component.html',
@@ -34,7 +33,6 @@ export class AlunniFilterComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili-------
 
- 
   ngOnInit() {
 
     this.nomeFilter.valueChanges

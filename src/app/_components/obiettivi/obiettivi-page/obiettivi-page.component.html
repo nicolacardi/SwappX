@@ -1,4 +1,4 @@
-<button mat-mini-fab aria-label="Strumenti" matTooltip="Strumenti" class="_btn-toolbar _btn-pos-top-0" (click)="sidenav2.toggle();" >
+<button mat-mini-fab aria-label="Strumenti" matTooltip="Strumenti" class="_btn-toolbar _btn-pos-top-0" (click)="toolSidenav.toggle();" >
     <mat-icon>construction</mat-icon>
 </button>
 
@@ -6,7 +6,7 @@
     <mat-icon>add</mat-icon>
 </button>
 
-<button mat-mini-fab aria-label="Filtri Avanzati" matTooltip="Filtri Avanzati" class="_btn-add _btn-pos-right-2 _btn-pos-top-0" (click)="sidenav.toggle(); resetFiltri()" >
+<button mat-mini-fab aria-label="Filtri Avanzati" matTooltip="Filtri Avanzati" class="_btn-add _btn-pos-right-2 _btn-pos-top-0" (click)="filterSidenav.toggle(); resetFiltri()" >
     <mat-icon>filter_alt</mat-icon>
 </button>
 
@@ -15,28 +15,23 @@
 </button>
 
 <mat-drawer-container [hasBackdrop]="false" style="min-height: 91%">
-    <mat-drawer position="end" #sidenav class="rightSidenav"  [mode]="'side'">
+    <mat-drawer position="end" #filterSidenav class="filterSidenav"  [mode]="'side'">
         <app-obiettivi-filter [obiettiviListComponent] = "appobiettivilist" #appobiettivifilter></app-obiettivi-filter>    
     </mat-drawer>
 
-    <mat-drawer position="start" #sidenav2 class="leftSidenav2"  [mode]="'side'">
-        <app-toolbar 
-            [rptTitle]="appobiettivilist.rptTitle" 
-            [rptFieldsToKeep]="appobiettivilist.rptFieldsToKeep" 
-            [rptColumnsNames]="appobiettivilist.rptColumnsNames" 
-            [rptData]="appobiettivilist.matDataSource.data"
-            [rptFileName]="appobiettivilist.rptFileName"
-            [columnsComponent] = "appobiettivilist"
-            >
+    <mat-drawer position="start" #toolSidenav class="toolSidenav"  [mode]="'side'">
+        <app-toolbar [rptTitle]="appobiettivilist.rptTitle" 
+                     [rptFieldsToKeep]="appobiettivilist.rptFieldsToKeep" 
+                     [rptColumnsNames]="appobiettivilist.rptColumnsNames" 
+                     [rptData]="appobiettivilist.matDataSource.data"
+                     [rptFileName]="appobiettivilist.rptFileName"
+                     [columnsComponent] = "appobiettivilist" >
         </app-toolbar>
     </mat-drawer>
 
     <mat-drawer-content>
         <app-obiettivi-list
-            [obiettiviFilterComponent] = "appobiettivifilter"
-
-            #appobiettivilist  
-            >
+            [obiettiviFilterComponent] = "appobiettivifilter" #appobiettivilist >
         </app-obiettivi-list>
     </mat-drawer-content>
 </mat-drawer-container>

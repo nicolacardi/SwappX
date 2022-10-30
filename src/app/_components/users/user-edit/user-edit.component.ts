@@ -5,20 +5,25 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { pairwise, startWith, tap } from 'rxjs/operators';
 
+//components
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+
+//services
 import { RuoliService } from 'src/app/_user/ruoli.service';
 import { UserService } from 'src/app/_user/user.service';
-import { Ruolo, User } from 'src/app/_user/Users';
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
-
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { LoadingService } from '../../utilities/loading/loading.service';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+
+//classes
+import { Ruolo, User } from 'src/app/_user/Users';
 
 @Component({
   selector: 'app-user-edit',
   templateUrl: './user-edit.component.html',
   styleUrls: ['../users.css']
 })
+
 export class UserEditComponent implements OnInit {
 
   user$!:                     Observable<User>;
@@ -41,8 +46,7 @@ export class UserEditComponent implements OnInit {
     public _dialog:                             MatDialog,
     private _snackBar:                          MatSnackBar,
     private _loadingService :                   LoadingService,
-    private fb:                                 FormBuilder,
-  ) { 
+    private fb:                                 FormBuilder ) { 
 
     _dialogRef.disableClose = true;
 
@@ -55,7 +59,6 @@ export class UserEditComponent implements OnInit {
       ruoloID:          [''],
     });
   }
-
 
 //#region ----- LifeCycle Hooks e simili-------
 
@@ -79,8 +82,7 @@ export class UserEditComponent implements OnInit {
       }
     )
   }
-
-  
+ 
 
   loadData() {
 
@@ -94,9 +96,7 @@ export class UserEditComponent implements OnInit {
       this.user$ = loadUser$.pipe(
           tap(utente => {
             this.form.patchValue(utente);
-            this.userID = utente.id;            /*
-            this.svcRuoli.list().pipe().subscribe();
-            */
+            this.userID = utente.id;       
           })
       );
     } 
@@ -114,25 +114,19 @@ export class UserEditComponent implements OnInit {
     });
     dialogYesNo.afterClosed().subscribe(result => {
       if(result){
-        this.svcUser.delete(this.idUser)
-        .subscribe(
-          ()=>{
+        this.svcUser.delete(this.idUser).subscribe(()=>{
             this._snackBar.openFromComponent(SnackbarComponent,
               {data: 'Record cancellato', panelClass: ['green-snackbar']}
             );
             this._dialogRef.close();
           },
-          ()=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          )
+          ()=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
         );
       }
     });
   }
 
- 
-
-  save() {
+   save() {
 
     let formData = {
       userID:     this.idUser,   
@@ -145,9 +139,6 @@ export class UserEditComponent implements OnInit {
       
     };
     
-
-
-
     if (formData.userID == "0") {
       if (formData.Password == ""  || formData.Password == null || formData.Password == undefined) {
         this._dialog.open(DialogOkComponent, {
@@ -156,26 +147,21 @@ export class UserEditComponent implements OnInit {
         });
         return;        
       }
-        this.svcUser.post(this.form.value)
-             .subscribe(res=> {
-               this._dialogRef.close();
-             },
-             err=> (
-               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-             ));
+      this.svcUser.post(this.form.value).subscribe(
+        res=> { this._dialogRef.close();},
+        err=> {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}  
+      );
     } else {
-      this.svcUser.put(formData)
-        .subscribe( ()=> {
-          console.log (formData);
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo utente salvato', panelClass: ['green-snackbar']})}
-        );
+      this.svcUser.put(formData).subscribe( 
+        res => { this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo utente salvato', panelClass: ['green-snackbar']})},
+        err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvaggio', panelClass: ['red-snackbar']})}
+      );
     }
-
 
     if(formData.userID != "0" && this.form.controls.password.dirty && this.form.controls.password.value != "" ){
       
-      this.svcUser.ResetPassword(this.idUser, this.form.controls.password.value)
-        .subscribe( res=> {
+      this.svcUser.ResetPassword(this.idUser, this.form.controls.password.value).subscribe( 
+        res=> {
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password modificata', panelClass: ['green-snackbar']});
           this._dialogRef.close();
         },
@@ -184,8 +170,6 @@ export class UserEditComponent implements OnInit {
         ));
     }
   }
-
-
 
   ruoloChange() {
     if (this.currUserRuolo != 11 && this.previousMatSelect == 11) {
@@ -199,7 +183,6 @@ export class UserEditComponent implements OnInit {
       this.form.controls['ruoloID'].setValue(this.previousMatSelect);
       return;
     }
-
 
     if (this.currUserRuolo != 11 && this.form.controls.ruoloID.value == 11) {
       //impedisco ai non SysAdmin di impostare alcuno come SySAdmin 

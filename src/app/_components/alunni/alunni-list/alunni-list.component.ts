@@ -22,7 +22,6 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
 
 //classes
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { promises, resolve } from 'dns';
 
 @Component({
   selector:     'app-alunni-list',

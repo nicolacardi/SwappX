@@ -4,9 +4,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+
+//models
 import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
-import { LoadingService } from '../../../utilities/loading/loading.service';
+
+//components
 import { SnackbarComponent } from '../../../utilities/snackbar/snackbar.component';
+
+//services
+import { LoadingService } from '../../../utilities/loading/loading.service';
 import { DocenzeService } from '../docenze.service';
 
 @Component({
@@ -32,11 +38,8 @@ export class DocenzaEditComponent implements OnInit {
     private svcDocenze:                         DocenzeService,
     private _loadingService :                   LoadingService,
     private fb:                                 FormBuilder,
-    private _snackBar:                          MatSnackBar,
+    private _snackBar:                          MatSnackBar ) {
 
-
-
-  ) { 
     this.form = this.fb.group({
       id:                         [null],
       ckPagella:                  [''],
@@ -70,7 +73,6 @@ export class DocenzaEditComponent implements OnInit {
           )
       );
     }
-
   }
 
   save() {
@@ -97,8 +99,8 @@ export class DocenzaEditComponent implements OnInit {
     //          (di norma così sarebbe, perchè non ha senso che si voglia togliere dalla pagella di una I A e non della I C...) 
     //          (attenzione, stiamo parlando di quelle uguali dello stesso anno)
 
-      this.svcDocenze.put(this.form.value)
-        .subscribe(res=> {
+      this.svcDocenze.put(this.form.value).subscribe(
+          res=> {
             this._dialogRef.close();
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
           },
@@ -110,7 +112,8 @@ export class DocenzaEditComponent implements OnInit {
 
   delete() {
     this.svcDocenze.delete(this.form.controls.id.value)
-    .subscribe(res=> {
+    .subscribe(
+      res=> {
         this._dialogRef.close();
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record Elieminato', panelClass: ['green-snackbar']});
       },

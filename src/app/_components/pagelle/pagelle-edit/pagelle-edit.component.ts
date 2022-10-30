@@ -4,25 +4,28 @@ import { iif, Observable, ReplaySubject } from 'rxjs';
 import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { jsPDF } from 'jspdf';
 
+//components
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+
 //services
+import { PagellaVotiService } from '../pagella-voti.service';
 import { PagelleService } from '../pagelle.service';
 import { FilesService } from '../files.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 
 //classes
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
-import { JspdfService } from '../../utilities/jspdf/jspdf.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { DOC_File } from 'src/app/_models/DOC_File';
 import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto';
-import { PagellaVotiService } from '../pagella-voti.service';
 
 @Component({
   selector: 'app-pagelle-edit',
   templateUrl: './pagelle-edit.component.html',
   styleUrls: ['../pagelle.css']
 })
+
 export class PagellaEditComponent implements OnInit {
 
 //#region ----- Variabili -------
@@ -111,7 +114,6 @@ export class PagellaEditComponent implements OnInit {
   aggiornaData () {
 
     let formData = <DOC_Pagella>{
-      //id: this.pagellaID,
       id: this.objPagella.id!,
       iscrizioneID: this.iscrizioneID
     }

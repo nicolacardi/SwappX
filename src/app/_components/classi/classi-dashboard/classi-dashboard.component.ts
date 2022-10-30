@@ -1,29 +1,30 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatTabGroup } from '@angular/material/tabs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+//models
 
 //components
-//import { AlunniListComponent } from '../../alunni/alunni-list/alunni-list.component';
-import { IscrizioniClasseListComponent } from '../../iscrizioni/iscrizioni-classe-list/iscrizioni-classe-list.component';
 
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+
+import { IscrizioniClasseListComponent } from '../../iscrizioni/iscrizioni-classe-list/iscrizioni-classe-list.component';
 import { IscrizioniAddComponent } from '../../iscrizioni/iscrizioni-add/iscrizioni-add.component';
+import { LezioniCalendarioComponent } from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
+import { DocenzeAddComponent } from '../docenze/docenze-add/docenze-add.component';
+import { DocenzeListComponent } from '../docenze/docenze-list/docenze-list.component';
+import { ClassiSezioniAnniListComponent } from '../../classi-sezioni-anni/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { IscrizioniClasseCalcoloComponent } from '../../iscrizioni/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 
 //services
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
 import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
-import { ClassiSezioniAnniListComponent } from '../../classi-sezioni-anni/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { IscrizioniClasseCalcoloComponent } from '../../iscrizioni/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
-import { DocenzeAddComponent } from '../docenze/docenze-add/docenze-add.component';
-import { DocenzeListComponent } from '../docenze/docenze-list/docenze-list.component';
 import { DocenzeService } from '../docenze/docenze.service';
-import { LezioniCalendarioComponent } from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
-import { MatTabGroup } from '@angular/material/tabs';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import jsPDF from 'jspdf';
 
 
 @Component({
@@ -106,9 +107,9 @@ export class ClassiDashboardComponent implements OnInit {
     private _jspdf:                       JspdfService,
     private actRoute:                     ActivatedRoute,
     private router:                       Router,        
-    private _snackBar:                    MatSnackBar
-  
-    ) {}
+    private _snackBar:                    MatSnackBar) {
+    
+  }
 
 //#region ----- LifeCycle Hooks e simili-------
 
@@ -125,7 +126,6 @@ export class ClassiDashboardComponent implements OnInit {
           this.classeSezioneAnnoIDrouted = params['classeSezioneAnnoID'];  
     });
 
-
     this._navigationService.passPage("classiDashboard");
   }
 //#endregion
@@ -139,27 +139,23 @@ export class ClassiDashboardComponent implements OnInit {
     this.isOpen = true;
   }
 
-
-
   creaPdfIscrizioni() {
+
     //elenco i campi da tenere
     let fieldsToKeep = ['alunno.nome', 'alunno.cognome', 'alunno.email', 'alunno.telefono', 'alunno.dtNascita'];
     //elenco i nomi delle colonne
     let columnsNames = [['nome', 'cognome', 'email', 'telefono', 'nato il']];
-    this._jspdf.downloadPdf(
-      this.viewListIscrizioni.matDataSource.data, 
-      columnsNames,
-      fieldsToKeep,
-      "Classe "+ this.viewListIscrizioni.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewListIscrizioni.classeSezioneAnno.classeSezione.sezione,
-       "ListaIscrizioni");
+    this._jspdf.downloadPdf( this.viewListIscrizioni.matDataSource.data, 
+                             columnsNames,
+                             fieldsToKeep,
+                             "Classe "+ this.viewListIscrizioni.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewListIscrizioni.classeSezioneAnno.classeSezione.sezione,
+                             "ListaIscrizioni");
 
-     this._jspdf.downloadPdf(
-      this.viewListIscrizioni.matDataSource.data, 
-      columnsNames,
-      fieldsToKeep,
-      "Classe "+ this.viewListIscrizioni.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewListIscrizioni.classeSezioneAnno.classeSezione.sezione,
-       "ListaIscrizioni");
-
+     this._jspdf.downloadPdf(this.viewListIscrizioni.matDataSource.data, 
+                             columnsNames,
+                             fieldsToKeep,
+                             "Classe "+ this.viewListIscrizioni.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewListIscrizioni.classeSezioneAnno.classeSezione.sezione,
+                             "ListaIscrizioni");
   }
 
   creaPdfDocenze() {
@@ -167,14 +163,12 @@ export class ClassiDashboardComponent implements OnInit {
     let fieldsToKeep = ['materia.descrizione', 'docente.persona.nome', 'docente.persona.cognome'];
     //elenco i nomi delle colonne
     let columnsNames = [['materia', 'Nome Docente', 'Cognome Docente']];
-    this._jspdf.downloadPdf(
-      this.viewDocenzeList.matDataSource.data,
-      columnsNames,
-      fieldsToKeep,
-      "Docenti Classe "+ this.viewDocenzeList.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewDocenzeList.classeSezioneAnno.classeSezione.sezione,
-      "ListaDocenze");
+    this._jspdf.downloadPdf( this.viewDocenzeList.matDataSource.data,
+                             columnsNames,
+                             fieldsToKeep,
+                             "Docenti Classe "+ this.viewDocenzeList.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewDocenzeList.classeSezioneAnno.classeSezione.sezione,
+                             "ListaDocenze");
   }
-
 
   promuovi() {
 
@@ -198,10 +192,9 @@ export class ClassiDashboardComponent implements OnInit {
 
       }
     };
-
-    const dialogRef = this._dialog.open(IscrizioniClasseCalcoloComponent, dialogConfig);
-
+    this._dialog.open(IscrizioniClasseCalcoloComponent, dialogConfig);
   }
+
 //#endregion
 
 //#region ----- add/remove to/from Classe-------
@@ -221,9 +214,7 @@ export class ClassiDashboardComponent implements OnInit {
     const dialogRef = this._dialog.open(IscrizioniAddComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
         result => {
-          if(result == undefined){          
-          this.viewListIscrizioni.loadData()
-          }
+           if(result == undefined) this.viewListIscrizioni.loadData()
     });
   }
 
@@ -242,11 +233,9 @@ export class ClassiDashboardComponent implements OnInit {
     const dialogRef = this._dialog.open(DocenzeAddComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
         result => {
-          if(result == undefined)          
-            this.viewDocenzeList.loadData()
+          if(result == undefined) this.viewDocenzeList.loadData()
     });
   }
-
 
   removeAlunnoFromClasse() {
     const objIdToRemove = this.viewListIscrizioni.getChecked();
@@ -266,15 +255,8 @@ export class ClassiDashboardComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe(
         async result => {
-          if(!result) {
-            return; 
-          } else {
-            // objIdToRemove.forEach(val=>{
-              
-            //   this.svcIscrizioni.delete(val.id)
-            //     .subscribe(()=>{
-            //     })
-            // }); 
+          if(!result) return; 
+          else {
             //per ragioni di sincronia (aggiornamento classiSezioniAnniList dopo il loop) usiamo la Promise()
             for (const element of objIdToRemove) {
               // await this.svcIscrizioni.delete(element.id)
@@ -285,20 +267,13 @@ export class ClassiDashboardComponent implements OnInit {
                   console.log ("err",err);
                   this._snackBar.openFromComponent(SnackbarComponent, {data: err, panelClass: ['red-snackbar']});
                 }
-
               );
             }
 
-            // let tmpclicked = this.viewClassiSezioniAnni.classeSezioneAnnoID;
-            // console.log (tmpclicked);
-            this.viewClassiSezioniAnni.loadData()
-            // this.viewClassiSezioniAnni.rowclicked(tmpclicked.toString());
-            
+            this.viewClassiSezioniAnni.loadData()            
             this.router.navigate(['/classi-dashboard'], { queryParams: { annoID: this.annoID, classeSezioneAnnoID: this.classeSezioneAnnoID } });
-
             this.viewListIscrizioni.resetSelections();
             this.viewListIscrizioni.loadData();
-
           }
       })
     }
@@ -338,9 +313,7 @@ export class ClassiDashboardComponent implements OnInit {
             }
 
             this.viewDocenzeList.loadData()
-            
             this.router.navigate(['/classi-dashboard'], { queryParams: { annoID: this.annoID, classeSezioneAnnoID: this.classeSezioneAnnoID } });
-
             this.viewDocenzeList.resetSelections();
             this.viewDocenzeList.loadData();
           }
@@ -370,8 +343,6 @@ export class ClassiDashboardComponent implements OnInit {
   }
 
   //#endregion
-  
-
 
   selectedTabValue(event: any){
     //senza questo espediente non fa il primo render correttamente
@@ -385,14 +356,5 @@ export class ClassiDashboardComponent implements OnInit {
       this.viewOrarioDocente.loadData()
 
     }
-
   }
-
-
-
-
-
-
-
-
 }

@@ -26,6 +26,7 @@ import { DOC_PagellaVoto, DOC_TipoGiudizio } from 'src/app/_models/DOC_PagellaVo
 })
 
 export class PagellaVotoEditComponent implements OnInit  {
+  
 //#region ----- Variabili -------
   matDataSource = new           MatTableDataSource<DOC_PagellaVoto>();
 
@@ -130,16 +131,10 @@ export class PagellaVotoEditComponent implements OnInit  {
     delete formInput._ObiettiviCompleti;
 
     //nel caso la pagella ancora non sia stata creata, va inserita
-    //console.log("pagella-voto-edit - save");
-    //console.log("formInput: ", formInput);
-    //console.log("objPagella", this.objPagella);
-
     if (this.objPagella.id == -1) {
-      //console.log("1 Pagella.id = -1: Non c'è una Pagella ancora --->post della Pagella e Post/put del PagellaVoto");
       this.svcPagella.post(this.objPagella)
         .pipe (
           tap( x =>  {
-            //console.log("x", x);
             formInput.pagellaID = x.id! 
           } ),
           concatMap( () =>   
@@ -147,23 +142,18 @@ export class PagellaVotoEditComponent implements OnInit  {
               this.svcPagellaVoti.post(formInput),
               this.svcPagellaVoti.put(formInput)
           )
-        ))
-        .subscribe(
-          res => {},
-          err => {}
         )
+      ).subscribe()
     }
     else {    //caso pagella già presente
       //console.log("2 Pagella.id <> -1: C'è una Pagella --->post o put del PagellaVoto");
 
       if (formInput.id == 0) {
-        //console.log("2.1 formInput.id = 0--> Non c'è PagellaVoto --->post PagellaVoto");
         this.svcPagellaVoti.post(formInput).subscribe(
           res => { this.loadData();  },
           err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})}
         )
       } else {
-        //console.log("2.2 formInput.id <> 0--> C'è PagellaVoto --->put PagellaVoto");
         this.svcPagellaVoti.put(formInput).subscribe(
           res => {  },
           err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})}

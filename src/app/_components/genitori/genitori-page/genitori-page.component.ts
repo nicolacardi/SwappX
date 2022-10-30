@@ -8,7 +8,6 @@ import { GenitoriListComponent } from '../genitori-list/genitori-list.component'
 
 //services
 import { NavigationService } from '../../utilities/navigation/navigation.service';
-import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({

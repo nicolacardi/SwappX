@@ -1,13 +1,4 @@
 <h1 *ngIf="showPageTitle" class="_titolo-pagina">Materie e Docenti per Classe</h1>
-
-    <!-- **************************   FILTER   ******************* -->
-   <!--
-    <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
-        <mat-label>Filtro</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
-    </mat-form-field>
-    -->
-    
     
     <!-- **************************   PAGINATOR   ******************* -->
     <!-- <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator> -->
@@ -46,7 +37,6 @@
               </mat-checkbox>
             </td>
         </ng-container>
-
 
         <ng-container matColumnDef="actionsColumn">
             <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>

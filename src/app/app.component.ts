@@ -35,7 +35,6 @@ export class AppComponent implements OnInit{
 
 //#region ----- ViewChild Input Output -------
   @ViewChild('start') public leftSidenav!: MatSidenav;
-
   @ViewChild('end') public rightSidenav!: MatSidenav;
 
   @ViewChild('expansion1') public expansion1!: MatExpansionPanel;
@@ -44,8 +43,7 @@ export class AppComponent implements OnInit{
 //#endregion
   constructor(private svcUser:              UserService,
               private router:               Router,
-              private eventEmitterService:  EventEmitterService 
-              ) {
+              private eventEmitterService:  EventEmitterService  ) {
   }
 
   ngOnInit () {
@@ -105,14 +103,13 @@ export class AppComponent implements OnInit{
   }
 
   clickHamburger() {
-    if (!this.isPinned) {
+    if (!this.isPinned) 
       this.isExpanded = !this.isExpanded
-    }
-    if(this.isExpanded) {
+    
+    if(this.isExpanded) 
       this.leftSidenav.mode = "over";
-    } else {
+    else 
       this.leftSidenav.mode = "side";
-    }
   }
 
   clickPin() {
