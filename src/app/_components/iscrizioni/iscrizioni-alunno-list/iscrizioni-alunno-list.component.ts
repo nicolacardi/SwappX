@@ -64,7 +64,8 @@ export class IscrizioniAlunnoListComponent implements OnInit {
     obsIscrizioni$= this.svcIscrizioni.listByAlunno(this.alunnoID);
     let loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
 
-    loadIscrizioni$.subscribe(val =>  {
+    loadIscrizioni$.subscribe(
+      val =>  {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;          
         //this.sortCustom();

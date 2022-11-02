@@ -64,8 +64,7 @@ export class ResizeColumnDirective implements OnInit {
       for (const cell of tableCells) {
         this.renderer.setStyle(cell, "width", `${width}px`);
       }
-
-      console.log (this.column);
+      //console.log (this.column);
     }
   };
 

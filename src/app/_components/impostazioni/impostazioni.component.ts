@@ -3,15 +3,17 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 
+//models
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
+//components
 import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
 
+//services 
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { ParametriService } from 'src/app/_services/parametri.service';
 import { LoadingService } from '../utilities/loading/loading.service';
-import { AttachSession } from 'protractor/built/driverProviders';
 
 @Component({
   selector: 'app-impostazioni',
@@ -102,22 +104,14 @@ export class ImpostazioniComponent implements OnInit {
     });
     this.parQuoteDefault.parValue = strCheckboxes;
     this.svcParametri.put(this.parQuoteDefault).subscribe( 
-      res=>{
-        this.setMessage(1);
-      },
-      err=>{
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Quote Default]', panelClass: ['red-snackbar']});
-      }
+      res=> this.setMessage(1),
+      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Quote Default]', panelClass: ['red-snackbar']})
     );
   
     this.parQuoteRidotteFratelli.parValue = this.form.controls['quoteRidotteFratelli'].value;
     this.svcParametri.put(this.parQuoteRidotteFratelli).subscribe(
-      res=>{
-        this.setMessage(2);
-      },
-      err=>{
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Quote Fratelli]', panelClass: ['red-snackbar']});
-      }
+      res=> this.setMessage(2),
+      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Quote Fratelli]', panelClass: ['red-snackbar']})
     ); 
   }
 

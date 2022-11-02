@@ -63,7 +63,9 @@ export class DocenzeAddComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
   
-    this.svcClasseSezioneAnno.get(this.data.classeSezioneAnnoID).subscribe(res => this.classeSezioneAnno = res)
+    this.svcClasseSezioneAnno.get(this.data.classeSezioneAnnoID).subscribe(
+      res => this.classeSezioneAnno = res
+    );
 
     this.obsFilteredDocenti$ = this.form.controls['nomeCognomeDocente'].valueChanges
       .pipe(
@@ -80,10 +82,11 @@ export class DocenzeAddComponent implements OnInit {
         //   this.svcAlunni.listByAnnoNoClasse(this.form.value.nomeCognomeAlunno, this.data.annoID)
         // )
         tap(() => this.docentiIsLoading = false)
-    )
+    );
 
-    this.form.controls['selectMateria'].valueChanges
-          .subscribe( val=> this.materiaSelectedID = val );
+    this.form.controls['selectMateria'].valueChanges.subscribe(
+       val=> this.materiaSelectedID = val 
+    );
 
     this.obsMaterie$ = this.svcMaterie.list();
   }
@@ -148,16 +151,10 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
        concatMap( res => iif (()=> res == null, this.svcDocenze.post(objDocenza) , of() )
       )
     ).subscribe(
-      res=> {
-        this.dialogRef.close()
-      },
-      err=> {
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-       }
+      res=> this.dialogRef.close(),
+      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']}) 
     )
   }
 
 //#endregion
-
-
 }

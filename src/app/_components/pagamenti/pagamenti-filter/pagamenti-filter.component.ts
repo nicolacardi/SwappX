@@ -51,8 +51,7 @@ export class PagamentiFilterComponent implements OnInit {
     this.causaliPagamento$ = this.svcCausaliPagamento.list();
     this.tipiPagamento$ = this.svcTipiPagamento.list();
 
-    this.tipoPagamentoFilter.valueChanges
-    .subscribe(
+    this.tipoPagamentoFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.tipoPagamento = val;
@@ -60,8 +59,7 @@ export class PagamentiFilterComponent implements OnInit {
       }
     )
 
-    this.causaleFilter.valueChanges
-    .subscribe(
+    this.causaleFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.causale = val;
@@ -69,8 +67,7 @@ export class PagamentiFilterComponent implements OnInit {
       }
     )
 
-    this.nomeFilter.valueChanges
-    .subscribe(
+    this.nomeFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.nome = val;
@@ -78,8 +75,7 @@ export class PagamentiFilterComponent implements OnInit {
       }
     )
 
-    this.cognomeFilter.valueChanges
-    .subscribe(
+    this.cognomeFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.cognome = val;
@@ -88,8 +84,7 @@ export class PagamentiFilterComponent implements OnInit {
     )
 
 
-    this.importoPiuDiFilter.valueChanges
-    .subscribe(
+    this.importoPiuDiFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.importoPiuDi = val;
@@ -97,8 +92,7 @@ export class PagamentiFilterComponent implements OnInit {
       }
     )
 
-    this.importoMenoDiFilter.valueChanges
-    .subscribe(
+    this.importoMenoDiFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.importoMenoDi = val;
@@ -106,8 +100,7 @@ export class PagamentiFilterComponent implements OnInit {
       }
     )
 
-    this.importoFilter.valueChanges
-    .subscribe(
+    this.importoFilter.valueChanges.subscribe(
       val => {
         if (this.importoFilter.value != '') {this.importoMenoDiFilter.disable();this.importoPiuDiFilter.disable()} 
         else {this.importoMenoDiFilter.enable(); this.importoPiuDiFilter.enable()}
@@ -117,8 +110,7 @@ export class PagamentiFilterComponent implements OnInit {
       }
     )
 
-    this.dataDal.valueChanges
-    .subscribe(
+    this.dataDal.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.dataDal = val;
@@ -126,8 +118,7 @@ export class PagamentiFilterComponent implements OnInit {
       }
     )
 
-    this.dataAl.valueChanges
-    .subscribe(
+    this.dataAl.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.dataAl = val;

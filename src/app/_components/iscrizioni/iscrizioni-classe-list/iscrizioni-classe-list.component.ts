@@ -166,17 +166,20 @@ export class IscrizioniClasseListComponent implements OnInit {
     //if (this.context == "classi-dashboard" && this.classeSezioneAnnoID != undefined) {
     if (this.classeSezioneAnnoID != undefined) {
       //parcheggio in classeSezioneAnno i dati della classe che servono a classi-dashboard (per il nome dell'export)
-      this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID).subscribe(res => this.classeSezioneAnno = res)
+      this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID).subscribe(
+        res => this.classeSezioneAnno = res
+      );
 
       obsIscrizioni$= this.svcIscrizioni.listByClasseSezioneAnno(this.classeSezioneAnnoID);
       const loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
 
-      loadIscrizioni$.subscribe(val =>  {
-          this.matDataSource.data = val;
+      loadIscrizioni$.subscribe(
+        res =>  {
+          this.matDataSource.data = res;
           this.matDataSource.paginator = this.paginator;
           this.sortCustom(); 
           this.matDataSource.sort = this.sort; 
-          if (val.length != 0) 
+          if (res.length != 0) 
             this.rowclicked(this.matDataSource.data[0]); 
           else 
             this.iscrizioneIdEmitter.emit(0);
@@ -285,9 +288,7 @@ export class IscrizioniClasseListComponent implements OnInit {
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
-      () => { 
-        this.loadData(); 
-      }
+      res => this.loadData()
     );
   }
 
@@ -321,11 +322,9 @@ export class IscrizioniClasseListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(RettaEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(
+      res => this.loadData()
+    );
   }
 //#endregion
 
@@ -400,7 +399,6 @@ export class IscrizioniClasseListComponent implements OnInit {
       "ckAttivo"];
   }
 //#endregion
-
 
 }
 

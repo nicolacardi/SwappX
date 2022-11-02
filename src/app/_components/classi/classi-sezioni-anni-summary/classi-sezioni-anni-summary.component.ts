@@ -79,9 +79,8 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
     obsSummary$= this.svcClassiSezioniAnni.listByAnnoGroupByClasse(this.form.controls['selectAnnoScolastico'].value);
     const loadSummary$ =this._loadingService.showLoaderUntilCompleted(obsSummary$);
 
-    loadSummary$.subscribe(val => {
-        this.matDataSource.data = val;
-      }
+    loadSummary$.subscribe(
+      val => {this.matDataSource.data = val}
     ); 
   }
   

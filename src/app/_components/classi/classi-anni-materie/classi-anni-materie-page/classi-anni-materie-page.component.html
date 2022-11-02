@@ -1,4 +1,4 @@
-<button mat-mini-fab aria-label="Strumenti" matTooltip="Strumenti" class="_btn-toolbar _btn-pos-top-0" (click)="sidenav2.toggle();" >
+<button mat-mini-fab aria-label="Strumenti" matTooltip="Strumenti" class="_btn-toolbar _btn-pos-top-0" (click)="toolSidenav.toggle();" >
     <mat-icon>construction</mat-icon>
 </button>
 
@@ -12,22 +12,19 @@
 
 <mat-drawer-container [hasBackdrop]="false" style="min-height: 91%">
 
-    <mat-drawer position="start" #sidenav2 class="leftSidenav2"  [mode]="'side'">
-        <app-toolbar 
-            [rptTitle]="appclassiannimaterielist.rptTitle" 
-            [rptFieldsToKeep]="appclassiannimaterielist.rptFieldsToKeep" 
-            [rptColumnsNames]="appclassiannimaterielist.rptColumnsNames" 
-            [rptData]="appclassiannimaterielist.matDataSource.data"
-            [rptFileName]="appclassiannimaterielist.rptFileName"
-            [columnsComponent] = "appclassiannimaterielist"
-            >
+    <mat-drawer position="start" #toolSidenav class="toolSidenav"  [mode]="'side'">
+        <app-toolbar [rptTitle]="appclassiannimaterielist.rptTitle" 
+                     [rptFieldsToKeep]="appclassiannimaterielist.rptFieldsToKeep" 
+                     [rptColumnsNames]="appclassiannimaterielist.rptColumnsNames" 
+                     [rptData]="appclassiannimaterielist.matDataSource.data"
+                     [rptFileName]="appclassiannimaterielist.rptFileName"
+                     [columnsComponent] = "appclassiannimaterielist">
         </app-toolbar>
     </mat-drawer>
 
     <mat-drawer-content>
-        <app-classi-anni-materie-list
-            #appclassiannimaterielist  
-            >
+        <app-classi-anni-materie-list #appclassiannimaterielist>
         </app-classi-anni-materie-list>
     </mat-drawer-content>
+    
 </mat-drawer-container>

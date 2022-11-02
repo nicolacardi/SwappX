@@ -112,44 +112,39 @@ export class LezioneComponent implements OnInit {
   ngOnInit () {
 
     this.form.controls.materiaID.valueChanges.subscribe( 
-      val =>{
+      res =>{
 
         if (this.form.controls.classeSezioneAnnoID.value != null && this.form.controls.classeSezioneAnnoID.value != undefined) {
           //verifica se già non è impegnato in quest'ora o FRAZIONI DI ORA in qualche altro posto.
-          this.svcDocenze.getByClasseSezioneAnnoAndMateria(this.form.controls.classeSezioneAnnoID.value, val)
-          .subscribe(val => {
-            if (val) 
-              this.form.controls['docenteID'].setValue(val.docenteID);
-            else 
-              this.form.controls['docenteID'].setValue("")
-          });
+          this.svcDocenze.getByClasseSezioneAnnoAndMateria(this.form.controls.classeSezioneAnnoID.value, res).subscribe(
+            val => {
+              if (val) 
+                this.form.controls['docenteID'].setValue(val.docenteID);
+              else 
+                this.form.controls['docenteID'].setValue("")
+            });
         }
       }
     );
 
     this.form.controls.docenteID.valueChanges.subscribe( 
-      val =>{
+      val =>
         //ora devo estrarre i supplenti: i docenti che per l'ora selezionata NON sono già impegnati
         this.obsSupplenti$ = this.svcDocenti.listSupplentiDisponibili(this.data.lezioneID? this.data.lezioneID: 0, val, this.data.dtCalendario, this.data.h_Ini, this.data.h_End)
-        .pipe(
-          tap (x=> console.log ("supplenti", x))
-        );
-      }
+        //.pipe(
+        //  tap (x=> console.log ("supplenti", x))
+        //);
     );
 
 
     if (this.data.classeSezioneAnnoID != null && this.data.classeSezioneAnnoID != undefined) {
-      this.svcClasseSezioneAnno.get(this.data.classeSezioneAnnoID)
-      .subscribe(
-        (val) => {
-          this.strClasseSezioneAnno = val.classeSezione.classe.descrizione2 + " " + val.classeSezione.sezione;
-        }
+      this.svcClasseSezioneAnno.get(this.data.classeSezioneAnnoID).subscribe(
+        val => this.strClasseSezioneAnno = val.classeSezione.classe.descrizione2 + " " + val.classeSezione.sezione
       );
     }
 
     this.loadData();
   }
-
 
   loadData(): void {
 
@@ -161,11 +156,9 @@ export class LezioneComponent implements OnInit {
     this.obsDocenti$ = this.svcDocenti.list();
 
     if (this.data.dove == "orario") {
-
       this.form.controls.ckFirma.disable();
       this.form.controls.compiti.disable();
       this.form.controls.argomento.disable();
-
     } 
     else {
       this.form.controls.h_Ini.disable();
@@ -179,19 +172,17 @@ export class LezioneComponent implements OnInit {
       const obsLezione$: Observable<CAL_Lezione> = this.svcLezioni.get(this.data.lezioneID);
       const loadLezione$ = this._loadingService.showLoaderUntilCompleted(obsLezione$);
       this.lezione$ = loadLezione$
-      .pipe(
-        tap(
-          lezione => {
-            this.form.patchValue(lezione)
-            //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
-            this.dtStart = new Date (this.data.start);
-            this.strDtStart = Utility.formatDate(this.dtStart, FormatoData.yyyy_mm_dd);
-            this.strH_Ini = Utility.formatHour(this.dtStart);
+      .pipe( tap(
+        lezione => {
+          this.form.patchValue(lezione)
+          //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
+          this.dtStart = new Date (this.data.start);
+          this.strDtStart = Utility.formatDate(this.dtStart, FormatoData.yyyy_mm_dd);
+          this.strH_Ini = Utility.formatHour(this.dtStart);
 
-            this.dtEnd = new Date (this.data.end);
-            this.strH_End = Utility.formatHour(this.dtEnd);
-          }
-        )
+          this.dtEnd = new Date (this.data.end);
+          this.strH_End = Utility.formatHour(this.dtEnd);
+        } )
       );
     } 
     else {
@@ -215,7 +206,6 @@ export class LezioneComponent implements OnInit {
       this.form.controls.dtCalendario.setValue(this.dtStart);
       this.form.controls.h_Ini.setValue(this.strH_Ini);
       this.form.controls.h_End.setValue(this.strH_End);
-
     }
   }
 
@@ -248,25 +238,21 @@ export class LezioneComponent implements OnInit {
           this.form.value[prop] = this.form.controls[prop].value;
         }
         if (this.form.controls['id'].value == null) {          
-          this.svcLezioni.post(this.form.value)
-            .subscribe(res=> {
+          this.svcLezioni.post(this.form.value).subscribe(
+            res => {
               this._dialogRef.close();
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
             },
-            err=> (
-              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-            )
+            err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
           );
         } 
         else  {
-          this.svcLezioni.put(this.form.value)
-            .subscribe(res=> {
+          this.svcLezioni.put(this.form.value).subscribe(
+            res=> {
               this._dialogRef.close();
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
             },
-            err=> (
-              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-            )
+            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
           );
         }
       }
@@ -278,19 +264,19 @@ export class LezioneComponent implements OnInit {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-    dialogYesNo.afterClosed().subscribe(result => {
-      if(result){
-        this.svcLezioni.delete (this.data.lezioneID).subscribe(
-          res=>{
-            this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
-            this._dialogRef.close();
-          },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          )
-        );
+    dialogYesNo.afterClosed().subscribe(
+      result => {
+        if(result){
+          this.svcLezioni.delete (this.data.lezioneID).subscribe(
+            res =>{
+              this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
+              this._dialogRef.close();
+            },
+            err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          );
+        }
       }
-    });
+    );
   }
 
   dp1Change() {

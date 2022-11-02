@@ -34,82 +34,64 @@ export class GenitoriFilterComponent implements OnInit {
 
   ngOnInit() {
 
-    this.nomeFilter.valueChanges
-    .subscribe(
+    this.nomeFilter.valueChanges.subscribe(
       val => {
-        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.nome = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
     )
 
-    this.cognomeFilter.valueChanges
-    .subscribe(
+    this.cognomeFilter.valueChanges.subscribe(
       val => {
-        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.cognome = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
     )
 
-    this.dtNascitaFilter.valueChanges
-    .subscribe(
+    this.dtNascitaFilter.valueChanges.subscribe(
       val => {
-        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.dtNascita = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
     )
 
-    this.indirizzoFilter.valueChanges
-    .subscribe(
+    this.indirizzoFilter.valueChanges.subscribe(
       val => {
-        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.indirizzo = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
     )
 
-    this.comuneFilter.valueChanges
-    .subscribe(
+    this.comuneFilter.valueChanges.subscribe(
       val => {
-        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.comune = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
     )
 
-    this.provFilter.valueChanges
-    .subscribe(
+    this.provFilter.valueChanges.subscribe(
       val => {
-        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.prov = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
     )
 
-    this.emailFilter.valueChanges
-    .subscribe(
+    this.emailFilter.valueChanges.subscribe(
       val => {
-        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.email = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
     )
 
-    this.telefonoFilter.valueChanges
-    .subscribe(
+    this.telefonoFilter.valueChanges.subscribe(
       val => {
-        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.telefono = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }
     )
 
-    this.nomeCognomeAlunnoFilter.valueChanges
-    .subscribe(
+    this.nomeCognomeAlunnoFilter.valueChanges.subscribe(
       val => {
-        //this.resetFilterSx();
         this.genitoriListComponent.filterValues.nomeCognomeAlunno = val.toLowerCase();
         this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
       }

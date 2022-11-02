@@ -39,9 +39,8 @@ export class ClassiAnniMateriePageComponent implements OnInit {
       data: 0
     };
     const dialogRef = this._dialog.open(ClassiAnniMaterieDuplicaComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe( () => {
-          this.classiAnniMaterieList.loadData();
-    });
+    dialogRef.afterClosed().subscribe( 
+        () => this.classiAnniMaterieList.loadData()
+    );
   }
 }

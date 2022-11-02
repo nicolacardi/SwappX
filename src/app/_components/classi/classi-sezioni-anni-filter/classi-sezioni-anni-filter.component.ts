@@ -7,7 +7,7 @@ import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/clas
 @Component({
   selector: 'app-classi-sezioni-anni-filter',
   templateUrl: './classi-sezioni-anni-filter.component.html',
-  styleUrls: ['./../classi-sezioni-anni.css']
+  styleUrls: ['./../classi.css']
 })
 export class ClassiSezioniAnniFilterComponent implements OnInit {
 
@@ -18,14 +18,14 @@ export class ClassiSezioniAnniFilterComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------  
   @Input() classiSezioniAnniListComponent!: ClassiSezioniAnniListComponent;
-//#endregion  
+//#endregion 
+
   constructor() { }
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit() {
 
-    this.classeFilter.valueChanges
-    .subscribe(
+    this.classeFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.classiSezioniAnniListComponent.filterValues.classe = val.toLowerCase();
@@ -33,16 +33,13 @@ export class ClassiSezioniAnniFilterComponent implements OnInit {
       }
     )
 
-    this.sezioneFilter.valueChanges
-    .subscribe(
+    this.sezioneFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.classiSezioniAnniListComponent.filterValues.sezione = val.toLowerCase();
         this.classiSezioniAnniListComponent.matDataSource.filter = JSON.stringify(this.classiSezioniAnniListComponent.filterValues);
       }
     )
-
-
   }
 //#endregion
 
@@ -63,7 +60,6 @@ export class ClassiSezioniAnniFilterComponent implements OnInit {
     this.classeFilter.setValue('');
     this.sezioneFilter.setValue('')
   }
-
 
 //#endregion
 }

@@ -7,7 +7,7 @@ import { concatMap, debounceTime, switchMap, tap } from 'rxjs/operators';
 
 //components
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { ClassiSezioniAnniListComponent } from '../../classi-sezioni-anni/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { GenitoreEditComponent } from '../../genitori/genitore-edit/genitore-edit.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
@@ -73,8 +73,7 @@ export class AlunnoEditComponent implements OnInit {
     private svcComuni:                    ComuniService,
     public _dialog:                       MatDialog,
     private _snackBar:                    MatSnackBar,
-    private _loadingService :             LoadingService
-  ) {
+    private _loadingService :             LoadingService ) {
 
     _dialogRef.disableClose = true;
 
@@ -110,7 +109,6 @@ export class AlunnoEditComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili-------
 
-
   ngOnInit () {
     this.loadData();
   }
@@ -140,10 +138,10 @@ export class AlunnoEditComponent implements OnInit {
             alunno => this.form.patchValue(alunno)
           )
       );
-    } else {
-      this.emptyForm = true
     }
-    
+    else 
+      this.emptyForm = true
+        
     //********************* FILTRO COMUNE *******************
     this.filteredComuni$ = this.form.controls['comune'].valueChanges
     .pipe(
@@ -171,26 +169,23 @@ export class AlunnoEditComponent implements OnInit {
   save(){
 
     if (this.form.controls['id'].value == null) //ma non sarebbe == 0?
-      this.svcAlunni.post(this.form.value)
-        .subscribe(res=> {
+      this.svcAlunni.post(this.form.value).subscribe(
+        res => {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err=> (
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
+        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']}
+      )
     );
     else 
-      this.svcAlunni.put(this.form.value)
-        .subscribe(res=> {
+      this.svcAlunni.put(this.form.value).subscribe(
+        res => {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err=> (
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
+        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']}
+      )
     );
-
   }
 
   delete(){
@@ -199,26 +194,21 @@ export class AlunnoEditComponent implements OnInit {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
+
     dialogYesNo.afterClosed().subscribe(result => {
       if(result){
-        this.svcAlunni.delete(Number(this.alunnoID))
-        //.pipe (
-        //  finalize(()=>this.router.navigate(['/alunni']))
-        //)
-        .subscribe(
+        this.svcAlunni.delete(Number(this.alunnoID)).subscribe(
           res=>{
-            this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Record cancellato', panelClass: ['red-snackbar']}
-            );
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
             this._dialogRef.close();
           },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          )
-        );
-      }
-    });
+          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}
+        )
+      );
+    }});
   }
+
+//#endregion
 
   popolaProv(prov: string, cap: string) {
     this.form.controls['prov'].setValue(prov);
@@ -231,8 +221,6 @@ export class AlunnoEditComponent implements OnInit {
     this.form.controls['nazioneNascita'].setValue('ITA');
   }
 
-//#endregion
-
 //#region ----- Metodi di gestione Genitori, Famiglia e Classi -------
   addGenitore(){
     const dialogConfig : MatDialogConfig = {
@@ -243,11 +231,9 @@ export class AlunnoEditComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(GenitoreEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(
+        () => this.loadData()
+    );
   }
 
   addToFamily(genitore: ALU_Genitore) {
@@ -258,25 +244,18 @@ export class AlunnoEditComponent implements OnInit {
     
     this.svcAlunni.listByGenitoreAlunno(genitore.id, this.alunnoID)
     .pipe(
-      concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(genitore.id, this.alunnoID), of() )
-      )
+      concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(genitore.id, this.alunnoID), of() ))
     ).subscribe(
-      res=> {
-        this.genitoriFamigliaComponent.loadData();
-      },
-      err=> {
-      }
+      res=> this.genitoriFamigliaComponent.loadData(),
+      err=> { }
     )
   }
 
   removeFromFamily(genitore: ALU_Genitore) {
     const alunnoID = this.alunnoID;
     this.svcAlunni.deleteByGenitoreAlunno(genitore.id, this.alunnoID).subscribe(
-      res=> {
-          this.genitoriFamigliaComponent.loadData();
-      },
-      err=> {
-      }
+      res=> this.genitoriFamigliaComponent.loadData(),
+      err=> { }
     )
   }
 
@@ -291,11 +270,10 @@ export class AlunnoEditComponent implements OnInit {
       //invece "test" non compare mai...quindi? sta uscendo sempre con of()?
       tap(res=> {
           if (res != null) {
-          this._dialog.open(DialogOkComponent, {
-            width: '320px',
-            data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa classe è già stata inserita!"}
-          });
-          
+            this._dialog.open(DialogOkComponent, {
+              width: '320px',
+              data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa classe è già stata inserita!"}
+            });
           } else {
             //l'alunno non frequenta la classe a cui sto cercando di iscriverlo, posso procedere
           }
@@ -316,64 +294,30 @@ export class AlunnoEditComponent implements OnInit {
       })
 
     )
-    checks$
-    .pipe(
+    checks$.pipe(
       concatMap( res => iif (()=> res == null, this.svcIscrizioni.post(objClasseSezioneAnnoAlunno) , of() )
       )
     ).subscribe(
-      res=> {
-        //loadData del component attended
-        this.classiAttendedComponent.loadData();
-      },
+      res=> { this.classiAttendedComponent.loadData() },
       err=> { }
     )
   }
 
   removeFromAttended(classeSezioneAnno: CLS_ClasseSezioneAnno) {
     this.svcIscrizioni.deleteByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id , this.alunnoID).subscribe(
-      res=> {
-          this.classiAttendedComponent.loadData();
-      },
-      err=> {
-      }
+      res=> { this.classiAttendedComponent.loadData() },
+      err=> { }
     )
   }
 //#endregion
 
-//#region ----- Altri metodi -------
+//#region ----- Eventi -------
+
   onResize(event: any) {
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
     this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
   }
 //#endregion
 
-//#region FUNZIONI NON PIU' UTILIZZATE IN QUANTO ORA SI USA SOLO COME DIALOG
-
-  // back(){
-  //   if (this.form.dirty) {
-  //     const dialogRef = this._dialog.open(DialogYesNoComponent, {
-  //       width: '320px',
-  //       data: {titolo: "ATTENZIONE", sottoTitolo: "Dati modificati: si conferma l'uscita?"}
-  //     });
-  //     dialogRef.afterClosed().subscribe(result => {
-  //       if(!result) return;
-  //       else this.navigateBack();
-  //     });
-  //   } else {
-  //     this.navigateBack();
-  //   }   
-  // }
-  //NON PIU' UTILIZZATA IN QUANTO ORA SI USA SOLO COME DIALOG
-  // navigateBack(){
-  //   this.router.navigate(["alunni"], {queryParams:{
-  //     page: this.caller_page,
-  //     size: this.caller_size,
-  //     filter: this.caller_filter,
-  //     sortField: this.caller_sortField,
-  //     sortDirection: this.caller_sortDirection
-  //    }});
-  // }
-
-  //#endregion
 }
 

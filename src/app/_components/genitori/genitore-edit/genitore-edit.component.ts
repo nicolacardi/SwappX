@@ -157,24 +157,21 @@ export class GenitoreEditComponent implements OnInit {
   save(){
 
     if (this.form.controls['id'].value == null) 
-      this.svcGenitori.post(this.form.value)
-        .subscribe(res=> {
+      this.svcGenitori.post(this.form.value).subscribe(
+        res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err=> (
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
     );
     else 
-      this.svcGenitori.put(this.form.value)
-        .subscribe(res=> {
+      this.svcGenitori.put(this.form.value).subscribe(
+        res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err=> (
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']}
+      )
     );
   }
 
@@ -210,27 +207,19 @@ export class GenitoreEditComponent implements OnInit {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.svcGenitori.delete(Number(this.genitoreID))
-        // .pipe (
-        //   finalize(()=>this.router.navigate(['/alunni']))
-        // )
-        .subscribe(
-          res=>{
-            this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Record cancellato', panelClass: ['red-snackbar']}
-            );
-            this._dialogRef.close();
-          },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          )
-        );
-      }
+    dialogRef.afterClosed().subscribe(
+      yesno => {
+        if(yesno){
+          this.svcGenitori.delete(Number(this.genitoreID)).subscribe(
+            res=>{
+              this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
+              this._dialogRef.close();
+            },
+            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          );
+        }
     });
   }
-  
 
   popolaProv(prov: string, cap: string) {
     this.form.controls['prov'].setValue(prov);
@@ -261,11 +250,8 @@ export class GenitoreEditComponent implements OnInit {
       concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(this.genitoreID, figlio.id), of() )
       )
     ).subscribe(
-      res=> {
-        this.alunniFamigliaComponent.loadData();
-      },
-      err=> {
-      }
+      res=> this.alunniFamigliaComponent.loadData(),
+      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
     )
   }
 
@@ -274,11 +260,8 @@ export class GenitoreEditComponent implements OnInit {
     //per caso è già figlio? In teoria dovremmo aver nascosto il genitore dalla lista da cui pescare, no?
     const genitoreID = this.genitoreID;
     this.svcAlunni.deleteByGenitoreAlunno(genitoreID, figlio.id).subscribe(
-      res=> {
-          this.alunniFamigliaComponent.loadData();
-      },
-      err=> {
-      }
+      res=> this.alunniFamigliaComponent.loadData(),
+      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
     )
   }
 //#endregion

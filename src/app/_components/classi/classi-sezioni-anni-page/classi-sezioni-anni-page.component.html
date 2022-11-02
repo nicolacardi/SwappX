@@ -12,25 +12,24 @@
 
 <mat-drawer-container [hasBackdrop]="false" style="min-height: 91%">
     <mat-drawer position="end" #filterSidenav class="filterSidenav"  [mode]="'side'">
-        <!-- app alunni filter deve dialogare con il suo "sibling" app alunni list, allora metto un riferimento (#appalunnilist) e passo una variabile in input a app-alunni-filter -->
-        <app-persone-filter [personeListComponent] = "apppersonelist" #apppersonefilter></app-persone-filter>    
+        <app-classi-sezioni-anni-filter [classiSezioniAnniListComponent] = "appclassisezioniannilist" #appclassisezioniannifilter></app-classi-sezioni-anni-filter>    
     </mat-drawer>
 
     <mat-drawer position="start" #toolSidenav class="toolSidenav"  [mode]="'side'">
-        <app-toolbar [rptTitle]="apppersonelist.rptTitle" 
-                     [rptFieldsToKeep]="apppersonelist.rptFieldsToKeep" 
-                     [rptColumnsNames]="apppersonelist.rptColumnsNames" 
-                     [rptData]="apppersonelist.matDataSource.data"
-                     [rptFileName]="apppersonelist.rptFileName"
-                     [columnsComponent] = "apppersonelist">
+        <app-toolbar [rptTitle]="appclassisezioniannilist.rptTitle" 
+                     [rptFieldsToKeep]="appclassisezioniannilist.rptFieldsToKeep" 
+                     [rptColumnsNames]="appclassisezioniannilist.rptColumnsNames" 
+                     [rptData]="appclassisezioniannilist.matDataSource.data"
+                     [rptFileName]="appclassisezioniannilist.rptFileName"
+                     [columnsComponent] = "appclassisezioniannilist">
         </app-toolbar>
     </mat-drawer>
 
     <mat-drawer-content>
-        <app-persone-list [personeFilterComponent] = "apppersonefilter"
-                          [dove] = "'persone-page'"
-                          (openDrawer) = "openDrawer()"
-                          #apppersonelist>
-        </app-persone-list>
+        <app-classi-sezioni-anni-list [classiSezioniAnniFilterComponent] = "appclassisezioniannifilter"
+                                      [dove] = "'classi-page'"
+                                      #appclassisezioniannilist >
+            <!-- (openDrawer) = "openDrawer()" -->
+        </app-classi-sezioni-anni-list>
     </mat-drawer-content>
 </mat-drawer-container>

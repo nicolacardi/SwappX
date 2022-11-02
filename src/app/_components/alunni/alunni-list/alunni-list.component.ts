@@ -22,7 +22,6 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
 
 //classes
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { promises, resolve } from 'dns';
 
 @Component({
   selector:     'app-alunni-list',
@@ -222,15 +221,16 @@ export class AlunniListComponent implements OnInit {
     if (this.context =="alunni-page") {
       if(this.ckSoloAttivi){
         obsAlunni$= this.svcAlunni.listWithParents()
-          .pipe(map(res=> res.filter((x) => x.ckAttivo == true)));
+          .pipe(map(
+            res=> res.filter((x) => x.ckAttivo == true))
+          );
       }
-      else {
-        obsAlunni$= this.svcAlunni.listWithParents();
-      }
+      else obsAlunni$= this.svcAlunni.listWithParents();
 
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
 
-      loadAlunni$.subscribe(val =>   {
+      loadAlunni$.subscribe(
+        val =>   {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
@@ -242,8 +242,8 @@ export class AlunniListComponent implements OnInit {
     if (this.context == "genitore-edit-list") {
       obsAlunni$= this.svcAlunni.listWithParents();
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
-      loadAlunni$.subscribe(val => 
-        {
+      loadAlunni$.subscribe(
+        val =>  {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
@@ -255,16 +255,16 @@ export class AlunniListComponent implements OnInit {
     if (this.context == "genitore-edit-famiglia") {
       obsAlunni$= this.svcAlunni.listByGenitore(this.genitoreID);
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
-      loadAlunni$.subscribe(val => 
-        {
+      loadAlunni$.subscribe(
+        val => {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
         }
       );
     }
-
   }
+
 //#endregion
 
 //#region ----- Filtri & Sort -------
@@ -294,7 +294,6 @@ export class AlunniListComponent implements OnInit {
 
       let dArr = data.dtNascita.split("-");
       const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
-
 
       let boolSx = String(data.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
@@ -343,11 +342,9 @@ export class AlunniListComponent implements OnInit {
       data: 0
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(
+        () => this.loadData()
+    );
   }
 
   openDetail(id:any){
@@ -360,9 +357,7 @@ export class AlunniListComponent implements OnInit {
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
-      () => { 
-        this.loadData(); 
-      }
+      () => this.loadData()
     );
   }
 
@@ -399,11 +394,9 @@ export class AlunniListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(RettaEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(
+        () => this.loadData()
+    );
   }
 //#endregion
 
@@ -489,10 +482,6 @@ export class AlunniListComponent implements OnInit {
       "ckAttivo"];
   }
 //#endregion
-
-
-
-
 
 
 

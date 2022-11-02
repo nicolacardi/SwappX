@@ -4,26 +4,33 @@ import { iif, Observable, ReplaySubject } from 'rxjs';
 import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { jsPDF } from 'jspdf';
 
+//components
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+
 //services
+import { PagellaVotiService } from '../pagella-voti.service';
 import { PagelleService } from '../pagelle.service';
 import { FilesService } from '../files.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
+import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 
 //classes
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
-import { JspdfService } from '../../utilities/jspdf/jspdf.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { DOC_File } from 'src/app/_models/DOC_File';
 import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto';
+<<<<<<< HEAD
 import { PagellaVotiService } from '../pagella-voti.service';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+=======
+>>>>>>> 0372ba789d2e7a3b697df85e528ee30d8d3e7c5a
 
 @Component({
   selector: 'app-pagelle-edit',
   templateUrl: './pagelle-edit.component.html',
   styleUrls: ['../pagelle.css']
 })
+
 export class PagellaEditComponent implements OnInit {
 
 //#region ----- Variabili -------
@@ -75,8 +82,8 @@ export class PagellaEditComponent implements OnInit {
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagelle$);
 
     loadPagella$.pipe (
-      map(val=>val.filter(val=>(val.periodo == this.quadrimestre))))
-        .subscribe(val =>  {
+      map(val=>val.filter(val=>(val.periodo == this.quadrimestre)))).subscribe(
+        val =>  {
           if (val.length != 0)  {
             this.objPagella = val[0];
             this.dtIns = val[0].dtIns!;
@@ -95,13 +102,6 @@ export class PagellaEditComponent implements OnInit {
             this.ckStampato = false;
             this.dtIns = '';
           }
-          
-          // if(this.objPagella.iscrizione != undefined){
-          //   this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnno.classeSezione.classeID,this.objPagella.id! )
-          //     .subscribe(
-          //       res => {this.lstPagellaVoti = res; }
-          //     );
-          // }
         }
     );
   }
@@ -114,7 +114,6 @@ export class PagellaEditComponent implements OnInit {
   aggiornaData () {
 
     let formData = <DOC_Pagella>{
-      //id: this.pagellaID,
       id: this.objPagella.id!,
       iscrizioneID: this.iscrizioneID
     }
@@ -137,9 +136,7 @@ export class PagellaEditComponent implements OnInit {
           link.download = `${"test"}.pdf`
           link.click();
         },
-        err => {
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di caricamento', panelClass: ['red-snackbar']})
-        }
+        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di caricamento', panelClass: ['red-snackbar']})
       );
   }
 

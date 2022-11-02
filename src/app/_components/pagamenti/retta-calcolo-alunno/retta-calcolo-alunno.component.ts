@@ -82,7 +82,6 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
 
     //estraggo anno e iscrizione, utili per quando dovrò procedere con la put
     this.svcAnni.get(this.annoID).subscribe (anno => this.anno = anno);  
-
     this.caricaQuotaConcordataDefault();
   }
 
@@ -141,24 +140,13 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
       id: this.iscrizione.id,
       codiceStato: 20
     }
-    this.svcIscrizioni.updateStato(formData)
-      .subscribe(
-        //() => this.viewListClassi.loadData()
-    );
+    this.svcIscrizioni.updateStato(formData).subscribe();
 
-
-
-
-
-
-
-    this.svcRette.listByAlunnoAnno(this.alunnoID, this.annoID )
-    .subscribe (async (retteAnnoAlunno) => {
+    this.svcRette.listByAlunnoAnno(this.alunnoID, this.annoID ).subscribe (
+      async (retteAnnoAlunno) => {
     
       //se array vuoto, INSERT
-
       if(retteAnnoAlunno.length == 0){
-
 
         const d = new Date();
         d.setSeconds(0,0);
@@ -183,7 +171,6 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
                 primaQuota = false;
               } 
               else  importoMese = importoMeseRound;
-            // }
           }
 
           let rettaMese: PAG_Retta = {
@@ -203,11 +190,9 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
             userUpd:                1
           };
           this.svcRette.post(rettaMese).subscribe(
-            res=>   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']}),
+            res =>   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']}),
             err =>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore durante l\'inserimento delle rette', panelClass: ['red-snackbar']})
           );
-          
-
         } 
       } else {
 
@@ -252,22 +237,16 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
           //));
           
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']})
-          //console.log ("finito tutto");
           this.ricalcoloRetteEmitter.emit();
       }
     
     });
-      
- 
-    
       
     //https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/   NON FUNZIONA QUI DA NOI
     //https://codeburst.io/javascript-async-await-with-foreach-b6ba62bbf404                 SPIEGA PERCHE' NON PASSA PER ALCUNI PEZZI PERO' NON FUNZIONA
     //https://masteringjs.io/tutorials/fundamentals/async-foreach
   }
   
-
-
 
 
   async testForEachAsync () {
@@ -305,9 +284,6 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
     //a
     //a
     //a NON FUNZIONA
-
-
-
 
 
     // let promise = new Promise ((resolve, reject) => {

@@ -52,17 +52,10 @@ displayedColumns: string[] = [
   loadData(){
 
     let obsNews$: Observable<_UT_Message[]>;
-
     obsNews$ = this.svcMessages.listByUserID(this.currUser.userID);
 
     const loadNews$ =this._loadingService.showLoaderUntilCompleted(obsNews$);
-
-    loadNews$.subscribe(val => {
-      this.matDataSource.data = val;
-
-      }
-    );
-
+    loadNews$.subscribe(val => this.matDataSource.data = val);
   }
 
   closeMsg(element: _UT_Message) {
@@ -70,28 +63,16 @@ displayedColumns: string[] = [
     element.closed = !element.closed;
 
     this.svcMessages.put(element).subscribe(
-      res=> {
-        this.loadData();
-      },
-      err=>  {
-        this._snackBar.openFromComponent(SnackbarComponent, {
-          data: 'Errore nella chuisura  del messaggio ', panelClass: ['red-snackbar']
-        });
-      }
+      res=> this.loadData(),
+      err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella chuisura  del messaggio ', panelClass: ['red-snackbar']})
     );
   }
 
   deleteMsg(id: number) {
 
     this.svcMessages.delete(id).subscribe(
-      res=> {
-        this.loadData();
-      },
-      err=>  {
-        this._snackBar.openFromComponent(SnackbarComponent, {
-          data: 'Errore nella cancellazione  del messaggio ', panelClass: ['red-snackbar']
-        });
-      }
+      res=> this.loadData(),
+      err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella cancellazione  del messaggio ', panelClass: ['red-snackbar']})
     );
   }
 }

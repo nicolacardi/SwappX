@@ -123,24 +123,17 @@ export class MateriaEditComponent implements OnInit {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.svcMaterie.delete(Number(this.materiaID))
-        // .pipe (
-        //   finalize(()=>this.router.navigate(['/alunni']))
-        // )
-        .subscribe(
-          res=>{
-            this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Record cancellato', panelClass: ['red-snackbar']}
-            );
-            this._dialogRef.close();
-          },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          )
-        );
-      }
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if(result){
+          this.svcMaterie.delete(Number(this.materiaID)).subscribe(
+            res=>{
+              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
+              this._dialogRef.close();
+            },
+            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          );
+        }
     });
   }
 
@@ -156,14 +149,10 @@ export class MateriaEditComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       result => { 
         //devo valorizzare il campo color
-        if (result) {
-          this.form.controls.color.setValue(result);
-        }
+        if (result) this.form.controls.color.setValue(result);
         //this.loadData(); 
       }
     );
-
-
   }
 //#endregion
 

@@ -180,7 +180,8 @@ export class GenitoriListComponent implements OnInit {
     }
     const loadGenitori$ =this._loadingService.showLoaderUntilCompleted(obsGenitori$);
 
-    loadGenitori$.subscribe(val =>   {
+    loadGenitori$.subscribe(
+      val =>   {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort;
@@ -258,11 +259,9 @@ export class GenitoriListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(GenitoreEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(
+      () => this.loadData()
+    );
   }
   
   openDetail(id:any){
@@ -274,11 +273,9 @@ export class GenitoriListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(GenitoreEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(
+        () => this.loadData()
+    );
   }
 
   drop(event: CdkDragDrop<string[]>) {

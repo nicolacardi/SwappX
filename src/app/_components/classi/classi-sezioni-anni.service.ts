@@ -45,7 +45,4 @@ export class ClassiSezioniAnniService {
   delete(classeSezioneAnnoID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'CLS_ClassiSezioniAnni/' + classeSezioneAnnoID);    
   }
-
-
-
 }

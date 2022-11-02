@@ -1,13 +1,4 @@
 <h1 *ngIf="showPageTitle" class="_titolo-pagina">Materie e Docenti per Classe</h1>
-
-    <!-- **************************   FILTER   ******************* -->
-   <!--
-    <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
-        <mat-label>Filtro</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
-    </mat-form-field>
-    -->
-    
     
     <!-- **************************   PAGINATOR   ******************* -->
     <!-- <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator> -->
@@ -24,29 +15,22 @@
         <ng-container matColumnDef="select" >
             <!-- masterToggle delle checkbox di selezione record -->
             <th mat-header-cell class="_no-bottom-border" *matHeaderCellDef >
-              <mat-checkbox  (change)="$event ? masterToggle() : null"
+              <mat-checkbox (change)="$event ? masterToggle() : null"
                             [checked] = "toggleChecks"
                             [aria-label]="checkboxLabel()"
-                            color="warn" #mstToggle
-                            >
-                            <!-- [checked]="selection.hasValue() && isAllSelected()"
-                            [indeterminate]="selection.hasValue() && !isAllSelected()" -->
+                            color="warn" #mstToggle >
               </mat-checkbox>
             </th>
             <!-- singole checkbox di selezione record -->
             <td mat-cell class="_no-bottom-border" *matCellDef="let element">
-              <mat-checkbox 
-                            
-                            (click)="$event.stopPropagation()"
+              <mat-checkbox (click)="$event.stopPropagation()"
                             (change) = "$event ? selectedRow(element) : null"
                             [checked]="selection.isSelected(element)"
                             [aria-label]="checkboxLabel(element)"
                             color="warn">
-                            <!-- ho tolto questo (change)="$event ? selection.toggle(row) : null" -->
               </mat-checkbox>
             </td>
         </ng-container>
-
 
         <ng-container matColumnDef="actionsColumn">
             <mat-header-cell *matHeaderCellDef cdkDrag></mat-header-cell>
@@ -109,6 +93,5 @@
         <ng-template matMenuContent let-item="item"> 
             <mat-label class="_titolo-filtri-avanzati">{{item.docente.persona.nome | uppercase}} {{item.docente.persona.cognome | uppercase}}</mat-label> 
             <button mat-menu-item (click)="openDocente(item.docente.persona.id)">Scheda Insegnante</button> 
-
         </ng-template> 
     </mat-menu> 
