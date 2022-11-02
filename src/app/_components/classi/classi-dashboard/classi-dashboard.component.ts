@@ -17,7 +17,7 @@ import { IscrizioniAddComponent } from '../../iscrizioni/iscrizioni-add/iscrizio
 import { LezioniCalendarioComponent } from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
 import { DocenzeAddComponent } from '../docenze/docenze-add/docenze-add.component';
 import { DocenzeListComponent } from '../docenze/docenze-list/docenze-list.component';
-import { ClassiSezioniAnniListComponent } from '../../classi-sezioni-anni/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { IscrizioniClasseCalcoloComponent } from '../../iscrizioni/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 
 //services

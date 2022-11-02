@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouteConfigLoadEnd, RouterModule, Routes } from '@angular/router';
 
-import { AppComponent } from './app.component';
-
 import { AuthGuard } from './_user/auth/auth.guard';
 import { UserComponent } from './_user/user.component';
 import { UserRole } from './_user/Users';
@@ -25,7 +23,7 @@ import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/
 
 import { RettePageComponent } from './_components/pagamenti/rette-page/rette-page.component';
 import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
-import { ClassiPageComponent } from './_components/classi-sezioni-anni/classi-sezioni-anni-page/classi-sezioni-anni-page.component';
+import { ClassiPageComponent } from './_components/classi/classi-sezioni-anni-page/classi-sezioni-anni-page.component';
 import { UsersPageComponent } from './_components/users/users-page/users-page.component';
 import { IscrizioniPageComponent } from './_components/iscrizioni/iscrizioni-page/iscrizioni-page.component';
 import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';

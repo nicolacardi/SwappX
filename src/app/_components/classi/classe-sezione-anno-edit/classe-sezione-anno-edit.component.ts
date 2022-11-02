@@ -11,9 +11,9 @@ import { concatMap, subscribeOn, switchMap, tap } from 'rxjs/operators';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 //services
-import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
-import { ClassiSezioniService } from '../../classi/classi-sezioni.service';
-import { ClassiService } from '../../classi/classi.service';
+import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
+import { ClassiSezioniService } from '../classi-sezioni.service';
+import { ClassiService } from '../classi.service';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 
 import { LoadingService } from '../../utilities/loading/loading.service';
@@ -28,7 +28,7 @@ import { CLS_ClasseSezione } from 'src/app/_models/CLS_ClasseSezione';
 @Component({
   selector: 'app-classe-sezione-anno-edit',
   templateUrl: './classe-sezione-anno-edit.component.html',
-  styleUrls: ['./../classi-sezioni-anni.css']
+  styleUrls: ['./../classi.css']
 })
 export class ClasseSezioneAnnoEditComponent implements OnInit {
 

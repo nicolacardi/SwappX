@@ -15,7 +15,7 @@ import { ClassiSezioniAnniFilterComponent } from '../classi-sezioni-anni-filter/
 
 //services
 import { LoadingService } from '../../utilities/loading/loading.service';
-import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
+import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 
 //classes
@@ -32,7 +32,7 @@ import { DocentiService } from '../../persone/docenti.service';
 @Component({
   selector: 'app-classi-sezioni-anni-list',
   templateUrl: './classi-sezioni-anni-list.component.html',
-  styleUrls: ['./../classi-sezioni-anni.css']
+  styleUrls: ['./../classi.css']
 })
 export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 

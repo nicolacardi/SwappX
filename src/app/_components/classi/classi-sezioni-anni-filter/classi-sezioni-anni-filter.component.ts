@@ -7,7 +7,7 @@ import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/clas
 @Component({
   selector: 'app-classi-sezioni-anni-filter',
   templateUrl: './classi-sezioni-anni-filter.component.html',
-  styleUrls: ['./../classi-sezioni-anni.css']
+  styleUrls: ['./../classi.css']
 })
 export class ClassiSezioniAnniFilterComponent implements OnInit {
 

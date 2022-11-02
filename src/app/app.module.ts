@@ -41,10 +41,10 @@ import { PersonaEditComponent } from './_components/persone/persona-edit/persona
 import { PersoneFilterComponent } from './_components/persone/persone-filter/persone-filter.component';
 import { PersonePageComponent } from './_components/persone/persone-page/persone-page.component';
 
-import { ClassiPageComponent } from './_components/classi-sezioni-anni/classi-sezioni-anni-page/classi-sezioni-anni-page.component';
-import { ClasseSezioneAnnoEditComponent } from './_components/classi-sezioni-anni/classe-sezione-anno-edit/classe-sezione-anno-edit.component';
-import { ClassiSezioniAnniFilterComponent } from './_components/classi-sezioni-anni/classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
-import { ClassiSezioniAnniListComponent } from './_components/classi-sezioni-anni/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { ClassiPageComponent } from './_components/classi/classi-sezioni-anni-page/classi-sezioni-anni-page.component';
+import { ClasseSezioneAnnoEditComponent } from './_components/classi/classe-sezione-anno-edit/classe-sezione-anno-edit.component';
+import { ClassiSezioniAnniFilterComponent } from './_components/classi/classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
+import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
 
 import { IscrizioniAddComponent } from './_components/iscrizioni/iscrizioni-add/iscrizioni-add.component';

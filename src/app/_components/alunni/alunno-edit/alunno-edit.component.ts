@@ -7,7 +7,7 @@ import { concatMap, debounceTime, switchMap, tap } from 'rxjs/operators';
 
 //components
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { ClassiSezioniAnniListComponent } from '../../classi-sezioni-anni/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { GenitoreEditComponent } from '../../genitori/genitore-edit/genitore-edit.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
