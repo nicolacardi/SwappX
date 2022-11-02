@@ -49,8 +49,7 @@ export class ObiettiviFilterComponent implements OnInit {
     this.obsAnni$= this.svcAnni.list();
     this.obsMaterie$ = this.svcMaterie.list();
 
-    this.classeFilter.valueChanges
-    .subscribe(
+    this.classeFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();  
         this.obiettiviListComponent.filterValues.classeID = val;
@@ -58,8 +57,7 @@ export class ObiettiviFilterComponent implements OnInit {
       }
     )
 
-    this.materiaFilter.valueChanges
-    .subscribe(
+    this.materiaFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();  
         this.obiettiviListComponent.filterValues.materiaID = val;
@@ -67,16 +65,13 @@ export class ObiettiviFilterComponent implements OnInit {
       }
     )
 
-    this.annoFilter.valueChanges
-    .subscribe(
+    this.annoFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();  
         this.obiettiviListComponent.filterValues.annoID = val;
         this.obiettiviListComponent.matDataSource.filter = JSON.stringify(this.obiettiviListComponent.filterValues);
       }
     )
-
-
   }
 
   resetAllInputs() {

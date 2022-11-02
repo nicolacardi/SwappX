@@ -61,11 +61,11 @@ export class IscrizioniAddComponent implements OnInit {
         tap(() => this.alunniIsLoading = true),
         debounceTime(300),
         //delayWhen(() => timer(2000)),
-        switchMap(val => 
-          this.svcAlunni.listByAnnoNoClasse(this.form.value.nomeCognomeAlunno, this.data.annoID)
-              .pipe(
-                map( val2 => val2.filter(val=>!this.idAlunniSelezionati.includes(val.id)) )//FANTASTICO!!! NON MOSTRA QUELLI GIA'SELEZIONATI! MEGLIO DI GOOGLE CHE LI RIMOSTRA!
-              ) 
+        switchMap(
+          val => this.svcAlunni.listByAnnoNoClasse(this.form.value.nomeCognomeAlunno, this.data.annoID)
+            .pipe(
+              map( val2 => val2.filter(val=>!this.idAlunniSelezionati.includes(val.id)) )//FANTASTICO!!! NON MOSTRA QUELLI GIA'SELEZIONATI! MEGLIO DI GOOGLE CHE LI RIMOSTRA!
+            ) 
         ),
         // switchMap(() => 
         //   this.svcAlunni.listByAnnoNoClasse(this.form.value.nomeCognomeAlunno, this.data.annoID)
@@ -112,17 +112,13 @@ export class IscrizioniAddComponent implements OnInit {
           ClasseSezioneAnnoID: this.data.classeSezioneAnnoID
         };
         this.svcIscrizioni.post(objIscrizione)
-          .pipe( finalize(()=>this.dialogRef.close()))
-          .subscribe(
-            val=>{},
-            err =>{
-              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-            }
+          .pipe( finalize(()=>this.dialogRef.close())).subscribe(
+            res =>{},
+            err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
           );
       });
   }
 
 //#endregion
-
 
 }

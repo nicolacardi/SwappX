@@ -62,20 +62,11 @@ export class VotiObiettiviEditComponent implements OnInit {
 
     this.obsTipiLivelloObiettivo$= this.svcPagellaVotoObiettivi.listTipiLivelliObiettivo();
     let obsPagellaVotoObiettivi$: Observable<DOC_PagellaVotoObiettivo[]>;
-    console.log("voti-obiettivi-edit pagellaVotoID, materiaID, classeSezioneAnnoID", this.data.pagellaVotoID, this.data.materiaID, this.data.classeSezioneAnnoID);
+    //console.log("voti-obiettivi-edit pagellaVotoID, materiaID, classeSezioneAnnoID", this.data.pagellaVotoID, this.data.materiaID, this.data.classeSezioneAnnoID);
     obsPagellaVotoObiettivi$= this.svcPagellaVotoObiettivi.ListByPagellavotoMateriaCsa(this.data.pagellaVotoID, this.data.materiaID, this.data.classeSezioneAnnoID);
 
-    let loadObiettivi$ =this._loadingService.showLoaderUntilCompleted(obsPagellaVotoObiettivi$);
-
-    loadObiettivi$.subscribe(val =>  {
-        this.matDataSource.data = val;
-        console.log ("val", val);
-        //this.matDataSource.paginator = this.paginator;          
-        //this.sortCustom();
-        //this.matDataSource.sort = this.sort; 
-        //this.matDataSource.filterPredicate = this.filterPredicate();
-      }
-    );
+    let loadObiettivi$ =this._loadingService.showLoaderUntilCompleted(obsPagellaVotoObiettivi$)
+    loadObiettivi$.subscribe(val =>  this.matDataSource.data = val );
   }
 
   changeSelectObiettivo(element: DOC_PagellaVotoObiettivo, valLivello: number) {
@@ -92,8 +83,8 @@ export class VotiObiettiviEditComponent implements OnInit {
       
       this.svcPagellaVotoObiettivi.put(formDataPagella)
         .subscribe(
-          res => {},
-          err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})}
+          res => { },
+          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
         );
     } 
     else {
@@ -162,18 +153,15 @@ export class VotiObiettiviEditComponent implements OnInit {
               formDataPagellaVotoObiettivo.pagellaVotoID = x.id 
               this.data.pagellaVotoID = x.id;
             } ),
-            concatMap( () =>
-              //### insert PagellaVotoObiettivo
-              this.svcPagellaVotoObiettivi.post(formDataPagellaVotoObiettivo)
+            concatMap( 
+              () => this.svcPagellaVotoObiettivi.post(formDataPagellaVotoObiettivo)
             )
           ).subscribe()
         } 
         else {
           //### caso pagella esistente, PagellaVoto esistente --> insert PagellaVotoObiettivo
           formDataPagellaVotoObiettivo.pagellaVotoID = this.data.pagellaVotoID;
-
-          this.svcPagellaVotoObiettivi.post(formDataPagellaVotoObiettivo)
-          .subscribe()
+          this.svcPagellaVotoObiettivi.post(formDataPagellaVotoObiettivo).subscribe()
         }
       }
     }

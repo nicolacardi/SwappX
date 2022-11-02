@@ -26,23 +26,17 @@ export class LoadingService {
         //this.loadingOn();
         return of(null) 
             .pipe(
-                tap(()=> {
-                    setTimeout(()=>this.loadingOn(), 100);
-                    //this.loadingOn();
-                    //console.log ("On");
-                }),
+                tap(()=> setTimeout(()=>this.loadingOn(), 100)),
                 concatMap(() => obs$), // emette lo stesso identico observable di quello che riceve in input ma ha attivato il loading
                 finalize(()=> {
                     setTimeout(()=>this.loadingOff(), 100);
                     //this.loadingOff();
-                    //console.log ("Off");
                 })
             )
     }
     
     loadingOn() {
         this.loadingSubject.next(true);
-
     }
 
     loadingOff() {

@@ -149,11 +149,9 @@ export class RettaCalcoloComponent implements OnInit {
               id: iscrizione.id,
               codiceStato: 20
             }
-            //this.svcIscrizioni.updateStato(formData).subscribe();
-            this.svcIscrizioni.updateStato(formData)
-              .subscribe(
+            this.svcIscrizioni.updateStato(formData).subscribe(
                 () => this.viewListClassi.loadData()
-              );
+            );
 
             let hasFratelloMaggiore= false;
             this.svcAlunni.hasFratelloMaggiore(annoID, iscrizione.alunnoID )
@@ -261,53 +259,4 @@ export class RettaCalcoloComponent implements OnInit {
     )
   }
 
-  // selected(event: MatAutocompleteSelectedEvent): void {
-  // }
-
-  // loadData ( ) {
-  // }
-
-  // blur() {
-  // }
-  
-  // enterAlunnoInput(){
-  // }
-
-
-  /*
-  foreach CLS_ClasseSezioneAnno -->classeSezioneAnnoID
-
-    GET CLS_Classe
-
-    let importoMese;
-    let ImportoAnno;
-    
-    foreach CLS_Iscrizione
-      - stato iscrizione = ...
-      - put CLS_Iscrizione
-
-      ALU_Alunno alunno = CLS_Iscrizione.alunno
-      if( alunno.FratelloMinore && parScontoFratelliMinori)
-        importoAnno = importo2;
-      else
-        importoAnno = importo;
-
-      let totMesi = count checkboxes mesi
-      importoMese = round( importoAnno / totMesi )
-      let restoImporto = ImportoAnno - importoMese * totMesi ;
-
-      foreach( checkbox mese (DOM...) )
-        
-        if(checked){
-          importoMese
-        - get PAG_Retta
-        - exists ? yes:put; no: post
-        -  
-        - set PAG_Retta quotaConcordata = importoMese (+ restoImporto se primo mese)
-        - save
-        }
-      }
-  */
-
-  
 }

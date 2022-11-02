@@ -105,32 +105,26 @@ export class RettapagamentoEditComponent implements OnInit {
         tap (val=> this.formRetta.controls['rettaID'].setValue(val.id)), //il valore in arrivo dalla load viene inserito nel form
         concatMap(() => this.svcPagamenti.post(this.formRetta.value)) //concatMap ATTENDE l'observable precedente prima di lanciare il successivo
       ).subscribe(
-          ()=> {
+          res => {
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
             //this._dialogRef.close();
             this.pagamentoEmitter.emit(this.formRetta.controls['meseRetta'].value);
             this.resetFields();
           },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          )
+          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       );
 
     } else {
 
-      this.svcPagamenti.post(this.formRetta.value)
-        
-        .subscribe(
-          ()=> {
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-            //this._dialogRef.close();
-            this.pagamentoEmitter.emit("RecordSalvato");
-            this.resetFields();
-          },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          )
-        )
+      this.svcPagamenti.post(this.formRetta.value).subscribe(
+        res => {
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+          //this._dialogRef.close();
+          this.pagamentoEmitter.emit("RecordSalvato");
+          this.resetFields();
+        },
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      )
     }
   }
 //#endregion  

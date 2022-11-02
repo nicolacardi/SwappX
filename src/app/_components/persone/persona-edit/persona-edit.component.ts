@@ -100,19 +100,16 @@ export class PersonaEditComponent implements OnInit {
       const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
 
       this.persona$ = loadPersona$
-      .pipe(
-          tap(
-            persona => this.form.patchValue(persona)
-          )
+      .pipe( tap(
+          persona => this.form.patchValue(persona)
+        )
       );
-    } else {
+    } else 
       this.emptyForm = true
-    }
     
     //********************* FILTRO COMUNE *******************
     this.filteredComuni$ = this.form.controls['comune'].valueChanges
-    .pipe(
-      tap(),
+    .pipe( tap(),
       debounceTime(300),
       tap(() => this.comuniIsLoading = true),
       //delayWhen(() => timer(2000)),
@@ -122,8 +119,7 @@ export class PersonaEditComponent implements OnInit {
 
     //********************* FILTRO COMUNE NASCITA ***********
     this.filteredComuniNascita$ = this.form.controls['comuneNascita'].valueChanges
-    .pipe(
-      tap(),
+    .pipe( tap(),
       debounceTime(300),
       tap(() => this.comuniNascitaIsLoading = true),
       switchMap(() => this.svcComuni.filterList(this.form.value.comuneNascita)),
@@ -137,25 +133,14 @@ export class PersonaEditComponent implements OnInit {
   save(){
 
     if (this.form.controls['id'].value == null) 
-      this.svcPersone.post(this.form.value)
-      .subscribe(res=> {
-        //this.form.markAsPristine();
-        this._dialogRef.close();
-      },
-      err=> (
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
-      
+      this.svcPersone.post(this.form.value).subscribe(
+        res=> this._dialogRef.close(),
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
     );
     else 
-      this.svcPersone.put(this.form.value)
-      .subscribe(res=> {
-        //this.form.markAsPristine();
-        this._dialogRef.close();
-      },
-      err=> (
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
+      this.svcPersone.put(this.form.value).subscribe(
+        res=> this._dialogRef.close(),
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
     );
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
   }
@@ -166,22 +151,18 @@ export class PersonaEditComponent implements OnInit {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-    dialogYesNo.afterClosed().subscribe(result => {
-      if(result){
-        this.svcPersone.delete(Number(this.personaID))
-        //.pipe (
-        //  finalize(()=>this.router.navigate(['/alunni']))
-        //)
-        .subscribe(
-          res=>{
-            this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Record cancellato', panelClass: ['red-snackbar']}
-            );
+    dialogYesNo.afterClosed().subscribe(
+      result => {
+        if(result){
+          this.svcPersone.delete(Number(this.personaID))
+          //.pipe (
+          //  finalize(()=>this.router.navigate(['/alunni']))
+          //)
+          .subscribe(
+            res=> { this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
             this._dialogRef.close();
-          },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          )
+            },
+            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
         );
       }
     });

@@ -150,13 +150,13 @@ export class PagellaVotoEditComponent implements OnInit  {
 
       if (formInput.id == 0) {
         this.svcPagellaVoti.post(formInput).subscribe(
-          res => { this.loadData();  },
-          err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})}
+          res => this.loadData() ,
+          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
         )
       } else {
         this.svcPagellaVoti.put(formInput).subscribe(
-          res => {  },
-          err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})}
+          res => { },
+          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})
         )
       }
     }
@@ -179,7 +179,8 @@ export class PagellaVotoEditComponent implements OnInit  {
     }
     
     const dialogRef = this._dialog.open(VotiObiettiviEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe( () => { 
+    dialogRef.afterClosed().subscribe( 
+      () => { 
         this.reloadParent.emit();
         this.loadData(); 
       });

@@ -8,10 +8,10 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+
 export class DocenzeService {
 
   constructor(private http: HttpClient) { }
-
 
   // list(): Observable<CLS_ClasseDocenteMateria[]>{
   //   return this.http.get<CLS_ClasseDocenteMateria[]>(environment.apiBaseUrl+'CLS_ClassiDocentiMaterie');
@@ -38,8 +38,6 @@ export class DocenzeService {
       //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateriaAndDocente/16/4/3
   }
 
-
-
   put(formData: any): Observable <any>{
     console.log ("formData put", formData);
     return this.http.put( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/' + formData.id , formData);    
@@ -54,7 +52,5 @@ export class DocenzeService {
   delete(docenzaID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/' + docenzaID);    
   }
-
-
 
 }

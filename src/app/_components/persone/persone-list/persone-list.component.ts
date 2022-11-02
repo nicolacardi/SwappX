@@ -118,8 +118,8 @@ export class PersoneListComponent implements OnInit {
     let obsPersone$: Observable<PER_Persona[]>;
     obsPersone$= this.svcPersone.list();
     const loadPersone$ =this._loadingService.showLoaderUntilCompleted(obsPersone$);
-    loadPersone$.subscribe(val => 
-      {
+    loadPersone$.subscribe(
+      val => {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort; 
@@ -184,11 +184,7 @@ export class PersoneListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(PersonaEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(() => this.loadData());
   }
 
   openDetail(id:any){
@@ -200,11 +196,7 @@ export class PersoneListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(PersonaEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(() => this.loadData());
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -212,7 +204,7 @@ export class PersoneListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Right Click -------
+ 
   onRightClick(event: MouseEvent, element: PER_Persona) { 
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
@@ -220,6 +212,6 @@ export class PersoneListComponent implements OnInit {
     this.matMenuTrigger.menuData = {item: element}   
     this.matMenuTrigger.openMenu(); 
   }
-//#endregion
+
   
 }

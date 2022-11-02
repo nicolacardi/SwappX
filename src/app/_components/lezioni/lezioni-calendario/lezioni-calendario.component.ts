@@ -64,8 +64,6 @@ export class LezioniCalendarioComponent implements OnInit {
       timeGridDay: {  //questo modifica TUTTI gli eventi in questa vista
         eventContent: (event: any, element: any) => {
           { 
-
-            console.log (event);
             //mostra l'ora
             let timeText = document.createElement('div');
             timeText.className = "fc-event-time";
@@ -169,7 +167,8 @@ export class LezioniCalendarioComponent implements OnInit {
     }
 
     const loadLezioni$ =this._loadingService.showLoaderUntilCompleted(obsLezioni$);
-    loadLezioni$.subscribe(val =>   {
+    loadLezioni$.subscribe(
+      val =>   {
         this.Events = val;
         this.calendarOptions.events = this.Events;
       }
@@ -226,6 +225,7 @@ export class LezioniCalendarioComponent implements OnInit {
   }
 
   setEventiLezioni() {
+    
     this.calendarOptions.eventContent = (arg: any)  =>//arg è l'oggetto che contiene l'evento con tutte le sue proprietà
       { 
         //mostra l'ora
@@ -381,9 +381,8 @@ export class LezioniCalendarioComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(() => { 
-        this.loadData(); 
-      }
+    dialogRef.afterClosed().subscribe(
+      () => this.loadData()
     );
   }
 
@@ -413,10 +412,8 @@ export class LezioniCalendarioComponent implements OnInit {
       }
     };
     const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(() => { 
-        this.loadData(); 
-      }
-    );
+    dialogRef.afterClosed().subscribe( () => this.loadData() );
+
     const calendarApi = selectInfo.view.calendar;
     calendarApi.unselect(); 
   }
@@ -432,10 +429,7 @@ export class LezioniCalendarioComponent implements OnInit {
       }
     };
     const dialogRef = this._dialog.open(LezioniUtilsComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(() => { 
-        this.loadData(); 
-      }
-    );
+    dialogRef.afterClosed().subscribe(() =>  this.loadData());
   }
 
   mostraDocenti () {
@@ -486,7 +480,7 @@ export class LezioniCalendarioComponent implements OnInit {
         if (val.length > 0) {
           let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
           val.forEach (x =>
-            {strMsg = strMsg + "\n - " + x.classeSezioneAnno.classeSezione.classe.descrizione2 + ' ' + x.classeSezioneAnno.classeSezione.sezione;}
+            { strMsg = strMsg + "\n - " + x.classeSezioneAnno.classeSezione.classe.descrizione2 + ' ' + x.classeSezioneAnno.classeSezione.sezione;}
           )
           this._dialog.open(DialogOkComponent, {
             width: '320px',
@@ -496,7 +490,7 @@ export class LezioniCalendarioComponent implements OnInit {
         }
         else {
           this.svcLezioni.get(resizeInfo.event.id)
-          .pipe ( tap ( val   =>  {
+          .pipe ( tap ( val  =>  {
               form = val;
               let dtISOLocaleEnd = resizeInfo.event.end!.toLocaleString('sv').replace(' ', 'T');
               form.h_End = dtISOLocaleEnd.substring(11,19);
@@ -506,9 +500,7 @@ export class LezioniCalendarioComponent implements OnInit {
             res=>{
               //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
             },
-            err=>{
-              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-            }
+            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
           );
         }
       }

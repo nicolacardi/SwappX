@@ -64,7 +64,8 @@ export class UserEditComponent implements OnInit {
 
   ngOnInit() {
 
-    this.svcUser.obscurrentUser.subscribe(val => {
+    this.svcUser.obscurrentUser.subscribe(
+      val => {
         this.currUserRuolo = val.ruoloID;
         this.currUserID = val.userID;
     })
@@ -76,11 +77,8 @@ export class UserEditComponent implements OnInit {
       startWith(this.form.controls.ruoloID.value),
       pairwise()
     ).subscribe(
-      ([old,value])=>{
-        this.previousMatSelect = old;
-        console.log (old);
-      }
-    )
+      ([old,value])=> this.previousMatSelect = old
+    );
   }
  
 
@@ -94,10 +92,10 @@ export class UserEditComponent implements OnInit {
       const loadUser$ = this._loadingService.showLoaderUntilCompleted(obsUser$);
       
       this.user$ = loadUser$.pipe(
-          tap(utente => {
-            this.form.patchValue(utente);
-            this.userID = utente.id;       
-          })
+        tap(utente => {
+          this.form.patchValue(utente);
+          this.userID = utente.id;       
+        })
       );
     } 
     else 
@@ -112,17 +110,16 @@ export class UserEditComponent implements OnInit {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-    dialogYesNo.afterClosed().subscribe(result => {
-      if(result){
-        this.svcUser.delete(this.idUser).subscribe(()=>{
-            this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Record cancellato', panelClass: ['green-snackbar']}
-            );
-            this._dialogRef.close();
-          },
-          ()=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-        );
-      }
+    dialogYesNo.afterClosed().subscribe(
+      result => {
+        if(result){
+          this.svcUser.delete(this.idUser).subscribe(()=>{
+              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['green-snackbar']});
+              this._dialogRef.close();
+            },
+            err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          );
+        }
     });
   }
 
@@ -136,7 +133,6 @@ export class UserEditComponent implements OnInit {
       Badge:      this.form.controls.badge.value,
       RuoloID:    this.form.controls.ruoloID.value,
       Password:   this.form.controls.password.value
-      
     };
     
     if (formData.userID == "0") {
@@ -148,26 +144,25 @@ export class UserEditComponent implements OnInit {
         return;        
       }
       this.svcUser.post(this.form.value).subscribe(
-        res=> { this._dialogRef.close();},
-        err=> {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}  
+        res=> this._dialogRef.close(),
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})  
       );
     } else {
       this.svcUser.put(formData).subscribe( 
-        res => { this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo utente salvato', panelClass: ['green-snackbar']})},
-        err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvaggio', panelClass: ['red-snackbar']})}
+        res => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo utente salvato', panelClass: ['green-snackbar']}),
+        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvaggio', panelClass: ['red-snackbar']})
       );
     }
 
     if(formData.userID != "0" && this.form.controls.password.dirty && this.form.controls.password.value != "" ){
       
       this.svcUser.ResetPassword(this.idUser, this.form.controls.password.value).subscribe( 
-        res=> {
+        res => {
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password modificata', panelClass: ['green-snackbar']});
           this._dialogRef.close();
         },
-        err=> (
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel cambio password', panelClass: ['red-snackbar']})
-        ));
+        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel cambio password', panelClass: ['red-snackbar']})
+      );
     }
   }
 

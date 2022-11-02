@@ -297,9 +297,8 @@ export class RettaEditComponent implements OnInit {
     for (let i = 0; i < 12; i++) {
       let childRettaMese = this.ChildrenRettaMese.find(childRettaMese => childRettaMese.indice == i);
       response = childRettaMese!.save();
-      if (!response) {
+      if (!response) 
         hasError = true;
-      }
     }
 
     if (hasError) 

@@ -75,8 +75,8 @@ export class PagellaEditComponent implements OnInit {
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagelle$);
 
     loadPagella$.pipe (
-      map(val=>val.filter(val=>(val.periodo == this.quadrimestre))))
-        .subscribe(val =>  {
+      map(val=>val.filter(val=>(val.periodo == this.quadrimestre)))).subscribe(
+        val =>  {
           if (val.length != 0)  {
             this.objPagella = val[0];
             this.dtIns = val[0].dtIns!;
@@ -95,13 +95,6 @@ export class PagellaEditComponent implements OnInit {
             this.ckStampato = false;
             this.dtIns = '';
           }
-          
-          // if(this.objPagella.iscrizione != undefined){
-          //   this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnno.classeSezione.classeID,this.objPagella.id! )
-          //     .subscribe(
-          //       res => {this.lstPagellaVoti = res; }
-          //     );
-          // }
         }
     );
   }
@@ -136,9 +129,7 @@ export class PagellaEditComponent implements OnInit {
           link.download = `${"test"}.pdf`
           link.click();
         },
-        err => {
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di caricamento', panelClass: ['red-snackbar']})
-        }
+        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di caricamento', panelClass: ['red-snackbar']})
       );
   }
 

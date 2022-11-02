@@ -17,9 +17,9 @@ import { MatExpansionPanel } from '@angular/material/expansion';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
-  isPinned = false;
-  isExpanded = false;
+
+export class AppComponent implements OnInit {
+
 //#region ----- Variabili -------
   //isLoggedIn?: boolean;
   public isLoggedIn?:  boolean = false;
@@ -29,6 +29,9 @@ export class AppComponent implements OnInit{
   stringJson: any;
   stringObject: any;
 
+  isPinned = false;
+  isExpanded = false;
+
   public mode = new FormControl('over');
   title = 'Stoody';
 //#endregion
@@ -36,7 +39,6 @@ export class AppComponent implements OnInit{
 //#region ----- ViewChild Input Output -------
   @ViewChild('start') public leftSidenav!: MatSidenav;
   @ViewChild('end') public rightSidenav!: MatSidenav;
-
   @ViewChild('expansion1') public expansion1!: MatExpansionPanel;
   @ViewChild('expansion2') public expansion2!: MatExpansionPanel;
 
@@ -63,7 +65,7 @@ export class AppComponent implements OnInit{
     if (this.eventEmitterService.subsVar==undefined) {    
     
       this.eventEmitterService.subsVar = this.eventEmitterService.invokeAppComponentRefreshFoto.subscribe(
-        (name:string) => {     //Questo è il modo per tipizzare una lambda expression  
+        (res:string) => {     
           this.refreshUserData();    
       });    
     } 
@@ -73,8 +75,7 @@ export class AppComponent implements OnInit{
     if(!this.currUser) return;
 
     this.svcUser.getFotoByUserID(this.currUser.userID).subscribe(
-      val=> {
-        this.imgAccount = val.foto; }
+      res => this.imgAccount = res.foto
     );
     
     let currUser = Utility.getCurrentUser();

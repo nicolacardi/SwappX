@@ -122,8 +122,8 @@ export class ClassiDashboardComponent implements OnInit {
 
     this.actRoute.queryParams.subscribe(
       params => {
-          this.annoIDrouted = params['annoID'];     
-          this.classeSezioneAnnoIDrouted = params['classeSezioneAnnoID'];  
+        this.annoIDrouted = params['annoID'];     
+        this.classeSezioneAnnoIDrouted = params['classeSezioneAnnoID'];  
     });
 
     this._navigationService.passPage("classiDashboard");
@@ -213,9 +213,10 @@ export class ClassiDashboardComponent implements OnInit {
 
     const dialogRef = this._dialog.open(IscrizioniAddComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
-        result => {
-           if(result == undefined) this.viewListIscrizioni.loadData()
-    });
+      result => {
+        if(result == undefined) this.viewListIscrizioni.loadData()
+      }
+    );
   }
 
   addDocenteToClasse() {
@@ -225,7 +226,7 @@ export class ClassiDashboardComponent implements OnInit {
       panelClass: 'app-full-bleed-dialog',
       width: '400px',
       minHeight: '300px',
-      data: {titolo: "Iscrivi alunno alla classe", 
+      data: { titolo: "Iscrivi alunno alla classe", 
               annoID:   this.annoID,
               classeSezioneAnnoID: this.classeSezioneAnnoID}
     };

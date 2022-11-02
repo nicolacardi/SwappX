@@ -124,18 +124,16 @@ export class LezioniUtilsComponent implements OnInit {
     let dtEndYYYY_MM_DD = dtEnd.toLocaleString('sv').replace(' ', 'T').substring(0,10);
 
     if (ckTutteleClassi1 == false  || ckTutteleClassi1 == null) {
-      this.svcLezioni.deleteByClasseSezioneAnnoAndDate(this.data.classeSezioneAnnoID, dtStartYYYY_MM_DD, dtEndYYYY_MM_DD)
-        .subscribe(
-          res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
-          err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
-        );
+      this.svcLezioni.deleteByClasseSezioneAnnoAndDate(this.data.classeSezioneAnnoID, dtStartYYYY_MM_DD, dtEndYYYY_MM_DD).subscribe(
+        res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
+        err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
+      );
     } else {
       //console.log ("deleteByDate");
-      this.svcLezioni.deleteByDate(dtStartYYYY_MM_DD, dtEndYYYY_MM_DD)
-        .subscribe(
-          res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
-          err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
-        );
+      this.svcLezioni.deleteByDate(dtStartYYYY_MM_DD, dtEndYYYY_MM_DD).subscribe(
+        res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Operazione effettuata correttamente', panelClass: ['green-snackbar']}) } ,
+        err => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})}
+      );
     }
   }
 

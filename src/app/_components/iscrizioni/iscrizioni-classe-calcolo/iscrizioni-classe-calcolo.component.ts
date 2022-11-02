@@ -81,9 +81,7 @@ export class IscrizioniClasseCalcoloComponent implements OnInit {
         concatMap( ()  =>
             this.svcClasseSezioneAnno.listByAnnoGroupByClasse(this.annoSucc.id)),
             map(val=>val.filter(val=>(val.seq == seq || val.seq == seq +1))),
-            tap(()=>{
-              this.form.controls['selectClasseSezioneAnno'].setValue(this.classeSezioneAnno.classeSezioneAnnoSuccID);
-            }  
+            tap( ()=> this.form.controls['selectClasseSezioneAnno'].setValue(this.classeSezioneAnno.classeSezioneAnnoSuccID)
         )
       )
   }

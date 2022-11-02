@@ -61,11 +61,7 @@ displayedColumnsRettePagamentiSummary: string[] = [
     this.obsAnni$= this.svcAnni.list();
     this.loadData();
 
-    this.form.controls['selectAnnoScolastico'].valueChanges
-    .subscribe(val => {
-      this.loadData();
-      //this.annoIdEmitter.emit(val);
-    })
+    this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val =>  this.loadData() );
   }
 
   loadData() {
@@ -76,10 +72,7 @@ displayedColumnsRettePagamentiSummary: string[] = [
     obsSummary$= this.svcRette.listRettePagamenti_Sum(this.form.controls['selectAnnoScolastico'].value);
     const loadSummary$ =this._loadingService.showLoaderUntilCompleted(obsSummary$);
 
-    loadSummary$.subscribe(val => {
-        this.matDataSource.data = val;
-      }
-    );
+    loadSummary$.subscribe(val => this.matDataSource.data = val);
   }
 
 //#endregion

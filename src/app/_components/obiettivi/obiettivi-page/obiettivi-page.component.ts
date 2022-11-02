@@ -48,11 +48,7 @@ export class ObiettiviPageComponent implements OnInit {
       data: 0
     };
     const dialogRef = this._dialog.open(ObiettiviDuplicaComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.obiettiviList.loadData();
-    });
+    dialogRef.afterClosed().subscribe( () => this.obiettiviList.loadData());
   }
 //#endregion
 

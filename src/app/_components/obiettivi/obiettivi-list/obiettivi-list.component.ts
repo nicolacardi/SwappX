@@ -97,15 +97,15 @@ constructor(
 
     const loadObiettivi$ =this._loadingService.showLoaderUntilCompleted(this.obsObiettivi$);
 
-    loadObiettivi$.subscribe(val =>   {
-      this.matDataSource.data = val;
-      this.sortCustom(); 
-      this.matDataSource.sort = this.sort; 
-      this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
-    }
-  );
-
-}
+    loadObiettivi$.subscribe(
+      val =>   {
+        this.matDataSource.data = val;
+        this.sortCustom(); 
+        this.matDataSource.sort = this.sort; 
+        this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
+      }
+    );
+  }
 
 //#region ----- Add Edit Drop -------
   addRecord(){
@@ -116,11 +116,7 @@ constructor(
       data: 0
     };
     const dialogRef = this._dialog.open(ObiettivoEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(() =>  this.loadData());
   }
 
   openDetail(obiettivoID:any){
@@ -131,11 +127,7 @@ constructor(
       data: obiettivoID
     };
     const dialogRef = this._dialog.open(ObiettivoEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-      () => { 
-        this.loadData(); 
-      }
-    );
+    dialogRef.afterClosed().subscribe(() =>  this.loadData());
   }
 //#endregion
 

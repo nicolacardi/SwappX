@@ -27,8 +27,7 @@ export class UsersFilterComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit() {
 
-    this.fullnameFilter.valueChanges
-    .subscribe(
+    this.fullnameFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.usersListComponent.filterValues.fullname = val.toLowerCase();
@@ -36,8 +35,7 @@ export class UsersFilterComponent implements OnInit {
       }
     )
 
-    this.emailFilter.valueChanges
-    .subscribe(
+    this.emailFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.usersListComponent.filterValues.email = val.toLowerCase();
@@ -45,8 +43,7 @@ export class UsersFilterComponent implements OnInit {
       }
     )
 
-    this.badgeFilter.valueChanges
-    .subscribe(
+    this.badgeFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.usersListComponent.filterValues.badge = val.toLowerCase();

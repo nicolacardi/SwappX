@@ -189,12 +189,13 @@ constructor(
           this.classeSezioneAnnoIDrouted = params['classeSezioneAnnoID'];  
     });
     
-
     this.obsAnni$ = this.svcAnni.list().pipe(
-      finalize( () => {
-        //se arrivo da home
-        if (this.annoIDrouted) this.form.controls.selectAnnoScolastico.setValue(parseInt(this.annoIDrouted));
-      })
+      finalize( 
+        () => {
+          //se arrivo da home
+          if (this.annoIDrouted) this.form.controls.selectAnnoScolastico.setValue(parseInt(this.annoIDrouted));
+        }
+      )
     );
    
     this.loadData();
@@ -236,23 +237,27 @@ constructor(
       default: this.displayedColumns = this.displayedColumnsClassiDashboard;
     }
 
-    this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(val => {
-      this.loadData();
-      this.annoIdEmitter.emit(val);
-      //vanno resettate le selezioni delle checkbox e masterToggle
-      this.resetSelections();
-      this.toggleChecks = false;
-    });
+    this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(
+      val => {
+        this.loadData();
+        this.annoIdEmitter.emit(val);
+        //vanno resettate le selezioni delle checkbox e masterToggle
+        this.resetSelections();
+        this.toggleChecks = false;
+      }
+    );
 
     this.obsDocenti$ = this.svcDocenti.list();
 
-    this.form.controls['selectDocente'].valueChanges.subscribe(val => {
-      this.loadData();
-      this.docenteIdEmitter.emit(val);
-      //vanno resettate le selezioni delle checkbox e masterToggle
-      this.resetSelections();
-      this.toggleChecks = false;
-    });
+    this.form.controls['selectDocente'].valueChanges.subscribe(
+      val => {
+        this.loadData();
+        this.docenteIdEmitter.emit(val);
+        //vanno resettate le selezioni delle checkbox e masterToggle
+        this.resetSelections();
+        this.toggleChecks = false;
+      }
+    );
   }
 
   ngOnChanges() {
@@ -279,9 +284,8 @@ constructor(
 
       const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
-      loadClassi$.subscribe(val =>   {
-
-
+      loadClassi$.subscribe(
+        val =>   {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
   
@@ -410,11 +414,9 @@ constructor(
       data: 0
     };
     const dialogRef = this._dialog.open(ClasseSezioneAnnoEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(
+      () => this.loadData()
+    );
   }
 
   openDetail(classeSezioneAnnoID:any) {
@@ -426,9 +428,9 @@ constructor(
     };
 
     const dialogRef = this._dialog.open(ClasseSezioneAnnoEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(() => { this.loadData(); //TODO: metto intanto un valore di default CABLATO DENTRO COMUNQUE NON FUNZIONA BENE!
-    });
+    dialogRef.afterClosed().subscribe(
+      () =>  this.loadData() //TODO: metto intanto un valore di default CABLATO DENTRO COMUNQUE NON FUNZIONA BENE!
+    );
   }
 
   updateImporto(element: CLS_ClasseSezioneAnno, value: any) {
@@ -436,13 +438,9 @@ constructor(
     element.classeSezione.classe.importo = parseFloat(value);
 
     this.svcClassiSezioniAnni.put(element).subscribe(
-      res=> {
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Importo salvato', panelClass: ['green-snackbar']})  //MOSTRA ESITO OK MA NON SALVA
-      },
-      err=> (
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
-    );  //NON VA
+      res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Importo salvato', panelClass: ['green-snackbar']}),  //MOSTRA ESITO OK MA NON SALVA,
+      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+    ); 
   }
 //#endregion
 

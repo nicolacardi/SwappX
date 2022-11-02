@@ -150,11 +150,8 @@ export class UsersListComponent implements OnInit {
       }
       */
       const loadUsers$ =this._loadingService.showLoaderUntilCompleted(obsUsers$);
-      
-      
-
-      loadUsers$.subscribe(val => 
-        {
+      loadUsers$.subscribe(
+        val =>  {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
@@ -172,7 +169,6 @@ export class UsersListComponent implements OnInit {
     //if (this.dove == "alunni-page") this.usersFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
-
 
   filterPredicate(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
@@ -218,11 +214,7 @@ export class UsersListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(UserEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe( () => this.loadData());
   }
 
   openDetail(id:any){
@@ -234,11 +226,7 @@ export class UsersListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(UserEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe( () => this.loadData());
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -255,7 +243,6 @@ export class UsersListComponent implements OnInit {
     this.matMenuTrigger.menuData = {item: element}   
     this.matMenuTrigger.openMenu(); 
   }
-
   
 //#endregion
 
@@ -337,20 +324,6 @@ export class UsersListComponent implements OnInit {
       "ckAttivo"];
   }
 //#endregion
-
-
 }
 
-
-
-  //NON DOVREBBE SERVIRE, ELIMINARE
-  // concatenaFindGenitori(data: any, searchTerms: any): boolean{
-  //   let found : boolean;
-  //   //per ogni genitore trovato vado a concatenare la || di true. Quelli non trovati fanno la || di false quindi non aggiungono niente
-  //   data._Genitori?.forEach((val: { genitore: { nome: any; }; })=>    (   
-  //       found = found || String(val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore)  !== -1   ))
-    
-  //   //alla fine found conterrà true se almeno un genitore viene trovato e false altrimenti
-  //   return found!;
-  // }
 

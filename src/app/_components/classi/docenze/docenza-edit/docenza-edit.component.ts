@@ -62,15 +62,12 @@ export class DocenzaEditComponent implements OnInit {
       const loadDocenza$ = this._loadingService.showLoaderUntilCompleted(obsDocenza$);
       
       this.docenza$ = loadDocenza$.pipe(
-          tap(
-            docenza => {
-              this.form.patchValue(docenza);
-              this.strMateria = docenza.materia.descrizione;
-              this.strDocente = docenza.docente.persona.nome + ' ' + docenza.docente.persona.cognome;
-              this.strClasseSezioneAnno = docenza.classeSezioneAnno.classeSezione.classe.descrizione + ' ' + docenza.classeSezioneAnno.classeSezione.sezione;
-
-            }
-          )
+        tap( docenza => {
+          this.form.patchValue(docenza);
+          this.strMateria = docenza.materia.descrizione;
+          this.strDocente = docenza.docente.persona.nome + ' ' + docenza.docente.persona.cognome;
+          this.strClasseSezioneAnno = docenza.classeSezioneAnno.classeSezione.classe.descrizione + ' ' + docenza.classeSezioneAnno.classeSezione.sezione;
+        })
       );
     }
   }
@@ -99,15 +96,13 @@ export class DocenzaEditComponent implements OnInit {
     //          (di norma così sarebbe, perchè non ha senso che si voglia togliere dalla pagella di una I A e non della I C...) 
     //          (attenzione, stiamo parlando di quelle uguali dello stesso anno)
 
-      this.svcDocenze.put(this.form.value).subscribe(
-          res=> {
-            this._dialogRef.close();
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-          },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          )
-        );
+    this.svcDocenze.put(this.form.value).subscribe(
+        res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        },
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      );
   }
 
   delete() {
@@ -117,10 +112,7 @@ export class DocenzaEditComponent implements OnInit {
         this._dialogRef.close();
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record Elieminato', panelClass: ['green-snackbar']});
       },
-      err=> (
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore durante la cancellazione', panelClass: ['red-snackbar']})
-      )
+      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore durante la cancellazione', panelClass: ['red-snackbar']})
     );
   }
-
 }

@@ -80,14 +80,14 @@ export class MaterieListComponent implements OnInit {
 
     const loadMaterie$ =this._loadingService.showLoaderUntilCompleted(this.obsMaterie$);
 
-    loadMaterie$.subscribe(val =>   {
-      this.matDataSource.data = val;
-      this.sortCustom(); 
-      this.matDataSource.sort = this.sort; 
-      this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
-    }
-  );
-
+    loadMaterie$.subscribe(
+      val =>   {
+        this.matDataSource.data = val;
+        this.sortCustom(); 
+        this.matDataSource.sort = this.sort; 
+        this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
+      }
+    );
   }
 
 //#region ----- Add Edit Drop -------
@@ -99,11 +99,7 @@ export class MaterieListComponent implements OnInit {
       data: 0
     };
     const dialogRef = this._dialog.open(MateriaEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(() => this.loadData());
   }
 
   openDetail(materiaID:any){
@@ -114,11 +110,7 @@ export class MaterieListComponent implements OnInit {
       data: materiaID
     };
     const dialogRef = this._dialog.open(MateriaEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-      () => { 
-        this.loadData(); 
-      }
-    );
+    dialogRef.afterClosed().subscribe(() => this.loadData());
   }
 //#endregion
 
@@ -145,11 +137,9 @@ export class MaterieListComponent implements OnInit {
     let filterFunction = function(data: any, filter: any): boolean {
       
       let searchTerms = JSON.parse(filter);
-
       let boolSx = String(data.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.macroMateria.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
       return boolSx;
-
     }
     return filterFunction;
   }

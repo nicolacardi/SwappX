@@ -1,18 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { concatMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { UserService } from '../user.service';
 import { ParametriService } from 'src/app/_services/parametri.service';
 
-import { DialogOkComponent } from 'src/app/_components/utilities/dialog-ok/dialog-ok.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
 import { LoadingService } from 'src/app/_components/utilities/loading/loading.service';
 import { EventEmitterService } from 'src/app/_services/event-emitter.service';
-
 
 @Component({
   selector: 'app-login',
@@ -21,23 +18,19 @@ import { EventEmitterService } from 'src/app/_services/event-emitter.service';
 })
 
 export class LoginComponent implements OnInit {
+  
   loading = false;
-  // formModel={
-  //   UserName:'',
-  //   Password:''
-  // };
-
   form! :                     FormGroup;
   
-  constructor(private svcUser:       UserService,
-              private svcParametri:   ParametriService, 
-              private router:         Router,
-              private fb:             FormBuilder,
+  constructor(private svcUser:         UserService,
+              private svcParametri:    ParametriService, 
+              private router:          Router,
+              private fb:              FormBuilder,
               private eventEmitterService:  EventEmitterService,
-              public _dialog:         MatDialog,
-              private _loadingService:  LoadingService,
-              private _snackBar:      MatSnackBar,
-              ) {
+              public _dialog:          MatDialog,
+              private _loadingService: LoadingService,
+              private _snackBar:       MatSnackBar ) {
+
     this.form = this.fb.group({
       UserName:                   ['a', Validators.required],
       Password:                   ['1234', { validators:[ Validators.required, Validators.maxLength(50)]}]
@@ -45,9 +38,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(localStorage.getItem('token') != null){
+    if(localStorage.getItem('token') != null)
       this.router.navigateByUrl('/home');
-    }
   }
 
   onSubmit(){
@@ -55,24 +47,15 @@ export class LoginComponent implements OnInit {
     const loadUser$ =this._loadingService.showLoaderUntilCompleted(obsUser$);
     
     loadUser$.subscribe(
-      (res: any) => {
-
+      res => {
         this.eventEmitterService.onAccountSaveProfile();
-
         //this.svcUser.changeLoggedIn(true);
-        this._snackBar.openFromComponent(SnackbarComponent, {
-          //data: 'Benvenuto ' + res.fullname , panelClass: ['green-snackbar']
-          data: 'Benvenuto ' + res[0].fullname , panelClass: ['green-snackbar']
-        });
-
+        this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + res[0].fullname , panelClass: ['green-snackbar']});
         this.router.navigateByUrl('/home');
       },
-      err=> {
+      err => {
         this.loading = false;
-
-        this._snackBar.openFromComponent(SnackbarComponent, {
-          data: err, panelClass: ['red-snackbar']
-        });
+        this._snackBar.openFromComponent(SnackbarComponent, { data: err, panelClass: ['red-snackbar'] });
 
         /*
         //this.svcUser.changeLoggedIn(false);
@@ -94,39 +77,28 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-
-
-  /*
-  public forgotPassword1 = (route: string, body: ForgotPasswordDto) => {
-    return this._http.post(this.createCompleteRoute(route, this._envUrl.urlAddress), body);
-  }
-  */
-
   
   forgotPassword(e: Event){
 
     e.preventDefault();
 
     //console.log(this.validateEmail(this.form.controls.UserName.value));
-    if(!this.validateEmail(this.form.controls.UserName.value)){
-      this._snackBar.openFromComponent(SnackbarComponent, {
-        data: "Inserire una email valida"  , panelClass: ['red-snackbar']
-      });
+    if(!this.validateEmail(this.form.controls.UserName.value)){ 
+      this._snackBar.openFromComponent(SnackbarComponent, { data: "Inserire una email valida"  , panelClass: ['red-snackbar']});
       return;
     }
 
     //invio mail di reset
     //TODO 
-   
-    this._snackBar.openFromComponent(SnackbarComponent, {
-      data: "E' stata inviata una mail con un link di reset a " + this.form.controls.UserName.value , panelClass: ['green-snackbar']
-    });
+  
+    this._snackBar.openFromComponent(SnackbarComponent, { data: "E' stata inviata una mail con un link di reset a " + this.form.controls.UserName.value , panelClass: ['green-snackbar']});
   }
 
   validateEmail(email: string) {
     const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return regularExpression.test(String(email).toLowerCase());
-   }
+  }
+
   /*
     /* WS REST
     https://code-maze.com/angular-password-reset-functionality-with-aspnet-identity/

@@ -15,25 +15,19 @@
         <ng-container matColumnDef="select" >
             <!-- masterToggle delle checkbox di selezione record -->
             <th mat-header-cell class="_no-bottom-border" *matHeaderCellDef >
-              <mat-checkbox  (change)="$event ? masterToggle() : null"
+              <mat-checkbox (change)="$event ? masterToggle() : null"
                             [checked] = "toggleChecks"
                             [aria-label]="checkboxLabel()"
-                            color="warn" #mstToggle
-                            >
-                            <!-- [checked]="selection.hasValue() && isAllSelected()"
-                            [indeterminate]="selection.hasValue() && !isAllSelected()" -->
+                            color="warn" #mstToggle >
               </mat-checkbox>
             </th>
             <!-- singole checkbox di selezione record -->
             <td mat-cell class="_no-bottom-border" *matCellDef="let element">
-              <mat-checkbox 
-                            
-                            (click)="$event.stopPropagation()"
+              <mat-checkbox (click)="$event.stopPropagation()"
                             (change) = "$event ? selectedRow(element) : null"
                             [checked]="selection.isSelected(element)"
                             [aria-label]="checkboxLabel(element)"
                             color="warn">
-                            <!-- ho tolto questo (change)="$event ? selection.toggle(row) : null" -->
               </mat-checkbox>
             </td>
         </ng-container>
@@ -99,6 +93,5 @@
         <ng-template matMenuContent let-item="item"> 
             <mat-label class="_titolo-filtri-avanzati">{{item.docente.persona.nome | uppercase}} {{item.docente.persona.cognome | uppercase}}</mat-label> 
             <button mat-menu-item (click)="openDocente(item.docente.persona.id)">Scheda Insegnante</button> 
-
         </ng-template> 
     </mat-menu> 

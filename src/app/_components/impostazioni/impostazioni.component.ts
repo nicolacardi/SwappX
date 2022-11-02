@@ -104,22 +104,14 @@ export class ImpostazioniComponent implements OnInit {
     });
     this.parQuoteDefault.parValue = strCheckboxes;
     this.svcParametri.put(this.parQuoteDefault).subscribe( 
-      res=>{
-        this.setMessage(1);
-      },
-      err=>{
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Quote Default]', panelClass: ['red-snackbar']});
-      }
+      res=> this.setMessage(1),
+      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Quote Default]', panelClass: ['red-snackbar']})
     );
   
     this.parQuoteRidotteFratelli.parValue = this.form.controls['quoteRidotteFratelli'].value;
     this.svcParametri.put(this.parQuoteRidotteFratelli).subscribe(
-      res=>{
-        this.setMessage(2);
-      },
-      err=>{
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Quote Fratelli]', panelClass: ['red-snackbar']});
-      }
+      res=> this.setMessage(2),
+      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Quote Fratelli]', panelClass: ['red-snackbar']})
     ); 
   }
 

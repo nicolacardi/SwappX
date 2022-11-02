@@ -102,11 +102,9 @@ filterValues = {
       data: 0
     };
     const dialogRef = this._dialog.open(ClasseAnnoMateriaEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(
+      () => this.loadData()
+    );
   }
 
   openDetail(obiettivoID:any){
@@ -118,9 +116,7 @@ filterValues = {
     };
     const dialogRef = this._dialog.open(ClasseAnnoMateriaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
-      () => { 
-        this.loadData(); 
-      }
+      () => this.loadData()
     );
   }
 //#endregion

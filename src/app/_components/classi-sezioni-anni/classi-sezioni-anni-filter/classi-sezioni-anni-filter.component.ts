@@ -18,7 +18,8 @@ export class ClassiSezioniAnniFilterComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------  
   @Input() classiSezioniAnniListComponent!: ClassiSezioniAnniListComponent;
-//#endregion  
+//#endregion 
+
   constructor() { }
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -59,7 +60,6 @@ export class ClassiSezioniAnniFilterComponent implements OnInit {
     this.classeFilter.setValue('');
     this.sezioneFilter.setValue('')
   }
-
 
 //#endregion
 }

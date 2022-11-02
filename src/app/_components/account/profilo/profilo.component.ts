@@ -83,9 +83,7 @@ export class ProfiloComponent implements OnInit {
         this.imgFile = reader.result as string;
 
         Utility.compressImage( this.imgFile, 200, 200)
-                  .then(compressed => {
-                    this.immagineDOM.nativeElement.src = compressed
-                  });
+               .then(compressed => this.immagineDOM.nativeElement.src = compressed);
       };
     }
   }
@@ -107,7 +105,6 @@ export class ProfiloComponent implements OnInit {
         height: '400px',
         data: {file: e.target.files}
       });
-
     }
   }
 
@@ -121,23 +118,22 @@ export class ProfiloComponent implements OnInit {
     };
 
     this.svcUser.put(formData).subscribe(
-      ()=> {
+      res => {
         this.currUser.username = this.form.controls.username.value;
         this.currUser.email =this.form.controls.email.value;
         this.currUser.fullname = this.form.controls.fullname.value;
 
         localStorage.setItem('currentUser', JSON.stringify(this.currUser));
       },
-      err => {
-        console.log("ERRORE this.svcUser.put", formData);
-      }
+      err => console.log("[profilo.component] - save: ERRORE this.svcUser.put", formData)
     );
 
     if(this.immagineDOM != undefined){
       this.fotoObj.userID = this.currUser.userID;
       this.fotoObj.foto = this.immagineDOM.nativeElement.src;
 
-      this.svcUser.save(this.fotoObj).subscribe(() => {
+      this.svcUser.save(this.fotoObj).subscribe(
+        () => {
           this.eventEmitterService.onAccountSaveProfile();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo salvato', panelClass: ['green-snackbar']});
         }

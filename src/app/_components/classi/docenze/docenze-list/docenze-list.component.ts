@@ -84,7 +84,9 @@ export class DocenzeListComponent implements OnInit {
       this.loadData();
       //this.toggleChecks = false;
       //parcheggio in classeSezioneAnno i dati della classe che servono a classi-dashboard (per il nome dell'export)
-      this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID).subscribe(res => this.classeSezioneAnno = res)
+      this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID).subscribe(
+        res => this.classeSezioneAnno = res
+      )
     }
   }
 
@@ -225,6 +227,5 @@ export class DocenzeListComponent implements OnInit {
     return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
   }
 //#endregion
-
 
 }

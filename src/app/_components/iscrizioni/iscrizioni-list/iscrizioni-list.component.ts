@@ -161,7 +161,8 @@ export class IscrizioniListComponent implements OnInit {
       obsIscrizioni$= this.svcIscrizioni.listByAnno(this.annoID);
       let loadIscrizioni$ =this._loadingService.showLoaderUntilCompleted(obsIscrizioni$);
 
-      loadIscrizioni$.subscribe(val =>  {
+      loadIscrizioni$.subscribe(
+        val =>  {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;          
           this.sortCustom();
@@ -295,9 +296,7 @@ export class IscrizioniListComponent implements OnInit {
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
-      () => { 
-        this.loadData(); 
-      }
+      () => this.loadData()
     );
   }
 
@@ -329,11 +328,9 @@ export class IscrizioniListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(RettaEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(
+      () => this.loadData()
+    );
   }
 //#endregion
 

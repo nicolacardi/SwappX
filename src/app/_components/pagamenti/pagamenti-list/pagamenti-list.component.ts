@@ -184,8 +184,8 @@ export class PagamentiListComponent implements OnInit {
     }
     const loadPagamenti$ =this._loadingService.showLoaderUntilCompleted(obsPagamenti$);
 
-    loadPagamenti$.subscribe(val => 
-      {
+    loadPagamenti$.subscribe(
+      val => {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         
@@ -223,10 +223,11 @@ export class PagamentiListComponent implements OnInit {
       let cfrImportoMenoDi = true;
       let cfrImporti = true;
       if (searchTerms.importo  == '') {
-        if (searchTerms.importoPiuDi > data.importo) { cfrImportoPiuDi = false }
-        if (searchTerms.importoMenoDi < data.importo && searchTerms.importoMenoDi != '') { cfrImportoMenoDi = false }
-
-         cfrImporti = cfrImportoPiuDi && cfrImportoMenoDi;
+        if (searchTerms.importoPiuDi > data.importo) 
+         cfrImportoPiuDi = false;
+        if (searchTerms.importoMenoDi < data.importo && searchTerms.importoMenoDi != '') 
+           cfrImportoMenoDi = false;
+        cfrImporti = cfrImportoPiuDi && cfrImportoMenoDi;
       } else {
          cfrImporti = (data.importo == searchTerms.importo) 
       }
@@ -329,11 +330,7 @@ export class PagamentiListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(RettaEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe( () => this.loadData());
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -359,27 +356,24 @@ export class PagamentiListComponent implements OnInit {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-    dialogYesNo.afterClosed().subscribe(result => {
-      if(result){
-        this.svcPagamenti.delete(Number(pagamentoID))
-        //.pipe (
-        //  finalize(()=>this.router.navigate(['/alunni']))
-        //)
-        .subscribe(
-          res=>{
-            this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Record cancellato', panelClass: ['red-snackbar']}
-            );
-            //this._dialogRef.close();
-            this.loadData();
-            this.pagamentoEliminatoEmitter.emit();
-            //AS: attenzione: se non faccio refresh la griglia non si aggiorna: perchè ???
-          },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          )
-        );
-      }
+    dialogYesNo.afterClosed().subscribe(
+      result => {
+        if(result){
+          this.svcPagamenti.delete(Number(pagamentoID))
+          //.pipe (
+          //  finalize(()=>this.router.navigate(['/alunni']))
+          //)
+          .subscribe(
+            res=> {
+              this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
+              //this._dialogRef.close();
+              this.loadData();
+              this.pagamentoEliminatoEmitter.emit();
+              //AS: attenzione: se non faccio refresh la griglia non si aggiorna: perchè ???
+            },
+            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          );
+        }
     });
   }
 //#endregion

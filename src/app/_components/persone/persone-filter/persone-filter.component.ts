@@ -42,10 +42,7 @@ export class PersoneFilterComponent implements OnInit {
 
     this.obsTipiPersona$ = this.svcTipiPersona.list();
 
-
-
-    this.nomeFilter.valueChanges
-    .subscribe(
+    this.nomeFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.personeListComponent.filterValues.nome = val.toLowerCase();
@@ -53,8 +50,7 @@ export class PersoneFilterComponent implements OnInit {
       }
     )
 
-    this.cognomeFilter.valueChanges
-    .subscribe(
+    this.cognomeFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.personeListComponent.filterValues.cognome = val.toLowerCase();
@@ -62,8 +58,7 @@ export class PersoneFilterComponent implements OnInit {
       }
     )
 
-    this.tipoPersonaFilter.valueChanges
-    .subscribe(
+    this.tipoPersonaFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.personeListComponent.filterValues.tipoPersona = val;
@@ -71,8 +66,7 @@ export class PersoneFilterComponent implements OnInit {
       }
     )
 
-    this.annoNascitaFilter.valueChanges
-    .subscribe(
+    this.annoNascitaFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.personeListComponent.filterValues.annoNascita = val.toLowerCase();
@@ -80,8 +74,7 @@ export class PersoneFilterComponent implements OnInit {
       }
     )
 
-    this.indirizzoFilter.valueChanges
-    .subscribe(
+    this.indirizzoFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.personeListComponent.filterValues.indirizzo = val.toLowerCase();
@@ -89,8 +82,7 @@ export class PersoneFilterComponent implements OnInit {
       }
     )
 
-    this.comuneFilter.valueChanges
-    .subscribe(
+    this.comuneFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.personeListComponent.filterValues.comune = val.toLowerCase();
@@ -98,8 +90,7 @@ export class PersoneFilterComponent implements OnInit {
       }
     )
 
-    this.provFilter.valueChanges
-    .subscribe(
+    this.provFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.personeListComponent.filterValues.prov = val.toLowerCase();
@@ -107,8 +98,7 @@ export class PersoneFilterComponent implements OnInit {
       }
     )
 
-    this.emailFilter.valueChanges
-    .subscribe(
+    this.emailFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.personeListComponent.filterValues.email = val.toLowerCase();
@@ -116,8 +106,7 @@ export class PersoneFilterComponent implements OnInit {
       }
     )
 
-    this.telefonoFilter.valueChanges
-    .subscribe(
+    this.telefonoFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.personeListComponent.filterValues.telefono = val.toLowerCase();

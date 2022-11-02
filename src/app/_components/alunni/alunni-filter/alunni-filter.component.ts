@@ -4,7 +4,6 @@ import { FormControl } from '@angular/forms';
 //components
 import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 
-
 @Component({
   selector: 'app-alunni-filter',
   templateUrl: './alunni-filter.component.html',
@@ -35,8 +34,7 @@ export class AlunniFilterComponent implements OnInit {
 
   ngOnInit() {
 
-    this.nomeFilter.valueChanges
-    .subscribe(
+    this.nomeFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();  
         this.alunniListComponent.filterValues.nome = val.toLowerCase();
@@ -44,8 +42,7 @@ export class AlunniFilterComponent implements OnInit {
       }
     )
 
-    this.cognomeFilter.valueChanges
-    .subscribe(
+    this.cognomeFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.alunniListComponent.filterValues.cognome = val.toLowerCase();
@@ -53,8 +50,7 @@ export class AlunniFilterComponent implements OnInit {
       }
     )
 
-    this.dtNascitaFilter.valueChanges
-    .subscribe(
+    this.dtNascitaFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.alunniListComponent.filterValues.dtNascita = val.toLowerCase();
@@ -62,8 +58,7 @@ export class AlunniFilterComponent implements OnInit {
       }
     )
 
-    this.indirizzoFilter.valueChanges
-    .subscribe(
+    this.indirizzoFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.alunniListComponent.filterValues.indirizzo = val.toLowerCase();
@@ -71,8 +66,7 @@ export class AlunniFilterComponent implements OnInit {
       }
     )
 
-    this.comuneFilter.valueChanges
-    .subscribe(
+    this.comuneFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.alunniListComponent.filterValues.comune = val.toLowerCase();
@@ -80,8 +74,7 @@ export class AlunniFilterComponent implements OnInit {
       }
     )
 
-    this.provFilter.valueChanges
-    .subscribe(
+    this.provFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.alunniListComponent.filterValues.prov = val.toLowerCase();
@@ -89,8 +82,7 @@ export class AlunniFilterComponent implements OnInit {
       }
     )
 
-    this.emailFilter.valueChanges
-    .subscribe(
+    this.emailFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.alunniListComponent.filterValues.email = val.toLowerCase();
@@ -98,8 +90,7 @@ export class AlunniFilterComponent implements OnInit {
       }
     )
 
-    this.telefonoFilter.valueChanges
-    .subscribe(
+    this.telefonoFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.alunniListComponent.filterValues.telefono = val.toLowerCase();
@@ -107,8 +98,7 @@ export class AlunniFilterComponent implements OnInit {
       }
     )
 
-    this.nomeCognomeGenitoreFilter.valueChanges
-    .subscribe(
+    this.nomeCognomeGenitoreFilter.valueChanges.subscribe(
       val => {
         //this.resetFilterSx();
         this.alunniListComponent.filterValues.nomeCognomeGenitore = val.toLowerCase();

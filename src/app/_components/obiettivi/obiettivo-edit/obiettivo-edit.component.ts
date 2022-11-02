@@ -90,9 +90,7 @@ constructor(
       this.obiettivo$ = loadObiettivo$
       .pipe(
           tap(
-            obiettivo => {
-              this.form.patchValue(obiettivo)
-            }
+            obiettivo => this.form.patchValue(obiettivo)
           )
       );
     } else {
@@ -106,26 +104,24 @@ constructor(
 
   save(){
 
-    if (this.form.controls['id'].value == null) 
-      this.svcObiettivi.post(this.form.value)
-        .subscribe(res=> {
+    if (this.form.controls['id'].value == null) {
+      this.svcObiettivi.post(this.form.value).subscribe(
+        res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err=> (
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
-    );
-    else 
-      this.svcObiettivi.put(this.form.value)
-        .subscribe(res=> {
+        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      );
+    }
+    else {
+      this.svcObiettivi.put(this.form.value).subscribe(
+        res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err=> (
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
-    );
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      );
+    }
   }
 
   delete(){
@@ -134,24 +130,21 @@ constructor(
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.svcObiettivi.delete(Number(this.obiettivoID))
-        // .pipe (
-        //   finalize(()=>this.router.navigate(['/alunni']))
-        // )
-        .subscribe(
-          res=>{
-            this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Record cancellato', panelClass: ['red-snackbar']}
-            );
-            this._dialogRef.close();
-          },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          )
-        );
-      }
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if(result) {
+          this.svcObiettivi.delete(Number(this.obiettivoID))
+          // .pipe (
+          //   finalize(()=>this.router.navigate(['/alunni']))
+          // )
+          .subscribe(
+            res => {
+              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
+              this._dialogRef.close();
+            },
+            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          );
+        }
     });
   }
 //#endregion

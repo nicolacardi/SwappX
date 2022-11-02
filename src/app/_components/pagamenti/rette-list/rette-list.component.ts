@@ -250,13 +250,12 @@ export class RetteListComponent implements OnInit {
           return arrObj;
         })    //fine map
     )         //fine mergeMap
-
-      .subscribe(val => {
-        this.matDataSource.data = val;
-        this.filterPredicateCustom();
-        this.matDataSource.paginator = this.paginator;
-       }
-      );
+    .subscribe(val => {
+      this.matDataSource.data = val;
+      this.filterPredicateCustom();
+      this.matDataSource.paginator = this.paginator;
+      }
+    );
   }
 
   trovaQuotaConcMese (arr: Array<any>, m: number) : number {
@@ -265,30 +264,28 @@ export class RetteListComponent implements OnInit {
       if (this.myObjAssigned._Rette.find(x=> x.meseRetta == m)?.quotaConcordata) {
         //INTERESSANTE L'USO DEL '!' IN QUESTO CASO! dice: "sono sicuro che non sia undefined"
         return this.myObjAssigned._Rette.find(x=> x.meseRetta == m)!.quotaConcordata  
-      } else {
+      } 
+      else 
         return 0;
-      }
   }
 
   sommaQuoteConc (arr: Array<any>) : number {
     this.myObjAssigned.alunnoID =  arr[0];
     this.myObjAssigned._Rette =  arr[1]; 
     let totQuotaConcordata = 0;
-    if (this.myObjAssigned._Rette.length != 0) {
+    if (this.myObjAssigned._Rette.length != 0) 
       this.myObjAssigned._Rette.forEach(mese=> totQuotaConcordata += mese.quotaConcordata) 
-    }
-      //INTERESSANTE L'USO DEL '!' IN QUESTO CASO! dice: "sono sicuro che non sia undefined"
+    
     return totQuotaConcordata;  
   }
 
   trovaQuotaDefMese (arr: Array<any>, m: number) : number {
     this.myObjAssigned.alunnoID =  arr[0];
     this.myObjAssigned._Rette =  arr[1]; 
-      if (this.myObjAssigned._Rette.find(x=> x.meseRetta == m)?.quotaDefault) {
+      if (this.myObjAssigned._Rette.find(x=> x.meseRetta == m)?.quotaDefault) 
         return this.myObjAssigned._Rette.find(x=> x.meseRetta == m)!.quotaDefault
-      } else {
+      else 
         return 0;
-      }
   }
 
   sommaQuoteDef (arr: Array<any>) : number {
@@ -313,9 +310,9 @@ export class RetteListComponent implements OnInit {
       this.myObjAssigned._Rette.find(x=> x.meseRetta == m)!.pagamenti!
       .forEach (x=> sumPags = sumPags + x.importo) ;
       return sumPags;
-    } else {
+    } 
+    else 
       return 0;
-    }
   }
 
   sommaQuotePagAnno (arr: Array<any>) : number {
@@ -388,11 +385,7 @@ export class RetteListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe( () => this.loadData() );
   }
 //#endregion
 
@@ -413,11 +406,7 @@ export class RetteListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(RettaEditComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(() => this.loadData());
   }
 
   calcoloRette(){
@@ -432,11 +421,7 @@ export class RetteListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(RettaCalcoloComponent, dialogConfig);
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-          this.loadData();
-    });
+    dialogRef.afterClosed().subscribe(() => this.loadData());
   }
   
   public togD() {
@@ -524,9 +509,5 @@ export class RetteListComponent implements OnInit {
 
   }
 //#endregion
-
-
-
-
 
 }

@@ -73,8 +73,8 @@ export class FilesService {
         }
       }),
     ).subscribe(
-      res => {  return true} ,
-      err => {  return false}
+      res => { return true} ,
+      err => { return false}
     );
   return true;
 

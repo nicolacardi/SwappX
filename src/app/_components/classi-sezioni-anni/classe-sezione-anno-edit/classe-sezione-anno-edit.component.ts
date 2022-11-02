@@ -110,17 +110,14 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
               tap ( val   =>  annoIDsucc= val.id),
               concatMap(() => this.obsClassiSezioniAnniSucc$ = this.svcClasseSezioneAnno.listByAnnoGroupByClasse(annoIDsucc))
             ).subscribe(
-              res=>{
-              },
-              err=>{
-                this.obs.unsubscribe();  ///NC ??? serve nel caso di errore, ma qui dentro cosa accade se c'è un errore?
-              }
+              res=> { },
+              err=> this.obs.unsubscribe()  ///NC ??? serve nel caso di errore, ma qui dentro cosa accade se c'è un errore?
             );
             this.form.controls['classeSezioneAnnoSuccID'].setValue(classe.ClasseSezioneAnnoSucc?.id); 
           })
       );
-    } else 
-      this.emptyForm = true
+    } 
+    else this.emptyForm = true
   }
 
 //#endregion
@@ -135,34 +132,23 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
     if (this.form.controls['id'].value == null){
       this.svcClasseSezione.getByClasseSezione (classeID, sezione) 
         .pipe (
-            tap ( val   =>   this.form.controls['classeSezioneID'].setValue(val.id)),
-            concatMap(() => this.svcClasseSezioneAnno.post(this.form.value))
-          ).subscribe(
-            () => { 
-              this._dialogRef.close();
-            },
-            err=> (
-              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-            )
-      );
+          tap ( val   =>   this.form.controls['classeSezioneID'].setValue(val.id)),
+          concatMap(() => this.svcClasseSezioneAnno.post(this.form.value))
+        ).subscribe(
+          val => this._dialogRef.close(),
+          err=>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        );
     }
-    else{
-      this.svcClasseSezione.getByClasseSezione (classeID, sezione) 
-        .pipe (
-            tap ( val   =>   this.form.controls['classeSezioneID'].setValue(val.id)),
-            concatMap(() => this.svcClasseSezioneAnno.put(this.form.value))
-          ).subscribe(
-            () => { 
-              this._dialogRef.close();
-            },
-            err=> (
-              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-            )
-      );
+    else {
+      this.svcClasseSezione.getByClasseSezione (classeID, sezione).pipe (
+          tap ( val   =>   this.form.controls['classeSezioneID'].setValue(val.id)),
+          concatMap(() => this.svcClasseSezioneAnno.put(this.form.value))
+        ).subscribe(
+          res => this._dialogRef.close(),
+          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        );
     }
-
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-
   }
 
   delete(){
@@ -170,46 +156,33 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-    dialogYesNo.afterClosed().subscribe(result => {
-      if(result){
-        this.svcClasseSezioneAnno.delete(Number(this.classeSezioneAnnoID))
-        .subscribe(
-          res=>{
-            this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Record cancellato', panelClass: ['red-snackbar']}
-            );
-            this._dialogRef.close();
-          },
-          err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          )
-        );
-      }
+    dialogYesNo.afterClosed().subscribe(
+      yesno => {
+        if(yesno){
+          this.svcClasseSezioneAnno.delete(Number(this.classeSezioneAnnoID)).subscribe(
+            res=>{
+              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
+              this._dialogRef.close();
+            },
+            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          );
+        }
     });
   }
 
-  
-
   updateAnnoSucc(selectedAnno: number) {
-
 
     //su modifica della combo dell'anno deve cambiare l'eleco delle classi successive disponibili...e che si fa del valore eventualmente già selezionato? lo si pone a null?
     //comunque? anche se è un valore che sarebbe valido lo perdiamo in caso di modifica dell'anno selezionato?
     //this.obsClassiSezioniAnniSucc$= this.svcClasseSezioneAnno.loadClassiByAnnoScolastico(selectedAnno + 1); 
     let annoIDsucc=0;
-
   
-    this.obs=  this.svcAnni.getAnnoSucc(selectedAnno) 
-      .pipe (
+    this.obs=  this.svcAnni.getAnnoSucc(selectedAnno).pipe (
         tap ( val   =>  annoIDsucc= val.id),
         concatMap(() => this.obsClassiSezioniAnniSucc$= this.svcClasseSezioneAnno.listByAnnoGroupByClasse(annoIDsucc))
       ).subscribe(
-        res=>{
-        },
-        err=>{
-          this.obs.unsubscribe();
-        }
-
+        res=> { },
+        err=> this.obs.unsubscribe()
       );
   }
   
