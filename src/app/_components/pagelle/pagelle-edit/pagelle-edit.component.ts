@@ -17,6 +17,7 @@ import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { DOC_File } from 'src/app/_models/DOC_File';
 import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto';
 import { PagellaVotiService } from '../pagella-voti.service';
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 @Component({
   selector: 'app-pagelle-edit',
@@ -33,7 +34,6 @@ export class PagellaEditComponent implements OnInit {
 
   periodo!:                                      number;
   quadrimestre = 1;
-
   ckStampato!:                                   boolean;  
   formDataFile! :                                DOC_File;
 
@@ -41,6 +41,7 @@ export class PagellaEditComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
   @Input('iscrizioneID') iscrizioneID!:          number;
+  @Input('alunno') alunno!:                      ALU_Alunno;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:          number;
 
   @ViewChild('toggleQuad') toggleQuad!:           MatButtonToggle;
@@ -59,6 +60,8 @@ export class PagellaEditComponent implements OnInit {
   ngOnChanges() {
     if (this.iscrizioneID != undefined) 
       this.loadData();
+    
+
   }
 
   ngOnInit(): void {

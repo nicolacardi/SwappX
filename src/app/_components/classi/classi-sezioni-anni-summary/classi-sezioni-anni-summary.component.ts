@@ -31,7 +31,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
 
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnnoGroup>();
   obsAnni$!:                            Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-  form! :                             FormGroup;
+  form! :                               FormGroup;
   menuTopLeftPosition =  {x: '0', y: '0'} 
   displayedColumns: string[] =  [];
   displayedColumnsClassiSezioniAnniSummary: string[] = [

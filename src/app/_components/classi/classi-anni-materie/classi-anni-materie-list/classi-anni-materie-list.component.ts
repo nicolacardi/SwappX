@@ -3,16 +3,21 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 //services
 import { ClasseAnnoMateriaService } from '../classe-anno-materia.service';
+import { LoadingService } from '../../../utilities/loading/loading.service';
+import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 
 //models
 import { CLS_ClasseAnnoMateria } from 'src/app/_models/CLS_ClasseAnnoMateria';
+import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
 //components
 import { ClasseAnnoMateriaEditComponent } from '../classe-anno-materia-edit/classe-anno-materia-edit.component';
-import { LoadingService } from '../../../utilities/loading/loading.service';
 
 @Component({
   selector: 'app-classi-anni-materie-list',
@@ -28,9 +33,11 @@ matDataSource = new MatTableDataSource<CLS_ClasseAnnoMateria>();
 
 obsClassiAnniMaterie$!:               Observable<CLS_ClasseAnnoMateria[]>;
 
+obsAnni$!:                            Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+form! :                               FormGroup;
+
 displayedColumns: string[] = [
     "actionsColumn", 
-    "anno",
     "classe",
     "materia",
     "tipoVoto"
@@ -69,13 +76,24 @@ filterValues = {
 //#endregion
 
   constructor(private svcClasseAnnoMateria:           ClasseAnnoMateriaService,
+              private svcAnni:                        AnniScolasticiService,
+              private fb:                             FormBuilder, 
               private _loadingService:                LoadingService,
               public _dialog:                         MatDialog ) {
               
+    let obj = localStorage.getItem('AnnoCorrente');
+    this.form = this.fb.group({
+      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
+    })      
   }
 
   ngOnInit(): void {
+    this.obsAnni$= this.svcAnni.list();
     this.loadData();
+    this.form.controls['selectAnnoScolastico'].valueChanges
+    .subscribe(() => {
+      this.loadData();
+    })
   }
 
   loadData() {
@@ -83,7 +101,11 @@ filterValues = {
     this.obsClassiAnniMaterie$ = this.svcClasseAnnoMateria.list();  
     const loadClassiAnniMaterie$ =this._loadingService.showLoaderUntilCompleted(this.obsClassiAnniMaterie$);
 
-    loadClassiAnniMaterie$.subscribe(val =>   {
+    loadClassiAnniMaterie$
+    .pipe(
+      map(val=>val.filter(val=>(val.annoID == this.form.controls['selectAnnoScolastico'].value)))
+    )
+    .subscribe(val =>   {
         this.matDataSource.data = val;
         this.sortCustom(); 
         this.matDataSource.sort = this.sort; 

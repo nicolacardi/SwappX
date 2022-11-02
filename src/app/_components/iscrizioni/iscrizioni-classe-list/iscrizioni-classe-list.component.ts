@@ -23,6 +23,7 @@ import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.servi
 //models
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 
 @Component({
@@ -103,8 +104,9 @@ export class IscrizioniClasseListComponent implements OnInit {
   @Input('dove') dove! :                                      string;
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
-  @Output('iscrizioneId') iscrizioneIdEmitter = new EventEmitter<number>();  
- 
+  @Output('iscrizioneID') iscrizioneIdEmitter = new EventEmitter<number>();  
+  @Output('alunno') alunnoEmitter = new EventEmitter<ALU_Alunno>();  
+
 
 //#endregion
 
@@ -187,6 +189,8 @@ export class IscrizioniClasseListComponent implements OnInit {
     //il click su una riga deve essere trasmesso su al parent
     this.selectedRowIndex = Iscrizione.id;
     this.iscrizioneIdEmitter.emit(Iscrizione.id);
+    this.alunnoEmitter.emit(Iscrizione.alunno);
+
   }
 
   sortCustom() {

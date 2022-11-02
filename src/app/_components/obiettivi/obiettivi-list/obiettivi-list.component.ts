@@ -3,6 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 //components
 import { ObiettivoEditComponent } from '../obiettivo-edit/obiettivo-edit.component';
@@ -11,9 +12,13 @@ import { ObiettiviFilterComponent } from '../obiettivi-filter/obiettivi-filter.c
 //services
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { ObiettiviService } from '../obiettivi.service';
+import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 
 //classes
 import { MAT_Obiettivo } from 'src/app/_models/MAT_Obiettivo';
+import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -29,10 +34,13 @@ matDataSource = new MatTableDataSource<MAT_Obiettivo>();
 
 obsObiettivi$!:               Observable<MAT_Obiettivo[]>;
 
+obsAnni$!:                    Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+form! :                       FormGroup;
+
 displayedColumns: string[] = [
     "actionsColumn", 
     "classe",
-    "anno",
+    //"anno",
     "materia",
     "descrizione",
 
@@ -75,29 +83,39 @@ filterValues = {
 @ViewChild(MatSort) sort!:                MatSort;
 //#endregion
 
-constructor(
-  private svcObiettivi:                   ObiettiviService,
+constructor(private svcObiettivi:                   ObiettiviService,
+            private svcAnni:                        AnniScolasticiService,
+            private fb:                             FormBuilder, 
+            private _loadingService:                LoadingService,
+            public _dialog:                         MatDialog) {
 
-  private _loadingService:                LoadingService,
-  public _dialog:                         MatDialog, 
-
-
-) { }
+  let obj = localStorage.getItem('AnnoCorrente');
+  this.form = this.fb.group({
+    selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
+  })      
+ }
 
 
 
   ngOnInit(): void {
+    this.obsAnni$= this.svcAnni.list();
     this.loadData();
+    this.form.controls['selectAnnoScolastico'].valueChanges
+    .subscribe(() => {
+      this.loadData();
+    })
   }
 
   loadData() {
 
-    
     this.obsObiettivi$ = this.svcObiettivi.list();  
-
     const loadObiettivi$ =this._loadingService.showLoaderUntilCompleted(this.obsObiettivi$);
 
-    loadObiettivi$.subscribe(val =>   {
+    loadObiettivi$
+    .pipe(
+      map(val=>val.filter(val=>(val.annoID == this.form.controls['selectAnnoScolastico'].value)))
+    )
+    .subscribe(val =>   {
       this.matDataSource.data = val;
       this.sortCustom(); 
       this.matDataSource.sort = this.sort; 

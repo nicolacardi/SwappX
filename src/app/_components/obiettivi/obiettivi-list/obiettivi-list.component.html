@@ -1,10 +1,20 @@
 <h1 class="_titolo-pagina">Elenco Obiettivi</h1>
 
     <!-- **************************   FILTER   ******************* -->
-    <mat-form-field class="ml20 topZIndex">
-        <mat-label>Filtro</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
-    </mat-form-field>
+    <form [formGroup] = "form">
+        <mat-form-field  class="ml20 mt10 topZIndex noBottomPadding" >
+            <mat-label>Anno Scolastico</mat-label>
+            <mat-select formControlName="selectAnnoScolastico">
+                <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
+                {{element.annoscolastico}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="ml20 topZIndex">
+            <mat-label>Filtro</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
+        </mat-form-field>
+    </form>
     
     <!-- **************************   PAGINATOR   ******************* -->
     <!-- <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator> -->

@@ -61,8 +61,8 @@ export class GenitoriService {
   filterGenitori(searchstring: string): Observable<ALU_Genitore[]>{
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori')
-            .pipe (
-            map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
+        .pipe (
+          map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
       );
         } else {
       return of()

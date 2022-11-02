@@ -1,15 +1,14 @@
 <h1 *ngIf="showPageTitle" class="_titolo-pagina">Elenco Classi</h1>
 
     <form [formGroup] = "form">
-
-            <mat-form-field  class="ml20 mt10 topZIndex noBottomPadding" *ngIf="showSelect" >
-                <mat-label>Anno Scolastico</mat-label>
-                <mat-select formControlName="selectAnnoScolastico">
-                    <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
-                    {{element.annoscolastico}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+        <mat-form-field  class="ml20 mt10 topZIndex noBottomPadding" *ngIf="showSelect" >
+            <mat-label>Anno Scolastico</mat-label>
+            <mat-select formControlName="selectAnnoScolastico">
+                <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
+                {{element.annoscolastico}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
         <div *ngIf="showSelect && showSelectDocente">
             <mat-form-field  class="ml20 topZIndex"  >
                 <mat-label>Docente</mat-label>
@@ -20,16 +19,12 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-
         </div>
 <!-- **************************   FILTER   ******************* -->
         <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
             <mat-label>Filtro</mat-label>
             <input matInput (keyup)="applyFilter($event)" placeholder="Classe, sezione" #filterInput>
         </mat-form-field>
-
-
-
     </form>
 
 <!-- **************************   PAGINATOR   ******************* -->

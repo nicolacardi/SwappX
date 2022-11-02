@@ -24,6 +24,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import jsPDF from 'jspdf';
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 
 @Component({
@@ -80,7 +81,8 @@ export class ClassiDashboardComponent implements OnInit {
   public annoID!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public docenteID!:            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public iscrizioneID!:         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
-  
+  public alunno!:               ALU_Alunno;   //valore ricevuto (emitted) dal child IscrizioniClasseList
+
   public classeSezioneAnnoIDrouted!:        string;   //valore ricevuto (routed) dal ruoting
   public annoIDrouted!:         string;   //valore ricevuto (routed) dal ruoting
   isOpen = true;
@@ -365,8 +367,12 @@ export class ClassiDashboardComponent implements OnInit {
     this.docenteID = docenteId;
   }
 
-  iscrizioneIdEmitted(iscrizioneId: number) {
-    this.iscrizioneID = iscrizioneId;
+  iscrizioneIDEmitted(iscrizioneID: number) {
+    this.iscrizioneID = iscrizioneID;
+  }
+
+  alunnoEmitted(alunno: ALU_Alunno) {
+    this.alunno = alunno;
   }
 
   //#endregion
