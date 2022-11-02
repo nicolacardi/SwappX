@@ -238,9 +238,9 @@ constructor(
     }
 
     this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(
-      val => {
+      res => {
         this.loadData();
-        this.annoIdEmitter.emit(val);
+        this.annoIdEmitter.emit(res);
         //vanno resettate le selezioni delle checkbox e masterToggle
         this.resetSelections();
         this.toggleChecks = false;
@@ -250,9 +250,9 @@ constructor(
     this.obsDocenti$ = this.svcDocenti.list();
 
     this.form.controls['selectDocente'].valueChanges.subscribe(
-      val => {
+      res => {
         this.loadData();
-        this.docenteIdEmitter.emit(val);
+        this.docenteIdEmitter.emit(res);
         //vanno resettate le selezioni delle checkbox e masterToggle
         this.resetSelections();
         this.toggleChecks = false;
@@ -428,9 +428,7 @@ constructor(
     };
 
     const dialogRef = this._dialog.open(ClasseSezioneAnnoEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-      () =>  this.loadData() //TODO: metto intanto un valore di default CABLATO DENTRO COMUNQUE NON FUNZIONA BENE!
-    );
+    dialogRef.afterClosed().subscribe(() =>  this.loadData());
   }
 
   updateImporto(element: CLS_ClasseSezioneAnno, value: any) {

@@ -105,8 +105,9 @@ filterValues = {
     .pipe(
       map(val=>val.filter(val=>(val.annoID == this.form.controls['selectAnnoScolastico'].value)))
     )
-    .subscribe(val =>   {
-        this.matDataSource.data = val;
+    .subscribe(
+      res=>{
+        this.matDataSource.data = res;
         this.sortCustom(); 
         this.matDataSource.sort = this.sort; 
         this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente

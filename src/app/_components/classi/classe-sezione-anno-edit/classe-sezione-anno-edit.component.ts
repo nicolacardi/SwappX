@@ -7,7 +7,6 @@ import { concat, Observable, Subscription } from 'rxjs';
 import { concatMap, subscribeOn, switchMap, tap } from 'rxjs/operators';
 
 //components
-
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 //services
@@ -15,9 +14,7 @@ import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { ClassiSezioniService } from '../classi-sezioni.service';
 import { ClassiService } from '../classi.service';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-
 import { LoadingService } from '../../utilities/loading/loading.service';
-
 
 //models
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';

@@ -5,9 +5,9 @@ import { MatTabGroup } from '@angular/material/tabs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 //models
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 //components
-
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
@@ -25,7 +25,6 @@ import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
 import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
 import { DocenzeService } from '../docenze/docenze.service';
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 
 @Component({

@@ -183,14 +183,15 @@ export class AlunniListComponent implements OnInit {
       case 'alunni-page': 
         this.displayedColumns =  this.displayedColumnsAlunniList;
         this._navigationService.getGenitore().subscribe(
-          val=>{
-          if (val!= '') {
-            this.passedGenitore = val;
-            this.toggleDrawer.emit();
-            this.alunniFilterComponent.nomeCognomeGenitoreFilter.setValue(val);
-            this.loadData(); 
+          res=>{
+            if (res!= '') {
+              this.passedGenitore = res;
+              this.toggleDrawer.emit();
+              this.alunniFilterComponent.nomeCognomeGenitoreFilter.setValue(res);
+              this.loadData(); 
+            }
           }
-        });
+        );
       break;
       case 'genitore-edit-famiglia':
         this.displayedColumns = this.displayedColumnsGenitoreEditFamiglia;
