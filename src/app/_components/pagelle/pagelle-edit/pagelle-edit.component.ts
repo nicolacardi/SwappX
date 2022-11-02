@@ -19,11 +19,7 @@ import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
 import { DOC_File } from 'src/app/_models/DOC_File';
 import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto';
-<<<<<<< HEAD
-import { PagellaVotiService } from '../pagella-voti.service';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-=======
->>>>>>> 0372ba789d2e7a3b697df85e528ee30d8d3e7c5a
 
 @Component({
   selector: 'app-pagelle-edit',

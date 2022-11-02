@@ -111,7 +111,6 @@ constructor(private svcObiettivi:                   ObiettiviService,
     this.obsObiettivi$ = this.svcObiettivi.list();  
     const loadObiettivi$ =this._loadingService.showLoaderUntilCompleted(this.obsObiettivi$);
 
-<<<<<<< HEAD
     loadObiettivi$
     .pipe(
       map(val=>val.filter(val=>(val.annoID == this.form.controls['selectAnnoScolastico'].value)))
@@ -125,17 +124,6 @@ constructor(private svcObiettivi:                   ObiettiviService,
   );
 
 }
-=======
-    loadObiettivi$.subscribe(
-      val =>   {
-        this.matDataSource.data = val;
-        this.sortCustom(); 
-        this.matDataSource.sort = this.sort; 
-        this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
-      }
-    );
-  }
->>>>>>> 0372ba789d2e7a3b697df85e528ee30d8d3e7c5a
 
 //#region ----- Add Edit Drop -------
   addRecord(){
