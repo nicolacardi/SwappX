@@ -35,7 +35,4 @@ export class PersoneService {
   delete(personaID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'PER_Persone/' + personaID);    
   }
-
-
-
 }

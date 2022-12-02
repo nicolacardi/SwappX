@@ -3,25 +3,23 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PER_Docente } from 'src/app/_models/PER_Docente';
+
 import { environment } from 'src/environments/environment';
 import { FormatoData, Utility } from '../utilities/utility.component';
+import { PER_Docente } from 'src/app/_models/PER_Docente';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocentiService {
 
-  constructor(private http: HttpClient) { }
-
-
-  //***************************************************************MANCA TUTTO SULL'EF??? */
+  constructor(private http: HttpClient) {
+  }
 
   list(): Observable<PER_Docente[]>{
     return this.http.get<PER_Docente[]>(environment.apiBaseUrl+'PER_Docenti');
     //http://213.215.231.4/swappX/api/PER_Docenti
   }
-
 
   listSupplentiDisponibili(lezioneID: number, docenteID: number, dtCalendario: string, h_Ini: string, h_End: string) : Observable<PER_Docente[]>{
     return this.http.get<PER_Docente[]>(environment.apiBaseUrl+'PER_Docenti/ListSupplentiDisponibili/' + lezioneID + '/' + docenteID + '/' + Utility.formatDate(dtCalendario, FormatoData.yyyy_mm_dd) + '/' + Utility.URL_FormatHour(h_Ini) + '/' + Utility.URL_FormatHour( h_End));
@@ -32,12 +30,15 @@ export class DocentiService {
 
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<PER_Docente[]>(environment.apiBaseUrl+'PER_Docenti')
-            .pipe (
-            map(val=>val.filter(val=>(val.persona.nome.toLowerCase() + ' ' + val.persona.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
+            .pipe ( map(
+              val=>val.filter(
+                val=>(val.persona.nome.toLowerCase() + ' ' + val.persona.cognome.toLowerCase()).includes(searchstring.toLowerCase())
+              )
+            ),
       );
-        } else {
-      return of()
-      }
+    }
+    else 
+      return of();
 
     //Quando si fa clic su uno dei valori nella dropdown, searchstring non è più una stringa ma un object ( a causa forse di [value] = "element" in filtri.component.html),
     //quindi non si può più fare searchstring.toLowerCase(), istruzione che si è resa necessaria per cercare in maniera case insensitive
@@ -69,7 +70,4 @@ export class DocentiService {
   delete(docenteID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'PER_Docenti/' + docenteID);    
   }
-
-
-
 }
