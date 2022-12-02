@@ -3,6 +3,7 @@ import { PER_Persona } from "./PER_Persone";
 export interface PER_Docente {
         id:                     number;
         personaID:              number;
+        
         ckAttivo:               boolean;
 
         note:                   string;

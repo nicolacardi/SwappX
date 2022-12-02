@@ -2,6 +2,9 @@ import { ALU_Alunno } from "./ALU_Alunno";
 
 export interface ALU_Genitore {
         id:             number;
+        personaID:      number;
+
+        /*
         nome:           string;
         cognome:        string;
         dtNascita:      string;
@@ -16,6 +19,8 @@ export interface ALU_Genitore {
         nazione:        string;
         email:          string;
         telefono:       string;
+        */
+
         telefono2:      string;
 
         note:           string;
