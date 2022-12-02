@@ -45,7 +45,6 @@ const routes: Routes = [
     ]
    },
 
-  
 
   { path:'home',              component: HomeComponent, canActivate:[AuthGuard]  },
 
@@ -57,16 +56,15 @@ const routes: Routes = [
 
   { path: "genitori",         component: GenitoriPageComponent, canActivate:[AuthGuard]},
 
-  { path: "persone",          component: PersonePageComponent },
+  { path: "persone",          component: PersonePageComponent,canActivate:[AuthGuard] },
 
   { path: "classi",           component: ClassiPageComponent,canActivate:[AuthGuard] },
 
-  { path: "classi-dashboard", component: ClassiDashboardComponent },
+  { path: "classi-dashboard", component: ClassiDashboardComponent,canActivate:[AuthGuard] },
 
-  { path: "pagamenti",        component: PagamentiPageComponent },
+  { path: "pagamenti",        component: PagamentiPageComponent,canActivate:[AuthGuard] },
 
-  { path: "rette",            component: RettePageComponent },
-
+  { path: "rette",            component: RettePageComponent,canActivate:[AuthGuard] },
 
   { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.SysAdmin, UserRole.IT_Manager,UserRole.Segreteria ] } },
   

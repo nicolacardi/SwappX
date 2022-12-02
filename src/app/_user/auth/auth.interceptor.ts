@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Injectable()
-export class AuthInterceptor implements HttpInterceptor{
+export class AuthInterceptor implements HttpInterceptor {
 
     constructor(private router: Router) {}
 
@@ -32,5 +32,5 @@ export class AuthInterceptor implements HttpInterceptor{
         }
         else
             return next.handle(req.clone());
-        }
     }
+}

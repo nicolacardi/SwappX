@@ -114,32 +114,27 @@
                 <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/money_expand.svg">
             </a>
             <mat-expansion-panel *ngIf="isExpanded" class="transparent expansionMainMenu mat-elevation-z0" #expansion2>
-            <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
-                <mat-panel-title>
-                <img class="iconaMenuSidenav mr10" src="../assets/mainMenuWhite/money.svg">
-                <span class="fs16" *ngIf="isExpanded">Ricavi</span>
-                </mat-panel-title>
-                <mat-panel-description>
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <mat-divider></mat-divider>
+                <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
+                    <mat-panel-title>
+                    <img class="iconaMenuSidenav mr10" src="../assets/mainMenuWhite/money.svg">
+                    <span class="fs16" *ngIf="isExpanded">Ricavi</span>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-divider></mat-divider>
 
-            <a mat-list-item class="h35px" routerLink="pagamenti" (click)="clickMenuItem()">
-                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/pagamenti.svg">
-                <span>Elenco Pagamenti</span>
-            </a> 
-            <a mat-list-item class="h35px" routerLink="rette" (click)="clickMenuItem()">
-                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/retteList.svg">
-                <span>Rette</span>
-            </a> 
-
+                <a mat-list-item class="h35px" routerLink="pagamenti" (click)="clickMenuItem()">
+                    <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/pagamenti.svg">
+                    <span>Elenco Pagamenti</span>
+                </a> 
+                <a mat-list-item class="h35px" routerLink="rette" (click)="clickMenuItem()">
+                    <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/retteList.svg">
+                    <span>Rette</span>
+                </a> 
             </mat-expansion-panel>
 
-
             <mat-divider></mat-divider>
-
-
-
 
             <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.ruoloID >= 10">
                 <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/utente.svg">

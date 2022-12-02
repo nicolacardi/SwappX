@@ -9,7 +9,7 @@ import { UserService } from '../user.service';
 @Injectable({
   providedIn: 'root'
 })
-//export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
+
 export class AuthGuard implements CanActivate {
 
   constructor( private router: Router, 
@@ -17,18 +17,19 @@ export class AuthGuard implements CanActivate {
                private _snackBar:      MatSnackBar ) {
   }
 
-  canActivate( route:  ActivatedRouteSnapshot,
-               state: RouterStateSnapshot):  boolean  {
+  canActivate( route:  ActivatedRouteSnapshot, state: RouterStateSnapshot):  boolean  {
 
-    //Versione con UserService
     const currentUser = this.uService.currentUser;
-
-    //console.log("DEBUG: auth.guard - currentuser ", currentUser);
     if (currentUser) {
  
       // check if route is restricted by role
       //console.log("Auth Guard | Ruolo", currentUser.ruoloID);
       
+      console.log("DEBUG: route.data.roles - ");
+      console.log(route.data);
+      console.log("DEBUG: - currentUser ");
+      console.log(currentUser);
+
       if (route.data.roles && route.data.roles.indexOf(currentUser.ruoloID) === -1) {
           // role not authorised so redirect to home page
           this._snackBar.openFromComponent(SnackbarComponent, {
