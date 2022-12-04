@@ -23,6 +23,7 @@ import { LezioniService } from '../lezioni.service';
 
 //classes
 import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
+import { UserService } from 'src/app/_user/user.service';
 
 
 @Component({
@@ -127,6 +128,7 @@ export class LezioniCalendarioComponent implements OnInit {
 //#endregion
   
   constructor( private svcLezioni:       LezioniService,
+               private svcUser:          UserService,
                private _loadingService:  LoadingService,
                private _snackBar:        MatSnackBar,
                public _dialog:           MatDialog, 
@@ -190,7 +192,7 @@ export class LezioniCalendarioComponent implements OnInit {
       this.calendarOptions.editable =             true;             //consente modifiche agli eventi presenti   :  da gestire sulla base del ruolo
       this.calendarOptions.selectable =           true;             //consente di creare eventi                 :  da gestire sulla base del ruolo
       this.calendarOptions.eventStartEditable =   true;             //consente di draggare eventi               :  da gestire sulla base del ruolo
-      this.calendarOptions.eventDurationEditable =true;            //consente di modificare la lunghezza eventi:  da gestire sulla base del ruolo
+      this.calendarOptions.eventDurationEditable =true;             //consente di modificare la lunghezza eventi:  da gestire sulla base del ruolo
 
       if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni') 
         this.setEventiDocenti();
@@ -363,7 +365,7 @@ export class LezioniCalendarioComponent implements OnInit {
 //#region ----- Add Edit Eventi -------
 
   openDetail(clickInfo: EventClickArg) {
-
+    
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '900px',
@@ -379,11 +381,17 @@ export class LezioniCalendarioComponent implements OnInit {
         dove: this.dove
       }
     };
+    //solo il docente della lezione può aprire oppure lo può fare un docente con privilegi/segreteria/amministrazione scuola
+    //serve il ruolo dell'utente corrente
+     console.log ("current USer",this.svcUser.currentUser);
+     console.log ("docenteID", this.docenteID);
 
-    const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-      () => this.loadData()
-    );
+    if (this.svcUser.currentUser.ruoloID>=7) {
+      const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
+      dialogRef.afterClosed().subscribe(
+        () => this.loadData()
+      );
+    }
   }
 
   addEvento(selectInfo: DateSelectArg) {
