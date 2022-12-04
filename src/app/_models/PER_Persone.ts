@@ -14,8 +14,12 @@ export interface PER_Persona {
         cap:                    string;
         prov:                   string;
         nazione:                string;
+
         email:                  string;
+        email1:                 string;
+
         telefono:               string;
+        telefono1:              string;
 
         note:                   string;
         dtIns:                  string;

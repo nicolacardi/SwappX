@@ -377,7 +377,7 @@ export class AlunniListComponent implements OnInit {
   }
 
   openGenitori(item: ALU_Alunno) {
-    this._navigationService.passAlunno(item.nome+" "+item.cognome);
+    this._navigationService.passAlunno(item.persona.nome+" "+item.persona.cognome);
     this.router.navigateByUrl("/genitori");
   }
 

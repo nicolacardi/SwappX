@@ -1,24 +1,10 @@
 import { ALU_Genitore } from './ALU_Genitore';
+import { PER_Persona } from './PER_Persone';
 export interface ALU_Alunno {
 
         id:                     number;
         personaID:              number;
-        /*
-        nome:                   string;
-        cognome:                string;
-        dtNascita:              string;
-        comuneNascita:          string;
-        provNascita:            string;
-        nazioneNascita:         string;
-        cf:                     string;
-        indirizzo:              string;
-        comune:                 string;
-        cap:                    string;
-        prov:                   string;
-        nazione:                string;
-        email:                  string;
-        telefono:               string;
-        */
+
         ckAttivo:               boolean;
         ckDisabile:             boolean;
         ckDSA:                  boolean;
@@ -33,6 +19,8 @@ export interface ALU_Alunno {
         dtUpd:                  string;
         userIns:                number;
         userUpd:                number;
+
+        persona:                PER_Persona;
 
         _Genitori:              ALU_Genitore[];
 }

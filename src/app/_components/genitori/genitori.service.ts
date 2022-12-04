@@ -62,7 +62,7 @@ export class GenitoriService {
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori')
         .pipe (
-          map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
+          map(val=>val.filter(val=>(val.persona.nome.toLowerCase() + ' ' + val.persona.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
       );
         } else {
       return of()
@@ -72,7 +72,7 @@ export class GenitoriService {
   findGenitoreID(searchstring: string) : Observable<any>{
     return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori')
       .pipe(
-        map(val => val.find(val => (val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase())== searchstring.toLowerCase())),
+        map(val => val.find(val => (val.persona.nome.toLowerCase() + ' ' + val.persona.cognome.toLowerCase())== searchstring.toLowerCase())),
       )
   }
 

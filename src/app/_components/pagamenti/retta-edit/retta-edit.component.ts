@@ -144,7 +144,7 @@ export class RettaEditComponent implements OnInit {
 
           this.anno = obj[0].anno!;
           this.alunno = obj[0].alunno!;
-          this.formRetta.controls['nomeCognomeAlunno'].setValue(this.alunno.nome+" "+this.alunno.cognome);
+          this.formRetta.controls['nomeCognomeAlunno'].setValue(this.alunno.persona.nome+" "+this.alunno.persona.cognome);
 
           obj.forEach((val, i)=>{
             this.retteID[obj[i].meseRetta-1] = obj[i].id;

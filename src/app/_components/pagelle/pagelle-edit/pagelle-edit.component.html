@@ -17,7 +17,7 @@
         </mat-button-toggle-group>
     </span>
     quadr. di 
-    <span *ngIf="alunno">{{alunno.nome}}  {{alunno.cognome}}</span>
+    <span *ngIf="alunno">{{alunno.persona.nome}}  {{alunno.persona.cognome}}</span>
     <mat-form-field *ngIf="dtIns" class="ml50 fs14 center w100px" appearance="outline">
         <mat-label>Data Pagella</mat-label>
         <input matInput placeholder="data Pagella" [value]="dtIns|date:'dd/MM/yyyy'" (change)="aggiornaData()">

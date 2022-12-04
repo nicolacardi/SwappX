@@ -197,8 +197,8 @@ export class RetteListComponent implements OnInit {
             {
             'alunnoID': arr[0],
             alunno : arr[1][0].alunno!,
-            nome: arr[1][0].alunno!.nome,
-            cognome: arr[1][0].alunno!.cognome,
+            nome: arr[1][0].alunno!.persona.nome,
+            cognome: arr[1][0].alunno!.persona.cognome,
             annoID : arr[1][0].annoID,
             iscrizione : arr[1][0].iscrizione,
             'c_SET': this.trovaQuotaConcMese(arr, 9) ,       //ERA: 'c_SET': arr[1][0].quotaConcordata,  MA COSI' SI CREAVANO I VUOTI

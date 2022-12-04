@@ -64,7 +64,7 @@ export class AlunniService {
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni')
             .pipe (
-            map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
+            map(val=>val.filter(val=>(val.persona.nome.toLowerCase() + ' ' + val.persona.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
       );
         } else {
       return of()
@@ -88,7 +88,7 @@ export class AlunniService {
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni')
             .pipe (
-            map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase())===(searchstring.toLowerCase())).length !==0
+            map(val=>val.filter(val=>(val.persona.nome.toLowerCase() + ' ' + val.persona.cognome.toLowerCase())===(searchstring.toLowerCase())).length !==0
             ),
       );
         } else {
@@ -101,7 +101,7 @@ export class AlunniService {
       return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'CLS_Iscrizioni/ListByAnnoNoClasse/'+annoID)
       //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByAnnoNoClasse/2
         .pipe (
-        map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
+        map(val=>val.filter(val=>(val.persona.nome.toLowerCase() + ' ' + val.persona.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
       );
     } else {
       return of()
@@ -112,7 +112,7 @@ export class AlunniService {
   findAlunnoID(searchstring: string) : Observable<any>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni')
       .pipe(
-        map(val => val.find(val => (val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase())== searchstring.toLowerCase())),
+        map(val => val.find(val => (val.persona.nome.toLowerCase() + ' ' + val.persona.cognome.toLowerCase())== searchstring.toLowerCase())),
       )
   }
 

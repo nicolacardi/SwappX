@@ -20,6 +20,7 @@ import { AlunniService } from '../../alunni/alunni.service';
 
 //models
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 @Component({
   selector: 'app-genitori-list',
@@ -200,8 +201,8 @@ export class GenitoriListComponent implements OnInit {
   }
 
   filterPredicate(): (data: any, filter: string) => boolean {
+    
     let filterFunction = function(data: any, filter: any): boolean {
-      
       let searchTerms = JSON.parse(filter);
       let foundAlunno : boolean = false;
       
@@ -209,14 +210,14 @@ export class GenitoriListComponent implements OnInit {
       if (data._Figli.length == 0)
         foundAlunno = true;
       else {
-        data._Figli?.forEach((val: { alunno: { nome: any; cognome: any}; })=>  {
+        data._Figli?.forEach((val : { alunno: { nome: any; cognome: any}; })=>  {
             const foundCognomeNome = foundAlunno || String(val.alunno.cognome+" "+val.alunno.nome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1;
             const foundNomeCognome = foundAlunno || String(val.alunno.nome+" "+val.alunno.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1; 
             foundAlunno = foundCognomeNome || foundNomeCognome;
         })
       }
 
-      let dArr = data.dtNascita.split("-");
+      let dArr = data.persona.dtNascita.split("-");
       const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 
 
@@ -294,7 +295,7 @@ export class GenitoriListComponent implements OnInit {
   } 
 
   openAlunni(item: ALU_Genitore) {
-    this._navigationService.passGenitore(item.nome+" "+item.cognome);
+    this._navigationService.passGenitore(item.persona.nome+" "+item.persona.cognome);
     this.router.navigateByUrl("/alunni");
   }
 //#endregion

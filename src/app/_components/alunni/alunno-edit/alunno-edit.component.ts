@@ -81,6 +81,7 @@ export class AlunnoEditComponent implements OnInit {
     
     this.form = this.fb.group({
       id:                         [null],
+      
       nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       cognome:                    ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       dtNascita:                  ['', Validators.required],
@@ -96,6 +97,7 @@ export class AlunnoEditComponent implements OnInit {
       cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
       telefono:                   ['', Validators.maxLength(13)],
       email:                      ['', Validators.email],
+
       scuolaProvenienza:          ['', Validators.maxLength(255)],
       indirizzoScuolaProvenienza: ['', Validators.maxLength(255)],
       ckAttivo:                   [false],
@@ -135,7 +137,8 @@ export class AlunnoEditComponent implements OnInit {
       this.alunno$ = loadAlunno$
       .pipe(
           tap(
-            alunno => this.form.patchValue(alunno)
+            alunno => 
+              this.form.patchValue(alunno)            
           )
       );
     }
