@@ -23,9 +23,8 @@ export interface PER_Persona {
         userIns:                number;
         userUpd:                number;
 
-        tipoPersona:                   PER_TipoPersona;
+        tipoPersona:            PER_TipoPersona;
 }
-
 
 export interface PER_TipoPersona {
         id:                            number;
