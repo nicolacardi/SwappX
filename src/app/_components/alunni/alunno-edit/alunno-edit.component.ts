@@ -81,7 +81,7 @@ export class AlunnoEditComponent implements OnInit {
     
     this.form = this.fb.group({
       id:                         [null],
-      
+      //persona: this.fb.group({
       nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       cognome:                    ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       dtNascita:                  ['', Validators.required],
@@ -97,7 +97,7 @@ export class AlunnoEditComponent implements OnInit {
       cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
       telefono:                   ['', Validators.maxLength(13)],
       email:                      ['', Validators.email],
-
+      //}),
       scuolaProvenienza:          ['', Validators.maxLength(255)],
       indirizzoScuolaProvenienza: ['', Validators.maxLength(255)],
       ckAttivo:                   [false],
@@ -137,8 +137,38 @@ export class AlunnoEditComponent implements OnInit {
       this.alunno$ = loadAlunno$
       .pipe(
           tap(
-            alunno => 
-              this.form.patchValue(alunno)            
+            alunno => {
+              //this.form.patchValue(alunno);
+              this.form.controls['nome'].setValue(alunno.persona.nome);
+              this.form.controls['cognome'].setValue(alunno.persona.cognome);
+              this.form.controls['dtNascita'].setValue(alunno.persona.dtNascita);
+
+              this.form.controls['genere'].setValue(alunno.persona.genere);
+              this.form.controls['cf'].setValue(alunno.persona.CF);
+
+              this.form.controls['comuneNascita'].setValue(alunno.persona.comuneNascita);
+              this.form.controls['provNascita'].setValue(alunno.persona.provNascita);
+              this.form.controls['nazioneNascita'].setValue(alunno.persona.nazioneNascita);
+
+              this.form.controls['comune'].setValue(alunno.persona.comune);
+              this.form.controls['prov'].setValue(alunno.persona.prov);
+              this.form.controls['nazione'].setValue(alunno.persona.nazione);
+
+              this.form.controls['indirizzo'].setValue(alunno.persona.indirizzo);
+              this.form.controls['cap'].setValue(alunno.persona.cap);
+
+              this.form.controls['telefono'].setValue(alunno.persona.telefono);
+              this.form.controls['email'].setValue(alunno.persona.email);
+
+              this.form.controls['scuolaProvenienza'].setValue(alunno.scuolaProvenienza);
+              this.form.controls['indirizzoScuolaProvenienza'].setValue(alunno.indirizzoScuolaProvenienza);
+
+              this.form.controls['ckDSA'].setValue(alunno.ckDSA);
+              this.form.controls['ckDisabile'].setValue(alunno.ckDisabile);
+              this.form.controls['ckAuthFoto'].setValue(alunno.ckAuthFoto);
+              this.form.controls['ckAuthUscite'].setValue(alunno.ckAuthuscite);
+              this.form.controls['ckAuthUsoMateriale'].setValue(alunno.ckAuthUsoMateriale);
+            }       
           )
       );
     }

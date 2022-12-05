@@ -4,7 +4,7 @@ import { PER_Persona } from "./PER_Persone";
 export interface ALU_Genitore {
         id:             number;
         personaID:      number;
-
+        tipo:           string;
         note:           string;
         dtIns:          string;
         dtUpd:          string;

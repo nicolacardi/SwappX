@@ -55,17 +55,17 @@ export class IscrizioniListComponent implements OnInit {
   rptTitle = 'Lista Iscrizioni';
   rptFileName = 'ListaIscrizioni';
   rptFieldsToKeep  = [
-      "alunno.nome", 
-      "alunno.cognome", 
+      "alunno.persona.nome", 
+      "alunno.persona.cognome", 
       "classeSezioneAnno.classeSezione.classe.descrizioneBreve",
       "classeSezioneAnno.classeSezione.sezione",
       "stato.descrizione",
-      "alunno.email", 
-      "alunno.telefono",
-      "alunno.dtNascita", 
-      "alunno.indirizzo", 
-      "alunno.comune", 
-      "alunno.prov"
+      "alunno.persona.email", 
+      "alunno.persona.telefono",
+      "alunno.persona.dtNascita", 
+      "alunno.persona.indirizzo", 
+      "alunno.persona.comune", 
+      "alunno.persona.prov"
   ];
 
   rptColumnsNames  = [
@@ -163,6 +163,7 @@ export class IscrizioniListComponent implements OnInit {
 
       loadIscrizioni$.subscribe(
         val =>  {
+          console.log ("val", val);
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;          
           this.sortCustom();
@@ -185,18 +186,18 @@ export class IscrizioniListComponent implements OnInit {
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {
       switch(property) {
-        case 'nome':                        return item.alunno.nome;
-        case 'cognome':                     return item.alunno.cognome;
+        case 'nome':                        return item.alunno.persona.nome;
+        case 'cognome':                     return item.alunno.persona.cognome;
         case 'classe':                      return item.classeSezioneAnno.classeSezione.classe.descrizioneBreve;
         case 'sezione':                     return item.classeSezioneAnno.classeSezione.sezione;
-        case 'cf':                          return item.alunno.cf;
-        case 'email':                       return item.alunno.email;
-        case 'telefono':                    return item.alunno.telefono;
-        case 'dtNascita':                   return item.alunno.dtNascita;
+        case 'cf':                          return item.alunno.persona.cf;
+        case 'email':                       return item.alunno.persona.email;
+        case 'telefono':                    return item.alunno.persona.telefono;
+        case 'dtNascita':                   return item.alunno.persona.dtNascita;
         case 'stato':                       return item.stato.descrizione;
-        case 'indirizzo':                   return item.alunno.indirizzo;
-        case 'comune':                      return item.alunno.comune;
-        case 'prov':                        return item.alunno.prov;
+        case 'indirizzo':                   return item.alunno.persona.indirizzo;
+        case 'comune':                      return item.alunno.persona.comune;
+        case 'prov':                        return item.alunno.persona.prov;
 
         default: return item[property]
       }
@@ -231,33 +232,33 @@ export class IscrizioniListComponent implements OnInit {
       if (String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase() == searchTerms.classe) 
         trovataClasseOVuota = true;
       
-      let dArr = data.alunno.dtNascita.split("-");
+      let dArr = data.alunno.persona.dtNascita.split("-");
       const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 
-      let boolSx = String(data.alunno.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+      let boolSx = String(data.alunno.persona.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.persona.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.classeSezioneAnno.classeSezione.classe.descrizioneBreve).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.alunno.cf).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.alunno.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.alunno.telefono).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.persona.cf).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.persona.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.persona.telefono).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(dtNascitaddmmyyyy).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.alunno.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.alunno.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.alunno.prov).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
+                || String(data.alunno.persona.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.persona.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.persona.prov).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
 
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
-      let boolDx = String(data.alunno.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
-                && String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+      let boolDx = String(data.alunno.persona.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+                && String(data.alunno.persona.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
                 && String(data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.sezione) !== -1
                 && trovataClasseOVuota
-                && String(data.alunno.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
-                && String(data.alunno.email).toLowerCase().indexOf(searchTerms.email) !== -1
-                && String(data.alunno.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
+                && String(data.alunno.persona.cf).toLowerCase().indexOf(searchTerms.cf) !== -1
+                && String(data.alunno.persona.email).toLowerCase().indexOf(searchTerms.email) !== -1
+                && String(data.alunno.persona.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
                 && String(dtNascitaddmmyyyy).toLowerCase().indexOf(searchTerms.dtNascita) !== -1
-                && String(data.alunno.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
-                && String(data.alunno.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
-                && String(data.alunno.prov).toLowerCase().indexOf(searchTerms.prov) !== -1;
+                && String(data.alunno.persona.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
+                && String(data.alunno.persona.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
+                && String(data.alunno.persona.prov).toLowerCase().indexOf(searchTerms.prov) !== -1;
 
       return boolSx && boolDx;
     }

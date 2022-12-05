@@ -270,6 +270,7 @@ export class AlunniListComponent implements OnInit {
 
 //#region ----- Filtri & Sort -------
   applyFilter(event: Event) {
+
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
     //if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
@@ -292,28 +293,28 @@ export class AlunniListComponent implements OnInit {
             foundGenitore = foundCognomeNome || foundNomeCognome;
         })
       }
-
-      let dArr = data.dtNascita.split("-");
+      console.log ("data", data);
+      let dArr = data.persona.dtNascita.split("-");
       const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 
-      let boolSx = String(data.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+      let boolSx = String(data.persona.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.persona.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(dtNascitaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
-                || String(data.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.prov).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.telefono).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
+                || String(data.persona.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.persona.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.persona.prov).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.persona.telefono).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.persona.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
       
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
-      let boolDx = String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
-                && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+      let boolDx = String(data.persona.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+                && String(data.persona.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
                 && String(dtNascitaddmmyyyy).indexOf(searchTerms.dtNascita) !== -1
-                && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
-                && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
-                && String(data.prov).toLowerCase().indexOf(searchTerms.prov) !== -1
-                && String(data.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
-                && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
+                && String(data.persona.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
+                && String(data.persona.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
+                && String(data.persona.prov).toLowerCase().indexOf(searchTerms.prov) !== -1
+                && String(data.persona.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
+                && String(data.persona.email).toLowerCase().indexOf(searchTerms.email) !== -1
                 && foundGenitore;
 
                 // console.log(data, searchTerms, boolSx, boolDx);

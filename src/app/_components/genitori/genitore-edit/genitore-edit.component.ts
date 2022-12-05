@@ -121,7 +121,29 @@ export class GenitoreEditComponent implements OnInit {
       this.genitore$ = loadGenitore$
       .pipe(
           tap(
-            genitore => this.form.patchValue(genitore)
+            //genitore => this.form.patchValue(genitore)
+
+            genitore=> {
+              this.form.controls['nome'].setValue(genitore.persona.nome);
+              this.form.controls['cognome'].setValue(genitore.persona.cognome);
+              this.form.controls['dtNascita'].setValue(genitore.persona.dtNascita);
+
+              this.form.controls['cf'].setValue(genitore.persona.CF);
+
+              this.form.controls['comuneNascita'].setValue(genitore.persona.comuneNascita);
+              this.form.controls['provNascita'].setValue(genitore.persona.provNascita);
+              this.form.controls['nazioneNascita'].setValue(genitore.persona.nazioneNascita);
+
+              this.form.controls['comune'].setValue(genitore.persona.comune);
+              this.form.controls['prov'].setValue(genitore.persona.prov);
+              this.form.controls['nazione'].setValue(genitore.persona.nazione);
+
+              this.form.controls['indirizzo'].setValue(genitore.persona.indirizzo);
+              this.form.controls['cap'].setValue(genitore.persona.cap);
+
+              this.form.controls['telefono'].setValue(genitore.persona.telefono);
+              this.form.controls['tipo'].setValue(genitore.tipo);  //incredibile: non esisteva tipo nel model e funzionava con il patchValue!
+            }
           )
       );
     } else {
