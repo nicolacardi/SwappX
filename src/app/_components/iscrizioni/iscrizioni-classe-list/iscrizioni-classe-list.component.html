@@ -53,12 +53,12 @@
 
         <ng-container matColumnDef="nome">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></td>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.nome|highlight:filterValue"></td>
         </ng-container>
         
         <ng-container matColumnDef="cognome">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.cognome | highlight: filterValue"></td>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.cognome | highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="stato">
@@ -68,17 +68,17 @@
 
         <ng-container matColumnDef="dtNascita">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>nato il</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.dtNascita | highlight: filterValue| date: 'dd/MM/yyyy'"></td>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.dtNascita | highlight: filterValue| date: 'dd/MM/yyyy'"></td>
         </ng-container>
 
         <ng-container matColumnDef="email">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</th>
-            <td mat-cell *matCellDef="let element">{{element.alunno.email}}</td>
+            <td mat-cell *matCellDef="let element">{{element.alunno.persona.email}}</td>
         </ng-container>
 
         <ng-container matColumnDef="telefono">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>telefono</th>
-            <td mat-cell *matCellDef="let element">{{element.alunno.telefono}}</td>
+            <td mat-cell *matCellDef="let element">{{element.alunno.persona.telefono}}</td>
         </ng-container>
 
         <ng-container matColumnDef="ckAttivo">
@@ -119,7 +119,7 @@
 
     <mat-menu #rightMenu="matMenu"> 
         <ng-template matMenuContent let-item="item"> 
-            <mat-label class="_titolo-filtri-avanzati">{{item.alunno.nome | uppercase}} {{item.alunno.cognome | uppercase}}</mat-label> 
+            <mat-label class="_titolo-filtri-avanzati">{{item.alunno.persona.nome | uppercase}} {{item.alunno.persona.cognome | uppercase}}</mat-label> 
             <button mat-menu-item>Classi Frequentate</button>
             <button mat-menu-item>Pagelle</button>
             <button mat-menu-item (click)="openPagamenti(item.id)">Quote e Pagamenti</button>

@@ -345,6 +345,7 @@ export class ClassiDashboardComponent implements OnInit {
   }
 
   alunnoEmitted(alunno: ALU_Alunno) {
+    console.log ("classi-dashboard emit alunno", alunno)
     this.alunno = alunno;
   }
 

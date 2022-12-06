@@ -42,19 +42,19 @@
         <ng-container matColumnDef="materia">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Materia</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.materia.descrizione}}</mat-cell>
-            <!-- <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></mat-cell> -->
+            <!-- <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.nome|highlight:filterValue"></mat-cell> -->
         </ng-container>
 
         <ng-container matColumnDef="docenteNome">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome Docente</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.docente.persona.nome}}</mat-cell>
-            <!-- <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></mat-cell> -->
+            <!-- <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.nome|highlight:filterValue"></mat-cell> -->
         </ng-container>
 
         <ng-container matColumnDef="docenteCognome">
             <mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Cognome Docente</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.docente.persona.cognome}}</mat-cell>
-            <!-- <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></mat-cell> -->
+            <!-- <mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.nome|highlight:filterValue"></mat-cell> -->
         </ng-container>
 
         <ng-container matColumnDef="ckOrario">

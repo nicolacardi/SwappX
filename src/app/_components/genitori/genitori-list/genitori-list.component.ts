@@ -210,6 +210,7 @@ export class GenitoriListComponent implements OnInit {
       if (data._Figli.length == 0)
         foundAlunno = true;
       else {
+        console.log ("genitori-list filterPredicate data", data);
         data._Figli?.forEach((val : { alunno: { nome: any; cognome: any}; })=>  {
             const foundCognomeNome = foundAlunno || String(val.alunno.cognome+" "+val.alunno.nome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1;
             const foundNomeCognome = foundAlunno || String(val.alunno.nome+" "+val.alunno.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1; 

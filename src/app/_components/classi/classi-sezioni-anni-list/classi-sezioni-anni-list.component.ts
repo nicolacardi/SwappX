@@ -286,6 +286,8 @@ constructor(
 
       loadClassi$.subscribe(
         val =>   {
+
+          console.log ("this.matDataSource.data", annoID, docenteID, val);
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
   
