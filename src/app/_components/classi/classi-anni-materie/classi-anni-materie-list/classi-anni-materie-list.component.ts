@@ -104,8 +104,7 @@ filterValues = {
     loadClassiAnniMaterie$
     .pipe(
       map(val=>val.filter(val=>(val.annoID == this.form.controls['selectAnnoScolastico'].value)))
-    )
-    .subscribe(
+    ).subscribe(
       res=>{
         this.matDataSource.data = res;
         this.sortCustom(); 

@@ -13,9 +13,17 @@ export class PersoneService {
 
 
   list(): Observable<PER_Persona[]>{
+    return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone')
+    //Aggiungere metodo filtrato ???
+    //return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/ListByGenitore/'+genitoreID);
+    //http://213.215.231.4/swappX/api/PER_Persone
+  }
+
+  listCompleta(): Observable<PER_Persona[]>{
     return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone');
     //http://213.215.231.4/swappX/api/PER_Persone
   }
+
 
   get(personaID: any): Observable<PER_Persona>{
     return this.http.get<PER_Persona>(environment.apiBaseUrl+'PER_Persone/'+personaID);

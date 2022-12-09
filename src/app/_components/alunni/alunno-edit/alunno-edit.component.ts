@@ -15,6 +15,7 @@ import { GenitoriListComponent } from '../../genitori/genitori-list/genitori-lis
 
 //services
 import { AlunniService } from 'src/app/_components/alunni/alunni.service';
+import { PersoneService } from '../../persone/persone.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
 import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
@@ -25,7 +26,6 @@ import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
-import { PersoneService } from '../../persone/persone.service';
 import { PER_Persona } from 'src/app/_models/PER_Persone';
 
 
@@ -45,12 +45,6 @@ export class AlunnoEditComponent implements OnInit {
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
-  
-  // caller_page!:               string;
-  // caller_size!:               string;
-  // caller_filter!:             string;
-  // caller_sortField!:          string;
-  // caller_sortDirection!:      string;
   
   filteredComuni$!:           Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:    Observable<_UT_Comuni[]>;
@@ -72,15 +66,14 @@ export class AlunnoEditComponent implements OnInit {
     private fb:                           FormBuilder, 
     private svcIscrizioni:                IscrizioniService,
     private svcAlunni:                    AlunniService,
-    private svcComuni:                    ComuniService,
     private svcPersone:                   PersoneService,
+    private svcComuni:                    ComuniService,
 
     public _dialog:                       MatDialog,
     private _snackBar:                    MatSnackBar,
     private _loadingService :             LoadingService ) {
 
     _dialogRef.disableClose = true;
-
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
     
     this.form = this.fb.group({
@@ -106,7 +99,7 @@ export class AlunnoEditComponent implements OnInit {
 
       scuolaProvenienza:          ['', Validators.maxLength(255)],
       indirizzoScuolaProvenienza: ['', Validators.maxLength(255)],
-      ckAttivo:                   [false],
+      ckAttivo:                   [true],
       ckDSA:                      [false],
       ckDisabile:                 [false],
       ckAuthFoto:                 [false],
@@ -144,15 +137,12 @@ export class AlunnoEditComponent implements OnInit {
       .pipe(
           tap(
             alunno => {
-              //this.form.patchValue(alunno);
               this.form.controls['id'].setValue(alunno.id);
-
-                this.form.controls['personaID'].setValue(alunno.personaID);
+              this.form.controls['personaID'].setValue(alunno.personaID);
 
                 this.form.controls['nome'].setValue(alunno.persona!.nome);
                 this.form.controls['cognome'].setValue(alunno.persona!.cognome);
                 this.form.controls['dtNascita'].setValue(alunno.persona!.dtNascita);
-
                 this.form.controls['genere'].setValue(alunno.persona!.genere);
                 this.form.controls['cf'].setValue(alunno.persona!.CF);
 
@@ -183,8 +173,7 @@ export class AlunnoEditComponent implements OnInit {
           )
       );
     }
-    else 
-      this.emptyForm = true
+    else this.emptyForm = true
         
     //********************* FILTRO COMUNE *******************
     this.filteredComuni$ = this.form.controls['comune'].valueChanges
@@ -215,6 +204,7 @@ export class AlunnoEditComponent implements OnInit {
   save(){
 
     let personaObj: PER_Persona = {
+      
       nome :          this.form.value.nome,
       cognome :       this.form.value.cognome,
       dtNascita :     this.form.value.dtNascita,
@@ -249,25 +239,15 @@ export class AlunnoEditComponent implements OnInit {
       indirizzoScuolaProvenienza: this.form.value.indirizzoScuolaProvenienza,
 
       persona: personaObj
-
     }
 
-
-    console.log ("this.alunnoID", this.alunnoID);
-
-    //if (this.alunnoID == null) //ma non sarebbe == 0?
-    if (this.alunnoID == 0)
-
-    {
-      console.log ("post");
+    if (this.alunnoID == null || this.alunnoID == 0)    {
       this.svcPersone.post(personaObj)
       .pipe(
         tap(res=> {
           alunnoObj.personaID = res.id;  //importante!
-        }
-          ),
-        concatMap( () => this.svcAlunni.post(alunnoObj)
-          )
+        }),
+        concatMap( () => this.svcAlunni.post(alunnoObj))
       ).subscribe(
         res=> {
           this._dialogRef.close();
@@ -276,10 +256,7 @@ export class AlunnoEditComponent implements OnInit {
         err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       ) 
     }
-    else 
-    {
-      console.log ("put");
-
+    else {
       this.svcPersone.put(personaObj)
       .pipe(
         concatMap( () => this.svcAlunni.put(alunnoObj))
@@ -293,24 +270,24 @@ export class AlunnoEditComponent implements OnInit {
     }
   }
 
-  delete(){
-
+  delete()
+  {
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
 
     dialogYesNo.afterClosed().subscribe(result => {
-      if(result){
-        this.svcAlunni.delete(Number(this.alunnoID)).subscribe(
-          res=>{
+      if(result) {
+        this.svcAlunni.delete(Number(this.alunnoID)).subscribe (
+          res=> {
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
             this._dialogRef.close();
           },
-          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}
-        )
-      );
-    }});
+          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}  )
+        );
+      }
+    });
   }
 
 //#endregion

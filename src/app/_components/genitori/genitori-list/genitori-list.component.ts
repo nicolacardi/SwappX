@@ -86,7 +86,6 @@ export class GenitoriListComponent implements OnInit {
     "email", 
     "nato il"];
 
-
   public passedAlunno!:         string;
   public page!:                 string;
   
@@ -94,6 +93,7 @@ export class GenitoriListComponent implements OnInit {
 
   showPageTitle:                boolean = true;
   showTableRibbon:              boolean = true;
+  public ckSoloAttivi :         boolean = true;
 
   filterValue = '';       //Filtro semplice
    //filterValues contiene l'elenco dei filtri avanzati da applicare 
@@ -124,6 +124,7 @@ export class GenitoriListComponent implements OnInit {
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('addToFamily') addToFamily = new EventEmitter<ALU_Genitore>();
   @Output('removeFromFamily') removeFromFamily = new EventEmitter<ALU_Genitore>();
+
 //#endregion
 
   constructor(
@@ -133,8 +134,9 @@ export class GenitoriListComponent implements OnInit {
     private router:           Router,
     public _dialog:           MatDialog, 
     private _loadingService:  LoadingService,
-    private _navigationService:    NavigationService
-  ) {}
+    private _navigationService:    NavigationService ) {
+
+  }
 
 //#region ----- LifeCycle Hooks e simili-------
 
@@ -220,7 +222,6 @@ export class GenitoriListComponent implements OnInit {
       let dArr = data.persona.dtNascita.split("-");
       const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 
-
       let boolSx = String(data.persona.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.persona.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(dtNascitaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
@@ -241,12 +242,9 @@ export class GenitoriListComponent implements OnInit {
                 && String(data.persona.email).toLowerCase().indexOf(searchTerms.email) !== -1
                 && foundAlunno;
       return boolSx && boolDx;
-
     }
     return filterFunction;
   }
-
-
 
 //#endregion
 
@@ -310,9 +308,6 @@ export class GenitoriListComponent implements OnInit {
     this.removeFromFamily.emit(item);
   }
 //#endregion
-
-
-
 }
 
 

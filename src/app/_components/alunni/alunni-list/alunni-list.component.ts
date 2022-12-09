@@ -35,7 +35,6 @@ export class AlunniListComponent implements OnInit {
   matDataSource = new MatTableDataSource<ALU_Alunno>();
 
   displayedColumns: string[] =  [];
-  
   displayedColumnsAlunniList: string[] = [
       "actionsColumn", 
       "nome", 
@@ -109,7 +108,7 @@ export class AlunniListComponent implements OnInit {
   public ckSoloAttivi :         boolean = true;
 
   filterValue = '';       //Filtro semplice
-
+   //filterValues contiene l'elenco dei filtri avanzati da applicare 
   filterValues = {
     nome: '',
     cognome: '',
@@ -146,8 +145,9 @@ export class AlunniListComponent implements OnInit {
     private router:               Router,
     public _dialog:               MatDialog, 
     private _loadingService:      LoadingService,
-    private _navigationService:   NavigationService
-  ) {}
+    private _navigationService:   NavigationService  ) {
+
+  }
   
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -177,7 +177,6 @@ export class AlunniListComponent implements OnInit {
   }
   
   ngOnInit () {
-
 
     switch(this.context) {
       case 'alunni-page': 

@@ -17,6 +17,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 
 //models
 import { PER_Persona } from 'src/app/_models/PER_Persone';
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-persone-list',
   templateUrl: './persone-list.component.html',
@@ -117,8 +118,12 @@ export class PersoneListComponent implements OnInit {
   loadData () {
     let obsPersone$: Observable<PER_Persona[]>;
     obsPersone$= this.svcPersone.list();
+
     const loadPersone$ =this._loadingService.showLoaderUntilCompleted(obsPersone$);
-    loadPersone$.subscribe(
+    loadPersone$.pipe(
+        map(val=> val.filter( val => (val.tipoPersonaID != 9 && val.tipoPersonaID != 10 ))
+      )
+    ).subscribe(
       val => {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;

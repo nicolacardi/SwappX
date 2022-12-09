@@ -13,6 +13,7 @@ import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-n
 
 //services
 import { GenitoriService } from 'src/app/_components/genitori/genitori.service';
+import { PersoneService } from '../../persone/persone.service';
 import { ComuniService } from 'src/app/_services/comuni.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { AlunniService } from '../../alunni/alunni.service';
@@ -21,6 +22,8 @@ import { AlunniService } from '../../alunni/alunni.service';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { PER_Persona } from 'src/app/_models/PER_Persone';
+import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y/input-modality/input-modality-detector';
 
 @Component({
   selector: 'app-genitore-edit',
@@ -37,12 +40,6 @@ export class GenitoreEditComponent implements OnInit {
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
-
-  // caller_page!:               string;
-  // caller_size!:               string;
-  // caller_filter!:             string;
-  // caller_sortField!:          string;
-  // caller_sortDirection!:      string;
 
   filteredComuni$!:           Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:    Observable<_UT_Comuni[]>;
@@ -62,18 +59,22 @@ export class GenitoreEditComponent implements OnInit {
     private route:          ActivatedRoute,
     private router:         Router,
     private svcGenitori:    GenitoriService,
+    private svcPersone:     PersoneService,
     private svcAlunni:      AlunniService, //serve perchè è in questa che si trovano le addToFamily e RemoveFromFamily"
     private svcComuni:      ComuniService,
     public _dialog:         MatDialog,
     private _snackBar:      MatSnackBar,
-    private _loadingService :LoadingService 
-  ) {
+    private _loadingService :LoadingService  ) {
+
     _dialogRef.disableClose = true;
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
     let regemail = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$";
     
     this.form = this.fb.group({
       id:                         [null],
+      personaID:                  [null],
+      tipoPersonaID:              [null],
+
       nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       cognome:                    ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       dtNascita:                  ['', Validators.required],
@@ -89,8 +90,11 @@ export class GenitoreEditComponent implements OnInit {
       cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
       telefono:                   ['', Validators.maxLength(13)],
       telefono2:                  ['', Validators.maxLength(13)],
-      email:                      ['',Validators.email]
+      email:                      ['',Validators.email],
       //email:                      ['', Validators.pattern(regemail)]
+      ckAttivo:                   [true],
+      titoloStudio:               [''],
+      professione:                ['']
     });
   }
 
@@ -124,31 +128,37 @@ export class GenitoreEditComponent implements OnInit {
             //genitore => this.form.patchValue(genitore)
 
             genitore=> {
-              this.form.controls['nome'].setValue(genitore.persona.nome);
-              this.form.controls['cognome'].setValue(genitore.persona.cognome);
-              this.form.controls['dtNascita'].setValue(genitore.persona.dtNascita);
+              this.form.controls['id'].setValue(genitore.id);
+              this.form.controls['personaID'].setValue(genitore.personaID);
 
-              this.form.controls['cf'].setValue(genitore.persona.CF);
+              this.form.controls['nome'].setValue(genitore.persona!.nome);
+              this.form.controls['cognome'].setValue(genitore.persona!.cognome);
+              this.form.controls['dtNascita'].setValue(genitore.persona!.dtNascita);
+              
+              this.form.controls['cf'].setValue(genitore.persona!.CF);
 
-              this.form.controls['comuneNascita'].setValue(genitore.persona.comuneNascita);
-              this.form.controls['provNascita'].setValue(genitore.persona.provNascita);
-              this.form.controls['nazioneNascita'].setValue(genitore.persona.nazioneNascita);
+              this.form.controls['comuneNascita'].setValue(genitore.persona!.comuneNascita);
+              this.form.controls['provNascita'].setValue(genitore.persona!.provNascita);
+              this.form.controls['nazioneNascita'].setValue(genitore.persona!.nazioneNascita);
 
-              this.form.controls['comune'].setValue(genitore.persona.comune);
-              this.form.controls['prov'].setValue(genitore.persona.prov);
-              this.form.controls['nazione'].setValue(genitore.persona.nazione);
+              this.form.controls['comune'].setValue(genitore.persona!.comune);
+              this.form.controls['prov'].setValue(genitore.persona!.prov);
+              this.form.controls['nazione'].setValue(genitore.persona!.nazione);
 
-              this.form.controls['indirizzo'].setValue(genitore.persona.indirizzo);
-              this.form.controls['cap'].setValue(genitore.persona.cap);
+              this.form.controls['indirizzo'].setValue(genitore.persona!.indirizzo);
+              this.form.controls['cap'].setValue(genitore.persona!.cap);
 
-              this.form.controls['telefono'].setValue(genitore.persona.telefono);
+              this.form.controls['telefono'].setValue(genitore.persona!.telefono);
+              
               this.form.controls['tipo'].setValue(genitore.tipo);  //incredibile: non esisteva tipo nel model e funzionava con il patchValue!
+              this.form.controls['ckAttivo'].setValue(genitore.ckAttivo);
+              // TODO!!!
+              //titoloStudio, professione
             }
           )
       );
-    } else {
-      this.emptyForm = true
-    }
+    } 
+    else this.emptyForm = true
     
     //********************* FILTRO COMUNE *******************
     this.filteredComuni$ = this.form.controls['comune'].valueChanges
@@ -178,14 +188,80 @@ export class GenitoreEditComponent implements OnInit {
 
   save(){
 
-    if (this.form.controls['id'].value == null) 
-      this.svcGenitori.post(this.form.value).subscribe(
+    let personaObj: PER_Persona = {
+      
+      nome :          this.form.value.nome,
+      cognome :       this.form.value.cognome,
+      dtNascita :     this.form.value.dtNascita,
+      comuneNascita : this.form.value.comuneNascita,
+      provNascita :   this.form.value.provNascita,
+      nazioneNascita : this.form.value.nazioneNascita,
+      indirizzo :     this.form.value.indirizzo,
+      comune :        this.form.value.comune,
+      prov :          this.form.value.prov,
+      cap :           this.form.value.cap,
+      nazione :       this.form.value.nazione,
+      genere :        this.form.value.genere,
+      CF :            this.form.value.cf,
+      telefono :      this.form.value.telefono,
+      email :         this.form.value.email,
+
+      tipoPersonaID : 10,
+      id : this.form.value.personaID
+    }
+
+    let genitoreObj: ALU_Genitore = {
+      id:                         this.form.value.id,
+      personaID:                  this.form.value.personaID,
+
+      tipo:                       this.form.value.tipo,
+      //ckAttivo:                   this.form.value.ckAttivo,
+      ckAttivo:                   true,
+      //titoloStudio:               this.form.value.titoloStudio,
+      //professione:                this.form.value.professione,
+
+      persona: personaObj
+    }
+
+    if (this.genitoreID == null || this.genitoreID == 0) {
+      this.svcPersone.post(personaObj)
+      .pipe (
+        tap(res => {
+          genitoreObj.personaID = res.id;
+        }),
+        concatMap( () => this.svcGenitori.post(genitoreObj))
+      ).subscribe(
+        res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        },
+        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      ) 
+    }
+    else{
+      console.log("put personaObj: ", personaObj);
+
+      this.svcPersone.put(personaObj)
+      .pipe(
+        concatMap( () => this.svcGenitori.put(genitoreObj))
+      ).subscribe(
+        res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        },
+        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      ) 
+    }
+    
+    /*
+    this.svcGenitori.post(this.form.value).subscribe(
         res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
         err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    );
+      );
+    }
     else 
       this.svcGenitori.put(this.form.value).subscribe(
         res=> {
@@ -195,6 +271,7 @@ export class GenitoreEditComponent implements OnInit {
         err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']}
       )
     );
+    */
   }
 
   //NON PIU' UTILIZZATA IN QUANTO ORA SI USA SOLO COME DIALOG
@@ -223,15 +300,14 @@ export class GenitoreEditComponent implements OnInit {
   //    }});
   // }
 
-  delete(){
-
+  delete()
+  {
     const dialogRef = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-    dialogRef.afterClosed().subscribe(
-      yesno => {
-        if(yesno){
+    dialogRef.afterClosed().subscribe( result => {
+        if(result) {
           this.svcGenitori.delete(Number(this.genitoreID)).subscribe(
             res=>{
               this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});

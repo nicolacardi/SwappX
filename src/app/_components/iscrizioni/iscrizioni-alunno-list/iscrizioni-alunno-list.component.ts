@@ -43,8 +43,9 @@ export class IscrizioniAlunnoListComponent implements OnInit {
   constructor(
     private svcIscrizioni:    IscrizioniService,
     public _dialog:           MatDialog, 
-    private _loadingService:  LoadingService
-  ) { }
+    private _loadingService:  LoadingService ) { 
+
+    }
 
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -59,6 +60,8 @@ export class IscrizioniAlunnoListComponent implements OnInit {
 
   loadData () {
 
+    if(this.alunnoID == null ||this.alunnoID == undefined|| this.alunnoID == 0 ) return;
+    
     let obsIscrizioni$: Observable<CLS_Iscrizione[]>;
 
     obsIscrizioni$= this.svcIscrizioni.listByAlunno(this.alunnoID);

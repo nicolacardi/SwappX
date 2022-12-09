@@ -153,9 +153,9 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-    dialogYesNo.afterClosed().subscribe(
-      yesno => {
-        if(yesno){
+
+    dialogYesNo.afterClosed().subscribe( result => {
+        if(result) {
           this.svcClasseSezioneAnno.delete(Number(this.classeSezioneAnnoID)).subscribe(
             res=>{
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});

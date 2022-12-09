@@ -1,7 +1,7 @@
 import { ALU_Genitore } from './ALU_Genitore';
 import { PER_Persona } from './PER_Persone';
-export interface ALU_Alunno {
 
+export interface ALU_Alunno {
         id:                     number;
         personaID:              number;
 
