@@ -47,11 +47,13 @@ export class AlunniService {
 
 
   put(formData: any): Observable <any>{
-    return this.http.put( environment.apiBaseUrl  + 'ALU_Alunni/' + formData.id , formData);    
+      console.log ("formData per la put Alunni", formData);
+      return this.http.put( environment.apiBaseUrl  + 'ALU_Alunni/' + formData.id , formData);    
   }
 
   post(formData: any): Observable <any>{
     formData.id = 0;
+
     return this.http.post( environment.apiBaseUrl  + 'ALU_Alunni' , formData);  
   }
 
