@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { PER_Persona } from 'src/app/_models/PER_Persone';
 import { environment } from 'src/environments/environment';
 
@@ -22,7 +22,9 @@ export class PersoneService {
     //http://213.215.231.4/swappX/api/PER_Persone/3
   }
 
+
   put(formData: any): Observable <any>{
+    console.log ("formData", formData);
     return this.http.put( environment.apiBaseUrl  + 'PER_Persone/' + formData.id , formData);    
   }
 

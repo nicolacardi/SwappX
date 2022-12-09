@@ -1,6 +1,6 @@
 export interface PER_Persona {
         id:                     number;
-        tipoID:                 number;
+        tipoPersonaID:                 number;
         nome:                   string;
         cognome:                string;
         genere:                 string;
@@ -16,18 +16,18 @@ export interface PER_Persona {
         nazione:                string;
 
         email:                  string;
-        email1:                 string;
+        email1?:                 string;
 
         telefono:               string;
-        telefono1:              string;
+        telefono1?:              string;
 
-        note:                   string;
-        dtIns:                  string;
-        dtUpd:                  string;
-        userIns:                number;
-        userUpd:                number;
+        note?:                   string;
+        dtIns?:                  string;
+        dtUpd?:                  string;
+        userIns?:                number;
+        userUpd?:                number;
 
-        tipoPersona:            PER_TipoPersona;
+        tipoPersona?:            PER_TipoPersona;
 }
 
 export interface PER_TipoPersona {

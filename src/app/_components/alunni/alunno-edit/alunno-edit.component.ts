@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { iif, Observable, of } from 'rxjs';
@@ -26,6 +26,7 @@ import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { PersoneService } from '../../persone/persone.service';
+import { PER_Persona } from 'src/app/_models/PER_Persone';
 
 
 
@@ -148,30 +149,31 @@ export class AlunnoEditComponent implements OnInit {
 
                 this.form.controls['personaID'].setValue(alunno.personaID);
 
-                this.form.controls['nome'].setValue(alunno.persona.nome);
-                this.form.controls['cognome'].setValue(alunno.persona.cognome);
-                this.form.controls['dtNascita'].setValue(alunno.persona.dtNascita);
+                this.form.controls['nome'].setValue(alunno.persona!.nome);
+                this.form.controls['cognome'].setValue(alunno.persona!.cognome);
+                this.form.controls['dtNascita'].setValue(alunno.persona!.dtNascita);
 
-                this.form.controls['genere'].setValue(alunno.persona.genere);
-                this.form.controls['cf'].setValue(alunno.persona.CF);
+                this.form.controls['genere'].setValue(alunno.persona!.genere);
+                this.form.controls['cf'].setValue(alunno.persona!.CF);
 
-                this.form.controls['comuneNascita'].setValue(alunno.persona.comuneNascita);
-                this.form.controls['provNascita'].setValue(alunno.persona.provNascita);
-                this.form.controls['nazioneNascita'].setValue(alunno.persona.nazioneNascita);
+                this.form.controls['comuneNascita'].setValue(alunno.persona!.comuneNascita);
+                this.form.controls['provNascita'].setValue(alunno.persona!.provNascita);
+                this.form.controls['nazioneNascita'].setValue(alunno.persona!.nazioneNascita);
 
-                this.form.controls['comune'].setValue(alunno.persona.comune);
-                this.form.controls['prov'].setValue(alunno.persona.prov);
-                this.form.controls['nazione'].setValue(alunno.persona.nazione);
+                this.form.controls['comune'].setValue(alunno.persona!.comune);
+                this.form.controls['prov'].setValue(alunno.persona!.prov);
+                this.form.controls['nazione'].setValue(alunno.persona!.nazione);
 
-                this.form.controls['indirizzo'].setValue(alunno.persona.indirizzo);
-                this.form.controls['cap'].setValue(alunno.persona.cap);
+                this.form.controls['indirizzo'].setValue(alunno.persona!.indirizzo);
+                this.form.controls['cap'].setValue(alunno.persona!.cap);
 
-                this.form.controls['telefono'].setValue(alunno.persona.telefono);
-                this.form.controls['email'].setValue(alunno.persona.email);
+                this.form.controls['telefono'].setValue(alunno.persona!.telefono);
+                this.form.controls['email'].setValue(alunno.persona!.email);
 
               this.form.controls['scuolaProvenienza'].setValue(alunno.scuolaProvenienza);
               this.form.controls['indirizzoScuolaProvenienza'].setValue(alunno.indirizzoScuolaProvenienza);
 
+              this.form.controls['ckAttivo'].setValue(alunno.ckAttivo);
               this.form.controls['ckDSA'].setValue(alunno.ckDSA);
               this.form.controls['ckDisabile'].setValue(alunno.ckDisabile);
               this.form.controls['ckAuthFoto'].setValue(alunno.ckAuthFoto);
@@ -207,59 +209,56 @@ export class AlunnoEditComponent implements OnInit {
   }
 //#endregion
 
+
+
 //#region ----- Operazioni CRUD -------
   save(){
 
-    let formPersone = Object.assign({}, this.form);
-    
-    formPersone.value.tipoPersonaID = 9;
-    formPersone.value.id = formPersone.value.personaID;
-    delete formPersone.value.personaID;
-    delete formPersone.value.scuolaProvenienza;
-    delete formPersone.value.indirizzoScuolaProvenienza;
-    delete formPersone.value.ckAttivo;
-    delete formPersone.value.ckDSA;
-    delete formPersone.value.ckDisabile;
-    delete formPersone.value.ckAuthFoto;
-    delete formPersone.value.ckAuthUsoMateriale;
-    delete formPersone.value.ckAuthUscite;
+    let personaObj: PER_Persona = {
+      nome :          this.form.value.nome,
+      cognome :       this.form.value.cognome,
+      dtNascita :     this.form.value.dtNascita,
+      comuneNascita : this.form.value.comuneNascita,
+      provNascita :   this.form.value.provNascita,
+      nazioneNascita : this.form.value.nazioneNascita,
+      indirizzo :     this.form.value.indirizzo,
+      comune :        this.form.value.comune,
+      prov :          this.form.value.prov,
+      cap :           this.form.value.cap,
+      nazione :       this.form.value.nazione,
+      genere :        this.form.value.genere,
+      CF :            this.form.value.cf,
+      telefono :      this.form.value.telefono,
+      email :         this.form.value.email,
 
-    let formAlunni = Object.assign({}, this.form);
-    delete formAlunni.value.nome;
-    delete formAlunni.value.cognome;
-    delete formAlunni.value.dtNascita;
-    delete formAlunni.value.comuneNascita;
-    delete formAlunni.value.provNascita;
-    delete formAlunni.value.nazioneNascita;
-    delete formAlunni.value.indirizzo;
-    delete formAlunni.value.comune;
-    delete formAlunni.value.prov;
-    delete formAlunni.value.cap;
-    delete formAlunni.value.nazione;
-    delete formAlunni.value.genere;
-    delete formAlunni.value.cf;
-    delete formAlunni.value.telefono;
-    delete formAlunni.value.email;    
-    //******
+      tipoPersonaID : 9,
+      id : this.form.value.personaID
+    }
+
+    let alunnoObj: ALU_Alunno = {
+      id:                         this.form.value.id,
+      personaID:                  this.form.value.personaID,
+
+      ckAttivo:                   this.form.value.ckAttivo,
+      ckDisabile:                 this.form.value.ckDisabile,
+      ckDSA:                      this.form.value.ckDSA,
+      ckAuthFoto:                 this.form.value.ckAuthFoto,
+      ckAuthUsoMateriale:         this.form.value.ckAuthUsoMateriale,
+      ckAuthuscite:               this.form.value.ckAuthUscite,
+      scuolaProvenienza:          this.form.value.scuolaProvenienza,
+      indirizzoScuolaProvenienza: this.form.value.indirizzoScuolaProvenienza,
+
+      persona: personaObj
+
+    }
+
+
 
     if (this.alunnoID == null) //ma non sarebbe == 0?
-
-
-      {
-        console.log ("alunno-edit save post");
-    // this.svcAlunni.listByGenitoreAlunno(genitore.id, this.alunnoID)
-    // .pipe(
-    //   concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(genitore.id, this.alunnoID), of() ))
-    // ).subscribe(
-    //   res=> this.genitoriFamigliaComponent.loadData(),
-    //   err=> { }
-    // )
-
-
-
-      this.svcPersone.post(formPersone.value)
+    {
+      this.svcPersone.post(personaObj)
       .pipe(
-        concatMap( () => this.svcAlunni.post(formAlunni.value))
+        concatMap( () => this.svcAlunni.post(alunnoObj))
       ).subscribe(
         res=> {
           this._dialogRef.close();
@@ -267,40 +266,20 @@ export class AlunnoEditComponent implements OnInit {
         },
         err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       ) 
-      // this.svcAlunni.post(this.form.value).subscribe(
-      //   res => {
-      //     this._dialogRef.close();
-      //     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-      //   },
-      //   err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']}
-      // )
-      // );
-      }
+    }
     else 
-      {
-        console.log ("alunno-edit save put");
-
-
-        this.svcPersone.put(formPersone.value)
-        .pipe(
-          concatMap( () => this.svcAlunni.put(formAlunni.value))
-        ).subscribe(
-          res=> {
-            this._dialogRef.close();
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-          },
-          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        ) 
-        }
-
-      // this.svcAlunni.put(this.form.value).subscribe(
-      //   res => {
-      //     this._dialogRef.close();
-      //     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-      //   },
-      //   err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']}
-      // )
-      //);
+    {
+      this.svcPersone.put(personaObj)
+      .pipe(
+        concatMap( () => this.svcAlunni.put(alunnoObj))
+      ).subscribe(
+        res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        },
+        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      ) 
+    }
   }
 
   delete(){

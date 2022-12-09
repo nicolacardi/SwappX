@@ -14,15 +14,15 @@ export interface ALU_Alunno {
         scuolaProvenienza:      string;
         indirizzoScuolaProvenienza: string;
 
-        note:                   string;
-        dtIns:                  string;
-        dtUpd:                  string;
-        userIns:                number;
-        userUpd:                number;
+        note?:                   string;
+        dtIns?:                  string;
+        dtUpd?:                  string;
+        userIns?:                number;
+        userUpd?:                number;
 
         persona:                PER_Persona;
 
-        _Genitori:              ALU_Genitore[];
+        _Genitori?:              ALU_Genitore[];
 }
 
  
