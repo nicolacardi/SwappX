@@ -253,12 +253,21 @@ export class AlunnoEditComponent implements OnInit {
     }
 
 
+    console.log ("this.alunnoID", this.alunnoID);
 
-    if (this.alunnoID == null) //ma non sarebbe == 0?
+    //if (this.alunnoID == null) //ma non sarebbe == 0?
+    if (this.alunnoID == 0)
+
     {
+      console.log ("post");
       this.svcPersone.post(personaObj)
       .pipe(
-        concatMap( () => this.svcAlunni.post(alunnoObj))
+        tap(res=> {
+          alunnoObj.personaID = res.id;  //importante!
+        }
+          ),
+        concatMap( () => this.svcAlunni.post(alunnoObj)
+          )
       ).subscribe(
         res=> {
           this._dialogRef.close();
@@ -269,6 +278,8 @@ export class AlunnoEditComponent implements OnInit {
     }
     else 
     {
+      console.log ("put");
+
       this.svcPersone.put(personaObj)
       .pipe(
         concatMap( () => this.svcAlunni.put(alunnoObj))

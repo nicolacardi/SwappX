@@ -53,7 +53,7 @@ export class AlunniService {
 
   post(formData: any): Observable <any>{
     formData.id = 0;
-
+    console.log ("formData", formData);
     return this.http.post( environment.apiBaseUrl  + 'ALU_Alunni' , formData);  
   }
 
