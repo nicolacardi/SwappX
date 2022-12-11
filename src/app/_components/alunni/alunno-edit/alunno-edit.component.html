@@ -38,34 +38,34 @@
 
     <mat-card class="form-card">
         <mat-card-content>
-            <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
+        
+            <!-- ********************************    BOTTONI     ************************************* -->
+            <div class="center">
 
-                <!-- ********************************    BOTTONI     ************************************* -->
-                <div class="center">
+                <img class="iconaMenuBig" src="../assets/alunno_edit.svg">
 
-                    <img class="iconaMenuBig" src="../assets/alunno_edit.svg">
+                <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
-                    <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
+                <button *ngIf="alunnoID" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10"
+                        [disabled]= "!form.valid" 
+                        (click)="loadData()" >
+                    <mat-icon>restart_alt</mat-icon>
+                </button>
 
-                    <button *ngIf="alunnoID" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10"
-                            [disabled]= "!form.valid" 
-                            (click)="loadData()" >
-                        <mat-icon>restart_alt</mat-icon>
-                    </button>
+                <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                        [disabled]= "!form.valid" 
+                        (click)="save()" >
+                    <mat-icon>save</mat-icon>
+                </button>
 
-                    <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-                            [disabled]= "!form.valid" 
-                            (click)="save()" >
-                        <mat-icon>save</mat-icon>
-                    </button>
+                <button *ngIf="alunnoID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
+                        [disabled]= "!form.valid" 
+                        (click)="delete()" >
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
 
-                    <button *ngIf="alunnoID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
-                            [disabled]= "!form.valid" 
-                            (click)="delete()" >
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </div>
-                
+            <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">    
                 <mat-tab-group mat-align-tabs="center">
 <!-- ********************************    MAT TAB ANAGRAFICA *********************************** -->
                     <mat-tab  label="Dati Anagrafici">
@@ -280,7 +280,7 @@
                         <button mat-mini-fab aria-label="Nuova anagrafica Genitore" matTooltip="Nuova anagrafica Genitore" class= "_btn-addModal" (click)="addGenitore()">
                             <mat-icon>add</mat-icon>
                         </button>
-                        <mat-label class="frameLabel">i genitori/tutori di {{nome.value}} </mat-label>
+                        <mat-label class="frameLabel">i genitori/tutori di {{alunnoNomeCognome}} </mat-label>
                         <div class="_genitori-container cellBordered mt10">
                             <app-genitori-list [context]="'alunno-edit-famiglia'"[alunnoID]="alunnoID"  (removeFromFamily) = "removeFromFamily($event)" #genitoriFamiglia></app-genitori-list>
                         </div>
@@ -307,7 +307,7 @@
                         <table>
                             <tr>
                                 <td>
-                                    <mat-label class="frameLabel">Le classi frequentate da {{nome.value}} </mat-label>
+                                    <mat-label class="frameLabel">Le classi frequentate da {{alunnoNomeCognome}} </mat-label>
                                     <div class="_classi-attended-container cellBordered mt10">
                                         <app-iscrizioni-alunno-list [alunnoID] = "alunnoID" 
                                         (removeFromAttended) = "removeFromAttended($event)"

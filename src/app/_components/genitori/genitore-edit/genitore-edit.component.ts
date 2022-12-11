@@ -35,8 +35,8 @@ export class GenitoreEditComponent implements OnInit {
 
 //#region ----- Variabili -------
 
-  genitore$!:                  Observable<ALU_Genitore>;
-
+  genitore$!:                 Observable<ALU_Genitore>;
+  genitoreNomeCognome :       string = "";
   form! :                     FormGroup;
   formGenitore! :             FormGroup;
 
@@ -128,6 +128,8 @@ export class GenitoreEditComponent implements OnInit {
           tap(
             //genitore => this.form.patchValue(genitore)
             genitore => {
+
+              this.genitoreNomeCognome = genitore.persona.nome + " "+ genitore.persona.cognome;
               //Dati PER_Persona
               this.form.controls['id'].setValue(genitore.id);
               this.form.controls['personaID'].setValue(genitore.personaID);

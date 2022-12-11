@@ -41,7 +41,7 @@ export class AlunnoEditComponent implements OnInit {
 //#region ----- Variabili -------
 
   alunno$!:                    Observable<ALU_Alunno>;
-
+  alunnoNomeCognome:          string = "";
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
@@ -137,6 +137,8 @@ export class AlunnoEditComponent implements OnInit {
       .pipe(
           tap(
             alunno => {
+
+              this.alunnoNomeCognome = alunno.persona.nome + " " + alunno.persona.cognome;
               this.form.controls['id'].setValue(alunno.id);
               this.form.controls['personaID'].setValue(alunno.personaID);
 
