@@ -51,16 +51,17 @@ export class PersonaEditComponent implements OnInit {
     private svcComuni:                    ComuniService,
     public _dialog:                       MatDialog,
     private _snackBar:                    MatSnackBar,
-    private _loadingService :             LoadingService,
-  ) { 
+    private _loadingService :             LoadingService  ) {
+
     _dialogRef.disableClose = true;
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 
     this.form = this.fb.group({
       id:                         [null],
+      tipoPersonaID:              ['', Validators.required],
+
       nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       cognome:                    ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-      tipoPersonaID:              ['', Validators.required],
       dtNascita:                  ['', Validators.required],
       comuneNascita:              ['', Validators.maxLength(50)],
       provNascita:                ['', Validators.maxLength(2)] ,
@@ -75,6 +76,7 @@ export class PersonaEditComponent implements OnInit {
       telefono:                   ['', Validators.maxLength(13)],
       email:                      ['',Validators.email],
 
+      ckAttivo:                   [true]
     });
   }
 
@@ -82,10 +84,7 @@ export class PersonaEditComponent implements OnInit {
 
   ngOnInit() {
 
-    
     this.obsTipiPersona$ = this.svcTipiPersona.list();
-
-
     this.loadData();
   }
 
@@ -100,11 +99,13 @@ export class PersonaEditComponent implements OnInit {
       const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
 
       this.persona$ = loadPersona$
-      .pipe( tap(
-          persona => this.form.patchValue(persona)
-        )
+      .pipe( 
+          tap(
+            persona => this.form.patchValue(persona)
+          )
       );
-    } else 
+    }
+    else 
       this.emptyForm = true
     
     //********************* FILTRO COMUNE *******************
@@ -119,19 +120,21 @@ export class PersonaEditComponent implements OnInit {
 
     //********************* FILTRO COMUNE NASCITA ***********
     this.filteredComuniNascita$ = this.form.controls['comuneNascita'].valueChanges
-    .pipe( tap(),
+    .pipe( 
+      tap(),
       debounceTime(300),
       tap(() => this.comuniNascitaIsLoading = true),
       switchMap(() => this.svcComuni.filterList(this.form.value.comuneNascita)),
       tap(() => this.comuniNascitaIsLoading = false)
     )
   }
+
 //#endregion
 
 //#region ----- Operazioni CRUD -------
 
-  save(){
-
+  save()
+  {
     if (this.form.controls['id'].value == null) 
       this.svcPersone.post(this.form.value).subscribe(
         res=> this._dialogRef.close(),
@@ -145,22 +148,18 @@ export class PersonaEditComponent implements OnInit {
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
   }
 
-  delete(){
-
+  delete()
+  {
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-    dialogYesNo.afterClosed().subscribe(
-      result => {
+    dialogYesNo.afterClosed().subscribe( result => {
         if(result){
-          this.svcPersone.delete(Number(this.personaID))
-          //.pipe (
-          //  finalize(()=>this.router.navigate(['/alunni']))
-          //)
-          .subscribe(
-            res=> { this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
-            this._dialogRef.close();
+          this.svcPersone.delete(Number(this.personaID)).subscribe(
+            res=> { 
+              this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
+              this._dialogRef.close();
             },
             err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
         );
@@ -170,6 +169,7 @@ export class PersonaEditComponent implements OnInit {
 //#endregion
 
 //#region ----- Altri metodi -------
+
 popolaProv(prov: string, cap: string) {
   this.form.controls['prov'].setValue(prov);
   this.form.controls['cap'].setValue(cap);

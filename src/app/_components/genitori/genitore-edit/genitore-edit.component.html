@@ -1,8 +1,9 @@
-
     <mat-card class="form-card">
         <mat-card-content>
             <form *ngIf="(genitore$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
                 <div class="center">
+
+<!-- ********************************    BOTTONI     ************************************* -->
                     <!-- <button mat-mini-fab aria-label="Back" matTooltip="Back" class="btn" 
                     mat-dialog-close>
                         <mat-icon>arrow_back</mat-icon>
@@ -33,12 +34,8 @@
                 <mat-tab-group mat-align-tabs="center">
 <!-- ********************************    MAT TAB ANAGRAFICA *********************************** -->
                     <mat-tab  label="Dati Anagrafici">
-                        <mat-grid-list class="mt10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
-                            
-                            <mat-checkbox color="primary" formControlName="ckAttivo">
-                                Genitore Attivo
-                            </mat-checkbox>
-                            
+                        
+                        <mat-grid-list class="mt10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">    
                             <mat-grid-tile>
                                 <mat-form-field>
                                     <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome" #nome>
@@ -54,21 +51,33 @@
                             </mat-grid-tile>
 
                             <mat-grid-tile>
+                                <mat-checkbox color="primary" formControlName="ckAttivo">
+                                    Anagrafica Attiva
+                                </mat-checkbox>
+                            </mat-grid-tile>
+
+                        </mat-grid-list>
+
+                        <mat-grid-list [cols]="breakpoint" rowHeight="60px">
+
+                            <mat-grid-tile>
                                 <mat-form-field>
-                                    <input matInput required formControlName = "dtNascita" [matDatepicker]= "dpDtNascita"
-                                        placeholder="Data di Nascita"
-                                        #date>
+                                    <input matInput required type="text" 
+                                           placeholder="Tipo (P/M/T)" 
+                                           formControlName="tipo">
+                                    <mat-error>Inserire P (padre), M (madre) o T (tutore)</mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput required formControlName = "dtNascita" 
+                                           [matDatepicker]= "dpDtNascita"
+                                           placeholder="Data di Nascita"
+                                           #date>
                                     <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
                                     <mat-datepicker #dpDtNascita  ></mat-datepicker>
                                     <mat-error *ngIf="form.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
-                                </mat-form-field>
-                            </mat-grid-tile>
-                        </mat-grid-list>
-                        <mat-grid-list [cols]="breakpoint" rowHeight="60px">
-                            <mat-grid-tile>
-                                <mat-form-field>
-                                    <input matInput required type="text" placeholder="Tipo (P/M/T)" formControlName="tipo">
-                                    <mat-error>Inserire P (padre), M (madre) o T (tutore)</mat-error>
                                 </mat-form-field>
                             </mat-grid-tile>
 
@@ -224,21 +233,17 @@
             </div> -->
 
             <form *ngIf="(genitore$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "formGenitore">
-                
-
                  
                 <mat-form-field>
-                    <input matInput type="text" required placeholder="titoloStudio"   formControlName="titoloStudio" #titoloStudio>
+                    <input matInput type="text" placeholder="titoloStudio"   formControlName="titoloStudio" #titoloStudio>
                 </mat-form-field>
                 
                 <mat-form-field>
-                    <input matInput type="text" required placeholder="professione"   formControlName="professione" #professione>
+                    <input matInput type="text" placeholder="professione"   formControlName="professione" #professione>
                 </mat-form-field>
 
- 
-
-
             </form> 
+            
         </mat-card-content>
     </mat-card>
 

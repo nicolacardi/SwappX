@@ -95,11 +95,11 @@ export class GenitoreEditComponent implements OnInit {
       email:                      ['',Validators.email],
       //email:                      ['', Validators.pattern(regemail)]
 
-      ckAttivo:                   [true],
+      ckAttivo:                   [true]
     });
 
-    this.formGenitore = this.fb.group({
-      //ckAttivo:                   [true],
+    this.formGenitore = this.fb.group(
+    {
       titoloStudio:               [''],
       professione:                ['']
     });
@@ -113,12 +113,6 @@ export class GenitoreEditComponent implements OnInit {
 
   loadData(){
 
-    // this.genitoreID = this.route.snapshot.params['id'];  
-    // this.caller_page = this.route.snapshot.queryParams["page"];
-    // this.caller_size = this.route.snapshot.queryParams["size"];
-    // this.caller_filter = this.route.snapshot.queryParams["filter"];
-    // this.caller_sortField = this.route.snapshot.queryParams["sortField"];
-    // this.caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
 
     //********************* POPOLAMENTO FORM *******************
@@ -133,8 +127,8 @@ export class GenitoreEditComponent implements OnInit {
       .pipe(
           tap(
             //genitore => this.form.patchValue(genitore)
-
-            genitore=> {
+            genitore => {
+              //Dati PER_Persona
               this.form.controls['id'].setValue(genitore.id);
               this.form.controls['personaID'].setValue(genitore.personaID);
 
@@ -157,8 +151,9 @@ export class GenitoreEditComponent implements OnInit {
               this.form.controls['telefono'].setValue(genitore.persona!.telefono);
               this.form.controls['email'].setValue(genitore.persona!.email);
 
-              this.form.controls['ckAttivo'].setValue(genitore.persona.ckAttivo);
+              this.form.controls['ckAttivo'].setValue(genitore.persona!.ckAttivo);
 
+              //Dati ALU_Genitore
               this.form.controls['tipo'].setValue(genitore.tipo);  //incredibile: non esisteva tipo nel model e funzionava con il patchValue!
               //this.formGenitore.controls['ckAttivo'].setValue(genitore.persona.ckAttivo);
               this.formGenitore.controls['titoloStudio'].setValue(genitore.titoloStudio );
@@ -175,7 +170,6 @@ export class GenitoreEditComponent implements OnInit {
       tap(),
       debounceTime(300),
       tap(() => this.comuniIsLoading = true),
-      //delayWhen(() => timer(2000)),
       switchMap(() => this.svcComuni.filterList(this.form.value.comune)),
       tap(() => this.comuniIsLoading = false)
     )
@@ -195,8 +189,8 @@ export class GenitoreEditComponent implements OnInit {
 
 //#region ----- Operazioni CRUD -------
 
-  save(){
-
+  save()
+  {
     let personaObj: PER_Persona = {
       
       nome :          this.form.value.nome,
@@ -248,9 +242,8 @@ export class GenitoreEditComponent implements OnInit {
         err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       ) 
     }
-    else{
-      console.log("put personaObj: ", personaObj);
-
+    else {
+      //console.log("put personaObj: ", personaObj);
       this.svcPersone.put(personaObj)
       .pipe(
         concatMap( () => this.svcGenitori.put(genitoreObj))
@@ -328,7 +321,9 @@ export class GenitoreEditComponent implements OnInit {
         }
     });
   }
+//#endregion
 
+//#region ----- Altri metodi -------
   popolaProv(prov: string, cap: string) {
     this.form.controls['prov'].setValue(prov);
     this.form.controls['cap'].setValue(cap);
@@ -344,7 +339,9 @@ export class GenitoreEditComponent implements OnInit {
 
 //#region ----- Metodi di gestione Genitori, Famiglia e Classi -------
 
-  addAlunno() { //TODO
+  addAlunno() 
+  {
+     //TODO
   }
 
   addToFamily(figlio: ALU_Alunno) {

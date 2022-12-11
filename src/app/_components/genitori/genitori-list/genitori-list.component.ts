@@ -171,8 +171,7 @@ export class GenitoriListComponent implements OnInit {
       default: this.displayedColumns = this.displayedColumnsGenitoriPage;
     }
 
-    this._navigationService.getAlunno().subscribe(
-      val=>{
+    this._navigationService.getAlunno().subscribe( val=>{
       if (val!= '') {
         this.passedAlunno = val;
         this.toggleDrawer.emit();
@@ -196,13 +195,18 @@ export class GenitoriListComponent implements OnInit {
             res=> res.filter((x) => x.persona.ckAttivo == true))
           );
       }
-      else obsGenitori$= this.svcGenitori.listWithChildren();
+      else {
+        obsGenitori$= this.svcGenitori.listWithChildren();
+      }
     }
 
     const loadGenitori$ =this._loadingService.showLoaderUntilCompleted(obsGenitori$);
 
     loadGenitori$.subscribe(
       val =>   {
+
+        console.log("val: ", val);
+
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort;

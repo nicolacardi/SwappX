@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
+import { SelectionModel } from '@angular/cdk/collections';
 
 //components
 import { PersonaEditComponent } from '../persona-edit/persona-edit.component';
@@ -18,6 +19,8 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 //models
 import { PER_Persona } from 'src/app/_models/PER_Persone';
 import { map } from 'rxjs/operators';
+
+
 @Component({
   selector: 'app-persone-list',
   templateUrl: './persone-list.component.html',
@@ -40,8 +43,9 @@ export class PersoneListComponent implements OnInit {
     "comune", 
     "cap", 
     "prov", 
+    "telefono",
     "email", 
-    "telefono"
+    "ckAttivo"
   ];
 
   filterValue = '';       //Filtro semplice
@@ -86,7 +90,14 @@ export class PersoneListComponent implements OnInit {
     "email", 
     "telefono"];
 
+  selection = new SelectionModel<PER_Persona>(true, []);   //rappresenta la selezione delle checkbox
+
   menuTopLeftPosition =  {x: '0', y: '0'} 
+
+  toggleChecks:                 boolean = false;
+  showPageTitle:                boolean = true;
+  showTableRibbon:              boolean = true;
+  public ckSoloAttivi :         boolean = true;
 
 //#endregion
 
@@ -110,15 +121,23 @@ export class PersoneListComponent implements OnInit {
   }
 
 //#region ----- LifeCycle Hooks e simili-------
-  ngOnInit(): void {
+  ngOnInit()
+  {
     this.displayedColumns =  this.displayedColumnsPersoneList;
     this.loadData(); 
   }
 
   loadData () {
     let obsPersone$: Observable<PER_Persona[]>;
-    obsPersone$= this.svcPersone.list();
-
+    
+    if(this.ckSoloAttivi){
+      obsPersone$= this.svcPersone.list()
+      .pipe(map(
+        res=> res.filter((x) => x.ckAttivo == true))
+      );
+    }
+    else  obsPersone$= this.svcPersone.list();
+ 
     const loadPersone$ =this._loadingService.showLoaderUntilCompleted(obsPersone$);
     loadPersone$.pipe(
         map(val=> val.filter( val => (val.tipoPersonaID != 9 && val.tipoPersonaID != 10 ))
@@ -207,6 +226,55 @@ export class PersoneListComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
   }
+//#endregion
+
+//#region ----- Gestione Campo Checkbox -------
+
+selectedRow(element: PER_Persona) {
+  this.selection.toggle(element);
+}
+
+masterToggle() {
+  this.toggleChecks = !this.toggleChecks;
+
+  if (this.toggleChecks) 
+    this.selection.select(...this.matDataSource.data);
+  else 
+    this.resetSelections();
+}
+
+resetSelections() {
+  this.selection.clear();
+  this.matDataSource.data.forEach(row => this.selection.deselect(row));
+}
+
+toggleAttivi(){
+  this.ckSoloAttivi = !this.ckSoloAttivi;
+  this.loadData();
+}
+
+getChecked() {
+  //funzione usata da classi-dahsboard
+  return this.selection.selected;
+}
+
+//non so se serva questo metodo: genera un valore per l'aria-label...
+//forse serve per poi pescare i valori selezionati?
+checkboxLabel(row?: PER_Persona): string {
+  if (!row) 
+    return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+  else
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+}
+
+//questo metodo ritorna un booleano che dice se sono selezionati tutti i record o no
+//per ora non lo utilizzo
+isAllSelected() {
+  const numSelected = this.selection.selected.length;   //conta il numero di elementi selezionati
+  const numRows = this.matDataSource.data.length;       //conta il numero di elementi del matDataSource
+  return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
+}
+
 //#endregion
 
  
