@@ -38,6 +38,8 @@ export class GenitoreEditComponent implements OnInit {
   genitore$!:                  Observable<ALU_Genitore>;
 
   form! :                     FormGroup;
+  formGenitore! :             FormGroup;
+
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
 
@@ -92,7 +94,12 @@ export class GenitoreEditComponent implements OnInit {
       telefono2:                  ['', Validators.maxLength(13)],
       email:                      ['',Validators.email],
       //email:                      ['', Validators.pattern(regemail)]
+
       ckAttivo:                   [true],
+    });
+
+    this.formGenitore = this.fb.group({
+      //ckAttivo:                   [true],
       titoloStudio:               [''],
       professione:                ['']
     });
@@ -147,13 +154,15 @@ export class GenitoreEditComponent implements OnInit {
 
               this.form.controls['indirizzo'].setValue(genitore.persona!.indirizzo);
               this.form.controls['cap'].setValue(genitore.persona!.cap);
-
               this.form.controls['telefono'].setValue(genitore.persona!.telefono);
-              
+              this.form.controls['email'].setValue(genitore.persona!.email);
+
+              this.form.controls['ckAttivo'].setValue(genitore.persona.ckAttivo);
+
               this.form.controls['tipo'].setValue(genitore.tipo);  //incredibile: non esisteva tipo nel model e funzionava con il patchValue!
-              this.form.controls['ckAttivo'].setValue(genitore.ckAttivo);
-              // TODO!!!
-              //titoloStudio, professione
+              //this.formGenitore.controls['ckAttivo'].setValue(genitore.persona.ckAttivo);
+              this.formGenitore.controls['titoloStudio'].setValue(genitore.titoloStudio );
+              this.formGenitore.controls['professione'].setValue(genitore.professione);
             }
           )
       );
@@ -206,6 +215,8 @@ export class GenitoreEditComponent implements OnInit {
       telefono :      this.form.value.telefono,
       email :         this.form.value.email,
 
+      ckAttivo:       this.form.value.ckAttivo,
+      
       tipoPersonaID : 10,
       id : this.form.value.personaID
     }
@@ -215,10 +226,9 @@ export class GenitoreEditComponent implements OnInit {
       personaID:                  this.form.value.personaID,
 
       tipo:                       this.form.value.tipo,
-      //ckAttivo:                   this.form.value.ckAttivo,
-      ckAttivo:                   true,
-      //titoloStudio:               this.form.value.titoloStudio,
-      //professione:                this.form.value.professione,
+      //ckAttivo:                   this.formGenitore.value.ckAttivo,
+      titoloStudio:               this.formGenitore.value.titoloStudio,
+      professione:                this.formGenitore.value.professione,
 
       persona: personaObj
     }

@@ -6,17 +6,17 @@ export interface ALU_Genitore {
         personaID:      number;
 
         tipo:           string;
-        ckAttivo:       boolean;
-        //titoloStudio:   string;
-        //professione:    string;
+        //ckAttivo:       boolean;
+        titoloStudio:   string;
+        professione:    string;
 
-        note?:           string;
-        dtIns?:          string;
-        dtUpd?:          string;
-        userIns?:        number;
-        userUpd?:        number;
+        note?:          string;
+        dtIns?:         string;
+        dtUpd?:         string;
+        userIns?:       number;
+        userUpd?:       number;
 
         persona:        PER_Persona;
 
-        _Figli?:         ALU_Alunno[];
+        _Figli?:        ALU_Alunno[];
 }

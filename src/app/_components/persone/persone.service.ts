@@ -11,7 +11,6 @@ export class PersoneService {
 
   constructor(private http: HttpClient) { }
 
-
   list(): Observable<PER_Persona[]>{
     return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone')
     //Aggiungere metodo filtrato ???
@@ -32,7 +31,6 @@ export class PersoneService {
 
 
   put(formData: any): Observable <any>{
-    console.log ("formData", formData);
     return this.http.put( environment.apiBaseUrl  + 'PER_Persone/' + formData.id , formData);    
   }
 

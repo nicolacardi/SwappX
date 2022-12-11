@@ -12,27 +12,33 @@
                     <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
                     <button *ngIf="genitoreID" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
-                    [disabled]= "!form.valid" 
-                    (click)="loadData()" >
+                            [disabled]= "!form.valid" 
+                            (click)="loadData()" >
                         <mat-icon>restart_alt</mat-icon>
                     </button>
 
                     <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-                    [disabled]= "!form.valid" 
-                    (click)="save()" >
+                            [disabled]= "!form.valid" 
+                            (click)="save()" >
                         <mat-icon>save</mat-icon>
                     </button>
 
                     <button *ngIf="genitoreID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
-                    [disabled]= "!form.valid" 
-                    (click)="delete()" >
+                            [disabled]= "!form.valid" 
+                            (click)="delete()" >
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>
+                
                 <mat-tab-group mat-align-tabs="center">
 <!-- ********************************    MAT TAB ANAGRAFICA *********************************** -->
                     <mat-tab  label="Dati Anagrafici">
                         <mat-grid-list class="mt10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
+                            
+                            <mat-checkbox color="primary" formControlName="ckAttivo">
+                                Genitore Attivo
+                            </mat-checkbox>
+                            
                             <mat-grid-tile>
                                 <mat-form-field>
                                     <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome" #nome>
@@ -49,12 +55,9 @@
 
                             <mat-grid-tile>
                                 <mat-form-field>
-                                    <input matInput
-                                    required
-                                    formControlName = "dtNascita"
-                                    [matDatepicker]= "dpDtNascita"
-                                    placeholder="Data di Nascita"
-                                    #date>
+                                    <input matInput required formControlName = "dtNascita" [matDatepicker]= "dpDtNascita"
+                                        placeholder="Data di Nascita"
+                                        #date>
                                     <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
                                     <mat-datepicker #dpDtNascita  ></mat-datepicker>
                                     <mat-error *ngIf="form.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
@@ -67,7 +70,6 @@
                                     <input matInput required type="text" placeholder="Tipo (P/M/T)" formControlName="tipo">
                                     <mat-error>Inserire P (padre), M (madre) o T (tutore)</mat-error>
                                 </mat-form-field>
-                                
                             </mat-grid-tile>
 
                             <mat-grid-tile>
@@ -221,6 +223,22 @@
                 form.valid: {{form.valid}}
             </div> -->
 
+            <form *ngIf="(genitore$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "formGenitore">
+                
+
+                 
+                <mat-form-field>
+                    <input matInput type="text" required placeholder="titoloStudio"   formControlName="titoloStudio" #titoloStudio>
+                </mat-form-field>
+                
+                <mat-form-field>
+                    <input matInput type="text" required placeholder="professione"   formControlName="professione" #professione>
+                </mat-form-field>
+
+ 
+
+
+            </form> 
         </mat-card-content>
     </mat-card>
 

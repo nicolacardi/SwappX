@@ -101,6 +101,19 @@
             <!-- <td mat-cell *matCellDef="let element">{{element.telefono}}</td> -->
             <td mat-cell *matCellDef="let element" [innerHTML]="element.persona.telefono|highlight:filterValue"></td>
         </ng-container>
+
+        <ng-container matColumnDef="ckAttivo">
+            <th mat-header-cell class="center w50px"  *matHeaderCellDef cdkDrag mat-sort-header>
+                attivo<br>
+                <button mat-icon-button (click)="toggleAttivi()" class="topZIndex">
+                    <mat-icon *ngIf="ckSoloAttivi" color="primary">visibility_off</mat-icon>
+                    <mat-icon *ngIf="!ckSoloAttivi" color="primary">visibility</mat-icon>
+                </button>
+            </th>
+            <td mat-cell class="center" *matCellDef="let element">
+                <mat-checkbox [checked]="element.persona.ckAttivo" color="primary" disabled></mat-checkbox>
+            </td>
+        </ng-container>
         
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
         <tr mat-header-row class="_table-title-low" *matHeaderRowDef="displayedColumns; "></tr>

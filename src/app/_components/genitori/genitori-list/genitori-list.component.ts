@@ -2,6 +2,8 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Observable, pipe } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource} from '@angular/material/table';
 import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,7 +22,6 @@ import { AlunniService } from '../../alunni/alunni.service';
 
 //models
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 @Component({
   selector: 'app-genitori-list',
@@ -58,11 +59,15 @@ export class GenitoriListComponent implements OnInit {
     "actionsColumn", 
     "nome", 
     "cognome", 
+    "dtNascita",
     "tipo", 
     "indirizzo", 
+    "comune", 
+    "cap", 
+    "prov", 
     "telefono", 
     "email", 
-    "dtNascita"
+    "ckAttivo"
    ];
 
   rptTitle = 'List Genitori';
@@ -86,11 +91,14 @@ export class GenitoriListComponent implements OnInit {
     "email", 
     "nato il"];
 
+  selection = new SelectionModel<ALU_Genitore>(true, []);   //rappresenta la selezione delle checkbox
+
   public passedAlunno!:         string;
   public page!:                 string;
   
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
+  toggleChecks:                 boolean = false;
   showPageTitle:                boolean = true;
   showTableRibbon:              boolean = true;
   public ckSoloAttivi :         boolean = true;
@@ -141,8 +149,11 @@ export class GenitoriListComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-    if (this.context != '')
+    if (this.context != ''){
       this.loadData();
+      this.toggleChecks = false;
+      this.resetSelections();
+    }
   }
 
   ngOnInit () {
@@ -175,12 +186,19 @@ export class GenitoriListComponent implements OnInit {
     let obsGenitori$: Observable<ALU_Genitore[]>;
 
     if(this.context == "alunno-edit-famiglia"){
-      obsGenitori$= this.svcGenitori.listByAlunno(this.alunnoID);
+      obsGenitori$ = this.svcGenitori.listByAlunno(this.alunnoID);
       //.pipe(map(res=> res.filter(gen => gen._Figli.some(y => (y.id == this.alunnoID)))));  //BELLISSIMA Sembra giusta ma non funziona
     }
     else {
-      obsGenitori$= this.svcGenitori.listWithChildren();
+      if(this.ckSoloAttivi){
+        obsGenitori$= this.svcGenitori.listWithChildren()
+          .pipe(map(
+            res=> res.filter((x) => x.persona.ckAttivo == true))
+          );
+      }
+      else obsGenitori$= this.svcGenitori.listWithChildren();
     }
+
     const loadGenitori$ =this._loadingService.showLoaderUntilCompleted(obsGenitori$);
 
     loadGenitori$.subscribe(
@@ -299,6 +317,54 @@ export class GenitoriListComponent implements OnInit {
 //#endregion
 
 //#region ----- Emit per alunno-edit -------
+
+//#region ----- Gestione Campo Checkbox -------
+selectedRow(element: ALU_Genitore) {
+  this.selection.toggle(element);
+}
+
+masterToggle() {
+  this.toggleChecks = !this.toggleChecks;
+
+  if (this.toggleChecks) 
+    this.selection.select(...this.matDataSource.data);
+  else 
+    this.resetSelections();
+}
+
+resetSelections() {
+  this.selection.clear();
+  this.matDataSource.data.forEach(row => this.selection.deselect(row));
+}
+
+toggleAttivi(){
+  this.ckSoloAttivi = !this.ckSoloAttivi;
+  this.loadData();
+}
+
+getChecked() {
+  //funzione usata da classi-dahsboard
+  return this.selection.selected;
+}
+
+//non so se serva questo metodo: genera un valore per l'aria-label...
+//forse serve per poi pescare i valori selezionati?
+checkboxLabel(row?: ALU_Genitore): string {
+  if (!row) 
+    return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+  else
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+}
+
+//questo metodo ritorna un booleano che dice se sono selezionati tutti i record o no
+//per ora non lo utilizzo
+isAllSelected() {
+  const numSelected = this.selection.selected.length;   //conta il numero di elementi selezionati
+  const numRows = this.matDataSource.data.length;       //conta il numero di elementi del matDataSource
+  return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
+}
+//#endregion
+
 
   addToFamilyEmit(item: ALU_Genitore) {
     this.addToFamily.emit(item);

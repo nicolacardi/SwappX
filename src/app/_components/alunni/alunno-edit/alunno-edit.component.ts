@@ -163,11 +163,13 @@ export class AlunnoEditComponent implements OnInit {
               this.form.controls['scuolaProvenienza'].setValue(alunno.scuolaProvenienza);
               this.form.controls['indirizzoScuolaProvenienza'].setValue(alunno.indirizzoScuolaProvenienza);
 
-              this.form.controls['ckAttivo'].setValue(alunno.ckAttivo);
+              //this.form.controls['ckAttivo'].setValue(alunno.ckAttivo);
+              this.form.controls['ckAttivo'].setValue(alunno.persona.ckAttivo);
+
               this.form.controls['ckDSA'].setValue(alunno.ckDSA);
               this.form.controls['ckDisabile'].setValue(alunno.ckDisabile);
               this.form.controls['ckAuthFoto'].setValue(alunno.ckAuthFoto);
-              this.form.controls['ckAuthUscite'].setValue(alunno.ckAuthuscite);
+              this.form.controls['ckAuthUscite'].setValue(alunno.ckAuthUscite);
               this.form.controls['ckAuthUsoMateriale'].setValue(alunno.ckAuthUsoMateriale);
             }       
           )
@@ -204,7 +206,7 @@ export class AlunnoEditComponent implements OnInit {
   save(){
 
     let personaObj: PER_Persona = {
-      
+
       nome :          this.form.value.nome,
       cognome :       this.form.value.cognome,
       dtNascita :     this.form.value.dtNascita,
@@ -220,6 +222,7 @@ export class AlunnoEditComponent implements OnInit {
       CF :            this.form.value.cf,
       telefono :      this.form.value.telefono,
       email :         this.form.value.email,
+      ckAttivo:       this.form.value.ckAttivo,
 
       tipoPersonaID : 9,
       id : this.form.value.personaID
@@ -229,12 +232,11 @@ export class AlunnoEditComponent implements OnInit {
       id:                         this.form.value.id,
       personaID:                  this.form.value.personaID,
 
-      ckAttivo:                   this.form.value.ckAttivo,
       ckDisabile:                 this.form.value.ckDisabile,
       ckDSA:                      this.form.value.ckDSA,
       ckAuthFoto:                 this.form.value.ckAuthFoto,
       ckAuthUsoMateriale:         this.form.value.ckAuthUsoMateriale,
-      ckAuthuscite:               this.form.value.ckAuthUscite,
+      ckAuthUscite:               this.form.value.ckAuthUscite,
       scuolaProvenienza:          this.form.value.scuolaProvenienza,
       indirizzoScuolaProvenienza: this.form.value.indirizzoScuolaProvenienza,
 

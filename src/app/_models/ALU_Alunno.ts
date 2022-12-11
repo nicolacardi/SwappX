@@ -5,12 +5,12 @@ export interface ALU_Alunno {
         id:                     number;
         personaID:              number;
 
-        ckAttivo:               boolean;
+        //ckAttivo:               boolean;
         ckDisabile:             boolean;
         ckDSA:                  boolean;
         ckAuthFoto:             boolean;
         ckAuthUsoMateriale:     boolean;
-        ckAuthuscite:           boolean;
+        ckAuthUscite:           boolean;
         scuolaProvenienza:      string;
         indirizzoScuolaProvenienza: string;
 

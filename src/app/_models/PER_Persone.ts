@@ -21,6 +21,8 @@ export interface PER_Persona {
         telefono:               string;
         telefono1?:              string;
 
+        ckAttivo:               boolean;
+
         note?:                   string;
         dtIns?:                  string;
         dtUpd?:                  string;

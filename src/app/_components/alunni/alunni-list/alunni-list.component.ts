@@ -44,8 +44,8 @@ export class AlunniListComponent implements OnInit {
       "comune", 
       "cap", 
       "prov", 
-      "email", 
       "telefono", 
+      "email", 
       "ckAttivo"
   ];
 
@@ -54,8 +54,8 @@ export class AlunniListComponent implements OnInit {
     "nome", 
     "cognome", 
     "dtNascita", 
-    "email", 
     "telefono", 
+    "email", 
     "removeFromFam"
   ];
 
@@ -79,8 +79,9 @@ export class AlunniListComponent implements OnInit {
     "comune", 
     "cap", 
     "prov", 
+    "telefono",
     "email", 
-    "telefono", ];
+     ];
 
   rptColumnsNames  = [
     "nome", 
@@ -90,8 +91,9 @@ export class AlunniListComponent implements OnInit {
     "comune", 
     "cap", 
     "prov", 
-    "email", 
-    "telefono", ];
+    "telefono" ,
+    "email"
+    ];
 
   selection = new SelectionModel<ALU_Alunno>(true, []);   //rappresenta la selezione delle checkbox
 
@@ -102,7 +104,6 @@ export class AlunniListComponent implements OnInit {
   //idAlunniChecked:              number[] = [];
   
   toggleChecks:                 boolean = false;
-
   showPageTitle:                boolean = true;
   showTableRibbon:              boolean = true;
   public ckSoloAttivi :         boolean = true;
@@ -222,7 +223,7 @@ export class AlunniListComponent implements OnInit {
       if(this.ckSoloAttivi){
         obsAlunni$= this.svcAlunni.listWithParents()
           .pipe(map(
-            res=> res.filter((x) => x.ckAttivo == true))
+            res=> res.filter((x) => x.persona.ckAttivo == true))
           );
       }
       else obsAlunni$= this.svcAlunni.listWithParents();
