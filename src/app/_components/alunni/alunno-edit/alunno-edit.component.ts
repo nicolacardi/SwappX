@@ -42,7 +42,9 @@ export class AlunnoEditComponent implements OnInit {
 
   alunno$!:                    Observable<ALU_Alunno>;
   alunnoNomeCognome:          string = "";
-  form! :                     FormGroup;
+  formPersona! :                     FormGroup;
+  formAlunno! :             FormGroup;
+
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
   
@@ -76,7 +78,7 @@ export class AlunnoEditComponent implements OnInit {
     _dialogRef.disableClose = true;
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
     
-    this.form = this.fb.group({
+    this.formPersona = this.fb.group({
       id:                         [null],
       personaID:                  [null],
       tipoPersonaID:              [null],
@@ -95,17 +97,31 @@ export class AlunnoEditComponent implements OnInit {
       genere:                     ['',{ validators:[Validators.maxLength(1), Validators.required, Validators.pattern("M|F")]}],
       cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
       telefono:                   ['', Validators.maxLength(13)],
-      email:                      ['', Validators.email],
+      telefono1:                   ['', Validators.maxLength(13)],
 
-      scuolaProvenienza:          ['', Validators.maxLength(255)],
-      indirizzoScuolaProvenienza: ['', Validators.maxLength(255)],
-      ckAttivo:                   [true],
-      ckDSA:                      [false],
-      ckDisabile:                 [false],
-      ckAuthFoto:                 [false],
-      ckAuthUsoMateriale:         [false],
-      ckAuthUscite:               [false]
+      email:                      ['', Validators.email],
+      ckAttivo:                   [true]
+      // scuolaProvenienza:          ['', Validators.maxLength(255)],
+      // indirizzoScuolaProvenienza: ['', Validators.maxLength(255)],
+      // ckAttivo:                   [true],
+      // ckDSA:                      [false],
+      // ckDisabile:                 [false],
+      // ckAuthFoto:                 [false],
+      // ckAuthUsoMateriale:         [false],
+      // ckAuthUscite:               [false]
     });
+
+    this.formAlunno = this.fb.group(
+      {
+        scuolaProvenienza:          ['', Validators.maxLength(255)],
+        indirizzoScuolaProvenienza: ['', Validators.maxLength(255)],
+
+        ckDSA:                      [false],
+        ckDisabile:                 [false],
+        ckAuthFoto:                 [false],
+        ckAuthUsoMateriale:         [false],
+        ckAuthUscite:               [false]
+      });
   }
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -122,8 +138,9 @@ export class AlunnoEditComponent implements OnInit {
     // this.caller_filter = this.route.snapshot.queryParams["filter"];
     // this.caller_sortField = this.route.snapshot.queryParams["sortField"];
     // this.caller_sortDirection = this.route.snapshot.queryParams["sortDirection"];
-    this.breakpoint = (window.innerWidth <= 800) ? 1 : 4;
-    this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 4;
+    this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
+    this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
+
 
     //********************* POPOLAMENTO FORM *******************
     //serve distinguere tra form vuoto e form popolato in arrivo da lista alunni
@@ -139,40 +156,41 @@ export class AlunnoEditComponent implements OnInit {
             alunno => {
 
               this.alunnoNomeCognome = alunno.persona.nome + " " + alunno.persona.cognome;
-              this.form.controls['id'].setValue(alunno.id);
-              this.form.controls['personaID'].setValue(alunno.personaID);
 
-                this.form.controls['nome'].setValue(alunno.persona!.nome);
-                this.form.controls['cognome'].setValue(alunno.persona!.cognome);
-                this.form.controls['dtNascita'].setValue(alunno.persona!.dtNascita);
-                this.form.controls['genere'].setValue(alunno.persona!.genere);
-                this.form.controls['cf'].setValue(alunno.persona!.CF);
+              this.formPersona.controls['id'].setValue(alunno.id);
+              this.formPersona.controls['personaID'].setValue(alunno.personaID);  //non dovrebbe essere parte del formAlunno?
 
-                this.form.controls['comuneNascita'].setValue(alunno.persona!.comuneNascita);
-                this.form.controls['provNascita'].setValue(alunno.persona!.provNascita);
-                this.form.controls['nazioneNascita'].setValue(alunno.persona!.nazioneNascita);
+              this.formPersona.controls['nome'].setValue(alunno.persona!.nome);
+              this.formPersona.controls['cognome'].setValue(alunno.persona!.cognome);
+              this.formPersona.controls['dtNascita'].setValue(alunno.persona!.dtNascita);
+              this.formPersona.controls['genere'].setValue(alunno.persona!.genere);
+              this.formPersona.controls['cf'].setValue(alunno.persona!.CF);
 
-                this.form.controls['comune'].setValue(alunno.persona!.comune);
-                this.form.controls['prov'].setValue(alunno.persona!.prov);
-                this.form.controls['nazione'].setValue(alunno.persona!.nazione);
+              this.formPersona.controls['comuneNascita'].setValue(alunno.persona!.comuneNascita);
+              this.formPersona.controls['provNascita'].setValue(alunno.persona!.provNascita);
+              this.formPersona.controls['nazioneNascita'].setValue(alunno.persona!.nazioneNascita);
 
-                this.form.controls['indirizzo'].setValue(alunno.persona!.indirizzo);
-                this.form.controls['cap'].setValue(alunno.persona!.cap);
+              this.formPersona.controls['comune'].setValue(alunno.persona!.comune);
+              this.formPersona.controls['prov'].setValue(alunno.persona!.prov);
+              this.formPersona.controls['nazione'].setValue(alunno.persona!.nazione);
 
-                this.form.controls['telefono'].setValue(alunno.persona!.telefono);
-                this.form.controls['email'].setValue(alunno.persona!.email);
+              this.formPersona.controls['indirizzo'].setValue(alunno.persona!.indirizzo);
+              this.formPersona.controls['cap'].setValue(alunno.persona!.cap);
 
-              this.form.controls['scuolaProvenienza'].setValue(alunno.scuolaProvenienza);
-              this.form.controls['indirizzoScuolaProvenienza'].setValue(alunno.indirizzoScuolaProvenienza);
+              this.formPersona.controls['telefono'].setValue(alunno.persona!.telefono);
+              this.formPersona.controls['telefono1'].setValue(alunno.persona!.telefono1);
 
-              //this.form.controls['ckAttivo'].setValue(alunno.ckAttivo);
-              this.form.controls['ckAttivo'].setValue(alunno.persona.ckAttivo);
+              this.formPersona.controls['email'].setValue(alunno.persona!.email);
+              this.formPersona.controls['ckAttivo'].setValue(alunno.persona.ckAttivo);
 
-              this.form.controls['ckDSA'].setValue(alunno.ckDSA);
-              this.form.controls['ckDisabile'].setValue(alunno.ckDisabile);
-              this.form.controls['ckAuthFoto'].setValue(alunno.ckAuthFoto);
-              this.form.controls['ckAuthUscite'].setValue(alunno.ckAuthUscite);
-              this.form.controls['ckAuthUsoMateriale'].setValue(alunno.ckAuthUsoMateriale);
+              this.formAlunno.controls['scuolaProvenienza'].setValue(alunno.scuolaProvenienza);
+              this.formAlunno.controls['indirizzoScuolaProvenienza'].setValue(alunno.indirizzoScuolaProvenienza);
+
+              this.formAlunno.controls['ckDSA'].setValue(alunno.ckDSA);
+              this.formAlunno.controls['ckDisabile'].setValue(alunno.ckDisabile);
+              this.formAlunno.controls['ckAuthFoto'].setValue(alunno.ckAuthFoto);
+              this.formAlunno.controls['ckAuthUscite'].setValue(alunno.ckAuthUscite);
+              this.formAlunno.controls['ckAuthUsoMateriale'].setValue(alunno.ckAuthUsoMateriale);
             }       
           )
       );
@@ -180,23 +198,23 @@ export class AlunnoEditComponent implements OnInit {
     else this.emptyForm = true
         
     //********************* FILTRO COMUNE *******************
-    this.filteredComuni$ = this.form.controls['comune'].valueChanges
+    this.filteredComuni$ = this.formPersona.controls['comune'].valueChanges
     .pipe(
       tap(),
       debounceTime(300),
       tap(() => this.comuniIsLoading = true),
       //delayWhen(() => timer(2000)),
-      switchMap(() => this.svcComuni.filterList(this.form.value.comune)),
+      switchMap(() => this.svcComuni.filterList(this.formPersona.value.comune)),
       tap(() => this.comuniIsLoading = false)
     )
 
     //********************* FILTRO COMUNE NASCITA ***********
-    this.filteredComuniNascita$ = this.form.controls['comuneNascita'].valueChanges
+    this.filteredComuniNascita$ = this.formPersona.controls['comuneNascita'].valueChanges
     .pipe(
       tap(),
       debounceTime(300),
       tap(() => this.comuniNascitaIsLoading = true),
-      switchMap(() => this.svcComuni.filterList(this.form.value.comuneNascita)),
+      switchMap(() => this.svcComuni.filterList(this.formPersona.value.comuneNascita)),
       tap(() => this.comuniNascitaIsLoading = false)
     )
   }
@@ -209,38 +227,40 @@ export class AlunnoEditComponent implements OnInit {
 
     let personaObj: PER_Persona = {
 
-      nome :          this.form.value.nome,
-      cognome :       this.form.value.cognome,
-      dtNascita :     this.form.value.dtNascita,
-      comuneNascita : this.form.value.comuneNascita,
-      provNascita :   this.form.value.provNascita,
-      nazioneNascita : this.form.value.nazioneNascita,
-      indirizzo :     this.form.value.indirizzo,
-      comune :        this.form.value.comune,
-      prov :          this.form.value.prov,
-      cap :           this.form.value.cap,
-      nazione :       this.form.value.nazione,
-      genere :        this.form.value.genere,
-      CF :            this.form.value.cf,
-      telefono :      this.form.value.telefono,
-      email :         this.form.value.email,
-      ckAttivo:       this.form.value.ckAttivo,
+      nome :          this.formPersona.value.nome,
+      cognome :       this.formPersona.value.cognome,
+      dtNascita :     this.formPersona.value.dtNascita,
+      comuneNascita : this.formPersona.value.comuneNascita,
+      provNascita :   this.formPersona.value.provNascita,
+      nazioneNascita : this.formPersona.value.nazioneNascita,
+      indirizzo :     this.formPersona.value.indirizzo,
+      comune :        this.formPersona.value.comune,
+      prov :          this.formPersona.value.prov,
+      cap :           this.formPersona.value.cap,
+      nazione :       this.formPersona.value.nazione,
+      genere :        this.formPersona.value.genere,
+      CF :            this.formPersona.value.cf,
+      telefono :      this.formPersona.value.telefono,
+      telefono1 :     this.formPersona.value.telefono1,
+
+      email :         this.formPersona.value.email,
+      ckAttivo:       this.formPersona.value.ckAttivo,
 
       tipoPersonaID : 9,
-      id : this.form.value.personaID
+      id : this.formPersona.value.personaID
     }
 
     let alunnoObj: ALU_Alunno = {
-      id:                         this.form.value.id,
-      personaID:                  this.form.value.personaID,
+      id:                         this.formPersona.value.id,
+      personaID:                  this.formPersona.value.personaID,
 
-      ckDisabile:                 this.form.value.ckDisabile,
-      ckDSA:                      this.form.value.ckDSA,
-      ckAuthFoto:                 this.form.value.ckAuthFoto,
-      ckAuthUsoMateriale:         this.form.value.ckAuthUsoMateriale,
-      ckAuthUscite:               this.form.value.ckAuthUscite,
-      scuolaProvenienza:          this.form.value.scuolaProvenienza,
-      indirizzoScuolaProvenienza: this.form.value.indirizzoScuolaProvenienza,
+      ckDisabile:                 this.formAlunno.value.ckDisabile,
+      ckDSA:                      this.formAlunno.value.ckDSA,
+      ckAuthFoto:                 this.formAlunno.value.ckAuthFoto,
+      ckAuthUsoMateriale:         this.formAlunno.value.ckAuthUsoMateriale,
+      ckAuthUscite:               this.formAlunno.value.ckAuthUscite,
+      scuolaProvenienza:          this.formAlunno.value.scuolaProvenienza,
+      indirizzoScuolaProvenienza: this.formAlunno.value.indirizzoScuolaProvenienza,
 
       persona: personaObj
     }
@@ -297,14 +317,14 @@ export class AlunnoEditComponent implements OnInit {
 //#endregion
 
   popolaProv(prov: string, cap: string) {
-    this.form.controls['prov'].setValue(prov);
-    this.form.controls['cap'].setValue(cap);
-    this.form.controls['nazione'].setValue('ITA');
+    this.formPersona.controls['prov'].setValue(prov);
+    this.formPersona.controls['cap'].setValue(cap);
+    this.formPersona.controls['nazione'].setValue('ITA');
   }
 
   popolaProvNascita(prov: string) {
-    this.form.controls['provNascita'].setValue(prov);
-    this.form.controls['nazioneNascita'].setValue('ITA');
+    this.formPersona.controls['provNascita'].setValue(prov);
+    this.formPersona.controls['nazioneNascita'].setValue('ITA');
   }
 
 //#region ----- Metodi di gestione Genitori, Famiglia e Classi -------
@@ -400,7 +420,7 @@ export class AlunnoEditComponent implements OnInit {
 //#region ----- Eventi -------
 
   onResize(event: any) {
-    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
+    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
     this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
   }
 //#endregion

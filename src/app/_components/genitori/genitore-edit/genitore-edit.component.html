@@ -14,19 +14,19 @@
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
                 <button *ngIf="genitoreID" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
-                        [disabled]= "!form.valid" 
+                        [disabled]= "!formPersona.valid" 
                         (click)="loadData()" >
                     <mat-icon>restart_alt</mat-icon>
                 </button>
 
                 <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-                        [disabled]= "!form.valid" 
+                        [disabled]= "!formPersona.valid" 
                         (click)="save()" >
                     <mat-icon>save</mat-icon>
                 </button>
 
                 <button *ngIf="genitoreID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
-                        [disabled]= "!form.valid" 
+                        [disabled]= "!formPersona.valid" 
                         (click)="delete()" >
                     <mat-icon>delete</mat-icon>
                 </button>
@@ -36,19 +36,19 @@
                 <mat-tab-group mat-align-tabs="center">
 <!-- ********************************    MAT TAB ANAGRAFICA *********************************** -->
                     <mat-tab  label="Dati Anagrafici">
-                        <form *ngIf="(genitore$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">    
+                        <form *ngIf="(genitore$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "formPersona">    
                             <mat-grid-list class="mt10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">    
                                 <mat-grid-tile>
                                     <mat-form-field>
                                         <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome" #nome>
-                                        <mat-error *ngIf="form.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
+                                        <mat-error *ngIf="formPersona.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
                                     </mat-form-field>
                                 </mat-grid-tile>
 
                                 <mat-grid-tile>
                                     <mat-form-field>
                                         <input matInput required type="text" placeholder="Cognome" formControlName="cognome">
-                                        <mat-error *ngIf="form.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
+                                        <mat-error *ngIf="formPersona.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
                                     </mat-form-field>
                                 </mat-grid-tile>
 
@@ -79,7 +79,7 @@
                                             #date>
                                         <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
                                         <mat-datepicker #dpDtNascita  ></mat-datepicker>
-                                        <mat-error *ngIf="form.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
+                                        <mat-error *ngIf="formPersona.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
                                     </mat-form-field>
                                 </mat-grid-tile>
 
@@ -176,7 +176,7 @@
 
                                 <mat-grid-tile>
                                     <mat-form-field>
-                                        <input matInput type="text" placeholder="altro Telefono" formControlName="telefono2">
+                                        <input matInput type="text" placeholder="altro Telefono" formControlName="telefono1">
                                     </mat-form-field>
                                 </mat-grid-tile>
 
@@ -203,10 +203,7 @@
                                     </mat-form-field>
                                 </mat-grid-tile>
                             </mat-grid-list>
-            
                         </form> 
-
-
                     </mat-tab>
 <!-- ********************************    MAT TAB FIGLI ************************************ -->
                     <mat-tab  label="Famiglia">
@@ -248,10 +245,10 @@
             
 
             <!-- <div>
-                errori su campo nome: {{form.controls.nome.errors?.required}}
+                errori su campo nome: {{formPersona.controls.nome.errors?.required}}
             </div>
             <div>
-                form.valid: {{form.valid}}
+                formPersona.valid: {{formPersona.valid}}
             </div> -->
 
 

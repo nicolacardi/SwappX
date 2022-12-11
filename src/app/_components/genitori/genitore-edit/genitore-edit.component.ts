@@ -37,7 +37,7 @@ export class GenitoreEditComponent implements OnInit {
 
   genitore$!:                 Observable<ALU_Genitore>;
   genitoreNomeCognome :       string = "";
-  form! :                     FormGroup;
+  formPersona! :                     FormGroup;
   formGenitore! :             FormGroup;
 
   emptyForm :                 boolean = false;
@@ -72,7 +72,7 @@ export class GenitoreEditComponent implements OnInit {
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
     let regemail = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$";
     
-    this.form = this.fb.group({
+    this.formPersona = this.fb.group({
       id:                         [null],
       personaID:                  [null],
       tipoPersonaID:              [null],
@@ -91,7 +91,7 @@ export class GenitoreEditComponent implements OnInit {
       tipo:                       ['',{ validators:[Validators.maxLength(1), Validators.required, Validators.pattern("P|M|T")]}],
       cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
       telefono:                   ['', Validators.maxLength(13)],
-      telefono2:                  ['', Validators.maxLength(13)],
+      telefono1:                  ['', Validators.maxLength(13)],
       email:                      ['',Validators.email],
       //email:                      ['', Validators.pattern(regemail)]
 
@@ -126,38 +126,39 @@ export class GenitoreEditComponent implements OnInit {
       this.genitore$ = loadGenitore$
       .pipe(
           tap(
-            //genitore => this.form.patchValue(genitore)
+            //genitore => this.formPersona.patchValue(genitore)
             genitore => {
 
               this.genitoreNomeCognome = genitore.persona.nome + " "+ genitore.persona.cognome;
               //Dati PER_Persona
-              this.form.controls['id'].setValue(genitore.id);
-              this.form.controls['personaID'].setValue(genitore.personaID);
+              this.formPersona.controls['id'].setValue(genitore.id);
+              this.formPersona.controls['personaID'].setValue(genitore.personaID);
 
-              this.form.controls['nome'].setValue(genitore.persona!.nome);
-              this.form.controls['cognome'].setValue(genitore.persona!.cognome);
-              this.form.controls['dtNascita'].setValue(genitore.persona!.dtNascita);
+              this.formPersona.controls['nome'].setValue(genitore.persona!.nome);
+              this.formPersona.controls['cognome'].setValue(genitore.persona!.cognome);
+              this.formPersona.controls['dtNascita'].setValue(genitore.persona!.dtNascita);
               
-              this.form.controls['cf'].setValue(genitore.persona!.CF);
+              this.formPersona.controls['cf'].setValue(genitore.persona!.CF);
 
-              this.form.controls['comuneNascita'].setValue(genitore.persona!.comuneNascita);
-              this.form.controls['provNascita'].setValue(genitore.persona!.provNascita);
-              this.form.controls['nazioneNascita'].setValue(genitore.persona!.nazioneNascita);
+              this.formPersona.controls['comuneNascita'].setValue(genitore.persona!.comuneNascita);
+              this.formPersona.controls['provNascita'].setValue(genitore.persona!.provNascita);
+              this.formPersona.controls['nazioneNascita'].setValue(genitore.persona!.nazioneNascita);
 
-              this.form.controls['comune'].setValue(genitore.persona!.comune);
-              this.form.controls['prov'].setValue(genitore.persona!.prov);
-              this.form.controls['nazione'].setValue(genitore.persona!.nazione);
+              this.formPersona.controls['comune'].setValue(genitore.persona!.comune);
+              this.formPersona.controls['prov'].setValue(genitore.persona!.prov);
+              this.formPersona.controls['nazione'].setValue(genitore.persona!.nazione);
 
-              this.form.controls['indirizzo'].setValue(genitore.persona!.indirizzo);
-              this.form.controls['cap'].setValue(genitore.persona!.cap);
-              this.form.controls['telefono'].setValue(genitore.persona!.telefono);
-              this.form.controls['email'].setValue(genitore.persona!.email);
+              this.formPersona.controls['indirizzo'].setValue(genitore.persona!.indirizzo);
+              this.formPersona.controls['cap'].setValue(genitore.persona!.cap);
+              this.formPersona.controls['telefono'].setValue(genitore.persona!.telefono);
+              this.formPersona.controls['telefono1'].setValue(genitore.persona!.telefono1);
 
-              this.form.controls['ckAttivo'].setValue(genitore.persona!.ckAttivo);
+              this.formPersona.controls['email'].setValue(genitore.persona!.email);
 
-              //Dati ALU_Genitore
-              this.form.controls['tipo'].setValue(genitore.tipo);  //incredibile: non esisteva tipo nel model e funzionava con il patchValue!
-              //this.formGenitore.controls['ckAttivo'].setValue(genitore.persona.ckAttivo);
+              this.formPersona.controls['ckAttivo'].setValue(genitore.persona!.ckAttivo);
+
+              this.formPersona.controls['tipo'].setValue(genitore.tipo);  //incredibile: non esisteva tipo nel model e funzionava con il patchValue!
+
               this.formGenitore.controls['titoloStudio'].setValue(genitore.titoloStudio );
               this.formGenitore.controls['professione'].setValue(genitore.professione);
             }
@@ -167,22 +168,22 @@ export class GenitoreEditComponent implements OnInit {
     else this.emptyForm = true
     
     //********************* FILTRO COMUNE *******************
-    this.filteredComuni$ = this.form.controls['comune'].valueChanges
+    this.filteredComuni$ = this.formPersona.controls['comune'].valueChanges
     .pipe(
       tap(),
       debounceTime(300),
       tap(() => this.comuniIsLoading = true),
-      switchMap(() => this.svcComuni.filterList(this.form.value.comune)),
+      switchMap(() => this.svcComuni.filterList(this.formPersona.value.comune)),
       tap(() => this.comuniIsLoading = false)
     )
 
     //********************* FILTRO COMUNE NASCITA ***********
-    this.filteredComuniNascita$ = this.form.controls['comuneNascita'].valueChanges
+    this.filteredComuniNascita$ = this.formPersona.controls['comuneNascita'].valueChanges
     .pipe(
       tap(),
       debounceTime(300),
       tap(() => this.comuniNascitaIsLoading = true),
-      switchMap(() => this.svcComuni.filterList(this.form.value.comuneNascita)),
+      switchMap(() => this.svcComuni.filterList(this.formPersona.value.comuneNascita)),
       tap(() => this.comuniNascitaIsLoading = false)
     )
   }  
@@ -195,33 +196,35 @@ export class GenitoreEditComponent implements OnInit {
   {
     let personaObj: PER_Persona = {
       
-      nome :          this.form.value.nome,
-      cognome :       this.form.value.cognome,
-      dtNascita :     this.form.value.dtNascita,
-      comuneNascita : this.form.value.comuneNascita,
-      provNascita :   this.form.value.provNascita,
-      nazioneNascita : this.form.value.nazioneNascita,
-      indirizzo :     this.form.value.indirizzo,
-      comune :        this.form.value.comune,
-      prov :          this.form.value.prov,
-      cap :           this.form.value.cap,
-      nazione :       this.form.value.nazione,
-      genere :        this.form.value.genere,
-      CF :            this.form.value.cf,
-      telefono :      this.form.value.telefono,
-      email :         this.form.value.email,
+      nome :          this.formPersona.value.nome,
+      cognome :       this.formPersona.value.cognome,
+      dtNascita :     this.formPersona.value.dtNascita,
+      comuneNascita : this.formPersona.value.comuneNascita,
+      provNascita :   this.formPersona.value.provNascita,
+      nazioneNascita : this.formPersona.value.nazioneNascita,
+      indirizzo :     this.formPersona.value.indirizzo,
+      comune :        this.formPersona.value.comune,
+      prov :          this.formPersona.value.prov,
+      cap :           this.formPersona.value.cap,
+      nazione :       this.formPersona.value.nazione,
+      genere :        this.formPersona.value.genere,
+      CF :            this.formPersona.value.cf,
+      telefono :      this.formPersona.value.telefono,
+      telefono1 :      this.formPersona.value.telefono1,
 
-      ckAttivo:       this.form.value.ckAttivo,
+      email :         this.formPersona.value.email,
+
+      ckAttivo:       this.formPersona.value.ckAttivo,
       
       tipoPersonaID : 10,
-      id : this.form.value.personaID
+      id : this.formPersona.value.personaID
     }
 
     let genitoreObj: ALU_Genitore = {
-      id:                         this.form.value.id,
-      personaID:                  this.form.value.personaID,
+      id:                         this.formPersona.value.id,
+      personaID:                  this.formPersona.value.personaID,
 
-      tipo:                       this.form.value.tipo,
+      tipo:                       this.formPersona.value.tipo,
       //ckAttivo:                   this.formGenitore.value.ckAttivo,
       titoloStudio:               this.formGenitore.value.titoloStudio,
       professione:                this.formGenitore.value.professione,
@@ -259,7 +262,7 @@ export class GenitoreEditComponent implements OnInit {
     }
     
     /*
-    this.svcGenitori.post(this.form.value).subscribe(
+    this.svcGenitori.post(this.formPersona.value).subscribe(
         res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
@@ -268,7 +271,7 @@ export class GenitoreEditComponent implements OnInit {
       );
     }
     else 
-      this.svcGenitori.put(this.form.value).subscribe(
+      this.svcGenitori.put(this.formPersona.value).subscribe(
         res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
@@ -281,7 +284,7 @@ export class GenitoreEditComponent implements OnInit {
 
   //NON PIU' UTILIZZATA IN QUANTO ORA SI USA SOLO COME DIALOG
   // back(){
-  //   if (this.form.dirty) {
+  //   if (this.formPersona.dirty) {
   //     const dialogRef = this._dialog.open(DialogYesNoComponent, {
   //       width: '320px',
   //       data: {titolo: "ATTENZIONE", sottoTitolo: "Dati modificati: si conferma l'uscita?"}
@@ -327,14 +330,14 @@ export class GenitoreEditComponent implements OnInit {
 
 //#region ----- Altri metodi -------
   popolaProv(prov: string, cap: string) {
-    this.form.controls['prov'].setValue(prov);
-    this.form.controls['cap'].setValue(cap);
-    this.form.controls['nazione'].setValue('ITA');
+    this.formPersona.controls['prov'].setValue(prov);
+    this.formPersona.controls['cap'].setValue(cap);
+    this.formPersona.controls['nazione'].setValue('ITA');
   }
 
   popolaProvNascita(prov: string) {
-    this.form.controls['provNascita'].setValue(prov);
-    this.form.controls['nazioneNascita'].setValue('ITA');
+    this.formPersona.controls['provNascita'].setValue(prov);
+    this.formPersona.controls['nazioneNascita'].setValue('ITA');
   }
 
 //#endregion

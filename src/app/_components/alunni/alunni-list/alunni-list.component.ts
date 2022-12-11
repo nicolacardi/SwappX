@@ -340,7 +340,7 @@ export class AlunniListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
-      height: '580px',
+      height: '700px',
       data: 0
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
@@ -354,7 +354,7 @@ export class AlunniListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
-      height: '580px',
+      height: '700px',
       data: id
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);

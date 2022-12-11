@@ -204,9 +204,6 @@ export class GenitoriListComponent implements OnInit {
 
     loadGenitori$.subscribe(
       val =>   {
-
-        console.log("val: ", val);
-
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort;
@@ -275,7 +272,7 @@ export class GenitoriListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
-      height: '580px',
+      height: '600px',
       data: 0
     };
 
