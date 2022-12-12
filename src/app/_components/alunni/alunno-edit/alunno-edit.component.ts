@@ -269,7 +269,8 @@ export class AlunnoEditComponent implements OnInit {
       this.svcPersone.post(personaObj)
       .pipe(
         tap(res=> {
-          alunnoObj.personaID = res.id;  //importante!
+          console.log ("res", res); 
+          alunnoObj.personaID = res.id;  
         }),
         concatMap( () => this.svcAlunni.post(alunnoObj))
       ).subscribe(

@@ -24,6 +24,7 @@ import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { PER_Persona } from 'src/app/_models/PER_Persone';
 import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y/input-modality/input-modality-detector';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-genitore-edit',
@@ -236,6 +237,7 @@ export class GenitoreEditComponent implements OnInit {
       this.svcPersone.post(personaObj)
       .pipe (
         tap(res => {
+          console.log ("res", res); 
           genitoreObj.personaID = res.id;
         }),
         concatMap( () => this.svcGenitori.post(genitoreObj))
