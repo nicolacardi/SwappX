@@ -144,7 +144,6 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   @Input('alunnoID') alunnoID! :                                  number;
   @Input() classiSezioniAnniFilterComponent!:                     ClassiSezioniAnniFilterComponent;
   
-
   @ViewChild(MatPaginator) paginator!:                            MatPaginator;
   @ViewChild(MatSort) sort!:                                      MatSort;
   @ViewChild("filterInput") filterInput!:                         ElementRef;  
@@ -161,15 +160,14 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#endregion
 
-constructor(
-    private svcClassiSezioniAnni:         ClassiSezioniAnniService,
-    private svcAnni:                      AnniScolasticiService,
-    private svcDocenti:                   DocentiService,
-    private _loadingService:              LoadingService,
-    private fb:                           FormBuilder, 
-    public _dialog:                       MatDialog, 
-    private actRoute:                     ActivatedRoute,
-    private _snackBar:                    MatSnackBar ) { 
+  constructor( private svcClassiSezioniAnni:         ClassiSezioniAnniService,
+              private svcAnni:                      AnniScolasticiService,
+              private svcDocenti:                   DocentiService,
+              private _loadingService:              LoadingService,
+              private fb:                           FormBuilder, 
+              public _dialog:                       MatDialog, 
+              private actRoute:                     ActivatedRoute,
+              private _snackBar:                    MatSnackBar ) {
 
     let obj = localStorage.getItem('AnnoCorrente');
 
@@ -190,8 +188,7 @@ constructor(
     });
     
     this.obsAnni$ = this.svcAnni.list().pipe(
-      finalize( 
-        () => {
+      finalize( () => {
           //se arrivo da home
           if (this.annoIDrouted) this.form.controls.selectAnnoScolastico.setValue(parseInt(this.annoIDrouted));
         }
@@ -264,7 +261,7 @@ constructor(
   }
 
 
-  loadData ( ) {
+  loadData () {
    
     let annoID: number;
     annoID = this.form.controls["selectAnnoScolastico"].value;
@@ -272,40 +269,37 @@ constructor(
     let docenteID: number;
     docenteID = this.form.controls["selectDocente"].value;
 
+    //console.log("[DEBUG] LOAD DATA annoID/DocenteID:", annoID, docenteID);
+
     let obsClassi$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
-
     obsClassi$= this.svcClassiSezioniAnni.listByAnnoDocenteGroupByClasse(annoID, docenteID);
-    // pipe(
-    // map(res=> {
-    //   let ret = <CLS_ClasseSezioneAnno[]>res.json();
-    //   ret.sort((a,b) => a.classeSezione.classe < b.classeSezione.classe ? -1 : 1);
-    //   return ret;
-    // })) ;
+    
+    const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
-      const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
+    loadClassi$.subscribe(
+      val =>   {
 
-      loadClassi$.subscribe(
-        val =>   {
+        console.log("[DEBUG] loadClassi", val);
+    
+        this.matDataSource.data = val;
+        this.matDataSource.paginator = this.paginator;
 
-          this.matDataSource.data = val;
-          this.matDataSource.paginator = this.paginator;
-  
-          if (this.dove == "classi-page") {
-            this.sortCustom(); 
-            this.matDataSource.sort = this.sort; 
-          }
-  
-          this.matDataSource.filterPredicate = this.filterPredicate();
-          
-          if(this.matDataSource.data.length >0)
-            if (this.classeSezioneAnnoIDrouted) 
-              this.rowclicked(this.classeSezioneAnnoIDrouted);  
-            else
-              this.rowclicked(this.matDataSource.data[0].id); //seleziona per default la prima riga DA TESTARE
-          else
-            this.rowclicked(undefined);
+        if (this.dove == "classi-page") {
+          this.sortCustom(); 
+          this.matDataSource.sort = this.sort; 
         }
-      );
+
+        this.matDataSource.filterPredicate = this.filterPredicate();
+        
+        if(this.matDataSource.data.length >0)
+          if (this.classeSezioneAnnoIDrouted) 
+            this.rowclicked(this.classeSezioneAnnoIDrouted);  
+          else
+            this.rowclicked(this.matDataSource.data[0].id); //seleziona per default la prima riga DA TESTARE
+        else
+          this.rowclicked(undefined);
+      }
+    );
   }
 
   rowclicked(classeSezioneAnnoID?: number ){

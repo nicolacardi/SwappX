@@ -62,10 +62,9 @@ export class PagellaEditComponent implements OnInit {
 
   ngOnChanges() {
 
-    console.log("pagelle-edit...ts this.alunno", this.alunno);
+    //console.log("pagelle-edit...ts this.alunno", this.alunno);
     if (this.iscrizioneID != undefined) 
       this.loadData();
-    
 
   }
 
