@@ -40,7 +40,8 @@ export class UsersListComponent implements OnInit {
       "fullName", 
       "email", 
       "ruolo",
-      "badge"
+      "personaID",
+      // "badge"
   ];
 
   rptTitle = 'Lista Utenti';
@@ -50,15 +51,17 @@ export class UsersListComponent implements OnInit {
     "userName", 
     "fullName", 
     "email", 
-    "ruolo",
-    "badge"];
+    // "ruolo",
+    // "badge"
+  ];
 
   rptColumnsNames  = [
     "userName", 
     "Nome completo", 
     "email", 
-    "ruolo",
-    "badge"];
+    // "ruolo",
+    // "badge"
+  ];
 
   selection = new SelectionModel<User>(true, []);   //rappresenta la selezione delle checkbox
 
@@ -208,8 +211,8 @@ export class UsersListComponent implements OnInit {
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width:      '500px',
-      height:     '450px',
+      width:      '850px',
+      height:     '600px',
       data:       0
     };
 
@@ -220,8 +223,8 @@ export class UsersListComponent implements OnInit {
   openDetail(id:any){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width:      '500px',
-      height:     '450px',
+      width:      '850px',
+      height:     '600px',
       data:       id
     };
 

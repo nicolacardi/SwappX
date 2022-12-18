@@ -8,7 +8,7 @@
                 </button> -->
                 <img class="iconaMenuBig" src="../assets/docente_edit.svg">
 
-                <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
+                <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" [mat-dialog-close]="persona$|async"></button>
 
                 <button *ngIf="personaID" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
                         [disabled]= "!form.valid" 

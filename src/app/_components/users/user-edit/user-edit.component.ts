@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { pairwise, startWith, tap } from 'rxjs/operators';
-
+import { debounceTime, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
+import {FormCustomValidators, RequireMatch} from '../../utilities/requireMatch/requireMatch';
 //components
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
@@ -17,6 +17,10 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 
 //classes
 import { Ruolo, User } from 'src/app/_user/Users';
+import { PER_Persona } from 'src/app/_models/PER_Persone';
+import { PersoneService } from '../../persone/persone.service';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { PersonaEditComponent } from '../../persone/persona-edit/persona-edit.component';
 
 @Component({
   selector: 'app-user-edit',
@@ -24,10 +28,12 @@ import { Ruolo, User } from 'src/app/_user/Users';
   styleUrls: ['../users.css']
 })
 
-export class UserEditComponent implements OnInit {
+export class UserEditComponent implements OnInit, AfterViewInit {
 
   user$!:                     Observable<User>;
   obsRuoli$!:                 Observable<Ruolo[]>;
+
+  filteredPersone$!:           Observable<PER_Persona[]>;
 
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
@@ -37,12 +43,21 @@ export class UserEditComponent implements OnInit {
   currUserID!:                string;       //ID dell'utente loggato
   userID!:                    string;       //ID dell'utente che si sta editando
 
+  @ViewChild(MatAutocompleteTrigger) trigger!: MatAutocompleteTrigger; //non sembra "agganciarsi" al matautocompleteTrigger
+  @ViewChild(MatAutocomplete) MatAutoComplete!: MatAutocomplete;
+
+  //myArray = ["Andrea Svegliado", "Nicola Cardi"];
+  
+  
   constructor(
     @Inject(MAT_DIALOG_DATA) public idUser: string,
     public _dialogRef:                          MatDialogRef<UserEditComponent>,
   
     private svcUser:                            UserService,
     private svcRuoli:                           RuoliService,
+    private svcPersone:                         PersoneService,
+
+
     public _dialog:                             MatDialog,
     private _snackBar:                          MatSnackBar,
     private _loadingService :                   LoadingService,
@@ -50,13 +65,27 @@ export class UserEditComponent implements OnInit {
 
     _dialogRef.disableClose = true;
 
+    
     this.form = this.fb.group({
       userName:         [''],
-      fullName:         [''],
+      //fullName:         [''],
       email:            ['', Validators.email],
-      badge:            [''],
+      //badge:            [''],
       password:         ['', [Validators.minLength(4), Validators.maxLength(19)]],
-      ruoloID:          [''],
+      //ruoloID:          [''],
+
+      //nomeCognomePersona: [null, [RequireMatch]],
+
+
+      //punto di partenza: https://onthecode.co.uk/blog/force-selection-angular-material-autocomplete/
+
+      
+      //qui usando un customFormValidator
+      //https://stackoverflow.com/questions/51871720/angular-material-how-to-validate-autocomplete-against-suggested-options
+      //che funziona se gli si passa un array!, funzioa benissimo, ma in questo caso l'array arriva da un observable e lo conosco "più tardi"...quindi?
+      //Ho chiesto su stackoverflow e attendo risposta
+      //nomeCognomePersona: [null, [FormCustomValidators.valueSelected(this.myArray)]],
+      nomeCognomePersona: []
     });
   }
 
@@ -64,28 +93,54 @@ export class UserEditComponent implements OnInit {
 
   ngOnInit() {
 
+
+
+
+    this.filteredPersone$ = this.form.controls['nomeCognomePersona'].valueChanges
+    .pipe(
+      debounceTime(300),
+      switchMap(() => this.svcPersone.filterPersone(this.form.value.nomeCognomePersona))
+    )
+
     this.svcUser.obscurrentUser.subscribe(
       val => {
-        this.currUserRuolo = val.ruoloID;
+        //this.currUserRuolo = val.ruoloID;
         this.currUserID = val.userID;
     })
 
     this.loadData();
 
     //salvo in una proprietà (previousMatSelect) il valore PRECEDENTE nella combo
-    this.form.controls.ruoloID.valueChanges.pipe(
-      startWith(this.form.controls.ruoloID.value),
-      pairwise()
-    ).subscribe(
-      ([old,value])=> this.previousMatSelect = old
-    );
+    // this.form.controls.ruoloID.valueChanges.pipe(
+    //   startWith(this.form.controls.ruoloID.value),
+    //   pairwise()
+    // ).subscribe(
+    //   ([old,value])=> this.previousMatSelect = old
+    // );
   }
  
 
-  loadData() {
+  ngAfterViewInit() {
+    //come approccio alternativo all'uso fi un customformvalidator vorrei fare come in 
+    //https://stackblitz.com/edit/mat-autocomplete-force-selection-of-option?file=src%2Fapp%2Fautocomplete-auto-active-first-option-example.ts 
+    //sembra infatti molto più "diretto" e "semplice" MA....
+    //this.MatAutoComplete.closed.subscribe(val=>{console.log ("chiuso")});
+    this.trigger.panelClosingActions.subscribe(e => {  //...NON FUNZIONA QUESTO, CASSO!
+      //ERROR TypeError: Cannot read properties of undefined (reading 'panelClosingActions') è come se trigger non lo vedesse "ancora", come se fosse un tema di caricamento
+      //ma cos'è MatAutoCompleteTrigger? qui lo spiega https://stackoverflow.com/questions/50030381/angular-material-autocomplete-matautocompletetrigger
+      if (!(e && e.source)) {
+        this.form.value.nomeCognomePersona.setValue('');
+        this.trigger.closePanel();
+      }
+    });
+  }
 
+
+
+
+  loadData() {
     this.obsRuoli$ = this.svcRuoli.list();
-    this.form.controls['ruoloID'].setValue(this.user$);
+    //this.form.controls['ruoloID'].setValue(this.user$);
 
     if (this.idUser && this.idUser + '' != "0") {
       const obsUser$: Observable<User> = this.svcUser.get(this.idUser);
@@ -129,9 +184,9 @@ export class UserEditComponent implements OnInit {
       userID:     this.idUser,   
       UserName:   this.form.controls.userName.value,
       Email:      this.form.controls.email.value,
-      FullName:   this.form.controls.fullName.value,
-      Badge:      this.form.controls.badge.value,
-      RuoloID:    this.form.controls.ruoloID.value,
+      //FullName:   this.form.controls.fullName.value,
+      //Badge:      this.form.controls.badge.value,
+      //RuoloID:    this.form.controls.ruoloID.value,
       Password:   this.form.controls.password.value
     };
     
@@ -167,6 +222,7 @@ export class UserEditComponent implements OnInit {
   }
 
   ruoloChange() {
+    //questa routine non dovrebbe più servire
     if (this.currUserRuolo != 11 && this.previousMatSelect == 11) {
       //impedisco  ai non SysAdmin di modificare il ruolo di quelli che sono SySAdmin
       //un SySAdmin invece può cambiare tutti gli altri (non il suo, v. oltre)
@@ -200,6 +256,32 @@ export class UserEditComponent implements OnInit {
       return;
     }
   }
+
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    //evento triggered su selezione di una voce tra quelle proposte
+    console.log ("selected", event.option.id);
+    //this.data.alunnoID = parseInt(event.option.id);
+    //this.formRetta.controls['alunnoID'].setValue(parseInt(event.option.id));
+    //this.loadData();
+
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '850px',
+      height: '600px',
+      data: event.option.id
+    };
+
+    const dialogRef = this._dialog.open(PersonaEditComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe( result => {
+      this.form.controls['email'].setValue(result.email);
+      console.log (result);
+      //this.loadData()
+    });
+    
+  }
+
+  
 
 }
 

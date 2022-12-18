@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -40,6 +40,10 @@ export class PersonaEditComponent implements OnInit {
   comuniNascitaIsLoading:     boolean = false;
   breakpoint!:                number;
   breakpoint2!:               number;
+
+//#endregion
+
+//#region ----- ViewChild Input Output -------
 //#endregion
 
   constructor(
@@ -94,6 +98,7 @@ export class PersonaEditComponent implements OnInit {
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
     if (this.personaID && this.personaID + '' != "0") {
+      console.log ("personaID", this.personaID);  //come mai aprendo da user-edit gil arriva come persona ID lo user ID?
 
       const obsPersona$: Observable<PER_Persona> = this.svcPersone.get(this.personaID);
       const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
@@ -185,5 +190,10 @@ onResize(event: any) {
   this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
   this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
 }
+
+
 //#endregion
 }
+
+
+

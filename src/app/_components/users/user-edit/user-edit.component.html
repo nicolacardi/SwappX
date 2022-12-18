@@ -27,7 +27,7 @@
                 </button>
             </div>
 
-            <mat-grid-list class="no-overflowx mt50" [cols]="2" rowHeight="60px">
+            <mat-grid-list class="no-overflowx mt10" [cols]="3" rowHeight="60px">
                 <mat-grid-tile>
                     <mat-form-field>
                         <input matInput required type="text" placeholder="userName" formControlName="userName">
@@ -36,9 +36,15 @@
 
                 <mat-grid-tile>
                     <mat-form-field>
-                        <input matInput required type="text" placeholder="fullName" formControlName="fullName">
+                        <input matInput type="password" placeholder="password" formControlName="password">
                     </mat-form-field>
                 </mat-grid-tile>
+
+                <!-- <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput required type="text" placeholder="fullName" formControlName="fullName">
+                    </mat-form-field>
+                </mat-grid-tile> -->
 
                 <mat-grid-tile>
                     <mat-form-field>
@@ -46,13 +52,13 @@
                     </mat-form-field>
                 </mat-grid-tile>
 
-                <mat-grid-tile>
+                <!-- <mat-grid-tile>
                     <mat-form-field>
                         <input matInput type="text" placeholder="badge" formControlName="badge">
                     </mat-form-field>
-                </mat-grid-tile>
+                </mat-grid-tile> -->
 
-                <mat-grid-tile colspan="2">
+                <!-- <mat-grid-tile colspan="2">
                     <mat-form-field>
                         <mat-label>Ruolo</mat-label>
                         <mat-select formControlName="ruoloID"  required (selectionChange)="ruoloChange()">
@@ -61,15 +67,43 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                </mat-grid-tile>
+                </mat-grid-tile> -->
 
-                <mat-grid-tile colspan="2">
-                    <mat-form-field>
-                        <input matInput type="password" placeholder="password" formControlName="password">
-                    </mat-form-field>
-                </mat-grid-tile>
+
 
             </mat-grid-list>
+
+
+            <mat-grid-list [cols]="1" rowHeight="60px">
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input type="text"
+                                placeholder="<persona>"
+                                matInput
+                                formControlName="nomeCognomePersona"
+                                [matAutocomplete]="autoPersona"  
+                        >
+                        <!-- #nomeCognomePersona -->
+                        <!-- (keydown.enter) = "enterPersonaInput()" dovrebbe essere superata da autoActiveFirstOption-->
+                        <mat-autocomplete autoActiveFirstOption #autoPersona="matAutocomplete" (optionSelected)="selected($event)" >
+                            <!-- <mat-spinner *ngIf="nomeAlunnoIsLoading" class="is-loading" diameter="40"></mat-spinner> -->
+                            <mat-option *ngFor="let element of (filteredPersone$ | async)"  [value]="element.nome + ' ' + element.cognome" [id]="element.id.toString()" #option>
+                                <small>{{element.nome}} {{element.cognome}}</small>
+                            </mat-option>
+                        </mat-autocomplete>
+
+                        <mat-error *ngIf="form.controls['nomeCognomePersona'].hasError('unmatched')">
+                            Selezionare un valore dalla lista
+
+                        </mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+            </mat-grid-list>
         </form>
+
     </mat-card-content>
+
+
+
+
 </mat-card>

@@ -10,6 +10,7 @@ export interface User {
     
     ruoloID: number;
     ruolo: Ruolo;
+    personaID: number;
 }
 
 

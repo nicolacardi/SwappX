@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { PER_Persona } from 'src/app/_models/PER_Persone';
 import { environment } from 'src/environments/environment';
 
@@ -42,4 +43,24 @@ export class PersoneService {
   delete(personaID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'PER_Persone/' + personaID);    
   }
+
+  filterPersone(searchstring: string): Observable<PER_Persona[]>{
+
+    if (searchstring != null && (typeof searchstring === 'string')) {
+      return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone')
+            .pipe (
+            map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
+      );
+        } else {
+      return of()
+      }
+  }
+    //Recupera l'id da nome cognome  
+  findPersonaID(searchstring: string) : Observable<any>{
+    return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone')
+      .pipe(
+        map(val => val.find(val => (val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase())== searchstring.toLowerCase())),
+      )
+  }
+
 }
