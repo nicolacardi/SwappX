@@ -27,7 +27,7 @@
                 </button>
             </div>
 
-            <mat-grid-list class="no-overflowx mt10" [cols]="3" rowHeight="60px">
+            <mat-grid-list class="no-overflowx mt10" [cols]="2" rowHeight="60px">
                 <mat-grid-tile>
                     <mat-form-field>
                         <input matInput required type="text" placeholder="userName" formControlName="userName">
@@ -45,7 +45,8 @@
                         <input matInput required type="text" placeholder="fullName" formControlName="fullName">
                     </mat-form-field>
                 </mat-grid-tile> -->
-
+            </mat-grid-list>
+            <mat-grid-list class="no-overflowx mt10" [cols]="1" rowHeight="60px">
                 <mat-grid-tile>
                     <mat-form-field>
                         <input matInput required type="text" placeholder="email" formControlName="email">
@@ -78,23 +79,22 @@
                 <mat-grid-tile>
                     <mat-form-field>
                         <input type="text"
-                                placeholder="<persona>"
+                                placeholder="persona"
                                 matInput
                                 formControlName="nomeCognomePersona"
                                 [matAutocomplete]="autoPersona"  
                         >
                         <!-- #nomeCognomePersona -->
                         <!-- (keydown.enter) = "enterPersonaInput()" dovrebbe essere superata da autoActiveFirstOption-->
-                        <mat-autocomplete autoActiveFirstOption #autoPersona="matAutocomplete" (optionSelected)="selected($event)" >
+                        <mat-autocomplete autoActiveFirstOption #autoPersona="matAutocomplete" (optionSelected)="selected($event)">
                             <!-- <mat-spinner *ngIf="nomeAlunnoIsLoading" class="is-loading" diameter="40"></mat-spinner> -->
-                            <mat-option *ngFor="let element of (filteredPersone$ | async)"  [value]="element.nome + ' ' + element.cognome" [id]="element.id.toString()" #option>
+                            <mat-option *ngFor="let element of filteredPersone$ | async"  [value]="element.nome + ' ' + element.cognome" [id]="element.id.toString()" #option>
                                 <small>{{element.nome}} {{element.cognome}}</small>
                             </mat-option>
                         </mat-autocomplete>
 
                         <mat-error *ngIf="form.controls['nomeCognomePersona'].hasError('unmatched')">
                             Selezionare un valore dalla lista
-
                         </mat-error>
                     </mat-form-field>
                 </mat-grid-tile>

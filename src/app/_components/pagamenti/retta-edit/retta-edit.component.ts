@@ -106,7 +106,6 @@ export class RettaEditComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit() {
-
     this.filteredAlunni$ = this.formRetta.controls['nomeCognomeAlunno'].valueChanges
     .pipe(
       debounceTime(300),
@@ -189,6 +188,7 @@ export class RettaEditComponent implements OnInit {
     ).subscribe( )
   }
 
+
 //#endregion
 
 //#region ----- Interazioni Varie Interfaccia -------
@@ -227,6 +227,8 @@ export class RettaEditComponent implements OnInit {
     //Su pressione di enter devo dapprima selezionare il PRIMO valore della lista aperta (a meno che non sia vuoto)
     //Una volta selezionato devo trovare, SE esiste, il valore dell'id che corrisponde a quanto digitato e quello passarlo a passAlunno del service
     //Mancherebbe qui la possibilità di selezionare solo con le freccette e Enter
+
+
     if (this.formRetta.controls['nomeCognomeAlunno'].value != '') {
       this.matAutocomplete.options.first.select();
       //Questo è il valore che devo cercare: this.matAutocomplete.options.first.viewValue;

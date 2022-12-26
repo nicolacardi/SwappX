@@ -211,8 +211,8 @@ export class UsersListComponent implements OnInit {
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width:      '850px',
-      height:     '600px',
+      width:      '500px',
+      height:     '350px',
       data:       0
     };
 
@@ -223,8 +223,8 @@ export class UsersListComponent implements OnInit {
   openDetail(id:any){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width:      '850px',
-      height:     '600px',
+      width:      '500px',
+      height:     '350px',
       data:       id
     };
 
