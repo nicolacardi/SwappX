@@ -5,7 +5,6 @@
         <mat-label>Filtro</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
     </mat-form-field>
-    
 
     <!-- **************************   PAGINATOR   ******************* -->
     <mat-paginator class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>

@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, Subscription } from 'rxjs';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
 import { FormCustomValidatorsArray} from '../../utilities/requireMatch/requireMatch';
+
 //components
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
@@ -30,9 +31,7 @@ import { PersonaEditComponent } from '../../persone/persona-edit/persona-edit.co
 
 export class UserEditComponent implements OnInit {
 
-
   subscription!: Subscription;
-
 
   user$!:                     Observable<User>;
   obsRuoli$!:                 Observable<Ruolo[]>;
@@ -51,28 +50,20 @@ export class UserEditComponent implements OnInit {
   userID!:                    string;       //ID dell'utente che si sta editando
 
   @ViewChild(MatAutocompleteTrigger) trigger!: MatAutocompleteTrigger; //non sembra "agganciarsi" al matautocompleteTrigger
-  
   @ViewChild(MatAutocomplete) MatAutoComplete!: MatAutocomplete;
 
-  //myArray = ["Andrea Svegliado", "Nicola Cardi"];
-  
-  
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public idUser: string,
-    public _dialogRef:                          MatDialogRef<UserEditComponent>,
-  
-    private svcUser:                            UserService,
-    private svcRuoli:                           RuoliService,
-    private svcPersone:                         PersoneService,
-
-
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar,
-    private _loadingService :                   LoadingService,
-    private fb:                                 FormBuilder ) { 
+  constructor( @Inject(MAT_DIALOG_DATA) 
+               public idUser: string,
+               public _dialogRef: MatDialogRef<UserEditComponent>,
+               private svcUser:                            UserService,
+               private svcRuoli:                           RuoliService,
+               private svcPersone:                         PersoneService,
+               public _dialog:                             MatDialog,
+               private _snackBar:                          MatSnackBar,
+               private _loadingService :                   LoadingService,
+               private fb:                                 FormBuilder ) { 
 
     _dialogRef.disableClose = true;
-
     
     this.form = this.fb.group({
       userName:         [''],
@@ -83,12 +74,8 @@ export class UserEditComponent implements OnInit {
       //ruoloID:          [''],
 
       nomeCognomePersona: [null],
-
-      
-
       //punto di partenza: https://onthecode.co.uk/blog/force-selection-angular-material-autocomplete/
 
-      
       //qui usando un customFormValidator
       //https://stackoverflow.com/questions/51871720/angular-material-how-to-validate-autocomplete-against-suggested-options
       //che funziona se gli si passa un array!, funzioa benissimo, ma in questo caso l'array arriva da un observable e lo conosco "più tardi"...quindi?
@@ -101,40 +88,30 @@ export class UserEditComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili-------
 
-
-private myObjectExists(value: any): boolean {
-  return this.filteredPersoneArray.some(v => v === value);
-}
+  private myObjectExists(value: any): boolean {
+    return this.filteredPersoneArray.some(v => v === value);
+  }
 
 
   ngOnInit() {
 
-
-
-    //this.form.controls.nomeCognomePersona.addValidators(FormCustomValidators.valueSelected<PER_Persona>(this.myObjectExists.bind(this)));
-
-    console.log ("ngOnInit");
-    this.svcPersone.list()
-    .subscribe(persone => {
+    //console.log ("ngOnInit");
+    this.svcPersone.list().subscribe(persone => {
       this.form.controls['nomeCognomePersona'].setValidators(
         [FormCustomValidatorsArray.valueSelected(persone)]
       );
     })
 
     this.filteredPersone$ = this.form.controls['nomeCognomePersona'].valueChanges
-    .pipe(
-      debounceTime(300),
-      switchMap(() => this.svcPersone.filterPersone(this.form.value.nomeCognomePersona)),
-    )
-    
-    
+      .pipe(
+        debounceTime(300),
+        switchMap(() => this.svcPersone.filterPersone(this.form.value.nomeCognomePersona)),
+      );
 
-
-    this.svcUser.obscurrentUser.subscribe(
-      val => {
+    this.svcUser.obscurrentUser.subscribe( val => {
         //this.currUserRuolo = val.ruoloID;
         this.currUserID = val.userID;
-    })
+    });
 
     this.loadData();
 

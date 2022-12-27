@@ -9,8 +9,8 @@ export class UserComponent implements OnInit {
 
   routerPage!: string;
   
-  constructor() 
-  {}
+  constructor()  {
+  }
 
   ngOnInit() {
     const str = window.location.href;

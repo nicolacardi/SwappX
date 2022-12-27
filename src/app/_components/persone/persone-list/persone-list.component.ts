@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { SelectionModel } from '@angular/cdk/collections';
+import { map } from 'rxjs/operators';
 
 //components
 import { PersonaEditComponent } from '../persona-edit/persona-edit.component';
@@ -18,7 +19,6 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 
 //models
 import { PER_Persona } from 'src/app/_models/PER_Persone';
-import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -106,23 +106,22 @@ export class PersoneListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild("filterInput") filterInput!:                     ElementRef;
-
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
+
   @Input() personeFilterComponent!:                           PersoneFilterComponent;
   @Input('dove') dove! :                                      string;
+
 //#endregion
 
 
-  constructor(
-    private svcPersone:       PersoneService,
-    private _loadingService:  LoadingService,
-    public _dialog:           MatDialog
-  ) {    
+  constructor( private svcPersone:       PersoneService,
+               private _loadingService:  LoadingService,
+               public _dialog:           MatDialog ) {    
   }
 
 //#region ----- LifeCycle Hooks e simili-------
-  ngOnInit()
-  {
+
+  ngOnInit() {
     this.displayedColumns =  this.displayedColumnsPersoneList;
     this.loadData(); 
   }
@@ -142,8 +141,7 @@ export class PersoneListComponent implements OnInit {
     loadPersone$.pipe(
         map(val=> val.filter( val => (val.tipoPersonaID != 9 && val.tipoPersonaID != 10 ))
       )
-    ).subscribe(
-      val => {
+    ).subscribe( val => {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort; 
@@ -161,7 +159,6 @@ export class PersoneListComponent implements OnInit {
     //if (this.dove == "persone-page") this.personeFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
-
 
   filterPredicate(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {

@@ -16,7 +16,6 @@
                 <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
                         [disabled]= "!form.valid"
                         (click)="save()" >
-                        <!--   -->
                     <mat-icon>save</mat-icon>
                 </button>
 
@@ -69,8 +68,6 @@
                         </mat-select>
                     </mat-form-field>
                 </mat-grid-tile> -->
-
-
                 
             </mat-grid-list>
             <span class="center"><mat-divider class="mb10"></mat-divider></span>
@@ -88,8 +85,7 @@
                                 placeholder="persona"
                                 matInput
                                 formControlName="nomeCognomePersona"
-                                [matAutocomplete]="autoPersona"  
-                        >
+                                [matAutocomplete]="autoPersona"  >
                         <!-- #nomeCognomePersona -->
                         <!-- (keydown.enter) = "enterPersonaInput()" dovrebbe essere superata da autoActiveFirstOption-->
                         <mat-autocomplete autoActiveFirstOption #autoPersona="matAutocomplete" (optionSelected)="selected($event)">
@@ -103,7 +99,6 @@
                             Selezionare un valore dalla lista
                         </mat-error>
                     </mat-form-field>
-                
 
                     <button mat-mini-fab aria-label="Nuova anagrafica" matTooltip="Nuova anagrafica" class="_btn-add _btn-pos-right-2 " (click)="addPersona()">
                         <mat-icon>add</mat-icon>
@@ -113,8 +108,5 @@
         </form>
 
     </mat-card-content>
-
-
-
 
 </mat-card>

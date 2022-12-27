@@ -260,7 +260,6 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   ngOnChanges() {
   }
 
-
   loadData () {
    
     let annoID: number;
@@ -269,18 +268,12 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     let docenteID: number;
     docenteID = this.form.controls["selectDocente"].value;
 
-    //console.log("[DEBUG] LOAD DATA annoID/DocenteID:", annoID, docenteID);
-
     let obsClassi$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
     obsClassi$= this.svcClassiSezioniAnni.listByAnnoDocenteGroupByClasse(annoID, docenteID);
     
     const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
-    loadClassi$.subscribe(
-      val =>   {
-
-        console.log("[DEBUG] loadClassi", val);
-    
+    loadClassi$.subscribe( val =>   {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
 

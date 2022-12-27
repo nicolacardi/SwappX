@@ -1,21 +1,25 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { PER_TipoPersona } from 'src/app/_models/PER_Persone';
 
 //components
 import { PersoneListComponent } from '../persone-list/persone-list.component';
 import { TipiPersonaService } from '../tipi-persona.service';
+
+//services
+
+//models
+import { PER_TipoPersona } from 'src/app/_models/PER_Persone';
 
 @Component({
   selector: 'app-persone-filter',
   templateUrl: './persone-filter.component.html',
   styleUrls: ['../persone.css']
 })
+
 export class PersoneFilterComponent implements OnInit {
 
 //#region ----- Variabili -------
-  obsTipiPersona$!:            Observable<PER_TipoPersona[]>;
 
   nomeFilter = new FormControl('');
   cognomeFilter = new FormControl('');
@@ -26,15 +30,17 @@ export class PersoneFilterComponent implements OnInit {
   provFilter = new FormControl('');
   emailFilter = new FormControl('');
   telefonoFilter = new FormControl('');
+  
+  obsTipiPersona$!:            Observable<PER_TipoPersona[]>;
+
 //#endregion
 
 //#region ----- ViewChild Input Output -------  
   @Input() personeListComponent!: PersoneListComponent;
 //#endregion
-  constructor(
-    private svcTipiPersona:             TipiPersonaService,
+  constructor( private svcTipiPersona: TipiPersonaService ) {
 
-  ) { }
+   }
 
 //#region ----- LifeCycle Hooks e simili-------
 
@@ -42,78 +48,61 @@ export class PersoneFilterComponent implements OnInit {
 
     this.obsTipiPersona$ = this.svcTipiPersona.list();
 
-    this.nomeFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
+    this.nomeFilter.valueChanges.subscribe( val => {
         this.personeListComponent.filterValues.nome = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
     )
 
-    this.cognomeFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
+    this.cognomeFilter.valueChanges.subscribe( val => {
         this.personeListComponent.filterValues.cognome = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
     )
 
-    this.tipoPersonaFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
+    this.tipoPersonaFilter.valueChanges.subscribe( val => {
         this.personeListComponent.filterValues.tipoPersona = val;
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
     )
 
-    this.annoNascitaFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
+    this.annoNascitaFilter.valueChanges.subscribe( val => {
         this.personeListComponent.filterValues.annoNascita = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
     )
 
-    this.indirizzoFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
+    this.indirizzoFilter.valueChanges.subscribe(  val => {
         this.personeListComponent.filterValues.indirizzo = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
     )
 
-    this.comuneFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
+    this.comuneFilter.valueChanges.subscribe( val => {
         this.personeListComponent.filterValues.comune = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
     )
 
-    this.provFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
+    this.provFilter.valueChanges.subscribe( val => {
         this.personeListComponent.filterValues.prov = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
     )
 
-    this.emailFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
+    this.emailFilter.valueChanges.subscribe( val => {
         this.personeListComponent.filterValues.email = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
     )
 
-    this.telefonoFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
+    this.telefonoFilter.valueChanges.subscribe( val => {
         this.personeListComponent.filterValues.telefono = val.toLowerCase();
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
     )
   }
+
 //#endregion
 
 //#region ----- Reset vari -------
@@ -134,7 +123,6 @@ export class PersoneFilterComponent implements OnInit {
     this.provFilter.setValue('', {emitEvent:false});
     this.emailFilter.setValue('', {emitEvent:false});
     this.telefonoFilter.setValue('', {emitEvent:false});
-
   }
 
   resetAllInputsAndClearFilters() {

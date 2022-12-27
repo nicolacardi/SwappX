@@ -10,6 +10,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
 
 //components
+import { UserEditComponent } from '../user-edit/user-edit.component';
 import { UsersFilterComponent } from '../users-filter/users-filter.component';
 
 //services
@@ -19,7 +20,7 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
 
 //classes
 import { User } from 'src/app/_user/Users';
-import { UserEditComponent } from '../user-edit/user-edit.component';
+
 
 @Component({
   selector: 'app-users-list',
@@ -37,11 +38,27 @@ export class UsersListComponent implements OnInit {
       //"userID", 
       "actionsColumn",
       "userName", 
-      "fullName", 
+      "persona.nome",
+      "persona.cognome",
       "email", 
+      "persona.tipoPersona.descrizione",
+      //"fullName", 
+  
       "personaID",
+      "tipoPersonaID"
       // "badge"
   ];
+
+  filterValue = '';       //Filtro semplice
+
+  //filterValues contiene l'elenco dei filtri avanzati da applicare 
+  filterValues = {
+    nome: '',
+    cognome:    '',
+    email:    '',
+    tipoPersona:    '',
+    filtrosx: ''
+  };
 
   rptTitle = 'Lista Utenti';
   rptFileName = 'ListaUtenti';
@@ -76,15 +93,7 @@ export class UsersListComponent implements OnInit {
   showTableRibbon:              boolean = true;
   public ckSoloAttivi :         boolean = true;
 
-  filterValue = '';       //Filtro semplice
 
-  //filterValues contiene l'elenco dei filtri avanzati da applicare 
-  filterValues = {
-    fullname: '',
-    email:    '',
-    badge:    '',
-    filtrosx: ''
-  };
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -100,11 +109,9 @@ export class UsersListComponent implements OnInit {
 //#endregion
 
   constructor(private svcUsers:        UserService,
-              private router:           Router,
               public _dialog:           MatDialog, 
               private _loadingService:  LoadingService,
-              private _navigationService:   NavigationService
-              ) {
+              private _navigationService:   NavigationService  ) {
   }
   
 //#region ----- LifeCycle Hooks e simili-------
@@ -115,18 +122,17 @@ export class UsersListComponent implements OnInit {
         this.toggleChecks = false;
         this.resetSelections();
       }
-
   }
   
   ngOnInit () {
     switch(this.dove) {
       case 'users-page': 
         this.displayedColumns =  this.displayedColumnsUsersList;
-        this._navigationService.getGenitore().subscribe(
-          val=>{
+        this._navigationService.getGenitore().subscribe(  val=>{
           if (val!= '') {
             this.toggleDrawer.emit();
-            this.usersFilterComponent.fullnameFilter.setValue(val);
+            //this.usersFilterComponent.fullnameFilter.setValue(val);
+            this.usersFilterComponent.emailFilter.setValue(val);
             this.loadData(); 
           }
         });
@@ -151,9 +157,9 @@ export class UsersListComponent implements OnInit {
         obsUsers$= this.svcUsers.list();
       }
       */
+
       const loadUsers$ =this._loadingService.showLoaderUntilCompleted(obsUsers$);
-      loadUsers$.subscribe(
-        val =>  {
+      loadUsers$.subscribe(  val =>  {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
@@ -165,10 +171,10 @@ export class UsersListComponent implements OnInit {
 //#endregion
 
 //#region ----- Filtri & Sort -------
+
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
-    //if (this.dove == "alunni-page") this.usersFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
 
@@ -176,34 +182,26 @@ export class UsersListComponent implements OnInit {
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
 
-      let boolSx = String(data.fullName).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.badge).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
+      //let boolSx = String(data.fullName).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+      //          || String(data.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+      //          || String(data.badge).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
 
-      let boolDx = String(data.fullName).toLowerCase().indexOf(searchTerms.fullname) !== -1
-                && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1
-                && String(data.badge).toLowerCase().indexOf(searchTerms.badge) !== -1;
+      let foundTipoPersona = (String(data.persona.tipoPersonaID).indexOf(searchTerms.tipoPersona) !== -1);
+      if (searchTerms.tipoPersona == null) foundTipoPersona = true;
 
+      let boolSx = String(data.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.email).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
+
+      let boolDx = String(data.persona.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+                && String(data.persona.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+                && String(data.email).toLowerCase().indexOf(searchTerms.email) !== -1;
 
       return boolSx && boolDx;
     }
     return filterFunction;
   }
 
-
-  // filterPredicateCustom(){
-  //   //questa funzione consente il filtro selettivamente su alcuni campi e non su altri oppure su oggetti nested
-  //   //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
-  //   this.matDataSource.filterPredicate = (data, filter: string)  => {
-  //     const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
-  //     //stabilisco dunque in quali campi cercare
-  //      return currentTerm + data.email + data.fullname + data.badge
-  //     };
-  //     const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
-  //     const transformedFilter = filter.trim().toLowerCase();
-  //     return dataStr.indexOf(transformedFilter) !== -1;
-  //   };
-  // }
 //#endregion
 
 //#region ----- Add Edit Drop -------
@@ -249,8 +247,8 @@ export class UsersListComponent implements OnInit {
 //#endregion
 
 
-
 //#region ----- Gestione Campo Checkbox -------
+
   selectedRow(element: User) {
     this.selection.toggle(element);
   }
@@ -275,31 +273,33 @@ export class UsersListComponent implements OnInit {
   }
 
   getChecked() {
-    //funzione usata da classi-dahsboard
+    //funzione usata da classi-dashboard
     return this.selection.selected;
   }
 
     //non so se serva questo metodo: genera un valore per l'aria-label...
   //forse serve per poi pescare i valori selezionati?
+  
   checkboxLabel(row?: User): string {
 
-    /* TODO
-    if (!row) 
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    else
-      return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
-      */
+    // if (!row) 
+    //   return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    // else
+    //   return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
 
       return "";
   }
+ 
 
   //questo metodo ritorna un booleano che dice se sono selezionati tutti i record o no
   //per ora non lo utilizzo
+  /*
   isAllSelected() {
     const numSelected = this.selection.selected.length;   //conta il numero di elementi selezionati
     const numRows = this.matDataSource.data.length;       //conta il numero di elementi del matDataSource
     return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
   }
+  */
 //#endregion
 
 //#region ----- Altri metodi -------
