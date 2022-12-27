@@ -1,10 +1,10 @@
-import { AfterViewChecked, AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, Subscription } from 'rxjs';
-import { debounceTime, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
-import { FormCustomValidatorsArray, RequireMatch} from '../../utilities/requireMatch/requireMatch';
+import { debounceTime, switchMap, tap } from 'rxjs/operators';
+import { FormCustomValidatorsArray} from '../../utilities/requireMatch/requireMatch';
 //components
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
@@ -28,7 +28,7 @@ import { PersonaEditComponent } from '../../persone/persona-edit/persona-edit.co
   styleUrls: ['../users.css']
 })
 
-export class UserEditComponent implements OnInit, AfterViewInit {
+export class UserEditComponent implements OnInit {
 
 
   subscription!: Subscription;
@@ -113,26 +113,18 @@ private myObjectExists(value: any): boolean {
 
     //this.form.controls.nomeCognomePersona.addValidators(FormCustomValidators.valueSelected<PER_Persona>(this.myObjectExists.bind(this)));
 
+    console.log ("ngOnInit");
+    this.svcPersone.list()
+    .subscribe(persone => {
+      this.form.controls['nomeCognomePersona'].setValidators(
+        [FormCustomValidatorsArray.valueSelected(persone)]
+      );
+    })
 
     this.filteredPersone$ = this.form.controls['nomeCognomePersona'].valueChanges
     .pipe(
-
-      //debounceTime(300),  //SERVE? in teoria perchè non lo faccia sempre ad ogni tasto...ma forse compromette poi il setValidators?
+      debounceTime(300),
       switchMap(() => this.svcPersone.filterPersone(this.form.value.nomeCognomePersona)),
-      //,tap(personaArr => {this.filteredPersoneArray= personaArr})
-      tap (()=>
-      {
-          this.svcPersone.filterPersone(this.form.value.nomeCognomePersona).subscribe(personeFiltrate => {
-          console.log ("personeFiltrate", personeFiltrate);
-
-          this.form.controls['nomeCognomePersona'].setValidators(
-            [FormCustomValidatorsArray.valueSelected(personeFiltrate)]
-          );
-
-        });
-
-
-      }),
     )
     
     
@@ -159,24 +151,9 @@ private myObjectExists(value: any): boolean {
 
 
 
-  ngAfterViewInit() {
-
-    // //QUI NON FUNZIONA!
-    // this.trigger.panelClosingActions.subscribe(e => {  
-    //   //su ngAFterViewInit: ERROR TypeError: Cannot read properties of undefined (reading 'panelClosingActions') è come se trigger non lo vedesse "ancora", come se fosse un tema di caricamento
-    //   //ma cos'è MatAutoCompleteTrigger? qui lo spiega https://stackoverflow.com/questions/50030381/angular-material-autocomplete-matautocompletetrigger
-    //   if (!(e && e.source)) {
-    //     this.form.controls.nomeCognomePersona.setValue('');
-    //     this.trigger.closePanel();
-    //   }
-    // });
 
 
-  }
 
-  blur(event: any) {
-    console.log (event);
-  }
 
 
 
@@ -230,7 +207,7 @@ private myObjectExists(value: any): boolean {
       //FullName:   this.form.controls.fullName.value,
       //Badge:      this.form.controls.badge.value,
       //RuoloID:    this.form.controls.ruoloID.value,
-      personaID:  this.form.controls.personaID.value,  //NC 25.12.22
+      PersonaID:  this.form.controls.personaID.value,  //NC 25.12.22
       Password:   this.form.controls.password.value
     };
     
@@ -244,12 +221,12 @@ private myObjectExists(value: any): boolean {
       }
       this.svcUser.post(this.form.value).subscribe(
         res=> this._dialogRef.close(),
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})  
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio POST', panelClass: ['red-snackbar']})  
       );
     } else {
       this.svcUser.put(formData).subscribe( 
         res => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo utente salvato', panelClass: ['green-snackbar']}),
-        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvaggio', panelClass: ['red-snackbar']})
+        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvaggio PUT', panelClass: ['red-snackbar']})
       );
     }
 
@@ -348,6 +325,17 @@ private myObjectExists(value: any): boolean {
     
   }
 
+  addPersona() {
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '850px',
+      height: '600px',
+      data: 0
+    };
+
+    const dialogRef = this._dialog.open(PersonaEditComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() => this.loadData());
+  }
   
 
 }

@@ -71,11 +71,17 @@
                 </mat-grid-tile> -->
 
 
-
+                
             </mat-grid-list>
-
+            <span class="center"><mat-divider class="mb10"></mat-divider></span>
+            <span class="center mt10">
+                selezionare una persona esistente<br>
+                oppure creare una nuova anagrafica<br>
+                e poi selezionarla per associarla a questo utente
+            </span>
 
             <mat-grid-list [cols]="1" rowHeight="60px">
+                
                 <mat-grid-tile>
                     <mat-form-field>
                         <input type="text"
@@ -97,6 +103,11 @@
                             Selezionare un valore dalla lista
                         </mat-error>
                     </mat-form-field>
+                
+
+                    <button mat-mini-fab aria-label="Nuova anagrafica" matTooltip="Nuova anagrafica" class="_btn-add _btn-pos-right-2 " (click)="addPersona()">
+                        <mat-icon>add</mat-icon>
+                    </button>
                 </mat-grid-tile>
             </mat-grid-list>
         </form>

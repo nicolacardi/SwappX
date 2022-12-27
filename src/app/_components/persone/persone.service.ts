@@ -55,6 +55,7 @@ export class PersoneService {
       return of()
       }
   }
+
     //Recupera l'id da nome cognome  
   findPersonaID(searchstring: string) : Observable<any>{
     return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone')

@@ -212,7 +212,7 @@ export class UsersListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width:      '500px',
-      height:     '350px',
+      height:     '400px',
       data:       0
     };
 
@@ -224,7 +224,7 @@ export class UsersListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width:      '500px',
-      height:     '350px',
+      height:     '400px',
       data:       id
     };
 
