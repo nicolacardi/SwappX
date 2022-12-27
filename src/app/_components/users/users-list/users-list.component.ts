@@ -39,7 +39,6 @@ export class UsersListComponent implements OnInit {
       "userName", 
       "fullName", 
       "email", 
-      "ruolo",
       "personaID",
       // "badge"
   ];

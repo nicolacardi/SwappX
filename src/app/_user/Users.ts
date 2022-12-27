@@ -4,7 +4,7 @@ export interface User {
     fullname: string;
     email: string;
     username: string;
-    badge: string;
+    //badge: string;
     token?: string;
     isLoggedIn?: boolean;
     
