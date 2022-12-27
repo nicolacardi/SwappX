@@ -16,11 +16,11 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
 
 export class UsersPageComponent implements OnInit {
 
-
 //#region ----- ViewChild Input Output -------
+
   @ViewChild(UsersListComponent) usersList!: UsersListComponent; 
- // @ViewChild(AlunniFilterComponent) usersFilterComponent!: AlunniFilterComponent; 
   @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
+
 //#endregion
   
   constructor(private _navigationService:  NavigationService) { }
@@ -41,7 +41,6 @@ export class UsersPageComponent implements OnInit {
   resetFiltri() {
     //this.usersFilterComponent.nomeFilter.setValue('');
     //this.usersFilterComponent.cognomeFilter.setValue('');
-
   }
 //#endregion
 
