@@ -12,6 +12,8 @@ export interface User {
     
     ruoloID:        number;
     ruolo:          Ruolo;
+
+    tipoPersonaID:  number;
     personaID:      number;
     persona?:       PER_Persona;
 }

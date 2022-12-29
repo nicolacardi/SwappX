@@ -12,9 +12,9 @@ import { UserService } from '../user.service';
 
 export class AuthGuard implements CanActivate {
 
-  constructor( private router: Router, 
-               private uService: UserService,
-               private _snackBar:      MatSnackBar ) {
+  constructor( private router:        Router, 
+               private uService:      UserService,
+               private _snackBar:     MatSnackBar ) {
   }
 
   canActivate( route:  ActivatedRouteSnapshot, state: RouterStateSnapshot):  boolean  {

@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup} from '@angular/forms';
 import { HttpClient } from "@angular/common/http";
 import { catchError, concatMap, map, tap, timeout } from 'rxjs/operators';
-import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 import { User, UserRole } from './Users';
 import { _UT_Parametro } from '../_models/_UT_Parametro';
 import { _UT_UserFoto } from '../_models/_UT_UserFoto';
 import { ParametriService } from '../_services/parametri.service';
+import { PER_Persona } from '../_models/PER_Persone';
+import { PersoneService } from '../_components/persone/persone.service';
 
 
 @Injectable({
@@ -21,10 +23,10 @@ export class UserService {
 
   private BehaviourSubjectcurrentUser : BehaviorSubject<User>;      //holds the value that needs to be shared with other components
   public obscurrentUser: Observable<User>;
-
   constructor(
     private fb:             FormBuilder,
     private http:           HttpClient,
+    private svcPersona:     PersoneService,
     private svcParametri:   ParametriService
     ) { 
     this.BehaviourSubjectcurrentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
@@ -53,41 +55,36 @@ export class UserService {
   //Login(userName: string, userPwd: string) {
   Login(formData: any) {
 
+
     let httpPost$ = this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
       .pipe(timeout(8000))  
       .pipe(
         map(user => {
           if (user && user.token) {
-            user.isLoggedIn = true;
-            //TEMP
-            //user.role= UserRole.Admin;        //Debug Role
 
-            // store user details in local storage to keep user logged in
-            localStorage.setItem('token', user.token);
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            
-            this.BehaviourSubjectcurrentUser.next(user);
+
+            //estraiamo i dati della persona e li inseriamo nel localStorage
+            this.svcPersona.get(user.personaID)
+              .subscribe(val=>{
+                //localStorage.setItem('currentPersona', JSON.stringify(val));
+                //localStorage.setItem('currentUser.ruoloID', user.ruoloID);
+
+                user.isLoggedIn = true;
+                user.fullname = "XX"+ val.nome + " " + val.cognome;
+                //user.role= UserRole.Admin;        //Debug Role
+    
+                localStorage.setItem('token', user.token!);
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                this.BehaviourSubjectcurrentUser.next(user);
+
+            })
+
+
           }
         return user;
-      }),
-      //*********************DA SISTEMARE******************* */
-      tap(val => {
-        this.http.get<User>(environment.apiBaseUrl+'ApplicationUser/' + val.userID)
-        .subscribe(val=>{
-          console.log(val);
-          if (val && val.persona) {
-            //localStorage.setItem('currentUser.fullName', val.persona.nome + " " + val.persona.cognome);
-            
-            //localStorage.setItem('currentUser', JSON.stringify(val.persona));
-
-            
-          }
-        });
       })
-      //***************************************************** */
-
-
-    );
+      );
 
     //let httpParam$ =  this.http.get<_UT_Parametro>(environment.apiBaseUrl+'_UT_Parametri/GetByParName/AnnoCorrente')
     let httpParam$ = this.svcParametri.getByParName('AnnoCorrente')

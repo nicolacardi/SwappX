@@ -11,6 +11,7 @@ import { Utility } from  './_components/utilities/utility.component';
 //models
 import { User } from './_user/Users';
 import { MatExpansionPanel } from '@angular/material/expansion';
+import { PER_Persona } from './_models/PER_Persone';
 
 @Component({
   selector: 'app-root',
@@ -22,8 +23,10 @@ export class AppComponent implements OnInit {
 
 //#region ----- Variabili -------
   //isLoggedIn?: boolean;
-  public isLoggedIn?:  boolean = false;
-  public currUser!: User;
+  public isLoggedIn?:     boolean = false;
+  public currUser!:       User;
+  public currPersona!:    PER_Persona;
+
   public userFullName: string = "";
   public imgAccount = "";
   stringJson: any;
