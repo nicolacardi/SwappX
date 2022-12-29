@@ -246,7 +246,7 @@ export class AlunnoEditComponent implements OnInit {
       email :         this.formPersona.value.email,
       ckAttivo:       this.formPersona.value.ckAttivo,
 
-      tipoPersonaID : 9,
+      tipoPersonaID : 1, //Alunno
       id : this.formPersona.value.personaID
     }
 

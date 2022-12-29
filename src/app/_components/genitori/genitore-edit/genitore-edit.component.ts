@@ -217,7 +217,7 @@ export class GenitoreEditComponent implements OnInit {
 
       ckAttivo:       this.formPersona.value.ckAttivo,
       
-      tipoPersonaID : 10,
+      tipoPersonaID : 3, //Genitore
       id : this.formPersona.value.personaID
     }
 

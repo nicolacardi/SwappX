@@ -139,7 +139,7 @@ export class PersoneListComponent implements OnInit {
  
     const loadPersone$ =this._loadingService.showLoaderUntilCompleted(obsPersone$);
     loadPersone$.pipe(
-        map(val=> val.filter( val => (val.tipoPersonaID != 9 && val.tipoPersonaID != 10 ))
+        map(val=> val.filter( val => (val.tipoPersonaID != 1 && val.tipoPersonaID != 3 ))
       )
     ).subscribe( val => {
         this.matDataSource.data = val;
