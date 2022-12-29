@@ -48,6 +48,7 @@ export class LoginComponent implements OnInit {
     
     loadUser$.subscribe(
       res => {
+        console.log ("res",res);
         this.eventEmitterService.onAccountSaveProfile();
         //this.svcUser.changeLoggedIn(true);
         this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + res[0].fullname , panelClass: ['green-snackbar']});

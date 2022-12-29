@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup} from '@angular/forms';
 import { HttpClient } from "@angular/common/http";
-import { catchError, map, timeout } from 'rxjs/operators';
+import { catchError, concatMap, map, tap, timeout } from 'rxjs/operators';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
@@ -21,7 +21,6 @@ export class UserService {
 
   private BehaviourSubjectcurrentUser : BehaviorSubject<User>;      //holds the value that needs to be shared with other components
   public obscurrentUser: Observable<User>;
-  //public currUser! : User;
 
   constructor(
     private fb:             FormBuilder,
@@ -56,21 +55,39 @@ export class UserService {
 
     let httpPost$ = this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
       .pipe(timeout(8000))  
-      .pipe(map(user => {
-        if (user && user.token) {
-          user.isLoggedIn = true;
-          
-          //TEMP
-          //user.role= UserRole.Admin;        //Debug Role
+      .pipe(
+        map(user => {
+          if (user && user.token) {
+            user.isLoggedIn = true;
+            //TEMP
+            //user.role= UserRole.Admin;        //Debug Role
 
-          // store user details in local storage to keep user logged in
-          localStorage.setItem('token', user.token);
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          
-          this.BehaviourSubjectcurrentUser.next(user);
-        }
+            // store user details in local storage to keep user logged in
+            localStorage.setItem('token', user.token);
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            
+            this.BehaviourSubjectcurrentUser.next(user);
+          }
         return user;
-      }));
+      }),
+      //*********************DA SISTEMARE******************* */
+      tap(val => {
+        this.http.get<User>(environment.apiBaseUrl+'ApplicationUser/' + val.userID)
+        .subscribe(val=>{
+          console.log(val);
+          if (val && val.persona) {
+            //localStorage.setItem('currentUser.fullName', val.persona.nome + " " + val.persona.cognome);
+            
+            //localStorage.setItem('currentUser', JSON.stringify(val.persona));
+
+            
+          }
+        });
+      })
+      //***************************************************** */
+
+
+    );
 
     //let httpParam$ =  this.http.get<_UT_Parametro>(environment.apiBaseUrl+'_UT_Parametri/GetByParName/AnnoCorrente')
     let httpParam$ = this.svcParametri.getByParName('AnnoCorrente')

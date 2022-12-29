@@ -1,16 +1,19 @@
+import { PER_Persona } from "../_models/PER_Persone";
+
 export interface User {
-    id: string;  //NC 230222
-    userID: string;
-    fullname: string;
-    email: string;
-    username: string;
+    id:             string;  //NC 230222
+    userID:         string;
+    fullname:       string;
+    email:          string;
+    username:       string;
     //badge: string;
-    token?: string;
-    isLoggedIn?: boolean;
+    token?:         string;
+    isLoggedIn?:    boolean;
     
-    ruoloID: number;
-    ruolo: Ruolo;
-    personaID: number;
+    ruoloID:        number;
+    ruolo:          Ruolo;
+    personaID:      number;
+    persona?:       PER_Persona;
 }
 
 
