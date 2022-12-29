@@ -24,12 +24,10 @@ export class PersoneService {
     //http://213.215.231.4/swappX/api/PER_Persone
   }
 
-
   get(personaID: any): Observable<PER_Persona>{
     return this.http.get<PER_Persona>(environment.apiBaseUrl+'PER_Persone/'+personaID);
     //http://213.215.231.4/swappX/api/PER_Persone/3
   }
-
 
   put(formData: any): Observable <any>{
     return this.http.put( environment.apiBaseUrl  + 'PER_Persone/' + formData.id , formData);    
@@ -44,24 +42,24 @@ export class PersoneService {
     return this.http.delete( environment.apiBaseUrl  + 'PER_Persone/' + personaID);    
   }
 
-  filterPersone(searchstring: string): Observable<PER_Persona[]>{
+  filterPersone(searchstring: string): Observable<PER_Persona[]> {
 
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone')
-            .pipe (
+        .pipe (
             map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
-      );
-        } else {
+        );
+    } 
+    else {
       return of()
-      }
+    }
   }
 
     //Recupera l'id da nome cognome  
   findPersonaID(searchstring: string) : Observable<any>{
     return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone')
-      .pipe(
-        map(val => val.find(val => (val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase())== searchstring.toLowerCase())),
+      .pipe (
+          map(val => val.find(val => (val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase())== searchstring.toLowerCase())),
       )
   }
-
 }

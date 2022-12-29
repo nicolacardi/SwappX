@@ -3,7 +3,7 @@ import { RouteConfigLoadEnd, RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from './_user/auth/auth.guard';
 import { UserComponent } from './_user/user.component';
-import { UserRole } from './_user/Users';
+//import { UserRole } from './_user/Users';
 import { RegisterComponent } from './_user/register/register.component';
 import { LoginComponent } from './_user/login/login.component';
 
@@ -13,7 +13,6 @@ import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.c
 import { ResetPasswordComponent } from './_user/reset-password/reset-password.component';
 
 import { HomeComponent } from './_components/home/home.component';
-
 
 import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-page.component';
 import { GenitoriPageComponent } from './_components/genitori/genitori-page/genitori-page.component';
@@ -28,7 +27,6 @@ import { IscrizioniPageComponent } from './_components/iscrizioni/iscrizioni-pag
 import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
 import { MateriePageComponent } from './_components/materie/materie-page/materie-page.component';
 import { ObiettiviPageComponent } from './_components/obiettivi/obiettivi-page/obiettivi-page.component';
-
 import { ClassiAnniMateriePageComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-page/classi-anni-materie-page.component';
 
 const routes: Routes = [
@@ -65,10 +63,15 @@ const routes: Routes = [
 
   { path: "rette",            component: RettePageComponent,canActivate:[AuthGuard] },
 
-  { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.SysAdmin, UserRole.IT_Manager,UserRole.Segreteria ] } },
-  
-  { path: "impostazioni",     component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: [UserRole.SysAdmin, UserRole.IT_Manager] }  },
 
+  //BELLA MERDA !!!
+  // COME SI FA ? NOI CONFRONTAVAMO IL RUOLO CON UN VALORE FISSO (userRole.SysAdmin) --> per il momento confronto con la descrizione del record TipoPersona ...
+  //IL RESTO DEL CONTROLLO LO FA L'auth.guard
+  //{ path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.SysAdmin, UserRole.IT_Manager,UserRole.Segreteria ] } },
+  { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: ['SysAdmin', 'Segreteria' ] } },
+
+  //{ path: "impostazioni",     component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: [UserRole.SysAdmin, UserRole.IT_Manager] }  },
+  { path: "impostazioni",     component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: ['SysAdmin', 'Segreteria' ] }  },
 
   { path: "profilo",          component: ProfiloComponent, canActivate:[AuthGuard] },
 

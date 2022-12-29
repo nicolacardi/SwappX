@@ -4,14 +4,18 @@ import { HttpClient } from "@angular/common/http";
 import { catchError, concatMap, map, tap, timeout } from 'rxjs/operators';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 
+//components
 import { environment } from 'src/environments/environment';
-import { User, UserRole } from './Users';
-import { _UT_Parametro } from '../_models/_UT_Parametro';
-import { _UT_UserFoto } from '../_models/_UT_UserFoto';
+import { User } from './Users';
+//import { User, UserRole } from './Users';
+
+//services
 import { ParametriService } from '../_services/parametri.service';
-import { PER_Persona } from '../_models/PER_Persone';
 import { PersoneService } from '../_components/persone/persone.service';
 
+//classes
+import { _UT_Parametro } from '../_models/_UT_Parametro';
+import { _UT_UserFoto } from '../_models/_UT_UserFoto';
 
 @Injectable({
   providedIn: 'root'
@@ -23,12 +27,11 @@ export class UserService {
 
   private BehaviourSubjectcurrentUser : BehaviorSubject<User>;      //holds the value that needs to be shared with other components
   public obscurrentUser: Observable<User>;
-  constructor(
-    private fb:             FormBuilder,
-    private http:           HttpClient,
-    private svcPersona:     PersoneService,
-    private svcParametri:   ParametriService
-    ) { 
+  constructor( private fb:             FormBuilder,
+               private http:           HttpClient,
+               private svcPersona:     PersoneService,
+               private svcParametri:   ParametriService ) { 
+
     this.BehaviourSubjectcurrentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
     this.obscurrentUser = this.BehaviourSubjectcurrentUser.asObservable();
   }
@@ -38,23 +41,21 @@ export class UserService {
   }
 
   formModel = this.fb.group(
+  {
+      UserName:   ['', Validators.required],
+      Email:      ['', Validators.email],
+      FullName:   [''],
+      Passwords: this.fb.group({
+        Password:         ['', [Validators.required, Validators.minLength(4)]],
+        ConfirmPassword:  ['', Validators.required]
+      },
       {
-        UserName:   ['', Validators.required],
-        Email:      ['', Validators.email],
-        FullName:   [''],
-        Passwords: this.fb.group({
-          Password:         ['', [Validators.required, Validators.minLength(4)]],
-          ConfirmPassword:  ['', Validators.required]
-        },
-      {
-       validator: this.comparePasswords
-      }
-    ) 
+        validator: this.comparePasswords
+      }) 
   });
 
   //Login(userName: string, userPwd: string) {
   Login(formData: any) {
-
 
     let httpPost$ = this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
       .pipe(timeout(8000))  
@@ -62,35 +63,37 @@ export class UserService {
         map(user => {
           if (user && user.token) {
 
-
             //estraiamo i dati della persona e li inseriamo nel localStorage
-            this.svcPersona.get(user.personaID)
-              .subscribe(val=>{
-                //localStorage.setItem('currentPersona', JSON.stringify(val));
-                //localStorage.setItem('currentUser.ruoloID', user.ruoloID);
+            this.svcPersona.get(user.personaID).subscribe(val=>{
 
                 user.isLoggedIn = true;
-                user.fullname = "XX"+ val.nome + " " + val.cognome;
+                
+                //Dati di PER_Persona
+                user.personaID = val.id;
+                user.fullname = val.nome + " " + val.cognome;
+                user.tipoPersonaID = val.tipoPersonaID;
+                user.TipoPersona = val.tipoPersona;
+
                 //user.role= UserRole.Admin;        //Debug Role
     
                 localStorage.setItem('token', user.token!);
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 
                 this.BehaviourSubjectcurrentUser.next(user);
-
             })
-
-
           }
-        return user;
-      })
+          else {
+            //AS ???
+            console.log("User.servise - Passerà mai di qua ?");
+            this.Logout();
+          }
+          return user;
+        })
       );
 
-    //let httpParam$ =  this.http.get<_UT_Parametro>(environment.apiBaseUrl+'_UT_Parametri/GetByParName/AnnoCorrente')
     let httpParam$ = this.svcParametri.getByParName('AnnoCorrente')
       .pipe(map( par => {
         //sessionStorage.setItem();
-        //localStorage.setItem(par.parName, par.parValue);
         localStorage.setItem(par.parName, JSON.stringify(par));
         return par;
       }));
@@ -98,7 +101,7 @@ export class UserService {
     return forkJoin([ httpPost$ ,httpParam$  ]);
   }
 
-  Logout(){
+  Logout() {
     
     //Pulizia cookies
     localStorage.removeItem('token');
@@ -110,8 +113,8 @@ export class UserService {
     this.BehaviourSubjectcurrentUser.next(logOutUser);
   }
 
-  Register()
-  {
+  Register() {
+
     let body = {
       UserName:   this.formModel.value.UserName,
       Email:      this.formModel.value.Email,
@@ -131,16 +134,18 @@ export class UserService {
     //http://213.215.231.4/swappX/api/ApplicationUser/GetByUsername/a
   }
 
-
   put(formData: any): Observable <any>{
     return this.http.put(environment.apiBaseUrl +'ApplicationUser/'+ formData.userID, formData );
   }
 
   post(formData: any): Observable <any>{
-    console.log (formData);
+    //console.log (formData);
     return  this.http.post(environment.apiBaseUrl +'ApplicationUser/Register', formData );
   }
-
+  
+  delete(userID: string): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'ApplicationUser/' + userID);    
+  }
 
   ChangePassword(formData: any): Observable <any>{
     return  this.http.post(environment.apiBaseUrl +'ApplicationUser/ChangePassword?userID=' + formData.userID + "&currPassword=" + formData.currPassword + "&newPassword=" + formData.newPassword,formData);
@@ -171,9 +176,7 @@ export class UserService {
   }
  
  
-
-
-
+/*
 //AS: VERIFICARE
   getUserProfile(appUser: string){
     //AS: sostituito da auth.interceptor
@@ -192,14 +195,14 @@ export class UserService {
     //console.log("DEBUG -getUserProfile:" + this.BaseURI  + '/ApplicationUser/'+ localUser );
     //return this.http.get(this.BaseURI  + '/ApplicationUser/' + this.formModel.value.UserName, );
     return this.http.get(this.BaseURI  + '/ApplicationUser/' + appUser, );
-
   }
-
+*/
   /*
   changeLoggedIn(val: boolean) {
     this.BehaviourSubjectLoggedIn.next(val);    
   }
 */
+
 
   //AS: custom validator
   comparePasswords(fb: FormGroup )
@@ -208,20 +211,19 @@ export class UserService {
     //passwordMismatch
     //comfirmPasswordCtrl.errors{passwordMismatch:true};
     
-    /* TODO: ERRORI DA CAPIRE
-    if(confirmPasswordCtrl!.errors == null|| 'passwordMismatch' in confirmPasswordCtrl!.errors){
-      if( fb.get('Password').value !=  confirmPasswordCtrl.value )
-        confirmPasswordCtrl.setErrors({passwordMismatch:true});
-      else
-        confirmPasswordCtrl.setErrors(null);
-    }
-    */
+    // TODO: ERRORI DA CAPIRE
+    //if(confirmPasswordCtrl!.errors == null|| 'passwordMismatch' in confirmPasswordCtrl!.errors){
+    //  if( fb.get('Password').value !=  confirmPasswordCtrl.value )
+    //    confirmPasswordCtrl.setErrors({passwordMismatch:true});
+    //  else
+    //    confirmPasswordCtrl.setErrors(null);
+    //}
+    
   }
+ 
 
 
-  delete(userID: string): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'ApplicationUser/' + userID);    
-  }
+  
 }
 
 

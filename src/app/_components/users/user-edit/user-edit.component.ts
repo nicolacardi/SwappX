@@ -12,13 +12,15 @@ import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 //services
-import { RuoliService } from 'src/app/_user/ruoli.service';
 import { UserService } from 'src/app/_user/user.service';
+//import { RuoliService } from 'src/app/_user/ruoli.service';
+import { TipiPersonaService } from 'src/app/_components/persone/tipi-persona.service';
+
 import { LoadingService } from '../../utilities/loading/loading.service';
 
 //classes
-import { Ruolo, User } from 'src/app/_user/Users';
-import { PER_Persona } from 'src/app/_models/PER_Persone';
+import {  User } from 'src/app/_user/Users';
+import { PER_Persona, PER_TipoPersona } from 'src/app/_models/PER_Persone';
 import { PersoneService } from '../../persone/persone.service';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { PersonaEditComponent } from '../../persone/persona-edit/persona-edit.component';
@@ -34,7 +36,8 @@ export class UserEditComponent implements OnInit {
   subscription!: Subscription;
 
   user$!:                     Observable<User>;
-  obsRuoli$!:                 Observable<Ruolo[]>;
+  //obsRuoli$!:               Observable<Ruolo[]>;
+  obsTipiPersona$!:           Observable<PER_TipoPersona[]>;
 
   filteredPersone$!:          Observable<PER_Persona[]>;
   filteredPersoneArray!:      PER_Persona[];
@@ -45,7 +48,8 @@ export class UserEditComponent implements OnInit {
   emptyForm :                 boolean = false;
 
   previousMatSelect! :        number;
-  currUserRuolo!:             number;
+  //currUserRuolo!:             number;
+
   currUserID!:                string;       //ID dell'utente loggato
   userID!:                    string;       //ID dell'utente che si sta editando
 
@@ -56,7 +60,8 @@ export class UserEditComponent implements OnInit {
                public idUser: string,
                public _dialogRef: MatDialogRef<UserEditComponent>,
                private svcUser:                            UserService,
-               private svcRuoli:                           RuoliService,
+               //private svcRuoli:                         RuoliService,
+               private svcTipiPersona:                     TipiPersonaService,
                private svcPersone:                         PersoneService,
                public _dialog:                             MatDialog,
                private _snackBar:                          MatSnackBar,
@@ -88,10 +93,11 @@ export class UserEditComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili-------
 
+/* AS ???
   private myObjectExists(value: any): boolean {
     return this.filteredPersoneArray.some(v => v === value);
   }
-
+  */
 
   ngOnInit() {
 
@@ -113,30 +119,13 @@ export class UserEditComponent implements OnInit {
         this.currUserID = val.userID;
     });
 
+    //this.obsRuoli$ = this.svcRuoli.list();
+    this.obsTipiPersona$ = this.svcTipiPersona.list();    
+
     this.loadData();
-
-    //salvo in una proprietà (previousMatSelect) il valore PRECEDENTE nella combo
-    // this.form.controls.ruoloID.valueChanges.pipe(
-    //   startWith(this.form.controls.ruoloID.value),
-    //   pairwise()
-    // ).subscribe(
-    //   ([old,value])=> this.previousMatSelect = old
-    // );
   }
- 
-
-
-
-
-
-
-
-
-
 
   loadData() {
-    this.obsRuoli$ = this.svcRuoli.list();
-    //this.form.controls['ruoloID'].setValue(this.user$);
 
     if (this.idUser && this.idUser + '' != "0") {
       const obsUser$: Observable<User> = this.svcUser.get(this.idUser);
@@ -164,7 +153,8 @@ export class UserEditComponent implements OnInit {
     dialogYesNo.afterClosed().subscribe(
       result => {
         if(result){
-          this.svcUser.delete(this.idUser).subscribe(()=>{
+          this.svcUser.delete(this.idUser).subscribe(
+            res => {
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['green-snackbar']});
               this._dialogRef.close();
             },
@@ -175,7 +165,8 @@ export class UserEditComponent implements OnInit {
   }
 
    save() {
-    //ho aggiunto il campo personaID e non salva...bisogna aggiustare anche il service per accettarlo
+    //NC: ho aggiunto il campo personaID e non salva...bisogna aggiustare anche il service per accettarlo
+    //AS: e il tipo Persona ?
 
     let formData = {
       userID:     this.idUser,   
@@ -219,8 +210,11 @@ export class UserEditComponent implements OnInit {
     }
   }
 
+  //questa routine non dovrebbe più servire
   ruoloChange() {
-    //questa routine non dovrebbe più servire
+    
+    //AS: ATTENZIONE: verificare se serve
+    /*
     if (this.currUserRuolo != 11 && this.previousMatSelect == 11) {
       //impedisco  ai non SysAdmin di modificare il ruolo di quelli che sono SySAdmin
       //un SySAdmin invece può cambiare tutti gli altri (non il suo, v. oltre)
@@ -243,7 +237,7 @@ export class UserEditComponent implements OnInit {
       this.form.controls['ruoloID'].setValue(this.previousMatSelect);
       return;
     }
-
+    */
     if (this.currUserID == this.userID) {
       //impedisco di modificare il proprio ruolo a chiunque, compresi i SysAdmin
       this._dialog.open(DialogOkComponent, {
@@ -255,15 +249,11 @@ export class UserEditComponent implements OnInit {
     }
   }
 
-
   selected(event: MatAutocompleteSelectedEvent): void {
 
     //come approccio alternativo all'uso di un customformvalidator vorrei fare come in 
     //https://stackblitz.com/edit/mat-autocomplete-force-selection-of-option?file=src%2Fapp%2Fautocomplete-auto-active-first-option-example.ts 
     //sembra infatti molto più "diretto" e "semplice" MA....come lo propone lui su ngAfterViewInit ...NON FUNZIONA CASSO! quindi lo metto qui che non è il massimo
-
-
-
 
     //***NC 25.12.22 ***/
     this.form.controls.personaID.setValue(event.option.id);
@@ -274,10 +264,10 @@ export class UserEditComponent implements OnInit {
       .pipe( 
           tap(
             persona => {this.form.controls.email.setValue(persona.email);}
-
           )
       );
       this.persona$.subscribe();
+
     //***NC 25.12.22 ***/
 
     //in alternativa apro il form persona....
@@ -314,6 +304,5 @@ export class UserEditComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => this.loadData());
   }
   
-
 }
 

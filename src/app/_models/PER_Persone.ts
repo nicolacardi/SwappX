@@ -34,6 +34,8 @@ export interface PER_Persona {
 }
 
 export interface PER_TipoPersona {
-        id:                            number;
-        descrizione:                   string;
+        id:                      number;
+        descrizione:             string;
+        ckDocente?:              boolean;
+        ckPersonale?:            boolean;
 }

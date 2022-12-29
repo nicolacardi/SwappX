@@ -11,6 +11,7 @@ import { PER_Docente } from 'src/app/_models/PER_Docente';
 @Injectable({
   providedIn: 'root'
 })
+
 export class DocentiService {
 
   constructor(private http: HttpClient) {
@@ -30,7 +31,8 @@ export class DocentiService {
 
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<PER_Docente[]>(environment.apiBaseUrl+'PER_Docenti')
-            .pipe ( map(
+            .pipe ( 
+              map( 
               val=>val.filter(
                 val=>(val.persona.nome.toLowerCase() + ' ' + val.persona.cognome.toLowerCase()).includes(searchstring.toLowerCase())
               )

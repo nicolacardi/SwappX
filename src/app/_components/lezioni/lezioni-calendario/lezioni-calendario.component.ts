@@ -386,11 +386,10 @@ export class LezioniCalendarioComponent implements OnInit {
      console.log ("current USer",this.svcUser.currentUser);
      console.log ("docenteID", this.docenteID);
 
-    if (this.svcUser.currentUser.ruoloID>=7) {
+    //if (this.svcUser.currentUser.ruoloID>=7) {
+    if (this.svcUser.currentUser.TipoPersona?.ckDocente || this.svcUser.currentUser.TipoPersona?.ckPersonale) {
       const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
-      dialogRef.afterClosed().subscribe(
-        () => this.loadData()
-      );
+      dialogRef.afterClosed().subscribe(  () => this.loadData() );
     }
   }
 

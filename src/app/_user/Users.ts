@@ -1,24 +1,27 @@
-import { PER_Persona } from "../_models/PER_Persone";
+import { PER_Persona, PER_TipoPersona } from "../_models/PER_Persone";
 
 export interface User {
     id:             string;  //NC 230222
     userID:         string;
-    fullname:       string;
+    username:       string; 
     email:          string;
-    username:       string;
-    //badge: string;
-    token?:         string;
-    isLoggedIn?:    boolean;
+
+    fullname:       string;         //Da PER_Persona
+
+    token?:         string;         //token restituito da EF
+    isLoggedIn?:    boolean;        //dinamico: impostato da behaviour subject
     
-    ruoloID:        number;
-    ruolo:          Ruolo;
+    //ruoloID:        number;         //DA SOSTITUIRE con tipoPersonaID
+    //ruolo:          Ruolo;          //DA ELIMINARE
 
     tipoPersonaID:  number;
+    TipoPersona?:    PER_TipoPersona;
+
     personaID:      number;
     persona?:       PER_Persona;
 }
 
-
+/*
 export enum UserRole {
     Alunno =1,
     Alunno_Rappresentante=2,
@@ -32,11 +35,11 @@ export enum UserRole {
     IT_Manager=10,
     SysAdmin=11
 }
-
-export interface Ruolo {
-    //User = 'User',
-    //Admin = 'Admin',
-    id: number;
-    descrizione: string;
-}
+*/
+// export interface Ruolo {
+//     //User = 'User',
+//     //Admin = 'Admin',
+//     id: number;
+//     descrizione: string;
+// }
 

@@ -136,7 +136,8 @@
 
             <mat-divider></mat-divider>
 
-            <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.ruoloID >= 10">
+            <!-- <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.ruoloID >= 10"></a> -->
+            <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.TipoPersona!.ckPersonale == true">
                 <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/utente.svg">
                 <span *ngIf="isExpanded">Gestione Utenti</span>
             </a> 
@@ -151,11 +152,15 @@
                 <span *ngIf="isExpanded">Tutorials</span>
             </a>
             
-            <a mat-list-item class="_pos-absolute _border-top _grey-background" routerLink="impostazioni" (click)="clickMenuItem()"  style="z-index: 100000!important; bottom: 0;" *ngIf="currUser && (currUser.ruoloID == 5 || currUser.ruoloID >=10)">
+            <a mat-list-item class="_pos-absolute _border-top _grey-background" 
+                     routerLink="impostazioni"
+                     (click)="clickMenuItem()"  style="z-index: 100000!important; bottom: 0;" 
+                     *ngIf="currUser && currUser.TipoPersona!.descrizione == 'SysAdmin'">
+                     <!-- *ngIf="currUser && (currUser.ruoloID == 5 || currUser.ruoloID >=10)"> -->
+
                 <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/settings.svg">
                 <span *ngIf="isExpanded">Impostazioni</span>
             </a>
-
 
         </mat-nav-list>
     </mat-sidenav>

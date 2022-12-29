@@ -12,7 +12,6 @@ export class TipiPersonaService {
 
   constructor(private http: HttpClient) { }
 
-
   list(): Observable<PER_TipoPersona[]>{
     return this.http.get<PER_TipoPersona[]>(environment.apiBaseUrl+'PER_TipiPersona');
     //http://213.215.231.4/swappX/api/PER_TipiPersona
@@ -35,7 +34,4 @@ export class TipiPersonaService {
   delete(tipoPersonaID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'PER_TipiPersona/' + tipoPersonaID);    
   }
-
-
-
 }

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-//import { CanActivate, CanActivateChild, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { CanActivate,  ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
 
 import { UserService } from '../user.service';
@@ -17,21 +16,23 @@ export class AuthGuard implements CanActivate {
                private _snackBar:     MatSnackBar ) {
   }
 
+  // check if route is restricted by role
   canActivate( route:  ActivatedRouteSnapshot, state: RouterStateSnapshot):  boolean  {
 
     const currentUser = this.uService.currentUser;
     if (currentUser) {
- 
-      // check if route is restricted by role
-      //console.log("Auth Guard | Ruolo", currentUser.ruoloID);
       
- /*      console.log("DEBUG: route.data.roles - ");
+ /*      
+      console.log("Auth Guard | TipoPersona", currentUser.TipoPersona);
+      console.log("DEBUG: route.data.roles - ");
       console.log(route.data);
       console.log("DEBUG: - currentUser ");
-      console.log(currentUser); */
-
-      if (route.data.roles && route.data.roles.indexOf(currentUser.ruoloID) === -1) {
-          // role not authorised so redirect to home page
+      console.log(currentUser);
+ */
+      
+//BELLA MERDA N°2: adesso il controllo lo faccio con la descrizione del TipoPersona ... no beissimo...
+      //if (route.data.roles && route.data.roles.indexOf(currentUser.ruoloID) === -1) {
+      if (route.data.roles && route.data.roles.indexOf(currentUser.TipoPersona?.descrizione) === -1) {
           this._snackBar.openFromComponent(SnackbarComponent, {
             data: 'Utente non autorizzato', panelClass: ['red-snackbar']
           });

@@ -10,6 +10,7 @@ import { PersoneListComponent } from '../persone-list/persone-list.component';
   templateUrl: './persone-page.component.html',
   styleUrls: ['../persone.css']
 })
+
 export class PersonePageComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
