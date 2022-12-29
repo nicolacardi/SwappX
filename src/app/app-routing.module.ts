@@ -4,7 +4,6 @@ import { RouteConfigLoadEnd, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './_user/auth/auth.guard';
 import { UserComponent } from './_user/user.component';
 import { UserRole } from './_user/Users';
-import { Ruolo } from './_user/Users';
 import { RegisterComponent } from './_user/register/register.component';
 import { LoginComponent } from './_user/login/login.component';
 
