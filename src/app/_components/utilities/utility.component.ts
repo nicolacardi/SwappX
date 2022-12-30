@@ -76,12 +76,14 @@ export abstract class Utility {
     })
   }
 
+
   public static getCurrentUser() : User {
     let obj: any;
     let tmp = localStorage.getItem('currentUser');
     obj = JSON.parse(tmp!) as User;
     return obj;
   }
+  
 
   public static matchingPasswords(PasswordField : string, ConfirmPasswordField: string) {
     return (controls: AbstractControl) => {

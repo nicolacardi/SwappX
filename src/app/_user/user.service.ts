@@ -54,13 +54,44 @@ export class UserService {
       }) 
   });
 
+
   //Login(userName: string, userPwd: string) {
   Login(formData: any) {
 
     let httpPost$ = this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
       .pipe(timeout(8000))  
       .pipe(
-        map(user => {
+         
+        concatMap( user =>   ( 
+          
+          this.svcPersona.get(user.personaID).pipe(
+            tap(val => {
+              if (user && user.token) {
+                user.isLoggedIn = true;
+                    
+                //Dati di PER_Persona
+                user.personaID = val.id;
+                user.fullname = val.nome + " " + val.cognome;
+                user.tipoPersonaID = val.tipoPersonaID;
+                user.TipoPersona = val.tipoPersona;
+
+                localStorage.setItem('token', user.token!);
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                this.BehaviourSubjectcurrentUser.next(user);
+              }
+              else{
+                 //Caso record User campo PersonaID senza corrispondente record in PER_Persone
+                //console.log("User.service - Passerà mai di qua ?");
+                this.Logout();
+              }
+            }
+          )
+        )))
+      );
+
+        /*
+        map( user => {
           if (user && user.token) {
 
             //estraiamo i dati della persona e li inseriamo nel localStorage
@@ -74,11 +105,13 @@ export class UserService {
                 user.tipoPersonaID = val.tipoPersonaID;
                 user.TipoPersona = val.tipoPersona;
 
-                //user.role= UserRole.Admin;        //Debug Role
-    
+                console.log("DEBUG - user.service prima di SetItem" );
+
                 localStorage.setItem('token', user.token!);
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 
+                console.log("DEBUG - user.service SetItem" );
+    
                 this.BehaviourSubjectcurrentUser.next(user);
             })
           }
@@ -90,15 +123,20 @@ export class UserService {
           return user;
         })
       );
-
-    let httpParam$ = this.svcParametri.getByParName('AnnoCorrente')
+*/
+    //let httpParam$ = this.svcParametri.getByParName('AnnoCorrente')    
+    this.svcParametri.getByParName('AnnoCorrente')
       .pipe(map( par => {
         //sessionStorage.setItem();
         localStorage.setItem(par.parName, JSON.stringify(par));
-        return par;
-      }));
 
-    return forkJoin([ httpPost$ ,httpParam$  ]);
+        return par;
+      })
+    ).subscribe();
+
+    return httpPost$;
+
+    //return forkJoin([ httpPost$ ,httpParam$  ]);      //Concatenazione di due observable, te ghè da farghe fare la subscribe in un colpo solo
   }
 
   Logout() {

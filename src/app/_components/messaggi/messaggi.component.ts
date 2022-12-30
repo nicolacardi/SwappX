@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 
-
 //services
 import { LoadingService } from '../utilities/loading/loading.service';
 import { MessaggiService } from './messaggi.service';
@@ -36,20 +35,22 @@ displayedColumns: string[] = [
 
 //#endregion
 
-  constructor(
-    private svcMessages:      MessaggiService,  
-    private _loadingService:  LoadingService,
-    private _snackBar:        MatSnackBar
-  ) {
+  constructor( private svcMessages:      MessaggiService,  
+               private _loadingService:  LoadingService,
+               private _snackBar:        MatSnackBar ) {
+
     this.currUser = Utility.getCurrentUser();    
-   }
+  }
 
   ngOnInit(){
-
     this.loadData();
   }
 
   loadData(){
+
+    console.log("DEBUG - this.currUser:", this.currUser);
+
+
 
     let obsNews$: Observable<_UT_Message[]>;
     obsNews$ = this.svcMessages.listByUserID(this.currUser.userID);
