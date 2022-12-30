@@ -7,6 +7,7 @@ export interface User {
     email:          string;
 
     fullname:       string;         //Da PER_Persona
+    //fullname: string = this.persona.nome + ' ' + this.persona.cognome;
 
     token?:         string;         //token restituito da EF
     isLoggedIn?:    boolean;        //dinamico: impostato da behaviour subject

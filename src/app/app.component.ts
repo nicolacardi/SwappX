@@ -57,7 +57,8 @@ export class AppComponent implements OnInit {
       this.currUser = val;
 
       if(this.currUser){
-        this.userFullName = this.currUser.fullname;
+        //this.userFullName = this.currUser.fullname;
+        this.userFullName = this.currUser.persona?.nome + ' ' +  this.currUser.persona?.cognome ;
         this.isLoggedIn = this.currUser.isLoggedIn;
       }
     })
