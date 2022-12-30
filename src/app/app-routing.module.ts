@@ -42,7 +42,6 @@ const routes: Routes = [
     ]
    },
 
-
   { path:'home',              component: HomeComponent, canActivate:[AuthGuard]  },
 
   { path: "calendario",       component: LezioniCalendarioComponent, canActivate:[AuthGuard]},
@@ -63,10 +62,6 @@ const routes: Routes = [
 
   { path: "rette",            component: RettePageComponent,canActivate:[AuthGuard] },
 
-
-  //BELLA MERDA !!!
-  // COME SI FA ? NOI CONFRONTAVAMO IL RUOLO CON UN VALORE FISSO (userRole.SysAdmin) --> per il momento confronto con la descrizione del record TipoPersona ...
-  //IL RESTO DEL CONTROLLO LO FA L'auth.guard
   //{ path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.SysAdmin, UserRole.IT_Manager,UserRole.Segreteria ] } },
   { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: ['SysAdmin', 'Segreteria' ] } },
 
