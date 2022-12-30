@@ -57,8 +57,7 @@ export class AppComponent implements OnInit {
       this.currUser = val;
 
       if(this.currUser){
-        //this.userFullName = this.currUser.fullname;
-        this.userFullName = this.currUser.persona?.nome + ' ' +  this.currUser.persona?.cognome ;
+        this.userFullName = this.currUser.fullname;
         this.isLoggedIn = this.currUser.isLoggedIn;
       }
     })
@@ -77,6 +76,7 @@ export class AppComponent implements OnInit {
 
   refreshUserData () {
     if(!this.currUser) return;
+    console.log ("refreshUserData", this.currUser);
 
     this.svcUser.getFotoByUserID(this.currUser.userID).subscribe(
       res => this.imgAccount = res.foto
