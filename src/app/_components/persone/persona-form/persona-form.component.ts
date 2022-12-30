@@ -4,12 +4,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
-import { PER_Persona } from 'src/app/_models/PER_Persone';
-import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
+
+//services
 import { ComuniService } from 'src/app/_services/comuni.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { PersoneService } from '../persone.service';
-import { TipiPersonaService } from '../tipi-persona.service';
+
+//models
+import { PER_Persona } from 'src/app/_models/PER_Persone';
+import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 
 @Component({
   selector: 'app-persona-form',
@@ -39,15 +42,12 @@ export class PersonaFormComponent implements OnInit {
 
 //#endregion
 
-  constructor(
-    private fb:                           FormBuilder, 
-    private svcPersone:                   PersoneService,
-    private svcComuni:                    ComuniService,
-    public _dialog:                       MatDialog,
-    private _snackBar:                    MatSnackBar,
-    private _loadingService :             LoadingService
-
-  ) { 
+  constructor( private fb:                           FormBuilder, 
+               private svcPersone:                   PersoneService,
+               private svcComuni:                    ComuniService,
+               public _dialog:                       MatDialog,
+               private _snackBar:                    MatSnackBar,
+               private _loadingService :             LoadingService  ) { 
 
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 
@@ -77,7 +77,7 @@ export class PersonaFormComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili-------
 
-  ngOnInit(): void {
+  ngOnInit(){
     this.loadData();
   }
 
@@ -87,7 +87,7 @@ export class PersonaFormComponent implements OnInit {
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
     if (this.personaID && this.personaID + '' != "0") {
-      console.log ("personaID", this.personaID);  //come mai aprendo da user-edit gil arriva come persona ID lo user ID?
+      //console.log ("personaID", this.personaID);  //come mai aprendo da user-edit gil arriva come persona ID lo user ID?
 
       const obsPersona$: Observable<PER_Persona> = this.svcPersone.get(this.personaID);
       const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
@@ -102,26 +102,25 @@ export class PersonaFormComponent implements OnInit {
     else 
       this.emptyForm = true
 
-
       //********************* FILTRO COMUNE *******************
     this.filteredComuni$ = this.form.controls['comune'].valueChanges
-    .pipe( tap(),
-      debounceTime(300),
-      tap(() => this.comuniIsLoading = true),
-      //delayWhen(() => timer(2000)),
-      switchMap(() => this.svcComuni.filterList(this.form.value.comune)),
-      tap(() => this.comuniIsLoading = false)
-    )
+      .pipe( 
+        tap(),
+        debounceTime(300),
+        tap(() => this.comuniIsLoading = true),
+        switchMap(() => this.svcComuni.filterList(this.form.value.comune)),
+        tap(() => this.comuniIsLoading = false)
+      )
 
     //********************* FILTRO COMUNE NASCITA ***********
     this.filteredComuniNascita$ = this.form.controls['comuneNascita'].valueChanges
-    .pipe( 
-      tap(),
-      debounceTime(300),
-      tap(() => this.comuniNascitaIsLoading = true),
-      switchMap(() => this.svcComuni.filterList(this.form.value.comuneNascita)),
-      tap(() => this.comuniNascitaIsLoading = false)
-    )
+      .pipe( 
+        tap(),
+        debounceTime(300),
+        tap(() => this.comuniNascitaIsLoading = true),
+        switchMap(() => this.svcComuni.filterList(this.form.value.comuneNascita)),
+        tap(() => this.comuniNascitaIsLoading = false)
+      )
   }
 
 //#endregion

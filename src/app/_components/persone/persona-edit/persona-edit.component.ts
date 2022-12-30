@@ -18,7 +18,6 @@ import { PersoneService } from '../persone.service';
 import { PER_Persona, PER_TipoPersona } from 'src/app/_models/PER_Persone';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { TipiPersonaService } from '../tipi-persona.service';
-import { PagamentiFilterComponent } from '../../pagamenti/pagamenti-filter/pagamenti-filter.component';
 import { PersonaFormComponent } from '../persona-form/persona-form.component';
 
 

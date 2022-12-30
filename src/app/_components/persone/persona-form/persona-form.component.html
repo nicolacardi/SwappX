@@ -15,7 +15,6 @@
             </mat-form-field>
         </mat-grid-tile>
 
-
     </mat-grid-list>
 
     <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
@@ -36,12 +35,10 @@
 
         <mat-grid-tile>
             <mat-form-field class="w70">
-                <input matInput
-                required
-                formControlName = "dtNascita"
-                [matDatepicker]= "dpDtNascita"
-                placeholder="Data di Nascita"
-                #date>
+                <input matInput #date required
+                      formControlName = "dtNascita"
+                      [matDatepicker]= "dpDtNascita"
+                      placeholder="Data di Nascita">
                 <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
                 <mat-datepicker #dpDtNascita  ></mat-datepicker>
                 <mat-error *ngIf="form.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
@@ -53,9 +50,8 @@
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>Comune di Nascita</mat-label>
-                <input type="text"
+                <input matInput type="text"
                         placeholder="<Selezionare il Comune>"
-                        matInput
                         formControlName="comuneNascita"
                         [matAutocomplete]="auto1">
                 <mat-autocomplete #auto1="matAutocomplete" >
@@ -85,11 +81,10 @@
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>Comune di Residenza</mat-label>
-                <input type="text"
-                        placeholder="<Selezionare il Comune>"
-                        matInput
-                        formControlName="comune"
-                        [matAutocomplete]="auto2">
+                <input matInput type="text"
+                       placeholder="<Selezionare il Comune>"
+                       formControlName="comune"
+                       [matAutocomplete]="auto2">
                 <mat-autocomplete #auto2="matAutocomplete" >
                     <mat-spinner *ngIf="comuniIsLoading" class="_spinner-is-loading-mini" diameter="40"></mat-spinner>
                     <ng-container >
@@ -101,7 +96,6 @@
                 </mat-autocomplete>
             </mat-form-field>
         </mat-grid-tile>
-
 
         <mat-grid-tile>
             <mat-form-field>
