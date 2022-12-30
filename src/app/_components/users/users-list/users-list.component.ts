@@ -42,7 +42,6 @@ export class UsersListComponent implements OnInit {
       "persona.cognome",
       "email", 
       "persona.tipoPersona.descrizione",
-      //"fullName", 
   
       "personaID",
       "tipoPersonaID"
@@ -65,7 +64,6 @@ export class UsersListComponent implements OnInit {
 
   rptFieldsToKeep  = [
     "userName", 
-    "fullName", 
     "email", 
     // "ruolo",
     // "badge"
@@ -73,7 +71,6 @@ export class UsersListComponent implements OnInit {
 
   rptColumnsNames  = [
     "userName", 
-    "Nome completo", 
     "email", 
     // "ruolo",
     // "badge"

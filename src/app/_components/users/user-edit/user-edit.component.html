@@ -39,11 +39,6 @@
                     </mat-form-field>
                 </mat-grid-tile>
 
-                <!-- <mat-grid-tile>
-                    <mat-form-field>
-                        <input matInput required type="text" placeholder="fullName" formControlName="fullName">
-                    </mat-form-field>
-                </mat-grid-tile> -->
             </mat-grid-list>
             <mat-grid-list class="no-overflowx mt10" [cols]="1" rowHeight="60px">
                 <mat-grid-tile>
@@ -51,23 +46,6 @@
                         <input matInput required type="text" placeholder="email" formControlName="email">
                     </mat-form-field>
                 </mat-grid-tile>
-
-                <!-- <mat-grid-tile>
-                    <mat-form-field>
-                        <input matInput type="text" placeholder="badge" formControlName="badge">
-                    </mat-form-field>
-                </mat-grid-tile> -->
-
-                <!-- <mat-grid-tile colspan="2">
-                    <mat-form-field>
-                        <mat-label>Ruolo</mat-label>
-                        <mat-select formControlName="ruoloID"  required (selectionChange)="ruoloChange()">
-                            <mat-option *ngFor="let element of (obsRuoli$|async)" [value]="element.id">
-                            {{element.descrizione}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile> -->
                 
             </mat-grid-list>
             <span class="center"><mat-divider class="mb10"></mat-divider></span>

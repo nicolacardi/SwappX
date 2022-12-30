@@ -1,7 +1,7 @@
 import { PER_Persona, PER_TipoPersona } from "../_models/PER_Persone";
 
 export interface User {
-    id:             string;  //NC 230222
+    id:             string;
     userID:         string;
     username:       string; 
     email:          string;
@@ -12,7 +12,6 @@ export interface User {
     isLoggedIn?:    boolean;        //dinamico: impostato da behaviour subject
     
     //ruoloID:        number;         //DA SOSTITUIRE con tipoPersonaID
-    //ruolo:          Ruolo;          //DA ELIMINARE
 
     tipoPersonaID:  number;
     TipoPersona?:    PER_TipoPersona;

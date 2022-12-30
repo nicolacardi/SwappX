@@ -72,11 +72,8 @@ export class UserEditComponent implements OnInit {
     
     this.form = this.fb.group({
       userName:         [''],
-      //fullName:         [''],
       email:            ['', Validators.email],
-      //badge:            [''],
       password:         ['', [Validators.minLength(4), Validators.maxLength(19)]],
-      //ruoloID:          [''],
 
       nomeCognomePersona: [null],
       //punto di partenza: https://onthecode.co.uk/blog/force-selection-angular-material-autocomplete/
@@ -115,7 +112,6 @@ export class UserEditComponent implements OnInit {
       );
 
     this.svcUser.obscurrentUser.subscribe( val => {
-        //this.currUserRuolo = val.ruoloID;
         this.currUserID = val.userID;
     });
 
@@ -133,7 +129,11 @@ export class UserEditComponent implements OnInit {
       
       this.user$ = loadUser$.pipe(
         tap(utente => {
+          console.log(utente);
+
           this.form.patchValue(utente);
+          this.form.controls['nomeCognomePersona'].setValue(utente.persona!.nome + " " + utente.persona!.cognome);
+
           this.userID = utente.id;       
         })
       );
@@ -172,9 +172,6 @@ export class UserEditComponent implements OnInit {
       userID:     this.idUser,   
       UserName:   this.form.controls.userName.value,
       Email:      this.form.controls.email.value,
-      //FullName:   this.form.controls.fullName.value,
-      //Badge:      this.form.controls.badge.value,
-      //RuoloID:    this.form.controls.ruoloID.value,
       PersonaID:  this.form.controls.personaID.value,  //NC 25.12.22
       Password:   this.form.controls.password.value
     };
