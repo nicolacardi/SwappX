@@ -38,4 +38,6 @@ export interface PER_TipoPersona {
         descrizione:             string;
         ckDocente?:              boolean;
         ckPersonale?:            boolean;
+        livello:                 number;
+
 }

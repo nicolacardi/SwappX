@@ -19,6 +19,8 @@ import { PER_Persona, PER_TipoPersona } from 'src/app/_models/PER_Persone';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { TipiPersonaService } from '../tipi-persona.service';
 import { PersonaFormComponent } from '../persona-form/persona-form.component';
+import { User } from 'src/app/_user/Users';
+import { Utility } from '../../utilities/utility.component';
 
 
 @Component({
@@ -31,6 +33,7 @@ export class PersonaEditComponent implements OnInit {
 //#region ----- Variabili -------
   persona$!:                  Observable<PER_Persona>;
   obsTipiPersona$!:           Observable<PER_TipoPersona[]>;
+  currPersona!:               User;
 
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
@@ -49,6 +52,7 @@ export class PersonaEditComponent implements OnInit {
 //#endregion
 
   constructor(
+    
     public _dialogRef: MatDialogRef<PersonaEditComponent>,
     @Inject(MAT_DIALOG_DATA) public personaID: number,
     private fb:                           FormBuilder, 
@@ -89,8 +93,8 @@ export class PersonaEditComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit() {
-
-    this.obsTipiPersona$ = this.svcTipiPersona.list();
+    this.currPersona = Utility.getCurrentUser();
+    this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.TipoPersona!.livello);
     this.loadData();
   }
 

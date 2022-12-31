@@ -61,7 +61,7 @@ export class PersoneFilterComponent implements OnInit {
     )
 
     this.tipoPersonaFilter.valueChanges.subscribe( val => {
-        this.personeListComponent.filterValues.tipoPersona = val;
+        this.personeListComponent.filterValues.tipoPersonaID = val;
         this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
       }
     )

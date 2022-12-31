@@ -63,10 +63,10 @@ const routes: Routes = [
   { path: "rette",            component: RettePageComponent,canActivate:[AuthGuard] },
 
   //{ path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.SysAdmin, UserRole.IT_Manager,UserRole.Segreteria ] } },
-  { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: ['SysAdmin', 'Segreteria' ] } },
+  { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: ['SysAdmin', 'Segreteria', 'Amministratore' ] } },
 
   //{ path: "impostazioni",     component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: [UserRole.SysAdmin, UserRole.IT_Manager] }  },
-  { path: "impostazioni",     component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: ['SysAdmin', 'Segreteria' ] }  },
+  { path: "impostazioni",     component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: ['SysAdmin', 'Segreteria', 'Amministratore' ] }  },
 
   { path: "profilo",          component: ProfiloComponent, canActivate:[AuthGuard] },
 

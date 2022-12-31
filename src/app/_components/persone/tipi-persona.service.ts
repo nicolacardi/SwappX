@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 
 //classes
 import { PER_TipoPersona } from 'src/app/_models/PER_Persone';
+import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,6 +15,15 @@ export class TipiPersonaService {
 
   list(): Observable<PER_TipoPersona[]>{
     return this.http.get<PER_TipoPersona[]>(environment.apiBaseUrl+'PER_TipiPersona');
+    //http://213.215.231.4/swappX/api/PER_TipiPersona
+  }
+
+  listByLivello(livelloMax: number): Observable<PER_TipoPersona[]>{
+
+    return this.http.get<PER_TipoPersona[]>(environment.apiBaseUrl+'PER_TipiPersona')
+      .pipe (
+        map(val=>val.filter(val=>(val.livello<livelloMax)))
+      );
     //http://213.215.231.4/swappX/api/PER_TipiPersona
   }
 

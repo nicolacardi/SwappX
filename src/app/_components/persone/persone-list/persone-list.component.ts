@@ -37,7 +37,8 @@ export class PersoneListComponent implements OnInit {
     "actionsColumn", 
     "nome", 
     "cognome", 
-    "tipo",
+    "tipoPersona",
+    "tipoPersonaID",
     "dtNascita", 
     "indirizzo", 
     "comune", 
@@ -45,7 +46,8 @@ export class PersoneListComponent implements OnInit {
     "prov", 
     "telefono",
     "email", 
-    "ckAttivo"
+    "ckAttivo",
+
   ];
 
   filterValue = '';       //Filtro semplice
@@ -53,7 +55,7 @@ export class PersoneListComponent implements OnInit {
   filterValues = {
     nome: '',
     cognome: '',
-    tipoPersona: '',
+    tipoPersonaID: '',
     annoNascita: '',
     indirizzo: '',
     comune: '',
@@ -164,8 +166,10 @@ export class PersoneListComponent implements OnInit {
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
 
-      let foundTipoPersona = (String(data.tipoPersonaID).indexOf(searchTerms.tipoPersona) !== -1);
-      if (searchTerms.tipoPersona == null) foundTipoPersona = true;
+      //let foundTipoPersona = (String(data.tipoPersonaID).indexOf(searchTerms.tipoPersonaID) !== -1); //per ricerca non numerica...
+      let foundTipoPersona = data.tipoPersonaID==searchTerms.tipoPersonaID;
+
+      if (searchTerms.tipoPersonaID == null || searchTerms.tipoPersonaID == '') foundTipoPersona = true;
 
       let boolSx = String(data.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1

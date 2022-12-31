@@ -31,15 +31,16 @@
             
             <form *ngIf="(persona$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
 
-                <mat-tab-group mat-align-tabs="center">
+                <!-- <mat-tab-group mat-align-tabs="center"> -->
 <!-- ********************************    MAT TAB ANAGRAFICA *********************************** -->
-                    <mat-tab  label="Dati Anagrafici">
-
+                    <!-- <mat-tab  label=""> -->
+                        <div class="mt50"></div>
+                        <!-- <mat-divider></mat-divider> -->
                         <mat-grid-list class="no-overflowx mt10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
                             <mat-grid-tile>
                                 <mat-form-field >
                                     <mat-label>Tipo Personale</mat-label>
-                                    <mat-select matNativeControl formControlName="tipoPersonaID">
+                                    <mat-select matNativeControl formControlName="tipoPersonaID" [disabled] ="currPersona.personaID == personaID">
                                         <mat-option *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id">
                                             {{element.descrizione}}
                                         </mat-option>
@@ -57,11 +58,11 @@
                         </mat-grid-list>
 
                         <app-persona-form [personaID] = "personaID" >   </app-persona-form>
-                    </mat-tab>
+                    <!-- </mat-tab> -->
                     <!-- <mat-tab  label="Docenze">
 
                     </mat-tab> -->
-                </mat-tab-group>    
+                <!-- </mat-tab-group>     -->
             </form>
         </mat-card-content>
     </mat-card>

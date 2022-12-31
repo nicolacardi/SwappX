@@ -37,9 +37,7 @@ export class PersonaFormComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-
-@Input() personaID!:         number;
-
+  @Input() personaID!:         number;
 //#endregion
 
   constructor( private fb:                           FormBuilder, 
