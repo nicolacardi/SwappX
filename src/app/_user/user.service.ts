@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup} from '@angular/forms';
 import { HttpClient } from "@angular/common/http";
-import { catchError, concatMap, map, tap, timeout } from 'rxjs/operators';
-import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
+import { concatMap, map, tap, timeout } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 //components
 import { environment } from 'src/environments/environment';
@@ -30,8 +30,8 @@ export class UserService {
   constructor( private fb:             FormBuilder,
                private http:           HttpClient,
                private svcPersona:     PersoneService,
-               private svcParametri:   ParametriService ) { 
-
+               private svcParametri:   ParametriService ) 
+  { 
     this.BehaviourSubjectcurrentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
     this.obscurrentUser = this.BehaviourSubjectcurrentUser.asObservable();
   }
@@ -59,11 +59,9 @@ export class UserService {
   Login(formData: any) {
 
     let httpPost$ = this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
-      .pipe(timeout(8000))  
+      .pipe(timeout(8000))  //è il timeout oltre il quale viene dato l'errore
       .pipe(
-         
         concatMap( user =>   ( 
-          
           this.svcPersona.get(user.personaID).pipe(
             tap(val => {
               if (user && user.token) {
@@ -81,8 +79,7 @@ export class UserService {
                 this.BehaviourSubjectcurrentUser.next(user);
               }
               else{
-                 //Caso record User campo PersonaID senza corrispondente record in PER_Persone
-                //console.log("User.service - Passerà mai di qua ?");
+                //Passerà mai di qua ?
                 this.Logout();
               }
             }
@@ -93,31 +90,18 @@ export class UserService {
         /*
         map( user => {
           if (user && user.token) {
-
-            //estraiamo i dati della persona e li inseriamo nel localStorage
             this.svcPersona.get(user.personaID).subscribe(val=>{
-
                 user.isLoggedIn = true;
-                
-                //Dati di PER_Persona
                 user.personaID = val.id;
                 user.fullname = val.nome + " " + val.cognome;
                 user.tipoPersonaID = val.tipoPersonaID;
                 user.TipoPersona = val.tipoPersona;
-
-                console.log("DEBUG - user.service prima di SetItem" );
-
                 localStorage.setItem('token', user.token!);
                 localStorage.setItem('currentUser', JSON.stringify(user));
-                
-                console.log("DEBUG - user.service SetItem" );
-    
                 this.BehaviourSubjectcurrentUser.next(user);
             })
           }
           else {
-            //AS ???
-            console.log("User.service - Passerà mai di qua ?");
             this.Logout();
           }
           return user;
@@ -129,19 +113,18 @@ export class UserService {
       .pipe(map( par => {
         //sessionStorage.setItem();
         localStorage.setItem(par.parName, JSON.stringify(par));
-
         return par;
       })
     ).subscribe();
 
     return httpPost$;
 
-    //return forkJoin([ httpPost$ ,httpParam$  ]);      //Concatenazione di due observable, te ghè da farghe fare la subscribe in un colpo solo
+    //return forkJoin([ httpPost$ ,httpParam$  ]);      //Concatenazione di due observable, in qs modo se ne fa la subscribe in un colpo solo
   }
 
   Logout() {
     
-    //Pulizia cookies
+    //Pulizia localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('AnnoCorrente');
@@ -173,6 +156,7 @@ export class UserService {
   }
 
   put(formData: any): Observable <any>{
+    console.log(formData);
     return this.http.put(environment.apiBaseUrl +'ApplicationUser/'+ formData.userID, formData );
   }
 

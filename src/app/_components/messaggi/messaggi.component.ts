@@ -47,11 +47,6 @@ displayedColumns: string[] = [
   }
 
   loadData(){
-
-    console.log("DEBUG - this.currUser:", this.currUser);
-
-
-
     let obsNews$: Observable<_UT_Message[]>;
     obsNews$ = this.svcMessages.listByUserID(this.currUser.userID);
 

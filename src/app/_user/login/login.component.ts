@@ -4,15 +4,11 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EventEmitterService } from 'src/app/_services/event-emitter.service';
  
-
 import { UserService } from '../user.service';
-import { ParametriService } from 'src/app/_services/parametri.service';
 
 import { MatDialog } from '@angular/material/dialog';
 import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
 import { LoadingService } from 'src/app/_components/utilities/loading/loading.service';
-import { User } from '../Users';
-
 
 @Component({
   selector: 'app-login',
@@ -26,7 +22,6 @@ export class LoginComponent implements OnInit {
   form! :                     FormGroup;
   
   constructor(private svcUser:         UserService,
-              private svcParametri:    ParametriService, 
               private router:          Router,
               private fb:              FormBuilder,
               private eventEmitterService:  EventEmitterService,
@@ -52,8 +47,8 @@ export class LoginComponent implements OnInit {
     loadUser$.subscribe(
         res => {
           this.eventEmitterService.onAccountSaveProfile();
-         
-        //  this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + res[0].fullname , panelClass: ['green-snackbar']});
+          //nel caso di forkJoin res[0] è relativo al primo Observable 
+          //this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + res[0].fullname , panelClass: ['green-snackbar']}); 
           this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + res.nome + ' ' + res.cognome , panelClass: ['green-snackbar']});  
           this.router.navigateByUrl('/home');
         },
@@ -65,9 +60,7 @@ export class LoginComponent implements OnInit {
   }
   
   forgotPassword(e: Event){
-
     e.preventDefault();
-
     //console.log(this.validateEmail(this.form.controls.UserName.value));
     if(!this.validateEmail(this.form.controls.UserName.value)){ 
       this._snackBar.openFromComponent(SnackbarComponent, { data: "Inserire una email valida"  , panelClass: ['red-snackbar']});

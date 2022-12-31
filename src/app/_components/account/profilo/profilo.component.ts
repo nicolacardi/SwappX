@@ -16,6 +16,8 @@ import { UserService } from 'src/app/_user/user.service';
 //models
 import { _UT_UserFoto } from 'src/app/_models/_UT_UserFoto';
 import { User } from 'src/app/_user/Users';
+import { PersonaFormComponent } from '../../persone/persona-form/persona-form.component';
+import { PersoneService } from '../../persone/persone.service';
 
 @Component({
   selector: 'app-profilo',
@@ -24,18 +26,25 @@ import { User } from 'src/app/_user/Users';
 })
 
 export class ProfiloComponent implements OnInit {
+
+//#region ----- Variabili -------
   imgFile!:         string;
   foto!:            string;
   fotoObj!:         _UT_UserFoto
   form! :           FormGroup;
-  formPsw! :        FormGroup;
   public currUser!: User;
+//#endregion
 
+
+//#region ----- ViewChild Input Output -------
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
   @ViewChild('canvasDOM', {static: false}) canvasDOM!: ElementRef;
+  @ViewChild(PersonaFormComponent) personaFormComponent!: PersonaFormComponent; 
+//#endregion
 
   constructor(private fb:                   FormBuilder, 
               private svcUser:              UserService,
+              private svcPersone:           PersoneService,
               public _dialog:               MatDialog,
               private eventEmitterService:  EventEmitterService,
               private _snackBar:            MatSnackBar) { 
@@ -44,7 +53,7 @@ export class ProfiloComponent implements OnInit {
       file:           ['' , [Validators.required]],
       username:       [{value:'' , disabled: true}, [Validators.required]],
       email:          [''],
-      fullname:       ['' , [Validators.required]],
+      fullname:       [{value:'' , disabled: true} , [Validators.required]],
     });
   }
 
@@ -110,11 +119,18 @@ export class ProfiloComponent implements OnInit {
 
   save(){
 
+    //Prendo dal form nel child personaForm i valori dei campi che NON si trovano nel component padre
+    this.form.controls.email.setValue(this.personaFormComponent.form.controls.email.value);
+    //se dovesse servire....sistemo anche il fullname
+    this.form.controls.fullname.setValue(this.personaFormComponent.form.controls.nome.value + " "+ this.personaFormComponent.form.controls.cognome.value);
+
     let formData = {
       userID:     this.currUser.userID,   
       UserName:   this.form.controls.username.value,
       Email:      this.form.controls.email.value,
-      FullName:   this.form.controls.fullname.value,
+      Password:   "",
+      PersonaID:  this.currUser.personaID
+      //FullName:   this.form.controls.fullname.value,
     };
 
     this.svcUser.put(formData).subscribe(
@@ -127,6 +143,13 @@ export class ProfiloComponent implements OnInit {
       },
       err => console.log("[profilo.component] - save: ERRORE this.svcUser.put", formData)
     );
+
+    this.svcPersone.put(this.personaFormComponent.form.value).subscribe(
+      res => console.log("persona salvata", this.personaFormComponent.form.value),
+      err => console.log("[profilo.component] - save: ERRORE this.svcPersone.put", this.personaFormComponent.form.value)
+    );
+
+
 
     if(this.immagineDOM != undefined){
       this.fotoObj.userID = this.currUser.userID;

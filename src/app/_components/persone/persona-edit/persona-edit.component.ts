@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -18,6 +18,8 @@ import { PersoneService } from '../persone.service';
 import { PER_Persona, PER_TipoPersona } from 'src/app/_models/PER_Persone';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { TipiPersonaService } from '../tipi-persona.service';
+import { PagamentiFilterComponent } from '../../pagamenti/pagamenti-filter/pagamenti-filter.component';
+import { PersonaFormComponent } from '../persona-form/persona-form.component';
 
 
 @Component({
@@ -28,7 +30,6 @@ import { TipiPersonaService } from '../tipi-persona.service';
 export class PersonaEditComponent implements OnInit {
 
 //#region ----- Variabili -------
-
   persona$!:                  Observable<PER_Persona>;
   obsTipiPersona$!:           Observable<PER_TipoPersona[]>;
 
@@ -40,10 +41,12 @@ export class PersonaEditComponent implements OnInit {
   comuniNascitaIsLoading:     boolean = false;
   breakpoint!:                number;
   breakpoint2!:               number;
-
 //#endregion
 
 //#region ----- ViewChild Input Output -------
+
+  @ViewChild(PersonaFormComponent) personaFormComponent!: PersonaFormComponent; 
+
 //#endregion
 
   constructor(
@@ -52,33 +55,33 @@ export class PersonaEditComponent implements OnInit {
     private fb:                           FormBuilder, 
     private svcPersone:                   PersoneService,
     private svcTipiPersona:               TipiPersonaService,
-    private svcComuni:                    ComuniService,
+    //private svcComuni:                    ComuniService,
     public _dialog:                       MatDialog,
     private _snackBar:                    MatSnackBar,
     private _loadingService :             LoadingService  ) {
 
     _dialogRef.disableClose = true;
-    let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
+    //let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 
     this.form = this.fb.group({
       id:                         [null],
       tipoPersonaID:              ['', Validators.required],
 
-      nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-      cognome:                    ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-      dtNascita:                  ['', Validators.required],
-      comuneNascita:              ['', Validators.maxLength(50)],
-      provNascita:                ['', Validators.maxLength(2)] ,
-      nazioneNascita:             ['', Validators.maxLength(3)],
-      indirizzo:                  ['', Validators.maxLength(255)],
-      comune:                     ['', Validators.maxLength(50)],
-      prov:                       ['', Validators.maxLength(2)],
-      cap:                        ['', Validators.maxLength(5)],
-      nazione:                    ['', Validators.maxLength(3)],
-      genere:                     ['',{ validators:[Validators.maxLength(1), Validators.required, Validators.pattern("M|F")]}],
-      cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
-      telefono:                   ['', Validators.maxLength(13)],
-      email:                      ['',Validators.email],
+      nome:                       [''],
+      cognome:                    [''],
+      dtNascita:                  [''],
+      comuneNascita:              [''],
+      provNascita:                [''],
+      nazioneNascita:             [''],
+      indirizzo:                  [''],
+      comune:                     [''],
+      prov:                       [''],
+      cap:                        [''],
+      nazione:                    [''],
+      genere:                     [''],
+      cf:                         [''],
+      telefono:                   [''],
+      email:                      [''],
 
       ckAttivo:                   [true]
     });
@@ -113,25 +116,25 @@ export class PersonaEditComponent implements OnInit {
     else 
       this.emptyForm = true
     
-    //********************* FILTRO COMUNE *******************
-    this.filteredComuni$ = this.form.controls['comune'].valueChanges
-    .pipe( tap(),
-      debounceTime(300),
-      tap(() => this.comuniIsLoading = true),
-      //delayWhen(() => timer(2000)),
-      switchMap(() => this.svcComuni.filterList(this.form.value.comune)),
-      tap(() => this.comuniIsLoading = false)
-    )
+    // //********************* FILTRO COMUNE *******************
+    // this.filteredComuni$ = this.form.controls['comune'].valueChanges
+    // .pipe( tap(),
+    //   debounceTime(300),
+    //   tap(() => this.comuniIsLoading = true),
+    //   //delayWhen(() => timer(2000)),
+    //   switchMap(() => this.svcComuni.filterList(this.form.value.comune)),
+    //   tap(() => this.comuniIsLoading = false)
+    // )
 
-    //********************* FILTRO COMUNE NASCITA ***********
-    this.filteredComuniNascita$ = this.form.controls['comuneNascita'].valueChanges
-    .pipe( 
-      tap(),
-      debounceTime(300),
-      tap(() => this.comuniNascitaIsLoading = true),
-      switchMap(() => this.svcComuni.filterList(this.form.value.comuneNascita)),
-      tap(() => this.comuniNascitaIsLoading = false)
-    )
+    // //********************* FILTRO COMUNE NASCITA ***********
+    // this.filteredComuniNascita$ = this.form.controls['comuneNascita'].valueChanges
+    // .pipe( 
+    //   tap(),
+    //   debounceTime(300),
+    //   tap(() => this.comuniNascitaIsLoading = true),
+    //   switchMap(() => this.svcComuni.filterList(this.form.value.comuneNascita)),
+    //   tap(() => this.comuniNascitaIsLoading = false)
+    // )
   }
 
 //#endregion
@@ -140,6 +143,10 @@ export class PersonaEditComponent implements OnInit {
 
   save()
   {
+
+    //Prendo dal form nel child personaForm i valori dei campi che NON si trovano nel component padre
+    this.form.patchValue(this.personaFormComponent.form.value);
+
     if (this.form.controls['id'].value == null) 
       this.svcPersone.post(this.form.value).subscribe(
         res=> this._dialogRef.close(),
@@ -175,16 +182,16 @@ export class PersonaEditComponent implements OnInit {
 
 //#region ----- Altri metodi -------
 
-popolaProv(prov: string, cap: string) {
-  this.form.controls['prov'].setValue(prov);
-  this.form.controls['cap'].setValue(cap);
-  this.form.controls['nazione'].setValue('ITA');
-}
+// popolaProv(prov: string, cap: string) {
+//   this.form.controls['prov'].setValue(prov);
+//   this.form.controls['cap'].setValue(cap);
+//   this.form.controls['nazione'].setValue('ITA');
+// }
 
-popolaProvNascita(prov: string) {
-  this.form.controls['provNascita'].setValue(prov);
-  this.form.controls['nazioneNascita'].setValue('ITA');
-}
+// popolaProvNascita(prov: string) {
+//   this.form.controls['provNascita'].setValue(prov);
+//   this.form.controls['nazioneNascita'].setValue('ITA');
+// }
 
 onResize(event: any) {
   this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;

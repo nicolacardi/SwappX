@@ -76,7 +76,6 @@ export class AppComponent implements OnInit {
 
   refreshUserData () {
     if(!this.currUser) return;
-    console.log ("refreshUserData", this.currUser);
 
     this.svcUser.getFotoByUserID(this.currUser.userID).subscribe(
       res => this.imgAccount = res.foto
