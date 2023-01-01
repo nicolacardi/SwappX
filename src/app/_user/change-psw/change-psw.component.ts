@@ -1,16 +1,17 @@
-import { validateHorizontalPosition } from '@angular/cdk/overlay';
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../../_components/utilities/snackbar/snackbar.component';
+
 import { UserService } from 'src/app/_user/user.service';
 import { User } from 'src/app/_user/Users';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { Utility } from '../../utilities/utility.component';
+
+import { Utility } from '../../_components/utilities/utility.component';
 
 @Component({
   selector: 'app-change-psw',
   templateUrl: './change-psw.component.html',
-  styleUrls: ['../account.component.css']
+  styleUrls: ['../user.css']
 })
 
 export class ChangePswComponent implements OnInit {
@@ -18,24 +19,22 @@ export class ChangePswComponent implements OnInit {
   form! :              FormGroup;
   public currUser!:    User;
 
-  constructor(
-    private fb:                   FormBuilder, 
-    private svcUser:              UserService,
-    private _snackBar:            MatSnackBar
-    ) { 
+  constructor( private fb:                   FormBuilder, 
+               private svcUser:              UserService,
+               private _snackBar:            MatSnackBar ) { 
 
-    this.form = this.fb.group({
-      password:        ['', [Validators.required, Validators.minLength(4)]],
-      newPassword:     ['', [Validators.required, Validators.minLength(4), Validators.maxLength(19)]],
-      confirmPassword: ['', Validators.required]
-    },
-    {
-      validators: [
-        Utility.matchingPasswords ('newPassword', 'confirmPassword'),
-        Utility.checkIfChangedPasswords('password', 'newPassword') ]
-    });
+    this.form = this.fb.group(
+      {
+        password:        ['', [Validators.required, Validators.minLength(4)]],
+        newPassword:     ['', [Validators.required, Validators.minLength(4), Validators.maxLength(19)]],
+        confirmPassword: ['', Validators.required]
+      },
+      {
+        validators: [
+          Utility.matchingPasswords ('newPassword', 'confirmPassword'),
+          Utility.checkIfChangedPasswords('password', 'newPassword') ]
+      });
   }
-
 
   ngOnInit(): void {
     this.currUser = Utility.getCurrentUser();
@@ -51,9 +50,8 @@ export class ChangePswComponent implements OnInit {
 
     this.svcUser.ChangePassword(formData).subscribe(
       res =>  {
-        if(res.succeeded == false){
+        if(res.succeeded == false)
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password attuale non corretta', panelClass: ['red-snackbar']});
-        }
         else
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password modificata', panelClass: ['green-snackbar']});
       },

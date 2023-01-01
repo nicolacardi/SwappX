@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ColorPickerComponent } from '../_components/color-picker/color-picker.component';
 import { ColorSliderComponent } from '../_components/color-picker/color-slider/color-slider.component'
 import { ColorPaletteComponent } from '../_components/color-picker/color-palette/color-palette.component';
-import { MaterialModule } from '../_material/material.module';
 
+import { MaterialModule } from '../_material/material.module';
 
 @NgModule({
   declarations: [
@@ -15,9 +15,7 @@ import { MaterialModule } from '../_material/material.module';
   ],
   imports: [
     CommonModule,
-    MaterialModule,
-    
-
+    MaterialModule
   ]
 })
 export class ColorPickerModule { }

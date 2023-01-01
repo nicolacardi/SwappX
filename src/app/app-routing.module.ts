@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouteConfigLoadEnd, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from './_user/auth/auth.guard';
 import { UserComponent } from './_user/user.component';
@@ -7,8 +7,8 @@ import { UserComponent } from './_user/user.component';
 import { RegisterComponent } from './_user/register/register.component';
 import { LoginComponent } from './_user/login/login.component';
 
-import { ProfiloComponent } from './_components/account/profilo/profilo.component';
-import { ChangePswComponent } from './_components/account/change-psw/change-psw.component';
+import { ProfiloComponent } from './_user/profilo/profilo.component';
+import { ChangePswComponent } from './_user/change-psw/change-psw.component';
 import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.component';
 import { ResetPasswordComponent } from './_user/reset-password/reset-password.component';
 

@@ -100,8 +100,8 @@ import { UserEditComponent } from './_components/users/user-edit/user-edit.compo
 
 
 import { MessaggiComponent } from './_components/messaggi/messaggi.component';
-import { ProfiloComponent } from './_components/account/profilo/profilo.component';
-import { ChangePswComponent } from './_components/account/change-psw/change-psw.component';
+import { ProfiloComponent } from './_user/profilo/profilo.component';
+import { ChangePswComponent } from './_user/change-psw/change-psw.component';
 
 import { ToolbarComponent } from './_components/utilities/toolbar/toolbar.component';
 import { SceltaColonneComponent } from './_components/utilities/toolbar/scelta-colonne/scelta-colonne.component';

@@ -4,6 +4,11 @@
     border-color: #c3e6cb !important;
   }
 
+  
+:host ::ng-deep  .mat-expansion-panel-body {
+    padding: 10px;
+  }
+
 :host  ::ng-deep .error-class .mat-simple-snackbar-action {
     color: red;
   }

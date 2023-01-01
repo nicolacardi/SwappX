@@ -4,10 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 //components
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
-import { PhotocropComponent } from '../../utilities/photocrop/photocrop.component';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { Utility } from '../../utilities/utility.component';
+import { DialogOkComponent } from '../../_components/utilities/dialog-ok/dialog-ok.component';
+import { PhotocropComponent } from '../../_components/utilities/photocrop/photocrop.component';
+import { SnackbarComponent } from '../../_components/utilities/snackbar/snackbar.component';
+import { Utility } from '../../_components/utilities/utility.component';
 
 //services
 import { EventEmitterService } from 'src/app/_services/event-emitter.service';
@@ -16,13 +16,13 @@ import { UserService } from 'src/app/_user/user.service';
 //models
 import { _UT_UserFoto } from 'src/app/_models/_UT_UserFoto';
 import { User } from 'src/app/_user/Users';
-import { PersonaFormComponent } from '../../persone/persona-form/persona-form.component';
-import { PersoneService } from '../../persone/persone.service';
+import { PersonaFormComponent } from '../../_components/persone/persona-form/persona-form.component';
+import { PersoneService } from '../../_components/persone/persone.service';
 
 @Component({
   selector: 'app-profilo',
   templateUrl: './profilo.component.html',
-  styleUrls: ['../account.component.css']
+  styleUrls: ['../user.css']
 })
 
 export class ProfiloComponent implements OnInit {
@@ -34,7 +34,6 @@ export class ProfiloComponent implements OnInit {
   form! :           FormGroup;
   public currUser!: User;
 //#endregion
-
 
 //#region ----- ViewChild Input Output -------
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
@@ -149,14 +148,11 @@ export class ProfiloComponent implements OnInit {
       err => console.log("[profilo.component] - save: ERRORE this.svcPersone.put", this.personaFormComponent.form.value)
     );
 
-
-
     if(this.immagineDOM != undefined){
       this.fotoObj.userID = this.currUser.userID;
       this.fotoObj.foto = this.immagineDOM.nativeElement.src;
 
-      this.svcUser.save(this.fotoObj).subscribe(
-        () => {
+      this.svcUser.save(this.fotoObj).subscribe( () => {
           this.eventEmitterService.onAccountSaveProfile();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo salvato', panelClass: ['green-snackbar']});
         }

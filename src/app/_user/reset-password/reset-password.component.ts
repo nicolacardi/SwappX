@@ -21,20 +21,22 @@ import { Utility } from  '../../_components/utilities/utility.component';
   styleUrls: ['../user.css']
 })
 
+/* ++++++++ DA FINIRE +++++++
+
+*/
 export class ResetPasswordComponent implements OnInit {
   loading = false;
   form! :                     FormGroup;
   
-  constructor(
-    private svcUser:        UserService,
-    private svcParametri:   ParametriService, 
-    private router:         Router,
-    private fb:             FormBuilder,
-    private eventEmitterService:  EventEmitterService,
-    public _dialog:         MatDialog,
-    private _loadingService:  LoadingService,
-    private _snackBar:      MatSnackBar  ) 
-  {
+  constructor( private svcUser:        UserService,
+               private svcParametri:   ParametriService, 
+               private router:         Router,
+               private fb:             FormBuilder,
+               private eventEmitterService:  EventEmitterService,
+               public _dialog:         MatDialog,
+               private _loadingService:  LoadingService,
+               private _snackBar:      MatSnackBar  )  {
+                
     this.form = this.fb.group(
       {
         Password:                  ['', { validators:[ Validators.required, Validators.minLength(4), Validators.maxLength(19)]}],
