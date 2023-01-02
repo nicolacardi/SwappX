@@ -28,22 +28,49 @@
                 </button>
             </div>
 
+            
+            <mat-grid-list class="no-overflowx mt20" [cols]="4" rowHeight="60px">
+                <mat-label class="...'">Docente:  {{personaNome}} {{personaCognome}} </mat-label>
+                <mat-label>  (personaID= {{personaID}} )</mat-label>
+            </mat-grid-list>
+            
+            <mat-grid-list class="no-overflowx mt20" [cols]="4" rowHeight="60px">
+
+                <mat-label class="...'">Alunno: {{alunnoNome}} {{alunnoCognome}} </mat-label>
+                <mat-label>  (iscrizioneID= {{iscrizioneID}} )</mat-label>
+            </mat-grid-list>
+
             <mat-grid-list class="no-overflowx mt20" [cols]="4" rowHeight="60px">
 
                 <mat-grid-tile>
                     <mat-form-field >
-                        <input matInput
-                            required
-                            formControlName = "dtNota"
-                            placeholder="Data della Nota"
-                            >
-                        <mat-datepicker></mat-datepicker>
+                        <input matInput required formControlName = "dtNota" placeholder="Data della Nota" [matDatepicker]= "dpDtNota"  #date >
+                        <mat-datepicker-toggle matSuffix [for]="dpDtNota" ></mat-datepicker-toggle>
+                        <mat-datepicker #dpDtNota  ></mat-datepicker>
+
                         <!-- (change)="dp1Change()" -->
                         <!-- <mat-error *ngIf="form.controls.start.errors?.required"> Campo obbligatorio</mat-error> -->
                     </mat-form-field>
                 </mat-grid-tile>
-
                 
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput required type="text" placeholder="iscrizioneID" formControlName="iscrizioneID">
+                    </mat-form-field>
+                </mat-grid-tile>
+
             </mat-grid-list>
+
+            <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput required type="text" placeholder="Nota" formControlName="nota">
+                        <mat-error *ngIf="form.controls.nota.errors?.required"> Campo obbligatorio</mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+            </mat-grid-list>
+
+
+
         </form>
     </mat-card-content>

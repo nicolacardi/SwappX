@@ -64,306 +64,301 @@
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
-
             
-                <mat-tab-group mat-align-tabs="center">
+            <mat-tab-group mat-align-tabs="center">
+
 <!-- ********************************    MAT TAB ANAGRAFICA *********************************** -->
-                    <mat-tab  label="Dati Anagrafici">
-                        <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "formPersona">    
-                            <mat-grid-list class="no-overflowx mt10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome" #nome>
-                                        <mat-error *ngIf="formPersona.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
-                                    </mat-form-field>
-                                </mat-grid-tile>
+                <mat-tab  label="Dati Anagrafici">
+                    <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "formPersona">    
+                        <mat-grid-list class="no-overflowx mt10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome" #nome>
+                                    <mat-error *ngIf="formPersona.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input matInput required type="text" placeholder="Cognome" formControlName="cognome">
-                                        <mat-error *ngIf="formPersona.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
-                                    </mat-form-field>
-                                </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput required type="text" placeholder="Cognome" formControlName="cognome">
+                                    <mat-error *ngIf="formPersona.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                                <mat-grid-tile>
-                                    <mat-checkbox color="primary" formControlName="ckAttivo">
-                                        Anagrafica Attiva
-                                    </mat-checkbox>
-                                </mat-grid-tile>
-                            </mat-grid-list>
-                            <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input matInput required type="text" placeholder="Genere (M/F)" formControlName="genere">
-                                        <mat-error>Inserire M o F</mat-error>
-                                    </mat-form-field>
-                                    
-                                </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-checkbox color="primary" formControlName="ckAttivo">
+                                    Anagrafica Attiva
+                                </mat-checkbox>
+                            </mat-grid-tile>
+                        </mat-grid-list>
 
-                                <mat-grid-tile>
-                                    <mat-form-field>
+                        <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput required type="text" placeholder="Genere (M/F)" formControlName="genere">
+                                    <mat-error>Inserire M o F</mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                                        <input matInput
-                                        required
-                                        formControlName = "dtNascita"
-                                        [matDatepicker]= "dpDtNascita"
-                                        placeholder="Data di Nascita"
-                                        #date>
-                                        <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
-                                        <mat-datepicker #dpDtNascita  ></mat-datepicker>
-                                        <mat-error *ngIf="formPersona.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
-                                    </mat-form-field>
-                                </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput required placeholder="Data di Nascita" formControlName = "dtNascita" [matDatepicker]= "dpDtNascita"  #date>
+                                    <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
+                                    <mat-datepicker #dpDtNascita  ></mat-datepicker>
+                                    <mat-error *ngIf="formPersona.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input matInput type="text" placeholder="Codice Fiscale" formControlName="cf">
-                                        <mat-error>Campo errato</mat-error>
-                                    </mat-form-field>
-                                </mat-grid-tile>
-                            </mat-grid-list>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Codice Fiscale" formControlName="cf">
+                                    <mat-error>Campo errato</mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
 
-                            <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <mat-label>Comune di Nascita</mat-label>
-                                        <input type="text"
-                                                placeholder="<Selezionare il Comune>"
-                                                matInput
-                                                formControlName="comuneNascita"
-                                                [matAutocomplete]="auto1">
-                                        <mat-autocomplete #auto1="matAutocomplete" >
-                                            <mat-spinner *ngIf="comuniNascitaIsLoading" class="_spinner-is-loading-mini" diameter="40"></mat-spinner>
-                                            <mat-option *ngFor="let element of (filteredComuniNascita$ | async)" [value]="element.comune" (click)="popolaProvNascita(element.provincia)">
+                        <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <mat-label>Comune di Nascita</mat-label>
+                                    <input type="text"
+                                            placeholder="<Selezionare il Comune>"
+                                            matInput
+                                            formControlName="comuneNascita"
+                                            [matAutocomplete]="auto1">
+                                    <mat-autocomplete #auto1="matAutocomplete" >
+                                        <mat-spinner *ngIf="comuniNascitaIsLoading" class="_spinner-is-loading-mini" diameter="40"></mat-spinner>
+                                        <mat-option *ngFor="let element of (filteredComuniNascita$ | async)" [value]="element.comune" (click)="popolaProvNascita(element.provincia)">
+                                            <small>{{element.comune}}</small>
+                                            <!-- <small> - {{element.provincia}}</small> -->
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Prov di Nascita" formControlName="provNascita">
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Paese di Nascita" formControlName="nazioneNascita">
+                                </mat-form-field>
+                            </mat-grid-tile>
+
+
+                        </mat-grid-list>
+                        <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <mat-label>Comune di Residenza</mat-label>
+                                    <input type="text"
+                                            placeholder="<Selezionare il Comune>"
+                                            matInput
+                                            formControlName="comune"
+                                            [matAutocomplete]="auto2">
+                                    <mat-autocomplete #auto2="matAutocomplete" >
+                                        <mat-spinner *ngIf="comuniIsLoading" class="_spinner-is-loading-mini" diameter="40"></mat-spinner>
+                                        <ng-container >
+                                            <mat-option *ngFor="let element of (filteredComuni$ | async)" [value]="element.comune" (click)="popolaProv(element.provincia,  element.cap)">
                                                 <small>{{element.comune}}</small>
                                                 <!-- <small> - {{element.provincia}}</small> -->
                                             </mat-option>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
-                                </mat-grid-tile>
+                                        </ng-container>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                    
 
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input matInput type="text" placeholder="Prov di Nascita" formControlName="provNascita">
-                                    </mat-form-field>
-                                </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Prov di Residenza" formControlName="prov">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input matInput type="text" placeholder="Paese di Nascita" formControlName="nazioneNascita">
-                                    </mat-form-field>
-                                </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Paese di Residenza" formControlName="nazione">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
+                        </mat-grid-list>
+                        <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input  matInput type="text" placeholder="Indirizzo e N. Civico" formControlName="indirizzo">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                            </mat-grid-list>
-                            <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <mat-label>Comune di Residenza</mat-label>
-                                        <input type="text"
-                                                placeholder="<Selezionare il Comune>"
-                                                matInput
-                                                formControlName="comune"
-                                                [matAutocomplete]="auto2">
-                                        <mat-autocomplete #auto2="matAutocomplete" >
-                                            <mat-spinner *ngIf="comuniIsLoading" class="_spinner-is-loading-mini" diameter="40"></mat-spinner>
-                                            <ng-container >
-                                                <mat-option *ngFor="let element of (filteredComuni$ | async)" [value]="element.comune" (click)="popolaProv(element.provincia,  element.cap)">
-                                                    <small>{{element.comune}}</small>
-                                                    <!-- <small> - {{element.provincia}}</small> -->
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-autocomplete>
-                                    </mat-form-field>
-                                </mat-grid-tile>
-                        
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="CAP" formControlName="cap">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input matInput type="text" placeholder="Prov di Residenza" formControlName="prov">
-                                    </mat-form-field>
-                                </mat-grid-tile>
+                            <mat-grid-tile class="tileCk">
 
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input matInput type="text" placeholder="Paese di Residenza" formControlName="nazione">
-                                    </mat-form-field>
-                                </mat-grid-tile>
+                            </mat-grid-tile>
+                        </mat-grid-list>
 
-                            </mat-grid-list>
-                            <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input  matInput type="text" placeholder="Indirizzo e N. Civico" formControlName="indirizzo">
-                                    </mat-form-field>
-                                </mat-grid-tile>
+                        <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Telefono" formControlName="telefono">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input matInput type="text" placeholder="CAP" formControlName="cap">
-                                    </mat-form-field>
-                                </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="altro Telefono" formControlName="telefono1">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                                <mat-grid-tile class="tileCk">
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="e-mail" formControlName="email">
+                                    <mat-error>Campo errato</mat-error>
+                                </mat-form-field>
+                            </mat-grid-tile>
+                        </mat-grid-list>
 
-                                </mat-grid-tile>
-                            </mat-grid-list>
+                    </form>
 
-                            <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input matInput type="text" placeholder="Telefono" formControlName="telefono">
-                                    </mat-form-field>
-                                </mat-grid-tile>
+                    <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "formAlunno">
+                        <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Scuola di provenienza" formControlName="scuolaProvenienza">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input matInput type="text" placeholder="altro Telefono" formControlName="telefono1">
-                                    </mat-form-field>
-                                </mat-grid-tile>
+                            <mat-grid-tile>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Indirizzo Scuola di provenienza" formControlName="indirizzoScuolaProvenienza">
+                                </mat-form-field>
+                            </mat-grid-tile>
 
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input matInput type="text" placeholder="e-mail" formControlName="email">
-                                        <mat-error>Campo errato</mat-error>
-                                    </mat-form-field>
-                                </mat-grid-tile>
-                            </mat-grid-list>
+                            <mat-grid-tile class="tileCk">
 
-                        </form>
+                            </mat-grid-tile>
+                        </mat-grid-list>
 
-                        <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "formAlunno">
-                            <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input matInput type="text" placeholder="Scuola di provenienza" formControlName="scuolaProvenienza">
-                                    </mat-form-field>
-                                </mat-grid-tile>
+                        <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
 
-                                <mat-grid-tile>
-                                    <mat-form-field>
-                                        <input matInput type="text" placeholder="Indirizzo Scuola di provenienza" formControlName="indirizzoScuolaProvenienza">
-                                    </mat-form-field>
-                                </mat-grid-tile>
+                            <mat-grid-tile class="tileCk ml15">
+                                <mat-checkbox color="primary" formControlName="ckDSA">
+                                    Alunno con DSA
+                                </mat-checkbox>
+                            </mat-grid-tile>
 
-                                <mat-grid-tile class="tileCk">
+                            
+                            <mat-grid-tile class="tileCk ml15" >
+                                <mat-checkbox color="primary" formControlName="ckDisabile">
+                                    Alunno Disabile
+                                </mat-checkbox>
+                            </mat-grid-tile>
 
-                                </mat-grid-tile>
-                            </mat-grid-list>
+                            <mat-grid-tile class="tileCk ml15">
+                                <mat-checkbox color="primary" formControlName="ckAuthFoto">
+                                    Autorizz. Uso Foto
+                                </mat-checkbox>
+                            </mat-grid-tile>
 
-                            <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+                            <mat-grid-tile class="tileCk ml15">
+                                <mat-checkbox color="primary" formControlName="ckAuthUscite">
+                                    Autorizz. Uscite
+                                </mat-checkbox>
+                            </mat-grid-tile>
 
-                                <mat-grid-tile class="tileCk ml15">
-                                    <mat-checkbox color="primary" formControlName="ckDSA">
-                                        Alunno con DSA
-                                    </mat-checkbox>
-                                </mat-grid-tile>
-
-                                
-                                <mat-grid-tile class="tileCk ml15" >
-                                    <mat-checkbox color="primary" formControlName="ckDisabile">
-                                        Alunno Disabile
-                                    </mat-checkbox>
-                                </mat-grid-tile>
-
-                                <mat-grid-tile class="tileCk ml15">
-                                    <mat-checkbox color="primary" formControlName="ckAuthFoto">
-                                        Autorizz. Uso Foto
-                                    </mat-checkbox>
-                                </mat-grid-tile>
-
-                                <mat-grid-tile class="tileCk ml15">
-                                    <mat-checkbox color="primary" formControlName="ckAuthUscite">
-                                        Autorizz. Uscite
-                                    </mat-checkbox>
-                                </mat-grid-tile>
-
-                                <mat-grid-tile class="tileCk ml15">
-                                    <mat-checkbox color="primary" formControlName="ckAuthUsoMateriale">
-                                        Autorizz. Uso Mat.
-                                    </mat-checkbox>
-                                </mat-grid-tile>
-                            </mat-grid-list>
-                        </form> 
-                    </mat-tab>
+                            <mat-grid-tile class="tileCk ml15">
+                                <mat-checkbox color="primary" formControlName="ckAuthUsoMateriale">
+                                    Autorizz. Uso Mat.
+                                </mat-checkbox>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </form> 
+                </mat-tab>
 <!-- ********************************    MAT TAB GENITORI ************************************ -->
-                    <mat-tab label="Famiglia">    
-                        <button mat-mini-fab aria-label="Nuova anagrafica Genitore" matTooltip="Nuova anagrafica Genitore" class= "_btn-addModal" (click)="addGenitore()">
-                            <mat-icon>add</mat-icon>
-                        </button>
-                        <mat-label class="frameLabel">i genitori/tutori di {{alunnoNomeCognome}} </mat-label>
-                        <div class="_genitori-container cellBordered mt10">
-                            <app-genitori-list [context]="'alunno-edit-famiglia'"[alunnoID]="alunnoID"  (removeFromFamily) = "removeFromFamily($event)" #genitoriFamiglia></app-genitori-list>
-                        </div>
-                        <mat-accordion>
-                            <mat-expansion-panel hideToggle>
-                              <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                  Elenco di tutti i genitori/tutori
-                                </mat-panel-title>
-                                <mat-panel-description>
-                                  (fare click per aprire)
-                                </mat-panel-description>
-                              </mat-expansion-panel-header>
-                                <mat-label class="frameLabel">Elenco dei genitori/tutori </mat-label>
-                                <div class="_genitori-list-container cellBordered mt10">
-                                    <app-genitori-list [context]="'alunno-edit-list'" (addToFamily) = "addToFamily($event)"></app-genitori-list>
-                                </div>
-                            </mat-expansion-panel>
-                        </mat-accordion>
+                <mat-tab label="Famiglia">    
+                    <button mat-mini-fab aria-label="Nuova anagrafica Genitore" matTooltip="Nuova anagrafica Genitore" class= "_btn-addModal" (click)="addGenitore()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                    
+                    <mat-label class="frameLabel">i genitori/tutori di {{alunnoNomeCognome}} </mat-label>
+                    <div class="_genitori-container cellBordered mt10">
+                        <app-genitori-list [context]="'alunno-edit-famiglia'"[alunnoID]="alunnoID"  (removeFromFamily) = "removeFromFamily($event)" #genitoriFamiglia></app-genitori-list>
+                    </div>
+                    <mat-accordion>
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Elenco di tutti i genitori/tutori
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                (fare click per aprire)
+                            </mat-panel-description>
+                            </mat-expansion-panel-header>
+                            <mat-label class="frameLabel">Elenco dei genitori/tutori </mat-label>
+                            <div class="_genitori-list-container cellBordered mt10">
+                                <app-genitori-list [context]="'alunno-edit-list'" (addToFamily) = "addToFamily($event)"></app-genitori-list>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
 
-                    </mat-tab>
+                </mat-tab>
 <!-- ********************************    MAT TAB CLASSI    ************************************* -->
-                    <mat-tab label="Classi Frequentate" style="overflow-x: hideen;">
-                        <table>
-                            <tr>
-                                <td>
-                                    <mat-label class="frameLabel">Le classi frequentate da {{alunnoNomeCognome}} </mat-label>
-                                    <div class="_classi-attended-container cellBordered mt10">
-                                        <app-iscrizioni-alunno-list [alunnoID] = "alunnoID" 
-                                        (removeFromAttended) = "removeFromAttended($event)"
-                                        #iscrizioniAlunno >
-                                        </app-iscrizioni-alunno-list>
-                                    </div>
-                                </td>
-                                <td class="_classi-list-td-vertical-accordion">
-                                    <mat-accordion class="_rotated-accordion">
-                                        <mat-expansion-panel hideToggle>
-                                            <mat-expansion-panel-header>
-                                            <mat-panel-title>
-                                                Tutte le classi
-                                            </mat-panel-title>
-                                            <mat-panel-description>
-                                                (fare click per aprire)
-                                            </mat-panel-description>
-                                            </mat-expansion-panel-header>
-                                            <mat-label class="frameLabel le480">Elenco delle classi</mat-label>
-                                            <div class="_panel-content _classi-list-container cellBordered mt10">
-                                                <app-classi-sezioni-anni-list
-                                                    [dove] = "'alunno-edit-list'"
-                                                    (addToAttended) = "addToAttended($event)"
-                                                    #classiSezioniAnniList>
-                                                </app-classi-sezioni-anni-list>
-                                            </div>
-                                        </mat-expansion-panel>
-                                    </mat-accordion>  
-                                </td>
-                            </tr>
-                        </table>
-                    </mat-tab>
+                <mat-tab label="Classi Frequentate" style="overflow-x: hideen;">
+                    <table>
+                        <tr>
+                            <td>
+                                <mat-label class="frameLabel">Le classi frequentate da {{alunnoNomeCognome}} </mat-label>
+                                <div class="_classi-attended-container cellBordered mt10">
+                                    <app-iscrizioni-alunno-list [alunnoID] = "alunnoID" 
+                                    (removeFromAttended) = "removeFromAttended($event)"
+                                    #iscrizioniAlunno >
+                                    </app-iscrizioni-alunno-list>
+                                </div>
+                            </td>
+                            <td class="_classi-list-td-vertical-accordion">
+                                <mat-accordion class="_rotated-accordion">
+                                    <mat-expansion-panel hideToggle>
+                                        <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Tutte le classi
+                                        </mat-panel-title>
+                                        <mat-panel-description>
+                                            (fare click per aprire)
+                                        </mat-panel-description>
+                                        </mat-expansion-panel-header>
+                                        <mat-label class="frameLabel le480">Elenco delle classi</mat-label>
+                                        <div class="_panel-content _classi-list-container cellBordered mt10">
+                                            <app-classi-sezioni-anni-list
+                                                [dove] = "'alunno-edit-list'"
+                                                (addToAttended) = "addToAttended($event)"
+                                                #classiSezioniAnniList>
+                                            </app-classi-sezioni-anni-list>
+                                        </div>
+                                    </mat-expansion-panel>
+                                </mat-accordion>  
+                            </td>
+                        </tr>
+                    </table>
+                </mat-tab>
 <!-- ********************************    MAT TAB PAGELLE ************************************** -->
-                    <mat-tab label="Pagelle">
+                <mat-tab label="Pagelle">
 
-                    </mat-tab>
+                </mat-tab>
 <!-- ********************************    MAT TAB VOTI    ************************************** -->
-                    <mat-tab label="Voti">
+                <mat-tab label="Voti">
 
-                    </mat-tab>
+                </mat-tab>
 <!-- ********************************    MAT TAB ASSENZE ************************************** -->
-                    <mat-tab label="Assenze">
+                <mat-tab label="Assenze">
 
-                    </mat-tab>
-                </mat-tab-group>    
+                </mat-tab>
+            </mat-tab-group>    
             
         </mat-card-content>
     </mat-card>

@@ -6,12 +6,13 @@ import { iif, Observable, of } from 'rxjs';
 import { concatMap, debounceTime, switchMap, tap } from 'rxjs/operators';
 
 //components
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { GenitoreEditComponent } from '../../genitori/genitore-edit/genitore-edit.component';
+import { GenitoriListComponent } from '../../genitori/genitori-list/genitori-list.component';
+
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
-import { GenitoriListComponent } from '../../genitori/genitori-list/genitori-list.component';
 
 //services
 import { AlunniService } from 'src/app/_components/alunni/alunni.service';
@@ -40,20 +41,21 @@ export class AlunnoEditComponent implements OnInit {
 
 //#region ----- Variabili -------
 
-  alunno$!:                    Observable<ALU_Alunno>;
+  alunno$!:                   Observable<ALU_Alunno>;
   alunnoNomeCognome:          string = "";
-  formPersona! :                     FormGroup;
-  formAlunno! :             FormGroup;
+  formPersona! :              FormGroup;
+  formAlunno! :               FormGroup;
 
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
-  
+  breakpoint!:                number;
+  breakpoint2!:               number;
+
   filteredComuni$!:           Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:    Observable<_UT_Comuni[]>;
   comuniIsLoading:            boolean = false;
   comuniNascitaIsLoading:     boolean = false;
-  breakpoint!:                number;
-  breakpoint2!:               number;
+
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -62,18 +64,17 @@ export class AlunnoEditComponent implements OnInit {
   @ViewChild('classiSezioniAnniList') classiSezioniAnniListComponent!:  ClassiSezioniAnniListComponent; 
 //#endregion
 
-  constructor(
-    public _dialogRef: MatDialogRef<AlunnoEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public alunnoID: number,
-    private fb:                           FormBuilder, 
-    private svcIscrizioni:                IscrizioniService,
-    private svcAlunni:                    AlunniService,
-    private svcPersone:                   PersoneService,
-    private svcComuni:                    ComuniService,
+  constructor( public _dialogRef: MatDialogRef<AlunnoEditComponent>,
+               @Inject(MAT_DIALOG_DATA) public alunnoID: number,
+               private fb:                           FormBuilder, 
+               private svcIscrizioni:                IscrizioniService,
+               private svcAlunni:                    AlunniService,
+               private svcPersone:                   PersoneService,
+               private svcComuni:                    ComuniService,
 
-    public _dialog:                       MatDialog,
-    private _snackBar:                    MatSnackBar,
-    private _loadingService :             LoadingService ) {
+               public _dialog:                       MatDialog,
+               private _snackBar:                    MatSnackBar,
+               private _loadingService :             LoadingService ) {
 
     _dialogRef.disableClose = true;
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
