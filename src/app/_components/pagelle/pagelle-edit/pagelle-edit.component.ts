@@ -52,27 +52,24 @@ export class PagellaEditComponent implements OnInit {
 
 //#endregion  
 
-  constructor(private svcPagelle:               PagelleService,
-              private svcPagellaVoti:           PagellaVotiService,
-              private svcFiles:                 FilesService,
-              private _loadingService:          LoadingService,
-              private _snackBar:                MatSnackBar ,
-              private _jspdf:                   JspdfService ) {
-  }
+  constructor(
+    private svcPagelle:               PagelleService,
+    private svcPagellaVoti:           PagellaVotiService,
+    private svcFiles:                 FilesService,
+    private _loadingService:          LoadingService,
+    private _snackBar:                MatSnackBar ,
+    private _jspdf:                   JspdfService
+    ) { }
 
   ngOnChanges() {
-
-    //console.log("pagelle-edit...ts this.alunno", this.alunno);
     if (this.iscrizioneID != undefined) 
       this.loadData();
-
   }
 
   ngOnInit(): void {
   }
 
   loadData() {
-
     //this.periodo = this.toggleQuad;
     let obsPagelle$: Observable<DOC_Pagella[]>;
     obsPagelle$= this.svcPagelle.listByIscrizione(this.iscrizioneID);

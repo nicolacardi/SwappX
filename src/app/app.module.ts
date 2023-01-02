@@ -134,6 +134,8 @@ import { ClassiAnniMaterieDuplicaComponent } from './_components/classi/classi-a
 import { ColorPickerModule } from './color-picker/color-picker.module';
 import { PagellaEditComponent } from './_components/pagelle/pagelle-edit/pagelle-edit.component';
 import { PersonaFormComponent } from './_components/persone/persona-form/persona-form.component';
+import { NoteListComponent } from './_components/note/note-list/note-list.component';
+import { NotaEditComponent } from './_components/note/nota-edit/nota-edit.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -250,6 +252,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ClassiAnniMaterieDuplicaComponent,
     PagellaEditComponent,
     PersonaFormComponent,
+    NoteListComponent,
+    NotaEditComponent,
     
 
   ],

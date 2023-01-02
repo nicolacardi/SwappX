@@ -36,3 +36,12 @@ export interface DialogDataColoreMateria {
         ascRGB:             string;
       }
 
+export interface DialogDataNota {
+        notaID:             number;
+        periodo:            number;
+        dtNota:             string;
+        ckFirmato:          boolean;
+        dtFirma:            string;
+        personaID:          number;
+      }
+

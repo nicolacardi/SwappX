@@ -147,7 +147,6 @@ export class AlunniListComponent implements OnInit {
     public _dialog:               MatDialog, 
     private _loadingService:      LoadingService,
     private _navigationService:   NavigationService  ) {
-
   }
   
 
