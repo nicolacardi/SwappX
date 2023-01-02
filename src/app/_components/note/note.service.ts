@@ -24,6 +24,15 @@ export class NoteService {
     //http://213.215.231.4/swappX/api/DOC_Note/1
   }
 
+  put(formData: any): Observable <any>{
+    return this.http.put(environment.apiBaseUrl  + 'DOC_Note/' + formData.id , formData);    
+  }
+
+  post(formData: any): Observable <any>{
+    formData.id = 0;
+    return this.http.post(environment.apiBaseUrl  + 'DOC_Note' , formData);  
+  }
+
   delete(notaID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'DOC_Note/' + notaID);    
   }

@@ -4,7 +4,7 @@ import { PER_Persona } from "./PER_Persone";
 export interface DOC_Nota {
     id:                     number;
     iscrizioneID:           number;
-    personaiD:              number;
+    personaID:              number;
     dtNota:                 string;
     periodo:                number;
     ckFirmato?:             boolean;

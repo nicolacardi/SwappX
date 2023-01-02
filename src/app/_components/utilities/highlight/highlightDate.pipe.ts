@@ -7,13 +7,18 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class HighlightDatePipe implements PipeTransform {
 
     transform(value: string, search: string): string {
-        if (search) {
-            let valueStr = this.formatDate(value) + '';
-            valueStr = valueStr.replace(new RegExp('(' + search + ')', 'gi'), '<span class="yellow">$1</span>');
-            return valueStr;
+        if (value) {
+            if (search) {
+                let valueStr = this.formatDate(value) + '';
+                valueStr = valueStr.replace(new RegExp('(' + search + ')', 'gi'), '<span class="yellow">$1</span>');
+                return valueStr;
+            } else {
+
+                let valueStr = this.formatDate(value)
+                return valueStr;  //NB LA CUSTOMPIPE DEVE AGIRE ANCHE IN ASSENZA DI FILTERVALUE NEL CASO DELLA DATA.
+            }
         } else {
-            let valueStr = this.formatDate(value)
-            return valueStr;  //NB LA CUSTOMPIPE DEVE AGIRE ANCHE IN ASSENZA DI FILTERVALUE NEL CASO DELLA DATA.
+            return '' //NB: trasforma le date null in stringhe vuote
         }
     }
 

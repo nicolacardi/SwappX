@@ -5,23 +5,23 @@
             <!-- ********************************    BOTTONI     ************************************* -->
             <div class="center">
 
-                <img class="iconaMenuBig" src="../assets/evento_edit.svg">
+                <img class="iconaMenuBig" src="../assets/nota_edit.svg">
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
-                <button *ngIf="notaID" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10"
+                <button *ngIf="data.notaID" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="loadData()" >
                     <mat-icon>restart_alt</mat-icon>
                 </button>
 
-                <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                <button *ngIf="data.notaID || data.notaID == 0 " mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="save()" >
                     <mat-icon>save</mat-icon>
                 </button>
 
-                <button *ngIf="notaID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
+                <button *ngIf="data.notaID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="delete()" >
                     <mat-icon>delete</mat-icon>
@@ -29,18 +29,16 @@
             </div>
 
             
-            <mat-grid-list class="no-overflowx mt20" [cols]="4" rowHeight="60px">
-                <mat-label class="...'">Docente:  {{personaNome}} {{personaCognome}} </mat-label>
-                <mat-label>  (personaID= {{personaID}} )</mat-label>
+            <mat-grid-list class="mt20 center" [cols]="1" rowHeight="60px">
+                <mat-label>Nota emessa da:<br>{{personaNomeCognome}}<br>(personaID= {{personaID}} )</mat-label>
             </mat-grid-list>
             
-            <mat-grid-list class="no-overflowx mt20" [cols]="4" rowHeight="60px">
+            <mat-grid-list class="center" [cols]="2" rowHeight="60px">
 
-                <mat-label class="...'">Alunno: {{alunnoNome}} {{alunnoCognome}} </mat-label>
-                <mat-label>  (iscrizioneID= {{iscrizioneID}} )</mat-label>
+                <mat-label>Per i genitori dell'alunno: {{alunnoNomeCognome}}<br>(iscrizioneID= {{iscrizioneID}} )</mat-label>
             </mat-grid-list>
 
-            <mat-grid-list class="no-overflowx mt20" [cols]="4" rowHeight="60px">
+            <mat-grid-list [cols]="1" rowHeight="60px">
 
                 <mat-grid-tile>
                     <mat-form-field >
@@ -61,10 +59,16 @@
 
             </mat-grid-list>
 
-            <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+            <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="160px">
                 <mat-grid-tile>
-                    <mat-form-field>
-                        <input matInput required type="text" placeholder="Nota" formControlName="nota">
+                    <mat-form-field class="w400px">
+                        <textarea   matInput 
+                                    required 
+                                    type="text" 
+                                    placeholder="Nota" 
+                                    formControlName="nota"
+                                    class="resize-vertical-only max-height">
+                        </textarea>
                         <mat-error *ngIf="form.controls.nota.errors?.required"> Campo obbligatorio</mat-error>
                     </mat-form-field>
                 </mat-grid-tile>

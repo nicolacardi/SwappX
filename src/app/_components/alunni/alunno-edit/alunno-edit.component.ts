@@ -1,33 +1,32 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { iif, Observable, of } from 'rxjs';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { iif, Observable, of }                  from 'rxjs';
 import { concatMap, debounceTime, switchMap, tap } from 'rxjs/operators';
 
 //components
-import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { GenitoreEditComponent } from '../../genitori/genitore-edit/genitore-edit.component';
-import { GenitoriListComponent } from '../../genitori/genitori-list/genitori-list.component';
+import { ClassiSezioniAnniListComponent }       from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { GenitoreEditComponent }                from '../../genitori/genitore-edit/genitore-edit.component';
+import { GenitoriListComponent }                from '../../genitori/genitori-list/genitori-list.component';
 
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 
 //services
-import { AlunniService } from 'src/app/_components/alunni/alunni.service';
-import { PersoneService } from '../../persone/persone.service';
-import { ComuniService } from 'src/app/_services/comuni.service';
-import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
+import { AlunniService }                        from 'src/app/_components/alunni/alunni.service';
+import { PersoneService }                       from '../../persone/persone.service';
+import { ComuniService }                        from 'src/app/_services/comuni.service';
+import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
 
 //models
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
-import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
+import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
+import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
+import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni';
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
-import { PER_Persona } from 'src/app/_models/PER_Persone';
+import { PER_Persona }                          from 'src/app/_models/PER_Persone';
 
 
 
@@ -41,20 +40,20 @@ export class AlunnoEditComponent implements OnInit {
 
 //#region ----- Variabili -------
 
-  alunno$!:                   Observable<ALU_Alunno>;
-  alunnoNomeCognome:          string = "";
-  formPersona! :              FormGroup;
-  formAlunno! :               FormGroup;
+  alunno$!:                                     Observable<ALU_Alunno>;
+  alunnoNomeCognome:                            string = "";
+  formPersona! :                                FormGroup;
+  formAlunno! :                                 FormGroup;
 
-  emptyForm :                 boolean = false;
-  loading:                    boolean = true;
-  breakpoint!:                number;
-  breakpoint2!:               number;
+  emptyForm :                                   boolean = false;
+  loading:                                      boolean = true;
+  breakpoint!:                                  number;
+  breakpoint2!:                                 number;
 
-  filteredComuni$!:           Observable<_UT_Comuni[]>;
-  filteredComuniNascita$!:    Observable<_UT_Comuni[]>;
-  comuniIsLoading:            boolean = false;
-  comuniNascitaIsLoading:     boolean = false;
+  filteredComuni$!:                             Observable<_UT_Comuni[]>;
+  filteredComuniNascita$!:                      Observable<_UT_Comuni[]>;
+  comuniIsLoading:                              boolean = false;
+  comuniNascitaIsLoading:                       boolean = false;
 
 //#endregion
 
@@ -64,64 +63,65 @@ export class AlunnoEditComponent implements OnInit {
   @ViewChild('classiSezioniAnniList') classiSezioniAnniListComponent!:  ClassiSezioniAnniListComponent; 
 //#endregion
 
-  constructor( public _dialogRef: MatDialogRef<AlunnoEditComponent>,
-               @Inject(MAT_DIALOG_DATA) public alunnoID: number,
-               private fb:                           FormBuilder, 
-               private svcIscrizioni:                IscrizioniService,
-               private svcAlunni:                    AlunniService,
-               private svcPersone:                   PersoneService,
-               private svcComuni:                    ComuniService,
+  constructor( 
+    public _dialogRef:                          MatDialogRef<AlunnoEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public alunnoID:   number,
+    private fb:                                 FormBuilder, 
+    private svcIscrizioni:                      IscrizioniService,
+    private svcAlunni:                          AlunniService,
+  private svcPersone:                           PersoneService,
+    private svcComuni:                          ComuniService,
 
-               public _dialog:                       MatDialog,
-               private _snackBar:                    MatSnackBar,
-               private _loadingService :             LoadingService ) {
+    public _dialog:                             MatDialog,
+    private _snackBar:                          MatSnackBar,
+    private _loadingService :                   LoadingService ) {
 
     _dialogRef.disableClose = true;
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
     
     this.formPersona = this.fb.group({
-      id:                         [null],
-      personaID:                  [null],
-      tipoPersonaID:              [null],
+      id:                                       [null],
+      personaID:                                [null],
+      tipoPersonaID:                            [null],
 
-      nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-      cognome:                    ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-      dtNascita:                  ['', Validators.required],
-      comuneNascita:              ['', Validators.maxLength(50)],
-      provNascita:                ['', Validators.maxLength(2)] ,
-      nazioneNascita:             ['', Validators.maxLength(3)],
-      indirizzo:                  ['', Validators.maxLength(255)],
-      comune:                     ['', Validators.maxLength(50)],
-      prov:                       ['', Validators.maxLength(2)],
-      cap:                        ['', Validators.maxLength(5)],
-      nazione:                    ['', Validators.maxLength(3)],
-      genere:                     ['',{ validators:[Validators.maxLength(1), Validators.required, Validators.pattern("M|F")]}],
-      cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
-      telefono:                   ['', Validators.maxLength(13)],
-      telefono1:                   ['', Validators.maxLength(13)],
+      nome:                                     ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+      cognome:                                  ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+      dtNascita:                                ['', Validators.required],
+      comuneNascita:                            ['', Validators.maxLength(50)],
+      provNascita:                              ['', Validators.maxLength(2)] ,
+      nazioneNascita:                           ['', Validators.maxLength(3)],
+      indirizzo:                                ['', Validators.maxLength(255)],
+      comune:                                   ['', Validators.maxLength(50)],
+      prov:                                     ['', Validators.maxLength(2)],
+      cap:                                      ['', Validators.maxLength(5)],
+      nazione:                                  ['', Validators.maxLength(3)],
+      genere:                                   ['',{ validators:[Validators.maxLength(1), Validators.required, Validators.pattern("M|F")]}],
+      cf:                                       ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
+      telefono:                                 ['', Validators.maxLength(13)],
+      telefono1:                                ['', Validators.maxLength(13)],
 
-      email:                      ['', Validators.email],
-      ckAttivo:                   [true]
-      // scuolaProvenienza:          ['', Validators.maxLength(255)],
-      // indirizzoScuolaProvenienza: ['', Validators.maxLength(255)],
-      // ckAttivo:                   [true],
-      // ckDSA:                      [false],
-      // ckDisabile:                 [false],
-      // ckAuthFoto:                 [false],
-      // ckAuthUsoMateriale:         [false],
-      // ckAuthUscite:               [false]
+      email:                                    ['', Validators.email],
+      ckAttivo:                                 [true]
+      // scuolaProvenienza:                     ['', Validators.maxLength(255)],
+      // indirizzoScuolaProvenienza:            ['', Validators.maxLength(255)],
+      // ckAttivo:                              [true],
+      // ckDSA:                                 [false],
+      // ckDisabile:                            [false],
+      // ckAuthFoto:                            [false],
+      // ckAuthUsoMateriale:                    [false],
+      // ckAuthUscite:                          [false]
     });
 
     this.formAlunno = this.fb.group(
       {
-        scuolaProvenienza:          ['', Validators.maxLength(255)],
-        indirizzoScuolaProvenienza: ['', Validators.maxLength(255)],
+        scuolaProvenienza:                      ['', Validators.maxLength(255)],
+        indirizzoScuolaProvenienza:             ['', Validators.maxLength(255)],
 
-        ckDSA:                      [false],
-        ckDisabile:                 [false],
-        ckAuthFoto:                 [false],
-        ckAuthUsoMateriale:         [false],
-        ckAuthUscite:               [false]
+        ckDSA:                                  [false],
+        ckDisabile:                             [false],
+        ckAuthFoto:                             [false],
+        ckAuthUsoMateriale:                     [false],
+        ckAuthUscite:                           [false]
       });
   }
 
@@ -228,42 +228,42 @@ export class AlunnoEditComponent implements OnInit {
 
     let personaObj: PER_Persona = {
 
-      nome :          this.formPersona.value.nome,
-      cognome :       this.formPersona.value.cognome,
-      dtNascita :     this.formPersona.value.dtNascita,
-      comuneNascita : this.formPersona.value.comuneNascita,
-      provNascita :   this.formPersona.value.provNascita,
-      nazioneNascita : this.formPersona.value.nazioneNascita,
-      indirizzo :     this.formPersona.value.indirizzo,
-      comune :        this.formPersona.value.comune,
-      prov :          this.formPersona.value.prov,
-      cap :           this.formPersona.value.cap,
-      nazione :       this.formPersona.value.nazione,
-      genere :        this.formPersona.value.genere,
-      CF :            this.formPersona.value.cf,
-      telefono :      this.formPersona.value.telefono,
-      telefono1 :     this.formPersona.value.telefono1,
+      nome :                                    this.formPersona.value.nome,
+      cognome :                                 this.formPersona.value.cognome,
+      dtNascita :                               this.formPersona.value.dtNascita,
+      comuneNascita :                           this.formPersona.value.comuneNascita,
+      provNascita :                             this.formPersona.value.provNascita,
+      nazioneNascita :                          this.formPersona.value.nazioneNascita,
+      indirizzo :                               this.formPersona.value.indirizzo,
+      comune :                                  this.formPersona.value.comune,
+      prov :                                    this.formPersona.value.prov,
+      cap :                                     this.formPersona.value.cap,
+      nazione :                                 this.formPersona.value.nazione,
+      genere :                                  this.formPersona.value.genere,
+      CF :                                      this.formPersona.value.cf,
+      telefono :                                this.formPersona.value.telefono,
+      telefono1 :                               this.formPersona.value.telefono1,
 
-      email :         this.formPersona.value.email,
-      ckAttivo:       this.formPersona.value.ckAttivo,
+      email :                                   this.formPersona.value.email,
+      ckAttivo:                                 this.formPersona.value.ckAttivo,
 
-      tipoPersonaID : 1, //Alunno
-      id : this.formPersona.value.personaID
+      tipoPersonaID :                           1, //Alunno
+      id :                                      this.formPersona.value.personaID
     }
 
     let alunnoObj: ALU_Alunno = {
-      id:                         this.formPersona.value.id,
-      personaID:                  this.formPersona.value.personaID,
+      id:                                       this.formPersona.value.id,
+      personaID:                                this.formPersona.value.personaID,
 
-      ckDisabile:                 this.formAlunno.value.ckDisabile,
-      ckDSA:                      this.formAlunno.value.ckDSA,
-      ckAuthFoto:                 this.formAlunno.value.ckAuthFoto,
-      ckAuthUsoMateriale:         this.formAlunno.value.ckAuthUsoMateriale,
-      ckAuthUscite:               this.formAlunno.value.ckAuthUscite,
-      scuolaProvenienza:          this.formAlunno.value.scuolaProvenienza,
-      indirizzoScuolaProvenienza: this.formAlunno.value.indirizzoScuolaProvenienza,
+      ckDisabile:                               this.formAlunno.value.ckDisabile,
+      ckDSA:                                    this.formAlunno.value.ckDSA,
+      ckAuthFoto:                               this.formAlunno.value.ckAuthFoto,
+      ckAuthUsoMateriale:                       this.formAlunno.value.ckAuthUsoMateriale,
+      ckAuthUscite:                             this.formAlunno.value.ckAuthUscite,
+      scuolaProvenienza:                        this.formAlunno.value.scuolaProvenienza,
+      indirizzoScuolaProvenienza:               this.formAlunno.value.indirizzoScuolaProvenienza,
 
-      persona: personaObj
+      persona:                                  personaObj
     }
 
     if (this.alunnoID == null || this.alunnoID == 0)    {

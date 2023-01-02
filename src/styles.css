@@ -567,6 +567,10 @@
         right: 120px;
     }
 
+    ._btn-pos-top-0 {
+        top: 20px;
+    }
+
     ._btn-pos-top-1 {
         top: 80px;
     }

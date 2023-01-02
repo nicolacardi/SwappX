@@ -1,16 +1,21 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { DOC_Nota } from 'src/app/_models/DOC_Nota';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { NoteService } from '../note.service';
-import { NotaEditComponent } from '../nota-edit/nota-edit.component';
+import { CdkDragDrop, moveItemInArray }         from '@angular/cdk/drag-drop';
+import { Component, Input, OnInit, ViewChild }  from '@angular/core';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatPaginator }                         from '@angular/material/paginator';
+import { MatSort }                              from '@angular/material/sort';
+import { MatTableDataSource }                   from '@angular/material/table';
+import { Observable }                           from 'rxjs';
 
+//components
+import { NotaEditComponent }                    from '../nota-edit/nota-edit.component';
+
+//services
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { NoteService }                          from '../note.service';
+
+//models
+import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
+import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
 
 @Component({
   selector: 'app-note-list',
@@ -28,7 +33,8 @@ export class NoteListComponent implements OnInit {
     "nota",
     "personaID",
     "ckFirmato",
-    "dtFirma"
+    "dtFirma",
+    "iscrizioneID"
   ];
 
   filterValue = '';       //Filtro semplice
@@ -40,21 +46,19 @@ export class NoteListComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-  @Input('iscrizioneID') iscrizioneID!:          number;
-  @Input('alunno') alunno!:                      ALU_Alunno;
+  @Input('iscrizioneID') iscrizioneID!:         number;
+  @Input('alunno') alunno!:                     ALU_Alunno;
 
-  @ViewChild(MatPaginator) paginator!:           MatPaginator;
-  @ViewChild(MatSort) sort!:                     MatSort;
+  @ViewChild(MatPaginator) paginator!:          MatPaginator;
+  @ViewChild(MatSort) sort!:                    MatSort;
 
 
 //#endregion  
 
   constructor(
-    private svcNote:               NoteService,
-    private _loadingService:       LoadingService,
-    public _dialog:                MatDialog, 
-
-    
+    private svcNote:                            NoteService,
+    private _loadingService:                    LoadingService,
+    public _dialog:                             MatDialog, 
   ) { }
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -121,20 +125,38 @@ export class NoteListComponent implements OnInit {
 
 //#region ----- Add Edit Drop -------
 
-openDetail(id:any){
+  addRecord(iscrizioneID: number){
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '450px',
+      height: '550px',
+      data: {
+        iscrizioneID:                           iscrizioneID,
+        notaID:                                 0                    
+      }
+    };
+    const dialogRef = this._dialog.open(NotaEditComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+        () => this.loadData()
+    );
+  }
 
-  const dialogConfig : MatDialogConfig = {
-    panelClass: 'add-DetailDialog',
-    width: '850px',
-    height: '500px',
-    data: id
-  };
-  const dialogRef = this._dialog.open(NotaEditComponent, dialogConfig);
-  dialogRef.afterClosed().subscribe(
-    () => this.loadData()
-  );
-}
-
+  openDetail(element: DOC_Nota){
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '450px',
+      height: '550px',
+      data: {
+        iscrizioneID:                           element.iscrizioneID,
+        notaID:                                 element.id,
+        personaID:                              element.personaID
+      }
+    };
+    const dialogRef = this._dialog.open(NotaEditComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      () => this.loadData()
+    );
+  }
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
