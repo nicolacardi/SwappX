@@ -208,7 +208,6 @@ export class AlunniListComponent implements OnInit {
 
   loadLayout(){
       //chiamata al WS dei layout con nome utente e nome griglia e contesto (variabile 'context')
-
       
       //se trovato, update colonne griglia
       //this.displayedColumns =  this.displayedColumnsAlunniList;
@@ -286,13 +285,14 @@ export class AlunniListComponent implements OnInit {
       if (data._Genitori.length == 0) //restituiva false se i Genitori non c'erano: sbagliato
         foundGenitore = true;
       else {
-        data._Genitori?.forEach((val: { genitore: { nome: any; cognome: any}; })=>  {   
+        data._Genitori?.forEach(
+          (val: { genitore: { nome: any; cognome: any}; })=>  {   
             const foundCognomeNome = foundGenitore || String(val.genitore.cognome+" "+val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
             const foundNomeCognome = foundGenitore || String(val.genitore.nome+" "+val.genitore.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
             foundGenitore = foundCognomeNome || foundNomeCognome;
         })
       }
-      console.log ("data", data);
+      
       let dArr = data.persona.dtNascita.split("-");
       const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 
@@ -315,17 +315,6 @@ export class AlunniListComponent implements OnInit {
                 && String(data.persona.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
                 && String(data.persona.email).toLowerCase().indexOf(searchTerms.email) !== -1
                 && foundGenitore;
-
-                // console.log(data, searchTerms, boolSx, boolDx);
-                // console.log("nome",String(data.nome).toLowerCase().indexOf(searchTerms.nome));
-                // console.log("cognome",String(data.cognome).toLowerCase().indexOf(searchTerms.cognome));
-                // console.log("dtNacsita",String(dtNascitaddmmyyyy).indexOf(searchTerms.dtNascita));
-                // console.log("indirizzo",String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo));
-                // console.log("comune", String(data.comune).toLowerCase().indexOf(searchTerms.comune));
-                // console.log("prov",String(data.prov).toLowerCase().indexOf(searchTerms.prov));
-                // console.log("telefono",String(data.telefono).toLowerCase().indexOf(searchTerms.telefono));
-                // console.log("email",String(data.email).toLowerCase().indexOf(searchTerms.email));
-                //console.log("cognome", data.cognome, "foundGenitore",foundGenitore);
 
       return boolSx && boolDx;
     }

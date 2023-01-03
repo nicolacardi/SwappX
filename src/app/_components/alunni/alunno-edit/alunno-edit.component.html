@@ -122,10 +122,10 @@
                                 <mat-form-field>
                                     <mat-label>Comune di Nascita</mat-label>
                                     <input type="text"
-                                            placeholder="<Selezionare il Comune>"
-                                            matInput
-                                            formControlName="comuneNascita"
-                                            [matAutocomplete]="auto1">
+                                           placeholder="<Selezionare il Comune>"
+                                           matInput
+                                           formControlName="comuneNascita"
+                                           [matAutocomplete]="auto1">
                                     <mat-autocomplete #auto1="matAutocomplete" >
                                         <mat-spinner *ngIf="comuniNascitaIsLoading" class="_spinner-is-loading-mini" diameter="40"></mat-spinner>
                                         <mat-option *ngFor="let element of (filteredComuniNascita$ | async)" [value]="element.comune" (click)="popolaProvNascita(element.provincia)">
@@ -147,18 +147,17 @@
                                     <input matInput type="text" placeholder="Paese di Nascita" formControlName="nazioneNascita">
                                 </mat-form-field>
                             </mat-grid-tile>
-
-
                         </mat-grid-list>
+
                         <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
                             <mat-grid-tile>
                                 <mat-form-field>
                                     <mat-label>Comune di Residenza</mat-label>
                                     <input type="text"
-                                            placeholder="<Selezionare il Comune>"
-                                            matInput
-                                            formControlName="comune"
-                                            [matAutocomplete]="auto2">
+                                           placeholder="<Selezionare il Comune>"
+                                           matInput
+                                           formControlName="comune"
+                                           [matAutocomplete]="auto2">
                                     <mat-autocomplete #auto2="matAutocomplete" >
                                         <mat-spinner *ngIf="comuniIsLoading" class="_spinner-is-loading-mini" diameter="40"></mat-spinner>
                                         <ng-container >
@@ -171,7 +170,6 @@
                                 </mat-form-field>
                             </mat-grid-tile>
                     
-
                             <mat-grid-tile>
                                 <mat-form-field>
                                     <input matInput type="text" placeholder="Prov di Residenza" formControlName="prov">
@@ -185,6 +183,7 @@
                             </mat-grid-tile>
 
                         </mat-grid-list>
+
                         <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
                             <mat-grid-tile>
                                 <mat-form-field>
@@ -223,7 +222,6 @@
                                 </mat-form-field>
                             </mat-grid-tile>
                         </mat-grid-list>
-
                     </form>
 
                     <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "formAlunno">
@@ -253,7 +251,6 @@
                                 </mat-checkbox>
                             </mat-grid-tile>
 
-                            
                             <mat-grid-tile class="tileCk ml15" >
                                 <mat-checkbox color="primary" formControlName="ckDisabile">
                                     Alunno Disabile
@@ -293,12 +290,8 @@
                     <mat-accordion>
                         <mat-expansion-panel hideToggle>
                             <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                Elenco di tutti i genitori/tutori
-                            </mat-panel-title>
-                            <mat-panel-description>
-                                (fare click per aprire)
-                            </mat-panel-description>
+                                <mat-panel-title>Elenco di tutti i genitori/tutori</mat-panel-title>
+                                <mat-panel-description>(fare click per aprire)</mat-panel-description>
                             </mat-expansion-panel-header>
                             <mat-label class="frameLabel">Elenco dei genitori/tutori </mat-label>
                             <div class="_genitori-list-container cellBordered mt10">
@@ -315,9 +308,8 @@
                             <td>
                                 <mat-label class="frameLabel">Le classi frequentate da {{alunnoNomeCognome}} </mat-label>
                                 <div class="_classi-attended-container cellBordered mt10">
-                                    <app-iscrizioni-alunno-list [alunnoID] = "alunnoID" 
-                                    (removeFromAttended) = "removeFromAttended($event)"
-                                    #iscrizioniAlunno >
+                                    <app-iscrizioni-alunno-list [alunnoID] = "alunnoID" #iscrizioniAlunno 
+                                                                (removeFromAttended) = "removeFromAttended($event)" >
                                     </app-iscrizioni-alunno-list>
                                 </div>
                             </td>
@@ -325,19 +317,14 @@
                                 <mat-accordion class="_rotated-accordion">
                                     <mat-expansion-panel hideToggle>
                                         <mat-expansion-panel-header>
-                                        <mat-panel-title>
-                                            Tutte le classi
-                                        </mat-panel-title>
-                                        <mat-panel-description>
-                                            (fare click per aprire)
-                                        </mat-panel-description>
+                                        <mat-panel-title>Tutte le classi</mat-panel-title>
+                                        <mat-panel-description>(fare click per aprire)</mat-panel-description>
                                         </mat-expansion-panel-header>
                                         <mat-label class="frameLabel le480">Elenco delle classi</mat-label>
                                         <div class="_panel-content _classi-list-container cellBordered mt10">
-                                            <app-classi-sezioni-anni-list
-                                                [dove] = "'alunno-edit-list'"
-                                                (addToAttended) = "addToAttended($event)"
-                                                #classiSezioniAnniList>
+                                            <app-classi-sezioni-anni-list [dove] = "'alunno-edit-list'"
+                                                                          (addToAttended) = "addToAttended($event)"
+                                                                          #classiSezioniAnniList>
                                             </app-classi-sezioni-anni-list>
                                         </div>
                                     </mat-expansion-panel>

@@ -28,13 +28,18 @@ export class NoteListComponent implements OnInit {
 
   displayedColumns: string[] =  [
     "actionsColumn", 
-    "periodo",
+
+    "docente",
+    //"personaID",
+
+    "alunno",
+    //"iscrizioneID"
+
     "dtNota",
+    "periodo",
     "nota",
-    "personaID",
     "ckFirmato",
-    "dtFirma",
-    "iscrizioneID"
+    "dtFirma"
   ];
 
   filterValue = '';       //Filtro semplice
@@ -52,21 +57,20 @@ export class NoteListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!:          MatPaginator;
   @ViewChild(MatSort) sort!:                    MatSort;
 
-
 //#endregion  
 
-  constructor(
-    private svcNote:                            NoteService,
-    private _loadingService:                    LoadingService,
-    public _dialog:                             MatDialog, 
-  ) { }
+  constructor( private svcNote:            NoteService,
+               private _loadingService:    LoadingService,
+               public _dialog:             MatDialog ) {
+
+  }
 
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
     if (this.iscrizioneID != undefined) {
       this.loadData();
-      console.log ("iscrizioneID", this.iscrizioneID);
+      //console.log ("iscrizioneID", this.iscrizioneID);
     }
   }
 
@@ -78,8 +82,9 @@ export class NoteListComponent implements OnInit {
     obsNote$= this.svcNote.listByIscrizione(this.iscrizioneID);
     let loadNote$ =this._loadingService.showLoaderUntilCompleted(obsNote$);
 
-    loadNote$.subscribe(
+    loadNote$.subscribe( 
       val =>   {
+
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort; 
@@ -95,7 +100,6 @@ export class NoteListComponent implements OnInit {
 
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
-    //if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
 
@@ -103,18 +107,27 @@ export class NoteListComponent implements OnInit {
     let filterFunction = function(data: any, filter: any): boolean {
 
       let searchTerms = JSON.parse(filter);
+      let foundAlunno : boolean = false;
 
+      /*
+      if (data.iscrizione.iscrizione.alunno.length == 0) 
+        foundAlunno = true;
+      else {
+        data.iscrizione.iscrizione.alunno?.forEach(
+          (val: { alunno: { nome: any; cognome: any}; })=>  {   
+             const foundCognomeNome = foundAlunno || String(val.alunno.cognome+" "+val.alunno.nome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1;
+             const foundNomeCognome = foundAlunno || String(val.alunno.nome+" "+val.alunno.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1; 
+             foundAlunno = foundCognomeNome || foundNomeCognome;
+         })
+      }
+      */
       let dArr = data.dtNota.split("-");
       const dtNotaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 
-      let boolSx = 
-                String(dtNotaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1;
+      let boolSx = String(dtNotaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1;
       
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
-      let boolDx = 
-                String(dtNotaddmmyyyy).indexOf(searchTerms.dtNascita) !== -1
-                ;
-
+      let boolDx = String(dtNotaddmmyyyy).indexOf(searchTerms.dtNascita) !== -1;
 
       return boolSx && boolDx;
     }
@@ -136,8 +149,8 @@ export class NoteListComponent implements OnInit {
       }
     };
     const dialogRef = this._dialog.open(NotaEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-        () => this.loadData()
+    dialogRef.afterClosed().subscribe( res => 
+      this.loadData()
     );
   }
 
@@ -153,8 +166,8 @@ export class NoteListComponent implements OnInit {
       }
     };
     const dialogRef = this._dialog.open(NotaEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-      () => this.loadData()
+    dialogRef.afterClosed().subscribe( res=>
+       this.loadData()
     );
   }
 

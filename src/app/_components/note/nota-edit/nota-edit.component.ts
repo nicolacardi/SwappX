@@ -16,7 +16,7 @@ import { UserService }                          from 'src/app/_user/user.service
 
 //models
 import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
-import { DialogDataNota } from 'src/app/_models/DialogData';
+import { DialogDataNota }                       from 'src/app/_models/DialogData';
 
 
 @Component({
@@ -39,20 +39,15 @@ export class NotaEditComponent implements OnInit {
   breakpoint!:                                  number;
 //#endregion
 
+  constructor( public _dialogRef:                          MatDialogRef<NotaEditComponent>,
+               private svcUser:                            UserService,
+               @Inject(MAT_DIALOG_DATA) public data:       DialogDataNota,
+               private fb:                                 FormBuilder, 
+               private svcNote:                            NoteService,
+               private _loadingService:                    LoadingService,
+               public _dialog:                             MatDialog,
+               private _snackBar:                          MatSnackBar ) {
 
-
-  constructor( 
-    public _dialogRef:                          MatDialogRef<NotaEditComponent>,
-    private svcUser:                            UserService,
-
-    @Inject(MAT_DIALOG_DATA) public data:       DialogDataNota,
-    private fb:                                 FormBuilder, 
-    private svcNote:                            NoteService,
-    private _loadingService:                    LoadingService,
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar
-  ) 
-  { 
     _dialogRef.disableClose = true;
 
     this.form = this.fb.group(
@@ -68,7 +63,6 @@ export class NotaEditComponent implements OnInit {
     });
   }
 
-
   ngOnInit(): void {
     this.loadData();
   }
@@ -81,7 +75,6 @@ export class NotaEditComponent implements OnInit {
       const obsNota$: Observable<DOC_Nota> = this.svcNote.get(this.data.notaID);
       const loadNota$ = this._loadingService.showLoaderUntilCompleted(obsNota$);
       
-      
       this.nota$ = loadNota$
       .pipe( tap(
         nota => {
@@ -93,7 +86,8 @@ export class NotaEditComponent implements OnInit {
           this.personaNomeCognome = nota.persona?.nome! + " " +nota.persona?.cognome!;
         } )
       );
-    } else {
+    } 
+    else {
       this.form.controls.iscrizioneID.setValue(this.data.iscrizioneID);
       this.form.controls.dtNota.setValue(new Date());
 
@@ -103,8 +97,8 @@ export class NotaEditComponent implements OnInit {
         this.form.controls.personaID.setValue(val.personaID);
         this.form.controls.ckFirmato.setValue(false);
         this.form.controls.periodo.setValue(1); //per ora ho messo un valore fisso....BELLA MERDA
-
       });
+      
       this.emptyForm = true;
     }
   }
@@ -130,26 +124,22 @@ export class NotaEditComponent implements OnInit {
   }
 
   save() {
-    console.log (this.form.value);
+    //console.log (this.form.value);
     if (this.form.controls['id'].value == null) 
-          this.svcNote.post(this.form.value)
-            .subscribe(res=> {
-              this._dialogRef.close();
-              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-            },
-            err=> (
-              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-            )
-        );
-        else 
-          this.svcNote.put(this.form.value)
-            .subscribe(res=> {
-              this._dialogRef.close();
-              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-            },
-            err=> (
-              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-            )
-        );
+      this.svcNote.post(this.form.value).subscribe(
+        res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        },
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      );
+    else 
+      this.svcNote.put(this.form.value).subscribe(
+        res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        },
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+    );
   }
 }

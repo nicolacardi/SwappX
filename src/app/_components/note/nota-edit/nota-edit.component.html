@@ -28,14 +28,14 @@
                 </button>
             </div>
 
-            
-            <mat-grid-list class="mt20 center" [cols]="1" rowHeight="60px">
-                <mat-label>Nota emessa da:<br>{{personaNomeCognome}}<br>(personaID= {{personaID}} )</mat-label>
+            <mat-grid-list class="mt20 left" [cols]="1" rowHeight="30px">
+                <mat-label class="mt20 fs16">Nota emessa da: </mat-label>
+                <mat-label class="bold">{{personaNomeCognome}}</mat-label>
             </mat-grid-list>
             
-            <mat-grid-list class="center" [cols]="2" rowHeight="60px">
-
-                <mat-label>Per i genitori dell'alunno: {{alunnoNomeCognome}}<br>(iscrizioneID= {{iscrizioneID}} )</mat-label>
+            <mat-grid-list class="left" [cols]="2" rowHeight="30px">
+                <mat-label class="mt20 fs16">Per i genitori dell'alunno: </mat-label>
+                <mat-label class="bold">{{alunnoNomeCognome}}</mat-label>
             </mat-grid-list>
 
             <mat-grid-list [cols]="1" rowHeight="60px">
