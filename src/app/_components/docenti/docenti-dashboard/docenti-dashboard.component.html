@@ -1,0 +1,71 @@
+<table>
+    <tr>
+        <td class="_columnleft-dashboard">
+            <div class="_table-container">
+                <app-classi-sezioni-anni-list 
+                    [dove] = "'classi-dashboard'"
+                    (annoID)="annoIdEmitted($event)"
+                    (classeSezioneAnnoID)="classeSezioneAnnoIDEmitted($event)"
+                    (docenteId)="docenteIdEmitted($event)" >
+                </app-classi-sezioni-anni-list>
+            </div>
+        </td>
+        <td class="_columnright-dashboard border-left">
+            <mat-tab-group (selectedTabChange)="selectedTabValue($event)">
+                <mat-tab  label="Alunni">
+                    <!-- <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addAlunno" (click)="addAlunnoToClasse()" >
+                        <img class="iconaMenu" src="../../../../assets/alunnoPlus.svg">
+                    </button> -->
+
+                    <!-- <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="_btn-Red" (click)="removeAlunnoFromClasse()">
+                        <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg">
+                    </button> -->
+                    <!-- <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="esporta Pdf" class="_btn-Blu" (click)="creaPdfIscrizioni()">
+                        <img class="iconaMenu" src="../../../../assets/PDFiconGreys.svg">
+                    </button> -->
+                    <!-- <button mat-mini-fab aria-label="Promuovi alunni" matTooltip="Promuovi" class="_btn-Green" (click)="promuovi()">
+                        <img class="iconaMenu" src="../../../../assets/promuovi_white.svg">
+                    </button> -->
+                    <!-- <mat-card class=" card mat-elevation-z8" style="height: 100%"> -->
+                        <div class="_table-container">
+                            <app-iscrizioni-classe-list  
+                                [dove]="'lista-alunni'" 
+                                [classeSezioneAnnoID]="classeSezioneAnnoID">
+                            </app-iscrizioni-classe-list>
+                        </div>
+                    <!-- </mat-card> -->
+                </mat-tab>
+               
+                <mat-tab  label="Orario Per Docente">
+                    <app-lezioni-calendario [classeSezioneAnnoID]="classeSezioneAnnoID" [docenteID] = "docenteID" [dove]="'orarioDocente'" #orarioDocenteDOM></app-lezioni-calendario>
+                </mat-tab>
+
+                <mat-tab  label="Pagelle">
+                    <table>
+                        <tr>
+                            <td class="_cell-align-top w300px">
+                                <app-iscrizioni-classe-list [dove]="'pagella'"  
+                                    [classeSezioneAnnoID]="classeSezioneAnnoID"  
+                                    (iscrizioneID)="iscrizioneIDEmitted($event)"
+                                    (alunno)="alunnoEmitted($event)" >
+                                </app-iscrizioni-classe-list>
+                            </td>
+                            <td class="_cell-align-top pl10 border-left w750px">
+                                <app-pagelle-edit
+                                    [iscrizioneID]="iscrizioneID"
+                                    [classeSezioneAnnoID]="classeSezioneAnnoID" 
+                                    [alunno]="alunno">
+                                </app-pagelle-edit>
+                            </td>
+                        </tr>
+                    </table>
+                </mat-tab>
+                <mat-tab  label="Note">
+                    <app-note-page [classeSezioneAnnoID]="classeSezioneAnnoID"> </app-note-page>
+                </mat-tab>
+               
+            </mat-tab-group>
+   
+        </td>
+    </tr>
+<table>
