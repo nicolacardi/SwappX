@@ -73,6 +73,11 @@
                 <span *ngIf="isExpanded">Iscrizioni</span>
             </a>
 
+            <a mat-list-item class="h35px" routerLink="note" (click)="clickMenuItem()" >
+                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/iscrizione.svg">
+                <span *ngIf="isExpanded">Note-TMP</span>
+            </a>
+
             <a mat-list-item class="h35px" routerLink="genitori" (click)="clickMenuItem()">
                 <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/genitore.svg">
                 <span *ngIf="isExpanded">Genitori</span>

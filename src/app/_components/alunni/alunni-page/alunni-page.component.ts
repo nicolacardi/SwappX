@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDrawer } from '@angular/material/sidenav';
+import { Component, OnInit, ViewChild }         from '@angular/core';
+import { MatDrawer }                            from '@angular/material/sidenav';
 
 //components
-import { AlunniFilterComponent } from '../alunni-filter/alunni-filter.component';
-import { AlunniListComponent } from '../alunni-list/alunni-list.component';
+import { AlunniFilterComponent }                from '../alunni-filter/alunni-filter.component';
+import { AlunniListComponent }                  from '../alunni-list/alunni-list.component';
 
 //services
-import { NavigationService } from '../../utilities/navigation/navigation.service';
+import { NavigationService }                    from '../../utilities/navigation/navigation.service';
 
 
 @Component({

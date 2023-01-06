@@ -136,6 +136,8 @@ import { PagellaEditComponent } from './_components/pagelle/pagelle-edit/pagelle
 import { PersonaFormComponent } from './_components/persone/persona-form/persona-form.component';
 import { NoteListComponent } from './_components/note/note-list/note-list.component';
 import { NotaEditComponent } from './_components/note/nota-edit/nota-edit.component';
+import { NotePageComponent } from './_components/note/note-page/note-page.component';
+import { NoteFilterComponent } from './_components/note/note-filter/note-filter.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -254,6 +256,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     PersonaFormComponent,
     NoteListComponent,
     NotaEditComponent,
+    NotePageComponent,
+    NoteFilterComponent,
     
 
   ],

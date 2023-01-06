@@ -28,6 +28,7 @@ import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calend
 import { MateriePageComponent } from './_components/materie/materie-page/materie-page.component';
 import { ObiettiviPageComponent } from './_components/obiettivi/obiettivi-page/obiettivi-page.component';
 import { ClassiAnniMateriePageComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-page/classi-anni-materie-page.component';
+import { NotePageComponent } from './_components/note/note-page/note-page.component';
 
 const routes: Routes = [
 
@@ -61,6 +62,8 @@ const routes: Routes = [
   { path: "pagamenti",        component: PagamentiPageComponent,canActivate:[AuthGuard] },
 
   { path: "rette",            component: RettePageComponent,canActivate:[AuthGuard] },
+
+  { path: "note",            component: NotePageComponent,canActivate:[AuthGuard] },
 
   //{ path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.SysAdmin, UserRole.IT_Manager,UserRole.Segreteria ] } },
   { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: ['SysAdmin', 'Segreteria', 'Amministratore' ] } },

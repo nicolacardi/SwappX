@@ -8,6 +8,7 @@ import { Observable }                           from 'rxjs';
 
 //components
 import { NotaEditComponent }                    from '../nota-edit/nota-edit.component';
+import { NoteFilterComponent } from '../note-filter/note-filter.component';
 
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
@@ -16,6 +17,7 @@ import { NoteService }                          from '../note.service';
 //models
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
+
 
 @Component({
   selector: 'app-note-list',
@@ -42,6 +44,16 @@ export class NoteListComponent implements OnInit {
     "dtFirma"
   ];
 
+  rptTitle = 'Lista Note';
+  rptFileName = 'ListaNote';
+  rptFieldsToKeep  = [
+    "dtNota"
+     ];
+
+  rptColumnsNames  = [
+    "data Nota"
+    ];
+
   filterValue = '';       //Filtro semplice
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
   filterValues = {
@@ -53,6 +65,7 @@ export class NoteListComponent implements OnInit {
 //#region ----- ViewChild Input Output -------
   @Input('iscrizioneID') iscrizioneID!:         number;
   @Input('alunno') alunno!:                     ALU_Alunno;
+  @Input() noteFilterComponent!:                NoteFilterComponent;
 
   @ViewChild(MatPaginator) paginator!:          MatPaginator;
   @ViewChild(MatSort) sort!:                    MatSort;
@@ -68,10 +81,10 @@ export class NoteListComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-    if (this.iscrizioneID != undefined) {
+    //if (this.iscrizioneID != undefined) {
       this.loadData();
       //console.log ("iscrizioneID", this.iscrizioneID);
-    }
+    //}
   }
 
   ngOnInit(): void {
@@ -79,12 +92,13 @@ export class NoteListComponent implements OnInit {
 
   loadData() {
     let obsNote$: Observable<DOC_Nota[]>;
-    obsNote$= this.svcNote.listByIscrizione(this.iscrizioneID);
+    //obsNote$= this.svcNote.listByIscrizione(this.iscrizioneID);
+    obsNote$= this.svcNote.list();
     let loadNote$ =this._loadingService.showLoaderUntilCompleted(obsNote$);
 
     loadNote$.subscribe( 
       val =>   {
-
+        console.log ("loadNote", val);
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort; 
@@ -138,15 +152,12 @@ export class NoteListComponent implements OnInit {
 
 //#region ----- Add Edit Drop -------
 
-  addRecord(iscrizioneID: number){
+  addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '450px',
       height: '550px',
-      data: {
-        iscrizioneID:                           iscrizioneID,
-        notaID:                                 0                    
-      }
+      data: 0
     };
     const dialogRef = this._dialog.open(NotaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe( res => 

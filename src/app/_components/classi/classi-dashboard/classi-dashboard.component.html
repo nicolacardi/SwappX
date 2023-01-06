@@ -89,8 +89,13 @@
                         </tr>
                     </table>
                 </mat-tab>
-
-                <mat-tab  label="Comunicazioni">
+                <mat-tab  label="Note">
+                    <app-note-page
+                        [classeSezioneAnnoID]="classeSezioneAnnoID"  
+                        >
+                    </app-note-page>
+                </mat-tab>
+                <!-- <mat-tab  label="Comunicazioni">
                     <table>
                         <tr>
                             <td class="_cell-align-top w300px">
@@ -107,14 +112,11 @@
                                     [alunno]="alunno"
                                     [iscrizioneID]="iscrizioneID"
                                     >
-                                    
-                                    <!--[classeSezioneAnnoID]="classeSezioneAnnoID" 
-                                      -->
                                 </app-note-list>
                             </td>
                         </tr>
                     </table>
-                </mat-tab>
+                </mat-tab> -->
             </mat-tab-group>
                 
            <!-- ipotesi component di dettaglio dell'alunno

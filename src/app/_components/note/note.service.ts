@@ -12,6 +12,11 @@ export class NoteService {
 
   constructor(private http: HttpClient) { }
 
+  list(): Observable<DOC_Nota[]>{
+    return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note');
+    //http://213.215.231.4/swappX/api/DOC_Note
+  }
+
   listByIscrizione(iscrizioneID: number): Observable<DOC_Nota[]>{
     return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note/ListByIscrizione/'+iscrizioneID);   
     //http://213.215.231.4/swappX/api/DOC_Note/ListByIscrizione/285

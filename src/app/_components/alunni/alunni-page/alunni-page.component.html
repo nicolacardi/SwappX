@@ -11,6 +11,7 @@
 </button>
 
 <mat-drawer-container [hasBackdrop]="false" style="min-height: 91%">
+    
     <mat-drawer position="end" #filterSidenav class="filterSidenav"  [mode]="'side'">
         <!-- app alunni filter deve dialogare con il suo "sibling" app alunni list, allora metto un riferimento (#appalunnilist) e passo una variabile in input a app-alunni-filter -->
         <app-alunni-filter [alunniListComponent] = "appalunnilist" #appalunnifilter></app-alunni-filter>    
