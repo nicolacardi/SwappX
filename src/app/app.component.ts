@@ -42,8 +42,9 @@ export class AppComponent implements OnInit {
 //#region ----- ViewChild Input Output -------
   @ViewChild('start') public leftSidenav!: MatSidenav;
   @ViewChild('end') public rightSidenav!: MatSidenav;
-  @ViewChild('expansion1') public expansion1!: MatExpansionPanel;
-  @ViewChild('expansion2') public expansion2!: MatExpansionPanel;
+  @ViewChild('expansionClassi') public expansionClassi!: MatExpansionPanel;
+  @ViewChild('expansionPagamenti') public expansionPagamenti!: MatExpansionPanel;
+  @ViewChild('expansionDocenti') public expansionDocenti!: MatExpansionPanel;
 
 //#endregion
   constructor(private svcUser:              UserService,
@@ -91,12 +92,16 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/user/login']);
   }
 
-  expandExpansion1() {
-    setTimeout(() => this.expansion1.expanded = true, 10);
+  expandClassi() {
+    setTimeout(() => this.expansionClassi.expanded = true, 10);
   }
 
-  expandExpansion2() {
-    setTimeout(() => this.expansion2.expanded = true, 10);
+  expandPagamenti() {
+    setTimeout(() => this.expansionPagamenti.expanded = true, 10);
+  }
+
+  expandDocenti() {
+    setTimeout(() => this.expansionDocenti.expanded = true, 10);
   }
 
   clickMenuItem() {

@@ -87,6 +87,8 @@ import { LezioniUtilsComponent } from './_components/lezioni/lezioni-utils/lezio
 import { DocenzeAddComponent } from './_components/classi/docenze/docenze-add/docenze-add.component';
 import { DocenzaEditComponent } from './_components/classi/docenze/docenza-edit/docenza-edit.component';
 
+import { DocentiDashboardComponent } from './_components/docenti/docenti-dashboard/docenti-dashboard.component';
+import { DocentiPageComponent } from './_components/docenti/docenti-page/docenti-page.component';
 
 
 import { UserService } from './_user/user.service';
@@ -258,6 +260,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     NotaEditComponent,
     NotePageComponent,
     NoteFilterComponent,
+    DocentiDashboardComponent,
+    DocentiPageComponent,
     
 
   ],
