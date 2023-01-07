@@ -41,7 +41,7 @@
         </ng-container>
 
         <ng-container matColumnDef="nota">
-            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nota</th>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header class="ellipsisColumn">Nota</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.nota | highlight:filterValue"></td>
         </ng-container>
 
@@ -61,8 +61,11 @@
         </ng-container>
 
         <ng-container matColumnDef="ckFirmato">
-            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >ck Firmato</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.ckFirmato | highlight:filterValue"></td>
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Firma</th>
+            <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.ckFirmato | highlight:filterValue"></td> -->
+            <td mat-cell class="center" *matCellDef="let element">
+                <mat-checkbox [checked]="element.ckFirmato" color="primary" disabled></mat-checkbox>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="dtFirma">
