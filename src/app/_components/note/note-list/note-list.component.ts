@@ -58,6 +58,12 @@ export class NoteListComponent implements OnInit {
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
   filterValues = {
     dtNota: '',
+    nota: '',
+    docente: '',
+    alunno: '',
+    periodo: '',
+    ckFirmato: '',
+    dtFirma: '',
     filtrosx: ''
   };
 //#endregion
@@ -102,7 +108,7 @@ export class NoteListComponent implements OnInit {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort; 
-        //this.matDataSource.filterPredicate = this.filterPredicate();
+        this.matDataSource.filterPredicate = this.filterPredicate();
       }
     );
 
@@ -122,7 +128,7 @@ export class NoteListComponent implements OnInit {
 
       let searchTerms = JSON.parse(filter);
       let foundAlunno : boolean = false;
-
+      //console.log (filter);
       /*
       if (data.iscrizione.iscrizione.alunno.length == 0) 
         foundAlunno = true;
@@ -135,13 +141,44 @@ export class NoteListComponent implements OnInit {
          })
       }
       */
-      let dArr = data.dtNota.split("-");
-      const dtNotaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
+     let dtNotaddmmyyyy!: string;
+      if (data.dtNota){
+        let dArrN = data.dtNota.split("-");
+         dtNotaddmmyyyy = dArrN[2].substring(0,2)+ "/" +dArrN[1]+"/"+dArrN[0];
+      } else {
+         dtNotaddmmyyyy = '';
+      }
 
-      let boolSx = String(dtNotaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1;
+      let dtFirmaddmmyyyy!: string;
+      if (data.dtFirma){
+        let dArrF = data.dtFirma.split("-");
+         dtFirmaddmmyyyy = dArrF[2].substring(0,2)+ "/" +dArrF[1]+"/"+dArrF[0];
+      } else {
+         dtFirmaddmmyyyy = '';
+      }
+
+      console.log ("st", searchTerms);
+      console.log ("data", data);
+
+      let boolSx = String(dtNotaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
+                  || String(data.nota).indexOf(searchTerms.filtrosx) !== -1
+                  || (data.periodo == searchTerms.periodo)
+                  || String(data.persona.nome.toLowerCase() + ' ' + data.persona.cognome.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1
+                  || String(dtFirmaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
+                  || String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1
+
+
+                  ;
       
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
-      let boolDx = String(dtNotaddmmyyyy).indexOf(searchTerms.dtNascita) !== -1;
+      let boolDx = String(dtNotaddmmyyyy).indexOf(searchTerms.dtNota) !== -1
+                    && String(data.nota).indexOf(searchTerms.nota) !== -1
+                    && ((data.periodo == searchTerms.periodo) || searchTerms.periodo == '' || searchTerms.periodo == null)
+                    && String(data.persona.nome.toLowerCase() + ' ' + data.persona.cognome.toLowerCase()).indexOf(searchTerms.docente) !== -1
+                    && String(dtFirmaddmmyyyy).indexOf(searchTerms.dtFirma) !== -1
+                    && String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.alunno) !== -1
+
+                    ;
 
       return boolSx && boolDx;
     }

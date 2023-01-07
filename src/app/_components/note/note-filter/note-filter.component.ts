@@ -13,6 +13,13 @@ export class NoteFilterComponent implements OnInit {
 
 //#region ----- Variabili -------
 dtNotaFilter = new FormControl('');
+notaFilter = new FormControl('');
+quadrimestreFilter = new FormControl('');
+dtFirmaFilter = new FormControl('');
+docenteFilter = new FormControl('');
+alunnoFilter = new FormControl('');
+
+
 
 //#endregion
 
@@ -30,14 +37,46 @@ ngOnInit() {
     val => {
       //this.resetFilterSx();  
       this.noteListComponent.filterValues.dtNota = val.toLowerCase();
-      console.log(this.noteListComponent.filterValues)
       this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
     }
   )
 
+  this.notaFilter.valueChanges.subscribe(
+    val => {
+      //this.resetFilterSx();  
+      this.noteListComponent.filterValues.nota = val.toLowerCase();
+      this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
+    }
+  )
 
-
- 
+  this.quadrimestreFilter.valueChanges.subscribe(
+    val => {
+      //this.resetFilterSx();  
+      this.noteListComponent.filterValues.periodo = val.toLowerCase();
+      this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
+    }
+  )
+  this.dtFirmaFilter.valueChanges.subscribe(
+    val => {
+      //this.resetFilterSx();  
+      this.noteListComponent.filterValues.dtFirma = val.toLowerCase();
+      this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
+    }
+  )
+  this.docenteFilter.valueChanges.subscribe(
+    val => {
+      //this.resetFilterSx();  
+      this.noteListComponent.filterValues.docente = val.toLowerCase();
+      this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
+    }
+  )
+  this.alunnoFilter.valueChanges.subscribe(
+    val => {
+      //this.resetFilterSx();  
+      this.noteListComponent.filterValues.alunno = val.toLowerCase();
+      this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
+    }
+  )
 
 }
 //#endregion
@@ -55,11 +94,22 @@ resetFilterSx() {
 
 resetAllInputs() {
   this.dtNotaFilter.setValue('', {emitEvent:false});
-
+  this.dtNotaFilter.setValue('', {emitEvent:false});
+  this.notaFilter.setValue('', {emitEvent:false});
+  this.quadrimestreFilter.setValue('', {emitEvent:false});
+  this.dtFirmaFilter.setValue('', {emitEvent:false});
+  this.docenteFilter.setValue('', {emitEvent:false});
+  this.alunnoFilter.setValue('', {emitEvent:false});
 }
 
 resetAllInputsAndClearFilters() {
   this.dtNotaFilter.setValue('');
+  this.notaFilter.setValue('');
+  this.quadrimestreFilter.setValue('');
+  this.dtFirmaFilter.setValue('');
+  this.docenteFilter.setValue('');
+  this.alunnoFilter.setValue('');
+
 
 }
 

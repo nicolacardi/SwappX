@@ -67,8 +67,6 @@ const routes: Routes = [
 
   { path: "rette",            component: RettePageComponent,canActivate:[AuthGuard] },
 
-  { path: "note",            component: NotePageComponent,canActivate:[AuthGuard] },
-
   //{ path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.SysAdmin, UserRole.IT_Manager,UserRole.Segreteria ] } },
   { path:'users',             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: ['SysAdmin', 'Segreteria', 'Amministratore' ] } },
 
