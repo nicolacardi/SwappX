@@ -8,7 +8,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 //services
 import { DocenzeService } from '../docenze.service';
-import { DocentiService } from '../../../persone/docenti.service';
+import { DocentiService } from '../../../docenti/docenti.service';
 import { ClassiSezioniAnniService } from '../../classi-sezioni-anni.service';
 import { MaterieService } from 'src/app/_components/materie/materie.service';
 
@@ -146,8 +146,7 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
       })
     )
 
-    checks$
-    .pipe(
+    checks$.pipe(
        concatMap( res => iif (()=> res == null, this.svcDocenze.post(objDocenza) , of() )
       )
     ).subscribe(

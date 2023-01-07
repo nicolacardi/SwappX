@@ -1,4 +1,3 @@
-import { formatDate } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
@@ -31,12 +30,12 @@ export class DocentiService {
 
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<PER_Docente[]>(environment.apiBaseUrl+'PER_Docenti')
-            .pipe ( 
-              map( 
-              val=>val.filter(
-                val=>(val.persona.nome.toLowerCase() + ' ' + val.persona.cognome.toLowerCase()).includes(searchstring.toLowerCase())
-              )
-            ),
+        .pipe ( 
+          map( 
+          val=>val.filter(
+            val=>(val.persona.nome.toLowerCase() + ' ' + val.persona.cognome.toLowerCase()).includes(searchstring.toLowerCase())
+          )
+        )
       );
     }
     else 
@@ -58,6 +57,11 @@ export class DocentiService {
   get(docenteID: any): Observable<PER_Docente>{
     return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/'+docenteID);
     //http://213.215.231.4/swappX/api/PER_Docenti/3
+  }
+
+  getByPersonaID(personaID: any): Observable<PER_Docente>{
+    return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersonaID/'+personaID);
+    //http://213.215.231.4/swappX/api/PER_Docenti/GetByPersonaID/6
   }
 
   put(formData: any): Observable <any>{

@@ -75,8 +75,8 @@ import { DocenzeService } from '../docenze/docenze.service';
 
 export class ClassiDashboardComponent implements OnInit {
 
-
 //#region ----- Variabili -------
+
   public classeSezioneAnnoID!:  number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public annoID!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public docenteID!:            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
@@ -86,6 +86,7 @@ export class ClassiDashboardComponent implements OnInit {
   public classeSezioneAnnoIDrouted!:        string;   //valore ricevuto (routed) dal ruoting
   public annoIDrouted!:         string;   //valore ricevuto (routed) dal ruoting
   isOpen = true;
+
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -100,15 +101,14 @@ export class ClassiDashboardComponent implements OnInit {
   //@Input () classeSezioneAnnoId!: number;
 //#endregion
 
-  constructor(
-    private svcIscrizioni:                IscrizioniService,
-    private svcDocenze:                   DocenzeService,
-    private _navigationService:           NavigationService,
-    public _dialog:                       MatDialog,
-    private _jspdf:                       JspdfService,
-    private actRoute:                     ActivatedRoute,
-    private router:                       Router,        
-    private _snackBar:                    MatSnackBar) {
+  constructor(private svcIscrizioni:                IscrizioniService,
+              private svcDocenze:                   DocenzeService,
+              private _navigationService:           NavigationService,
+              public _dialog:                       MatDialog,
+              private _jspdf:                       JspdfService,
+              private actRoute:                     ActivatedRoute,
+              private router:                       Router,        
+              private _snackBar:                    MatSnackBar) {
     
   }
 
@@ -345,7 +345,6 @@ export class ClassiDashboardComponent implements OnInit {
   }
 
   alunnoEmitted(alunno: ALU_Alunno) {
-    //console.log ("classi-dashboard emit alunno", alunno)
     this.alunno = alunno;
   }
 

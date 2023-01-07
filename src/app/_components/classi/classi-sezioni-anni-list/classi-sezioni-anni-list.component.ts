@@ -26,14 +26,14 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { PER_Docente } from 'src/app/_models/PER_Docente';
-import { DocentiService } from '../../persone/docenti.service';
-
+import { DocentiService } from '../../docenti/docenti.service';
 
 @Component({
   selector: 'app-classi-sezioni-anni-list',
   templateUrl: './classi-sezioni-anni-list.component.html',
   styleUrls: ['./../classi.css']
 })
+
 export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#region ----- Variabili -------
@@ -223,6 +223,12 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
           this.matDataSource.sort = this.sort;
           this.showSelectDocente = false;
           break;
+          case 'docenti-dashboard':
+            this.displayedColumns = this.displayedColumnsClassiDashboard;
+            this.showPageTitle = false;
+            this.showTableRibbon = false;
+            // this.matDataSource.sort = this.sort; TODO
+            break;          
       case 'retta-calcolo':
           this.displayedColumns = this.displayedColumnsRettaCalcolo;
           this.showPageTitle = false;

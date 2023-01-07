@@ -3,7 +3,7 @@
         <td class="_columnleft-dashboard">
             <div class="_table-container">
                 <app-classi-sezioni-anni-list 
-                    [dove] = "'classi-dashboard'"
+                    [dove] = "'docenti-dashboard'"
                     (annoID)="annoIdEmitted($event)"
                     (classeSezioneAnnoID)="classeSezioneAnnoIDEmitted($event)"
                     (docenteId)="docenteIdEmitted($event)" >
@@ -35,11 +35,12 @@
                         </div>
                     <!-- </mat-card> -->
                 </mat-tab>
-               
+            <!--
                 <mat-tab  label="Orario Per Docente">
                     <app-lezioni-calendario [classeSezioneAnnoID]="classeSezioneAnnoID" [docenteID] = "docenteID" [dove]="'orarioDocente'" #orarioDocenteDOM></app-lezioni-calendario>
                 </mat-tab>
-
+            -->
+                <!--
                 <mat-tab  label="Pagelle">
                     <table>
                         <tr>
@@ -63,7 +64,7 @@
                 <mat-tab  label="Note">
                     <app-note-page [classeSezioneAnnoID]="classeSezioneAnnoID"> </app-note-page>
                 </mat-tab>
-               
+            -->
             </mat-tab-group>
    
         </td>

@@ -57,6 +57,7 @@ export class ProfiloComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
     this.currUser = Utility.getCurrentUser();
 
     this.form.controls.username.setValue(this.currUser.username);

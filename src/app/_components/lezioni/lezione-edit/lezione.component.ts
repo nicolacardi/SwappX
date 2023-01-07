@@ -14,7 +14,7 @@ import { FormatoData, Utility } from '../../utilities/utility.component';
 import { MaterieService } from 'src/app/_components/materie/materie.service';
 import { DocenzeService } from '../../classi/docenze/docenze.service';
 import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
-import { DocentiService } from '../../persone/docenti.service';
+import { DocentiService } from '../../docenti/docenti.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { LezioniService } from '../lezioni.service';
 

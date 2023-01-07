@@ -3,18 +3,23 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 //models
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { User } from 'src/app/_user/Users';
 
 //components
 import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { NavigationService } from '../../utilities/navigation/navigation.service';
+import { Utility } from '../../utilities/utility.component';
+
+//services
 import { DocenzeService } from '../../classi/docenze/docenze.service';
 import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
-import { NavigationService } from '../../utilities/navigation/navigation.service';
-
-//services
+import { DocentiService } from '../docenti.service';
+import { concatMap, tap } from 'rxjs/operators';
+import { convertActionBinding } from '@angular/compiler/src/compiler_util/expression_converter';
 
 @Component({
   selector: 'app-docenti-dashboard',
@@ -36,6 +41,8 @@ export class DocentiDashboardComponent implements OnInit {
   public annoIDrouted!:         string;   //valore ricevuto (routed) dal ruoting
   isOpen = true;
   
+  public currUser!: User;
+  
   //#endregion
   
   //#region ----- ViewChild Input Output -------
@@ -50,7 +57,7 @@ export class DocentiDashboardComponent implements OnInit {
   //#endregion
 
   constructor( private svcIscrizioni:                IscrizioniService,
-               private svcDocenze:                   DocenzeService,
+               private svcDocenti:                   DocentiService,
                private _navigationService:           NavigationService,
                public _dialog:                       MatDialog,
                private _jspdf:                       JspdfService,
@@ -59,43 +66,57 @@ export class DocentiDashboardComponent implements OnInit {
                private _snackBar:                    MatSnackBar){
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
 
     this.actRoute.queryParams.subscribe(
       params => {
+
+        console.log("docenti-dashboad - params: ", params);
+
         this.annoIDrouted = params['annoID'];     
         this.classeSezioneAnnoIDrouted = params['classeSezioneAnnoID'];  
+
+        console.log("docenti-dashboad - annoIDrouted: ", this.annoIDrouted);
     });
 
     this._navigationService.passPage("docentiDashboard");
 
 
-    //QUI!!!
     //recuperare docenteID : sul token ho personaID
-
-
     //impostarlo sulla combo (che deve essere read-only, siamo sul croscotto docente )
 
+
+    this.currUser = Utility.getCurrentUser();
+    console.log("[docenti-dashboard] - currUser.personaID: " ,this.currUser.personaID)
     
-  }
+    if(this.currUser.personaID != null){
+      this.svcDocenti.getByPersonaID(this.currUser.personaID)
+        //.pipe(
+        //  tap (val => this.docenteID = val.id),
+          //concatMap(() =>  this.form.controls['classeSezioneID'].setValue(val.id))
+        //)
+        .subscribe(
+          res => console.log("getDocenteBypersonaID- OK:", res),
+          err => console.log("getDocenteBypersonaID- KO:", err)
+      )
+    }
 
-  selectedTabValue(event: any){
-    //senza questo espediente non fa il primo render correttamente
 /*
-    if (this.tabGroup.selectedIndex == 2) {
-      this.viewOrarioLezioni.calendarDOM.getApi().render();
-      this.viewOrarioLezioni.loadData();
-    }
-    if (this.tabGroup.selectedIndex == 3) {
-      this.viewOrarioDocente.calendarDOM.getApi().render();
-      this.viewOrarioDocente.loadData()
+             val => {
+              if (val) 
+                this.form.controls['docenteID'].setValue(val.docenteID);
+              else 
+                this.form.controls['docenteID'].setValue("")
+            });
+ */
 
-    }
-    */
   }
+
+
 
   
 //#region ----- ricezione emit -------
+
 annoIdEmitted(annoID: number) {
   //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
   //serve per la successiva assegnazione ad una classe...in quanto il modale che va ad aggiungere
@@ -118,9 +139,23 @@ iscrizioneIDEmitted(iscrizioneID: number) {
 }
 
 alunnoEmitted(alunno: ALU_Alunno) {
-  //console.log ("classi-dashboard emit alunno", alunno)
   this.alunno = alunno;
 }
 
 //#endregion
+
+selectedTabValue(event: any){
+  //senza questo espediente non fa il primo render correttamente
+/*
+  if (this.tabGroup.selectedIndex == 2) {
+    this.viewOrarioLezioni.calendarDOM.getApi().render();
+    this.viewOrarioLezioni.loadData();
+  }
+  if (this.tabGroup.selectedIndex == 3) {
+    this.viewOrarioDocente.calendarDOM.getApi().render();
+    this.viewOrarioDocente.loadData()
+
+  }
+  */
+}
 }
