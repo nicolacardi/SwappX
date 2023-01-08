@@ -24,10 +24,10 @@ import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service
 import { DocentiService } from '../../docenti/docenti.service';
 
 //classes
+import { User } from 'src/app/_user/Users';
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { PER_Docente } from 'src/app/_models/PER_Docente';
-import { User } from 'src/app/_user/Users';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
 
@@ -181,69 +181,14 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
     let objAnno = localStorage.getItem('AnnoCorrente');
     
-    this.form = this.fb.group({
-      selectAnnoScolastico:  + (JSON.parse(objAnno!) as _UT_Parametro).parValue,
-      selectDocente: '0'
-      //selectDocente: this.docenteID
-    });
-
-
     //let objCurrentUser = localStorage.getItem('currentUser');
     //this.currUser = (JSON.parse(objCurrentUser!) as User);
     this.currUser = Utility.getCurrentUser();
 
-    //console.log("AS- this.currUser", this.currUser);
-    /*
-      if (this.alunnoID == null || this.alunnoID == 0)    {
-      this.svcPersone.post(personaObj)
-      .pipe(
-        tap(res=> {
-          console.log ("res", res); 
-          alunnoObj.personaID = res.id;  
-        }),
-        concatMap( () => this.svcAlunni.post(alunnoObj))
-      ).subscribe(
-        res=> {
-          this._dialogRef.close();
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-        },
-        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      ) 
-    }
-     */
-    if(this.currUser.personaID != null || this.currUser.personaID == 0){
-      this.svcDocenti.getByPersonaID(this.currUser.personaID)
-        .pipe(
-          tap (val =>{ 
-            this.docenteID = val.id;
-            
-            //this.form.controls['selectDocente'].setValue(val.id);
-          }
-          //concatMap(() =>  this.form.controls['selectDocente'].setValue(val.id) )
-          )
-        )
-        .subscribe(
-          res => {
-            console.log("getDocenteBypersonaID- OK: docenteID=", this.docenteID)
-
-            //this.form.controls['selectDocente'].setValue(this.docenteID);
-BELLA MERDA
-            // this.form = this.fb.group({
-            //   selectAnnoScolastico:  + (JSON.parse(objAnno!) as _UT_Parametro).parValue,
-            //    selectDocente: this.docenteID
-            //  });
-
-          },
-          err => console.log("getDocenteBypersonaID- KO:", err)
-      )
-    }
-    else{
-
-      this.form = this.fb.group({
-        selectAnnoScolastico:  + (JSON.parse(objAnno!) as _UT_Parametro).parValue,
-        selectDocente: '0'
-      });
-    }
+    this.form = this.fb.group( {
+      selectAnnoScolastico:  + (JSON.parse(objAnno!) as _UT_Parametro).parValue,
+      selectDocente: 0
+    });
   }
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -257,29 +202,19 @@ BELLA MERDA
           this.classeSezioneAnnoIDrouted = params['classeSezioneAnnoID'];  
     });
     
-    this.obsAnni$ = this.svcAnni.list().pipe(
-      finalize( () => {
-          //se arrivo da home
-          //if (this.annoIDrouted) this.form.controls.selectAnnoScolastico.setValue(parseInt(this.annoIDrouted));
-        }
-      )
-    );
+    this.obsAnni$ = this.svcAnni.list()
+      .pipe(
+        finalize( () => {
+            //se arrivo da home
+            if (this.annoIDrouted) this.form.controls.selectAnnoScolastico.setValue(parseInt(this.annoIDrouted));
+          }
+        )
+      );
    
-    console.log("AS: this.annoIDrouted: ",this.annoIDrouted)
-    console.log("AS: this.docenteIDrouted: ",this.docenteIDrouted)
-
-    this.obsDocenti$ = this.svcDocenti.list().pipe(
-      finalize( () => {
-          if (this.docenteIDrouted) this.form.controls.selectDocente.setValue(parseInt(this.docenteIDrouted));
-        
-        
-        //qui
-        }
-      )
-    );
-
+    this.obsDocenti$ = this.svcDocenti.list();
 
     this.loadData();
+    
     this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);
     this.docenteIdEmitter.emit(this.form.controls["selectDocente"].value);
 
@@ -306,11 +241,22 @@ BELLA MERDA
           this.displayedColumns = this.displayedColumnsClassiPage;
           this.matDataSource.sort = this.sort;
           this.showSelectDocente = false;
+
           break;
       case 'docenti-dashboard':
         this.displayedColumns = this.displayedColumnsClassiDashboard;
         this.showPageTitle = false;
         this.showTableRibbon = false;
+
+        if(this.currUser.personaID != undefined && this.currUser.personaID != 0){
+          this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe( 
+            res => {            
+              this.docenteID = res.id;
+              this.form.controls['selectDocente'].setValue(res.id);
+            },
+            err => console.log("getDocenteBypersonaID- KO:", err)
+          );
+        }
 
         // this.matDataSource.sort = this.sort; TODO
         break;          
@@ -322,6 +268,7 @@ BELLA MERDA
 
           //this.matDataSource.sort = this.sort; TODO
           break;
+
       default: this.displayedColumns = this.displayedColumnsClassiDashboard;
     }
 

@@ -32,7 +32,7 @@ export class DocentiService {
       return this.http.get<PER_Docente[]>(environment.apiBaseUrl+'PER_Docenti')
         .pipe ( 
           map( 
-          val=>val.filter(
+          val => val.filter(
             val=>(val.persona.nome.toLowerCase() + ' ' + val.persona.cognome.toLowerCase()).includes(searchstring.toLowerCase())
           )
         )

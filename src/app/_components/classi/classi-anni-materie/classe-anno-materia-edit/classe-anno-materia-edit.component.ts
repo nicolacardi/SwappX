@@ -86,16 +86,12 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
       const obsClasseAnnoMateria$: Observable<CLS_ClasseAnnoMateria> = this.svcClassiAnniMaterie.get(this.classeAnnoMateriaID);
       const loadObiettivo$ = this._loadingService.showLoaderUntilCompleted(obsClasseAnnoMateria$);
       this.classeAnnoMateria$ = loadObiettivo$
-      .pipe( tap(
-            classeAnnoMateria => {
-              this.form.patchValue(classeAnnoMateria)
-            }
-          )
-      );
+        .pipe( 
+          tap( val => this.form.patchValue(val) )
+        );
     } 
-    else {
+    else 
       this.emptyForm = true
-    }
   }
 
 

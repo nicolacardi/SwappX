@@ -70,24 +70,13 @@ export class DocentiDashboardComponent implements OnInit {
 
     this.actRoute.queryParams.subscribe(
       params => {
-
-        console.log("docenti-dashboad - params: ", params);
-
         this.annoIDrouted = params['annoID'];     
         this.classeSezioneAnnoIDrouted = params['classeSezioneAnnoID'];  
-
-        console.log("docenti-dashboad - annoIDrouted: ", this.annoIDrouted);
     });
 
     this._navigationService.passPage("docentiDashboard");
 
-
-    //OK ---- recuperare docenteID : sul token ho personaID
-    //impostarlo sulla combo (che deve essere read-only, siamo sul cruscotto docente )
-
-
     this.currUser = Utility.getCurrentUser();
-    console.log("[docenti-dashboard] - currUser.personaID: " ,this.currUser.personaID)
     
     if(this.currUser.personaID != null){
       this.svcDocenti.getByPersonaID(this.currUser.personaID)
@@ -96,36 +85,18 @@ export class DocentiDashboardComponent implements OnInit {
           //concatMap(() =>  this.form.controls['classeSezioneID'].setValue(val.id))
         //)
         .subscribe(
-          res =>{
-            //this.form.controls['docenteID'].setValue(res.id);
-            console.log("getDocenteBypersonaID- OK:", res)
-
-            this.docenteID = res.id;
-          },
+          res => this.docenteID = res.id,
           err => console.log("getDocenteBypersonaID- KO:", err)
       )
     }
-
-/*
-             val => {
-              if (val) 
-                this.form.controls['docenteID'].setValue(val.docenteID);
-              else 
-                this.form.controls['docenteID'].setValue("")
-            });
- */
-
   }
-
-
-
   
 //#region ----- ricezione emit -------
-
-annoIdEmitted(annoID: number) {
   //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
   //serve per la successiva assegnazione ad una classe...in quanto il modale che va ad aggiungere
   //le classi ha bisogno di conoscere anche l'annoID per fare le proprie verifiche
+
+annoIdEmitted(annoID: number) {
   this.annoID = annoID;
 }
 
@@ -134,8 +105,6 @@ classeSezioneAnnoIDEmitted(classeSezioneAnnoID: number) {
 }
 
 docenteIdEmitted(docenteId: number) {
-  //console.log("DEBUG- docenteEmitted: " + docenteId)
-
   this.docenteID = docenteId;
 }
 
