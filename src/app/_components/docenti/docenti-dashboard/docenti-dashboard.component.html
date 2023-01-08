@@ -1,6 +1,6 @@
 <table>
     <tr>
-        <td class="_columnleft-dashboard">
+        <td class="_columnleft-dashboard _cell-align-top">
             <div class="_table-container">
                 <app-classi-sezioni-anni-list 
                     [dove] = "'docenti-dashboard'"
@@ -10,7 +10,7 @@
                 </app-classi-sezioni-anni-list>
             </div>
         </td>
-        <td class="_columnright-dashboard border-left">
+        <td class="_columnright-dashboard border-left _cell-align-top w90">
             <mat-tab-group (selectedTabChange)="selectedTabValue($event)">
                 <mat-tab  label="Alunni">
                     <!-- <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addAlunno" (click)="addAlunnoToClasse()" >

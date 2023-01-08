@@ -77,7 +77,7 @@
             </a>  
 
             <a mat-list-item class="h35px" routerLink="persone" (click)="clickMenuItem()">
-                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/docente.svg">
+                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/persona.svg">
                 <span *ngIf="isExpanded">Personale</span>
             </a>
 
@@ -111,7 +111,7 @@
 
  <!-- Docenti -->
             <a mat-list-item class="h35px" *ngIf="!isExpanded" (click)="isExpanded = true; expandDocenti()">
-                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/classiSezioniAnni_expand.svg">
+                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/docente_expand.svg">
             </a>
 
             <mat-expansion-panel *ngIf="isExpanded" class="transparent expansionMainMenu mat-elevation-z0" #expansionDocenti>

@@ -15,7 +15,7 @@
                     <mat-icon>restart_alt</mat-icon>
                 </button>
 
-                <button *ngIf="data.notaID || data.notaID == 0 " mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                <button *ngIf="data.notaID || data.notaID == 0 || data.notaID == null" mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="save()" >
                     <mat-icon>save</mat-icon>
@@ -28,12 +28,12 @@
                 </button>
             </div>
 
-            <mat-grid-list class="mt20 left" [cols]="1" rowHeight="30px">
+            <mat-grid-list class="mt20 center" [cols]="1" rowHeight="30px">
                 <mat-label class="mt20 fs16">Nota emessa da: </mat-label>
                 <mat-label class="bold">{{personaNomeCognome}}</mat-label>
             </mat-grid-list>
             
-            <mat-grid-list class="left" [cols]="2" rowHeight="30px">
+            <mat-grid-list class="center" [cols]="2" rowHeight="30px">
                 <mat-label class="mt20 fs16">Per i genitori dell'alunno: </mat-label>
                 <mat-label class="bold">{{alunnoNomeCognome}}</mat-label>
             </mat-grid-list>

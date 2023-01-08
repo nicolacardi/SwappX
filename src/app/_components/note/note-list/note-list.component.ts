@@ -172,7 +172,7 @@ export class NoteListComponent implements OnInit {
       
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
       let boolDx = String(dtNotaddmmyyyy).indexOf(searchTerms.dtNota) !== -1
-                    && String(data.nota).indexOf(searchTerms.nota) !== -1
+                    && String(data.nota.toLowerCase()).indexOf(searchTerms.nota) !== -1
                     && ((data.periodo == searchTerms.periodo) || searchTerms.periodo == '' || searchTerms.periodo == null)
                     && String(data.persona.nome.toLowerCase() + ' ' + data.persona.cognome.toLowerCase()).indexOf(searchTerms.docente) !== -1
                     && String(dtFirmaddmmyyyy).indexOf(searchTerms.dtFirma) !== -1
