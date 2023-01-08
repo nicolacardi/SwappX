@@ -82,8 +82,8 @@ export class DocentiDashboardComponent implements OnInit {
     this._navigationService.passPage("docentiDashboard");
 
 
-    //recuperare docenteID : sul token ho personaID
-    //impostarlo sulla combo (che deve essere read-only, siamo sul croscotto docente )
+    //OK ---- recuperare docenteID : sul token ho personaID
+    //impostarlo sulla combo (che deve essere read-only, siamo sul cruscotto docente )
 
 
     this.currUser = Utility.getCurrentUser();
@@ -96,7 +96,12 @@ export class DocentiDashboardComponent implements OnInit {
           //concatMap(() =>  this.form.controls['classeSezioneID'].setValue(val.id))
         //)
         .subscribe(
-          res => console.log("getDocenteBypersonaID- OK:", res),
+          res =>{
+            //this.form.controls['docenteID'].setValue(res.id);
+            console.log("getDocenteBypersonaID- OK:", res)
+
+            this.docenteID = res.id;
+          },
           err => console.log("getDocenteBypersonaID- KO:", err)
       )
     }

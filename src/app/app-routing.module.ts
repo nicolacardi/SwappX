@@ -60,7 +60,7 @@ const routes: Routes = [
 
   { path: "classi-dashboard", component: ClassiDashboardComponent,canActivate:[AuthGuard] },
 
-  { path: "docenti-dashboard", component: DocentiDashboardComponent,canActivate:[AuthGuard],data: { roles: ['SysAdmin', 'Segreteria', 'Amministratore', 'Docente' ] }  },
+  { path: "docenti-dashboard", component: DocentiDashboardComponent,canActivate:[AuthGuard],data: { roles: ['SysAdmin', 'Segreteria', 'Amministratore', 'Maestro' ] }  },
 
   { path: "pagamenti",        component: PagamentiPageComponent,canActivate:[AuthGuard] },
 
