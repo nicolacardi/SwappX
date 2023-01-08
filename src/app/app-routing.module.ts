@@ -62,7 +62,6 @@ const routes: Routes = [
 
   { path: "docenti-dashboard", component: DocentiDashboardComponent,canActivate:[AuthGuard],data: { roles: ['SysAdmin', 'Segreteria', 'Amministratore', 'Maestro' ] }  },
 
-
   { path: "pagamenti",        component: PagamentiPageComponent,canActivate:[AuthGuard] },
 
   { path: "rette",            component: RettePageComponent,canActivate:[AuthGuard] },
