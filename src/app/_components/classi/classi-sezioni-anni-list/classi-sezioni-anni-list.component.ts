@@ -6,27 +6,31 @@ import { Observable } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
-import { finalize } from 'rxjs/operators';
+import { concatMap, finalize } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 //components
 import { ClasseSezioneAnnoEditComponent } from '../classe-sezione-anno-edit/classe-sezione-anno-edit.component';
 import { ClassiSezioniAnniFilterComponent } from '../classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { Utility } from '../../utilities/utility.component';
 
 //services
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
+import { DocentiService } from '../../docenti/docenti.service';
 
 //classes
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
-import { SelectionModel } from '@angular/cdk/collections';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { PER_Docente } from 'src/app/_models/PER_Docente';
-import { DocentiService } from '../../docenti/docenti.service';
+import { User } from 'src/app/_user/Users';
+import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
+
+
 
 @Component({
   selector: 'app-classi-sezioni-anni-list',
@@ -37,6 +41,8 @@ import { DocentiService } from '../../docenti/docenti.service';
 export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#region ----- Variabili -------
+  currUser!: User;
+
   matDataSourceIscrizioni = new MatTableDataSource<CLS_ClasseSezioneAnno>();
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnnoGroup>();
 
@@ -110,8 +116,12 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   toggleChecks:                       boolean = false;
   public ckSoloAttivi :               boolean = true;
 
-  annoIDrouted!:                       string; //Da routing
+  annoIDrouted!:                      string; //Da routing
+  docenteIDrouted!:                   string; //Da routing
   classeSezioneAnnoIDrouted!:         number; //Da routing
+
+  docenteID!:                         number;
+  
   classeSezioneAnnoID!:               number;
   classeSezioneAnno!:                 CLS_ClasseSezioneAnno;
   showSelect:                         boolean = true;
@@ -120,7 +130,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   showPageTitle:                      boolean = true;
   showTableRibbon:                    boolean = true;
 
-  obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;     
   obsDocenti$!:                       Observable<PER_Docente[]>;
 
   form! :                             FormGroup;
@@ -161,40 +171,114 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 //#endregion
 
   constructor( private svcClassiSezioniAnni:         ClassiSezioniAnniService,
-              private svcAnni:                      AnniScolasticiService,
-              private svcDocenti:                   DocentiService,
-              private _loadingService:              LoadingService,
-              private fb:                           FormBuilder, 
-              public _dialog:                       MatDialog, 
-              private actRoute:                     ActivatedRoute,
-              private _snackBar:                    MatSnackBar ) {
+               private svcAnni:                      AnniScolasticiService,
+               private svcDocenti:                   DocentiService,
+               private _loadingService:              LoadingService,
+               private fb:                           FormBuilder, 
+               public _dialog:                       MatDialog, 
+               private actRoute:                     ActivatedRoute,
+               private _snackBar:                    MatSnackBar ) {
 
-    let obj = localStorage.getItem('AnnoCorrente');
-
+    let objAnno = localStorage.getItem('AnnoCorrente');
+    
     this.form = this.fb.group({
-      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue,
+      selectAnnoScolastico:  + (JSON.parse(objAnno!) as _UT_Parametro).parValue,
       selectDocente: '0'
+      //selectDocente: this.docenteID
     });
+
+
+    //let objCurrentUser = localStorage.getItem('currentUser');
+    //this.currUser = (JSON.parse(objCurrentUser!) as User);
+    this.currUser = Utility.getCurrentUser();
+
+    //console.log("AS- this.currUser", this.currUser);
+    /*
+      if (this.alunnoID == null || this.alunnoID == 0)    {
+      this.svcPersone.post(personaObj)
+      .pipe(
+        tap(res=> {
+          console.log ("res", res); 
+          alunnoObj.personaID = res.id;  
+        }),
+        concatMap( () => this.svcAlunni.post(alunnoObj))
+      ).subscribe(
+        res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        },
+        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      ) 
+    }
+     */
+    if(this.currUser.personaID != null || this.currUser.personaID == 0){
+      this.svcDocenti.getByPersonaID(this.currUser.personaID)
+        .pipe(
+          tap (val =>{ 
+            this.docenteID = val.id;
+            
+            //this.form.controls['selectDocente'].setValue(val.id);
+          }
+          //concatMap(() =>  this.form.controls['selectDocente'].setValue(val.id) )
+          )
+        )
+        .subscribe(
+          res => {
+            console.log("getDocenteBypersonaID- OK: docenteID=", this.docenteID)
+
+            //this.form.controls['selectDocente'].setValue(this.docenteID);
+BELLA MERDA
+            // this.form = this.fb.group({
+            //   selectAnnoScolastico:  + (JSON.parse(objAnno!) as _UT_Parametro).parValue,
+            //    selectDocente: this.docenteID
+            //  });
+
+          },
+          err => console.log("getDocenteBypersonaID- KO:", err)
+      )
+    }
+    else{
+
+      this.form = this.fb.group({
+        selectAnnoScolastico:  + (JSON.parse(objAnno!) as _UT_Parametro).parValue,
+        selectDocente: '0'
+      });
+    }
   }
 
 //#region ----- LifeCycle Hooks e simili-------
-  ngOnInit(): void {
-    // let arrEndedIcons = this.endedIcons.toArray();
-    // console.log ("endedIcons", arrEndedIcons);
+
+  ngOnInit() {
+
     this.actRoute.queryParams.subscribe(
       params => {
           this.annoIDrouted = params['annoID'];     
+          this.docenteIDrouted = params['docenteID'];   
           this.classeSezioneAnnoIDrouted = params['classeSezioneAnnoID'];  
     });
     
     this.obsAnni$ = this.svcAnni.list().pipe(
       finalize( () => {
           //se arrivo da home
-          if (this.annoIDrouted) this.form.controls.selectAnnoScolastico.setValue(parseInt(this.annoIDrouted));
+          //if (this.annoIDrouted) this.form.controls.selectAnnoScolastico.setValue(parseInt(this.annoIDrouted));
         }
       )
     );
    
+    console.log("AS: this.annoIDrouted: ",this.annoIDrouted)
+    console.log("AS: this.docenteIDrouted: ",this.docenteIDrouted)
+
+    this.obsDocenti$ = this.svcDocenti.list().pipe(
+      finalize( () => {
+          if (this.docenteIDrouted) this.form.controls.selectDocente.setValue(parseInt(this.docenteIDrouted));
+        
+        
+        //qui
+        }
+      )
+    );
+
+
     this.loadData();
     this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);
     this.docenteIdEmitter.emit(this.form.controls["selectDocente"].value);
@@ -223,12 +307,13 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
           this.matDataSource.sort = this.sort;
           this.showSelectDocente = false;
           break;
-          case 'docenti-dashboard':
-            this.displayedColumns = this.displayedColumnsClassiDashboard;
-            this.showPageTitle = false;
-            this.showTableRibbon = false;
-            // this.matDataSource.sort = this.sort; TODO
-            break;          
+      case 'docenti-dashboard':
+        this.displayedColumns = this.displayedColumnsClassiDashboard;
+        this.showPageTitle = false;
+        this.showTableRibbon = false;
+
+        // this.matDataSource.sort = this.sort; TODO
+        break;          
       case 'retta-calcolo':
           this.displayedColumns = this.displayedColumnsRettaCalcolo;
           this.showPageTitle = false;
@@ -244,20 +329,16 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
       res => {
         this.loadData();
         this.annoIdEmitter.emit(res);
-        //vanno resettate le selezioni delle checkbox e masterToggle
-        this.resetSelections();
+        this.resetSelections();         //vanno resettate le selezioni delle checkbox e masterToggle
         this.toggleChecks = false;
       }
     );
-
-    this.obsDocenti$ = this.svcDocenti.list();
 
     this.form.controls['selectDocente'].valueChanges.subscribe(
       res => {
         this.loadData();
         this.docenteIdEmitter.emit(res);
-        //vanno resettate le selezioni delle checkbox e masterToggle
-        this.resetSelections();
+        this.resetSelections();           //vanno resettate le selezioni delle checkbox e masterToggle
         this.toggleChecks = false;
       }
     );
@@ -490,3 +571,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 
 }
+function tap(arg0: (val: any) => any): import("rxjs").OperatorFunction<PER_Docente, unknown> {
+  throw new Error('Function not implemented.');
+}
+

@@ -13,10 +13,11 @@
             <mat-label>Anno Scolastico</mat-label>
             <mat-select formControlName="selectAnnoScolastico">
                 <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
-                {{element.annoscolastico}}
+                    {{element.annoscolastico}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
+        
         <div *ngIf="showSelect && showSelectDocente">
             <mat-form-field  class="ml20 topZIndex"  >
                 <mat-label>Docente</mat-label>
