@@ -13,10 +13,13 @@ import { SnackbarComponent }                    from '../../utilities/snackbar/s
 import { NoteService }                          from '../note.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { UserService }                          from 'src/app/_user/user.service';
+import { AlunniService }                        from '../../alunni/alunni.service';
 
 //models
 import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
 import { DialogDataNota }                       from 'src/app/_models/DialogData';
+import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
+
 
 
 @Component({
@@ -28,7 +31,9 @@ import { DialogDataNota }                       from 'src/app/_models/DialogData
 export class NotaEditComponent implements OnInit {
 
 //#region ----- Variabili -------
-  nota$!:                                       Observable<DOC_Nota>;
+  obsNota$!:                                       Observable<DOC_Nota>;
+  obsAlunni$!:                                     Observable<ALU_Alunno[]>;
+
   form! :                                       FormGroup;
   personaNomeCognome!:                          string;
   personaID!:                                   number;
@@ -39,14 +44,16 @@ export class NotaEditComponent implements OnInit {
   breakpoint!:                                  number;
 //#endregion
 
-  constructor( public _dialogRef:                          MatDialogRef<NotaEditComponent>,
-               private svcUser:                            UserService,
-               @Inject(MAT_DIALOG_DATA) public data:       DialogDataNota,
-               private fb:                                 FormBuilder, 
-               private svcNote:                            NoteService,
-               private _loadingService:                    LoadingService,
-               public _dialog:                             MatDialog,
-               private _snackBar:                          MatSnackBar ) {
+  constructor( 
+    public _dialogRef:                          MatDialogRef<NotaEditComponent>,
+    private svcUser:                            UserService,
+    private svcAlunno:                          AlunniService,
+    @Inject(MAT_DIALOG_DATA) public data:       DialogDataNota,
+    private fb:                                 FormBuilder, 
+    private svcNote:                            NoteService,
+    private _loadingService:                    LoadingService,
+    public _dialog:                             MatDialog,
+    private _snackBar:                          MatSnackBar ) {
 
     _dialogRef.disableClose = true;
 
@@ -55,6 +62,7 @@ export class NotaEditComponent implements OnInit {
       id:                                       [null],
       iscrizioneID:                             [],
       personaID:                                [],
+      alunnoID:                                 [],
       dtNota:                                   [],
       periodo:                                  [],
       ckFirmato:                                [],
@@ -71,16 +79,19 @@ export class NotaEditComponent implements OnInit {
 
     if (this.data.notaID && this.data.notaID + '' != "0") {
     
+      this.obsAlunni$ = this.svcAlunno.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
+
       //in teoria potrei anche fare a meno dell'observable e dell'async nel form: potrei passare TUTTI i valori tramite DialogData...tanto li ho già...ma non sarebbe rxJs
       const obsNota$: Observable<DOC_Nota> = this.svcNote.get(this.data.notaID);
       const loadNota$ = this._loadingService.showLoaderUntilCompleted(obsNota$);
       
-      this.nota$ = loadNota$
+      this.obsNota$ = loadNota$
       .pipe( tap(
         nota => {
           this.form.patchValue(nota); //questo è fondamentale. Infatti anche se passassi i dati dal DialogData è il form che va "nutrito", non tanto le variabili
           this.iscrizioneID= this.data.iscrizioneID;
           this.alunnoNomeCognome = nota.iscrizione?.alunno.persona.nome! + ' '+ nota.iscrizione?.alunno.persona.cognome!;
+          this.form.controls.alunnoID.setValue(nota.iscrizione?.alunnoID);
           //this.personaID = nota.persona?.id!;
           this.personaID = this.data.personaID;
           this.personaNomeCognome = nota.persona?.nome! + " " +nota.persona?.cognome!;

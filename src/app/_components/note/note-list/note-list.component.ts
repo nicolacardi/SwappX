@@ -210,7 +210,8 @@ export class NoteListComponent implements OnInit {
       data: {
         iscrizioneID:                           element.iscrizioneID,
         notaID:                                 element.id,
-        personaID:                              element.personaID
+        personaID:                              element.personaID,
+        classeSezioneAnnoID:                    element.iscrizione?.classeSezioneAnnoID
       }
     };
     const dialogRef = this._dialog.open(NotaEditComponent, dialogConfig);

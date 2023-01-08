@@ -40,6 +40,7 @@ export interface DialogDataColoreMateria {
 export interface DialogDataNota {
         notaID:                                 number;
         iscrizioneID:                           number;
+        classeSezioneAnnoID:                    number;
         personaID:                              number;
         nome?:                                  string;
         cognome?:                               string;

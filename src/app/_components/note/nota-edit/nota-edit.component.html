@@ -1,6 +1,6 @@
 <mat-card class="form-card">
     <mat-card-content>
-        <form *ngIf="(nota$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
+        <form *ngIf="(obsNota$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
 
             <!-- ********************************    BOTTONI     ************************************* -->
             <div class="center">
@@ -35,9 +35,17 @@
             
             <mat-grid-list class="center" [cols]="2" rowHeight="30px">
                 <mat-label class="mt20 fs16">Per i genitori dell'alunno: </mat-label>
-                <mat-label class="bold">{{alunnoNomeCognome}}</mat-label>
+                <!-- <mat-label class="bold">{{alunnoNomeCognome}}</mat-label> -->
             </mat-grid-list>
-
+            <mat-grid-list class="center" [cols]="1" rowHeight="60px">
+                <mat-form-field >
+                    <mat-select formControlName="alunnoID">
+                        <mat-option *ngFor="let element of (obsAlunni$ | async)" [value]="element.id">
+                            {{element.persona.nome}} {{element.persona.cognome}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-list>
             <mat-grid-list [cols]="1" rowHeight="60px">
 
                 <mat-grid-tile>
