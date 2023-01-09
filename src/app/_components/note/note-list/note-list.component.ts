@@ -70,6 +70,8 @@ export class NoteListComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
   @Input('iscrizioneID') iscrizioneID!:         number;
+  @Input('classeSezioneAnnoID') classeSezioneAnnoID!: number;
+
   @Input('alunno') alunno!:                     ALU_Alunno;
   @Input() noteFilterComponent!:                NoteFilterComponent;
 
@@ -78,9 +80,11 @@ export class NoteListComponent implements OnInit {
 
 //#endregion  
 
-  constructor( private svcNote:            NoteService,
-               private _loadingService:    LoadingService,
-               public _dialog:             MatDialog ) {
+  constructor( 
+    private svcNote:                            NoteService,
+    private _loadingService:                    LoadingService,
+    public _dialog:                             MatDialog 
+  ) {
 
   }
 
@@ -97,20 +101,21 @@ export class NoteListComponent implements OnInit {
   }
 
   loadData() {
-    let obsNote$: Observable<DOC_Nota[]>;
-    //obsNote$= this.svcNote.listByIscrizione(this.iscrizioneID);
-    obsNote$= this.svcNote.list();
-    let loadNote$ =this._loadingService.showLoaderUntilCompleted(obsNote$);
+    if (this.classeSezioneAnnoID) {
+      let obsNote$: Observable<DOC_Nota[]>;
+      obsNote$= this.svcNote.listByClasseSezioneAnnoID(this.classeSezioneAnnoID);
+      let loadNote$ =this._loadingService.showLoaderUntilCompleted(obsNote$);
 
-    loadNote$.subscribe( 
-      val =>   {
-        console.log ("loadNote", val);
-        this.matDataSource.data = val;
-        this.matDataSource.paginator = this.paginator;
-        this.matDataSource.sort = this.sort; 
-        this.matDataSource.filterPredicate = this.filterPredicate();
-      }
-    );
+      loadNote$.subscribe( 
+        val =>   {
+          console.log ("loadNote", val);
+          this.matDataSource.data = val;
+          this.matDataSource.paginator = this.paginator;
+          this.matDataSource.sort = this.sort; 
+          this.matDataSource.filterPredicate = this.filterPredicate();
+        }
+      );
+    }
 
   }
 //#endregion
@@ -194,7 +199,12 @@ export class NoteListComponent implements OnInit {
       panelClass: 'add-DetailDialog',
       width: '450px',
       height: '550px',
-      data: 0
+      data: {
+        iscrizioneID:                           0,
+        notaID:                                 0,
+        personaID:                              0,
+        classeSezioneAnnoID:                    this.classeSezioneAnnoID
+      }
     };
     const dialogRef = this._dialog.open(NotaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe( res => 
@@ -211,7 +221,7 @@ export class NoteListComponent implements OnInit {
         iscrizioneID:                           element.iscrizioneID,
         notaID:                                 element.id,
         personaID:                              element.personaID,
-        classeSezioneAnnoID:                    element.iscrizione?.classeSezioneAnnoID
+        classeSezioneAnnoID:                    this.classeSezioneAnnoID
       }
     };
     const dialogRef = this._dialog.open(NotaEditComponent, dialogConfig);

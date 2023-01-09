@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { DOC_Nota } from 'src/app/_models/DOC_Nota';
 import { environment } from 'src/environments/environment';
@@ -15,6 +16,12 @@ export class NoteService {
   list(): Observable<DOC_Nota[]>{
     return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note');
     //http://213.215.231.4/swappX/api/DOC_Note
+  }
+
+  listByClasseSezioneAnnoID(classeSezioneAnnoID: number): Observable<DOC_Nota[]>{
+    return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note/listByClasseSezioneAnnoID/'+classeSezioneAnnoID);   
+
+    //http://213.215.231.4/swappX/api/DOC_Note/ListByClasseSezioneAnnoID/16 
   }
 
   listByIscrizione(iscrizioneID: number): Observable<DOC_Nota[]>{

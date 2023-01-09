@@ -19,6 +19,8 @@ import { AlunniService }                        from '../../alunni/alunni.servic
 import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
 import { DialogDataNota }                       from 'src/app/_models/DialogData';
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
+import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
+import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 
 
 
@@ -31,8 +33,8 @@ import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno
 export class NotaEditComponent implements OnInit {
 
 //#region ----- Variabili -------
-  obsNota$!:                                       Observable<DOC_Nota>;
-  obsAlunni$!:                                     Observable<ALU_Alunno[]>;
+  obsNota$!:                                    Observable<DOC_Nota>;
+  obsIscrizioni$!:                              Observable<CLS_Iscrizione[]>;
 
   form! :                                       FormGroup;
   personaNomeCognome!:                          string;
@@ -47,7 +49,7 @@ export class NotaEditComponent implements OnInit {
   constructor( 
     public _dialogRef:                          MatDialogRef<NotaEditComponent>,
     private svcUser:                            UserService,
-    private svcAlunno:                          AlunniService,
+    private svcIscrizioni:                      IscrizioniService,
     @Inject(MAT_DIALOG_DATA) public data:       DialogDataNota,
     private fb:                                 FormBuilder, 
     private svcNote:                            NoteService,
@@ -71,15 +73,20 @@ export class NotaEditComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+
+
+
+  ngOnInit() {
     this.loadData();
   }
 
   loadData() {
 
+
+
     if (this.data.notaID && this.data.notaID + '' != "0") {
-    
-      this.obsAlunni$ = this.svcAlunno.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
+      this.obsIscrizioni$ = this.svcIscrizioni.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
+
 
       //in teoria potrei anche fare a meno dell'observable e dell'async nel form: potrei passare TUTTI i valori tramite DialogData...tanto li ho già...ma non sarebbe rxJs
       const obsNota$: Observable<DOC_Nota> = this.svcNote.get(this.data.notaID);
@@ -99,6 +106,9 @@ export class NotaEditComponent implements OnInit {
       );
     } 
     else {
+      console.log (this.data.classeSezioneAnnoID);
+      this.obsIscrizioni$ = this.svcIscrizioni.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
+
       this.form.controls.iscrizioneID.setValue(this.data.iscrizioneID);
       this.form.controls.dtNota.setValue(new Date());
 

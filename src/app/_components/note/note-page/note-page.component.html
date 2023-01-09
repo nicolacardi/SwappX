@@ -29,8 +29,9 @@
     </mat-drawer>
 
     <mat-drawer-content>
-        <app-note-list [noteFilterComponent] = "appnotefilter"
-                         (openDrawer) = "openDrawer()"
+        <app-note-list  [noteFilterComponent] = "appnotefilter"
+                        [classeSezioneAnnoID] = "classeSezioneAnnoID"
+                        (openDrawer) = "openDrawer()"
                          #appnotelist >
         </app-note-list>
     </mat-drawer-content>

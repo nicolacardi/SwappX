@@ -38,13 +38,20 @@
                 <!-- <mat-label class="bold">{{alunnoNomeCognome}}</mat-label> -->
             </mat-grid-list>
             <mat-grid-list class="center" [cols]="1" rowHeight="60px">
-                <mat-form-field >
-                    <mat-select formControlName="alunnoID">
-                        <mat-option *ngFor="let element of (obsAlunni$ | async)" [value]="element.id">
-                            {{element.persona.nome}} {{element.persona.cognome}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <mat-grid-tile>
+                    <mat-form-field >
+                        <mat-select formControlName="iscrizioneID">
+                            <mat-option *ngFor="let element of (obsIscrizioni$ | async)" [value]="element.id">
+                                {{element.alunno.persona.nome}} {{element.alunno.persona.cognome}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <!-- <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput required type="text" placeholder="iscrizioneID" formControlName="iscrizioneID">
+                    </mat-form-field>
+                </mat-grid-tile> -->
             </mat-grid-list>
             <mat-grid-list [cols]="1" rowHeight="60px">
 
@@ -59,11 +66,7 @@
                     </mat-form-field>
                 </mat-grid-tile>
                 
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <input matInput required type="text" placeholder="iscrizioneID" formControlName="iscrizioneID">
-                    </mat-form-field>
-                </mat-grid-tile>
+
 
             </mat-grid-list>
 
