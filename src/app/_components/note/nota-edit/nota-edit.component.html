@@ -38,9 +38,18 @@
                 <!-- <mat-label class="bold">{{alunnoNomeCognome}}</mat-label> -->
             </mat-grid-list>
             <mat-grid-list class="center" [cols]="1" rowHeight="60px">
-                <mat-grid-tile>
+                <mat-grid-tile *ngIf="data.notaID != 0">
                     <mat-form-field >
                         <mat-select formControlName="iscrizioneID">
+                            <mat-option *ngFor="let element of (obsIscrizioni$ | async)" [value]="element.id">
+                                {{element.alunno.persona.nome}} {{element.alunno.persona.cognome}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile *ngIf="data.notaID == 0">
+                    <mat-form-field >
+                        <mat-select formControlName="iscrizioneIDMultiple" multiple>
                             <mat-option *ngFor="let element of (obsIscrizioni$ | async)" [value]="element.id">
                                 {{element.alunno.persona.nome}} {{element.alunno.persona.cognome}}
                             </mat-option>

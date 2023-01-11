@@ -27,109 +27,128 @@
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
+            <!-- In questo modo si fa il setting della data locale timezone fuso orario (keywords per trovarlo) -->
+            <mat-label class="center mt20 fs16" *ngIf="data.lezioneID || emptyForm">{{strDtStart | date: 'EEEE, d MMMM, y' : '+0100' : 'it' }} - Classe: {{strClasseSezioneAnno}}</mat-label>
+            <mat-tab-group mat-align-tabs="center">
 
-            <mat-label class="center mt20 fs16" *ngIf="data.lezioneID || emptyForm">- {{strDtStart | date: 'dd/LL/yyyy'}} -</mat-label>
-            <!-- <mat-label class="center" *ngIf="data.lezioneID || emptyForm">dalle  {{strH_Ini}} - alle {{strH_end}}</mat-label> -->
-            <mat-grid-list class="no-overflowx mt20" [cols]="4" rowHeight="60px">
+                <mat-tab  label="Presenze">
+                    <button mat-mini-fab aria-label="Appello" matTooltip="Appello" class="btn ml10"
 
-                <mat-grid-tile>
-                    <mat-form-field >
-                        <input matInput
-                            required
-                            formControlName = "h_Ini"
-                            type="time"
-                            placeholder="Ora Inizio"
-                            (change)="dp1Change()">
-                        <mat-datepicker></mat-datepicker>
-                        <!-- <mat-error *ngIf="form.controls.start.errors?.required"> Campo obbligatorio</mat-error> -->
-                    </mat-form-field>
-                </mat-grid-tile>
+                    (click)="generaAppello()" >
+                        <mat-icon>restart_alt</mat-icon>
+                    </button>
 
-                <mat-grid-tile>
-                    <mat-form-field >
-                        <input matInput
-                            required
-                            formControlName = "h_End"
-                            type="time"
-                            placeholder="Ora Fine"
-                            (change)="dp2Change()">
-                        <mat-datepicker #dpEnd ></mat-datepicker>
-                        <!-- <mat-error *ngIf="form.controls.end.errors?.required"> Campo obbligatorio</mat-error> -->
-                    </mat-form-field>
-                </mat-grid-tile>
+                    <app-presenze-list
+                    [lezioneID] = "data.lezioneID">
+                    </app-presenze-list>
 
-                <mat-grid-tile class="_align-top" colspan="2" rowspan ="3">
-                    <mat-form-field class="w100 _argomento border-left pl5" appearance="outline">
-                        <mat-label>Argomenti della Lezione</mat-label>
-                        <textarea class="w300px h125px _noresize" matInput formControlName="argomento"></textarea>
-                    </mat-form-field>
-                </mat-grid-tile>
+                </mat-tab>
+                <mat-tab  label="Gestione Lezione">
 
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <mat-label>Classe - Sezione</mat-label>
-                        <input matInput type="text" placeholder="Nome e Cognome" [value]="strClasseSezioneAnno" [disabled] = "true">
-                    </mat-form-field>
-                </mat-grid-tile>
+                    <!-- <mat-label class="center" *ngIf="data.lezioneID || emptyForm">dalle  {{strH_Ini}} - alle {{strH_end}}</mat-label> -->
+                    <mat-grid-list class="no-overflowx mt20" [cols]="4" rowHeight="60px">
 
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <mat-label>Materia</mat-label>
-                        <mat-select required formControlName="materiaID">
-                            <mat-option *ngFor="let element of (obsClassiDocentiMaterie$ | async)" [value]="element.materiaID">
-                            {{element.materia.descrizione}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
+                        <mat-grid-tile>
+                            <mat-form-field >
+                                <input matInput
+                                    required
+                                    formControlName = "h_Ini"
+                                    type="time"
+                                    placeholder="Ora Inizio"
+                                    (change)="dp1Change()">
+                                <mat-datepicker></mat-datepicker>
+                                <!-- <mat-error *ngIf="form.controls.start.errors?.required"> Campo obbligatorio</mat-error> -->
+                            </mat-form-field>
+                        </mat-grid-tile>
 
-                <mat-grid-tile class="tileCk ml15">
-                    <mat-checkbox color="primary" formControlName="ckFirma">
-                        Firma Docente
-                    </mat-checkbox>
-                </mat-grid-tile>
+                        <mat-grid-tile>
+                            <mat-form-field >
+                                <input matInput
+                                    required
+                                    formControlName = "h_End"
+                                    type="time"
+                                    placeholder="Ora Fine"
+                                    (change)="dp2Change()">
+                                <mat-datepicker #dpEnd ></mat-datepicker>
+                                <!-- <mat-error *ngIf="form.controls.end.errors?.required"> Campo obbligatorio</mat-error> -->
+                            </mat-form-field>
+                        </mat-grid-tile>
 
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <mat-label>Docente</mat-label>
-                        <mat-select required formControlName="docenteID">
-                            <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
-                            {{element.persona.nome}} {{element.persona.cognome}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
+                        <mat-grid-tile class="_align-top" colspan="2" rowspan ="3">
+                            <mat-form-field class="w100 _argomento border-left pl5" appearance="outline">
+                                <mat-label>Argomenti della Lezione</mat-label>
+                                <textarea class="w300px h125px _noresize" matInput formControlName="argomento"></textarea>
+                            </mat-form-field>
+                        </mat-grid-tile>
 
-                <mat-grid-tile class="tileCk ml15">
-                    <mat-checkbox color="primary" formControlName="ckAssente" #ckAssente (change)="ckAssenteChange()">
-                        Assenza
-                    </mat-checkbox>
-                </mat-grid-tile>
+                        <mat-grid-tile>
+                            <mat-form-field>
+                                <mat-label>Classe - Sezione</mat-label>
+                                <input matInput type="text" placeholder="Nome e Cognome" [value]="strClasseSezioneAnno" [disabled] = "true">
+                            </mat-form-field>
+                        </mat-grid-tile>
 
-                <mat-grid-tile>
-                    <mat-form-field *ngIf="ckAssente.checked">
-                        <mat-label>Supplente</mat-label>
-                        <mat-select formControlName="supplenteID">
-                            <mat-option *ngFor="let element of (obsSupplenti$ | async)" [value]="element.id">
-                            {{element.persona.nome}} {{element.persona.cognome}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
+                        <mat-grid-tile>
+                            <mat-form-field>
+                                <mat-label>Materia</mat-label>
+                                <mat-select required formControlName="materiaID">
+                                    <mat-option *ngFor="let element of (obsClassiDocentiMaterie$ | async)" [value]="element.materiaID">
+                                    {{element.materia.descrizione}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </mat-grid-tile>
 
-                <mat-grid-tile class="_align-top" colspan="2" rowspan ="2">
-                    <mat-form-field class="w100 _argomento border-left pl5" appearance="outline">
-                        <mat-label>Compiti Assegnati</mat-label>
-                        <textarea class="w300px h75px _noresize" formControlName="compiti" matInput></textarea>
-                    </mat-form-field>
-                </mat-grid-tile>
+                        <mat-grid-tile class="tileCk ml15">
+                            <mat-checkbox color="primary" formControlName="ckFirma">
+                                Firma Docente
+                            </mat-checkbox>
+                        </mat-grid-tile>
 
-                <mat-grid-tile class="tileCk ml15">
-                    <mat-checkbox color="primary" formControlName="ckEpoca">
-                        Epoca
-                    </mat-checkbox>
-                </mat-grid-tile>
-            </mat-grid-list>
+                        <mat-grid-tile>
+                            <mat-form-field>
+                                <mat-label>Docente</mat-label>
+                                <mat-select required formControlName="docenteID">
+                                    <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
+                                    {{element.persona.nome}} {{element.persona.cognome}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </mat-grid-tile>
+
+                        <mat-grid-tile class="tileCk ml15">
+                            <mat-checkbox color="primary" formControlName="ckAssente" #ckAssente (change)="ckAssenteChange()">
+                                Assenza
+                            </mat-checkbox>
+                        </mat-grid-tile>
+
+                        <mat-grid-tile>
+                            <mat-form-field *ngIf="ckAssente.checked">
+                                <mat-label>Supplente</mat-label>
+                                <mat-select formControlName="supplenteID">
+                                    <mat-option *ngFor="let element of (obsSupplenti$ | async)" [value]="element.id">
+                                    {{element.persona.nome}} {{element.persona.cognome}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </mat-grid-tile>
+
+                        <mat-grid-tile class="_align-top" colspan="2" rowspan ="2">
+                            <mat-form-field class="w100 _argomento border-left pl5" appearance="outline">
+                                <mat-label>Compiti Assegnati</mat-label>
+                                <textarea class="w300px h75px _noresize" formControlName="compiti" matInput></textarea>
+                            </mat-form-field>
+                        </mat-grid-tile>
+
+                        <mat-grid-tile class="tileCk ml15">
+                            <mat-checkbox color="primary" formControlName="ckEpoca">
+                                Epoca
+                            </mat-checkbox>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                </mat-tab>
+
+            </mat-tab-group>
         </form>
     </mat-card-content>
 

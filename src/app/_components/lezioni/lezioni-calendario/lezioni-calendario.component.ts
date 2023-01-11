@@ -29,7 +29,7 @@ import { UserService } from 'src/app/_user/user.service';
 @Component({
   selector: 'app-lezioni-calendario',
   templateUrl: './lezioni-calendario.component.html',
-  styleUrls: ['../lezioni.component.css']
+  styleUrls: ['../lezioni.css']
 })
 export class LezioniCalendarioComponent implements OnInit {
 
@@ -369,7 +369,7 @@ export class LezioniCalendarioComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '900px',
-      height: '500px',
+      height: '550px',
       data: {
         lezioneID: clickInfo.event.id,
         start: clickInfo.event.start,
@@ -406,7 +406,7 @@ export class LezioniCalendarioComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '900px',
-      height: '500px',
+      height: '550px',
       data: {
         lezioneID: 0,
         start: dtStart.toLocaleString('sv').replace(' ', 'T'),

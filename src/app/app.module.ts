@@ -83,6 +83,7 @@ import { PagellaVotoEditComponent } from './_components/pagelle/pagella-voto-edi
 import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
 import { LezioneComponent } from './_components/lezioni/lezione-edit/lezione.component';
 import { LezioniUtilsComponent } from './_components/lezioni/lezioni-utils/lezioni-utils.component';
+import { PresenzeListComponent } from './_components/lezioni/presenze-list/presenze-list.component';
 
 import { DocenzeAddComponent } from './_components/classi/docenze/docenze-add/docenze-add.component';
 import { DocenzaEditComponent } from './_components/classi/docenze/docenza-edit/docenza-edit.component';
@@ -235,6 +236,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     LezioniCalendarioComponent,
     LezioneComponent,
     LezioniUtilsComponent,
+    PresenzeListComponent,
+
     RettaCalcoloAlunnoComponent,
     RettaannoEditComponent,
     PagellaVotoEditComponent,

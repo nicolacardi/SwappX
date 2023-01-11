@@ -63,6 +63,7 @@ export class NotaEditComponent implements OnInit {
     {
       id:                                       [null],
       iscrizioneID:                             [],
+      iscrizioneIDMultiple:                     [],
       personaID:                                [],
       alunnoID:                                 [],
       dtNota:                                   [],
@@ -145,22 +146,30 @@ export class NotaEditComponent implements OnInit {
   }
 
   save() {
-    //console.log (this.form.value);
-    if (this.form.controls['id'].value == null) 
-      this.svcNote.post(this.form.value).subscribe(
-        res=> {
-          this._dialogRef.close();
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-        },
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      );
-    else 
+
+    console.log (this.form.controls['iscrizioneIDMultiple'].value);
+    
+    if (this.form.controls['id'].value == null) {
+      this.form.controls['iscrizioneIDMultiple'].value.forEach((iscrizioneID: number) =>
+        {
+        this.form.controls.iscrizioneID.setValue(iscrizioneID);
+        this.svcNote.post(this.form.value).subscribe(
+          res=> {
+            this._dialogRef.close();
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+          },
+          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        );
+        });
+      }
+    else { 
       this.svcNote.put(this.form.value).subscribe(
         res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
         err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    );
+      );
+    }
   }
 }

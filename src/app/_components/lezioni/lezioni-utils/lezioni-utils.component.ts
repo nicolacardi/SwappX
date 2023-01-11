@@ -70,7 +70,7 @@ import { DialogDataLezioniUtils } from 'src/app/_models/DialogData';
 @Component({
   selector: 'app-lezioni-utils',
   templateUrl: './lezioni-utils.component.html',
-  styleUrls: ['../lezioni.component.css'],
+  styleUrls: ['../lezioni.css'],
   providers: [
     {
       provide: MAT_DATE_RANGE_SELECTION_STRATEGY,

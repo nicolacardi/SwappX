@@ -1,86 +1,98 @@
 import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { concatMap, take, tap } from 'rxjs/operators';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { Observable }                           from 'rxjs';
+import { concatMap, take, tap }                 from 'rxjs/operators';
+
+import { registerLocaleData }                   from '@angular/common';
+import localeIt                                 from '@angular/common/locales/it';
+registerLocaleData(localeIt, 'it');
+
+import { CdkTextareaAutosize }                  from '@angular/cdk/text-field';
 
 //components
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { FormatoData, Utility } from '../../utilities/utility.component';
+import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { FormatoData, Utility }                 from '../../utilities/utility.component';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 
 //services
-import { MaterieService } from 'src/app/_components/materie/materie.service';
-import { DocenzeService } from '../../classi/docenze/docenze.service';
-import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
-import { DocentiService } from '../../docenti/docenti.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { LezioniService } from '../lezioni.service';
-
+import { MaterieService }                       from 'src/app/_components/materie/materie.service';
+import { DocenzeService }                       from '../../classi/docenze/docenze.service';
+import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
+import { DocentiService }                       from '../../docenti/docenti.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { LezioniService }                       from '../lezioni.service';
+import { PresenzeService }                      from '../presenze.service';
+import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
 //models
-import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
-import { MAT_Materia } from 'src/app/_models/MAT_Materia';
-import { PER_Docente } from 'src/app/_models/PER_Docente';
-import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { DialogDataLezione } from 'src/app/_models/DialogData';
+import { CAL_Lezione }                          from 'src/app/_models/CAL_Lezione';
+import { MAT_Materia }                          from 'src/app/_models/MAT_Materia';
+import { PER_Docente }                          from 'src/app/_models/PER_Docente';
+import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_ClasseDocenteMateria';
+import { DialogDataLezione }                    from 'src/app/_models/DialogData';
+import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
+import { CAL_Presenza }                         from 'src/app/_models/CAL_Presenza';
+
 
 @Component({
   selector: 'app-lezione',
   templateUrl: './lezione.component.html',
-  styleUrls: ['../lezioni.component.css'],
+  styleUrls: ['../lezioni.css'],
 
 })
 export class LezioneComponent implements OnInit {
 
 //#region ----- Variabili -------
 
-  form! :                     FormGroup;
+  form! :                                       FormGroup;
 
-  lezione$!:                  Observable<CAL_Lezione>;
-  obsMaterie$!:               Observable<MAT_Materia[]>;
-  obsClassiDocentiMaterie$!:  Observable<CLS_ClasseDocenteMateria[]>;
-  obsDocenti$!:               Observable<PER_Docente[]>;
-  obsSupplenti$!:             Observable<PER_Docente[]>;
+  lezione$!:                                    Observable<CAL_Lezione>;
+  obsMaterie$!:                                 Observable<MAT_Materia[]>;
+  obsClassiDocentiMaterie$!:                    Observable<CLS_ClasseDocenteMateria[]>;
+  obsDocenti$!:                                 Observable<PER_Docente[]>;
+  obsSupplenti$!:                               Observable<PER_Docente[]>;
 
-  strDtStart!:                string;
-  strDtEnd!:                  string;
+  strDtStart!:                                  string;
+  strDtEnd!:                                    string;
 
-  strH_Ini!:                  string;
-  strH_End!:                  string;
+  strH_Ini!:                                    string;
+  strH_End!:                                    string;
 
-  dtStart!:                   Date;
-  dtEnd!:                     Date;
-  strClasseSezioneAnno!:       string;
-  emptyForm :                 boolean = false;
-  loading:                    boolean = true;
-  public docenteView: boolean = false;
-  breakpoint!:                number;
-  classeSezioneAnnoID!:       number;
+  dtStart!:                                     Date;
+  dtEnd!:                                       Date;
+  strClasseSezioneAnno!:                        string;
+  emptyForm :                                   boolean = false;
+  loading:                                      boolean = true;
+  public docenteView:                           boolean = false;
+  breakpoint!:                                  number;
+  //classeSezioneAnnoID!:                         number;
 
 
-  @ViewChild('autosize') autosize!: CdkTextareaAutosize;
+  @ViewChild('autosize') autosize!:             CdkTextareaAutosize;
 
 
 //#endregion
 
-  constructor( public _dialogRef: MatDialogRef<LezioneComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogDataLezione,
+  constructor( 
+    public _dialogRef:                          MatDialogRef<LezioneComponent>,
+    @Inject(MAT_DIALOG_DATA) public data:       DialogDataLezione,
 
-              private fb:                             FormBuilder, 
-              private svcLezioni:                     LezioniService,
-              private svcMaterie:                     MaterieService,
-              private svcDocenti:                     DocentiService,
-              private svcDocenze:                     DocenzeService,
-              private svcClasseSezioneAnno:           ClassiSezioniAnniService,
+    private fb:                                 FormBuilder, 
+    private svcLezioni:                         LezioniService,
+    private svcMaterie:                         MaterieService,
+    private svcDocenti:                         DocentiService,
+    private svcDocenze:                         DocenzeService,
+    private svcClasseSezioneAnno:               ClassiSezioniAnniService,
+    private svcIscrizioni:                      IscrizioniService,
+    private svcPresenze:                        PresenzeService,
 
-              public _dialog:                         MatDialog,
-              private _snackBar:                      MatSnackBar,
-              private _loadingService:                LoadingService,
-              private cdRef :                         ChangeDetectorRef,
-              private _ngZone:                        NgZone ) {
+    public _dialog:                             MatDialog,
+    private _snackBar:                          MatSnackBar,
+    private _loadingService:                    LoadingService,
+    private cdRef :                             ChangeDetectorRef,
+    private _ngZone:                            NgZone ) {
 
     _dialogRef.disableClose = true;
 
@@ -113,8 +125,7 @@ export class LezioneComponent implements OnInit {
 
     this.form.controls.materiaID.valueChanges.subscribe( 
       res =>{
-
-        if (this.form.controls.classeSezioneAnnoID.value != null && this.form.controls.classeSezioneAnnoID.value != undefined) {
+        if (this.form.controls.classeSezioneAnnoID.value != '' && this.form.controls.classeSezioneAnnoID.value != null && this.form.controls.classeSezioneAnnoID.value != undefined) {
           //verifica se già non è impegnato in quest'ora o FRAZIONI DI ORA in qualche altro posto.
           this.svcDocenze.getByClasseSezioneAnnoAndMateria(this.form.controls.classeSezioneAnnoID.value, res).subscribe(
             val => {
@@ -152,7 +163,9 @@ export class LezioneComponent implements OnInit {
     this.obsClassiDocentiMaterie$ = this.svcDocenze.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
     
     //this.obsMaterie$ = this.svcMaterie.listOrario(); //AS [30mar2022]: sostituita dal metodo listByClasseSezioneAnno
-    this.obsMaterie$ = this.svcMaterie.listByClasseSezioneAnno(this.classeSezioneAnnoID); 
+    this.obsMaterie$ = this.svcMaterie.listByClasseSezioneAnno(this.data.classeSezioneAnnoID); 
+    //this.obsMaterie$ = this.svcMaterie.listByClasseSezioneAnno(this.classeSezioneAnnoID); 
+
     this.obsDocenti$ = this.svcDocenti.list();
 
     if (this.data.dove == "orario") {
@@ -349,6 +362,50 @@ export class LezioneComponent implements OnInit {
   triggerResize() {
     // Wait for changes to be applied, then trigger textarea resize.
     this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
+  }
+
+  generaAppello() {
+    const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+      width: '320px',
+      data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la generazione dell'appello ?"}
+    });
+
+    dialogYesNo.afterClosed().subscribe(result => {
+      if(result) {
+        console.log ("VA BENE: classesezioneAnnoID", this.data.classeSezioneAnnoID);
+        this.svcIscrizioni.listByClasseSezioneAnno(this.data.classeSezioneAnnoID)
+            .subscribe(iscrizioni => {
+                console.log("Array iscrizioni", iscrizioni);
+
+                for (let iscrizione of iscrizioni) {
+
+                
+                  //(iscrizione: CLS_Iscrizione) => {
+                  let objPresenza : CAL_Presenza =
+                  { id : 0,
+                    AlunnoID : iscrizione.alunnoID,
+                    LezioneID : this.data.lezioneID,
+                    ckPresente : true,
+                    ckDAD: false
+                  };
+
+                  this.svcPresenze.post(objPresenza).subscribe();
+
+                }
+                this.loadData();
+                
+                
+            });
+
+        // this.svcAlunni.delete(Number(this.alunnoID)).subscribe (
+        //   res=> {
+        //     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
+        //     this._dialogRef.close();
+        //   },
+        //   err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}  )
+        // );
+      }
+    });
   }
 
 }
