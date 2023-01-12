@@ -1,36 +1,34 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSelect } from '@angular/material/select';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
-import { concatMap, finalize } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
-import { SelectionModel } from '@angular/cdk/collections';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormBuilder, FormGroup }               from '@angular/forms';
+import { MatSelect }                            from '@angular/material/select';
+import { MatTableDataSource }                   from '@angular/material/table';
+import { Observable }                           from 'rxjs';
+import { MatPaginator }                         from '@angular/material/paginator';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatSort }                              from '@angular/material/sort';
+import { concatMap, finalize }                  from 'rxjs/operators';
+import { ActivatedRoute }                       from '@angular/router';
+import { SelectionModel }                       from '@angular/cdk/collections';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //components
-import { ClasseSezioneAnnoEditComponent } from '../classe-sezione-anno-edit/classe-sezione-anno-edit.component';
-import { ClassiSezioniAnniFilterComponent } from '../classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { Utility } from '../../utilities/utility.component';
+import { ClasseSezioneAnnoEditComponent }       from '../classe-sezione-anno-edit/classe-sezione-anno-edit.component';
+import { ClassiSezioniAnniFilterComponent }     from '../classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { Utility }                              from '../../utilities/utility.component';
 
 //services
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { DocentiService } from '../../docenti/docenti.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { ClassiSezioniAnniService }             from '../classi-sezioni-anni.service';
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { DocentiService }                       from '../../docenti/docenti.service';
 
 //classes
-import { User } from 'src/app/_user/Users';
+import { User }                                 from 'src/app/_user/Users';
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { PER_Docente } from 'src/app/_models/PER_Docente';
-import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
-
-
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { PER_Docente }                          from 'src/app/_models/PER_Docente';
+import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
 
 @Component({
   selector: 'app-classi-sezioni-anni-list',
@@ -158,6 +156,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   @ViewChild(MatSort) sort!:                                      MatSort;
   @ViewChild("filterInput") filterInput!:                         ElementRef;  
   @ViewChild('selectAnnoScolastico') selectAnnoScolastico!:       MatSelect; 
+
   @ViewChildren("endedIcons", { read: ElementRef }) endedIcons!:  QueryList<ElementRef>   //elenco delle icone di fine procedura
   //@ViewChildren("ckSelected", { read: ElementRef }) ckSelected!:  QueryList<ElementRef>   //elenco delle icone di fine procedura)
   //@ViewChildren ('ckSelected' ) ckSelected!:QueryList<any>;
@@ -210,8 +209,15 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
           }
         )
       );
-   
-    this.obsDocenti$ = this.svcDocenti.list();
+      
+    this.obsDocenti$ = this.svcDocenti.list()
+    .pipe(
+      finalize( () => {
+          this.form.controls.selectDocente.setValue(0); //funziona solo dopo aver implementato con compareWith...NC120123
+        }
+      )
+    );
+    
 
     this.loadData();
     
@@ -308,6 +314,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
     loadClassi$.subscribe( val =>   {
+
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
 
@@ -431,8 +438,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '380px',
-      height: '450px',
+      width: '500px',
+      height: '400px',
       data: 0
     };
     const dialogRef = this._dialog.open(ClasseSezioneAnnoEditComponent, dialogConfig);
@@ -444,8 +451,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   openDetail(classeSezioneAnnoID:any) {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '380px',
-      height: '450px',
+      width: '500px',
+      height: '400px',
       data: classeSezioneAnnoID
     };
 
@@ -516,6 +523,11 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   }
 //#endregion
 
+
+//non chiaro ma compareWith= compareObjects consente di impostare correttamente il valore di default NC 120123
+  compareObjects(o1: any, o2: any): boolean {
+    return o1.name === o2.name && o1.id === o2.id;
+  }
 
 }
 function tap(arg0: (val: any) => any): import("rxjs").OperatorFunction<PER_Docente, unknown> {

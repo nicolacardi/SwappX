@@ -28,15 +28,24 @@ export class NoteListComponent implements OnInit {
 //#region ----- Variabili -------
   matDataSource = new MatTableDataSource<DOC_Nota>();
 
-  displayedColumns: string[] =  [
+  displayedColumns: string[] =  [];
+
+
+  displayedColumnsNotePage: string[] =  [
+    "actionsColumn", 
+    "docente",
+    "alunno",
+    "dtNota",
+    "periodo",
+    "nota",
+    "ckFirmato",
+    "dtFirma"
+  ];
+
+  displayedColumnsAlunnoEdit: string[] =  [
     "actionsColumn", 
 
     "docente",
-    //"personaID",
-
-    "alunno",
-    //"iscrizioneID"
-
     "dtNota",
     "periodo",
     "nota",
@@ -54,6 +63,9 @@ export class NoteListComponent implements OnInit {
     "data Nota"
     ];
 
+  showPageTitle:                                boolean = true;
+  showTableRibbon:                              boolean = true;
+
   filterValue = '';       //Filtro semplice
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
   filterValues = {
@@ -69,10 +81,10 @@ export class NoteListComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-  @Input('iscrizioneID') iscrizioneID!:         number;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!: number;
+  @Input('dove') dove!:                         string;
 
-  @Input('alunno') alunno!:                     ALU_Alunno;
+  @Input('alunnoID') alunnoID!:                 number;
   @Input() noteFilterComponent!:                NoteFilterComponent;
 
   @ViewChild(MatPaginator) paginator!:          MatPaginator;
@@ -91,31 +103,65 @@ export class NoteListComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-    //if (this.iscrizioneID != undefined) {
       this.loadData();
-      //console.log ("iscrizioneID", this.iscrizioneID);
-    //}
   }
 
   ngOnInit(): void {
   }
 
   loadData() {
-    if (this.classeSezioneAnnoID) {
-      let obsNote$: Observable<DOC_Nota[]>;
-      obsNote$= this.svcNote.listByClasseSezioneAnnoID(this.classeSezioneAnnoID);
-      let loadNote$ =this._loadingService.showLoaderUntilCompleted(obsNote$);
 
-      loadNote$.subscribe( 
-        val =>   {
-          console.log ("loadNote", val);
-          this.matDataSource.data = val;
-          this.matDataSource.paginator = this.paginator;
-          this.matDataSource.sort = this.sort; 
-          this.matDataSource.filterPredicate = this.filterPredicate();
+    switch(this.dove) {
+
+      case 'note-page':
+        this.displayedColumns = this.displayedColumnsNotePage;
+        this.showPageTitle = true;
+        this.showTableRibbon = true;
+        
+        if (this.classeSezioneAnnoID) {
+          let obsNote$: Observable<DOC_Nota[]>;
+          obsNote$= this.svcNote.listByClasseSezioneAnnoID(this.classeSezioneAnnoID);
+          let loadNote$ =this._loadingService.showLoaderUntilCompleted(obsNote$);
+    
+          loadNote$.subscribe( 
+            val =>   {
+              this.matDataSource.data = val;
+              this.matDataSource.paginator = this.paginator;
+              this.matDataSource.sort = this.sort; 
+              this.matDataSource.filterPredicate = this.filterPredicate();
+            }
+          );
         }
-      );
+
+
+        break;
+
+      case 'alunno-edit':
+        this.displayedColumns = this.displayedColumnsAlunnoEdit;
+        this.showPageTitle = false;
+        this.showTableRibbon = false;
+
+        if (this.alunnoID) {
+          let obsNote$: Observable<DOC_Nota[]>;
+          obsNote$= this.svcNote.listByAlunnoID(this.alunnoID);
+          let loadNote$ =this._loadingService.showLoaderUntilCompleted(obsNote$);
+    
+          loadNote$.subscribe( 
+            val =>   {
+              this.matDataSource.data = val;
+              this.matDataSource.paginator = this.paginator;
+              this.matDataSource.sort = this.sort; 
+              this.matDataSource.filterPredicate = this.filterPredicate();
+            }
+          );
+        }
+        
+        break;
+      
+
+      default: this.displayedColumns = this.displayedColumnsNotePage;
     }
+
 
   }
 //#endregion

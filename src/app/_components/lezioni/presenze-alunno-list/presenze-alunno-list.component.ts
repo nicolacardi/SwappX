@@ -15,26 +15,29 @@ import { CAL_Presenza }                         from 'src/app/_models/CAL_Presen
 
 
 @Component({
-  selector:     'app-presenze-list',
-  templateUrl:  './presenze-list.component.html',
+  selector:     'app-presenze-alunno-list',
+  templateUrl:  './presenze-alunno-list.component.html',
   styleUrls:    ['../lezioni.css']
 })
 
-export class PresenzeListComponent implements OnInit {
+export class PresenzeAlunnoListComponent implements OnInit {
 
 //#region ----- Variabili -------
   matDataSource = new MatTableDataSource<CAL_Presenza>();
   
   displayedColumns: string[] = [
       "ckPresente",
-      "nome", 
-      "cognome", 
+      "dataLezione",
+      "h_Ini", 
+      "materia", 
+      "docente"
   ];
 //#endregion
 
 //#region ----- ViewChild Input Output -------
   @ViewChild(MatSort) sort!:                    MatSort;
-  @Input() lezioneID!:                          number;
+  @Input() alunnoID!:                          number;
+
 //#endregion
 
   constructor(
@@ -50,8 +53,8 @@ export class PresenzeListComponent implements OnInit {
   loadData () {
     let obsPresenze$: Observable<CAL_Presenza[]>;
 
-    if (this.lezioneID != undefined) {
-      obsPresenze$= this.svcPresenze.listByLezione(this.lezioneID);
+    if (this.alunnoID != undefined) {
+      obsPresenze$= this.svcPresenze.listByAlunno(this.alunnoID);
       const loadPresenze$ =this._loadingService.showLoaderUntilCompleted(obsPresenze$);
 
       loadPresenze$.subscribe(
@@ -69,8 +72,8 @@ export class PresenzeListComponent implements OnInit {
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {
       switch(property) {
-        case 'nome':                            return item.alunno.persona.nome;
-        case 'cognome':                         return item.alunno.persona.cognome;
+        case 'dataLezione':                     return item.lezione.dtCalendario;
+        case 'materia':                         return item.lezione.materia.descrizione;
         default:                                return item[property]
       }
     };

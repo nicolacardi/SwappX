@@ -20,13 +20,17 @@ export class NoteService {
 
   listByClasseSezioneAnnoID(classeSezioneAnnoID: number): Observable<DOC_Nota[]>{
     return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note/listByClasseSezioneAnnoID/'+classeSezioneAnnoID);   
-
     //http://213.215.231.4/swappX/api/DOC_Note/ListByClasseSezioneAnnoID/16 
   }
 
   listByIscrizione(iscrizioneID: number): Observable<DOC_Nota[]>{
     return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note/ListByIscrizione/'+iscrizioneID);   
     //http://213.215.231.4/swappX/api/DOC_Note/ListByIscrizione/285
+  }
+
+  listByAlunnoID(alunnoID: number): Observable<DOC_Nota[]>{
+    return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note/listByAlunnoID/'+alunnoID);   
+    //http://213.215.231.4/swappX/api/DOC_Note/listByAlunnoID/54 
   }
   
   get(notaID: any): Observable<DOC_Nota>{

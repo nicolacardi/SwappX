@@ -40,6 +40,7 @@ import { PersoneListComponent } from './_components/persone/persone-list/persone
 import { PersonaEditComponent } from './_components/persone/persona-edit/persona-edit.component';
 import { PersoneFilterComponent } from './_components/persone/persone-filter/persone-filter.component';
 import { PersonePageComponent } from './_components/persone/persone-page/persone-page.component';
+import { PersonaFormComponent } from './_components/persone/persona-form/persona-form.component';
 
 import { ClassiPageComponent } from './_components/classi/classi-sezioni-anni-page/classi-sezioni-anni-page.component';
 import { ClasseSezioneAnnoEditComponent } from './_components/classi/classe-sezione-anno-edit/classe-sezione-anno-edit.component';
@@ -82,15 +83,16 @@ import { PagellaVotoEditComponent } from './_components/pagelle/pagella-voto-edi
 
 import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
 import { LezioneComponent } from './_components/lezioni/lezione-edit/lezione.component';
+
 import { LezioniUtilsComponent } from './_components/lezioni/lezioni-utils/lezioni-utils.component';
 import { PresenzeListComponent } from './_components/lezioni/presenze-list/presenze-list.component';
+import { PresenzeAlunnoListComponent } from './_components/lezioni/presenze-alunno-list/presenze-alunno-list.component';
 
 import { DocenzeAddComponent } from './_components/classi/docenze/docenze-add/docenze-add.component';
 import { DocenzaEditComponent } from './_components/classi/docenze/docenza-edit/docenza-edit.component';
 
 import { DocentiDashboardComponent } from './_components/docenti/docenti-dashboard/docenti-dashboard.component';
 import { DocentiPageComponent } from './_components/docenti/docenti-page/docenti-page.component';
-
 
 import { UserService } from './_user/user.service';
 import { UserComponent } from './_user/user.component';
@@ -136,7 +138,7 @@ import { ObiettiviDuplicaComponent } from './_components/obiettivi/obiettivi-dup
 import { ClassiAnniMaterieDuplicaComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-duplica/classi-anni-materie-duplica.component';
 import { ColorPickerModule } from './color-picker/color-picker.module';
 import { PagellaEditComponent } from './_components/pagelle/pagelle-edit/pagelle-edit.component';
-import { PersonaFormComponent } from './_components/persone/persona-form/persona-form.component';
+
 import { NoteListComponent } from './_components/note/note-list/note-list.component';
 import { NotaEditComponent } from './_components/note/nota-edit/nota-edit.component';
 import { NotePageComponent } from './_components/note/note-page/note-page.component';
@@ -153,6 +155,15 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   declarations: [
     AppComponent,
     
+
+    HighlightPipe,
+    HighlightDatePipe,
+
+    DialogYesNoComponent,
+    DialogOkComponent,
+    LoadingComponent,
+    SnackbarComponent,
+
     HomeComponent,
    
     RettepagamentiSummaryComponent,
@@ -172,6 +183,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     PersoneListComponent,
     PersonaEditComponent,
     PersoneFilterComponent,
+    PersonaFormComponent,
 
     ClassiPageComponent,
     ClasseSezioneAnnoEditComponent,
@@ -183,11 +195,11 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
 
     IscrizioniClasseListComponent,
     IscrizioniAddComponent,
-
     IscrizioniPageComponent,
     IscrizioniListComponent,
-    //IscrizioniEditComponent,
     IscrizioniFilterComponent,
+    IscrizioniClasseCalcoloComponent,
+    IscrizioniAlunnoListComponent,
 
     PagamentiListComponent,
     PagamentiPageComponent,
@@ -195,56 +207,50 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     
     
     RettePageComponent,
-
     RetteListComponent,
     RettaEditComponent,
     RettameseEditComponent,
     RettapagamentoEditComponent,
-    
-    
+    RettaCalcoloComponent,
+    RettaCalcoloAlunnoComponent,
+    RettaannoEditComponent,
+
     ToolbarComponent,
     SceltaColonneComponent,
 
     LoginComponent,
     RegisterComponent,
-
     UserComponent,
     UsersPageComponent,
     UsersListComponent,
     UsersFilterComponent,
+    UserEditComponent,
+    ProfiloComponent,
 
     MessaggiComponent,
  
-    HighlightPipe,
+    LezioniCalendarioComponent,
+    LezioneComponent,
+    LezioniUtilsComponent,
 
-    HighlightDatePipe,
-    DialogYesNoComponent,
-    DialogOkComponent,
-    LoadingComponent,
-    SnackbarComponent,
-    ProfiloComponent,
     PhotocropComponent,
     ChangePswComponent,
     ImpostazioniComponent,
     ResizeColumnDirective,
-    RettaCalcoloComponent,
-    IscrizioniClasseCalcoloComponent,
-    IscrizioniAlunnoListComponent,
-    UserEditComponent,
+
     ResetPasswordComponent,
     DocenzeAddComponent,
-    LezioniCalendarioComponent,
-    LezioneComponent,
-    LezioniUtilsComponent,
-    PresenzeListComponent,
 
-    RettaCalcoloAlunnoComponent,
-    RettaannoEditComponent,
+    PresenzeListComponent,
+    PresenzeAlunnoListComponent,
+
     PagellaVotoEditComponent,
     DocenzaEditComponent,
+
     MaterieListComponent,
     MateriePageComponent,
     MateriaEditComponent,
+
     ObiettiviListComponent,
     ObiettiviPageComponent,
     ObiettivoEditComponent,
@@ -253,16 +259,18 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ClassiAnniMaterieListComponent,
     ClassiAnniMateriePageComponent,
     ClasseAnnoMateriaEditComponent,
+    ClassiAnniMaterieDuplicaComponent,
 
     ObiettiviFilterComponent,
     ObiettiviDuplicaComponent,
-    ClassiAnniMaterieDuplicaComponent,
+
     PagellaEditComponent,
-    PersonaFormComponent,
+
     NoteListComponent,
     NotaEditComponent,
     NotePageComponent,
     NoteFilterComponent,
+
     DocentiDashboardComponent,
     DocentiPageComponent,
     

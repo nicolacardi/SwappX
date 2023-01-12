@@ -65,7 +65,7 @@
                 </button>
             </div>
             
-            <mat-tab-group mat-align-tabs="center">
+            <mat-tab-group mat-align-tabs="center" >
 
 <!-- ********************************    MAT TAB ANAGRAFICA *********************************** -->
                 <mat-tab  label="Dati Anagrafici">
@@ -338,11 +338,26 @@
 
                 </mat-tab>
 <!-- ********************************    MAT TAB VOTI    ************************************** -->
-                <mat-tab label="Voti">
+                <!-- <mat-tab label="Voti">
 
-                </mat-tab>
+                </mat-tab> -->
 <!-- ********************************    MAT TAB ASSENZE ************************************** -->
                 <mat-tab label="Assenze">
+
+                    <app-presenze-alunno-list
+                    [alunnoID]="alunnoID">
+
+                    </app-presenze-alunno-list>
+
+                </mat-tab>
+<!-- ********************************    MAT TAB NOTE ************************************** -->
+                <mat-tab label="Note">
+
+                    <app-note-list
+                    [alunnoID] = "alunnoID"
+                    [dove] = "'alunno-edit'"
+                    >
+                    </app-note-list>
 
                 </mat-tab>
             </mat-tab-group>    

@@ -103,10 +103,10 @@ export class AlunniListComponent implements OnInit {
   menuTopLeftPosition =  {x: '0', y: '0'} 
   //idAlunniChecked:              number[] = [];
   
-  toggleChecks:                 boolean = false;
-  showPageTitle:                boolean = true;
-  showTableRibbon:              boolean = true;
-  public ckSoloAttivi :         boolean = true;
+  toggleChecks:                                 boolean = false;
+  showPageTitle:                                boolean = true;
+  showTableRibbon:                              boolean = true;
+  public ckSoloAttivi :                         boolean = true;
 
   filterValue = '';       //Filtro semplice
    //filterValues contiene l'elenco dei filtri avanzati da applicare 
@@ -327,7 +327,7 @@ export class AlunniListComponent implements OnInit {
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '850px',
+      width: '900px',
       height: '700px',
       data: 0
     };
@@ -341,7 +341,7 @@ export class AlunniListComponent implements OnInit {
 
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '850px',
+      width: '900px',
       height: '700px',
       data: id
     };

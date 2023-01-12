@@ -290,8 +290,8 @@ export class IscrizioniClasseListComponent implements OnInit {
     
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '850px',
-      height: '580px',
+      width: '900px',
+      height: '700px',
       data: recordID
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
@@ -321,7 +321,7 @@ export class IscrizioniClasseListComponent implements OnInit {
     let annoID = 1; //TODO questa sarà un default da mettere nei parametri
     const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
-        width: '850px',
+        width: '900px',
         height: '580px',
         data: {
           alunnoID: alunnoID,

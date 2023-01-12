@@ -5,7 +5,7 @@
 <style type="text/css">
 	.st0{fill:none;}
 	.st1{font-family:'TitilliumWeb-Black';}
-	.st2{font-size:12px;}
+	.st2{font-size:15px;}
 </style>
 <path class="st0" d="M-2.1,0.6h24v24h-24C-2.1,24.6-2.1,0.6-2.1,0.6z"/>
 <path d="M13.3,20c-0.2,0-0.4,0-0.7,0c-4.4,0-8-3.6-8-8c0-0.3,0-0.6,0.1-0.9c2.4-1.1,4.2-3,5.2-5.4C11.6,8.3,14.6,10,18,10
@@ -14,7 +14,6 @@
 <path d="M16.8,13c0-0.6-0.6-1.2-1.2-1.2c-0.7,0-1.2,0.6-1.2,1.2s0.6,1.2,1.2,1.2C16.3,14.2,16.8,13.6,16.8,13z"/>
 <path d="M8.4,13c0,0.6,0.6,1.2,1.2,1.2c0.6,0,1.2-0.6,1.2-1.2s-0.6-1.2-1.2-1.2C8.9,11.8,8.4,12.4,8.4,13z"/>
 <polygon points="14.5,17.7 14.2,20.9 17.3,20.5 26,11.8 23.2,9 "/>
-<rect x="24.6" y="7.1" transform="matrix(0.7071 -0.7071 0.7071 0.7071 1.2199 21.0368)" width="2.8" height="3.9"/>
-<rect x="29.1" y="2" class="st0" width="57.2" height="18.1"/>
-<text transform="matrix(1 0 0 1 29.1296 10.2797)"><tspan x="0" y="0" class="st1 st2">Modifica</tspan><tspan x="0" y="8.5" class="st1 st2">Alunno</tspan></text>
+<rect x="24.6" y="7.1" transform="matrix(0.7071 -0.7071 0.7071 0.7071 1.2145 21.0339)" width="2.8" height="3.9"/>
+<text transform="matrix(1 0 0 1 30.027 12.0001)" class="st1 st2">Alunno</text>
 </svg>

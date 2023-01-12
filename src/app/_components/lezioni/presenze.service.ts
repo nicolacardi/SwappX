@@ -21,6 +21,11 @@ export class PresenzeService {
     //http://213.215.231.4/swappX/api/CAL_Presenze/ListByLezione/975
   }
 
+  listByAlunno(alunnoID: number): Observable<CAL_Presenza[]>{
+    return this.http.get<CAL_Presenza[]>(environment.apiBaseUrl+'CAL_Presenze/ListByAlunno/'+alunnoID);
+    //http://213.215.231.4/swappX/api/CAL_Presenze/ListByAlunno/3
+  }
+
 
   get(presenzaID: any): Observable<CAL_Presenza>{
     return this.http.get<CAL_Presenza>(environment.apiBaseUrl+'CAL_Presenze/'+presenzaID);
