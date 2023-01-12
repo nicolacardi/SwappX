@@ -17,8 +17,8 @@
             <!-- singole checkbox di selezione record -->
             <td mat-cell *matCellDef="let element" class="_no-bottom-border" >
                 <mat-checkbox 
-                            (click)="$event.stopPropagation()"
-                            (change) = "$event ? selectedRow(element) : null"
+                            
+                            (change) = "changedCkPresente($event.checked, element)"
                             [checked] = "element.ckPresente"
                             
                             color="warn">

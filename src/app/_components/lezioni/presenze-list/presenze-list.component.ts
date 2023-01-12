@@ -111,57 +111,24 @@ export class PresenzeListComponent implements OnInit {
       switch(property) {
         case 'nome':                        return item.alunno.nome;
         case 'cognome':                     return item.alunno.cognome;
-        case 'email':                       return item.alunno.email;
-        case 'telefono':                    return item.alunno.telefono;
-        case 'dtNascita':                   return item.alunno.dtNascita;
-        case 'stato':                       return item.stato.descrizione;
         default: return item[property]
       }
     };
   }
 
-//#endregion
 
-
-
-
-
-//#region ----- Gestione Campo Checkbox -------
-  selectedRow(element: CAL_Presenza) {
-    this.selection.toggle(element);
-  }
-
-  masterToggle() {
-    this.toggleChecks = !this.toggleChecks;
-
-    if (this.toggleChecks) 
-      this.selection.select(...this.matDataSource.data);
-    else 
-      this.resetSelections();
-  }
-
-  resetSelections() {
-    this.selection.clear();
-    this.matDataSource.data.forEach(row => this.selection.deselect(row));
-  }
-
-
-
-  getChecked() {
-    //funzione usata da classi-dahsboard
-    return this.selection.selected;
-  }
-
-
-
-  //questo metodo ritorna un booleano che dice se sono selezionati tutti i record o no
-  //per ora non lo utilizzo
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;   //conta il numero di elementi selezionati
-    const numRows = this.matDataSource.data.length;       //conta il numero di elementi del matDataSource
-    return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
+  changedCkPresente( checked: boolean, presenza: CAL_Presenza) {
+    presenza.ckPresente = checked;
+    console.log (presenza);
+    this.svcPresenze.put(presenza).subscribe();
   }
 //#endregion
+
+
+
+
+
+
 
 
 

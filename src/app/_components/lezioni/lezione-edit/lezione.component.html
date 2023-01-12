@@ -32,15 +32,17 @@
             <mat-tab-group mat-align-tabs="center">
 
                 <mat-tab  label="Presenze">
-                    <button mat-mini-fab aria-label="Appello" matTooltip="Appello" class="btn ml10"
+                    <div *ngIf="!ckAppello" style="height: 200px;">
+                        <div  class="_warnCentroSchermo2" (click)="generaAppello()" >
+                            Fai l'appello!
+                        </div>
+                    </div>
 
-                    (click)="generaAppello()" >
-                        <mat-icon>restart_alt</mat-icon>
-                    </button>
-
-                    <app-presenze-list
-                    [lezioneID] = "data.lezioneID">
+                    <app-presenze-list *ngIf="ckAppello"
+                         [lezioneID] = "data.lezioneID"
+                    >
                     </app-presenze-list>
+
 
                 </mat-tab>
                 <mat-tab  label="Gestione Lezione">

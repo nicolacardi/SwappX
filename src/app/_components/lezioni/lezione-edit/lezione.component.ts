@@ -65,6 +65,7 @@ export class LezioneComponent implements OnInit {
   strClasseSezioneAnno!:                        string;
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
+  ckAppello:                                   boolean = false;
   public docenteView:                           boolean = false;
   breakpoint!:                                  number;
   //classeSezioneAnnoID!:                         number;
@@ -113,6 +114,7 @@ export class LezioneComponent implements OnInit {
       ckFirma:                    [''],
       dtFirma:                    [''],
       ckAssente:                  [''],
+      ckAppello:                  [''],
       argomento:                  [''],
       compiti:                    [''],
       supplenteID:                [''],
@@ -187,6 +189,7 @@ export class LezioneComponent implements OnInit {
       this.lezione$ = loadLezione$
       .pipe( tap(
         lezione => {
+          
           this.form.patchValue(lezione)
           //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
           this.dtStart = new Date (this.data.start);
@@ -195,6 +198,8 @@ export class LezioneComponent implements OnInit {
 
           this.dtEnd = new Date (this.data.end);
           this.strH_End = Utility.formatHour(this.dtEnd);
+          this.ckAppello = lezione.ckAppello;
+          console.log ("ckAppello", this.ckAppello);
         } )
       );
     } 
@@ -391,8 +396,28 @@ export class LezioneComponent implements OnInit {
 
                   this.svcPresenze.post(objPresenza).subscribe();
 
-                }
+            }
+
+
+            this.form.controls.ckAppello.setValue(true);
+            
+
+            
+            for (const prop in this.form.controls) {
+              this.form.value[prop] = this.form.controls[prop].value;
+            }
+            
+            this.svcLezioni.put(this.form.value).subscribe(
+              res=> {
                 this.loadData();
+
+              },
+              err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+            );
+            
+
+
+            
                 
                 
             });

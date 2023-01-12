@@ -22,6 +22,7 @@ export interface CAL_Lezione {
   ckFirma:              number;
   dtFirma:              string;
   ckAssente:            number;
+  ckAppello:            boolean;
   argomento:            string;
   compiti:              string;
   

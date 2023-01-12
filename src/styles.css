@@ -1366,6 +1366,22 @@ div.inner img {
         border: grey 1px solid;
         text-align: center;
         z-index: 1000;
+        cursor: pointer;
+    }
+
+    ._warnCentroSchermo2 {
+        position: relative;
+        width: 20%;
+        left: 40%;
+        top: 50px; 
+
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 10px;
+        border: grey 1px solid;
+        text-align: center;
+        z-index: 1000;
+        cursor: pointer;
     }
 
 

@@ -31,8 +31,8 @@ export class PresenzeService {
     return this.http.post( environment.apiBaseUrl  + 'CAL_Presenze' , presenza);  
   }
   
-  put(formData: any): Observable <any>{
-    return this.http.put( environment.apiBaseUrl  + 'CAL_Presenze/' + formData.id , formData);    
+  put(presenza: CAL_Presenza): Observable <any>{
+    return this.http.put( environment.apiBaseUrl  + 'CAL_Presenze/' + presenza.id , presenza);    
   }
 
   delete(presenzaID: number): Observable <any>{
