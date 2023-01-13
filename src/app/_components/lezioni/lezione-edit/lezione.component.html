@@ -76,11 +76,13 @@
                             </mat-form-field>
                         </mat-grid-tile>
 
-                        <mat-grid-tile class="_align-top" colspan="2" rowspan ="3">
-                            <mat-form-field class="w100 _argomento border-left pl5" appearance="outline">
-                                <mat-label>Argomenti della Lezione</mat-label>
-                                <textarea class="w300px h125px _noresize" matInput formControlName="argomento"></textarea>
-                            </mat-form-field>
+                        
+                        <mat-grid-tile class="tileCk" colspan="2" rowspan ="1">
+                            <mat-checkbox class="border-left pl10" color="primary" formControlName="ckCompito" 
+                                    (change) = "changedCkCompito($event.checked)"
+                                    >
+                                Compito in Classe
+                            </mat-checkbox>
                         </mat-grid-tile>
 
                         <mat-grid-tile>
@@ -101,6 +103,13 @@
                             </mat-form-field>
                         </mat-grid-tile>
 
+                        <mat-grid-tile class="_align-top" colspan="2" rowspan ="1">
+                            <mat-form-field class="w100 border-left pl5 pt5" appearance="outline">
+                                <mat-label>Argomento del Compito in Classe</mat-label>
+                                <textarea class="w300px h16px _noresize" matInput formControlName="argomentoCompito"></textarea>
+                            </mat-form-field>
+                        </mat-grid-tile>
+
                         <mat-grid-tile class="tileCk ml15">
                             <mat-checkbox color="primary" formControlName="ckFirma">
                                 Firma Docente
@@ -118,6 +127,13 @@
                             </mat-form-field>
                         </mat-grid-tile>
 
+                        <mat-grid-tile class="_align-top" colspan="2" rowspan ="2">
+                            <mat-form-field class="w100 border-left pl5" appearance="outline">
+                                <mat-label>Argomenti della Lezione</mat-label>
+                                <textarea class="w300px h70px _noresize" matInput formControlName="argomento"></textarea>
+                            </mat-form-field>
+                        </mat-grid-tile>
+                        
                         <mat-grid-tile class="tileCk ml15">
                             <mat-checkbox color="primary" formControlName="ckAssente" #ckAssente (change)="ckAssenteChange()">
                                 Assenza
@@ -135,18 +151,23 @@
                             </mat-form-field>
                         </mat-grid-tile>
 
-                        <mat-grid-tile class="_align-top" colspan="2" rowspan ="2">
-                            <mat-form-field class="w100 _argomento border-left pl5" appearance="outline">
-                                <mat-label>Compiti Assegnati</mat-label>
-                                <textarea class="w300px h75px _noresize" formControlName="compiti" matInput></textarea>
-                            </mat-form-field>
-                        </mat-grid-tile>
-
                         <mat-grid-tile class="tileCk ml15">
                             <mat-checkbox color="primary" formControlName="ckEpoca">
                                 Epoca
                             </mat-checkbox>
                         </mat-grid-tile>
+
+                        <mat-grid-tile class="tileCk ml15">
+
+                        </mat-grid-tile>
+
+                        <mat-grid-tile class="_align-top" colspan="2" rowspan ="2">
+                            <mat-form-field class="w100 border-left pl5" appearance="outline">
+                                <mat-label>Compiti Assegnati</mat-label>
+                                <textarea class="w300px h70px _noresize" formControlName="compiti" matInput></textarea>
+                            </mat-form-field>
+                        </mat-grid-tile>
+
                     </mat-grid-list>
                 </mat-tab>
 

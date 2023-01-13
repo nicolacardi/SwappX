@@ -65,7 +65,8 @@ export class LezioneComponent implements OnInit {
   strClasseSezioneAnno!:                        string;
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
-  ckAppello:                                   boolean = false;
+  ckAppello:                                    boolean = false;
+
   public docenteView:                           boolean = false;
   breakpoint!:                                  number;
   //classeSezioneAnnoID!:                         number;
@@ -115,6 +116,9 @@ export class LezioneComponent implements OnInit {
       dtFirma:                    [''],
       ckAssente:                  [''],
       ckAppello:                  [''],
+      ckCompito:                  [''],
+      argomentoCompito:           [''],
+
       argomento:                  [''],
       compiti:                    [''],
       supplenteID:                [''],
@@ -174,6 +178,9 @@ export class LezioneComponent implements OnInit {
       this.form.controls.ckFirma.disable();
       this.form.controls.compiti.disable();
       this.form.controls.argomento.disable();
+      this.form.controls.ckCompito.disable();
+      this.form.controls.argomentoCompito.disable();
+
     } 
     else {
       this.form.controls.h_Ini.disable();
@@ -181,6 +188,8 @@ export class LezioneComponent implements OnInit {
       this.form.controls.materiaID.disable();
       this.form.controls.supplenteID.disable();
       this.form.controls.ckEpoca.disable();
+      if (this.form.controls.ckCompito.value == false) {this.form.controls.argomentoCompito.disable();};
+
     }
 
     if (this.data.lezioneID && this.data.lezioneID + '' != "0") {
@@ -189,7 +198,7 @@ export class LezioneComponent implements OnInit {
       this.lezione$ = loadLezione$
       .pipe( tap(
         lezione => {
-          
+          console.log ("lezione", lezione);
           this.form.patchValue(lezione)
           //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
           this.dtStart = new Date (this.data.start);
@@ -431,6 +440,18 @@ export class LezioneComponent implements OnInit {
         // );
       }
     });
+  }
+
+  changedCkCompito(checked: boolean,) {
+    if (checked) 
+      {
+        this.form.controls.argomentoCompito.enable();
+      }
+    else {
+      this.form.controls.argomentoCompito.setValue('');
+      this.form.controls.argomentoCompito.disable();
+    }
+
   }
 
 }

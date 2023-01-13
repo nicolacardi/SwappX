@@ -369,7 +369,7 @@ export class LezioniCalendarioComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '900px',
-      height: '550px',
+      height: '600px',
       data: {
         lezioneID: clickInfo.event.id,
         start: clickInfo.event.start,
@@ -406,7 +406,7 @@ export class LezioniCalendarioComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '900px',
-      height: '550px',
+      height: '600px',
       data: {
         lezioneID: 0,
         start: dtStart.toLocaleString('sv').replace(' ', 'T'),
