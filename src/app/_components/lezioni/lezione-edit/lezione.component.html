@@ -40,7 +40,8 @@
 
                     <app-presenze-list *ngIf="ckAppello"
                          [lezioneID] = "data.lezioneID"
-                    >
+                    
+                        #apppresenzelist>
                     </app-presenze-list>
 
 
@@ -170,7 +171,13 @@
 
                     </mat-grid-list>
                 </mat-tab>
+                <mat-tab  *ngIf="ckCompito" label="Voti Compito">
+                    <app-voti-list
+                    [lezioneID] = "data.lezioneID"
+                    >
+                    </app-voti-list>
 
+                </mat-tab>
             </mat-tab-group>
         </form>
     </mat-card-content>

@@ -1,148 +1,169 @@
-import { NgModule } from '@angular/core';
-import { DatePipe } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
+import { NgModule }                             from '@angular/core';
+import { DatePipe }                             from '@angular/common';
+import { BrowserModule }                        from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { AppRoutingModule }                     from './app-routing.module';
+import { AppComponent }                         from './app.component';
 
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { DragDropModule} from '@angular/cdk/drag-drop';
-import { MaterialModule } from './_material/material.module';
-import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
-import listPlugin from '@fullcalendar/list'; // a plugin!
-import timegridPlugin from '@fullcalendar/timegrid'; // a plugin!
+import { HttpClientModule, HTTP_INTERCEPTORS }  from "@angular/common/http";
+import { BrowserAnimationsModule }              from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule }     from '@angular/forms';
+import { MAT_DATE_LOCALE }                      from '@angular/material/core';
+import { DragDropModule}                        from '@angular/cdk/drag-drop';
+import { MaterialModule }                       from './_material/material.module';
+import { MatPaginatorIntl }                     from '@angular/material/paginator';
 
-
-import interactionPlugin from '@fullcalendar/interaction'; // a plugin!
-
-import { AuthInterceptor } from './_user/auth/auth.interceptor';
-import { ErrorInterceptor } from './_user/auth/error.interceptor';
-
-import { HomeComponent } from './_components/home/home.component';
-import { ClassiSezioniAnniSummaryComponent } from './_components/classi/classi-sezioni-anni-summary/classi-sezioni-anni-summary.component';
-import { RettepagamentiSummaryComponent } from './_components/pagamenti/rettepagamenti-summary/rettepagamenti-summary.component';
-
-import { AlunniPageComponent } from './_components/alunni/alunni-page/alunni-page.component';
-import { AlunniListComponent } from './_components/alunni/alunni-list/alunni-list.component';
-import { AlunnoEditComponent } from './_components/alunni/alunno-edit/alunno-edit.component';
-import { AlunniFilterComponent } from './_components/alunni/alunni-filter/alunni-filter.component';
-
-import { GenitoriPageComponent } from './_components/genitori/genitori-page/genitori-page.component';
-import { GenitoriListComponent } from './_components/genitori/genitori-list/genitori-list.component';
-import { GenitoreEditComponent } from './_components/genitori/genitore-edit/genitore-edit.component';
-import { GenitoriFilterComponent } from './_components/genitori/genitori-filter/genitori-filter.component';
-
-import { PersoneListComponent } from './_components/persone/persone-list/persone-list.component';
-import { PersonaEditComponent } from './_components/persone/persona-edit/persona-edit.component';
-import { PersoneFilterComponent } from './_components/persone/persone-filter/persone-filter.component';
-import { PersonePageComponent } from './_components/persone/persone-page/persone-page.component';
-import { PersonaFormComponent } from './_components/persone/persona-form/persona-form.component';
-
-import { ClassiPageComponent } from './_components/classi/classi-sezioni-anni-page/classi-sezioni-anni-page.component';
-import { ClasseSezioneAnnoEditComponent } from './_components/classi/classe-sezione-anno-edit/classe-sezione-anno-edit.component';
-import { ClassiSezioniAnniFilterComponent } from './_components/classi/classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
-import { ClassiSezioniAnniListComponent } from './_components/classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { ClassiDashboardComponent } from './_components/classi/classi-dashboard/classi-dashboard.component';
-
-import { IscrizioniAddComponent } from './_components/iscrizioni/iscrizioni-add/iscrizioni-add.component';
-import { IscrizioniClasseListComponent } from './_components/iscrizioni/iscrizioni-classe-list/iscrizioni-classe-list.component';
-import { IscrizioniPageComponent } from './_components/iscrizioni/iscrizioni-page/iscrizioni-page.component';
-import { IscrizioniListComponent } from './_components/iscrizioni/iscrizioni-list/iscrizioni-list.component';
-import { IscrizioniFilterComponent } from './_components/iscrizioni/iscrizioni-filter/iscrizioni-filter.component';
-import { IscrizioniClasseCalcoloComponent } from './_components/iscrizioni/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
-import { IscrizioniAlunnoListComponent } from './_components/iscrizioni/iscrizioni-alunno-list/iscrizioni-alunno-list.component';
-
-import { DocenzeListComponent } from './_components/classi/docenze/docenze-list/docenze-list.component';
-
-import { PagamentiPageComponent } from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
-import { PagamentiListComponent } from './_components/pagamenti/pagamenti-list/pagamenti-list.component';
-import { PagamentiFilterComponent } from './_components/pagamenti/pagamenti-filter/pagamenti-filter.component';
-
-import { RettePageComponent } from './_components/pagamenti/rette-page/rette-page.component';
-import { RetteListComponent } from './_components/pagamenti/rette-list/rette-list.component';
-import { RettaEditComponent } from './_components/pagamenti/retta-edit/retta-edit.component';
-import { RettameseEditComponent } from './_components/pagamenti/rettamese-edit/rettamese-edit.component';
-import { RettapagamentoEditComponent } from './_components/pagamenti/rettapagamento-edit/rettapagamento-edit.component';
-import { RettaCalcoloAlunnoComponent } from './_components/pagamenti/retta-calcolo-alunno/retta-calcolo-alunno.component';
-import { RettaCalcoloComponent } from './_components/pagamenti/retta-calcolo/retta-calcolo.component';
-import { RettaannoEditComponent } from './_components/pagamenti/rettaanno-edit/rettaanno-edit.component';
-
-
-import { MaterieListComponent } from './_components/materie/materie-list/materie-list.component';
-import { MateriePageComponent } from './_components/materie/materie-page/materie-page.component';
-import { MateriaEditComponent } from './_components/materie/materia-edit/materia-edit.component';
-
-import { ObiettiviPageComponent } from './_components/obiettivi/obiettivi-page/obiettivi-page.component';
-import { ObiettiviListComponent } from './_components/obiettivi/obiettivi-list/obiettivi-list.component';
-
-import { PagellaVotoEditComponent } from './_components/pagelle/pagella-voto-edit/pagella-voto-edit.component';
-
-import { LezioniCalendarioComponent } from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
-import { LezioneComponent } from './_components/lezioni/lezione-edit/lezione.component';
-
-import { LezioniUtilsComponent } from './_components/lezioni/lezioni-utils/lezioni-utils.component';
-import { PresenzeListComponent } from './_components/lezioni/presenze-list/presenze-list.component';
-import { PresenzeAlunnoListComponent } from './_components/lezioni/presenze-alunno-list/presenze-alunno-list.component';
-
-import { DocenzeAddComponent } from './_components/classi/docenze/docenze-add/docenze-add.component';
-import { DocenzaEditComponent } from './_components/classi/docenze/docenza-edit/docenza-edit.component';
-
-import { DocentiDashboardComponent } from './_components/docenti/docenti-dashboard/docenti-dashboard.component';
-import { DocentiPageComponent } from './_components/docenti/docenti-page/docenti-page.component';
-
-import { UserService } from './_user/user.service';
-import { UserComponent } from './_user/user.component';
-import { LoginComponent } from './_user/login/login.component';
-import { RegisterComponent } from './_user/register/register.component';
-import { UsersPageComponent } from './_components/users/users-page/users-page.component';
-import { UsersListComponent } from './_components/users/users-list/users-list.component';
-import { UsersFilterComponent } from './_components/users/users-filter/users-filter.component';
-import { UserEditComponent } from './_components/users/user-edit/user-edit.component';
-
-
-import { MessaggiComponent } from './_components/messaggi/messaggi.component';
-import { ProfiloComponent } from './_user/profilo/profilo.component';
-import { ChangePswComponent } from './_user/change-psw/change-psw.component';
-
-import { ToolbarComponent } from './_components/utilities/toolbar/toolbar.component';
-import { SceltaColonneComponent } from './_components/utilities/toolbar/scelta-colonne/scelta-colonne.component';
-
-import { DialogYesNoComponent } from './_components/utilities/dialog-yes-no/dialog-yes-no.component';
-import { DialogOkComponent } from './_components/utilities/dialog-ok/dialog-ok.component';
-import { SnackbarComponent } from './_components/utilities/snackbar/snackbar.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
-import { LoadingComponent } from './_components/utilities/loading/loading.component';
-import { MatPaginatorIntl } from '@angular/material/paginator';
-import { CustomMatPaginatorIntl } from './_components/utilities/paginator-custom/custom-mat-paginator-int';
-import { HighlightPipe } from './_components/utilities/highlight/highlight.pipe';
-import { HighlightDatePipe } from './_components/utilities/highlight/highlightDate.pipe';
-import { PhotocropComponent } from './_components/utilities/photocrop/photocrop.component';
-import { EventEmitterService } from './_services/event-emitter.service';
-import { ImpostazioniComponent } from './_components/impostazioni/impostazioni.component';
 
-import { ResizeColumnDirective } from './_components/utilities/resize-column/resize-column.directive';
+//Fullcalendar
+import { FullCalendarModule }                   from '@fullcalendar/angular'; // Va prima dei plugin di FullCalendar
+import dayGridPlugin                            from '@fullcalendar/daygrid';
+import listPlugin                               from '@fullcalendar/list';
+import timegridPlugin                           from '@fullcalendar/timegrid';
+import interactionPlugin                         from '@fullcalendar/interaction';
 
-import { ResetPasswordComponent } from './_user/reset-password/reset-password.component';
+//Auth
+import { AuthInterceptor }                      from './_user/auth/auth.interceptor';
+import { ErrorInterceptor }                     from './_user/auth/error.interceptor';
 
-import { ObiettivoEditComponent } from './_components/obiettivi/obiettivo-edit/obiettivo-edit.component';
-import { VotiObiettiviEditComponent } from './_components/pagelle/voti-obiettivi-edit/voti-obiettivi-edit.component';
-import { ClassiAnniMaterieListComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-list/classi-anni-materie-list.component';
-import { ClassiAnniMateriePageComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-page/classi-anni-materie-page.component';
-import { ClasseAnnoMateriaEditComponent } from './_components/classi/classi-anni-materie/classe-anno-materia-edit/classe-anno-materia-edit.component';
-import { ObiettiviFilterComponent } from './_components/obiettivi/obiettivi-filter/obiettivi-filter.component';
-import { ObiettiviDuplicaComponent } from './_components/obiettivi/obiettivi-duplica/obiettivi-duplica.component';
-import { ClassiAnniMaterieDuplicaComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-duplica/classi-anni-materie-duplica.component';
-import { ColorPickerModule } from './color-picker/color-picker.module';
-import { PagellaEditComponent } from './_components/pagelle/pagelle-edit/pagelle-edit.component';
+//Home Page
+import { HomeComponent }                        from './_components/home/home.component';
+import { ClassiSezioniAnniSummaryComponent }    from './_components/classi/classi-sezioni-anni-summary/classi-sezioni-anni-summary.component';
+import { RettepagamentiSummaryComponent }       from './_components/pagamenti/rettepagamenti-summary/rettepagamenti-summary.component';
 
-import { NoteListComponent } from './_components/note/note-list/note-list.component';
-import { NotaEditComponent } from './_components/note/nota-edit/nota-edit.component';
-import { NotePageComponent } from './_components/note/note-page/note-page.component';
-import { NoteFilterComponent } from './_components/note/note-filter/note-filter.component';
+//Alunni
+import { AlunniPageComponent }                  from './_components/alunni/alunni-page/alunni-page.component';
+import { AlunniListComponent }                  from './_components/alunni/alunni-list/alunni-list.component';
+import { AlunnoEditComponent }                  from './_components/alunni/alunno-edit/alunno-edit.component';
+import { AlunniFilterComponent }                from './_components/alunni/alunni-filter/alunni-filter.component';
+
+//Genitori
+import { GenitoriPageComponent }                from './_components/genitori/genitori-page/genitori-page.component';
+import { GenitoriListComponent }                from './_components/genitori/genitori-list/genitori-list.component';
+import { GenitoreEditComponent }                from './_components/genitori/genitore-edit/genitore-edit.component';
+import { GenitoriFilterComponent }              from './_components/genitori/genitori-filter/genitori-filter.component';
+
+//Persone
+import { PersonePageComponent }                 from './_components/persone/persone-page/persone-page.component';
+import { PersoneListComponent }                 from './_components/persone/persone-list/persone-list.component';
+import { PersonaEditComponent }                 from './_components/persone/persona-edit/persona-edit.component';
+import { PersoneFilterComponent }               from './_components/persone/persone-filter/persone-filter.component';
+import { PersonaFormComponent }                 from './_components/persone/persona-form/persona-form.component';
+
+//Classi-ClassiSezioniAnni
+import { ClassiDashboardComponent }             from './_components/classi/classi-dashboard/classi-dashboard.component';
+import { ClassiPageComponent }                  from './_components/classi/classi-sezioni-anni-page/classi-sezioni-anni-page.component';
+import { ClasseSezioneAnnoEditComponent }       from './_components/classi/classe-sezione-anno-edit/classe-sezione-anno-edit.component';
+import { ClassiSezioniAnniFilterComponent }     from './_components/classi/classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
+import { ClassiSezioniAnniListComponent }       from './_components/classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+
+//Iscrizioni
+import { IscrizioniAddComponent }               from './_components/iscrizioni/iscrizioni-add/iscrizioni-add.component';
+import { IscrizioniClasseListComponent }        from './_components/iscrizioni/iscrizioni-classe-list/iscrizioni-classe-list.component';
+import { IscrizioniPageComponent }              from './_components/iscrizioni/iscrizioni-page/iscrizioni-page.component';
+import { IscrizioniListComponent }              from './_components/iscrizioni/iscrizioni-list/iscrizioni-list.component';
+import { IscrizioniFilterComponent }            from './_components/iscrizioni/iscrizioni-filter/iscrizioni-filter.component';
+import { IscrizioniClasseCalcoloComponent }     from './_components/iscrizioni/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
+import { IscrizioniAlunnoListComponent }        from './_components/iscrizioni/iscrizioni-alunno-list/iscrizioni-alunno-list.component';
+
+//Docenti
+import { DocentiDashboardComponent }            from './_components/docenti/docenti-dashboard/docenti-dashboard.component';
+import { DocentiPageComponent }                 from './_components/docenti/docenti-page/docenti-page.component';
+
+//Docenze
+import { DocenzeListComponent }                 from './_components/classi/docenze/docenze-list/docenze-list.component';
+import { DocenzeAddComponent }                  from './_components/classi/docenze/docenze-add/docenze-add.component';
+import { DocenzaEditComponent }                 from './_components/classi/docenze/docenza-edit/docenza-edit.component';
+
+//Pagamenti
+import { PagamentiPageComponent }               from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
+import { PagamentiListComponent }               from './_components/pagamenti/pagamenti-list/pagamenti-list.component';
+import { PagamentiFilterComponent }             from './_components/pagamenti/pagamenti-filter/pagamenti-filter.component';
+
+//Rette
+import { RettePageComponent }                   from './_components/pagamenti/rette-page/rette-page.component';
+import { RetteListComponent }                   from './_components/pagamenti/rette-list/rette-list.component';
+import { RettaEditComponent }                   from './_components/pagamenti/retta-edit/retta-edit.component';
+import { RettameseEditComponent }               from './_components/pagamenti/rettamese-edit/rettamese-edit.component';
+import { RettapagamentoEditComponent }          from './_components/pagamenti/rettapagamento-edit/rettapagamento-edit.component';
+import { RettaCalcoloAlunnoComponent }          from './_components/pagamenti/retta-calcolo-alunno/retta-calcolo-alunno.component';
+import { RettaCalcoloComponent }                from './_components/pagamenti/retta-calcolo/retta-calcolo.component';
+import { RettaannoEditComponent }               from './_components/pagamenti/rettaanno-edit/rettaanno-edit.component';
+
+//Materie
+import { MaterieListComponent }                 from './_components/materie/materie-list/materie-list.component';
+import { MateriePageComponent }                 from './_components/materie/materie-page/materie-page.component';
+import { MateriaEditComponent }                 from './_components/materie/materia-edit/materia-edit.component';
+
+//Obiettivi e VotiObiettivi
+import { ObiettiviPageComponent }               from './_components/obiettivi/obiettivi-page/obiettivi-page.component';
+import { ObiettiviListComponent }               from './_components/obiettivi/obiettivi-list/obiettivi-list.component';
+import { ObiettivoEditComponent }               from './_components/obiettivi/obiettivo-edit/obiettivo-edit.component';
+import { ObiettiviFilterComponent }             from './_components/obiettivi/obiettivi-filter/obiettivi-filter.component';
+import { ObiettiviDuplicaComponent }            from './_components/obiettivi/obiettivi-duplica/obiettivi-duplica.component';
+import { VotiObiettiviEditComponent }           from './_components/pagelle/voti-obiettivi-edit/voti-obiettivi-edit.component';
+
+//Pagella
+import { PagellaVotoEditComponent }             from './_components/pagelle/pagella-voto-edit/pagella-voto-edit.component';
+import { PagellaEditComponent }                 from './_components/pagelle/pagelle-edit/pagelle-edit.component';
+
+//Lezioni
+import { LezioniCalendarioComponent }           from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
+import { LezioneComponent }                     from './_components/lezioni/lezione-edit/lezione.component';
+import { LezioniUtilsComponent }                from './_components/lezioni/lezioni-utils/lezioni-utils.component';
+
+//Presenze
+import { PresenzeListComponent }                from './_components/lezioni/presenze-list/presenze-list.component';
+import { PresenzeAlunnoListComponent }          from './_components/lezioni/presenze-alunno-list/presenze-alunno-list.component';
+
+//Note
+import { NotePageComponent }                    from './_components/note/note-page/note-page.component';
+import { NoteListComponent }                    from './_components/note/note-list/note-list.component';
+import { NotaEditComponent }                    from './_components/note/nota-edit/nota-edit.component';
+import { NoteFilterComponent }                  from './_components/note/note-filter/note-filter.component';
+
+//Voti
+import { VotiListComponent }                    from './_components/lezioni/voti-list/voti-list.component';
+
+//User e Profilo
+import { UserService }                          from './_user/user.service';
+import { UserComponent }                        from './_user/user.component';
+import { LoginComponent }                       from './_user/login/login.component';
+import { RegisterComponent }                    from './_user/register/register.component';
+import { UsersPageComponent }                   from './_components/users/users-page/users-page.component';
+import { UsersListComponent }                   from './_components/users/users-list/users-list.component';
+import { UsersFilterComponent }                 from './_components/users/users-filter/users-filter.component';
+import { UserEditComponent }                    from './_components/users/user-edit/user-edit.component';
+import { ProfiloComponent }                     from './_user/profilo/profilo.component';
+import { ChangePswComponent }                   from './_user/change-psw/change-psw.component';
+import { ResetPasswordComponent }               from './_user/reset-password/reset-password.component';
+
+//Messaggi
+import { MessaggiComponent }                    from './_components/messaggi/messaggi.component';
+
+//Utilities
+import { ToolbarComponent }                     from './_components/utilities/toolbar/toolbar.component';
+import { SceltaColonneComponent }               from './_components/utilities/toolbar/scelta-colonne/scelta-colonne.component';
+
+import { DialogYesNoComponent }                 from './_components/utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogOkComponent }                    from './_components/utilities/dialog-ok/dialog-ok.component';
+import { SnackbarComponent }                    from './_components/utilities/snackbar/snackbar.component';
+import { LoadingComponent }                     from './_components/utilities/loading/loading.component';
+import { HighlightPipe }                        from './_components/utilities/highlight/highlight.pipe';
+import { HighlightDatePipe }                    from './_components/utilities/highlight/highlightDate.pipe';
+import { PhotocropComponent }                   from './_components/utilities/photocrop/photocrop.component';
+import { EventEmitterService }                  from './_services/event-emitter.service';
+import { ImpostazioniComponent }                from './_components/impostazioni/impostazioni.component';
+import { CustomMatPaginatorIntl }               from './_components/utilities/paginator-custom/custom-mat-paginator-int';
+
+import { ResizeColumnDirective }                from './_components/utilities/resize-column/resize-column.directive';
+import { ColorPickerModule }                    from './color-picker/color-picker.module';
+
+//ClassiAnniMaterie
+import { ClassiAnniMaterieListComponent }       from './_components/classi/classi-anni-materie/classi-anni-materie-list/classi-anni-materie-list.component';
+import { ClassiAnniMateriePageComponent }       from './_components/classi/classi-anni-materie/classi-anni-materie-page/classi-anni-materie-page.component';
+import { ClasseAnnoMateriaEditComponent }       from './_components/classi/classi-anni-materie/classe-anno-materia-edit/classe-anno-materia-edit.component';
+import { ClassiAnniMaterieDuplicaComponent }    from './_components/classi/classi-anni-materie/classi-anni-materie-duplica/classi-anni-materie-duplica.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -233,6 +254,10 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     LezioneComponent,
     LezioniUtilsComponent,
 
+    PresenzeListComponent,
+    PresenzeAlunnoListComponent,
+    VotiListComponent,
+
     PhotocropComponent,
     ChangePswComponent,
     ImpostazioniComponent,
@@ -241,8 +266,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ResetPasswordComponent,
     DocenzeAddComponent,
 
-    PresenzeListComponent,
-    PresenzeAlunnoListComponent,
 
     PagellaVotoEditComponent,
     DocenzaEditComponent,

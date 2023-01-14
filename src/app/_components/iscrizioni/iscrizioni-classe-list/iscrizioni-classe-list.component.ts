@@ -123,7 +123,6 @@ export class IscrizioniClasseListComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-    console.log ("ngOnChanges");
 
       switch(this.dove) {
 
@@ -165,8 +164,6 @@ export class IscrizioniClasseListComponent implements OnInit {
 
   loadData () {
     let obsIscrizioni$: Observable<CLS_Iscrizione[]>;
-    console.log ("loadData");
-    console.log ("this.classeSezioneAnnoID", this.classeSezioneAnnoID);
 
     //if (this.context == "classi-dashboard" && this.classeSezioneAnnoID != undefined) {
     if (this.classeSezioneAnnoID != undefined) {

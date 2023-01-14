@@ -26,14 +26,18 @@ import { LoadingService }                       from '../../utilities/loading/lo
 import { LezioniService }                       from '../lezioni.service';
 import { PresenzeService }                      from '../presenze.service';
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
+import { VotiService }                          from '../voti.service';
+
 //models
 import { CAL_Lezione }                          from 'src/app/_models/CAL_Lezione';
 import { MAT_Materia }                          from 'src/app/_models/MAT_Materia';
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_ClasseDocenteMateria';
-import { DialogDataLezione }                    from 'src/app/_models/DialogData';
-import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 import { CAL_Presenza }                         from 'src/app/_models/CAL_Presenza';
+import { TST_Voto }                             from 'src/app/_models/TST_Voti';
+import { DialogDataLezione }                    from 'src/app/_models/DialogData';
+import { VotiListComponent } from '../voti-list/voti-list.component';
+import { PresenzeListComponent } from '../presenze-list/presenze-list.component';
 
 
 @Component({
@@ -66,6 +70,7 @@ export class LezioneComponent implements OnInit {
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
   ckAppello:                                    boolean = false;
+  ckCompito:                                    boolean = false;
 
   public docenteView:                           boolean = false;
   breakpoint!:                                  number;
@@ -73,6 +78,8 @@ export class LezioneComponent implements OnInit {
 
 
   @ViewChild('autosize') autosize!:             CdkTextareaAutosize;
+  @ViewChild(VotiListComponent) VotiListComponent!: VotiListComponent; 
+  @ViewChild(PresenzeListComponent) PresenzeListComponent!: PresenzeListComponent; 
 
 
 //#endregion
@@ -89,6 +96,7 @@ export class LezioneComponent implements OnInit {
     private svcClasseSezioneAnno:               ClassiSezioniAnniService,
     private svcIscrizioni:                      IscrizioniService,
     private svcPresenze:                        PresenzeService,
+    private svcVoti:                            VotiService,
 
     public _dialog:                             MatDialog,
     private _snackBar:                          MatSnackBar,
@@ -99,31 +107,32 @@ export class LezioneComponent implements OnInit {
     _dialogRef.disableClose = true;
 
     this.form = this.fb.group({
-      id:                         [null],
-      classeSezioneAnnoID:        [''],
-      dtCalendario:               [''],
+      id:                                       [null],
+      classeSezioneAnnoID:                      [''],
+      dtCalendario:                             [''],
     
       //campi di FullCalendar
-      title:                      [''],
-      h_Ini:                      [''],     
-      h_End:                      [''],    
-      colore:                     [''],
+      title:                                    [''],
+      h_Ini:                                    [''],     
+      h_End:                                    [''],    
+      colore:                                   [''],
   
-      docenteID:                  [{value: '', disabled: true}],
-      materiaID:                  [''],
-      ckEpoca:                    [''],
-      ckFirma:                    [''],
-      dtFirma:                    [''],
-      ckAssente:                  [''],
-      ckAppello:                  [''],
-      ckCompito:                  [''],
-      argomentoCompito:           [''],
+      docenteID:                                [{value: '', disabled: true}],
+      materiaID:                                [''],
+      ckEpoca:                                  [''],
+      ckFirma:                                  [''],
+      dtFirma:                                  [''],
+      ckAssente:                                [''],
+      ckAppello:                                [''],
 
-      argomento:                  [''],
-      compiti:                    [''],
-      supplenteID:                [''],
-      start:                      [''],
-      end:                        ['']
+      ckCompito:                                [''],
+      argomentoCompito:                         [''],
+
+      argomento:                                [''],
+      compiti:                                  [''],
+      supplenteID:                              [''],
+      start:                                    [''],
+      end:                                      ['']
     });
   }
 
@@ -183,12 +192,13 @@ export class LezioneComponent implements OnInit {
 
     } 
     else {
+      
       this.form.controls.h_Ini.disable();
       this.form.controls.h_End.disable();
       this.form.controls.materiaID.disable();
       this.form.controls.supplenteID.disable();
       this.form.controls.ckEpoca.disable();
-      if (this.form.controls.ckCompito.value == false) {this.form.controls.argomentoCompito.disable();};
+
 
     }
 
@@ -208,7 +218,9 @@ export class LezioneComponent implements OnInit {
           this.dtEnd = new Date (this.data.end);
           this.strH_End = Utility.formatHour(this.dtEnd);
           this.ckAppello = lezione.ckAppello;
-          console.log ("ckAppello", this.ckAppello);
+          this.ckCompito = lezione.ckCompito;
+          if (lezione.ckCompito && this.data.dove !="orario") this.form.controls.argomentoCompito.enable();
+          else this.form.controls.argomentoCompito.disable();
         } )
       );
     } 
@@ -386,70 +398,113 @@ export class LezioneComponent implements OnInit {
 
     dialogYesNo.afterClosed().subscribe(result => {
       if(result) {
-        console.log ("VA BENE: classesezioneAnnoID", this.data.classeSezioneAnnoID);
         this.svcIscrizioni.listByClasseSezioneAnno(this.data.classeSezioneAnnoID)
-            .subscribe(iscrizioni => {
-                console.log("Array iscrizioni", iscrizioni);
+        .subscribe(iscrizioni => {
+          //Inserisce le presenze
+          for (let iscrizione of iscrizioni) {
+            let objPresenza : CAL_Presenza =
+            { id : 0,
+              AlunnoID : iscrizione.alunnoID,
+              LezioneID : this.data.lezioneID,
+              ckPresente : true,
+              ckDAD: false
+            };
+            this.svcPresenze.post(objPresenza).subscribe();
+          }
 
-                for (let iscrizione of iscrizioni) {
+          //ora deve salvare il ckAppello nella lezione: 
+          //ATTENZIONE: così salva anche eventuali modifiche ad altri campi che magari uno non voleva salvare
+          //forse bisognerebbe salvare SOLO il ckAppello
+          this.form.controls.ckAppello.setValue(true);
+          
+          for (const prop in this.form.controls) {
+            this.form.value[prop] = this.form.controls[prop].value;
+          }
+        
+          this.svcLezioni.put(this.form.value).subscribe(
+            res=> {
+              this.PresenzeListComponent.loadData();
 
-                
-                  //(iscrizione: CLS_Iscrizione) => {
-                  let objPresenza : CAL_Presenza =
-                  { id : 0,
-                    AlunnoID : iscrizione.alunnoID,
-                    LezioneID : this.data.lezioneID,
-                    ckPresente : true,
-                    ckDAD: false
-                  };
-
-                  this.svcPresenze.post(objPresenza).subscribe();
-
-            }
-
-
-            this.form.controls.ckAppello.setValue(true);
-            
-
-            
-            for (const prop in this.form.controls) {
-              this.form.value[prop] = this.form.controls[prop].value;
-            }
-            
-            this.svcLezioni.put(this.form.value).subscribe(
-              res=> {
-                this.loadData();
-
-              },
-              err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-            );
-            
-
-
-            
-                
-                
-            });
-
-        // this.svcAlunni.delete(Number(this.alunnoID)).subscribe (
-        //   res=> {
-        //     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
-        //     this._dialogRef.close();
-        //   },
-        //   err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}  )
-        // );
+            },
+            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          );
+        
+        });
       }
     });
   }
 
   changedCkCompito(checked: boolean,) {
+    this.ckCompito = checked;
     if (checked) 
       {
         this.form.controls.argomentoCompito.enable();
+
+        //Ora bisogna inserire in Voti un valore per ogni alunno
+        this.svcIscrizioni.listByClasseSezioneAnno(this.data.classeSezioneAnnoID)
+        .subscribe(iscrizioni => {
+          //Inserisce le presenze
+          for (let iscrizione of iscrizioni) {
+            let objVoto : TST_Voto =
+            { id : 0,
+              AlunnoID : iscrizione.alunnoID,
+              LezioneID : this.data.lezioneID,
+              voto : '',
+              giudizio: ''
+            };
+
+            this.svcVoti.post(objVoto).subscribe();
+          }
+
+          //ora deve salvare il ckCompito e l'argomentoCompito nella lezione: 
+          //ATTENZIONE: così salva anche eventuali modifiche ad altri campi che magari uno non voleva salvare
+          //forse bisognerebbe salvare SOLO il ckCompito e l'argomentoCompito
+          //this.form.controls.ckCompito.setValue(true); //dovrebbe essere già settato
+          
+          for (const prop in this.form.controls) {
+            this.form.value[prop] = this.form.controls[prop].value;
+          }
+        
+          this.svcLezioni.put(this.form.value).subscribe(
+            res=> {
+              this.VotiListComponent.loadData();
+            },
+            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          );
+        
+        });
+          
+
+        
       }
     else {
       this.form.controls.argomentoCompito.setValue('');
       this.form.controls.argomentoCompito.disable();
+
+      const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma di voler cancellare il compito e con esso tutti i voti dello stesso?"}
+      });
+  
+      dialogYesNo.afterClosed().subscribe(result => {
+        if(result) {
+          this.svcVoti.deleteByLezione(this.data.lezioneID).subscribe();
+          for (const prop in this.form.controls) {
+            this.form.value[prop] = this.form.controls[prop].value;
+          }
+        
+          this.svcLezioni.put(this.form.value).subscribe(
+            res=> {
+              this.VotiListComponent.loadData();
+            },
+            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          );
+        } else {
+          this.form.controls.ckCompito.setValue(true);
+          this.ckCompito = true;
+        }
+      });
+
     }
 
   }
