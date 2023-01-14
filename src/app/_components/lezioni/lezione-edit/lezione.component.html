@@ -31,21 +31,7 @@
             <mat-label class="center mt20 fs16" *ngIf="data.lezioneID || emptyForm">{{strDtStart | date: 'EEEE, d MMMM, y' : '+0100' : 'it' }} - Classe: {{strClasseSezioneAnno}}</mat-label>
             <mat-tab-group mat-align-tabs="center">
 
-                <mat-tab  label="Presenze">
-                    <div *ngIf="!ckAppello" style="height: 200px;">
-                        <div  class="_warnCentroSchermo2" (click)="generaAppello()" >
-                            Fai l'appello!
-                        </div>
-                    </div>
 
-                    <app-presenze-list *ngIf="ckAppello"
-                         [lezioneID] = "data.lezioneID"
-                    
-                        #apppresenzelist>
-                    </app-presenze-list>
-
-
-                </mat-tab>
                 <mat-tab  label="Gestione Lezione">
 
                     <!-- <mat-label class="center" *ngIf="data.lezioneID || emptyForm">dalle  {{strH_Ini}} - alle {{strH_end}}</mat-label> -->
@@ -171,12 +157,20 @@
 
                     </mat-grid-list>
                 </mat-tab>
+                <mat-tab  label="Presenze">
+                    <div *ngIf="!ckAppello" style="height: 200px;">
+                        <div  class="_warnCentroSchermo2" (click)="generaAppello()" >
+                            Fai l'appello!
+                        </div>
+                    </div>
+                    <app-presenze-list *ngIf="ckAppello"
+                         [lezioneID] = "data.lezioneID">
+                    </app-presenze-list>
+                </mat-tab>
                 <mat-tab  *ngIf="ckCompito" label="Voti Compito">
                     <app-voti-list
-                    [lezioneID] = "data.lezioneID"
-                    >
+                    [lezioneID] = "data.lezioneID">
                     </app-voti-list>
-
                 </mat-tab>
             </mat-tab-group>
         </form>
