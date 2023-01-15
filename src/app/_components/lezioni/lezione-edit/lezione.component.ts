@@ -125,7 +125,7 @@ export class LezioneComponent implements OnInit {
       ckAssente:                                [''],
       ckAppello:                                [''],
 
-      ckCompito:                                [''],
+      ckCompito:                                [false],
       argomentoCompito:                         [''],
 
       argomento:                                [''],
@@ -208,7 +208,7 @@ export class LezioneComponent implements OnInit {
       this.lezione$ = loadLezione$
       .pipe( tap(
         lezione => {
-          console.log ("lezione", lezione);
+          console.log ("lezione loadData", lezione);
           this.form.patchValue(lezione)
           //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
           this.dtStart = new Date (this.data.start);
@@ -276,7 +276,10 @@ export class LezioneComponent implements OnInit {
         for (const prop in this.form.controls) {
           this.form.value[prop] = this.form.controls[prop].value;
         }
-        if (this.form.controls['id'].value == null) {          
+        if (this.form.controls['id'].value == null) {   
+          if (this.form.controls.ckAppello.value == '')   this.form.controls.ckAppello.setValue(false);     
+          if (this.form.controls.ckCompito.value == '')   this.form.controls.ckCompito.setValue(false);     
+          console.log ("this.form.value prima di post", this.form.value);
           this.svcLezioni.post(this.form.value).subscribe(
             res => {
               this._dialogRef.close();

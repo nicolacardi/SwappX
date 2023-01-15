@@ -140,7 +140,8 @@ export class LezioniCalendarioComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-    if (this.classeSezioneAnnoID != undefined  && this.dove != undefined) 
+    //if (this.classeSezioneAnnoID != undefined  && this.dove != undefined) 
+    if ( (this.dove == "orario" && this.classeSezioneAnnoID != undefined) || (this.dove == "orarioDocente"  && this.docenteID != undefined)) 
       this.loadData();
   }
 
@@ -151,6 +152,7 @@ export class LezioniCalendarioComponent implements OnInit {
     let obsLezioni$: Observable<CAL_Lezione[]>;
     this.showWarn = false;
     if (this.dove == "orario") {
+    //if (this.classeSezioneAnnoID) {
       //se c'è un Docente selezionato allora filtro anche per lui
       if (this.docenteID != undefined && this.docenteID > 0) {
         obsLezioni$= this.svcLezioni.listByDocenteClasseSezioneAnno(this.docenteID, this.classeSezioneAnnoID);
@@ -159,7 +161,7 @@ export class LezioniCalendarioComponent implements OnInit {
         obsLezioni$= this.svcLezioni.listByClasseSezioneAnno(this.classeSezioneAnnoID);
       }
     } else {
-      //qui ("orario per Docente) non conta la classe ma solo il docenteID
+      //qui ("orario per Docente") non conta la classe ma solo il docenteID
       if (this.docenteID != undefined && this.docenteID > 0) {
         obsLezioni$= this.svcLezioni.listByDocente(this.docenteID);
       } else {

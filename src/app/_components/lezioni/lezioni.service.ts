@@ -102,6 +102,7 @@ export class LezioniService {
 
   post(formData: any): Observable <any>{
     formData.id = 0;
+    console.log (formData);
     return this.http.post( environment.apiBaseUrl  + 'CAL_Lezioni' , formData);  
   }
 

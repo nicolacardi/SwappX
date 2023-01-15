@@ -18,6 +18,7 @@ import { DocenzeService } from '../../classi/docenze/docenze.service';
 import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { DocentiService } from '../docenti.service';
+import { LezioniCalendarioComponent } from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
 
 @Component({
   selector: 'app-docenti-dashboard',
@@ -49,7 +50,7 @@ export class DocentiDashboardComponent implements OnInit {
   // @ViewChild(IscrizioniClasseListComponent) viewListIscrizioni!: IscrizioniClasseListComponent; 
   // @ViewChild(DocenzeListComponent) viewDocenzeList!: DocenzeListComponent; 
   // @ViewChild('orarioLezioniDOM') viewOrarioLezioni!: LezioniCalendarioComponent; 
-  // @ViewChild('orarioDocenteDOM') viewOrarioDocente!: LezioniCalendarioComponent; 
+  @ViewChild('orarioDocenteDOM') viewOrarioDocente!: LezioniCalendarioComponent; 
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
 
   //#endregion
@@ -119,16 +120,12 @@ alunnoEmitted(alunno: ALU_Alunno) {
 
 selectedTabValue(event: any){
   //senza questo espediente non fa il primo render correttamente
-/*
-  if (this.tabGroup.selectedIndex == 2) {
-    this.viewOrarioLezioni.calendarDOM.getApi().render();
-    this.viewOrarioLezioni.loadData();
-  }
-  if (this.tabGroup.selectedIndex == 3) {
+
+  if (this.tabGroup.selectedIndex == 1) {
     this.viewOrarioDocente.calendarDOM.getApi().render();
     this.viewOrarioDocente.loadData()
 
   }
-  */
+  
 }
 }

@@ -37,7 +37,11 @@
                 </mat-tab>
                 
                 <mat-tab  label="Orario Per Docente">
-                    <app-lezioni-calendario [classeSezioneAnnoID]="classeSezioneAnnoID" [docenteID] = "docenteID" [dove]="'orarioDocente'" #orarioDocenteDOM></app-lezioni-calendario>
+                    <app-lezioni-calendario 
+                        [classeSezioneAnnoID]="classeSezioneAnnoID" 
+                        [docenteID] = "docenteID" 
+                        [dove]="'orarioDocente'" #orarioDocenteDOM>
+                    </app-lezioni-calendario>
                 </mat-tab>
 
                 <!--

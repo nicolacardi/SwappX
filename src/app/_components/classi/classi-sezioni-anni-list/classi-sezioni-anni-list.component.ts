@@ -211,12 +211,13 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
       );
       
     this.obsDocenti$ = this.svcDocenti.list()
-    .pipe(
-      finalize( () => {
-          this.form.controls.selectDocente.setValue(0); //funziona solo dopo aver implementato con compareWith...NC120123
-        }
-      )
-    );
+    // .pipe(
+    //   finalize( () => {
+    //       this.form.controls.selectDocente.setValue(this.docenteID); //funziona solo dopo aver implementato con compareWith...NC120123
+    //     }
+    //   )
+    // )
+    ;
     
 
     this.loadData();
@@ -258,10 +259,16 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
           this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe( 
             res => {            
               this.docenteID = res.id;
-              this.form.controls['selectDocente'].setValue(res.id);
+              this.form.controls.selectDocente.setValue(res.id);
+              console.log("res", res);
             },
-            err => console.log("getDocenteBypersonaID- KO:", err)
+            err => {
+              console.log("getDocenteBypersonaID- KO:", err);
+              this.docenteID = 0;
+            }
           );
+        } else {
+          this.form.controls.selectDocente.setValue(0)
         }
 
         // this.matDataSource.sort = this.sort; TODO
@@ -526,6 +533,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //non chiaro ma compareWith= compareObjects consente di impostare correttamente il valore di default NC 120123
   compareObjects(o1: any, o2: any): boolean {
+    console.log ("compareObjects, o1, o2", o1, o2);
     return o1.name === o2.name && o1.id === o2.id;
   }
 
