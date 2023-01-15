@@ -357,10 +357,9 @@ export class ClassiDashboardComponent implements OnInit {
       this.viewOrarioLezioni.calendarDOM.getApi().render();
       this.viewOrarioLezioni.loadData();
     }
-    if (this.tabGroup.selectedIndex == 3) {
-      this.viewOrarioDocente.calendarDOM.getApi().render();
-      this.viewOrarioDocente.loadData()
-
-    }
+    // if (this.tabGroup.selectedIndex == 3) {
+    //   this.viewOrarioDocente.calendarDOM.getApi().render();
+    //   this.viewOrarioDocente.loadData()
+    // }
   }
 }

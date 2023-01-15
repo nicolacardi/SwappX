@@ -27,12 +27,18 @@ export class LezioniService {
     //http://213.215.231.4/swappX/api/CAL_Lezioni/ListByClasseSezioneAnno/16
   }
 
+  //NON USATA
   listByClasseSezioneAnnoCkCompito(classeSezioneAnnoID: number): Observable<CAL_Lezione[]>{
     return this.http.get<CAL_Lezione[]>(environment.apiBaseUrl+'CAL_Lezioni/ListByClasseSezioneAnno/'+classeSezioneAnnoID)
     .pipe (
-      map(val=>val.filter(val=>(val.ckCompito == true))),  //BELLA MERDA
+      map(val=>val.filter(val=>(val.ckCompito == true))),  
     );
     //http://213.215.231.4/swappX/api/CAL_Lezioni/ListByClasseSezioneAnno/16
+  }
+
+  listCompiti(classeSezioneAnnoID: number, docenteID: number): Observable<CAL_Lezione[]>{
+    return this.http.get<CAL_Lezione[]>(environment.apiBaseUrl+'CAL_Lezioni/ListCompiti/'+classeSezioneAnnoID+"/"+docenteID)
+    //http://213.215.231.4/swappX/api/CAL_Lezioni/listCompiti/16/1005
   }
 
   listByDocente(docenteID: number): Observable<CAL_Lezione[]>{

@@ -17,17 +17,17 @@
 
         <ng-container matColumnDef="dtCalendario">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Data</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.dtCalendario"></td>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.dtCalendario | highlightDate: filterValue"></td>
         </ng-container>
         
         <ng-container matColumnDef="materia">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Materia</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.materia"></td>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.materia.descrizione | highlight:filterValue" ></td>
         </ng-container>
         
         <ng-container matColumnDef="argomento">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Argomento</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.argomento"></td>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.argomentoCompito | highlight:filterValue"></td>
         </ng-container>
         
         <!-- **************************   MAT-HEADER-ROW   ******************* -->

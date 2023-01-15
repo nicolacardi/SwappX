@@ -48,6 +48,8 @@ export class CompitiListComponent implements OnInit {
 //#region ----- ViewChild Input Output -------
   @ViewChild(MatSort) sort!:                    MatSort;
   @Input() classeSezioneAnnoID!:                number;
+  @Input() docenteID!:                          number;
+
 //#endregion
 
   constructor( private svcLezioni:                         LezioniService,
@@ -68,15 +70,17 @@ export class CompitiListComponent implements OnInit {
     let obsLezioni$: Observable<CAL_Lezione[]>;
 
     if (this.classeSezioneAnnoID != undefined) {
-      obsLezioni$= this.svcLezioni.listByClasseSezioneAnnoCkCompito(this.classeSezioneAnnoID);
+      obsLezioni$= this.svcLezioni.listCompiti(this.classeSezioneAnnoID, this.docenteID);
       const loadLezioni$ =this._loadingService.showLoaderUntilCompleted(obsLezioni$);
 
       loadLezioni$.subscribe(
         res =>  {
-          console.log ("Compiti-list - loadData: ", res);
+          
+          //console.log ("Compiti-list - loadData: ", res);
           this.matDataSource.data = res;
           this.sortCustom(); 
           this.matDataSource.sort = this.sort; 
+          this.matDataSource.filterPredicate = this.filterPredicate();
         }
       );
     } 
@@ -90,8 +94,8 @@ export class CompitiListComponent implements OnInit {
 sortCustom() {
   this.matDataSource.sortingDataAccessor = (item:any, property) => {
     switch(property) {
-      case 'nome':                            return item.alunno.persona.nome;
-      case 'cognome':                         return item.alunno.persona.cognome;
+      case 'materia':                            return item.materia.descrizione;
+      case 'argomento':                         return item.argomentoCompito;
       default:                                return item[property]
     }
   };
@@ -105,50 +109,38 @@ applyFilter(event: Event) {
   this.matDataSource.filter = JSON.stringify(this.filterValues)
 }
 
+
 filterPredicate(): (data: any, filter: string) => boolean {
   let filterFunction = function(data: any, filter: any): boolean {
 
     let searchTerms = JSON.parse(filter);
-    let foundAlunno : boolean = false;
      
-   let dtNotaddmmyyyy!: string;
-    if (data.dtNota){
-      let dArrN = data.dtNota.split("-");
-       dtNotaddmmyyyy = dArrN[2].substring(0,2)+ "/" +dArrN[1]+"/"+dArrN[0];
-    } else {
-       dtNotaddmmyyyy = '';
-    }
+   let ddmmyyyy!: string;
+    if (data.dtCalendario){
+      let dArrN = data.dtCalendario.split("-");
+       ddmmyyyy = dArrN[2].substring(0,2)+ "/" +dArrN[1]+"/"+dArrN[0];
+    } 
+    else 
+      ddmmyyyy = '';
 
-    let dtFirmaddmmyyyy!: string;
-    if (data.dtFirma){
-      let dArrF = data.dtFirma.split("-");
-       dtFirmaddmmyyyy = dArrF[2].substring(0,2)+ "/" +dArrF[1]+"/"+dArrF[0];
-    } else {
-       dtFirmaddmmyyyy = '';
-    }
-
-    console.log ("st", searchTerms);
-    console.log ("data", data);
-
-    let boolSx = String(dtNotaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
-                || String(data.nota).indexOf(searchTerms.filtrosx) !== -1
-                || (data.periodo == searchTerms.periodo)
-                || String(data.persona.nome.toLowerCase() + ' ' + data.persona.cognome.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1
-                || String(dtFirmaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
-                || String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1;
+    let boolSx = String(ddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
+                || String(data.materia.descrizione.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1
+                || String(data.argomentoCompito.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1;
                 
     // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
-    let boolDx = String(dtNotaddmmyyyy).indexOf(searchTerms.dtNota) !== -1
-                  && String(data.nota.toLowerCase()).indexOf(searchTerms.nota) !== -1
-                  && ((data.periodo == searchTerms.periodo) || searchTerms.periodo == '' || searchTerms.periodo == null)
-                  && String(data.persona.nome.toLowerCase() + ' ' + data.persona.cognome.toLowerCase()).indexOf(searchTerms.docente) !== -1
-                  && String(dtFirmaddmmyyyy).indexOf(searchTerms.dtFirma) !== -1
-                  && String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.alunno) !== -1 ;
+    // let boolDx = String(dtNotaddmmyyyy).indexOf(searchTerms.dtNota) !== -1
+    //               && String(data.nota.toLowerCase()).indexOf(searchTerms.nota) !== -1
+    //               && ((data.periodo == searchTerms.periodo) || searchTerms.periodo == '' || searchTerms.periodo == null)
+    //               && String(data.persona.nome.toLowerCase() + ' ' + data.persona.cognome.toLowerCase()).indexOf(searchTerms.docente) !== -1
+    //               && String(dtFirmaddmmyyyy).indexOf(searchTerms.dtFirma) !== -1
+    //               && String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.alunno) !== -1 ;
 
-    return boolSx && boolDx;
+    return boolSx;
+    //return boolSx && boolDx;
   }
   return filterFunction;
 }
+
 
 //#endregion
 
