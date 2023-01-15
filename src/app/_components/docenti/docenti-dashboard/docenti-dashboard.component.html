@@ -35,11 +35,11 @@
                         </div>
                     <!-- </mat-card> -->
                 </mat-tab>
-            <!--
+                
                 <mat-tab  label="Orario Per Docente">
                     <app-lezioni-calendario [classeSezioneAnnoID]="classeSezioneAnnoID" [docenteID] = "docenteID" [dove]="'orarioDocente'" #orarioDocenteDOM></app-lezioni-calendario>
                 </mat-tab>
-            -->
+
                 <!--
                 <mat-tab  label="Pagelle">
                     <table>
@@ -61,10 +61,11 @@
                         </tr>
                     </table>
                 </mat-tab>
-                <mat-tab  label="Note">
-                    <app-note-page [classeSezioneAnnoID]="classeSezioneAnnoID"> </app-note-page>
-                </mat-tab>
             -->
+
+            <mat-tab  label="Note"  >
+                <app-note-page [classeSezioneAnnoID]="classeSezioneAnnoID"> </app-note-page>
+            </mat-tab>
             </mat-tab-group>
    
         </td>

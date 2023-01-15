@@ -18,8 +18,6 @@ import { DocenzeService } from '../../classi/docenze/docenze.service';
 import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { DocentiService } from '../docenti.service';
-import { concatMap, tap } from 'rxjs/operators';
-import { convertActionBinding } from '@angular/compiler/src/compiler_util/expression_converter';
 
 @Component({
   selector: 'app-docenti-dashboard',
@@ -74,10 +72,11 @@ export class DocentiDashboardComponent implements OnInit {
         this.classeSezioneAnnoIDrouted = params['classeSezioneAnnoID'];  
     });
 
-    this._navigationService.passPage("docentiDashboard");
+    //this._navigationService.passPage("docentiDashboard");
 
     this.currUser = Utility.getCurrentUser();
-    
+    console.log("curruser: ", this.currUser)
+
     if(this.currUser.personaID != null){
       this.svcDocenti.getByPersonaID(this.currUser.personaID)
         //.pipe(
