@@ -1,7 +1,7 @@
 export interface TST_Voto {
   id:                                           number;
-  LezioneID:                                    number;
-  AlunnoID:                                     number;
+  lezioneID:                                    number;
+  alunnoID:                                     number;
   voto:                                         number;
   giudizio:                                     string;
 

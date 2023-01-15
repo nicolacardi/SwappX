@@ -49,13 +49,13 @@ export class VotiListComponent implements OnInit {
   }
 
   loadData () {
-    let obsPresenze$: Observable<TST_Voto[]>;
+    let obsVoti$: Observable<TST_Voto[]>;
 
     if (this.lezioneID != undefined) {
-      obsPresenze$= this.svcVoti.listByLezione(this.lezioneID);
-      const loadPresenze$ =this._loadingService.showLoaderUntilCompleted(obsPresenze$);
+      obsVoti$= this.svcVoti.listByLezione(this.lezioneID);
+      const loadVoti$ =this._loadingService.showLoaderUntilCompleted(obsVoti$);
 
-      loadPresenze$.subscribe(
+      loadVoti$.subscribe(
         res =>  {
           console.log ("res", res);
           this.matDataSource.data = res;
@@ -77,15 +77,22 @@ export class VotiListComponent implements OnInit {
     };
   }
 
-  changeVoto(element: TST_Voto, voto: string) {
+  changeVoto(element: TST_Voto, voto: string ) {
     
     let votoN = parseInt(voto);
     if (votoN >10 ) votoN = 10
     if (votoN <0 )  votoN = 0
     element.voto = votoN;
-    element.LezioneID = this.lezioneID;
 
-    this.svcVoti.put(element);
+    this.svcVoti.put(element).subscribe();
+
+  }
+
+  changeGiudizio(element: TST_Voto, giudizio: string) {
+    
+    element.giudizio = giudizio;
+
+    this.svcVoti.put(element).subscribe();
 
   }
 

@@ -274,38 +274,44 @@ export class LezioneComponent implements OnInit {
         //   this.form.value[prop] = this.form.controls[prop].value;
         // }
 
-        if (this.form.controls['id'].value == null) {   
-          if (this.form.controls.ckAppello.value == '')   this.form.controls.ckAppello.setValue(false);     
-          if (this.form.controls.ckCompito.value == '')   this.form.controls.ckCompito.setValue(false);     
+
+        if (this.form.controls.ckAppello.value == '')   this.form.controls.ckAppello.setValue(false);     
+        if (this.form.controls.ckCompito.value == '')   this.form.controls.ckCompito.setValue(false);     
+        
+
+        const objLezione = <CAL_Lezione>{
           
-          const objLezione = <CAL_Lezione>{
-            id:0,
-            classeSezioneAnnoID: this.form.controls.classeSezioneAnnoID.value,
-            dtCalendario: this.form.controls.dtCalendario.value,
-            title: this.form.controls.title.value,
-            start: this.form.controls.start.value,
-            end: this.form.controls.end.value,
-            colore: this.form.controls.colore.value,
+          classeSezioneAnnoID: this.form.controls.classeSezioneAnnoID.value,
+          dtCalendario: this.form.controls.dtCalendario.value,
+          title: this.form.controls.title.value,
+          start: this.form.controls.start.value,
+          end: this.form.controls.end.value,
+          colore: this.form.controls.colore.value,
 
-            h_Ini: this.form.controls.h_Ini.value,
-            h_End: this.form.controls.h_End.value,
+          h_Ini: this.form.controls.h_Ini.value,
+          h_End: this.form.controls.h_End.value,
 
-            docenteID: this.form.controls.docenteID.value,
-            materiaID: this.form.controls.materiaID.value,
-            supplenteID: this.form.controls.supplenteID.value,
+          docenteID: this.form.controls.docenteID.value,
+          materiaID: this.form.controls.materiaID.value,
+          supplenteID: this.form.controls.supplenteID.value,
 
-            ckEpoca: this.form.controls.ckEpoca.value,
-            ckFirma: this.form.controls.ckFirma.value,
-            dtFirma: this.form.controls.dtFirma.value,
-            ckAssente: this.form.controls.ckAssente.value,
-            ckAppello: this.form.controls.ckAppello.value,
-            
-            argomento: this.form.controls.argomento.value,
-            compiti: this.form.controls.compiti.value,
-            ckCompito: this.form.controls.ckCompito.value,
-            argomentoCompito: this.form.controls.argomentoCompito.value
-          };
+          ckEpoca: this.form.controls.ckEpoca.value,
+          ckFirma: this.form.controls.ckFirma.value,
+          dtFirma: this.form.controls.dtFirma.value,
+          ckAssente: this.form.controls.ckAssente.value,
+          ckAppello: this.form.controls.ckAppello.value,
+          
+          argomento: this.form.controls.argomento.value,
+          compiti: this.form.controls.compiti.value,
+          ckCompito: this.form.controls.ckCompito.value,
+          argomentoCompito: this.form.controls.argomentoCompito.value
+        };
 
+
+        if (this.form.controls['id'].value == null) {   
+
+          
+          objLezione.id = 0;
           //this.svcLezioni.post(this.form.value).subscribe(
           this.svcLezioni.post(objLezione).subscribe(
             res => {
@@ -316,7 +322,10 @@ export class LezioneComponent implements OnInit {
           );
         } 
         else  {
-          this.svcLezioni.put(this.form.value).subscribe(
+          //this.svcLezioni.put(this.form.value).subscribe(
+            objLezione.id = this.form.controls.id.value;
+            this.svcLezioni.put(objLezione).subscribe(
+
             res=> {
               this._dialogRef.close();
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
@@ -475,8 +484,8 @@ export class LezioneComponent implements OnInit {
           let objVoto : TST_Voto =
           { 
             id : 0,
-            AlunnoID : iscrizione.alunnoID,
-            LezioneID : this.data.lezioneID,
+            alunnoID : iscrizione.alunnoID,
+            lezioneID : this.data.lezioneID,
             voto : 0,
             giudizio: ''
           };

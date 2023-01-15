@@ -260,7 +260,6 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
             res => {            
               this.docenteID = res.id;
               this.form.controls.selectDocente.setValue(res.id);
-              console.log("res", res);
             },
             err => {
               console.log("getDocenteBypersonaID- KO:", err);
