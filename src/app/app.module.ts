@@ -164,6 +164,7 @@ import { ClassiAnniMaterieListComponent }       from './_components/classi/class
 import { ClassiAnniMateriePageComponent }       from './_components/classi/classi-anni-materie/classi-anni-materie-page/classi-anni-materie-page.component';
 import { ClasseAnnoMateriaEditComponent }       from './_components/classi/classi-anni-materie/classe-anno-materia-edit/classe-anno-materia-edit.component';
 import { ClassiAnniMaterieDuplicaComponent }    from './_components/classi/classi-anni-materie/classi-anni-materie-duplica/classi-anni-materie-duplica.component';
+import { CompitiListComponent } from './_components/lezioni/compiti-list/compiti-list.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -222,10 +223,18 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     IscrizioniClasseCalcoloComponent,
     IscrizioniAlunnoListComponent,
 
+    LezioniCalendarioComponent,
+    LezioneComponent,
+    LezioniUtilsComponent,
+
+    PresenzeListComponent,
+    PresenzeAlunnoListComponent,
+    VotiListComponent,
+    CompitiListComponent,
+
     PagamentiListComponent,
     PagamentiPageComponent,
     PagamentiFilterComponent,
-    
     
     RettePageComponent,
     RetteListComponent,
@@ -249,14 +258,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ProfiloComponent,
 
     MessaggiComponent,
- 
-    LezioniCalendarioComponent,
-    LezioneComponent,
-    LezioniUtilsComponent,
-
-    PresenzeListComponent,
-    PresenzeAlunnoListComponent,
-    VotiListComponent,
 
     PhotocropComponent,
     ChangePswComponent,

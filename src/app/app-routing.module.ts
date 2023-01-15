@@ -30,6 +30,7 @@ import { ObiettiviPageComponent } from './_components/obiettivi/obiettivi-page/o
 import { ClassiAnniMateriePageComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-page/classi-anni-materie-page.component';
 import { NotePageComponent } from './_components/note/note-page/note-page.component';
 import { DocentiDashboardComponent } from './_components/docenti/docenti-dashboard/docenti-dashboard.component';
+import { CompitiListComponent } from './_components/lezioni/compiti-list/compiti-list.component';
 
 const routes: Routes = [
 
@@ -61,6 +62,8 @@ const routes: Routes = [
   { path: "classi-dashboard", component: ClassiDashboardComponent,canActivate:[AuthGuard] },
 
   { path: "docenti-dashboard", component: DocentiDashboardComponent,canActivate:[AuthGuard],data: { roles: ['SysAdmin', 'Segreteria', 'Amministratore', 'Maestro' ] }  },
+
+  { path: "compiti",          component: CompitiListComponent,canActivate:[AuthGuard],data: { roles: ['SysAdmin', 'Segreteria', 'Amministratore', 'Maestro' ] } },
 
   { path: "pagamenti",        component: PagamentiPageComponent,canActivate:[AuthGuard] },
 

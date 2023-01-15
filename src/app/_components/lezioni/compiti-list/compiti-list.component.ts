@@ -17,7 +17,7 @@ import { LezioniService } from '../lezioni.service';
 
 @Component({
   selector:     'app-voti-list',
-  templateUrl:  './voti-list.component.html',
+  templateUrl:  './compiti-list.component.html',
   styleUrls:    ['../lezioni.css']
 })
 
