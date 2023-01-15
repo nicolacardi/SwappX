@@ -25,11 +25,11 @@ import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
   styleUrls: ['../note.component.css']
 })
 export class NoteListComponent implements OnInit {
+  
 //#region ----- Variabili -------
   matDataSource = new MatTableDataSource<DOC_Nota>();
 
   displayedColumns: string[] =  [];
-
 
   displayedColumnsNotePage: string[] =  [
     "actionsColumn", 
@@ -44,7 +44,6 @@ export class NoteListComponent implements OnInit {
 
   displayedColumnsAlunnoEdit: string[] =  [
     "actionsColumn", 
-
     "docente",
     "dtNota",
     "periodo",
@@ -92,11 +91,9 @@ export class NoteListComponent implements OnInit {
 
 //#endregion  
 
-  constructor( 
-    private svcNote:                            NoteService,
-    private _loadingService:                    LoadingService,
-    public _dialog:                             MatDialog 
-  ) {
+  constructor( private svcNote:                            NoteService,
+               private _loadingService:                    LoadingService,
+               public _dialog:                             MatDialog ) {
 
   }
 

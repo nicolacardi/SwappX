@@ -38,10 +38,9 @@ export class VotiListComponent implements OnInit {
   @Input() lezioneID!:                          number;
 //#endregion
 
-  constructor(
-    private svcVoti:                            VotiService,
-    private _loadingService:                    LoadingService,
-  ) { }
+  constructor( private svcVoti:                            VotiService,
+               private _loadingService:                    LoadingService ) { 
+  }
   
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit () {
@@ -57,7 +56,7 @@ export class VotiListComponent implements OnInit {
 
       loadVoti$.subscribe(
         res =>  {
-          console.log ("res", res);
+          //console.log ("res", res);
           this.matDataSource.data = res;
           this.sortCustom(); 
           this.matDataSource.sort = this.sort; 

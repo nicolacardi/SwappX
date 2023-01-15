@@ -1,40 +1,33 @@
 
+    <h1 *ngIf="showPageTitle" class="_titolo-pagina">Compiti in classe</h1>
+
+    <!-- **************************   FILTER   ******************* -->
+    <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
+        <mat-label>Filtro</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
+    </mat-form-field>   
+
+    <!-- **************************   PAGINATOR   ******************* -->
+    <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>
 
     <!-- **************************   MAT-TABLE   ******************* -->
-    <table mat-table class="_table-row-low transparent w100" 
-        [dataSource]="matDataSource"
-        matSort>
+    <table mat-table class="_table-row-low transparent w100" [dataSource]="matDataSource" matSort>
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
 
-        <ng-container matColumnDef="nome">
-            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.nome"></td>
+        <ng-container matColumnDef="dtCalendario">
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Data</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.dtCalendario"></td>
         </ng-container>
         
-        <ng-container matColumnDef="cognome">
-            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.cognome"></td>
+        <ng-container matColumnDef="materia">
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Materia</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.materia"></td>
         </ng-container>
-
-        <ng-container matColumnDef="voto">
-            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Voto</th>
-            <td mat-cell *matCellDef="let element">
-                <input matInput type="number" placeholder="voto" 
-                       [value]="element.voto"                 
-                       maxlength="2" #voto>
-            </td>
-            <!--(change)="changeVoto(element, voto.value)" -->
-        </ng-container>
-
-        <ng-container matColumnDef="giudizio">
-            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Giudizio</th>
-            <td mat-cell *matCellDef="let element">
-                <input matInput type="text" placeholder="giudizio" 
-                       [value]="element.giudizio" 
-                       #giudizio>
-            </td>
-            <!--(change)="changeGiudizio(element, giudizio.value)" -->
+        
+        <ng-container matColumnDef="argomento">
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Argomento</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.argomento"></td>
         </ng-container>
         
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
