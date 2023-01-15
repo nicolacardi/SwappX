@@ -477,7 +477,7 @@ export class LezioneComponent implements OnInit {
             id : 0,
             AlunnoID : iscrizione.alunnoID,
             LezioneID : this.data.lezioneID,
-            voto : '',
+            voto : 0,
             giudizio: ''
           };
           this.svcVoti.post(objVoto).subscribe();

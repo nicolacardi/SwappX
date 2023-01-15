@@ -77,6 +77,18 @@ export class VotiListComponent implements OnInit {
     };
   }
 
+  changeVoto(element: TST_Voto, voto: string) {
+    
+    let votoN = parseInt(voto);
+    if (votoN >10 ) votoN = 10
+    if (votoN <0 )  votoN = 0
+    element.voto = votoN;
+    element.LezioneID = this.lezioneID;
+
+    this.svcVoti.put(element);
+
+  }
+
 
 }
 
