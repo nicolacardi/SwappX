@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { Utility } from '../utilities/utility.component';
 
 import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -23,6 +24,14 @@ export class LezioniService {
 
   listByClasseSezioneAnno(classeSezioneAnnoID: number): Observable<CAL_Lezione[]>{
     return this.http.get<CAL_Lezione[]>(environment.apiBaseUrl+'CAL_Lezioni/ListByClasseSezioneAnno/'+classeSezioneAnnoID);
+    //http://213.215.231.4/swappX/api/CAL_Lezioni/ListByClasseSezioneAnno/16
+  }
+
+  listByClasseSezioneAnnoCkCompito(classeSezioneAnnoID: number): Observable<CAL_Lezione[]>{
+    return this.http.get<CAL_Lezione[]>(environment.apiBaseUrl+'CAL_Lezioni/ListByClasseSezioneAnno/'+classeSezioneAnnoID)
+    .pipe (
+      map(val=>val.filter(val=>(val.ckCompito== true))),
+    );
     //http://213.215.231.4/swappX/api/CAL_Lezioni/ListByClasseSezioneAnno/16
   }
 
