@@ -111,6 +111,8 @@ import { PagellaEditComponent }                 from './_components/pagelle/page
 import { LezioniCalendarioComponent }           from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
 import { LezioneComponent }                     from './_components/lezioni/lezione-edit/lezione.component';
 import { LezioniUtilsComponent }                from './_components/lezioni/lezioni-utils/lezioni-utils.component';
+import { OrarioDocentePageComponent }           from './_components/lezioni/orario-docente-page/orario-docente-page.component';
+
 
 //Presenze
 import { PresenzeListComponent }                from './_components/lezioni/presenze-list/presenze-list.component';
@@ -164,7 +166,8 @@ import { ClassiAnniMaterieListComponent }       from './_components/classi/class
 import { ClassiAnniMateriePageComponent }       from './_components/classi/classi-anni-materie/classi-anni-materie-page/classi-anni-materie-page.component';
 import { ClasseAnnoMateriaEditComponent }       from './_components/classi/classi-anni-materie/classe-anno-materia-edit/classe-anno-materia-edit.component';
 import { ClassiAnniMaterieDuplicaComponent }    from './_components/classi/classi-anni-materie/classi-anni-materie-duplica/classi-anni-materie-duplica.component';
-import { CompitiListComponent } from './_components/lezioni/compiti-list/compiti-list.component';
+
+import { CompitiListComponent }                 from './_components/lezioni/compiti-list/compiti-list.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -226,6 +229,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     LezioniCalendarioComponent,
     LezioneComponent,
     LezioniUtilsComponent,
+    OrarioDocentePageComponent,
 
     PresenzeListComponent,
     PresenzeAlunnoListComponent,

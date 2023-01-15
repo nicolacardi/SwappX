@@ -99,7 +99,7 @@
                 
                 <a mat-list-item class="h35px" routerLink="classi" (click)="clickMenuItem()">
                     <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/classiSezioniAnniList.svg">
-                    <span>Elenco Classi</span>
+                    <span>Classi</span>
                 </a> 
 
                 <a mat-list-item class="h35px" routerLink="classi-dashboard" (click)="clickMenuItem()">
@@ -118,22 +118,23 @@
                 <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
                     <mat-panel-title>
                         <img class="iconaMenuSidenav mr10"  src="../assets/mainMenuWhite/docente.svg">
-                        <span class="fs16">Docenti</span>
+                        <span class="fs16">Cruscotto Docente</span>
                     </mat-panel-title>
                     <mat-panel-description> </mat-panel-description>
                 </mat-expansion-panel-header>
 
                 <mat-divider></mat-divider>
 
+                <a mat-list-item class="h35px" routerLink="calendario-docente" (click)="clickMenuItem()">
+                    <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/calendar_docente.svg">
+                    <span>Orario Docente</span>
+                </a> 
+
                 <a mat-list-item class="h35px" routerLink="docenti-dashboard" (click)="clickMenuItem()">
-                    <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/classiSezioniAnniDashboard.svg">
-                    <span>Gestione Classi</span>
+                    <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/classi_docente.svg">
+                    <span>Classi Docente</span>
                 </a>
 
-                <a mat-list-item class="h35px" routerLink="compiti" (click)="clickMenuItem()">
-                    <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/classiSezioniAnniList.svg">
-                    <span>Compiti in classe</span>
-                </a> 
             </mat-expansion-panel>
 
 
@@ -155,7 +156,7 @@
 
                 <a mat-list-item class="h35px" routerLink="pagamenti" (click)="clickMenuItem()">
                     <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/pagamenti.svg">
-                    <span>Elenco Pagamenti</span>
+                    <span>Pagamenti</span>
                 </a> 
                 <a mat-list-item class="h35px" routerLink="rette" (click)="clickMenuItem()">
                     <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/retteList.svg">

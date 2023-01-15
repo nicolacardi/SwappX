@@ -50,7 +50,7 @@ export class DocentiDashboardComponent implements OnInit {
   // @ViewChild(IscrizioniClasseListComponent) viewListIscrizioni!: IscrizioniClasseListComponent; 
   // @ViewChild(DocenzeListComponent) viewDocenzeList!: DocenzeListComponent; 
   // @ViewChild('orarioLezioniDOM') viewOrarioLezioni!: LezioniCalendarioComponent; 
-  @ViewChild('orarioDocenteDOM') viewOrarioDocente!: LezioniCalendarioComponent; 
+  // @ViewChild('orarioDocenteDOM') viewOrarioDocente!: LezioniCalendarioComponent; 
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
 
   //#endregion
@@ -121,11 +121,11 @@ alunnoEmitted(alunno: ALU_Alunno) {
 selectedTabValue(event: any){
   //senza questo espediente non fa il primo render correttamente
 
-  if (this.tabGroup.selectedIndex == 1) {
-    this.viewOrarioDocente.calendarDOM.getApi().render();
-    this.viewOrarioDocente.loadData()
+  // if (this.tabGroup.selectedIndex == 1) {
+  //   this.viewOrarioDocente.calendarDOM.getApi().render();
+  //   this.viewOrarioDocente.loadData()
 
-  }
+  // }
   
 }
 }

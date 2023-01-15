@@ -40,6 +40,28 @@
   z-index: 1000;
 }
 
+::ng-deep ._iconFirmaListWeek {
+  width: 20px;
+  top: 2px;
+  right: 2px;
+  z-index: 1000;
+}
+
+::ng-deep ._iconEpocaListWeek {
+width: 20px;
+top: 2px;
+right: 25px;
+z-index: 1000;
+}
+
+::ng-deep ._iconCompitoListWeek {
+width: 20px;
+top: 2px;
+right: 48px;
+z-index: 1000;
+}
+
+
 ::ng-deep .may-form-field {
   width: 300px;
 }

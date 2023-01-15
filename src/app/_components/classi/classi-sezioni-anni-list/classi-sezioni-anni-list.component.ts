@@ -39,20 +39,20 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#region ----- Variabili -------
-  currUser!: User;
+  currUser!:                                    User;
 
-  matDataSourceIscrizioni = new MatTableDataSource<CLS_ClasseSezioneAnno>();
-  matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnnoGroup>();
+  matDataSourceIscrizioni =                     new MatTableDataSource<CLS_ClasseSezioneAnno>();
+  matDataSource =                               new MatTableDataSource<CLS_ClasseSezioneAnnoGroup>();
 
-  displayedColumns: string[] =  [];
+  displayedColumns:                             string[] =  [];
 
-  displayedColumnsClassiDashboard: string[] =  [
+  displayedColumnsClassiDashboard:              string[] =  [
     "descrizione",
     "sezione",
     "numAlunni"
   ];
 
-  displayedColumnsClassiPage: string[] =  [
+  displayedColumnsClassiPage:                   string[] =  [
     "actionsColumn",
     //"annoscolastico",
     //"seq",
@@ -73,7 +73,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     "sezioneAnnoSuccessivo"
   ];
 
-  displayedColumnsAlunnoEditList: string[] =  [
+  displayedColumnsAlunnoEditList:               string[] =  [
     "descrizione",
     "sezione",
     "addToAttended"
@@ -85,7 +85,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   // ];
 
 
-  displayedColumnsRettaCalcolo: string[] =  [
+  displayedColumnsRettaCalcolo:                 string[] =  [
     "descrizione",
     "sezione",
     "numAlunni",
@@ -109,30 +109,30 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     "numero alunni"
   ];
 
-  selection = new SelectionModel<CLS_ClasseSezioneAnnoGroup>(true, []);   //rappresenta la selezione delle checkbox
+  selection =                                   new SelectionModel<CLS_ClasseSezioneAnnoGroup>(true, []);   //rappresenta la selezione delle checkbox
   
-  toggleChecks:                       boolean = false;
-  public ckSoloAttivi :               boolean = true;
+  toggleChecks:                                 boolean = false;
+  public ckSoloAttivi :                         boolean = true;
 
-  annoIDrouted!:                      string; //Da routing
-  docenteIDrouted!:                   string; //Da routing
-  classeSezioneAnnoIDrouted!:         number; //Da routing
+  annoIDrouted!:                                string; //Da routing
+  docenteIDrouted!:                             string; //Da routing
+  classeSezioneAnnoIDrouted!:                   number; //Da routing
 
-  docenteID!:                         number;
+  docenteID!:                                   number;
   
-  classeSezioneAnnoID!:               number;
-  classeSezioneAnno!:                 CLS_ClasseSezioneAnno;
-  showSelect:                         boolean = true;
-  showSelectDocente:                  boolean = true;
+  classeSezioneAnnoID!:                         number;
+  classeSezioneAnno!:                           CLS_ClasseSezioneAnno;
+  showSelect:                                   boolean = true;
+  showSelectDocente:                            boolean = true;
 
-  showPageTitle:                      boolean = true;
-  showTableRibbon:                    boolean = true;
+  showPageTitle:                                boolean = true;
+  showTableRibbon:                              boolean = true;
 
-  obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;     
-  obsDocenti$!:                       Observable<PER_Docente[]>;
+  obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>;     
+  obsDocenti$!:                                 Observable<PER_Docente[]>;
 
-  form! :                             FormGroup;
-  public showProgress=                false;
+  form! :                                       FormGroup;
+  public showProgress=                          false;
   selectedRowIndex = -1;
 
   filterValue = '';       //Filtro semplice
@@ -169,14 +169,16 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#endregion
 
-  constructor( private svcClassiSezioniAnni:         ClassiSezioniAnniService,
-               private svcAnni:                      AnniScolasticiService,
-               private svcDocenti:                   DocentiService,
-               private _loadingService:              LoadingService,
-               private fb:                           FormBuilder, 
-               public _dialog:                       MatDialog, 
-               private actRoute:                     ActivatedRoute,
-               private _snackBar:                    MatSnackBar ) {
+  constructor( 
+    private svcClassiSezioniAnni:               ClassiSezioniAnniService,
+    private svcAnni:                            AnniScolasticiService,
+    private svcDocenti:                         DocentiService,
+    private _loadingService:                    LoadingService,
+    private fb:                                 FormBuilder, 
+    public _dialog:                             MatDialog, 
+    private actRoute:                           ActivatedRoute,
+    private _snackBar:                          MatSnackBar 
+  ) {
 
     let objAnno = localStorage.getItem('AnnoCorrente');
     

@@ -16,7 +16,7 @@
     Pagamenti
 </span>
 
-<h1 class="_titolo-pagina">Elenco Rette </h1>
+<h1 class="_titolo-pagina">Rette</h1>
 <form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
     <mat-form-field class="ml20 topZIndex">
         <mat-select formControlName="selectAnnoScolastico" (selectionChange)="updateList()" #annoscolastico>

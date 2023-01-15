@@ -65,7 +65,7 @@ export class PersoneListComponent implements OnInit {
     filtrosx: ''
   };
   
-  rptTitle = 'Elenco Persone';
+  rptTitle = 'Persone';
   rptFileName = 'ListaPersone';
 
   rptFieldsToKeep  = [

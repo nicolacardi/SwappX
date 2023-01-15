@@ -59,7 +59,7 @@
                     <!-- </mat-card> -->
                 </mat-tab>
                 <!-- <mat-tab  label="Orario" (selectedTabChange)="rerenderCAL()"> -->
-                <mat-tab  label="Orario Per Classe">
+                <mat-tab  label="Orario Generale">
                     <app-lezioni-calendario 
                         [classeSezioneAnnoID]="classeSezioneAnnoID" 
                         [docenteID] = "docenteID" 
@@ -94,7 +94,7 @@
                         </tr>
                     </table>
                 </mat-tab>
-                <mat-tab  label="Note" style="">
+                <mat-tab  label="Note Disciplinari" style="">
                     <app-note-page [classeSezioneAnnoID]="classeSezioneAnnoID"> </app-note-page>
                 </mat-tab>
             </mat-tab-group>
