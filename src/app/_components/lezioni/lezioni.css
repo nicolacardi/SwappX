@@ -32,6 +32,14 @@
   z-index: 1000;
 }
 
+::ng-deep ._iconCompito {
+  width: 20px;
+  position: absolute;
+  top: 2px;
+  right: 48px;
+  z-index: 1000;
+}
+
 ::ng-deep .may-form-field {
   width: 300px;
 }

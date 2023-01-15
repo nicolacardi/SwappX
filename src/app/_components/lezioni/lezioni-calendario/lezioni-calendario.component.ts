@@ -100,8 +100,17 @@ export class LezioniCalendarioComponent implements OnInit {
             
             img2.className = "_iconEpoca";
 
+            //Aggiungo icona compito
+            let img3 = document.createElement('img');
+            if (event.event._def.extendedProps.ckCompito == true) 
+              img3.src = '../../assets/epoca_YES.svg';
+            else 
+              img3.src = '../../assets/compito.svg';
+            
+            img3.className = "_iconCompito";
 
-            let arrayOfDomNodes = [ timeText, titleText, img2, img];     //prepara il set di Nodes
+
+            let arrayOfDomNodes = [ timeText, titleText, img2, img, img3];     //prepara il set di Nodes
             return { domNodes: arrayOfDomNodes }
         }
         }
@@ -267,7 +276,16 @@ export class LezioniCalendarioComponent implements OnInit {
           this.toggleEpoca(arg.event.id);                        //collega il metodo all'immagine
         })
 
-        let arrayOfDomNodes = [ timeText, titleText, img, img2];     //prepara il set di Nodes
+        //Aggiungo icona compito
+        let img3 = document.createElement('img');
+        if (arg.event._def.extendedProps.ckCompito == true) 
+          img3.src = '../../assets/compito_YES.svg';
+        else 
+          img3.src = '../../assets/compito_NO.svg';
+        
+        img3.className = "_iconCompito";
+
+        let arrayOfDomNodes = [ timeText, titleText, img, img2, img3];     //prepara il set di Nodes
         return { domNodes: arrayOfDomNodes }
     }
   }
@@ -311,7 +329,16 @@ export class LezioniCalendarioComponent implements OnInit {
         this.toggleEpoca(arg.event.id);                        //collega il metodo all'immagine
       })
 
-      let arrayOfDomNodes = [ timeText, docenteText, img, img2 ];     //prepara il set di Nodes
+    //Aggiungo icona compito
+    let img3 = document.createElement('img');
+    if (arg.event._def.extendedProps.ckCompito == true) 
+      img3.src = '../../assets/compito_YES.svg';
+    else 
+      img3.src = '../../assets/compito_NO.svg';
+    
+    img3.className = "_iconCompito";
+
+      let arrayOfDomNodes = [ timeText, docenteText, img, img2, img3 ];     //prepara il set di Nodes
       return { domNodes: arrayOfDomNodes }
     }
   }
@@ -357,7 +384,16 @@ export class LezioniCalendarioComponent implements OnInit {
         this.toggleEpoca(arg.event.id);                        //collega il metodo all'immagine
       })
 
-      let arrayOfDomNodes = [ timeText, classeText, img, img2 ];     //prepara il set di Nodes
+          //Aggiungo icona compito
+    let img3 = document.createElement('img');
+    if (arg.event._def.extendedProps.ckCompito == true) 
+      img3.src = '../../assets/compito_YES.svg';
+    else 
+      img3.src = '../../assets/compito_NO.svg';
+    
+    img3.className = "_iconCompito";
+
+      let arrayOfDomNodes = [ timeText, classeText, img, img2, img3 ];     //prepara il set di Nodes
       return { domNodes: arrayOfDomNodes }
     }
   }
