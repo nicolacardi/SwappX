@@ -29,7 +29,6 @@ export interface CAL_Lezione {
 
   ckCompito:                                    boolean;
   argomentoCompito:                             string;
-
   
   docente:                                      PER_Docente;
   persona:                                      PER_Persona;

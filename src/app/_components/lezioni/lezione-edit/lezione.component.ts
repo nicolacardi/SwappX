@@ -273,14 +273,52 @@ export class LezioneComponent implements OnInit {
         //https://thecodemon.com/angular-get-value-from-disabled-form-control-while-submitting/
         //i campi disabled non vengono più passati al form!
         //va prima lanciato questo loop che "ripopola" il form anche con i valori dei campi disabled
-        for (const prop in this.form.controls) {
-          this.form.value[prop] = this.form.controls[prop].value;
-        }
+        
+        // for (const prop in this.form.controls) {
+        //   this.form.value[prop] = this.form.controls[prop].value;
+        // }
+
         if (this.form.controls['id'].value == null) {   
           if (this.form.controls.ckAppello.value == '')   this.form.controls.ckAppello.setValue(false);     
           if (this.form.controls.ckCompito.value == '')   this.form.controls.ckCompito.setValue(false);     
           console.log ("this.form.value prima di post", this.form.value);
-          this.svcLezioni.post(this.form.value).subscribe(
+          console.log ("this.form.value- this.form.controls.value: ", this.form.controls.value);
+          
+          //var objLezione!: CAL_Lezione; 
+          const objLezione = <CAL_Lezione>{
+            id:0,
+            classeSezioneAnnoID: this.form.controls.classeSezioneAnnoID.value,
+            dtCalendario: this.form.controls.dtCalendario.value,
+            title: this.form.controls.title.value,
+            start: this.form.controls.start.value,
+            end: this.form.controls.end.value,
+            colore: this.form.controls.colore.value,
+
+            h_Ini: this.form.controls.h_Ini.value,
+            h_End: this.form.controls.h_End.value,
+
+            docenteID: this.form.controls.docenteID.value,
+            materiaID: this.form.controls.materiaID.value,
+            supplenteID: this.form.controls.supplenteID.value,
+
+            ckEpoca: this.form.controls.ckEpoca.value,
+            ckFirma: this.form.controls.ckFirma.value,
+            dtFirma: this.form.controls.dtFirma.value,
+            ckAssente: this.form.controls.ckAssente.value,
+            ckAppello: this.form.controls.ckAppello.value,
+            
+            argomento: this.form.controls.argomento.value,
+            compiti: this.form.controls.compiti.value,
+            ckCompito: this.form.controls.ckCompito.value,
+            argomentoCompito: this.form.controls.argomentoCompito.value
+
+          };
+
+          //const tmpObj = <CAL_Lezione>{};
+          //tmpObj.id =0;
+          
+          //this.svcLezioni.post(this.form.value).subscribe(
+          this.svcLezioni.post(objLezione).subscribe(
             res => {
               this._dialogRef.close();
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});

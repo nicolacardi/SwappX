@@ -27,13 +27,11 @@
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
+
             <!-- In questo modo si fa il setting della data locale timezone fuso orario (keywords per trovarlo) -->
             <mat-label class="center mt20 fs16" *ngIf="data.lezioneID || emptyForm">{{strDtStart | date: 'EEEE, d MMMM, y' : '+0100' : 'it' }} - Classe: {{strClasseSezioneAnno}}</mat-label>
             <mat-tab-group mat-align-tabs="center">
-
-
                 <mat-tab  label="Gestione Lezione">
-
                     <!-- <mat-label class="center" *ngIf="data.lezioneID || emptyForm">dalle  {{strH_Ini}} - alle {{strH_end}}</mat-label> -->
                     <mat-grid-list class="no-overflowx mt20" [cols]="4" rowHeight="60px">
 
@@ -52,12 +50,11 @@
 
                         <mat-grid-tile>
                             <mat-form-field >
-                                <input matInput
-                                    required
-                                    formControlName = "h_End"
-                                    type="time"
-                                    placeholder="Ora Fine"
-                                    (change)="dp2Change()">
+                                <input matInput required
+                                       formControlName = "h_End"
+                                       type="time"
+                                       placeholder="Ora Fine"
+                                       (change)="dp2Change()">
                                 <mat-datepicker #dpEnd ></mat-datepicker>
                                 <!-- <mat-error *ngIf="form.controls.end.errors?.required"> Campo obbligatorio</mat-error> -->
                             </mat-form-field>
@@ -65,9 +62,7 @@
 
                         
                         <mat-grid-tile class="tileCk" colspan="2" rowspan ="1">
-                            <mat-checkbox class="border-left pl10" color="primary" formControlName="ckCompito" 
-                                    (change) = "changedCkCompito($event.checked)"
-                                    >
+                            <mat-checkbox class="border-left pl10" color="primary" formControlName="ckCompito" (change) = "changedCkCompito($event.checked)" >
                                 Compito in Classe
                             </mat-checkbox>
                         </mat-grid-tile>
@@ -84,7 +79,7 @@
                                 <mat-label>Materia</mat-label>
                                 <mat-select required formControlName="materiaID">
                                     <mat-option *ngFor="let element of (obsClassiDocentiMaterie$ | async)" [value]="element.materiaID">
-                                    {{element.materia.descrizione}}
+                                        {{element.materia.descrizione}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -108,7 +103,7 @@
                                 <mat-label>Docente</mat-label>
                                 <mat-select required formControlName="docenteID">
                                     <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
-                                    {{element.persona.nome}} {{element.persona.cognome}}
+                                        {{element.persona.nome}} {{element.persona.cognome}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -132,7 +127,7 @@
                                 <mat-label>Supplente</mat-label>
                                 <mat-select formControlName="supplenteID">
                                     <mat-option *ngFor="let element of (obsSupplenti$ | async)" [value]="element.id">
-                                    {{element.persona.nome}} {{element.persona.cognome}}
+                                        {{element.persona.nome}} {{element.persona.cognome}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -144,9 +139,7 @@
                             </mat-checkbox>
                         </mat-grid-tile>
 
-                        <mat-grid-tile class="tileCk ml15">
-
-                        </mat-grid-tile>
+                        <mat-grid-tile class="tileCk ml15"></mat-grid-tile>
 
                         <mat-grid-tile class="_align-top" colspan="2" rowspan ="2">
                             <mat-form-field class="w100 border-left pl5" appearance="outline">
@@ -162,15 +155,12 @@
                         <div  class="_warnCentroSchermo2" (click)="generaAppello()" >
                             Fai l'appello!
                         </div>
-                    </div>
-                    <app-presenze-list *ngIf="ckAppello"
-                         [lezioneID] = "data.lezioneID">
-                    </app-presenze-list>
+                    </div> 
+                    <app-presenze-list *ngIf="ckAppello" [lezioneID] = "data.lezioneID"> </app-presenze-list>
                 </mat-tab>
+                
                 <mat-tab  *ngIf="ckCompito" label="Voti Compito">
-                    <app-voti-list
-                    [lezioneID] = "data.lezioneID">
-                    </app-voti-list>
+                    <app-voti-list [lezioneID] = "data.lezioneID"> </app-voti-list>
                 </mat-tab>
             </mat-tab-group>
         </form>
