@@ -189,17 +189,13 @@ export class LezioneComponent implements OnInit {
       this.form.controls.argomento.disable();
       this.form.controls.ckCompito.disable();
       this.form.controls.argomentoCompito.disable();
-
     } 
     else {
-      
       this.form.controls.h_Ini.disable();
       this.form.controls.h_End.disable();
       this.form.controls.materiaID.disable();
       this.form.controls.supplenteID.disable();
       this.form.controls.ckEpoca.disable();
-
-
     }
 
     if (this.data.lezioneID && this.data.lezioneID + '' != "0") {
@@ -281,10 +277,7 @@ export class LezioneComponent implements OnInit {
         if (this.form.controls['id'].value == null) {   
           if (this.form.controls.ckAppello.value == '')   this.form.controls.ckAppello.setValue(false);     
           if (this.form.controls.ckCompito.value == '')   this.form.controls.ckCompito.setValue(false);     
-          console.log ("this.form.value prima di post", this.form.value);
-          console.log ("this.form.value- this.form.controls.value: ", this.form.controls.value);
           
-          //var objLezione!: CAL_Lezione; 
           const objLezione = <CAL_Lezione>{
             id:0,
             classeSezioneAnnoID: this.form.controls.classeSezioneAnnoID.value,
@@ -311,12 +304,8 @@ export class LezioneComponent implements OnInit {
             compiti: this.form.controls.compiti.value,
             ckCompito: this.form.controls.ckCompito.value,
             argomentoCompito: this.form.controls.argomentoCompito.value
-
           };
 
-          //const tmpObj = <CAL_Lezione>{};
-          //tmpObj.id =0;
-          
           //this.svcLezioni.post(this.form.value).subscribe(
           this.svcLezioni.post(objLezione).subscribe(
             res => {
@@ -375,7 +364,8 @@ export class LezioneComponent implements OnInit {
     if ((dtTMP.getHours() - 1) < 8) { 
       setHours = 8;
       setMinutes = 0;
-    } else { 
+    } 
+    else { 
       setHours = (dtTMP.getHours() - 1)
       setMinutes = (dtTMP.getMinutes())
     }
@@ -406,7 +396,8 @@ export class LezioneComponent implements OnInit {
     if ((dtTMP.getHours() - 1) > 15) { 
       setHours = 15;
       setMinutes = 0;
-    } else { 
+    } 
+    else { 
       setHours = (dtTMP.getHours() + 1)
       setMinutes = (dtTMP.getMinutes())
     }
@@ -418,7 +409,6 @@ export class LezioneComponent implements OnInit {
     if (this.form.controls.h_End.value < "08:30") {this.form.controls.h_End.setValue ("08:30") } //ora min di fine 08:30:  sarà parametrica
     if (this.form.controls.h_End.value > "16:00") {this.form.controls.h_End.setValue ("16:00") } //ora max di fine 16:00:  sarà parametrica
     if (this.form.controls.h_End.value <= this.form.controls.h_Ini.value) { this.form.controls.h_End.setValue (dtTimeNew) }
-
   }
 
   ckAssenteChange() {
@@ -439,12 +429,13 @@ export class LezioneComponent implements OnInit {
 
     dialogYesNo.afterClosed().subscribe(result => {
       if(result) {
-        this.svcIscrizioni.listByClasseSezioneAnno(this.data.classeSezioneAnnoID)
-        .subscribe(iscrizioni => {
+        this.svcIscrizioni.listByClasseSezioneAnno(this.data.classeSezioneAnnoID).subscribe(
+          iscrizioni => {
           //Inserisce le presenze
           for (let iscrizione of iscrizioni) {
             let objPresenza : CAL_Presenza =
-            { id : 0,
+            { 
+              id : 0,
               AlunnoID : iscrizione.alunnoID,
               LezioneID : this.data.lezioneID,
               ckPresente : true,
@@ -463,13 +454,9 @@ export class LezioneComponent implements OnInit {
           }
         
           this.svcLezioni.put(this.form.value).subscribe(
-            res=> {
-              this.PresenzeListComponent.loadData();
-
-            },
+            res=>  this.PresenzeListComponent.loadData(),
             err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
           );
-        
         });
       }
     });
@@ -477,47 +464,40 @@ export class LezioneComponent implements OnInit {
 
   changedCkCompito(checked: boolean,) {
     this.ckCompito = checked;
-    if (checked) 
-      {
-        this.form.controls.argomentoCompito.enable();
+    if (checked) {
+      this.form.controls.argomentoCompito.enable();
 
-        //Ora bisogna inserire in Voti un valore per ogni alunno
-        this.svcIscrizioni.listByClasseSezioneAnno(this.data.classeSezioneAnnoID)
-        .subscribe(iscrizioni => {
-          //Inserisce le presenze
-          for (let iscrizione of iscrizioni) {
-            let objVoto : TST_Voto =
-            { id : 0,
-              AlunnoID : iscrizione.alunnoID,
-              LezioneID : this.data.lezioneID,
-              voto : '',
-              giudizio: ''
-            };
+      //Ora bisogna inserire in Voti un valore per ogni alunno
+      this.svcIscrizioni.listByClasseSezioneAnno(this.data.classeSezioneAnnoID)
+      .subscribe(iscrizioni => {
+        //Inserisce le presenze
+        for (let iscrizione of iscrizioni) {
+          let objVoto : TST_Voto =
+          { 
+            id : 0,
+            AlunnoID : iscrizione.alunnoID,
+            LezioneID : this.data.lezioneID,
+            voto : '',
+            giudizio: ''
+          };
+          this.svcVoti.post(objVoto).subscribe();
+        }
 
-            this.svcVoti.post(objVoto).subscribe();
-          }
-
-          //ora deve salvare il ckCompito e l'argomentoCompito nella lezione: 
-          //ATTENZIONE: così salva anche eventuali modifiche ad altri campi che magari uno non voleva salvare
-          //forse bisognerebbe salvare SOLO il ckCompito e l'argomentoCompito
-          //this.form.controls.ckCompito.setValue(true); //dovrebbe essere già settato
-          
-          for (const prop in this.form.controls) {
-            this.form.value[prop] = this.form.controls[prop].value;
-          }
+        //ora deve salvare il ckCompito e l'argomentoCompito nella lezione: 
+        //ATTENZIONE: così salva anche eventuali modifiche ad altri campi che magari uno non voleva salvare
+        //forse bisognerebbe salvare SOLO il ckCompito e l'argomentoCompito
+        //this.form.controls.ckCompito.setValue(true); //dovrebbe essere già settato
         
-          this.svcLezioni.put(this.form.value).subscribe(
-            res=> {
-              this.VotiListComponent.loadData();
-            },
-            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          );
-        
-        });
-          
-
-        
-      }
+        for (const prop in this.form.controls) {
+          this.form.value[prop] = this.form.controls[prop].value;
+        }
+      
+        this.svcLezioni.put(this.form.value).subscribe(
+          res=> this.VotiListComponent.loadData(),
+          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        );
+      });
+    }
     else {
       this.form.controls.argomentoCompito.setValue('');
       this.form.controls.argomentoCompito.disable();
@@ -535,19 +515,15 @@ export class LezioneComponent implements OnInit {
           }
         
           this.svcLezioni.put(this.form.value).subscribe(
-            res=> {
-              this.VotiListComponent.loadData();
-            },
+            res=> this.VotiListComponent.loadData(),
             err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
           );
-        } else {
+        } 
+        else {
           this.form.controls.ckCompito.setValue(true);
           this.ckCompito = true;
         }
       });
-
     }
-
   }
-
 }
