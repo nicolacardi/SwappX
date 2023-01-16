@@ -9,6 +9,7 @@ import { registerLocaleData }                   from '@angular/common';
 import localeIt                                 from '@angular/common/locales/it';
 registerLocaleData(localeIt, 'it');
 
+import { MatTabGroup }                          from '@angular/material/tabs';
 import { CdkTextareaAutosize }                  from '@angular/cdk/text-field';
 
 //components
@@ -16,6 +17,8 @@ import { DialogYesNoComponent }                 from '../../utilities/dialog-yes
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
 import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
+import { VotiListComponent }                    from '../voti-list/voti-list.component';
+import { PresenzeListComponent }                from '../presenze-list/presenze-list.component';
 
 //services
 import { MaterieService }                       from 'src/app/_components/materie/materie.service';
@@ -36,8 +39,8 @@ import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_Classe
 import { CAL_Presenza }                         from 'src/app/_models/CAL_Presenza';
 import { TST_Voto }                             from 'src/app/_models/TST_Voti';
 import { DialogDataLezione }                    from 'src/app/_models/DialogData';
-import { VotiListComponent } from '../voti-list/voti-list.component';
-import { PresenzeListComponent } from '../presenze-list/presenze-list.component';
+
+
 
 
 @Component({
@@ -74,8 +77,7 @@ export class LezioneComponent implements OnInit {
 
   public docenteView:                           boolean = false;
   breakpoint!:                                  number;
-  //classeSezioneAnnoID!:                         number;
-
+  selectedTab:                                  number = 0;
 
   @ViewChild('autosize') autosize!:             CdkTextareaAutosize;
   @ViewChild(VotiListComponent) VotiListComponent!: VotiListComponent; 
@@ -535,4 +537,10 @@ export class LezioneComponent implements OnInit {
       });
     }
   }
+
+  selectedTabValue(event: any){
+    //senza questo espediente non fa il primo render correttamente
+    this.selectedTab = event.index;
+  }
+
 }

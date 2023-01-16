@@ -2,17 +2,17 @@ import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatSort }                              from '@angular/material/sort';
 import { Observable }                           from 'rxjs';
 import { MatTableDataSource}                    from '@angular/material/table';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 
 //components
-
+import { VotiEditPageComponent } from '../voti-edit-page/voti-edit-page.component';
 
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
-import { VotiService }                          from '../voti.service';
+import { LezioniService }                       from '../lezioni.service';
 
 //models
 import { CAL_Lezione }                         from 'src/app/_models/CAL_Lezione';
-import { LezioniService } from '../lezioni.service';
 
 
 @Component({
@@ -27,9 +27,10 @@ export class CompitiListComponent implements OnInit {
   matDataSource = new MatTableDataSource<CAL_Lezione>();
   
   displayedColumns: string[] = [ 
-      "dtCalendario", 
-      "materia",
-      "argomento"
+    "actionsColumn", 
+    "dtCalendario", 
+    "materia",
+    "argomento"
   ];
 
   showPageTitle:                                boolean = true;
@@ -52,8 +53,11 @@ export class CompitiListComponent implements OnInit {
 
 //#endregion
 
-  constructor( private svcLezioni:                         LezioniService,
-               private _loadingService:                    LoadingService ) {  
+  constructor( 
+    private svcLezioni:                         LezioniService,
+    private _loadingService:                    LoadingService,
+    public _dialog:                             MatDialog, 
+    ) {  
   }
   
 //#region ----- LifeCycle Hooks e simili-------
@@ -91,55 +95,68 @@ export class CompitiListComponent implements OnInit {
 
 //#region ----- Filtri & Sort -------
 
-sortCustom() {
-  this.matDataSource.sortingDataAccessor = (item:any, property) => {
-    switch(property) {
-      case 'materia':                            return item.materia.descrizione;
-      case 'argomento':                         return item.argomentoCompito;
-      default:                                return item[property]
-    }
-  };
-}
-
-
-applyFilter(event: Event) {
-
-  this.filterValue = (event.target as HTMLInputElement).value;
-  this.filterValues.filtrosx = this.filterValue.toLowerCase();
-  this.matDataSource.filter = JSON.stringify(this.filterValues)
-}
-
-
-filterPredicate(): (data: any, filter: string) => boolean {
-  let filterFunction = function(data: any, filter: any): boolean {
-
-    let searchTerms = JSON.parse(filter);
-     
-   let ddmmyyyy!: string;
-    if (data.dtCalendario){
-      let dArrN = data.dtCalendario.split("-");
-       ddmmyyyy = dArrN[2].substring(0,2)+ "/" +dArrN[1]+"/"+dArrN[0];
-    } 
-    else 
-      ddmmyyyy = '';
-
-    let boolSx = String(ddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
-                || String(data.materia.descrizione.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1
-                || String(data.argomentoCompito.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1;
-                
-    // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
-    // let boolDx = String(dtNotaddmmyyyy).indexOf(searchTerms.dtNota) !== -1
-    //               && String(data.nota.toLowerCase()).indexOf(searchTerms.nota) !== -1
-    //               && ((data.periodo == searchTerms.periodo) || searchTerms.periodo == '' || searchTerms.periodo == null)
-    //               && String(data.persona.nome.toLowerCase() + ' ' + data.persona.cognome.toLowerCase()).indexOf(searchTerms.docente) !== -1
-    //               && String(dtFirmaddmmyyyy).indexOf(searchTerms.dtFirma) !== -1
-    //               && String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.alunno) !== -1 ;
-
-    return boolSx;
-    //return boolSx && boolDx;
+  sortCustom() {
+    this.matDataSource.sortingDataAccessor = (item:any, property) => {
+      switch(property) {
+        case 'materia':                         return item.materia.descrizione;
+        case 'argomento':                       return item.argomentoCompito;
+        default:                                return item[property]
+      }
+    };
   }
-  return filterFunction;
-}
+
+
+  applyFilter(event: Event) {
+
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.filterValues.filtrosx = this.filterValue.toLowerCase();
+    this.matDataSource.filter = JSON.stringify(this.filterValues)
+  }
+
+
+  filterPredicate(): (data: any, filter: string) => boolean {
+    let filterFunction = function(data: any, filter: any): boolean {
+
+      let searchTerms = JSON.parse(filter);
+      
+    let ddmmyyyy!: string;
+      if (data.dtCalendario){
+        let dArrN = data.dtCalendario.split("-");
+        ddmmyyyy = dArrN[2].substring(0,2)+ "/" +dArrN[1]+"/"+dArrN[0];
+      } 
+      else 
+        ddmmyyyy = '';
+
+      let boolSx = String(ddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
+                  || String(data.materia.descrizione.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1
+                  || String(data.argomentoCompito.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1;
+                  
+      // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
+      // let boolDx = String(dtNotaddmmyyyy).indexOf(searchTerms.dtNota) !== -1
+      //               && String(data.nota.toLowerCase()).indexOf(searchTerms.nota) !== -1
+      //               && ((data.periodo == searchTerms.periodo) || searchTerms.periodo == '' || searchTerms.periodo == null)
+      //               && String(data.persona.nome.toLowerCase() + ' ' + data.persona.cognome.toLowerCase()).indexOf(searchTerms.docente) !== -1
+      //               && String(dtFirmaddmmyyyy).indexOf(searchTerms.dtFirma) !== -1
+      //               && String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.alunno) !== -1 ;
+
+      return boolSx;
+      //return boolSx && boolDx;
+    }
+    return filterFunction;
+  }
+  openDetail(element:CAL_Lezione){
+    console.log ("sto per passare element:", element);
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '900px',
+      height: '700px',
+      data: element
+    };
+    const dialogRef = this._dialog.open(VotiEditPageComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      () => this.loadData()
+    );
+  }
 
 
 //#endregion

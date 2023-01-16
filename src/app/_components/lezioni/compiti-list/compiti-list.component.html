@@ -14,6 +14,12 @@
     <table mat-table class="_table-row-low transparent w100" [dataSource]="matDataSource" matSort>
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+        <ng-container matColumnDef="actionsColumn">
+            <th mat-header-cell *matHeaderCellDef cdkDrag></th>
+            <td mat-cell  *matCellDef="let element;  let j = index;"> 
+                <img (click)="openDetail(element)" class="iconaMenu pointer" src="../assets/voticompito_edit.svg">
+            </td>
+        </ng-container>
 
         <ng-container matColumnDef="dtCalendario">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Data</th>

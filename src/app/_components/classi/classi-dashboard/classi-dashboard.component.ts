@@ -1,30 +1,30 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatTabGroup } from '@angular/material/tabs';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, Input, OnInit, ViewChild }  from '@angular/core';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { ActivatedRoute, Router }               from '@angular/router';
+import { MatTabGroup }                          from '@angular/material/tabs';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //models
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 
 //components
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
+import { DialogYesNoComponent }                   from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
-import { IscrizioniClasseListComponent } from '../../iscrizioni/iscrizioni-classe-list/iscrizioni-classe-list.component';
-import { IscrizioniAddComponent } from '../../iscrizioni/iscrizioni-add/iscrizioni-add.component';
-import { LezioniCalendarioComponent } from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
-import { DocenzeAddComponent } from '../docenze/docenze-add/docenze-add.component';
-import { DocenzeListComponent } from '../docenze/docenze-list/docenze-list.component';
-import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { IscrizioniClasseCalcoloComponent } from '../../iscrizioni/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
+import { IscrizioniClasseListComponent }        from '../../iscrizioni/iscrizioni-classe-list/iscrizioni-classe-list.component';
+import { IscrizioniAddComponent }               from '../../iscrizioni/iscrizioni-add/iscrizioni-add.component';
+import { LezioniCalendarioComponent }           from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
+import { DocenzeAddComponent }                  from '../docenze/docenze-add/docenze-add.component';
+import { DocenzeListComponent }                 from '../docenze/docenze-list/docenze-list.component';
+import { ClassiSezioniAnniListComponent }       from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { IscrizioniClasseCalcoloComponent }     from '../../iscrizioni/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 
 //services
-import { JspdfService } from '../../utilities/jspdf/jspdf.service';
-import { NavigationService } from '../../utilities/navigation/navigation.service';
-import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
-import { DocenzeService } from '../docenze/docenze.service';
+import { JspdfService }                         from '../../utilities/jspdf/jspdf.service';
+import { NavigationService }                    from '../../utilities/navigation/navigation.service';
+import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
+import { DocenzeService }                       from '../docenze/docenze.service';
 
 
 @Component({
@@ -101,14 +101,16 @@ export class ClassiDashboardComponent implements OnInit {
   //@Input () classeSezioneAnnoId!: number;
 //#endregion
 
-  constructor(private svcIscrizioni:                IscrizioniService,
-              private svcDocenze:                   DocenzeService,
-              private _navigationService:           NavigationService,
-              public _dialog:                       MatDialog,
-              private _jspdf:                       JspdfService,
-              private actRoute:                     ActivatedRoute,
-              private router:                       Router,        
-              private _snackBar:                    MatSnackBar) {
+  constructor(
+    private svcIscrizioni:                      IscrizioniService,
+    private svcDocenze:                         DocenzeService,
+    private _navigationService:                 NavigationService,
+    public _dialog:                             MatDialog,
+    private _jspdf:                             JspdfService,
+    private actRoute:                           ActivatedRoute,
+    private router:                             Router,        
+    private _snackBar:                          MatSnackBar
+  ) {
     
   }
 
@@ -352,7 +354,7 @@ export class ClassiDashboardComponent implements OnInit {
 
   selectedTabValue(event: any){
     //senza questo espediente non fa il primo render correttamente
-
+    console.log (event);
     if (this.tabGroup.selectedIndex == 2) {
       this.viewOrarioLezioni.calendarDOM.getApi().render();
       this.viewOrarioLezioni.loadData();

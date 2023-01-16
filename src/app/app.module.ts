@@ -167,7 +167,9 @@ import { ClassiAnniMateriePageComponent }       from './_components/classi/class
 import { ClasseAnnoMateriaEditComponent }       from './_components/classi/classi-anni-materie/classe-anno-materia-edit/classe-anno-materia-edit.component';
 import { ClassiAnniMaterieDuplicaComponent }    from './_components/classi/classi-anni-materie/classi-anni-materie-duplica/classi-anni-materie-duplica.component';
 
+//Compiti e Voti
 import { CompitiListComponent }                 from './_components/lezioni/compiti-list/compiti-list.component';
+import { VotiEditPageComponent }                from './_components/lezioni/voti-edit-page/voti-edit-page.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -235,6 +237,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     PresenzeAlunnoListComponent,
     VotiListComponent,
     CompitiListComponent,
+    VotiEditPageComponent,
 
     PagamentiListComponent,
     PagamentiPageComponent,

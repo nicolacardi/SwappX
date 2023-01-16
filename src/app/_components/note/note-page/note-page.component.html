@@ -31,7 +31,8 @@
     <mat-drawer-content>
         <app-note-list  [noteFilterComponent] = "appnotefilter"
                         [classeSezioneAnnoID] = "classeSezioneAnnoID"
-                        [dove] = "'note-page'"
+                        [dove] = "dove"
+                        [docenteID] = "docenteID"
                         (openDrawer) = "openDrawer()"
                          #appnotelist >
         </app-note-list>

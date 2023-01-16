@@ -14,19 +14,23 @@ import { NavigationService }                    from '../../utilities/navigation
   styleUrls: ['../note.component.css']
 })
 export class NotePageComponent implements OnInit {
-
 //#region ----- ViewChild Input Output -------
   @ViewChild(NoteListComponent) noteList!: NoteListComponent; 
   @ViewChild(NoteFilterComponent) noteFilterComponent!: NoteFilterComponent; 
   @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
 
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:         number;
+  @Input('dove') dove! :                        string;
+  @Input('docenteID') docenteID!:               number;
+
 
 //#endregion
 
 constructor(private _navigationService:  NavigationService) { }
 
 //#region ----- LifeCycle Hooks e simili-------
+
+
   ngOnInit(): void {
     this._navigationService.passPage("notePage");
   }

@@ -13,10 +13,15 @@ import { NoteFilterComponent } from '../note-filter/note-filter.component';
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { NoteService }                          from '../note.service';
+import { DocentiService }                       from '../../docenti/docenti.service';
 
 //models
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
+import { Utility } from '../../utilities/utility.component';
+import { User } from 'src/app/_user/Users';
+import { concatMap } from 'rxjs/operators';
+import { PER_Docente } from 'src/app/_models/PER_Docente';
 
 
 @Component({
@@ -27,11 +32,14 @@ import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
 export class NoteListComponent implements OnInit {
   
 //#region ----- Variabili -------
-  matDataSource = new MatTableDataSource<DOC_Nota>();
 
-  displayedColumns: string[] =  [];
 
-  displayedColumnsNotePage: string[] =  [
+
+  matDataSource =                               new MatTableDataSource<DOC_Nota>();
+
+  displayedColumns:                             string[] =  [];
+
+  displayedColumnsNotePage:                     string[] =  [
     "actionsColumn", 
     "docente",
     "alunno",
@@ -42,7 +50,7 @@ export class NoteListComponent implements OnInit {
     "dtFirma"
   ];
 
-  displayedColumnsAlunnoEdit: string[] =  [
+  displayedColumnsAlunnoEdit:                   string[] =  [
     "actionsColumn", 
     "docente",
     "dtNota",
@@ -84,6 +92,8 @@ export class NoteListComponent implements OnInit {
   @Input('dove') dove!:                         string;
 
   @Input('alunnoID') alunnoID!:                 number;
+  @Input('docenteID') docenteID!:               number;
+
   @Input() noteFilterComponent!:                NoteFilterComponent;
 
   @ViewChild(MatPaginator) paginator!:          MatPaginator;
@@ -91,9 +101,12 @@ export class NoteListComponent implements OnInit {
 
 //#endregion  
 
-  constructor( private svcNote:                            NoteService,
-               private _loadingService:                    LoadingService,
-               public _dialog:                             MatDialog ) {
+  constructor( 
+    private svcNote:                            NoteService,
+    private svcDocenti:                         DocentiService,
+    private _loadingService:                    LoadingService,
+    public _dialog:                             MatDialog ) {
+
 
   }
 
@@ -107,10 +120,9 @@ export class NoteListComponent implements OnInit {
   }
 
   loadData() {
-
     switch(this.dove) {
 
-      case 'note-page':
+      case 'classi-dashboard':
         this.displayedColumns = this.displayedColumnsNotePage;
         this.showPageTitle = true;
         this.showTableRibbon = true;
@@ -121,6 +133,27 @@ export class NoteListComponent implements OnInit {
           let loadNote$ =this._loadingService.showLoaderUntilCompleted(obsNote$);
     
           loadNote$.subscribe( 
+            val =>   {
+              this.matDataSource.data = val;
+              this.matDataSource.paginator = this.paginator;
+              this.matDataSource.sort = this.sort; 
+              this.matDataSource.filterPredicate = this.filterPredicate();
+            }
+          );
+        }
+        break;
+      case 'docenti-dashboard':
+        this.displayedColumns = this.displayedColumnsNotePage;
+        this.showPageTitle = true;
+        this.showTableRibbon = true;
+        
+        if (this.classeSezioneAnnoID) {
+          //Devo pescare il personaID del docenteID e passarlo alla listBYClasseSezionaAnnoIDAndDocente
+          this.svcDocenti.get(this.docenteID)
+          .pipe(
+            concatMap((res: PER_Docente) => this._loadingService.showLoaderUntilCompleted(this.svcNote.listByClasseSezioneAnnoIDAndDocenteID(this.classeSezioneAnnoID, res.personaID))
+          )).subscribe(
+          //loadNote$.subscribe( 
             val =>   {
               this.matDataSource.data = val;
               this.matDataSource.paginator = this.paginator;

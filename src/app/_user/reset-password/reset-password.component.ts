@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, AbstractControlOptions, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { concatMap } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
+import { Component, OnInit }                    from '@angular/core';
+import { FormBuilder, FormGroup, Validators }   from '@angular/forms';
+import { Router }                               from '@angular/router';
+import {MatSnackBar}                            from '@angular/material/snack-bar';
 
-import { UserService } from '../user.service';
-import { ParametriService } from 'src/app/_services/parametri.service';
+import { UserService }                          from '../user.service';
+import { ParametriService }                     from 'src/app/_services/parametri.service';
 
-import { DialogOkComponent } from 'src/app/_components/utilities/dialog-ok/dialog-ok.component';
-import { MatDialog } from '@angular/material/dialog';
-import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
-import { LoadingService } from 'src/app/_components/utilities/loading/loading.service';
-import { EventEmitterService } from 'src/app/_services/event-emitter.service';
-import { Utility } from  '../../_components/utilities/utility.component';
+import { MatDialog }                            from '@angular/material/dialog';
+import { SnackbarComponent }                    from 'src/app/_components/utilities/snackbar/snackbar.component';
+import { LoadingService }                       from 'src/app/_components/utilities/loading/loading.service';
+import { EventEmitterService }                  from 'src/app/_services/event-emitter.service';
+import { Utility }                              from  '../../_components/utilities/utility.component';
 
 
 @Component({

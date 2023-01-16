@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit }            from '@angular/core';
 import { FormBuilder, FormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
@@ -13,16 +13,12 @@ import { SnackbarComponent }                    from '../../utilities/snackbar/s
 import { NoteService }                          from '../note.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { UserService }                          from 'src/app/_user/user.service';
-import { AlunniService }                        from '../../alunni/alunni.service';
+import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
+import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 
 //models
 import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
 import { DialogDataNota }                       from 'src/app/_models/DialogData';
-import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
-import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
-import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
-
-
 
 @Component({
   selector: 'app-nota-edit',

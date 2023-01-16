@@ -67,7 +67,12 @@
             -->
 
                 <mat-tab  label="Note Disciplinari"  >
-                    <app-note-page [classeSezioneAnnoID]="classeSezioneAnnoID"> </app-note-page>
+                    <app-note-page 
+                        [classeSezioneAnnoID]="classeSezioneAnnoID"
+                        [dove] = "'docenti-dashboard'"
+                        [docenteID] = "docenteID"
+                    >
+                    </app-note-page>
                 </mat-tab>
 
                 <mat-tab  label="Compiti in Classe"  >

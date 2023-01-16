@@ -38,6 +38,9 @@ export class LezioniService {
 
   listCompiti(classeSezioneAnnoID: number, docenteID: number): Observable<CAL_Lezione[]>{
     return this.http.get<CAL_Lezione[]>(environment.apiBaseUrl+'CAL_Lezioni/ListCompiti/'+classeSezioneAnnoID+"/"+docenteID)
+    .pipe(
+      map(compiti=> compiti.sort((a,b) => { return a.dtCalendario < b.dtCalendario ? 1 : -1;})) //dal compito più recente al meno recente
+    )
     //http://213.215.231.4/swappX/api/CAL_Lezioni/listCompiti/16/1005
   }
 

@@ -95,7 +95,11 @@
                     </table>
                 </mat-tab>
                 <mat-tab  label="Note Disciplinari" style="">
-                    <app-note-page [classeSezioneAnnoID]="classeSezioneAnnoID"> </app-note-page>
+                    <app-note-page 
+                        [classeSezioneAnnoID]="classeSezioneAnnoID"
+                        [dove] = "'classi-dashboard'"
+                    >
+                    </app-note-page>
                 </mat-tab>
             </mat-tab-group>
                 
