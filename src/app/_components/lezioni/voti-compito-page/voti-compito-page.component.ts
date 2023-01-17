@@ -13,11 +13,11 @@ import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
 
 
 @Component({
-  selector: 'app-voti-edit-page',
-  templateUrl: './voti-edit-page.component.html',
+  selector: 'app-voti-compito-page',
+  templateUrl: './voti-compito-page.component.html',
   styleUrls: ['../lezioni.css']
 })
-export class VotiEditPageComponent implements OnInit {
+export class VotiCompitoPageComponent implements OnInit {
 
   form! :                                       FormGroup;
   strClasseSezioneAnno!:                        string;
@@ -31,7 +31,7 @@ export class VotiEditPageComponent implements OnInit {
 //#endregion
 
 constructor(
-  public _dialogRef:                            MatDialogRef<VotiEditPageComponent>,
+  public _dialogRef:                            MatDialogRef<VotiCompitoPageComponent>,
   @Inject(MAT_DIALOG_DATA) public data:         CAL_Lezione,
 
   private svcClasseSezioneAnno:                 ClassiSezioniAnniService,

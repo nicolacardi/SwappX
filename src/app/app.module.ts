@@ -113,6 +113,8 @@ import { LezioneComponent }                     from './_components/lezioni/lezi
 import { LezioniUtilsComponent }                from './_components/lezioni/lezioni-utils/lezioni-utils.component';
 import { OrarioDocentePageComponent }           from './_components/lezioni/orario-docente-page/orario-docente-page.component';
 
+//Scadenze
+
 
 //Presenze
 import { PresenzeListComponent }                from './_components/lezioni/presenze-list/presenze-list.component';
@@ -124,8 +126,6 @@ import { NoteListComponent }                    from './_components/note/note-li
 import { NotaEditComponent }                    from './_components/note/nota-edit/nota-edit.component';
 import { NoteFilterComponent }                  from './_components/note/note-filter/note-filter.component';
 
-//Voti
-import { VotiListComponent }                    from './_components/lezioni/voti-list/voti-list.component';
 
 //User e Profilo
 import { UserService }                          from './_user/user.service';
@@ -169,7 +169,16 @@ import { ClassiAnniMaterieDuplicaComponent }    from './_components/classi/class
 
 //Compiti e Voti
 import { CompitiListComponent }                 from './_components/lezioni/compiti-list/compiti-list.component';
-import { VotiEditPageComponent }                from './_components/lezioni/voti-edit-page/voti-edit-page.component';
+import { CompitoEditComponent }                 from './_components/lezioni/compito-edit/compito-edit.component';
+
+import { VotiCompitoPageComponent }             from './_components/lezioni/voti-compito-page/voti-compito-page.component';
+import { VotiCompitoListComponent }             from './_components/lezioni/voti-compito-list/voti-compito-list.component';
+
+import { VotiInterrListComponent }              from './_components/lezioni/voti-interr-list/voti-interr-list.component';
+
+//Scadenze
+import { ScadenzeCalendarioComponent }          from './_components/scadenze/scadenze-calendario/scadenze-calendario.component';
+import { ScadenzaEditComponent }                from './_components/scadenze/scadenza-edit/scadenza-edit.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -230,14 +239,19 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
 
     LezioniCalendarioComponent,
     LezioneComponent,
+
+    ScadenzeCalendarioComponent,
+    ScadenzaEditComponent,
     LezioniUtilsComponent,
     OrarioDocentePageComponent,
 
     PresenzeListComponent,
     PresenzeAlunnoListComponent,
-    VotiListComponent,
+    VotiCompitoListComponent,
     CompitiListComponent,
-    VotiEditPageComponent,
+    CompitoEditComponent,
+    VotiCompitoPageComponent,
+    VotiInterrListComponent,
 
     PagamentiListComponent,
     PagamentiPageComponent,

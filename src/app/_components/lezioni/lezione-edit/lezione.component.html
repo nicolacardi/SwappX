@@ -5,7 +5,7 @@
             <!-- ********************************    BOTTONI     ************************************* -->
             <div class="center">
 
-                <img class="iconaMenuBig" src="../assets/evento_edit_T.svg">
+                <img class="iconaMenuBig" src="../assets/lezione_edit_T.svg">
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
                 <span [ngClass]="{'invisible': selectedTab != 0}">
@@ -157,11 +157,15 @@
                             Fai l'appello!
                         </div>
                     </div> 
-                    <app-presenze-list *ngIf="ckAppello" [lezioneID] = "data.lezioneID"> </app-presenze-list>
+                    <app-presenze-list *ngIf="ckAppello" [lezioneID] = "data.lezioneID" #presenzeList> </app-presenze-list>
                 </mat-tab>
                 
                 <mat-tab  *ngIf="ckCompito" label="Voti Compito">
-                    <app-voti-list [lezioneID] = "data.lezioneID"> </app-voti-list>
+                    <app-voti-compito-list [lezioneID] = "data.lezioneID"> </app-voti-compito-list>
+                </mat-tab>
+
+                <mat-tab  label="Voti Interrogazioni">
+                    <app-voti-interr-list [lezioneID] = "data.lezioneID"> </app-voti-interr-list>
                 </mat-tab>
             </mat-tab-group>
         </form>

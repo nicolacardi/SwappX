@@ -36,19 +36,21 @@ export class GenitoreEditComponent implements OnInit {
 
 //#region ----- Variabili -------
 
-  genitore$!:                 Observable<ALU_Genitore>;
-  genitoreNomeCognome :       string = "";
-  formPersona! :                     FormGroup;
-  formGenitore! :             FormGroup;
+  genitore$!:                                   Observable<ALU_Genitore>;
+  genitoreNomeCognome :                         string = "";
+  formPersona! :                                FormGroup;
+  formGenitore! :                               FormGroup;
 
-  emptyForm :                 boolean = false;
-  loading:                    boolean = true;
+  emptyForm :                                   boolean = false;
+  loading:                                      boolean = true;
 
-  filteredComuni$!:           Observable<_UT_Comuni[]>;
-  filteredComuniNascita$!:    Observable<_UT_Comuni[]>;
-  comuniIsLoading:            boolean = false;
-  comuniNascitaIsLoading:     boolean = false;
-  breakpoint!:                number;
+  filteredComuni$!:                             Observable<_UT_Comuni[]>;
+  filteredComuniNascita$!:                      Observable<_UT_Comuni[]>;
+  comuniIsLoading:                              boolean = false;
+  comuniNascitaIsLoading:                       boolean = false;
+  breakpoint!:                                  number;
+  selectedTab:                                  number = 0;
+
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -381,6 +383,10 @@ export class GenitoreEditComponent implements OnInit {
 //#region ----- Altri metodi -------
   onResize(event: any) {
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
+  }
+
+  selectedTabValue(event: any){
+    this.selectedTab = event.index;
   }
 //#endregion
 }

@@ -54,6 +54,7 @@ export class AlunnoEditComponent implements OnInit {
   filteredComuniNascita$!:                      Observable<_UT_Comuni[]>;
   comuniIsLoading:                              boolean = false;
   comuniNascitaIsLoading:                       boolean = false;
+  selectedTab:                                  number = 0;
 
 //#endregion
 
@@ -69,7 +70,7 @@ export class AlunnoEditComponent implements OnInit {
     private fb:                                 FormBuilder, 
     private svcIscrizioni:                      IscrizioniService,
     private svcAlunni:                          AlunniService,
-  private svcPersone:                           PersoneService,
+    private svcPersone:                           PersoneService,
     private svcComuni:                          ComuniService,
 
     public _dialog:                             MatDialog,
@@ -427,5 +428,9 @@ export class AlunnoEditComponent implements OnInit {
   }
 //#endregion
 
+
+  selectedTabValue(event: any){
+    this.selectedTab = event.index;
+  }
 }
 

@@ -18,7 +18,7 @@ export class LezioniService {
 
 
   list(): Observable<CAL_Lezione[]>{
-    return this.http.get<CAL_Lezione[]>(environment.apiBaseUrl+'CAL_Lezioni');   //NON FUNZIONA
+    return this.http.get<CAL_Lezione[]>(environment.apiBaseUrl+'CAL_Lezioni');  
     //http://213.215.231.4/swappX/api/CAL_Lezioni
   }
 

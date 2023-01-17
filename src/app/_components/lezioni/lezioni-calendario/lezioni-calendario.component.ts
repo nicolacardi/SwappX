@@ -55,13 +55,35 @@ export class LezioniCalendarioComponent implements OnInit {
     defaultTimedEventDuration : "01:00:00",   //indica che di default un evento dura un'ora
     expandRows: true,                         //estende in altezza le righe per adattare alla height il calendario
     hiddenDays: [ 0 ],                        //nasconde la domenica
+    
     headerToolbar: {
       left: 'prev,next,today',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek mostraDocenti,settings'
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek mostraDocenti,settings'  //TODO bisogna togliere i settings dalla vista docente
     },  
 
     views: {
+      dayGridMonth: {  //questo modifica TUTTI gli eventi in questa vista
+        eventContent: (event: any, element: any) => {
+          { 
+            console.log (event.event._def)
+            //mostra l'ora
+            let timeText = document.createElement('div');
+            timeText.className = "fc-event-time";
+            timeText.innerHTML = event.timeText;
+            //include Info aggiuntive
+            let titleText = document.createElement('div');
+            titleText.className = "fc-event-title";
+            titleText.innerHTML = 
+            '<span class="fs30" style="color:'+event.event._def.ui.backgroundColor+'">•</span><b>'
+              +event.event._def.title
+            //+'</b>'
+            let arrayOfDomNodes = [ timeText, titleText];     //prepara il set di Nodes
+            return { domNodes: arrayOfDomNodes }
+          }
+        }
+      },
+
       timeGridDay: {  //questo modifica TUTTI gli eventi in questa vista
         eventContent: (event: any, element: any) => {
           { 
@@ -230,7 +252,7 @@ export class LezioniCalendarioComponent implements OnInit {
     } else {
       //qui ("orario per Docente") non conta la classe ma solo il docenteID
       if (this.docenteID != undefined && this.docenteID > 0) {
-        obsLezioni$= this.svcLezioni.listByDocente(this.docenteID);
+        obsLezioni$= this.svcLezioni.listByDocente(this.docenteID); //Order by dtCalendario non sembra funzionare nel WS
       } else {
         this.showWarn = true;
         obsLezioni$= this.svcLezioni.listByDocente(0);
@@ -485,8 +507,6 @@ export class LezioniCalendarioComponent implements OnInit {
     };
     //solo il docente della lezione può aprire oppure lo può fare un docente con privilegi/segreteria/amministrazione scuola
     //serve il ruolo dell'utente corrente
-     console.log ("current USer",this.svcUser.currentUser);
-     console.log ("docenteID", this.docenteID);
 
     //if (this.svcUser.currentUser.ruoloID>=7) {
     if (this.svcUser.currentUser.TipoPersona?.ckDocente || this.svcUser.currentUser.TipoPersona?.ckPersonale) {

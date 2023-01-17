@@ -51,6 +51,7 @@ export class PresenzeListComponent implements OnInit {
     let obsPresenze$: Observable<CAL_Presenza[]>;
 
     if (this.lezioneID != undefined) {
+      console.log ("parte la loadData di presenzeList");
       obsPresenze$= this.svcPresenze.listByLezione(this.lezioneID);
       const loadPresenze$ =this._loadingService.showLoaderUntilCompleted(obsPresenze$);
 

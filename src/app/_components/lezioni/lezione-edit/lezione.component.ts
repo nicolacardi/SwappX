@@ -9,7 +9,6 @@ import { registerLocaleData }                   from '@angular/common';
 import localeIt                                 from '@angular/common/locales/it';
 registerLocaleData(localeIt, 'it');
 
-import { MatTabGroup }                          from '@angular/material/tabs';
 import { CdkTextareaAutosize }                  from '@angular/cdk/text-field';
 
 //components
@@ -17,7 +16,7 @@ import { DialogYesNoComponent }                 from '../../utilities/dialog-yes
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
 import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
-import { VotiListComponent }                    from '../voti-list/voti-list.component';
+import { VotiCompitoListComponent }             from '../voti-compito-list/voti-compito-list.component';
 import { PresenzeListComponent }                from '../presenze-list/presenze-list.component';
 
 //services
@@ -29,7 +28,7 @@ import { LoadingService }                       from '../../utilities/loading/lo
 import { LezioniService }                       from '../lezioni.service';
 import { PresenzeService }                      from '../presenze.service';
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
-import { VotiService }                          from '../voti.service';
+import { VotiCompitiService }                   from '../voti-compiti.service';
 
 //models
 import { CAL_Lezione }                          from 'src/app/_models/CAL_Lezione';
@@ -37,7 +36,7 @@ import { MAT_Materia }                          from 'src/app/_models/MAT_Materi
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_ClasseDocenteMateria';
 import { CAL_Presenza }                         from 'src/app/_models/CAL_Presenza';
-import { TST_Voto }                             from 'src/app/_models/TST_Voti';
+import { TST_VotoCompito }                      from 'src/app/_models/TST_VotiCompiti';
 import { DialogDataLezione }                    from 'src/app/_models/DialogData';
 
 
@@ -80,8 +79,8 @@ export class LezioneComponent implements OnInit {
   selectedTab:                                  number = 0;
 
   @ViewChild('autosize') autosize!:             CdkTextareaAutosize;
-  @ViewChild(VotiListComponent) VotiListComponent!: VotiListComponent; 
-  @ViewChild(PresenzeListComponent) PresenzeListComponent!: PresenzeListComponent; 
+  @ViewChild(VotiCompitoListComponent) VotiCompitoListComponent!: VotiCompitoListComponent; 
+  @ViewChild("presenzeList") PresenzeListComponent!: PresenzeListComponent; 
 
 
 //#endregion
@@ -98,7 +97,7 @@ export class LezioneComponent implements OnInit {
     private svcClasseSezioneAnno:               ClassiSezioniAnniService,
     private svcIscrizioni:                      IscrizioniService,
     private svcPresenze:                        PresenzeService,
-    private svcVoti:                            VotiService,
+    private svcVotiCompiti:                     VotiCompitiService,
 
     public _dialog:                             MatDialog,
     private _snackBar:                          MatSnackBar,
@@ -139,7 +138,6 @@ export class LezioneComponent implements OnInit {
   }
 
   ngOnInit () {
-
     this.form.controls.materiaID.valueChanges.subscribe( 
       res =>{
         if (this.form.controls.classeSezioneAnnoID.value != '' && this.form.controls.classeSezioneAnnoID.value != null && this.form.controls.classeSezioneAnnoID.value != undefined) {
@@ -206,7 +204,6 @@ export class LezioneComponent implements OnInit {
       this.lezione$ = loadLezione$
       .pipe( tap(
         lezione => {
-          console.log ("lezione loadData", lezione);
           this.form.patchValue(lezione)
           //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
           this.dtStart = new Date (this.data.start);
@@ -459,13 +456,19 @@ export class LezioneComponent implements OnInit {
           //ATTENZIONE: così salva anche eventuali modifiche ad altri campi che magari uno non voleva salvare
           //forse bisognerebbe salvare SOLO il ckAppello
           this.form.controls.ckAppello.setValue(true);
+          this.ckAppello = true;
           
           for (const prop in this.form.controls) {
             this.form.value[prop] = this.form.controls[prop].value;
           }
         
           this.svcLezioni.put(this.form.value).subscribe(
-            res=>  this.PresenzeListComponent.loadData(),
+            res=> {
+              console.log("ho postato le presenze una ad una ora voglio aggiornare presenzeListComponent per fare scomparire il pulsante...tiro da tre... ");
+
+              this.PresenzeListComponent.loadData(); //NON VA. #ERROR cannot read properties of undefined reading loadData
+              console.log ("canestro");
+            },  
             err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
           );
         });
@@ -483,7 +486,7 @@ export class LezioneComponent implements OnInit {
       .subscribe(iscrizioni => {
         //Inserisce le presenze
         for (let iscrizione of iscrizioni) {
-          let objVoto : TST_Voto =
+          let objVoto : TST_VotoCompito =
           { 
             id : 0,
             alunnoID : iscrizione.alunnoID,
@@ -491,7 +494,7 @@ export class LezioneComponent implements OnInit {
             voto : 0,
             giudizio: ''
           };
-          this.svcVoti.post(objVoto).subscribe();
+          this.svcVotiCompiti.post(objVoto).subscribe();
         }
 
         //ora deve salvare il ckCompito e l'argomentoCompito nella lezione: 
@@ -504,7 +507,7 @@ export class LezioneComponent implements OnInit {
         }
       
         this.svcLezioni.put(this.form.value).subscribe(
-          res=> this.VotiListComponent.loadData(),
+          res=> this.VotiCompitoListComponent.loadData(),//qui funziona 
           err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         );
       });
@@ -520,13 +523,14 @@ export class LezioneComponent implements OnInit {
   
       dialogYesNo.afterClosed().subscribe(result => {
         if(result) {
-          this.svcVoti.deleteByLezione(this.data.lezioneID).subscribe();
+          this.svcVotiCompiti.deleteByLezione(this.data.lezioneID).subscribe();
           for (const prop in this.form.controls) {
             this.form.value[prop] = this.form.controls[prop].value;
           }
         
           this.svcLezioni.put(this.form.value).subscribe(
-            res=> this.VotiListComponent.loadData(),
+            res=> console.log ("ho cancellato i voti ma non faccio la refresh, non serve, i voti sono nascosti dalla ngIf"),
+            //this.VotiCompitoListComponent.loadData(),  //qui non serve fare la loadData, c'è un ngIf e quindi è nascosto, e poi non funzionerebbe per questo stesso motivo
             err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
           );
         } 

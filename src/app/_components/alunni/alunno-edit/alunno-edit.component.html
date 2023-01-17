@@ -45,27 +45,28 @@
                 <img class="iconaMenuBig" src="../assets/alunno_edit_T.svg">
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
+                <span [ngClass]="{'invisible': selectedTab != 0}">
+                    <button *ngIf="alunnoID" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10"
+                            [disabled]= "!formPersona.valid" 
+                            (click)="loadData()" >
+                        <mat-icon>restart_alt</mat-icon>
+                    </button>
 
-                <button *ngIf="alunnoID" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10"
-                        [disabled]= "!formPersona.valid" 
-                        (click)="loadData()" >
-                    <mat-icon>restart_alt</mat-icon>
-                </button>
+                    <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                            [disabled]= "!formPersona.valid" 
+                            (click)="save()" >
+                        <mat-icon>save</mat-icon>
+                    </button>
 
-                <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-                        [disabled]= "!formPersona.valid" 
-                        (click)="save()" >
-                    <mat-icon>save</mat-icon>
-                </button>
-
-                <button *ngIf="alunnoID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
-                        [disabled]= "!formPersona.valid" 
-                        (click)="delete()" >
-                    <mat-icon>delete</mat-icon>
-                </button>
+                    <button *ngIf="alunnoID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
+                            [disabled]= "!formPersona.valid" 
+                            (click)="delete()" >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </span>
             </div>
             
-            <mat-tab-group mat-align-tabs="center" >
+            <mat-tab-group mat-align-tabs="center" (selectedTabChange)="selectedTabValue($event)">
 
 <!-- ********************************    MAT TAB ANAGRAFICA *********************************** -->
                 <mat-tab  label="Dati Anagrafici">

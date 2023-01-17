@@ -31,6 +31,7 @@ import { ClassiAnniMateriePageComponent } from './_components/classi/classi-anni
 import { NotePageComponent } from './_components/note/note-page/note-page.component';
 import { DocentiDashboardComponent } from './_components/docenti/docenti-dashboard/docenti-dashboard.component';
 import { OrarioDocentePageComponent } from './_components/lezioni/orario-docente-page/orario-docente-page.component';
+import { ScadenzeCalendarioComponent } from './_components/scadenze/scadenze-calendario/scadenze-calendario.component';
 
 const routes: Routes = [
 
@@ -47,7 +48,7 @@ const routes: Routes = [
 
   { path:'home',              component: HomeComponent, canActivate:[AuthGuard]  },
 
-  { path: "calendario",       component: LezioniCalendarioComponent, canActivate:[AuthGuard]},
+  { path: "calendario",       component: ScadenzeCalendarioComponent, canActivate:[AuthGuard]},
 
   { path: "alunni",           component: AlunniPageComponent, canActivate:[AuthGuard]},
 

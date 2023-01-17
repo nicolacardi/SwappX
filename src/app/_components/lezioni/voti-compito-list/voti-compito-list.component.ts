@@ -8,22 +8,22 @@ import { MatTableDataSource}                    from '@angular/material/table';
 
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
-import { VotiService }                          from '../voti.service';
+import { VotiCompitiService }                   from '../voti-compiti.service';
 
 //models
-import { TST_Voto }                         from 'src/app/_models/TST_Voti';
+import { TST_VotoCompito }                      from 'src/app/_models/TST_VotiCompiti';
 
 
 @Component({
-  selector:     'app-voti-list',
-  templateUrl:  './voti-list.component.html',
+  selector:     'app-voti-compito-list',
+  templateUrl:  './voti-compito-list.component.html',
   styleUrls:    ['../lezioni.css']
 })
 
-export class VotiListComponent implements OnInit {
+export class VotiCompitoListComponent implements OnInit {
 
 //#region ----- Variabili -------
-  matDataSource = new MatTableDataSource<TST_Voto>();
+  matDataSource = new MatTableDataSource<TST_VotoCompito>();
   
   displayedColumns: string[] = [ 
       "nome", 
@@ -38,8 +38,9 @@ export class VotiListComponent implements OnInit {
   @Input() lezioneID!:                          number;
 //#endregion
 
-  constructor( private svcVoti:                            VotiService,
-               private _loadingService:                    LoadingService ) { 
+  constructor( 
+    private svcVotiCompiti:                     VotiCompitiService,
+    private _loadingService:                    LoadingService ) { 
   }
   
 //#region ----- LifeCycle Hooks e simili-------
@@ -48,10 +49,10 @@ export class VotiListComponent implements OnInit {
   }
 
   loadData () {
-    let obsVoti$: Observable<TST_Voto[]>;
+    let obsVoti$: Observable<TST_VotoCompito[]>;
 
     if (this.lezioneID != undefined) {
-      obsVoti$= this.svcVoti.listByLezione(this.lezioneID);
+      obsVoti$= this.svcVotiCompiti.listByLezione(this.lezioneID);
       const loadVoti$ =this._loadingService.showLoaderUntilCompleted(obsVoti$);
 
       loadVoti$.subscribe(
@@ -76,22 +77,22 @@ export class VotiListComponent implements OnInit {
     };
   }
 
-  changeVoto(element: TST_Voto, voto: string ) {
+  changeVoto(element: TST_VotoCompito, voto: string ) {
     
     let votoN = parseInt(voto);
     if (votoN >10 ) votoN = 10
     if (votoN <0 )  votoN = 0
     element.voto = votoN;
 
-    this.svcVoti.put(element).subscribe();
+    this.svcVotiCompiti.put(element).subscribe();
 
   }
 
-  changeGiudizio(element: TST_Voto, giudizio: string) {
+  changeGiudizio(element: TST_VotoCompito, giudizio: string) {
     
     element.giudizio = giudizio;
 
-    this.svcVoti.put(element).subscribe();
+    this.svcVotiCompiti.put(element).subscribe();
 
   }
 

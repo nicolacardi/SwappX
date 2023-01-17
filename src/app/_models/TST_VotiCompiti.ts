@@ -1,4 +1,4 @@
-export interface TST_Voto {
+export interface TST_VotoCompito {
   id:                                           number;
   lezioneID:                                    number;
   alunnoID:                                     number;

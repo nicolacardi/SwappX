@@ -17,7 +17,17 @@ export interface DialogDataLezione {
         classeSezioneAnnoID:                    number;
         dove:                                   string;
       }
-      
+
+export interface DialogDataScadenza {
+        scadenzaID:                              number;
+        start:                                  string;
+        end:                                    string;
+        dtCalendario:                           string;
+        h_Ini:                                  string;
+        h_End:                                  string;
+
+      }
+
 export interface DialogDataLezioniUtils {
         start:                                  Date;
         classeSezioneAnnoID:                    number;
@@ -46,4 +56,5 @@ export interface DialogDataNota {
         cognome?:                               string;
         dtNota?:                                string;
       }
+
 

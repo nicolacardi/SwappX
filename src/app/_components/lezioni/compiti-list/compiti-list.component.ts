@@ -5,14 +5,15 @@ import { MatTableDataSource}                    from '@angular/material/table';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 
 //components
-import { VotiEditPageComponent } from '../voti-edit-page/voti-edit-page.component';
+import { VotiCompitoPageComponent }             from '../voti-compito-page/voti-compito-page.component';
+import { CompitoEditComponent }                 from '../compito-edit/compito-edit.component';
 
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { LezioniService }                       from '../lezioni.service';
 
 //models
-import { CAL_Lezione }                         from 'src/app/_models/CAL_Lezione';
+import { CAL_Lezione }                          from 'src/app/_models/CAL_Lezione';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class CompitiListComponent implements OnInit {
   matDataSource = new MatTableDataSource<CAL_Lezione>();
   
   displayedColumns: string[] = [ 
+    "actionsColumn2",
     "actionsColumn", 
     "dtCalendario", 
     "materia",
@@ -144,15 +146,47 @@ export class CompitiListComponent implements OnInit {
     }
     return filterFunction;
   }
-  openDetail(element:CAL_Lezione){
-    console.log ("sto per passare element:", element);
+  openDetailCompito(element:CAL_Lezione){
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '500px',
+      height: '300px',
+      data: element
+    };
+    const dialogRef = this._dialog.open(CompitoEditComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      () => this.loadData()
+    );
+  }
+
+  openDetailVoti(element:CAL_Lezione){
+
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '900px',
       height: '700px',
       data: element
     };
-    const dialogRef = this._dialog.open(VotiEditPageComponent, dialogConfig);
+    const dialogRef = this._dialog.open(VotiCompitoPageComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      () => this.loadData()
+    );
+  }
+
+  addRecord() {
+    let lezione: any = {
+      id: 0,
+      docenteID: this.docenteID,
+      dtCalendario: '2023-01-01'
+
+    }
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '500px',
+      height: '300px',
+      data: lezione
+    };
+    const dialogRef = this._dialog.open(CompitoEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       () => this.loadData()
     );
