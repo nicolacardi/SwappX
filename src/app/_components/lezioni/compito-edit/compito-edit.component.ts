@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnChanges, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -28,10 +28,10 @@ export class CompitoEditComponent implements OnInit {
 
   obsLezioni$!:                                 Observable<CAL_Lezione[]>;
   lezione$!:                                    Observable<CAL_Lezione>;
-  
-  form! :                     FormGroup;
-  emptyForm :                 boolean = false;
-  breakpoint!:                number;
+  prof!:                                        string;
+  form! :                                       FormGroup;
+  emptyForm :                                   boolean = false;
+  breakpoint!:                                  number;
 //#endregion
 
   constructor( 
@@ -56,16 +56,21 @@ export class CompitoEditComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili-------
 
+  ngOnChanges() {
+    console.log (this.data);
+    this.prof = this.data.docente.persona.cognome;
+  }
+
   ngOnInit() {
     this.loadData();
   }
 
   loadData(){
-
+    
     this.obsLezioni$= this.svcLezioni.listByDocente(this.data.docenteID);
     //********************* POPOLAMENTO FORM *******************
     if (this.data.id) {
-
+      this.form.controls.id.disable();
       const obsLezione$: Observable<CAL_Lezione> = this.svcLezioni.get(this.data.id);
       const loadLezione$ = this._loadingService.showLoaderUntilCompleted(obsLezione$);
       
@@ -75,7 +80,11 @@ export class CompitoEditComponent implements OnInit {
       );
     
     } 
-    else this.emptyForm = true
+    else {
+      this.form.controls.id.enable();
+
+      this.emptyForm = true
+    }
   }
 
 //#endregion
@@ -113,7 +122,7 @@ export class CompitoEditComponent implements OnInit {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del compito ?"}
     });
-    //TODO: vanno cancellati tutti i compiti della lezione
+
     dialogYesNo.afterClosed().subscribe(result => {
       if(result) {
         this.svcVotiCompiti.deleteByLezione(this.data.id).subscribe();
