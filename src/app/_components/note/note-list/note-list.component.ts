@@ -273,8 +273,8 @@ export class NoteListComponent implements OnInit {
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '450px',
-      height: '550px',
+      width: '500px',
+      height: '500px',
       data: {
         iscrizioneID:                           0,
         notaID:                                 0,
@@ -291,8 +291,8 @@ export class NoteListComponent implements OnInit {
   openDetail(element: DOC_Nota){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '450px',
-      height: '550px',
+      width: '500px',
+      height: '500px',
       data: {
         iscrizioneID:                           element.iscrizioneID,
         notaID:                                 element.id,

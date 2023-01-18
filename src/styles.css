@@ -1172,7 +1172,12 @@ mat-nav-list a img {
 
 /* tutte le actionsColumn saranno larghe il 5%*/
 .mat-column-actionsColumn {
-    flex: 0 0 8% !important;
+    /* flex: 0 0 8% !important; */
+    width: 50px !important;
+}
+
+.mat-column-actionsColumn2 {
+    width: 50px !important;
 }
 
 .mat-column-blank {
