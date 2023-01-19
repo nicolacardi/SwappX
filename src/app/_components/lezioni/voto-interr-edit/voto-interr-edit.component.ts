@@ -84,18 +84,36 @@ export class VotoInterrEditComponent implements OnInit {
   }
 
   loadData(){
-    
+
     //********************* POPOLAMENTO COMBO LEZIONI *******************
     this.dateArr = [];
 
     //popolo la combo delle lezioni disponibili per il docente in questa classeSezioneAnno
     if (this.data.votoInterr == null) {
       //caso nuova interrogazione
-      this.obsLezioni$= this.svcLezioni.listByDocenteClasseSezioneAnno(this.data.docenteID, this.data.classeSezioneAnnoID)
-        .pipe(
-          tap(val =>  val.forEach(x=> this.dateArr.push(x.dtCalendario)))
+      //se data.lezioneID != undefined mi trovo nell'orario docente: devo valorizzare e più oltre inibire la scelta della lezione
+      if (this.data.lezioneID != undefined ) {
+        //estraggo un array di UN SOLO valore (data.lezioneID)... per passarlo alla selectLezione
+        this.obsLezioni$= this.svcLezioni.list()
+        .pipe (
+          map(val=>val.filter(val=>(val.id == this.data.lezioneID))),  
+          tap(val => {
+            this.form.controls.lezioneID.setValue(val[0].id);
+            this.form.controls.lezioneID.disable();
+          })
+          //tap(val =>  val.forEach(x=> this.dateArr.push(x.dtCalendario))) //non serve...la combo è disabled
         )
-        ;
+      } else {
+        //se invece data.lezioneID == undefined allora devo caricare tutte le lezioni e non selezionarne alcuna
+        this.obsLezioni$= this.svcLezioni.listByDocenteClasseSezioneAnno(this.data.docenteID, this.data.classeSezioneAnnoID)
+          .pipe(
+            tap(val =>  {
+              val.forEach(x=> this.dateArr.push(x.dtCalendario))
+              this.form.controls.lezioneID.enable();
+            })
+          )
+          ;
+      }
     } else {
       //caso click su interrogazione esistente
       //estraggo un array di UN SOLO valore... per passarlo alla selectLezione
@@ -103,7 +121,9 @@ export class VotoInterrEditComponent implements OnInit {
       .pipe (
         map(val=>val.filter(val=>(val.id == this.data.votoInterr.lezioneID))),  
         tap(val => {
-          this.form.controls.lezioneID.setValue(val[0].id)
+          this.form.controls.lezioneID.setValue(val[0].id);
+          this.form.controls.lezioneID.disable();
+
         })
         //tap(val =>  val.forEach(x=> this.dateArr.push(x.dtCalendario))) //non serve...la combo è disabled
       )
@@ -120,13 +140,19 @@ export class VotoInterrEditComponent implements OnInit {
 
     //********************* POPOLAMENTO FORM *******************
     if (this.data.votoInterr == null) {
+      //se data.lezioneID != undefined mi trovo nell'orario docente: ho valorizzato adesso devo inibire la scelta della lezione
+      // if (this.data.lezioneID != undefined ) {
+      //   this.form.controls.lezioneID.disable();
+      // } else {
+      //   this.form.controls.lezioneID.enable();
+      // }
       //console.log ("voto-interr-edit NUOVA INTERR loadData - this.data", this.data);
-      this.form.controls.lezioneID.enable();
+      
       this.emptyForm = true
     } 
     else {
       //console.log ("voto-interr-edit EDIT INTERR loadData - this.data", this.data);
-      this.form.controls.lezioneID.disable();
+      // this.form.controls.lezioneID.disable();
       const obsVotoInterr$: Observable<TST_VotoInterr> = this.svcVotiInterr.get(this.data.votoInterr.id);
       const loadVotoInterr$ = this._loadingService.showLoaderUntilCompleted(obsVotoInterr$);
       
@@ -145,14 +171,24 @@ export class VotoInterrEditComponent implements OnInit {
 
     if (this.data.votoInterr == null){ 
       //Inserimento nuova interrogazione
-      //questo ciclo for serve per passare al form ANCHE i valori disabled (nel caso specifico se siamo in edit, lezioneID è disabled)
+      //questo ciclo for serve per passare al form ANCHE i valori disabled (nel caso specifico se siamo in orario, lezioneID è disabled)
       for (const prop in this.form.controls) {
         this.form.value[prop] = this.form.controls[prop].value;
       }
+      let votoInterrObj: TST_VotoInterr = {
+        alunnoID: this.form.controls.alunnoID.value,
+        lezioneID : this.form.controls.lezioneID.value,
+        materiaID:  this.form.controls.materiaID.value,
+        argomento: this.form.controls.argomento.value,
+        voto: this.form.controls.voto.value,
+        giudizio: this.form.controls.giudizio.value,
 
-      console.log ("voto-interr-edit save this.form.value", this.form.value);
+      }
+
+      console.log ("voto-interr-edit save POST this.form.value", this.form.value);
+      console.log ("voto-interr-edit save POST votoInterrObj", votoInterrObj);
       this.form.controls.id.setValue(0);
-      this.svcVotiInterr.post(this.form.value).subscribe(
+      this.svcVotiInterr.post(votoInterrObj).subscribe(
         res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
@@ -162,14 +198,12 @@ export class VotoInterrEditComponent implements OnInit {
 
     } else { 
       //Update interrogazione
-
       //questo ciclo for serve per passare al form ANCHE i valori disabled (nel caso specifico se siamo in edit, lezioneID è disabled)
       for (const prop in this.form.controls) {
         this.form.value[prop] = this.form.controls[prop].value;
       }
-
-      console.log ("voto-interr-edit save this.form.value", this.form.value);
-
+      
+      console.log ("voto-interr-edit save PUT this.form.value", this.form.value);
       this.svcVotiInterr.put(this.form.value)
       .subscribe(
         res => {
@@ -192,10 +226,10 @@ export class VotoInterrEditComponent implements OnInit {
     dialogYesNo.afterClosed().subscribe(result => {
       if(result) {
 
-        this.svcVotiInterr.delete(this.data.votoInterr.id).subscribe(
+        this.svcVotiInterr.delete(this.data.votoInterr.id!).subscribe(
           res => {
             this._dialogRef.close();
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['green-snackbar']});
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
           },
           err=>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         );

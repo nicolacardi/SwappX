@@ -45,7 +45,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
 
     slotMinTime:  '08:00:00',
     slotMaxTime:  '22:00:00',
-    height:       700,
+    height:       600,
     allDaySlot:   false,                      //nasconde la riga degli eventi che durano il giorno intero
     locale:       'it',
     locales:      [itLocale],

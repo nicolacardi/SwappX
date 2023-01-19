@@ -1,9 +1,10 @@
 import { CAL_Lezione } from "./CAL_Lezione";
 
 export interface TST_VotoInterr {
-  id:                                           number;
+  id?:                                           number;
   lezioneID:                                    number;
   alunnoID:                                     number;
+  materiaID:                                    number;
   voto:                                         number;
   giudizio:                                     string;
   argomento:                                    string;
@@ -13,5 +14,5 @@ export interface TST_VotoInterr {
   userIns?:                                     number;
   userUpd?:                                     number;
 
-  lezione:                                      CAL_Lezione;
+  lezione?:                                      CAL_Lezione;
 }

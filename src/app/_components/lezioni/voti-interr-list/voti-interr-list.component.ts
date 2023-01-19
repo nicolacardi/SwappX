@@ -53,6 +53,19 @@ export class VotiInterrListComponent implements OnInit {
     "giudizio",
     "argomento"
   ];
+
+  filterValue = '';       //Filtro semplice
+  //filterValues contiene l'elenco dei filtri avanzati da applicare 
+ filterValues = {
+   nome: '',
+   cognome: '',
+   dtCalendario: '',
+   h_Ini: '',
+   voto: '',
+   giudizio: '',
+   argomento: '',
+   filtrosx: ''
+ };
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -80,12 +93,22 @@ export class VotiInterrListComponent implements OnInit {
   }
 
   loadData () {
+
+    //VotiInterrListComponent compare 
+    //- come child di docenti-dashboard (app-voti-interr-list)
+    //      --->In questo caso è disponibile this.lezioneID che infatti  arriva nella forma [lezione.ID] come Input
+    //- come child di Lezione, sempre dentro a docenti (ma nell'orario docenti)
+    //      --->In questo caso this.lezioneID è undefined
+    //[VotiInterrListComponent e' inibito dentro L'orario generale e non compare nella classi-dashboard]
+
+
     let obsVoti$: Observable<TST_VotoInterr[]>;
 
     //Il seguente check VORREBBE sostituire una variabile 'dove'!!!
     //Se sono nella vista lezione estraggo con listByLezione
     if (this.lezioneID != undefined) {
       this.showPageTitle = false;
+      this.showTableRibbon = false;
       this.displayedColumns =  this.displayedColumnsLezione;
 
       obsVoti$= this.svcVotiInterr.listByLezione(this.lezioneID);
@@ -97,6 +120,9 @@ export class VotiInterrListComponent implements OnInit {
           this.matDataSource.data = res;
           this.sortCustom(); 
           this.matDataSource.sort = this.sort; 
+          this.matDataSource.filterPredicate = this.filterPredicate();
+
+
         }
       );
     }
@@ -109,11 +135,13 @@ export class VotiInterrListComponent implements OnInit {
 
           loadVoti$.subscribe(
             res =>  {
-             // console.log ("listByClasseSezioneAnnoAndDocente res", res);
-
+              //console.log ("listByClasseSezioneAnnoAndDocente res", res);
               this.matDataSource.data = res;
               this.sortCustom(); 
               this.matDataSource.sort = this.sort; 
+              this.matDataSource.filterPredicate = this.filterPredicate();
+
+
             }
         );
       }
@@ -122,42 +150,87 @@ export class VotiInterrListComponent implements OnInit {
   }
 //#endregion
 
+//#region ----- Filtri & Sort -------
+
+  applyFilter(event: Event) {
+
+    this.filterValue = (event.target as HTMLInputElement).value;
+    this.filterValues.filtrosx = this.filterValue.toLowerCase();
+    this.matDataSource.filter = JSON.stringify(this.filterValues)
+  }
+
+  filterPredicate(): (data: any, filter: string) => boolean {
+    let filterFunction = function(data: any, filter: any): boolean {
+      let searchTerms = JSON.parse(filter);
+      
+      let dArr = data.lezione.dtCalendario.split("-");
+      const dtCalendarioddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
+
+      let boolSx = String(data.alunno.persona.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.persona.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(dtCalendarioddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
+                || String(data.lezione.h_Ini).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.voto).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.giudizio).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.argomento).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+
+
+
+      
+      // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
+      //let boolDx = String(data.alunno.persona.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+                //&& String(data.alunno.persona.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+                //&& String(dtCalendarioddmmyyyy).indexOf(searchTerms.dtCalendario) !== -1
+                ;
+
+      return boolSx ;//&& boolDx;
+    }
+    return filterFunction;
+  }
+
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {
       switch(property) {
         case 'nome':                            return item.alunno.persona.nome;
         case 'cognome':                         return item.alunno.persona.cognome;
+        case 'dtCalendario':                    return item.lezione.dtCalendario;
+        case 'dtCalendario':                    return item.lezione.dtCalendario;
+        case 'h_Ini':                           return item.lezione.h_Ini;
+
+
         default:                                return item[property]
       }
     };
   }
 
-  changeVoto(element: TST_VotoInterr, voto: string ) {
+//#endregion
+
+  // changeVoto(element: TST_VotoInterr, voto: string ) {
     
-    let votoN = parseInt(voto);
-    if (votoN >10 ) votoN = 10
-    if (votoN <0 )  votoN = 0
-    element.voto = votoN;
+  //   let votoN = parseInt(voto);
+  //   if (votoN >10 ) votoN = 10
+  //   if (votoN <0 )  votoN = 0
+  //   element.voto = votoN;
 
-    this.svcVotiInterr.put(element).subscribe();
+  //   this.svcVotiInterr.put(element).subscribe();
 
-  }
+  // }
 
-  changeGiudizio(element: TST_VotoInterr, giudizio: string) {
+  // changeGiudizio(element: TST_VotoInterr, giudizio: string) {
     
-    element.giudizio = giudizio;
+  //   element.giudizio = giudizio;
 
-    this.svcVotiInterr.put(element).subscribe();
+  //   this.svcVotiInterr.put(element).subscribe();
 
-  }
+  // }
 
-  changeArgomento(element: TST_VotoInterr, argomento: string) {
+  // changeArgomento(element: TST_VotoInterr, argomento: string) {
     
-    element.argomento = argomento;
+  //   element.argomento = argomento;
 
-    this.svcVotiInterr.put(element).subscribe();
+  //   this.svcVotiInterr.put(element).subscribe();
 
-  }
+  // }
 
   addRecord() {
 
@@ -166,6 +239,7 @@ export class VotiInterrListComponent implements OnInit {
       width: '500px',
       height: '400px',
       data: {
+        lezioneID:                              this.lezioneID,
         votoInterr:                             null,
         classeSezioneAnnoID:                    this.classeSezioneAnnoID,
         docenteID:                              this.docenteID
@@ -185,6 +259,7 @@ export class VotiInterrListComponent implements OnInit {
       width: '500px',
       height: '400px',
       data: {
+        lezioneID:                              this.lezioneID,
         votoInterr:                             element,
         classeSezioneAnnoID:                    this.classeSezioneAnnoID,
         docenteID:                              this.docenteID

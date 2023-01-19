@@ -65,5 +65,6 @@ export interface DialogDataVotoInterr {
         votoInterr:                             TST_VotoInterr;
         classeSezioneAnnoID:                    number;
         docenteID:                              number;
+        lezioneID:                              number;  //se undefined serve a capire che ci troviamo in orario-docenti!
 
       }

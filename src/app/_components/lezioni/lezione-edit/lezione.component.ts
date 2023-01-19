@@ -38,6 +38,7 @@ import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_Classe
 import { CAL_Presenza }                         from 'src/app/_models/CAL_Presenza';
 import { TST_VotoCompito }                      from 'src/app/_models/TST_VotiCompiti';
 import { DialogDataLezione }                    from 'src/app/_models/DialogData';
+import { MatTabGroup } from '@angular/material/tabs';
 
 
 
@@ -193,6 +194,7 @@ export class LezioneComponent implements OnInit {
       this.form.controls.argomento.disable();
       this.form.controls.ckCompito.disable();
       this.form.controls.argomentoCompito.disable();
+      
     } 
     else {
       this.form.controls.h_Ini.disable();

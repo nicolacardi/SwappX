@@ -160,13 +160,13 @@
                     <app-presenze-list *ngIf="ckAppello" [lezioneID] = "data.lezioneID" #presenzeList> </app-presenze-list>
                 </mat-tab>
                 
-                <mat-tab  *ngIf="ckCompito" label="Voti Compito">
+                <mat-tab  *ngIf="ckCompito && data.dove!='orario'" label="Voti Compito">
                     <app-voti-compito-list 
                         [lezioneID] = "data.lezioneID"
                     > </app-voti-compito-list>
                 </mat-tab>
 
-                <mat-tab  label="Voti Interrogazioni">
+                <mat-tab  *ngIf="data.dove!='orario'" label="Voti Interrogazioni">
                     <app-voti-interr-list 
                         [lezioneID] = "data.lezioneID"
                         [docenteID] = "docenteID"

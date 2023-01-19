@@ -3,6 +3,14 @@
 <button mat-mini-fab aria-label="Nuova interrogazione" matTooltip="Nuova interrogazione" class="_btn-add _btn-pos-right-1 _btn-pos-top-0" (click)="addRecord()">
     <mat-icon>add</mat-icon>
 </button>
+    <!-- **************************   FILTER   ******************* -->
+    <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
+        <mat-label>Filtro</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
+    </mat-form-field>
+    
+    <!-- **************************   PAGINATOR   ******************* -->
+    <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>
 
     <!-- **************************   MAT-TABLE   ******************* -->
     <table mat-table class="_table-row-low transparent w100" [dataSource]="matDataSource"  matSort>
@@ -18,54 +26,54 @@
 
         <ng-container matColumnDef="nome">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Nome</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.nome"></td>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.nome | highlight:filterValue"></td>
         </ng-container>
         
         <ng-container matColumnDef="cognome">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Cognome</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.cognome"></td>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.cognome| highlight:filterValue"></td>
         </ng-container>
 
         <ng-container  matColumnDef="dtCalendario">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Data</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.lezione.dtCalendario | date: 'dd/MM/yyyy'"></td>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.lezione.dtCalendario | highlightDate: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="h_Ini">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Ora</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.lezione.h_Ini"></td>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.lezione.h_Ini | highlight:filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="voto">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Voto</th>
-            <td mat-cell *matCellDef="let element">
-                <input 
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.voto | highlight:filterValue">
+                <!-- <input 
                 matInput type="number" placeholder="voto" 
                 [value]="element.voto" 
                 (change)="changeVoto(element, voto.value)" 
-                maxlength="2" #voto>
+                maxlength="2" #voto> -->
             </td>
         </ng-container>
 
         <ng-container matColumnDef="giudizio">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Giudizio</th>
-            <td mat-cell *matCellDef="let element">
-                <input 
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.giudizio | highlight:filterValue">
+                <!-- <input 
                 matInput type="text" placeholder="giudizio" 
                 [value]="element.giudizio" 
                 (change)="changeGiudizio(element, giudizio.value)" 
-                #giudizio>
+                #giudizio> -->
             </td>
         </ng-container>
         
         <ng-container matColumnDef="argomento">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Argomento</th>
-            <td mat-cell *matCellDef="let element">
-                <input 
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.argomento | highlight:filterValue">
+                <!-- <input 
                 matInput type="text" placeholder="argomento" 
                 [value]="element.argomento" 
                 (change)="changeArgomento(element, argomento.value)" 
-                #argomento>
+                #argomento> -->
             </td>
         </ng-container>
         <!-- **************************   MAT-HEADER-ROW   ******************* -->

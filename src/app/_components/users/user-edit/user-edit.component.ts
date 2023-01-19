@@ -155,7 +155,7 @@ export class UserEditComponent implements OnInit {
         if(result){
           this.svcUser.delete(this.idUser).subscribe(
             res => {
-              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['green-snackbar']});
+              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();
             },
             err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})

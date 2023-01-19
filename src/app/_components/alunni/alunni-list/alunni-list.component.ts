@@ -277,7 +277,6 @@ export class AlunniListComponent implements OnInit {
 
   filterPredicate(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
-
       let searchTerms = JSON.parse(filter);
       let foundGenitore : boolean = false;
 
