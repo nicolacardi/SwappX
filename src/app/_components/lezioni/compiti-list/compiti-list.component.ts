@@ -31,6 +31,7 @@ export class CompitiListComponent implements OnInit {
     "actionsColumn2",
     "actionsColumn", 
     "dtCalendario", 
+    "h_Ini",
     "materia",
     "argomento"
   ];
@@ -81,8 +82,6 @@ export class CompitiListComponent implements OnInit {
 
       loadLezioni$.subscribe(
         res =>  {
-          
-          //console.log ("Compiti-list - loadData: ", res);
           this.matDataSource.data = res;
           this.sortCustom(); 
           this.matDataSource.sort = this.sort; 
@@ -150,7 +149,7 @@ export class CompitiListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '500px',
-      height: '300px',
+      height: '400px',
       data: element
     };
     const dialogRef = this._dialog.open(CompitoEditComponent, dialogConfig);
@@ -177,13 +176,14 @@ export class CompitiListComponent implements OnInit {
     let lezione: any = {
       id: 0,
       docenteID: this.docenteID,
+      classeSezioneAnnoID: this.classeSezioneAnnoID,
       dtCalendario: '2023-01-01'
 
     }
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '500px',
-      height: '300px',
+      height: '400px',
       data: lezione
     };
     const dialogRef = this._dialog.open(CompitoEditComponent, dialogConfig);

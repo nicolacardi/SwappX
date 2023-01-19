@@ -34,6 +34,11 @@
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Data</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.dtCalendario | highlightDate: filterValue"></td>
         </ng-container>
+
+        <ng-container matColumnDef="h_Ini">
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Ora</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.h_Ini | highlight:filterValue"></td>
+        </ng-container>
         
         <ng-container matColumnDef="materia">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Materia</th>

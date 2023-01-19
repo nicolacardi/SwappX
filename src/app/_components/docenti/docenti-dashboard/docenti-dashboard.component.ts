@@ -19,6 +19,7 @@ import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
 import { JspdfService } from '../../utilities/jspdf/jspdf.service';
 import { DocentiService } from '../docenti.service';
 import { LezioniCalendarioComponent } from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
+import { PER_Docente } from 'src/app/_models/PER_Docente';
 
 @Component({
   selector: 'app-docenti-dashboard',
@@ -33,6 +34,7 @@ export class DocentiDashboardComponent implements OnInit {
   public classeSezioneAnnoID!:  number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public annoID!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public docenteID!:            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
+
   public iscrizioneID!:         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
   public alunno!:               ALU_Alunno;   //valore ricevuto (emitted) dal child IscrizioniClasseList
 
@@ -85,7 +87,10 @@ export class DocentiDashboardComponent implements OnInit {
           //concatMap(() =>  this.form.controls['classeSezioneID'].setValue(val.id))
         //)
         .subscribe(
-          res => this.docenteID = res.id,
+          res => {
+            this.docenteID = res.id;
+            },
+
           err => console.log("getDocenteBypersonaID- KO:", err)
       )
     }

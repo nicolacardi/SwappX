@@ -63,7 +63,6 @@ export class ScadenzeCalendarioComponent implements OnInit {
       dayGridMonth: {  //questo modifica TUTTI gli eventi in questa vista
         eventContent: (event: any, element: any) => {
           { 
-            console.log (event.event._def)
             //mostra l'ora
             let timeText = document.createElement('div');
             timeText.className = "fc-event-time";
@@ -170,7 +169,6 @@ export class ScadenzeCalendarioComponent implements OnInit {
     const loadScadenze$ =this._loadingService.showLoaderUntilCompleted(obsScadenze$);
     loadScadenze$.subscribe(
       val =>   {
-        console.log("val", val);
         this.Events = val;
         this.calendarOptions.events = this.Events;
       }

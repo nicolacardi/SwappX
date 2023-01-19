@@ -54,6 +54,16 @@ export class LezioniService {
     //http://213.215.231.4/SwappX/api/CAL_Lezioni/ListByDocenteClasseSezioneAnno/3/16
   }
 
+
+  listByDocenteClasseSezioneAnnoNoCompito(docenteID: number, classeSezioneAnnoID: number): Observable<CAL_Lezione[]>{
+    return this.http.get<CAL_Lezione[]>(environment.apiBaseUrl+'CAL_Lezioni/ListByDocenteClasseSezioneAnno/'+ docenteID + '/' + classeSezioneAnnoID)
+    .pipe (
+      map(val=>val.filter(val=>(val.ckCompito == false))),  
+    );
+    //http://213.215.231.4/SwappX/api/CAL_Lezioni/ListByDocenteClasseSezioneAnno/3/16
+  }
+
+
   listByDocenteAndOraOverlap(lezioneID: number, docenteID: number, dtCalendario: string, h_Ini: string, h_End: string): Observable<CAL_Lezione[]>{
     let strQuery = environment.apiBaseUrl+'CAL_Lezioni/ListByDocenteAndOraOverlap/'+ lezioneID + '/' + docenteID + '/' + dtCalendario + '/' + Utility.URL_FormatHour(h_Ini) + '/' + Utility.URL_FormatHour( h_End);
     //console.log (strQuery);
@@ -106,20 +116,16 @@ export class LezioniService {
   }
 
   put(formData: any): Observable <any>{
-    //console.log ("lezioni.service - put - formData", formData);
     return this.http.put( environment.apiBaseUrl  + 'CAL_Lezioni/' + formData.id , formData);    
   }
 
   setAppello(formData: any): Observable <any>{
-
     formData.ckAppello = true;
-    console.log ("setAppello formData", formData);
     return this.http.put( environment.apiBaseUrl  + 'CAL_Lezioni/' + formData.id , formData);    
   }
 
   post(formData: any): Observable <any>{
     formData.id = 0;
-    console.log (formData);
     return this.http.post( environment.apiBaseUrl  + 'CAL_Lezioni' , formData);  
   }
 

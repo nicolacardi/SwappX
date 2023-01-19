@@ -17,8 +17,14 @@ export class MaterieService {
   }
 
   listByClasseSezioneAnno(materiaID: any): Observable<MAT_Materia[]>{
-    return this.http.get<MAT_Materia[]>(environment.apiBaseUrl+'MAT_Materie/ListMaterieByClasseSezioneAnno/'+materiaID);
-    //http://213.215.231.4/swappX/api/MAT_Materie/ListMaterieByClasseSezioneAnno/2
+    return this.http.get<MAT_Materia[]>(environment.apiBaseUrl+'MAT_Materie/ListByClasseSezioneAnno/'+materiaID);
+    //http://213.215.231.4/swappX/api/MAT_Materie/ListByClasseSezioneAnno/2
+    //TODO ATTENZIONE WS ERRATO: NON USA il classesezioneannoID!!! Fatto: alla prossima publish funziona
+  }
+
+  listByClasseSezioneAnnoANDDocente(materiaID: any, docenteID: any): Observable<MAT_Materia[]>{
+    return this.http.get<MAT_Materia[]>(environment.apiBaseUrl+'MAT_Materie/ListByClasseSezioneAnnoAndDocente/'+materiaID+'/'+docenteID);
+    //http://213.215.231.4/swappX/api/MAT_Materie/ListByClasseSezioneAnnoAndDocente/48/1005
   }
 
   get(materiaID: any): Observable<MAT_Materia>{

@@ -1,5 +1,5 @@
 import { CLS_ClasseSezioneAnno }                from "./CLS_ClasseSezioneAnno";
-import { MAT_Materia } from "./MAT_Materia";
+import { MAT_Materia }                          from "./MAT_Materia";
 import { PER_Docente }                          from "./PER_Docente";
 import { PER_Persona }                          from "./PER_Persone";
 

@@ -30,11 +30,15 @@
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>
-                <mat-grid-list class="no-overflowx mt30" [cols]="breakpoint" rowHeight="60px">
-                    <mat-grid-tile>
+                <mat-grid-list class="no-overflow mt10 center" [cols]="breakpoint" rowHeight="60px">
+                    <mat-grid-tile class="mt10" >                    
+                        <mat-label>Lezioni del Prof. {{prof}} per la classe selezionata</mat-label>
+                    </mat-grid-tile>
+                    <mat-grid-tile class="mt10" >
+                        
                         <mat-form-field  >
-                            <mat-label>Lezioni del Prof. {{prof}}</mat-label>
-                            <mat-select formControlName="id" #selectLezione>
+                            <mat-label>Lezioni</mat-label>
+                            <mat-select formControlName="id" #selectLezione (click)="setGiornoCorrente()" (selectionChange)="changeSelection()">
                                 <mat-option *ngFor="let element of (obsLezioni$ | async)" [value]="element.id">
                                     {{element.dtCalendario| date: "dd/MM/yyyy"}} - {{element.h_Ini}}
                                 </mat-option>
@@ -49,7 +53,7 @@
                         </mat-form-field>
                     </mat-grid-tile> -->
 
-                    <mat-grid-tile>
+                    <mat-grid-tile class="mt10">
                         <mat-form-field>
                             <input matInput required type="text" placeholder="argomentoCompito"
                                     formControlName="argomentoCompito">

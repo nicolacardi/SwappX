@@ -1,3 +1,5 @@
+import { TST_VotoInterr } from "./TST_VotiInterr";
+
 //I dialog Data si usano ogni volta che da un form ad una Dialog non bisogna passare una sola info ma un serie di informazioni
 export interface DialogData {
         titolo:                                 string;
@@ -16,6 +18,7 @@ export interface DialogDataLezione {
         h_End:                                  string;
         classeSezioneAnnoID:                    number;
         dove:                                   string;
+        docenteID:                              number;
       }
 
 export interface DialogDataScadenza {
@@ -58,3 +61,9 @@ export interface DialogDataNota {
       }
 
 
+export interface DialogDataVotoInterr {
+        votoInterr:                             TST_VotoInterr;
+        classeSezioneAnnoID:                    number;
+        docenteID:                              number;
+
+      }

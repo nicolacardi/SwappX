@@ -175,6 +175,7 @@ import { VotiCompitoPageComponent }             from './_components/lezioni/voti
 import { VotiCompitoListComponent }             from './_components/lezioni/voti-compito-list/voti-compito-list.component';
 
 import { VotiInterrListComponent }              from './_components/lezioni/voti-interr-list/voti-interr-list.component';
+import { VotoInterrEditComponent }                 from './_components/lezioni/voto-interr-edit/voto-interr-edit.component';
 
 //Scadenze
 import { ScadenzeCalendarioComponent }          from './_components/scadenze/scadenze-calendario/scadenze-calendario.component';
@@ -252,7 +253,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     CompitoEditComponent,
     VotiCompitoPageComponent,
     VotiInterrListComponent,
-
+    VotoInterrEditComponent,
+    
     PagamentiListComponent,
     PagamentiPageComponent,
     PagamentiFilterComponent,

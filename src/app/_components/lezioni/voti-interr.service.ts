@@ -23,6 +23,16 @@ export class VotiInterrService {
     //http://213.215.231.4/swappX/api/TST_VotiInterr/ListByLezione/975
   }
 
+  listByClasseSezioneAnno(classeSezioneAnnoID: number): Observable<TST_VotoInterr[]>{
+    return this.http.get<TST_VotoInterr[]>(environment.apiBaseUrl+'TST_VotiInterr/listByClasseSezioneAnno/'+classeSezioneAnnoID);
+    //http://213.215.231.4/swappX/api/TST_VotiInterr/listByClasseSezioneAnno/48
+  }
+
+  listByClasseSezioneAnnoAndDocente(classeSezioneAnnoID: number, docenteID: number): Observable<TST_VotoInterr[]>{
+    return this.http.get<TST_VotoInterr[]>(environment.apiBaseUrl+'TST_VotiInterr/listByClasseSezioneAnnoAndDocente/'+classeSezioneAnnoID+'/'+docenteID);
+    //http://213.215.231.4/swappX/api/TST_VotiInterr/listByClasseSezioneAnnoAndDocente/16/3
+  }
+
   listByAlunno(alunnoID: number): Observable<TST_VotoInterr[]>{
     return this.http.get<TST_VotoInterr[]>(environment.apiBaseUrl+'TST_VotiInterr/ListByAlunno/'+alunnoID);
     //http://213.215.231.4/swappX/api/TST_VotiInterr/ListByAlunno/3

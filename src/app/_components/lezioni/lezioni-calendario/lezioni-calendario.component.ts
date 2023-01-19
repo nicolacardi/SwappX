@@ -24,6 +24,7 @@ import { LezioniService } from '../lezioni.service';
 //classes
 import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
 import { UserService } from 'src/app/_user/user.service';
+import { PER_Docente } from 'src/app/_models/PER_Docente';
 
 
 @Component({
@@ -211,7 +212,7 @@ export class LezioniCalendarioComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
   @Input() classeSezioneAnnoID!:                     number;
-  @Input() docenteID!:                    number;
+  @Input() docenteID!:                            number;
   @Input() dove!:                         string;
   @ViewChild('calendarDOM') calendarDOM!: FullCalendarComponent;
 //#endregion
@@ -502,7 +503,8 @@ export class LezioniCalendarioComponent implements OnInit {
         h_Ini: clickInfo.event.extendedProps.h_Ini,
         h_End: clickInfo.event.extendedProps.h_End,
         classeSezioneAnnoID: clickInfo.event.extendedProps.classeSezioneAnnoID,
-        dove: this.dove
+        dove: this.dove,
+        docenteID: this.docenteID
       }
     };
     //solo il docente della lezione può aprire oppure lo può fare un docente con privilegi/segreteria/amministrazione scuola
@@ -537,7 +539,9 @@ export class LezioniCalendarioComponent implements OnInit {
         h_Ini: dtStart.toLocaleString('sv').replace(' ', 'T').substring(11,19),
         h_End: dtEnd.toLocaleString('sv').replace(' ', 'T').substring(11,19),
         classeSezioneAnnoID: this.classeSezioneAnnoID,
-        dove: this.dove
+        dove: this.dove,
+        docenteID: this.docenteID
+
       }
     };
     const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);

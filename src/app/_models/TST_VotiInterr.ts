@@ -1,3 +1,5 @@
+import { CAL_Lezione } from "./CAL_Lezione";
+
 export interface TST_VotoInterr {
   id:                                           number;
   lezioneID:                                    number;
@@ -11,4 +13,5 @@ export interface TST_VotoInterr {
   userIns?:                                     number;
   userUpd?:                                     number;
 
+  lezione:                                      CAL_Lezione;
 }

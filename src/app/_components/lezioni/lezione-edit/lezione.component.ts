@@ -53,7 +53,7 @@ export class LezioneComponent implements OnInit {
 //#region ----- Variabili -------
 
   form! :                                       FormGroup;
-
+  docenteID!:                                   number;
   lezione$!:                                    Observable<CAL_Lezione>;
   obsMaterie$!:                                 Observable<MAT_Materia[]>;
   obsClassiDocentiMaterie$!:                    Observable<CLS_ClasseDocenteMateria[]>;
@@ -69,6 +69,8 @@ export class LezioneComponent implements OnInit {
   dtStart!:                                     Date;
   dtEnd!:                                       Date;
   strClasseSezioneAnno!:                        string;
+  classeSezioneAnnoID!:                         number;
+
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
   ckAppello:                                    boolean = false;
@@ -144,10 +146,14 @@ export class LezioneComponent implements OnInit {
           //verifica se già non è impegnato in quest'ora o FRAZIONI DI ORA in qualche altro posto.
           this.svcDocenze.getByClasseSezioneAnnoAndMateria(this.form.controls.classeSezioneAnnoID.value, res).subscribe(
             val => {
-              if (val) 
+              if (val) {
                 this.form.controls['docenteID'].setValue(val.docenteID);
-              else 
-                this.form.controls['docenteID'].setValue("")
+                this.docenteID = this.data.docenteID; //Serve per essere passato alle interrogazioni
+              }
+              else { 
+                this.form.controls['docenteID'].setValue("");
+                this.docenteID = this.data.docenteID; //Serve per essere passato alle interrogazioni
+              }
             });
         }
       }
@@ -176,10 +182,8 @@ export class LezioneComponent implements OnInit {
 
     this.breakpoint = (window.innerWidth <= 800) ? 2 : 2;
     this.obsClassiDocentiMaterie$ = this.svcDocenze.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
-    
-    //this.obsMaterie$ = this.svcMaterie.listOrario(); //AS [30mar2022]: sostituita dal metodo listByClasseSezioneAnno
+
     this.obsMaterie$ = this.svcMaterie.listByClasseSezioneAnno(this.data.classeSezioneAnnoID); 
-    //this.obsMaterie$ = this.svcMaterie.listByClasseSezioneAnno(this.classeSezioneAnnoID); 
 
     this.obsDocenti$ = this.svcDocenti.list();
 
