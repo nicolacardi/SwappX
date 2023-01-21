@@ -23,7 +23,7 @@ import { DialogDataNota }                       from 'src/app/_models/DialogData
 @Component({
   selector: 'app-nota-edit',
   templateUrl: './nota-edit.component.html',
-  styleUrls: ['../note.component.css']
+  styleUrls: ['../note.css']
 })
 
 export class NotaEditComponent implements OnInit {

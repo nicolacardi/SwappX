@@ -1,9 +1,9 @@
-import { MAT_MacroMateria } from "./MAT_MacroMateria";
+import { MAT_MacroMateria }                     from "./MAT_MacroMateria";
 
 export interface MAT_Materia {
-        id:                 number;
-        macroMateriaID:     number;
-        descrizione:        string;
+        id:                                     number;
+        macroMateriaID:                         number;
+        descrizione:                            string;
 
-        macroMateria:       MAT_MacroMateria
+        macroMateria:                           MAT_MacroMateria
 }

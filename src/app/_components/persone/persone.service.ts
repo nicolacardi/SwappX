@@ -19,6 +19,17 @@ export class PersoneService {
     //http://213.215.231.4/swappX/api/PER_Persone
   }
 
+  listPersonaleScuola(): Observable<PER_Persona[]>{
+    return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone/listPersonaleScuola')
+    //http://213.215.231.4/swappX/api/PER_Persone/listPersonaleScuola
+  }
+
+  listGenitoriByClasseSezioneAnno(classeSezioneAnnoID: number): Observable<PER_Persona[]>{
+    return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone/listGenitoriByClasseSezioneAnno/'+classeSezioneAnnoID)
+    //http://213.215.231.4/swappX/api/PER_Persone/listGenitoriByClasseSezioneAnno/16
+  }
+
+
   listCompleta(): Observable<PER_Persona[]>{
     return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone');
     //http://213.215.231.4/swappX/api/PER_Persone

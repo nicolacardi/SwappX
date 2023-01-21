@@ -1,26 +1,25 @@
-import { CLS_Iscrizione } from "./CLS_Iscrizione";
-import { PER_Persona } from "./PER_Persone";
+import { CLS_Iscrizione }                       from "./CLS_Iscrizione";
+import { PER_Persona }                          from "./PER_Persone";
 
 export interface DOC_Nota {
-    id:                     number;
-    iscrizioneID:           number;
-    personaID:              number;
-    dtNota:                 string;
-    periodo:                number;
-    ckFirmato?:             boolean;
-    dtFirma:                string;
-    nota:                   string;
+    id:                                         number;
+    
+    iscrizioneID:                               number;
+    personaID:                                  number;
+    dtNota:                                     string;
+    periodo:                                    number;
+    ckFirmato?:                                 boolean;
+    dtFirma:                                    string;
+    nota:                                       string;
+    
+    note?:                                      string;
+    dtIns?:                                     string;
+    dtUpd?:                                     string;
+    userIns?:                                   number;
+    userUpd?:                                   number;
 
-
-    note?:                  string;
-    dtIns?:                 string;
-    dtUpd?:                 string;
-    userIns?:               number;
-    userUpd?:               number;
-
-    iscrizione?:            CLS_Iscrizione;
-    persona?:               PER_Persona;
-
+    iscrizione?:                                CLS_Iscrizione;
+    persona?:                                   PER_Persona;
 }
 
  

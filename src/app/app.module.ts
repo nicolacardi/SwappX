@@ -68,7 +68,6 @@ import { IscrizioniAlunnoListComponent }        from './_components/iscrizioni/i
 
 //Docenti
 import { DocentiDashboardComponent }            from './_components/docenti/docenti-dashboard/docenti-dashboard.component';
-import { DocentiPageComponent }                 from './_components/docenti/docenti-page/docenti-page.component';
 
 //Docenze
 import { DocenzeListComponent }                 from './_components/classi/docenze/docenze-list/docenze-list.component';
@@ -180,6 +179,12 @@ import { VotoInterrEditComponent }                 from './_components/lezioni/v
 //Scadenze
 import { ScadenzeCalendarioComponent }          from './_components/scadenze/scadenze-calendario/scadenze-calendario.component';
 import { ScadenzaEditComponent }                from './_components/scadenze/scadenza-edit/scadenza-edit.component';
+
+//Verbali
+import { VerbaliListComponent }                 from './_components/verbali/verbali-list/verbali-list.component';
+import { VerbaleEditComponent }                 from './_components/verbali/verbale-edit/verbale-edit.component';
+import { VerbaliPageComponent }                 from './_components/verbali/verbali-page/verbali-page.component';
+import { VerbaliFilterComponent }               from './_components/verbali/verbali-filter/verbali-filter.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -318,8 +323,12 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     NotePageComponent,
     NoteFilterComponent,
 
-    DocentiDashboardComponent,
-    DocentiPageComponent,
+    VerbaliListComponent,
+    VerbaleEditComponent,
+    VerbaliPageComponent,
+    VerbaliFilterComponent,
+
+    DocentiDashboardComponent
     
 
   ],

@@ -27,7 +27,7 @@ import { PER_Docente } from 'src/app/_models/PER_Docente';
 @Component({
   selector: 'app-note-list',
   templateUrl: './note-list.component.html',
-  styleUrls: ['../note.component.css']
+  styleUrls: ['../note.css']
 })
 export class NoteListComponent implements OnInit {
   

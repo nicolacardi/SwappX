@@ -4,8 +4,8 @@ import { CLS_Iscrizione } from "./CLS_Iscrizione";
 import { PAG_Pagamento } from "./PAG_Pagamento";
 
 export interface PAG_Retta {
-       
         id:                     number,
+
         iscrizioneID:           number,
         annoID:                 number,
         alunnoID:               number,
@@ -32,6 +32,7 @@ export interface PAG_Retta {
 
 export interface PAG_RettePagamenti_Sum {
         id:                     number;
+        
         annoRetta:              number;
         meseRetta:              number;
 

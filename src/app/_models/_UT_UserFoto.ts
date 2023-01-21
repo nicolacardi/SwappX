@@ -1,5 +1,5 @@
 export interface _UT_UserFoto {
-        id:         number;
-        userID:     string;
-        foto:       string;
+        id:                                     number;
+        userID:                                 string;
+        foto:                                   string;
 }

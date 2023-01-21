@@ -1,5 +1,6 @@
 export interface PER_Persona {
         id:                                     number;
+
         tipoPersonaID:                          number;
 
         nome:                                   string;
@@ -35,9 +36,9 @@ export interface PER_Persona {
 
 export interface PER_TipoPersona {
         id:                                     number;
+
         descrizione:                            string;
         ckDocente?:                             boolean;
         ckPersonale?:                           boolean;
         livello:                                number;
-
 }

@@ -3,11 +3,12 @@ import { CLS_ClasseSezioneAnno } from "./CLS_ClasseSezioneAnno";
 import { CLS_Iscrizione } from "./CLS_Iscrizione";
 
 export interface PAG_RettaPivot {
-        alunnoID:               number;
-        alunno:                 ALU_Alunno;
-        nome:                   string;
-        cognome:                string;
-        annoID:                 number;
+        alunnoID:                               number;
+        alunno:                                 ALU_Alunno;
+        nome:                                   string;
+        cognome:                                string;
+        annoID:                                 number;
+        
         c_SET:    number;
         c_OTT:    number;
         c_NOV:    number;
@@ -54,21 +55,7 @@ export interface PAG_RettaPivot {
 
         p_TOT:    number;
 
-        iscrizione?:           CLS_Iscrizione;
-        classeSezioneAnno?:    CLS_ClasseSezioneAnno; //NC 240122  ...per mostrare in ElencoRette anche la classe
-
+        iscrizione?:                            CLS_Iscrizione;
+        classeSezioneAnno?:                     CLS_ClasseSezioneAnno; 
 
 }
-
-// "id": 4,
-// "annoID": 1,
-// "alunnoID": 3,
-// "anno": 2019,
-// "mese": 10,
-// "quotaDefault": 300,
-// "quotaConcordata": 280,
-// "note": null,
-// "dtIns": "2021-07-01T00:00:00",
-// "dtUpd": null,
-// "userIns": 1,
-// "userUpd": null

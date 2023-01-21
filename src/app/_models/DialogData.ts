@@ -1,4 +1,5 @@
-import { TST_VotoInterr } from "./TST_VotiInterr";
+import { DOC_Verbale } from "./DOC_Verbale";
+import { TST_VotoInterr }                       from "./TST_VotiInterr";
 
 //I dialog Data si usano ogni volta che da un form ad una Dialog non bisogna passare una sola info ma un serie di informazioni
 export interface DialogData {
@@ -60,6 +61,10 @@ export interface DialogDataNota {
         dtNota?:                                string;
       }
 
+export interface DialogDataVerbale {
+        verbale:                                DOC_Verbale;
+        annoID:                                 number;
+      }
 
 export interface DialogDataVotoInterr {
         votoInterr:                             TST_VotoInterr;

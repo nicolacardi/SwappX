@@ -6,7 +6,7 @@ import { Observable }                           from 'rxjs';
 import { MatPaginator }                         from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 import { MatSort }                              from '@angular/material/sort';
-import { concatMap, finalize }                  from 'rxjs/operators';
+import { finalize }                             from 'rxjs/operators';
 import { ActivatedRoute }                       from '@angular/router';
 import { SelectionModel }                       from '@angular/cdk/collections';
 import { MatSnackBar }                          from '@angular/material/snack-bar';

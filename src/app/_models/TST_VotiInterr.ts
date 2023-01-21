@@ -2,6 +2,7 @@ import { CAL_Lezione } from "./CAL_Lezione";
 
 export interface TST_VotoInterr {
   id?:                                           number;
+  
   lezioneID:                                    number;
   alunnoID:                                     number;
   materiaID:                                    number;

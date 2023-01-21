@@ -1,5 +1,5 @@
 
 export interface PAG_CausalePagamento {
-        id:                 number;
-        descrizione:        string;
+        id:                                     number;
+        descrizione:                            string;
 }

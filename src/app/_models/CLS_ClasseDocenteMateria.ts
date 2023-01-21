@@ -1,26 +1,25 @@
-import { CLS_ClasseSezioneAnno } from "./CLS_ClasseSezioneAnno";
-import { MAT_Materia } from "./MAT_Materia";
-import { PER_Docente } from "./PER_Docente";
-import { PER_Persona } from "./PER_Persone";
+import { CLS_ClasseSezioneAnno }                from "./CLS_ClasseSezioneAnno";
+import { MAT_Materia }                          from "./MAT_Materia";
+import { PER_Docente }                          from "./PER_Docente";
 
 export interface CLS_ClasseDocenteMateria {
-        id:                     number;
+        id:                                     number;
 
-        classeSezioneAnnoID:    number;
-        docenteID:              number;
-        materiaID:              number;
+        classeSezioneAnnoID:                    number;
+        docenteID:                              number;
+        materiaID:                              number;
 
-        ckOrario:               boolean;
-        ckPagella:              boolean;
+        ckOrario:                               boolean;
+        ckPagella:                              boolean;
 
-        note:                   string;
-        dtIns:                  string;
-        dtUpd:                  string;
-        userIns:                number;
-        userUpd:                number;
+        note:                                   string;
+        dtIns:                                  string;
+        dtUpd:                                  string;
+        userIns:                                number;
+        userUpd:                                number;
 
-        docente:                PER_Docente;
-        materia:                MAT_Materia;
-        classeSezioneAnno:      CLS_ClasseSezioneAnno;
+        docente:                                PER_Docente;
+        materia:                                MAT_Materia;
+        classeSezioneAnno:                      CLS_ClasseSezioneAnno;
 }
 

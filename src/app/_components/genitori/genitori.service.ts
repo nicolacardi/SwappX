@@ -24,6 +24,7 @@ export class GenitoriService {
       //http://213.215.231.4/swappX/api/ALU_Genitori/ListByAlunno/3
   }
 
+
   listWithChildren(): Observable<ALU_Genitore[]>{
     return this.http.get<ALU_Genitore[]>(environment.apiBaseUrl+'ALU_Genitori/ListWithChildren');
     //http://213.215.231.4/swappX/api/ALU_Genitori/ListWithChildren

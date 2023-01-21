@@ -1,8 +1,6 @@
-
 export interface CLS_IscrizioneStato {
-        id:                   number;
+        id:                                     number;
 
-        codice:               number;
-        descrizione:          string;
-        
+        codice:                                 number;
+        descrizione:                            string;
 }

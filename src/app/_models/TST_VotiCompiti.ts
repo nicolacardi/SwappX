@@ -1,5 +1,6 @@
 export interface TST_VotoCompito {
   id:                                           number;
+  
   lezioneID:                                    number;
   alunnoID:                                     number;
   voto:                                         number;

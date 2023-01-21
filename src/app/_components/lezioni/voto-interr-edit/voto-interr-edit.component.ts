@@ -182,7 +182,6 @@ export class VotoInterrEditComponent implements OnInit {
         argomento: this.form.controls.argomento.value,
         voto: this.form.controls.voto.value,
         giudizio: this.form.controls.giudizio.value,
-
       }
 
       console.log ("voto-interr-edit save POST this.form.value", this.form.value);

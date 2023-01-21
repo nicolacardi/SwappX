@@ -11,7 +11,7 @@ import { NavigationService }                    from '../../utilities/navigation
 @Component({
   selector: 'app-note-page',
   templateUrl: './note-page.component.html',
-  styleUrls: ['../note.component.css']
+  styleUrls: ['../note.css']
 })
 export class NotePageComponent implements OnInit {
 //#region ----- ViewChild Input Output -------

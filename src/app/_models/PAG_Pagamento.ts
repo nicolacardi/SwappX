@@ -1,34 +1,34 @@
-import { ALU_Alunno } from "./ALU_Alunno";
-import { PAG_CausalePagamento } from "./PAG_CausalePagamento";
-import { PAG_Retta } from "./PAG_Retta";
-import { PAG_TipoPagamento } from "./PAG_TipoPagamento";
-
+import { ALU_Alunno }                           from "./ALU_Alunno";
+import { PAG_CausalePagamento }                 from "./PAG_CausalePagamento";
+import { PAG_Retta }                            from "./PAG_Retta";
+import { PAG_TipoPagamento }                    from "./PAG_TipoPagamento";
 
 export interface PAG_Pagamento {
 
-        id:                     number;
-        importo:                number;
-        dtPagamento:            Date;
+        id:                                     number;
 
-        tipoPagamentoID:        number;
-        tipoPagamento:          PAG_TipoPagamento;
+        importo:                                number;
+        dtPagamento:                            Date;
 
-        causaleID:              number;                 //Sostituire con oggetto PAG_Causali?
-        Causale:                PAG_CausalePagamento;
-        rettaID:                number;
-        retta:                  PAG_Retta;            //Serve SOLO per poter ordinare i pagamenti per mese o per importo della retta
+        tipoPagamentoID:                        number;
+        tipoPagamento:                          PAG_TipoPagamento;
 
-        alunnoID:               number;
-        alunno:                 ALU_Alunno;
+        causaleID:                              number;                 //Sostituire con oggetto PAG_Causali?
+        Causale:                                PAG_CausalePagamento;
+        rettaID:                                number;
+        retta:                                  PAG_Retta;            //Serve SOLO per poter ordinare i pagamenti per mese o per importo della retta
+
+        alunnoID:                               number;
+        alunno:                                 ALU_Alunno;
         
-        genitoreID:             number;                //Sostituire con oggetto ALU_Genitore 
-        soggetto:               string;
+        genitoreID:                             number;                //Sostituire con oggetto ALU_Genitore 
+        soggetto:                               string;
 
-        note:                   string;
-        dtIns:                  string;
-        dtUpd:                  string;
-        userIns:                number;
-        userUpd:                number;
+        note:                                   string;
+        dtIns:                                  string;
+        dtUpd:                                  string;
+        userIns:                                number;
+        userUpd:                                number;
 }
 
 
