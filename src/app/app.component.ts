@@ -69,9 +69,8 @@ export class AppComponent implements OnInit {
     if (this.eventEmitterService.subsVar==undefined) {    
     
       this.eventEmitterService.subsVar = this.eventEmitterService.invokeAppComponentRefreshFoto.subscribe(
-        (res:string) => {     
-          this.refreshUserData();    
-      });    
+        () => this.refreshUserData()
+      );    
     } 
   }
 
@@ -86,8 +85,7 @@ export class AppComponent implements OnInit {
     this.userFullName = currUser.fullname;
   }
   
-  logOut(){
-
+  logOut() {
     this.svcUser.Logout();
     this.router.navigate(['/user/login']);
   }

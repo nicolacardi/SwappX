@@ -10,7 +10,6 @@ export class VerbaliPresentiService {
 
   constructor(private http: HttpClient) { }
 
-
   deleteByVerbale(verbaleID: any): Observable<any>{
     return this.http.delete(environment.apiBaseUrl+'DOC_VerbalePresenti/DeleteByVerbale/'+verbaleID);   
     //http://213.215.231.4/swappX/api/DOC_VerbalePresenti/DeleteByVerbale/1

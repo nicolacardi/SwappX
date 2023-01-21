@@ -169,16 +169,14 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#endregion
 
-  constructor( 
-    private svcClassiSezioniAnni:               ClassiSezioniAnniService,
-    private svcAnni:                            AnniScolasticiService,
-    private svcDocenti:                         DocentiService,
-    private _loadingService:                    LoadingService,
-    private fb:                                 FormBuilder, 
-    public _dialog:                             MatDialog, 
-    private actRoute:                           ActivatedRoute,
-    private _snackBar:                          MatSnackBar 
-  ) {
+  constructor( private svcClassiSezioniAnni:               ClassiSezioniAnniService,
+              private svcAnni:                            AnniScolasticiService,
+              private svcDocenti:                         DocentiService,
+              private _loadingService:                    LoadingService,
+              private fb:                                 FormBuilder, 
+              public _dialog:                             MatDialog, 
+              private actRoute:                           ActivatedRoute,
+              private _snackBar:                          MatSnackBar ) {
 
     let objAnno = localStorage.getItem('AnnoCorrente');
     
@@ -212,17 +210,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
         )
       );
       
-    this.obsDocenti$ = this.svcDocenti.list()
-    // .pipe(
-    //   finalize( () => {
-    //       this.form.controls.selectDocente.setValue(this.docenteID); //funziona solo dopo aver implementato con compareWith...NC120123
-    //     }
-    //   )
-    // )
-    ;
-    
-
-    this.loadData();
+    this.obsDocenti$ = this.svcDocenti.list();
     
     this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);
     this.docenteIdEmitter.emit(this.form.controls["selectDocente"].value);
@@ -257,8 +245,20 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
         this.showPageTitle = false;
         this.showTableRibbon = false;
 
+        console.log("DEBUG - this.currUser.personaID: ", this.currUser.personaID);
         if(this.currUser.personaID != undefined && this.currUser.personaID != 0){
-          this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe( 
+
+          //AS: ATTENZIONE: se la persona non è un docente, la chiamata al WS restituisce un errore 404, che viene fuori nel console.log
+          //bisogna modificare il WS in modo che ritorni null e non errore (NON RIESCO A COLLEGARMI AL SERVER)
+          /*
+          {
+"type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+"title": "Not Found",
+"status": 404,
+"traceId": "00-e2acc9e55ba9934bb0cf93e56cb1a04b-09371454471a6e45-00"
+}
+          */
+          this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe ( 
             res => {            
               this.docenteID = res.id;
               this.form.controls.selectDocente.setValue(res.id);
@@ -268,9 +268,9 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
               this.docenteID = 0;
             }
           );
-        } else {
-          this.form.controls.selectDocente.setValue(0)
-        }
+        } 
+        else 
+          this.form.controls.selectDocente.setValue(0);
 
         // this.matDataSource.sort = this.sort; TODO
         break;          
@@ -322,26 +322,24 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
     loadClassi$.subscribe( val =>   {
+      this.matDataSource.data = val;
+      this.matDataSource.paginator = this.paginator;
 
-        this.matDataSource.data = val;
-        this.matDataSource.paginator = this.paginator;
-
-        if (this.dove == "classi-page") {
-          this.sortCustom(); 
-          this.matDataSource.sort = this.sort; 
-        }
-
-        this.matDataSource.filterPredicate = this.filterPredicate();
-        
-        if(this.matDataSource.data.length >0)
-          if (this.classeSezioneAnnoIDrouted) 
-            this.rowclicked(this.classeSezioneAnnoIDrouted);  
-          else
-            this.rowclicked(this.matDataSource.data[0].id); //seleziona per default la prima riga DA TESTARE
-        else
-          this.rowclicked(undefined);
+      if (this.dove == "classi-page") {
+        this.sortCustom(); 
+        this.matDataSource.sort = this.sort; 
       }
-    );
+
+      this.matDataSource.filterPredicate = this.filterPredicate();
+      
+      if(this.matDataSource.data.length >0)
+        if (this.classeSezioneAnnoIDrouted) 
+          this.rowclicked(this.classeSezioneAnnoIDrouted);  
+        else
+          this.rowclicked(this.matDataSource.data[0].id); //seleziona per default la prima riga DA TESTARE
+      else
+        this.rowclicked(undefined);
+    });
   }
 
   rowclicked(classeSezioneAnnoID?: number ){
@@ -363,7 +361,6 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 //#region ----- Emit per alunno-edit -------
 
   addToAttendedEmit(item: CLS_ClasseSezioneAnnoGroup) {
-    console.log ("emetto questo da classisezioniannilist", item);
     this.addToAttended.emit(item);
   }
 
@@ -374,7 +371,6 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
-    //if (this.dove == "classi-page") this.classiSezioniAnniFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
 
@@ -451,9 +447,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
       data: 0
     };
     const dialogRef = this._dialog.open(ClasseSezioneAnnoEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-      () => this.loadData()
-    );
+    dialogRef.afterClosed().subscribe(() => this.loadData());
   }
 
   openDetail(classeSezioneAnnoID:any) {
@@ -534,12 +528,15 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //non chiaro ma compareWith= compareObjects consente di impostare correttamente il valore di default NC 120123
   compareObjects(o1: any, o2: any): boolean {
-    console.log ("compareObjects, o1, o2", o1, o2);
+    //console.log ("compareObjects, o1, o2", o1, o2);
     return o1.name === o2.name && o1.id === o2.id;
   }
 
 }
+
+/* AS: Cos'è ?
 function tap(arg0: (val: any) => any): import("rxjs").OperatorFunction<PER_Docente, unknown> {
   throw new Error('Function not implemented.');
 }
+*/
 

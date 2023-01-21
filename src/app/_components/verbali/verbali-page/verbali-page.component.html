@@ -34,12 +34,10 @@
         </mat-drawer>
 
         <mat-drawer-content>
-
-            <app-verbali-list  
-                        [verbaliFilterComponent] = "appverbalifilter"
-                        (openDrawer) = "openDrawer()"
-                        [annoID] = "selectAnno.value"
-                        #appverbalilist >
+            <app-verbali-list [verbaliFilterComponent] = "appverbalifilter"
+                            (openDrawer) = "openDrawer()"
+                            [annoID] = "selectAnno.value"
+                            #appverbalilist >
             </app-verbali-list>
         </mat-drawer-content>
     </mat-drawer-container>

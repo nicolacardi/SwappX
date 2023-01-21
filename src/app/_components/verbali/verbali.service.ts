@@ -27,7 +27,6 @@ export class VerbaliService {
     //http://213.215.231.4/swappX/api/DOC_Verbali/ListByClasseSezioneAnnoID/16 
   }
 
-
   lisByPersona(personaID: number): Observable<DOC_Verbale[]>{
     return this.http.get<DOC_Verbale[]>(environment.apiBaseUrl+'DOC_Verbali/ListByPersona/'+personaID);   
     //http://213.215.231.4/swappX/api/DOC_Verbali/ListByPersona/285
@@ -44,7 +43,7 @@ export class VerbaliService {
 
   post(formData: any): Observable <any>{
     formData.id = 0;
-    console.log (formData);
+    //console.log (formData);
     return this.http.post(environment.apiBaseUrl  + 'DOC_Verbali' , formData);  
   }
 
@@ -61,9 +60,4 @@ export class VerbaliService {
     return this.http.get<DOC_TipoVerbale>(environment.apiBaseUrl+'DOC_TipiVerbale/'+verbaleID);   
     //http://213.215.231.4/swappX/api/DOC_TipiVerbale/1
   }
-
-
-
-
-
 }

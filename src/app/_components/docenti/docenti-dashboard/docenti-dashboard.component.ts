@@ -80,57 +80,50 @@ export class DocentiDashboardComponent implements OnInit {
     this.currUser = Utility.getCurrentUser();
     //console.log("curruser: ", this.currUser)
 
-    if(this.currUser.personaID != null){
-      this.svcDocenti.getByPersonaID(this.currUser.personaID)
-        //.pipe(
-        //  tap (val => this.docenteID = val.id),
-          //concatMap(() =>  this.form.controls['classeSezioneID'].setValue(val.id))
-        //)
-        .subscribe(
-          res => {
-            this.docenteID = res.id;
-            },
-
-          err => console.log("getDocenteBypersonaID- KO:", err)
+    if(this.currUser.personaID != null && this.currUser.personaID != 0){
+      this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe(
+        res => this.docenteID = res.id,
+        err => console.log("getDocenteBypersonaID- KO:", err)
       )
     }
   }
   
-//#region ----- ricezione emit -------
-  //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
-  //serve per la successiva assegnazione ad una classe...in quanto il modale che va ad aggiungere
-  //le classi ha bisogno di conoscere anche l'annoID per fare le proprie verifiche
+  //#region ----- ricezione emit -------
+    //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
+    //serve per la successiva assegnazione ad una classe...in quanto il modale che va ad aggiungere
+    //le classi ha bisogno di conoscere anche l'annoID per fare le proprie verifiche
 
-annoIdEmitted(annoID: number) {
-  this.annoID = annoID;
-}
+  annoIdEmitted(annoID: number) {
+    this.annoID = annoID;
+  }
 
-classeSezioneAnnoIDEmitted(classeSezioneAnnoID: number) {
-  this.classeSezioneAnnoID = classeSezioneAnnoID;
-}
+  classeSezioneAnnoIDEmitted(classeSezioneAnnoID: number) {
+    this.classeSezioneAnnoID = classeSezioneAnnoID;
+  }
 
-docenteIdEmitted(docenteId: number) {
-  this.docenteID = docenteId;
-}
+  docenteIdEmitted(docenteId: number) {
+    this.docenteID = docenteId;
+  }
 
-iscrizioneIDEmitted(iscrizioneID: number) {
-  this.iscrizioneID = iscrizioneID;
-}
+  iscrizioneIDEmitted(iscrizioneID: number) {
+    this.iscrizioneID = iscrizioneID;
+  }
 
-alunnoEmitted(alunno: ALU_Alunno) {
-  this.alunno = alunno;
-}
+  alunnoEmitted(alunno: ALU_Alunno) {
+    this.alunno = alunno;
+  }
 
-//#endregion
+  //#endregion
 
-selectedTabValue(event: any){
-  //senza questo espediente non fa il primo render correttamente
+  selectedTabValue(event: any){
+    //senza questo espediente non fa il primo render correttamente
 
-  // if (this.tabGroup.selectedIndex == 1) {
-  //   this.viewOrarioDocente.calendarDOM.getApi().render();
-  //   this.viewOrarioDocente.loadData()
+    // if (this.tabGroup.selectedIndex == 1) {
+    //   this.viewOrarioDocente.calendarDOM.getApi().render();
+    //   this.viewOrarioDocente.loadData()
 
-  // }
-  
-}
+    // }
+    
+  }
+
 }

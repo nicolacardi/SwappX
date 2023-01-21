@@ -40,7 +40,6 @@
     <mat-sidenav *ngIf="isLoggedIn" #start class="leftSidenav" mode="side" opened="true">
 
         <mat-nav-list >
-
             <!-- <div mat-list-item>
                 <img  class="logo-img ml15 mt50" src="../assets/logoscrittaazzurro.svg">
             </div> -->
@@ -66,11 +65,6 @@
                 <span *ngIf="isExpanded">Alunni</span>
             </a>
 
-            <a mat-list-item class="h35px" routerLink="iscrizioni" (click)="clickMenuItem()" >
-                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/iscrizione.svg">
-                <span *ngIf="isExpanded">Iscrizioni</span>
-            </a>
-
             <a mat-list-item class="h35px" routerLink="genitori" (click)="clickMenuItem()">
                 <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/genitore.svg">
                 <span *ngIf="isExpanded">Genitori</span>
@@ -79,6 +73,13 @@
             <a mat-list-item class="h35px" routerLink="persone" (click)="clickMenuItem()">
                 <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/persona.svg">
                 <span *ngIf="isExpanded">Personale</span>
+            </a>
+
+            <mat-divider></mat-divider>
+
+            <a mat-list-item class="h35px" routerLink="iscrizioni" (click)="clickMenuItem()" >
+                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/iscrizione.svg">
+                <span *ngIf="isExpanded">Iscrizioni</span>
             </a>
 
 <!-- Classi -->
@@ -137,8 +138,6 @@
 
             </mat-expansion-panel>
 
-
-
  <!-- Pagamenti -->
             <a mat-list-item class="h35px" *ngIf="!isExpanded" (click)="isExpanded = true; expandPagamenti()">
                 <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/money_expand.svg">
@@ -146,11 +145,10 @@
             <mat-expansion-panel *ngIf="isExpanded" class="transparent expansionMainMenu mat-elevation-z0" #expansionPagamenti>
                 <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
                     <mat-panel-title>
-                    <img class="iconaMenuSidenav mr10" src="../assets/mainMenuWhite/money.svg">
-                    <span class="fs16" *ngIf="isExpanded">Ricavi</span>
+                        <img class="iconaMenuSidenav mr10" src="../assets/mainMenuWhite/money.svg">
+                        <span class="fs16" *ngIf="isExpanded">Ricavi</span>
                     </mat-panel-title>
-                    <mat-panel-description>
-                    </mat-panel-description>
+                    <mat-panel-description></mat-panel-description>
                 </mat-expansion-panel-header>
                 <mat-divider></mat-divider>
 
@@ -166,30 +164,30 @@
 
             <mat-divider></mat-divider>
 
-            <!-- <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.ruoloID >= 10"></a> -->
-            <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.TipoPersona!.ckPersonale == true">
-                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/utente.svg">
-                <span *ngIf="isExpanded">Gestione Utenti</span>
-            </a> 
+
 
             <a mat-list-item class="h35px" routerLink="verbali" (click)="clickMenuItem()">
                 <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/verbale.svg">
                 <span *ngIf="isExpanded">Verbali</span>
             </a>
 
-            <a mat-list-item class="h35px" (click)="clickMenuItem()">
-                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/tutorial.svg">
-                <span *ngIf="isExpanded">Tutorials</span>
-            </a>
-            
-            <a mat-list-item class="_pos-absolute _border-top _grey-background" 
+            <a mat-list-item class="_pos-absolute _border-top _grey-background"  style="z-index: 100000!important; bottom: 0;"
                      routerLink="impostazioni"
-                     (click)="clickMenuItem()"  style="z-index: 100000!important; bottom: 0;" 
+                     (click)="clickMenuItem()"  
                      *ngIf="currUser && currUser.TipoPersona!.descrizione == 'SysAdmin'">
-                     <!-- *ngIf="currUser && (currUser.ruoloID == 5 || currUser.ruoloID >=10)"> -->
 
                 <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/settings.svg">
                 <span *ngIf="isExpanded">Impostazioni</span>
+            </a>
+
+            <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.TipoPersona!.ckPersonale == true">
+                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/utente.svg">
+                <span *ngIf="isExpanded">Gestione Utenti</span>
+            </a> 
+
+            <a mat-list-item class="h35px" (click)="clickMenuItem()">
+                <img class="iconaMenuSidenav" src="../assets/mainMenuWhite/tutorial.svg">
+                <span *ngIf="isExpanded">Tutorials</span>
             </a>
 
         </mat-nav-list>

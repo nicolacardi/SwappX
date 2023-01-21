@@ -14,11 +14,8 @@ import { VerbaliFilterComponent }               from '../verbali-filter/verbali-
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { VerbaliService }                       from '../verbali.service';
 
-
 //models
 import { DOC_Verbale }                             from 'src/app/_models/DOC_Verbale';
-
-
 
 @Component({
   selector: 'app-verbali-list',
@@ -28,8 +25,6 @@ import { DOC_Verbale }                             from 'src/app/_models/DOC_Ver
 export class VerbaliListComponent implements OnInit, OnChanges {
   
 //#region ----- Variabili -------
-
-
 
   matDataSource =                               new MatTableDataSource<DOC_Verbale>();
 
@@ -72,7 +67,6 @@ export class VerbaliListComponent implements OnInit, OnChanges {
 
 //#region ----- ViewChild Input Output -------
 
-
   @Input() verbaliFilterComponent!:             VerbaliFilterComponent;
   @Input("annoID") annoID!:                     number;
 
@@ -81,12 +75,9 @@ export class VerbaliListComponent implements OnInit, OnChanges {
 
 //#endregion  
 
-  constructor( 
-    private svcVerbali:                            VerbaliService,
-    private _loadingService:                    LoadingService,
-    public _dialog:                             MatDialog ) {
-
-
+  constructor(private svcVerbali:                            VerbaliService,
+              private _loadingService:                    LoadingService,
+              public _dialog:                             MatDialog ) {
   }
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -116,13 +107,13 @@ export class VerbaliListComponent implements OnInit, OnChanges {
         this.matDataSource.filterPredicate = this.filterPredicate();
       }
     );
-
   }
+
 //#endregion
 
 //#region ----- Filtri & Sort -------
-  applyFilter(event: Event) {
 
+  applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
@@ -133,23 +124,20 @@ export class VerbaliListComponent implements OnInit, OnChanges {
 
       let searchTerms = JSON.parse(filter);
 
-     let dtVerbaleddmmyyyy!: string;
+      let dtVerbaleddmmyyyy!: string;
       if (data.dtVerbale){
         let dArrN = data.dtVerbale.split("-");
-         dtVerbaleddmmyyyy = dArrN[2].substring(0,2)+ "/" +dArrN[1]+"/"+dArrN[0];
-      } else {
-         dtVerbaleddmmyyyy = '';
-      }
-
-
+        dtVerbaleddmmyyyy = dArrN[2].substring(0,2)+ "/" +dArrN[1]+"/"+dArrN[0];
+      } 
+      else 
+        dtVerbaleddmmyyyy = '';
 
       let boolSx =  String(data.nome).indexOf(searchTerms.filtrosx) !== -1
                   || String(data.cognome).indexOf(searchTerms.filtrosx) !== -1
                   || String(data.tipo).indexOf(searchTerms.filtrosx) !== -1
                   || String(dtVerbaleddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
                   || String(data.titolo).indexOf(searchTerms.filtrosx) !== -1
-                  || String(data.classe).indexOf(searchTerms.filtrosx) !== -1
-                  ;
+                  || String(data.classe).indexOf(searchTerms.filtrosx) !== -1 ;
       
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
       let boolDx = 
@@ -159,7 +147,6 @@ export class VerbaliListComponent implements OnInit, OnChanges {
                     && String(dtVerbaleddmmyyyy).indexOf(searchTerms.dtVerbale) !== -1
                     && String(data.tipo.toLowerCase()).indexOf(searchTerms.tipo) !== -1
                     && String(data.classe.toLowerCase()).indexOf(searchTerms.classe) !== -1;
-                    ;
 
       return boolSx && boolDx;
     }
@@ -195,12 +182,10 @@ export class VerbaliListComponent implements OnInit, OnChanges {
         verbale: element,
         annoID: this.annoID
       }
-
-
     };
     const dialogRef = this._dialog.open(VerbaleEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe( res=>
-       this.loadData()
+    dialogRef.afterClosed().subscribe( 
+      res=> this.loadData()
     );
   }
 
