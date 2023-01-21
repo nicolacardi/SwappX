@@ -10,6 +10,9 @@ import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_mode
 })
 
 export class ClassiSezioniAnniService {
+  pipe(arg0: void): Observable<CLS_ClasseSezioneAnno[]> {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(private http: HttpClient) { }
 

@@ -79,7 +79,7 @@
                     </mat-form-field>
                 </mat-grid-tile>
 
-                <mat-grid-tile [ngClass]="{'invisible': mostraClassiEGenitori}">
+                <mat-grid-tile [ngClass]="{'invisible': !mostraClassiEGenitori}">
                     <mat-form-field>
                         <mat-label>Classe</mat-label>
                         <mat-select formControlName="classeSezioneAnnoID">
@@ -94,7 +94,7 @@
 
 
 
-                <mat-grid-tile [ngClass]="{'invisible': mostraClassiEGenitori}">
+                <mat-grid-tile [ngClass]="{'invisible': !mostraClassiEGenitori}">
                     <mat-form-field>
                         <mat-label>Genitori presenti</mat-label>
                         <mat-select formControlName="genitori" multiple>

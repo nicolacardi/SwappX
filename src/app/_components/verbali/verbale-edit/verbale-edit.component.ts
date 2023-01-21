@@ -3,10 +3,12 @@ import { FormBuilder, FormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { iif, Observable, of }                           from 'rxjs';
-import { concatMap, tap }                                  from 'rxjs/operators';
+import { concatMap, finalize, tap }                                  from 'rxjs/operators';
 
 //components
 import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
+
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 
 //services
@@ -77,41 +79,48 @@ export class VerbaleEditComponent implements OnInit {
       titolo:                                   [],
       contenuti:                                []
     });
+
+
   }
 
   ngOnInit() {
+
+    this.obsTipiVerbale$ = this.svcVerbali.listTipiVerbale();
+    this.obsPersonaleScuola$ = this.svcPersone.listPersonaleScuola();
+    
     this.loadData();
 
     
   }
 
   loadData() {
+    console.log("annoID arrivato", this.data.annoID);
+    this.form.controls.annoID.setValue(this.data.annoID);
 
+
+    //quando cambia il tipo di verbale cancella la classe e i genitori, poi mostra le combo a seconda
     this.form.controls.tipoVerbaleID.valueChanges
     .pipe(
       concatMap( val => this.svcVerbali.getTipoVerbale(val)),
     )
     .subscribe(
       val => {
-          this.form.controls.classeSezioneAnnoID.setValue(null);
-          this.form.controls.genitori.setValue(null);
+          //this.form.controls.classeSezioneAnnoID.setValue(null);
+          //accidenti questa impedisce di mostrare i genitori! ma se la tolgo non va bene se c'è perchè deve cancellare su change
+          //dovrebbe funzionare sempre meno che su load
+          //this.form.controls.genitori.setValue(null);  
         if (val.ckMostraGenitori) {
-          this.mostraClassiEGenitori = false;
-        } else {
           this.mostraClassiEGenitori = true;
+        } else {
+          this.mostraClassiEGenitori = false;
         }
       }
     );
 
-    this.obsTipiVerbale$ = this.svcVerbali.listTipiVerbale();
-
-    this.obsPersonaleScuola$ = this.svcPersone.listPersonaleScuola();
-
-    this.obsClassiSezioniAnni$ = this.svcClassiSezioniAnni.listByAnno(this.data.annoID);
 
     this.form.controls.classeSezioneAnnoID.valueChanges
     .pipe(
-      tap(val => {this.classeSezioneAnnoSelected = val? val: 0}),
+      tap(val => { this.classeSezioneAnnoSelected = val? val: 0}),
       //concatMap( (val:number) => iif( ()=> val!= null, this.obsGenitoriClasse$ = this.svcPersone.listGenitoriByClasseSezioneAnno(val), of())),
       concatMap( () => this.obsGenitoriClasse$ = this.svcPersone.listGenitoriByClasseSezioneAnno(this.classeSezioneAnnoSelected))
     )
@@ -122,7 +131,8 @@ export class VerbaleEditComponent implements OnInit {
 
 
     if (this.data.verbale) {
-
+      let arrPersonaleIDPresenti : number[] = [];
+      let arrGenitoriIDPresenti : number[] = [];
       //in teoria potrei anche fare a meno dell'observable e dell'async nel form: potrei passare TUTTI i valori tramite DialogData...tanto li ho già...ma non sarebbe rxJs
       const obsVerbale$: Observable<DOC_Verbale> = this.svcVerbali.get(this.data.verbale.id);
       const loadVerbale$ = this._loadingService.showLoaderUntilCompleted(obsVerbale$);
@@ -130,8 +140,31 @@ export class VerbaleEditComponent implements OnInit {
       this.obsVerbale$ = loadVerbale$
       .pipe( tap(
         verbale => {
-          console.log ("estraggo verbale:", verbale);
+          //console.log ("estraggo verbale:", verbale._VerbalePresenti);
+          //impostare i flag estraendo l'array da verbale.personale che però ha un sacco di altre proprietà
+          //console.log("quanti", verbale._VerbalePresenti.length);
+          verbale._VerbalePresenti.forEach((x, index) =>
+            { //devo inserire SOLO quelli che sono del personale
+              if (x.persona!.tipoPersona?.ckPersonale == true) arrPersonaleIDPresenti.push(verbale._VerbalePresenti[index].personaID)
+              else arrGenitoriIDPresenti.push(verbale._VerbalePresenti[index].personaID)
+
+            }
+          )
+          this.form.controls.personale.setValue(arrPersonaleIDPresenti);
+          this.form.controls.genitori.setValue(arrGenitoriIDPresenti);
+
           this.form.patchValue(verbale);
+          console.log ("classeSezioneAnnoID", verbale.classeSezioneAnnoID);
+
+          //purtroppo va fatto qui l'obSClassiSezioniAnni per poter selezionare poi il valore della classe in arrivo dalla get
+          this.obsClassiSezioniAnni$ = this.svcClassiSezioniAnni.listByAnno(this.data.annoID)
+          .pipe(
+              tap( val=> this.form.controls.classeSezioneAnnoID.setValue(verbale.classeSezioneAnnoID)
+          ));
+          
+
+
+          if (verbale.tipoVerbale.ckMostraGenitori) this.mostraClassiEGenitori = true
           this.form.controls.nomeCognome.setValue (verbale.persona.nome + ' ' + verbale.persona.cognome)
         } )
       );
@@ -139,6 +172,7 @@ export class VerbaleEditComponent implements OnInit {
     else {
      
       this.emptyForm = true;
+      this.obsClassiSezioniAnni$ = this.svcClassiSezioniAnni.listByAnno(this.data.annoID);
       this.form.controls.nomeCognome.setValue (Utility.getCurrentUser().fullname);
       this.form.controls.personaID.setValue (Utility.getCurrentUser().personaID);
 
@@ -153,7 +187,8 @@ export class VerbaleEditComponent implements OnInit {
     dialogYesNo.afterClosed().subscribe(
       result => {
         if(result){
-          this.svcVerbali.delete (this.data.verbale.id).subscribe(
+          this.svcVerbaliPresenti.deleteByVerbale(this.form.controls.id.value);
+          this.svcVerbali.delete (this.form.controls.id.value).subscribe(
             res =>{
               this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();
@@ -166,46 +201,83 @@ export class VerbaleEditComponent implements OnInit {
   }
 
   save() {
+    console.log (this.mostraClassiEGenitori);
+    console.log (this.form.controls.classeSezioneAnnoID.value);
+    if (this.mostraClassiEGenitori && !this.form.controls.classeSezioneAnnoID.value) {
+      const dialogOK = this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE", sottoTitolo: "Indicare la classe"}
+      });
+    } else {
 
-    if (this.form.controls.id.value == null) {
-      
-      //imposto per default l'anno corrente
-      let objAnno = localStorage.getItem('AnnoCorrente');
-      this.form.controls.annoID.setValue(JSON.parse(objAnno!).id);
-
-
-      this.svcVerbali.post(this.form.value).subscribe(
-        res=> {
-          this._dialogRef.close();
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-        },
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      );
-
+      //per sicurezza, qualora tipo fosse su un valore che non prevede la classe e i genitori,
+      //vado a cancellare i contenuti di quest'ultime in fase di salvataggio, potrebbero esserci valori rimasti
+      //da precedenti selezioni
+      if (!this.mostraClassiEGenitori) {
+        this.form.controls.classeSezioneAnnoID.setValue(null);
+        this.form.controls.genitori.setValue(null);
       }
-    else { 
+      
+      if (this.form.controls.id.value == null) {
+        
+        //imposto per default l'anno corrente
+        //let objAnno = localStorage.getItem('AnnoCorrente');
+        //this.form.controls.annoID.setValue(JSON.parse(objAnno!).id);
+        console.log (this.form.value);
+        this.svcVerbali.post(this.form.value).subscribe(
+          res=> {
+            
+            this.insertPresenze("personale", res.id);
+            this.insertPresenze("genitori", res.id);
 
-      //cancello le presenze e le ripristino
-      console.log("cancello presenze con verbaleID:",this.form.controls.id.value);
-      this.svcVerbaliPresenti.deleteByVerbale(this.form.controls.id.value);
-      this.form.controls.personale.value.forEach(
-        ((personaID: number) => {
-          let objVerbalePresente: DOC_VerbalePresente = {
-            personaID: personaID,
-            verbaleID : this.form.controls.id.value
-          }
-          console.log ("post di:", objVerbalePresente);
-          this.svcVerbaliPresenti.post(objVerbalePresente).subscribe();
-        })
-      )
+            this._dialogRef.close();
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+          },
+          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        );
 
-      this.svcVerbali.put(this.form.value).subscribe(
-        res=> {
-          this._dialogRef.close();
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-        },
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      );
+        }
+      else { 
+
+        //cancello tutte le presenze del verbale e le ripristino
+        let cancellaeRipristinaPresenze = this.svcVerbaliPresenti.deleteByVerbale(this.form.controls.id.value)
+        .pipe(
+          finalize(()=>{
+            this.insertPresenze("personale", this.form.controls.id.value);
+            this.insertPresenze("genitori", this.form.controls.id.value);
+          })
+        );
+        //.subscribe();
+
+        //ora salvo il verbale e lancio alla fine anche il cancellaeRipristinaPresenze
+        this.svcVerbali.put(this.form.value)
+        .pipe(
+          concatMap(()=>cancellaeRipristinaPresenze)
+        )
+        .subscribe(
+          res=> {
+            
+            this._dialogRef.close();
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+          },
+          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        );
+      }
+    }
+  }
+
+
+  insertPresenze(control: string, verbaleID: number) {
+    console.log("insertPresenze-control", control);
+
+    if (this.form.controls[control].value) {
+      for (let i = 0; i<this.form.controls[control].value.length; i++) {
+        let objVerbalePresente: DOC_VerbalePresente = {
+          personaID: this.form.controls[control].value[i],
+          verbaleID : verbaleID
+        }
+        this.svcVerbaliPresenti.post(objVerbalePresente).subscribe();
+      }
     }
   }
 }

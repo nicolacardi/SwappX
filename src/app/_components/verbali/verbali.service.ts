@@ -44,6 +44,7 @@ export class VerbaliService {
 
   post(formData: any): Observable <any>{
     formData.id = 0;
+    console.log (formData);
     return this.http.post(environment.apiBaseUrl  + 'DOC_Verbali' , formData);  
   }
 

@@ -3,6 +3,8 @@ import { PER_Persona } from "./PER_Persone";
 export interface DOC_Verbale {
     id:                                         number;
     
+    tipoVerbaleID:                              number;
+    classeSezioneAnnoID:                        number;
     annoID:                                     number;
     personaID:                                  number;
     dtVerbale:                                  string;
@@ -17,6 +19,8 @@ export interface DOC_Verbale {
     userUpd?:                                   number;
 
     persona:                                    PER_Persona;
+    tipoVerbale:                                DOC_TipoVerbale;
+    _VerbalePresenti:                           DOC_VerbalePresente[];
 }
 
  
@@ -34,4 +38,6 @@ export interface DOC_VerbalePresente {
     
     personaID:                                  number;
     verbaleID:                                  number;
+
+    persona?:                                    PER_Persona;
 }
