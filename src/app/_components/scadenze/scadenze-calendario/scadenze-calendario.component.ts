@@ -372,7 +372,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '500px',
-      height: '500px',
+      height: '550px',
       data: {
         scadenzaID: clickInfo.event.id,
         start: clickInfo.event.start,
@@ -405,7 +405,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '500px',
-      height: '500px',
+      height: '550px',
       data: {
         scadenzaID: 0,
         start: dtStart.toLocaleString('sv').replace(' ', 'T'),

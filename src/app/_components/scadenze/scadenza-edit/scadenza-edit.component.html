@@ -30,9 +30,10 @@
             </div>
 
             <!-- In questo modo si fa il setting della data locale timezone fuso orario (keywords per trovarlo) -->
-            <mat-label class="center mt20 fs16" *ngIf="data.scadenzaID || emptyForm">{{strDtStart | date: 'EEEE, d MMMM, y' : '+0100' : 'it' }}</mat-label>
+            <mat-label class="center mt10 fs16" *ngIf="data.scadenzaID || emptyForm">{{strDtStart | date: 'EEEE, d MMMM, y' : '+0100' : 'it' }}</mat-label>
                     <!-- <mat-label class="center" *ngIf="data.scadenzaID || emptyForm">dalle  {{strH_Ini}} - alle {{strH_end}}</mat-label> -->
-            <mat-grid-list class="no-overflowx mt20" [cols]="2" rowHeight="100px">
+            <mat-grid-list class="no-overflowx mt10" [cols]="2" rowHeight="60px">
+
                 <mat-grid-tile>
                     <mat-form-field >
                         <input matInput
@@ -56,13 +57,16 @@
                         <mat-datepicker #dpEnd ></mat-datepicker>
                     </mat-form-field>
                 </mat-grid-tile>
-
-                <mat-grid-tile class="_align-top h70px" colspan="2" rowspan ="1">
+            </mat-grid-list>
+            <mat-grid-list class="no-overflowx mt10" [cols]="2" rowHeight="100px">
+                <mat-grid-tile class="_align-top h100px" colspan="2" rowspan ="1">
                     <mat-form-field class="w100 pl5 pt5" appearance="outline">
                         <mat-label>Descrizione</mat-label>
                         <textarea class="w300px h50px _noresize" matInput formControlName="title"></textarea>
                     </mat-form-field>
                 </mat-grid-tile>
+            </mat-grid-list>
+            <mat-grid-list class="no-overflowx mt10" [cols]="2" rowHeight="60px">
 
                 <mat-grid-tile>
                     <mat-form-field>
@@ -73,6 +77,38 @@
                     <button type="button" class="_btnColorPicker" 
                     (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
                 </mat-grid-tile>
+
+                <mat-grid-tile class="_align-top h10px" colspan="2">
+                    <mat-divider></mat-divider>
+
+                    <mat-label class="center mt30 fs14">Visibile a</mat-label>
+
+                </mat-grid-tile>
+
+
+                <mat-grid-tile >
+                    <mat-form-field>
+                        <mat-label>Gruppi</mat-label>
+                        <mat-select formControlName="persone" multiple>
+                            <mat-option *ngFor="let element of (obsTipiPersone$ | async)" [value]="element.id" (checked)="optChanged($event)">
+                            {{element.descrizioneP}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+ 
+                <mat-grid-tile >
+                    <mat-form-field>
+                        <mat-label>Persone</mat-label>
+                        <mat-select formControlName="persone" multiple>
+                            <mat-option *ngFor="let element of (obsPersone$ | async)" [value]="element.id">
+                            {{element.nome}} {{element.cognome}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+
             </mat-grid-list>
 
         </form>

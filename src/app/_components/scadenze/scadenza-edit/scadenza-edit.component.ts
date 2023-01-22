@@ -28,6 +28,9 @@ import { MAT_Materia }                          from 'src/app/_models/MAT_Materi
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_ClasseDocenteMateria';
 import { DialogDataScadenza }                   from 'src/app/_models/DialogData';
+import { PER_Persona, PER_TipoPersona } from 'src/app/_models/PER_Persone';
+import { PersoneService } from '../../persone/persone.service';
+import { TipiPersonaService } from '../../persone/tipi-persona.service';
 
 
 
@@ -46,10 +49,8 @@ export class ScadenzaEditComponent implements OnInit {
   form! :                                       FormGroup;
 
   scadenza$!:                                   Observable<CAL_Scadenza>;
-  obsMaterie$!:                                 Observable<MAT_Materia[]>;
-  obsClassiDocentiMaterie$!:                    Observable<CLS_ClasseDocenteMateria[]>;
-  obsDocenti$!:                                 Observable<PER_Docente[]>;
-  obsSupplenti$!:                               Observable<PER_Docente[]>;
+  obsPersone$!:                                 Observable<PER_Persona[]>;
+  obsTipiPersone$!:                             Observable<PER_TipoPersona[]>;
 
   strDtStart!:                                  string;
   strDtEnd!:                                    string;
@@ -81,6 +82,9 @@ export class ScadenzaEditComponent implements OnInit {
 
     private fb:                                 FormBuilder, 
     private svcScadenze:                        ScadenzeService,
+    private svcPersone:                         PersoneService,
+    private svcTipiPersone:                     TipiPersonaService,
+
 
 
     public _dialog:                             MatDialog,
@@ -94,7 +98,7 @@ export class ScadenzaEditComponent implements OnInit {
     this.form = this.fb.group({
       id:                                       [null],
       dtCalendario:                             [''],
-    
+      persone:                                  [''],
       //campi di FullCalendar
       title:                                    [''],
       h_Ini:                                    [''],     
@@ -109,6 +113,11 @@ export class ScadenzaEditComponent implements OnInit {
 
   ngOnInit () {
     this.loadData();
+
+    this.obsPersone$ = this.svcPersone.list();
+    this.obsTipiPersone$ = this.svcTipiPersone.list();
+
+
   }
 
   loadData(): void {
@@ -333,6 +342,12 @@ export class ScadenzaEditComponent implements OnInit {
         //this.loadData(); 
       }
     );
+  }
+
+  //optChanged(element: PER_TipoPersona, value: any) {
+    optChanged(event: Event) {
+    let event2 = (event.target as HTMLInputElement);
+    console.log (event);
   }
 
 }
