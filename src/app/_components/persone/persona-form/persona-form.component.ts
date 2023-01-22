@@ -51,7 +51,7 @@ export class PersonaFormComponent implements OnInit {
 
     this.form = this.fb.group({
       id:                         [null],
-      tipoPersonaID:              ['', Validators.required],
+      //tipoPersonaID:              ['', Validators.required],
 
       nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       cognome:                    ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
@@ -68,8 +68,6 @@ export class PersonaFormComponent implements OnInit {
       cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
       telefono:                   ['', Validators.maxLength(13)],
       email:                      ['',Validators.email],
-
-      ckAttivo:                   [true]
     });
   }
 

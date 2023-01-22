@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import { FormatoData, Utility } from '../utilities/utility.component';
@@ -16,9 +16,15 @@ export class DocentiService {
   constructor(private http: HttpClient) {
   }
 
-  list(): Observable<PER_Docente[]>{
-    return this.http.get<PER_Docente[]>(environment.apiBaseUrl+'PER_Docenti');
+  list(swSoloAttivi: boolean = true): Observable<PER_Docente[]>{
+    
+    if(swSoloAttivi)
+      return this.http.get<PER_Docente[]>(environment.apiBaseUrl+'PER_Docenti/ListAttivi' );
+    else
+      return this.http.get<PER_Docente[]>(environment.apiBaseUrl+'PER_Docenti');
+
     //http://213.215.231.4/swappX/api/PER_Docenti
+    //http://213.215.231.4/swappX/api/PER_Docenti/ListAttivi
   }
 
   listSupplentiDisponibili(lezioneID: number, docenteID: number, dtCalendario: string, h_Ini: string, h_End: string) : Observable<PER_Docente[]>{
@@ -60,8 +66,32 @@ export class DocentiService {
   }
 
   getByPersonaID(personaID: any): Observable<PER_Docente>{
+
     return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersonaID/'+personaID);
+
+    // .pipe(
+    //   catchError(this.handleError )  
+    //   );
+
+    //return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersonaID/'+personaID);
     //http://213.215.231.4/swappX/api/PER_Docenti/GetByPersonaID/6
+  }
+
+  /// AS: handler degli errori
+  //TODO!!!!!!
+
+  private handleError(error: HttpErrorResponse) {
+
+    if (error.status === 0) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error( `Il WS ritorna il codice ${error.status}, body was: `, error.error);
+    }
+    // Return an observable with a user-facing error message.
+    return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
   put(formData: any): Observable <any>{

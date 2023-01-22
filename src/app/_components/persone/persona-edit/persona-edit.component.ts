@@ -3,21 +3,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { debounceTime, switchMap, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 //components
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 //services
-import { ComuniService } from 'src/app/_services/comuni.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { PersoneService } from '../persone.service';
+import { TipiPersonaService } from '../tipi-persona.service';
 
 //models
 import { PER_Persona, PER_TipoPersona } from 'src/app/_models/PER_Persone';
-import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
-import { TipiPersonaService } from '../tipi-persona.service';
 import { PersonaFormComponent } from '../persona-form/persona-form.component';
 import { User } from 'src/app/_user/Users';
 import { Utility } from '../../utilities/utility.component';
@@ -37,8 +35,6 @@ export class PersonaEditComponent implements OnInit {
 
   form! :                     FormGroup;
   emptyForm :                 boolean = false;
-  filteredComuni$!:           Observable<_UT_Comuni[]>;
-  filteredComuniNascita$!:    Observable<_UT_Comuni[]>;
   comuniIsLoading:            boolean = false;
   comuniNascitaIsLoading:     boolean = false;
   breakpoint!:                number;
@@ -104,7 +100,6 @@ export class PersonaEditComponent implements OnInit {
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
     if (this.personaID && this.personaID + '' != "0") {
-      console.log ("personaID", this.personaID);  //come mai aprendo da user-edit gil arriva come persona ID lo user ID?
 
       const obsPersona$: Observable<PER_Persona> = this.svcPersone.get(this.personaID);
       const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
@@ -118,26 +113,6 @@ export class PersonaEditComponent implements OnInit {
     }
     else 
       this.emptyForm = true
-    
-    // //********************* FILTRO COMUNE *******************
-    // this.filteredComuni$ = this.form.controls['comune'].valueChanges
-    // .pipe( tap(),
-    //   debounceTime(300),
-    //   tap(() => this.comuniIsLoading = true),
-    //   //delayWhen(() => timer(2000)),
-    //   switchMap(() => this.svcComuni.filterList(this.form.value.comune)),
-    //   tap(() => this.comuniIsLoading = false)
-    // )
-
-    // //********************* FILTRO COMUNE NASCITA ***********
-    // this.filteredComuniNascita$ = this.form.controls['comuneNascita'].valueChanges
-    // .pipe( 
-    //   tap(),
-    //   debounceTime(300),
-    //   tap(() => this.comuniNascitaIsLoading = true),
-    //   switchMap(() => this.svcComuni.filterList(this.form.value.comuneNascita)),
-    //   tap(() => this.comuniNascitaIsLoading = false)
-    // )
   }
 
 //#endregion
@@ -146,7 +121,6 @@ export class PersonaEditComponent implements OnInit {
 
   save()
   {
-
     //Prendo dal form nel child personaForm i valori dei campi che NON si trovano nel component padre
     this.form.patchValue(this.personaFormComponent.form.value);
 
@@ -185,22 +159,10 @@ export class PersonaEditComponent implements OnInit {
 
 //#region ----- Altri metodi -------
 
-// popolaProv(prov: string, cap: string) {
-//   this.form.controls['prov'].setValue(prov);
-//   this.form.controls['cap'].setValue(cap);
-//   this.form.controls['nazione'].setValue('ITA');
-// }
-
-// popolaProvNascita(prov: string) {
-//   this.form.controls['provNascita'].setValue(prov);
-//   this.form.controls['nazioneNascita'].setValue('ITA');
-// }
-
-onResize(event: any) {
-  this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
-  this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
-}
-
+  onResize(event: any) {
+    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
+    this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
+  }
 
 //#endregion
 }

@@ -5,7 +5,6 @@
         <mat-label>Docente</mat-label>
         <mat-select formControlName="selectDocente" #selectDocente>
         <!-- [compareWith]="compareObjects"  compareWith sembra la soluzione per impostare il valore correttamente -->
-        <mat-option value="0">-Tutti i docenti-</mat-option>
         <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
             {{element.persona.cognome + ' '+ element.persona.nome }}
         </mat-option>

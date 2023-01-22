@@ -49,9 +49,13 @@ export class OrarioDocentePageComponent implements OnInit {
 
     this.currUser = Utility.getCurrentUser();
     this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe( 
-      res => {            
-        this.docenteID = res.id;
-        this.form.controls.selectDocente.setValue(res.id);
+      res => {   
+        if(res)
+          this.docenteID = res.id;
+        else
+          this.docenteID = 0;
+              
+        this.form.controls.selectDocente.setValue(this.docenteID);
       },
       err => {
         console.log("getDocenteBypersonaID- KO:", err);

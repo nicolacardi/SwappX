@@ -82,7 +82,12 @@ export class DocentiDashboardComponent implements OnInit {
 
     if(this.currUser.personaID != null && this.currUser.personaID != 0){
       this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe(
-        res => this.docenteID = res.id,
+        res => {   
+          if(res)
+            this.docenteID = res.id;
+          else
+            this.docenteID = 0;
+        },
         err => console.log("getDocenteBypersonaID- KO:", err)
       )
     }

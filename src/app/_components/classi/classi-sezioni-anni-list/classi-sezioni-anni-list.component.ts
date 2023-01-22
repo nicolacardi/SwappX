@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, DebugElement, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup }               from '@angular/forms';
 import { MatSelect }                            from '@angular/material/select';
 import { MatTableDataSource }                   from '@angular/material/table';
@@ -169,7 +169,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#endregion
 
-  constructor( private svcClassiSezioniAnni:               ClassiSezioniAnniService,
+  constructor( private svcClassiSezioniAnni:              ClassiSezioniAnniService,
               private svcAnni:                            AnniScolasticiService,
               private svcDocenti:                         DocentiService,
               private _loadingService:                    LoadingService,
@@ -191,6 +191,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   }
 
 //#region ----- LifeCycle Hooks e simili-------
+ 
 
   ngOnInit() {
 
@@ -212,6 +213,24 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
       
     this.obsDocenti$ = this.svcDocenti.list();
     
+    this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(
+      res => {
+        this.loadData();
+        this.annoIdEmitter.emit(res);
+        this.resetSelections();         //vanno resettate le selezioni delle checkbox e masterToggle
+        this.toggleChecks = false;
+      }
+    );
+
+    this.form.controls['selectDocente'].valueChanges.subscribe(
+      res => {
+        this.loadData();
+        this.docenteIdEmitter.emit(res);
+        this.resetSelections();           //vanno resettate le selezioni delle checkbox e masterToggle
+        this.toggleChecks = false;
+      }
+    );
+
     this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);
     this.docenteIdEmitter.emit(this.form.controls["selectDocente"].value);
 
@@ -232,6 +251,10 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
         this.displayedColumns = this.displayedColumnsClassiDashboard;
         this.showPageTitle = false;
         this.showTableRibbon = false;
+
+        this.docenteID = 0;
+        this.form.controls.selectDocente.setValue(this.docenteID);
+
         // this.matDataSource.sort = this.sort; TODO
         break;
       case 'classi-page':
@@ -245,23 +268,26 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
         this.showPageTitle = false;
         this.showTableRibbon = false;
 
-        console.log("DEBUG - this.currUser.personaID: ", this.currUser.personaID);
         if(this.currUser.personaID != undefined && this.currUser.personaID != 0){
 
           //AS: ATTENZIONE: se la persona non è un docente, la chiamata al WS restituisce un errore 404, che viene fuori nel console.log
           //bisogna modificare il WS in modo che ritorni null e non errore (NON RIESCO A COLLEGARMI AL SERVER)
           /*
-          {
-"type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-"title": "Not Found",
-"status": 404,
-"traceId": "00-e2acc9e55ba9934bb0cf93e56cb1a04b-09371454471a6e45-00"
-}
-          */
+                  {
+        "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+        "title": "Not Found",
+        "status": 404,
+        "traceId": "00-e2acc9e55ba9934bb0cf93e56cb1a04b-09371454471a6e45-00"
+        }
+                  */
           this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe ( 
-            res => {            
-              this.docenteID = res.id;
-              this.form.controls.selectDocente.setValue(res.id);
+            res => {   
+              if(res)
+                this.docenteID = res.id;
+              else
+                this.docenteID = 0;
+              
+              this.form.controls.selectDocente.setValue(this.docenteID);
             },
             err => {
               console.log("getDocenteBypersonaID- KO:", err);
@@ -286,23 +312,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
       default: this.displayedColumns = this.displayedColumnsClassiDashboard;
     }
 
-    this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(
-      res => {
-        this.loadData();
-        this.annoIdEmitter.emit(res);
-        this.resetSelections();         //vanno resettate le selezioni delle checkbox e masterToggle
-        this.toggleChecks = false;
-      }
-    );
 
-    this.form.controls['selectDocente'].valueChanges.subscribe(
-      res => {
-        this.loadData();
-        this.docenteIdEmitter.emit(res);
-        this.resetSelections();           //vanno resettate le selezioni delle checkbox e masterToggle
-        this.toggleChecks = false;
-      }
-    );
   }
 
   ngOnChanges() {
