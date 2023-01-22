@@ -555,6 +555,12 @@
         margin-top: 10px !important;
     }
 
+    ._titolo-pagina-home {
+        float: right;
+        margin-right: 20px !important;
+    }
+
+
     ._titolo-filtri-avanzati {
         color: grey;
         width: 100%;
@@ -855,11 +861,14 @@
 /*add-DetailDialog è la classe attribuita dinamicamente
 in fase di creazione della Dialog addAlunno*/
 .cdk-overlay-pane.add-DetailDialog {
-    position: relative!important;
+    position: absolute!important; /*era relative*/
+    top: 75px;
+    max-height: 90vh !important;
   }
-  .app-full-bleed-dialog .mat-dialog-container{
-      padding: 0px;
-  }
+
+.app-full-bleed-dialog .mat-dialog-container{
+    padding: 0px;
+}
 /**********************************/
 
 
@@ -1173,10 +1182,10 @@ mat-nav-list a img {
     background-color: rgba(86, 86, 86, 0.279);
 }
 
-/* tutte le actionsColumn saranno larghe il 5%*/
+/* tutte le actionsColumn saranno larghe il 50px*/
 .mat-column-actionsColumn {
     /* flex: 0 0 8% !important; */
-    width: 50px !important;
+    max-width: 40px !important;
 }
 
 .mat-column-actionsColumn2 {
@@ -1221,6 +1230,9 @@ mat-nav-list a img {
     flex: 0 0 8% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
 }
 
+.mat-column-message {
+    width: 100px !important;
+}
 
 
   .mat-column-xxx {
