@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import { FormatoData, Utility } from '../utilities/utility.component';
@@ -67,11 +67,42 @@ export class DocentiService {
 
   getByPersonaID(personaID: any): Observable<PER_Docente>{
 
-    return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersonaID/'+personaID);
+    //console.log("DEBUG-getByPersonaID START");
 
-    // .pipe(
-    //   catchError(this.handleError )  
-    //   );
+    /*
+    return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersonaID/'+personaID)
+     .pipe(
+       catchError(this.handleError )  
+       );
+      */
+    /*
+    return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersonaID/'+personaID)
+    .pipe(
+      tap(  
+      {
+        next: (data) => console.log("DEBUG-docenti.service OK:", data),
+        error: (error) => console.log("DEBUG-docenti.service KO:", error)
+      }
+    ));
+*/
+    return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersonaID/'+personaID)
+    .pipe(
+      tap(
+        (res) => console.log('DEBUG-docenti.service OK: ', res)),
+        //(error) =>console.log('DEBUG-docenti.service OK: ', res)),
+        
+        catchError((error) => {
+          if (error.status === 404 || error == "Not Found") {
+            return of(error);
+            //return of(undefined);
+          }
+          else {
+            console.log("error: ", error);
+            throw error;
+          }
+      })
+    );
+
 
     //return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersonaID/'+personaID);
     //http://213.215.231.4/swappX/api/PER_Docenti/GetByPersonaID/6
@@ -79,21 +110,22 @@ export class DocentiService {
 
   /// AS: handler degli errori
   //TODO!!!!!!
-
+/*
   private handleError(error: HttpErrorResponse) {
 
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error);
+      console.error('ERRORE client-side:', error.error);
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong.
       console.error( `Il WS ritorna il codice ${error.status}, body was: `, error.error);
     }
     // Return an observable with a user-facing error message.
-    return throwError(() => new Error('Something bad happened; please try again later.'));
+    return throwError(() => new Error('Persona senza record Docente collegato'));
   }
-
+  */
+ 
   put(formData: any): Observable <any>{
     return this.http.put( environment.apiBaseUrl  + 'PER_Docenti/' + formData.id , formData);    
   }

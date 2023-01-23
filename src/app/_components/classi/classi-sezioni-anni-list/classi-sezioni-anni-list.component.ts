@@ -271,7 +271,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
         if(this.currUser.personaID != undefined && this.currUser.personaID != 0){
 
           //AS: ATTENZIONE: se la persona non è un docente, la chiamata al WS restituisce un errore 404, che viene fuori nel console.log
-          //bisogna modificare il WS in modo che ritorni null e non errore (NON RIESCO A COLLEGARMI AL SERVER)
+          //bisogna modificare il WS in modo che ritorni null e non errore 
           /*
                   {
         "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
@@ -311,8 +311,6 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
       default: this.displayedColumns = this.displayedColumnsClassiDashboard;
     }
-
-
   }
 
   ngOnChanges() {
