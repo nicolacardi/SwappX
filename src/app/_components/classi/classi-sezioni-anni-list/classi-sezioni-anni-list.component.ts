@@ -324,12 +324,14 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     let docenteID: number;
     docenteID = this.form.controls["selectDocente"].value;
 
+    
     let obsClassi$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
     obsClassi$= this.svcClassiSezioniAnni.listByAnnoDocenteGroupByClasse(annoID, docenteID);
     
     const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
     loadClassi$.subscribe( val =>   {
+
       this.matDataSource.data = val;
       this.matDataSource.paginator = this.paginator;
 
@@ -340,17 +342,20 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
       this.matDataSource.filterPredicate = this.filterPredicate();
       
-      if(this.matDataSource.data.length >0)
+      if(this.matDataSource.data.length >0){
         if (this.classeSezioneAnnoIDrouted) 
           this.rowclicked(this.classeSezioneAnnoIDrouted);  
-        else
+        else{
           this.rowclicked(this.matDataSource.data[0].id); //seleziona per default la prima riga DA TESTARE
+        }
+      }
       else
         this.rowclicked(undefined);
     });
   }
 
   rowclicked(classeSezioneAnnoID?: number ){
+
     //il click su una classe deve essere trasmesso su al parent
     this.classeSezioneAnnoID = classeSezioneAnnoID!;
     //per potermi estrarre seq in iscrizioni-classe-calcolo mi preparo qui il valore della classe
@@ -359,7 +364,10 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     if(classeSezioneAnnoID!= undefined && classeSezioneAnnoID != null)
       this.selectedRowIndex = classeSezioneAnnoID;
     else 
-      this.selectedRowIndex = this.matDataSource.data[0].id;
+      if(this.matDataSource.data[0])
+        this.selectedRowIndex = this.matDataSource.data[0].id;
+      else
+        this.selectedRowIndex = 0;
 
     this.classeSezioneAnnoIDEmitter.emit(this.selectedRowIndex);
   }
