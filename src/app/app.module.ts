@@ -113,8 +113,6 @@ import { LezioneComponent }                     from './_components/lezioni/lezi
 import { LezioniUtilsComponent }                from './_components/lezioni/lezioni-utils/lezioni-utils.component';
 import { OrarioDocentePageComponent }           from './_components/lezioni/orario-docente-page/orario-docente-page.component';
 
-//Scadenze
-
 
 //Presenze
 import { PresenzeListComponent }                from './_components/lezioni/presenze-list/presenze-list.component';
@@ -180,6 +178,8 @@ import { VotoInterrEditComponent }                 from './_components/lezioni/v
 //Scadenze
 import { ScadenzeCalendarioComponent }          from './_components/scadenze/scadenze-calendario/scadenze-calendario.component';
 import { ScadenzaEditComponent }                from './_components/scadenze/scadenza-edit/scadenza-edit.component';
+import { MieScadenzeComponent }                 from './_components/scadenze/miescadenze/miescadenze.component';
+
 
 //Verbali
 import { VerbaliListComponent }                 from './_components/verbali/verbali-list/verbali-list.component';
@@ -249,6 +249,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
 
     ScadenzeCalendarioComponent,
     ScadenzaEditComponent,
+    MieScadenzeComponent,
     LezioniUtilsComponent,
     OrarioDocentePageComponent,
 

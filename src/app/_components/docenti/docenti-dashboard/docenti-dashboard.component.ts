@@ -78,7 +78,6 @@ export class DocentiDashboardComponent implements OnInit {
     //this._navigationService.passPage("docentiDashboard");
 
     this.currUser = Utility.getCurrentUser();
-    //console.log("curruser: ", this.currUser)
 
     if(this.currUser.personaID != null && this.currUser.personaID != 0){
       this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe(

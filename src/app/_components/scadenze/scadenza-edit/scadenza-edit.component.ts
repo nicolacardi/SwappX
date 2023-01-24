@@ -155,6 +155,7 @@ export class ScadenzaEditComponent implements OnInit {
     this.svcScadenzePersone.listByScadenza(this.data.scadenzaID)
     .pipe(
       tap( sel=>{
+        console.log ("sel",sel);  
         this.personeListSelArr = sel;
         this.personeListSelArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
         }
@@ -163,6 +164,7 @@ export class ScadenzaEditComponent implements OnInit {
         this.svcPersone.list()
         .pipe(
           tap( val => {
+            
           this.personeListArr = val;
           //il forEach va in avanti e non va bene: scombussola gli index visto che si fa lo splice...bisogna usare un for i--
           for (let i= this.personeListArr.length -1; i >= 0; i--) {
@@ -220,10 +222,9 @@ export class ScadenzaEditComponent implements OnInit {
     } 
     else {
       //caso nuova Scadenza
-
       this.emptyForm = true;
       //LA RIGA QUI SOPRA DETERMINAVA UN ExpressionChangedAfterItHasBeenCheckedError...con il DetectChanges si risolve!  
-      this.cdRef.detectChanges();     
+      //this.cdRef.detectChanges();     ///DEVO TOGLIERLO! BLocca tutto!
 
       this.dtStart = new Date (this.data.start);
       //this.strDtStart = Utility.UT_FormatDate(this.dtStart, "yyyy-mm-dd");
@@ -235,9 +236,12 @@ export class ScadenzaEditComponent implements OnInit {
       this.strDtEnd = Utility.formatDate(this.dtEnd, FormatoData.yyyy_mm_dd);
       this.strH_End = Utility.formatHour(this.dtEnd);
 
+      
       this.form.controls.dtCalendario.setValue(this.dtStart);
       this.form.controls.h_Ini.setValue(this.strH_Ini);
       this.form.controls.h_End.setValue(this.strH_End);
+
+
     }
   }
 
@@ -245,9 +249,6 @@ export class ScadenzaEditComponent implements OnInit {
 
     this.strH_Ini = this.form.controls.h_Ini.value;
     this.strH_End = this.form.controls.h_End.value;
-
-    
-
 
 
     //https://thecodemon.com/angular-get-value-from-disabled-form-control-while-submitting/
@@ -257,7 +258,6 @@ export class ScadenzaEditComponent implements OnInit {
     // for (const prop in this.form.controls) {
     //   this.form.value[prop] = this.form.controls[prop].value;
     // }
-
 
     
 
@@ -275,15 +275,18 @@ export class ScadenzaEditComponent implements OnInit {
 
 
 
+    console.log(objScadenza);
+    //qualcosa non funziona nel valorizzare form.controls.end e form.controls.start ma solo su nuova scadenza
 
     if (this.form.controls['id'].value == null) {   
+
 
       
       objScadenza.id = 0;
       //this.svcLezioni.post(this.form.value).subscribe(
       this.svcScadenze.post(objScadenza).subscribe(
         res => {
-          this.insertPersone("personeListSel", res.id);
+          this.insertPersone(res.id);
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
@@ -292,10 +295,12 @@ export class ScadenzaEditComponent implements OnInit {
     } 
     else  {
 
+
+
       let cancellaeRipristinaPersone = this.svcScadenzePersone.deleteByScadenza(this.form.controls.id.value)
       .pipe(
         finalize(()=>{
-          this.insertPersone("personeListSel", this.form.controls.id.value);
+          this.insertPersone(this.form.controls.id.value);
         })
       );
 
@@ -510,7 +515,7 @@ export class ScadenzaEditComponent implements OnInit {
   //   }
   // }
 
-  insertPersone(control: string, scadenzaID: number) {
+  insertPersone(scadenzaID: number) {
     for (let i = 0; i<this.personeListSelArr.length; i++) {
       let objScadenzaPersona: CAL_ScadenzaPersone = {
         personaID: this.personeListSelArr[i].id,

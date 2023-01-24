@@ -21,6 +21,7 @@ export class ScadenzeService {
   }
 
 
+
   get(lezioneID: any): Observable<CAL_Scadenza>{
     return this.http.get<CAL_Scadenza>(environment.apiBaseUrl+'CAL_Scadenze/'+lezioneID);
     //http://213.215.231.4/swappX/api/CAL_Scadenze/1
@@ -39,7 +40,6 @@ export class ScadenzeService {
 
   post(formData: any): Observable <any>{
     formData.id = 0;
-    console.log (formData);
     return this.http.post( environment.apiBaseUrl  + 'CAL_Scadenze' , formData);  
   }
 

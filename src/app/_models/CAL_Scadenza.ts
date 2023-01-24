@@ -37,5 +37,6 @@ export interface CAL_ScadenzaPersone {
   ckAccettato:                                  boolean;
   ckRespinto:                                   boolean;
 
+  scadenza?:                                    CAL_Scadenza;   
   persona?:                                     PER_Persona;
 }

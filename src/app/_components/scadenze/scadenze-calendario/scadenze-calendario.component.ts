@@ -1,29 +1,28 @@
-import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ApplicationRef, Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/angular';
-import { FullCalendarComponent } from '@fullcalendar/angular';//-->serve per il ViewChild
-import { EventResizeDoneArg } from '@fullcalendar/interaction';
+import { FullCalendarComponent }                from '@fullcalendar/angular';//-->serve per il ViewChild
+import { EventResizeDoneArg }                   from '@fullcalendar/interaction';
+import { concatMap, tap }                       from 'rxjs/operators';
 
-import itLocale from '@fullcalendar/core/locales/it';
-import { Observable } from 'rxjs';
 
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import itLocale                                 from '@fullcalendar/core/locales/it';
+import { Observable }                           from 'rxjs';
+
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //components
-//import { LezioneComponent } from '../lezione-edit/lezione.component';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { FormatoData, Utility } from '../../utilities/utility.component';
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { FormatoData, Utility }                 from '../../utilities/utility.component';
+import { ScadenzaEditComponent }                from '../scadenza-edit/scadenza-edit.component';
 
 //services
-import { ScadenzeService } from '../scadenze.service';
-import { UserService } from 'src/app/_user/user.service';
+import { ScadenzeService }                      from '../scadenze.service';
+import { UserService }                          from 'src/app/_user/user.service';
 
 //classes
-import { CAL_Scadenza } from 'src/app/_models/CAL_Scadenza';
-import { ScadenzaEditComponent } from '../scadenza-edit/scadenza-edit.component';
-import { concatMap, tap } from 'rxjs/operators';
+import { CAL_Scadenza }                         from 'src/app/_models/CAL_Scadenza';
 
 
 @Component({

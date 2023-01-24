@@ -1,0 +1,72 @@
+
+
+<mat-card style="height: 100%;" class="card mat-elevation-z8">
+           <mat-card-header>
+
+        <h2 class="_titolo-pagina-home">Scadenze</h2>
+
+</mat-card-header>
+    <mat-card *ngFor="let element of (obsMieScadenze$ | async)" class="mt10">
+        <!-- <mat-card-header> -->
+            
+          <!-- <mat-card-title>Shiba Inu</mat-card-title>
+          <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+        <!-- </mat-card-header> -->
+        <mat-card-content>
+            <mat-grid-list [cols]="5" rowHeight="60px">
+                <mat-grid-tile >
+                    <mat-icon class="pointer" *ngIf="!element.ckLetto">check_box_outline_blank</mat-icon>
+                    <mat-icon class="defaultcursor" *ngIf="element.ckLetto">check_box</mat-icon>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="4">
+                    <h4 class="_pos-absolute l0">{{element.scadenza!.title}}</h4>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <span class="fs50 _pos-absolute r0 t0" [ngStyle]="{'color': element.scadenza!.color}">•</span>
+            
+            
+
+        </mat-card-content>
+        <!-- <mat-card-actions>
+          <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions> -->
+    </mat-card>
+
+
+
+
+    <!-- <mat-table *ngIf="matDataSource.data.length > 0" class="_table-row-low transparent" [dataSource]="matDataSource">
+
+        <ng-container matColumnDef="message">
+            <mat-header-cell *matHeaderCellDef ></mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="{'stroked': element.closed}">{{element.scadenza.title}}</mat-cell>
+            <mat-footer-cell class="bold" *matFooterCellDef> </mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actionsColumn">
+            <mat-header-cell *matHeaderCellDef>Letto</mat-header-cell>
+            <mat-cell  *matCellDef="let element" matTooltip="Segna Scadenza come letta" (click)="closeMsg(element)"> 
+                <mat-icon class="pointer" *ngIf="!element.ckLetto">check_box_outline_blank</mat-icon>
+                <mat-icon class="defaultcursor" *ngIf="element.ckLetto">check_box</mat-icon>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="delete">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell  *matCellDef="let element" matTooltip="Cancella Messaggio" (click)="deleteMsg(element.id)"> 
+                <mat-icon class="pointer"  *ngIf="element.closed">delete</mat-icon>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row class="_table-title-low" *matHeaderRowDef="displayedColumns;"></mat-header-row>
+        <mat-row *matRowDef="let element;columns: displayedColumns" 
+            >
+        </mat-row>
+
+    </mat-table> -->
+
+    <!-- <div *ngIf="matDataSource.data.length === 0">
+        Hai letto tutti i messaggi
+    </div> -->
+</mat-card>

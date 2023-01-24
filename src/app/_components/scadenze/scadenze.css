@@ -1,5 +1,8 @@
 /* NON RIESCO A CANCELLARE QUESTO FILE */
-
+/*ATTENZIONE: overriding element standard su ../Styles.css  */
+.mat-cell {
+  white-space: normal;
+}
 
 ::ng-deep .fc-event-title {
     font-size: 1.2em
