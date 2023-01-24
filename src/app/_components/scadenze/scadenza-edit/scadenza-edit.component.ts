@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
-import { take, tap }                 from 'rxjs/operators';
+import { concatMap, finalize, map, take, tap }                            from 'rxjs/operators';
 
 import { registerLocaleData }                   from '@angular/common';
 import localeIt                                 from '@angular/common/locales/it';
@@ -15,25 +15,19 @@ import { CdkTextareaAutosize }                  from '@angular/cdk/text-field';
 import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
-import { ColorPickerComponent } from '../../color-picker/color-picker.component';
+import { ColorPickerComponent }                 from '../../color-picker/color-picker.component';
 
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
-import { ScadenzeService }                       from '../scadenze.service';
-
+import { ScadenzeService }                      from '../scadenze.service';
+import { ScadenzePersoneService }               from '../scadenze-persone.service';
+import { PersoneService }                       from '../../persone/persone.service';
+import { TipiPersonaService }                   from '../../persone/tipi-persona.service';
 
 //models
-import { CAL_Scadenza }                          from 'src/app/_models/CAL_Scadenza';
-import { MAT_Materia }                          from 'src/app/_models/MAT_Materia';
-import { PER_Docente }                          from 'src/app/_models/PER_Docente';
-import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_ClasseDocenteMateria';
+import { CAL_Scadenza, CAL_ScadenzaPersone }                          from 'src/app/_models/CAL_Scadenza';
 import { DialogDataScadenza }                   from 'src/app/_models/DialogData';
-import { PER_Persona, PER_TipoPersona } from 'src/app/_models/PER_Persone';
-import { PersoneService } from '../../persone/persone.service';
-import { TipiPersonaService } from '../../persone/tipi-persona.service';
-
-
-
+import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
 
 
 @Component({
@@ -47,6 +41,12 @@ export class ScadenzaEditComponent implements OnInit {
 //#region ----- Variabili -------
 
   form! :                                       FormGroup;
+  personaIDArr!:                                number[];
+
+  personeListArr!:                              PER_Persona[];
+  personeListSelArr!:                           PER_Persona[];
+
+  tipoPersonaIDArr!:                            number[];
 
   scadenza$!:                                   Observable<CAL_Scadenza>;
   obsPersone$!:                                 Observable<PER_Persona[]>;
@@ -83,6 +83,8 @@ export class ScadenzaEditComponent implements OnInit {
     private fb:                                 FormBuilder, 
     private svcScadenze:                        ScadenzeService,
     private svcPersone:                         PersoneService,
+    private svcScadenzePersone:                 ScadenzePersoneService,
+
     private svcTipiPersone:                     TipiPersonaService,
 
 
@@ -98,7 +100,14 @@ export class ScadenzaEditComponent implements OnInit {
     this.form = this.fb.group({
       id:                                       [null],
       dtCalendario:                             [''],
+      gruppi:                                   [''],
       persone:                                  [''],
+
+      ckPromemoria:                             [''],
+      ckRisposta:                               [''],
+      personeList:                              [''],
+      personeListSel:                           [''],
+
       //campi di FullCalendar
       title:                                    [''],
       h_Ini:                                    [''],     
@@ -114,16 +123,69 @@ export class ScadenzaEditComponent implements OnInit {
   ngOnInit () {
     this.loadData();
 
-    this.obsPersone$ = this.svcPersone.list();
+
+    this.personaIDArr = [];
+    this.tipoPersonaIDArr = [];
+
+    //questa scomparirà
+    // this.obsPersone$ = this.svcPersone.list()
+    // .pipe(
+    //   tap(val =>  val.forEach(x=> {
+    //     this.personeListArr.push (x); //Popolo la lista
+    //     console.log (val);  
+    //     this.personaIDArr.push(x.id);
+    //     this.tipoPersonaIDArr.push(x.tipoPersonaID); 
+    //   }))
+    //   //tap((val:PER_Persona) =>  this.personaIDArr.push(val.id))
+    // );
+
+    //estraggo la lista delle persone che NON sono associate a questa scadenza
+    this.setArrayBase();
+
     this.obsTipiPersone$ = this.svcTipiPersone.list();
 
 
+  }
+
+  async setArrayBase () {
+
+    //estraggo le persone da selezionare, le metto in personeListSelArr
+    //poi inserisco le persone nella personeListArr e per ciascuna vado a veder se già c'è l'id in personeListArr, per toglierlo
+
+    this.svcScadenzePersone.listByScadenza(this.data.scadenzaID)
+    .pipe(
+      tap( sel=>{
+        this.personeListSelArr = sel;
+        this.personeListSelArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
+        }
+      ),
+      concatMap(sel => //sel è l'array delle selezionate
+        this.svcPersone.list()
+        .pipe(
+          tap( val => {
+          this.personeListArr = val;
+          //il forEach va in avanti e non va bene: scombussola gli index visto che si fa lo splice...bisogna usare un for i--
+          for (let i= this.personeListArr.length -1; i >= 0; i--) {
+              if (this.personeListSelArr.filter(e => e.id === this.personeListArr[i].id).length > 0) {
+              this.personeListArr.splice(i, 1);
+            }
+          }
+          //ordino per cognome
+          this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
+          }
+          )
+        )
+
+      )
+    )
+    .subscribe();
   }
 
   loadData(): void {
 
     this.breakpoint = (window.innerWidth <= 800) ? 2 : 2;
 
+    let arrPersoneScadenza : number[] = [];
 
     if (this.data.scadenzaID && this.data.scadenzaID + '' != "0") {
       const obsScadenza$: Observable<CAL_Scadenza> = this.svcScadenze.get(this.data.scadenzaID);
@@ -131,7 +193,18 @@ export class ScadenzaEditComponent implements OnInit {
       this.scadenza$ = loadScadenza$
       .pipe( tap(
         scadenza => {
-          console.log ("scadenza loadData", scadenza);
+
+          //console.log("scadenza", scadenza);
+          //console.log("scadenza._ScadenzaPersone.length", scadenza._ScadenzaPersone.length);
+          // if (scadenza._ScadenzaPersone) {
+          //   scadenza._ScadenzaPersone!.forEach((x, index) =>
+          //     arrPersoneScadenza.push(scadenza._ScadenzaPersone![index].personaID)
+          //   )
+          // }
+          // this.form.controls.persone.setValue(arrPersoneScadenza);
+
+
+          //console.log ("scadenza loadData", scadenza);
           this.form.patchValue(scadenza)
           //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
           this.dtStart = new Date (this.data.start);
@@ -194,6 +267,8 @@ export class ScadenzaEditComponent implements OnInit {
       start: this.form.controls.start.value,
       end: this.form.controls.end.value,
       color: this.form.controls.color.value,
+      ckPromemoria: this.form.controls.ckPromemoria.value,
+      ckRisposta: this.form.controls.ckRisposta.value,
       h_Ini: this.form.controls.h_Ini.value,
       h_End: this.form.controls.h_End.value,
     }
@@ -208,6 +283,7 @@ export class ScadenzaEditComponent implements OnInit {
       //this.svcLezioni.post(this.form.value).subscribe(
       this.svcScadenze.post(objScadenza).subscribe(
         res => {
+          this.insertPersone("personeListSel", res.id);
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
@@ -215,10 +291,22 @@ export class ScadenzaEditComponent implements OnInit {
       );
     } 
     else  {
+
+      let cancellaeRipristinaPersone = this.svcScadenzePersone.deleteByScadenza(this.form.controls.id.value)
+      .pipe(
+        finalize(()=>{
+          this.insertPersone("personeListSel", this.form.controls.id.value);
+        })
+      );
+
+
       //this.svcLezioni.put(this.form.value).subscribe(
         objScadenza.id = this.form.controls.id.value;
-        this.svcScadenze.put(objScadenza).subscribe(
-
+        this.svcScadenze.put(objScadenza)
+        .pipe(
+          concatMap(()=>cancellaeRipristinaPersone)
+        )
+        .subscribe(
         res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
@@ -327,7 +415,7 @@ export class ScadenzaEditComponent implements OnInit {
   }
 
   openColorPicker() {
-    console.log( "passo", this.form.controls.color.value);
+    
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '405px',
@@ -344,10 +432,113 @@ export class ScadenzaEditComponent implements OnInit {
     );
   }
 
-  //optChanged(element: PER_TipoPersona, value: any) {
-    optChanged(event: Event) {
-    let event2 = (event.target as HTMLInputElement);
-    console.log (event);
+  // optChangedOLD() {
+  //   let personaIDDaSelezionareArr : number[] =[];
+  //   let count: number = 0;
+  //   this.form.controls.persone.setValue(null);
+  //   this.form.controls.gruppi.value.forEach(
+  //     (val:number) => {
+  //       for (let i = 0; i<this.tipoPersonaIDArr.length; i++) {
+  //         if (this.tipoPersonaIDArr[i] == val) { count++; personaIDDaSelezionareArr.push(this.personaIDArr[i])}
+  //       }
+  //     }
+  //   )
+  //   this.form.controls.persone.setValue(personaIDDaSelezionareArr);
+  // }
+
+  optChanged() {
+
+
+
+    //devo aggiungere a personeListSelArr tutti quelli di personeListArr che hanno il tipoPersona come quello selezionato
+
+    let count: number = 0;
+    //devo annullare le precedenti selezioni, facendo reset di tutto
+
+
+    //azzero le selezioni
+    this.personeListSelArr =[];
+    //ricarico TUTTE le persone
+    this.svcPersone.list()
+    .pipe(
+      tap( val => {
+      this.personeListArr = val;
+      this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
+
+
+      //aggiungo alle selezioni quelli dei gruppi e tolgo dalle persone contemporaneamente
+      this.form.controls.gruppi.value.forEach(
+        (val:number) => {
+          for (let i = this.personeListArr.length - 1; i>0; i--) {
+            //console.log ("this.personeListArr[i].tipoPersonaID", this.personeListArr[i].tipoPersona!.id);
+            if (this.personeListArr[i].tipoPersona!.id == val) { 
+              count++; 
+              this.personeListSelArr.push(this.personeListArr[i])
+              this.personeListArr.splice(i, 1);
+              
+            }
+          }
+        }
+      )
+
+
+
+      }
+      )
+    )
+    .subscribe();
+
+
+
+
+  
+    //ordino per cognome
+    this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
+    
+  }
+
+  // insertPersoneOLD(control: string, scadenzaID: number) {
+
+  //   if (this.form.controls[control].value) {
+  //     for (let i = 0; i<this.form.controls[control].value.length; i++) {
+  //       let objScadenzaPersona: CAL_ScadenzaPersone = {
+  //         personaID: this.form.controls[control].value[i],
+  //         scadenzaID : scadenzaID
+  //       }
+  //       this.svcScadenzePersone.post(objScadenzaPersona).subscribe();
+  //     }
+  //   }
+  // }
+
+  insertPersone(control: string, scadenzaID: number) {
+    for (let i = 0; i<this.personeListSelArr.length; i++) {
+      let objScadenzaPersona: CAL_ScadenzaPersone = {
+        personaID: this.personeListSelArr[i].id,
+        scadenzaID : scadenzaID,
+        ckLetto: false,
+        ckAccettato: false,
+        ckRespinto: false
+      }
+      this.svcScadenzePersone.post(objScadenzaPersona).subscribe();
+    }
+  }
+
+  addToSel(element: PER_Persona) {
+    //console.log (element);
+    this.personeListSelArr.push(element);
+    const index = this.personeListArr.indexOf(element);
+    this.personeListArr.splice(index, 1);
+    this.personeListSelArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
+  }
+
+
+  removeFromSel(element: PER_Persona) {
+    //console.log (element);
+    this.personeListArr.push(element);
+    const index = this.personeListSelArr.indexOf(element);
+    this.personeListSelArr.splice(index, 1);
+    this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
+
   }
 
 }

@@ -18,8 +18,6 @@
                 <mat-tab  label="Alunni">
                     <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addAlunno" (click)="addAlunnoToClasse()" >
                         <img class="iconaMenu" src="../../../../assets/alunnoPlus.svg">
-                        <!-- <img class="iconaMenu" src="../../../../assets/empty.svg"
-                        [@openCloseAlu]="isOpen ? 'openAddAlu' : 'closedAddAlu'" (mouseover)="mouseOver()" (mouseout)="mouseOut()"> -->
                     </button>
                     <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="_btn-Red" (click)="removeAlunnoFromClasse()">
                         <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg">
@@ -42,8 +40,6 @@
                 <mat-tab  label="Materie & Docenti">
                     <button mat-mini-fab aria-label="Aggiungi Docente alla Classe" class="_btn-addDocente" (click)="addDocenteToClasse()" >
                         <img class="iconaMenu" src="../../../../assets/docentePlus.svg">
-                        <!-- <img class="iconaMenu" src="../../../../assets/empty.svg"
-                        [@openCloseDoc]="isOpen ? 'openAddDoc' : 'closedAddDoc'" (mouseover)="mouseOver()" (mouseout)="mouseOut()"> -->
                     </button>
                     <button mat-mini-fab aria-label="Stampa Lista Docenti della Classe" matTooltip="esporta Pdf" class="_btn-Blu" (click)="creaPdfDocenze()">
                         <img class="iconaMenu" src="../../../../assets/PDFiconGreys.svg">
@@ -59,13 +55,13 @@
                     <!-- </mat-card> -->
                 </mat-tab>
                 <!-- <mat-tab  label="Orario" (selectedTabChange)="rerenderCAL()"> -->
-                <mat-tab  label="Orario Generale">
+                <!-- <mat-tab  label="Orario Generale">
                     <app-lezioni-calendario 
                         [classeSezioneAnnoID]="classeSezioneAnnoID" 
                         [docenteID] = "docenteID" 
                         [dove]="'orario'" 
                         #orarioLezioniDOM></app-lezioni-calendario>
-                </mat-tab>
+                </mat-tab> -->
                 <!-- <mat-tab  label="Orario Per Docente">
                     <app-lezioni-calendario 
                         

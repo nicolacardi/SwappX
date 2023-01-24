@@ -1,30 +1,30 @@
 import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/angular';
-import { FullCalendarComponent } from '@fullcalendar/angular';//-->serve per il ViewChild
-import { EventResizeDoneArg } from '@fullcalendar/interaction';
+import { FullCalendarComponent }                from '@fullcalendar/angular';//-->serve per il ViewChild
+import { EventResizeDoneArg }                   from '@fullcalendar/interaction';
 
-import itLocale from '@fullcalendar/core/locales/it';
-import { Observable, of } from 'rxjs';
-import { concatMap, tap } from 'rxjs/operators';
+import itLocale                                 from '@fullcalendar/core/locales/it';
+import { Observable}                            from 'rxjs';
+import { concatMap, tap }                       from 'rxjs/operators';
 
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //components
-import { LezioneComponent } from '../lezione-edit/lezione.component';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { LezioniUtilsComponent } from '../lezioni-utils/lezioni-utils.component';
-import { FormatoData, Utility } from '../../utilities/utility.component';
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { LezioneComponent }                     from '../lezione-edit/lezione.component';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { LezioniUtilsComponent }                from '../lezioni-utils/lezioni-utils.component';
+import { FormatoData, Utility }                 from '../../utilities/utility.component';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 
 //services
-import { LezioniService } from '../lezioni.service';
+import { LezioniService }                       from '../lezioni.service';
+import { UserService }                          from 'src/app/_user/user.service';
 
 //classes
-import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
-import { UserService } from 'src/app/_user/user.service';
-import { PER_Docente } from 'src/app/_models/PER_Docente';
+import { CAL_Lezione }                          from 'src/app/_models/CAL_Lezione';
+import { User }                                 from 'src/app/_user/Users';
 
 
 @Component({
@@ -35,10 +35,11 @@ import { PER_Docente } from 'src/app/_models/PER_Docente';
 export class LezioniCalendarioComponent implements OnInit {
 
 //#region ----- Variabili -------
-  toggleDocentiMaterie = "materie";
+  private currUser!:                            User;
+  toggleDocentiMaterie =                        "materie";
   Events: any[] = [];
   
-  showWarn:           boolean = false;
+  showWarn:                                     boolean = false;
 
 
   calendarOptions: CalendarOptions = {
@@ -217,12 +218,15 @@ export class LezioniCalendarioComponent implements OnInit {
   @ViewChild('calendarDOM') calendarDOM!: FullCalendarComponent;
 //#endregion
   
-  constructor( private svcLezioni:       LezioniService,
-               private svcUser:          UserService,
-               private _loadingService:  LoadingService,
-               private _snackBar:        MatSnackBar,
-               public _dialog:           MatDialog, 
-               public appRef:            ApplicationRef ) {
+  constructor( 
+    private svcLezioni:       LezioniService,
+    private svcUser:          UserService,
+    private _loadingService:  LoadingService,
+    private _snackBar:        MatSnackBar,
+    public _dialog:           MatDialog, 
+    public appRef:            ApplicationRef ) {
+
+    this.currUser = Utility.getCurrentUser();
 
   }
 
@@ -281,10 +285,18 @@ export class LezioniCalendarioComponent implements OnInit {
         }
       }  
 
-      this.calendarOptions.editable =             true;             //consente modifiche agli eventi presenti   :  da gestire sulla base del ruolo
-      this.calendarOptions.selectable =           true;             //consente di creare eventi                 :  da gestire sulla base del ruolo
-      this.calendarOptions.eventStartEditable =   true;             //consente di draggare eventi               :  da gestire sulla base del ruolo
-      this.calendarOptions.eventDurationEditable =true;             //consente di modificare la lunghezza eventi:  da gestire sulla base del ruolo
+      
+      if (this.currUser.TipoPersona!.ckEditor) {
+        this.calendarOptions.editable =             true;             //consente modifiche agli eventi presenti   :  da gestire sulla base del ruolo
+        this.calendarOptions.selectable =           true;             //consente di creare eventi                 :  da gestire sulla base del ruolo
+        this.calendarOptions.eventStartEditable =   true;             //consente di draggare eventi               :  da gestire sulla base del ruolo
+        this.calendarOptions.eventDurationEditable =true;             //consente di modificare la lunghezza eventi:  da gestire sulla base del ruolo
+      } else {
+        this.calendarOptions.editable =             false;             //consente modifiche agli eventi presenti   :  da gestire sulla base del ruolo
+        this.calendarOptions.selectable =           false;             //consente di creare eventi                 :  da gestire sulla base del ruolo
+        this.calendarOptions.eventStartEditable =   false;             //consente di draggare eventi               :  da gestire sulla base del ruolo
+        this.calendarOptions.eventDurationEditable =false;             //consente di modificare la lunghezza eventi:  da gestire sulla base del ruolo
+      }
 
       if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni') 
         this.setEventiDocenti();
@@ -490,31 +502,33 @@ export class LezioniCalendarioComponent implements OnInit {
 //#region ----- Add Edit Eventi -------
 
   openDetail(clickInfo: EventClickArg) {
-    
-    const dialogConfig : MatDialogConfig = {
-      panelClass: 'add-DetailDialog',
-      width: '900px',
-      height: '600px',
-      data: {
-        lezioneID: clickInfo.event.id,
-        start: clickInfo.event.start,
-        end: clickInfo.event.end,
-        dtCalendario: clickInfo.event.extendedProps.dtCalendario,
-        h_Ini: clickInfo.event.extendedProps.h_Ini,
-        h_End: clickInfo.event.extendedProps.h_End,
-        classeSezioneAnnoID: clickInfo.event.extendedProps.classeSezioneAnnoID,
-        dove: this.dove,
-        docenteID: this.docenteID
-      }
-    };
-    //solo il docente della lezione può aprire oppure lo può fare un docente con privilegi/segreteria/amministrazione scuola
-    //serve il ruolo dell'utente corrente
 
-    //if (this.svcUser.currentUser.ruoloID>=7) {
-    if (this.svcUser.currentUser.TipoPersona?.ckDocente || this.svcUser.currentUser.TipoPersona?.ckPersonale) {
-      const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
-      dialogRef.afterClosed().subscribe(  () => this.loadData() );
-    }
+      const dialogConfig : MatDialogConfig = {
+        panelClass: 'add-DetailDialog',
+        width: '900px',
+        height: '600px',
+        data: {
+          lezioneID: clickInfo.event.id,
+          start: clickInfo.event.start,
+          end: clickInfo.event.end,
+          dtCalendario: clickInfo.event.extendedProps.dtCalendario,
+          h_Ini: clickInfo.event.extendedProps.h_Ini,
+          h_End: clickInfo.event.extendedProps.h_End,
+          classeSezioneAnnoID: clickInfo.event.extendedProps.classeSezioneAnnoID,
+          dove: this.dove,
+          docenteID: this.docenteID
+        }
+      };
+      //solo il docente della lezione può aprire oppure lo può fare un docente con privilegi/segreteria/amministrazione scuola
+      //serve il ruolo dell'utente corrente
+
+      //if (this.svcUser.currentUser.ruoloID>=7) {
+
+      if (this.svcUser.currentUser.TipoPersona?.ckEditor || (this.dove == "orarioDocente")) {
+        const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(  () => this.loadData() );
+      }
+    
   }
 
   addEvento(selectInfo: DateSelectArg) {

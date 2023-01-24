@@ -292,6 +292,18 @@
 
 /*#endregion ***************************/
 
+    .t0 {
+        top: 0px;
+    }
+
+    .l0 {
+        left: 0px;
+    }
+
+    .r0 {
+        right: 0px;
+    }
+
 /*#region ********** PADDING ***********/
 
     .p5 {
@@ -1138,6 +1150,10 @@ mat-nav-list a img {
     overflow-x:hidden;
 }
 
+.oflowyscroll {
+    overflow-y: scroll !important;
+}
+
 .frameLabel{
     position: absolute;
     left: 10px;
@@ -1442,6 +1458,9 @@ div.inner img {
         cursor: pointer;
     }
 
+    /* ._align-top {
+        align-items: flex-start !important;
+    } */
 
     ._align-top .mat-figure{
         justify-content: flex-start !important ;

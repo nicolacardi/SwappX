@@ -1,3 +1,5 @@
+import { CAL_ScadenzaPersone } from "./CAL_Scadenza";
+
 export interface PER_Persona {
         id:                                     number;
 
@@ -32,6 +34,7 @@ export interface PER_Persona {
         userUpd?:                               number;
 
         tipoPersona?:                           PER_TipoPersona;
+     
 }
 
 export interface PER_TipoPersona {
@@ -42,5 +45,6 @@ export interface PER_TipoPersona {
 
         ckDocente?:                             boolean;
         ckPersonale?:                           boolean;
+        ckEditor?:                              boolean;
         livello:                                number;
 }

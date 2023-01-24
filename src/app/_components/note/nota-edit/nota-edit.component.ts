@@ -110,6 +110,7 @@ export class NotaEditComponent implements OnInit {
       this.form.controls.dtNota.setValue(new Date());
 
       this.svcUser.obscurrentUser.subscribe( val => {
+        console.log ("current user", val);
         this.personaID = val.personaID;
         this.personaNomeCognome = val.fullname;
         this.form.controls.personaID.setValue(val.personaID);

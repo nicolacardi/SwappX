@@ -21,7 +21,7 @@
                     <mat-icon>save</mat-icon>
                 </button>
 
-                <button *ngIf="data.lezioneID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
+                <button *ngIf="data.lezioneID && data.dove!= 'orarioDocente'" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="delete()" >
                     <mat-icon>delete</mat-icon>

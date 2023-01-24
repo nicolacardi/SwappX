@@ -25,6 +25,7 @@ import { DocentiDashboardComponent }            from './_components/docenti/doce
 import { OrarioDocentePageComponent }           from './_components/lezioni/orario-docente-page/orario-docente-page.component';
 import { ScadenzeCalendarioComponent }          from './_components/scadenze/scadenze-calendario/scadenze-calendario.component';
 import { VerbaliPageComponent }                 from './_components/verbali/verbali-page/verbali-page.component';
+import { OrarioPageComponent }                  from './_components/lezioni/orario-page/orario-page.component';
 
 const routes: Routes = [
 
@@ -42,6 +43,8 @@ const routes: Routes = [
   { path:'home',                                component: HomeComponent, canActivate:[AuthGuard]  },
 
   { path: "calendario",                         component: ScadenzeCalendarioComponent, canActivate:[AuthGuard]},
+
+  { path: "orario-page",                        component: OrarioPageComponent, canActivate:[AuthGuard]},
 
   { path: "alunni",                             component: AlunniPageComponent, canActivate:[AuthGuard]},
 

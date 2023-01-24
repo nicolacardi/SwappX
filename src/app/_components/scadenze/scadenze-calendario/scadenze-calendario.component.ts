@@ -371,8 +371,8 @@ export class ScadenzeCalendarioComponent implements OnInit {
     
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '500px',
-      height: '550px',
+      width: '800px',
+      height: '730px',
       data: {
         scadenzaID: clickInfo.event.id,
         start: clickInfo.event.start,
@@ -384,11 +384,9 @@ export class ScadenzeCalendarioComponent implements OnInit {
     };
 
 
-    //if (this.svcUser.currentUser.ruoloID>=7) {
-    if (this.svcUser.currentUser.TipoPersona?.ckDocente || this.svcUser.currentUser.TipoPersona?.ckPersonale) {
       const dialogRef = this._dialog.open(ScadenzaEditComponent, dialogConfig);
       dialogRef.afterClosed().subscribe(  () => this.loadData() );
-    }
+
   }
 
   addEvento(selectInfo: DateSelectArg) {
@@ -404,8 +402,8 @@ export class ScadenzeCalendarioComponent implements OnInit {
     
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '500px',
-      height: '550px',
+      width: '800px',
+      height: '730px',
       data: {
         scadenzaID: 0,
         start: dtStart.toLocaleString('sv').replace(' ', 'T'),

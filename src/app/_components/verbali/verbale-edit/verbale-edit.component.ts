@@ -132,7 +132,7 @@ export class VerbaleEditComponent implements OnInit {
       this.obsVerbale$ = loadVerbale$
       .pipe( tap(
         verbale => {
-          //impostare i flag estraendo l'array da verbale.personale che però ha un sacco di altre proprietà
+          //impostare i flag estraendo l'array da verbale.personale
           verbale._VerbalePresenti.forEach((x, index) =>
             { //devo inserire SOLO quelli che sono del personale
               if (x.persona!.tipoPersona?.ckPersonale == true) 

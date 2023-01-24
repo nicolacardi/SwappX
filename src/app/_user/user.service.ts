@@ -25,12 +25,13 @@ export class UserService {
 
   readonly BaseURI = environment.apiBaseUrl;
 
-  private BehaviourSubjectcurrentUser : BehaviorSubject<User>;      //holds the value that needs to be shared with other components
-  public obscurrentUser: Observable<User>;
-  constructor( private fb:             FormBuilder,
-               private http:           HttpClient,
-               private svcPersona:     PersoneService,
-               private svcParametri:   ParametriService ) 
+  private BehaviourSubjectcurrentUser :         BehaviorSubject<User>;      //holds the value that needs to be shared with other components
+  public obscurrentUser:                        Observable<User>;
+  constructor( 
+    private fb:                                 FormBuilder,
+    private http:                               HttpClient,
+    private svcPersona:                         PersoneService,
+    private svcParametri:                       ParametriService ) 
   { 
     this.BehaviourSubjectcurrentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
     this.obscurrentUser = this.BehaviourSubjectcurrentUser.asObservable();

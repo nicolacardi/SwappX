@@ -1,8 +1,11 @@
+import { PER_Persona } from "./PER_Persone";
+
 export interface CAL_Scadenza {
   id:                                           number;
 
   dtCalendario:                                 string;
-
+  ckPromemoria:                                 boolean;
+  ckRisposta:                                   boolean;
   //campi di FullCalendar
 
   start:                                        string;     //YYYY-MM-DDTHH:MM:SS
@@ -21,4 +24,18 @@ export interface CAL_Scadenza {
 //   userIns:              number;
 //   userUpd:              number;
 
+  _ScadenzaPersone?:                             CAL_ScadenzaPersone[];
+
+}
+
+export interface CAL_ScadenzaPersone {
+  id?:                                          number;
+  
+  personaID:                                    number;
+  scadenzaID:                                   number;
+  ckLetto:                                      boolean;
+  ckAccettato:                                  boolean;
+  ckRespinto:                                   boolean;
+
+  persona?:                                     PER_Persona;
 }

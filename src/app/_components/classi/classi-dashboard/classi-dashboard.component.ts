@@ -85,7 +85,7 @@ export class ClassiDashboardComponent implements OnInit {
 
   public classeSezioneAnnoIDrouted!:        string;   //valore ricevuto (routed) dal ruoting
   public annoIDrouted!:         string;   //valore ricevuto (routed) dal ruoting
-  isOpen = true;
+
 
 //#endregion
 
@@ -134,13 +134,6 @@ export class ClassiDashboardComponent implements OnInit {
 //#endregion
 
 //#region ----- altri metodi-------
-  mouseOver() {
-    this.isOpen = false;
-  }
-
-  mouseOut() {
-    this.isOpen = true;
-  }
 
   creaPdfIscrizioni() {
 

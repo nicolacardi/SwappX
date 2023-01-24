@@ -11,8 +11,14 @@
             </div>
         </td>
         <td class="_columnright-dashboard border-left _cell-align-top w90">
+
+            <div *ngIf="!classeSezioneAnnoID" class="_warnCentroSchermo">
+                Selezionare un docente
+            </div>
+
+
             <mat-tab-group (selectedTabChange)="selectedTabValue($event)">
-                <mat-tab  label="Alunni">
+                <mat-tab  *ngIf="classeSezioneAnnoID"  label="Alunni">
                     <!-- <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addAlunno" (click)="addAlunnoToClasse()" >
                         <img class="iconaMenu" src="../../../../assets/alunnoPlus.svg">
                     </button> -->
@@ -66,7 +72,7 @@
                 </mat-tab>
             -->
 
-                <mat-tab  label="Note Disciplinari"  >
+                <mat-tab  *ngIf="classeSezioneAnnoID" label="Note Disciplinari"  >
                     <app-note-page 
                         [classeSezioneAnnoID]="classeSezioneAnnoID"
                         [dove] = "'docenti-dashboard'"
@@ -74,14 +80,14 @@
                     </app-note-page>
                 </mat-tab>
 
-                <mat-tab  label="Compiti in Classe"  >
+                <mat-tab  *ngIf="classeSezioneAnnoID" label="Compiti in Classe"  >
                     <app-compiti-list 
                         [classeSezioneAnnoID]="classeSezioneAnnoID"
                         [docenteID] = "docenteID" >
                     </app-compiti-list>
                 </mat-tab>
 
-                <mat-tab  label="Voti Interrogazioni">
+                <mat-tab  *ngIf="classeSezioneAnnoID" label="Voti Interrogazioni">
                     <app-voti-interr-list
                         [classeSezioneAnnoID]="classeSezioneAnnoID"
                         [docenteID] = "docenteID">

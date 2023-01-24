@@ -180,8 +180,6 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
     let objAnno = localStorage.getItem('AnnoCorrente');
     
-    //let objCurrentUser = localStorage.getItem('currentUser');
-    //this.currUser = (JSON.parse(objCurrentUser!) as User);
     this.currUser = Utility.getCurrentUser();
 
     this.form = this.fb.group( {
@@ -248,9 +246,12 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
       //   this.showTableRibbon = false;
       //   break;
       case 'classi-dashboard':
+      case 'orario-page':
         this.displayedColumns = this.displayedColumnsClassiDashboard;
         this.showPageTitle = false;
         this.showTableRibbon = false;
+        this.showSelectDocente = false;
+
 
         this.docenteID = 0;
         this.form.controls.selectDocente.setValue(this.docenteID);

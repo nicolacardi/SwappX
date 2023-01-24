@@ -107,6 +107,7 @@ import { PagellaVotoEditComponent }             from './_components/pagelle/page
 import { PagellaEditComponent }                 from './_components/pagelle/pagelle-edit/pagelle-edit.component';
 
 //Lezioni
+import { OrarioPageComponent }                  from './_components/lezioni/orario-page/orario-page.component';
 import { LezioniCalendarioComponent }           from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
 import { LezioneComponent }                     from './_components/lezioni/lezione-edit/lezione.component';
 import { LezioniUtilsComponent }                from './_components/lezioni/lezioni-utils/lezioni-utils.component';
@@ -186,7 +187,6 @@ import { VerbaleEditComponent }                 from './_components/verbali/verb
 import { VerbaliPageComponent }                 from './_components/verbali/verbali-page/verbali-page.component';
 import { VerbaliFilterComponent }               from './_components/verbali/verbali-filter/verbali-filter.component';
 
-
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   listPlugin,
@@ -243,6 +243,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     IscrizioniClasseCalcoloComponent,
     IscrizioniAlunnoListComponent,
 
+    OrarioPageComponent,
     LezioniCalendarioComponent,
     LezioneComponent,
 
