@@ -44,7 +44,7 @@ export class ScadenzaEditComponent implements OnInit {
   personaIDArr!:                                number[];
 
   personeListArr!:                              PER_Persona[];
-  personeListSelArr!:                           PER_Persona[];
+  personeListSelArr!:                           CAL_ScadenzaPersone[];
 
   tipoPersonaIDArr!:                            number[];
 
@@ -157,7 +157,7 @@ export class ScadenzaEditComponent implements OnInit {
       tap( sel=>{
         console.log ("sel",sel);  
         this.personeListSelArr = sel;
-        this.personeListSelArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
+        this.personeListSelArr.sort((a,b) => (a.persona!.cognome > b.persona!.cognome)?1:((b.persona!.cognome > a.persona!.cognome) ? -1 : 0) );
         }
       ),
       concatMap(sel => //sel è l'array delle selezionate
@@ -168,7 +168,7 @@ export class ScadenzaEditComponent implements OnInit {
           this.personeListArr = val;
           //il forEach va in avanti e non va bene: scombussola gli index visto che si fa lo splice...bisogna usare un for i--
           for (let i= this.personeListArr.length -1; i >= 0; i--) {
-              if (this.personeListSelArr.filter(e => e.id === this.personeListArr[i].id).length > 0) {
+              if (this.personeListSelArr.filter(e => e.persona!.id === this.personeListArr[i].id).length > 0) {
               this.personeListArr.splice(i, 1);
             }
           }
@@ -414,10 +414,10 @@ export class ScadenzaEditComponent implements OnInit {
 
   
 
-  selectedTabValue(event: any){
-    //senza questo espediente non fa il primo render correttamente
-    this.selectedTab = event.index;
-  }
+  // selectedTabValue(event: any){
+  //   //senza questo espediente non fa il primo render correttamente
+  //   this.selectedTab = event.index;
+  // }
 
   openColorPicker() {
     
@@ -478,7 +478,15 @@ export class ScadenzaEditComponent implements OnInit {
             //console.log ("this.personeListArr[i].tipoPersonaID", this.personeListArr[i].tipoPersona!.id);
             if (this.personeListArr[i].tipoPersona!.id == val) { 
               count++; 
-              this.personeListSelArr.push(this.personeListArr[i])
+              let objScadenzaPersona: CAL_ScadenzaPersone = {
+                personaID: this.personeListArr[i].id,
+                scadenzaID : this.data.scadenzaID,
+                ckLetto: false,
+                ckAccettato: false,
+                ckRespinto: false,
+                persona:  this.personeListArr[i]
+              }
+              this.personeListSelArr.push(objScadenzaPersona);
               this.personeListArr.splice(i, 1);
               
             }
@@ -518,11 +526,11 @@ export class ScadenzaEditComponent implements OnInit {
   insertPersone(scadenzaID: number) {
     for (let i = 0; i<this.personeListSelArr.length; i++) {
       let objScadenzaPersona: CAL_ScadenzaPersone = {
-        personaID: this.personeListSelArr[i].id,
+        personaID: this.personeListSelArr[i].persona!.id,
         scadenzaID : scadenzaID,
         ckLetto: false,
         ckAccettato: false,
-        ckRespinto: false
+        ckRespinto: false,
       }
       this.svcScadenzePersone.post(objScadenzaPersona).subscribe();
     }
@@ -530,16 +538,24 @@ export class ScadenzaEditComponent implements OnInit {
 
   addToSel(element: PER_Persona) {
     //console.log (element);
-    this.personeListSelArr.push(element);
+    let objScadenzaPersona: CAL_ScadenzaPersone = {
+      personaID: element.id,
+      scadenzaID : this.data.scadenzaID,
+      ckLetto: false,
+      ckAccettato: false,
+      ckRespinto: false,
+      persona: element
+    }
+    this.personeListSelArr.push(objScadenzaPersona);
     const index = this.personeListArr.indexOf(element);
     this.personeListArr.splice(index, 1);
-    this.personeListSelArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
+    this.personeListSelArr.sort((a,b) => (a.persona!.cognome > b.persona!.cognome)?1:((b.persona!.cognome > a.persona!.cognome) ? -1 : 0) );
   }
 
 
-  removeFromSel(element: PER_Persona) {
+  removeFromSel(element: CAL_ScadenzaPersone) {
     //console.log (element);
-    this.personeListArr.push(element);
+    this.personeListArr.push(element.persona!);
     const index = this.personeListSelArr.indexOf(element);
     this.personeListSelArr.splice(index, 1);
     this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );

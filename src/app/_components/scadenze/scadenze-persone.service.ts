@@ -27,8 +27,13 @@ export class ScadenzePersoneService {
     return this.http.put( environment.apiBaseUrl  + 'CAL_ScadenzePersone/' + formData.id , formData);    
   }
 
-  listByScadenza(scadenzaID: number): Observable<PER_Persona[]>{
+  listByScadenzaOLD(scadenzaID: number): Observable<PER_Persona[]>{
     return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'CAL_ScadenzePersone/listByScadenza/'+scadenzaID)
+    //http://213.215.231.4/swappX/api/CAL_ScadenzePersone/listByScadenza/4
+  }
+
+  listByScadenza(scadenzaID: number): Observable<CAL_ScadenzaPersone[]>{
+    return this.http.get<CAL_ScadenzaPersone[]>(environment.apiBaseUrl+'CAL_ScadenzePersone/listByScadenza/'+scadenzaID)
     //http://213.215.231.4/swappX/api/CAL_ScadenzePersone/listByScadenza/4
   }
   

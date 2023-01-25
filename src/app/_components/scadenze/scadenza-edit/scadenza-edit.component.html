@@ -189,12 +189,12 @@
 
                         <mat-option class="fs12 left" style="height: 23px; width: 500px" *ngFor="let element of personeListSelArr" [value]="element.id">
                             <mat-icon (click)="removeFromSel(element)" class="pointer tx-right">remove_circle_outline</mat-icon> 
-                            <span class="ml10">{{element.nome}} {{element.cognome}}</span>
+                            <span class="ml10">{{element.persona!.nome}} {{element.persona!.cognome}}</span>
 
                             <!-- [ngClass]="{'invisible': element.ckLetto}" serve prima passare qui lo scadenzapersona-->
-                            <mat-icon   style="position:absolute; right: 100px; top: 0px">done</mat-icon> 
-                            <mat-icon style="color: green;  transform: scale(0.8); position:absolute; right: 60px; top: 0px">thumb_up</mat-icon> 
-                            <!-- <mat-icon style="transform: scale(0.8); position:absolute; right: 40px; top: 0px">thumb_up_off_alt</mat-icon>  -->
+                            <mat-icon  *ngIf="element.ckLetto" style="position:absolute; right: 100px; top: 0px">done</mat-icon> 
+                            <mat-icon *ngIf="element.ckAccettato" style="color: green;  transform: scale(0.8); position:absolute; right: 60px; top: 0px">thumb_up</mat-icon> 
+                            <mat-icon *ngIf="element.ckRespinto" style="color: red;  transform: scale(0.8); position:absolute; right: 60px; top: 0px">thumb_down</mat-icon> 
 
                             <!-- <mat-icon style="color: red; transform: scale(0.8); position:absolute; right: 40px; top: 0px">thumb_down</mat-icon>  -->
 
