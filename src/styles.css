@@ -149,6 +149,10 @@
         font-size: 30px;
     }
 
+    .fs40 {
+        font-size: 40px;
+    }
+
     .fs50 {
         font-size: 50px;
     }
@@ -299,6 +303,12 @@
     .t0 {
         top: 0px;
     }
+    .t5 {
+        top: 5px;
+    }
+    .t10 {
+        top: 10px;
+    }
 
     .l0 {
         left: 0px;
@@ -307,6 +317,31 @@
     .r0 {
         right: 0px;
     }
+    .r5 {
+        right: 5px;
+    }
+    .r10 {
+        right: 10px;
+    }
+
+    .r20 {
+        right: 20px;
+    }
+
+    .r30 {
+        right: 30px;
+    }
+
+    .r40 {
+        right: 40px;
+    }
+
+    .r50 {
+        right: 50px;
+    }
+
+
+
 
 /*#region ********** PADDING ***********/
 

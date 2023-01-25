@@ -13,26 +13,37 @@
           <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
         <!-- </mat-card-header> -->
         <mat-card-content>
-            <mat-grid-list [cols]="5" rowHeight="60px">
+            <!-- <mat-grid-list class="mr10" [cols]="5" >
                 <mat-grid-tile >
                     <mat-icon class="pointer" *ngIf="!element.ckLetto">check_box_outline_blank</mat-icon>
                     <mat-icon class="defaultcursor" *ngIf="element.ckLetto">check_box</mat-icon>
                 </mat-grid-tile>
                 <mat-grid-tile colspan="4">
-                    <h4 class="_pos-absolute l0">{{element.scadenza!.title}}</h4>
+                    <h4 class="_pos-absolute l0 mr10">{{element.scadenza!.title}}</h4>
                 </mat-grid-tile>
             </mat-grid-list>
-            <span class="fs50 _pos-absolute r0 t0" [ngStyle]="{'color': element.scadenza!.color}">•</span>
-            
+            <span class="fs40 _pos-absolute r5 t10" [ngStyle]="{'color': element.scadenza!.color}">●</span> -->
+
+
+
+                    <span>{{element.scadenza!.title}}</span>
+
+            <span class="fs40 _pos-absolute r5 t10" [ngStyle]="{'color': element.scadenza!.color}">●</span>
             
 
         </mat-card-content>
-        <!-- <mat-card-actions>
-          <button mat-button>LIKE</button>
-          <button mat-button>SHARE</button>
-        </mat-card-actions> -->
-    </mat-card>
+        <mat-button-toggle-group  class="_pos-absolute" name="risposta" aria-label="risposta">
+            <mat-button-toggle value="flour" matTooltip="Invito Accettato">
+                <mat-icon style="color: green;  transform: scale(0.8)">thumb_up</mat-icon> 
+            </mat-button-toggle>
+            <mat-button-toggle value="eggs" matTooltip="Invito Respinto">
+                <mat-icon style="color: red;  transform: scale(0.8)">thumb_down</mat-icon> 
+            </mat-button-toggle>
+        </mat-button-toggle-group>
 
+          <mat-icon class="pointer _pos-absolute r5" *ngIf="!element.ckLetto">check_box_outline_blank</mat-icon>
+          <mat-icon class="defaultcursor _pos-absolute r5" *ngIf="element.ckLetto">check_box</mat-icon>
+    </mat-card>
 
 
 
