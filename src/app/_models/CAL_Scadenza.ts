@@ -6,6 +6,7 @@ export interface CAL_Scadenza {
   dtCalendario:                                 string;
   ckPromemoria:                                 boolean;
   ckRisposta:                                   boolean;
+  PersonaID:                                    number;
   //campi di FullCalendar
 
   start:                                        string;     //YYYY-MM-DDTHH:MM:SS

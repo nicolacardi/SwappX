@@ -16,6 +16,7 @@ import { DialogYesNoComponent }                 from '../../utilities/dialog-yes
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
 import { ColorPickerComponent }                 from '../../color-picker/color-picker.component';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
@@ -28,6 +29,7 @@ import { TipiPersonaService }                   from '../../persone/tipi-persona
 import { CAL_Scadenza, CAL_ScadenzaPersone }                          from 'src/app/_models/CAL_Scadenza';
 import { DialogDataScadenza }                   from 'src/app/_models/DialogData';
 import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
+import { User }                                 from 'src/app/_user/Users';
 
 
 @Component({
@@ -39,7 +41,7 @@ import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Person
 export class ScadenzaEditComponent implements OnInit {
 
 //#region ----- Variabili -------
-
+  currUser!:                                    User;
   form! :                                       FormGroup;
   personaIDArr!:                                number[];
 
@@ -84,15 +86,11 @@ export class ScadenzaEditComponent implements OnInit {
     private svcScadenze:                        ScadenzeService,
     private svcPersone:                         PersoneService,
     private svcScadenzePersone:                 ScadenzePersoneService,
-
     private svcTipiPersone:                     TipiPersonaService,
-
-
 
     public _dialog:                             MatDialog,
     private _snackBar:                          MatSnackBar,
     private _loadingService:                    LoadingService,
-    private cdRef :                             ChangeDetectorRef,
     private _ngZone:                            NgZone ) {
 
     _dialogRef.disableClose = true;
@@ -101,10 +99,9 @@ export class ScadenzaEditComponent implements OnInit {
       id:                                       [null],
       dtCalendario:                             [''],
       gruppi:                                   [''],
-      persone:                                  [''],
-
       ckPromemoria:                             [''],
       ckRisposta:                               [''],
+      PersonaID:                                [''],
       personeList:                              [''],
       personeListSel:                           [''],
 
@@ -118,26 +115,16 @@ export class ScadenzaEditComponent implements OnInit {
       end:                                      [''],
       color:                                    ['']
     });
+
+    this.currUser = Utility.getCurrentUser();
   }
 
   ngOnInit () {
     this.loadData();
 
 
-    this.personaIDArr = [];
-    this.tipoPersonaIDArr = [];
 
-    //questa scomparirà
-    // this.obsPersone$ = this.svcPersone.list()
-    // .pipe(
-    //   tap(val =>  val.forEach(x=> {
-    //     this.personeListArr.push (x); //Popolo la lista
-    //     console.log (val);  
-    //     this.personaIDArr.push(x.id);
-    //     this.tipoPersonaIDArr.push(x.tipoPersonaID); 
-    //   }))
-    //   //tap((val:PER_Persona) =>  this.personaIDArr.push(val.id))
-    // );
+    this.tipoPersonaIDArr = [];
 
     //estraggo la lista delle persone che NON sono associate a questa scadenza
     this.setArrayBase();
@@ -147,7 +134,7 @@ export class ScadenzaEditComponent implements OnInit {
 
   }
 
-  async setArrayBase () {
+  setArrayBase () {
 
     //estraggo le persone da selezionare, le metto in personeListSelArr
     //poi inserisco le persone nella personeListArr e per ciascuna vado a veder se già c'è l'id in personeListArr, per toglierlo
@@ -164,13 +151,16 @@ export class ScadenzaEditComponent implements OnInit {
         this.svcPersone.list()
         .pipe(
           tap( val => {
-            
+          
+
           this.personeListArr = val;
           //il forEach va in avanti e non va bene: scombussola gli index visto che si fa lo splice...bisogna usare un for i--
           for (let i= this.personeListArr.length -1; i >= 0; i--) {
               if (this.personeListSelArr.filter(e => e.persona!.id === this.personeListArr[i].id).length > 0) {
               this.personeListArr.splice(i, 1);
-            }
+              }
+              this.addMyself(i);
+
           }
           //ordino per cognome
           this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
@@ -183,11 +173,27 @@ export class ScadenzaEditComponent implements OnInit {
     .subscribe();
   }
 
+  addMyself(i: number){
+    //devo SEMPRE aggiungere me stesso se c'è in listArr a listSelArr
+    if (this.personeListArr[i].id === this.currUser.personaID) {
+      let objScadenzaPersona: CAL_ScadenzaPersone = {
+        personaID: this.personeListArr[i].id,
+        scadenzaID : this.data.scadenzaID,
+        ckLetto: false,
+        ckAccettato: false,
+        ckRespinto: false,
+        persona:  this.personeListArr[i]
+      }
+      this.personeListSelArr.push(objScadenzaPersona);
+      this.personeListArr.splice(i, 1);
+    }
+  }
+
   loadData(): void {
 
     this.breakpoint = (window.innerWidth <= 800) ? 2 : 2;
 
-    let arrPersoneScadenza : number[] = [];
+    
 
     if (this.data.scadenzaID && this.data.scadenzaID + '' != "0") {
       const obsScadenza$: Observable<CAL_Scadenza> = this.svcScadenze.get(this.data.scadenzaID);
@@ -195,18 +201,6 @@ export class ScadenzaEditComponent implements OnInit {
       this.scadenza$ = loadScadenza$
       .pipe( tap(
         scadenza => {
-
-          //console.log("scadenza", scadenza);
-          //console.log("scadenza._ScadenzaPersone.length", scadenza._ScadenzaPersone.length);
-          // if (scadenza._ScadenzaPersone) {
-          //   scadenza._ScadenzaPersone!.forEach((x, index) =>
-          //     arrPersoneScadenza.push(scadenza._ScadenzaPersone![index].personaID)
-          //   )
-          // }
-          // this.form.controls.persone.setValue(arrPersoneScadenza);
-
-
-          //console.log ("scadenza loadData", scadenza);
           this.form.patchValue(scadenza)
           //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
           this.dtStart = new Date (this.data.start);
@@ -215,8 +209,6 @@ export class ScadenzaEditComponent implements OnInit {
 
           this.dtEnd = new Date (this.data.end);
           this.strH_End = Utility.formatHour(this.dtEnd);
-
-
         } )
       );
     } 
@@ -271,6 +263,7 @@ export class ScadenzaEditComponent implements OnInit {
       ckRisposta: this.form.controls.ckRisposta.value,
       h_Ini: this.form.controls.h_Ini.value,
       h_End: this.form.controls.h_End.value,
+      PersonaID: this.currUser.personaID
     }
 
 
@@ -475,8 +468,9 @@ export class ScadenzaEditComponent implements OnInit {
       this.form.controls.gruppi.value.forEach(
         (val:number) => {
           for (let i = this.personeListArr.length - 1; i>0; i--) {
-            //console.log ("this.personeListArr[i].tipoPersonaID", this.personeListArr[i].tipoPersona!.id);
-            if (this.personeListArr[i].tipoPersona!.id == val) { 
+            
+            //se il tipo è uguale a quello che sto guardando OPPURE se trovo me stesso lo aggiungo
+            if (this.personeListArr[i].tipoPersona!.id == val  || this.personeListArr[i].id === this.currUser.personaID) { 
               count++; 
               let objScadenzaPersona: CAL_ScadenzaPersone = {
                 personaID: this.personeListArr[i].id,
@@ -490,9 +484,30 @@ export class ScadenzaEditComponent implements OnInit {
               this.personeListArr.splice(i, 1);
               
             }
+            
           }
         }
       )
+
+      //se non ci sono selezioni devo aggiungere almeno me stesso
+      if (this.form.controls.gruppi.value.length==0) {
+        for (let i = this.personeListArr.length - 1; i>0; i--) {
+          //se trovo me stesso lo aggiungo
+          if (this.personeListArr[i].id === this.currUser.personaID) { 
+            count++; 
+            let objScadenzaPersona: CAL_ScadenzaPersone = {
+              personaID: this.personeListArr[i].id,
+              scadenzaID : this.data.scadenzaID,
+              ckLetto: false,
+              ckAccettato: false,
+              ckRespinto: false,
+              persona:  this.personeListArr[i]
+            }
+            this.personeListSelArr.push(objScadenzaPersona);
+            this.personeListArr.splice(i, 1);
+          }
+        }
+      }
 
 
 
@@ -554,11 +569,18 @@ export class ScadenzaEditComponent implements OnInit {
 
 
   removeFromSel(element: CAL_ScadenzaPersone) {
-    //console.log (element);
-    this.personeListArr.push(element.persona!);
-    const index = this.personeListSelArr.indexOf(element);
-    this.personeListSelArr.splice(index, 1);
-    this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
+    if (element.personaID == this.currUser.personaID) {
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "Non è possibile rimuovere se stessi"}
+      });
+    } else {
+      //console.log (element);
+      this.personeListArr.push(element.persona!);
+      const index = this.personeListSelArr.indexOf(element);
+      this.personeListSelArr.splice(index, 1);
+      this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
+    }
 
   }
 

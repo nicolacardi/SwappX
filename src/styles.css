@@ -314,6 +314,14 @@
         left: 0px;
     }
 
+    .l100 {
+        left: 100px;
+    }
+
+    .l200 {
+        left: 200px;
+    }
+
     .r0 {
         right: 0px;
     }
@@ -1360,6 +1368,10 @@ mat-nav-list a img {
 
 .grey {
     background-color: rgb(241, 241, 241);
+}
+
+.cgrey {
+    color: rgb(190, 190, 190);
 }
   
 .low-row {

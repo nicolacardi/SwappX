@@ -15,6 +15,8 @@ import { ScadenzeService } from '../scadenze.service';
 import { CAL_Scadenza, CAL_ScadenzaPersone } from 'src/app/_models/CAL_Scadenza';
 import { ScadenzePersoneService } from '../scadenze-persone.service';
 import { tap } from 'rxjs/operators';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-mie-scadenze',
@@ -39,9 +41,13 @@ displayedColumns: string[] = [
 
 //#endregion
 
-  constructor( private svcScadenzePersone:      ScadenzePersoneService,
-               private _loadingService:         LoadingService,
-               private _snackBar:               MatSnackBar ) {
+  constructor( 
+    private svcScadenzePersone:                 ScadenzePersoneService,
+    private _loadingService:                    LoadingService,
+    private _snackBar:                          MatSnackBar, 
+    public _dialog:                             MatDialog,
+    
+    ) {
 
     this.currUser = Utility.getCurrentUser();   
      
@@ -63,8 +69,8 @@ displayedColumns: string[] = [
     
   }
 
-  closeMsg(element: CAL_ScadenzaPersone) {
-    console.log (element);
+  setLetto(element: CAL_ScadenzaPersone) {
+
     //element.ckLetto = !element.ckLetto;
     element.ckLetto = true;
 
@@ -72,6 +78,34 @@ displayedColumns: string[] = [
       res=> this.loadData(),
       err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella chuisura della scadenza ', panelClass: ['red-snackbar']})
     );
+  }
+
+  setAccettato(element: CAL_ScadenzaPersone) {
+    console.log(element);
+    element.ckAccettato = true;
+    element.ckRespinto = false;
+    this.svcScadenzePersone.put(element).subscribe(
+      res=> {},
+      err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella chuisura della scadenza ', panelClass: ['red-snackbar']})
+    );
+  }
+
+  setRespinto(element: CAL_ScadenzaPersone) {
+    if (element.personaID == this.currUser.personaID) {
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "Non è possibile Respingere un proprio invito"}
+      });
+      this.loadData();
+    } else {
+      console.log(element);
+      element.ckAccettato = false;
+      element.ckRespinto = true;
+      this.svcScadenzePersone.put(element).subscribe(
+        res=> {},
+        err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella chuisura della scadenza ', panelClass: ['red-snackbar']})
+      );
+    }
   }
 
   deleteMsg(id: number) {

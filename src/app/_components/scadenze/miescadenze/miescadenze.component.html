@@ -26,23 +26,24 @@
 
 
 
-                    <span>{{element.scadenza!.title}}</span>
+                    <span class="fs14">{{element.scadenza!.dtCalendario| date: "dd/MM/yy"}}</span> <span class="fs12">  - h.{{element.scadenza!.h_Ini}} </span><br>
+                    <span class="fs16">{{element.scadenza!.title}}</span>
 
             <span class="fs40 _pos-absolute r5 t10" [ngStyle]="{'color': element.scadenza!.color}">●</span>
             
 
         </mat-card-content>
-        <mat-button-toggle-group  class="_pos-absolute" name="risposta" aria-label="risposta">
-            <mat-button-toggle value="flour" matTooltip="Invito Accettato">
+        <mat-button-toggle-group *ngIf="element.scadenza!.ckRisposta" class="_pos-absolute" name="risposta" aria-label="risposta" >
+            <mat-button-toggle [checked]="element.ckAccettato" matTooltip="Invito Accettato" (click)="setAccettato(element)">
                 <mat-icon style="color: green;  transform: scale(0.8)">thumb_up</mat-icon> 
             </mat-button-toggle>
-            <mat-button-toggle value="eggs" matTooltip="Invito Respinto">
+            <mat-button-toggle [checked]="element.ckRespinto" matTooltip="Invito Respinto" (click)="setRespinto(element)">
                 <mat-icon style="color: red;  transform: scale(0.8)">thumb_down</mat-icon> 
             </mat-button-toggle>
         </mat-button-toggle-group>
 
-          <mat-icon class="pointer _pos-absolute r5" *ngIf="!element.ckLetto">check_box_outline_blank</mat-icon>
-          <mat-icon class="defaultcursor _pos-absolute r5" *ngIf="element.ckLetto">check_box</mat-icon>
+          <mat-icon class="pointer" *ngIf="!element.ckLetto && !element.scadenza!.ckRisposta" matTooltip="Conferma di lettura" (click)="setLetto(element)">check_box_outline_blank</mat-icon>
+          <mat-icon class="defaultcursor" *ngIf="element.ckLetto && !element.scadenza!.ckRisposta" matTooltip="Conferma di lettura">check_box</mat-icon>
     </mat-card>
 
 
