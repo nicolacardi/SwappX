@@ -180,12 +180,16 @@ import { ScadenzeCalendarioComponent }          from './_components/scadenze/sca
 import { ScadenzaEditComponent }                from './_components/scadenze/scadenza-edit/scadenza-edit.component';
 import { MieScadenzeComponent }                 from './_components/scadenze/miescadenze/miescadenze.component';
 
+import { TipiScadenzaListComponent }            from './_components/scadenze/tipiscadenza/tipiscadenza-list/tipiscadenza-list.component';
+import { TipiScadenzaPageComponent }            from './_components/scadenze/tipiscadenza/tipiscadenza-page/tipiscadenza-page.component';
+import { TipoScadenzaEditComponent }            from './_components/scadenze/tipiscadenza/tiposcadenza-edit/tiposcadenza-edit.component';
 
 //Verbali
 import { VerbaliListComponent }                 from './_components/verbali/verbali-list/verbali-list.component';
 import { VerbaleEditComponent }                 from './_components/verbali/verbale-edit/verbale-edit.component';
 import { VerbaliPageComponent }                 from './_components/verbali/verbali-page/verbali-page.component';
 import { VerbaliFilterComponent }               from './_components/verbali/verbali-filter/verbali-filter.component';
+
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -252,6 +256,10 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MieScadenzeComponent,
     LezioniUtilsComponent,
     OrarioDocentePageComponent,
+
+    TipiScadenzaListComponent,
+    TipiScadenzaPageComponent,
+    TipoScadenzaEditComponent,
 
     PresenzeListComponent,
     PresenzeAlunnoListComponent,

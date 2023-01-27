@@ -20,10 +20,14 @@ export class ScadenzeService {
     //http://213.215.231.4/swappX/api/CAL_Scadenze
   }
 
+  listByPersona(personaID: number): Observable<CAL_Scadenza[]>{
+    return this.http.get<CAL_Scadenza[]>(environment.apiBaseUrl+'CAL_Scadenze/ListByPersona/'+personaID); 
+    //http://213.215.231.4/swappX/api/CAL_Scadenze/ListBypersona/17
+  }
 
 
-  get(lezioneID: any): Observable<CAL_Scadenza>{
-    return this.http.get<CAL_Scadenza>(environment.apiBaseUrl+'CAL_Scadenze/'+lezioneID);
+  get(scadenzaID: any): Observable<CAL_Scadenza>{
+    return this.http.get<CAL_Scadenza>(environment.apiBaseUrl+'CAL_Scadenze/'+scadenzaID);
     //http://213.215.231.4/swappX/api/CAL_Scadenze/1
   }
 
@@ -43,8 +47,8 @@ export class ScadenzeService {
     return this.http.post( environment.apiBaseUrl  + 'CAL_Scadenze' , formData);  
   }
 
-  delete(lezioneID: number): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'CAL_Scadenze/' + lezioneID);    
+  delete(scadenzaID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'CAL_Scadenze/' + scadenzaID);    
   }
 
 

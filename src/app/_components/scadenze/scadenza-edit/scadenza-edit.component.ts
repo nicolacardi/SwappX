@@ -24,12 +24,15 @@ import { ScadenzeService }                      from '../scadenze.service';
 import { ScadenzePersoneService }               from '../scadenze-persone.service';
 import { PersoneService }                       from '../../persone/persone.service';
 import { TipiPersonaService }                   from '../../persone/tipi-persona.service';
+import { TipiScadenzaService }                  from '../tipiscadenza.service';
+
 
 //models
 import { CAL_Scadenza, CAL_ScadenzaPersone }                          from 'src/app/_models/CAL_Scadenza';
 import { DialogDataScadenza }                   from 'src/app/_models/DialogData';
 import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
 import { User }                                 from 'src/app/_user/Users';
+import { CAL_TipoScadenza } from 'src/app/_models/CAL_TipoScadenza';
 
 
 @Component({
@@ -44,7 +47,7 @@ export class ScadenzaEditComponent implements OnInit {
   currUser!:                                    User;
   form! :                                       FormGroup;
   personaIDArr!:                                number[];
-
+  colorSample:                                  string = '#FFFFFF'
   personeListArr!:                              PER_Persona[];
   personeListSelArr!:                           CAL_ScadenzaPersone[];
 
@@ -53,6 +56,7 @@ export class ScadenzaEditComponent implements OnInit {
   scadenza$!:                                   Observable<CAL_Scadenza>;
   obsPersone$!:                                 Observable<PER_Persona[]>;
   obsTipiPersone$!:                             Observable<PER_TipoPersona[]>;
+  obsTipiScadenza$!:                            Observable<CAL_TipoScadenza[]>;
 
   strDtStart!:                                  string;
   strDtEnd!:                                    string;
@@ -86,6 +90,8 @@ export class ScadenzaEditComponent implements OnInit {
     private svcScadenze:                        ScadenzeService,
     private svcPersone:                         PersoneService,
     private svcScadenzePersone:                 ScadenzePersoneService,
+    private svcTipiScadenza:                    TipiScadenzaService,
+
     private svcTipiPersone:                     TipiPersonaService,
 
     public _dialog:                             MatDialog,
@@ -99,9 +105,10 @@ export class ScadenzaEditComponent implements OnInit {
       id:                                       [null],
       dtCalendario:                             [''],
       gruppi:                                   [''],
-      ckPromemoria:                             [''],
-      ckRisposta:                               [''],
-      PersonaID:                                [''],
+      ckPromemoria:                             [false],
+      ckRisposta:                               [false],
+      tipoScadenzaID:                           [''],
+      personaID:                                [''],
       personeList:                              [''],
       personeListSel:                           [''],
 
@@ -130,6 +137,7 @@ export class ScadenzaEditComponent implements OnInit {
     this.setArrayBase();
 
     this.obsTipiPersone$ = this.svcTipiPersone.list();
+    this.obsTipiScadenza$ = this.svcTipiScadenza.list();
 
 
   }
@@ -142,7 +150,7 @@ export class ScadenzaEditComponent implements OnInit {
     this.svcScadenzePersone.listByScadenza(this.data.scadenzaID)
     .pipe(
       tap( sel=>{
-        console.log ("sel",sel);  
+        
         this.personeListSelArr = sel;
         this.personeListSelArr.sort((a,b) => (a.persona!.cognome > b.persona!.cognome)?1:((b.persona!.cognome > a.persona!.cognome) ? -1 : 0) );
         }
@@ -201,7 +209,10 @@ export class ScadenzaEditComponent implements OnInit {
       this.scadenza$ = loadScadenza$
       .pipe( tap(
         scadenza => {
+          //console.log ("scadenza-edit - loadData - scadenza", scadenza)
           this.form.patchValue(scadenza)
+          this.colorSample = scadenza.tipoScadenza!.color;
+          //this.form.controls.tipoScadenza.setValue(scadenza.tipoScadenza);
           //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
           this.dtStart = new Date (this.data.start);
           this.strDtStart = Utility.formatDate(this.dtStart, FormatoData.yyyy_mm_dd);
@@ -258,17 +269,18 @@ export class ScadenzaEditComponent implements OnInit {
       title: this.form.controls.title.value,
       start: this.form.controls.start.value,
       end: this.form.controls.end.value,
-      color: this.form.controls.color.value,
+      color: this.form.controls.tipoScadenzaID.value,
       ckPromemoria: this.form.controls.ckPromemoria.value,
       ckRisposta: this.form.controls.ckRisposta.value,
       h_Ini: this.form.controls.h_Ini.value,
       h_End: this.form.controls.h_End.value,
-      PersonaID: this.currUser.personaID
+      PersonaID: this.currUser.personaID,
+      TipoScadenzaID: this.form.controls.tipoScadenzaID.value
     }
 
 
 
-    console.log(objScadenza);
+    console.log("scadenza-edit - save() - objScadenza", objScadenza);
     //qualcosa non funziona nel valorizzare form.controls.end e form.controls.start ma solo su nuova scadenza
 
     if (this.form.controls['id'].value == null) {   
@@ -316,6 +328,8 @@ export class ScadenzaEditComponent implements OnInit {
 
 
   delete() {
+
+    //vanno cancellate tutte le scadenze persone!
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
@@ -323,13 +337,20 @@ export class ScadenzaEditComponent implements OnInit {
     dialogYesNo.afterClosed().subscribe(
       result => {
         if(result){
-          this.svcScadenze.delete (this.data.scadenzaID).subscribe(
+
+          this.svcScadenzePersone.deleteByScadenza(this.form.controls.id.value)
+          .pipe(
+            concatMap(()=>this.svcScadenze.delete (this.data.scadenzaID)
+            )
+          )
+          .subscribe(
             res =>{
               this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();
             },
             err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          );
+          );;
+
         }
       }
     );
@@ -412,23 +433,23 @@ export class ScadenzaEditComponent implements OnInit {
   //   this.selectedTab = event.index;
   // }
 
-  openColorPicker() {
+  // openColorPicker() {
     
-    const dialogConfig : MatDialogConfig = {
-      panelClass: 'add-DetailDialog',
-      width: '405px',
-      height: '460px',
-      data: {ascRGB: this.form.controls.color.value},
-    };
-    const dialogRef = this._dialog.open(ColorPickerComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-      result => { 
-        //devo valorizzare il campo color
-        if (result) this.form.controls.color.setValue(result);
-        //this.loadData(); 
-      }
-    );
-  }
+  //   const dialogConfig : MatDialogConfig = {
+  //     panelClass: 'add-DetailDialog',
+  //     width: '405px',
+  //     height: '460px',
+  //     data: {ascRGB: this.form.controls.color.value},
+  //   };
+  //   const dialogRef = this._dialog.open(ColorPickerComponent, dialogConfig);
+  //   dialogRef.afterClosed().subscribe(
+  //     result => { 
+  //       //devo valorizzare il campo color
+  //       if (result) this.form.controls.color.setValue(result);
+  //       //this.loadData(); 
+  //     }
+  //   );
+  // }
 
   // optChangedOLD() {
   //   let personaIDDaSelezionareArr : number[] =[];
@@ -582,6 +603,13 @@ export class ScadenzaEditComponent implements OnInit {
       this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
     }
 
+  }
+
+  changeColor() {
+    this.svcTipiScadenza.get(this.form.controls.tipoScadenzaID.value)
+    .subscribe(
+      val=> this.colorSample = val.color
+    );
   }
 
 }

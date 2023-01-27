@@ -312,7 +312,7 @@ export class LezioneComponent implements OnInit {
           argomentoCompito: this.form.controls.argomentoCompito.value
         };
 
-
+        console.log ("lezione-edit, objLezione", objLezione);
         if (this.form.controls['id'].value == null) {   
 
           

@@ -61,27 +61,43 @@
             </mat-grid-list>
 
             
-            <mat-grid-list class="no-overflowx mt10" [cols]="5" rowHeight="100px">
+            <mat-grid-list class="no-overflowx mt10" [cols]="8" rowHeight="100px">
                 <mat-grid-tile class="_align-top h100px" colspan="4">
                     <mat-form-field class="w100 pl5 pt5" appearance="outline">
                         <mat-label>Descrizione</mat-label>
-                        <textarea class="w300px h50px _noresize" matInput formControlName="title"></textarea>
+                        <textarea required class="w300px h50px _noresize" matInput formControlName="title"></textarea>
                     </mat-form-field>
                 </mat-grid-tile>
 
-                <mat-grid-tile colspan="1">
-                    <button type="button" class="_btnColorPicker" 
-                    (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
+                <mat-grid-tile class="_align-top h100px" colspan="3">
+                    <mat-form-field>
+                        <mat-label>Tipo Evento</mat-label>
+                        
+                        <mat-select required formControlName="tipoScadenzaID" #tipoScadenzaID (selectionChange)="changeColor()">
+                            <!-- <mat-select-trigger>
+                                <span class="fs40 _pos-absolute r5 t10" [ngStyle]="{'color': tipoScadenzaID.value.color}">●</span>{{tipoScadenzaID.value.descrizione}}
+                            </mat-select-trigger> -->
+                            <mat-option *ngFor="let element of (obsTipiScadenza$ | async)" [value]="element.id">
+                                
+                                {{element.descrizione}} 
+                                <!-- PROBLEMA: qui non valorizzo più l'ID -->
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <span class="fs40" [ngStyle]="{'color': colorSample}">●</span>
+                </mat-grid-tile>
+
             </mat-grid-list>
 
+            
             <mat-grid-list class="bordered-bottom" [cols]="2" rowHeight="40px">
                 <mat-grid-tile>
-
                     <mat-checkbox color="primary" formControlName="ckPromemoria">
                         Invia Messaggio Promemoria alle persone
                     </mat-checkbox>
-
                 </mat-grid-tile>
 
                 <mat-grid-tile>

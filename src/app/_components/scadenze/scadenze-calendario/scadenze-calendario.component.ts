@@ -145,7 +145,6 @@ export class ScadenzeCalendarioComponent implements OnInit {
   
   constructor( 
     private svcScadenze:                        ScadenzeService,
-    private svcUser:                            UserService,
     private _loadingService:                    LoadingService,
     private _snackBar:                          MatSnackBar,
     public _dialog:                             MatDialog, 
@@ -164,11 +163,20 @@ export class ScadenzeCalendarioComponent implements OnInit {
 
   loadData () {
     let obsScadenze$: Observable<CAL_Scadenza[]>;
-    obsScadenze$= this.svcScadenze.list();
+    obsScadenze$= this.svcScadenze.list(); //così le mostro tutte TODO listbyPersona
+    
     const loadScadenze$ =this._loadingService.showLoaderUntilCompleted(obsScadenze$);
     loadScadenze$.subscribe(
       val =>   {
+        //console.log ("scadenze-calendario - loadData - val", val);
+        for (let i = 0; i< val.length; i++) {
+          //console.log ("scadenze-calendario - loadData - val[i].tipoScadenza!.color", val[i].tipoScadenza!.color);
+          val[i].color = val[i].tipoScadenza!.color;
+        }
+
+
         this.Events = val;
+        
         this.calendarOptions.events = this.Events;
       }
     );
@@ -371,7 +379,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '800px',
-      height: '730px',
+      height: '700px',
       data: {
         scadenzaID: clickInfo.event.id,
         start: clickInfo.event.start,
@@ -402,7 +410,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '800px',
-      height: '730px',
+      height: '700px',
       data: {
         scadenzaID: 0,
         start: dtStart.toLocaleString('sv').replace(' ', 'T'),
@@ -410,6 +418,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
         dtCalendario: dtStart.toLocaleString('sv').replace(' ', 'T').substring(0,10),
         h_Ini: dtStart.toLocaleString('sv').replace(' ', 'T').substring(11,19),
         h_End: dtEnd.toLocaleString('sv').replace(' ', 'T').substring(11,19),
+
 
       }
     };
@@ -503,6 +512,8 @@ export class ScadenzeCalendarioComponent implements OnInit {
         form.dtCalendario = dtCalendario;
         form.h_Ini = strH_INI;
         form.h_End = strH_END;
+
+
       }),
       concatMap(() => this.svcScadenze.put(form))
     ).subscribe(

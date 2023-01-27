@@ -1,3 +1,4 @@
+import { CAL_TipoScadenza } from "./CAL_TipoScadenza";
 import { PER_Persona } from "./PER_Persone";
 
 export interface CAL_Scadenza {
@@ -7,6 +8,7 @@ export interface CAL_Scadenza {
   ckPromemoria:                                 boolean;
   ckRisposta:                                   boolean;
   PersonaID:                                    number;
+  TipoScadenzaID:                               number;
   //campi di FullCalendar
 
   start:                                        string;     //YYYY-MM-DDTHH:MM:SS
@@ -26,6 +28,8 @@ export interface CAL_Scadenza {
 //   userUpd:              number;
 
   _ScadenzaPersone?:                             CAL_ScadenzaPersone[];
+
+  tipoScadenza?:                                 CAL_TipoScadenza;
 
 }
 
