@@ -36,7 +36,7 @@ export class ScadenzeService {
 
 
   put(formData: any): Observable <any>{
-    //console.log ("lezioni.service - put - formData", formData);
+    console.log ("lezioni.service - put - formData", formData);
     return this.http.put( environment.apiBaseUrl  + 'CAL_Scadenze/' + formData.id , formData);    
   }
 

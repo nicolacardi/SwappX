@@ -23,6 +23,7 @@ import { UserService }                          from 'src/app/_user/user.service
 
 //classes
 import { CAL_Scadenza }                         from 'src/app/_models/CAL_Scadenza';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 
 @Component({
@@ -375,25 +376,30 @@ export class ScadenzeCalendarioComponent implements OnInit {
 //#region ----- Add Edit Eventi -------
 
   openDetail(clickInfo: EventClickArg) {
-    
-    const dialogConfig : MatDialogConfig = {
-      panelClass: 'add-DetailDialog',
-      width: '800px',
-      height: '700px',
-      data: {
-        scadenzaID: clickInfo.event.id,
-        start: clickInfo.event.start,
-        end: clickInfo.event.end,
-        dtCalendario: clickInfo.event.extendedProps.dtCalendario,
-        h_Ini: clickInfo.event.extendedProps.h_Ini,
-        h_End: clickInfo.event.extendedProps.h_End,
-      }
-    };
+    if (clickInfo.event.extendedProps.tipoScadenzaID == 6) {//FA SCHIFO! SISTEMARE TODO!!!
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "Le note vanno gestite dalla console Maestro"}
+      });
+    }  else {
+      const dialogConfig : MatDialogConfig = {
+        panelClass: 'add-DetailDialog',
+        width: '800px',
+        height: '700px',
+        data: {
+          scadenzaID: clickInfo.event.id,
+          start: clickInfo.event.start,
+          end: clickInfo.event.end,
+          dtCalendario: clickInfo.event.extendedProps.dtCalendario,
+          h_Ini: clickInfo.event.extendedProps.h_Ini,
+          h_End: clickInfo.event.extendedProps.h_End,
+        }
+      };
 
 
-      const dialogRef = this._dialog.open(ScadenzaEditComponent, dialogConfig);
-      dialogRef.afterClosed().subscribe(  () => this.loadData() );
-
+        const dialogRef = this._dialog.open(ScadenzaEditComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(  () => this.loadData() );
+    }
   }
 
   addEvento(selectInfo: DateSelectArg) {

@@ -406,8 +406,8 @@ export class LezioneComponent implements OnInit {
     let setHours = 0;
     let setMinutes = 0;
 
-    //tolgo un'ora, ma se vado sopra le 15 devo impostare le 15
-    if ((dtTMP.getHours() - 1) > 15) { 
+    //aggiungo un'ora, ma se vado sopra le 15 devo impostare le 15
+    if ((dtTMP.getHours() + 1) > 15) { //NC 28.01.23 era - 1, ho messo + 1
       setHours = 15;
       setMinutes = 0;
     } 

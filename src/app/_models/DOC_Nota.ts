@@ -6,6 +6,8 @@ export interface DOC_Nota {
     
     iscrizioneID:                               number;
     personaID:                                  number;
+    scadenzaID:                                 number;
+    ckInvioMsg:                                 boolean;
     dtNota:                                     string;
     periodo:                                    number;
     ckFirmato?:                                 boolean;
