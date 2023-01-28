@@ -202,28 +202,7 @@ export class ScadenzaEditComponent implements OnInit {
     this.breakpoint = (window.innerWidth <= 800) ? 2 : 2;
 
     
-
-    if (this.data.scadenzaID && this.data.scadenzaID + '' != "0") {
-      const obsScadenza$: Observable<CAL_Scadenza> = this.svcScadenze.get(this.data.scadenzaID);
-      const loadScadenza$ = this._loadingService.showLoaderUntilCompleted(obsScadenza$);
-      this.scadenza$ = loadScadenza$
-      .pipe( tap(
-        scadenza => {
-          //console.log ("scadenza-edit - loadData - scadenza", scadenza)
-          this.form.patchValue(scadenza)
-          this.colorSample = scadenza.tipoScadenza!.color;
-          //this.form.controls.tipoScadenza.setValue(scadenza.tipoScadenza);
-          //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
-          this.dtStart = new Date (this.data.start);
-          this.strDtStart = Utility.formatDate(this.dtStart, FormatoData.yyyy_mm_dd);
-          this.strH_Ini = Utility.formatHour(this.dtStart);
-
-          this.dtEnd = new Date (this.data.end);
-          this.strH_End = Utility.formatHour(this.dtEnd);
-        } )
-      );
-    } 
-    else {
+    if (!this.data.scadenzaID || this.data.scadenzaID + '' == "0") {
       //caso nuova Scadenza
       this.emptyForm = true;
       //LA RIGA QUI SOPRA DETERMINAVA UN ExpressionChangedAfterItHasBeenCheckedError...con il DetectChanges si risolve!  
@@ -243,8 +222,33 @@ export class ScadenzaEditComponent implements OnInit {
       this.form.controls.dtCalendario.setValue(this.dtStart);
       this.form.controls.h_Ini.setValue(this.strH_Ini);
       this.form.controls.h_End.setValue(this.strH_End);
+    } 
+    else {
+      const obsScadenza$: Observable<CAL_Scadenza> = this.svcScadenze.get(this.data.scadenzaID);
+      const loadScadenza$ = this._loadingService.showLoaderUntilCompleted(obsScadenza$);
+      this.scadenza$ = loadScadenza$
+      .pipe( tap(
+        scadenza => {
+          //console.log ("scadenza-edit - loadData - scadenza", scadenza)
+          this.form.patchValue(scadenza)
 
+          if (scadenza.tipoScadenza!.ckNota) {
+            this.form.controls.tipoScadenzaID.disable();
+            this.form.controls.h_Ini.disable();
+            this.form.controls.h_End.disable();
 
+          }
+          this.colorSample = scadenza.tipoScadenza!.color;
+          //this.form.controls.tipoScadenza.setValue(scadenza.tipoScadenza);
+          //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
+          this.dtStart = new Date (this.data.start);
+          this.strDtStart = Utility.formatDate(this.dtStart, FormatoData.yyyy_mm_dd);
+          this.strH_Ini = Utility.formatHour(this.dtStart);
+
+          this.dtEnd = new Date (this.data.end);
+          this.strH_End = Utility.formatHour(this.dtEnd);
+        } )
+      );
     }
   }
 

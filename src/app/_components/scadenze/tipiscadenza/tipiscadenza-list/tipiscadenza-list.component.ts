@@ -31,6 +31,7 @@ export class TipiScadenzaListComponent implements OnInit {
   displayedColumns: string[] = [
       "actionsColumn", 
       "descrizione", 
+      "ckNota",
       "color"
 
   ];

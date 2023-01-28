@@ -43,6 +43,12 @@
                     <button type="button" class="_btnColorPicker" 
                     (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
                 </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-checkbox color="primary" formControlName="ckNota" matTooltip="Il comportamento degli eventi così flaggati è differente">
+                        Tipo Scadenza per nota
+                    </mat-checkbox>
+                </mat-grid-tile>
             </mat-grid-list>
 
             

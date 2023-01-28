@@ -8,13 +8,13 @@ import { tap }                                  from 'rxjs/operators';
 //components
 import { SnackbarComponent }                    from '../../../utilities/snackbar/snackbar.component';
 import { DialogYesNoComponent }                 from '../../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { ColorPickerComponent }                 from '../../../color-picker/color-picker.component';
 
 //services
 import { LoadingService }                       from '../../../utilities/loading/loading.service';
 import { TipiScadenzaService }                  from '../../tipiscadenza.service';
 
 //classes
-import { ColorPickerComponent }                 from '../../../color-picker/color-picker.component';
 import { CAL_TipoScadenza }                     from 'src/app/_models/CAL_TipoScadenza';
 
 
@@ -49,7 +49,8 @@ export class TipoScadenzaEditComponent implements OnInit {
     this.form = this.fb.group({
       id:                         [null],
       descrizione:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-      color:                      ['']
+      color:                      [''],
+      ckNota:                     ['']
     });
 
   }

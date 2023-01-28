@@ -5,6 +5,7 @@ import { MatPaginator }                         from '@angular/material/paginato
 import { MatSort }                              from '@angular/material/sort';
 import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable }                           from 'rxjs';
+import { concatMap }                            from 'rxjs/operators';
 
 //components
 import { NotaEditComponent }                    from '../nota-edit/nota-edit.component';
@@ -16,12 +17,8 @@ import { NoteService }                          from '../note.service';
 import { DocentiService }                       from '../../docenti/docenti.service';
 
 //models
-import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
-import { Utility } from '../../utilities/utility.component';
-import { User } from 'src/app/_user/Users';
-import { concatMap } from 'rxjs/operators';
-import { PER_Docente } from 'src/app/_models/PER_Docente';
+import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 
 
 @Component({

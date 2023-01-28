@@ -117,6 +117,8 @@ export class AppComponent implements OnInit {
       this.leftSidenav.mode = "over";
     else 
       this.leftSidenav.mode = "side";
+
+    console.log("xxx");
   }
 
   clickPin() {

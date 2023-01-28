@@ -22,7 +22,7 @@ import { ScadenzePersoneService }               from '../../scadenze/scadenze-pe
 //models
 import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
 import { DialogDataNota }                       from 'src/app/_models/DialogData';
-import { CAL_Scadenza, CAL_ScadenzaPersone } from 'src/app/_models/CAL_Scadenza';
+import { CAL_Scadenza, CAL_ScadenzaPersone }    from 'src/app/_models/CAL_Scadenza';
 
 
 @Component({
@@ -84,9 +84,6 @@ export class NotaEditComponent implements OnInit {
     });
   }
 
-
-
-
   ngOnInit() {
     this.loadData();
   }
@@ -123,7 +120,7 @@ export class NotaEditComponent implements OnInit {
       this.obsNota$ = loadNota$
       .pipe( tap(
         nota => {
-          console.log ("nota-edit loadData nota", nota);
+          //console.log ("nota-edit loadData nota", nota);
           this.form.patchValue(nota);
           this.iscrizioneID= this.data.iscrizioneID;
           this.alunnoNomeCognome = nota.iscrizione?.alunno.persona.nome! + ' '+ nota.iscrizione?.alunno.persona.cognome!;
@@ -137,7 +134,7 @@ export class NotaEditComponent implements OnInit {
 
   delete() {
 
-    //TODO bisogna anche cancellare le scadenze che eventualmente fossero presenti nel record!!! TODO
+    //Vengono anche cancellate le scadenze (e le scadenzePersone) che eventualmente fossero presenti nel record
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
@@ -151,7 +148,7 @@ export class NotaEditComponent implements OnInit {
           
           this.svcNote.delete (this.data.notaID).subscribe(
             res =>{
-              //TODO vanno prima cancellati i record di scadenzapersone!
+              //vanno prima cancellati i record di scadenzapersone!
               if (scadenzaIDTodelete){
                 this.svcScadenzePersone.deleteByScadenza(scadenzaIDTodelete)
                 .pipe(
@@ -174,7 +171,6 @@ export class NotaEditComponent implements OnInit {
   }
 
   save() {
-
 
 
     // ***************calcolo hEnd *****************
@@ -225,27 +221,23 @@ export class NotaEditComponent implements OnInit {
       TipoScadenzaID: 6  //Fa schifetto
     }
 
-    console.log ("nota-edit - save this.form:", this.form.value);
+    //console.log ("nota-edit - save this.form:", this.form.value);
 
     //ci possono essere 6 casi
     //1 this.form.controls.scadenzaID == null && this.form.controls.id.value == null && this.form.controls.ckInvioMsg.value == true
     //2 this.form.controls.scadenzaID == null && this.form.controls.id.value == null && this.form.controls.ckInvioMsg.value == false
     //3 this.form.controls.scadenzaID == null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == true
     //4 this.form.controls.scadenzaID == null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == false
-
-
-    //7 this.form.controls.scadenzaID != null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == true
-    //8 this.form.controls.scadenzaID != null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == false
+    //5 this.form.controls.scadenzaID != null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == true
+    //6 this.form.controls.scadenzaID != null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == false
 
     //(non è possibile che se scadenzaID != null id sia != null perchè scadenzaID è null se id della nota c'è)
     //caso 1 faccio la POST della scadenza e con scadenzaID faccio la POST della nota
     //caso 2 faccio solo la POST della nota, scadenzaID resta null
     //caso 3 faccio la POST della scadenza e con scadenzaID faccio la PUT della nota    
     //caso 4 scadenzaID resta null, faccio la PUT della nota
-
- 
-    //caso 7 faccio la PUT della scadenza e faccio la PUT della nota, anche asincrone
-    //caso 8 faccio la DELETE della scadenza e faccio la PUT della nota, anche asincrone
+    //caso 5 faccio la PUT della scadenza e faccio la PUT della nota, anche asincrone
+    //caso 6 faccio la DELETE della scadenza e faccio la PUT della nota, anche asincrone
 
     // console.log ("nota-edit - this.form.controls.scadenzaID.value:", this.form.controls.scadenzaID);
     // console.log ("nota-edit - this.form.controls.id.value:", this.form.controls.id);
@@ -265,7 +257,7 @@ export class NotaEditComponent implements OnInit {
           //POST NOTA usando ScadenzaID appena creata (callback hell?)
           this.form.controls['iscrizioneIDMultiple'].value.forEach((iscrizioneID: number) =>{
             this.form.controls.iscrizioneID.setValue(iscrizioneID);
-            console.log("vado a inserire i genitori dell'alunno che è iscritto con", iscrizioneID);
+            //console.log("vado a inserire i genitori dell'alunno che è iscritto con", iscrizioneID);
             //a partire da ciascuna iscrizioneID estraggo l'alunnoID e ne inserisco in ScadenzaPersone i genitori
             this.svcIscrizioni.get(iscrizioneID).subscribe(
               iscrizione => this.insertGenitori(iscrizione.alunnoID, res.id)
@@ -310,7 +302,7 @@ export class NotaEditComponent implements OnInit {
         res => {
           this.insertGenitori(this.form.controls.alunnoID.value, res.id);
           this.form.controls.scadenzaID.setValue(res.id);
-          console.log ("ora faccio la put della nota");
+          //console.log ("ora faccio la put della nota");
           //PUT NOTA usando ScadenzaID appena creata (callback hell?)
           this.svcNote.put(this.form.value).subscribe(
             res=> {
@@ -338,9 +330,9 @@ export class NotaEditComponent implements OnInit {
     }
 
 
-    //OK caso 7 : Nota Esistente + ScadenzaID c'è già + è stato selezionato l'invio del Messaggio
+    //OK caso 5 : Nota Esistente + ScadenzaID c'è già + è stato selezionato l'invio del Messaggio
     if (this.form.controls.scadenzaID.value != null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == true) {
-      console.log ("caso7");
+      console.log ("caso5");
       //PUT SCADENZA
       objScadenza.id = this.form.controls.scadenzaID.value;
       this.svcScadenze.put(objScadenza).subscribe(
@@ -361,9 +353,9 @@ export class NotaEditComponent implements OnInit {
       );
     }
     
-    //caso 8 : Nota Esistente + ScadenzaID c'è già + è stato selezionato di non inviare il messaggio
+    //caso 6 : Nota Esistente + ScadenzaID c'è già + è stato selezionato di non inviare il messaggio
     if (this.form.controls.scadenzaID.value != null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == false) {
-      console.log ("caso8");
+      console.log ("caso6");
       //PUT SCADENZA
       let scadenzaIDTodelete = this.form.controls.scadenzaID.value;
 
@@ -385,71 +377,9 @@ export class NotaEditComponent implements OnInit {
         },
         err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       );
-
-
-    }
-    // if (this.form.controls['id'].value == null) {
-    //   //POST NOTA
-    //   this.form.controls['iscrizioneIDMultiple'].value.forEach((iscrizioneID: number) =>{
-    //     this.form.controls.iscrizioneID.setValue(iscrizioneID);
-    //     this.svcNote.post(this.form.value).subscribe(
-    //       res=> {
-    //         this._dialogRef.close();
-    //         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-    //       },
-    //       err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    //     );
-    //   });
-    // }
-    // else { 
-    //   //PUT NOTA
-    //   this.svcNote.put(this.form.value).subscribe(
-    //     res=> {
-    //       this._dialogRef.close();
-    //       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-    //     },
-    //     err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    //   );
-    // }
-  }
-
-
-  invioNotaGenitori(checked: boolean) {
-    return;
-
-
-    if (checked) {  //devo vedere se non è già stato inviato in precedenza e se non lo è stato inviare
-    console.log ("nota-edit - invioNotaGenitori");
-    const objScadenza = <CAL_Scadenza>{
-      dtCalendario: this.form.controls.dtNota.value,
-      title: this.form.controls.nota.value,
-      start: this.form.controls.dtNota.value,
-      end: this.form.controls.dtNota.value,
-      color: "#FF0000",
-      ckPromemoria: true,
-      ckRisposta: false,
-      h_Ini: '12:00:00',
-      h_End: '13:00:00',
-      PersonaID: this.personaID,
-      TipoScadenzaID: 6
-    }
-    console.log ("nota-edit - invioNotaGenitori objScadenza", objScadenza);
-
-    objScadenza.id = 0;
-      //this.svcLezioni.post(this.form.value).subscribe(
-      this.svcScadenze.post(objScadenza).subscribe(
-        res => {
-          console.log ("nota-edit - invioNotaGenitori res", res);
-          this.insertGenitori(this.form.controls.alunnoID.value, res.id);
-          this._dialogRef.close();
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-        },
-        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      );
-    } else {
-
     }
   }
+
 
   insertGenitori(alunnoID: number, scadenzaID: number) {
 
@@ -464,7 +394,7 @@ export class NotaEditComponent implements OnInit {
     this.svcScadenzePersone.post(objScadenzaPersona).subscribe();
 
     //estraggo i personaID dei genitori
-    console.log ("nota-edit - insertpersone - alunnoID", alunnoID, "scadenzaID", scadenzaID);
+    //console.log ("nota-edit - insertpersone - alunnoID", alunnoID, "scadenzaID", scadenzaID);
 
     this.svcGenitori.listByAlunno(alunnoID)
     .subscribe(

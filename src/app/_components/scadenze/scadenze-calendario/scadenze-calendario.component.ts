@@ -16,14 +16,13 @@ import { LoadingService }                       from '../../utilities/loading/lo
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
 import { ScadenzaEditComponent }                from '../scadenza-edit/scadenza-edit.component';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 
 //services
 import { ScadenzeService }                      from '../scadenze.service';
-import { UserService }                          from 'src/app/_user/user.service';
 
 //classes
 import { CAL_Scadenza }                         from 'src/app/_models/CAL_Scadenza';
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 
 @Component({
@@ -52,7 +51,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
     forceEventDuration : true,                //serve per attivare la defaultTimedEventDuration
     defaultTimedEventDuration : "01:00:00",   //indica che di default un evento dura un'ora
     expandRows: true,                         //estende in altezza le righe per adattare alla height il calendario
-    hiddenDays: [ 0 ],                        //nasconde la domenica
+    //hiddenDays: [ 0 ],                        //nasconde la domenica
     headerToolbar: {
       left: 'prev,next,today',
       center: 'title',
@@ -376,12 +375,12 @@ export class ScadenzeCalendarioComponent implements OnInit {
 //#region ----- Add Edit Eventi -------
 
   openDetail(clickInfo: EventClickArg) {
-    if (clickInfo.event.extendedProps.tipoScadenzaID == 6) {//FA SCHIFO! SISTEMARE TODO!!!
-      this._dialog.open(DialogOkComponent, {
-        width: '320px',
-        data: {titolo: "ATTENZIONE!", sottoTitolo: "Le note vanno gestite dalla console Maestro"}
-      });
-    }  else {
+    // if (clickInfo.event.extendedProps.tipoScadenza.ckNota) {
+    //   this._dialog.open(DialogOkComponent, {
+    //     width: '320px',
+    //     data: {titolo: "ATTENZIONE!", sottoTitolo: "Le note vanno gestite dalla console Maestro"}
+    //   });
+    // }  else {
       const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
         width: '800px',
@@ -399,7 +398,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
 
         const dialogRef = this._dialog.open(ScadenzaEditComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(  () => this.loadData() );
-    }
+    // }
   }
 
   addEvento(selectInfo: DateSelectArg) {
@@ -480,56 +479,70 @@ export class ScadenzeCalendarioComponent implements OnInit {
 
 
     handleResize (resizeInfo: EventResizeDoneArg) {
-
+      if (resizeInfo.event.extendedProps.tipoScadenza.ckNota) {
+        this._dialog.open(DialogOkComponent, {
+          width: '320px',
+          data: {titolo: "ATTENZIONE!", sottoTitolo: "Le note vanno gestite dalla console Maestro"}
+        });
+        resizeInfo.revert();
+      }  else {
       //let dt : Date | null   = resizeInfo.event.start;
       // let dtCalendario =Utility.formatDate(resizeInfo.event.start, FormatoData.yyyy_mm_dd);
       // let strH_INI =Utility.formatHour(resizeInfo.event.start);
       // let strH_END =Utility.formatHour(resizeInfo.event.end);
-      let form: CAL_Scadenza;
+        let form: CAL_Scadenza;
 
-      this.svcScadenze.get(resizeInfo.event.id)
-      .pipe ( tap ( val  =>  {
+        this.svcScadenze.get(resizeInfo.event.id)
+        .pipe ( tap ( val  =>  {
+            form = val;
+            let dtISOLocaleEnd = resizeInfo.event.end!.toLocaleString('sv').replace(' ', 'T');
+            form.h_End = dtISOLocaleEnd.substring(11,19);
+          }),
+          concatMap(() => this.svcScadenze.put(form))
+        ).subscribe(
+          res=>{
+            //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+          },
+          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        );
+      }
+
+      
+    }
+
+  handleDrop (dropInfo: EventDropArg) {
+    if (dropInfo.event.extendedProps.tipoScadenza.ckNota) {
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "Le note vanno gestite dalla console Maestro"}
+      });
+      dropInfo.revert();
+    }  else {
+      //let dt : Date | null   = dropInfo.event.start;
+      let dtCalendario =Utility.formatDate(dropInfo.event.start, FormatoData.yyyy_mm_dd);
+      let strH_INI =Utility.formatHour(dropInfo.event.start);
+      let strH_END =Utility.formatHour(dropInfo.event.end);
+
+      let form: CAL_Scadenza;
+      this.svcScadenze.get(dropInfo.event.id).pipe (
+        tap ( val   =>  {
           form = val;
-          let dtISOLocaleEnd = resizeInfo.event.end!.toLocaleString('sv').replace(' ', 'T');
-          form.h_End = dtISOLocaleEnd.substring(11,19);
+          form.dtCalendario = dtCalendario;
+          form.h_Ini = strH_INI;
+          form.h_End = strH_END;
+
+
         }),
         concatMap(() => this.svcScadenze.put(form))
       ).subscribe(
         res=>{
           //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      );
-
-      
+        err=>{
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        }
+      );  
     }
-
-  handleDrop (dropInfo: EventDropArg) {
-    
-    //let dt : Date | null   = dropInfo.event.start;
-    let dtCalendario =Utility.formatDate(dropInfo.event.start, FormatoData.yyyy_mm_dd);
-    let strH_INI =Utility.formatHour(dropInfo.event.start);
-    let strH_END =Utility.formatHour(dropInfo.event.end);
-
-    let form: CAL_Scadenza;
-    this.svcScadenze.get(dropInfo.event.id).pipe (
-      tap ( val   =>  {
-        form = val;
-        form.dtCalendario = dtCalendario;
-        form.h_Ini = strH_INI;
-        form.h_End = strH_END;
-
-
-      }),
-      concatMap(() => this.svcScadenze.put(form))
-    ).subscribe(
-      res=>{
-        //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-      },
-      err=>{
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      }
-    );  
         
   }
 }
