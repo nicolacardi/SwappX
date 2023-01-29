@@ -1,0 +1,70 @@
+
+  
+  <mat-vertical-stepper [linear]="true" #stepper animationDuration="200">
+    <mat-step [stepControl]="fg1">
+      <form [formGroup]="fg1">
+        <ng-template matStepLabel>Dati del Padre</ng-template>
+        <mat-form-field>
+          <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+        </mat-form-field>
+        <!-- <div>
+          <button mat-button matStepperNext>Next</button>
+        </div> -->
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="fg2">
+      <form [formGroup]="fg2">
+        <ng-template matStepLabel>Dati della Madre</ng-template>
+        <mat-form-field>
+          <input matInput placeholder="Address" formControlName="secondCtrl" required>
+        </mat-form-field>
+        <!-- <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div> -->
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="fg3">
+        <form [formGroup]="fg3">
+          <ng-template matStepLabel>Dati dell'alunno</ng-template>
+          <mat-form-field>
+            <input matInput placeholder="Address" formControlName="thirdCtrl" required>
+          </mat-form-field>
+          <!-- <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div> -->
+        </form>
+    </mat-step>
+
+    <mat-step [stepControl]="fg4">
+        <form [formGroup]="fg4">
+            <ng-template matStepLabel>Consensi</ng-template>
+
+            <!-- <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+            </div> -->
+        </form>
+    </mat-step>
+
+
+    <mat-step [stepControl]="fg5">
+        <form [formGroup]="fg5">
+            <ng-template matStepLabel>Dati economici</ng-template>
+
+            <!-- <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+            </div> -->
+        </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Fine</ng-template>
+      Hai completato l'iscrizione
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-vertical-stepper>

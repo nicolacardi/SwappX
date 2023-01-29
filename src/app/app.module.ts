@@ -189,6 +189,7 @@ import { VerbaliListComponent }                 from './_components/verbali/verb
 import { VerbaleEditComponent }                 from './_components/verbali/verbale-edit/verbale-edit.component';
 import { VerbaliPageComponent }                 from './_components/verbali/verbali-page/verbali-page.component';
 import { VerbaliFilterComponent }               from './_components/verbali/verbali-filter/verbali-filter.component';
+import { ProceduraIscrizioneComponent } from './_components/procedura-iscrizione/procedura-iscrizione.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -338,7 +339,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     VerbaliPageComponent,
     VerbaliFilterComponent,
 
-    DocentiDashboardComponent
+    DocentiDashboardComponent,
+      ProceduraIscrizioneComponent
     
 
   ],
