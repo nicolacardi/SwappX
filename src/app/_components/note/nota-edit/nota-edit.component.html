@@ -14,12 +14,13 @@
                         (click)="loadData()" >
                     <mat-icon>restart_alt</mat-icon>
                 </button>
-
-                <button *ngIf="data.notaID || data.notaID == 0 || data.notaID == null" mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-                        [disabled]= "!form.valid" 
-                        (click)="save()" >
-                    <mat-icon>save</mat-icon>
-                </button>
+                <span matTooltip="Nota già inviata ai genitori e per questo non modificabile" [matTooltipDisabled]="!disabilitato">
+                    <button *ngIf="data.notaID || data.notaID == 0 || data.notaID == null" mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                            [disabled]= "!form.valid || disabilitato" 
+                            (click)="save()" >
+                        <mat-icon>save</mat-icon>
+                    </button>
+                </span>
 
                 <button *ngIf="data.notaID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
                         [disabled]= "!form.valid" 
@@ -28,9 +29,14 @@
                 </button>
             </div>
 
+            <mat-grid-list *ngIf="disabilitato" class="mt20 center" [cols]="1" rowHeight="30px">
+                <mat-label class="fs16 _red">Nota già inviata ai genitori e non più modificabile</mat-label>
+
+            </mat-grid-list>
+
+
             <mat-grid-list class="mt20 center" [cols]="1" rowHeight="30px">
-                <mat-label class="mt20 fs16">Nota emessa da: </mat-label>
-                <mat-label class="bold">{{personaNomeCognome}}</mat-label>
+                <mat-label class="mt20 fs16">Nota emessa da {{personaNomeCognome}}</mat-label>
             </mat-grid-list>
             
             <mat-grid-list class="center" [cols]="2" rowHeight="30px">
@@ -86,7 +92,7 @@
                 </mat-grid-tile>
             </mat-grid-list>
 
-            <mat-checkbox color="primary" formControlName="ckInvioMsg" >
+            <mat-checkbox color="primary" formControlName="ckInvioMsg" (click)="warnDisabilitazione()">
                 Invio nota ai genitori
             </mat-checkbox>
 

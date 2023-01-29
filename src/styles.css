@@ -1530,6 +1530,11 @@ div.inner img {
         text-decoration: underline;
     }
 
+    ._red{
+        color: red;
+    }
+    
+
     ._btnColorPicker {
         /* background-image: url("./assets/toolbar-close-black.svg"); */
         background: transparent;

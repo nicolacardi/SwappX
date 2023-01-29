@@ -25,6 +25,12 @@ export class ScadenzeService {
     //http://213.215.231.4/swappX/api/CAL_Scadenze/ListBypersona/17
   }
 
+  listByNota(notaID: number): Observable<CAL_Scadenza[]>{
+    return this.http.get<CAL_Scadenza[]>(environment.apiBaseUrl+'CAL_Scadenze/ListByNota/'+notaID); 
+    //http://213.215.231.4/swappX/api/CAL_Scadenze/ListByNota/80
+  }
+
+
 
   get(scadenzaID: any): Observable<CAL_Scadenza>{
     return this.http.get<CAL_Scadenza>(environment.apiBaseUrl+'CAL_Scadenze/'+scadenzaID);
