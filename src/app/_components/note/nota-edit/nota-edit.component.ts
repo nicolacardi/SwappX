@@ -175,42 +175,7 @@ export class NotaEditComponent implements OnInit {
     this.form.controls.h_End.setValue (dtTimeNew)
     //**********fine calcolo h_End ***************
 
-    //preparo anche objScadenza a prescindere
-    const objScadenza = <CAL_Scadenza>{
-      dtCalendario: this.form.controls.dtNota.value,
-      title: "NOTA DISCIPLINARE: " + this.form.controls.nota.value,
-      start: this.form.controls.dtNota.value,
-      end: this.form.controls.dtNota.value,
-      color: "#FF0000",
-      ckPromemoria: true,
-      ckRisposta: false,
-      h_Ini: this.form.controls.h_Ini.value,
-      h_End: this.form.controls.h_End.value,
-      PersonaID: this.personaID,
-      TipoScadenzaID: 6,  //Fa schifetto  TODO
-    }
 
-    //console.log ("nota-edit - save this.form:", this.form.value);
-
-    //ci possono essere 6 casi
-    //00 this.form.controls.scadenzaID == null && this.form.controls.id.value == null && this.form.controls.ckInvioMsg.value == false
-
-    //3 this.form.controls.scadenzaID == null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == true
-    //4 this.form.controls.scadenzaID == null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == false
-    //5 this.form.controls.scadenzaID != null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == true
-    //6 this.form.controls.scadenzaID != null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == false
-
-    //(non è possibile che se scadenzaID != null id sia != null perchè scadenzaID è null se id della nota c'è)
-        //caso 00 faccio solo la POST della nota, scadenzaID resta null
-
-    //caso 3 faccio la POST della scadenza e con scadenzaID faccio la PUT della nota    
-    //caso 4 scadenzaID resta null, faccio la PUT della nota
-    //caso 5 faccio la PUT della scadenza e faccio la PUT della nota, anche asincrone
-    //caso 6 faccio la DELETE della scadenza e faccio la PUT della nota, anche asincrone
-
-    // console.log ("nota-edit - this.form.controls.scadenzaID.value:", this.form.controls.scadenzaID);
-    // console.log ("nota-edit - this.form.controls.id.value:", this.form.controls.id);
-    // console.log ("nota-edit - this.form.controls.ckInvioMsg.value:", this.form.controls.ckInvioMsg.value);
 
 
 
@@ -240,7 +205,7 @@ export class NotaEditComponent implements OnInit {
                 (iscrizione:CLS_Iscrizione) => {
                   //console.log ("iscrizione estratta:", iscrizione)
                   //inserisco la scadenza
-                  const objScadenzaX = <CAL_Scadenza>{
+                  const objScadenza = <CAL_Scadenza>{
                     dtCalendario: this.form.controls.dtNota.value,
                     title: "NOTA DISCIPLINARE PER " + iscrizione.alunno!.persona.nome + ' ' + iscrizione.alunno!.persona.cognome +"-" + this.form.controls.nota.value,
                     start: this.form.controls.dtNota.value,
@@ -254,8 +219,8 @@ export class NotaEditComponent implements OnInit {
                     TipoScadenzaID: 6,  //Fa schifetto  TODO
                     NotaID: nota.id
                   }
-                  //console.log ("objScadenzaX", objScadenzaX);
-                  this.svcScadenze.post(objScadenzaX)
+                  //console.log ("objScadenza", objScadenza);
+                  this.svcScadenze.post(objScadenza)
                   .subscribe(
                     scad => {
                       //inserisco i genitori nella tabella ScadenzaPersone
@@ -276,9 +241,9 @@ export class NotaEditComponent implements OnInit {
         .subscribe(
           //devo cancellare le noteIscrizioni e poi reinserirle
           nota=> {
-              this.svcNoteIscrizioni.deleteByNota(nota.id)
-              .subscribe(()=>{
-                this.form.controls.iscrizioni.value.forEach( (iscrizione: number) => {
+            this.svcNoteIscrizioni.deleteByNota(nota.id)
+            .subscribe(()=>{
+              this.form.controls.iscrizioni.value.forEach( (iscrizione: number) => {
                 const objNotaIscrizione = <DOC_NotaIscrizione>{
                   notaID: nota.id,
                   iscrizioneID: iscrizione
@@ -286,15 +251,13 @@ export class NotaEditComponent implements OnInit {
                 this.svcNoteIscrizioni.post(objNotaIscrizione).subscribe();
                 this._dialogRef.close();
                 this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-                }
-              )
+              })
             })
 
             if(this.form.controls.ckInvioMsg.value) {
               //è certamente il PRIMO inserimento di un invioMsg, non è possibile che ci siano altre scadenze vecchie, perchè poi viene inibito tutto
               //quindi non serve togliere prima tutte le scadenze e poi ripristinarle
 
-              console.log ("invioMsg");
               //DEVO INSERIRE TANTE SCADENZE QUANTE LE ISCRIZIONI
               //serve notaID appena inserito
               this.form.controls.iscrizioni.value.forEach( (iscrizione: number) => {
@@ -303,7 +266,7 @@ export class NotaEditComponent implements OnInit {
                   (iscrizione:CLS_Iscrizione) => {
                     //console.log ("iscrizione estratta:", iscrizione)
                     //inserisco la scadenza
-                    const objScadenzaX = <CAL_Scadenza>{
+                    const objScadenza = <CAL_Scadenza>{
                       dtCalendario: this.form.controls.dtNota.value,
                       title: "NOTA DISCIPLINARE PER " + iscrizione.alunno!.persona.nome + ' ' + iscrizione.alunno!.persona.cognome +"-" + this.form.controls.nota.value,
                       start: this.form.controls.dtNota.value,
@@ -317,8 +280,8 @@ export class NotaEditComponent implements OnInit {
                       TipoScadenzaID: 6,  //Fa schifetto  TODO
                       NotaID: nota.id
                     }
-                    //console.log ("objScadenzaX", objScadenzaX);
-                    this.svcScadenze.post(objScadenzaX)
+                    //console.log ("objScadenza", objScadenza);
+                    this.svcScadenze.post(objScadenza)
                     .subscribe(
                       scad => {
                         //inserisco i genitori nella tabella ScadenzaPersone
@@ -332,115 +295,8 @@ export class NotaEditComponent implements OnInit {
           },
           err=>this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         )
-      
-
     }
 
-
-
-
-    // // caso 3 : Nota Esistente + ScadenzaID non c'è in precedenza + è stato selezionato l'invio del Messaggio
-    // if (this.form.controls.scadenzaID.value == null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == true) {
-    //   console.log ("caso3");
-    //   //POST SCADENZA
-    //   objScadenza.id = 0;
-    //   //this.svcLezioni.post(this.form.value).subscribe(
-    //   this.svcScadenze.post(objScadenza).subscribe(
-    //     res => {
-    //       this.insertGenitori(this.form.controls.alunnoID.value, res.id);
-    //       this.form.controls.scadenzaID.setValue(res.id);
-    //       //console.log ("ora faccio la put della nota");
-    //       //PUT NOTA usando ScadenzaID appena creata (callback hell?)
-    //       this.svcNote.put(this.form.value).subscribe(
-    //         res=> {
-    //           this._dialogRef.close();
-    //           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-    //         },
-    //         err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    //       );
-    //       console.log ("inserimento Scadenza a buon fine - ScadenzaID:", res.id);
-    //     },
-    //     err =>  console.log ("errore inserimento Scadenza")
-    //   );
-    // }
-
-    // // caso 4 : Nota Esistente + ScadenzaID non c'è in precedenza + NON è stato selezionato l'invio del Messaggio
-    // if (this.form.controls.scadenzaID.value == null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == false) {
-    //   console.log ("caso4");
-    //   //PUT NOTA
-    //   this.svcNote.put(this.form.value)
-    //   .pipe(
-    //     concatMap( val=> this.svcNoteIscrizioni.deleteByNota(this.data.notaID))
-    //   )
-    //   .subscribe(
-    //     res=> {
-    //       //nel concatMap ho PULITO tutto, ora vado a ripostare le iscrizioni presenti nella combo multiple
-    //       this.form.controls.iscrizioni.value.forEach( (iscrizione: number) => {
-            
-    //         const objNotaIscrizione = <DOC_NotaIscrizione>{
-    //           notaID: this.data.notaID,
-    //           iscrizioneID: iscrizione
-    //         }
-            
-    //         this.svcNoteIscrizioni.post(objNotaIscrizione).subscribe();
-    //       }
-    //       )
-    //       this._dialogRef.close();
-    //       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-    //     },
-    //     err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    //   );
-    // }
-
-
-    // // caso 5 : Nota Esistente + ScadenzaID c'è già + è stato selezionato l'invio del Messaggio
-    // if (this.form.controls.scadenzaID.value != null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == true) {
-    //   console.log ("caso5");
-    //   //PUT SCADENZA
-    //   objScadenza.id = this.form.controls.scadenzaID.value;
-    //   this.svcScadenze.put(objScadenza).subscribe(
-    //     res => {
-    //       //this.insertGenitori(this.form.controls.alunnoID.value, res.id); I genitori già ci sono in scadenzapersone
-    //       //this.form.controls.ScadenzaID.setValue(res.id);
-    //       //PUT NOTA
-    //       this.svcNote.put(this.form.value).subscribe(
-    //         res=> {
-    //           this._dialogRef.close();
-    //           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-    //         },
-    //         err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    //       );
-    //       console.log ("aggiornamento Scadenza a buon fine - ScadenzaID:", res.id);
-    //     },
-    //     err =>  console.log ("errore aggiornamento Scadenza")
-    //   );
-    // }
-    
-    // //caso 6 : Nota Esistente + ScadenzaID c'è già + è stato selezionato di non inviare il messaggio
-    // if (this.form.controls.scadenzaID.value != null && this.form.controls.id.value != null && this.form.controls.ckInvioMsg.value == false) {
-    //   console.log ("caso6");
-    //   //PUT SCADENZA
-    //   let scadenzaIDTodelete = this.form.controls.scadenzaID.value;
-
-    //   this.form.controls.scadenzaID.setValue(null);
-    //   this.svcNote.put(this.form.value).subscribe(
-    //     res=> {
-    //       this._dialogRef.close();
-    //       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-
-    //       //Vanno prima cancellati i record di scadenzapersone!
-    //       this.svcScadenzePersone.deleteByScadenza(scadenzaIDTodelete)
-    //       .pipe(
-    //         concatMap(()=> this.svcScadenze.delete(scadenzaIDTodelete))
-    //       )
-    //       .subscribe(
-    //         res=>{console.log ("cancellazione scadenza e persone a buon fine");},
-    //         err=>{console.log ("errore in cancellazione scadenza o cancellazione persone")}
-    //       )
-    //     },
-    //     err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    //   );
-    // }
   }
 
 
@@ -497,99 +353,37 @@ export class NotaEditComponent implements OnInit {
       result => {
         if(result){
 
-          //bisogna prima cancellare eventuali scadenze con notaID dentro e conseguentemente scadenzePersone con quelle scadenzeID dentro
-          //nell'ordine:
+          //bisogna prima cancellare eventuali scadenze con notaID dentro e prima di queste, eventuali scadenzePersone che contengano quelle scadenzeID
+          //nell'ordine quindi
             //1. cancellare da ScadenzePersone
             //2. cancellare da Scadenze
             //3. cancellare da NoteIscrizioni
             //4. cancellare da Note
 
-            this.svcScadenze.listByNota(this.data.notaID)
-            .subscribe(
-              scadenze => {
-                for (let i = 0; i< scadenze.length; i++) {
-                  console.log("cancello", scadenze[i])
-                  this.svcScadenzePersone.deleteByScadenza(scadenze[i].id)
-                }
-                this.svcScadenze.delete(this.data.notaID);
-
-                //NON FUNZIONA
-                this.svcNoteIscrizioni.deleteByNota(this.data.notaID)
+          this.svcScadenze.listByNota(this.data.notaID)
+          .subscribe(
+            scadenze => {
+              //un foreach non funzionerebbe: non aspetta le subscribe: la for of sembra invece attenderle
+              for (let scadenza of scadenze) {
+                this.svcScadenzePersone.deleteByScadenza(scadenza.id)
                 .pipe(
-                  concatMap(()=> this.svcNote.delete(this.data.notaID))
-                )
-                .subscribe(            
-                  res=> {
-                    this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
-                    this._dialogRef.close();
-                  },
-                  err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}) )
-                
+                  concatMap(res => this.svcScadenze.delete(scadenza.id)),
+
+                ).subscribe()
               }
-              
-            )
 
-
-            // this.svcScadenze.listByNota(this.data.notaID)
-            // subscribe(
-            //   //ciclo for e non forEach!!
-            //   (res: CAL_Scadenza) => res.forEach(
-            //     this.svcScadenzePersone.deleteByScadenza(res.id)
-            //     this.svcScadenze.delete(res.id)
-            //     .subscribe(
-            //       //E SE NON CE NE SONO DI SCADENZE?
-            //     )
-            //   )
-            //   //ora posso cancellare le scadenze
-            // )
-
-
-            
-            // this.svcScadenzePersone.deleteByScadenza(scadenzaIDTodelete)
-            //       .pipe(
-            //         concatMap(()=> this.svcScadenze.deleteByNota(this.data.notaID))
-            //       )
-            //       .subscribe(
-            //         res=>{console.log ("cancellazione scadenza e persone a buon fine");},
-            //         err=>{console.log ("errore in cancellazione scadenza o cancellazione persone")}
-            //       )
-
-
-          // this.svcNoteIscrizioni.deleteByNota(this.data.notaID)
-          //   .pipe(
-          //     concatMap(()=> this.svcNote.delete(this.data.notaID))
-          //   )
-          // .subscribe(
-          //   res=> {
-          //     this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
-          //     this._dialogRef.close();
-          //   },
-          //   err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}) 
-          // );
-
-
-          // let scadenzaIDTodelete = this.form.controls.scadenzaID.value;
-
-          
-          // this.svcNote.delete (this.data.notaID).subscribe(
-          //   res =>{
-          //     //vanno prima cancellati i record di scadenzapersone!
-          //     if (scadenzaIDTodelete){
-          //       this.svcScadenzePersone.deleteByScadenza(scadenzaIDTodelete)
-          //       .pipe(
-          //         concatMap(()=> this.svcScadenze.delete(scadenzaIDTodelete))
-          //       )
-          //       .subscribe(
-          //         res=>{console.log ("cancellazione scadenza e persone a buon fine");},
-          //         err=>{console.log ("errore in cancellazione scadenza o cancellazione persone")}
-          //       )
-          //     }
-
-          //     this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
-          //     this._dialogRef.close();
-          //   },
-          //   err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          // );
+              this.svcNoteIscrizioni.deleteByNota(this.data.notaID)
+              .pipe(
+                concatMap(()=> this.svcNote.delete(this.data.notaID))
+              )
+              .subscribe(            
+                res=> {
+                  this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
+                  this._dialogRef.close();
+                },
+                err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}) )
+            }
+          )
         }
       }
     );
