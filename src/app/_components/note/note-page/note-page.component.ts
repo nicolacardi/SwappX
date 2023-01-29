@@ -23,13 +23,11 @@ export class NotePageComponent implements OnInit {
   @Input('dove') dove! :                        string;
   @Input('docenteID') docenteID!:               number;
 
-
 //#endregion
 
 constructor(private _navigationService:  NavigationService) { }
 
 //#region ----- LifeCycle Hooks e simili-------
-
 
   ngOnInit(): void {
     this._navigationService.passPage("notePage");

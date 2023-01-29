@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
-import { concatMap, finalize, tap }                                  from 'rxjs/operators';
+import { concatMap, tap }                       from 'rxjs/operators';
 
 //components
 import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
@@ -14,19 +14,17 @@ import { NoteService }                          from '../note.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { UserService }                          from 'src/app/_user/user.service';
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
-import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 import { GenitoriService }                      from '../../genitori/genitori.service';
 import { ScadenzeService }                      from '../../scadenze/scadenze.service';
 import { ScadenzePersoneService }               from '../../scadenze/scadenze-persone.service';
+import { NoteIscrizioniService }                from '../noteiscrizioni.service';
 
 //models
 import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
-import { DialogDataNota }                       from 'src/app/_models/DialogData';
+import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 import { CAL_Scadenza, CAL_ScadenzaPersone }    from 'src/app/_models/CAL_Scadenza';
-import { NoteIscrizioniService } from '../noteiscrizioni.service';
-import { DOC_NotaIscrizione } from 'src/app/_models/DOC_NotaIscrizione';
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
-
+import { DOC_NotaIscrizione }                   from 'src/app/_models/DOC_NotaIscrizione';
+import { DialogDataNota }                       from 'src/app/_models/DialogData';
 
 @Component({
   selector: 'app-nota-edit',
@@ -51,23 +49,20 @@ export class NotaEditComponent implements OnInit {
   breakpoint!:                                  number;
 //#endregion
 
-  constructor( 
-    public _dialogRef:                          MatDialogRef<NotaEditComponent>,
-    private svcUser:                            UserService,
-    private svcNote:                            NoteService,
-    private svcIscrizioni:                      IscrizioniService,
-    private svcNoteIscrizioni:                  NoteIscrizioniService,
+  constructor(public _dialogRef:                          MatDialogRef<NotaEditComponent>,
+              private svcUser:                            UserService,
+              private svcNote:                            NoteService,
+              private svcIscrizioni:                      IscrizioniService,
+              private svcNoteIscrizioni:                  NoteIscrizioniService,
+              private svcScadenze:                        ScadenzeService,
+              private svcScadenzePersone:                 ScadenzePersoneService,
+              private svcGenitori:                        GenitoriService,
 
-    private svcScadenze:                        ScadenzeService,
-    private svcScadenzePersone:                 ScadenzePersoneService,
-
-    private svcGenitori:                        GenitoriService,
-
-    @Inject(MAT_DIALOG_DATA) public data:       DialogDataNota,
-    private fb:                                 FormBuilder, 
-    private _loadingService:                    LoadingService,
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar ) {
+              @Inject(MAT_DIALOG_DATA) public data:       DialogDataNota,
+              private fb:                                 FormBuilder, 
+              private _loadingService:                    LoadingService,
+              public _dialog:                             MatDialog,
+              private _snackBar:                          MatSnackBar ) {
 
     _dialogRef.disableClose = true;
 
@@ -98,19 +93,18 @@ export class NotaEditComponent implements OnInit {
   loadData() {
 
     if (!this.data.notaID || this.data.notaID + '' == "0") {
-      console.log ("nota-edit loadData nota, nuova nota");
+      //console.log ("nota-edit loadData nota, nuova nota");
 
       this.form.controls.iscrizioni.setValue(this.data.iscrizioni);
       this.form.controls.dtNota.setValue(new Date());
 
       this.svcUser.obscurrentUser.subscribe( val => {
-        console.log ("current user", val);
+        //console.log ("current user", val);
         this.form.controls.personaID.setValue(val.personaID);
         this.form.controls.ckFirmato.setValue(false);
         this.form.controls.periodo.setValue(1); //per ora ho messo un valore fisso....TODO
         this.personaID = val.personaID;
         this.personaNomeCognome = val.fullname;
-
       });
       
       this.emptyForm = true;
@@ -129,7 +123,8 @@ export class NotaEditComponent implements OnInit {
           for (let i=0; i < nota._NotaIscrizioni.length ; i++){ 
             iscrizioniArr.push(nota._NotaIscrizioni[i].iscrizioneID)
           }
-          if (nota.ckInvioMsg) {this.disabilitato = true}
+          if (nota.ckInvioMsg) this.disabilitato = true;
+
           this.form.controls.iscrizioni.setValue(iscrizioniArr);
           this.personaID = this.data.personaID;
           this.personaNomeCognome = nota.persona?.nome! + " " +nota.persona?.cognome!;
@@ -138,9 +133,7 @@ export class NotaEditComponent implements OnInit {
     }
   }
 
-
   save() {
-
 
     // ***************calcolo hEnd *****************
     // a prescindere, lo faccio nel caso debba servire impostarla
@@ -175,15 +168,10 @@ export class NotaEditComponent implements OnInit {
     this.form.controls.h_End.setValue (dtTimeNew)
     //**********fine calcolo h_End ***************
 
-
-
-
-
     if (this.form.controls.id.value == null) {
       // caso 00 : Nuova Nota
-      console.log ("nuova nota");     
-      this.svcNote.post(this.form.value)
-      .subscribe(
+      //console.log ("nuova nota");     
+      this.svcNote.post(this.form.value).subscribe(
         nota=> {
             this.form.controls.iscrizioni.value.forEach( (iscrizione: number) => {
             const objNotaIscrizione = <DOC_NotaIscrizione>{
@@ -196,12 +184,11 @@ export class NotaEditComponent implements OnInit {
           })
 
           if(this.form.controls.ckInvioMsg.value) {
-            console.log ("invioMsg");
+            //console.log ("invioMsg");
             //DEVO INSERIRE TANTE SCADENZE QUANTE LE ISCRIZIONI
             //serve notaID appena inserito
             this.form.controls.iscrizioni.value.forEach( (iscrizione: number) => {
-              this.svcIscrizioni.get(iscrizione)
-              .subscribe(
+              this.svcIscrizioni.get(iscrizione).subscribe(
                 (iscrizione:CLS_Iscrizione) => {
                   //console.log ("iscrizione estratta:", iscrizione)
                   //inserisco la scadenza
@@ -220,8 +207,7 @@ export class NotaEditComponent implements OnInit {
                     NotaID: nota.id
                   }
                   //console.log ("objScadenza", objScadenza);
-                  this.svcScadenze.post(objScadenza)
-                  .subscribe(
+                  this.svcScadenze.post(objScadenza).subscribe(
                     scad => {
                       //inserisco i genitori nella tabella ScadenzaPersone
                       this.insertGenitori(iscrizione.alunnoID, scad.id)
@@ -234,11 +220,11 @@ export class NotaEditComponent implements OnInit {
         },
         err=>this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       )
-    } else {
-      console.log ("nota esistente");     
+    } 
+    else {
+      //console.log ("nota esistente");     
 
-        this.svcNote.put(this.form.value)
-        .subscribe(
+        this.svcNote.put(this.form.value).subscribe(
           //devo cancellare le noteIscrizioni e poi reinserirle
           nota=> {
             this.svcNoteIscrizioni.deleteByNota(nota.id)
@@ -261,8 +247,7 @@ export class NotaEditComponent implements OnInit {
               //DEVO INSERIRE TANTE SCADENZE QUANTE LE ISCRIZIONI
               //serve notaID appena inserito
               this.form.controls.iscrizioni.value.forEach( (iscrizione: number) => {
-                this.svcIscrizioni.get(iscrizione)
-                .subscribe(
+                this.svcIscrizioni.get(iscrizione).subscribe(
                   (iscrizione:CLS_Iscrizione) => {
                     //console.log ("iscrizione estratta:", iscrizione)
                     //inserisco la scadenza
@@ -281,8 +266,7 @@ export class NotaEditComponent implements OnInit {
                       NotaID: nota.id
                     }
                     //console.log ("objScadenza", objScadenza);
-                    this.svcScadenze.post(objScadenza)
-                    .subscribe(
+                    this.svcScadenze.post(objScadenza).subscribe(
                       scad => {
                         //inserisco i genitori nella tabella ScadenzaPersone
                         this.insertGenitori(iscrizione.alunnoID, scad.id)
@@ -296,7 +280,6 @@ export class NotaEditComponent implements OnInit {
           err=>this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         )
     }
-
   }
 
 
@@ -315,34 +298,31 @@ export class NotaEditComponent implements OnInit {
     //estraggo i personaID dei genitori
     //console.log ("nota-edit - insertpersone - alunnoID", alunnoID, "scadenzaID", scadenzaID);
 
-    this.svcGenitori.listByAlunno(alunnoID)
-    .subscribe(
+    this.svcGenitori.listByAlunno(alunnoID).subscribe(
       res=> {
-
-      if (res.length != 0) {
-        res.forEach( genitore => {
-          let objScadenzaPersona: CAL_ScadenzaPersone = {
-            personaID: genitore.persona.id,
-            scadenzaID : scadenzaID,
-            ckLetto: false,
-            ckAccettato: false,
-            ckRespinto: false,
-          }
-          console.log ("nota-edit - insertpersone - genitore", genitore);
-
-          this.svcScadenzePersone.post(objScadenzaPersona).subscribe();
-        })
-      } else {
-        console.log ("nessun genitore da inserire, ", res);
-      }
-      return;
-    },
+        if (res.length != 0) {
+          res.forEach( genitore => {
+            let objScadenzaPersona: CAL_ScadenzaPersone = {
+              personaID: genitore.persona.id,
+              scadenzaID : scadenzaID,
+              ckLetto: false,
+              ckAccettato: false,
+              ckRespinto: false,
+            }
+            //console.log ("nota-edit - insertpersone - genitore", genitore);
+            this.svcScadenzePersone.post(objScadenzaPersona).subscribe();
+          })
+        } 
+        else 
+          console.log ("nessun genitore da inserire, ", res);
+        
+        return;
+      },
       err=> {console.log ("errore in inserimento genitori", err)}
     );  
   }
 
-  
-  delete() {
+    delete() {
 
     //Vengono anche cancellate le scadenze (e le scadenzePersone) che eventualmente fossero presenti nel record
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
@@ -360,23 +340,20 @@ export class NotaEditComponent implements OnInit {
             //3. cancellare da NoteIscrizioni
             //4. cancellare da Note
 
-          this.svcScadenze.listByNota(this.data.notaID)
-          .subscribe(
+          this.svcScadenze.listByNota(this.data.notaID).subscribe(
             scadenze => {
               //un foreach non funzionerebbe: non aspetta le subscribe: la for of sembra invece attenderle
               for (let scadenza of scadenze) {
                 this.svcScadenzePersone.deleteByScadenza(scadenza.id)
                 .pipe(
                   concatMap(res => this.svcScadenze.delete(scadenza.id)),
-
                 ).subscribe()
               }
 
               this.svcNoteIscrizioni.deleteByNota(this.data.notaID)
               .pipe(
                 concatMap(()=> this.svcNote.delete(this.data.notaID))
-              )
-              .subscribe(            
+              ).subscribe(            
                 res=> {
                   this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
                   this._dialogRef.close();
@@ -388,6 +365,7 @@ export class NotaEditComponent implements OnInit {
       }
     );
   }
+  
   warnDisabilitazione() {
     if (this.form.controls.ckInvioMsg.value == false) {
 

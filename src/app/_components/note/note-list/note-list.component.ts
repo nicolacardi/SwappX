@@ -19,7 +19,7 @@ import { DocentiService }                       from '../../docenti/docenti.serv
 //models
 import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
-import { DOC_NotaIscrizione } from 'src/app/_models/DOC_NotaIscrizione';
+import { DOC_NotaIscrizione }                   from 'src/app/_models/DOC_NotaIscrizione';
 
 
 @Component({
@@ -30,8 +30,6 @@ import { DOC_NotaIscrizione } from 'src/app/_models/DOC_NotaIscrizione';
 export class NoteListComponent implements OnInit {
   
 //#region ----- Variabili -------
-
-
 
   matDataSource =                               new MatTableDataSource<DOC_Nota>();
 
@@ -100,12 +98,10 @@ export class NoteListComponent implements OnInit {
 
 //#endregion  
 
-  constructor( 
-    private svcNote:                            NoteService,
-    private svcDocenti:                         DocentiService,
-    private _loadingService:                    LoadingService,
-    public _dialog:                             MatDialog ) {
-
+  constructor(private svcNote:                            NoteService,
+              private svcDocenti:                         DocentiService,
+              private _loadingService:                    LoadingService,
+              public _dialog:                             MatDialog ) {
 
   }
 
@@ -119,13 +115,16 @@ export class NoteListComponent implements OnInit {
   }
 
   loadData() {
+
+
+    console.log("[DEBUG] note-list.loadData: dove=", this.dove)
     switch(this.dove) {
 
       case 'classi-dashboard':
         this.displayedColumns = this.displayedColumnsNotePage;
         this.showPageTitle = true;
         this.showTableRibbon = true;
-        
+
         if (this.classeSezioneAnnoID) {
           let obsNote$: Observable<DOC_Nota[]>;
           obsNote$= this.svcNote.listByClasseSezioneAnno(this.classeSezioneAnnoID);
@@ -133,6 +132,8 @@ export class NoteListComponent implements OnInit {
     
           loadNote$.subscribe( 
             val =>   {
+              console.log("DEBUG: loadNote: " ,val)
+
               this.matDataSource.data = val;
               this.matDataSource.paginator = this.paginator;
               this.matDataSource.sort = this.sort; 
@@ -141,6 +142,7 @@ export class NoteListComponent implements OnInit {
           );
         }
         break;
+
       case 'docenti-dashboard':
         this.displayedColumns = this.displayedColumnsNotePage;
         this.showPageTitle = true;
@@ -158,9 +160,7 @@ export class NoteListComponent implements OnInit {
                 nota=> {
                   let strNomiAlunni = "";
                   nota._NotaIscrizioni.forEach( 
-                  (notaIscrizione: DOC_NotaIscrizione) => {
-                      strNomiAlunni= strNomiAlunni + ' - '+ notaIscrizione.iscrizione.alunno.persona.nome + ' ' + notaIscrizione.iscrizione.alunno.persona.cognome
-                    }
+                    (notaIscrizione: DOC_NotaIscrizione) => strNomiAlunni= strNomiAlunni + ' - '+ notaIscrizione.iscrizione.alunno.persona.nome + ' ' + notaIscrizione.iscrizione.alunno.persona.cognome
                   )
                   nota.nomiAlunni = strNomiAlunni.slice(3);
                 }
@@ -172,8 +172,6 @@ export class NoteListComponent implements OnInit {
             }
           );
         }
-
-
         break;
 
       case 'alunno-edit':
@@ -197,7 +195,6 @@ export class NoteListComponent implements OnInit {
         }
         
         break;
-      
 
       default: this.displayedColumns = this.displayedColumnsNotePage;
     }
@@ -236,30 +233,27 @@ export class NoteListComponent implements OnInit {
       if (data.dtNota){
         let dArrN = data.dtNota.split("-");
          dtNotaddmmyyyy = dArrN[2].substring(0,2)+ "/" +dArrN[1]+"/"+dArrN[0];
-      } else {
+      } 
+      else 
          dtNotaddmmyyyy = '';
-      }
 
       let dtFirmaddmmyyyy!: string;
       if (data.dtFirma){
         let dArrF = data.dtFirma.split("-");
          dtFirmaddmmyyyy = dArrF[2].substring(0,2)+ "/" +dArrF[1]+"/"+dArrF[0];
-      } else {
-         dtFirmaddmmyyyy = '';
       }
+      else 
+         dtFirmaddmmyyyy = '';
 
-      console.log ("st", searchTerms);
-      console.log ("data", data);
+      //console.log ("st", searchTerms);
+      //console.log ("data", data);
 
       let boolSx = String(dtNotaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
                   || String(data.nota).indexOf(searchTerms.filtrosx) !== -1
                   || (data.periodo == searchTerms.periodo)
                   || String(data.persona.nome.toLowerCase() + ' ' + data.persona.cognome.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1
                   || String(dtFirmaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
-                  || String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1
-
-
-                  ;
+                  || String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1 ;
       
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
       let boolDx = String(dtNotaddmmyyyy).indexOf(searchTerms.dtNota) !== -1
@@ -267,9 +261,7 @@ export class NoteListComponent implements OnInit {
                     && ((data.periodo == searchTerms.periodo) || searchTerms.periodo == '' || searchTerms.periodo == null)
                     && String(data.persona.nome.toLowerCase() + ' ' + data.persona.cognome.toLowerCase()).indexOf(searchTerms.docente) !== -1
                     && String(dtFirmaddmmyyyy).indexOf(searchTerms.dtFirma) !== -1
-                    && String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.alunno) !== -1
-
-                    ;
+                    && String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.alunno) !== -1 ;
 
       return boolSx && boolDx;
     }
@@ -293,8 +285,8 @@ export class NoteListComponent implements OnInit {
       }
     };
     const dialogRef = this._dialog.open(NotaEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe( res => 
-      this.loadData()
+    dialogRef.afterClosed().subscribe( 
+      res => this.loadData()
     );
   }
 
@@ -311,8 +303,8 @@ export class NoteListComponent implements OnInit {
       }
     };
     const dialogRef = this._dialog.open(NotaEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe( res=>
-       this.loadData()
+    dialogRef.afterClosed().subscribe( 
+      res=> this.loadData()
     );
   }
 
