@@ -1,3 +1,4 @@
+import { DOC_NotaIscrizione } from "./DOC_NotaIscrizione";
 import { DOC_Verbale } from "./DOC_Verbale";
 import { TST_VotoInterr }                       from "./TST_VotiInterr";
 
@@ -53,7 +54,7 @@ export interface DialogDataColoreMateria {
 
 export interface DialogDataNota {
         notaID:                                 number;
-        iscrizioneID:                           number;
+        iscrizioni:                             DOC_NotaIscrizione[];
         classeSezioneAnnoID:                    number;
         personaID:                              number;
         nome?:                                  string;

@@ -1,3 +1,4 @@
+import { ALU_Alunno } from "./ALU_Alunno";
 import { CAL_TipoScadenza } from "./CAL_TipoScadenza";
 import { PER_Persona } from "./PER_Persone";
 
@@ -8,6 +9,7 @@ export interface CAL_Scadenza {
   ckPromemoria:                                 boolean;
   ckRisposta:                                   boolean;
   PersonaID:                                    number;
+  NotaID?:                                       number;
   TipoScadenzaID:                               number;
   //campi di FullCalendar
 
@@ -27,9 +29,11 @@ export interface CAL_Scadenza {
 //   userIns:              number;
 //   userUpd:              number;
 
-  _ScadenzaPersone?:                             CAL_ScadenzaPersone[];
+  _ScadenzaPersone?:                            CAL_ScadenzaPersone[];
 
-  tipoScadenza?:                                 CAL_TipoScadenza;
+  tipoScadenza?:                                CAL_TipoScadenza;
+
+
 
 }
 

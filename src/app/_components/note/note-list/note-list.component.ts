@@ -9,7 +9,7 @@ import { concatMap }                            from 'rxjs/operators';
 
 //components
 import { NotaEditComponent }                    from '../nota-edit/nota-edit.component';
-import { NoteFilterComponent } from '../note-filter/note-filter.component';
+import { NoteFilterComponent }                  from '../note-filter/note-filter.component';
 
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
@@ -19,6 +19,7 @@ import { DocentiService }                       from '../../docenti/docenti.serv
 //models
 import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
+import { DOC_NotaIscrizione } from 'src/app/_models/DOC_NotaIscrizione';
 
 
 @Component({
@@ -39,7 +40,8 @@ export class NoteListComponent implements OnInit {
   displayedColumnsNotePage:                     string[] =  [
     "actionsColumn", 
     "docente",
-    "alunno",
+    "alunni",
+    "nomiAlunni",
     "dtNota",
     "periodo",
     "nota",
@@ -126,7 +128,7 @@ export class NoteListComponent implements OnInit {
         
         if (this.classeSezioneAnnoID) {
           let obsNote$: Observable<DOC_Nota[]>;
-          obsNote$= this.svcNote.listByClasseSezioneAnnoID(this.classeSezioneAnnoID);
+          obsNote$= this.svcNote.listByClasseSezioneAnno(this.classeSezioneAnnoID);
           let loadNote$ =this._loadingService.showLoaderUntilCompleted(obsNote$);
     
           loadNote$.subscribe( 
@@ -148,10 +150,21 @@ export class NoteListComponent implements OnInit {
           //Devo pescare il personaID del docenteID e passarlo alla listBYClasseSezionaAnnoIDAndDocente
           this.svcDocenti.get(this.docenteID)
           .pipe(
-            concatMap((res: PER_Docente) => this._loadingService.showLoaderUntilCompleted(this.svcNote.listByClasseSezioneAnnoIDAndDocenteID(this.classeSezioneAnnoID, res.personaID))
+            concatMap((res: PER_Docente) => this._loadingService.showLoaderUntilCompleted(this.svcNote.listByClasseSezioneAnnoAndDocente(this.classeSezioneAnnoID, res.personaID))
           )).subscribe(
           //loadNote$.subscribe( 
-            val =>   {
+            (val: DOC_Nota[]) =>   {
+              val.forEach(
+                nota=> {
+                  let strNomiAlunni = "";
+                  nota._NotaIscrizioni.forEach( 
+                  (notaIscrizione: DOC_NotaIscrizione) => {
+                      strNomiAlunni= strNomiAlunni + ' - '+ notaIscrizione.iscrizione.alunno.persona.nome + ' ' + notaIscrizione.iscrizione.alunno.persona.cognome
+                    }
+                  )
+                  nota.nomiAlunni = strNomiAlunni.slice(3);
+                }
+              );
               this.matDataSource.data = val;
               this.matDataSource.paginator = this.paginator;
               this.matDataSource.sort = this.sort; 
@@ -170,7 +183,7 @@ export class NoteListComponent implements OnInit {
 
         if (this.alunnoID) {
           let obsNote$: Observable<DOC_Nota[]>;
-          obsNote$= this.svcNote.listByAlunnoID(this.alunnoID);
+          obsNote$= this.svcNote.listByAlunno(this.alunnoID);
           let loadNote$ =this._loadingService.showLoaderUntilCompleted(obsNote$);
     
           loadNote$.subscribe( 
@@ -273,7 +286,7 @@ export class NoteListComponent implements OnInit {
       width: '500px',
       height: '500px',
       data: {
-        iscrizioneID:                           0,
+        iscrizioni:                             [],
         notaID:                                 0,
         personaID:                              0,
         classeSezioneAnnoID:                    this.classeSezioneAnnoID
@@ -291,7 +304,7 @@ export class NoteListComponent implements OnInit {
       width: '500px',
       height: '500px',
       data: {
-        iscrizioneID:                           element.iscrizioneID,
+        iscrizioni:                             element._NotaIscrizioni,
         notaID:                                 element.id,
         personaID:                              element.personaID,
         classeSezioneAnnoID:                    this.classeSezioneAnnoID

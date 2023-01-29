@@ -18,27 +18,27 @@ export class NoteService {
     //http://213.215.231.4/swappX/api/DOC_Note
   }
 
-  listByClasseSezioneAnnoID(classeSezioneAnnoID: number): Observable<DOC_Nota[]>{
-    return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note/listByClasseSezioneAnnoID/'+classeSezioneAnnoID);   
-    //http://213.215.231.4/swappX/api/DOC_Note/ListByClasseSezioneAnnoID/16 
+  listByClasseSezioneAnno(classeSezioneAnnoID: number): Observable<DOC_Nota[]>{
+    return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note/listByClasseSezioneAnno/'+classeSezioneAnnoID);   
+    //http://213.215.231.4/swappX/api/DOC_Note/ListByClasseSezioneAnno/16 
   }
 
-  listByClasseSezioneAnnoIDAndDocenteID(classeSezioneAnnoID: number, docenteID: number): Observable<DOC_Nota[]>{
+  listByClasseSezioneAnnoAndDocente(classeSezioneAnnoID: number, docenteID: number): Observable<DOC_Nota[]>{
 
-    return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note/listByClasseSezioneAnnoID/'+classeSezioneAnnoID)
+    return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note/listByClasseSezioneAnno/'+classeSezioneAnnoID)
     .pipe (
       map(val=>val.filter(val=>(val.personaID == docenteID))),
     );   
-    //http://213.215.231.4/swappX/api/DOC_Note/ListByClasseSezioneAnnoID/16
+    //http://213.215.231.4/swappX/api/DOC_Note/ListByClasseSezioneAnno/16
   }
 
-  listByIscrizione(iscrizioneID: number): Observable<DOC_Nota[]>{
-    return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note/ListByIscrizione/'+iscrizioneID);   
-    //http://213.215.231.4/swappX/api/DOC_Note/ListByIscrizione/285
-  }
+  // listByIscrizione(iscrizioneID: number): Observable<DOC_Nota[]>{
+  //   return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note/ListByIscrizione/'+iscrizioneID);   
+  //   //http://213.215.231.4/swappX/api/DOC_Note/ListByIscrizione/285
+  // }
 
-  listByAlunnoID(alunnoID: number): Observable<DOC_Nota[]>{
-    return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note/listByAlunnoID/'+alunnoID);   
+  listByAlunno(alunnoID: number): Observable<DOC_Nota[]>{
+    return this.http.get<DOC_Nota[]>(environment.apiBaseUrl+'DOC_Note/listByAlunno/'+alunnoID);   
     //http://213.215.231.4/swappX/api/DOC_Note/listByAlunnoID/54 
   }
   
