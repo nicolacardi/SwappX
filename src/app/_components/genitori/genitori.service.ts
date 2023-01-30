@@ -34,6 +34,11 @@ export class GenitoriService {
     return this.http.get<ALU_Genitore>(environment.apiBaseUrl+'ALU_Genitori/'+genitoreID);
     //http://213.215.231.4/swappX/api/ALU_Genitori/3
   }
+
+  getByPersona(personaID: any): Observable<ALU_Genitore>{  //TODO: WS da fare
+    return this.http.get<ALU_Genitore>(environment.apiBaseUrl+'ALU_Genitori/getByPersona/'+personaID);
+    //http://213.215.231.4/swappX/api/ALU_Genitori/getByPersona/42
+  }
   
   //per filtro e paginazione server side (NON USATO)
   findGenitori(filter = '', sortOrder= 'asc', pageNumber = 0, pageSize = 3): Observable<ALU_Genitore[]>{

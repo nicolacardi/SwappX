@@ -4,7 +4,9 @@
            <mat-card-header>
 
         <h2 class="_titolo-pagina-home">Scadenze</h2>
-
+        <a mat-list-item class="h35px" routerLink="/procedura-iscrizione" [queryParams]="{ iscrizioneID: '328' }" >
+            <span>Iscrizione</span>
+        </a>
 </mat-card-header>
     <mat-card *ngFor="let element of (obsMieScadenze$ | async)" class="mt10">
         <!-- <mat-card-header> -->
@@ -30,7 +32,8 @@
                     <span class="fs16">{{element.scadenza!.title}}</span>
 
             <span class="fs40 _pos-absolute r5 t10" [ngStyle]="{'color': element.scadenza!.color}">●</span>
-            
+
+
 
         </mat-card-content>
         <mat-button-toggle-group *ngIf="element.scadenza!.ckRisposta" class="_pos-absolute" name="risposta" aria-label="risposta" >

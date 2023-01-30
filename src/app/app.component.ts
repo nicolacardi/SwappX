@@ -54,6 +54,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit () {
 
+    //TODO non andrebbe preso da Utility?
     this.svcUser.obscurrentUser.subscribe(val => {
       this.currUser = val;
 

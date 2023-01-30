@@ -1,22 +1,24 @@
 import { Component, OnInit }                    from '@angular/core';
 import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable }                           from 'rxjs';
+import { MatDialog }                            from '@angular/material/dialog';
+import { tap }                                  from 'rxjs/operators';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+
+
+//components
+import { Utility }                              from '../../utilities/utility.component';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+
 
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { ScadenzePersoneService }               from '../scadenze-persone.service';
 
 //models
-import { _UT_Message }                          from 'src/app/_models/_UT_Message';
 import { User }                                 from 'src/app/_user/Users';
-import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
-import { Utility }                              from '../../utilities/utility.component';
-import { ScadenzeService } from '../scadenze.service';
-import { CAL_Scadenza, CAL_ScadenzaPersone } from 'src/app/_models/CAL_Scadenza';
-import { ScadenzePersoneService } from '../scadenze-persone.service';
-import { tap } from 'rxjs/operators';
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
-import { MatDialog } from '@angular/material/dialog';
+import { CAL_ScadenzaPersone }                  from 'src/app/_models/CAL_Scadenza';
 
 @Component({
   selector: 'app-mie-scadenze',
@@ -31,6 +33,7 @@ export class MieScadenzeComponent implements OnInit {
 //public userID: string;
 public currUser!:                               User;
 public obsMieScadenze$!:                        Observable<CAL_ScadenzaPersone[]>
+public iscrizioneID:                            number = 43;
 
 matDataSource = new MatTableDataSource<CAL_ScadenzaPersone>();
 displayedColumns: string[] = [

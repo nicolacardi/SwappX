@@ -1,11 +1,13 @@
 import { ALU_Alunno }                           from "./ALU_Alunno";
+import { ALU_TipoGenitore } from "./ALU_Tipogenitore";
 import { PER_Persona }                          from "./PER_Persone";
 
 export interface ALU_Genitore {
         id:                                     number;     
         personaID:                              number;
 
-        tipo:                                   string;
+        //tipo:                                   string;
+        tipoGenitoreID:                         number;
         titoloStudio:                           string;
         professione:                            string;
 
@@ -16,6 +18,7 @@ export interface ALU_Genitore {
         userUpd?:                               number;
 
         persona:                                PER_Persona;
+        tipoGenitore?:                          ALU_TipoGenitore;
 
         _Figli?:                                ALU_Alunno[];
 }

@@ -48,10 +48,10 @@
             <td mat-cell *matCellDef="let element" [innerHTML]="element.persona.cognome|highlight:filterValue"></td>
         </ng-container>
 
-        <ng-container matColumnDef="tipo">
+        <ng-container matColumnDef="tipoGenitoreID">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Tipo</th>
             <!-- <td mat-cell *matCellDef="let element">{{element.tipo}}</td> -->
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.tipo|highlight:filterValue"></td>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.tipoGenitore.sigla |highlight:filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="dtNascita">

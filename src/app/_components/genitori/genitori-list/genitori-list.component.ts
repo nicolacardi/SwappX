@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Observable, pipe } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource} from '@angular/material/table';
 import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
@@ -39,7 +39,7 @@ export class GenitoriListComponent implements OnInit {
       "actionsColumn", 
       "nome", 
       "cognome",
-      "tipo",
+      "tipoGenitoreID",
       "telefono", 
       "email",
       "dtNascita",
@@ -49,7 +49,7 @@ export class GenitoriListComponent implements OnInit {
       "actionsColumn", 
       "nome", 
       "cognome",
-      "tipo",
+      "tipoGenitoreID",
       "telefono", 
       "email",
       "dtNascita",
@@ -60,7 +60,7 @@ export class GenitoriListComponent implements OnInit {
     "nome", 
     "cognome", 
     "dtNascita",
-    "tipo", 
+    "tipoGenitoreID", 
     "indirizzo", 
     "comune", 
     "cap", 
@@ -76,7 +76,7 @@ export class GenitoriListComponent implements OnInit {
   rptFieldsToKeep  = [
     "nome", 
     "cognome", 
-    "tipo", 
+    "tipoGenitoreID", 
     "indirizzo", 
     "telefono", 
     "email", 
@@ -85,7 +85,7 @@ export class GenitoriListComponent implements OnInit {
   rptColumnsNames  = [
     "nome", 
     "cognome", 
-    "tipo", 
+    "tipoGenitoreID", 
     "indirizzo", 
     "telefono", 
     "email", 
@@ -158,6 +158,7 @@ export class GenitoriListComponent implements OnInit {
 
   ngOnInit () {
 
+
     if (this.context == "alunno-edit-list" || this.context == "alunno-edit-famiglia") {
       this.showPageTitle = false;
     }
@@ -191,7 +192,10 @@ export class GenitoriListComponent implements OnInit {
     else {
       if(this.ckSoloAttivi){
         obsGenitori$= this.svcGenitori.listWithChildren()
-          .pipe(map(
+
+          .pipe(
+            tap(res=> console.log (res)),
+            map(
             res=> res.filter((x) => x.persona.ckAttivo == true))
           );
       }

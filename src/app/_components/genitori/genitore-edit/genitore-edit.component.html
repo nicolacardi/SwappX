@@ -63,12 +63,22 @@
 
                             <mat-grid-list [cols]="breakpoint" rowHeight="60px">
 
-                                <mat-grid-tile>
+                                <!-- <mat-grid-tile>
                                     <mat-form-field>
                                         <input matInput required type="text" 
                                             placeholder="Tipo (P/M/T)" 
                                             formControlName="tipo">
                                         <mat-error>Inserire P (padre), M (madre) o T (tutore)</mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile> -->
+                                <mat-grid-tile>
+                                    <mat-form-field>
+                                        <mat-label>Tipo</mat-label>
+                                        <mat-select required formControlName="tipoGenitoreID">
+                                            <mat-option *ngFor="let element of (obsTipiGenitore$ | async)" [value]="element.id">
+                                            {{element.descrizione}}
+                                            </mat-option>
+                                        </mat-select>
                                     </mat-form-field>
                                 </mat-grid-tile>
 

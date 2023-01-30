@@ -1,41 +1,33 @@
 
   
+  
+  <!-- <mat-form-field >
+  <mat-label>Figli</mat-label>
+  <mat-select formControlName="figlio" #selectFiglio>
+      <mat-option *ngFor="let element of (obsFigli$ | async)" [value]="element.id">
+          {{element.persona.nome}} {{element.persona.cognome}}
+      </mat-option>
+  </mat-select>
+</mat-form-field> -->
+iscrizioneID : {{iscrizioneID}}
+
   <mat-vertical-stepper [linear]="true" #stepper animationDuration="200">
     <mat-step [stepControl]="fg1">
-      <form [formGroup]="fg1">
-        <ng-template matStepLabel>Dati del Padre</ng-template>
-        <mat-form-field>
-          <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
-        </mat-form-field>
+      <form [formGroup]="fg1 "*ngFor="let element of genitoriArr" >
+
+        <ng-template matStepLabel>Dati dei Genitori</ng-template>
+        <h3>{{element.tipoGenitore!.descrizione}}</h3>
+       <app-persona-form
+       [personaID]="element.personaID"
+       >
+       </app-persona-form> 
+       <mat-divider></mat-divider>
         <!-- <div>
           <button mat-button matStepperNext>Next</button>
         </div> -->
       </form>
     </mat-step>
-    <mat-step [stepControl]="fg2">
-      <form [formGroup]="fg2">
-        <ng-template matStepLabel>Dati della Madre</ng-template>
-        <mat-form-field>
-          <input matInput placeholder="Address" formControlName="secondCtrl" required>
-        </mat-form-field>
-        <!-- <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
-        </div> -->
-      </form>
-    </mat-step>
-    <mat-step [stepControl]="fg3">
-        <form [formGroup]="fg3">
-          <ng-template matStepLabel>Dati dell'alunno</ng-template>
-          <mat-form-field>
-            <input matInput placeholder="Address" formControlName="thirdCtrl" required>
-          </mat-form-field>
-          <!-- <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
-          </div> -->
-        </form>
-    </mat-step>
+    
 
     <mat-step [stepControl]="fg4">
         <form [formGroup]="fg4">

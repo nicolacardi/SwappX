@@ -1,4 +1,5 @@
 import { ALU_Genitore }                         from './ALU_Genitore';
+import { ALU_GenitoreAlunno } from './ALU_GenitoreAlunno';
 import { PER_Persona }                          from './PER_Persone';
 
 export interface ALU_Alunno {
@@ -21,7 +22,9 @@ export interface ALU_Alunno {
 
         persona:                                PER_Persona;
 
-        _Genitori?:                             ALU_Genitore[];
+        //_Genitori?:                             ALU_Genitore[]; /// forse dovrebbe essere ALU_GenitoreAlunno?????? NC 30 01 2023
+        _Genitori?:                             ALU_GenitoreAlunno[]; /// forse dovrebbe essere ALU_GenitoreAlunno?????? NC 30 01 2023
+
 }
 
  

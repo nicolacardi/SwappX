@@ -23,8 +23,9 @@ import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { PER_Persona } from 'src/app/_models/PER_Persone';
-import { TOUCH_BUFFER_MS } from '@angular/cdk/a11y/input-modality/input-modality-detector';
-import { Console } from 'console';
+import { ALU_TipoGenitore } from 'src/app/_models/ALU_Tipogenitore';
+import { TipiGenitoreService } from '../tipi-genitore.service';
+
 
 @Component({
   selector: 'app-genitore-edit',
@@ -37,6 +38,7 @@ export class GenitoreEditComponent implements OnInit {
 //#region ----- Variabili -------
 
   genitore$!:                                   Observable<ALU_Genitore>;
+  obsTipiGenitore$!:                            Observable<ALU_TipoGenitore[]>;
   genitoreNomeCognome :                         string = "";
   formPersona! :                                FormGroup;
   formGenitore! :                               FormGroup;
@@ -60,16 +62,19 @@ export class GenitoreEditComponent implements OnInit {
   constructor(
     public _dialogRef: MatDialogRef<GenitoreEditComponent>,
     @Inject(MAT_DIALOG_DATA) public genitoreID: number,
-    private fb:             FormBuilder, 
-    private route:          ActivatedRoute,
-    private router:         Router,
-    private svcGenitori:    GenitoriService,
-    private svcPersone:     PersoneService,
-    private svcAlunni:      AlunniService, //serve perchè è in questa che si trovano le addToFamily e RemoveFromFamily"
-    private svcComuni:      ComuniService,
-    public _dialog:         MatDialog,
-    private _snackBar:      MatSnackBar,
-    private _loadingService :LoadingService  ) {
+    private fb:                                 FormBuilder, 
+    private route:                              ActivatedRoute,
+    private router:                             Router,
+    private svcGenitori:                        GenitoriService,
+    private svcTipiGenitore:                    TipiGenitoreService,
+
+    private svcPersone:                         PersoneService,
+    private svcAlunni:                          AlunniService, //serve perchè è in questa che si trovano le addToFamily e RemoveFromFamily"
+    private svcComuni:                          ComuniService,
+    public _dialog:                             MatDialog,
+    private _snackBar:                          MatSnackBar,
+    private _loadingService :                   LoadingService
+  ) {
 
     _dialogRef.disableClose = true;
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
@@ -91,7 +96,8 @@ export class GenitoreEditComponent implements OnInit {
       prov:                       ['', Validators.maxLength(2)],
       cap:                        ['', Validators.maxLength(5)],
       nazione:                    ['', Validators.maxLength(3)],
-      tipo:                       ['',{ validators:[Validators.maxLength(1), Validators.required, Validators.pattern("P|M|T")]}],
+      //tipo:                       ['',{ validators:[Validators.maxLength(1), Validators.required, Validators.pattern("P|M|T")]}],
+      tipoGenitoreID:             [''],
       cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
       telefono:                   ['', Validators.maxLength(13)],
       telefono1:                  ['', Validators.maxLength(13)],
@@ -106,12 +112,16 @@ export class GenitoreEditComponent implements OnInit {
       titoloStudio:               [''],
       professione:                ['']
     });
+
+    this.obsTipiGenitore$ = this.svcTipiGenitore.list();
+
   }
 
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit(): void {
     this.loadData();
+
   }
 
   loadData(){
@@ -160,7 +170,7 @@ export class GenitoreEditComponent implements OnInit {
 
               this.formPersona.controls['ckAttivo'].setValue(genitore.persona!.ckAttivo);
 
-              this.formPersona.controls['tipo'].setValue(genitore.tipo);  //incredibile: non esisteva tipo nel model e funzionava con il patchValue!
+              this.formPersona.controls['tipoGenitoreID'].setValue(genitore.tipoGenitoreID); 
 
               this.formGenitore.controls['titoloStudio'].setValue(genitore.titoloStudio );
               this.formGenitore.controls['professione'].setValue(genitore.professione);
@@ -227,7 +237,8 @@ export class GenitoreEditComponent implements OnInit {
       id:                         this.formPersona.value.id,
       personaID:                  this.formPersona.value.personaID,
 
-      tipo:                       this.formPersona.value.tipo,
+      //tipo:                       this.formPersona.value.tipo,
+      tipoGenitoreID:             this.formPersona.value.tipoGenitoreID,
       //ckAttivo:                   this.formGenitore.value.ckAttivo,
       titoloStudio:               this.formGenitore.value.titoloStudio,
       professione:                this.formGenitore.value.professione,
@@ -239,7 +250,7 @@ export class GenitoreEditComponent implements OnInit {
       this.svcPersone.post(personaObj)
       .pipe (
         tap(res => {
-          console.log ("res", res); 
+          //console.log ("res", res); 
           genitoreObj.personaID = res.id;
         }),
         concatMap( () => this.svcGenitori.post(genitoreObj))

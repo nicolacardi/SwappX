@@ -1,27 +1,27 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { Observable } from 'rxjs';
-import { MatTableDataSource} from '@angular/material/table';
-import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { Router } from '@angular/router';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { SelectionModel } from '@angular/cdk/collections';
-import { map } from 'rxjs/operators';
+import { MatPaginator }                         from '@angular/material/paginator';
+import { MatSort }                              from '@angular/material/sort';
+import { Observable }                           from 'rxjs';
+import { MatTableDataSource}                    from '@angular/material/table';
+import { CdkDragDrop, moveItemInArray}          from '@angular/cdk/drag-drop';
+import { Router }                               from '@angular/router';
+import { MatMenuTrigger }                       from '@angular/material/menu';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { SelectionModel }                       from '@angular/cdk/collections';
+import { map }                                  from 'rxjs/operators';
 
 //components
-import { AlunnoEditComponent } from '../alunno-edit/alunno-edit.component';
-import { AlunniFilterComponent } from '../alunni-filter/alunni-filter.component';
-import { RettaEditComponent } from '../../pagamenti/retta-edit/retta-edit.component';
+import { AlunnoEditComponent }                  from '../alunno-edit/alunno-edit.component';
+import { AlunniFilterComponent }                from '../alunni-filter/alunni-filter.component';
+import { RettaEditComponent }                   from '../../pagamenti/retta-edit/retta-edit.component';
 
 //services
-import { AlunniService } from '../alunni.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { NavigationService } from '../../utilities/navigation/navigation.service';
+import { AlunniService }                        from '../alunni.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { NavigationService }                    from '../../utilities/navigation/navigation.service';
 
 //classes
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 
 @Component({
   selector:     'app-alunni-list',
@@ -97,8 +97,8 @@ export class AlunniListComponent implements OnInit {
 
   selection = new SelectionModel<ALU_Alunno>(true, []);   //rappresenta la selezione delle checkbox
 
-  public passedGenitore!:       string;
-  public page!:                 string;
+  public passedGenitore!:                       string;
+  public page!:                                 string;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   //idAlunniChecked:              number[] = [];
@@ -125,15 +125,14 @@ export class AlunniListComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-  @ViewChild(MatPaginator) paginator!:                        MatPaginator;
-  @ViewChild(MatSort) sort!:                                  MatSort;
-  @ViewChild("filterInput") filterInput!:                     ElementRef;
+  @ViewChild(MatPaginator) paginator!:          MatPaginator;
+  @ViewChild(MatSort) sort!:                    MatSort;
+  @ViewChild("filterInput") filterInput!:       ElementRef;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
-  //@Input() classeSezioneAnnoID!:                                         number;
-  @Input() alunniFilterComponent!:                            AlunniFilterComponent;
-  @Input('context') context! :                                string;
-  @Input('genitoreID') genitoreID! :                          number;
+  @Input() alunniFilterComponent!:              AlunniFilterComponent;
+  @Input('context') context! :                  string;
+  @Input('genitoreID') genitoreID! :            number;
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('addToFamily') addToFamily = new EventEmitter<ALU_Alunno>();
@@ -142,12 +141,12 @@ export class AlunniListComponent implements OnInit {
 //#endregion
 
   constructor(
-    private svcAlunni:            AlunniService,
-    private router:               Router,
-    public _dialog:               MatDialog, 
-    private _loadingService:      LoadingService,
-    private _navigationService:   NavigationService  ) {
-  }
+    private svcAlunni:                          AlunniService,
+    private router:                             Router,
+    public _dialog:                             MatDialog, 
+    private _loadingService:                    LoadingService,
+    private _navigationService:                 NavigationService
+  ) { }
   
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -160,7 +159,6 @@ export class AlunniListComponent implements OnInit {
     //ngOnChanges serve perchè quando listAlunni è child di classiDashboard gli viene passato il valore di classeSezioneAnnoID
     // e devo "sentire" in questo modo che deve refreshare
 
-    //if (this.page == 'classiDashboard'  ) {
 
       //lanciamo loadData SOLO una volta che sia arrivata la this.page.
       //this.page non arriva, nel caso in cui page = ClassiDashboard
@@ -288,7 +286,7 @@ export class AlunniListComponent implements OnInit {
           (val: { genitore: { nome: any; cognome: any}; })=>  {   
             const foundCognomeNome = foundGenitore || String(val.genitore.cognome+" "+val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
             const foundNomeCognome = foundGenitore || String(val.genitore.nome+" "+val.genitore.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
-            foundGenitore = foundCognomeNome || foundNomeCognome;
+            foundGenitore = foundCognomeNome || foundNomeCognome;  //TODO attenzione!!! qui c'è un problema! _Genitori non sono i genitori ma ALU_AlunnoGenitore!
         })
       }
       
