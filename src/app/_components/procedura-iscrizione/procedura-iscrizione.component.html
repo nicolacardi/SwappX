@@ -9,54 +9,72 @@
       </mat-option>
   </mat-select>
 </mat-form-field> -->
-iscrizioneID : {{iscrizioneID}}
 
-  <mat-vertical-stepper [linear]="true" #stepper animationDuration="200">
-    <mat-step [stepControl]="fg1">
-      <form [formGroup]="fg1 "*ngFor="let element of genitoriArr" >
+  <mat-horizontal-stepper  #stepper animationDuration="200" labelPosition="bottom" >
+    <ng-template matStepperIcon="edit">
+      <mat-icon>done</mat-icon>
+    </ng-template>
+    <mat-step *ngFor="let element of genitoriArr; let i= index" [stepControl]="apppersonaform.form" >
 
-        <ng-template matStepLabel>Dati dei Genitori</ng-template>
-        <h3>{{element.tipoGenitore!.descrizione}}</h3>
-       <app-persona-form
-       [personaID]="element.personaID"
-       >
-       </app-persona-form> 
-       <mat-divider></mat-divider>
-        <!-- <div>
-          <button mat-button matStepperNext>Next</button>
-        </div> -->
-      </form>
+
+      <ng-template matStepLabel >Dati del Genitore {{i+1}}</ng-template>
+      <h3>{{element.tipoGenitore!.descrizione}}: {{element.persona.nome}} {{element.persona.cognome}}</h3>
+      <app-persona-form
+      [personaID]="element.personaID"
+      #apppersonaform>
+      </app-persona-form> 
+       <div class="center">
+        <button *ngIf="i!=0" mat-stroked-button matStepperPrevious>Indietro</button>
+        <button mat-stroked-button class="ml10" matStepperNext (click)="salvaPersona(3)">Salva e procedi</button>
+      </div>
+    </mat-step>
+
+    <mat-step [stepControl]="apppersonaform.form">
+      <ng-template matStepLabel>Dati dell'alunno</ng-template>
+      <h3>Alunno: {{iscrizione.alunno.persona.nome}} {{iscrizione.alunno.persona.cognome}}</h3>
+      <app-persona-form
+      [personaID]="iscrizione.alunno.personaID"
+      #apppersonaform>
+      </app-persona-form> 
+      <div class="center">
+        <button mat-stroked-button matStepperPrevious>Indietro</button>
+        <button mat-stroked-button class="ml10" matStepperNext (click)="salvaPersona(1)">Salva e procedi</button>
+      </div>    
     </mat-step>
     
 
-    <mat-step [stepControl]="fg4">
-        <form [formGroup]="fg4">
-            <ng-template matStepLabel>Consensi</ng-template>
+    <mat-step >
 
-            <!-- <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
-            </div> -->
-        </form>
+      <ng-template matStepLabel>Consensi</ng-template>
+      <div class="center">
+        <button mat-stroked-button matStepperPrevious>Indietro</button>
+        <button mat-stroked-button class="ml10" matStepperNext>Salva e procedi</button>
+      </div>
+
     </mat-step>
 
 
-    <mat-step [stepControl]="fg5">
-        <form [formGroup]="fg5">
-            <ng-template matStepLabel>Dati economici</ng-template>
+    <mat-step >
 
-            <!-- <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
-            </div> -->
-        </form>
+      <ng-template matStepLabel>Dati economici</ng-template>
+      <div class="center">
+        <button mat-stroked-button matStepperPrevious>Indietro</button>
+        <button mat-stroked-button class="ml10" matStepperNext>Salva e procedi</button>
+      </div>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Fine</ng-template>
       Hai completato l'iscrizione
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
+      <div class="center">
+        <button mat-stroked-button matStepperPrevious>Indietro</button>
+        <!-- <button mat-stroked-button class="ml10" (click)="stepper.reset()">Reset</button> -->
       </div>
     </mat-step>
-  </mat-vertical-stepper>
+
+    <ng-template matStepperIcon="genitori">
+      <mat-icon>call_end</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="chat">
+      <mat-icon>forum</mat-icon>
+    </ng-template>
+  </mat-horizontal-stepper>

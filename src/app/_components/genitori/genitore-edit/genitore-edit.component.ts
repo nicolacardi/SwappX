@@ -151,7 +151,7 @@ export class GenitoreEditComponent implements OnInit {
               this.formPersona.controls['cognome'].setValue(genitore.persona!.cognome);
               this.formPersona.controls['dtNascita'].setValue(genitore.persona!.dtNascita);
               
-              this.formPersona.controls['cf'].setValue(genitore.persona!.CF);
+              this.formPersona.controls['cf'].setValue(genitore.persona!.cf);
 
               this.formPersona.controls['comuneNascita'].setValue(genitore.persona!.comuneNascita);
               this.formPersona.controls['provNascita'].setValue(genitore.persona!.provNascita);
@@ -221,7 +221,7 @@ export class GenitoreEditComponent implements OnInit {
       cap :           this.formPersona.value.cap,
       nazione :       this.formPersona.value.nazione,
       genere :        this.formPersona.value.genere,
-      CF :            this.formPersona.value.cf,
+      cf :            this.formPersona.value.cf,
       telefono :      this.formPersona.value.telefono,
       telefono1 :      this.formPersona.value.telefono1,
 

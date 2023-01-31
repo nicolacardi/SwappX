@@ -1,4 +1,4 @@
-import { Component, OnInit }                    from '@angular/core';
+import { Component, ContentChildren, Input, OnInit, QueryList, ViewChild, ViewChildren }                    from '@angular/core';
 import { FormBuilder, FormGroup }               from '@angular/forms';
 import { concatMap, map }                            from 'rxjs/operators';
 import { Observable }                           from 'rxjs';
@@ -18,6 +18,12 @@ import { IscrizioniService } from '../iscrizioni/iscrizioni.service';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { ALU_GenitoreAlunno } from 'src/app/_models/ALU_GenitoreAlunno';
+import { PersonaFormComponent } from '../persone/persona-form/persona-form.component';
+import { CdkStep } from '@angular/cdk/stepper';
+import { MatStepper } from '@angular/material/stepper';
+import { PersoneService } from '../persone/persone.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
 
 @Component({
   selector: 'app-procedura-iscrizione',
@@ -30,48 +36,54 @@ export class ProceduraIscrizioneComponent implements OnInit {
   private genitoreBool:                         boolean = false;
   //public obsFigli$!:                            Observable<ALU_Alunno[]>;
   public obsIscrizione$!:                       Observable<CLS_Iscrizione>;
-  public genitoriArr:                           ALU_Genitore[] = []
+  public genitoriArr:                           ALU_Genitore[] = [];
+  public iscrizione!:                           CLS_Iscrizione;
+
 
   private form! :                               FormGroup;
   public iscrizioneID!:                         number;
 
-  fg1! :                                        FormGroup;
-  fg2! :                                        FormGroup;
-  fg3! :                                        FormGroup;
-  fg4! :                                        FormGroup;
-  fg5! :                                        FormGroup;
+  
+  @ViewChildren(PersonaFormComponent) PersonaFormComponent!: QueryList<PersonaFormComponent>;
+
+  @ViewChild('stepper') stepper!:               MatStepper;
+
 
   constructor(
     private fb:                                 FormBuilder,
     private svcIscrizioni:                      IscrizioniService,
-    // private svcGenitori:                        GenitoriService,
+    private svcPersone:                         PersoneService,
     private actRoute:                           ActivatedRoute,
+    private _snackBar:                          MatSnackBar
 
 
   ) { 
 
-    this.fg1 = this.fb.group({
-      firstCtrl:                                [''],
-    })
 
-    this.fg2 = this.fb.group({
-      secondCtrl:                               [''],
-    })
-
-    this.fg3 = this.fb.group({
-      thirdCtrl:                                [''],
-    })
-    
-    this.fg4 = this.fb.group({
-      thirdCtrl:                                [''],
-    })
-    
-    this.fg5 = this.fb.group({
-      thirdCtrl:                                [''],
-    })
 
     this.form = this.fb.group({
-      figlio:                         [null],
+      id:                         [null],
+      
+      tipoPersonaID:              [''],
+      ckAttivo:                   [true],
+
+      nome:                       [''],
+      cognome:                    [''],
+      dtNascita:                  [''],
+      comuneNascita:              [''],
+      provNascita:                [''],
+      nazioneNascita:             [''],
+      indirizzo:                  [''],
+      comune:                     [''],
+      prov:                       [''],
+      cap:                        [''],
+      nazione:                    [''],
+      genere:                     [''],
+      cf:                         [''],
+      telefono:                   [''],
+      email:                      [''],
+
+      //ckAttivo:                   [true]
     });
 
 
@@ -112,7 +124,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
     
     this.svcIscrizioni.get(this.iscrizioneID)
     .subscribe(res => {
-      
+      this.iscrizione = res;
       //console.log(res.alunno._Genitori!.length);
       res.alunno._Genitori!.forEach(
         (genitorealunno: ALU_GenitoreAlunno) =>{
@@ -127,6 +139,23 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
     )
     ;
+  }
+
+  salvaPersona(n: number){
+    console.log(this.stepper.selectedIndex);
+    this.form.controls.tipoPersonaID.setValue(n);
+    let PersonaFormComponentArray = this.PersonaFormComponent.toArray();
+    console.log ("form del child", PersonaFormComponentArray[this.stepper.selectedIndex-1].form.value);
+    this.form.patchValue(PersonaFormComponentArray[this.stepper.selectedIndex-1].form.value);
+    console.log("sto per salvare", this.form.value);
+    this.svcPersone.put(this.form.value).subscribe(
+      res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
+
+      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+  );
+
+
+
   }
 
 }

@@ -166,7 +166,7 @@ export class AlunnoEditComponent implements OnInit {
               this.formPersona.controls['cognome'].setValue(alunno.persona!.cognome);
               this.formPersona.controls['dtNascita'].setValue(alunno.persona!.dtNascita);
               this.formPersona.controls['genere'].setValue(alunno.persona!.genere);
-              this.formPersona.controls['cf'].setValue(alunno.persona!.CF);
+              this.formPersona.controls['cf'].setValue(alunno.persona!.cf);
 
               this.formPersona.controls['comuneNascita'].setValue(alunno.persona!.comuneNascita);
               this.formPersona.controls['provNascita'].setValue(alunno.persona!.provNascita);
@@ -241,7 +241,7 @@ export class AlunnoEditComponent implements OnInit {
       cap :                                     this.formPersona.value.cap,
       nazione :                                 this.formPersona.value.nazione,
       genere :                                  this.formPersona.value.genere,
-      CF :                                      this.formPersona.value.cf,
+      cf :                                      this.formPersona.value.cf,
       telefono :                                this.formPersona.value.telefono,
       telefono1 :                               this.formPersona.value.telefono1,
 

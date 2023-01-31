@@ -1,27 +1,27 @@
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
-import { concatMap, tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogRef }              from '@angular/material/dialog';
+import { Observable }                           from 'rxjs';
+import { concatMap, tap }                       from 'rxjs/operators';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //components
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
-import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
+import { ClassiSezioniAnniListComponent }       from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 
 //services
-import { AlunniService } from '../../alunni/alunni.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { ParametriService } from 'src/app/_services/parametri.service';
-import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
-import { RetteService } from '../rette.service';
+import { AlunniService }                        from '../../alunni/alunni.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { ParametriService }                     from 'src/app/_services/parametri.service';
+import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
+import { RetteService }                         from '../rette.service';
 
 //classes
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
-import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
-import { PAG_Retta } from 'src/app/_models/PAG_Retta';
+import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
+import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
+import { PAG_Retta }                            from 'src/app/_models/PAG_Retta';
 
 @Component({
   selector: 'app-retta-calcolo',
@@ -31,34 +31,34 @@ import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 
 export class RettaCalcoloComponent implements OnInit {
 
-  obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   //obsQuoteDefault$!:                  Observable<_UT_Parametro>;
   //obsQuoteRidotteFratelli$!:          Observable<_UT_Parametro>;
   
-  obsClassiSezioniAnni$!:             Observable<CLS_ClasseSezioneAnno[]>;
-  obsRette$!:                         Observable<PAG_Retta[]>;
+  obsClassiSezioniAnni$!:                       Observable<CLS_ClasseSezioneAnno[]>;
+  obsRette$!:                                   Observable<PAG_Retta[]>;
   // obsFilteredAlunni$!:                Observable<ALU_Alunno[]>;
 
   //form! :                             FormGroup;
-  public mesiArr =                    [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
-  public placeholderMeseArr=          ["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
-  public QuoteDefault =               "000000000000";
-  public QuoteRidotteFratelli =       false;
+  public mesiArr =                              [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
+  public placeholderMeseArr=                    ["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
+  public QuoteDefault =                         "000000000000";
+  public QuoteRidotteFratelli =                 false;
 
   @ViewChild('ListClassi') viewListClassi!:     ClassiSezioniAnniListComponent; 
   @ViewChildren('QuoteListElement') QuoteList!: QueryList<any>;
 
   constructor(
-    public _dialogRef:                    MatDialogRef<RettaCalcoloComponent>,
+    public _dialogRef:                          MatDialogRef<RettaCalcoloComponent>,
 
-    private svcIscrizioni:                IscrizioniService,
-    private svcRette:                     RetteService,
-    private svcAlunni:                    AlunniService,
+    private svcIscrizioni:                      IscrizioniService,
+    private svcRette:                           RetteService,
+    private svcAlunni:                          AlunniService,
     
-    private svcParametri:                 ParametriService,
-    private _loadingService:              LoadingService,
-    public _dialog:                       MatDialog,
-    private _snackBar:                    MatSnackBar ) {
+    private svcParametri:                       ParametriService,
+    private _loadingService:                    LoadingService,
+    public _dialog:                             MatDialog,
+    private _snackBar:                          MatSnackBar ) {
 
     _dialogRef.disableClose = true;
 

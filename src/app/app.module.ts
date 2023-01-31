@@ -13,7 +13,9 @@ import { DragDropModule}                        from '@angular/cdk/drag-drop';
 import { MaterialModule }                       from './_material/material.module';
 import { MatPaginatorIntl }                     from '@angular/material/paginator';
 
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS }        from '@angular/material/snack-bar';
+import { STEPPER_GLOBAL_OPTIONS }               from '@angular/cdk/stepper';
+
 
 //Fullcalendar
 import { FullCalendarModule }                   from '@fullcalendar/angular'; // Va prima dei plugin di FullCalendar
@@ -189,7 +191,9 @@ import { VerbaliListComponent }                 from './_components/verbali/verb
 import { VerbaleEditComponent }                 from './_components/verbali/verbale-edit/verbale-edit.component';
 import { VerbaliPageComponent }                 from './_components/verbali/verbali-page/verbali-page.component';
 import { VerbaliFilterComponent }               from './_components/verbali/verbali-filter/verbali-filter.component';
-import { ProceduraIscrizioneComponent } from './_components/procedura-iscrizione/procedura-iscrizione.component';
+
+
+import { ProceduraIscrizioneComponent }         from './_components/procedura-iscrizione/procedura-iscrizione.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -368,7 +372,14 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl },
-    { provide: EventEmitterService}
+    { provide: EventEmitterService},
+    {provide: STEPPER_GLOBAL_OPTIONS,
+    useValue: { showError: true }}
+
+    
+
+
+
   ],
   bootstrap: [AppComponent]
 })
