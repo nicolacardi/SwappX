@@ -62,35 +62,35 @@ export class PersonaEditComponent implements OnInit {
     _dialogRef.disableClose = true;
     //let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 
-    this.form = this.fb.group({
-      id:                         [null],
-      tipoPersonaID:              ['', Validators.required],
+    // this.form = this.fb.group({
+    //   id:                         [null],
+    //   tipoPersonaID:              ['', Validators.required],
 
-      nome:                       [''],
-      cognome:                    [''],
-      dtNascita:                  [''],
-      comuneNascita:              [''],
-      provNascita:                [''],
-      nazioneNascita:             [''],
-      indirizzo:                  [''],
-      comune:                     [''],
-      prov:                       [''],
-      cap:                        [''],
-      nazione:                    [''],
-      genere:                     [''],
-      cf:                         [''],
-      telefono:                   [''],
-      email:                      [''],
+    //   nome:                       [''],
+    //   cognome:                    [''],
+    //   dtNascita:                  [''],
+    //   comuneNascita:              [''],
+    //   provNascita:                [''],
+    //   nazioneNascita:             [''],
+    //   indirizzo:                  [''],
+    //   comune:                     [''],
+    //   prov:                       [''],
+    //   cap:                        [''],
+    //   nazione:                    [''],
+    //   genere:                     [''],
+    //   cf:                         [''],
+    //   telefono:                   [''],
+    //   email:                      [''],
 
-      ckAttivo:                   [true]
-    });
+    //   ckAttivo:                   [true]
+    // });
   }
 
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit() {
-    this.currPersona = Utility.getCurrentUser();
-    this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.TipoPersona!.livello);
+    //this.currPersona = Utility.getCurrentUser();
+    //this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.TipoPersona!.livello);
     this.loadData();
   }
 
@@ -107,7 +107,8 @@ export class PersonaEditComponent implements OnInit {
       this.persona$ = loadPersona$
       .pipe( 
           tap(
-            persona => this.form.patchValue(persona)
+            persona => this.personaID = persona.id
+            //this.form.patchValue(persona)
           )
       );
     }
@@ -121,24 +122,15 @@ export class PersonaEditComponent implements OnInit {
 
   save()
   {
-    //Prendo dal form nel child personaForm i valori dei campi che NON si trovano nel component padre
-    this.form.patchValue(this.personaFormComponent.form.value);
-
-    if (this.form.controls['id'].value == null) 
-      this.svcPersone.post(this.form.value).subscribe(
-        res=> this._dialogRef.close(),
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    );
-    else {
-      console.log("PER_Persona form", this.form.value);
-      this.svcPersone.put(this.form.value).subscribe(
-        res=> { 
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-          this._dialogRef.close();
-        },
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      );   
-    }
+    this.personaFormComponent.save()
+    .subscribe(
+      res=> {
+        this._dialogRef.close();
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+      },
+      err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+    )
+  
   }
 
   delete()
@@ -149,7 +141,7 @@ export class PersonaEditComponent implements OnInit {
     });
               dialogYesNo.afterClosed().subscribe( result => {
         if(result){
-          this.svcPersone.delete(Number(this.personaID)).subscribe(
+          this.svcPersone.delete(Number(this.personaID)).subscribe(  //va sostituita con il metodo di personaForm...ma in quel caso va resa anche la delete unmetodo che restituisce un observable
             res=> { 
               this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();

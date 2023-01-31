@@ -62,16 +62,18 @@ export class GenitoreEditComponent implements OnInit {
 
 //#endregion
 
-  constructor(public _dialogRef: MatDialogRef<GenitoreEditComponent>,
-              @Inject(MAT_DIALOG_DATA) public genitoreID: number,
-              private fb:                                 FormBuilder, 
-              private svcGenitori:                        GenitoriService,
-              private svcTipiGenitore:                    TipiGenitoreService,
-              private svcPersone:                         PersoneService,
-              private svcAlunni:                          AlunniService, //serve perchè è in questa che si trovano le addToFamily e RemoveFromFamily"
-              public _dialog:                             MatDialog,
-              private _snackBar:                          MatSnackBar,
-              private _loadingService :                   LoadingService ) {
+  constructor(
+    public _dialogRef: MatDialogRef<GenitoreEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public genitoreID: number,
+    private fb:                                 FormBuilder, 
+    private svcGenitori:                        GenitoriService,
+    private svcTipiGenitore:                    TipiGenitoreService,
+    private svcPersone:                         PersoneService,
+    private svcAlunni:                          AlunniService, //serve perchè è in questa che si trovano le addToFamily e RemoveFromFamily"
+    public _dialog:                             MatDialog,
+    private _snackBar:                          MatSnackBar,
+    private _loadingService :                   LoadingService
+  ) {
 
     _dialogRef.disableClose = true;
 
@@ -97,9 +99,6 @@ export class GenitoreEditComponent implements OnInit {
   loadData(){
 
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
-
-    //********************* POPOLAMENTO FORM *******************
-    //serve distinguere tra form vuoto e form popolato in arrivo da lista alunni
     
     if (this.genitoreID && this.genitoreID + '' != "0") {
 
@@ -109,13 +108,11 @@ export class GenitoreEditComponent implements OnInit {
       .pipe(
           tap(
             genitore => {
+              console.log ("loadgenitore", genitore);
               this.personaID = genitore.personaID;
               this.genitoreNomeCognome = genitore.persona.nome + " "+ genitore.persona.cognome;
-
-              this.formGenitore.controls.id.setValue(genitore.id); 
-              this.formGenitore.controls.tipoGenitoreID.setValue(genitore.tipoGenitoreID); 
-              this.formGenitore.controls.titoloStudio.setValue(genitore.titoloStudio );
-              this.formGenitore.controls.professione.setValue(genitore.professione);
+              this.formGenitore.patchValue(genitore);
+              
             }
           )
       );
@@ -129,48 +126,36 @@ export class GenitoreEditComponent implements OnInit {
 
   save()
   {
-    let genitoreObj: ALU_Genitore = {
-      id:                         this.formGenitore.value.id,
-      personaID:                  this.personaFormComponent.form.value.id,
 
-      tipoGenitoreID:             this.formGenitore.value.tipoGenitoreID,
-      titoloStudio:               this.formGenitore.value.titoloStudio,
-      professione:                this.formGenitore.value.professione,
-
-      persona:                    this.personaFormComponent.form.value
-      //persona:                    {}
-    }
-
-    this.personaFormComponent.save();
     if (this.genitoreID == null || this.genitoreID == 0) {
 
-      console.log("MERDA1",  );
-      
-      //genitoreObj.persona.id =   this.personaFormComponent.form.value.id;
-      //genitoreObj.personaID =   this.personaFormComponent.form.value.id;
-
-      this.formGenitore.controls["personaID"].setValue(this.personaFormComponent.form.value.id);
-
-      //this.svcGenitori.post(genitoreObj).subscribe(
-        console.log("this.formGenitore",this.formGenitore.value);
-        this.svcGenitori.post(this.formGenitore.value).subscribe(
+      this.personaFormComponent.save()
+      .pipe(
+        tap(persona => {
+          this.formGenitore.controls.personaID.setValue(persona.id)
+        }),
+        concatMap( () => this.svcGenitori.post(this.formGenitore.value))
+      )
+      .subscribe(
         res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
         err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      ); 
-    }
-    else {
-      console.log("MERDA2");
-
-      this.svcGenitori.put(this.formGenitore.value).subscribe(
+      )
+    } else
+    {
+      this.personaFormComponent.save()
+      .pipe(
+        concatMap( () => this.svcGenitori.put(this.formGenitore.value))
+      )
+      .subscribe(
         res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
         err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      );
+      )
     }
   }
 

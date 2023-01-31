@@ -45,16 +45,18 @@ export class PersonaFormComponent implements OnInit {
 //#region ----- ViewChild Input Output -------
   @Input() personaID!:                          number;
   @Input() tipoPersonaID!:                      number;
+  @Input() dove!:                               string;
 
 //#endregion
 
-  constructor(public _dialogRef:                          MatDialogRef<PersonaFormComponent>,
-              public _dialog:                             MatDialog,
-              private fb:                                 FormBuilder, 
-              private svcPersone:                         PersoneService,
-              private svcTipiPersona:                     TipiPersonaService,
-              private svcComuni:                          ComuniService,
-              private _loadingService :                   LoadingService  ) { 
+  constructor(
+    public _dialogRef:                          MatDialogRef<PersonaFormComponent>,
+    public _dialog:                             MatDialog,
+    private fb:                                 FormBuilder, 
+    private svcPersone:                         PersoneService,
+    private svcTipiPersona:                     TipiPersonaService,
+    private svcComuni:                          ComuniService,
+    private _loadingService :                   LoadingService  ) { 
 
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 
@@ -131,35 +133,35 @@ export class PersonaFormComponent implements OnInit {
       )
   }
 
-  save(): number {
+  save() :Observable<any>{
 
-    console.log("persona-forma - save");
-
-    if (this.personaID == null) {
-      this.svcPersone.post(this.form.value).subscribe(
-        res => {
-          this.personaID = res.id;
-          console.log("salvato Form Persona - post", res.id)
-          return this.personaID;
-        },
-        err => {
-           console.log("errore in salvataggio Form Persona - post")
-           return this.personaID;
-          }
-      ) 
+    
+    if (this.personaID == null || this.personaID == 0) {
+      console.log("faccio la post di", this.form.value, "personaID:", this. personaID);
+      return this.svcPersone.post(this.form.value)
+      // this.svcPersone.post(this.form.value).subscribe(
+      //   res => {
+      //     this.personaID = res.id;
+      //     console.log("salvato Form Persona - post", res.id)
+      //     return this.personaID;
+      //   },
+      //   err => {
+      //      console.log("errore in salvataggio Form Persona - post")
+      //      return this.personaID;
+      //     }
+      // ) 
     }
     else {
-      this.svcPersone.put(this.form.value).subscribe(
-        res => console.log("salvato Form Persona - put"),
-        err => console.log("errore in salvataggio Form Persona - put")
-      ) 
-      return this.personaID;
+      console.log("faccio la put di", this.form.value, "personaID:", this. personaID);
+
+      return this.svcPersone.put(this.form.value)
+
     }
   }
 
   delete() {
 
-    if (this.personaID == null) {
+    if (this.personaID != null) {
       this.svcPersone.delete(this.personaID).subscribe(
         res => console.log("Cancellato ID = " , this.personaID),
         err => console.log("errore in cancellazione  - delete ID=", this.personaID)

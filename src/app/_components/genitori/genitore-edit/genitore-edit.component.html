@@ -38,10 +38,9 @@
                 <mat-tab-group mat-align-tabs="center" (selectedTabChange)="selectedTabValue($event)">
 <!-- ********************************    MAT TAB ANAGRAFICA *********************************** -->
                     <mat-tab  label="Dati Anagrafici">
-                        
-                        <app-persona-form *ngIf="(genitore$ | async) || emptyForm" [personaID] = "personaID" [tipoPersonaID]="3">   </app-persona-form>
 
                         <form *ngIf="(genitore$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "formGenitore">
+
                             <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
                                 <mat-grid-tile>
                                     <mat-form-field>
@@ -54,6 +53,12 @@
                                     </mat-form-field>
                                 </mat-grid-tile>
                             </mat-grid-list>
+                    
+                            <app-persona-form *ngIf="(genitore$ | async) || emptyForm" 
+                                [personaID] = "personaID" 
+                                [tipoPersonaID]="3"
+                                [dove]="'genitore-edit'">   
+                            </app-persona-form>
 
                             <mat-grid-list class="mt10" [cols]="3" rowHeight="60px" (window:resize)="onResize($event)">
                                 <mat-grid-tile>

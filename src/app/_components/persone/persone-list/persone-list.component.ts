@@ -1,24 +1,24 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray }         from '@angular/cdk/drag-drop';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
-import { SelectionModel } from '@angular/cdk/collections';
-import { map } from 'rxjs/operators';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatMenuTrigger }                       from '@angular/material/menu';
+import { MatPaginator }                         from '@angular/material/paginator';
+import { MatSort }                              from '@angular/material/sort';
+import { MatTableDataSource }                   from '@angular/material/table';
+import { Observable }                           from 'rxjs';
+import { SelectionModel }                       from '@angular/cdk/collections';
+import { map }                                  from 'rxjs/operators';
 
 //components
-import { PersonaEditComponent } from '../persona-edit/persona-edit.component';
-import { PersoneFilterComponent } from '../persone-filter/persone-filter.component';
+import { PersonaEditComponent }                 from '../persona-edit/persona-edit.component';
+import { PersoneFilterComponent }               from '../persone-filter/persone-filter.component';
 
 //services
-import { PersoneService } from '../persone.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
+import { PersoneService }                       from '../persone.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
 
 //models
-import { PER_Persona } from 'src/app/_models/PER_Persone';
+import { PER_Persona }                          from 'src/app/_models/PER_Persone';
 
 
 @Component({
