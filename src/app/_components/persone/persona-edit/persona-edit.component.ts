@@ -144,7 +144,7 @@ export class PersonaEditComponent implements OnInit {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-    dialogYesNo.afterClosed().subscribe( result => {
+              dialogYesNo.afterClosed().subscribe( result => {
         if(result){
           this.svcPersone.delete(Number(this.personaID)).subscribe(
             res=> { 

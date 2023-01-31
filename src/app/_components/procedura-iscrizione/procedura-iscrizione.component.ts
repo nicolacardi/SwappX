@@ -142,12 +142,12 @@ export class ProceduraIscrizioneComponent implements OnInit {
   }
 
   salvaPersona(n: number){
-    console.log(this.stepper.selectedIndex);
+    //console.log(this.stepper.selectedIndex);
     this.form.controls.tipoPersonaID.setValue(n);
     let PersonaFormComponentArray = this.PersonaFormComponent.toArray();
-    console.log ("form del child", PersonaFormComponentArray[this.stepper.selectedIndex-1].form.value);
+    //console.log ("form del child", PersonaFormComponentArray[this.stepper.selectedIndex-1].form.value);
     this.form.patchValue(PersonaFormComponentArray[this.stepper.selectedIndex-1].form.value);
-    console.log("sto per salvare", this.form.value);
+    //console.log("sto per salvare", this.form.value);
     this.svcPersone.put(this.form.value).subscribe(
       res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
 
