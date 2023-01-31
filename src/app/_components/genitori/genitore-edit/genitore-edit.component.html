@@ -21,7 +21,7 @@
                     </button>
 
                     <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-
+                            [disabled] ="!isValid"
                             (click)="save()" >
                         <mat-icon>save</mat-icon>
                     </button>
@@ -57,7 +57,9 @@
                             <app-persona-form *ngIf="(genitore$ | async) || emptyForm" 
                                 [personaID] = "personaID" 
                                 [tipoPersonaID]="3"
-                                [dove]="'genitore-edit'">   
+                                [dove]="'genitore-edit'"
+                                (formValid)="formValidEmitted($event)"
+                                >   
                             </app-persona-form>
 
                             <mat-grid-list class="mt10" [cols]="3" rowHeight="60px" (window:resize)="onResize($event)">

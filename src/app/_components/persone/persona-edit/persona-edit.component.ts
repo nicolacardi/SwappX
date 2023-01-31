@@ -1,5 +1,5 @@
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
@@ -18,7 +18,6 @@ import { TipiPersonaService } from '../tipi-persona.service';
 import { PER_Persona, PER_TipoPersona } from 'src/app/_models/PER_Persone';
 import { PersonaFormComponent } from '../persona-form/persona-form.component';
 import { User } from 'src/app/_user/Users';
-import { Utility } from '../../utilities/utility.component';
 
 
 @Component({
@@ -29,16 +28,17 @@ import { Utility } from '../../utilities/utility.component';
 export class PersonaEditComponent implements OnInit {
 
 //#region ----- Variabili -------
-  persona$!:                  Observable<PER_Persona>;
-  obsTipiPersona$!:           Observable<PER_TipoPersona[]>;
-  currPersona!:               User;
+  persona$!:                                    Observable<PER_Persona>;
+  obsTipiPersona$!:                             Observable<PER_TipoPersona[]>;
+  currPersona!:                                 User;
 
-  form! :                     FormGroup;
-  emptyForm :                 boolean = false;
-  comuniIsLoading:            boolean = false;
-  comuniNascitaIsLoading:     boolean = false;
-  breakpoint!:                number;
-  breakpoint2!:               number;
+  form! :                                       FormGroup;
+  isValid!:                                     boolean;
+  emptyForm :                                   boolean = false;
+  comuniIsLoading:                              boolean = false;
+  comuniNascitaIsLoading:                       boolean = false;
+  breakpoint!:                                  number;
+  breakpoint2!:                                 number;
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -141,14 +141,16 @@ export class PersonaEditComponent implements OnInit {
     });
               dialogYesNo.afterClosed().subscribe( result => {
         if(result){
-          this.svcPersone.delete(Number(this.personaID)).subscribe(  //va sostituita con il metodo di personaForm...ma in quel caso va resa anche la delete unmetodo che restituisce un observable
+
+          this.personaFormComponent.delete()
+          .subscribe(  
             res=> { 
               this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();
             },
             err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-        );
-      }
+          );
+        }
     });
   }
 //#endregion
@@ -158,6 +160,10 @@ export class PersonaEditComponent implements OnInit {
   onResize(event: any) {
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
     this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
+  }
+
+  formValidEmitted(isValid: boolean) {
+    this.isValid = isValid;
   }
 
 //#endregion

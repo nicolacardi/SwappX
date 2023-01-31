@@ -1,6 +1,6 @@
 <form *ngIf="(persona$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
 
-    <mat-grid-list *ngIf="dove!= 'genitore-edit'" class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list *ngIf="dove!= 'genitore-edit' && dove!='alunno-edit'" class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field >
                 <mat-label>Tipo Personale</mat-label>

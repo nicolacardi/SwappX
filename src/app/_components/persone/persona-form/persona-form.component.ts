@@ -1,7 +1,7 @@
-import { Component, Input, OnInit }             from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output }             from '@angular/core';
 import { FormBuilder, FormGroup, Validators }   from '@angular/forms';
 import { MatDialog, MatDialogRef }              from '@angular/material/dialog';
-import { Observable }                           from 'rxjs';
+import { Observable, of }                           from 'rxjs';
 import { debounceTime, switchMap, tap }         from 'rxjs/operators';
 
 //components
@@ -31,7 +31,6 @@ export class PersonaFormComponent implements OnInit {
   obsTipiPersona$!:                             Observable<PER_TipoPersona[]>;
   currPersona!:                                 User;
 
-
   public form! :                                FormGroup;
   emptyForm :                                   boolean = false;
   filteredComuni$!:                             Observable<_UT_Comuni[]>;
@@ -47,6 +46,7 @@ export class PersonaFormComponent implements OnInit {
   @Input() tipoPersonaID!:                      number;
   @Input() dove!:                               string;
 
+  @Output('formValid') formValid = new EventEmitter<boolean>();
 //#endregion
 
   constructor(
@@ -89,6 +89,10 @@ export class PersonaFormComponent implements OnInit {
 
   ngOnInit(){
     this.loadData();
+    this.form.valueChanges
+    .subscribe(
+      res=> this.formValid.emit(this.form.valid)
+    )
   }
 
   loadData(){
@@ -135,38 +139,22 @@ export class PersonaFormComponent implements OnInit {
 
   save() :Observable<any>{
 
-    
     if (this.personaID == null || this.personaID == 0) {
       console.log("faccio la post di", this.form.value, "personaID:", this. personaID);
       return this.svcPersone.post(this.form.value)
-      // this.svcPersone.post(this.form.value).subscribe(
-      //   res => {
-      //     this.personaID = res.id;
-      //     console.log("salvato Form Persona - post", res.id)
-      //     return this.personaID;
-      //   },
-      //   err => {
-      //      console.log("errore in salvataggio Form Persona - post")
-      //      return this.personaID;
-      //     }
-      // ) 
     }
     else {
       console.log("faccio la put di", this.form.value, "personaID:", this. personaID);
-
       return this.svcPersone.put(this.form.value)
-
     }
   }
 
-  delete() {
+  delete() :Observable<any>{
 
     if (this.personaID != null) {
-      this.svcPersone.delete(this.personaID).subscribe(
-        res => console.log("Cancellato ID = " , this.personaID),
-        err => console.log("errore in cancellazione  - delete ID=", this.personaID)
-      );
-    }
+      return this.svcPersone.delete(this.personaID)
+      
+    } else return of();
   }
 
 //#endregion

@@ -4,8 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { iif, Observable, of }                  from 'rxjs';
-import { concatMap, debounceTime, switchMap, tap } from 'rxjs/operators';
-import { ActivatedRoute, Router }               from '@angular/router';
+import { concatMap, tap }                       from 'rxjs/operators';
 
 //components
 import { AlunniListComponent }                  from '../../alunni/alunni-list/alunni-list.component';
@@ -15,7 +14,6 @@ import { PersonaFormComponent }                 from '../../persone/persona-form
 //services
 import { GenitoriService }                      from 'src/app/_components/genitori/genitori.service';
 import { PersoneService }                       from '../../persone/persone.service';
-import { ComuniService }                        from 'src/app/_services/comuni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { AlunniService }                        from '../../alunni/alunni.service';
 import { TipiGenitoreService }                  from '../tipi-genitore.service';
@@ -44,6 +42,7 @@ export class GenitoreEditComponent implements OnInit {
   genitoreNomeCognome :                         string = "";
   formGenitore! :                               FormGroup;
 
+  isValid!:                                     boolean;
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
 
@@ -68,7 +67,6 @@ export class GenitoreEditComponent implements OnInit {
     private fb:                                 FormBuilder, 
     private svcGenitori:                        GenitoriService,
     private svcTipiGenitore:                    TipiGenitoreService,
-    private svcPersone:                         PersoneService,
     private svcAlunni:                          AlunniService, //serve perchè è in questa che si trovano le addToFamily e RemoveFromFamily"
     public _dialog:                             MatDialog,
     private _snackBar:                          MatSnackBar,
@@ -108,11 +106,9 @@ export class GenitoreEditComponent implements OnInit {
       .pipe(
           tap(
             genitore => {
-              console.log ("loadgenitore", genitore);
               this.personaID = genitore.personaID;
               this.genitoreNomeCognome = genitore.persona.nome + " "+ genitore.persona.cognome;
               this.formGenitore.patchValue(genitore);
-              
             }
           )
       );
@@ -168,11 +164,11 @@ export class GenitoreEditComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe( result => {
       if(result) {
-
-        this.svcGenitori.delete(Number(this.genitoreID)).subscribe(
+        this.svcGenitori.delete(Number(this.genitoreID))
+        .pipe(
+          concatMap(()=> this.personaFormComponent.delete())
+        ).subscribe(
           res=>{
-            this.personaFormComponent.delete();
-
             this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
             this._dialogRef.close();
           },
@@ -189,7 +185,7 @@ export class GenitoreEditComponent implements OnInit {
 
   addAlunno() 
   {
-     //TODO
+     //TODO *****************/
   }
 
   addToFamily(figlio: ALU_Alunno) {
@@ -226,6 +222,10 @@ export class GenitoreEditComponent implements OnInit {
 
   selectedTabValue(event: any){
     this.selectedTab = event.index;
+  }
+
+  formValidEmitted(isValid: boolean) {
+    this.isValid = isValid;
   }
 //#endregion
 }

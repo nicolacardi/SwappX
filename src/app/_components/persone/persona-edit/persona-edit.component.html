@@ -17,7 +17,7 @@
                 </button>
 
                 <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-                        
+                        [disabled] ="!isValid"
                         (click)="save()" >
                     <mat-icon>save</mat-icon>
                 </button>
@@ -35,7 +35,10 @@
                 <div class="mt20"></div>
 
 
-                <app-persona-form [personaID] = "personaID" >   </app-persona-form>
+                <app-persona-form 
+                    [personaID] = "personaID"
+                    (formValid)="formValidEmitted($event)">   
+                </app-persona-form>
 
             </form>
         </mat-card-content>
