@@ -1,18 +1,23 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { debounceTime, switchMap, tap } from 'rxjs/operators';
+import { Component, Input, OnInit }             from '@angular/core';
+import { FormBuilder, FormGroup, Validators }   from '@angular/forms';
+import { MatDialog, MatDialogRef }              from '@angular/material/dialog';
+import { Observable }                           from 'rxjs';
+import { debounceTime, switchMap, tap }         from 'rxjs/operators';
+
+//components
+import { Utility }                              from '../../utilities/utility.component';
+
 
 //services
-import { ComuniService } from 'src/app/_services/comuni.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { PersoneService } from '../persone.service';
+import { ComuniService }                        from 'src/app/_services/comuni.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { PersoneService }                       from '../persone.service';
 
 //models
-import { PER_Persona } from 'src/app/_models/PER_Persone';
-import { _UT_Comuni } from 'src/app/_models/_UT_Comuni';
+import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
+import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni';
+import { TipiPersonaService }                   from '../tipi-persona.service';
+import { User }                                 from 'src/app/_user/Users';
 
 @Component({
   selector: 'app-persona-form',
@@ -23,35 +28,46 @@ export class PersonaFormComponent implements OnInit {
 
 //#region ----- Variabili -------
 
-  persona$!:                  Observable<PER_Persona>;
+  persona$!:                                    Observable<PER_Persona>;
+  obsTipiPersona$!:                             Observable<PER_TipoPersona[]>;
+  currPersona!:                                 User;
 
 
-  form! :                     FormGroup;
-  emptyForm :                 boolean = false;
-  filteredComuni$!:           Observable<_UT_Comuni[]>;
-  filteredComuniNascita$!:    Observable<_UT_Comuni[]>;
-  comuniIsLoading:            boolean = false;
-  comuniNascitaIsLoading:     boolean = false;
-  breakpoint!:                number;
-  breakpoint2!:               number;
+  public form! :                                FormGroup;
+  emptyForm :                                   boolean = false;
+  filteredComuni$!:                             Observable<_UT_Comuni[]>;
+  filteredComuniNascita$!:                      Observable<_UT_Comuni[]>;
+  comuniIsLoading:                              boolean = false;
+  comuniNascitaIsLoading:                       boolean = false;
+  breakpoint!:                                  number;
+  breakpoint2!:                                 number;
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-  @Input() personaID!:         number;
+  @Input() personaID!:                          number;
+  @Input() tipoPersonaID!:                      number;
+
 //#endregion
 
-  constructor( private fb:                           FormBuilder, 
-               private svcPersone:                   PersoneService,
-               private svcComuni:                    ComuniService,
-               public _dialog:                       MatDialog,
-               private _snackBar:                    MatSnackBar,
-               private _loadingService :             LoadingService  ) { 
+  constructor( 
+    
+    public _dialogRef:                          MatDialogRef<PersonaFormComponent>,
+    public _dialog:                             MatDialog,
+
+    private fb:                                 FormBuilder, 
+    
+    private svcPersone:                         PersoneService,
+    private svcTipiPersona:                     TipiPersonaService,
+    private svcComuni:                          ComuniService,
+    
+    private _loadingService :                   LoadingService  
+  ) { 
 
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 
     this.form = this.fb.group({
       id:                         [null],
-      //tipoPersonaID:              ['', Validators.required],
+      tipoPersonaID:              ['', Validators.required],
 
       nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       cognome:                    ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
@@ -68,7 +84,12 @@ export class PersonaFormComponent implements OnInit {
       cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
       telefono:                   ['', Validators.maxLength(13)],
       email:                      ['',Validators.email],
+      ckAttivo:                   [true]
+
     });
+
+    this.currPersona = Utility.getCurrentUser();
+    this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.TipoPersona!.livello);
   }
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -82,9 +103,9 @@ export class PersonaFormComponent implements OnInit {
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
-    if (this.personaID && this.personaID + '' != "0") {
-      //console.log ("personaID", this.personaID);  //come mai aprendo da user-edit gil arriva come persona ID lo user ID?
+    if (this.tipoPersonaID) this.form.controls.tipoPersonaID.setValue(this.tipoPersonaID);
 
+    if (this.personaID && this.personaID + '' != "0") {
       const obsPersona$: Observable<PER_Persona> = this.svcPersone.get(this.personaID);
       const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
 
@@ -99,7 +120,7 @@ export class PersonaFormComponent implements OnInit {
       this.emptyForm = true
 
       //********************* FILTRO COMUNE *******************
-    this.filteredComuni$ = this.form.controls['comune'].valueChanges
+    this.filteredComuni$ = this.form.controls.comune.valueChanges
       .pipe( 
         tap(),
         debounceTime(300),
@@ -109,7 +130,7 @@ export class PersonaFormComponent implements OnInit {
       )
 
     //********************* FILTRO COMUNE NASCITA ***********
-    this.filteredComuniNascita$ = this.form.controls['comuneNascita'].valueChanges
+    this.filteredComuniNascita$ = this.form.controls.comuneNascita.valueChanges
       .pipe( 
         tap(),
         debounceTime(300),
@@ -119,7 +140,35 @@ export class PersonaFormComponent implements OnInit {
       )
   }
 
+  save() {
+
+    if (this.personaID == null) {
+      this.svcPersone.post(this.form.value)
+      .subscribe(
+        res => {
+          this.personaID = res.id;
+          console.log("salvato Form Persona - post", res.id)
+        },
+        err => console.log("errore in salvataggio Form Persona - post")
+      ) 
+    }
+    else {
+      this.svcPersone.put(this.form.value)
+      .subscribe(
+        res => console.log("salvato Form Persona - put"),
+        err => console.log("errore in salvataggio Form Persona - put")
+      ) 
+    }
+  }
+
+  delete() {
+
+  }
 //#endregion
+
+
+
+
 
 //#region ----- Altri metodi -------
 

@@ -46,6 +46,9 @@ export class PersoneService {
 
   post(formData: any): Observable <any>{
     formData.id = 0;
+    formData.tipoPersonaID = 3;
+    console.log ("post", formData)
+    //return of()
     return this.http.post( environment.apiBaseUrl  + 'PER_Persone' , formData);  
   }
 

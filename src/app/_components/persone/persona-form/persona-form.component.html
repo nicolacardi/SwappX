@@ -2,6 +2,21 @@
 
     <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
+            <mat-form-field >
+                <mat-label>Tipo Personale</mat-label>
+                <!-- [disabled] ="currPersona.personaID == personaID" impedire di cambiae tipo a se stessi -->
+                <mat-select matNativeControl formControlName="tipoPersonaID" >
+                    <mat-option *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id">
+                        {{element.descrizione}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+
+    <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+        <mat-grid-tile>
             <mat-form-field>
                 <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome" #nome>
                 <mat-error *ngIf="form.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
@@ -14,7 +29,11 @@
                 <mat-error *ngIf="form.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
             </mat-form-field>
         </mat-grid-tile>
-
+        <mat-grid-tile>
+            <mat-checkbox color="primary" formControlName="ckAttivo">
+                Anagrafica Attiva
+            </mat-checkbox>
+        </mat-grid-tile>
     </mat-grid-list>
 
     <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">

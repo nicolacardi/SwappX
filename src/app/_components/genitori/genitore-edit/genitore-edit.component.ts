@@ -151,8 +151,6 @@ export class GenitoreEditComponent implements OnInit {
       persona: this.personaFormComponent.form.value
     }
 
-    console.log("genitoreObj: ", genitoreObj);
-
     if (this.genitoreID == null || this.genitoreID == 0) {
 
 

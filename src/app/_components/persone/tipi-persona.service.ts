@@ -22,7 +22,7 @@ export class TipiPersonaService {
 
     return this.http.get<PER_TipoPersona[]>(environment.apiBaseUrl+'PER_TipiPersona')
       .pipe (
-        map(val=>val.filter(val=>(val.livello<livelloMax)))
+        map(val=>val.filter(val=>(val.livello<=livelloMax)))
       );
     //http://213.215.231.4/swappX/api/PER_TipiPersona
   }
