@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import { map, catchError } from 'rxjs/operators';
 
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { formatDate } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +59,7 @@ export class GenitoriService {
 
   post(formData: any): Observable <any>{
     formData.id = 0;
+
     return this.http.post( environment.apiBaseUrl  + 'ALU_Genitori' , formData);  
   }
 

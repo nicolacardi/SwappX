@@ -129,13 +129,16 @@ export class PersonaEditComponent implements OnInit {
         res=> this._dialogRef.close(),
         err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
     );
-    else 
-    console.log("PER_Persona form", this.form.value);
+    else {
+      console.log("PER_Persona form", this.form.value);
       this.svcPersone.put(this.form.value).subscribe(
-        res=> this._dialogRef.close(),
+        res=> { 
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+          this._dialogRef.close();
+        },
         err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    );
-    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+      );   
+    }
   }
 
   delete()

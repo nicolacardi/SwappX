@@ -7,7 +7,6 @@ import { debounceTime, switchMap, tap }         from 'rxjs/operators';
 //components
 import { Utility }                              from '../../utilities/utility.component';
 
-
 //services
 import { ComuniService }                        from 'src/app/_services/comuni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
@@ -49,26 +48,19 @@ export class PersonaFormComponent implements OnInit {
 
 //#endregion
 
-  constructor( 
-    
-    public _dialogRef:                          MatDialogRef<PersonaFormComponent>,
-    public _dialog:                             MatDialog,
-
-    private fb:                                 FormBuilder, 
-    
-    private svcPersone:                         PersoneService,
-    private svcTipiPersona:                     TipiPersonaService,
-    private svcComuni:                          ComuniService,
-    
-    private _loadingService :                   LoadingService  
-  ) { 
+  constructor(public _dialogRef:                          MatDialogRef<PersonaFormComponent>,
+              public _dialog:                             MatDialog,
+              private fb:                                 FormBuilder, 
+              private svcPersone:                         PersoneService,
+              private svcTipiPersona:                     TipiPersonaService,
+              private svcComuni:                          ComuniService,
+              private _loadingService :                   LoadingService  ) { 
 
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 
     this.form = this.fb.group({
       id:                         [null],
       tipoPersonaID:              ['', Validators.required],
-
       nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       cognome:                    ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       dtNascita:                  ['', Validators.required],
@@ -85,7 +77,6 @@ export class PersonaFormComponent implements OnInit {
       telefono:                   ['', Validators.maxLength(13)],
       email:                      ['',Validators.email],
       ckAttivo:                   [true]
-
     });
 
     this.currPersona = Utility.getCurrentUser();
@@ -140,34 +131,43 @@ export class PersonaFormComponent implements OnInit {
       )
   }
 
-  save() {
+  save(): number {
+
+    console.log("persona-forma - save");
 
     if (this.personaID == null) {
-      this.svcPersone.post(this.form.value)
-      .subscribe(
+      this.svcPersone.post(this.form.value).subscribe(
         res => {
           this.personaID = res.id;
           console.log("salvato Form Persona - post", res.id)
+          return this.personaID;
         },
-        err => console.log("errore in salvataggio Form Persona - post")
+        err => {
+           console.log("errore in salvataggio Form Persona - post")
+           return this.personaID;
+          }
       ) 
     }
     else {
-      this.svcPersone.put(this.form.value)
-      .subscribe(
+      this.svcPersone.put(this.form.value).subscribe(
         res => console.log("salvato Form Persona - put"),
         err => console.log("errore in salvataggio Form Persona - put")
       ) 
+      return this.personaID;
     }
   }
 
   delete() {
 
+    if (this.personaID == null) {
+      this.svcPersone.delete(this.personaID).subscribe(
+        res => console.log("Cancellato ID = " , this.personaID),
+        err => console.log("errore in cancellazione  - delete ID=", this.personaID)
+      );
+    }
   }
+
 //#endregion
-
-
-
 
 
 //#region ----- Altri metodi -------

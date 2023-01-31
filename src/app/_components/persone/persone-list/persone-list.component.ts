@@ -46,8 +46,7 @@ export class PersoneListComponent implements OnInit {
     "prov", 
     "telefono",
     "email", 
-    "ckAttivo",
-
+    "ckAttivo"
   ];
 
   filterValue = '';       //Filtro semplice
