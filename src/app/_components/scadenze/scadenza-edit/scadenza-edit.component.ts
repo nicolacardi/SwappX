@@ -33,6 +33,7 @@ import { DialogDataScadenza }                   from 'src/app/_models/DialogData
 import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
 import { User }                                 from 'src/app/_user/Users';
 import { CAL_TipoScadenza } from 'src/app/_models/CAL_TipoScadenza';
+import { GenitoriService } from '../../genitori/genitori.service';
 
 
 @Component({
@@ -89,6 +90,8 @@ export class ScadenzaEditComponent implements OnInit {
     private fb:                                 FormBuilder, 
     private svcScadenze:                        ScadenzeService,
     private svcPersone:                         PersoneService,
+    private svcGenitori:                        GenitoriService,
+
     private svcScadenzePersone:                 ScadenzePersoneService,
     private svcTipiScadenza:                    TipiScadenzaService,
 
@@ -615,5 +618,10 @@ export class ScadenzaEditComponent implements OnInit {
       val=> this.colorSample = val.color
     );
   }
+
+
+  
+
+
 
 }

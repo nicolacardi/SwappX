@@ -23,6 +23,16 @@ import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
+import { CAL_Scadenza, CAL_ScadenzaPersone } from 'src/app/_models/CAL_Scadenza';
+import { ScadenzeService } from '../../scadenze/scadenze.service';
+import { Utility } from '../../utilities/utility.component';
+import { User } from 'src/app/_user/Users';
+import { ScadenzePersoneService } from '../../scadenze/scadenze-persone.service';
+import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
+import { GenitoriService } from '../../genitori/genitori.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { concatMap, tap } from 'rxjs/operators';
 
 @Component({
   selector:     'app-iscrizioni-list',
@@ -33,16 +43,18 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 export class IscrizioniListComponent implements OnInit {
 
 //#region ----- Variabili -------
+  public currUser!:                             User;
 
-  matDataSource = new           MatTableDataSource<CLS_Iscrizione>();
+  matDataSource = new                           MatTableDataSource<CLS_Iscrizione>();
 
-  displayedColumns:             string[] = [
+  displayedColumns:                             string[] = [
       "actionsColumn", 
       "nome", 
       "cognome", 
       "classe",
       "sezione",
       "stato",
+      "actionsColumn2",
       "cf",
       "email", 
       "telefono",
@@ -82,15 +94,15 @@ export class IscrizioniListComponent implements OnInit {
       "prov"
   ];
 
-  selection = new               SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
-  obsAnni$!:                    Observable<ASC_AnnoScolastico[]>;           //Serve per la combo anno scolastico
-  form:                         FormGroup;                                  //form fatto della sola combo anno scolastico
+  selection = new                               SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
+  obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>;           //Serve per la combo anno scolastico
+  form:                                         FormGroup;                                  //form fatto della sola combo anno scolastico
   
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
-  toggleChecks:                 boolean = false;
-  showPageTitle:                boolean = true;
-  showTableRibbon:              boolean = true;
+  toggleChecks:                                 boolean = false;
+  showPageTitle:                                boolean = true;
+  showTableRibbon:                              boolean = true;
 
 
   filterValue = '';       //Filtro semplice
@@ -129,17 +141,24 @@ export class IscrizioniListComponent implements OnInit {
 //#endregion
 
   constructor(
-    private svcIscrizioni:    IscrizioniService,
-    private svcAnni:          AnniScolasticiService,
-    private fb:               FormBuilder, 
-    public _dialog:           MatDialog, 
-    private _loadingService:  LoadingService 
+    private svcIscrizioni:                      IscrizioniService,
+    private svcAnni:                            AnniScolasticiService,
+    private svcScadenze:                        ScadenzeService,
+    private svcGenitori:                        GenitoriService,
+
+    private svcScadenzePersone:                 ScadenzePersoneService,
+    private fb:                                 FormBuilder, 
+    public _dialog:                             MatDialog, 
+    private _loadingService:                    LoadingService, 
+    private _snackBar:                          MatSnackBar,
+
   ) {
 
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     });
+    this.currUser = Utility.getCurrentUser();
   }
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -383,6 +402,117 @@ export class IscrizioniListComponent implements OnInit {
     return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
   }
 //#endregion
+
+  makeScadenza(iscrizione: CLS_Iscrizione) {
+    console.log (iscrizione);
+
+
+    //prendo la data corrente
+    let dtTMP = new Date ();
+
+    //ne estraggo ora e minuto
+    let setHours = 0;
+    let setMinutes = 0;
+    setHours = (dtTMP.getHours() + 1)
+    setMinutes = (dtTMP.getMinutes())
+
+    //creo una seconda data e ci metto l'ora + 1 e il minuto
+    let dtTMP2 = new Date (dtTMP.setHours(setHours));
+    dtTMP2.setMinutes(setMinutes);
+
+    let dtScadenza = dtTMP.toLocaleString('sv').replace(' ', 'T').substring(0,10)
+    let h_Ini = dtTMP.toLocaleString('sv').replace(' ', 'T').substring(11,19)
+    let h_End = dtTMP2.toLocaleString('sv').replace(' ', 'T').substring(11,19)
+
+
+    this.svcIscrizioni.get(iscrizione.id).subscribe(
+      iscrizione => {
+        console.log ("iscrizione estratta:", iscrizione)
+        //inserisco la scadenza
+        const objScadenza = <CAL_Scadenza>{
+          dtCalendario: dtScadenza,
+          title: "RICHIESTA DI ISCRIZIONE PER " + iscrizione.alunno!.persona.nome + ' ' + iscrizione.alunno!.persona.cognome,
+          start: dtScadenza,
+          end: dtScadenza,
+          color: "#FF0000", //fa schifetto TODO
+          ckPromemoria: true,
+          ckRisposta: false,
+          h_Ini: h_Ini,
+          h_End: h_End,
+          PersonaID: this.currUser.personaID,
+          TipoScadenzaID: 6,  //Fa schifetto  TODO
+        }
+
+        console.log ("objScadenza", objScadenza);
+        iscrizione.stato.codice = iscrizione.stato.codice + 10; //fa schifetto TODO come facciamo a dire "passa allo stato successivo?"
+
+        let formData = {
+          id: iscrizione.id,
+          codiceStato: iscrizione.stato.codiceSucc
+        }
+        console.log (formData);
+
+        this.svcScadenze.post(objScadenza)
+        .subscribe(
+          scad => {
+            //inserisco i genitori nella tabella ScadenzaPersone: per ora prendo lo stesso metodo usato in notaedit
+            //potrebbe stare fuori da entrambi, per esempio in Utility
+            console.log("ritorno da post", scad);
+            
+            this.insertGenitori(iscrizione.alunnoID, scad.id, iscrizione.id);
+            
+            this.svcIscrizioni.updateStato(formData).subscribe(res=>this.loadData());
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta inviata', panelClass: ['green-snackbar']});
+          },
+          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore invio richiesta', panelClass: ['red-snackbar']})
+        )
+      }
+    ) 
+  }
+
+
+
+  insertGenitori(alunnoID: number, scadenzaID: number, iscrizioneID: number) {
+    //Se si volesse inserire il creatore della scadenza (il maestro per una nota) tra coloro che lo ricevono...
+    // let objScadenzaPersona: CAL_ScadenzaPersone = {
+    //   personaID: this.currUser.personaID,
+    //   scadenzaID : scadenzaID,
+    //   ckLetto: false,
+    //   ckAccettato: false,
+    //   ckRespinto: false,
+    //   link: iscrizioneID.toString()
+    // }
+
+    // this.svcScadenzePersone.post(objScadenzaPersona).subscribe();
+
+    //estraggo i personaID dei genitori
+    //console.log ("nota-edit - insertpersone - alunnoID", alunnoID, "scadenzaID", scadenzaID);
+
+    this.svcGenitori.listByAlunno(alunnoID).subscribe(
+      (res: ALU_Genitore[]) => {
+        if (res.length != 0) {
+          res.forEach( genitore => {
+            let objScadenzaPersona: CAL_ScadenzaPersone = {
+              personaID: genitore.persona.id,
+              scadenzaID : scadenzaID,
+              ckLetto: false,
+              ckAccettato: false,
+              ckRespinto: false,
+              link: iscrizioneID.toString()
+            }
+            //console.log ("nota-edit - insertpersone - genitore", genitore);
+            this.svcScadenzePersone.post(objScadenzaPersona).subscribe();
+          })
+        } 
+        else 
+          console.log ("nessun genitore da inserire, ", res);
+        
+        return;
+      },
+      (err: any)=> {console.log ("errore in inserimento genitori", err)}
+    );  
+  }
+
 
 }
 

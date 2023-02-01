@@ -4,55 +4,52 @@
            <mat-card-header>
 
         <h2 class="_titolo-pagina-home">Scadenze</h2>
-        <a mat-list-item class="h35px" routerLink="/procedura-iscrizione" [queryParams]="{ iscrizioneID: '328' }" >
-
-            <span>Iscrizione</span>
-        </a>
 </mat-card-header>
-    <mat-card *ngFor="let element of (obsMieScadenze$ | async)" class="mt10">
-        <!-- <mat-card-header> -->
-            
-          <!-- <mat-card-title>Shiba Inu</mat-card-title>
-          <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
-        <!-- </mat-card-header> -->
-        <mat-card-content>
-            <!-- <mat-grid-list class="mr10" [cols]="5" >
-                <mat-grid-tile >
-                    <mat-icon class="pointer" *ngIf="!element.ckLetto">check_box_outline_blank</mat-icon>
-                    <mat-icon class="defaultcursor" *ngIf="element.ckLetto">check_box</mat-icon>
-                </mat-grid-tile>
-                <mat-grid-tile colspan="4">
-                    <h4 class="_pos-absolute l0 mr10">{{element.scadenza!.title}}</h4>
-                </mat-grid-tile>
-            </mat-grid-list>
-            <span class="fs40 _pos-absolute r5 t10" [ngStyle]="{'color': element.scadenza!.color}">●</span> -->
+
+<mat-card *ngFor="let element of (obsMieScadenze$ | async)" class="mt10">
+    <!-- <mat-card-header> -->
+        
+        <!-- <mat-card-title>Shiba Inu</mat-card-title>
+        <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+    <!-- </mat-card-header> -->
+    <mat-card-content>
+        <!-- <mat-grid-list class="mr10" [cols]="5" >
+            <mat-grid-tile >
+                <mat-icon class="pointer" *ngIf="!element.ckLetto">check_box_outline_blank</mat-icon>
+                <mat-icon class="defaultcursor" *ngIf="element.ckLetto">check_box</mat-icon>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="4">
+                <h4 class="_pos-absolute l0 mr10">{{element.scadenza!.title}}</h4>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <span class="fs40 _pos-absolute r5 t10" [ngStyle]="{'color': element.scadenza!.color}">●</span> -->
 
 
 
-                    <span class="fs14">{{element.scadenza!.dtCalendario| date: "dd/MM/yy"}}</span> <span class="fs12">  - h.{{element.scadenza!.h_Ini}} </span><br>
-                    <span class="fs16">{{element.scadenza!.title}}</span>
-                    <div *ngIf="element.link">
-                        <a routerLink="/procedura-iscrizione" [queryParams]="{ iscrizioneID: element.link }">link a iscrizione</a>
-                    </div>
-                    
+                <span class="fs14">{{element.scadenza!.dtCalendario| date: "dd/MM/yy"}}</span> <span class="fs12">  - h.{{element.scadenza!.h_Ini}} </span><br>
+                <span class="fs16">{{element.scadenza!.title}}</span>
+                <div *ngIf="element.link">
+                    <a routerLink="/procedura-iscrizione" [queryParams]="{ iscrizioneID: element.link }">link a iscrizione</a>
+                </div>
+                
 
-            <span class="fs40 _pos-absolute r5 t10" [ngStyle]="{'color': element.scadenza!.color}">●</span>
+        <span class="fs40 _pos-absolute r5 t10" [ngStyle]="{'color': element.scadenza!.color}">●</span>
 
 
 
-        </mat-card-content>
-        <mat-button-toggle-group *ngIf="element.scadenza!.ckRisposta" class="_pos-absolute" name="risposta" aria-label="risposta" >
-            <mat-button-toggle [checked]="element.ckAccettato" matTooltip="Invito Accettato" (click)="setAccettato(element)">
-                <mat-icon style="color: green;  transform: scale(0.8)">thumb_up</mat-icon> 
-            </mat-button-toggle>
-            <mat-button-toggle [checked]="element.ckRespinto" matTooltip="Invito Respinto" (click)="setRespinto(element)">
-                <mat-icon style="color: red;  transform: scale(0.8)">thumb_down</mat-icon> 
-            </mat-button-toggle>
-        </mat-button-toggle-group>
+    </mat-card-content>
+    <mat-button-toggle-group *ngIf="element.scadenza!.ckRisposta" class="_pos-absolute" name="risposta" aria-label="risposta" >
+        <mat-button-toggle [checked]="element.ckAccettato" matTooltip="Invito Accettato" (click)="setAccettato(element)">
+            <mat-icon style="color: green;  transform: scale(0.8)">thumb_up</mat-icon> 
+        </mat-button-toggle>
+        <mat-button-toggle [checked]="element.ckRespinto" matTooltip="Invito Respinto" (click)="setRespinto(element)">
+            <mat-icon style="color: red;  transform: scale(0.8)">thumb_down</mat-icon> 
+        </mat-button-toggle>
+    </mat-button-toggle-group>
 
-          <mat-icon class="pointer" *ngIf="!element.ckLetto && !element.scadenza!.ckRisposta" matTooltip="Conferma di lettura" (click)="setLetto(element)">check_box_outline_blank</mat-icon>
-          <mat-icon class="defaultcursor" *ngIf="element.ckLetto && !element.scadenza!.ckRisposta" matTooltip="Conferma di lettura">check_box</mat-icon>
-    </mat-card>
+        <mat-icon class="pointer" *ngIf="!element.ckLetto && !element.scadenza!.ckRisposta" matTooltip="Conferma di lettura" (click)="setLetto(element)">check_box_outline_blank</mat-icon>
+        <mat-icon class="defaultcursor" *ngIf="element.ckLetto && !element.scadenza!.ckRisposta" matTooltip="Conferma di lettura">check_box</mat-icon>
+</mat-card>
 
 
 
@@ -89,4 +86,4 @@
     <!-- <div *ngIf="matDataSource.data.length === 0">
         Hai letto tutti i messaggi
     </div> -->
-</mat-card>
+<!-- </mat-card> -->

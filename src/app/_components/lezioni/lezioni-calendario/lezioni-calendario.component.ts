@@ -532,6 +532,7 @@ export class LezioniCalendarioComponent implements OnInit {
   }
 
   addEvento(selectInfo: DateSelectArg) {
+
     //INSERIMENTO NUOVO EVENTO
     let dtStart: Date;
     let dtEnd: Date;

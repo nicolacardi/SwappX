@@ -69,7 +69,20 @@
 
         <ng-container matColumnDef="stato">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>St.Iscrizione</th>
-            <td mat-cell class="_grey-background" *matCellDef="let element" [innerHTML]="element.stato.descrizione | highlight: filterValue"></td>
+            <td mat-cell [ngStyle]="{'color': element.stato.color}"  class="_grey-background" *matCellDef="let element" [innerHTML]="element.stato.descrizione | highlight: filterValue"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="actionsColumn2">
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header></th>
+            <td mat-cell class="_grey-background" *matCellDef="let element" >
+                <mat-icon 
+                    class="pointer" 
+                    matTooltip="invia richiesta di iscrizione ai genitori di {{element.alunno.persona.nome}} {{element.alunno.persona.cognome}}" 
+                    [ngClass]="{'invisible': !element.stato.ckInvioIscrizione}" 
+                    (click)="makeScadenza(element)">
+                    outgoing_mail
+                </mat-icon>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="dtNascita">

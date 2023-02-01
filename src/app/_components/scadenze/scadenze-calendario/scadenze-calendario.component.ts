@@ -402,7 +402,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
   }
 
   addEvento(selectInfo: DateSelectArg) {
-    
+
     //INSERIMENTO NUOVO EVENTO
     let dtStart: Date;
     let dtEnd: Date;
