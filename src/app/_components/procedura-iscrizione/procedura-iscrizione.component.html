@@ -14,14 +14,18 @@
     <ng-template matStepperIcon="edit">
       <mat-icon>done</mat-icon>
     </ng-template>
-    <mat-step *ngFor="let element of genitoriArr; let i= index" [stepControl]="apppersonaform.form" >
+    <!-- [stepControl]="apppersonaformG.form" -->
+    <mat-step *ngFor="let element of genitoriArr; let i= index"  >
 
 
       <ng-template matStepLabel >Dati del Genitore {{i+1}}</ng-template>
       <h3>{{element.tipoGenitore!.descrizione}}: {{element.persona.nome}} {{element.persona.cognome}}</h3>
       <app-persona-form
-      [personaID]="element.personaID"
-      #apppersonaform>
+        [personaID]="element.personaID"
+        [dove]="'procedura-iscrizione'"
+
+        
+      #apppersonaformG>
       </app-persona-form> 
        <div class="center">
         <button *ngIf="i!=0" mat-stroked-button matStepperPrevious>Indietro</button>
@@ -29,7 +33,7 @@
       </div>
     </mat-step>
 
-    <mat-step [stepControl]="apppersonaform.form">
+    <mat-step >
       <ng-template matStepLabel>Dati dell'alunno</ng-template>
       <h3>Alunno: {{iscrizione.alunno.persona.nome}} {{iscrizione.alunno.persona.cognome}}</h3>
       <app-persona-form
@@ -67,7 +71,6 @@
       Hai completato l'iscrizione
       <div class="center">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
-        <!-- <button mat-stroked-button class="ml10" (click)="stepper.reset()">Reset</button> -->
       </div>
     </mat-step>
 

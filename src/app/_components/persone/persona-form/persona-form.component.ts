@@ -50,15 +50,17 @@ export class PersonaFormComponent implements OnInit {
 //#endregion
 
   constructor(
-    public _dialogRef:                          MatDialogRef<PersonaFormComponent>,
+
+    
+    //public _dialogRef:                          MatDialogRef<PersonaFormComponent>,
     public _dialog:                             MatDialog,
     private fb:                                 FormBuilder, 
     private svcPersone:                         PersoneService,
     private svcTipiPersona:                     TipiPersonaService,
     private svcComuni:                          ComuniService,
     private _loadingService :                   LoadingService  ) { 
-
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
+
 
     this.form = this.fb.group({
       id:                         [null],

@@ -5,6 +5,7 @@
 
         <h2 class="_titolo-pagina-home">Scadenze</h2>
         <a mat-list-item class="h35px" routerLink="/procedura-iscrizione" [queryParams]="{ iscrizioneID: '328' }" >
+
             <span>Iscrizione</span>
         </a>
 </mat-card-header>
@@ -30,6 +31,10 @@
 
                     <span class="fs14">{{element.scadenza!.dtCalendario| date: "dd/MM/yy"}}</span> <span class="fs12">  - h.{{element.scadenza!.h_Ini}} </span><br>
                     <span class="fs16">{{element.scadenza!.title}}</span>
+                    <div *ngIf="element.link">
+                        <a routerLink="/procedura-iscrizione" [queryParams]="{ iscrizioneID: element.link }">link a iscrizione</a>
+                    </div>
+                    
 
             <span class="fs40 _pos-absolute r5 t10" [ngStyle]="{'color': element.scadenza!.color}">●</span>
 

@@ -13,7 +13,6 @@ import { PersonaFormComponent }                 from '../../persone/persona-form
 
 //services
 import { GenitoriService }                      from 'src/app/_components/genitori/genitori.service';
-import { PersoneService }                       from '../../persone/persone.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { AlunniService }                        from '../../alunni/alunni.service';
 import { TipiGenitoreService }                  from '../tipi-genitore.service';

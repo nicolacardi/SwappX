@@ -1,10 +1,13 @@
+                <!-- [disabled] ="currPersona.personaID == personaID" impedire di cambiae tipo a se stessi -->
+
+
+               
 <form *ngIf="(persona$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
 
     <mat-grid-list *ngIf="dove!= 'genitore-edit' && dove!='alunno-edit'" class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field >
                 <mat-label>Tipo Personale</mat-label>
-                <!-- [disabled] ="currPersona.personaID == personaID" impedire di cambiae tipo a se stessi -->
                 <mat-select matNativeControl formControlName="tipoPersonaID" >
                     <mat-option *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id">
                         {{element.descrizione}}
@@ -76,7 +79,6 @@
                     <mat-spinner *ngIf="comuniNascitaIsLoading" class="_spinner-is-loading-mini" diameter="40"></mat-spinner>
                     <mat-option *ngFor="let element of (filteredComuniNascita$ | async)" [value]="element.comune" (click)="popolaProvNascita(element.provincia)">
                         <small>{{element.comune}}</small>
-                        <!-- <small> - {{element.provincia}}</small> -->
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
@@ -108,7 +110,6 @@
                     <ng-container >
                         <mat-option *ngFor="let element of (filteredComuni$ | async)" [value]="element.comune" (click)="popolaProv(element.provincia,  element.cap)">
                             <small>{{element.comune}}</small>
-                            <!-- <small> - {{element.provincia}}</small> -->
                         </mat-option>
                     </ng-container>
                 </mat-autocomplete>
