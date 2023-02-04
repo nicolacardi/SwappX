@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup }               from '@angular/forms';
-import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
-import { concatMap, finalize, map, take, tap }                            from 'rxjs/operators';
+import { concatMap, finalize, take, tap }                            from 'rxjs/operators';
 
 import { registerLocaleData }                   from '@angular/common';
 import localeIt                                 from '@angular/common/locales/it';
@@ -433,54 +433,12 @@ export class ScadenzaEditComponent implements OnInit {
     this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
-  
-
-  // selectedTabValue(event: any){
-  //   //senza questo espediente non fa il primo render correttamente
-  //   this.selectedTab = event.index;
-  // }
-
-  // openColorPicker() {
-    
-  //   const dialogConfig : MatDialogConfig = {
-  //     panelClass: 'add-DetailDialog',
-  //     width: '405px',
-  //     height: '460px',
-  //     data: {ascRGB: this.form.controls.color.value},
-  //   };
-  //   const dialogRef = this._dialog.open(ColorPickerComponent, dialogConfig);
-  //   dialogRef.afterClosed().subscribe(
-  //     result => { 
-  //       //devo valorizzare il campo color
-  //       if (result) this.form.controls.color.setValue(result);
-  //       //this.loadData(); 
-  //     }
-  //   );
-  // }
-
-  // optChangedOLD() {
-  //   let personaIDDaSelezionareArr : number[] =[];
-  //   let count: number = 0;
-  //   this.form.controls.persone.setValue(null);
-  //   this.form.controls.gruppi.value.forEach(
-  //     (val:number) => {
-  //       for (let i = 0; i<this.tipoPersonaIDArr.length; i++) {
-  //         if (this.tipoPersonaIDArr[i] == val) { count++; personaIDDaSelezionareArr.push(this.personaIDArr[i])}
-  //       }
-  //     }
-  //   )
-  //   this.form.controls.persone.setValue(personaIDDaSelezionareArr);
-  // }
 
   optChanged() {
 
-
-
     //devo aggiungere a personeListSelArr tutti quelli di personeListArr che hanno il tipoPersona come quello selezionato
-
     let count: number = 0;
     //devo annullare le precedenti selezioni, facendo reset di tutto
-
 
     //azzero le selezioni
     this.personeListSelArr =[];

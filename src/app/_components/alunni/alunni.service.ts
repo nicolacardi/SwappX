@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { filter, map} from 'rxjs/operators';
@@ -18,6 +18,7 @@ export class AlunniService {
   list(): Observable<ALU_Alunno[]>{
     return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni');
     //http://213.215.231.4/swappX/api/ALU_Alunni
+    //https://213.215.231.4/swappX/api/ALU_Alunni    
   }
   
   listByGenitore(genitoreID: any): Observable<ALU_Alunno[]>{

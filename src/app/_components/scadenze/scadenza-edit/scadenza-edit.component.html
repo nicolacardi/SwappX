@@ -5,7 +5,7 @@
             <!-- ********************************    BOTTONI     ************************************* -->
             <div class="center">
 
-                <img class="iconaMenuBig" src="../assets/evento_edit_T.svg">
+                <img class="iconaMenuBig" src="./assets/evento_edit_T.svg">
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
                 <span [ngClass]="{'invisible': selectedTab != 0}">
@@ -121,10 +121,10 @@
             </mat-grid-list> -->
             <mat-grid-list class="no-overflowx" [cols]="3" rowHeight="30px">
                 <mat-grid-tile class="h10px" colspan="1">
-                    <mat-label class="center fs16">Elenco persone<span class="fs12"> ({{personeListArr.length}})</span></mat-label>
+                    <mat-label *ngIf="personeListArr" class="center fs16">Elenco persone<span class="fs12"> ({{personeListArr.length}})</span></mat-label>
                 </mat-grid-tile>
                 <mat-grid-tile class="h10px" colspan="2">
-                    <mat-label class="center fs16">Visibile a<span class="fs12"> ({{personeListSelArr.length}})</span></mat-label>
+                    <mat-label *ngIf="personeListArr"  class="center fs16">Visibile a<span class="fs12"> ({{personeListSelArr.length}})</span></mat-label>
                 </mat-grid-tile>
 
 

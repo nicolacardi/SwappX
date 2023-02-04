@@ -291,7 +291,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
               this.form.controls.selectDocente.setValue(this.docenteID);
             },
             err => {
-              console.log("getDocenteBypersonaID- KO:", err);
+              //console.log("getDocenteBypersonaID- KO:", err);
               this.docenteID = 0;
             }
           );

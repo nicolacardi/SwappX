@@ -122,7 +122,6 @@ export class ClassiDashboardComponent implements OnInit {
     //ora vanno passati al Child ClassiSezioniAnniList perchè quello deve settarsi su questo anno e su questa classe
     //l'annoID ClassiSezioniAnniList lo prende dalla select che a sua volta lo prende dal local storage (anno di default)
     //bisogna fare in modo che annoID in arrivo da home component "vinca" rispetto all'annoID impostato per default
-
     this.actRoute.queryParams.subscribe(
       params => {
         this.annoIDrouted = params['annoID'];     
@@ -347,7 +346,6 @@ export class ClassiDashboardComponent implements OnInit {
 
   selectedTabValue(event: any){
     //senza questo espediente non fa il primo render correttamente
-    console.log (event);
     if (this.tabGroup.selectedIndex == 2) {
       this.viewOrarioLezioni.calendarDOM.getApi().render();
       this.viewOrarioLezioni.loadData();

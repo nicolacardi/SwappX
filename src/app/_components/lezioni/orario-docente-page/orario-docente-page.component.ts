@@ -58,7 +58,6 @@ export class OrarioDocentePageComponent implements OnInit {
         this.form.controls.selectDocente.setValue(this.docenteID);
       },
       err => {
-        console.log("getDocenteBypersonaID- KO:", err);
         this.form.controls.selectDocente.setValue(0);
         this.docenteID = 0;
       }

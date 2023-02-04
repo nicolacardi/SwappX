@@ -360,7 +360,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FullCalendarModule,
     ColorPickerModule
 
+
   ],
+
 
   providers: [
     UserService,

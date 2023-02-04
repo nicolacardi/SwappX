@@ -30,6 +30,7 @@ constructor(private _navigationService:  NavigationService) { }
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit(): void {
+    console.log("note-page- ngOnInit");
     this._navigationService.passPage("notePage");
   }
 //#endregion

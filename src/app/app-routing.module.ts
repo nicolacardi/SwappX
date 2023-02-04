@@ -83,7 +83,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  //imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })], //NC 02/02 https://stackoverflow.com/questions/60527776/uncaught-in-promise-error-cannot-match-any-routes-angular8
+
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

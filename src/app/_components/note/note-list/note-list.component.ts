@@ -38,13 +38,11 @@ export class NoteListComponent implements OnInit {
   displayedColumnsNotePage:                     string[] =  [
     "actionsColumn", 
     "docente",
-    "alunni",
+    //"alunni",
     "nomiAlunni",
     "dtNota",
     "periodo",
-    "nota",
-    "ckFirmato",
-    "dtFirma"
+    "nota"
   ];
 
   displayedColumnsAlunnoEdit:                   string[] =  [
@@ -98,17 +96,20 @@ export class NoteListComponent implements OnInit {
 
 //#endregion  
 
-  constructor(private svcNote:                            NoteService,
-              private svcDocenti:                         DocentiService,
-              private _loadingService:                    LoadingService,
-              public _dialog:                             MatDialog ) {
+  constructor(
+    private svcNote:                            NoteService,
+    private svcDocenti:                         DocentiService,
+    private _loadingService:                    LoadingService,
+    public _dialog:                             MatDialog ) {
 
   }
 
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
-      this.loadData();
+    
+    this.loadData();
+
   }
 
   ngOnInit(): void {
@@ -117,7 +118,7 @@ export class NoteListComponent implements OnInit {
   loadData() {
 
 
-    console.log("[DEBUG] note-list.loadData: dove=", this.dove)
+    //console.log("[DEBUG] note-list.loadData: dove=", this.dove)
     switch(this.dove) {
 
       case 'classi-dashboard':
@@ -132,7 +133,7 @@ export class NoteListComponent implements OnInit {
     
           loadNote$.subscribe( 
             val =>   {
-              console.log("DEBUG: loadNote: " ,val)
+              // console.log("DEBUG: notelist - loadData: " ,val)
 
               this.matDataSource.data = val;
               this.matDataSource.paginator = this.paginator;
@@ -154,17 +155,27 @@ export class NoteListComponent implements OnInit {
           .pipe(
             concatMap((res: PER_Docente) => this._loadingService.showLoaderUntilCompleted(this.svcNote.listByClasseSezioneAnnoAndDocente(this.classeSezioneAnnoID, res.personaID))
           )).subscribe(
-          //loadNote$.subscribe( 
+
             (val: DOC_Nota[]) =>   {
-              val.forEach(
-                nota=> {
-                  let strNomiAlunni = "";
-                  nota._NotaIscrizioni.forEach( 
-                    (notaIscrizione: DOC_NotaIscrizione) => strNomiAlunni= strNomiAlunni + ' - '+ notaIscrizione.iscrizione.alunno.persona.nome + ' ' + notaIscrizione.iscrizione.alunno.persona.cognome
-                  )
-                  nota.nomiAlunni = strNomiAlunni.slice(3);
-                }
-              );
+
+              console.log("notelist - PARTE DA RPRISTINARE quando _NotaIscrizioni torna dal WS")
+
+              // TODO ********
+              // NON CANCELLARE MA ANZI RIPRSTINARE QUANDO IL SERVICE TORNERA' A MOSTRARE _NotaIscrizioni (attualmente non lo fa e questo blocca il seguito)
+              // val.forEach(
+              //   nota=> {
+              //     let strNomiAlunni = "";
+              //     nota._NotaIscrizioni.forEach( 
+              //       (notaIscrizione: DOC_NotaIscrizione) => strNomiAlunni= strNomiAlunni + ' - '+ notaIscrizione.iscrizione.alunno.persona.nome + ' ' + notaIscrizione.iscrizione.alunno.persona.cognome
+              //     )
+              //     console.log("strNomiAlunni", strNomiAlunni);
+              //     nota.nomiAlunni = strNomiAlunni.slice(3);
+              //   }
+              // );
+
+              
+              // console.log("DEBUG: notelist - loadData: " ,val)
+
               this.matDataSource.data = val;
               this.matDataSource.paginator = this.paginator;
               this.matDataSource.sort = this.sort; 
