@@ -1,25 +1,25 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { concatMap, tap } from 'rxjs/operators';
+import { Component, Inject, OnInit }            from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
+import { MatTableDataSource }                   from '@angular/material/table';
+import { Observable }                           from 'rxjs';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { concatMap, tap }                       from 'rxjs/operators';
 
 //components
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 
 //services
-import { PagellaVotoObiettiviService } from '../pagella-voto-obiettivi.service';
-import { PagelleService } from '../pagelle.service';
-import { PagellaVotiService } from '../pagella-voti.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
+import { PagellaVotoObiettiviService }          from '../pagella-voto-obiettivi.service';
+import { PagelleService }                       from '../pagelle.service';
+import { PagellaVotiService }                   from '../pagella-voti.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
 
 //models
-import { DialogDataVotiObiettivi } from 'src/app/_models/DialogData';
-import { DOC_PagellaVotoObiettivo } from 'src/app/_models/DOC_PagellaVotoObiettivo';
-import { MAT_LivelloObiettivo } from 'src/app/_models/MAT_LivelloObiettivo';
-import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
-import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto';
+import { DialogDataVotiObiettivi }              from 'src/app/_models/DialogData';
+import { DOC_PagellaVotoObiettivo }             from 'src/app/_models/DOC_PagellaVotoObiettivo';
+import { MAT_LivelloObiettivo }                 from 'src/app/_models/MAT_LivelloObiettivo';
+import { DOC_Pagella }                          from 'src/app/_models/DOC_Pagella';
+import { DOC_PagellaVoto }                      from 'src/app/_models/DOC_PagellaVoto';
 
 @Component({
   selector: 'app-voti-obiettivi-edit',
@@ -44,13 +44,15 @@ export class VotiObiettiviEditComponent implements OnInit {
 
 //#endregion
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:   DialogDataVotiObiettivi,
-              public _dialogRef: MatDialogRef         <VotiObiettiviEditComponent>,
-              private svcPagella:                     PagelleService,
-              private svcPagellaVoti:                 PagellaVotiService,
-              private svcPagellaVotoObiettivi:        PagellaVotoObiettiviService,
-              private _loadingService:                LoadingService,
-              private _snackBar:                      MatSnackBar ) { 
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data:       DialogDataVotiObiettivi,
+    public _dialogRef: MatDialogRef             <VotiObiettiviEditComponent>,
+    private svcPagella:                         PagelleService,
+    private svcPagellaVoti:                     PagellaVotiService,
+    private svcPagellaVotoObiettivi:            PagellaVotoObiettiviService,
+    private _loadingService:                    LoadingService,
+    private _snackBar:                          MatSnackBar
+  ) { 
 
   }
 
