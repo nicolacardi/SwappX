@@ -147,7 +147,7 @@ export class NoteListComponent implements OnInit {
         this.showPageTitle = true;
         this.showTableRibbon = true;
         
-        if (this.classeSezioneAnnoID) {
+        if (this.classeSezioneAnnoID && this.docenteID != 0) {
           //Devo pescare il personaID del docenteID e passarlo alla listBYClasseSezionaAnnoIDAndDocente
           this.svcDocenti.get(this.docenteID)
           .pipe(
@@ -156,7 +156,7 @@ export class NoteListComponent implements OnInit {
 
             (val: DOC_Nota[]) =>   {
 
-              console.log("notelist - PARTE DA RPRISTINARE quando _NotaIscrizioni torna dal WS")
+              console.log("notelist - PARTE DA RIPRISTINARE quando _NotaIscrizioni torna dal WS")
 
               // TODO ********
               // NON CANCELLARE MA ANZI RIPRSTINARE QUANDO IL SERVICE TORNERA' A MOSTRARE _NotaIscrizioni (attualmente non lo fa e questo blocca il seguito)

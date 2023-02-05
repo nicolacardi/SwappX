@@ -5,7 +5,7 @@ import { Observable, of }                           from 'rxjs';
 import { debounceTime, switchMap, tap }         from 'rxjs/operators';
 
 //components
-import { Utility }                              from '../../utilities/utility.component';
+import { FormatoData, Utility }                 from '../../utilities/utility.component';
 
 //services
 import { ComuniService }                        from 'src/app/_services/comuni.service';
@@ -145,6 +145,8 @@ export class PersonaFormComponent implements OnInit {
       return this.svcPersone.post(this.form.value)
     }
     else {
+      this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
+      console.log ("PersonaFormComponent - save() - this.form.value", this.form.value);
       return this.svcPersone.put(this.form.value)
     }
   }
