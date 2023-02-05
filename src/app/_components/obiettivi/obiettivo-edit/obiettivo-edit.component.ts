@@ -1,28 +1,30 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit }            from '@angular/core';
+import { FormBuilder, FormGroup, Validators }   from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { CLS_Classe } from 'src/app/_models/CLS_Classe';
-import { MAT_Materia } from 'src/app/_models/MAT_Materia';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { iif, Observable, of }                           from 'rxjs';
+import { concatMap, tap }                                  from 'rxjs/operators';
+
 
 //components
+import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 
 //services
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { ClassiService }                        from '../../classi/classi.service';
+import { MaterieService }                       from '../../materie/materie.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { ObiettiviService }                     from '../obiettivi.service';
+import { PagellaVotoObiettiviService }          from '../../pagelle/pagella-voto-obiettivi.service';
 
 
-//classes
-import { MAT_Obiettivo } from 'src/app/_models/MAT_Obiettivo';
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { ClassiService } from '../../classi/classi.service';
-import { MaterieService } from '../../materie/materie.service';
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { ObiettiviService } from '../obiettivi.service';
-
+//models
+import { MAT_Obiettivo }                        from 'src/app/_models/MAT_Obiettivo';
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { CLS_Classe }                           from 'src/app/_models/CLS_Classe';
+import { MAT_Materia }                          from 'src/app/_models/MAT_Materia';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 @Component({
   selector: 'app-obiettivo-edit',
   templateUrl: './obiettivo-edit.component.html',
@@ -32,30 +34,31 @@ export class ObiettivoEditComponent implements OnInit {
 
 //#region ----- Variabili -------
 
-obiettivo$!:                Observable<MAT_Obiettivo>;
-obsClassi$!:                Observable<CLS_Classe[]>;
-obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;
-obsMaterie$!:               Observable<MAT_Materia[]>;
+obiettivo$!:                                    Observable<MAT_Obiettivo>;
+obsClassi$!:                                    Observable<CLS_Classe[]>;
+obsAnni$!:                                      Observable<ASC_AnnoScolastico[]>;
+obsMaterie$!:                                   Observable<MAT_Materia[]>;
 
 
-form! :                     FormGroup;
-emptyForm :                 boolean = false;
-loading:                    boolean = true;
+form! :                                         FormGroup;
+emptyForm :                                     boolean = false;
+loading:                                        boolean = true;
 //#endregion
 
 constructor(
   public _dialogRef: MatDialogRef<ObiettivoEditComponent>,
-  @Inject(MAT_DIALOG_DATA) public obiettivoID: number,
-  private svcObiettivi:                   ObiettiviService,
-  private svcClassi:                      ClassiService,
-  private svcAnni:                        AnniScolasticiService,
-  private svcMaterie:                     MaterieService,
+  @Inject(MAT_DIALOG_DATA) public obiettivoID:  number,
+  private svcObiettivi:                         ObiettiviService,
+  private svcPagellaVotoObiettivi:              PagellaVotoObiettiviService,
+  private svcClassi:                            ClassiService,
+  private svcAnni:                              AnniScolasticiService,
+  private svcMaterie:                           MaterieService,
 
 
-  private _loadingService :               LoadingService,
-  private fb:                             FormBuilder, 
-  public _dialog:                         MatDialog,
-  private _snackBar:                      MatSnackBar,
+  private _loadingService :                     LoadingService,
+  private fb:                                   FormBuilder, 
+  public _dialog:                               MatDialog,
+  private _snackBar:                            MatSnackBar,
   
 ) { 
   _dialogRef.disableClose = true;
@@ -126,6 +129,7 @@ constructor(
 
   delete(){
 
+  
     const dialogRef = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
@@ -133,17 +137,28 @@ constructor(
     dialogRef.afterClosed().subscribe(
       result => {
         if(result) {
-          this.svcObiettivi.delete(Number(this.obiettivoID))
-          // .pipe (
-          //   finalize(()=>this.router.navigate(['/alunni']))
-          // )
-          .subscribe(
-            res => {
-              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
-              this._dialogRef.close();
-            },
-            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          );
+          //bisogna verificare se per caso questo obiettivoID non sia utilizzato già in qualche voto
+          this.svcPagellaVotoObiettivi.ListByObiettivo(this.obiettivoID)
+            .pipe(
+              tap(res => {
+                if (res.length !=0) {
+                  const dialogRef = this._dialog.open(DialogOkComponent, {
+                    width: '320px',
+                    data: {titolo: "ATTENZIONE", sottoTitolo: "Questo obiettivo è utilizzato in qualche pagella"}
+                  });
+                  return;
+                }
+              }),
+              concatMap(res=> iif (()=> res.length == 0, this.svcObiettivi.delete(Number(this.obiettivoID)), of() ))
+            )
+            .subscribe(
+              res => {
+                console.log(res);
+                this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
+                this._dialogRef.close();
+              },
+              err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+            );
         }
     });
   }
