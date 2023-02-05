@@ -108,7 +108,6 @@ export class LezioniService {
   }
 
   propagaEpocaByClasseSezioneAnnoUntilDate (classeSezioneAnnoID: number, dtFromStart: any, dtUntilEnd: any) {
-    console.log (environment.apiBaseUrl  + 'CAL_Lezioni/propagaEpocaByClasseSezioneAnnoUntilDate/' + classeSezioneAnnoID + '/' + dtFromStart + '/' + dtUntilEnd);
     let formData = {};
     return this.http.post( environment.apiBaseUrl  + 'CAL_Lezioni/propagaEpocaByClasseSezioneAnnoUntilDate/' + classeSezioneAnnoID + '/' + dtFromStart + '/' + dtUntilEnd, formData);
   //http://213.215.231.4/SwappX/api/CAL_Lezioni/propagaEpocaByClasseSezioneAnnoUntilDate/16/2022-03-28/2022-04-02

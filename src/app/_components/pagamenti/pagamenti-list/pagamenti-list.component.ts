@@ -241,7 +241,6 @@ export class PagamentiListComponent implements OnInit {
 
       let dArr = data.dtPagamento.split("-");
       const dtPagamentoddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
-      console.log (data);
 
       let boolSx = String(data.alunno.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
             || String(dtPagamentoddmmyyyy).indexOf(searchTerms.filtrosx) !== -1

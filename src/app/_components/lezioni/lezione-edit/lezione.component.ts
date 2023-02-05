@@ -312,7 +312,6 @@ export class LezioneComponent implements OnInit {
           argomentoCompito: this.form.controls.argomentoCompito.value
         };
 
-        console.log ("lezione-edit, objLezione", objLezione);
         if (this.form.controls['id'].value == null) {   
 
           
@@ -470,10 +469,7 @@ export class LezioneComponent implements OnInit {
         
           this.svcLezioni.put(this.form.value).subscribe(
             res=> {
-              console.log("ho postato le presenze una ad una ora voglio aggiornare presenzeListComponent per fare scomparire il pulsante...tiro da tre... ");
-
               this.PresenzeListComponent.loadData(); //NON VA. #ERROR cannot read properties of undefined reading loadData
-              console.log ("canestro");
             },  
             err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
           );

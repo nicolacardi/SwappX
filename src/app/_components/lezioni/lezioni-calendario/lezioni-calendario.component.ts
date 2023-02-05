@@ -68,7 +68,7 @@ export class LezioniCalendarioComponent implements OnInit {
       dayGridMonth: {  //questo modifica TUTTI gli eventi in questa vista
         eventContent: (event: any, element: any) => {
           { 
-            console.log (event.event._def)
+            // console.log (event.event._def)
             //mostra l'ora
             let timeText = document.createElement('div');
             timeText.className = "fc-event-time";
@@ -609,7 +609,7 @@ export class LezioniCalendarioComponent implements OnInit {
   }
 
   anotherMethod () {
-    console.log ("fat-to");
+    // console.log ("fat-to");
   }
 
   handleResize (resizeInfo: EventResizeDoneArg) {

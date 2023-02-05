@@ -403,7 +403,7 @@ export class IscrizioniListComponent implements OnInit {
 //#endregion
 
   makeScadenza(iscrizione: CLS_Iscrizione) {
-    console.log (iscrizione);
+    //console.log ("iscrizioni-list-makeScadenza - iscrizione:", iscrizione);
 
 
     //prendo la data corrente
@@ -426,7 +426,7 @@ export class IscrizioniListComponent implements OnInit {
 
     this.svcIscrizioni.get(iscrizione.id).subscribe(
       iscrizione => {
-        console.log ("iscrizione estratta:", iscrizione)
+        //console.log ("iscrizioni-list - makeScadenza - iscrizione estratta:", iscrizione)
         //inserisco la scadenza
         const objScadenza = <CAL_Scadenza>{
           dtCalendario: dtScadenza,
@@ -442,21 +442,18 @@ export class IscrizioniListComponent implements OnInit {
           TipoScadenzaID: 6,  //Fa schifetto  TODO
         }
 
-        console.log ("objScadenza", objScadenza);
         iscrizione.stato.codice = iscrizione.stato.codice + 10; //fa schifetto TODO come facciamo a dire "passa allo stato successivo?"
 
         let formData = {
           id: iscrizione.id,
           codiceStato: iscrizione.stato.codiceSucc
         }
-        console.log (formData);
 
         this.svcScadenze.post(objScadenza)
         .subscribe(
           scad => {
             //inserisco i genitori nella tabella ScadenzaPersone: per ora prendo lo stesso metodo usato in notaedit
             //potrebbe stare fuori da entrambi, per esempio in Utility
-            console.log("ritorno da post", scad);
             
             this.insertGenitori(iscrizione.alunnoID, scad.id, iscrizione.id);
             

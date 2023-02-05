@@ -38,7 +38,6 @@ export class AlunniFilterComponent implements OnInit {
       val => {
         //this.resetFilterSx();  
         this.alunniListComponent.filterValues.nome = val.toLowerCase();
-        console.log(this.alunniListComponent.filterValues)
         this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
       }
     )

@@ -47,13 +47,8 @@ constructor(
         val => this.strClasseSezioneAnno = val.classeSezione.classe.descrizione2 + " " + val.classeSezione.sezione
       );
     }
-
-
     this.dtStart = new Date (this.data.start);
     this.strDtStart = Utility.formatDate(this.dtStart, FormatoData.yyyy_mm_dd);
-    console.log ("this.data", this.data);
-
-
 
   }
 //#endregion

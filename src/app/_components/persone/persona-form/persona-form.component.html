@@ -3,10 +3,10 @@
 
                
 <form *ngIf="(persona$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
-
-    <mat-grid-list *ngIf="dove!= 'genitore-edit' && dove!='alunno-edit'" class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <!-- *ngIf="dove!= 'genitore-edit' && dove!='alunno-edit'" -->
+    <mat-grid-list  class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
-            <mat-form-field >
+            <mat-form-field>
                 <mat-label>Tipo Personale</mat-label>
                 <mat-select matNativeControl formControlName="tipoPersonaID" >
                     <mat-option *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id">
@@ -17,7 +17,7 @@
         </mat-grid-tile>
     </mat-grid-list>
 
-    <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome" #nome>
@@ -38,7 +38,7 @@
         </mat-grid-tile>
     </mat-grid-list>
 
-    <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <input matInput required type="text" placeholder="Genere (M/F)" formControlName="genere">
@@ -67,7 +67,7 @@
         </mat-grid-tile>
     </mat-grid-list>
 
-    <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>Comune di Nascita</mat-label>
@@ -97,7 +97,7 @@
         </mat-grid-tile>
 
     </mat-grid-list>
-    <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>Comune di Residenza</mat-label>
@@ -129,7 +129,7 @@
         </mat-grid-tile>
 
     </mat-grid-list>
-    <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <input  matInput type="text" placeholder="Indirizzo e N. Civico" formControlName="indirizzo">
@@ -144,7 +144,7 @@
 
     </mat-grid-list>
 
-    <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <input matInput type="text" placeholder="Telefono" formControlName="telefono">

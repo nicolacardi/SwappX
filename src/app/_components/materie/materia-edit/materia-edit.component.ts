@@ -79,7 +79,6 @@ export class MateriaEditComponent implements OnInit {
       .pipe(
           tap(
             materia => {
-              console.log(materia);
               this.form.patchValue(materia)
             }
           )
@@ -138,7 +137,6 @@ export class MateriaEditComponent implements OnInit {
   }
 
   openColorPicker() {
-    console.log( "passo", this.form.controls.color.value);
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '405px',

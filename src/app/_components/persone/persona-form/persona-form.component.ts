@@ -142,11 +142,9 @@ export class PersonaFormComponent implements OnInit {
   save() :Observable<any>{
 
     if (this.personaID == null || this.personaID == 0) {
-      console.log("faccio la post di", this.form.value, "personaID:", this. personaID);
       return this.svcPersone.post(this.form.value)
     }
     else {
-      console.log("faccio la put di", this.form.value, "personaID:", this. personaID);
       return this.svcPersone.put(this.form.value)
     }
   }

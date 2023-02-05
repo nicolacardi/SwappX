@@ -184,8 +184,8 @@ export class VotoInterrEditComponent implements OnInit {
         giudizio: this.form.controls.giudizio.value,
       }
 
-      console.log ("voto-interr-edit save POST this.form.value", this.form.value);
-      console.log ("voto-interr-edit save POST votoInterrObj", votoInterrObj);
+      // console.log ("voto-interr-edit save POST this.form.value", this.form.value);
+      // console.log ("voto-interr-edit save POST votoInterrObj", votoInterrObj);
       this.form.controls.id.setValue(0);
       this.svcVotiInterr.post(votoInterrObj).subscribe(
         res=> {

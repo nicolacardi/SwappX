@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
@@ -91,7 +91,6 @@ export class GenitoreEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
-
   }
 
   loadData(){
@@ -120,8 +119,7 @@ export class GenitoreEditComponent implements OnInit {
 
 //#region ----- Operazioni CRUD -------
 
-  save()
-  {
+  save() {
 
     if (this.genitoreID == null || this.genitoreID == 0) {
 

@@ -50,9 +50,7 @@ export class NoteListComponent implements OnInit {
     "docente",
     "dtNota",
     "periodo",
-    "nota",
-    "ckFirmato",
-    "dtFirma"
+    "nota"
   ];
 
   rptTitle = 'Lista Note';

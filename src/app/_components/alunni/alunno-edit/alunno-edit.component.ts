@@ -96,21 +96,17 @@ export class AlunnoEditComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili-------
 
-  ngOnChanges() {
-    //console.log("changes");
-    //this.isvalid = this.personaFormComponent.form.valid;
-  }
 
   ngOnInit () {
     this.loadData();
   }
 
+
   loadData(){
 
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
-
-    
+ 
     if (this.alunnoID && this.alunnoID + '' != "0") {
 
       const obsAlunno$: Observable<ALU_Alunno> = this.svcAlunni.get(this.alunnoID);
@@ -130,8 +126,6 @@ export class AlunnoEditComponent implements OnInit {
         
   }
 //#endregion
-
-
 
 //#region ----- Operazioni CRUD -------
   save(){

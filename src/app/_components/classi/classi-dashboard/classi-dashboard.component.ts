@@ -260,7 +260,6 @@ export class ClassiDashboardComponent implements OnInit {
               this.svcIscrizioni.delete(element.id).subscribe(
                 res=>{},
                 err=>{
-                  console.log ("err",err);
                   this._snackBar.openFromComponent(SnackbarComponent, {data: err, panelClass: ['red-snackbar']});
                 }
               );
