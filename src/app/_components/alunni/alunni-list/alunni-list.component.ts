@@ -279,17 +279,16 @@ export class AlunniListComponent implements OnInit {
       let foundGenitore : boolean = false;
 
       // if (Object.values(searchTerms).every(x => x === null || x === '')) 
-      if (data._Genitori.length == 0) //restituiva false se i Genitori non c'erano: sbagliato
-        foundGenitore = true;
+      if (data._Genitori.length == 0) //restituiva true se i Genitori non c'erano: sbagliato
+        foundGenitore = false;
       else {
         data._Genitori?.forEach(
-          (val: { genitore: { nome: any; cognome: any}; })=>  {   
-            const foundCognomeNome = foundGenitore || String(val.genitore.cognome+" "+val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
-            const foundNomeCognome = foundGenitore || String(val.genitore.nome+" "+val.genitore.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
-            foundGenitore = foundCognomeNome || foundNomeCognome;  //TODO attenzione!!! qui c'è un problema! _Genitori non sono i genitori ma ALU_AlunnoGenitore!
+          (val: { genitore: {persona: { nome: any; cognome: any}} })=>  {   
+            const foundCognomeNome = foundGenitore || String(val.genitore.persona.cognome+" "+val.genitore.persona.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
+            const foundNomeCognome = foundGenitore || String(val.genitore.persona.nome+" "+val.genitore.persona.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
+            foundGenitore =  foundCognomeNome || foundNomeCognome;  //attenzione!!! _Genitori non sono i genitori ma ALU_AlunnoGenitore! ecco perchè val.genitore
         })
       }
-      
       let dArr = data.persona.dtNascita.split("-");
       const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 
@@ -312,6 +311,7 @@ export class AlunniListComponent implements OnInit {
                 && String(data.persona.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
                 && String(data.persona.email).toLowerCase().indexOf(searchTerms.email) !== -1
                 && foundGenitore;
+      
 
       return boolSx && boolDx;
     }
