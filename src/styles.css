@@ -314,6 +314,10 @@
         left: 0px;
     }
 
+    .l10 {
+        left: 10px;
+    }
+
     .l100 {
         left: 100px;
     }
@@ -653,6 +657,33 @@
         position: absolute !important;
         background-color: #044D7E !important;
     }
+
+    ._btn-add-fixed {
+        z-index: 1000;
+        position: fixed !important;
+        background-color: #044D7E !important;
+    }
+
+    ._btn-add2 {
+        z-index: 1000;
+        position: absolute !important;
+        background-color: #10722cd4 !important;
+    }
+
+    ._btn-delete-pagina {
+        z-index: 1000;
+        position:absolute !important;
+        background-color: #a62424d4 !important;
+    }
+
+    ._btn-pos-left-0 {
+        left: 15px;
+    }
+
+    ._btn-pos-left-1 {
+        left: 60px;
+    }
+
 
     ._btn-pos-top-0 {
         top: 15px;
@@ -1416,6 +1447,10 @@ mat-nav-list a img {
 
 .bordered-grey {
     border: 1px solid grey;
+}
+
+._bordered-grey-dot {
+    border: 1px dotted grey;
 }
 
 .bordered-bottom {

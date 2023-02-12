@@ -1,0 +1,28 @@
+<button mat-mini-fab aria-label="Nuova Pagina" matTooltip="Nuova Pagina" class="_btn-add-fixed _btn-pos-right-1 _btn-pos-top-1" (click)="addPage()">
+    <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/add_pagina.svg">
+</button>
+
+<button mat-mini-fab aria-label="Nuova Pagina" matTooltip="Nuova Pagina" class="_btn-add-fixed _btn-pos-right-2 _btn-pos-top-1" (click)="incZoom()">
+    <mat-icon>add_circle_outline</mat-icon>
+</button>
+
+<button mat-mini-fab aria-label="Nuova Pagina" matTooltip="Nuova Pagina" class="_btn-add-fixed _btn-pos-right-3 _btn-pos-top-1" (click)="decZoom()">
+    <mat-icon>remove_circle_outline</mat-icon>
+</button>
+
+
+
+<div *ngFor="let element of (obsPagine$ | async); let i = index" style="padding-top: 10px; background-color: lightgray">
+    <div class="center mb20">Pagina {{i+1}} di {{numPagine}}</div>
+    <app-pagina-edit
+        [paginaID]="element.id"
+        [zoom]="zoom"
+        (deleteEmitted)="deletedPage($event)"
+        >
+    </app-pagina-edit>
+
+    <div class="h-divider">  
+        <div class="shadow"></div>
+    </div>
+</div>
+

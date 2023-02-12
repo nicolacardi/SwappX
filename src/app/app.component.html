@@ -176,6 +176,11 @@
                 <span *ngIf="isExpanded">Verbali</span>
             </a>
 
+            <a mat-list-item class="h35px" routerLink="template" (click)="clickMenuItem()">
+                <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/template.svg">
+                <span *ngIf="isExpanded">Template</span>
+            </a>
+
             <a mat-list-item class="_pos-absolute _border-top _grey-background"  style="z-index: 100000!important; bottom: 0;"
                      routerLink="impostazioni"
                      (click)="clickMenuItem()"  

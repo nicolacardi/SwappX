@@ -195,6 +195,10 @@ import { VerbaliFilterComponent }               from './_components/verbali/verb
 
 import { ProceduraIscrizioneComponent }         from './_components/procedura-iscrizione/procedura-iscrizione.component';
 
+import { TemplateEditComponent }                from './_components/templates/template-edit/template-edit.component';
+import { PaginaEditComponent }                  from './_components/templates/pagina-edit/pagina-edit.component';
+import { BloccoEditComponent } from './_components/templates/blocco-edit/blocco-edit.component';
+
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -344,7 +348,10 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     VerbaliFilterComponent,
 
     DocentiDashboardComponent,
-      ProceduraIscrizioneComponent
+      ProceduraIscrizioneComponent,
+      TemplateEditComponent,
+      PaginaEditComponent,
+      BloccoEditComponent
     
 
   ],

@@ -1,0 +1,54 @@
+<div style="margin: auto; width: 420px; height: 594px; background-color: white" 
+
+        [ngStyle]=
+            "{
+            'width': 210*zoom+'px',
+            'height': 297*zoom+'px'
+            }"
+        
+        >
+    <button mat-mini-fab aria-label="Cancella Pagina" matTooltip="Cancella Pagina" class="_btn-delete-pagina _btn-pos-left-0" (click)="deletePage()">
+        <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/delete_pagina.svg">
+    </button>
+    <button mat-mini-fab aria-label="Salva Pagina" matTooltip="Salva Pagina" class="_btn-delete-pagina _btn-pos-left-1" (click)="savePage()">
+        <mat-icon>save</mat-icon>
+    </button>
+    <!-- <div class="_pos-absolute l10">paginaID: {{paginaID}}</div> -->
+
+    <!-- [ngStyle]=
+            "{
+            'top': element.y*zoom+'px',
+            'left': element.x*zoom+'px',
+            'width': element.w*zoom+'px',
+            'height': element.h*zoom+'px',
+            'background-color': element.color
+            }" -->
+
+    <div class="_pos-absolute">
+        <div *ngFor="let element of (obsBlocchi$ | async)" class="_pos-absolute"  #Blocchi>
+
+
+
+            <!-- cdkDrag> -->
+
+
+            <!-- <div class="example-handle" cdkDragHandle>
+                <mat-icon class="_pos-absolute" style="margin-top: -5px; margin-left: -10px">stop</mat-icon>
+            </div> -->
+            <app-blocco-edit 
+                [top]="element.y*zoom"
+                [left]="element.x*zoom" 
+                [width]="element.w*zoom" 
+                [height]="element.h*zoom" 
+
+                [zoom]="zoom"
+                [bloccoID]="element.id"
+                [paginaID]="paginaID"
+
+                #Blocco
+                >
+
+            </app-blocco-edit>
+        </div>
+    </div>
+</div>

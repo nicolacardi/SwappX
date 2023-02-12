@@ -27,6 +27,7 @@ import { ScadenzeCalendarioComponent }          from './_components/scadenze/sca
 import { VerbaliPageComponent }                 from './_components/verbali/verbali-page/verbali-page.component';
 import { OrarioPageComponent }                  from './_components/lezioni/orario-page/orario-page.component';
 import { ProceduraIscrizioneComponent } from './_components/procedura-iscrizione/procedura-iscrizione.component';
+import { TemplateEditComponent } from './_components/templates/template-edit/template-edit.component';
 
 const routes: Routes = [
 
@@ -72,6 +73,8 @@ const routes: Routes = [
 
   { path: "verbali",                            component: VerbaliPageComponent,canActivate:[AuthGuard] },
  
+  { path: "template",                           component: TemplateEditComponent,canActivate:[AuthGuard] },
+
   { path: "impostazioni",                       component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: ['SysAdmin', 'Segreteria', 'Amministratore' ] }  },
 
   { path: "procedura-iscrizione",               component: ProceduraIscrizioneComponent, canActivate:[AuthGuard] },

@@ -169,14 +169,16 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#endregion
 
-  constructor( private svcClassiSezioniAnni:              ClassiSezioniAnniService,
-              private svcAnni:                            AnniScolasticiService,
-              private svcDocenti:                         DocentiService,
-              private _loadingService:                    LoadingService,
-              private fb:                                 FormBuilder, 
-              public _dialog:                             MatDialog, 
-              private actRoute:                           ActivatedRoute,
-              private _snackBar:                          MatSnackBar ) {
+  constructor( 
+    private svcClassiSezioniAnni:               ClassiSezioniAnniService,
+    private svcAnni:                            AnniScolasticiService,
+    private svcDocenti:                         DocentiService,
+    private _loadingService:                    LoadingService,
+    private fb:                                 FormBuilder, 
+    public _dialog:                             MatDialog, 
+    private actRoute:                           ActivatedRoute,
+    private _snackBar:                          MatSnackBar
+  ) {
 
     //let objAnno = localStorage.getItem('AnnoCorrente');
     

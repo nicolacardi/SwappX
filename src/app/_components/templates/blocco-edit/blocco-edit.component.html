@@ -1,0 +1,21 @@
+<!-- style trasform funziona quando si ridimensiona -->
+<!-- mousedown all'interno del div trasforma lo status in 2 (MOVE) -->
+<!-- mouseup fuori dal div resetta a 0 lo status -->
+<!-- <button mat-mini-fab aria-label="Cancella Pagina" matTooltip="Cancella Pagina" class="_btn-delete-pagina _btn-pos-left-0" (click)="save()">
+    <mat-icon>save</mat-icon>
+</button> -->
+<div #box class="resizable-draggable" 
+    [style.width.px]="width"
+    [style.height.px]="height" 
+    [style.transform]="'translate3d('+ left + 'px,' + top + 'px,' + '0px)'"
+    [class.active]="status === 1 || status === 2"
+    (mousedown)="setStatus($event, 2)"
+    (window:mouseup)="setStatus($event, 0)"
+>
+
+<!-- resize-action è il triangolino -->
+    <div class="resize-action" (mousedown)="setStatus($event, 1)"></div>
+    <span class="w-legenda">{{width/zoom | number:'1.0-0'}}px</span>
+    <span class="h-legenda">{{height/zoom | number:'1.0-0'}}px</span>
+    <span class="size w100">{{(left/zoom | number:'1.0-0')}}-{{top/zoom | number:'1.0-0'}}</span>
+</div>
