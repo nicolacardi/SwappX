@@ -28,11 +28,10 @@ export class BlocchiService {
 
   get(BloccoID: any): Observable<TEM_Blocco>{
     return this.http.get<TEM_Blocco>(environment.apiBaseUrl+'TEM_Blocchi/'+BloccoID);
-    //http://213.215.231.4/swappX/api/TEM_Blocchi/18
+    //http://213.215.231.4/swappX/api/TEM_Blocchi/73
   }
 
   put(formData: any): Observable <any>{
-    console.log ("sto x salvare", formData);
     return this.http.put( environment.apiBaseUrl  + 'TEM_Blocchi/' + formData.id , formData);    
   }
 
