@@ -1,14 +1,14 @@
 export interface TEM_Blocco {
-        id:                                     number;
+        id?:                                     number;
 
-        paginaID?:                               number;
+        paginaID:                               number;
         x:                                      number;
         y:                                      number;
         w:                                      number;
         h:                                      number;
 
-        fill:                                   boolean;
-        color?:                                  string;
+        ckFill?:                                 boolean;
+        color?:                                 string;
 }
 
  

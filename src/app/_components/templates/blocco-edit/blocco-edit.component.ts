@@ -1,169 +1,136 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
-import { TEM_Blocco } from 'src/app/_models/TEM_Blocco';
-import { BlocchiService } from '../blocchi.service';
+import { Component, Inject, OnInit }            from '@angular/core';
+import { FormBuilder, FormGroup, ValidatorFn }               from '@angular/forms';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { Observable } from 'rxjs';
 
-const enum Status {
-  OFF = 0,
-  RESIZE = 1,
-  MOVE = 2
-}
+//components
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { tooWideValidator, tooHighValidator}    from '../../utilities/crossfieldvalidators/tooWide';
+
+//services
+import { BlocchiService }                       from '../blocchi.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+
+//models
+import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
+import { tap } from 'rxjs/operators';
+import { ColorPickerComponent } from '../../color-picker/color-picker.component';
+
+
+
+
 
 @Component({
   selector: 'app-blocco-edit',
   templateUrl: './blocco-edit.component.html',
   styleUrls: ['../templates.css']
 })
-export class BloccoEditComponent implements OnInit, AfterViewInit {
-
-
+export class BloccoEditComponent implements OnInit {
 //#region ----- Variabili -------
-
-  private oldZoom:                              number = 1;
-  private boxPos!: { left: number, top: number }; //la posizione del blocco
-  private contPos!: { left: number, top: number, right: number, bottom: number };  //le 4 coordinate dei due punti alto sx e basso dx
-  public mouse!: {x: number, y: number}
-  public status: Status = Status.OFF;
-  private mouseClick!: {x: number, y: number, left: number, top: number}
-//#endregion
-
-//#region ----- ViewChild Input Output -------
-
-  @Input() bloccoID!:                           number;
-  @Input() paginaID!:                           number;
-
-  @Input('width') public width!: number;
-  @Input('height') public height!: number;
-  @Input('left') public left!: number;
-  @Input('top') public top!: number;
-  @Input() zoom!:                               number;
-
-  @ViewChild("box") public box!: ElementRef;
-
-
+  blocco$!:                                     Observable<TEM_Blocco>
+  form! :                                       FormGroup;
 
 //#endregion
+
+
+
+
+
   constructor(
-    private svcBlocchi:                         BlocchiService
-  ) { }
+    private svcBlocchi:                         BlocchiService,
+    public _dialogRef:                          MatDialogRef<BloccoEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public bloccoID:   number,
+    private fb:                                 FormBuilder, 
 
-  ngOnChanges() {
-    this.reloadData();
+
+    public _dialog:                             MatDialog,
+    private _snackBar:                          MatSnackBar,
+    private _loadingService :                   LoadingService,
+    
+  ) { 
+
+    this.form = this.fb.group(
+      {
+        id:                                     [null],
+        paginaID:                               [0],
+        x:                                      [0],
+        y:                                      [0],
+        w:                                      [0],
+        h:                                      [0],
+        color:                                  [''],
+        ckFill:                                 [false]
+      }, { validators: [tooWideValidator, tooHighValidator]});
+
+
   }
+
+//#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit(): void {
+    this.loadData();
   }
 
+  loadData(){
 
-  ngAfterViewInit(){
-    this.loadBox();
-    this.loadContainer();
+    if (this.bloccoID && this.bloccoID + '' != "0") {
+
+      const obsBlocco$: Observable<TEM_Blocco> = this.svcBlocchi.get(this.bloccoID);
+      const loadBlocco$ = this._loadingService.showLoaderUntilCompleted(obsBlocco$);
+      //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
+      this.blocco$ = loadBlocco$
+      .pipe(
+          tap(
+            blocco => {
+              console.log (blocco);
+              this.form.patchValue(blocco)
+            }
+          )
+      );
+    }
 
   }
+//#endregion
 
-  reloadData() {
-    console.log ("è cambiato lo zoom!", this.zoom);
-    this.loadBox();
-    this.loadContainer();
+save(){
+  this.svcBlocchi.put(this.form.value)
+    .subscribe(res=> {
+      this._dialogRef.close(this.bloccoID);
+      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+    },
+    err=> (
+      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+    )
+  );
+}
+
+  delete() {
+    this.svcBlocchi.delete(this.bloccoID).subscribe(
+      res=>{
+        this._snackBar.openFromComponent(SnackbarComponent,
+          {data: 'Blocco cancellato', panelClass: ['red-snackbar']}
+        );
+        this._dialogRef.close(this.bloccoID);
+      },
+      err=> (
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+      )
+    );
   }
 
-
-  
-  loadBox(){
-
-    const {left, top} = this.box.nativeElement.getBoundingClientRect();
-    this.boxPos = {left, top};
-    console.log ("this.boxPos", this.boxPos);
-  }
-
-  loadContainer(){
-    const left = this.boxPos.left - this.left;
-    const top = this.boxPos.top - this.top;
-    const right = left + 210*this.zoom;
-    const bottom = top + 297*this.zoom;
-    this.contPos = { left, top, right, bottom };
-    console.log ("this.contPos", this.contPos);
-  }
-
-  setStatus(event: MouseEvent, status: number){
-    if(status === 1) 
-      {
-        event.stopPropagation(); //RESIZE
+  openColorPicker() {
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '405px',
+      height: '460px',
+      data: {ascRGB: this.form.controls.color.value},
+    };
+    const dialogRef = this._dialog.open(ColorPickerComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      result => { 
+        if (result) this.form.controls.color.setValue(result);
+        //this.loadData(); 
       }
-    else if(status === 2) 
-      {
-        this.mouseClick = { x: event.clientX, y: event.clientY, left: this.left, top: this.top }; //MOVE imposta this.MouseClick con le coordinate iniziali
-        //console.log ("this.mouseClick", this.mouseClick);
-      }
-    else {
-      this.loadBox(); //altro
-    }
-    this.status = status;
+    );
   }
-
-  @HostListener('window:mousemove', ['$event'])
-  onMouseMove(event: MouseEvent){
-    this.mouse = { x: event.clientX, y: event.clientY };
-
-    if(this.status === Status.RESIZE) this.resize();
-    else if(this.status === Status.MOVE) this.move();
-  }
-
-  private resize(){
-
-    if (this.mouse.x - this.boxPos.left <0) this.width = 0 //evita che si possa fare un rettangolo di larghezza negativa
-    else if (this.mouse.x > this.contPos.right) {
-      console.log ("this.contPos.right", this.contPos.right);
-      console.log ("this.contPos.left", this.contPos.left);
-      console.log ("this.left", this.left);
-      this.width = this.contPos.right - this.contPos.left - this.left
-      console.log ("this.width", this.width);
-    }
-    else this.width = this.mouse.x - this.boxPos.left;
-
-    if (this.mouse.y - this.boxPos.top <0) this.height = 0
-    else if (this.mouse.y > this.contPos.bottom) {
-      // console.log ("this.contPos.top", this.contPos.top);
-      // console.log ("this.contPos.bottom", this.contPos.bottom);
-      // console.log ("this.top", this.top);
-      this.height = this.contPos.bottom - this.contPos.top - this.top
-    }
-    else this.height = this.mouse.y - this.boxPos.top;
-    //console.log ("this.width", this.width);
-    // console.log ("this.height", this.height);
-    console.log ("this.contPos.left", this.contPos.left);
-  }
-
-
-  move(){
-    //this.mouse.x - this.mouseClick.x rappresenta quanta strada ha fatto il mouse verso dx da quando ha cliccato
-    //questa va aggiunta alla posizione in cui si trovava il box (this.mouseClick.left) quando ha cliccato
-    let xTemp = this.mouseClick.left + this.mouse.x - this.mouseClick.x;
-
-    if (xTemp+this.contPos.left+this.width>this.contPos.right) this.left = this.contPos.right - this.contPos.left - this.width;
-    else if (xTemp <0) this.left = 0
-    else this.left = xTemp;
-
-    let yTemp = this.mouseClick.top - this.mouseClick.y + this.mouse.y ;
-    if (yTemp+this.contPos.top+this.height>this.contPos.bottom) this.top = this.contPos.bottom - this.contPos.top - this.height;
-    else if (yTemp <0) this.top = 0
-    else this.top = yTemp;
-    console.log ("this.contPos.left", this.contPos.left);
-  }
-
-  public save() {
-    let objBlocco : TEM_Blocco =
-    { 
-      id: this.bloccoID,
-      paginaID: this.paginaID,
-      x: Math.floor(this.left/this.zoom),
-      y: Math.floor(this.top/this.zoom),
-      w: Math.floor(this.width/this.zoom),
-      h: Math.floor(this.height/this.zoom),
-      fill: false,
-    }
-    this.svcBlocchi.put(objBlocco).subscribe();
-
-    //console.log (this.left/this.zoom, this.top/this.zoom, this.width/this.zoom, this.height/this.zoom);
-  }
-
 }

@@ -13,14 +13,15 @@ import { PagineService } from '../pagine.service';
 
 
 @Component({
-  selector: 'app-pagina-edit',
-  templateUrl: './pagina-edit.component.html',
+  selector: 'app-pagina',
+  templateUrl: './pagina.component.html',
   styleUrls: ['../templates.css']
 })
-export class PaginaEditComponent implements OnInit {
+export class PaginaComponent implements OnInit {
 
 //#region ----- Variabili -------
   public obsBlocchi$!:                           Observable<TEM_Blocco[]>;
+  public blocchiArr!:                           TEM_Blocco[];
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -56,6 +57,13 @@ export class PaginaEditComponent implements OnInit {
   loadData() {
     const obsBlocchiTMP$ = this.svcBlocchi.listByPagina(this.paginaID);
     this.obsBlocchi$ = this._loadingService.showLoaderUntilCompleted( obsBlocchiTMP$);
+
+    this.obsBlocchi$.subscribe(
+      res=> {
+        console.log ("res", res);
+        this.blocchiArr = res
+      }
+    )
   }
 
   deletePage() {
@@ -68,13 +76,34 @@ export class PaginaEditComponent implements OnInit {
   }
 
   savePage() {
-    
     let BlocchiArr = this.Blocchi.toArray();
     for(let i = 0; i < BlocchiArr.length; i++) {
       BlocchiArr[i].save();
     }
-
-    
   }
+
+  addBlock() {
+    let objBlocco : TEM_Blocco =
+    { 
+      paginaID: this.paginaID,
+      x: 0,
+      y: 0,
+      w: 0,
+      h: 0,
+      ckFill: false,
+    }
+    this.svcBlocchi.post(objBlocco).subscribe(
+      res=> this.loadData()
+    )
+
+
+  }
+
+  bloccoEditedEmitted(bloccoID: number){
+    let zoomStore = this.zoom;
+    this.loadData();
+    this.zoom = zoomStore;
+  }
+
 
 }

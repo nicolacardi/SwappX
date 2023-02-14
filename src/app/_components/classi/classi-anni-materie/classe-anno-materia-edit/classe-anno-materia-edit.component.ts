@@ -1,30 +1,31 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit }            from '@angular/core';
+import { FormBuilder, FormGroup, Validators }   from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { Observable }                           from 'rxjs';
+import { tap }                                  from 'rxjs/operators';
 
 //components
+import { SnackbarComponent }                    from '../../../utilities/snackbar/snackbar.component';
+import { DialogYesNoComponent }                 from '../../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 //services
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { MaterieService } from '../../../materie/materie.service';
-import { ClassiService } from '../../classi.service';
-import { TipiVotoService } from '../tipi-voto.service';
-import { ClasseAnnoMateriaService } from '../classe-anno-materia.service';
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { MaterieService }                       from '../../../materie/materie.service';
+import { ClassiService }                        from '../../classi.service';
+import { TipiVotoService }                      from '../tipi-voto.service';
+import { ClasseAnnoMateriaService }             from '../classe-anno-materia.service';
+import { LoadingService }                       from '../../../utilities/loading/loading.service';
 
 //models
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { CLS_Classe } from 'src/app/_models/CLS_Classe';
-import { CLS_ClasseAnnoMateria } from 'src/app/_models/CLS_ClasseAnnoMateria';
-import { CLS_TipoVoto } from 'src/app/_models/CLS_TipoVoto';
-import { MAT_Materia } from 'src/app/_models/MAT_Materia';
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { CLS_Classe }                           from 'src/app/_models/CLS_Classe';
+import { CLS_ClasseAnnoMateria }                from 'src/app/_models/CLS_ClasseAnnoMateria';
+import { CLS_TipoVoto }                         from 'src/app/_models/CLS_TipoVoto';
+import { MAT_Materia }                          from 'src/app/_models/MAT_Materia';
 
-//utilities
-import { LoadingService } from '../../../utilities/loading/loading.service';
-import { SnackbarComponent } from '../../../utilities/snackbar/snackbar.component';
-import { DialogYesNoComponent } from '../../../utilities/dialog-yes-no/dialog-yes-no.component';
+
+
 
 @Component({
   selector: 'app-classe-anno-materia-edit',
@@ -47,18 +48,20 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
   loading:                    boolean = true;
 //#endregion
 
-  constructor(public _dialogRef: MatDialogRef<ClasseAnnoMateriaEditComponent>,
-              @Inject(MAT_DIALOG_DATA) public classeAnnoMateriaID: number,
-              private svcClassi:                      ClassiService,
-              private svcAnni:                        AnniScolasticiService,
-              private svcMaterie:                     MaterieService,
-              private svcClassiAnniMaterie:           ClasseAnnoMateriaService,
-              private svcTipiVoto:                    TipiVotoService,
+  constructor(
+    public _dialogRef: MatDialogRef<ClasseAnnoMateriaEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public classeAnnoMateriaID: number,
+    private svcClassi:                          ClassiService,
+    private svcAnni:                            AnniScolasticiService,
+    private svcMaterie:                         MaterieService,
+    private svcClassiAnniMaterie:               ClasseAnnoMateriaService,
+    private svcTipiVoto:                        TipiVotoService,
 
-              private _loadingService :               LoadingService,
-              private fb:                             FormBuilder, 
-              public _dialog:                         MatDialog,
-              private _snackBar:                      MatSnackBar) { 
+    private _loadingService :                   LoadingService,
+    private fb:                                 FormBuilder, 
+    public _dialog:                             MatDialog,
+    private _snackBar:                          MatSnackBar
+  ) { 
 
     _dialogRef.disableClose = true;
   

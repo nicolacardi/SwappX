@@ -14,12 +14,12 @@
 
 <div *ngFor="let element of (obsPagine$ | async); let i = index" style="padding-top: 10px; background-color: lightgray">
     <div class="center mb20">Pagina {{i+1}} di {{numPagine}}</div>
-    <app-pagina-edit
+    <app-pagina
         [paginaID]="element.id"
         [zoom]="zoom"
         (deleteEmitted)="deletedPage($event)"
         >
-    </app-pagina-edit>
+    </app-pagina>
 
     <div class="h-divider">  
         <div class="shadow"></div>

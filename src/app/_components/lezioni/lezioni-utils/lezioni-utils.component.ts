@@ -1,18 +1,18 @@
 import { Component, Inject, Injectable, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DateAdapter } from '@angular/material/core';
+import { FormBuilder, FormGroup, Validators }   from '@angular/forms';
+import { DateAdapter }                          from '@angular/material/core';
 import { DateRange, MatDateRangeSelectionStrategy, MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //components
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 
 //services
-import { LezioniService } from '../lezioni.service';
+import { LezioniService }                       from '../lezioni.service';
 
 //models
-import { DialogDataLezioniUtils } from 'src/app/_models/DialogData';
+import { DialogDataLezioniUtils }               from 'src/app/_models/DialogData';
 
 
 //#region Injectable per la selezione dell'intervallo nel matdatepicker

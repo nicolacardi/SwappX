@@ -80,18 +80,18 @@ export class AlunnoEditComponent implements OnInit {
     
 
     this.formAlunno = this.fb.group(
-      {
-        id:                                     [null],
-        scuolaProvenienza:                      ['', Validators.maxLength(255)],
-        indirizzoScuolaProvenienza:             ['', Validators.maxLength(255)],
+    {
+      id:                                     [null],
+      scuolaProvenienza:                      ['', Validators.maxLength(255)],
+      indirizzoScuolaProvenienza:             ['', Validators.maxLength(255)],
 
-        personaID:                              [null],
-        ckDSA:                                  [false],
-        ckDisabile:                             [false],
-        ckAuthFoto:                             [false],
-        ckAuthUsoMateriale:                     [false],
-        ckAuthUscite:                           [false]
-      });
+      personaID:                              [null],
+      ckDSA:                                  [false],
+      ckDisabile:                             [false],
+      ckAuthFoto:                             [false],
+      ckAuthUsoMateriale:                     [false],
+      ckAuthUscite:                           [false]
+    });
   }
 
 //#region ----- LifeCycle Hooks e simili-------

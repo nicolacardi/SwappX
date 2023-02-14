@@ -195,9 +195,15 @@ import { VerbaliFilterComponent }               from './_components/verbali/verb
 
 import { ProceduraIscrizioneComponent }         from './_components/procedura-iscrizione/procedura-iscrizione.component';
 
-import { TemplateEditComponent }                from './_components/templates/template-edit/template-edit.component';
-import { PaginaEditComponent }                  from './_components/templates/pagina-edit/pagina-edit.component';
-import { BloccoEditComponent } from './_components/templates/blocco-edit/blocco-edit.component';
+//Templates
+import { TemplateComponent }                    from './_components/templates/template/template.component';
+import { PaginaComponent }                      from './_components/templates/pagina/pagina.component';
+import { BloccoComponent }                      from './_components/templates/blocco/blocco.component';
+import { BloccoEditComponent }                  from './_components/templates/blocco-edit/blocco-edit.component';
+
+
+
+import { ClickDoubleDirective }                 from './_components/utilities/clickdouble/clickdouble.directive';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -310,6 +316,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ChangePswComponent,
     ImpostazioniComponent,
     ResizeColumnDirective,
+    ClickDoubleDirective,
 
     ResetPasswordComponent,
     DocenzeAddComponent,
@@ -349,8 +356,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
 
     DocentiDashboardComponent,
       ProceduraIscrizioneComponent,
-      TemplateEditComponent,
-      PaginaEditComponent,
+      TemplateComponent,
+      PaginaComponent,
+      BloccoComponent,
       BloccoEditComponent
     
 

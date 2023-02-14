@@ -1,21 +1,91 @@
-<!-- style trasform funziona quando si ridimensiona -->
-<!-- mousedown all'interno del div trasforma lo status in 2 (MOVE) -->
-<!-- mouseup fuori dal div resetta a 0 lo status -->
-<!-- <button mat-mini-fab aria-label="Cancella Pagina" matTooltip="Cancella Pagina" class="_btn-delete-pagina _btn-pos-left-0" (click)="save()">
-    <mat-icon>save</mat-icon>
-</button> -->
-<div #box class="resizable-draggable" 
-    [style.width.px]="width"
-    [style.height.px]="height" 
-    [style.transform]="'translate3d('+ left + 'px,' + top + 'px,' + '0px)'"
-    [class.active]="status === 1 || status === 2"
-    (mousedown)="setStatus($event, 2)"
-    (window:mouseup)="setStatus($event, 0)"
->
+<mat-card class="form-card">
+    <mat-card-content>
+        <form *ngIf="blocco$ | async" class="data-form flex-form" [formGroup] = "form">
 
-<!-- resize-action è il triangolino -->
-    <div class="resize-action" (mousedown)="setStatus($event, 1)"></div>
-    <span class="w-legenda">{{width/zoom | number:'1.0-0'}}px</span>
-    <span class="h-legenda">{{height/zoom | number:'1.0-0'}}px</span>
-    <span class="size w100">{{(left/zoom | number:'1.0-0')}}-{{top/zoom | number:'1.0-0'}}</span>
-</div>
+            <!-- ********************************    BOTTONI     ************************************* -->
+            <div class="center">
+
+                <img class="iconaMenuBig" src="./assets/blocco_edit_T.svg">
+
+                <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
+
+                <button *ngIf="bloccoID" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10" (click)="loadData()">
+                    <mat-icon>restart_alt</mat-icon>
+                </button>
+
+                <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                        [disabled]= "!form.valid" 
+                        (click)="save()" >
+                    <mat-icon>save</mat-icon>
+                </button>
+
+                <button *ngIf="bloccoID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
+
+                        (click)="delete()" >
+                    <mat-icon>delete</mat-icon>
+                </button>
+
+            </div>
+            <mat-grid-list class="mt10" [cols]="2" rowHeight="60px" >
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput type="number" required placeholder="Distanza da bordo sx" formControlName="x">
+                        <mat-error *ngIf="form.controls.x.errors?.required"> Campo obbligatorio</mat-error>
+                        <!-- <mat-error *ngIf="form.errors?.['tooWide']">Il blocco termina fuori dall'area disponibile</mat-error> -->
+                        <div class="_red fs10 mt10 _pos-absolute" *ngIf="form.errors?.['tooWide']">Il blocco termina fuori dall'area disponibile</div>
+
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput type="number" required placeholder="Distanza dall'alto" formControlName="y">
+                        <mat-error *ngIf="form.controls.y.errors?.required"> Campo obbligatorio</mat-error>
+                        <div class="_red fs10 mt10 _pos-absolute" *ngIf="form.errors?.['tooHigh']">Il blocco termina fuori dall'area disponibile</div>
+                    </mat-form-field>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <mat-grid-list class="mt10" [cols]="2" rowHeight="60px" >
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput type="number" required placeholder="Larghezza" formControlName="w">
+                        <mat-error *ngIf="form.controls.w.errors?.required"> Campo obbligatorio</mat-error>
+                        <div class="_red fs10 mt10 _pos-absolute" *ngIf="form.errors?.['tooWide']">Il blocco termina fuori dall'area disponibile</div>
+                    </mat-form-field>
+
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput type="number" required placeholder="Altezza" formControlName="h">
+                        <mat-error *ngIf="form.controls.h.errors?.required"> Campo obbligatorio</mat-error>
+                        <div class="_red fs10 mt10 _pos-absolute" *ngIf="form.errors?.['tooHigh']">Il blocco termina fuori dall'area disponibile</div>
+                    </mat-form-field>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <mat-grid-list class="mt10" [cols]="1" rowHeight="60px" >
+
+
+
+                <mat-grid-tile class="ml15">
+                    <mat-checkbox color="primary" formControlName="ckFill">
+                        Riempimento
+                    </mat-checkbox>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <mat-grid-list [cols]="1" rowHeight="30px" >
+
+
+                <mat-grid-tile [ngClass]="{'invisible': !form.controls.ckFill.value}">
+                    <button type="button" class="_btnColorPicker" 
+                    (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
+                </mat-grid-tile>
+                <!-- <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Codice colore" formControlName="color" #color>
+                    </mat-form-field>
+                </mat-grid-tile> -->
+            </mat-grid-list>
+        </form>
+    </mat-card-content>
+</mat-card>

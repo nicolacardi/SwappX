@@ -26,8 +26,8 @@ import { OrarioDocentePageComponent }           from './_components/lezioni/orar
 import { ScadenzeCalendarioComponent }          from './_components/scadenze/scadenze-calendario/scadenze-calendario.component';
 import { VerbaliPageComponent }                 from './_components/verbali/verbali-page/verbali-page.component';
 import { OrarioPageComponent }                  from './_components/lezioni/orario-page/orario-page.component';
-import { ProceduraIscrizioneComponent } from './_components/procedura-iscrizione/procedura-iscrizione.component';
-import { TemplateEditComponent } from './_components/templates/template-edit/template-edit.component';
+import { ProceduraIscrizioneComponent }         from './_components/procedura-iscrizione/procedura-iscrizione.component';
+import { TemplateComponent }                    from './_components/templates/template/template.component';
 
 const routes: Routes = [
 
@@ -73,7 +73,7 @@ const routes: Routes = [
 
   { path: "verbali",                            component: VerbaliPageComponent,canActivate:[AuthGuard] },
  
-  { path: "template",                           component: TemplateEditComponent,canActivate:[AuthGuard] },
+  { path: "template",                           component: TemplateComponent,canActivate:[AuthGuard] },
 
   { path: "impostazioni",                       component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: ['SysAdmin', 'Segreteria', 'Amministratore' ] }  },
 

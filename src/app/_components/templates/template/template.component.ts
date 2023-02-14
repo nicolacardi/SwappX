@@ -15,11 +15,11 @@ import { TEM_Template } from 'src/app/_models/TEM_Template';
 
 
 @Component({
-  selector: 'app-template-edit',
-  templateUrl: './template-edit.component.html',
+  selector: 'app-template',
+  templateUrl: './template.component.html',
   styleUrls: ['../templates.css']
 })
-export class TemplateEditComponent implements OnInit {
+export class TemplateComponent implements OnInit {
 
 //#region ----- Variabili -------
   public zoom:                                  number = 1;
