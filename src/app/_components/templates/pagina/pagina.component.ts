@@ -60,7 +60,7 @@ export class PaginaComponent implements OnInit {
 
     this.obsBlocchi$.subscribe(
       res=> {
-        console.log ("res", res);
+        console.log ("Blocchi di pagina:", this.paginaID, res);
         this.blocchiArr = res
       }
     )
@@ -82,7 +82,7 @@ export class PaginaComponent implements OnInit {
     }
   }
 
-  addBlock() {
+  addBlock(tipoBloccoID: number) {
     let objBlocco : TEM_Blocco =
     { 
       paginaID: this.paginaID,
@@ -91,6 +91,7 @@ export class PaginaComponent implements OnInit {
       w: 0,
       h: 0,
       ckFill: false,
+      tipoBloccoID: tipoBloccoID
     }
     this.svcBlocchi.post(objBlocco).subscribe(
       res=> this.loadData()

@@ -1,3 +1,5 @@
+import { TEM_TipoBlocco } from "./TEM_TipoBlocco";
+
 export interface TEM_Blocco {
         id?:                                     number;
 
@@ -9,6 +11,12 @@ export interface TEM_Blocco {
 
         ckFill?:                                 boolean;
         color?:                                 string;
+
+        tipoBloccoID:                           number;
+
+        tipoBlocco?:                             TEM_TipoBlocco;
+
+        bloccoFotoID?:                           number;
 }
 
  

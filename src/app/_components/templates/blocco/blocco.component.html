@@ -12,25 +12,22 @@
 
 
 <div 
-
     #box class="resizable-draggable" 
     [style.width.px]="width"
     [style.height.px]="height" 
-    [style.background-color] = "color"
+    [style.background-color] = "blocco.color"
     [style.transform]="'translate3d('+ left + 'px,' + top + 'px,' + '0px)'"
     [class.active]="status === 1 || status === 2"
     (mousedown)="setStatus($event, 2)"
     (mouseup)="setStatus($event, 0)"
     (dblclick)="openDetail()"
-
-    
 >
 
-<!-- era     (window:mouseup)="setStatus($event, 0)" -->
+<!-- era     (window:mouseup)="setStatus($event, 0)" , ho tolto l'evento dalal finestra intera-->
 
 
-<!-- resize-action è il triangolino -->
-    <div class="resize-action" (mousedown)="setStatus($event, 1)"></div>
+<!-- resize-action è il triangolino, classTipo dice se blu o giallo-->
+    <div class="resize-action" [ngClass] = "classTipo" (mousedown)="setStatus($event, 1)"></div>
     <span class="w-legenda">{{width/zoom | number:'1.0-0'}}px</span>
     <span class="h-legenda">{{height/zoom | number:'1.0-0'}}px</span>
     <span class="size w100">{{(left/zoom | number:'1.0-0')}}-{{top/zoom | number:'1.0-0'}}</span>

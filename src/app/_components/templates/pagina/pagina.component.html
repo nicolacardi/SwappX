@@ -13,49 +13,22 @@
     <button mat-mini-fab aria-label="Salva Pagina" matTooltip="Salva Pagina" class="_btn-delete-pagina _btn-pos-left-1" (click)="savePage()">
         <mat-icon>save</mat-icon>
     </button>
-    <button mat-mini-fab aria-label="Aggiungi Blocco" matTooltip="Agiungi Blocco" class="_btn-delete-pagina _btn-pos-left-2" (click)="addBlock()">
-        <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/add_block.svg">
+    <button mat-mini-fab aria-label="Aggiungi Blocco" matTooltip="Agiungi Blocco" class="_btn-add-text _btn-pos-left-2" (click)="addBlock(1)">
+        <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/add_block_text.svg">
     </button>
-    <!-- <div class="_pos-absolute l10">paginaID: {{paginaID}}</div> -->
-
-    <!-- [ngStyle]=
-            "{
-            'top': element.y*zoom+'px',
-            'left': element.x*zoom+'px',
-            'width': element.w*zoom+'px',
-            'height': element.h*zoom+'px',
-            'background-color': element.color
-            }" -->
+    <button mat-mini-fab aria-label="Aggiungi Blocco" matTooltip="Agiungi Blocco" class="_btn-add-picture _btn-pos-left-25" (click)="addBlock(2)">
+        <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/add_block_picture.svg">
+    </button>
 
     <div class="_pos-absolute">
         <div *ngFor="let element of blocchiArr" class="_pos-absolute" #Blocchi>
 
-
-            <!-- cdkDrag> -->
-
-
-            <!-- <div class="example-handle" cdkDragHandle>
-                <mat-icon class="_pos-absolute" style="margin-top: -5px; margin-left: -10px">stop</mat-icon>
-            </div> -->
-
-            <!-- style="z-index: -100;" -->
-            <!-- [color]="element.color!" -->
             <app-blocco
-
-                [top]="element.y*zoom"
-                [left]="element.x*zoom" 
-                [width]="element.w*zoom" 
-                [height]="element.h*zoom" 
-                [color]="element.color!"
+                [blocco] = "element"
                 [zoom]="zoom"
-                [bloccoID]="element.id!"
-                [paginaID]="paginaID"
-
                 (recordEdited) ="bloccoEditedEmitted($event)"
-
                 #Blocco
                 >
-
             </app-blocco>
         </div>
     </div>

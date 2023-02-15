@@ -63,10 +63,7 @@
                     </mat-form-field>
                 </mat-grid-tile>
             </mat-grid-list>
-            <mat-grid-list class="mt10" [cols]="1" rowHeight="60px" >
-
-
-
+            <mat-grid-list *ngIf="tipoBloccoDesc == 'Testo'" class="mt10" [cols]="1" rowHeight="60px" formControlName="tipoBlocco">
                 <mat-grid-tile class="ml15">
                     <mat-checkbox color="primary" formControlName="ckFill">
                         Riempimento
@@ -74,9 +71,7 @@
                 </mat-grid-tile>
             </mat-grid-list>
             <mat-grid-list [cols]="1" rowHeight="30px" >
-
-
-                <mat-grid-tile [ngClass]="{'invisible': !form.controls.ckFill.value}">
+                <mat-grid-tile *ngIf="tipoBloccoDesc == 'Testo'" [ngClass]="{'invisible': !form.controls.ckFill.value}">
                     <button type="button" class="_btnColorPicker" 
                     (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
                 </mat-grid-tile>
@@ -86,6 +81,21 @@
                     </mat-form-field>
                 </mat-grid-tile> -->
             </mat-grid-list>
+
+
+            <div *ngIf="tipoBloccoDesc == 'Immagine'" class="w100px h100px ma-lr mt20 shadowed" >
+                <img #myImg *ngIf="imgFile" class="w100px bordered " [src]="imgFile">
+            </div>
+
+            <div *ngIf="tipoBloccoDesc == 'Immagine'" class="flex-container form-group mt20 ">
+                <div class="form-group">
+                    <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" formControlName="file" (change)="onImageChange($event)"hidden #selectFile>
+                    <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile.click()" >Seleziona Immagine</button>
+                    <!-- <div *ngIf="uf.file.touched && uf.file.invalid" class="alert alert-danger">
+                        <div *ngIf="uf.file.errors.required">Image file is required.</div>
+                    </div> -->
+                </div>
+            </div>
         </form>
     </mat-card-content>
 </mat-card>

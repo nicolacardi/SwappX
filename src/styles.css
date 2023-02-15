@@ -670,6 +670,18 @@
         background-color: #10722cd4 !important;
     }
 
+    ._btn-add-text {
+        z-index: 1000;
+        position: absolute !important;
+        background-color: #044D7E !important;
+    }
+
+    ._btn-add-picture {
+        z-index: 1000;
+        position: absolute !important;
+        background-color: #de8a49 !important;
+    }
+
     ._btn-delete-pagina {
         z-index: 1000;
         position:absolute !important;
@@ -686,6 +698,10 @@
 
     ._btn-pos-left-2 {
         left: 105px;
+    }
+
+    ._btn-pos-left-25 {
+        left: 150px;
     }
 
     ._btn-pos-top-0 {

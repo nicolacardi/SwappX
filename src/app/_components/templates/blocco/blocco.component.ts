@@ -26,74 +26,71 @@ export class BloccoComponent implements OnInit {
 
 
 //#region ----- Variabili -------
+  public width!:                                number;
+  public height!:                                number;
+  public left!:                                number;
+  public top!:                                number;
+  public color!:                                string;
+  public tipoBloccoID!:                         number;
+  public ckFill!:                               boolean;
 
   private oldZoom:                              number = 1;
-  public divDisabled= "none";
+
   private oldLeft!:                              number;
   private oldTop!:                               number;
-
   private oldWidth!:                             number;
-  private oldHeight!:                            number;
+  private oldheight!:                            number;
 
+  public classTipo!:                             string;
 
   private boxPos!: { left: number, top: number }; //la posizione del blocco
-  private contPos!: { left: number, top: number, right: number, bottom: number };  //le 4 coordinate dei due punti alto sx e basso dx
+  private contPos!: { left: number, top: number, right: number, bottom: number };  //le 4 coordinate dei due punti alto sx e basso dx del contenitore
   public mouse!: {x: number, y: number}
   public status: Status = Status.OFF;
-  private mouseClick!: {x: number, y: number, left: number, top: number}
+  private mouseClick!: {x: number, y: number, left: number, top: number}  //le 4 coordinate del click del mouse
 //#endregion
 
 //#region ----- ViewChild Input Output -------
 
-  @Input() bloccoID!:                           number;
-  @Input() paginaID!:                           number;
-
-  @Input('width') public width!:                number;
-  @Input('height') public height!:              number;
-  @Input('left') public left!:                  number;
-  @Input('top') public top!:                    number;
-  @Input('color') public color!:                string;
-
+  @Input('blocco') public blocco!:              TEM_Blocco;
   @Input() zoom!:                               number;
-
-  @ViewChild("box") public box!: ElementRef;
 
   @Output('recordEdited') recordEdited = new EventEmitter<number>();
 
-  // https://medium.com/swlh/create-a-resizable-and-draggable-angular-component-in-the-easiest-way-bb67031866cb
-
+  @ViewChild("box") public box!: ElementRef;
+  //https://medium.com/swlh/create-a-resizable-and-draggable-angular-component-in-the-easiest-way-bb67031866cb
   //https://stackblitz.com/edit/angular-resizable-draggable?file=src%2Fapp%2Fapp.component.ts
 //#endregion
   constructor(
     private svcBlocchi:                         BlocchiService,
     public _dialog:                             MatDialog, 
-    //public _renderer:                           Renderer2
-
   ) { }
 
 
-  // @HostListener('document:mouseup', ['$event'])
-  // onMouseUp(event: MouseEvent) {
-  //   console.log("onMouseUp");  //questo crea il listener come se fosse stato scritto nell'html
-  //   this.setStatus(event, 0)
-  // }
 
 
   ngOnChanges() {
-  //su cambio Zoom devo fare diverse operazioni
-    console.log("blocco - ngOnChanges");
-    this.reloadData();
 
+    //console.log("blocco - ngOnChanges");
+
+    this.width = this.blocco.w * this.zoom;
+    this.height = this.blocco.h*this.zoom;
+    this.top =  this.blocco.y*this.zoom;
+    this.left = this.blocco.x*this.zoom;
+    this.tipoBloccoID = this.blocco.tipoBloccoID;
+    this.classTipo = "tipo"+this.tipoBloccoID; 
+
+  //su cambio Zoom devo fare diverse operazioni
+
+    this.reloadData();
   }
 
   ngOnInit(): void {
-
-    //this._renderer.listen(this.box.nativeElement, 'window:mouseup', this.setStatus(event!, 0))
   }
 
 
   reloadData() {
-    console.log("blocco - reloadData");
+    //console.log("blocco - reloadData");
 
     // console.log ("è cambiato lo zoom! era", this.oldZoom, "ora è ",this.zoom);
 
@@ -106,7 +103,7 @@ export class BloccoComponent implements OnInit {
       this.left = this.oldLeft*ratio;
       this.top = this.oldTop*ratio;
       this.width = this.oldWidth*ratio;
-      this.height = this.oldHeight*ratio;
+      this.height = this.oldheight*ratio;
 
     } 
     this.storeOldPosSize()
@@ -115,7 +112,7 @@ export class BloccoComponent implements OnInit {
 
 
   loadBox(){
-    console.log("blocco - loadBox");
+    //console.log("blocco - loadBox");
     //imposta l'oggetto boxPos tratteggiato estraendo la posizione in pixel (left, top) del box
     const {left, top} = this.box.nativeElement.getBoundingClientRect();
     this.boxPos = {left, top};
@@ -125,7 +122,7 @@ export class BloccoComponent implements OnInit {
   }
 
   loadContainer(){
-    console.log("blocco - loadContainer");
+    //console.log("blocco - loadContainer");
     //imposta la dimensione del container bianco a partire da boxPos in quanto sottrae dalla x della box la x relativa al container (this.left)
     const left = this.boxPos.left - this.left;
     // console.log ("this.boxPos.left", this.boxPos.left);
@@ -139,7 +136,7 @@ export class BloccoComponent implements OnInit {
   }
 
   setStatus(event: MouseEvent, status: number){
-    console.log("blocco - setStatus");
+    //console.log("blocco - setStatus");
 
     this.loadBox(); //altro
     this.loadContainer();
@@ -157,13 +154,12 @@ export class BloccoComponent implements OnInit {
       }
     else { //LIBERO
       //per di qua passa anche alla fine del move quindi SALVO la posizione in DB ma solo se lo status è 0 (ho liberato la selezione)
-      console.log("blocco - setStatus - lancio la save");
+      //console.log("blocco - setStatus - lancio la save");
       this.save();
     }
 
-
-
   }
+
 
   @HostListener('window:mousemove', ['$event'])
   onMouseMove(event: MouseEvent){
@@ -201,7 +197,7 @@ export class BloccoComponent implements OnInit {
 
 
   move(){
-    console.log("blocco - move");
+    //console.log("blocco - move");
 
     //this.mouse.x - this.mouseClick.x rappresenta quanta strada ha fatto il mouse verso dx da quando ha cliccato
     //questa va aggiunta alla posizione in cui si trovava il box (this.mouseClick.left) quando ha cliccato
@@ -223,58 +219,58 @@ export class BloccoComponent implements OnInit {
 
 
   storeOldPosSize() {
-    console.log("blocco - storeOldPosSize");
-
+    //console.log("blocco - storeOldPosSize");
     this.oldLeft = this.left;
     this.oldTop = this.top;
     this.oldWidth = this.width;
-    this.oldHeight = this.height;
+    this.oldheight = this.height;
     // console.log ("this.oldLeft", this.oldLeft);
   }
 
   restoreOldPosSize() {
+    //non utilizzata per ora
     this.left = this.oldLeft ;
     this.top = this.oldTop;
     this.width = this.oldWidth;
-    this.height = this.oldHeight;
+    this.height = this.oldheight;
     // console.log ("this.oldLeft", this.oldLeft);
   }
 
   public save() {
-    console.log("blocco - save");
+    //console.log("blocco - save");
 
     let objBlocco : TEM_Blocco =
     { 
-      id: this.bloccoID,
-      paginaID: this.paginaID,
+      id: this.blocco.id!,
+      paginaID: this.blocco.paginaID,
       x: Math.floor(this.left/this.zoom),
       y: Math.floor(this.top/this.zoom),
       w: Math.floor(this.width/this.zoom),
       h: Math.floor(this.height/this.zoom),
-      color: this.color,
+      color: this.blocco.color!,
+      ckFill: this.blocco.ckFill,
+      tipoBloccoID: this.blocco.tipoBloccoID
 
     }
     this.svcBlocchi.put(objBlocco).subscribe();
 
     this.storeOldPosSize();
-    //console.log (this.left/this.zoom, this.top/this.zoom, this.width/this.zoom, this.height/this.zoom);
   }
 
   public openDetail() {
-    //this.box.nativeElement.removeEventListener("window:mouseup");
-    console.log("blocco - openDetail");
+    //console.log("blocco - openDetail");
 
       const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
         width: '600px',
-        height: '370px',
-        data: this.bloccoID
+        height: '550px',
+        data: this.blocco.id!
       };
       const dialogRef = this._dialog.open(BloccoEditComponent, dialogConfig);
       dialogRef.afterClosed().subscribe(
         res => {
           //mi serve fare la refresh, quindi emetto recordEdited che Pagina riceve e ci pensa lei a farsi refresh
-          if (res) this.recordEdited.emit(this.bloccoID)
+          if (res) this.recordEdited.emit(this.blocco.id!)
         }
       );
     
