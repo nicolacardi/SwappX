@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output }             from '@angular/core';
-import { FormBuilder, FormGroup, Validators }   from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { MatDialog, MatDialogRef }              from '@angular/material/dialog';
 import { Observable, of }                           from 'rxjs';
 import { debounceTime, switchMap, tap }         from 'rxjs/operators';
@@ -31,7 +31,7 @@ export class PersonaFormComponent implements OnInit {
   obsTipiPersona$!:                             Observable<PER_TipoPersona[]>;
   currPersona!:                                 User;
 
-  public form! :                                FormGroup;
+  public form! :                                UntypedFormGroup;
   emptyForm :                                   boolean = false;
   filteredComuni$!:                             Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:                      Observable<_UT_Comuni[]>;
@@ -54,7 +54,7 @@ export class PersonaFormComponent implements OnInit {
     
     //public _dialogRef:                          MatDialogRef<PersonaFormComponent>,
     public _dialog:                             MatDialog,
-    private fb:                                 FormBuilder, 
+    private fb:                                 UntypedFormBuilder, 
     private svcPersone:                         PersoneService,
     private svcTipiPersona:                     TipiPersonaService,
     private svcComuni:                          ComuniService,

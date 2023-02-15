@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { iif, Observable, of }                  from 'rxjs';
@@ -40,8 +40,8 @@ export class AlunnoEditComponent implements OnInit {
   public personaID!:                            number;
   alunno$!:                                     Observable<ALU_Alunno>;
   alunnoNomeCognome:                            string = "";
-  formPersona! :                                FormGroup;
-  formAlunno! :                                 FormGroup;
+  formPersona! :                                UntypedFormGroup;
+  formAlunno! :                                 UntypedFormGroup;
 
   isValid!:                                     boolean;
   emptyForm :                                   boolean = false;
@@ -68,7 +68,7 @@ export class AlunnoEditComponent implements OnInit {
   constructor( 
     public _dialogRef:                          MatDialogRef<AlunnoEditComponent>,
     @Inject(MAT_DIALOG_DATA) public alunnoID:   number,
-    private fb:                                 FormBuilder, 
+    private fb:                                 UntypedFormBuilder, 
     private svcIscrizioni:                      IscrizioniService,
     private svcAlunni:                          AlunniService,
 

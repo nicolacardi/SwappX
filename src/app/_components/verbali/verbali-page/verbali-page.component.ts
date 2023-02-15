@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatDrawer }                            from '@angular/material/sidenav';
 import { Observable }                           from 'rxjs';
-import { FormBuilder, FormGroup }               from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
 
 //components
@@ -25,7 +25,7 @@ import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoSc
 export class VerbaliPageComponent implements OnInit {
 
   obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>;     
-  form! :                                       FormGroup;
+  form! :                                       UntypedFormGroup;
   annoID!:                                       number;
 //#region ----- ViewChild Input Output -------
   @ViewChild(VerbaliListComponent) verbaliList!: VerbaliListComponent; 
@@ -41,7 +41,7 @@ export class VerbaliPageComponent implements OnInit {
 
   constructor(private _navigationService:                   NavigationService,
               private svcAnni:                              AnniScolasticiService,
-              private fb:                                   FormBuilder ) {
+              private fb:                                   UntypedFormBuilder ) {
 
     let objAnno = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group( {

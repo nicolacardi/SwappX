@@ -1,5 +1,5 @@
 import { Component, Input, OnInit} from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 //components
 import { AlunniListComponent } from '../alunni-list/alunni-list.component';
@@ -13,15 +13,15 @@ import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 export class AlunniFilterComponent implements OnInit {
 
 //#region ----- Variabili -------
-  nomeFilter = new FormControl('');
-  cognomeFilter = new FormControl('');
-  dtNascitaFilter = new FormControl('');
-  indirizzoFilter = new FormControl('');
-  comuneFilter = new FormControl('');
-  provFilter = new FormControl('');
-  emailFilter = new FormControl('');
-  telefonoFilter = new FormControl('');
-  nomeCognomeGenitoreFilter = new FormControl('');
+  nomeFilter = new UntypedFormControl('');
+  cognomeFilter = new UntypedFormControl('');
+  dtNascitaFilter = new UntypedFormControl('');
+  indirizzoFilter = new UntypedFormControl('');
+  comuneFilter = new UntypedFormControl('');
+  provFilter = new UntypedFormControl('');
+  emailFilter = new UntypedFormControl('');
+  telefonoFilter = new UntypedFormControl('');
+  nomeCognomeGenitoreFilter = new UntypedFormControl('');
 //#endregion
   
 //#region ----- ViewChild Input Output -------  

@@ -1,6 +1,6 @@
 //TODO ngOnChanges scatta un numero enorme di volte su hover della lista pagamenti
 import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { BehaviorSubject, Observable, timer } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -23,7 +23,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 export class RettameseEditComponent implements OnInit{
 
 //#region ----- Variabili -------
-  form! :                     FormGroup;
+  form! :                     UntypedFormGroup;
 
   //private rettaIDSubject = new BehaviorSubject<number>(0);
   //rettaIDObs$: Observable<number> = this.rettaIDSubject.asObservable();
@@ -49,7 +49,7 @@ export class RettameseEditComponent implements OnInit{
 //#endregion
 
   constructor(
-    private fb:               FormBuilder,
+    private fb:               UntypedFormBuilder,
     private svcRette:         RetteService,
     public _dialog:           MatDialog,
     private _loadingService:  LoadingService  

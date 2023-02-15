@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
@@ -32,7 +32,7 @@ export class PersonaEditComponent implements OnInit {
   obsTipiPersona$!:                             Observable<PER_TipoPersona[]>;
   currPersona!:                                 User;
 
-  form! :                                       FormGroup;
+  form! :                                       UntypedFormGroup;
   isValid!:                                     boolean;
   emptyForm :                                   boolean = false;
   comuniIsLoading:                              boolean = false;
@@ -51,7 +51,7 @@ export class PersonaEditComponent implements OnInit {
     
     public _dialogRef: MatDialogRef<PersonaEditComponent>,
     @Inject(MAT_DIALOG_DATA) public personaID: number,
-    private fb:                           FormBuilder, 
+    private fb:                           UntypedFormBuilder, 
     private svcPersone:                   PersoneService,
     private svcTipiPersona:               TipiPersonaService,
     //private svcComuni:                    ComuniService,

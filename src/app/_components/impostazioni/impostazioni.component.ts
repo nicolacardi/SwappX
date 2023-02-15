@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 
@@ -24,7 +24,7 @@ import { LoadingService } from '../utilities/loading/loading.service';
 export class ImpostazioniComponent implements OnInit {
 
   obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-  form! :                             FormGroup;
+  form! :                             UntypedFormGroup;
   
   public mesiArr =            [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=  ["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
@@ -40,7 +40,7 @@ export class ImpostazioniComponent implements OnInit {
   @ViewChildren('QuoteListElement') QuoteList!: QueryList<any>;
   
   constructor(
-    private fb:                       FormBuilder, 
+    private fb:                       UntypedFormBuilder, 
     private svcAnni:                  AnniScolasticiService,
     private svcParametri:             ParametriService,
     private _snackBar:                MatSnackBar,

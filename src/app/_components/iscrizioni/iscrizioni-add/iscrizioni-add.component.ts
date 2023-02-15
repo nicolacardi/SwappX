@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -26,7 +26,7 @@ import { DialogData } from 'src/app/_models/DialogData';
 export class IscrizioniAddComponent implements OnInit {
 
 //#region ----- Variabili -------
-  form! :                   FormGroup;
+  form! :                   UntypedFormGroup;
   filteredAlunni$!:         Observable<ALU_Alunno[]>;
   alunniSelezionati:        string[] = [];
   idAlunniSelezionati:      number[] = [];
@@ -40,7 +40,7 @@ export class IscrizioniAddComponent implements OnInit {
   @ViewChild('nomeCognomeAlunno') nomeCognomeAlunno!: ElementRef<HTMLInputElement>;
 //#endregion
 
-  constructor(private fb:                     FormBuilder,
+  constructor(private fb:                     UntypedFormBuilder,
               private svcAlunni:              AlunniService,
               private svcIscrizioni:          IscrizioniService,
               public dialogRef:               MatDialogRef<IscrizioniAddComponent>,

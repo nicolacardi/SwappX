@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { concatMap, last, take, tap } from 'rxjs/operators';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 //components
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
@@ -27,7 +27,7 @@ import { interval } from 'rxjs';
 export class RettaCalcoloAlunnoComponent implements OnInit {
 
 //#region ----- Variabili -------
-  form! :                             FormGroup;
+  form! :                             UntypedFormGroup;
 
   public mesiArr =                    [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=          ["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
@@ -59,7 +59,7 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
     private svcAlunni:                    AlunniService,
     private svcRette:                     RetteService,
     private _snackBar:                    MatSnackBar, 
-    private fb:                           FormBuilder, 
+    private fb:                           UntypedFormBuilder, 
 
     
   ) {

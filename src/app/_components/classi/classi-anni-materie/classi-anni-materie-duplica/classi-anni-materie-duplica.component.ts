@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 
 //services
@@ -25,12 +25,12 @@ import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackb
 export class ClassiAnniMaterieDuplicaComponent implements OnInit {
 
   obsAnni$!:          Observable<ASC_AnnoScolastico[]>
-  form!:              FormGroup;
+  form!:              UntypedFormGroup;
 
   constructor(public _dialogRef:            MatDialogRef<ClassiAnniMaterieDuplicaComponent>,
               private svcAnni:              AnniScolasticiService,
               private svcClassiAnniMaterie: ClasseAnnoMateriaService,
-              private fb:                   FormBuilder,
+              private fb:                   UntypedFormBuilder,
               public _dialog:               MatDialog,
               private _snackBar:            MatSnackBar ) {
 

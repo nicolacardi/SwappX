@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 
 //services
@@ -31,7 +31,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
 
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnnoGroup>();
   obsAnni$!:                            Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-  form! :                               FormGroup;
+  form! :                               UntypedFormGroup;
   menuTopLeftPosition =  {x: '0', y: '0'} 
   displayedColumns: string[] =  [];
   displayedColumnsClassiSezioniAnniSummary: string[] = [
@@ -49,7 +49,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
 
   constructor(private svcClassiSezioniAnni:          ClassiSezioniAnniService,
               private svcAnni:            AnniScolasticiService,
-              private fb:                 FormBuilder, 
+              private fb:                 UntypedFormBuilder, 
               private _loadingService:    LoadingService,
               private router:             Router) { 
 

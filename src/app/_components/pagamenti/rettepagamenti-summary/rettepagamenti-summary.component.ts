@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
@@ -29,7 +29,7 @@ matDataSource = new MatTableDataSource<PAG_RettePagamenti_Sum>();
 
 obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
 
-form! :                             FormGroup;
+form! :                             UntypedFormGroup;
 menuTopLeftPosition =  {x: '0', y: '0'} 
 displayedColumns: string[] =  [];
 displayedColumnsRettePagamentiSummary: string[] = [
@@ -45,7 +45,7 @@ displayedColumnsRettePagamentiSummary: string[] = [
 @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 //#endregion
 
-  constructor(private fb:               FormBuilder,
+  constructor(private fb:               UntypedFormBuilder,
               private svcRette:         RetteService,
               private svcAnni:          AnniScolasticiService,
               private _loadingService:  LoadingService) { 

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild }            from '@angular/core';
-import { FormBuilder, FormGroup, ValidatorFn }               from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, ValidatorFn }               from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { iif, Observable } from 'rxjs';
@@ -34,7 +34,7 @@ import { TEM_BloccoFoto }                       from 'src/app/_models/TEM_Blocco
 export class BloccoEditComponent implements OnInit {
 //#region ----- Variabili -------
   blocco$!:                                     Observable<TEM_Blocco>
-  form! :                                       FormGroup;
+  form! :                                       UntypedFormGroup;
   imgFile!:                                     string;
   tipoBloccoDesc!:                              string;
   bloccoFotoID!:                                number;
@@ -53,7 +53,7 @@ export class BloccoEditComponent implements OnInit {
 
     public _dialogRef:                          MatDialogRef<BloccoEditComponent>,
     @Inject(MAT_DIALOG_DATA) public bloccoID:   number,
-    private fb:                                 FormBuilder, 
+    private fb:                                 UntypedFormBuilder, 
 
 
     public _dialog:                             MatDialog,

@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 //components
 import { ObiettivoEditComponent } from '../obiettivo-edit/obiettivo-edit.component';
@@ -35,7 +35,7 @@ matDataSource = new MatTableDataSource<MAT_Obiettivo>();
 obsObiettivi$!:               Observable<MAT_Obiettivo[]>;
 
 obsAnni$!:                    Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-form! :                       FormGroup;
+form! :                       UntypedFormGroup;
 
 displayedColumns: string[] = [
     "actionsColumn", 
@@ -85,7 +85,7 @@ filterValues = {
 
 constructor(private svcObiettivi:                   ObiettiviService,
             private svcAnni:                        AnniScolasticiService,
-            private fb:                             FormBuilder, 
+            private fb:                             UntypedFormBuilder, 
             private _loadingService:                LoadingService,
             public _dialog:                         MatDialog) {
 

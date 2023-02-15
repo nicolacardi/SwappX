@@ -1,5 +1,5 @@
 import { Component, Inject, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup }               from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
@@ -41,7 +41,7 @@ export class VotoInterrEditComponent implements OnInit {
   obsIscrizioni$!:                              Observable<CLS_Iscrizione[]>;
   votoInterr$!:                                 Observable<TST_VotoInterr>;
   prof!:                                        string;
-  form! :                                       FormGroup;
+  form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
   breakpoint!:                                  number;
 
@@ -56,7 +56,7 @@ export class VotoInterrEditComponent implements OnInit {
   constructor( 
     @Inject(MAT_DIALOG_DATA) public data:       DialogDataVotoInterr,
     public _dialogRef:                          MatDialogRef<VotoInterrEditComponent>,
-    private fb:                                 FormBuilder,
+    private fb:                                 UntypedFormBuilder,
     public _dialog:                             MatDialog,
     private _snackBar:                          MatSnackBar,
     private _loadingService :                   LoadingService,

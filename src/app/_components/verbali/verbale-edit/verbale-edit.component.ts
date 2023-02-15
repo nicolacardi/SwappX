@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit }            from '@angular/core';
-import { FormBuilder, FormGroup }               from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { iif, Observable, of }                           from 'rxjs';
@@ -43,7 +43,7 @@ export class VerbaleEditComponent implements OnInit {
   obsGenitoriClasse$!:                          Observable<PER_Persona[]>;
   classeSezioneAnnoSelected!:                   number;
   mostraClassiEGenitori:                        boolean = false;
-  form! :                                       FormGroup;
+  form! :                                       UntypedFormGroup;
   personaID!:                                   number;
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
@@ -52,7 +52,7 @@ export class VerbaleEditComponent implements OnInit {
 
   constructor(public _dialogRef:                          MatDialogRef<VerbaleEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data:       DialogDataVerbale,
-              private fb:                                 FormBuilder, 
+              private fb:                                 UntypedFormBuilder, 
               private svcVerbali:                         VerbaliService,
               private svcVerbaliPresenti:                 VerbaliPresentiService,
 

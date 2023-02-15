@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit,  }          from '@angular/core';
-import { FormGroup }                            from '@angular/forms';
+import { UntypedFormGroup }                            from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
 
@@ -19,7 +19,7 @@ import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
 })
 export class VotiCompitoPageComponent implements OnInit {
 
-  form! :                                       FormGroup;
+  form! :                                       UntypedFormGroup;
   strClasseSezioneAnno!:                        string;
   dtStart!:                                     Date;
   strDtStart!:                                  string;

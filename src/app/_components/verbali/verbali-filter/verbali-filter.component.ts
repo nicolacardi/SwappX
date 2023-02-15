@@ -1,5 +1,5 @@
 import { Component, Input, OnInit} from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 //components
 import { VerbaliListComponent } from '../verbali-list/verbali-list.component';
@@ -13,12 +13,12 @@ import { VerbaliListComponent } from '../verbali-list/verbali-list.component';
 export class VerbaliFilterComponent implements OnInit {
 
   //#region ----- Variabili -------
-  nomeFilter = new FormControl('');
-  cognomeFilter = new FormControl('');
-  tipoFilter = new FormControl('');
-  dtVerbaleFilter = new FormControl('');
-  classeFilter = new FormControl('');
-  titoloFilter = new FormControl('');
+  nomeFilter = new UntypedFormControl('');
+  cognomeFilter = new UntypedFormControl('');
+  tipoFilter = new UntypedFormControl('');
+  dtVerbaleFilter = new UntypedFormControl('');
+  classeFilter = new UntypedFormControl('');
+  titoloFilter = new UntypedFormControl('');
 
   //#endregion
 

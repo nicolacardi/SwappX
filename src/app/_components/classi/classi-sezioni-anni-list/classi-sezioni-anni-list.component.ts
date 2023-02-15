@@ -1,5 +1,5 @@
 import { Component, DebugElement, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormBuilder, FormGroup }               from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatSelect }                            from '@angular/material/select';
 import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable }                           from 'rxjs';
@@ -131,7 +131,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>;     
   obsDocenti$!:                                 Observable<PER_Docente[]>;
 
-  form! :                                       FormGroup;
+  form! :                                       UntypedFormGroup;
   public showProgress=                          false;
   selectedRowIndex = -1;
 
@@ -174,7 +174,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     private svcAnni:                            AnniScolasticiService,
     private svcDocenti:                         DocentiService,
     private _loadingService:                    LoadingService,
-    private fb:                                 FormBuilder, 
+    private fb:                                 UntypedFormBuilder, 
     public _dialog:                             MatDialog, 
     private actRoute:                           ActivatedRoute,
     private _snackBar:                          MatSnackBar

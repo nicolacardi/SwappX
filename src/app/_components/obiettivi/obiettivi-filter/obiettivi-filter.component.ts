@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { ObiettiviListComponent } from '../obiettivi-list/obiettivi-list.component';
 
 //services
@@ -27,10 +27,10 @@ export class ObiettiviFilterComponent implements OnInit {
   obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;
   obsMaterie$!:               Observable<MAT_Materia[]>;
 
-  classeFilter = new FormControl('');
-  annoFilter = new FormControl('');
-  materiaFilter = new FormControl('');
-  tipoVotoFilter = new FormControl('');
+  classeFilter = new UntypedFormControl('');
+  annoFilter = new UntypedFormControl('');
+  materiaFilter = new UntypedFormControl('');
+  tipoVotoFilter = new UntypedFormControl('');
 //#endregion
 
 //#region ----- ViewChild Input Output -------  

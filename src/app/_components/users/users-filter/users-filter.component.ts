@@ -1,5 +1,5 @@
 import { Component, Input, OnInit} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 //components
@@ -20,10 +20,10 @@ import { PER_TipoPersona } from 'src/app/_models/PER_Persone';
 export class UsersFilterComponent implements OnInit {
 
 //#region ----- Variabili -------
-  nomeFilter = new FormControl('');
-  cognomeFilter = new FormControl('');
-  emailFilter = new FormControl('');
-  tipoPersonaFilter = new FormControl('');
+  nomeFilter = new UntypedFormControl('');
+  cognomeFilter = new UntypedFormControl('');
+  emailFilter = new UntypedFormControl('');
+  tipoPersonaFilter = new UntypedFormControl('');
 
   obsTipiPersona$!:            Observable<PER_TipoPersona[]>;
   

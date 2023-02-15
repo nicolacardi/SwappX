@@ -1,5 +1,5 @@
 import { Component, ContentChildren, Input, OnInit, QueryList, ViewChild, ViewChildren }                    from '@angular/core';
-import { FormBuilder, FormGroup }               from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { concatMap, map }                            from 'rxjs/operators';
 import { Observable }                           from 'rxjs';
 
@@ -36,7 +36,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
   public iscrizione!:                           CLS_Iscrizione;
 
 
-  private form! :                               FormGroup;
+  private form! :                               UntypedFormGroup;
   public iscrizioneID!:                         number;
 
   
@@ -46,7 +46,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
 
   constructor(
-    private fb:                                 FormBuilder,
+    private fb:                                 UntypedFormBuilder,
     private svcIscrizioni:                      IscrizioniService,
     private svcPersone:                         PersoneService,
     private actRoute:                           ActivatedRoute,

@@ -1,5 +1,5 @@
 import { Component, OnInit }                    from '@angular/core';
-import { FormBuilder, FormGroup }               from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { Observable }                           from 'rxjs';
 
 //components
@@ -25,10 +25,10 @@ export class OrarioDocentePageComponent implements OnInit {
   currUser!:                                    User;
 
   obsDocenti$!:                                 Observable<PER_Docente[]>;
-  form! :                                       FormGroup;
+  form! :                                       UntypedFormGroup;
 
   constructor(private svcDocenti:                         DocentiService,
-              private fb:                                 FormBuilder  ) {
+              private fb:                                 UntypedFormBuilder  ) {
 
     this.form = this.fb.group( {
       selectDocente: 0

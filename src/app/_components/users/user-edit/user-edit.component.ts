@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, Subscription } from 'rxjs';
@@ -44,7 +44,7 @@ export class UserEditComponent implements OnInit {
 
   persona$!:                  Observable<PER_Persona>;
 
-  form! :                     FormGroup;
+  form! :                     UntypedFormGroup;
   emptyForm :                 boolean = false;
 
   previousMatSelect! :        number;
@@ -66,7 +66,7 @@ export class UserEditComponent implements OnInit {
                public _dialog:                             MatDialog,
                private _snackBar:                          MatSnackBar,
                private _loadingService :                   LoadingService,
-               private fb:                                 FormBuilder ) { 
+               private fb:                                 UntypedFormBuilder ) { 
 
     _dialogRef.disableClose = true;
     

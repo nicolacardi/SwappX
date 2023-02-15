@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { iif, Observable, of } from 'rxjs';
 import { concatMap, debounceTime, switchMap, tap } from 'rxjs/operators';
@@ -31,7 +31,7 @@ import { DialogData } from 'src/app/_models/DialogData';
 export class DocenzeAddComponent implements OnInit {
 
 //#region ----- Variabili -------
-  form! :                     FormGroup;
+  form! :                     UntypedFormGroup;
   obsFilteredDocenti$!:       Observable<PER_Docente[]>;
   obsMaterie$!:               Observable<MAT_Materia[]>;
   docentiIsLoading:           boolean = false;
@@ -44,7 +44,7 @@ export class DocenzeAddComponent implements OnInit {
   @ViewChild('nomeCognomeDocente') nomeCognomeDocente!: ElementRef<HTMLInputElement>;
 //#endregion
 
-  constructor(private fb:                             FormBuilder,
+  constructor(private fb:                             UntypedFormBuilder,
               private svcMaterie:                     MaterieService,
               private svcDocenti:                     DocentiService,
               private svcClasseSezioneAnno:           ClassiSezioniAnniService,

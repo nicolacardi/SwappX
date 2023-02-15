@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 //services
 import { ClasseAnnoMateriaService } from '../classe-anno-materia.service';
@@ -34,7 +34,7 @@ matDataSource = new MatTableDataSource<CLS_ClasseAnnoMateria>();
 obsClassiAnniMaterie$!:               Observable<CLS_ClasseAnnoMateria[]>;
 
 obsAnni$!:                            Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-form! :                               FormGroup;
+form! :                               UntypedFormGroup;
 
 displayedColumns: string[] = [
     "actionsColumn", 
@@ -77,7 +77,7 @@ filterValues = {
 
   constructor(private svcClasseAnnoMateria:           ClasseAnnoMateriaService,
               private svcAnni:                        AnniScolasticiService,
-              private fb:                             FormBuilder, 
+              private fb:                             UntypedFormBuilder, 
               private _loadingService:                LoadingService,
               public _dialog:                         MatDialog ) {
               

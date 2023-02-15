@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 //components
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
@@ -23,13 +23,13 @@ import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 })
 export class ObiettiviDuplicaComponent implements OnInit {
   obsAnni$!:            Observable<ASC_AnnoScolastico[]>
-  form!:                FormGroup;
+  form!:                UntypedFormGroup;
 
   constructor(
     public _dialogRef:                      MatDialogRef<ObiettiviDuplicaComponent>,
     private svcAnni:                        AnniScolasticiService,
     private svcObiettivi:                   ObiettiviService,
-    private fb:                             FormBuilder,
+    private fb:                             UntypedFormBuilder,
     public _dialog:                         MatDialog,
     private _snackBar:                      MatSnackBar
 

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup }               from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
@@ -53,7 +53,7 @@ export class LezioneComponent implements OnInit {
 
 //#region ----- Variabili -------
 
-  form! :                                       FormGroup;
+  form! :                                       UntypedFormGroup;
   docenteID!:                                   number;
   lezione$!:                                    Observable<CAL_Lezione>;
   obsMaterie$!:                                 Observable<MAT_Materia[]>;
@@ -92,7 +92,7 @@ export class LezioneComponent implements OnInit {
     public _dialogRef:                          MatDialogRef<LezioneComponent>,
     @Inject(MAT_DIALOG_DATA) public data:       DialogDataLezione,
 
-    private fb:                                 FormBuilder, 
+    private fb:                                 UntypedFormBuilder, 
     private svcLezioni:                         LezioniService,
     private svcMaterie:                         MaterieService,
     private svcDocenti:                         DocentiService,
