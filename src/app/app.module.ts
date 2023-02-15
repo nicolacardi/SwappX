@@ -206,6 +206,8 @@ import { BloccoEditComponent }                  from './_components/templates/bl
 import { ClickDoubleDirective }                 from './_components/utilities/clickdouble/clickdouble.directive';
 
 
+
+
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
   listPlugin,
@@ -374,7 +376,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     FormsModule,
     FullCalendarModule,
     ColorPickerModule
-
 
   ],
 

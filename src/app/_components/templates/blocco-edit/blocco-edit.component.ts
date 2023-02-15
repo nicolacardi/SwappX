@@ -40,6 +40,7 @@ export class BloccoEditComponent implements OnInit {
   bloccoFotoID!:                                number;
 
 
+
 //#endregion
 
 
