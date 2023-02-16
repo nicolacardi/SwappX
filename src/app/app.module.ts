@@ -209,10 +209,10 @@ import { ClickDoubleDirective }                 from './_components/utilities/cl
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
-  dayGridPlugin,
-  listPlugin,
-  timegridPlugin,
-  interactionPlugin
+  //dayGridPlugin, NC 16/02/23
+  //listPlugin, NC 16/02/23
+  //timegridPlugin, NS 16/02/23
+  //interactionPlugin NC 16/02/23
 ]);
 @NgModule({
   declarations: [
