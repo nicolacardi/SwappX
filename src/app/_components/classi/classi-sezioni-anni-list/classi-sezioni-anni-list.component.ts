@@ -1,15 +1,15 @@
 import { Component, DebugElement, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
-import { MatSelect }                            from '@angular/material/select';
-import { MatTableDataSource }                   from '@angular/material/table';
+import { MatLegacySelect as MatSelect }                            from '@angular/material/legacy-select';
+import { MatLegacyTableDataSource as MatTableDataSource }                   from '@angular/material/legacy-table';
 import { Observable }                           from 'rxjs';
-import { MatPaginator }                         from '@angular/material/paginator';
-import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatLegacyPaginator as MatPaginator }                         from '@angular/material/legacy-paginator';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig }           from '@angular/material/legacy-dialog';
 import { MatSort }                              from '@angular/material/sort';
 import { finalize }                             from 'rxjs/operators';
 import { ActivatedRoute }                       from '@angular/router';
 import { SelectionModel }                       from '@angular/cdk/collections';
-import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar }                          from '@angular/material/legacy-snack-bar';
 
 //components
 import { ClasseSezioneAnnoEditComponent }       from '../classe-sezione-anno-edit/classe-sezione-anno-edit.component';

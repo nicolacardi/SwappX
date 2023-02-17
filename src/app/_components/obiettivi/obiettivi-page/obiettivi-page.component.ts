@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 import { MatDrawer } from '@angular/material/sidenav';
 import { ObiettiviDuplicaComponent } from '../obiettivi-duplica/obiettivi-duplica.component';
 import { ObiettiviFilterComponent } from '../obiettivi-filter/obiettivi-filter.component';

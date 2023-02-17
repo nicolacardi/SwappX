@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatSort }                              from '@angular/material/sort';
 import { Observable }                           from 'rxjs';
-import { MatTableDataSource}                    from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource}                    from '@angular/material/legacy-table';
 
 //components
 

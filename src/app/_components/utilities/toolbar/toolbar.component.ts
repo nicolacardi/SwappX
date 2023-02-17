@@ -1,5 +1,5 @@
 import { Component, ComponentRef, Input, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 
 //components
 import { DialogOkComponent } from '../dialog-ok/dialog-ok.component';

@@ -1,11 +1,11 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { MatSort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
-import { MatTableDataSource} from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource} from '@angular/material/legacy-table';
 import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 import { SelectionModel } from '@angular/cdk/collections';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
@@ -30,7 +30,7 @@ import { User } from 'src/app/_user/Users';
 import { ScadenzePersoneService } from '../../scadenze/scadenze-persone.service';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { GenitoriService } from '../../genitori/genitori.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { concatMap, tap } from 'rxjs/operators';
 
