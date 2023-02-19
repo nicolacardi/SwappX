@@ -1,5 +1,5 @@
 import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/angular';
+import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/core';
 import { FullCalendarComponent }                from '@fullcalendar/angular';//-->serve per il ViewChild
 import { EventResizeDoneArg }                   from '@fullcalendar/interaction';
 
