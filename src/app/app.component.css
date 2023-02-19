@@ -256,13 +256,18 @@
 
 
   
-::ng-deep .mat-list-item-content { 
-  padding-right: 0px!important; 
-  padding-left: 10px!important; 
 
+:host ::ng-deep .mat-mdc-list-item__primary-text { 
+  letter-spacing: 0 !important; 
 }
 
-::ng-deep .mat-toolbar-row, .mat-toolbar-single-row {
+
+:host ::ng-deep .mdc-list-item { 
+  padding-right: 0px!important; 
+  padding-left: 10px!important; 
+}
+
+:host ::ng-deep .mat-toolbar-row, .mat-toolbar-single-row {
   padding-left: 8px;
 }
 

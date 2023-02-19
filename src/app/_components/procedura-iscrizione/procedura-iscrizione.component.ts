@@ -18,7 +18,7 @@ import { ALU_GenitoreAlunno } from 'src/app/_models/ALU_GenitoreAlunno';
 import { PersonaFormComponent } from '../persone/persona-form/persona-form.component';
 import { MatStepper } from '@angular/material/stepper';
 import { PersoneService } from '../persone/persone.service';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
 
 @Component({

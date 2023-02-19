@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild }         from '@angular/core';
-import { MatLegacyTableDataSource as MatTableDataSource }                   from '@angular/material/legacy-table';
+import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable }                           from 'rxjs';
 import { MatSort }                              from '@angular/material/sort';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig }           from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 
 //components
 import { TipoScadenzaEditComponent }            from '../tiposcadenza-edit/tiposcadenza-edit.component';

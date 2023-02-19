@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatTableDataSource } from '@angular/material/table';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 

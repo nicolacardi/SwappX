@@ -28,7 +28,7 @@
     <!-- <canvas #myCanvas style="position: relative; max-width: 100%; max-height: 100%"></canvas> -->
 </div>
 
-<mat-slider class="w100" value="100" (input)="onSliderChange($event)"></mat-slider>
+<mat-slider class="w100" #ngSlider><input matSliderThumb (input)="onSliderChange({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" value="100" /></mat-slider>
 
 
 <button type="button" mat-button matSuffix class="w100 ma" mat-stroked-button >Ancora non Funziona</button>

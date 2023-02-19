@@ -1,22 +1,25 @@
 /* low-list-row è una classe creata per  ridurre l'altezza dei form:
 /* attenzione però: toglie il mat-hint sottostante !!!*/
-::ng-deep ._low-list-row .mat-form-field-subscript-wrapper {
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+:host ::ng-deep ._low-list-row .mat-form-field-subscript-wrapper {
     visibility: hidden !important;
 }
 
-::ng-deep ._low-list-row .mat-form-field-wrapper {
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+:host ::ng-deep ._low-list-row .mat-form-field-wrapper {
     padding-bottom: 0px !important;
 }
 
-::ng-deep ._low-list-row .mat-form-field-underline {
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+:host ::ng-deep ._low-list-row .mat-form-field-underline {
     bottom: 0.25em !important;
 }
 
-::ng-deep ._low-list-row .mat-grid-tile {
+:host ::ng-deep ._low-list-row .mat-grid-tile {
     height: 50px !important;
 }
 
-::ng-deep ._low-list-row {
+:host ::ng-deep ._low-list-row {
     height: 50px !important;
 }
 

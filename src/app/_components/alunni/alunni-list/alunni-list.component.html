@@ -1,13 +1,14 @@
 <h1 *ngIf="showPageTitle" class="_titolo-pagina">Alunni</h1>
 
     <!-- **************************   FILTER   ******************* -->
-    <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
-        <mat-label>Filtro</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
-    </mat-form-field>
-    
-    <!-- **************************   PAGINATOR   ******************* -->
-    <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>
+        <mat-form-field *ngIf="showTableRibbon" class="_pos-relative ml20 topZIndex">
+            <mat-label>Filtro</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
+        </mat-form-field>
+        
+        <!-- **************************   PAGINATOR   ******************* -->
+        <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>
+
 
     <!-- **************************   MAT-TABLE   ******************* -->
     <table mat-table class="_table-row-low transparent w100" 

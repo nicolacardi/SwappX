@@ -11,9 +11,9 @@ import { FormsModule, ReactiveFormsModule }     from '@angular/forms';
 import { MAT_DATE_LOCALE }                      from '@angular/material/core';
 import { DragDropModule}                        from '@angular/cdk/drag-drop';
 import { MaterialModule }                       from './_material/material.module';
-import { MatLegacyPaginatorIntl as MatPaginatorIntl }                     from '@angular/material/legacy-paginator';
+import { MatPaginatorIntl }                     from '@angular/material/paginator';
 
-import { MAT_LEGACY_SNACK_BAR_DEFAULT_OPTIONS as MAT_SNACK_BAR_DEFAULT_OPTIONS }        from '@angular/material/legacy-snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS }        from '@angular/material/snack-bar';
 import { STEPPER_GLOBAL_OPTIONS }               from '@angular/cdk/stepper';
 
 

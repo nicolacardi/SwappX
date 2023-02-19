@@ -4,7 +4,7 @@
                
 <form *ngIf="(persona$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
     <!-- *ngIf="dove!= 'genitore-edit' && dove!='alunno-edit'" -->
-    <mat-grid-list  class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list  *ngIf="dove!= 'genitore-edit' && dove!='alunno-edit'" class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>Tipo Personale</mat-label>
@@ -20,14 +20,16 @@
     <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
-                <input matInput type="text" required placeholder="Nome" minlength= "3" formControlName="nome" #nome>
+                <mat-label>Nome</mat-label>
+                <input matInput type="text" required minlength= "3" formControlName="nome" #nome>
                 <mat-error *ngIf="form.controls.nome.errors?.required"> Campo obbligatorio</mat-error>
             </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-form-field>
-                <input matInput required type="text" placeholder="Cognome" formControlName="cognome">
+                <mat-label>Cognome</mat-label>
+                <input matInput required type="text" formControlName="cognome">
                 <mat-error *ngIf="form.controls.cognome.errors?.required"> Campo obbligatorio</mat-error>
             </mat-form-field>
         </mat-grid-tile>
@@ -41,7 +43,8 @@
     <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
-                <input matInput required type="text" placeholder="Genere (M/F)" formControlName="genere">
+                <mat-label>Genere (M/F)</mat-label>
+                <input matInput required type="text" formControlName="genere">
                 <mat-error>Inserire M o F</mat-error>
             </mat-form-field>
             
@@ -49,17 +52,19 @@
 
         <mat-grid-tile>
             <mat-form-field>
-                <input matInput type="text" placeholder="Codice Fiscale" formControlName="cf">
+                <mat-label>Codice Fiscale</mat-label>
+                <input matInput type="text" formControlName="cf">
                 <mat-error>Campo errato</mat-error>
             </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-form-field class="w70">
+                <mat-label>Data di Nascita</mat-label>
                 <input matInput #date required
                       formControlName = "dtNascita"
                       [matDatepicker]= "dpDtNascita"
-                      placeholder="Data di Nascita">
+                      >
                 <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
                 <mat-datepicker #dpDtNascita  ></mat-datepicker>
                 <mat-error *ngIf="form.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error>
@@ -72,7 +77,7 @@
             <mat-form-field>
                 <mat-label>Comune di Nascita</mat-label>
                 <input matInput type="text"
-                        placeholder="<Selezionare il Comune>"
+                        
                         formControlName="comuneNascita"
                         [matAutocomplete]="auto1">
                 <mat-autocomplete #auto1="matAutocomplete" >
@@ -86,13 +91,15 @@
 
         <mat-grid-tile>
             <mat-form-field>
-                <input matInput type="text" placeholder="Prov di Nascita" formControlName="provNascita">
+                <mat-label>Prov. di nascita</mat-label>
+                <input matInput type="text" formControlName="provNascita">
             </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-form-field>
-                <input matInput type="text" placeholder="Paese di Nascita" formControlName="nazioneNascita">
+                <mat-label>Paese di nascita</mat-label>
+                <input matInput type="text" formControlName="nazioneNascita">
             </mat-form-field>
         </mat-grid-tile>
 
@@ -102,7 +109,7 @@
             <mat-form-field>
                 <mat-label>Comune di Residenza</mat-label>
                 <input matInput type="text"
-                       placeholder="<Selezionare il Comune>"
+                       
                        formControlName="comune"
                        [matAutocomplete]="auto2">
                 <mat-autocomplete #auto2="matAutocomplete" >
@@ -118,13 +125,15 @@
 
         <mat-grid-tile>
             <mat-form-field>
-                <input matInput type="text" placeholder="Prov di Residenza" formControlName="prov">
+                <mat-label>Prov. di Residenza</mat-label>
+                <input matInput type="text" formControlName="prov">
             </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-form-field>
-                <input matInput type="text" placeholder="Paese di Residenza" formControlName="nazione">
+                <mat-label>Paese di Residenza</mat-label>
+                <input matInput type="text" formControlName="nazione">
             </mat-form-field>
         </mat-grid-tile>
 
@@ -132,13 +141,15 @@
     <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
-                <input  matInput type="text" placeholder="Indirizzo e N. Civico" formControlName="indirizzo">
+                <mat-label>Indirizzo e N.</mat-label>
+                <input  matInput type="text" formControlName="indirizzo">
             </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-form-field>
-                <input matInput type="text" placeholder="CAP" formControlName="cap">
+                <mat-label>CAP</mat-label>
+                <input matInput type="text" formControlName="cap">
             </mat-form-field>
         </mat-grid-tile>
 
@@ -147,13 +158,15 @@
     <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
-                <input matInput type="text" placeholder="Telefono" formControlName="telefono">
+                <mat-label>Telefono</mat-label>
+                <input matInput type="text" formControlName="telefono">
             </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile>
             <mat-form-field>
-                <input matInput type="text" placeholder="e-mail" formControlName="email">
+                <mat-label>e-mail</mat-label>
+                <input matInput type="text" formControlName="email">
                 <mat-error>Campo errato</mat-error>
             </mat-form-field>
         </mat-grid-tile>

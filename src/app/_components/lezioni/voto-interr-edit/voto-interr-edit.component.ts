@@ -1,11 +1,11 @@
 import { Component, Inject, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar }                          from '@angular/material/legacy-snack-bar';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { Observable }                           from 'rxjs';
 import { map, tap }                                  from 'rxjs/operators';
-import { MatLegacySelect as MatSelect }                            from '@angular/material/legacy-select';
+import { MatSelect }                            from '@angular/material/select';
 
 //components
 import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';

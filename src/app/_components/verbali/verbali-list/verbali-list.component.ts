@@ -1,9 +1,9 @@
 import { CdkDragDrop, moveItemInArray }         from '@angular/cdk/drag-drop';
 import { Component, Input, OnChanges, OnInit, ViewChild }  from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig }           from '@angular/material/legacy-dialog';
-import { MatLegacyPaginator as MatPaginator }                         from '@angular/material/legacy-paginator';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatPaginator }                         from '@angular/material/paginator';
 import { MatSort }                              from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource }                   from '@angular/material/legacy-table';
+import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable }                           from 'rxjs';
 
 //components

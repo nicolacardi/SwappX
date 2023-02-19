@@ -1,4 +1,4 @@
-::ng-deep .mat-paginator-container{
+:host ::ng-deep .mat-mdc-paginator-container{
     width:50% !important;
 }
 

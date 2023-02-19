@@ -94,12 +94,14 @@
 
     /*CELLETTE  RETTE D,C,P IN RETTA EDIT */
     /* avvicina le celle nelle quali sono scritte le rette D C e P in retta edit*/
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     :host ::ng-deep .cellRetta .mat-form-field-wrapper { 
         padding:0px;
         margin: 0px;
     }
 
     /*estetica delle cellette nelle quali sono scirtte le rete D C e P in retta edit */
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     :host ::ng-deep .cellRetta .mat-form-field-infix {
         width: 45px; 
         padding-top: 2px !important;
@@ -122,20 +124,24 @@
     }
 
     /*bordo inferiore nascosto (finiva a metà cella)*/
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     :host ::ng-deep .cellRetta .mat-form-field-underline {
         display: none;
     }
 
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     :host ::ng-deep .cellRettaEdit .mat-form-field-wrapper { 
         padding:5px;
         margin: 0px;
     }
 
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     :host ::ng-deep ._highlightPag2 .mat-form-field-infix  {
         background-color: rgb(212, 68, 68);
         color: white !important;
     }
 
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     :host ::ng-deep ._highlightConc .mat-form-field-infix  {
         background-color: rgba(173, 173, 173, 0.142);
     }
@@ -219,12 +225,13 @@
     }
 
 
-::ng-deep ._no-padding-bottom .mat-form-field-wrapper {
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+:host ::ng-deep ._no-padding-bottom .mat-form-field-wrapper {
         padding-bottom: 0px !important;
     }
 
 
-    .mat-card {
+    .mat-mdc-card {
         padding-bottom: 0px;
       }
 

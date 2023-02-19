@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig }           from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 import { ActivatedRoute, Router }               from '@angular/router';
-import { MatLegacyTabGroup as MatTabGroup }                          from '@angular/material/legacy-tabs';
-import { MatLegacySnackBar as MatSnackBar }                          from '@angular/material/legacy-snack-bar';
+import { MatTabGroup }                          from '@angular/material/tabs';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //models
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';

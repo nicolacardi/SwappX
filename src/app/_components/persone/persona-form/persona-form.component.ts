@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output }             from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef }              from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef }              from '@angular/material/dialog';
 import { Observable, of }                           from 'rxjs';
 import { debounceTime, switchMap, tap }         from 'rxjs/operators';
 

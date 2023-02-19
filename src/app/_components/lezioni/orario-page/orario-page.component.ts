@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild }  from '@angular/core';
-import { MatLegacyDialog as MatDialog }           from '@angular/material/legacy-dialog';
+import { MatDialog }           from '@angular/material/dialog';
 
-import { MatLegacySnackBar as MatSnackBar }                          from '@angular/material/legacy-snack-bar';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //models
 

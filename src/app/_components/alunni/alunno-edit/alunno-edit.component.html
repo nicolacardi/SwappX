@@ -35,8 +35,7 @@
 |                                                                          |
 \--------------------------------------------------------------------------/
 -->
-
-    <mat-card class="form-card">
+    <mat-card  class="form-card">
         <mat-card-content>
         
             <!-- ********************************    BOTTONI     ************************************* -->
@@ -71,7 +70,7 @@
                 <mat-tab  label="Dati Anagrafici">
                     
                     <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "formAlunno">
-                        <app-persona-form *ngIf="(alunno$ | async) || emptyForm" 
+                        <app-persona-form class="mt10" *ngIf="(alunno$ | async) || emptyForm" 
                             [personaID] = "personaID" 
                             [tipoPersonaID]="1"
                             [dove]="'alunno-edit'"
@@ -83,13 +82,15 @@
                         <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
                             <mat-grid-tile>
                                 <mat-form-field>
-                                    <input matInput type="text" placeholder="Scuola di provenienza" formControlName="scuolaProvenienza">
+                                    <mat-label>Scuola di provenienza</mat-label>
+                                    <input matInput type="text" formControlName="scuolaProvenienza">
                                 </mat-form-field>
                             </mat-grid-tile>
 
                             <mat-grid-tile>
                                 <mat-form-field>
-                                    <input matInput type="text" placeholder="Indirizzo Scuola di provenienza" formControlName="indirizzoScuolaProvenienza">
+                                    <mat-label>Indirizzo Sc. provenienza</mat-label>
+                                    <input matInput type="text" formControlName="indirizzoScuolaProvenienza">
                                 </mat-form-field>
                             </mat-grid-tile>
 
@@ -139,7 +140,7 @@
                     </button>
                     
                     <mat-label class="frameLabel">i genitori/tutori di {{alunnoNomeCognome}} </mat-label>
-                    <div class="_genitori-container cellBordered mt10">
+                    <div class="_genitori-container cellBordered mt30">
                         <app-genitori-list [context]="'alunno-edit-famiglia'"[alunnoID]="alunnoID"  (removeFromFamily) = "removeFromFamily($event)" #genitoriFamiglia></app-genitori-list>
                     </div>
                     <mat-accordion>

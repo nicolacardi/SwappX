@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar }                          from '@angular/material/legacy-snack-bar';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
 import { concatMap, take, tap }                 from 'rxjs/operators';
 
@@ -38,7 +38,7 @@ import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_Classe
 import { CAL_Presenza }                         from 'src/app/_models/CAL_Presenza';
 import { TST_VotoCompito }                      from 'src/app/_models/TST_VotiCompiti';
 import { DialogDataLezione }                    from 'src/app/_models/DialogData';
-import { MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
+import { MatTabGroup } from '@angular/material/tabs';
 
 
 

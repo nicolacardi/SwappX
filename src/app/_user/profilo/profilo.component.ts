@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
-import { MatLegacyDialog as MatDialog }                            from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar }                          from '@angular/material/legacy-snack-bar';
+import { MatDialog }                            from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //components
 import { DialogOkComponent }                    from '../../_components/utilities/dialog-ok/dialog-ok.component';

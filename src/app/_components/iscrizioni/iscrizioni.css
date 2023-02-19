@@ -7,7 +7,7 @@
 }
 
 /* Bordo inferiore nelle checkbox */
-th.mat-header-cell._no-bottom-border, td.mat-cell._no-bottom-border {
+th.mat-mdc-header-cell._no-bottom-border, td.mat-mdc-cell._no-bottom-border {
   border-bottom-width: 0px !important;
 }
 
@@ -40,10 +40,11 @@ th.mat-header-cell._no-bottom-border, td.mat-cell._no-bottom-border {
   font-weight: bold;
 }
 
-::ng-deep .noBottomPadding .mat-form-field-wrapper {
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+:host ::ng-deep .noBottomPadding .mat-form-field-wrapper {
 /* padding-bottom: 0px !important; */
 }
 
-::ng-deep .headerColored .mat-header-row {
+:host ::ng-deep .headerColored .mat-mdc-header-row {
 background-color: #f9f9f9;
 }
