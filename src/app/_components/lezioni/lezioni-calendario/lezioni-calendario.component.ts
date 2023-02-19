@@ -1,6 +1,13 @@
 import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/core';
 import { FullCalendarComponent }                from '@fullcalendar/angular';//-->serve per il ViewChild
+
+
+import dayGridPlugin from '@fullcalendar/daygrid'
+import listPlugin from '@fullcalendar/list'
+import timegridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+
 import { EventResizeDoneArg }                   from '@fullcalendar/interaction';
 
 import itLocale                                 from '@fullcalendar/core/locales/it';
@@ -43,6 +50,13 @@ export class LezioniCalendarioComponent implements OnInit {
 
 
   calendarOptions: CalendarOptions = {
+
+        plugins: [                              //aggiunto con fullcalendar 6.1.4
+           dayGridPlugin,
+           interactionPlugin,
+           listPlugin,
+           timegridPlugin
+         ],
 
     //PROPRIETA' BASE
     initialView:  'timeGridWeek',

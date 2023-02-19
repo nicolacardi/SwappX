@@ -19,10 +19,10 @@ import { STEPPER_GLOBAL_OPTIONS }               from '@angular/cdk/stepper';
 
 //Fullcalendar
 import { FullCalendarModule }                   from '@fullcalendar/angular'; // Va prima dei plugin di FullCalendar
-import dayGridPlugin                            from '@fullcalendar/daygrid';
-import listPlugin                               from '@fullcalendar/list';
-import timegridPlugin                           from '@fullcalendar/timegrid';
-import interactionPlugin                         from '@fullcalendar/interaction';
+// import dayGridPlugin                            from '@fullcalendar/daygrid';
+// import listPlugin                               from '@fullcalendar/list';
+// import timegridPlugin                           from '@fullcalendar/timegrid';
+// import interactionPlugin                         from '@fullcalendar/interaction';
 
 //Auth
 import { AuthInterceptor }                      from './_user/auth/auth.interceptor';
