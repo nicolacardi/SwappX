@@ -14,7 +14,7 @@
     <div style="position: absolute; right: 30px;">
         <button mat-icon-button [matMenuTriggerFor]="menu" >
             <mat-icon *ngIf="imgAccount == '' || imgAccount== null ">account_circle</mat-icon>
-            <img #myImg *ngIf="imgAccount != '' && imgAccount != null " class="w40px  br200 bordered-white " [src]="imgAccount">        
+            <img #myImg *ngIf="imgAccount != '' && imgAccount != null " class="w40px  br200 _bordered-white " [src]="imgAccount">        
         </button>
     </div>
 </mat-toolbar>
@@ -44,14 +44,17 @@
                 <img  class="logo-img ml15 mt50" src="./assets/logoscrittaazzurro.svg">
             </div> -->
 
-            <a mat-list-item *ngIf="isExpanded" class="_pinIconContainer h20px mt60" >
-                <img *ngIf="!isPinned" class="_pinIcon" src="./assets/mainMenuWhite/pinMenu.svg" (click)="clickPin()" >
-                <img *ngIf="isPinned" class="_pinIcon" src="./assets/mainMenuWhite/unpinMenu.svg" (click)="clikUnPin()" >
-            </a>
+            <!-- <a mat-list-item *ngIf="isExpanded" class="_pinIconContainer h20px mt60 " >
+
+            </a> -->
 
             <a mat-list-item class="h35px mt60" routerLink="home" (click)="clickMenuItem()" >
                 <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/home.svg">
                 <span *ngIf="isExpanded">Home</span>
+
+                <img *ngIf="isExpanded && !isPinned" class="_pinIcon _pos-absolute r0" src="./assets/mainMenuWhite/pinMenu.svg" (click)="clickPin()" >
+                <img *ngIf="isExpanded && isPinned" class="_pinIcon _pos-absolute r0" src="./assets/mainMenuWhite/unpinMenu.svg" (click)="clikUnPin()" >
+
             </a>
 
             <a mat-list-item class="h35px" routerLink="calendario" (click)="clickMenuItem()">
@@ -124,7 +127,7 @@
                 <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
                     <mat-panel-title>
                         <img class="iconaMenuSidenav mr10"  src="./assets/mainMenuWhite/docente.svg">
-                        <span class="fs16">Area Docente</span>
+                        <span class="fs16" matListItemTitle>Area Docente</span>
                     </mat-panel-title>
                     <mat-panel-description> </mat-panel-description>
                 </mat-expansion-panel-header>
@@ -181,14 +184,7 @@
                 <span *ngIf="isExpanded">Template</span>
             </a>
 
-            <a mat-list-item class="_pos-absolute _border-top _grey-background"  style="z-index: 100000!important; bottom: 0;"
-                     routerLink="impostazioni"
-                     (click)="clickMenuItem()"  
-                     *ngIf="currUser && currUser.TipoPersona!.descrizione == 'SysAdmin'">
 
-                <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/settings.svg">
-                <span *ngIf="isExpanded">Impostazioni</span>
-            </a>
 
             <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.TipoPersona!.ckPersonale == true">
                 <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/utente.svg">
@@ -203,6 +199,15 @@
             <a mat-list-item class="h35px" routerLink="procedura-iscrizione" (click)="clickMenuItem()">
                 <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/procedura.svg">
                 <span *ngIf="isExpanded">Procedura Iscrizione</span>
+            </a>
+
+            <a mat-list-item class="_pos-absolute_i _border-top _grey-background b0 topZindex"
+                routerLink="impostazioni"
+                (click)="clickMenuItem()"  
+                *ngIf="currUser && currUser.TipoPersona!.descrizione == 'SysAdmin'">
+
+                <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/settings.svg">
+                <span *ngIf="isExpanded">Impostazioni</span>
             </a>
 
         </mat-nav-list>

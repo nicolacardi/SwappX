@@ -66,15 +66,17 @@
                         </mat-form-field>
                     </mat-grid-tile>
                 </mat-grid-list>
-                <mat-grid-list class="no-overflow mt10 center" [cols]="2" rowHeight="60px">
+                <mat-grid-list class="no-overflow mt10 center" [cols]="2" rowHeight="100px">
                 
                     <mat-grid-tile colspan="2">
-                        <mat-form-field class="w100">
+                        <mat-form-field class="w100 h80px" appearance="outline">
                             <textarea   matInput  
                                 type="text" 
                                 placeholder="argomento interrogazione" 
                                 formControlName="argomento"
-                                class="resize-vertical-only max-height">
+                                class="_noresize"
+
+                                >
                             </textarea>
 
                             <!-- <input matInput required type="text" placeholder="argomento interrogazione"

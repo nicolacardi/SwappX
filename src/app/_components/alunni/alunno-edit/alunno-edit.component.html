@@ -140,7 +140,7 @@
                     </button>
                     
                     <mat-label class="frameLabel">i genitori/tutori di {{alunnoNomeCognome}} </mat-label>
-                    <div class="_genitori-container cellBordered mt30">
+                    <div class="_genitori-container _cell-bordered mt30">
                         <app-genitori-list [context]="'alunno-edit-famiglia'"[alunnoID]="alunnoID"  (removeFromFamily) = "removeFromFamily($event)" #genitoriFamiglia></app-genitori-list>
                     </div>
                     <mat-accordion>
@@ -150,7 +150,7 @@
                                 <mat-panel-description>(fare click per aprire)</mat-panel-description>
                             </mat-expansion-panel-header>
                             <mat-label class="frameLabel">Elenco dei genitori/tutori </mat-label>
-                            <div class="_genitori-list-container cellBordered mt10">
+                            <div class="_genitori-list-container _cell-bordered mt10">
                                 <app-genitori-list [context]="'alunno-edit-list'" (addToFamily) = "addToFamily($event)"></app-genitori-list>
                             </div>
                         </mat-expansion-panel>
@@ -163,7 +163,7 @@
                         <tr>
                             <td>
                                 <mat-label class="frameLabel">Le classi frequentate da {{alunnoNomeCognome}} </mat-label>
-                                <div class="_classi-attended-container cellBordered mt10">
+                                <div class="_classi-attended-container _cell-bordered mt10">
                                     <app-iscrizioni-alunno-list [alunnoID] = "alunnoID" #iscrizioniAlunno 
                                                                 (removeFromAttended) = "removeFromAttended($event)" >
                                     </app-iscrizioni-alunno-list>
@@ -177,7 +177,7 @@
                                         <mat-panel-description>(fare click per aprire)</mat-panel-description>
                                         </mat-expansion-panel-header>
                                         <mat-label class="frameLabel le480">Elenco delle classi</mat-label>
-                                        <div class="_panel-content _classi-list-container cellBordered mt10">
+                                        <div class="_panel-content _classi-list-container _cell-bordered mt10">
                                             <app-classi-sezioni-anni-list [dove] = "'alunno-edit-list'"
                                                                           (addToAttended) = "addToAttended($event)"
                                                                           #classiSezioniAnniList>

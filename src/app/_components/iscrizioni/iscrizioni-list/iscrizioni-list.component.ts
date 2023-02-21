@@ -59,7 +59,7 @@ export class IscrizioniListComponent implements OnInit {
       "email", 
       "telefono",
       "dtNascita", 
-      "indirizzo", 
+      // "indirizzo", 
       "comune", 
       "prov"
   ];

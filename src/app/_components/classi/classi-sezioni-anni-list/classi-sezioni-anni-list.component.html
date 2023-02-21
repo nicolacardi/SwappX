@@ -12,7 +12,7 @@
 <h3 *ngIf="dove=='orario-page'" class="_titolo-pagina">Orario per Classe</h3>
 
     <form [formGroup] = "form">
-        <mat-form-field  class="ml20 mt10 topZIndex noBottomPadding" *ngIf="showSelect" >
+        <mat-form-field  class="_pos-relative ml20 mt10 topZIndex noBottomPadding" *ngIf="showSelect" >
             <mat-label>Anno Scolastico</mat-label>
             <mat-select formControlName="selectAnnoScolastico">
                 <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
@@ -36,9 +36,9 @@
             </mat-form-field>
         </div>
 <!-- **************************   FILTER   ******************* -->
-        <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
-            <mat-label>Filtro</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="Classe, sezione" #filterInput>
+        <mat-form-field *ngIf="showTableRibbon" class="_pos-relative ml20 topZIndex">
+            <mat-label>Filtro (Classe, sezione)</mat-label>
+            <input matInput (keyup)="applyFilter($event)" #filterInput>
         </mat-form-field>
     </form>
 

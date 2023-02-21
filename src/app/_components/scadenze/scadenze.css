@@ -83,3 +83,7 @@ z-index: 1000;
 :host ::ng-deep .mat-mdc-card-actions, .mat-mdc-card-subtitle, .mat-mdc-card-content {
   margin-bottom: 0px ! important;
 }
+
+:host ::ng-deep .mat-mdc-option {
+  min-height: 23px ! important;
+}

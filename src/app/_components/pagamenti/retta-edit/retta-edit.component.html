@@ -133,7 +133,7 @@
                                 (nuovoPagamento) = "nuovoPagamentoArrivato($event)">
                             </app-rettapagamento-edit>
                         <mat-label class="frameLabel"> Pagamenti </mat-label>
-                        <div class="_pagamenti-container cellBordered mt10">
+                        <div class="_pagamenti-container _cell-bordered mt10">
                             <app-pagamenti-list 
                                 [dove]="'retta-edit'" 
                                 [alunnoID]="data.alunnoID"
@@ -147,7 +147,7 @@
 
                     <mat-tab label="Utilities Rette" *ngIf="data.alunnoID">
                         <mat-label class="frameLabel"> Utilities per la definizione rapida delle rette </mat-label>
-                        <div class="_utilities-container cellBordered mt10">
+                        <div class="_utilities-container _cell-bordered mt10">
                             <app-retta-calcolo-alunno 
                                 [annoID]="data.annoID"
                                 [alunnoID]="data.alunnoID"

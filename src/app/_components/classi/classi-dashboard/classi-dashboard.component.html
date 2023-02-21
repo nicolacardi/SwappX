@@ -13,7 +13,7 @@
                 </div>
             <!-- </mat-card> -->
         </td>
-        <td class="_columnright-dashboard border-left">
+        <td class="_columnright-dashboard _border-left">
             <mat-tab-group (selectedTabChange)="selectedTabValue($event)">
                 <mat-tab  label="Alunni">
                     <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addAlunno" (click)="addAlunnoToClasse()" >
@@ -80,7 +80,7 @@
                                     (alunno)="alunnoEmitted($event)" >
                                 </app-iscrizioni-classe-list>
                             </td>
-                            <td class="_cell-align-top pl10 border-left w750px">
+                            <td class="_cell-align-top pl10 _border-left w750px">
                                 <app-pagelle-edit
                                     [iscrizioneID]="iscrizioneID"
                                     [classeSezioneAnnoID]="classeSezioneAnnoID" 

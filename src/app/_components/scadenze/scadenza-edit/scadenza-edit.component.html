@@ -93,7 +93,7 @@
             </mat-grid-list>
 
             
-            <mat-grid-list class="bordered-bottom" [cols]="2" rowHeight="40px">
+            <mat-grid-list class="_bordered-bottom" [cols]="2" rowHeight="40px">
                 <mat-grid-tile>
                     <mat-checkbox color="primary" formControlName="ckPromemoria">
                         Invia Messaggio Promemoria alle persone
@@ -190,10 +190,10 @@
             <mat-grid-list [cols]="5" rowHeight="250px" >
 
                
-                <mat-grid-tile colspan="2" class="oflowyscroll bordered-grey" >
+                <mat-grid-tile colspan="2" class="oflowyscroll _bordered-grey" >
                     <!-- con mat-selection-list al posto di mat-list e mat-list-option ho già le selezioni fatte -->
                     <mat-list class="_pos-absolute t0 l0 w100" formControlName="personeList" >
-                        <mat-option class="fs12 left" style="height: 23px;" *ngFor="let element of personeListArr" [value]="element.id">
+                        <mat-option class="fs12 left" *ngFor="let element of personeListArr" [value]="element.id">
                             <mat-icon (click)="addToSel(element)" class="pointer tx-right">add_circle_outline</mat-icon>
                             <span class="ml10">{{element.nome}} {{element.cognome}}</span>
                             <span class="ml10 cgrey _pos-absolute l200">{{element.tipoPersona!.descrizione}}</span>
@@ -201,7 +201,7 @@
                     </mat-list>
                 </mat-grid-tile>
 
-                <mat-grid-tile  class="oflowyscroll bordered-grey ml10" colspan="3" >
+                <mat-grid-tile  class="oflowyscroll _bordered-grey ml10" colspan="3" >
                     <!-- con mat-selection-list al posto di mat-list e mat-list-option ho già le selezioni fatte -->
                     <mat-list class="_pos-absolute t0 l0 w100" formControlName="personeListSel" >
 

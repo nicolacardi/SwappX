@@ -12,7 +12,10 @@
         /* letter-spacing: 0em !important; */
     }
 
-    * { font-family: 'Titillium Web', sans-serif;
+    * { 
+        font-family: 'Titillium Web', sans-serif;
+        letter-spacing: 0em ;                    /* fix font dopo migrazione a ng v15 */
+
     }
 
     h2 { font-family: 'Titillium Web', sans-serif !important;
@@ -26,10 +29,19 @@
     }
 
     .mat-mdc-form-field{
+        letter-spacing: 0em ;                    /* fix font dopo migrazione a ng v15 */
+    }
+
+    .mat-mdc-option{
         letter-spacing: 0em;                    /* fix font dopo migrazione a ng v15 */
     }
 
     .mat-mdc-cell{
+        letter-spacing: 0em;                    /* fix font dopo migrazione a ng v15 */
+        font-family: 'Titillium Web', sans-serif; /* fix font dopo migrazione a ng v15 */
+    }
+
+    .mat-mdc-list-item-title{                   /* directive aggiunta in menu per evitare text wrap a capo su Area Docente*/
         letter-spacing: 0em;                    /* fix font dopo migrazione a ng v15 */
         font-family: 'Titillium Web', sans-serif; /* fix font dopo migrazione a ng v15 */
     }
@@ -63,6 +75,13 @@
         letter-spacing: 0em;                    /* fix font dopo migrazione a ng v15 */
         font-size: 1em;
     }
+
+
+
+    /* .mat-mdc-form-field-infix {
+        min-height: 40px !important;
+    } */
+
 /*#endregion ***************************/
 
 /*#region ********** FONT-SIZE *********/
@@ -280,6 +299,17 @@
         top: 10px;
     }
     
+    /* bottom */
+    .b0 {
+        bottom: 0px;
+    }
+    .b5 {
+        bottom: 5px;
+    }
+    .b10 {
+        bottom: 10px;
+    }
+
     /* left */
     .l0 {
         left: 0px;
@@ -338,12 +368,32 @@
         padding-top: 5px;
     }
 
+    .pt10 {
+        padding-top: 10px;
+    }
+
     .pt20 {
         padding-top: 20px;
     }
 
     .pt50 {
         padding-top: 50px;
+    }
+
+    .pb5 {
+        padding-bottom: 5px;
+    }
+
+    .pb10 {
+        padding-bottom: 10px;
+    }
+
+    .pb20 {
+        padding-bottom: 20px;
+    }
+
+    .pb50 {
+        padding-bottom: 50px;
     }
 
     .pt60 {
@@ -542,10 +592,50 @@
     }
 /*#endregion ***************************/
 
-/*#region ********** BORDER RADIUS *****/
+/*#region ********** BORDERS ***********/
     .br200 {
         border-radius: 200px; 
     }
+
+    ._border-left {
+        border-left: 1px solid grey;
+    }
+
+    ._border-top {
+        border-top: 0.5px solid rgba(86, 86, 86, 0.279) !important;
+    }
+
+    ._cell-bordered {
+        border-radius: 2px;
+        border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
+    }
+
+    ._bordered {
+        border: 3px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    ._bordered-white {
+        border: 2px solid rgb(255, 255, 255);
+    }
+    
+    ._bordered-grey {
+        border: 1px solid grey;
+    }
+    
+    
+    ._bordered-bottom {
+        border-bottom: 1px solid grey;
+    }
+    
+    ._big-border {
+        border: 60px solid rgba(0,0,0, .3);
+    }
+    
+    ._noborder {
+        border: none;
+    }
+    
+
 /*#endregion ***************************/
 
 /*#region ********** ALIGN *************/
@@ -880,14 +970,23 @@
         background-color: transparent !important; /* senza questo quando si clicca su un campo diventa grigio */
     }
 
-    .filtriAvanzati .mat-mdc-form-field {
+    .mat-mdc-option {
+        min-height: 40px !important;
+    }
+
+    /* .filtriAvanzati .mat-mdc-form-field {
         height: 40px;
-        font-size: 1em;                         /* riduzione font per tutti i mat-form-field - era aumentata con ng v15*/
+        font-size: 1em;                        
         margin-top: 5px;
         margin-right: 5px;      
         margin-left: 5px;   
 
-    }
+    } */
+
+
+
+
+
 
 
     /* :host ::ng-deep .filtriAvanzati ._low-list-row .mat-form-field-subscript-wrapper {
@@ -918,9 +1017,10 @@
         margin-left: 5px;       
     }
 
-    .mat-mdc-form-field .mat-mdc-floating-label.mdc-floating-label {
-        line-height: 80% !important;            /* sposta la label che sta in alto nella mat-Input leggermente più in basso */
-    }
+    /* sposta la label che sta in alto nella mat-Input leggermente più in basso */
+    /* .mat-mdc-form-field .mat-mdc-floating-label.mdc-floating-label {
+        line-height: 80% !important;            
+    } */
     
     .tileCk mat-checkbox{
         position: absolute;
@@ -1066,15 +1166,17 @@
     /* color: red; */
 }
 
+
+
 .leftSidenav .mdc-list-item__primary-text { /* colore del menu nella sidenav */
     color: white;                         /* fix dopo passaggio a Angular v15 per colore testi left Sidenav*/
 }
 
-.toolSidenav {
+.toolSidenav {                                  /* è la sidenav sulla sinistra con martello e chiave inglese */
     width:  60px;
     background: transparent url("../src/assets/backgroundglassToolbarVertical.svg") no-repeat;
     background-size: cover;
-    color: rgb(10,10,10) !important;
+    color: rgb(10,10,10) !important;            
     margin-top: 5px;
     border-radius: 50px 50px 0px 0px;
 }
@@ -1232,9 +1334,7 @@ mat-nav-list a img {
 }
 
 
-.border-left {
-    border-left: 1px solid grey;
-}
+
 
 .no-overflow {
     overflow:hidden;
@@ -1280,14 +1380,8 @@ mat-nav-list a img {
 }
 
 
-.cellBordered {
-    border-radius: 2px;
-    border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
-}
 
-._border-top {
-    border-top: 0.5px solid rgba(86, 86, 86, 0.279) !important;
-}
+
 
 .backgrey {
     background-color: rgba(86, 86, 86, 0.279);
@@ -1296,7 +1390,7 @@ mat-nav-list a img {
 /* tutte le actionsColumn saranno larghe il 50px*/
 .mat-column-actionsColumn {
     /* flex: 0 0 8% !important; */
-    max-width: 40px !important;
+    width: 40px !important;
 }
 
 .mat-column-actionsColumn2 {
@@ -1454,30 +1548,6 @@ mat-nav-list a img {
     text-align: center;
 }
 
-.bordered {
-    border: 3px solid rgba(0, 0, 0, 0.1);
-}
-
-.bordered-white {
-    border: 2px solid rgb(255, 255, 255);
-}
-
-.bordered-grey {
-    border: 1px solid grey;
-}
-
-._bordered-grey-dot {
-    border: 1px dotted grey;
-}
-
-.bordered-bottom {
-    border-bottom: 1px solid grey;
-}
-
-
-.big-border {
-    border: 60px solid rgba(0,0,0, .3);
-}
 
 
 div.outer {
@@ -1526,6 +1596,10 @@ div.inner img {
 
     ._pos-absolute {
         position: absolute;
+    }
+
+    ._pos-absolute_i {
+        position: absolute !important;          /* per non creare casini introduco questa */
     }
 
     ._floatleft {

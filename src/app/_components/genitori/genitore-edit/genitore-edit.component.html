@@ -85,7 +85,7 @@
                             <mat-icon>add</mat-icon>
                         </button>
                         <mat-label class="frameLabel">i figli di {{genitoreNomeCognome}}</mat-label>
-                        <div class="_alunni-container cellBordered mt30">
+                        <div class="_alunni-container _cell-bordered mt30">
                             <app-alunni-list 
                                 [context]="'genitore-edit-famiglia'" 
                                 [genitoreID] ="genitoreID" 
@@ -104,7 +104,7 @@
                                 </mat-panel-description>
                               </mat-expansion-panel-header>
                                 <mat-label class="frameLabel">Elenco degli alunni </mat-label>
-                                <div class="_alunni-list-container cellBordered mt10">
+                                <div class="_alunni-list-container _cell-bordered mt10">
                                     <!-- <app-alunni-list [dove]="'genitore-edit-list'" (addToFamily) = "addToFamily($event)"></app-alunni-list> -->
                                     <app-alunni-list 
                                         [context]="'genitore-edit-list'" 
