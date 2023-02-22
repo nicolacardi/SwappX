@@ -12,7 +12,7 @@
 <h3 *ngIf="dove=='orario-page'" class="_titolo-pagina">Orario per Classe</h3>
 
     <form [formGroup] = "form">
-        <mat-form-field  class="_pos-relative ml20 mt10 topZIndex noBottomPadding" *ngIf="showSelect" >
+        <mat-form-field  *ngIf="showSelect" class="_pos-relative ml20 mt10 topZIndex noBottomPadding"  >
             <mat-label>Anno Scolastico</mat-label>
             <mat-select formControlName="selectAnnoScolastico">
                 <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">

@@ -25,7 +25,7 @@ import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoSc
 export class VerbaliPageComponent implements OnInit {
 
   obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>;     
-  form! :                                       UntypedFormGroup;
+  // form! :                                       UntypedFormGroup;
   annoID!:                                       number;
 //#region ----- ViewChild Input Output -------
   @ViewChild(VerbaliListComponent) verbaliList!: VerbaliListComponent; 
@@ -39,14 +39,16 @@ export class VerbaliPageComponent implements OnInit {
 
 //#endregion
 
-  constructor(private _navigationService:                   NavigationService,
-              private svcAnni:                              AnniScolasticiService,
-              private fb:                                   UntypedFormBuilder ) {
+  constructor(
+    private _navigationService:                 NavigationService,
+    private svcAnni:                            AnniScolasticiService,
+    // private fb:                                   UntypedFormBuilder 
+  ) {
 
-    let objAnno = localStorage.getItem('AnnoCorrente');
-    this.form = this.fb.group( {
-      selectAnnoScolastico:  + (JSON.parse(objAnno!) as _UT_Parametro).parValue,
-    });
+    // let objAnno = localStorage.getItem('AnnoCorrente');
+    // this.form = this.fb.group( {
+    //   selectAnnoScolastico:  + (JSON.parse(objAnno!) as _UT_Parametro).parValue,
+    // });
   }
 
 //#region ----- LifeCycle Hooks e simili-------

@@ -215,8 +215,13 @@
     .ml15 {
         margin-left: 15px;
     }
+
     .ml20 {
         margin-left: 20px;
+    }
+
+    .ml30 {
+        margin-left: 30px;
     }
 
     .ml50 {
@@ -325,6 +330,10 @@
 
     .l200 {
         left: 200px;
+    }
+
+    .l480 {
+        left: 480px;
     }
 
     /* right */
@@ -700,6 +709,11 @@
         background-color: #044D7E !important;
     }
 
+    /* .mat-mdc-button:not(:disabled) {
+        color: white !important;              
+    } */
+    
+
     /*TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
     ._btn-text-container .mat-button-disabled{
         background-color: rgba(100, 100, 100, 0.2) !important;
@@ -918,6 +932,14 @@
         background-image: url("./assets/XLSicon.svg"); 
     }
 
+    ._btnColorPicker {
+        /* background-image: url("./assets/toolbar-close-black.svg"); */
+        background: transparent;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+    } 
+
 /*#endregion ***************************/
 
 /*#region ********** SNACKBAR **********/
@@ -946,8 +968,7 @@
 
 /*#endregion ***************************/
 
-
-/*********** FORM MATERIAL ********/
+/*#region ********** FORM MATERIAL *****/
     .data-form {
         max-width: 800px;
         margin: 0 auto;
@@ -974,42 +995,6 @@
         min-height: 40px !important;
     }
 
-    /* .filtriAvanzati .mat-mdc-form-field {
-        height: 40px;
-        font-size: 1em;                        
-        margin-top: 5px;
-        margin-right: 5px;      
-        margin-left: 5px;   
-
-    } */
-
-
-
-
-
-
-
-    /* :host ::ng-deep .filtriAvanzati ._low-list-row .mat-form-field-subscript-wrapper {
-        visibility: hidden !important;
-    }
-    
-    :host ::ng-deep .filtriAvanzati  ._low-list-row .mat-form-field-wrapper {
-        padding-bottom: 0px !important;
-    }
-    
-    :host ::ng-deep .filtriAvanzati ._low-list-row .mat-form-field-underline {
-        bottom: 0.25em !important;
-    }
-    
-    :host ::ng-deep .filtriAvanzati ._low-list-row .mat-grid-tile {
-        height: 50px !important;
-    }
-    
-    :host ::ng-deep .filtriAvanzati ._low-list-row {
-        height: 50px !important;
-    } */
-
-
     .data-form mat-form-field {
         font-size: 1em;                         /* riduzione font per tutti i mat-form-field - era aumentata con ng v15*/
         margin-top: 5px;
@@ -1030,9 +1015,6 @@
     :host ::ng-deep .mat-formfield-wrapper{
         width:2000px;
     }
-
-
-
 
 
     @media only screen and (max-width: 800px) {
@@ -1085,27 +1067,26 @@
         margin-left: 5px;                           /* sembra funzionare anche dopo migrazione a ng v15 nonostante passaggio a mdc*/
     }
 
-/**********************************/
+/*#endregion *********************************/
+
+/*#region ********** TABLES ************/
+
+    .element-row:hover {
+        background: whitesmoke;
+    }
 
 
-/*********** TABLES ***************/
 
-.element-row:hover {
-    background: whitesmoke;
-}
+    .mat-mdc-cell {
+        width: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-
-
-.mat-mdc-cell {
-    width: auto;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.mdc-text-field--filled {
-    background-color: transparent !important;
-}
+    .mdc-text-field--filled {
+        background-color: transparent !important;
+    }
 
 
     .element-row {
@@ -1141,184 +1122,238 @@
         vertical-align: top;
     }
 
-
-/**********************************/
-
-
-/*********** SIDENAV ************/
-.example-spacer {
-    flex: 1 1 auto;
-}
-
-.filterSidenav {
-    width:  250px;
-    background-color: rgba(255,255,255,1);
-    color: rgb(10,10,10) !important;
-}
-
-.filterSidenav mat-form-feld{
-    font-size: 10px;
-}
-
-.leftSidenav {
-    /* width:  250px; */
-    background-color: rgb(85, 85, 85);
-    /* color: red; */
-}
+    .mat-mdc-paginator-container {
+        position: absolute;
+        margin-top: -60px;
+        right: 0px;
+    }
 
 
+    
+    /* tutte le actionsColumn saranno larghe il 50px*/
+    .mat-column-actionsColumn {
+        /* flex: 0 0 8% !important; */
+        width: 40px !important;
+    }
 
-.leftSidenav .mdc-list-item__primary-text { /* colore del menu nella sidenav */
-    color: white;                         /* fix dopo passaggio a Angular v15 per colore testi left Sidenav*/
-}
+    .mat-column-actionsColumn2 {
+        width: 50px !important;
+    }
 
-.toolSidenav {                                  /* è la sidenav sulla sinistra con martello e chiave inglese */
-    width:  60px;
-    background: transparent url("../src/assets/backgroundglassToolbarVertical.svg") no-repeat;
-    background-size: cover;
-    color: rgb(10,10,10) !important;            
-    margin-top: 5px;
-    border-radius: 50px 50px 0px 0px;
-}
+    .mat-column-blank {
+        flex: 0 0 8% !important; /*Colonne usate in rette sotto la actions column*/
+    }
 
-mat-nav-list a{
-    /* color: rgb(10,10,10) !important; */
-    color: rgb(255, 255, 255) !important;
-}
+    .mat-column-tipo {
+        flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+    }
 
-mat-nav-list a:hover{
-    /* color: rgb(10,10,10) !important; */
-    background: rgb(137, 136, 136) !important;
-}
+    .mat-column-addToFam {
+        flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+    }
 
-mat-nav-list mat-expansion-panel mat-panel-title{
-    /* color: rgb(10,10,10) !important; */
-    color: rgb(255, 255, 255) !important;
-}
+    .mat-column-removeFromFam {
+        flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+    }
 
-mat-nav-list mat-expansion-panel:hover{
-    /* color: rgb(10,10,10) !important; */
-    background: rgb(137, 136, 136) !important;
-}
+    .mat-column-addToAttended {
+        flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+    }
 
-:host ::ng-deep .mat-expansion-indicator::after{
-    color: white !important;
-}
+    .mat-column-removeFromAttended {
+        flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+    }
 
-.expansionMainMenu
-.mat-expansion-panel-header-description, 
-.mat-expansion-indicator::after {
-    color: white;
-}
+    /* tutte le email column saranno larghe 180px e andranno a capo se troppo lunghe */
+    .mat-column-email {
+        flex: 0 0 180px !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+        word-break: break-word; /*spezza l'email quando troppo lunga*/
+    }
 
-.mat-drawer-backdrop.mat-drawer-shown {
-    background-color: rgba(0,0,0,0.2);
-}
+    .mat-column-ckAttivo {
+        flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+    }
 
-mat-nav-list a mat-icon {
-    margin-right: 10px;
-}
+    .mat-column-delete {
+        flex: 0 0 8% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
+    }
 
-mat-nav-list a img {
-    width: 30px;
-    margin-right: 8px;
-}
-
-.sidenav-expansion-panel-header {
-    padding: 0 16px !important;
-}
-
-.closeIcon {
-    margin-left: 5px;
-    margin-top: 20px;
-}
-
-.descMenu{
-    margin-left: 5px;
-}
-
-.iconaMenu{
-    height: 24px;
-}
+    .mat-column-message {
+        width: 100px !important;
+    }
 
 
-.iconaMenuBig{
-    height: 50px;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    opacity: 0.12;
-}
+    .mat-column-xxx {
+        /* flex: 0 0 3% !important; */
+        /* width: 5% !important; */
+
+        /* white-space: unset !important; */
+        /* overflow-wrap: break-word; */
+        /* word-wrap: break-word; */
+        /* word-break: break-word; */
+    
+        /* -ms-hyphens: auto; */
+        /* -moz-hyphens: auto; */
+        /* -webkit-hyphens: auto; */
+        /* hyphens: auto; mette il segno di a capo*/
+    }
 
 
-.iconaMenuSidenav{
-    width: 35px;
-}
-/* .miniButton {
-    width: 5px !important;
-    height: 5px !important;
-} */
+/*#endregion *********************************/
 
-._icona-check-green {
-    color: green;
-    opacity: 0;
-    transition: opacity 0.5s ease-in;
-}
-/**********************************/
+/*#region ********** SIDENAV ***********/
+    /* la filterSidenav è quella di destra*/
+    .filterSidenav {
+        width:  250px;
+        background-color: rgba(255,255,255,1);
+        color: rgb(10,10,10) !important;
+    }
 
-
-.transparent {
-    background: none;
-}
-
-.invisible {
-    visibility: hidden;
-}
-
-/*  STILE SPOSTATO NEL LOADING COMPONENT.CSS
-
-.spinner-container {
-    position: fixed;
-    height: 100vh;
-    width: 100vw;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.32);
-    z-index: 20000;
-} */
-
-
-.mat-mdc-paginator-container {
-    position: absolute;
-    margin-top: -60px;
-    right: 0px;
-}
-
-.topZIndex {
-    z-index: 1000;
-}
+    .filterSidenav mat-form-feld{
+        font-size: 10px;
+    }
 
 
 
+    /* la toolSidenav è la sidenav sulla sinistra con martello e chiave inglese */
+    .toolSidenav {                                  
+        width:  60px;
+        background: transparent url("../src/assets/backgroundglassToolbarVertical.svg") no-repeat;
+        background-size: cover;
+        color: rgb(10,10,10) !important;            
+        margin-top: 5px;
+        border-radius: 50px 50px 0px 0px;
+    }
 
-.mat-mdc-checkbox {
-    /*color: red;*/
-}
+    .material-icons.color_white { color: #FFFFFF; }
+
+    .button-transparent.mat-mdc-mini-fab.mat-accent   {
+        margin-left: 10px;
+        background-color: transparent !important;
+        box-shadow: none;
+        border: 0.5px solid rgba(255, 255, 255, 0.3);
+    }
 
 
-.material-icons.color_white { color: #FFFFFF; }
+    /* la leftSidenav è il menu è una mat-nav-list, l'unica della app */
+    .leftSidenav {
+        /* width:  250px; */
+        background-color: rgb(85, 85, 85);
+        /* color: red; */
+    }
 
-.button-transparent.mat-mdc-mini-fab.mat-accent   {
-    margin-left: 10px;
-    background-color: transparent !important;
-    box-shadow: none;
-    border: 0.5px solid rgba(255, 255, 255, 0.3);
-}
+    .leftSidenav .mdc-list-item__primary-text { /* colore del menu nella sidenav */
+        color: white;                         /* fix dopo passaggio a Angular v15 per colore testi left Sidenav*/
+    }
+
+    mat-nav-list a{
+        /* color: rgb(10,10,10) !important; */
+        color: rgb(255, 255, 255) !important;
+    }
+
+    mat-nav-list a:hover{
+        /* color: rgb(10,10,10) !important; */
+        background: rgb(137, 136, 136) !important;
+    }
+
+    mat-nav-list mat-expansion-panel mat-panel-title{
+        /* color: rgb(10,10,10) !important; */
+        color: rgb(255, 255, 255) !important;
+    }
+
+    mat-nav-list mat-expansion-panel:hover{
+        /* color: rgb(10,10,10) !important; */
+        background: rgb(137, 136, 136) !important;
+    }
+
+    :host ::ng-deep .mat-expansion-indicator::after{
+        color: white !important;
+    }
+
+    .expansionMainMenu
+    .mat-expansion-panel-header-description, 
+    .mat-expansion-indicator::after {
+        color: white;
+    }
+
+    .mat-drawer-backdrop.mat-drawer-shown {
+        background-color: rgba(0,0,0,0.2);
+    }
+
+    mat-nav-list a mat-icon {
+        margin-right: 10px;
+    }
+
+    mat-nav-list a img {
+        width: 30px;
+        margin-right: 8px;
+    }
+
+    .sidenav-expansion-panel-header {
+        padding: 0 16px !important;
+    }
+
+
+    /* .descMenu{
+        margin-left: 5px;
+    } */
+
+    .iconaMenu{
+        height: 24px;
+    }
+
+
+    .iconaMenuBig{
+        height: 50px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        opacity: 0.12;
+    }
+
+
+    .iconaMenuSidenav{
+        width: 35px;
+    }
+
+
+    ._icona-check-green {
+        color: green;
+        opacity: 0;
+        transition: opacity 0.5s ease-in;
+    }
+/*#endregion *********************************/
+
+/*#region ********** VISIBILITY ********/
+
+    .transparent {
+        background: none;
+    }
+
+    .invisible {
+        visibility: hidden;
+    }
+
+    .topZIndex {
+        z-index: 1000;
+    }
+/*#endregion ***************************/
+
+/*#region ********** OVERFLOW *********/
+
+    .no-overflow {
+        overflow:hidden;
+    }
+
+    .no-overflowx {
+        overflow-x:hidden;
+    }
+
+    .oflowyscroll {
+        overflow-y: scroll !important;
+    }
+
+/*#endregion ***************************/
 
 
 /*le icone nei mat-mini-fab sono scentrate verso il basso: questo css rimedia*/
@@ -1336,17 +1371,7 @@ mat-nav-list a img {
 
 
 
-.no-overflow {
-    overflow:hidden;
-}
 
-.no-overflowx {
-    overflow-x:hidden;
-}
-
-.oflowyscroll {
-    overflow-y: scroll !important;
-}
 
 .frameLabel{
     position: absolute;
@@ -1358,6 +1383,7 @@ mat-nav-list a img {
     font-size: 11px;
     color: grey;
     z-index: 1000;
+    margin-top: -20px;
 }
 
 .frameLabelTransparent{
@@ -1371,89 +1397,16 @@ mat-nav-list a img {
     z-index: 1000;
 }
 
-.relative {
-    position: relative;
-}
-
-.le480 {
-    left: 480px;
-}
 
 
 
 
 
-.backgrey {
-    background-color: rgba(86, 86, 86, 0.279);
-}
-
-/* tutte le actionsColumn saranno larghe il 50px*/
-.mat-column-actionsColumn {
-    /* flex: 0 0 8% !important; */
-    width: 40px !important;
-}
-
-.mat-column-actionsColumn2 {
-    width: 50px !important;
-}
-
-.mat-column-blank {
-    flex: 0 0 8% !important; /*Colonne usate in rette sotto la actions column*/
-}
-
-.mat-column-tipo {
-    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
-}
-
-.mat-column-addToFam {
-    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
-}
-
-.mat-column-removeFromFam {
-    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
-}
-
-.mat-column-addToAttended {
-    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
-}
-
-.mat-column-removeFromAttended {
-    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
-}
-
-/* tutte le email column saranno larghe 180px e andranno a capo se troppo lunghe */
-.mat-column-email {
-    flex: 0 0 180px !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
-    word-break: break-word; /*spezza l'email quando troppo lunga*/
-}
-
-.mat-column-ckAttivo {
-    flex: 0 0 5% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
-}
-
-.mat-column-delete {
-    flex: 0 0 8% !important; /* https://www.w3schools.com/css/css3_flexbox_items.asp#flex*/
-}
-
-.mat-column-message {
-    width: 100px !important;
-}
 
 
-  .mat-column-xxx {
-    /* flex: 0 0 3% !important; */
-    /* width: 5% !important; */
 
-    /* white-space: unset !important; */
-    /* overflow-wrap: break-word; */
-    /* word-wrap: break-word; */
-    /* word-break: break-word; */
-  
-    /* -ms-hyphens: auto; */
-    /* -moz-hyphens: auto; */
-    /* -webkit-hyphens: auto; */
-    /* hyphens: auto; mette il segno di a capo*/
-  }
+
+
 
 .logo {
 
@@ -1496,6 +1449,10 @@ mat-nav-list a img {
     background-color: #FFFF00;
 }
 
+.grey {
+    background-color: rgb(241, 241, 241);
+}
+
 .bold {
     font-weight: bold;
 }
@@ -1508,9 +1465,7 @@ mat-nav-list a img {
   text-align:right;
 }
 
-.grey {
-    background-color: rgb(241, 241, 241);
-}
+
 
 .cgrey {
     color: rgb(190, 190, 190);
@@ -1526,15 +1481,6 @@ mat-nav-list a img {
 
 
 
-.roundphoto {
-    
-    margin: 0 auto;
-    height: 100%;
-    position: relative;
-    left: 0;
-    /* width: auto; */
-    /* object-fit: cover; */
-}
 
 
 .image-cropper {
@@ -1550,24 +1496,7 @@ mat-nav-list a img {
 
 
 
-div.outer {
-    width: 300px; 
-    margin: 0 auto; 
-    border: 1px solid red; /* for demo */
-    overflow: visible;
-    height: 102px;  /* for demo since child is floated */ 
-}
-div.inner {
-    position:relative;
-    float: right;
-    right: 50%;
-}
-div.inner img {
-    border: 1px solid blue; /* for demo */
-    position: relative; 
-    right:-50%;
-    opacity: .5; /* for demo */
-}
+
 
 .shadowed {
     box-shadow: 0 3px 4px 0 rgba(149, 149, 149, 0.05), 4px 2px 10px  rgba(0, 0, 0, 0.1);
@@ -1661,13 +1590,7 @@ div.inner img {
     }
     
 
-    ._btnColorPicker {
-        /* background-image: url("./assets/toolbar-close-black.svg"); */
-        background: transparent;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-    } 
+
 
     .color-div {
         width: 32px;
@@ -1693,3 +1616,32 @@ div.inner img {
     }
 
 
+    /* 
+.roundphoto {
+    
+    margin: 0 auto;
+    height: 100%;
+    position: relative;
+    left: 0;
+
+} */
+
+
+div.outer {
+    width: 300px; 
+    margin: 0 auto; 
+    border: 1px solid red; /* for demo */
+    overflow: visible;
+    height: 102px;  /* for demo since child is floated */ 
+}
+div.inner {
+    position:relative;
+    float: right;
+    right: 50%;
+}
+div.inner img {
+    border: 1px solid blue; /* for demo */
+    position: relative; 
+    right:-50%;
+    opacity: .5; /* for demo */
+}

@@ -39,7 +39,7 @@
             <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
             <mat-card-content>
-                <div class="center mt10 _no-padding-bottom" *ngIf="obsRette$ | async" >
+                <div class="center mt10 ml30 _no-padding-bottom" *ngIf="obsRette$ | async" >
                     <mat-form-field appearance="outline">
                         <mat-label>Anno Scolastico</mat-label>
                         <mat-select formControlName="selectAnnoScolastico">
@@ -132,7 +132,7 @@
                                 [annoID]="data.annoID"
                                 (nuovoPagamento) = "nuovoPagamentoArrivato($event)">
                             </app-rettapagamento-edit>
-                        <mat-label class="frameLabel"> Pagamenti </mat-label>
+                        <!-- <mat-label class="frameLabel"> Pagamenti </mat-label> -->
                         <div class="_pagamenti-container _cell-bordered mt10">
                             <app-pagamenti-list 
                                 [dove]="'retta-edit'" 

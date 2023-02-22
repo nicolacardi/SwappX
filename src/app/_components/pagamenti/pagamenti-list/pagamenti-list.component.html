@@ -2,7 +2,7 @@
 
 <!-- **************************   SELECT ANNO   ******************* -->
 <form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
-    <mat-form-field *ngIf="show" class="ml20 topZIndex">
+    <mat-form-field *ngIf="show" class="_pos-relative ml20 topZIndex noBottomPadding">
         <mat-select formControlName="selectAnnoScolastico" (selectionChange)="updateList()" #annoscolastico>
             <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id" >
             {{element.annoscolastico}}
@@ -11,9 +11,9 @@
     </mat-form-field>
 
     <!-- **************************   FILTER   ******************* -->
-    <mat-form-field *ngIf="show" class="ml20 topZIndex">
+    <mat-form-field *ngIf="show" class="_pos-relative ml20 topZIndex">
         <mat-label>Filtro</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
+        <input matInput (keyup)="applyFilter($event)" #filterInput>
     </mat-form-field>
 </form>
 <!-- **************************   PAGINATOR   ******************* -->

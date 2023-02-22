@@ -138,9 +138,9 @@
                     <button mat-mini-fab aria-label="Nuova anagrafica Genitore" matTooltip="Nuova anagrafica Genitore" class= "_btn-addModal" (click)="addGenitore()">
                         <mat-icon>add</mat-icon>
                     </button>
-                    
+                    <br>
                     <mat-label class="frameLabel">i genitori/tutori di {{alunnoNomeCognome}} </mat-label>
-                    <div class="_genitori-container _cell-bordered mt30">
+                    <div class="_genitori-container _cell-bordered mt10">
                         <app-genitori-list [context]="'alunno-edit-famiglia'"[alunnoID]="alunnoID"  (removeFromFamily) = "removeFromFamily($event)" #genitoriFamiglia></app-genitori-list>
                     </div>
                     <mat-accordion>
@@ -176,7 +176,7 @@
                                         <mat-panel-title>Tutte le classi</mat-panel-title>
                                         <mat-panel-description>(fare click per aprire)</mat-panel-description>
                                         </mat-expansion-panel-header>
-                                        <mat-label class="frameLabel le480">Elenco delle classi</mat-label>
+                                        <mat-label class="frameLabel l480">Elenco delle classi</mat-label>
                                         <div class="_panel-content _classi-list-container _cell-bordered mt10">
                                             <app-classi-sezioni-anni-list [dove] = "'alunno-edit-list'"
                                                                           (addToAttended) = "addToAttended($event)"

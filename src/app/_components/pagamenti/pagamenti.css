@@ -87,7 +87,7 @@
     }
 
     ._visibility-rette-container mat-icon {
-        width: 20px; 
+        width: 25spx; 
         color: #044D7E;
     }
 
@@ -95,20 +95,26 @@
     /*CELLETTE  RETTE D,C,P IN RETTA EDIT */
     /* avvicina le celle nelle quali sono scritte le rette D C e P in retta edit*/
     /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-    :host ::ng-deep .cellRetta .mat-form-field-wrapper { 
+    :host ::ng-deep .cellRetta .mat-mdc-form-field-wrapper { 
         padding:0px;
         margin: 0px;
     }
 
     /*estetica delle cellette nelle quali sono scirtte le rete D C e P in retta edit */
     /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-    :host ::ng-deep .cellRetta .mat-form-field-infix {
-        width: 45px; 
+    :host ::ng-deep .cellRetta .mat-mdc-form-field-infix {
+        width: 50px; 
         padding-top: 2px !important;
         padding-bottom: 0px !important;
         border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
         border-radius: 2px;
         height: 20px;
+        min-height: 30px;
+    }
+
+    :host ::ng-deep .cellRetta .mat-mdc-form-field-subscript-wrapper {
+        line-height: 0px !important;
+        display: none;
     }
 
     /*allineamento*/
@@ -146,6 +152,10 @@
         background-color: rgba(173, 173, 173, 0.142);
     }
 
+    :host ::ng-deep .mat-mdc-form-field-underline {
+        display: none !important;
+    }
+
     /*distanza verticale tra i mat-form-field in retta-edit*/
     .data-form mat-form-field {
         margin-top: 5px;
@@ -178,13 +188,13 @@
 
     /*elenco pagamenti in retta-edit*/
     ._pagamenti-container {
-        height: 170px;
+        height: 150px;
         overflow: auto;
     }
 
     /*utilities suddivisione rette in retta-edit*/
     ._utilities-container {
-        height: 260px;
+        height: 280px;
     }
 
     /*usato p.e. in retta-calcolo per vedere elenco classi*/
@@ -203,7 +213,7 @@
 
     /*larghezza ridotta dei mat-form-field*/
     ._pagamento-edit-container mat-form-field {
-        width: 115px; 
+        width: 132px; 
     }
 
     /*non funziona o non viene più usato BOH*/

@@ -1,11 +1,26 @@
     <h1 *ngIf="showPageTitle" class="_titolo-pagina">Verbali</h1>
 
     <!-- **************************   FILTER   ******************* -->
-    <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
-        <mat-label>Filtro</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
-    </mat-form-field>    
-    
+    <form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
+
+    <mat-form-field  class="ml20 topZIndex">
+        <mat-select formControlName="selectAnnoScolastico" #annoscolastico>
+            <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id" >
+            {{element.annoscolastico}}
+            </mat-option>
+        </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
+            <mat-label>Filtro</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
+        </mat-form-field>   
+        
+        <button mat-icon-button *ngIf="filterValue" (click)="resetSearch();applyFilter($event)"  class="topZIndex">
+            <mat-icon  color="primary">clear</mat-icon>
+        </button>
+    </form>
     <!-- **************************   PAGINATOR   ******************* -->
     <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>
 

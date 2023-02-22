@@ -1,12 +1,12 @@
-<form [formGroup] = "form">
-    <mat-form-field  class="ml20 mt10 topZIndex noBottomPadding" >
+<!-- <form [formGroup] = "form"> -->
+    <!-- <mat-form-field  class="ml20 mt10 topZIndex noBottomPadding" >
         <mat-label>Anno Scolastico</mat-label>
         <mat-select formControlName="selectAnnoScolastico" #selectAnno>
             <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
                 {{element.annoscolastico}}
             </mat-option>
         </mat-select>
-    </mat-form-field>
+    </mat-form-field> -->
     <button mat-mini-fab aria-label="Nuovo Verbale" matTooltip="Nuovo Verbale" class="_btn-add _btn-pos-right-1 _btn-pos-top-1" (click)="addRecord()">
         <mat-icon>add</mat-icon>
     </button>
@@ -17,13 +17,13 @@
 
     <mat-drawer-container [hasBackdrop]="false" style="min-height: 91%; height: 100vh">
         <!-- style="min-height: 91%;  -->
-        <mat-drawer position="end" #filterSidenav class="filterSidenav sidenav-fix"  [mode]="'over'" style="height: 100%">
+        <mat-drawer position="end" #filterSidenav class="filterSidenav"  [mode]="'side'" >
             <!-- app verbali filter deve dialogare con il suo "sibling" app verbali list, allora metto un riferimento (#appverbalilist) e passo una variabile in input a app-verbali-filter -->
             <app-verbali-filter [verbaliListComponent] = "appverbalilist" #appverbalifilter></app-verbali-filter>    
         </mat-drawer>
 
         <!-- la toolSidenav per ora non la usiamo -->
-        <mat-drawer position="start" #toolSidenav class="toolSidenav"  [mode]="'side'">
+        <!-- <mat-drawer position="start" #toolSidenav class="toolSidenav"  [mode]="'side'"> -->
             <!-- <app-toolbar [rptTitle]="appverbalilist.rptTitle" 
                         [rptFieldsToKeep]="appverbalilist.rptFieldsToKeep" 
                         [rptColumnsNames]="appverbalilist.rptColumnsNames" 
@@ -31,14 +31,13 @@
                         [rptFileName]="appverbalilist.rptFileName"
                         [columnsComponent] = "appverbalilist">
             </app-toolbar> -->
-        </mat-drawer>
+        <!-- </mat-drawer> -->
 
         <mat-drawer-content>
             <app-verbali-list [verbaliFilterComponent] = "appverbalifilter"
                             (openDrawer) = "openDrawer()"
-                            [annoID] = "selectAnno.value"
                             #appverbalilist >
             </app-verbali-list>
         </mat-drawer-content>
     </mat-drawer-container>
-</form>
+<!-- </form> -->

@@ -46,7 +46,7 @@ export class IscrizioniListComponent implements OnInit {
   public currUser!:                             User;
 
   matDataSource = new                           MatTableDataSource<CLS_Iscrizione>();
-
+  annoID!:                                       number;
   displayedColumns:                             string[] = [
       "actionsColumn", 
       "nome", 
@@ -131,7 +131,6 @@ export class IscrizioniListComponent implements OnInit {
   @ViewChild("filterInput") filterInput!:                     ElementRef;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
-  @Input() annoID!:                                           number;
   @Input('alunnoID') alunnoID! :                              number;
   @Input() iscrizioniFilterComponent!:                        IscrizioniFilterComponent;
   @Input('dove') dove! :                                      string;
@@ -164,6 +163,7 @@ export class IscrizioniListComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
   
   ngOnInit () {
+    this.obsAnni$= this.svcAnni.list();
     this.loadData();
   }
 
@@ -172,7 +172,6 @@ export class IscrizioniListComponent implements OnInit {
   }
 
   loadData () {
-    this.obsAnni$= this.svcAnni.list();
     let obsIscrizioni$: Observable<CLS_Iscrizione[]>;
 
     this.annoID = this.form.controls['selectAnnoScolastico'].value;
@@ -339,7 +338,7 @@ export class IscrizioniListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
         width: '850px',
-        height: '580px',
+        height: '620px',
         data: {
           alunnoID: alunnoID,
           annoID: annoID

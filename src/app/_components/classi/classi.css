@@ -11,46 +11,6 @@
     border-bottom-width: 0px !important;
   }
 
-  /* :host ::ng-deep .mat-form-field-infix {
-    border: 0px !important;
-  } */
-
-  /* Larghezza colonne specifiche nelle table di questa sezione*/
-  /* .mat-column-descrizione {
-    min-width: 170px;
-  }
-
-  .mat-column-sezione {
-    max-width: 30px;
-  }
-
-  .mat-column-sezioneCSAA {
-    max-width: 30px;
-  }
-
-  .mat-column-actionsColumn {
-    min-width: 50px;
-  }
-
-  .mat-column-numAlunni {
-    width: 80px;
-  }
-
-  .mat-column-numMaschi {
-    width: 80px;
-  }
-
-  .mat-column-numFemmine {
-    width: 80px;
-  }
-
-  .mat-column-stato {
-    background-color: rgba(173, 173, 173, 0.142);
-    padding-left: 10px;
-  } */
-
-
-
   /*colonna di sx classi dashboard*/ 
   ._columnleft-dashboard {
     /* width:315px; */
