@@ -33,6 +33,7 @@ export class BloccoComponent implements OnInit {
   public color!:                                string;
   public tipoBloccoID!:                         number;
   public ckFill!:                               boolean;
+  public testo!:                                 string;
 
   private oldZoom:                              number = 1;
 
@@ -79,7 +80,7 @@ export class BloccoComponent implements OnInit {
     this.left = this.blocco.x*this.zoom;
     this.tipoBloccoID = this.blocco.tipoBloccoID;
     this.classTipo = "tipo"+this.tipoBloccoID; 
-
+    if (this.blocco.bloccoTesto) this.testo = this.blocco.bloccoTesto?.testo;
   //su cambio Zoom devo fare diverse operazioni
 
     this.zoomChanged();
@@ -92,7 +93,10 @@ export class BloccoComponent implements OnInit {
   reloadData() {
 
     this.svcBlocchi.get(this.blocco.id).subscribe(
-      val=> this.blocco = val
+      val=> {
+        this.blocco = val;
+        this.ngOnChanges();
+      }
     )
   }
     //console.log("blocco - reloadData");
@@ -280,9 +284,9 @@ export class BloccoComponent implements OnInit {
       dialogRef.afterClosed().subscribe(
         res => {
           console.log("chiusa la dialog");
-          this.reloadData();
+          this.reloadData(); //ri-estrae i dati per il blocco
           //mi serve fare la refresh, quindi emetto recordEdited che Pagina riceve e ci pensa lei a farsi refresh
-          if (res) this.recordEdited.emit(this.blocco.id!)
+          //if (res) this.recordEdited.emit(this.blocco.id!)
         }
       );
     
