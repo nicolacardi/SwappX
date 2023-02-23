@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate,  ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatLegacySnackBar as MatSnackBar} from '@angular/material/legacy-snack-bar';
 import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
 
 import { UserService } from '../user.service';

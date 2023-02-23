@@ -22,7 +22,7 @@ import { PersonaFormComponent } from '../persone/persona-form/persona-form.compo
 import { CdkStep } from '@angular/cdk/stepper';
 import { MatStepper } from '@angular/material/stepper';
 import { PersoneService } from '../persone/persone.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
 
 @Component({

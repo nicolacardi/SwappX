@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatSort }                              from '@angular/material/sort';
 import { Observable }                           from 'rxjs';
-import { MatTableDataSource}                    from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource}                    from '@angular/material/legacy-table';
 
 //components
 
@@ -12,7 +12,7 @@ import { VotiInterrService }                    from '../voti-interr.service';
 
 //models
 import { TST_VotoInterr }                   from 'src/app/_models/TST_VotiInterr';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
 import { VotoInterrEditComponent } from '../voto-interr-edit/voto-interr-edit.component';
 
 

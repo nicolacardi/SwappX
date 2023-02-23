@@ -1,9 +1,9 @@
 import { Component, OnInit }                    from '@angular/core';
-import { MatTableDataSource }                   from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource }                   from '@angular/material/legacy-table';
 import { Observable }                           from 'rxjs';
-import { MatDialog }                            from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog }                            from '@angular/material/legacy-dialog';
 import { tap }                                  from 'rxjs/operators';
-import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar }                          from '@angular/material/legacy-snack-bar';
 
 
 //components
