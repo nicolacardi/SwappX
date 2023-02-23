@@ -2,7 +2,7 @@
 
 
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -31,7 +31,7 @@ import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 export class RettapagamentoEditComponent implements OnInit {
 
 //#region ----- Variabili -------
-  formRetta! :                FormGroup;
+  formRetta! :                UntypedFormGroup;
   causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
   tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
 
@@ -49,7 +49,7 @@ export class RettapagamentoEditComponent implements OnInit {
 //#endregion
 
 
-  constructor(private fb:                           FormBuilder, 
+  constructor(private fb:                           UntypedFormBuilder, 
               private svcTipiPagamento:             TipiPagamentoService,
               private svcCausaliPagamento:          CausaliPagamentoService,
               private svcPagamenti:                 PagamentiService,

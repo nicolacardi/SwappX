@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit }            from '@angular/core';
-import { FormBuilder, FormGroup, Validators }   from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
@@ -29,7 +29,7 @@ export class TipoScadenzaEditComponent implements OnInit {
 
   tiposcadenza$!:                                    Observable<CAL_TipoScadenza>;
 
-  form! :                                       FormGroup;
+  form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
 //#endregion
@@ -39,7 +39,7 @@ export class TipoScadenzaEditComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public tiposcadenzaID: number,
     private svcTipiScadenza:                    TipiScadenzaService,
     private _loadingService :                   LoadingService,
-    private fb:                                 FormBuilder, 
+    private fb:                                 UntypedFormBuilder, 
     public _dialog:                             MatDialog,
     private _snackBar:                          MatSnackBar,
     

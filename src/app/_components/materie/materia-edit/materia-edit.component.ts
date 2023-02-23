@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
@@ -32,7 +32,7 @@ export class MateriaEditComponent implements OnInit {
   materia$!:                  Observable<MAT_Materia>;
   obsMacroMaterie$!:          Observable<MAT_MacroMateria[]>;
 
-  form! :                     FormGroup;
+  form! :                     UntypedFormGroup;
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
 //#endregion
@@ -42,7 +42,7 @@ export class MateriaEditComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public materiaID: number,
     private svcMaterie:                     MaterieService,
     private _loadingService :               LoadingService,
-    private fb:                             FormBuilder, 
+    private fb:                             UntypedFormBuilder, 
     public _dialog:                         MatDialog,
     private _snackBar:                      MatSnackBar,
     private svcMacroMaterie:                MacroMaterieService,

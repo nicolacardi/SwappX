@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostListener, Inject, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, timer } from 'rxjs';
@@ -40,8 +40,8 @@ export class RettaEditComponent implements OnInit {
   obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
 
   filteredAlunni$!:           Observable<ALU_Alunno[]>;
-  formRetta! :                FormGroup;
-  formAlunno! :               FormGroup;
+  formRetta! :                UntypedFormGroup;
+  formAlunno! :               UntypedFormGroup;
 
   alunno!:                    ALU_Alunno;
   anno!:                      ASC_AnnoScolastico;
@@ -75,7 +75,7 @@ export class RettaEditComponent implements OnInit {
   constructor(
     public _dialogRef: MatDialogRef<RettaEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private fb:             FormBuilder, 
+    private fb:             UntypedFormBuilder, 
     private svcRette:       RetteService,
     private svcAlunni:      AlunniService,
     private svcAnni:        AnniScolasticiService,

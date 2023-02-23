@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -9,9 +9,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 export class RegisterComponent implements OnInit {
 
-  form! :                     FormGroup;
+  form! :                     UntypedFormGroup;
   
-  constructor(  private fb:             FormBuilder) {
+  constructor(  private fb:             UntypedFormBuilder) {
     
     this.form = this.fb.group({
       UserName:                   ['user', Validators.required],

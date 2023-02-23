@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
   isPinned = false;
   isExpanded = false;
 
-  public mode = new FormControl('over');
+  public mode = new UntypedFormControl('over');
   title = 'Stoody';
 //#endregion
 

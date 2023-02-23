@@ -1,5 +1,5 @@
 import { Component, Inject, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup }               from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
@@ -34,7 +34,7 @@ export class CompitoEditComponent implements OnInit {
   obsLezioni$!:                                 Observable<CAL_Lezione[]>;
   lezione$!:                                    Observable<CAL_Lezione>;
   prof!:                                        string;
-  form! :                                       FormGroup;
+  form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
   breakpoint!:                                  number;
 
@@ -49,7 +49,7 @@ export class CompitoEditComponent implements OnInit {
   constructor( 
     @Inject(MAT_DIALOG_DATA) public data:       CAL_Lezione,
     public _dialogRef:                          MatDialogRef<CompitoEditComponent>,
-    private fb:                                 FormBuilder,
+    private fb:                                 UntypedFormBuilder,
     public _dialog:                             MatDialog,
     private _snackBar:                          MatSnackBar,
     private _loadingService :                   LoadingService,

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit} from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 //components
 import { NoteListComponent } from '../note-list/note-list.component';
@@ -12,12 +12,12 @@ import { NoteListComponent } from '../note-list/note-list.component';
 export class NoteFilterComponent implements OnInit {
 
 //#region ----- Variabili -------
-dtNotaFilter = new FormControl('');
-notaFilter = new FormControl('');
-quadrimestreFilter = new FormControl('');
-dtFirmaFilter = new FormControl('');
-docenteFilter = new FormControl('');
-alunnoFilter = new FormControl('');
+dtNotaFilter = new UntypedFormControl('');
+notaFilter = new UntypedFormControl('');
+quadrimestreFilter = new UntypedFormControl('');
+dtFirmaFilter = new UntypedFormControl('');
+docenteFilter = new UntypedFormControl('');
+alunnoFilter = new UntypedFormControl('');
 
 //#endregion
 

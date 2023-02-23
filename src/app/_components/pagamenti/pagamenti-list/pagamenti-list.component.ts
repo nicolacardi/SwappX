@@ -2,7 +2,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -37,7 +37,7 @@ export class PagamentiListComponent implements OnInit {
   pagamentoEmitter = new EventEmitter<number>();
 
   obsAnni$!:                Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-  form:                     FormGroup;            //form fatto della sola combo anno scolastico
+  form:                     UntypedFormGroup;            //form fatto della sola combo anno scolastico
 
   show: boolean = true;
  
@@ -135,7 +135,7 @@ export class PagamentiListComponent implements OnInit {
   constructor(
     private svcPagamenti:     PagamentiService,
     private svcAnni:          AnniScolasticiService,
-    private fb:               FormBuilder, 
+    private fb:               UntypedFormBuilder, 
     public _dialog:           MatDialog, 
     private _snackBar:        MatSnackBar,
     private _loadingService:  LoadingService

@@ -5,7 +5,7 @@ import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-to
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, zip } from 'rxjs';
 import { groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
 
 //components
@@ -36,7 +36,7 @@ export class RetteListComponent implements OnInit {
   matDataSource = new MatTableDataSource<PAG_RettaPivot>();
 
   obsAnni$!:                Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-  form:                     FormGroup;            //form fatto della sola combo anno scolastico
+  form:                     UntypedFormGroup;            //form fatto della sola combo anno scolastico
   annoID!:                  number;
   showC= true;
   showD= true;
@@ -142,7 +142,7 @@ export class RetteListComponent implements OnInit {
     private svcRette:         RetteService,
     private svcAnni:          AnniScolasticiService,
     private _loadingService:  LoadingService,
-    private fb:               FormBuilder, 
+    private fb:               UntypedFormBuilder, 
     public _dialog:           MatDialog) 
   {
     let obj = localStorage.getItem('AnnoCorrente');

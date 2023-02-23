@@ -1,5 +1,5 @@
 import { Component, Inject, Injectable, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { DateRange, MatDateRangeSelectionStrategy, MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -83,7 +83,7 @@ export class LezioniUtilsComponent implements OnInit {
 
 //#region ----- Variabili -------
 
-  form!:                     FormGroup;
+  form!:                     UntypedFormGroup;
   currMonday!:               Date;
 
 //#endregion
@@ -91,7 +91,7 @@ export class LezioniUtilsComponent implements OnInit {
   constructor( public _dialogRef: MatDialogRef<LezioniUtilsComponent>,
                private svcLezioni:                   LezioniService,         
                @Inject(MAT_DIALOG_DATA) public data: DialogDataLezioniUtils,
-               private fb:                           FormBuilder, 
+               private fb:                           UntypedFormBuilder, 
                private _dateAdapter:                 DateAdapter<Date>,
                private _snackBar:                    MatSnackBar  ) {
 

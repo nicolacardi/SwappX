@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit }            from '@angular/core';
-import { FormBuilder, FormGroup }               from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
@@ -39,7 +39,7 @@ export class NotaEditComponent implements OnInit {
   obsIscrizioni$!:                              Observable<CLS_Iscrizione[]>;
   disabilitato:                                 boolean = false;
 
-  form! :                                       FormGroup;
+  form! :                                       UntypedFormGroup;
   personaNomeCognome!:                          string;
   personaID!:                                   number;
   iscrizioneID!:                                number;
@@ -59,7 +59,7 @@ export class NotaEditComponent implements OnInit {
               private svcGenitori:                        GenitoriService,
 
               @Inject(MAT_DIALOG_DATA) public data:       DialogDataNota,
-              private fb:                                 FormBuilder, 
+              private fb:                                 UntypedFormBuilder, 
               private _loadingService:                    LoadingService,
               public _dialog:                             MatDialog,
               private _snackBar:                          MatSnackBar ) {

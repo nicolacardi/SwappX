@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
@@ -42,7 +42,7 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
   obsMaterie$!:               Observable<MAT_Materia[]>;
   obsTipiVoto$!:              Observable<CLS_TipoVoto[]>;
 
-  form! :                     FormGroup;
+  form! :                     UntypedFormGroup;
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
 //#endregion
@@ -56,7 +56,7 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
               private svcTipiVoto:                    TipiVotoService,
 
               private _loadingService :               LoadingService,
-              private fb:                             FormBuilder, 
+              private fb:                             UntypedFormBuilder, 
               public _dialog:                         MatDialog,
               private _snackBar:                      MatSnackBar) { 
 

@@ -1,6 +1,6 @@
 import { ThisReceiver } from '@angular/compiler';
 import { Component, Input, OnInit} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 //components
@@ -25,15 +25,15 @@ export class PagamentiFilterComponent implements OnInit {
   causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
   tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
   
-  tipoPagamentoFilter = new FormControl('');
-  causaleFilter = new FormControl('');
-  nomeFilter = new FormControl('');
-  cognomeFilter = new FormControl('');
-  importoPiuDiFilter = new FormControl('');
-  importoFilter = new FormControl('');
-  importoMenoDiFilter = new FormControl('');
-  dataDal = new FormControl('');
-  dataAl = new FormControl('');
+  tipoPagamentoFilter = new UntypedFormControl('');
+  causaleFilter = new UntypedFormControl('');
+  nomeFilter = new UntypedFormControl('');
+  cognomeFilter = new UntypedFormControl('');
+  importoPiuDiFilter = new UntypedFormControl('');
+  importoFilter = new UntypedFormControl('');
+  importoMenoDiFilter = new UntypedFormControl('');
+  dataDal = new UntypedFormControl('');
+  dataAl = new UntypedFormControl('');
 //#endregion
   
 //#region ----- ViewChild Input Output -------  

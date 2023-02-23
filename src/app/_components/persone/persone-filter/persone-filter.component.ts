@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 //components
@@ -21,15 +21,15 @@ export class PersoneFilterComponent implements OnInit {
 
 //#region ----- Variabili -------
 
-  nomeFilter = new FormControl('');
-  cognomeFilter = new FormControl('');
-  tipoPersonaFilter= new FormControl('');
-  annoNascitaFilter = new FormControl('');
-  indirizzoFilter = new FormControl('');
-  comuneFilter = new FormControl('');
-  provFilter = new FormControl('');
-  emailFilter = new FormControl('');
-  telefonoFilter = new FormControl('');
+  nomeFilter = new UntypedFormControl('');
+  cognomeFilter = new UntypedFormControl('');
+  tipoPersonaFilter= new UntypedFormControl('');
+  annoNascitaFilter = new UntypedFormControl('');
+  indirizzoFilter = new UntypedFormControl('');
+  comuneFilter = new UntypedFormControl('');
+  provFilter = new UntypedFormControl('');
+  emailFilter = new UntypedFormControl('');
+  telefonoFilter = new UntypedFormControl('');
   
   obsTipiPersona$!:            Observable<PER_TipoPersona[]>;
 

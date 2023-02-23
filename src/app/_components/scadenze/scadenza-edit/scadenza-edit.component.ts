@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup }               from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
@@ -45,7 +45,7 @@ export class ScadenzaEditComponent implements OnInit {
 
 //#region ----- Variabili -------
   currUser!:                                    User;
-  form! :                                       FormGroup;
+  form! :                                       UntypedFormGroup;
   personaIDArr!:                                number[];
   colorSample:                                  string = '#FFFFFF'
   personeListArr!:                              PER_Persona[];
@@ -86,7 +86,7 @@ export class ScadenzaEditComponent implements OnInit {
     public _dialogRef:                          MatDialogRef<ScadenzaEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data:       DialogDataScadenza,
 
-    private fb:                                 FormBuilder, 
+    private fb:                                 UntypedFormBuilder, 
     private svcScadenze:                        ScadenzeService,
     private svcPersone:                         PersoneService,
     private svcScadenzePersone:                 ScadenzePersoneService,

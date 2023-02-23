@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
@@ -38,7 +38,7 @@ obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;
 obsMaterie$!:               Observable<MAT_Materia[]>;
 
 
-form! :                     FormGroup;
+form! :                     UntypedFormGroup;
 emptyForm :                 boolean = false;
 loading:                    boolean = true;
 //#endregion
@@ -53,7 +53,7 @@ constructor(
 
 
   private _loadingService :               LoadingService,
-  private fb:                             FormBuilder, 
+  private fb:                             UntypedFormBuilder, 
   public _dialog:                         MatDialog,
   private _snackBar:                      MatSnackBar,
   

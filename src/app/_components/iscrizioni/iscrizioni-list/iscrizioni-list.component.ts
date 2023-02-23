@@ -7,7 +7,7 @@ import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 //components
 import { IscrizioniFilterComponent } from '../iscrizioni-filter/iscrizioni-filter.component';
@@ -84,7 +84,7 @@ export class IscrizioniListComponent implements OnInit {
 
   selection = new               SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
   obsAnni$!:                    Observable<ASC_AnnoScolastico[]>;           //Serve per la combo anno scolastico
-  form:                         FormGroup;                                  //form fatto della sola combo anno scolastico
+  form:                         UntypedFormGroup;                                  //form fatto della sola combo anno scolastico
   
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
@@ -131,7 +131,7 @@ export class IscrizioniListComponent implements OnInit {
   constructor(
     private svcIscrizioni:    IscrizioniService,
     private svcAnni:          AnniScolasticiService,
-    private fb:               FormBuilder, 
+    private fb:               UntypedFormBuilder, 
     public _dialog:           MatDialog, 
     private _loadingService:  LoadingService 
   ) {

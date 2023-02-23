@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
@@ -40,7 +40,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 
   obs!: Subscription;
 
-  form! :                     FormGroup;
+  form! :                     UntypedFormGroup;
   emptyForm :                 boolean = false;
   breakpoint!:                number;
 //#endregion
@@ -48,7 +48,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
   constructor( 
     @Inject(MAT_DIALOG_DATA) public classeSezioneAnnoID: number,
     public _dialogRef:                          MatDialogRef<ClasseSezioneAnnoEditComponent>,
-    private fb:                                 FormBuilder,
+    private fb:                                 UntypedFormBuilder,
     private svcClasseSezioneAnno:               ClassiSezioniAnniService,
     private svcClasseSezione:                   ClassiSezioniService,
     private svcClassi:                          ClassiService,

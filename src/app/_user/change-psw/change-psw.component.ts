@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../_components/utilities/snackbar/snackbar.component';
 
@@ -16,10 +16,10 @@ import { Utility } from '../../_components/utilities/utility.component';
 
 export class ChangePswComponent implements OnInit {
 
-  form! :              FormGroup;
+  form! :              UntypedFormGroup;
   public currUser!:    User;
 
-  constructor( private fb:                   FormBuilder, 
+  constructor( private fb:                   UntypedFormBuilder, 
                private svcUser:              UserService,
                private _snackBar:            MatSnackBar ) { 
 

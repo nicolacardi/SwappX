@@ -1,6 +1,6 @@
 import { validateHorizontalPosition } from '@angular/cdk/overlay';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
@@ -15,7 +15,7 @@ import { RetteService } from '../rette.service';
 export class RettaannoEditComponent implements OnInit {
 
 //#region ----- Variabili -------
-  form! :                     FormGroup;
+  form! :                     UntypedFormGroup;
   emptyForm :                 boolean = false;
   totDefault!:                number;
   totConcordate!:             number;
@@ -34,7 +34,7 @@ export class RettaannoEditComponent implements OnInit {
 
 //#endregion
 
-  constructor( private fb:               FormBuilder,
+  constructor( private fb:               UntypedFormBuilder,
                private svcRette:         RetteService,
                private _loadingService:  LoadingService ) {
 

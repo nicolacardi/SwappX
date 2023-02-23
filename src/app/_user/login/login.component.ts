@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EventEmitterService } from 'src/app/_services/event-emitter.service';
@@ -19,11 +19,11 @@ import { LoadingService } from 'src/app/_components/utilities/loading/loading.se
 export class LoginComponent implements OnInit {
   
   loading = false;
-  form! :                     FormGroup;
+  form! :                     UntypedFormGroup;
   
   constructor(private svcUser:         UserService,
               private router:          Router,
-              private fb:              FormBuilder,
+              private fb:              UntypedFormBuilder,
               private eventEmitterService:  EventEmitterService,
               public _dialog:          MatDialog,
               private _loadingService: LoadingService,

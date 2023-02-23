@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { iif, Observable, of } from 'rxjs';
@@ -42,7 +42,7 @@ export class IscrizioniClasseCalcoloComponent implements OnInit {
     public annoSucc!:                       ASC_AnnoScolastico;
     public anno!:                           ASC_AnnoScolastico;
 
-    form! :                                 FormGroup;
+    form! :                                 UntypedFormGroup;
     public obsClassiAnniSucc$!:             Observable<CLS_ClasseSezioneAnnoGroup[]>;
     private nRecOK=   0;
     private nRecKO =  0;
@@ -52,7 +52,7 @@ export class IscrizioniClasseCalcoloComponent implements OnInit {
     constructor(public _dialogRef:                      MatDialogRef<IscrizioniClasseCalcoloComponent>,
                 @Inject(MAT_DIALOG_DATA)                public data: DialogData,
                 public _dialog:                         MatDialog,
-                private fb:                             FormBuilder, 
+                private fb:                             UntypedFormBuilder, 
                 private svcAnni:                        AnniScolasticiService,
                 private svcClasseSezioneAnno:           ClassiSezioniAnniService,
                 private svcIscrizioni:                  IscrizioniService,

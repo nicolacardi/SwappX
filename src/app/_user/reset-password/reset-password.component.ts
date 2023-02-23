@@ -1,5 +1,5 @@
 import { Component, OnInit }                    from '@angular/core';
-import { FormBuilder, FormGroup, Validators }   from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { Router }                               from '@angular/router';
 import {MatSnackBar}                            from '@angular/material/snack-bar';
 
@@ -24,12 +24,12 @@ import { Utility }                              from  '../../_components/utiliti
 */
 export class ResetPasswordComponent implements OnInit {
   loading = false;
-  form! :                     FormGroup;
+  form! :                     UntypedFormGroup;
   
   constructor( private svcUser:        UserService,
                private svcParametri:   ParametriService, 
                private router:         Router,
-               private fb:             FormBuilder,
+               private fb:             UntypedFormBuilder,
                private eventEmitterService:  EventEmitterService,
                public _dialog:         MatDialog,
                private _loadingService:  LoadingService,

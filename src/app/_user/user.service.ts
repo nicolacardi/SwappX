@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, Validators, FormGroup} from '@angular/forms';
+import { UntypedFormBuilder, Validators, UntypedFormGroup} from '@angular/forms';
 import { HttpClient } from "@angular/common/http";
 import { concatMap, map, tap, timeout } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -28,7 +28,7 @@ export class UserService {
   private BehaviourSubjectcurrentUser :         BehaviorSubject<User>;      //holds the value that needs to be shared with other components
   public obscurrentUser:                        Observable<User>;
   constructor( 
-    private fb:                                 FormBuilder,
+    private fb:                                 UntypedFormBuilder,
     private http:                               HttpClient,
     private svcPersona:                         PersoneService,
     private svcParametri:                       ParametriService ) 
@@ -228,7 +228,7 @@ export class UserService {
 
 
   //AS: custom validator
-  comparePasswords(fb: FormGroup )
+  comparePasswords(fb: UntypedFormGroup )
   {
     let confirmPasswordCtrl = fb.get('ConfirmPassword');
     //passwordMismatch

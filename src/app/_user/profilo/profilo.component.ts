@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -31,7 +31,7 @@ export class ProfiloComponent implements OnInit {
   imgFile!:         string;
   foto!:            string;
   fotoObj!:         _UT_UserFoto
-  form! :           FormGroup;
+  form! :           UntypedFormGroup;
   public currUser!: User;
 //#endregion
 
@@ -41,7 +41,7 @@ export class ProfiloComponent implements OnInit {
   @ViewChild(PersonaFormComponent) personaFormComponent!: PersonaFormComponent; 
 //#endregion
 
-  constructor(private fb:                   FormBuilder, 
+  constructor(private fb:                   UntypedFormBuilder, 
               private svcUser:              UserService,
               private svcPersone:           PersoneService,
               public _dialog:               MatDialog,
