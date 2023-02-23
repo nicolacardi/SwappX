@@ -14,9 +14,11 @@ export interface TEM_Blocco {
 
         tipoBloccoID:                           number;
 
-        tipoBlocco?:                             TEM_TipoBlocco;
+        tipoBlocco?:                            TEM_TipoBlocco;
 
-        bloccoFotoID?:                           number;
+        bloccoFotoID?:                          number;
+
+        bloccoTestoID?:                         number;
 }
 
  

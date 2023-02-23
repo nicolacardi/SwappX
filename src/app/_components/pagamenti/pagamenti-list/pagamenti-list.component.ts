@@ -1,28 +1,28 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray }         from '@angular/cdk/drag-drop';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatTableDataSource }                   from '@angular/material/table';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable }                           from 'rxjs';
+import { MatPaginator }                         from '@angular/material/paginator';
+import { MatSort }                              from '@angular/material/sort';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //components
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { RettaEditComponent } from '../retta-edit/retta-edit.component';
-import { PagamentiFilterComponent } from '../pagamenti-filter/pagamenti-filter.component';
+import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { RettaEditComponent }                   from '../retta-edit/retta-edit.component';
+import { PagamentiFilterComponent }             from '../pagamenti-filter/pagamenti-filter.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 
 //services
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { PagamentiService } from '../pagamenti.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { PagamentiService }                     from '../pagamenti.service';
 
 //models
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { PAG_Pagamento } from 'src/app/_models/PAG_Pagamento';
-import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { PAG_Pagamento }                        from 'src/app/_models/PAG_Pagamento';
+import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
 
 @Component({
   selector: 'app-pagamenti-list',
@@ -133,9 +133,9 @@ export class PagamentiListComponent implements OnInit {
 //#endregion
 
   constructor(
+    private fb:               UntypedFormBuilder, 
     private svcPagamenti:     PagamentiService,
     private svcAnni:          AnniScolasticiService,
-    private fb:               UntypedFormBuilder, 
     public _dialog:           MatDialog, 
     private _snackBar:        MatSnackBar,
     private _loadingService:  LoadingService
@@ -224,9 +224,9 @@ export class PagamentiListComponent implements OnInit {
       let cfrImporti = true;
       if (searchTerms.importo  == '') {
         if (searchTerms.importoPiuDi > data.importo) 
-         cfrImportoPiuDi = false;
+          cfrImportoPiuDi = false;
         if (searchTerms.importoMenoDi < data.importo && searchTerms.importoMenoDi != '') 
-           cfrImportoMenoDi = false;
+          cfrImportoMenoDi = false;
         cfrImporti = cfrImportoPiuDi && cfrImportoMenoDi;
       } else {
          cfrImporti = (data.importo == searchTerms.importo) 
@@ -242,16 +242,16 @@ export class PagamentiListComponent implements OnInit {
       let dArr = data.dtPagamento.split("-");
       const dtPagamentoddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 
-      let boolSx = String(data.alunno.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+      let boolSx = String(data.alunno.persona.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
             || String(dtPagamentoddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
             || String(data.importo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-            || String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
+            || String(data.alunno.persona.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
 
       let boolDx = foundTipoPagamento
             && foundCausale
             && cfrImporti 
-            && String(data.alunno.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
-            && String(data.alunno.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+            && String(data.alunno.persona.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+            && String(data.alunno.persona.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
             && cfrDate;
 
       return boolSx && boolDx;
@@ -259,48 +259,17 @@ export class PagamentiListComponent implements OnInit {
     return filterFunction;
   }
 
-  // filterPredicateCustom(){
-  //   //questa funzione consente il filtro ANCHE sugli oggetti della classe
-  //   //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
-  //   this.matDataSource.filterPredicate = (data, filter: string)  => {
-  //     const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
-
-  //       switch(key) { 
-  //         case "tipoPagamento": { 
-  //           return currentTerm + data.tipoPagamento.descrizione; 
-  //            break; 
-  //         } 
-  //         case "causale": { 
-  //           return currentTerm + data.Causale.descrizione; 
-  //            break; 
-  //         } 
-  //         case "alunno": { 
-  //           return currentTerm + data.alunno.nome + data.alunno.cognome; 
-  //            break; 
-  //         } 
-  //         default: { 
-  //           return currentTerm + data.importo + data.dtPagamento; 
-  //            break; 
-  //         } 
-  //      } 
-  //     };
-  //     const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
-  //     const transformedFilter = filter.trim().toLowerCase();
-  //     return dataStr.indexOf(transformedFilter) !== -1;
-  //   };
-  // }
-
   sortCustom() {
 
     this.matDataSource.sortingDataAccessor = (item:any, property) => {
 
       switch(property) {
-        case 'tipoPagamento.descrizione':   return item.tipoPagamento.descrizione;
-        case 'causale.descrizione':         return item.causale.descrizione;
-        case 'alunno.nome':                 return item.alunno.nome;
-        case 'alunno.cognome':              return item.alunno.cognome;
-        case 'importo':                     return item.importo;
-        case 'dtPagamento':                 return parseInt(item.dtPagamento.toString());
+        case 'tipoPagamento.descrizione':       return item.tipoPagamento.descrizione;
+        case 'causale.descrizione':             return item.causale.descrizione;
+        case 'alunno.persona.nome':             return item.alunno.persona.nome;
+        case 'alunno.persona.cognome':          return item.alunno.persona.cognome;
+        case 'importo':                         return item.importo;
+        case 'dtPagamento':                     return parseInt(item.dtPagamento.toString());
         default: return item[property]
 
       }

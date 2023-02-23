@@ -2,8 +2,8 @@ import { Component, ElementRef, Inject, OnInit, ViewChild }            from '@an
 import { UntypedFormBuilder, UntypedFormGroup, ValidatorFn }               from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { iif, Observable } from 'rxjs';
-import { concatMap, tap }                                  from 'rxjs/operators';
+import { iif, Observable }                      from 'rxjs';
+import { concatMap, tap }                       from 'rxjs/operators';
 
 //components
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
@@ -20,6 +20,8 @@ import { BlocchiFotoService }                   from '../blocchifoto.service';
 //models
 import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
 import { TEM_BloccoFoto }                       from 'src/app/_models/TEM_BloccoFoto';
+import { TEM_BloccoTesto } from 'src/app/_models/TEM_BloccoTesto';
+import { BlocchiTestiService } from '../blocchitesti.service';
 
 
 
@@ -37,7 +39,7 @@ export class BloccoEditComponent implements OnInit {
   form! :                                       UntypedFormGroup;
   imgFile!:                                     string;
   tipoBloccoDesc!:                              string;
-  bloccoFotoID!:                                number;
+
 
 
 
@@ -48,14 +50,13 @@ export class BloccoEditComponent implements OnInit {
 
 
   constructor(
-    private svcBlocchi:                         BlocchiService,
-    private svcBlocchiFoto:                     BlocchiFotoService,
-
-    public _dialogRef:                          MatDialogRef<BloccoEditComponent>,
     @Inject(MAT_DIALOG_DATA) public bloccoID:   number,
     private fb:                                 UntypedFormBuilder, 
+    private svcBlocchi:                         BlocchiService,
+    private svcBlocchiFoto:                     BlocchiFotoService,
+    private svcBlocchiTesti:                    BlocchiTestiService,
 
-
+    public _dialogRef:                          MatDialogRef<BloccoEditComponent>,
     public _dialog:                             MatDialog,
     private _snackBar:                          MatSnackBar,
     private _loadingService :                   LoadingService,
@@ -71,9 +72,11 @@ export class BloccoEditComponent implements OnInit {
         w:                                      [0],
         h:                                      [0],
         color:                                  [''],
+        testo:                                  [''],
         ckFill:                                 [],
         tipoBloccoID:                           [0],
-        bloccoFotoID:                           [0]
+        bloccoFotoID:                           [0],
+        bloccoTestoID:                          [0]
       }, { validators: [tooWideValidator, tooHighValidator]});
 
 
@@ -89,17 +92,20 @@ export class BloccoEditComponent implements OnInit {
 
     if (this.bloccoID && this.bloccoID + '' != "0") {
 
+      //SUCCEDE QUALCOSA, FoRSe IL REFRESH (EMIT ecc. va a cancellare bloccotestoID/bloccofotoID)
       const obsBlocco$: Observable<TEM_Blocco> = this.svcBlocchi.get(this.bloccoID);
       const loadBlocco$ = this._loadingService.showLoaderUntilCompleted(obsBlocco$);
-      //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
       this.blocco$ = loadBlocco$
       .pipe(
           tap(
             blocco => {
               console.log ("blocco edit - loadData - blocco:", blocco);
               this.tipoBloccoDesc = blocco.tipoBlocco!.descrizione;
-              this.bloccoFotoID = blocco.bloccoFotoID!;
-              this.form.patchValue(blocco)
+
+              this.form.patchValue(blocco);
+              //this.form.controls.bloccoFotoID.setValue(blocco.bloccoFotoID?blocco.bloccoFotoID: 0);
+              //this.form.controls.bloccoTestoID.setValue(blocco.bloccoTestoID?blocco.bloccoTestoID: 0);
+              console.log ("form patched", this.form.value);
 
             }
           )
@@ -115,42 +121,78 @@ save(){
 
   if (this.tipoBloccoDesc == "Immagine" && this.immagineDOM != undefined) {
 
-    //in teoria se c'è lID blocco foto devo fare una put e non una post, quindi l'obj sarebbe diverso nei due casi 
-    //visto che chiamo sempre la save che decide lei cosa fare
-
-    let fotoObj : TEM_BloccoFoto = {
-      foto: this.immagineDOM.nativeElement.src
-    }
-    console.log (this.immagineDOM.nativeElement.src);
-    this.svcBlocchiFoto.save(fotoObj)
+    if (this.form.controls.bloccoFotoID.value) {
+      let fotoObj : TEM_BloccoFoto = {
+        id:this.form.controls.bloccoFotoID.value,
+        foto: this.immagineDOM.nativeElement.src
+      }
+      console.log (this.immagineDOM.nativeElement.src);
+      this.svcBlocchiFoto.put(fotoObj)
       .pipe(
-        tap(id=> {
-          if (this.bloccoFotoID == null) this.bloccoFotoID = id
-          this.form.controls.bloccoFotoID.setValue(this.bloccoFotoID)
-          console.log ("blocco-edit save this.bloccoID:", this.bloccoFotoID)
+        concatMap( ()=> this.svcBlocchi.put(this.form.value))
+      )
+      .subscribe( res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
+                  err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      )
+    } else {
+      let fotoObj : TEM_BloccoFoto = {
+        id:this.form.controls.bloccoFotoID.value,
+        foto: this.immagineDOM.nativeElement.src
+      }
+      console.log (this.immagineDOM.nativeElement.src);
+      this.svcBlocchiFoto.put(fotoObj)
+      .pipe(
+        tap(bloccoFoto=> {
+          this.form.controls.bloccoFotoID.setValue(bloccoFoto.id)
+            console.log ("blocco-edit save this.bloccoID:", bloccoFoto.id)
         }),
         concatMap( ()=> this.svcBlocchi.put(this.form.value))
       )
-      .subscribe(res=> {
-        this._dialogRef.close(this.bloccoID);
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-      },
-      err=> (
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
-      );
+      .subscribe( res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
+                  err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      )
+      
+    }
 
 
-  } else {
-    this.svcBlocchi.put(this.form.value)
-      .subscribe(res=> {
-        this._dialogRef.close(this.bloccoID);
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-      },
-      err=> (
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
-      );
+  } else if (this.tipoBloccoDesc == "Testo") {
+    let testoObj! : TEM_BloccoTesto;
+
+    if (this.form.controls.bloccoTestoID.value) {
+      testoObj = {
+        id: this.form.controls.bloccoTestoID.value,
+        testo: this.form.controls.testo.value
+      }
+      this.svcBlocchiTesti.put(testoObj)
+      .pipe (
+        concatMap( ()=> this.svcBlocchi.put(this.form.value))
+      )
+      .subscribe( res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
+                  err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      )
+    } else {
+      testoObj = {
+        testo: this.form.controls.testo.value
+      }
+      this.svcBlocchiTesti.post(testoObj)
+      .pipe (
+        tap(bloccoTesto=> {
+          this.form.controls.bloccoTestoID.setValue(bloccoTesto.id);
+          console.log ("ho salvato in blocchitesti con id", bloccoTesto.id);
+        }),
+        concatMap( ()=> this.svcBlocchi.put(this.form.value))
+      )
+      .subscribe( res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
+                  err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      )
+    }
+
+
+
+    
+
+
+   
   }
 
 
@@ -160,7 +202,7 @@ save(){
 
   delete() {
 
-    //serve la delete anche dei record di BlocchiFoto correlati TODO
+    //serve la delete anche dei record di BlocchiFoto e BlocchiTesti correlati TODO
     this.svcBlocchi.delete(this.bloccoID).subscribe(
       res=>{
         this._snackBar.openFromComponent(SnackbarComponent,

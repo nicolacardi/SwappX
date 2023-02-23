@@ -35,22 +35,6 @@ export class BlocchiFotoService {
     return this.http.post( environment.apiBaseUrl  + 'TEM_BlocchiFoto' , formData);  
   }
 
-
-  save(formData: any): Observable<any>{
-    
-    if(formData.id == null || formData.id <= 0){
-      console.log("non c'è id devo fare la post");
-      console.log (formData);
-      return this.http.post(environment.apiBaseUrl+'TEM_BlocchiFoto', formData);
-    }
-    else {
-    console.log("c'è id devo fare la put");
-
-      return this.http.put(environment.apiBaseUrl+'TEM_BlocchiFoto/' + formData.id, formData);
-    }
-  }
-
-
   delete(BloccoFotoID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'TEM_BlocchiFoto/' + BloccoFotoID);    
   }

@@ -26,43 +26,77 @@
                 </button>
 
             </div>
-            <mat-grid-list class="mt10" [cols]="2" rowHeight="60px" >
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <input matInput type="number" required placeholder="Distanza da bordo sx" formControlName="x">
-                        <mat-error *ngIf="form.controls.x.errors?.required"> Campo obbligatorio</mat-error>
-                        <!-- <mat-error *ngIf="form.errors?.['tooWide']">Il blocco termina fuori dall'area disponibile</mat-error> -->
-                        <div class="_red fs10 mt10 _pos-absolute" *ngIf="form.errors?.['tooWide']">Il blocco termina fuori dall'area disponibile</div>
 
-                    </mat-form-field>
-                </mat-grid-tile>
-
+            <mat-grid-list [cols]="1" rowHeight="20px" >
                 <mat-grid-tile>
-                    <mat-form-field>
-                        <input matInput type="number" required placeholder="Distanza dall'alto" formControlName="y">
-                        <mat-error *ngIf="form.controls.y.errors?.required"> Campo obbligatorio</mat-error>
-                        <div class="_red fs10 mt10 _pos-absolute" *ngIf="form.errors?.['tooHigh']">Il blocco termina fuori dall'area disponibile</div>
-                    </mat-form-field>
+                    <div class="_red fs12" [ngClass]="{'invisible': !form.errors?.['tooWide']}" >Il blocco termina in larghezza fuori dall'area disponibile</div>
                 </mat-grid-tile>
             </mat-grid-list>
-            <mat-grid-list class="mt10" [cols]="2" rowHeight="60px" >
+            <mat-grid-list class="_bordered-grey" [cols]="2" rowHeight="80px" >
+                <mat-grid-tile>
+                    <mat-form-field >
+                        <mat-label>Distanza da bordo sinistro</mat-label>
+                        <input matInput type="number" required formControlName="x">
+                        <mat-error *ngIf="form.controls.x.errors?.required"> Campo obbligatorio</mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+
                 <mat-grid-tile>
                     <mat-form-field>
-                        <input matInput type="number" required placeholder="Larghezza" formControlName="w">
+                        <mat-label>Larghezza</mat-label>
+                        <input matInput type="number" required formControlName="w">
                         <mat-error *ngIf="form.controls.w.errors?.required"> Campo obbligatorio</mat-error>
                         <div class="_red fs10 mt10 _pos-absolute" *ngIf="form.errors?.['tooWide']">Il blocco termina fuori dall'area disponibile</div>
                     </mat-form-field>
 
                 </mat-grid-tile>
 
+            </mat-grid-list>
+            <mat-grid-list [cols]="1" rowHeight="20px" >
+                <mat-grid-tile>
+                    <div class="_red fs12 " [ngClass]="{'invisible': !form.errors?.['tooHigh']}" >Il blocco termina in altezza fuori dall'area disponibile</div>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <mat-grid-list class="_bordered-grey"  [cols]="2" rowHeight="80px" >
                 <mat-grid-tile>
                     <mat-form-field>
-                        <input matInput type="number" required placeholder="Altezza" formControlName="h">
+                        <mat-label>Distanza da bordo superiore</mat-label>
+                        <input matInput type="number" required formControlName="y">
+                        <mat-error *ngIf="form.controls.y.errors?.required"> Campo obbligatorio</mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <mat-label>Altezza</mat-label>
+                        <input matInput type="number" required formControlName="h">
                         <mat-error *ngIf="form.controls.h.errors?.required"> Campo obbligatorio</mat-error>
                         <div class="_red fs10 mt10 _pos-absolute" *ngIf="form.errors?.['tooHigh']">Il blocco termina fuori dall'area disponibile</div>
                     </mat-form-field>
                 </mat-grid-tile>
             </mat-grid-list>
+
+            {{tipoBloccoDesc}}
+            <mat-grid-list class="_bordered-grey"  [cols]="2" rowHeight="80px" >
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <mat-label>BloccoTestoID</mat-label>
+                        <input matInput type="number"  formControlName="bloccoTestoID">
+                        
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <mat-label>BloccoFotoID</mat-label>
+                        <input matInput type="number"  formControlName="bloccoFotoID">
+                       
+                        
+                    </mat-form-field>
+                </mat-grid-tile>
+            </mat-grid-list>
+
+
             <mat-grid-list *ngIf="tipoBloccoDesc == 'Testo'" class="mt10" [cols]="1" rowHeight="60px" formControlName="tipoBlocco">
                 <mat-grid-tile class="ml15">
                     <mat-checkbox color="primary" formControlName="ckFill">
@@ -75,13 +109,17 @@
                     <button type="button" class="_btnColorPicker" 
                     (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
                 </mat-grid-tile>
-                <!-- <mat-grid-tile>
-                    <mat-form-field>
-                        <input matInput type="text" placeholder="Codice colore" formControlName="color" #color>
+            </mat-grid-list>
+            <mat-grid-list [cols]="1" rowHeight="80px" >
+                <mat-grid-tile *ngIf="tipoBloccoDesc == 'Testo'">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Testo</mat-label>
+                        <input matInput type="text" formControlName="testo">
                     </mat-form-field>
-                </mat-grid-tile> -->
+                </mat-grid-tile>
             </mat-grid-list>
 
+            
 
             <div *ngIf="tipoBloccoDesc == 'Immagine'" class="w100px h100px ma-lr mt20 shadowed" >
                 <img #myImg *ngIf="imgFile" class="w100px _bordered " [src]="imgFile">
