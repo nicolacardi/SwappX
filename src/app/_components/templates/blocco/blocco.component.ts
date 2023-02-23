@@ -93,7 +93,7 @@ export class BloccoComponent implements OnInit {
   reloadData() {
 
     this.svcBlocchi.get(this.blocco.id).subscribe(
-      val=> {
+      (val:any)=> {
         this.blocco = val;
         this.ngOnChanges();
       }
@@ -282,7 +282,7 @@ export class BloccoComponent implements OnInit {
       };
       const dialogRef = this._dialog.open(BloccoEditComponent, dialogConfig);
       dialogRef.afterClosed().subscribe(
-        res => {
+        (res:any) => {
           console.log("chiusa la dialog");
           this.reloadData(); //ri-estrae i dati per il blocco
           //mi serve fare la refresh, quindi emetto recordEdited che Pagina riceve e ci pensa lei a farsi refresh
