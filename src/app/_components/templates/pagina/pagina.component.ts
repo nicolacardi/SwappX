@@ -101,6 +101,7 @@ export class PaginaComponent implements OnInit {
   }
 
   bloccoEditedEmitted(bloccoID: number){
+    console.log ("bloccoEditedEmitted");
     let zoomStore = this.zoom;
     this.loadData();
     this.zoom = zoomStore;

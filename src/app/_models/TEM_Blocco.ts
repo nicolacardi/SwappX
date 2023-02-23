@@ -1,3 +1,5 @@
+import { TEM_BloccoFoto } from "./TEM_BloccoFoto";
+import { TEM_BloccoTesto } from "./TEM_BloccoTesto";
 import { TEM_TipoBlocco } from "./TEM_TipoBlocco";
 
 export interface TEM_Blocco {
@@ -19,6 +21,10 @@ export interface TEM_Blocco {
         bloccoFotoID?:                          number;
 
         bloccoTestoID?:                         number;
+
+        bloccoFoto?:                            TEM_BloccoFoto;
+        bloccoTesto?:                           TEM_BloccoTesto;
+
 }
 
  

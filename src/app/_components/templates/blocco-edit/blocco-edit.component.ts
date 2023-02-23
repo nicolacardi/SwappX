@@ -103,9 +103,9 @@ export class BloccoEditComponent implements OnInit {
               this.tipoBloccoDesc = blocco.tipoBlocco!.descrizione;
 
               this.form.patchValue(blocco);
-              //this.form.controls.bloccoFotoID.setValue(blocco.bloccoFotoID?blocco.bloccoFotoID: 0);
-              //this.form.controls.bloccoTestoID.setValue(blocco.bloccoTestoID?blocco.bloccoTestoID: 0);
               console.log ("form patched", this.form.value);
+
+              if (blocco.bloccoTesto) this.form.controls.testo.setValue(blocco.bloccoTesto!.testo);
 
             }
           )
@@ -116,49 +116,54 @@ export class BloccoEditComponent implements OnInit {
 //#endregion
 
 save(){
-  console.log("form blocco da salvare", this.form.value);
+  // console.log("blocco-edit - save - form blocco da salvare", this.form.value);
 
 
-  if (this.tipoBloccoDesc == "Immagine" && this.immagineDOM != undefined) {
+  if (this.tipoBloccoDesc == "Immagine" && this.immagineDOM != undefined) {  //********* caso blocco di Foto  *******************
 
-    if (this.form.controls.bloccoFotoID.value) {
+    if (this.form.controls.bloccoFotoID.value) {  // PUT
       let fotoObj : TEM_BloccoFoto = {
         id:this.form.controls.bloccoFotoID.value,
         foto: this.immagineDOM.nativeElement.src
       }
-      console.log (this.immagineDOM.nativeElement.src);
+      // console.log (this.immagineDOM.nativeElement.src);
       this.svcBlocchiFoto.put(fotoObj)
       .pipe(
         concatMap( ()=> this.svcBlocchi.put(this.form.value))
       )
-      .subscribe( res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
-                  err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      .subscribe( res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
+        },
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       )
     } else {
-      let fotoObj : TEM_BloccoFoto = {
+      let fotoObj : TEM_BloccoFoto = {          // POST
         id:this.form.controls.bloccoFotoID.value,
         foto: this.immagineDOM.nativeElement.src
       }
-      console.log (this.immagineDOM.nativeElement.src);
+      // console.log (this.immagineDOM.nativeElement.src);
       this.svcBlocchiFoto.put(fotoObj)
       .pipe(
-        tap(bloccoFoto=> {
-          this.form.controls.bloccoFotoID.setValue(bloccoFoto.id)
-            console.log ("blocco-edit save this.bloccoID:", bloccoFoto.id)
-        }),
+        tap(bloccoFoto=> this.form.controls.bloccoFotoID.setValue(bloccoFoto.id)),
         concatMap( ()=> this.svcBlocchi.put(this.form.value))
       )
-      .subscribe( res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
-                  err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      .subscribe( res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
+        },
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       )
       
     }
 
 
-  } else if (this.tipoBloccoDesc == "Testo") {
+  
+
+  } else if (this.tipoBloccoDesc == "Testo") {     //********* caso blocco di Testo *******************
     let testoObj! : TEM_BloccoTesto;
 
-    if (this.form.controls.bloccoTestoID.value) {
+    if (this.form.controls.bloccoTestoID.value) { // PUT
       testoObj = {
         id: this.form.controls.bloccoTestoID.value,
         testo: this.form.controls.testo.value
@@ -167,37 +172,29 @@ save(){
       .pipe (
         concatMap( ()=> this.svcBlocchi.put(this.form.value))
       )
-      .subscribe( res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
-                  err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      .subscribe( res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
+        },
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       )
-    } else {
+    } else {                                    // POST
       testoObj = {
         testo: this.form.controls.testo.value
       }
       this.svcBlocchiTesti.post(testoObj)
       .pipe (
-        tap(bloccoTesto=> {
-          this.form.controls.bloccoTestoID.setValue(bloccoTesto.id);
-          console.log ("ho salvato in blocchitesti con id", bloccoTesto.id);
-        }),
+        tap(bloccoTesto=> {console.log (bloccoTesto, "appena nserito"); this.form.controls.bloccoTestoID.setValue(bloccoTesto.id)}),
         concatMap( ()=> this.svcBlocchi.put(this.form.value))
       )
-      .subscribe( res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
-                  err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      .subscribe( res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
+        },
+        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       )
     }
-
-
-
-    
-
-
-   
   }
-
-
-
-
 }
 
   delete() {

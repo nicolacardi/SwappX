@@ -82,7 +82,7 @@ export class BloccoComponent implements OnInit {
 
   //su cambio Zoom devo fare diverse operazioni
 
-    this.reloadData();
+    this.zoomChanged();
   }
 
   ngOnInit(): void {
@@ -90,10 +90,16 @@ export class BloccoComponent implements OnInit {
 
 
   reloadData() {
+
+    this.svcBlocchi.get(this.blocco.id).subscribe(
+      val=> this.blocco = val
+    )
+  }
     //console.log("blocco - reloadData");
 
     // console.log ("è cambiato lo zoom! era", this.oldZoom, "ora è ",this.zoom);
 
+  zoomChanged() {
 
     //solo la PRIMA volta (ratio = 1) e devo salvare le coordinate correnti
     //le volte successive devo ripristinare la posizione e le dimensioni del box ripescandole dai valori precedenti
@@ -249,9 +255,13 @@ export class BloccoComponent implements OnInit {
       h: Math.floor(this.height/this.zoom),
       color: this.blocco.color!,
       ckFill: this.blocco.ckFill,
+      bloccoFotoID: this.blocco.bloccoFotoID!,
+      bloccoTestoID: this.blocco.bloccoTestoID!,
       tipoBloccoID: this.blocco.tipoBloccoID
 
     }
+    console.log ("blocco-save - objBlocco", objBlocco);
+
     this.svcBlocchi.put(objBlocco).subscribe();
 
     this.storeOldPosSize();
@@ -269,6 +279,8 @@ export class BloccoComponent implements OnInit {
       const dialogRef = this._dialog.open(BloccoEditComponent, dialogConfig);
       dialogRef.afterClosed().subscribe(
         res => {
+          console.log("chiusa la dialog");
+          this.reloadData();
           //mi serve fare la refresh, quindi emetto recordEdited che Pagina riceve e ci pensa lei a farsi refresh
           if (res) this.recordEdited.emit(this.blocco.id!)
         }
