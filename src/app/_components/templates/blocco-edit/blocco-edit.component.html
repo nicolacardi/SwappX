@@ -104,7 +104,7 @@
 
 
 
-            <quill-editor 
+            <quill-editor *ngIf="tipoBloccoDesc == 'Testo'"
                 (onContentChanged)="onContentChanged($event)"
                 placeholder="Inserire il proprio testo..."
                 formControlName="testo"

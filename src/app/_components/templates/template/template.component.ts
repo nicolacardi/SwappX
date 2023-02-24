@@ -27,7 +27,7 @@ export class TemplateComponent implements OnInit {
   public numPagine:                             number = 1;
   public obsTemplate$!:                         Observable<TEM_Template>;
   public obsPagine$!:                           Observable<TEM_Pagina[]>;
-
+  public magnete:                               boolean = true;
 //#endregion
 
   constructor(
@@ -71,6 +71,6 @@ export class TemplateComponent implements OnInit {
   }
 
   toggleMagnete() {
-    
+    this.magnete = !this.magnete
   }
 }

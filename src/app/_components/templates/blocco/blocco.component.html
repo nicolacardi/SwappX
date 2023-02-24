@@ -1,14 +1,6 @@
 <!-- style trasform funziona quando si ridimensiona -->
 <!-- mousedown all'interno del div trasforma lo status in 2 (MOVE) -->
 <!-- mouseup fuori dal div resetta a 0 lo status -->
-<!-- <button mat-mini-fab aria-label="Cancella Pagina" matTooltip="Cancella Pagina" class="_btn-delete-pagina _btn-pos-left-0" (click)="save()">
-    <mat-icon>save</mat-icon>
-</button> -->
-<!-- <div class="example-boundary">
-    <div class="example-box" cdkDragBoundary=".example-boundary" cdkDrag>
-      I can only be dragged within the dotted container
-    </div>
-  </div> -->
 
 
 <div 
@@ -23,17 +15,18 @@
     (dblclick)="openDetail()"
 >
 
-<!-- era     (window:mouseup)="setStatus($event, 0)" , ho tolto l'evento dalal finestra intera-->
 <!-- [ngStyle] = "{'font-size': 10*zoom+'px'}" -->
 
 <div *ngIf="blocco.bloccoTesto" 
-
     [innerHTML] ="blocco.bloccoTesto!.testo" 
     style="word-break: break-all; line-height: 0.3em; font-family: initial"
-    
-    
     >
-  
+</div>
+
+<div *ngIf="blocco.bloccoFoto">
+    <mat-label>ciao</mat-label>
+
+
 </div>
 
 <!-- resize-action è il triangolino, classTipo dice se blu o giallo-->

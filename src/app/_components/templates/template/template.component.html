@@ -11,7 +11,9 @@
 </button>
 
 <button mat-mini-fab aria-label="Aggancia ai Margini" matTooltip="Aggancia ai Margini"  class="_btn-add-fixed _btn-pos-right-4 _btn-pos-top-1" (click)="toggleMagnete()">
-    <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/magnete_on.svg">
+    <img *ngIf="magnete" class="iconaMenuSidenav" src="./assets/mainMenuWhite/magnete_on.svg">
+    <img *ngIf="!magnete" class="iconaMenuSidenav" src="./assets/mainMenuWhite/magnete_off.svg">
+
 </button>
 
 
@@ -20,6 +22,7 @@
     <div class="center mb20">Pagina {{i+1}} di {{numPagine}}</div>
     <app-pagina
         [paginaID]="element.id"
+        [magnete]="magnete"
         [zoom]="zoom"
         (deleteEmitted)="deletedPage($event)"
         >

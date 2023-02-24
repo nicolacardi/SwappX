@@ -55,6 +55,7 @@ export class BloccoComponent implements OnInit {
 
   @Input('blocco') public blocco!:              TEM_Blocco;
   @Input() zoom!:                               number;
+  @Input() magnete!:                            boolean;
 
   @Output('recordEdited') recordEdited = new EventEmitter<number>();
 
@@ -194,7 +195,9 @@ export class BloccoComponent implements OnInit {
     else this.width = this.mouse.x - this.boxPos.left;
 
     //magnetismo a destra (TODO sistemare in base allo zoom)
-    if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - 200) < 5*this.zoom) this.width = 200*this.zoom -this.left; 
+    if (this.magnete){ 
+      if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - 200) < 5*this.zoom) this.width = 200*this.zoom -this.left; 
+    }
 
 
     if (this.mouse.y - this.boxPos.top <0) this.height = 0
@@ -209,8 +212,9 @@ export class BloccoComponent implements OnInit {
     //console.log ("this.height", this.height);
 
     //magnetismo in basso (TODO sistemare in base allo zoom)
-    if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - 287) < 5*this.zoom) this.height = 287*this.zoom -this.top; 
-
+    if (this.magnete){ 
+      if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - 287) < 5*this.zoom) this.height = 287*this.zoom -this.top; 
+    }
 
     this.storeOldPosSize();
 
@@ -225,8 +229,10 @@ export class BloccoComponent implements OnInit {
     let xTemp = this.mouseClick.left + this.mouse.x - this.mouseClick.x;
 
     //magnetismo su 10 e 200
-    if (Math.abs(xTemp - 10*this.zoom) < 5*this.zoom) xTemp = 10*this.zoom; 
-    if (Math.abs(xTemp + this.width - 200*this.zoom) < 5) xTemp = 200*this.zoom - this.width;
+    if (this.magnete){ 
+      if (Math.abs(xTemp - 10*this.zoom) < 5*this.zoom) xTemp = 10*this.zoom; 
+      if (Math.abs(xTemp + this.width - 200*this.zoom) < 5) xTemp = 200*this.zoom - this.width;
+    }
      
     //viene verificata xTemp per essere sicuri che non vada oltre i limiti consentiti
     if (xTemp+this.contPos.left+this.width>this.contPos.right) this.left = this.contPos.right - this.contPos.left - this.width;
@@ -236,8 +242,10 @@ export class BloccoComponent implements OnInit {
     let yTemp = this.mouseClick.top - this.mouseClick.y + this.mouse.y ;
 
     //magnetismo su 10 e 280
-    if (Math.abs(yTemp - 10*this.zoom) < 5*this.zoom) yTemp = 10*this.zoom; 
-    if (Math.abs(yTemp + this.height - 287*this.zoom) < 5) yTemp = 287*this.zoom - this.height;
+    if (this.magnete){ 
+      if (Math.abs(yTemp - 10*this.zoom) < 5*this.zoom) yTemp = 10*this.zoom; 
+      if (Math.abs(yTemp + this.height - 287*this.zoom) < 5) yTemp = 287*this.zoom - this.height;
+    }
     
     if (yTemp+this.contPos.top+this.height>this.contPos.bottom) this.top = this.contPos.bottom - this.contPos.top - this.height;
     else if (yTemp <0) this.top = 0

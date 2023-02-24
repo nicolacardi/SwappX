@@ -28,6 +28,7 @@ export class PaginaComponent implements OnInit {
 
   @Input() paginaID!:                           number;
   @Input() zoom!:                               number;
+  @Input() magnete!:                            boolean;
 
 
   @Output('deleteEmitted') deleteEmitter = new EventEmitter<number>(); //l'ID della pagina cancellata viene EMESSA quando la si cancella
@@ -60,7 +61,7 @@ export class PaginaComponent implements OnInit {
 
     this.obsBlocchi$.subscribe(
       res=> {
-        //console.log ("Blocchi di pagina:", this.paginaID, res);
+        console.log ("Blocchi di pagina:", this.paginaID, res);
         this.blocchiArr = res
       }
     )
