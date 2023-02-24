@@ -131,10 +131,12 @@
 
     /*bordo inferiore nascosto (finiva a metà cella)*/
     /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     :host ::ng-deep .cellRetta .mat-form-field-underline {
         display: none;
     }
 
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     :host ::ng-deep .cellRettaEdit .mat-form-field-wrapper { 
         padding:5px;
@@ -142,11 +144,13 @@
     }
 
     /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     :host ::ng-deep ._highlightPag2 .mat-form-field-infix  {
         background-color: rgb(212, 68, 68);
         color: white !important;
     }
 
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     :host ::ng-deep ._highlightConc .mat-form-field-infix  {
         background-color: rgba(173, 173, 173, 0.142);
@@ -235,6 +239,7 @@
     }
 
 
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 :host ::ng-deep ._no-padding-bottom .mat-form-field-wrapper {
         padding-bottom: 0px !important;
