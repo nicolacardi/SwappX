@@ -134,10 +134,6 @@
                 </mat-grid-tile>
             </mat-grid-list>
 
-            <div *ngIf="tipoBloccoDesc == 'Immagine'" class="w100px h100px ma-lr mt20 shadowed" >
-                <img #myImg *ngIf="imgFile" class="w100px _bordered " [src]="imgFile">
-            </div>
-
             <div *ngIf="tipoBloccoDesc == 'Immagine'" class="flex-container form-group mt20 ">
                 <div class="form-group">
                     <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" formControlName="file" (change)="onImageChange($event)"hidden #selectFile>
@@ -147,6 +143,18 @@
                     </div> -->
                 </div>
             </div>
+            
+            <div *ngIf="tipoBloccoDesc == 'Immagine'" class=" ma-lr mt20" >
+                <img  
+                    *ngIf="imgFile" 
+                    style="max-width: 250px; max-height: 250px;"
+                    class="_bordered-lightgrey " 
+                    [src]="imgFile"
+                    
+                    #myImg >
+            </div>
+
+
 
         </form>
     </mat-card-content>

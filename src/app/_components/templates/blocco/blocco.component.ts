@@ -10,6 +10,7 @@ import { BlocchiService }                       from '../blocchi.service';
 
 //models
 import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
+import { A4 } from 'src/environments/environment';
 
 const enum Status {
   OFF = 0,
@@ -27,20 +28,22 @@ export class BloccoComponent implements OnInit {
 
 //#region ----- Variabili -------
   public width!:                                number;
-  public height!:                                number;
-  public left!:                                number;
-  public top!:                                number;
+  public widthImg!:                             number;
+
+  public height!:                               number;
+  public left!:                                 number;
+  public top!:                                  number;
   public color!:                                string;
   public tipoBloccoID!:                         number;
   public ckFill!:                               boolean;
-  public testo!:                                 string;
+  public testo!:                                string;
 
   private oldZoom:                              number = 1;
 
-  private oldLeft!:                              number;
-  private oldTop!:                               number;
-  private oldWidth!:                             number;
-  private oldheight!:                            number;
+  private oldLeft!:                             number;
+  private oldTop!:                              number;
+  private oldWidth!:                            number;
+  private oldheight!:                           number;
 
   public classTipo!:                             string;
 
@@ -139,8 +142,8 @@ export class BloccoComponent implements OnInit {
     // console.log ("this.boxPos.left", this.boxPos.left);
     // console.log ("this.left", this.left);
     const top = this.boxPos.top - this.top;
-    const right = left + 210*this.zoom;
-    const bottom = top + 297*this.zoom;
+    const right = left + A4.width *this.zoom;
+    const bottom = top + A4.height *this.zoom;
     this.contPos = { left, top, right, bottom };
     // console.log ("this.contPos", this.contPos);
 
@@ -181,9 +184,9 @@ export class BloccoComponent implements OnInit {
 
   private resize(){
 
-    console.log (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - 200));
+    //console.log (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (A4.width-10)));
 
-    //console.log (this.mouse.x - this.boxPos.left*this.zoom + this.left*this.zoom - 200*this.zoom);
+    //console.log (this.mouse.x - this.boxPos.left*this.zoom + this.left*this.zoom - (A4.height-10)*this.zoom);
     if (this.mouse.x - this.boxPos.left <0) this.width = 0 //evita che si possa fare un rettangolo di larghezza negativa
     else if (this.mouse.x > this.contPos.right) {
       // console.log ("this.contPos.right", this.contPos.right);
@@ -196,7 +199,7 @@ export class BloccoComponent implements OnInit {
 
     //magnetismo a destra (TODO sistemare in base allo zoom)
     if (this.magnete){ 
-      if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - 200) < 5*this.zoom) this.width = 200*this.zoom -this.left; 
+      if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (A4.width-10)) < 5*this.zoom) this.width = (A4.width-10)*this.zoom -this.left; 
     }
 
 
@@ -213,8 +216,11 @@ export class BloccoComponent implements OnInit {
 
     //magnetismo in basso (TODO sistemare in base allo zoom)
     if (this.magnete){ 
-      if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - 287) < 5*this.zoom) this.height = 287*this.zoom -this.top; 
+      if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - (A4.height-10)) < 5*this.zoom) this.height = (A4.height-10)*this.zoom -this.top; 
     }
+
+    
+
 
     this.storeOldPosSize();
 
@@ -229,9 +235,13 @@ export class BloccoComponent implements OnInit {
     let xTemp = this.mouseClick.left + this.mouse.x - this.mouseClick.x;
 
     //magnetismo su 10 e 200
+
+    let mezzeriaX = (this.contPos.right+ this.contPos.left)/2;
+
     if (this.magnete){ 
       if (Math.abs(xTemp - 10*this.zoom) < 5*this.zoom) xTemp = 10*this.zoom; 
-      if (Math.abs(xTemp + this.width - 200*this.zoom) < 5) xTemp = 200*this.zoom - this.width;
+      if (Math.abs(xTemp + this.width - (A4.width-10)*this.zoom) < 5*this.zoom) xTemp = (A4.width-10)*this.zoom - this.width;
+      if (Math.abs(xTemp + 0.5*this.width +this.contPos.left - mezzeriaX) < 5*this.zoom)   xTemp = mezzeriaX - this.contPos.left - this.width*0.5;
     }
      
     //viene verificata xTemp per essere sicuri che non vada oltre i limiti consentiti
@@ -241,10 +251,14 @@ export class BloccoComponent implements OnInit {
 
     let yTemp = this.mouseClick.top - this.mouseClick.y + this.mouse.y ;
 
+    let mezzeriaY = (this.contPos.bottom+ this.contPos.top)/2;
+
     //magnetismo su 10 e 280
     if (this.magnete){ 
       if (Math.abs(yTemp - 10*this.zoom) < 5*this.zoom) yTemp = 10*this.zoom; 
-      if (Math.abs(yTemp + this.height - 287*this.zoom) < 5) yTemp = 287*this.zoom - this.height;
+      if (Math.abs(yTemp + this.height - (A4.height-10)*this.zoom) < 5*this.zoom) yTemp = (A4.height-10)*this.zoom - this.height;
+      if (Math.abs(yTemp + 0.5*this.height +this.contPos.top - mezzeriaY) < 5*this.zoom)   yTemp = mezzeriaY - this.contPos.top - this.height*0.5;
+
     }
     
     if (yTemp+this.contPos.top+this.height>this.contPos.bottom) this.top = this.contPos.bottom - this.contPos.top - this.height;
@@ -293,7 +307,7 @@ export class BloccoComponent implements OnInit {
       tipoBloccoID: this.blocco.tipoBloccoID
 
     }
-    console.log ("blocco-save - objBlocco", objBlocco);
+    // console.log ("blocco-save - objBlocco", objBlocco);
 
     this.svcBlocchi.put(objBlocco).subscribe();
 
@@ -314,6 +328,10 @@ export class BloccoComponent implements OnInit {
         (res:any) => {
           
           this.reloadData(); //ri-estrae i dati per il blocco
+          if (this.blocco.bloccoFotoID) {
+            console.log("chiuso", res);
+            this.width = res.width;
+          }
           //mi serve fare la refresh, quindi emetto recordEdited che Pagina riceve e ci pensa lei a farsi refresh
           if (res=="DELETE") this.recordEdited.emit(this.blocco.id!)
         }

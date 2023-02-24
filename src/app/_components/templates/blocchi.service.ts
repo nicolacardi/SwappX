@@ -33,7 +33,6 @@ export class BlocchiService {
   }
 
   put(formData: any): Observable <any>{
-    console.log ("blocchi.service - put - formData:", formData)
     return this.http.put( environment.apiBaseUrl  + 'TEM_Blocchi/' + formData.id , formData);    
   }
 

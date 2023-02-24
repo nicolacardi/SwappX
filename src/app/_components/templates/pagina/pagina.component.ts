@@ -61,7 +61,7 @@ export class PaginaComponent implements OnInit {
 
     this.obsBlocchi$.subscribe(
       res=> {
-        console.log ("Blocchi di pagina:", this.paginaID, res);
+        // console.log ("Blocchi di pagina:", this.paginaID, res);
         this.blocchiArr = res
       }
     )
@@ -70,7 +70,7 @@ export class PaginaComponent implements OnInit {
   deletePage() {
     this.svcPagine.delete(this.paginaID).subscribe(
       res=> {
-        console.log ("emetto", this.paginaID);
+        // console.log ("emetto", this.paginaID);
         this.deleteEmitter.emit(this.paginaID);
       }
     );

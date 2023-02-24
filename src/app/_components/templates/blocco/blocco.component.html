@@ -23,10 +23,8 @@
     >
 </div>
 
-<div *ngIf="blocco.bloccoFoto">
-    <mat-label>ciao</mat-label>
-
-
+<div *ngIf="blocco.bloccoFoto" class="center">
+    <img class="_pos-relative ma" [style.height.px]="height" [src]="blocco.bloccoFoto.foto">
 </div>
 
 <!-- resize-action è il triangolino, classTipo dice se blu o giallo-->

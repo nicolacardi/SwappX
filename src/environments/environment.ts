@@ -8,6 +8,10 @@ export const environment = {
   apiBaseUrl: "http://213.215.231.4/SwappX/api/"
 };
 
+export const A4 = {
+  width: 210,  
+  height: 297
+};
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

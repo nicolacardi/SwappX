@@ -77,6 +77,56 @@ export abstract class Utility {
   }
 
 
+
+
+
+   
+  //Utility per caricare una foto nel template
+  public static loadImage(src: any, newX: number) {
+
+    return new Promise((res, rej) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        const elem = document.createElement('canvas');
+
+        let posX = 0;
+        let posY = 0;
+        let newY : number;
+
+        const ratio = img.height / img.width;
+        if (img.width> newX) {
+          //immagine + piccola, non vado ad aumentarne le dimensioni
+          newX = img.width;
+          newY = newX*ratio
+        } else {
+          
+          elem.width = newX;                      //imposta la larghezza al valore ricevuto
+          elem.height = newX*ratio;               //imposta l'altezza corrispondente
+          // if (ratio>1) {
+            newY = newX*ratio;          //rende il taglio proporzionato
+            posY = 0;    //posiziona il taglio
+          // } else { 
+          //   newX = newY/ratio;          //rende il taglio proporzionato
+          //   posX = (newX-newY)/2;       //posiziona il taglio
+          // }
+        }
+        const ctx = elem.getContext('2d');
+        ctx!.drawImage(img, -posX, -posY, newX, newY);
+        
+        const data = ctx!.canvas.toDataURL();
+        let arrReturn = [data, newX, newY];
+        res(arrReturn);
+      }
+      img.onerror = error =>{ 
+        rej(error);
+      }
+    })
+  }
+
+
+
+
   public static getCurrentUser() : User {
     let obj: any;
     let tmp = localStorage.getItem('currentUser');

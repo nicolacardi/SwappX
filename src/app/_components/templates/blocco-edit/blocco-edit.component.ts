@@ -35,9 +35,15 @@ import { CustomOption } from "ngx-quill";
 })
 export class BloccoEditComponent implements OnInit {
 //#region ----- Variabili -------
-  blocco$!:                                     Observable<TEM_Blocco>
+  blocco$!:                                     Observable<TEM_Blocco>;
   form! :                                       UntypedFormGroup;
   imgFile!:                                     string;
+
+  imgSize!: {
+    w: number,
+    h: number,
+  }                                        
+
   tipoBloccoDesc!:                              string;
 
   htmlText!:                                    string;        
@@ -136,10 +142,11 @@ export class BloccoEditComponent implements OnInit {
       .pipe(
           tap(
             blocco => {
-              console.log ("blocco edit - loadData - blocco:", blocco);
+              // console.log ("blocco edit - loadData - blocco:", blocco);
               this.tipoBloccoDesc = blocco.tipoBlocco!.descrizione;
 
               this.form.patchValue(blocco);
+              if (blocco.bloccoFoto) this.imgFile = blocco.bloccoFoto!.foto; 
               //console.log ("form patched", this.form.value);
 
               if (blocco.bloccoTesto) this.form.controls.testo.setValue(blocco.bloccoTesto!.testo);
@@ -153,7 +160,7 @@ export class BloccoEditComponent implements OnInit {
 //#endregion
 
 save(){
-  // console.log("blocco-edit - save - form blocco da salvare", this.form.value);
+  console.log("blocco-edit - save - form blocco da salvare", this.form.value);
 
 
   if (this.tipoBloccoDesc == "Immagine" && this.immagineDOM != undefined) {  //********* caso blocco di Foto  *******************
@@ -163,30 +170,32 @@ save(){
         id:this.form.controls.bloccoFotoID.value,
         foto: this.immagineDOM.nativeElement.src
       }
-      // console.log (this.immagineDOM.nativeElement.src);
+      console.log (this.immagineDOM.nativeElement.src);
       this.svcBlocchiFoto.put(fotoObj)
       .pipe(
         concatMap( ()=> this.svcBlocchi.put(this.form.value))
       )
       .subscribe( res=> {
-          this._dialogRef.close("POST IMG");
+        console.log("sto per chiudere e passare this.imgSize", this.imgSize);
+
+          this._dialogRef.close(this.imgSize);
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
         },
         err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       )
     } else {
       let fotoObj : TEM_BloccoFoto = {          // POST
-        id:this.form.controls.bloccoFotoID.value,
         foto: this.immagineDOM.nativeElement.src
       }
       // console.log (this.immagineDOM.nativeElement.src);
-      this.svcBlocchiFoto.put(fotoObj)
+      this.svcBlocchiFoto.post(fotoObj)
       .pipe(
         tap(bloccoFoto=> this.form.controls.bloccoFotoID.setValue(bloccoFoto.id)),
         concatMap( ()=> this.svcBlocchi.put(this.form.value))
       )
       .subscribe( res=> {
-          this._dialogRef.close("PUT IMG");
+          console.log("sto per chiudere e passare this.imgSize", this.imgSize);
+          this._dialogRef.close(this.imgSize);
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
         },
         err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
@@ -277,7 +286,7 @@ save(){
       if(e.target.files[0].size > 200000){
         this._dialog.open(DialogOkComponent, {
           width: '320px',
-          data: {titolo: "ATTENZIONE!", sottoTitolo: "Il file eccede la dimensione massima (200kb)"}
+          data: {titolo: "ATTENZIONE!", sottoTitolo: "Il file eccede la dimensione massima (300kb)"}
         });
         return;
       };
@@ -287,31 +296,24 @@ save(){
       reader.onload = () => {
         this.imgFile = reader.result as string;
 
-        Utility.compressImage( this.imgFile, 400, 400)
-               .then(compressed => this.immagineDOM.nativeElement.src = compressed);
+        //DA CAPIRE ! questa qui sotto non sembra funzionare mai, mentre la Utility.loadImage viene in verità chiamata e funziona
+        //infatti arr....viene popolata correttamente, ma qui non arriva....e tutto funziona lo stesso!
+        //loadImage restituisce un array nel quale il primo valore [0] è l'immagine, il secondo è la sua larghezza e il terzo l'altezza
+        Utility.loadImage( this.imgFile, 500)
+               .then((compressed: any) => {
+                console.log("NON PASSA MAI DI QUA???? this.imgSize.w h", this.imgSize.w, this.imgSize.h);
+
+                this.immagineDOM.nativeElement.src = compressed[1];
+
+                this.imgSize.w = compressed[1];
+                this.imgSize.h = compressed[2];
+                console.log("this.imgSize.w h", this.imgSize.w, this.imgSize.h);
+
+              });
       };
     }
   }
 
-  // cropImage(e: any) {
-   
-  //   if(e.target.files && e.target.files.length) {
-  //     const [file] = e.target.files;
-  //     if(e.target.files[0].size > 200000){
-  //       this._dialog.open(DialogOkComponent, {
-  //         width: '320px',
-  //         data: {titolo: "ATTENZIONE!", sottoTitolo: "Il file eccede la dimensione massima (200kb)"}
-  //       });
-  //       return;
-  //     };
-
-  //     const dialogRef = this._dialog.open(PhotocropComponent, {
-  //       width: '270px',
-  //       height: '400px',
-  //       data: {file: e.target.files}
-  //     });
-  //   }
-  // }
 
   onContentChanged = (event: any) =>{
     console.log(event.html);
