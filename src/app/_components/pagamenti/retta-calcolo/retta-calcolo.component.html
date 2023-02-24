@@ -7,7 +7,7 @@
 
             <h1 class="_titolo-pagina fs14">Distribuzione Quote Concordate</h1>
 
-            <mat-grid-list class="ma w50 bordered-grey p5" [cols]="12" rowHeight="20px">
+            <mat-grid-list class="ma w50 _bordered-grey p5" [cols]="12" rowHeight="20px">
                 <mat-grid-tile *ngFor="let mese of mesiArr; let i = index" >
                     <mat-label>{{placeholderMeseArr[i]}}</mat-label>
                 </mat-grid-tile>
@@ -28,10 +28,14 @@
                 </mat-form-field>
             </div> -->
         <!-- </form> -->
-        <mat-label class="frameLabel">Elenco classi dell'anno </mat-label>
-        <div class="_scrollable-classi-list-container cellBordered mt10">
-            <app-classi-sezioni-anni-list [dove] = "'retta-calcolo'" #ListClassi></app-classi-sezioni-anni-list>
-        </div>
+        <div class="_pos-relative">
+            <mat-label class="frameLabel">Elenco classi dell'anno </mat-label>
+
+            <div class="_scrollable-classi-list-container _cell-bordered mt20 ">
+
+                <app-classi-sezioni-anni-list [dove] = "'retta-calcolo'" #ListClassi></app-classi-sezioni-anni-list>
+            </div>
+     </div>
         
         <div mat-dialog-actions class="mat-dialog-buttonsContainer">
             <button class="_btn-text" mat-button cdkFocusInitial (click)="calcola()">Calcola</button> 

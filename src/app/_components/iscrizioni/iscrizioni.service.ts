@@ -14,7 +14,7 @@ export class IscrizioniService {
 
   get(iscrizioneID: any): Observable<CLS_Iscrizione>{
     return this.http.get<CLS_Iscrizione>(environment.apiBaseUrl+'CLS_Iscrizioni/'+iscrizioneID);
-    //http://213.215.231.4/swappX/api/CLS_Iscrizioni/3
+    //http://213.215.231.4/swappX/api/CLS_Iscrizioni/328
   }
 
   listByClasseSezioneAnno(classeSezioneAnnoID: number): Observable <any> {

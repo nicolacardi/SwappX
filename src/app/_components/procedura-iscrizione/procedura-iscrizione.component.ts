@@ -4,22 +4,18 @@ import { concatMap, map }                            from 'rxjs/operators';
 import { Observable }                           from 'rxjs';
 
 //components
-import { Utility }                              from '../utilities/utility.component';
 
 //services
-import { AlunniService }                        from '../alunni/alunni.service';
-import { GenitoriService }                      from '../genitori/genitori.service';
+
 
 //models
 import { User }                                 from 'src/app/_user/Users';
-import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 import { ActivatedRoute } from '@angular/router';
 import { IscrizioniService } from '../iscrizioni/iscrizioni.service';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 import { ALU_GenitoreAlunno } from 'src/app/_models/ALU_GenitoreAlunno';
 import { PersonaFormComponent } from '../persone/persona-form/persona-form.component';
-import { CdkStep } from '@angular/cdk/stepper';
 import { MatStepper } from '@angular/material/stepper';
 import { PersoneService } from '../persone/persone.service';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
@@ -33,7 +29,7 @@ import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
 export class ProceduraIscrizioneComponent implements OnInit {
 
   private currUser!:                            User;
-  private genitoreBool:                         boolean = false;
+
   //public obsFigli$!:                            Observable<ALU_Alunno[]>;
   public obsIscrizione$!:                       Observable<CLS_Iscrizione>;
   public genitoriArr:                           ALU_Genitore[] = [];
@@ -109,6 +105,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
     //   concatMap(genitore => this.svcAlunni.listByGenitore(genitore.id))
     // );
 
+    console.log("QUI")
     this.actRoute.queryParams.subscribe(
       params => {
         this.iscrizioneID = params['iscrizioneID'];     
@@ -157,5 +154,10 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
 
   }
+
+  formValidEmitted(valid: boolean){
+    console.log("ciao", valid);
+  }
+
 
 }

@@ -98,7 +98,7 @@ export class JspdfService { defaultColor!:          string;
         case "SheetDefault":
           break;
         case "Image":{
-          const ImageUrl = "../../assets/photos/" + element.value;
+          const ImageUrl = "./assets/photos/" + element.value;
           await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
           break;
         }

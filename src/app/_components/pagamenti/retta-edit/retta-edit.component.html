@@ -34,12 +34,12 @@
     <form  [formGroup] = "formRetta" >
 
         <mat-card class="form-cardRette data-form">
-            <img class="iconaMenuBig" src="../assets/money_edit_T.svg">
+            <img class="iconaMenuBig" src="./assets/money_edit_T.svg">
 
             <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
             <mat-card-content>
-                <div class="center mt10 _no-padding-bottom" *ngIf="obsRette$ | async" >
+                <div class="center mt10 ml30 _no-padding-bottom" *ngIf="obsRette$ | async" >
                     <mat-form-field appearance="outline">
                         <mat-label>Anno Scolastico</mat-label>
                         <mat-select formControlName="selectAnnoScolastico">
@@ -132,8 +132,8 @@
                                 [annoID]="data.annoID"
                                 (nuovoPagamento) = "nuovoPagamentoArrivato($event)">
                             </app-rettapagamento-edit>
-                        <mat-label class="frameLabel"> Pagamenti </mat-label>
-                        <div class="_pagamenti-container cellBordered mt10">
+                        <!-- <mat-label class="frameLabel"> Pagamenti </mat-label> -->
+                        <div class="_pagamenti-container _cell-bordered mt10">
                             <app-pagamenti-list 
                                 [dove]="'retta-edit'" 
                                 [alunnoID]="data.alunnoID"
@@ -147,7 +147,7 @@
 
                     <mat-tab label="Utilities Rette" *ngIf="data.alunnoID">
                         <mat-label class="frameLabel"> Utilities per la definizione rapida delle rette </mat-label>
-                        <div class="_utilities-container cellBordered mt10">
+                        <div class="_utilities-container _cell-bordered mt10">
                             <app-retta-calcolo-alunno 
                                 [annoID]="data.annoID"
                                 [alunnoID]="data.alunnoID"

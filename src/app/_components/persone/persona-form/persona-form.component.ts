@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output }             from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef }              from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef }              from '@angular/material/dialog';
 import { Observable, of }                           from 'rxjs';
 import { debounceTime, switchMap, tap }         from 'rxjs/operators';
 
 //components
-import { Utility }                              from '../../utilities/utility.component';
+import { FormatoData, Utility }                 from '../../utilities/utility.component';
 
 //services
 import { ComuniService }                        from 'src/app/_services/comuni.service';
@@ -50,15 +50,17 @@ export class PersonaFormComponent implements OnInit {
 //#endregion
 
   constructor(
-    public _dialogRef:                          MatDialogRef<PersonaFormComponent>,
+
+    
+    //public _dialogRef:                          MatDialogRef<PersonaFormComponent>,
     public _dialog:                             MatDialog,
     private fb:                                 UntypedFormBuilder, 
     private svcPersone:                         PersoneService,
     private svcTipiPersona:                     TipiPersonaService,
     private svcComuni:                          ComuniService,
     private _loadingService :                   LoadingService  ) { 
-
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
+
 
     this.form = this.fb.group({
       id:                         [null],
@@ -140,11 +142,11 @@ export class PersonaFormComponent implements OnInit {
   save() :Observable<any>{
 
     if (this.personaID == null || this.personaID == 0) {
-      console.log("faccio la post di", this.form.value, "personaID:", this. personaID);
       return this.svcPersone.post(this.form.value)
     }
     else {
-      console.log("faccio la put di", this.form.value, "personaID:", this. personaID);
+      this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
+      console.log ("PersonaFormComponent - save() - this.form.value", this.form.value);
       return this.svcPersone.put(this.form.value)
     }
   }

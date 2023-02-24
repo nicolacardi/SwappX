@@ -5,7 +5,7 @@
             <!-- ********************************    BOTTONI     ************************************* -->
             <div class="center">
 
-                <img class="iconaMenuBig" src="../assets/evento_edit_T.svg">
+                <img class="iconaMenuBig" src="./assets/evento_edit_T.svg">
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
                 <span [ngClass]="{'invisible': selectedTab != 0}">
@@ -93,7 +93,7 @@
             </mat-grid-list>
 
             
-            <mat-grid-list class="bordered-bottom" [cols]="2" rowHeight="40px">
+            <mat-grid-list class="_bordered-bottom" [cols]="2" rowHeight="40px">
                 <mat-grid-tile>
                     <mat-checkbox color="primary" formControlName="ckPromemoria">
                         Invia Messaggio Promemoria alle persone
@@ -121,10 +121,10 @@
             </mat-grid-list> -->
             <mat-grid-list class="no-overflowx" [cols]="3" rowHeight="30px">
                 <mat-grid-tile class="h10px" colspan="1">
-                    <mat-label class="center fs16">Elenco persone<span class="fs12"> ({{personeListArr.length}})</span></mat-label>
+                    <mat-label *ngIf="personeListArr" class="center fs16">Elenco persone<span class="fs12"> ({{personeListArr.length}})</span></mat-label>
                 </mat-grid-tile>
                 <mat-grid-tile class="h10px" colspan="2">
-                    <mat-label class="center fs16">Visibile a<span class="fs12"> ({{personeListSelArr.length}})</span></mat-label>
+                    <mat-label *ngIf="personeListArr"  class="center fs16">Visibile a<span class="fs12"> ({{personeListSelArr.length}})</span></mat-label>
                 </mat-grid-tile>
 
 
@@ -190,10 +190,10 @@
             <mat-grid-list [cols]="5" rowHeight="250px" >
 
                
-                <mat-grid-tile colspan="2" class="oflowyscroll bordered-grey" >
+                <mat-grid-tile colspan="2" class="oflowyscroll _bordered-grey" >
                     <!-- con mat-selection-list al posto di mat-list e mat-list-option ho già le selezioni fatte -->
                     <mat-list class="_pos-absolute t0 l0 w100" formControlName="personeList" >
-                        <mat-option class="fs12 left" style="height: 23px;" *ngFor="let element of personeListArr" [value]="element.id">
+                        <mat-option class="fs12 left" *ngFor="let element of personeListArr" [value]="element.id">
                             <mat-icon (click)="addToSel(element)" class="pointer tx-right">add_circle_outline</mat-icon>
                             <span class="ml10">{{element.nome}} {{element.cognome}}</span>
                             <span class="ml10 cgrey _pos-absolute l200">{{element.tipoPersona!.descrizione}}</span>
@@ -201,7 +201,7 @@
                     </mat-list>
                 </mat-grid-tile>
 
-                <mat-grid-tile  class="oflowyscroll bordered-grey ml10" colspan="3" >
+                <mat-grid-tile  class="oflowyscroll _bordered-grey ml10" colspan="3" >
                     <!-- con mat-selection-list al posto di mat-list e mat-list-option ho già le selezioni fatte -->
                     <mat-list class="_pos-absolute t0 l0 w100" formControlName="personeListSel" >
 

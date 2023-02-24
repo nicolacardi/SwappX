@@ -1,23 +1,23 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
+import { MatDialog }                            from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //components
-import { DialogOkComponent } from '../../_components/utilities/dialog-ok/dialog-ok.component';
-import { PhotocropComponent } from '../../_components/utilities/photocrop/photocrop.component';
-import { SnackbarComponent } from '../../_components/utilities/snackbar/snackbar.component';
-import { Utility } from '../../_components/utilities/utility.component';
+import { DialogOkComponent }                    from '../../_components/utilities/dialog-ok/dialog-ok.component';
+import { PhotocropComponent }                   from '../../_components/utilities/photocrop/photocrop.component';
+import { SnackbarComponent }                    from '../../_components/utilities/snackbar/snackbar.component';
+import { Utility }                              from '../../_components/utilities/utility.component';
+import { PersonaFormComponent }                 from '../../_components/persone/persona-form/persona-form.component';
 
 //services
-import { EventEmitterService } from 'src/app/_services/event-emitter.service';
-import { UserService } from 'src/app/_user/user.service';
+import { EventEmitterService }                  from 'src/app/_services/event-emitter.service';
+import { UserService }                          from 'src/app/_user/user.service';
+import { PersoneService }                       from '../../_components/persone/persone.service';
 
 //models
-import { _UT_UserFoto } from 'src/app/_models/_UT_UserFoto';
-import { User } from 'src/app/_user/Users';
-import { PersonaFormComponent } from '../../_components/persone/persona-form/persona-form.component';
-import { PersoneService } from '../../_components/persone/persone.service';
+import { _UT_UserFoto }                         from 'src/app/_models/_UT_UserFoto';
+import { User }                                 from 'src/app/_user/Users';
 
 @Component({
   selector: 'app-profilo',
@@ -28,25 +28,27 @@ import { PersoneService } from '../../_components/persone/persone.service';
 export class ProfiloComponent implements OnInit {
 
 //#region ----- Variabili -------
-  imgFile!:         string;
-  foto!:            string;
-  fotoObj!:         _UT_UserFoto
-  form! :           UntypedFormGroup;
-  public currUser!: User;
+  imgFile!:                                     string;
+  foto!:                                        string;
+  fotoObj!:                                     _UT_UserFoto
+  form! :                                       UntypedFormGroup;
+  public currUser!:                             User;
 //#endregion
 
 //#region ----- ViewChild Input Output -------
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
-  @ViewChild('canvasDOM', {static: false}) canvasDOM!: ElementRef;
+  // @ViewChild('canvasDOM', {static: false}) canvasDOM!: ElementRef;
   @ViewChild(PersonaFormComponent) personaFormComponent!: PersonaFormComponent; 
 //#endregion
 
-  constructor(private fb:                   UntypedFormBuilder, 
-              private svcUser:              UserService,
-              private svcPersone:           PersoneService,
-              public _dialog:               MatDialog,
-              private eventEmitterService:  EventEmitterService,
-              private _snackBar:            MatSnackBar) { 
+  constructor(
+    private fb:                                 UntypedFormBuilder, 
+    private svcUser:                            UserService,
+    private svcPersone:                         PersoneService,
+    public _dialog:                             MatDialog,
+    private eventEmitterService:                EventEmitterService,
+    private _snackBar:                          MatSnackBar
+  ) { 
 
     this.form = this.fb.group({
       file:           ['' , [Validators.required]],

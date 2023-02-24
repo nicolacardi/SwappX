@@ -1,0 +1,153 @@
+<mat-card class="form-card">
+    <mat-card-content>
+        <form *ngIf="blocco$ | async" class="data-form flex-form" [formGroup] = "form">
+
+            <!-- ********************************    BOTTONI     ************************************* -->
+            <div class="center">
+
+                <img class="iconaMenuBig" src="./assets/blocco_edit_T.svg">
+
+                <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
+
+                <button *ngIf="bloccoID" mat-mini-fab aria-label="Back" matTooltip="Ricarica" class="btn ml10" (click)="loadData()">
+                    <mat-icon>restart_alt</mat-icon>
+                </button>
+
+                <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                        [disabled]= "!form.valid" 
+                        (click)="save()" >
+                    <mat-icon>save</mat-icon>
+                </button>
+
+                <button *ngIf="bloccoID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
+
+                        (click)="delete()" >
+                    <mat-icon>delete</mat-icon>
+                </button>
+
+            </div>
+
+<!-- ************ X W Y H ********************-->
+
+            <mat-grid-list [cols]="2" rowHeight="20px" >
+                <mat-grid-tile>
+                    <div class="_red fs12" [ngClass]="{'invisible': !form.errors?.['tooWide']}" >Il blocco termina in larghezza fuori dall'area disponibile</div>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <div class="_red fs12 " [ngClass]="{'invisible': !form.errors?.['tooHigh']}" >Il blocco termina in altezza fuori dall'area disponibile</div>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <mat-grid-list  [cols]="4" rowHeight="80px" >
+                <mat-grid-tile>
+                    <mat-form-field  appearance="outline">
+                        <mat-label>Da sinistra</mat-label>
+                        <input matInput type="number" required formControlName="x">
+                        <mat-error *ngIf="form.controls.x.errors?.required"> Obbligatorio</mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field appearance="outline"> 
+                        <mat-label>Larghezza</mat-label>
+                        <input matInput type="number" required formControlName="w">
+                        <mat-error *ngIf="form.controls.w.errors?.required"> Obbligatorio</mat-error>
+                    </mat-form-field>
+
+                </mat-grid-tile>
+
+
+                <mat-grid-tile>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Dall'alto</mat-label>
+                        <input matInput type="number" required formControlName="y">
+                        <mat-error *ngIf="form.controls.y.errors?.required"> Obbligatorio</mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Altezza</mat-label>
+                        <input matInput type="number" required formControlName="h">
+                        <mat-error *ngIf="form.controls.h.errors?.required"> Obbligatorio</mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+            </mat-grid-list>
+
+            <!-- {{tipoBloccoDesc}}
+            <mat-grid-list class="_bordered-grey"  [cols]="2" rowHeight="80px" >
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <mat-label>BloccoTestoID</mat-label>
+                        <input matInput type="number"  formControlName="bloccoTestoID">
+                        
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <mat-label>BloccoFotoID</mat-label>
+                        <input matInput type="number"  formControlName="bloccoFotoID">
+                       
+                        
+                    </mat-form-field>
+                </mat-grid-tile>
+            </mat-grid-list> -->
+            <!-- <mat-grid-list [cols]="1" rowHeight="200px" >
+                <mat-grid-tile *ngIf="tipoBloccoDesc == 'Testo'">
+                    <mat-form-field class="w100" appearance="outline">
+                        <mat-label>Testo</mat-label>
+                        <textarea matInput class="w100 _noresize" type="text" style="height: 120px" formControlName="testo"></textarea>
+                    </mat-form-field>
+                </mat-grid-tile>
+            </mat-grid-list> -->
+
+
+
+            <quill-editor 
+                (onContentChanged)="onContentChanged($event)"
+                placeholder="Inserire il proprio testo..."
+                formControlName="testo"
+                [modules]="quillOptions"
+                [customOptions]="customOptions"
+
+                >
+
+            
+            
+            </quill-editor>
+
+<!-- ************ Riempimento ********************-->
+            <mat-grid-list *ngIf="tipoBloccoDesc == 'Testo'" class="_cell-bordered mt10" [cols]="4" rowHeight="60px">
+
+                <mat-grid-tile>
+                    <mat-label>Riempimento</mat-label>
+
+                    <mat-checkbox color="primary" formControlName="ckFill">
+                    </mat-checkbox>
+                </mat-grid-tile>
+
+                <mat-grid-tile *ngIf="tipoBloccoDesc == 'Testo'" [ngClass]="{'invisible': !form.controls.ckFill.value}">
+
+                    <button type="button" class="_btnColorPicker" 
+                    (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
+                </mat-grid-tile>
+            </mat-grid-list>
+
+            <div *ngIf="tipoBloccoDesc == 'Immagine'" class="w100px h100px ma-lr mt20 shadowed" >
+                <img #myImg *ngIf="imgFile" class="w100px _bordered " [src]="imgFile">
+            </div>
+
+            <div *ngIf="tipoBloccoDesc == 'Immagine'" class="flex-container form-group mt20 ">
+                <div class="form-group">
+                    <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" formControlName="file" (change)="onImageChange($event)"hidden #selectFile>
+                    <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile.click()" >Seleziona Immagine</button>
+                    <!-- <div *ngIf="uf.file.touched && uf.file.invalid" class="alert alert-danger">
+                        <div *ngIf="uf.file.errors.required">Image file is required.</div>
+                    </div> -->
+                </div>
+            </div>
+
+        </form>
+    </mat-card-content>
+</mat-card>

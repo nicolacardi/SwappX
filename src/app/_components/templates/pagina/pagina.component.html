@@ -1,0 +1,37 @@
+<div style="margin: auto; width: 420px; height: 594px; background-color: white" 
+
+        [ngStyle]=
+            "{
+            'width': 210*zoom+'px',
+            'height': 297*zoom+'px'
+            }"
+        
+        >
+    <button mat-mini-fab aria-label="Cancella Pagina" matTooltip="Cancella Pagina" class="_btn-delete-pagina _btn-pos-left-0" (click)="deletePage()">
+        <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/delete_pagina.svg">
+    </button>
+    <button mat-mini-fab aria-label="Salva Pagina" matTooltip="Salva Pagina" class="_btn-delete-pagina _btn-pos-left-1" (click)="savePage()">
+        <mat-icon>save</mat-icon>
+    </button>
+    <button mat-mini-fab aria-label="Aggiungi Blocco" matTooltip="Agiungi Blocco" class="_btn-add-text _btn-pos-left-2" (click)="addBlock(1)">
+        <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/add_block_text.svg">
+    </button>
+    <button mat-mini-fab aria-label="Aggiungi Blocco" matTooltip="Agiungi Blocco" class="_btn-add-picture _btn-pos-left-25" (click)="addBlock(2)">
+        <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/add_block_picture.svg">
+    </button>
+
+    <div class="_pos-absolute">
+        <div *ngFor="let element of blocchiArr" class="_pos-absolute" #Blocchi>
+
+            <app-blocco
+                [blocco] = "element"
+                [zoom]="zoom"
+                (recordEdited) ="bloccoEditedEmitted($event)"
+                #Blocco
+                >
+            </app-blocco>
+        </div>
+    </div>
+</div>
+
+

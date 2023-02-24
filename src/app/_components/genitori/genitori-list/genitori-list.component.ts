@@ -192,9 +192,7 @@ export class GenitoriListComponent implements OnInit {
     else {
       if(this.ckSoloAttivi){
         obsGenitori$= this.svcGenitori.listWithChildren()
-
           .pipe(
-            tap(res=> console.log (res)),
             map(
             res=> res.filter((x) => x.persona.ckAttivo == true))
           );

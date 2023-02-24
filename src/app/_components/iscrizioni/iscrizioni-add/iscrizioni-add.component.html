@@ -1,8 +1,8 @@
 <mat-card class="form-card">
     <mat-card-content>
         <form class="data-form flex-form" [formGroup] = "form">
-            <div class="center mt20 relative">
-                <img class="iconaMenuBig" src="../assets/alunnoPlus_black.svg">
+            <div class="center mt20 _pos-relative">
+                <img class="iconaMenuBig" src="./assets/alunnoPlus_black.svg">
 
                 <button mat-icon-button matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
     
@@ -14,15 +14,16 @@
             <br>
             <mat-form-field >
                 <mat-label >Nome e Cognome Alunno</mat-label>
-                <mat-chip-list #chipList aria-label="Selezione Alunni">
-                    <mat-chip *ngFor="let alunnoSelezionato of alunniSelezionati"
-                            [selectable]="selectable"
+                <mat-chip-grid #chipList aria-label="Selezione Alunni">
+                    <!-- [selectable]="selectable" -->
+                    <mat-chip-row *ngFor="let alunnoSelezionato of alunniSelezionati"
+                            
                             [removable]="removable"
                             (removed)="remove(alunnoSelezionato)">
                         {{alunnoSelezionato}}
                         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                    </mat-chip>
-                </mat-chip-list>
+                    </mat-chip-row>
+                </mat-chip-grid>
 
                 <input  placeholder = "digita e seleziona"
                         matInput

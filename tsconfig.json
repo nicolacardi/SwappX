@@ -14,7 +14,11 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
+<<<<<<< HEAD
     "target": "ES2022",
+=======
+    "target": "es2020",
+>>>>>>> ffc3290b4c0867ae2535db27174d1539affa6d22
     "module": "es2020",
     "lib": [
       "es2018",

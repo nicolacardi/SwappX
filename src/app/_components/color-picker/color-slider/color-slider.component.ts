@@ -34,7 +34,7 @@ export class ColorSliderComponent implements OnInit {
   }
 
 draw() {
-  console.log ("colorslider draw before this.ctx")
+  // console.log ("colorslider draw before this.ctx")
 
   if (!this.ctx) {
     this.ctx = this.canvas.nativeElement.getContext('2d')!;

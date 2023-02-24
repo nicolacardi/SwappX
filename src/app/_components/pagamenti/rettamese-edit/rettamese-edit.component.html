@@ -1,5 +1,5 @@
 <form  *ngIf="(retta$ | async)  || emptyForm" [formGroup] = "form" >
-    <mat-form-field class="cellRetta center" >
+    <mat-form-field class="cellRetta center"  >
         <input matInput type="number"
         (change) = "save()"
         formControlName="quotaDefault" #inpQuotaD>

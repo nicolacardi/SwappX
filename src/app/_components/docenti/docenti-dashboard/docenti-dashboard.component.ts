@@ -1,25 +1,22 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
-import { ActivatedRoute, Router } from '@angular/router';
-
-//models
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { User } from 'src/app/_user/Users';
+import { Component, OnInit, ViewChild }         from '@angular/core';
+import { MatDialog }                            from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { MatTabGroup }                          from '@angular/material/tabs';
+import { ActivatedRoute, Router }               from '@angular/router';
 
 //components
-import { ClassiSezioniAnniListComponent } from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { NavigationService } from '../../utilities/navigation/navigation.service';
-import { Utility } from '../../utilities/utility.component';
+import { ClassiSezioniAnniListComponent }       from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { NavigationService }                    from '../../utilities/navigation/navigation.service';
+import { Utility }                              from '../../utilities/utility.component';
 
 //services
-import { DocenzeService } from '../../classi/docenze/docenze.service';
-import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
-import { JspdfService } from '../../utilities/jspdf/jspdf.service';
-import { DocentiService } from '../docenti.service';
-import { LezioniCalendarioComponent } from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
-import { PER_Docente } from 'src/app/_models/PER_Docente';
+import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
+import { JspdfService }                         from '../../utilities/jspdf/jspdf.service';
+import { DocentiService }                       from '../docenti.service';
+
+//models
+import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
+import { User }                                 from 'src/app/_user/Users';
 
 @Component({
   selector: 'app-docenti-dashboard',
@@ -87,7 +84,7 @@ export class DocentiDashboardComponent implements OnInit {
           else
             this.docenteID = 0;
         },
-        err => console.log("getDocenteBypersonaID- KO:", err)
+        //err => console.log("getDocenteBypersonaID- KO:", err)
       )
     }
   }

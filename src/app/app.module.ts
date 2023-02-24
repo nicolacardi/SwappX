@@ -19,10 +19,10 @@ import { STEPPER_GLOBAL_OPTIONS }               from '@angular/cdk/stepper';
 
 //Fullcalendar
 import { FullCalendarModule }                   from '@fullcalendar/angular'; // Va prima dei plugin di FullCalendar
-import dayGridPlugin                            from '@fullcalendar/daygrid';
-import listPlugin                               from '@fullcalendar/list';
-import timegridPlugin                           from '@fullcalendar/timegrid';
-import interactionPlugin                         from '@fullcalendar/interaction';
+// import dayGridPlugin                            from '@fullcalendar/daygrid';
+// import listPlugin                               from '@fullcalendar/list';
+// import timegridPlugin                           from '@fullcalendar/timegrid';
+// import interactionPlugin                         from '@fullcalendar/interaction';
 
 //Auth
 import { AuthInterceptor }                      from './_user/auth/auth.interceptor';
@@ -195,13 +195,25 @@ import { VerbaliFilterComponent }               from './_components/verbali/verb
 
 import { ProceduraIscrizioneComponent }         from './_components/procedura-iscrizione/procedura-iscrizione.component';
 
+//Templates
+import { TemplateComponent }                    from './_components/templates/template/template.component';
+import { PaginaComponent }                      from './_components/templates/pagina/pagina.component';
+import { BloccoComponent }                      from './_components/templates/blocco/blocco.component';
+import { BloccoEditComponent }                  from './_components/templates/blocco-edit/blocco-edit.component';
 
-FullCalendarModule.registerPlugins([ // register FullCalendar plugins
-  dayGridPlugin,
-  listPlugin,
-  timegridPlugin,
-  interactionPlugin
-]);
+
+
+import { ClickDoubleDirective }                 from './_components/utilities/clickdouble/clickdouble.directive';
+
+import { QuillModule }                          from 'ngx-quill'
+
+
+// FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  //dayGridPlugin, NC 16/02/23
+  //listPlugin, NC 16/02/23
+  //timegridPlugin, NS 16/02/23
+  //interactionPlugin NC 16/02/23
+// ]);
 @NgModule({
   declarations: [
     AppComponent,
@@ -306,6 +318,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ChangePswComponent,
     ImpostazioniComponent,
     ResizeColumnDirective,
+    ClickDoubleDirective,
 
     ResetPasswordComponent,
     DocenzeAddComponent,
@@ -344,7 +357,11 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     VerbaliFilterComponent,
 
     DocentiDashboardComponent,
-      ProceduraIscrizioneComponent
+      ProceduraIscrizioneComponent,
+      TemplateComponent,
+      PaginaComponent,
+      BloccoComponent,
+      BloccoEditComponent
     
 
   ],
@@ -358,9 +375,11 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ReactiveFormsModule,
     FormsModule,
     FullCalendarModule,
-    ColorPickerModule
+    ColorPickerModule,
+    QuillModule.forRoot()
 
   ],
+
 
   providers: [
     UserService,

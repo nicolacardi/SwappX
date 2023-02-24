@@ -13,20 +13,20 @@
                 </div>
             <!-- </mat-card> -->
         </td>
-        <td class="_columnright-dashboard border-left">
+        <td class="_columnright-dashboard _border-left">
             <mat-tab-group (selectedTabChange)="selectedTabValue($event)">
                 <mat-tab  label="Alunni">
                     <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addAlunno" (click)="addAlunnoToClasse()" >
-                        <img class="iconaMenu" src="../../../../assets/alunnoPlus.svg">
+                        <img class="iconaMenu" src="./assets/alunnoPlus.svg">
                     </button>
                     <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="_btn-Red" (click)="removeAlunnoFromClasse()">
-                        <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg">
+                        <img class="iconaMenu" src="./assets/alunnoMinus.svg">
                     </button>
                     <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="esporta Pdf" class="_btn-Blu" (click)="creaPdfIscrizioni()">
-                        <img class="iconaMenu" src="../../../../assets/PDFiconGreys.svg">
+                        <img class="iconaMenu" src="./assets/PDFiconGreys.svg">
                     </button>
                     <button mat-mini-fab aria-label="Promuovi alunni" matTooltip="Promuovi" class="_btn-Green" (click)="promuovi()">
-                        <img class="iconaMenu" src="../../../../assets/promuovi_white.svg">
+                        <img class="iconaMenu" src="./assets/promuovi_white.svg">
                     </button>
                     <!-- <mat-card class=" card mat-elevation-z8" style="height: 100%"> -->
                         <div class="_table-container">
@@ -39,13 +39,13 @@
                 </mat-tab>
                 <mat-tab  label="Materie & Docenti">
                     <button mat-mini-fab aria-label="Aggiungi Docente alla Classe" class="_btn-addDocente" (click)="addDocenteToClasse()" >
-                        <img class="iconaMenu" src="../../../../assets/docentePlus.svg">
+                        <img class="iconaMenu" src="./assets/docentePlus.svg">
                     </button>
                     <button mat-mini-fab aria-label="Stampa Lista Docenti della Classe" matTooltip="esporta Pdf" class="_btn-Blu" (click)="creaPdfDocenze()">
-                        <img class="iconaMenu" src="../../../../assets/PDFiconGreys.svg">
+                        <img class="iconaMenu" src="./assets/PDFiconGreys.svg">
                     </button>
                     <button mat-mini-fab aria-label="Rimuovi docente dalla Classe" class="_btn-Red" (click)="removeDocenteFromClasse()">
-                        <img class="iconaMenu" src="../../../../assets/docenteMinus.svg">
+                        <img class="iconaMenu" src="./assets/docenteMinus.svg">
                     </button>
 
                     <!-- <mat-card class=" card mat-elevation-z8" style="height: 100%"> -->
@@ -80,7 +80,7 @@
                                     (alunno)="alunnoEmitted($event)" >
                                 </app-iscrizioni-classe-list>
                             </td>
-                            <td class="_cell-align-top pl10 border-left w750px">
+                            <td class="_cell-align-top pl10 _border-left w750px">
                                 <app-pagelle-edit
                                     [iscrizioneID]="iscrizioneID"
                                     [classeSezioneAnnoID]="classeSezioneAnnoID" 
@@ -99,15 +99,6 @@
                 </mat-tab>
             </mat-tab-group>
                 
-           <!-- ipotesi component di dettaglio dell'alunno
-            <tr>
-                <mat-card class=" card mat-elevation-z8" style="height: 100%">
-                    <div class="_table-container">
-                        <app-alunno-edit></app-alunno-edit>
-                    </div>
-                </mat-card>
-            </tr>
-        -->
         </td>
     </tr>
 <table>

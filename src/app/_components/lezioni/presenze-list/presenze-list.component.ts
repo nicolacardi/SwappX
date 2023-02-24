@@ -57,7 +57,6 @@ export class PresenzeListComponent implements OnInit {
 
       loadPresenze$.subscribe(
         res =>  {
-          console.log ("res", res);
           this.matDataSource.data = res;
           this.sortCustom(); 
           this.matDataSource.sort = this.sort; 

@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig, MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar }                          from '@angular/material/legacy-snack-bar';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { iif, Observable, of }                  from 'rxjs';
-import { concatMap, tap } from 'rxjs/operators';
+import { concatMap, tap }                       from 'rxjs/operators';
 
 //components
 import { ClassiSezioniAnniListComponent }       from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
@@ -80,37 +80,33 @@ export class AlunnoEditComponent implements OnInit {
     
 
     this.formAlunno = this.fb.group(
-      {
-        id:                                     [null],
-        scuolaProvenienza:                      ['', Validators.maxLength(255)],
-        indirizzoScuolaProvenienza:             ['', Validators.maxLength(255)],
+    {
+      id:                                     [null],
+      scuolaProvenienza:                      ['', Validators.maxLength(255)],
+      indirizzoScuolaProvenienza:             ['', Validators.maxLength(255)],
 
-        personaID:                              [null],
-        ckDSA:                                  [false],
-        ckDisabile:                             [false],
-        ckAuthFoto:                             [false],
-        ckAuthUsoMateriale:                     [false],
-        ckAuthUscite:                           [false]
-      });
+      personaID:                              [null],
+      ckDSA:                                  [false],
+      ckDisabile:                             [false],
+      ckAuthFoto:                             [false],
+      ckAuthUsoMateriale:                     [false],
+      ckAuthUscite:                           [false]
+    });
   }
 
 //#region ----- LifeCycle Hooks e simili-------
 
-  ngOnChanges() {
-    //console.log("changes");
-    //this.isvalid = this.personaFormComponent.form.valid;
-  }
 
   ngOnInit () {
     this.loadData();
   }
 
+
   loadData(){
 
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
-
-    
+ 
     if (this.alunnoID && this.alunnoID + '' != "0") {
 
       const obsAlunno$: Observable<ALU_Alunno> = this.svcAlunni.get(this.alunnoID);
@@ -130,8 +126,6 @@ export class AlunnoEditComponent implements OnInit {
         
   }
 //#endregion
-
-
 
 //#region ----- Operazioni CRUD -------
   save(){

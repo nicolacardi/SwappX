@@ -35,14 +35,13 @@
 |                                                                          |
 \--------------------------------------------------------------------------/
 -->
-
-    <mat-card class="form-card">
+    <mat-card  class="form-card">
         <mat-card-content>
         
             <!-- ********************************    BOTTONI     ************************************* -->
             <div class="center">
 
-                <img class="iconaMenuBig" src="../assets/alunno_edit_T.svg">
+                <img class="iconaMenuBig" src="./assets/alunno_edit_T.svg">
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
                 <span [ngClass]="{'invisible': selectedTab != 0}">
@@ -71,12 +70,11 @@
                 <mat-tab  label="Dati Anagrafici">
                     
                     <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "formAlunno">
-                        <app-persona-form *ngIf="(alunno$ | async) || emptyForm" 
+                        <app-persona-form class="mt10" *ngIf="(alunno$ | async) || emptyForm" 
                             [personaID] = "personaID" 
                             [tipoPersonaID]="1"
                             [dove]="'alunno-edit'"
                             (formValid)="formValidEmitted($event)"
-                            
                             >   
                         </app-persona-form>
                         
@@ -84,13 +82,15 @@
                         <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
                             <mat-grid-tile>
                                 <mat-form-field>
-                                    <input matInput type="text" placeholder="Scuola di provenienza" formControlName="scuolaProvenienza">
+                                    <mat-label>Scuola di provenienza</mat-label>
+                                    <input matInput type="text" formControlName="scuolaProvenienza">
                                 </mat-form-field>
                             </mat-grid-tile>
 
                             <mat-grid-tile>
                                 <mat-form-field>
-                                    <input matInput type="text" placeholder="Indirizzo Scuola di provenienza" formControlName="indirizzoScuolaProvenienza">
+                                    <mat-label>Indirizzo Sc. provenienza</mat-label>
+                                    <input matInput type="text" formControlName="indirizzoScuolaProvenienza">
                                 </mat-form-field>
                             </mat-grid-tile>
 
@@ -138,9 +138,9 @@
                     <button mat-mini-fab aria-label="Nuova anagrafica Genitore" matTooltip="Nuova anagrafica Genitore" class= "_btn-addModal" (click)="addGenitore()">
                         <mat-icon>add</mat-icon>
                     </button>
-                    
+                    <br>
                     <mat-label class="frameLabel">i genitori/tutori di {{alunnoNomeCognome}} </mat-label>
-                    <div class="_genitori-container cellBordered mt10">
+                    <div class="_genitori-container _cell-bordered mt10">
                         <app-genitori-list [context]="'alunno-edit-famiglia'"[alunnoID]="alunnoID"  (removeFromFamily) = "removeFromFamily($event)" #genitoriFamiglia></app-genitori-list>
                     </div>
                     <mat-accordion>
@@ -150,7 +150,7 @@
                                 <mat-panel-description>(fare click per aprire)</mat-panel-description>
                             </mat-expansion-panel-header>
                             <mat-label class="frameLabel">Elenco dei genitori/tutori </mat-label>
-                            <div class="_genitori-list-container cellBordered mt10">
+                            <div class="_genitori-list-container _cell-bordered mt10">
                                 <app-genitori-list [context]="'alunno-edit-list'" (addToFamily) = "addToFamily($event)"></app-genitori-list>
                             </div>
                         </mat-expansion-panel>
@@ -163,7 +163,7 @@
                         <tr>
                             <td>
                                 <mat-label class="frameLabel">Le classi frequentate da {{alunnoNomeCognome}} </mat-label>
-                                <div class="_classi-attended-container cellBordered mt10">
+                                <div class="_classi-attended-container _cell-bordered mt10">
                                     <app-iscrizioni-alunno-list [alunnoID] = "alunnoID" #iscrizioniAlunno 
                                                                 (removeFromAttended) = "removeFromAttended($event)" >
                                     </app-iscrizioni-alunno-list>
@@ -176,8 +176,8 @@
                                         <mat-panel-title>Tutte le classi</mat-panel-title>
                                         <mat-panel-description>(fare click per aprire)</mat-panel-description>
                                         </mat-expansion-panel-header>
-                                        <mat-label class="frameLabel le480">Elenco delle classi</mat-label>
-                                        <div class="_panel-content _classi-list-container cellBordered mt10">
+                                        <mat-label class="frameLabel l480">Elenco delle classi</mat-label>
+                                        <div class="_panel-content _classi-list-container _cell-bordered mt10">
                                             <app-classi-sezioni-anni-list [dove] = "'alunno-edit-list'"
                                                                           (addToAttended) = "addToAttended($event)"
                                                                           #classiSezioniAnniList>

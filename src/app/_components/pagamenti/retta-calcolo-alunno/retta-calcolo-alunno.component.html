@@ -1,4 +1,4 @@
-<mat-grid-list class="ma w50 bordered-grey p5 mt20" [cols]="12" rowHeight="20px">
+<mat-grid-list class="ma w50 _bordered-grey p5 mt20" [cols]="12" rowHeight="20px">
     <mat-grid-tile *ngFor="let mese of mesiArr; let i = index" >
         <mat-label>{{placeholderMeseArr[i]}}</mat-label>
     </mat-grid-tile>
@@ -20,7 +20,7 @@
     <form  [formGroup] = "form" >
         <mat-form-field>
             <input matInput type="number" placeholder="Quota Concordata" formControlName="quotaConcordata" #nome>
-            <img class="w20px _pos-absolute _refresh pointer" src="../assets/refresh.svg" (click)="caricaQuotaConcordataDefault()">
+            <img class="w20px _pos-absolute _refresh pointer" src="./assets/refresh.svg" (click)="caricaQuotaConcordataDefault()">
         </mat-form-field>
     </form>
 </div>

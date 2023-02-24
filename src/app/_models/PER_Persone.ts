@@ -1,5 +1,3 @@
-import { CAL_ScadenzaPersone } from "./CAL_Scadenza";
-
 export interface PER_Persona {
         id:                                     number;
 

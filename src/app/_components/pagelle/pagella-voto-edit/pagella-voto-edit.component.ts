@@ -49,12 +49,13 @@ export class PagellaVotoEditComponent implements OnInit  {
 //#endregion
 
   constructor( 
-    private svcPagella:                   PagelleService,
-    private svcPagellaVoti:               PagellaVotiService,
-    private svcClasseSezioneAnno:         ClassiSezioniAnniService,
-    private _loadingService:              LoadingService,
-    private _snackBar:                    MatSnackBar,
-    public _dialog:                       MatDialog  ) { 
+    private svcPagella:                         PagelleService,
+    private svcPagellaVoti:                     PagellaVotiService,
+    private svcClasseSezioneAnno:               ClassiSezioniAnniService,
+    
+    private _loadingService:                    LoadingService,
+    private _snackBar:                          MatSnackBar,
+    public _dialog:                             MatDialog  ) { 
   }
 
   ngOnChanges() {

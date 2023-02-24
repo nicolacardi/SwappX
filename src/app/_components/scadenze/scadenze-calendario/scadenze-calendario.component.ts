@@ -1,6 +1,12 @@
 import { ApplicationRef, Component, OnInit, ViewChild } from '@angular/core';
-import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/angular';
+import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/core';
 import { FullCalendarComponent }                from '@fullcalendar/angular';//-->serve per il ViewChild
+
+import dayGridPlugin from '@fullcalendar/daygrid'
+import listPlugin from '@fullcalendar/list'
+import timegridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+
 import { EventResizeDoneArg }                   from '@fullcalendar/interaction';
 import { concatMap, tap }                       from 'rxjs/operators';
 
@@ -38,6 +44,13 @@ export class ScadenzeCalendarioComponent implements OnInit {
 
 
   calendarOptions: CalendarOptions = {
+
+    plugins: [                              //aggiunto con fullcalendar 6.1.4
+      dayGridPlugin,
+      interactionPlugin,
+      listPlugin,
+      timegridPlugin
+    ],
 
     //PROPRIETA' BASE
     initialView:  'timeGridWeek',
@@ -402,7 +415,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
   }
 
   addEvento(selectInfo: DateSelectArg) {
-    
+
     //INSERIMENTO NUOVO EVENTO
     let dtStart: Date;
     let dtEnd: Date;

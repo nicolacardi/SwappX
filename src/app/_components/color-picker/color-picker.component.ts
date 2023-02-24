@@ -26,7 +26,6 @@ export class ColorPickerComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    console.log ("this.data.ascColor", this.data.ascRGB);
     //così viene PASSATO alla color palette il colore letto: la color palette si setta sulla Hue giusta
     this.ascHue = this.data.ascRGB;
     this.ascColor = this.data.ascRGB;

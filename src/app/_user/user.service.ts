@@ -192,10 +192,13 @@ export class UserService {
   }
  
   save(formData: any): Observable<any>{    
-    if(formData.id == null || formData.id <= 0)
+
+    if(formData.id == null || formData.id <= 0){
       return this.http.post(environment.apiBaseUrl+'_UT_UsersFoto', formData);
-    else
+    }
+    else {
       return this.http.put(environment.apiBaseUrl+'_UT_UsersFoto/' + formData.id, formData);
+    }
   }
  
  

@@ -1,7 +1,7 @@
 import { Component, DebugElement, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
-import { MatLegacySelect as MatSelect }                            from '@angular/material/legacy-select';
-import { MatLegacyTableDataSource as MatTableDataSource }                   from '@angular/material/legacy-table';
+import { MatSelect }                            from '@angular/material/select';
+import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable }                           from 'rxjs';
 import { MatLegacyPaginator as MatPaginator }                         from '@angular/material/legacy-paginator';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig }           from '@angular/material/legacy-dialog';
@@ -169,18 +169,21 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#endregion
 
-  constructor( private svcClassiSezioniAnni:              ClassiSezioniAnniService,
-              private svcAnni:                            AnniScolasticiService,
-              private svcDocenti:                         DocentiService,
-              private _loadingService:                    LoadingService,
-              private fb:                                 UntypedFormBuilder, 
-              public _dialog:                             MatDialog, 
-              private actRoute:                           ActivatedRoute,
-              private _snackBar:                          MatSnackBar ) {
+  constructor( 
+    private svcClassiSezioniAnni:               ClassiSezioniAnniService,
+    private svcAnni:                            AnniScolasticiService,
+    private svcDocenti:                         DocentiService,
+    private _loadingService:                    LoadingService,
+    private fb:                                 UntypedFormBuilder, 
+    public _dialog:                             MatDialog, 
+    private actRoute:                           ActivatedRoute,
+    private _snackBar:                          MatSnackBar
+  ) {
 
-    let objAnno = localStorage.getItem('AnnoCorrente');
+    //let objAnno = localStorage.getItem('AnnoCorrente');
     
-    this.currUser = Utility.getCurrentUser();
+    //this.currUser = Utility.getCurrentUser();
+    let objAnno = localStorage.getItem('AnnoCorrente');
 
     this.form = this.fb.group( {
       selectAnnoScolastico:  + (JSON.parse(objAnno!) as _UT_Parametro).parValue,
@@ -192,6 +195,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
  
 
   ngOnInit() {
+
 
     this.actRoute.queryParams.subscribe(
       params => {
@@ -205,13 +209,14 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
         finalize( () => {
             //se arrivo da home
             if (this.annoIDrouted) this.form.controls.selectAnnoScolastico.setValue(parseInt(this.annoIDrouted));
+
           }
         )
       );
       
     this.obsDocenti$ = this.svcDocenti.list();
     
-    this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(
+    this.form.controls.selectAnnoScolastico.valueChanges.subscribe(
       res => {
         this.loadData();
         this.annoIdEmitter.emit(res);
@@ -220,7 +225,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
       }
     );
 
-    this.form.controls['selectDocente'].valueChanges.subscribe(
+    this.form.controls.selectDocente.valueChanges.subscribe(
       res => {
         this.loadData();
         this.docenteIdEmitter.emit(res);
@@ -229,8 +234,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
       }
     );
 
-    this.annoIdEmitter.emit(this.form.controls["selectAnnoScolastico"].value);
-    this.docenteIdEmitter.emit(this.form.controls["selectDocente"].value);
+    this.annoIdEmitter.emit(this.form.controls.selectAnnoScolastico.value);
+    this.docenteIdEmitter.emit(this.form.controls.selectDocente.value);
 
     switch(this.dove) {
       case 'alunno-edit-list':
@@ -263,6 +268,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
           this.matDataSource.sort = this.sort;
           this.showSelectDocente = false;
 
+          this.loadData();
+
           break;
       case 'docenti-dashboard':
         this.displayedColumns = this.displayedColumnsClassiDashboard;
@@ -291,7 +298,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
               this.form.controls.selectDocente.setValue(this.docenteID);
             },
             err => {
-              console.log("getDocenteBypersonaID- KO:", err);
+              //console.log("getDocenteBypersonaID- KO:", err);
               this.docenteID = 0;
             }
           );
@@ -318,21 +325,21 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   }
 
   loadData () {
-   
+    console.log("PASSO DI QUI");
     let annoID: number;
     annoID = this.form.controls["selectAnnoScolastico"].value;
 
     let docenteID: number;
     docenteID = this.form.controls["selectDocente"].value;
 
-    
+
     let obsClassi$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
     obsClassi$= this.svcClassiSezioniAnni.listByAnnoDocenteGroupByClasse(annoID, docenteID);
     
     const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
     loadClassi$.subscribe( val =>   {
-
+      console.log(val);
       this.matDataSource.data = val;
       this.matDataSource.paginator = this.paginator;
 

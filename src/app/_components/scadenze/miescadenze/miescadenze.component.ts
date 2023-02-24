@@ -62,11 +62,7 @@ displayedColumns: string[] = [
 
   loadData(){
     let scadenze$: Observable<CAL_ScadenzaPersone[]>;
-    scadenze$ = this.svcScadenzePersone.listByPersonaID(this.currUser.personaID)
-    .pipe(
-      tap(val=> console.log (val))
-    )
-    ;
+    scadenze$ = this.svcScadenzePersone.listByPersonaID(this.currUser.personaID);
 
     this.obsMieScadenze$ =this._loadingService.showLoaderUntilCompleted(scadenze$);
     

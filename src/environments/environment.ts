@@ -3,8 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,  apiBaseUrl: "http://213.215.231.4/SwappX/api/"
-
+  //production: false,  apiBaseUrl: "http://213.215.231.4/SwappX/api/"
+  production: false,  
+  apiBaseUrl: "http://213.215.231.4/SwappX/api/"
 };
 
 /*

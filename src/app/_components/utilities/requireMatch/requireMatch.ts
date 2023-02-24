@@ -1,7 +1,4 @@
 import { AbstractControl, ValidatorFn } from '@angular/forms';
-import { PersoneService } from '../../persone/persone.service';
-import { PER_Persona } from 'src/app/_models/PER_Persone';
-import { Observable } from 'rxjs';
 
 
 export function RequireMatch(control: AbstractControl) {

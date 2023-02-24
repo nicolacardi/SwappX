@@ -6,7 +6,7 @@ import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/materia
 import { Observable, zip } from 'rxjs';
 import { groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 //components
 import { RettaEditComponent } from '../retta-edit/retta-edit.component';
@@ -398,7 +398,7 @@ export class RetteListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
         width: '850px',
-        height: '580px',
+        height: '620px',
         data: {
           alunnoID: alunno,
           annoID: annoID

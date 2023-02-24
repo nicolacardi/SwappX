@@ -1,7 +1,7 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar }                          from '@angular/material/legacy-snack-bar';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { iif, Observable, of }                  from 'rxjs';
 import { concatMap, tap }                       from 'rxjs/operators';
@@ -10,10 +10,10 @@ import { concatMap, tap }                       from 'rxjs/operators';
 import { AlunniListComponent }                  from '../../alunni/alunni-list/alunni-list.component';
 import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { PersonaFormComponent }                 from '../../persone/persona-form/persona-form.component';
+import { AlunnoEditComponent }                  from '../../alunni/alunno-edit/alunno-edit.component';
 
 //services
 import { GenitoriService }                      from 'src/app/_components/genitori/genitori.service';
-import { PersoneService }                       from '../../persone/persone.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { AlunniService }                        from '../../alunni/alunni.service';
 import { TipiGenitoreService }                  from '../tipi-genitore.service';
@@ -91,7 +91,6 @@ export class GenitoreEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
-
   }
 
   loadData(){
@@ -120,8 +119,7 @@ export class GenitoreEditComponent implements OnInit {
 
 //#region ----- Operazioni CRUD -------
 
-  save()
-  {
+  save() {
 
     if (this.genitoreID == null || this.genitoreID == 0) {
 
@@ -185,7 +183,17 @@ export class GenitoreEditComponent implements OnInit {
 
   addAlunno() 
   {
-     //TODO *****************/
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '850px',
+      height: '650px',
+      data: 0
+    };
+
+    const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+        () => this.loadData()
+    );
   }
 
   addToFamily(figlio: ALU_Alunno) {

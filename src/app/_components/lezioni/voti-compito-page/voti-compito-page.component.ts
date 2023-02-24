@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit,  }          from '@angular/core';
 import { UntypedFormGroup }                            from '@angular/forms';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA }        from '@angular/material/legacy-dialog';
+import { MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
 
 //components
@@ -47,13 +47,8 @@ constructor(
         val => this.strClasseSezioneAnno = val.classeSezione.classe.descrizione2 + " " + val.classeSezione.sezione
       );
     }
-
-
     this.dtStart = new Date (this.data.start);
     this.strDtStart = Utility.formatDate(this.dtStart, FormatoData.yyyy_mm_dd);
-    console.log ("this.data", this.data);
-
-
 
   }
 //#endregion

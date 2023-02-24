@@ -19,22 +19,24 @@
 
     <!-- la toolSidenav per ora non la usiamo -->
     <mat-drawer position="start" #toolSidenav class="toolSidenav"  [mode]="'side'">
-        <app-toolbar [rptTitle]="appnotelist.rptTitle" 
-                     [rptFieldsToKeep]="appnotelist.rptFieldsToKeep" 
-                     [rptColumnsNames]="appnotelist.rptColumnsNames" 
-                     [rptData]="appnotelist.matDataSource.data"
-                     [rptFileName]="appnotelist.rptFileName"
-                     [columnsComponent] = "appnotelist">
+        <app-toolbar 
+            [rptTitle]="appnotelist.rptTitle" 
+            [rptFieldsToKeep]="appnotelist.rptFieldsToKeep" 
+            [rptColumnsNames]="appnotelist.rptColumnsNames" 
+            [rptData]="appnotelist.matDataSource.data"
+            [rptFileName]="appnotelist.rptFileName"
+            [columnsComponent] = "appnotelist">
         </app-toolbar>
     </mat-drawer>
 
     <mat-drawer-content>
-        <app-note-list  [noteFilterComponent] = "appnotefilter"
-                        [classeSezioneAnnoID] = "classeSezioneAnnoID"
-                        [dove] = "dove"
-                        [docenteID] = "docenteID"
-                        (openDrawer) = "openDrawer()"
-                         #appnotelist >
+        <app-note-list  
+            [noteFilterComponent] = "appnotefilter"
+            [classeSezioneAnnoID] = "classeSezioneAnnoID"
+            [dove] = "dove"
+            [docenteID] = "docenteID"
+            (openDrawer) = "openDrawer()"
+            #appnotelist >
         </app-note-list>
     </mat-drawer-content>
 </mat-drawer-container>

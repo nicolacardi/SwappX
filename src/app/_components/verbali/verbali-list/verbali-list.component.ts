@@ -1,10 +1,11 @@
 import { CdkDragDrop, moveItemInArray }         from '@angular/cdk/drag-drop';
-import { Component, Input, OnChanges, OnInit, ViewChild }  from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig }           from '@angular/material/legacy-dialog';
-import { MatLegacyPaginator as MatPaginator }                         from '@angular/material/legacy-paginator';
+import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild }  from '@angular/core';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatPaginator }                         from '@angular/material/paginator';
 import { MatSort }                              from '@angular/material/sort';
 import { MatLegacyTableDataSource as MatTableDataSource }                   from '@angular/material/legacy-table';
 import { Observable }                           from 'rxjs';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 //components
 import { VerbaleEditComponent }                 from '../verbale-edit/verbale-edit.component';
@@ -13,9 +14,13 @@ import { VerbaliFilterComponent }               from '../verbali-filter/verbali-
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { VerbaliService }                       from '../verbali.service';
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
 
 //models
-import { DOC_Verbale }                             from 'src/app/_models/DOC_Verbale';
+import { DOC_Verbale }                          from 'src/app/_models/DOC_Verbale';
+import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-verbali-list',
@@ -27,6 +32,9 @@ export class VerbaliListComponent implements OnInit, OnChanges {
 //#region ----- Variabili -------
 
   matDataSource =                               new MatTableDataSource<DOC_Verbale>();
+  form:                                         UntypedFormGroup;                                  
+  obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>;           //Serve per la combo anno scolastico
+  annoID!:                                      number;
 
   displayedColumns:                             string[] =  [
     "actionsColumn", 
@@ -68,30 +76,63 @@ export class VerbaliListComponent implements OnInit, OnChanges {
 //#region ----- ViewChild Input Output -------
 
   @Input() verbaliFilterComponent!:             VerbaliFilterComponent;
-  @Input("annoID") annoID!:                     number;
 
   @ViewChild(MatPaginator) paginator!:          MatPaginator;
   @ViewChild(MatSort) sort!:                    MatSort;
+  @ViewChild("filterInput") filterInput!:       ElementRef;
+
 
 //#endregion  
 
-  constructor(private svcVerbali:                            VerbaliService,
-              private _loadingService:                    LoadingService,
-              public _dialog:                             MatDialog ) {
+  constructor(
+    private svcVerbali:                         VerbaliService,
+    private svcAnni:                            AnniScolasticiService,
+
+    private _loadingService:                    LoadingService,
+    public _dialog:                             MatDialog,
+    private fb:                                 UntypedFormBuilder, 
+
+  ) {
+    let obj = localStorage.getItem('AnnoCorrente');
+    this.form = this.fb.group({
+      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
+    });
+
+
+
+
   }
 
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnChanges() {
+    this.obsAnni$= this.svcAnni.list();
     this.loadData();
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void{
+
+    //TODO NON FUNZIONA MAI e quindi sempre annoID ha valore 2...
+
+    this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(
+      res => {
+        console.log("NON PASSA MAI DI QUA!", res);
+
+        this.loadData();
+      }
+    );
+
 
   }
 
+
+
   loadData() {
 
+
+    
+    this.annoID = this.form.controls.selectAnnoScolastico.value;
+    console.log (this.annoID);
     this.showPageTitle = true;
     this.showTableRibbon = true;
     
@@ -112,6 +153,13 @@ export class VerbaliListComponent implements OnInit, OnChanges {
 //#endregion
 
 //#region ----- Filtri & Sort -------
+
+
+resetSearch(){
+  this.filterInput.nativeElement.value = "";
+  this.filterValue = "";
+  this.filterValues.filtrosx = "";
+}
 
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;

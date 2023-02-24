@@ -3,8 +3,8 @@
 
 <!-- <div style="position:relative">
 
-<div class="w100px h100px ma-lr mt50 big-border" style="z-index: 100; position: absolute;  margin-left: auto;"> -->
-    <!-- <div class="w100px h100px ma-lr mt50 br200 bordered-grey" style="z-index: 100; overflow: visible"> -->
+<div class="w100px h100px ma-lr mt50 _big-border" style="z-index: 100; position: absolute;  margin-left: auto;"> -->
+    <!-- <div class="w100px h100px ma-lr mt50 br200 _bordered-grey" style="z-index: 100; overflow: visible"> -->
        
     <!-- <div> -->
 <!-- </div>
@@ -28,7 +28,7 @@
     <!-- <canvas #myCanvas style="position: relative; max-width: 100%; max-height: 100%"></canvas> -->
 </div>
 
-<mat-slider class="w100" value="100" (input)="onSliderChange($event)"></mat-slider>
+<mat-slider class="w100" #ngSlider><input matSliderThumb (input)="onSliderChange({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" value="100" /></mat-slider>
 
 
 <button type="button" mat-button matSuffix class="w100 ma" mat-stroked-button >Ancora non Funziona</button>

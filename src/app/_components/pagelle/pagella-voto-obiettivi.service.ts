@@ -15,9 +15,13 @@ export class PagellaVotoObiettiviService {
   constructor(private http: HttpClient) { }
 
   ListByPagellavotoMateriaCsa(pagellaVotoID: number, materiaID: number, classeSezioneAnnoID: number): Observable<DOC_PagellaVotoObiettivo[]>{
-
     return this.http.get<DOC_PagellaVotoObiettivo[]>(environment.apiBaseUrl+'DOC_PagellaVotoObiettivi/ListByPagellavotoMateriaCsa/'+pagellaVotoID+'/'+materiaID+'/'+classeSezioneAnnoID);   
     //http://213.215.231.4/swappX/api/DOC_PagellaVotoObiettivi/ListByPagellavotoMateriaCsa/130/1010/16
+  }
+
+  ListByObiettivo(obiettivoID: number): Observable<DOC_PagellaVotoObiettivo[]>{
+    return this.http.get<DOC_PagellaVotoObiettivo[]>(environment.apiBaseUrl+'DOC_PagellaVotoObiettivi/ListByObiettivo/'+obiettivoID);   
+    //http://213.215.231.4/swappX/api/DOC_PagellaVotoObiettivi/ListByObiettivo/19
   }
   
   put(formData: any): Observable <any>{

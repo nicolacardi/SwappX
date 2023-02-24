@@ -1,6 +1,13 @@
 import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/angular';
+import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/core';
 import { FullCalendarComponent }                from '@fullcalendar/angular';//-->serve per il ViewChild
+
+
+import dayGridPlugin from '@fullcalendar/daygrid'
+import listPlugin from '@fullcalendar/list'
+import timegridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+
 import { EventResizeDoneArg }                   from '@fullcalendar/interaction';
 
 import itLocale                                 from '@fullcalendar/core/locales/it';
@@ -44,6 +51,13 @@ export class LezioniCalendarioComponent implements OnInit {
 
   calendarOptions: CalendarOptions = {
 
+        plugins: [                              //aggiunto con fullcalendar 6.1.4
+           dayGridPlugin,
+           interactionPlugin,
+           listPlugin,
+           timegridPlugin
+         ],
+
     //PROPRIETA' BASE
     initialView:  'timeGridWeek',
 
@@ -68,7 +82,7 @@ export class LezioniCalendarioComponent implements OnInit {
       dayGridMonth: {  //questo modifica TUTTI gli eventi in questa vista
         eventContent: (event: any, element: any) => {
           { 
-            console.log (event.event._def)
+            // console.log (event.event._def)
             //mostra l'ora
             let timeText = document.createElement('div');
             timeText.className = "fc-event-time";
@@ -109,9 +123,9 @@ export class LezioniCalendarioComponent implements OnInit {
             //Aggiungo icona firma
             let img = document.createElement('img');
             if (event.event._def.extendedProps.ckFirma == true) 
-              img.src = '../../assets/sign_YES.svg';
+              img.src = 'assets/sign_YES.svg';
             else 
-              img.src = '../../assets/sign_NO.svg';
+              img.src = 'assets/sign_NO.svg';
             
             img.className = "_iconFirma";
             img.title='Firma della lezione';
@@ -119,9 +133,9 @@ export class LezioniCalendarioComponent implements OnInit {
             //Aggiungo icona epoca
             let img2 = document.createElement('img');
             if (event.event._def.extendedProps.ckEpoca == true) 
-              img2.src = '../../assets/epoca_YES.svg';
+              img2.src = './assets/epoca_YES.svg';
             else 
-              img2.src = '../../assets/epoca_NO.svg';
+              img2.src = './assets/epoca_NO.svg';
             
             img2.className = "_iconEpoca";
             img2.title='Epoca';
@@ -129,9 +143,9 @@ export class LezioniCalendarioComponent implements OnInit {
             //Aggiungo icona compito
             let img3 = document.createElement('img');
             if (event.event._def.extendedProps.ckCompito == true) 
-              img3.src = '../../assets/compito_YES.svg';
+              img3.src = './assets/compito_YES.svg';
             else 
-              img3.src = '../../assets/compito_NO.svg';
+              img3.src = './assets/compito_NO.svg';
             
             img3.className = "_iconCompito";
             img3.title='Compito in Classe';
@@ -164,18 +178,18 @@ export class LezioniCalendarioComponent implements OnInit {
             //Aggiungo icona firma
             let img = document.createElement('img');
             if (event.event._def.extendedProps.ckFirma == true) 
-              img.src = '../../assets/sign_YES.svg';
+              img.src = './assets/sign_YES.svg';
             else 
-              img.src = '../../assets/sign_NO.svg';            
+              img.src = './assets/sign_NO.svg';            
             img.className = "_iconFirmaListWeek";
             img.title='Firma della lezione';
 
             //Aggiungo icona epoca
             let img2 = document.createElement('img');
             if (event.event._def.extendedProps.ckEpoca == true) 
-              img2.src = '../../assets/epoca_YES.svg';
+              img2.src = './assets/epoca_YES.svg';
             else 
-              img2.src = '../../assets/epoca_NO.svg';
+              img2.src = './assets/epoca_NO.svg';
             
             img2.className = "_iconEpocaListWeek";
             img2.title='Epoca';
@@ -183,9 +197,9 @@ export class LezioniCalendarioComponent implements OnInit {
             //Aggiungo icona compito
             let img3 = document.createElement('img');
             if (event.event._def.extendedProps.ckCompito == true) 
-              img3.src = '../../assets/compito_YES.svg';
+              img3.src = './assets/compito_YES.svg';
             else 
-              img3.src = '../../assets/compito_NO.svg';
+              img3.src = './assets/compito_NO.svg';
             
             img3.className = "_iconCompitoListWeek tooltip";
             img3.title='Compito in Classe';
@@ -346,9 +360,9 @@ export class LezioniCalendarioComponent implements OnInit {
         //Aggiungo icona firma
         let img = document.createElement('img');
         if (arg.event.extendedProps.ckFirma == true) 
-          img.src = '../../assets/sign_YES.svg';
+          img.src = './assets/sign_YES.svg';
         else 
-          img.src = '../../assets/sign_NO.svg';
+          img.src = './assets/sign_NO.svg';
 
         img.className = "_iconFirma";
 
@@ -361,9 +375,9 @@ export class LezioniCalendarioComponent implements OnInit {
         //Aggiungo icona epoca
         let img2 = document.createElement('img');
         if (arg.event.extendedProps.ckEpoca == true) 
-          img2.src = '../../assets/epoca_YES.svg';
+          img2.src = './assets/epoca_YES.svg';
         else 
-          img2.src = '../../assets/epoca_NO.svg';
+          img2.src = './assets/epoca_NO.svg';
         
         img2.className = "_iconEpoca";
         img2.addEventListener("click", (e: Event) => {
@@ -375,9 +389,9 @@ export class LezioniCalendarioComponent implements OnInit {
         //Aggiungo icona compito
         let img3 = document.createElement('img');
         if (arg.event._def.extendedProps.ckCompito == true) 
-          img3.src = '../../assets/compito_YES.svg';
+          img3.src = './assets/compito_YES.svg';
         else 
-          img3.src = '../../assets/compito_NO.svg';
+          img3.src = './assets/compito_NO.svg';
         
         img3.className = "_iconCompito";
         img3.title='Compito in Classe';
@@ -402,9 +416,9 @@ export class LezioniCalendarioComponent implements OnInit {
       //Aggiungo icona firma
       let img = document.createElement('img');
       if (arg.event.extendedProps.ckFirma == true) 
-        img.src = '../../assets/sign_YES.svg';
+        img.src = './assets/sign_YES.svg';
       else 
-        img.src = '../../assets/sign_NO.svg';
+        img.src = './assets/sign_NO.svg';
       
       img.className = "_iconFirma";
       img.title='Firma della Lezione';
@@ -416,9 +430,9 @@ export class LezioniCalendarioComponent implements OnInit {
       //Aggiungo icona epoca
       let img2 = document.createElement('img');
       if (arg.event.extendedProps.ckEpoca == true) 
-        img2.src = '../../assets/epoca_YES.svg';
+        img2.src = './assets/epoca_YES.svg';
       else 
-        img2.src = '../../assets/epoca_NO.svg';
+        img2.src = './assets/epoca_NO.svg';
       
       img2.className = "_iconEpoca";
       img2.addEventListener("click", (e: Event) => {
@@ -429,9 +443,9 @@ export class LezioniCalendarioComponent implements OnInit {
     //Aggiungo icona compito
     let img3 = document.createElement('img');
     if (arg.event._def.extendedProps.ckCompito == true) 
-      img3.src = '../../assets/compito_YES.svg';
+      img3.src = './assets/compito_YES.svg';
     else 
-      img3.src = '../../assets/compito_NO.svg';
+      img3.src = './assets/compito_NO.svg';
     
     img3.className = "_iconCompito";
     img3.title='Compito in Classe';
@@ -458,9 +472,9 @@ export class LezioniCalendarioComponent implements OnInit {
       //Aggiungo icona firma
       let img = document.createElement('img');
       if (arg.event.extendedProps.ckFirma == true) 
-        img.src = '../../assets/sign_YES.svg';
+        img.src = './assets/sign_YES.svg';
       else 
-        img.src = '../../assets/sign_NO.svg';
+        img.src = './assets/sign_NO.svg';
       
       img.className = "_iconFirma";
       img.title='Firma della Lezione';
@@ -472,9 +486,9 @@ export class LezioniCalendarioComponent implements OnInit {
       //Aggiungo icona epoca
       let img2 = document.createElement('img');
       if (arg.event.extendedProps.ckEpoca == true) 
-        img2.src = '../../assets/epoca_YES.svg';
+        img2.src = './assets/epoca_YES.svg';
       else 
-        img2.src = '../../assets/epoca_NO.svg';
+        img2.src = './assets/epoca_NO.svg';
       
       img2.className = "_iconEpoca";
       img2.addEventListener("click", (e: Event) => {
@@ -486,9 +500,9 @@ export class LezioniCalendarioComponent implements OnInit {
           //Aggiungo icona compito
     let img3 = document.createElement('img');
     if (arg.event._def.extendedProps.ckCompito == true) 
-      img3.src = '../../assets/compito_YES.svg';
+      img3.src = './assets/compito_YES.svg';
     else 
-      img3.src = '../../assets/compito_NO.svg';
+      img3.src = './assets/compito_NO.svg';
     
     img3.className = "_iconCompito";
     img3.title='Compito in Classe';
@@ -532,6 +546,7 @@ export class LezioniCalendarioComponent implements OnInit {
   }
 
   addEvento(selectInfo: DateSelectArg) {
+
     //INSERIMENTO NUOVO EVENTO
     let dtStart: Date;
     let dtEnd: Date;
@@ -608,7 +623,7 @@ export class LezioniCalendarioComponent implements OnInit {
   }
 
   anotherMethod () {
-    console.log ("fat-to");
+    // console.log ("fat-to");
   }
 
   handleResize (resizeInfo: EventResizeDoneArg) {
@@ -619,11 +634,9 @@ export class LezioniCalendarioComponent implements OnInit {
     let strH_END =Utility.formatHour(resizeInfo.event.end);
     let form: CAL_Lezione;
 
-    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (parseInt(resizeInfo.event.id), resizeInfo.event.extendedProps.docenteID, dtCalendario, strH_INI, strH_END)
-      .toPromise();
-
-    promise.then( 
-      (val: CAL_Lezione[]) => {
+    this.svcLezioni.listByDocenteAndOraOverlap (parseInt(resizeInfo.event.id), resizeInfo.event.extendedProps.docenteID, dtCalendario, strH_INI, strH_END)
+    .subscribe(
+      (val : CAL_Lezione[])=> {
         if (val.length > 0) {
           let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
           val.forEach (x =>
@@ -661,11 +674,10 @@ export class LezioniCalendarioComponent implements OnInit {
     let strH_INI =Utility.formatHour(dropInfo.event.start);
     let strH_END =Utility.formatHour(dropInfo.event.end);
 
-    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (parseInt(dropInfo.event.id), dropInfo.event.extendedProps.docenteID, dtCalendario, strH_INI, strH_END)
-      .toPromise();
-
     let form: CAL_Lezione;
-    promise.then( 
+    this.svcLezioni.listByDocenteAndOraOverlap (parseInt(dropInfo.event.id), dropInfo.event.extendedProps.docenteID, dtCalendario, strH_INI, strH_END)
+    .subscribe(
+
       (val: CAL_Lezione[]) => {
         if (val.length > 0) {
           let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar }                          from '@angular/material/legacy-snack-bar';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
 import { concatMap, take, tap }                 from 'rxjs/operators';
 
@@ -254,10 +254,8 @@ export class LezioneComponent implements OnInit {
     this.strH_Ini = this.form.controls.h_Ini.value;
     this.strH_End = this.form.controls.h_End.value;
 
-    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (this.data.lezioneID? this.data.lezioneID: 0 , this.form.controls['docenteID'].value, this.strDtStart, this.strH_Ini, this.strH_End)
-      .toPromise();
-
-    promise.then( (val: CAL_Lezione[]) => {
+    this.svcLezioni.listByDocenteAndOraOverlap (this.data.lezioneID? this.data.lezioneID: 0 , this.form.controls['docenteID'].value, this.strDtStart, this.strH_Ini, this.strH_End)
+    .subscribe( (val: CAL_Lezione[]) => {
       if (val.length > 0) {
         let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
         val.forEach (x =>
@@ -312,7 +310,6 @@ export class LezioneComponent implements OnInit {
           argomentoCompito: this.form.controls.argomentoCompito.value
         };
 
-        console.log ("lezione-edit, objLezione", objLezione);
         if (this.form.controls['id'].value == null) {   
 
           
@@ -470,10 +467,7 @@ export class LezioneComponent implements OnInit {
         
           this.svcLezioni.put(this.form.value).subscribe(
             res=> {
-              console.log("ho postato le presenze una ad una ora voglio aggiornare presenzeListComponent per fare scomparire il pulsante...tiro da tre... ");
-
               this.PresenzeListComponent.loadData(); //NON VA. #ERROR cannot read properties of undefined reading loadData
-              console.log ("canestro");
             },  
             err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
           );

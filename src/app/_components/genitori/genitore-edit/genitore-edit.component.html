@@ -9,7 +9,7 @@
                 mat-dialog-close>
                     <mat-icon>arrow_back</mat-icon>
                 </button> -->
-                <img class="iconaMenuBig" src="../assets/genitore_edit_T.svg">
+                <img class="iconaMenuBig" src="./assets/genitore_edit_T.svg">
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
                 <span [ngClass]="{'invisible': selectedTab != 0}">
@@ -41,7 +41,7 @@
 
                         <form *ngIf="(genitore$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "formGenitore">
 
-                            <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
+                            <mat-grid-list class="no-overflowx mt10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
                                 <mat-grid-tile>
                                     <mat-form-field>
                                         <mat-label>Tipo</mat-label>
@@ -65,13 +65,15 @@
                             <mat-grid-list class="mt10" [cols]="3" rowHeight="60px" (window:resize)="onResize($event)">
                                 <mat-grid-tile>
                                     <mat-form-field>
-                                        <input matInput type="text" placeholder="Titolo di studio"   formControlName="titoloStudio" #titoloStudio>
+                                        <mat-label>Titolo di Studio</mat-label>
+                                        <input matInput type="text" formControlName="titoloStudio" #titoloStudio>
                                     </mat-form-field>
                                 </mat-grid-tile>
                                 
                                 <mat-grid-tile>
                                     <mat-form-field>
-                                        <input matInput type="text" placeholder="Professione"   formControlName="professione" #professione>
+                                        <mat-label>Professione</mat-label>
+                                        <input matInput type="text" formControlName="professione" #professione>
                                     </mat-form-field>
                                 </mat-grid-tile>
                             </mat-grid-list>
@@ -83,7 +85,7 @@
                             <mat-icon>add</mat-icon>
                         </button>
                         <mat-label class="frameLabel">i figli di {{genitoreNomeCognome}}</mat-label>
-                        <div class="_alunni-container cellBordered mt10">
+                        <div class="_alunni-container _cell-bordered mt30">
                             <app-alunni-list 
                                 [context]="'genitore-edit-famiglia'" 
                                 [genitoreID] ="genitoreID" 
@@ -102,7 +104,7 @@
                                 </mat-panel-description>
                               </mat-expansion-panel-header>
                                 <mat-label class="frameLabel">Elenco degli alunni </mat-label>
-                                <div class="_alunni-list-container cellBordered mt10">
+                                <div class="_alunni-list-container _cell-bordered mt10">
                                     <!-- <app-alunni-list [dove]="'genitore-edit-list'" (addToFamily) = "addToFamily($event)"></app-alunni-list> -->
                                     <app-alunni-list 
                                         [context]="'genitore-edit-list'" 

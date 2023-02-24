@@ -9,11 +9,11 @@
     padding: 10px;
   }
 
-:host  ::ng-deep .error-class .mat-simple-snackbar-action {
+:host  ::ng-deep .error-class .mat-mdc-snack-bar-action {
     color: red;
   }
 
-:host ::ng-deep .mat-simple-snackbar-action {
+:host ::ng-deep .mat-mdc-snack-bar-action {
     color: #1ed449 !important;
   }
 

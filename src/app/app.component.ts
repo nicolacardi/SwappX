@@ -1,17 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
-import { MatSidenav } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild }         from '@angular/core';
+import { UntypedFormControl }                          from '@angular/forms';
+import { MatSidenav }                           from '@angular/material/sidenav';
+import { Router }                               from '@angular/router';
 
 //services
-import { UserService } from './_user/user.service';
-import { EventEmitterService } from './_services/event-emitter.service';
-import { Utility } from  './_components/utilities/utility.component';
+import { UserService }                          from './_user/user.service';
+import { EventEmitterService }                  from './_services/event-emitter.service';
+import { Utility }                              from  './_components/utilities/utility.component';
 
 //models
-import { User } from './_user/Users';
-import { MatExpansionPanel } from '@angular/material/expansion';
-import { PER_Persona } from './_models/PER_Persone';
+import { User }                                 from './_user/Users';
+import { MatExpansionPanel }                    from '@angular/material/expansion';
+import { PER_Persona }                          from './_models/PER_Persone';
 
 @Component({
   selector: 'app-root',
@@ -23,17 +23,17 @@ export class AppComponent implements OnInit {
 
 //#region ----- Variabili -------
   //isLoggedIn?: boolean;
-  public isLoggedIn?:     boolean = false;
-  public currUser!:       User;
-  public currPersona!:    PER_Persona;
+  public isLoggedIn?:                           boolean = false;
+  public currUser!:                             User;
+  public currPersona!:                          PER_Persona;
 
-  public userFullName: string = "";
-  public imgAccount = "";
-  stringJson: any;
-  stringObject: any;
+  public userFullName:                          string = "";
+  public imgAccount =                           "";
+  stringJson:                                   any;
+  stringObject:                                 any;
 
-  isPinned = false;
-  isExpanded = false;
+  isPinned =                                    false;
+  isExpanded =                                  false;
 
   public mode = new UntypedFormControl('over');
   title = 'Stoody';
@@ -47,9 +47,11 @@ export class AppComponent implements OnInit {
   @ViewChild('expansionDocenti') public expansionDocenti!: MatExpansionPanel;
 
 //#endregion
-  constructor(private svcUser:              UserService,
-              private router:               Router,
-              private eventEmitterService:  EventEmitterService  ) {
+  constructor(
+    private svcUser:                            UserService,
+    private router:                             Router,
+    private eventEmitterService:                EventEmitterService
+  ) {
   }
 
   ngOnInit () {
@@ -118,8 +120,6 @@ export class AppComponent implements OnInit {
       this.leftSidenav.mode = "over";
     else 
       this.leftSidenav.mode = "side";
-
-    console.log("xxx");
   }
 
   clickPin() {

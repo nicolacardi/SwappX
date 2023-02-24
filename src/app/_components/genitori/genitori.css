@@ -2,7 +2,7 @@
   
   /* figli del genitore selezionato */
   ._alunni-container{
-    height: 100px;
+    height: 150px;
     overflow: auto;
   }
 
@@ -17,8 +17,24 @@
   }
 
 
-  .mat-card {
+  .mat-mdc-card {
     padding-bottom: 0px;
   }
 
+
+
+    /* low-list-row è una classe creata per  ridurre l'altezza dei form:
+    /* attenzione però: toglie il mat-hint sottostante !!!*/
+
+    :host ::ng-deep ._low-list-row .mat-mdc-text-field-wrapper {
+      height: 50px;
+    }
+
+    :host ::ng-deep ._low-list-row .mat-grid-tile {
+        height: 55px !important;
+    }
+
+    :host ::ng-deep ._low-list-row {
+        height: 55px !important;
+    }
   

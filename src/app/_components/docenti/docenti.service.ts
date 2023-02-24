@@ -98,7 +98,8 @@ export class DocentiService {
             //return of(undefined);
           }
           else {
-            console.log("error: ", error);
+            console.log("quando non trova (ad esempio con ID 17) la svcDocenti.getByPersonaID(ID) dovrebbe rispondere con 0 e non con un NotFound");
+
             throw error;
           }
       })

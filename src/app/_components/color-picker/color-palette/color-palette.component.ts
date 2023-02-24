@@ -92,9 +92,9 @@ export class ColorPaletteComponent implements AfterViewInit, OnChanges {
       this.ctx.stroke()
     } else {
 
-      console.log ("color-palette: draw: ricevo S da ascRGBToHSB(this.ascHue)[1]", this.ascRGBToHSB(this.ascHue)[1])
+      // console.log ("color-palette: draw: ricevo S da ascRGBToHSB(this.ascHue)[1]", this.ascRGBToHSB(this.ascHue)[1])
       const S = this.ascRGBToHSB(this.ascHue)[1];
-      console.log ("color-palette: draw: ricevo B da ascRGBToHSB(this.ascHue)[2]", this.ascRGBToHSB(this.ascHue)[2])
+      // console.log ("color-palette: draw: ricevo B da ascRGBToHSB(this.ascHue)[2]", this.ascRGBToHSB(this.ascHue)[2])
 
       const B = this.ascRGBToHSB(this.ascHue)[2];
 

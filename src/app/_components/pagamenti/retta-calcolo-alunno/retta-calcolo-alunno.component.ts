@@ -260,7 +260,6 @@ export class RettaCalcoloAlunnoComponent implements OnInit {
           
         }));
   
-    console.log ("ho finito");
 
 
 

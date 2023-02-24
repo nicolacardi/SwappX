@@ -20,6 +20,7 @@ export interface CAL_Scadenza {
   h_End:                                        string;
   
   title:                                        string;
+  link:                                         string;
   color:                                        string;
 
 
@@ -45,6 +46,8 @@ export interface CAL_ScadenzaPersone {
   ckLetto:                                      boolean;
   ckAccettato:                                  boolean;
   ckRespinto:                                   boolean;
+
+  link?:                                         string;
 
   scadenza?:                                    CAL_Scadenza;   
   persona?:                                     PER_Persona;

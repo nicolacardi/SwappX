@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig, MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar }                          from '@angular/material/legacy-snack-bar';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
-import { concatMap, finalize, map, take, tap }                            from 'rxjs/operators';
+import { concatMap, finalize, take, tap }                            from 'rxjs/operators';
 
 import { registerLocaleData }                   from '@angular/common';
 import localeIt                                 from '@angular/common/locales/it';
@@ -33,6 +33,7 @@ import { DialogDataScadenza }                   from 'src/app/_models/DialogData
 import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
 import { User }                                 from 'src/app/_user/Users';
 import { CAL_TipoScadenza } from 'src/app/_models/CAL_TipoScadenza';
+import { GenitoriService } from '../../genitori/genitori.service';
 
 
 @Component({
@@ -89,6 +90,8 @@ export class ScadenzaEditComponent implements OnInit {
     private fb:                                 UntypedFormBuilder, 
     private svcScadenze:                        ScadenzeService,
     private svcPersone:                         PersoneService,
+    private svcGenitori:                        GenitoriService,
+
     private svcScadenzePersone:                 ScadenzePersoneService,
     private svcTipiScadenza:                    TipiScadenzaService,
 
@@ -430,54 +433,12 @@ export class ScadenzaEditComponent implements OnInit {
     this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
-  
-
-  // selectedTabValue(event: any){
-  //   //senza questo espediente non fa il primo render correttamente
-  //   this.selectedTab = event.index;
-  // }
-
-  // openColorPicker() {
-    
-  //   const dialogConfig : MatDialogConfig = {
-  //     panelClass: 'add-DetailDialog',
-  //     width: '405px',
-  //     height: '460px',
-  //     data: {ascRGB: this.form.controls.color.value},
-  //   };
-  //   const dialogRef = this._dialog.open(ColorPickerComponent, dialogConfig);
-  //   dialogRef.afterClosed().subscribe(
-  //     result => { 
-  //       //devo valorizzare il campo color
-  //       if (result) this.form.controls.color.setValue(result);
-  //       //this.loadData(); 
-  //     }
-  //   );
-  // }
-
-  // optChangedOLD() {
-  //   let personaIDDaSelezionareArr : number[] =[];
-  //   let count: number = 0;
-  //   this.form.controls.persone.setValue(null);
-  //   this.form.controls.gruppi.value.forEach(
-  //     (val:number) => {
-  //       for (let i = 0; i<this.tipoPersonaIDArr.length; i++) {
-  //         if (this.tipoPersonaIDArr[i] == val) { count++; personaIDDaSelezionareArr.push(this.personaIDArr[i])}
-  //       }
-  //     }
-  //   )
-  //   this.form.controls.persone.setValue(personaIDDaSelezionareArr);
-  // }
 
   optChanged() {
 
-
-
     //devo aggiungere a personeListSelArr tutti quelli di personeListArr che hanno il tipoPersona come quello selezionato
-
     let count: number = 0;
     //devo annullare le precedenti selezioni, facendo reset di tutto
-
 
     //azzero le selezioni
     this.personeListSelArr =[];
@@ -615,5 +576,10 @@ export class ScadenzaEditComponent implements OnInit {
       val=> this.colorSample = val.color
     );
   }
+
+
+  
+
+
 
 }
