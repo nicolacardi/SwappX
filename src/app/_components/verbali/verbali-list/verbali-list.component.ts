@@ -191,10 +191,10 @@ resetSearch(){
       let boolDx = 
                     String(data.nome).indexOf(searchTerms.nome) !== -1
                     && String(data.cognome).indexOf(searchTerms.cognome) !== -1
-                    && String(data.tipo.toLowerCase()).indexOf(searchTerms.tipo) !== -1
+                    && String(data.tipo).toLowerCase().indexOf(searchTerms.tipo) !== -1
                     && String(dtVerbaleddmmyyyy).indexOf(searchTerms.dtVerbale) !== -1
-                    && String(data.tipo.toLowerCase()).indexOf(searchTerms.tipo) !== -1
-                    && String(data.classe.toLowerCase()).indexOf(searchTerms.classe) !== -1;
+                    && String(data.tipo).toLowerCase().indexOf(searchTerms.tipo) !== -1
+                    && String(data.classe).toLowerCase().indexOf(searchTerms.classe) !== -1;
 
       return boolSx && boolDx;
     }

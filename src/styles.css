@@ -70,7 +70,7 @@
     }
 
     .mat-mdc-card-outlined{   
-        /* --mdc-outlined-card-outline-color: transparent;  */
+        --mdc-outlined-card-outline-color: transparent; 
     }
 
     .mat-mdc-floating-label{   
@@ -635,6 +635,10 @@
     
     ._bordered-grey {
         border: 1px solid grey;
+    }
+
+    ._bordered-lightgrey {
+        border: 1px solid lightgrey;
     }
     
     
