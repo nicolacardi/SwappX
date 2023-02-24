@@ -135,15 +135,13 @@ export class GenitoriListComponent implements OnInit {
 
 //#endregion
 
-  constructor(
-    private svcGenitori:      GenitoriService,
-    private svcAlunni:        AlunniService,
-    private route:            ActivatedRoute,
-    private router:           Router,
-    public _dialog:           MatDialog, 
-    private _loadingService:  LoadingService,
-    private _navigationService:    NavigationService ) {
-
+  constructor(private svcGenitori:      GenitoriService,
+              private svcAlunni:        AlunniService,
+              private route:            ActivatedRoute,
+              private router:           Router,
+              public _dialog:           MatDialog, 
+              private _loadingService:  LoadingService,
+              private _navigationService:    NavigationService ) {
   }
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -158,14 +156,12 @@ export class GenitoriListComponent implements OnInit {
 
   ngOnInit () {
 
-
-    if (this.context == "alunno-edit-list" || this.context == "alunno-edit-famiglia") {
+    if (this.context == "alunno-edit-list" || this.context == "alunno-edit-famiglia") 
       this.showPageTitle = false;
-    }
-    if (this.context == "alunno-edit-famiglia") {
+    
+    if (this.context == "alunno-edit-famiglia") 
       this.showTableRibbon = false;
-    }
-
+    
     switch(this.context) {
       case 'alunno-edit-list': this.displayedColumns = this.displayedColumnsAlunnoEditList; break;
       case 'alunno-edit-famiglia': this.displayedColumns = this.displayedColumnsAlunnoEditFamiglia; break;
@@ -183,6 +179,7 @@ export class GenitoriListComponent implements OnInit {
   }
 
   loadData () {
+
     let obsGenitori$: Observable<ALU_Genitore[]>;
 
     if(this.context == "alunno-edit-famiglia"){
@@ -192,14 +189,12 @@ export class GenitoriListComponent implements OnInit {
     else {
       if(this.ckSoloAttivi){
         obsGenitori$= this.svcGenitori.listWithChildren()
-          .pipe(
-            map(
+          .pipe( map(
             res=> res.filter((x) => x.persona.ckAttivo == true))
           );
       }
-      else {
+      else
         obsGenitori$= this.svcGenitori.listWithChildren();
-      }
     }
 
     const loadGenitori$ =this._loadingService.showLoaderUntilCompleted(obsGenitori$);
@@ -213,14 +208,21 @@ export class GenitoriListComponent implements OnInit {
       }
     );
   }
+
 //#endregion
 
 //#region ----- Filtri & Sort -------
+
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
-    //this.genitoriFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
+  }
+
+  resetSearch(){
+    this.filterInput.nativeElement.value = "";
+    this.filterValue = "";
+    this.filterValues.filtrosx = "";
   }
 
   filterPredicate(): (data: any, filter: string) => boolean {
@@ -262,6 +264,7 @@ export class GenitoriListComponent implements OnInit {
                 && String(data.persona.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
                 && String(data.persona.email).toLowerCase().indexOf(searchTerms.email) !== -1
                 && foundAlunno;
+
       return boolSx && boolDx;
     }
     return filterFunction;
@@ -280,7 +283,7 @@ export class GenitoriListComponent implements OnInit {
 
     const dialogRef = this._dialog.open(GenitoreEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
-      () => this.loadData()
+      res => this.loadData()
     );
   }
   

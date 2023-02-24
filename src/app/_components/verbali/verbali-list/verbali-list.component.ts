@@ -81,26 +81,18 @@ export class VerbaliListComponent implements OnInit, OnChanges {
   @ViewChild(MatSort) sort!:                    MatSort;
   @ViewChild("filterInput") filterInput!:       ElementRef;
 
-
 //#endregion  
 
-  constructor(
-    private svcVerbali:                         VerbaliService,
-    private svcAnni:                            AnniScolasticiService,
-
-    private _loadingService:                    LoadingService,
-    public _dialog:                             MatDialog,
-    private fb:                                 UntypedFormBuilder, 
-
-  ) {
+  constructor(private svcVerbali:                         VerbaliService,
+              private svcAnni:                            AnniScolasticiService,
+              private _loadingService:                    LoadingService,
+              public _dialog:                             MatDialog,
+              private fb:                                 UntypedFormBuilder ) {
+    
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     });
-
-
-
-
   }
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -110,29 +102,17 @@ export class VerbaliListComponent implements OnInit, OnChanges {
     this.loadData();
   }
 
-  ngOnInit(): void{
-
-    //TODO NON FUNZIONA MAI e quindi sempre annoID ha valore 2...
+  ngOnInit() {
 
     this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(
-      res => {
-        console.log("NON PASSA MAI DI QUA!", res);
-
-        this.loadData();
-      }
+      res => this.loadData()
     );
-
-
   }
 
-
-
   loadData() {
-
-
     
     this.annoID = this.form.controls.selectAnnoScolastico.value;
-    console.log (this.annoID);
+    
     this.showPageTitle = true;
     this.showTableRibbon = true;
     
@@ -154,25 +134,25 @@ export class VerbaliListComponent implements OnInit, OnChanges {
 
 //#region ----- Filtri & Sort -------
 
-
-resetSearch(){
-  this.filterInput.nativeElement.value = "";
-  this.filterValue = "";
-  this.filterValues.filtrosx = "";
-}
-
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
 
+  resetSearch(){
+    this.filterInput.nativeElement.value = "";
+    this.filterValue = "";
+    this.filterValues.filtrosx = "";
+  }
+
   filterPredicate(): (data: any, filter: string) => boolean {
+
     let filterFunction = function(data: any, filter: any): boolean {
 
       let searchTerms = JSON.parse(filter);
-
       let dtVerbaleddmmyyyy!: string;
+
       if (data.dtVerbale){
         let dArrN = data.dtVerbale.split("-");
         dtVerbaleddmmyyyy = dArrN[2].substring(0,2)+ "/" +dArrN[1]+"/"+dArrN[0];
@@ -180,21 +160,20 @@ resetSearch(){
       else 
         dtVerbaleddmmyyyy = '';
 
-      let boolSx =  String(data.nome).indexOf(searchTerms.filtrosx) !== -1
-                  || String(data.cognome).indexOf(searchTerms.filtrosx) !== -1
-                  || String(data.tipo).indexOf(searchTerms.filtrosx) !== -1
+      let boolSx =  String(data.persona.nome).indexOf(searchTerms.filtrosx) !== -1
+                  || String(data.persona.cognome).indexOf(searchTerms.filtrosx) !== -1
+                  || String(data.tipoVerbaleID).indexOf(searchTerms.filtrosx) !== -1
                   || String(dtVerbaleddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
                   || String(data.titolo).indexOf(searchTerms.filtrosx) !== -1
                   || String(data.classe).indexOf(searchTerms.filtrosx) !== -1 ;
       
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
-      let boolDx = 
-                    String(data.nome).indexOf(searchTerms.nome) !== -1
-                    && String(data.cognome).indexOf(searchTerms.cognome) !== -1
-                    && String(data.tipo.toLowerCase()).indexOf(searchTerms.tipo) !== -1
+      let boolDx = String(data.persona.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+                    && String(data.persona.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+                    && String(data.tipo).toLowerCase().indexOf(searchTerms.tipo) !== -1
                     && String(dtVerbaleddmmyyyy).indexOf(searchTerms.dtVerbale) !== -1
-                    && String(data.tipo.toLowerCase()).indexOf(searchTerms.tipo) !== -1
-                    && String(data.classe.toLowerCase()).indexOf(searchTerms.classe) !== -1;
+                    && String(data.tipo).toLowerCase().indexOf(searchTerms.tipo) !== -1
+                    && String(data.classeSezioneAnnoID).toLowerCase().indexOf(searchTerms.classe) !== -1;
 
       return boolSx && boolDx;
     }
