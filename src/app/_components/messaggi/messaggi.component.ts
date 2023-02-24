@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 
 //services
@@ -9,7 +9,7 @@ import { MessaggiService } from './messaggi.service';
 //models
 import { _UT_Message } from 'src/app/_models/_UT_Message';
 import { User } from 'src/app/_user/Users';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
 import { Utility } from '../utilities/utility.component';
 

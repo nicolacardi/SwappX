@@ -13,10 +13,7 @@
   "dependencies": {
     "@angular/animations": "^15.2.0",
     "@angular/cdk": "^15.2.0",
-<<<<<<< HEAD
-=======
     "@angular/cli": "^15.2.0",
->>>>>>> ffc3290b4c0867ae2535db27174d1539affa6d22
     "@angular/common": "^15.2.0",
     "@angular/compiler": "^15.2.0",
     "@angular/core": "^15.2.0",
@@ -32,10 +29,7 @@
     "@fullcalendar/interaction": "^6.1.4",
     "@fullcalendar/list": "^6.1.4",
     "@fullcalendar/timegrid": "^6.1.4",
-<<<<<<< HEAD
-=======
     "@types/quill": "^1.3.10",
->>>>>>> ffc3290b4c0867ae2535db27174d1539affa6d22
     "exceljs": "^4.3.0",
     "file-saver": "^2.0.5",
     "fullcalendar": "^6.1.4",
@@ -50,10 +44,6 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.2.0",
-<<<<<<< HEAD
-    "@angular/cli": "^15.2.0",
-=======
->>>>>>> ffc3290b4c0867ae2535db27174d1539affa6d22
     "@angular/compiler-cli": "^15.2.0",
     "@types/file-saver": "^2.0.5",
     "@types/jasmine": "~3.6.0",

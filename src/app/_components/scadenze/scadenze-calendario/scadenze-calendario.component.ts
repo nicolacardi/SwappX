@@ -14,8 +14,8 @@ import { concatMap, tap }                       from 'rxjs/operators';
 import itLocale                                 from '@fullcalendar/core/locales/it';
 import { Observable }                           from 'rxjs';
 
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig }           from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar }                          from '@angular/material/legacy-snack-bar';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //components
 import { LoadingService }                       from '../../utilities/loading/loading.service';

@@ -3,7 +3,7 @@ import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild }  from '@an
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 import { MatPaginator }                         from '@angular/material/paginator';
 import { MatSort }                              from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource }                   from '@angular/material/legacy-table';
+import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable }                           from 'rxjs';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 

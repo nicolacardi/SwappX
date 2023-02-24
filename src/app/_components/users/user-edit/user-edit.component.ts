@@ -22,7 +22,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import {  User } from 'src/app/_user/Users';
 import { PER_Persona, PER_TipoPersona } from 'src/app/_models/PER_Persone';
 import { PersoneService } from '../../persone/persone.service';
-import { MatLegacyAutocomplete as MatAutocomplete, MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent, MatLegacyAutocompleteTrigger as MatAutocompleteTrigger } from '@angular/material/legacy-autocomplete';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { PersonaEditComponent } from '../../persone/persona-edit/persona-edit.component';
 
 @Component({

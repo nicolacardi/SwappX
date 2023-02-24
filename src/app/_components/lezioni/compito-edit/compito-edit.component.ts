@@ -5,7 +5,7 @@ import { MatSnackBar }                          from '@angular/material/snack-ba
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { Observable }                           from 'rxjs';
 import { map, tap }                                  from 'rxjs/operators';
-import { MatLegacySelect as MatSelect }                            from '@angular/material/legacy-select';
+import { MatSelect }                            from '@angular/material/select';
 
 //components
 import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';

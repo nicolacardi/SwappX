@@ -5,7 +5,7 @@ import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { jsPDF } from 'jspdf';
 
 //components
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 //services

@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatSort }                              from '@angular/material/sort';
 import { Observable }                           from 'rxjs';
-import { MatLegacyTableDataSource as MatTableDataSource}                    from '@angular/material/legacy-table';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig }           from '@angular/material/legacy-dialog';
+import { MatTableDataSource}                    from '@angular/material/table';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 
 //components
 import { VotiCompitoPageComponent }             from '../voti-compito-page/voti-compito-page.component';
