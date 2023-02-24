@@ -205,7 +205,7 @@ import { BloccoEditComponent }                  from './_components/templates/bl
 
 import { ClickDoubleDirective }                 from './_components/utilities/clickdouble/clickdouble.directive';
 
-
+import { QuillModule }                          from 'ngx-quill'
 
 
 // FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -375,7 +375,8 @@ import { ClickDoubleDirective }                 from './_components/utilities/cl
     ReactiveFormsModule,
     FormsModule,
     FullCalendarModule,
-    ColorPickerModule
+    ColorPickerModule,
+    QuillModule.forRoot()
 
   ],
 

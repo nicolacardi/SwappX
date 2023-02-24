@@ -69,4 +69,8 @@ export class TemplateComponent implements OnInit {
   decZoom(){
     if (this.zoom > 1) this.zoom--;
   }
+
+  toggleMagnete() {
+    
+  }
 }

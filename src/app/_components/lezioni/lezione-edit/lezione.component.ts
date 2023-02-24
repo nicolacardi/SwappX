@@ -254,10 +254,8 @@ export class LezioneComponent implements OnInit {
     this.strH_Ini = this.form.controls.h_Ini.value;
     this.strH_End = this.form.controls.h_End.value;
 
-    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (this.data.lezioneID? this.data.lezioneID: 0 , this.form.controls['docenteID'].value, this.strDtStart, this.strH_Ini, this.strH_End)
-      .toPromise();
-
-    promise.then( (val: CAL_Lezione[]) => {
+    this.svcLezioni.listByDocenteAndOraOverlap (this.data.lezioneID? this.data.lezioneID: 0 , this.form.controls['docenteID'].value, this.strDtStart, this.strH_Ini, this.strH_End)
+    .subscribe( (val: CAL_Lezione[]) => {
       if (val.length > 0) {
         let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
         val.forEach (x =>

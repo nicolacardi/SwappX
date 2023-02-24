@@ -29,6 +29,7 @@
     position: relative;
     z-index: 1;
     outline: 1px dotted grey;
+    font-style: inherit;
 }
 
 .resizable-draggable:active{

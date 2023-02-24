@@ -634,11 +634,9 @@ export class LezioniCalendarioComponent implements OnInit {
     let strH_END =Utility.formatHour(resizeInfo.event.end);
     let form: CAL_Lezione;
 
-    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (parseInt(resizeInfo.event.id), resizeInfo.event.extendedProps.docenteID, dtCalendario, strH_INI, strH_END)
-      .toPromise();
-
-    promise.then( 
-      (val: CAL_Lezione[]) => {
+    this.svcLezioni.listByDocenteAndOraOverlap (parseInt(resizeInfo.event.id), resizeInfo.event.extendedProps.docenteID, dtCalendario, strH_INI, strH_END)
+    .subscribe(
+      (val : CAL_Lezione[])=> {
         if (val.length > 0) {
           let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
           val.forEach (x =>
@@ -676,11 +674,10 @@ export class LezioniCalendarioComponent implements OnInit {
     let strH_INI =Utility.formatHour(dropInfo.event.start);
     let strH_END =Utility.formatHour(dropInfo.event.end);
 
-    const promise  = this.svcLezioni.listByDocenteAndOraOverlap (parseInt(dropInfo.event.id), dropInfo.event.extendedProps.docenteID, dtCalendario, strH_INI, strH_END)
-      .toPromise();
-
     let form: CAL_Lezione;
-    promise.then( 
+    this.svcLezioni.listByDocenteAndOraOverlap (parseInt(dropInfo.event.id), dropInfo.event.extendedProps.docenteID, dtCalendario, strH_INI, strH_END)
+    .subscribe(
+
       (val: CAL_Lezione[]) => {
         if (val.length > 0) {
           let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";

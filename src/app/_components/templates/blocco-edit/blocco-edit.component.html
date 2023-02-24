@@ -27,6 +27,8 @@
 
             </div>
 
+<!-- ************ X W Y H ********************-->
+
             <mat-grid-list [cols]="2" rowHeight="20px" >
                 <mat-grid-tile>
                     <div class="_red fs12" [ngClass]="{'invisible': !form.errors?.['tooWide']}" >Il blocco termina in larghezza fuori dall'area disponibile</div>
@@ -91,34 +93,46 @@
                     </mat-form-field>
                 </mat-grid-tile>
             </mat-grid-list> -->
-            <mat-grid-list [cols]="1" rowHeight="200px" >
+            <!-- <mat-grid-list [cols]="1" rowHeight="200px" >
                 <mat-grid-tile *ngIf="tipoBloccoDesc == 'Testo'">
                     <mat-form-field class="w100" appearance="outline">
                         <mat-label>Testo</mat-label>
                         <textarea matInput class="w100 _noresize" type="text" style="height: 120px" formControlName="testo"></textarea>
                     </mat-form-field>
                 </mat-grid-tile>
-            </mat-grid-list>
-
-                    <mat-grid-list *ngIf="tipoBloccoDesc == 'Testo'" class="_cell-bordered" [cols]="4" rowHeight="60px">
-
-                        <mat-grid-tile>
-                            <mat-label>Riempimento</mat-label>
-
-                            <mat-checkbox color="primary" formControlName="ckFill">
-                            </mat-checkbox>
-                        </mat-grid-tile>
-
-                        <mat-grid-tile *ngIf="tipoBloccoDesc == 'Testo'" [ngClass]="{'invisible': !form.controls.ckFill.value}">
-
-                            <button type="button" class="_btnColorPicker" 
-                            (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
-                        </mat-grid-tile>
-                    </mat-grid-list>
+            </mat-grid-list> -->
 
 
+
+            <quill-editor 
+                (onContentChanged)="onContentChanged($event)"
+                placeholder="Inserire il proprio testo..."
+                formControlName="testo"
+                [modules]="quillOptions"
+                [customOptions]="customOptions"
+
+                >
 
             
+            
+            </quill-editor>
+
+<!-- ************ Riempimento ********************-->
+            <mat-grid-list *ngIf="tipoBloccoDesc == 'Testo'" class="_cell-bordered mt10" [cols]="4" rowHeight="60px">
+
+                <mat-grid-tile>
+                    <mat-label>Riempimento</mat-label>
+
+                    <mat-checkbox color="primary" formControlName="ckFill">
+                    </mat-checkbox>
+                </mat-grid-tile>
+
+                <mat-grid-tile *ngIf="tipoBloccoDesc == 'Testo'" [ngClass]="{'invisible': !form.controls.ckFill.value}">
+
+                    <button type="button" class="_btnColorPicker" 
+                    (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
+                </mat-grid-tile>
+            </mat-grid-list>
 
             <div *ngIf="tipoBloccoDesc == 'Immagine'" class="w100px h100px ma-lr mt20 shadowed" >
                 <img #myImg *ngIf="imgFile" class="w100px _bordered " [src]="imgFile">

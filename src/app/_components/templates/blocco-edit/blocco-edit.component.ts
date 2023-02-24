@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild }            from '@an
 import { UntypedFormBuilder, UntypedFormGroup, ValidatorFn }               from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { iif, Observable }                      from 'rxjs';
+import { iif, Observable, of }                      from 'rxjs';
 import { concatMap, tap }                       from 'rxjs/operators';
 
 //components
@@ -23,7 +23,7 @@ import { TEM_BloccoFoto }                       from 'src/app/_models/TEM_Blocco
 import { TEM_BloccoTesto } from 'src/app/_models/TEM_BloccoTesto';
 import { BlocchiTestiService } from '../blocchitesti.service';
 
-
+import { CustomOption } from "ngx-quill";
 
 
 
@@ -40,10 +40,47 @@ export class BloccoEditComponent implements OnInit {
   imgFile!:                                     string;
   tipoBloccoDesc!:                              string;
 
+  htmlText!:                                    string;        
 
 
+  customOptions = [{
+    import: 'attributors/style/size',
+    whitelist: ['20', '22']
+  }]
 
+  quillOptions = {
+
+    toolbar: 
+    [
+      
+      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+      //['blockquote', 'code-block'],
+  
+      //[{ 'header': 1 }, { 'header': 2 }],               // custom button values
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+      //[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+      [{ 'direction': 'rtl' }],                         // text direction
+  
+      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+      //[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+  
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      [{ 'font': [] }],
+      [{ 'align': [] }],
+  
+      ['clean'],                                         // remove formatting button
+  
+      //['link', 'image', 'video']                         // link and image, video
+    ],
+    
+  };
 //#endregion
+
+
+
+
+
 
 
 @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
@@ -103,7 +140,7 @@ export class BloccoEditComponent implements OnInit {
               this.tipoBloccoDesc = blocco.tipoBlocco!.descrizione;
 
               this.form.patchValue(blocco);
-              console.log ("form patched", this.form.value);
+              //console.log ("form patched", this.form.value);
 
               if (blocco.bloccoTesto) this.form.controls.testo.setValue(blocco.bloccoTesto!.testo);
 
@@ -132,7 +169,7 @@ save(){
         concatMap( ()=> this.svcBlocchi.put(this.form.value))
       )
       .subscribe( res=> {
-          this._dialogRef.close();
+          this._dialogRef.close("POST IMG");
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
         },
         err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
@@ -149,7 +186,7 @@ save(){
         concatMap( ()=> this.svcBlocchi.put(this.form.value))
       )
       .subscribe( res=> {
-          this._dialogRef.close();
+          this._dialogRef.close("PUT IMG");
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
         },
         err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
@@ -173,7 +210,7 @@ save(){
         concatMap( ()=> this.svcBlocchi.put(this.form.value))
       )
       .subscribe( res=> {
-          this._dialogRef.close();
+          this._dialogRef.close("PUT TESTO");
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
         },
         err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
@@ -184,11 +221,11 @@ save(){
       }
       this.svcBlocchiTesti.post(testoObj)
       .pipe (
-        tap(bloccoTesto=> {console.log (bloccoTesto, "appena nserito"); this.form.controls.bloccoTestoID.setValue(bloccoTesto.id)}),
+        tap(bloccoTesto=> {this.form.controls.bloccoTestoID.setValue(bloccoTesto.id)}),
         concatMap( ()=> this.svcBlocchi.put(this.form.value))
       )
       .subscribe( res=> {
-          this._dialogRef.close();
+          this._dialogRef.close("POST TESTO");
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
         },
         err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
@@ -200,12 +237,16 @@ save(){
   delete() {
 
     //serve la delete anche dei record di BlocchiFoto e BlocchiTesti correlati TODO
-    this.svcBlocchi.delete(this.bloccoID).subscribe(
+    if (this.form.controls.bloccoFoto != null) this.svcBlocchiFoto.delete(this.form.controls.bloccoFotoID.value).subscribe();
+    if (this.form.controls.bloccoTesto != null) this.svcBlocchiTesti.delete(this.form.controls.bloccoTestoID.value).subscribe();
+
+    this.svcBlocchi.delete(this.bloccoID)
+    .subscribe(
       res=>{
         this._snackBar.openFromComponent(SnackbarComponent,
           {data: 'Blocco cancellato', panelClass: ['red-snackbar']}
         );
-        this._dialogRef.close(this.bloccoID);
+        this._dialogRef.close("DELETE");
       },
       err=> (
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
@@ -271,5 +312,9 @@ save(){
   //     });
   //   }
   // }
+
+  onContentChanged = (event: any) =>{
+    console.log(event.html);
+  }
   
 }

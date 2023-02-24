@@ -180,6 +180,9 @@ export class BloccoComponent implements OnInit {
 
   private resize(){
 
+    console.log (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - 200));
+
+    //console.log (this.mouse.x - this.boxPos.left*this.zoom + this.left*this.zoom - 200*this.zoom);
     if (this.mouse.x - this.boxPos.left <0) this.width = 0 //evita che si possa fare un rettangolo di larghezza negativa
     else if (this.mouse.x > this.contPos.right) {
       // console.log ("this.contPos.right", this.contPos.right);
@@ -189,6 +192,10 @@ export class BloccoComponent implements OnInit {
       // console.log ("this.width", this.width);
     }
     else this.width = this.mouse.x - this.boxPos.left;
+
+    //magnetismo a destra (TODO sistemare in base allo zoom)
+    if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - 200) < 5*this.zoom) this.width = 200*this.zoom -this.left; 
+
 
     if (this.mouse.y - this.boxPos.top <0) this.height = 0
     else if (this.mouse.y > this.contPos.bottom) {
@@ -200,6 +207,10 @@ export class BloccoComponent implements OnInit {
     else this.height = this.mouse.y - this.boxPos.top;
     //console.log ("this.width", this.width);
     //console.log ("this.height", this.height);
+
+    //magnetismo in basso (TODO sistemare in base allo zoom)
+    if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - 287) < 5*this.zoom) this.height = 287*this.zoom -this.top; 
+
 
     this.storeOldPosSize();
 
@@ -213,11 +224,21 @@ export class BloccoComponent implements OnInit {
     //questa va aggiunta alla posizione in cui si trovava il box (this.mouseClick.left) quando ha cliccato
     let xTemp = this.mouseClick.left + this.mouse.x - this.mouseClick.x;
 
+    //magnetismo su 10 e 200
+    if (Math.abs(xTemp - 10*this.zoom) < 5*this.zoom) xTemp = 10*this.zoom; 
+    if (Math.abs(xTemp + this.width - 200*this.zoom) < 5) xTemp = 200*this.zoom - this.width;
+     
+    //viene verificata xTemp per essere sicuri che non vada oltre i limiti consentiti
     if (xTemp+this.contPos.left+this.width>this.contPos.right) this.left = this.contPos.right - this.contPos.left - this.width;
     else if (xTemp <0) this.left = 0
     else this.left = xTemp;
 
     let yTemp = this.mouseClick.top - this.mouseClick.y + this.mouse.y ;
+
+    //magnetismo su 10 e 280
+    if (Math.abs(yTemp - 10*this.zoom) < 5*this.zoom) yTemp = 10*this.zoom; 
+    if (Math.abs(yTemp + this.height - 287*this.zoom) < 5) yTemp = 287*this.zoom - this.height;
+    
     if (yTemp+this.contPos.top+this.height>this.contPos.bottom) this.top = this.contPos.bottom - this.contPos.top - this.height;
     else if (yTemp <0) this.top = 0
     else this.top = yTemp;
@@ -283,10 +304,10 @@ export class BloccoComponent implements OnInit {
       const dialogRef = this._dialog.open(BloccoEditComponent, dialogConfig);
       dialogRef.afterClosed().subscribe(
         (res:any) => {
-          console.log("chiusa la dialog");
+          
           this.reloadData(); //ri-estrae i dati per il blocco
           //mi serve fare la refresh, quindi emetto recordEdited che Pagina riceve e ci pensa lei a farsi refresh
-          //if (res) this.recordEdited.emit(this.blocco.id!)
+          if (res=="DELETE") this.recordEdited.emit(this.blocco.id!)
         }
       );
     

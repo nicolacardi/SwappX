@@ -1,3 +1,5 @@
+@import '~quill/dist/quill.snow.css';
+
 /*#region ********** GENERALI **********/
     html, body { 
         height: 100%; 
@@ -75,6 +77,10 @@
         letter-spacing: 0em;                    /* fix font dopo migrazione a ng v15 */
         font-size: 1em;
     }
+
+
+
+
 
 
 
@@ -785,6 +791,10 @@
 
     ._btn-pos-right-3 {
         right: 120px;
+    }
+
+    ._btn-pos-right-4 {
+        right: 165px;
     }
 
     ._btn-pos-top-0 {

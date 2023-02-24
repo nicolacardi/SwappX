@@ -24,7 +24,15 @@
 >
 
 <!-- era     (window:mouseup)="setStatus($event, 0)" , ho tolto l'evento dalal finestra intera-->
-<div *ngIf="blocco.bloccoTesto" [innerHTML] ="blocco.bloccoTesto!.testo" class="fs8" style="word-break: break-all; ">
+<!-- [ngStyle] = "{'font-size': 10*zoom+'px'}" -->
+
+<div *ngIf="blocco.bloccoTesto" 
+
+    [innerHTML] ="blocco.bloccoTesto!.testo" 
+    style="word-break: break-all; line-height: 0.3em; font-family: initial"
+    
+    
+    >
   
 </div>
 
