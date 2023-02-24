@@ -51,14 +51,13 @@ export class VerbaleEditComponent implements OnInit {
 //#endregion
 
   constructor(public _dialogRef:                          MatDialogRef<VerbaleEditComponent>,
-              @Inject(MAT_DIALOG_DATA) public data:       DialogDataVerbale,
+              
               private fb:                                 UntypedFormBuilder, 
               private svcVerbali:                         VerbaliService,
               private svcVerbaliPresenti:                 VerbaliPresentiService,
-
               private svcPersone:                         PersoneService,
               private svcClassiSezioniAnni:               ClassiSezioniAnniService,
-
+              @Inject(MAT_DIALOG_DATA) public data:       DialogDataVerbale,
               private _loadingService:                    LoadingService,
               public _dialog:                             MatDialog,
               private _snackBar:                          MatSnackBar ) {
@@ -98,8 +97,7 @@ export class VerbaleEditComponent implements OnInit {
     this.form.controls.tipoVerbaleID.valueChanges
     .pipe(
       concatMap( val => this.svcVerbali.getTipoVerbale(val)),
-    )
-    .subscribe(
+    ).subscribe(
       val => {
           //this.form.controls.classeSezioneAnnoID.setValue(null);
           //accidenti questa impedisce di mostrare i genitori! ma se la tolgo non va bene se c'è perchè deve cancellare su change
@@ -117,8 +115,7 @@ export class VerbaleEditComponent implements OnInit {
       tap(val => { this.classeSezioneAnnoSelected = val? val: 0}),
       //concatMap( (val:number) => iif( ()=> val!= null, this.obsGenitoriClasse$ = this.svcPersone.listGenitoriByClasseSezioneAnno(val), of())),
       concatMap( () => this.obsGenitoriClasse$ = this.svcPersone.listGenitoriByClasseSezioneAnno(this.classeSezioneAnnoSelected))
-    )
-    .subscribe(
+    ).subscribe(
       //val => console.log(val)
     );
 
@@ -242,11 +239,15 @@ export class VerbaleEditComponent implements OnInit {
             concatMap(()=>cancellaeRipristinaPresenze)
           )
           .subscribe(
-            res=> {  
-              this._dialogRef.close();
-              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-            },
-            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+            //next: (v) => console.log(v),
+            //error: (e) => console.error(e),
+            //complete: () => console.info('complete') 
+
+             res=> {  
+               this._dialogRef.close();
+               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+             },
+             err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
           );
       }
     }
