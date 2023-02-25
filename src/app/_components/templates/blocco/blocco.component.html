@@ -8,23 +8,26 @@
     [style.width.px]="width"
     [style.height.px]="height" 
     [style.background-color] = "blocco.color"
+    [ngStyle]="{'border-top': blocco.borderTop? 'solid 1px grey':'none', 'border-right': blocco.borderRight? 'solid 1px grey':'none', 'border-bottom': blocco.borderBottom? 'solid 1px grey':'none', 'border-left': blocco.borderLeft? 'solid 1px grey':'none'}"
+
     [style.transform]="'translate3d('+ left + 'px,' + top + 'px,' + '0px)'"
     [class.active]="status === 1 || status === 2"
     (mousedown)="setStatus($event, 2)"
     (mouseup)="setStatus($event, 0)"
     (dblclick)="openDetail()"
+    
 >
 
 <!-- [ngStyle] = "{'font-size': 10*zoom+'px'}" -->
 
-<div *ngIf="blocco.bloccoTesto" 
+<div class="ql-editor" *ngIf="blocco.bloccoTesto" 
     [innerHTML] ="blocco.bloccoTesto!.testo" 
-    style="word-break: break-all; line-height: 0.3em; font-family: initial"
+    style="word-break: break-all; "
     >
 </div>
 
 <div *ngIf="blocco.bloccoFoto" class="center">
-    <img class="_pos-relative ma" [style.height.px]="height" [src]="blocco.bloccoFoto.foto">
+    <img class="_pos-relative ma" [style.height.px]="height" style="width: 100%; height: 100%; object-fit: contain !important" [src]="blocco.bloccoFoto.foto">
 </div>
 
 <!-- resize-action è il triangolino, classTipo dice se blu o giallo-->

@@ -109,7 +109,7 @@
                 placeholder="Inserire il proprio testo..."
                 formControlName="testo"
                 [modules]="quillOptions"
-                [customOptions]="customOptions"
+
 
                 >
 
@@ -117,11 +117,11 @@
             
             </quill-editor>
 
-<!-- ************ Riempimento ********************-->
-            <mat-grid-list *ngIf="tipoBloccoDesc == 'Testo'" class="_cell-bordered mt10" [cols]="4" rowHeight="60px">
+<!-- ************ Riempimento e Bordi ********************-->
+            <mat-grid-list *ngIf="tipoBloccoDesc == 'Testo'" class=" _cell-bordered mt10" [cols]="4" rowHeight="60px">
 
                 <mat-grid-tile>
-                    <mat-label>Riempimento</mat-label>
+                    <mat-label>Riempimento: </mat-label>
 
                     <mat-checkbox color="primary" formControlName="ckFill">
                     </mat-checkbox>
@@ -131,6 +131,15 @@
 
                     <button type="button" class="_btnColorPicker" 
                     (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
+                </mat-grid-tile>
+
+                <mat-grid-tile colspan="2">
+                    <mat-label>Bordi: </mat-label>
+
+                    <mat-button-toggle formControlName="borderTop" value="bordertop" (change)="bordersChange($event)" [checked]="form.controls.borderTop.value"><mat-icon>border_top</mat-icon></mat-button-toggle>
+                    <mat-button-toggle formControlName="borderRight" value="borderright" (change)="bordersChange($event)"  [checked]="form.controls.borderRight.value"><mat-icon>border_right</mat-icon></mat-button-toggle>
+                    <mat-button-toggle formControlName="borderBottom" value="borderbottom" (change)="bordersChange($event)"  [checked]="form.controls.borderBottom.value"><mat-icon>border_bottom</mat-icon></mat-button-toggle>
+                    <mat-button-toggle formControlName="borderLeft" value="borderleft" (change)="bordersChange($event)"  [checked]="form.controls.borderLeft.value"><mat-icon>border_left</mat-icon></mat-button-toggle>
                 </mat-grid-tile>
             </mat-grid-list>
 

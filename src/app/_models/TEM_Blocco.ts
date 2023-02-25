@@ -14,6 +14,12 @@ export interface TEM_Blocco {
         ckFill?:                                 boolean;
         color?:                                 string;
 
+        borderTop:                              boolean;
+        borderRight:                            boolean;
+        borderBottom:                           boolean;
+        borderLeft:                             boolean;
+
+
         tipoBloccoID:                           number;
 
         tipoBlocco?:                            TEM_TipoBlocco;

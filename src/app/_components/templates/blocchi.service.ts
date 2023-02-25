@@ -28,16 +28,19 @@ export class BlocchiService {
 
   get(BloccoID: any): Observable<TEM_Blocco>{
     return this.http.get<TEM_Blocco>(environment.apiBaseUrl+'TEM_Blocchi/'+BloccoID);
-    //http://213.215.231.4/swappX/api/TEM_Blocchi/79
+    //http://213.215.231.4/swappX/api/TEM_Blocchi/25
     //TODO la get butta fuori bloccotestoID e bloccofotoID null anche quando non lo sono!
   }
 
   put(formData: any): Observable <any>{
+    console.log ("put", formData);
     return this.http.put( environment.apiBaseUrl  + 'TEM_Blocchi/' + formData.id , formData);    
   }
 
   post(formData: any): Observable <any>{
     formData.id = 0;
+    console.log ("post", formData);
+
     return this.http.post( environment.apiBaseUrl  + 'TEM_Blocchi' , formData);  
   }
 

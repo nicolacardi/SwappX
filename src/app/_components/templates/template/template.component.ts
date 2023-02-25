@@ -28,6 +28,8 @@ export class TemplateComponent implements OnInit {
   public obsTemplate$!:                         Observable<TEM_Template>;
   public obsPagine$!:                           Observable<TEM_Pagina[]>;
   public magnete:                               boolean = true;
+  public griglia:                               boolean = false;
+
 //#endregion
 
   constructor(
@@ -71,6 +73,13 @@ export class TemplateComponent implements OnInit {
   }
 
   toggleMagnete() {
-    this.magnete = !this.magnete
+    this.magnete = !this.magnete;
+    if (this.magnete) this.griglia = false;
+
+  }
+
+  toggleGriglia() {
+    this.griglia = !this.griglia;
+    if (this.griglia) this.magnete = false;
   }
 }

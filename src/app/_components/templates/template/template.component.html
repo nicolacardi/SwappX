@@ -13,17 +13,20 @@
 <button mat-mini-fab aria-label="Aggancia ai Margini" matTooltip="Aggancia ai Margini"  class="_btn-add-fixed _btn-pos-right-4 _btn-pos-top-1" (click)="toggleMagnete()">
     <img *ngIf="magnete" class="iconaMenuSidenav" src="./assets/mainMenuWhite/magnete_on.svg">
     <img *ngIf="!magnete" class="iconaMenuSidenav" src="./assets/mainMenuWhite/magnete_off.svg">
-
 </button>
 
-
+<button mat-mini-fab aria-label="Aggancia alla griglia" matTooltip="Aggancia alla griglia"  class="_btn-add-fixed _btn-pos-right-5 _btn-pos-top-1" (click)="toggleGriglia()">
+    <img *ngIf="griglia" class="iconaMenuSidenav" src="./assets/mainMenuWhite/griglia_on.svg">
+    <img *ngIf="!griglia" class="iconaMenuSidenav" src="./assets/mainMenuWhite/griglia_off.svg">
+</button>
 
 <div *ngFor="let element of (obsPagine$ | async); let i = index" style="padding-top: 10px; background-color: lightgray">
     <div class="center mb20">Pagina {{i+1}} di {{numPagine}}</div>
     <app-pagina
         [paginaID]="element.id"
-        [magnete]="magnete"
         [zoom]="zoom"
+        [magnete]="magnete"
+        [griglia]="griglia"
         (deleteEmitted)="deletedPage($event)"
         >
     </app-pagina>

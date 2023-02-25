@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { debounceTime, fromEvent, merge, Observable } from 'rxjs';
 
 //components
 import { BloccoEditComponent }                  from '../blocco-edit/blocco-edit.component';
@@ -27,6 +27,7 @@ export class BloccoComponent implements OnInit {
 
 
 //#region ----- Variabili -------
+
   public width!:                                number;
   public widthImg!:                             number;
 
@@ -39,11 +40,7 @@ export class BloccoComponent implements OnInit {
   public testo!:                                string;
 
   private oldZoom:                              number = 1;
-
-  private oldLeft!:                             number;
-  private oldTop!:                              number;
-  private oldWidth!:                            number;
-  private oldheight!:                           number;
+  public zoomratio:                             number =1 ;
 
   public classTipo!:                             string;
 
@@ -59,6 +56,7 @@ export class BloccoComponent implements OnInit {
   @Input('blocco') public blocco!:              TEM_Blocco;
   @Input() zoom!:                               number;
   @Input() magnete!:                            boolean;
+  @Input() griglia!:                            boolean;
 
   @Output('recordEdited') recordEdited = new EventEmitter<number>();
 
@@ -74,56 +72,92 @@ export class BloccoComponent implements OnInit {
 
 
 
+
   ngOnChanges() {
 
-    //console.log("blocco - ngOnChanges");
-
-    this.width = this.blocco.w * this.zoom;
-    this.height = this.blocco.h*this.zoom;
-    this.top =  this.blocco.y*this.zoom;
-    this.left = this.blocco.x*this.zoom;
+    //viene chiamata sia su SAVE che su cambio ZOOM
+    this.zoomratio = this.zoom/this.oldZoom;
+    this.width = this.blocco.w * this.zoomratio;
+    this.height = this.blocco.h * this.zoomratio;
+    this.top =  this.blocco.y* this.zoomratio;
+    this.left = this.blocco.x* this.zoomratio;
     this.tipoBloccoID = this.blocco.tipoBloccoID;
+    
     this.classTipo = "tipo"+this.tipoBloccoID; 
+    
     if (this.blocco.bloccoTesto) this.testo = this.blocco.bloccoTesto?.testo;
-  //su cambio Zoom devo fare diverse operazioni
 
-    this.zoomChanged();
-  }
-
-  ngOnInit(): void {
-  }
-
-
-  reloadData() {
-
-    this.svcBlocchi.get(this.blocco.id).subscribe(
-      (val:any)=> {
-        this.blocco = val;
-        this.ngOnChanges();
-      }
-    )
-  }
-    //console.log("blocco - reloadData");
-
-    // console.log ("è cambiato lo zoom! era", this.oldZoom, "ora è ",this.zoom);
-
-  zoomChanged() {
-
-    //solo la PRIMA volta (ratio = 1) e devo salvare le coordinate correnti
-    //le volte successive devo ripristinare la posizione e le dimensioni del box ripescandole dai valori precedenti
-    let ratio = this.zoom/this.oldZoom;
-    if (ratio !=1 && this.oldWidth) {
-      //quando passo di qua dopo save e con zoom != 1 oldWidth = 1!!! non va bene
-      this.left = this.oldLeft*ratio;
-      this.top = this.oldTop*ratio;
-      this.width = this.oldWidth*ratio;
-      this.height = this.oldheight*ratio;
-
-    } 
-    this.storeOldPosSize()
+    this.storeCurrPosSize()
     this.oldZoom = this.zoom;
   }
 
+  ngOnInit(): void {
+
+  }
+
+  // ngAfterViewInit(): void {
+  //   this.handleClickAndDoubleClick();
+  // }
+
+  // handleClickAndDoubleClick(){
+  //   const el = this.box.nativeElement;
+  //   const clickEvent = fromEvent<MouseEvent>(el, 'mouseup');
+  //   const dblClickEvent = fromEvent<MouseEvent>(el, 'dblclick');
+  //   const eventsMerged = merge(clickEvent, dblClickEvent).pipe(debounceTime(250));
+  //   eventsMerged.subscribe(
+  //     (event) => {
+  //       if(event.type === 'dblclick'){
+  //         this.openDetail()
+  //       }
+
+  //       if(event.type === 'mouseup'){
+  //         this.setStatus(event, 0);
+  //       }
+  //     }
+  //   );
+  // }
+
+  setStatus(event: MouseEvent, status: number){
+
+    //console.log("blocco - setStatus");
+
+    this.loadBox();
+    this.loadContainer();
+
+    this.status = status;
+    if(status === 1) //RESIZE
+      {
+        event.stopPropagation();
+        return;
+      }
+    else if(status === 2)  //MOVE
+      {
+        this.mouseClick = { x: event.clientX, y: event.clientY, left: this.left, top: this.top }; //MOVE imposta this.MouseClick con le coordinate iniziali
+        return;
+      }
+    else { //LIBERO
+      //per di qua passa anche alla fine del move quindi SALVO la posizione in DB ma solo se lo status è 0 (ho liberato la selezione)
+      // console.log("blocco - setStatus - lancio la save");
+      this.save();
+    }
+  }
+
+
+  reloadData(w: number, h: number, x: number, y: number) {
+    //viene chiamata su save di ritorno da blocco-edit,
+    // NON su cambio di zoom
+    //serve perchè potrei aver modificato posizione e dimensioni
+
+      this.blocco.w = w *this.zoom;
+      this.blocco.h = h *this.zoom;
+      this.blocco.x = x *this.zoom;
+      this.blocco.y = y *this.zoom;
+
+
+      this.oldZoom = this.zoom;
+      this.ngOnChanges();
+
+  }
 
   loadBox(){
     //console.log("blocco - loadBox");
@@ -149,30 +183,12 @@ export class BloccoComponent implements OnInit {
 
   }
 
-  setStatus(event: MouseEvent, status: number){
-    //console.log("blocco - setStatus");
 
-    this.loadBox(); //altro
-    this.loadContainer();
 
-    this.status = status;
-    if(status === 1) //RESIZE
-      {
-        event.stopPropagation();
-        return;
-      }
-    else if(status === 2)  //MOVE
-      {
-        this.mouseClick = { x: event.clientX, y: event.clientY, left: this.left, top: this.top }; //MOVE imposta this.MouseClick con le coordinate iniziali
-        return;
-      }
-    else { //LIBERO
-      //per di qua passa anche alla fine del move quindi SALVO la posizione in DB ma solo se lo status è 0 (ho liberato la selezione)
-      //console.log("blocco - setStatus - lancio la save");
-      this.save();
-    }
 
-  }
+
+
+  
 
 
   @HostListener('window:mousemove', ['$event'])
@@ -181,6 +197,18 @@ export class BloccoComponent implements OnInit {
     if(this.status === Status.RESIZE) this.resize();
     else if(this.status === Status.MOVE) this.move();
   }
+
+  // @HostListener('box:mousedown', ['$event'])
+  // onMouseDown(event: MouseEvent){
+  //   this.setStatus(event, 2);
+  // }
+  
+  // @HostListener('box:mouseup', ['$event'])
+  // onMouseUp(event: MouseEvent){
+  //   this.setStatus(event, 0);
+  // }
+  
+
 
   private resize(){
 
@@ -199,8 +227,10 @@ export class BloccoComponent implements OnInit {
 
     //magnetismo a destra (TODO sistemare in base allo zoom)
     if (this.magnete){ 
-      if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (A4.width-10)) < 5*this.zoom) this.width = (A4.width-10)*this.zoom -this.left; 
+      if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (A4.width-10)) < 5) this.width = (A4.width-10)*this.zoom -this.left; 
     }
+
+    if (this.griglia) { this.width = Math.round(this.width/10/this.zoom)*10*this.zoom}
 
 
     if (this.mouse.y - this.boxPos.top <0) this.height = 0
@@ -216,13 +246,13 @@ export class BloccoComponent implements OnInit {
 
     //magnetismo in basso (TODO sistemare in base allo zoom)
     if (this.magnete){ 
-      if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - (A4.height-10)) < 5*this.zoom) this.height = (A4.height-10)*this.zoom -this.top; 
+      if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - (A4.height-10)) < 5) this.height = (A4.height-10)*this.zoom -this.top; 
     }
 
-    
+    if (this.griglia) { this.height = Math.round(this.height/10/this.zoom)*10*this.zoom}
 
 
-    this.storeOldPosSize();
+    this.storeCurrPosSize();
 
   }
 
@@ -234,15 +264,16 @@ export class BloccoComponent implements OnInit {
     //questa va aggiunta alla posizione in cui si trovava il box (this.mouseClick.left) quando ha cliccato
     let xTemp = this.mouseClick.left + this.mouse.x - this.mouseClick.x;
 
-    //magnetismo su 10 e 200
-
+    
+    //magnetismo su Bordi e centro
     let mezzeriaX = (this.contPos.right+ this.contPos.left)/2;
-
     if (this.magnete){ 
       if (Math.abs(xTemp - 10*this.zoom) < 5*this.zoom) xTemp = 10*this.zoom; 
       if (Math.abs(xTemp + this.width - (A4.width-10)*this.zoom) < 5*this.zoom) xTemp = (A4.width-10)*this.zoom - this.width;
       if (Math.abs(xTemp + 0.5*this.width +this.contPos.left - mezzeriaX) < 5*this.zoom)   xTemp = mezzeriaX - this.contPos.left - this.width*0.5;
     }
+
+    if (this.griglia) { xTemp = Math.round(xTemp/10/this.zoom)*10*this.zoom}
      
     //viene verificata xTemp per essere sicuri che non vada oltre i limiti consentiti
     if (xTemp+this.contPos.left+this.width>this.contPos.right) this.left = this.contPos.right - this.contPos.left - this.width;
@@ -253,44 +284,37 @@ export class BloccoComponent implements OnInit {
 
     let mezzeriaY = (this.contPos.bottom+ this.contPos.top)/2;
 
-    //magnetismo su 10 e 280
+    //magnetismo su Bordi e centro
     if (this.magnete){ 
       if (Math.abs(yTemp - 10*this.zoom) < 5*this.zoom) yTemp = 10*this.zoom; 
       if (Math.abs(yTemp + this.height - (A4.height-10)*this.zoom) < 5*this.zoom) yTemp = (A4.height-10)*this.zoom - this.height;
       if (Math.abs(yTemp + 0.5*this.height +this.contPos.top - mezzeriaY) < 5*this.zoom)   yTemp = mezzeriaY - this.contPos.top - this.height*0.5;
 
     }
+
+    if (this.griglia) { yTemp = Math.round(yTemp/10/this.zoom)*10*this.zoom}
+
     
     if (yTemp+this.contPos.top+this.height>this.contPos.bottom) this.top = this.contPos.bottom - this.contPos.top - this.height;
     else if (yTemp <0) this.top = 0
     else this.top = yTemp;
     //console.log ("this.contPos.left", this.contPos.left);
 
-    this.storeOldPosSize();
+    this.storeCurrPosSize();
 
   }
 
 
-  storeOldPosSize() {
-    //console.log("blocco - storeOldPosSize");
-    this.oldLeft = this.left;
-    this.oldTop = this.top;
-    this.oldWidth = this.width;
-    this.oldheight = this.height;
-    // console.log ("this.oldLeft", this.oldLeft);
+  storeCurrPosSize() {
+    this.blocco.w = this.width;
+    this.blocco.h = this.height;
+    this.blocco.y =  this.top;
+    this.blocco.x = this.left;
   }
 
-  restoreOldPosSize() {
-    //non utilizzata per ora
-    this.left = this.oldLeft ;
-    this.top = this.oldTop;
-    this.width = this.oldWidth;
-    this.height = this.oldheight;
-    // console.log ("this.oldLeft", this.oldLeft);
-  }
 
   public save() {
-    //console.log("blocco - save");
+    // console.log("blocco - save");
 
     let objBlocco : TEM_Blocco =
     { 
@@ -304,14 +328,18 @@ export class BloccoComponent implements OnInit {
       ckFill: this.blocco.ckFill,
       bloccoFotoID: this.blocco.bloccoFotoID!,
       bloccoTestoID: this.blocco.bloccoTestoID!,
-      tipoBloccoID: this.blocco.tipoBloccoID
+      tipoBloccoID: this.blocco.tipoBloccoID,
+      borderTop: this.blocco.borderTop,
+      borderRight: this.blocco.borderRight,
+      borderBottom: this.blocco.borderBottom,
+      borderLeft: this.blocco.borderLeft
 
     }
-    // console.log ("blocco-save - objBlocco", objBlocco);
+    //console.log ("blocco-save - objBlocco", objBlocco);
 
     this.svcBlocchi.put(objBlocco).subscribe();
 
-    this.storeOldPosSize();
+    this.storeCurrPosSize();
   }
 
   public openDetail() {
@@ -326,17 +354,25 @@ export class BloccoComponent implements OnInit {
       const dialogRef = this._dialog.open(BloccoEditComponent, dialogConfig);
       dialogRef.afterClosed().subscribe(
         (res:any) => {
-          
-          this.reloadData(); //ri-estrae i dati per il blocco
-          if (this.blocco.bloccoFotoID) {
-            console.log("chiuso", res);
-            this.width = res.width;
-          }
-          //mi serve fare la refresh, quindi emetto recordEdited che Pagina riceve e ci pensa lei a farsi refresh
-          if (res=="DELETE") this.recordEdited.emit(this.blocco.id!)
+        
+          //deve ripescarsi l'oggetto
+        if (res.operazione != "DELETE") 
+        this.svcBlocchi.get(this.blocco.id)
+        .subscribe(val=> {
+          this.blocco= val;
+          //devo adattare alla larghezza....
+          //console.log ("val", val);
+          //this.reloadData(res.bloccoSize.w, res.bloccoSize.h, res.bloccoPos.x, res.bloccoPos.y);
+          this.reloadData(val.w, val.h, val.x, val.y);
+        })
+        else this.recordEdited.emit(this.blocco.id!)
         }
       );
     
   }
+
+
+  
+
 
 }

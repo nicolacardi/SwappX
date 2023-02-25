@@ -1,3 +1,5 @@
+/* @import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css'; */
 @import '~quill/dist/quill.snow.css';
 
 /*#region ********** GENERALI **********/
@@ -432,6 +434,16 @@
 /*#region ********** WIDTH *************/
 
     /* percentuali */
+
+    .w5 {
+        width: 5%;
+    }
+
+    .w10 {
+        width: 10%;
+    }
+
+
     .w20 {
         width: 20%;
     }
@@ -545,11 +557,25 @@
 /*#region ********** HEIGHT ************/
 
     /* percentuali */
+
+    .h10 {
+        height: 10%;
+    }
+
     .h75 {
         height: 75%;
     }
 
+    .h100 {
+        height: 100%;
+    }
+
+
     /* pixels */
+    .h10px {
+        height: 10px;
+    }
+
     .h16px {
         height: 16px;
     }
@@ -619,6 +645,14 @@
 
     ._border-left {
         border-left: 1px solid grey;
+    }
+
+    ._border-left-dot {
+        border-left: 1px dotted grey;
+    }
+
+    ._border-top-dot {
+        border-top: 1px dotted grey;
     }
 
     ._border-top {
@@ -805,6 +839,10 @@
 
     ._btn-pos-right-4 {
         right: 165px;
+    }
+
+    ._btn-pos-right-5 {
+        right: 210px;
     }
 
     ._btn-pos-top-0 {
