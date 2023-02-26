@@ -109,13 +109,71 @@
                 placeholder="Inserire il proprio testo..."
                 formControlName="testo"
                 [modules]="quillOptions"
+                [customOptions]="customOptions"
 
 
                 >
+                
+                    <!-- COSI' SI AGGIUNGONO MENU CON AZIONI IN ALTERNATIVA AI MODULES + CUSTOMOPTIONS -->
+                    <div quill-editor-toolbar>
 
-            
+                    <span class="ql-formats">
+                        <select class="ql-font" [title]="'Carattere'">
+                        </select>
+                    </span>
+
+                    <span class="ql-formats">
+                      <button class="ql-bold" [title]="'Grassetto'"></button>
+                      <button class="ql-italic" [title]="'Corsivo'"></button>
+                      <button class="ql-underline" [title]="'Sottolineato'"></button>
+                      <button class="ql-strike" [title]="'Barrato'"></button>
+                    </span>
+                
+                    <span class="ql-formats">
+                        <button class="ql-list ordered" value="ordered" [title]="'Elenco Numerato'"></button>
+                        <button class="ql-list bullet" value="bullet" [title]="'Elenco Puntato'"></button>
+
+                      </span>
+                    <span class="ql-formats">
+                      <select class="ql-size" [title]="'Dimensione Font'">
+                        <option value="10px"></option>
+                        <option selected value="12px"></option>
+                        <option value="12px"></option>
+                        <option value="14px"></option>
+                      </select>
+                    </span>
+                
+                    <span class="ql-formats">                      
+                        <select class="ql-align" [title]="'Allineamento'">
+                        </select>
+                    </span>
+                    <select class="ql-custom tooltip">
+                        <option value="1">[anno scolastico]</option>
+                        <option value="2">[nome e cognome alunno]</option>
+                        <option value="3">[Indirizzo scuola]</option>
+                        <option value="4">[altro campo]</option>
+                    </select>
+                
+                    <span class="ql-formats">
+                        <button class="ql-clean" [title]="'Pulizia Formato'"></button>
+                      </span>
+                
+                  </div>
+                                   <!-- <span class="ql-formats">
+                      <select class="ql-lineheight" [title]="'Line Height'">
+                        <option selected></option>
+                        <option value="1.0">1.0</option>
+                        <option value="2.0">2.0</option>
+                      </select>      
+                    </span> -->
             
             </quill-editor>
+
+
+
+            
+
+
 
 <!-- ************ Riempimento e Bordi ********************-->
             <mat-grid-list *ngIf="tipoBloccoDesc == 'Testo'" class=" _cell-bordered mt10" [cols]="4" rowHeight="60px">

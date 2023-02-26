@@ -23,8 +23,10 @@ import { TEM_BloccoFoto }                       from 'src/app/_models/TEM_Blocco
 import { TEM_BloccoTesto } from 'src/app/_models/TEM_BloccoTesto';
 import { BlocchiTestiService } from '../blocchitesti.service';
 
+
 import { CustomOption } from "ngx-quill";
 import { A4 } from 'src/environments/environment';
+import { Quill }                                from 'quill'
 
 
 
@@ -60,19 +62,22 @@ export class BloccoEditComponent implements OnInit {
   tipoBloccoDesc!:                              string;
 
   htmlText!:                                    string;        
+  
+  // Size = Quill.import("attributors/style/size");
 
 
 
-  // public customOptions = [{
-  //   import: 'attributors/style/size',
-  //   whitelist: ['10', '16', '22', '36', '48', '72', '144']
-  // }];
+  //la customOption abilita l'effettiva applicazione di quello che viene selezionato
+  public customOptions = [{
+    import: 'attributors/style/size',
+    whitelist: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px']
+  }];
 
   quillOptions = {
 
     toolbar: 
+    // {container:
     [
-      
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
       //['blockquote', 'code-block'],
   
@@ -82,9 +87,8 @@ export class BloccoEditComponent implements OnInit {
       //[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
       //[{ 'direction': 'rtl' }],                         // text direction
   
-      [{ 'size': ['10px', '12px', '14px'] }], 
-      // [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-      //[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ size: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px'] }],      // toggled buttons
+      // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
   
       // [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
       [{ 'font': [] }],
@@ -94,8 +98,14 @@ export class BloccoEditComponent implements OnInit {
   
       //['link', 'image', 'video']                         // link and image, video
     ],
+ 
+  
+  // }
     
   };
+  
+
+
 //#endregion
 
 
@@ -475,4 +485,8 @@ save(){
 
   }
   
+
+  insertPlaceholder(event: Event) {
+    console.log(event.target);
+  }
 }

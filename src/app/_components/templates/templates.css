@@ -153,33 +153,14 @@
 
 
 
-  .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before {
-    content: 'Normal';
-    font-size: 10px !important;
-}
+  /* QUESTO FUNZIONA MA IL SUCCESSIVO NO, PERCHE? */
+  /* :host::ng-deep .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {  
+    font-size: 17px;
+  } */
 
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before {
-    content: 'Large';
-    font-size: 12px !important;
-}
+  /* :host::ng-deep .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=small]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {
+  content: 'test' !important;
+} */
 
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before {
-    content: 'Huge';
-    font-size: 14px !important;
-}
-
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label.ql-active[data-value="10px"]::before {
-    content: '10px';
-}
-
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label.ql-active[data-value="12px"]::before {
-    content: '16px';
-}
-
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label.ql-active[data-value="14px"]::before {
-    content: '14px';
-}
 

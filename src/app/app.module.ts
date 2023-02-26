@@ -214,6 +214,7 @@ import { QuillModule }                          from 'ngx-quill'
   //timegridPlugin, NS 16/02/23
   //interactionPlugin NC 16/02/23
 // ]);
+
 @NgModule({
   declarations: [
     AppComponent,
