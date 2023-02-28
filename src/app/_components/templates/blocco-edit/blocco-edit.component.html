@@ -74,49 +74,27 @@
                 </mat-grid-tile>
             </mat-grid-list>
 
-            <!-- {{tipoBloccoDesc}}
-            <mat-grid-list class="_bordered-grey"  [cols]="2" rowHeight="80px" >
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <mat-label>BloccoTestoID</mat-label>
-                        <input matInput type="number"  formControlName="bloccoTestoID">
-                        
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <mat-label>BloccoFotoID</mat-label>
-                        <input matInput type="number"  formControlName="bloccoFotoID">
-                       
-                        
-                    </mat-form-field>
-                </mat-grid-tile>
-            </mat-grid-list> -->
-            <!-- <mat-grid-list [cols]="1" rowHeight="200px" >
-                <mat-grid-tile *ngIf="tipoBloccoDesc == 'Testo'">
-                    <mat-form-field class="w100" appearance="outline">
-                        <mat-label>Testo</mat-label>
-                        <textarea matInput class="w100 _noresize" type="text" style="height: 120px" formControlName="testo"></textarea>
-                    </mat-form-field>
-                </mat-grid-tile>
-            </mat-grid-list> -->
-
-
+<!-- ************ QUILL  ********************-->
 
             <quill-editor *ngIf="tipoBloccoDesc == 'Testo'"
-                (onContentChanged)="onContentChanged($event)"
+                (onSelectionChanged)="onSelectionChanged($event)"
                 placeholder="Inserire il proprio testo..."
                 formControlName="testo"
-                [modules]="quillOptions"
                 [customOptions]="customOptions"
-
-
-                >
+                #QuillEditor>
                 
-                    <!-- COSI' SI AGGIUNGONO MENU CON AZIONI IN ALTERNATIVA AI MODULES + CUSTOMOPTIONS -->
-                    <div quill-editor-toolbar>
+            <!-- COSI' SI AGGIUNGONO MENU CON AZIONI IN ALTERNATIVA AI MODULES -->
+                <div quill-editor-toolbar>
+                        <select class="ql-custom tooltip" (change)="insertPlaceholder($event)" >
+                            <option value="0" selected></option>
 
+                            <option value="[anno scolastico]" >[anno scolastico]</option>
+                            <option value="[nome e cognome alunno]">[nome e cognome alunno]</option>
+                            <option value="[Indirizzo Scuola]">[Indirizzo scuola]</option>
+                            <option value="[Voto Italiano 1Q]">[Voto Italiano 1Q]</option>
+                            <option value="[Obiettivo 1 Italiano]">[Obiettivo 1 Italiano]</option>
+
+                        </select>
                     <span class="ql-formats">
                         <select class="ql-font" [title]="'Carattere'">
                         </select>
@@ -135,11 +113,12 @@
 
                       </span>
                     <span class="ql-formats">
-                      <select class="ql-size" [title]="'Dimensione Font'">
+                      <select class="ql-size" [title]="'Dimensione Font'" formControlName="fontSize" >
                         <option value="10px"></option>
                         <option selected value="12px"></option>
-                        <option value="12px"></option>
                         <option value="14px"></option>
+                        <option value="16px"></option>
+                        <option value="18px"></option>
                       </select>
                     </span>
                 
@@ -147,19 +126,13 @@
                         <select class="ql-align" [title]="'Allineamento'">
                         </select>
                     </span>
-                    <select class="ql-custom tooltip">
-                        <option value="1">[anno scolastico]</option>
-                        <option value="2">[nome e cognome alunno]</option>
-                        <option value="3">[Indirizzo scuola]</option>
-                        <option value="4">[altro campo]</option>
-                    </select>
-                
+
                     <span class="ql-formats">
                         <button class="ql-clean" [title]="'Pulizia Formato'"></button>
                       </span>
                 
                   </div>
-                                   <!-- <span class="ql-formats">
+                    <!-- <span class="ql-formats">
                       <select class="ql-lineheight" [title]="'Line Height'">
                         <option selected></option>
                         <option value="1.0">1.0</option>
@@ -169,23 +142,17 @@
             
             </quill-editor>
 
-
-
-            
-
-
-
 <!-- ************ Riempimento e Bordi ********************-->
             <mat-grid-list *ngIf="tipoBloccoDesc == 'Testo'" class=" _cell-bordered mt10" [cols]="4" rowHeight="60px">
 
                 <mat-grid-tile>
-                    <mat-label>Riempimento: </mat-label>
+                    <mat-label>Trasparenza: </mat-label>
 
-                    <mat-checkbox color="primary" formControlName="ckFill">
+                    <mat-checkbox color="primary" formControlName="ckFill" (change)="setTrasparenza($event)">
                     </mat-checkbox>
                 </mat-grid-tile>
 
-                <mat-grid-tile *ngIf="tipoBloccoDesc == 'Testo'" [ngClass]="{'invisible': !form.controls.ckFill.value}">
+                <mat-grid-tile *ngIf="tipoBloccoDesc == 'Testo'" [ngClass]="{'invisible': form.controls.ckFill.value}">
 
                     <button type="button" class="_btnColorPicker" 
                     (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
@@ -205,9 +172,6 @@
                 <div class="form-group">
                     <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" formControlName="file" (change)="onImageChange($event)"hidden #selectFile>
                     <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile.click()" >Seleziona Immagine</button>
-                    <!-- <div *ngIf="uf.file.touched && uf.file.invalid" class="alert alert-danger">
-                        <div *ngIf="uf.file.errors.required">Image file is required.</div>
-                    </div> -->
                 </div>
             </div>
             
@@ -220,9 +184,6 @@
                     
                     #myImg >
             </div>
-
-
-
         </form>
     </mat-card-content>
 </mat-card>

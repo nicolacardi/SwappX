@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -24,9 +26,7 @@ import { CLS_ClasseAnnoMateria }                from 'src/app/_models/CLS_Classe
 import { CLS_TipoVoto }                         from 'src/app/_models/CLS_TipoVoto';
 import { MAT_Materia }                          from 'src/app/_models/MAT_Materia';
 
-
-
-
+//#endregion
 @Component({
   selector: 'app-classe-anno-materia-edit',
   templateUrl: './classe-anno-materia-edit.component.html',
@@ -35,19 +35,20 @@ import { MAT_Materia }                          from 'src/app/_models/MAT_Materi
 
 export class ClasseAnnoMateriaEditComponent implements OnInit {
 
-  //#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
-  classeAnnoMateria$!:        Observable<CLS_ClasseAnnoMateria>;
-  obsClassi$!:                Observable<CLS_Classe[]>;
-  obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;
-  obsMaterie$!:               Observable<MAT_Materia[]>;
-  obsTipiVoto$!:              Observable<CLS_TipoVoto[]>;
+  classeAnnoMateria$!:                          Observable<CLS_ClasseAnnoMateria>;
+  obsClassi$!:                                  Observable<CLS_Classe[]>;
+  obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>;
+  obsMaterie$!:                                 Observable<MAT_Materia[]>;
+  obsTipiVoto$!:                                Observable<CLS_TipoVoto[]>;
 
-  form! :                     UntypedFormGroup;
-  emptyForm :                 boolean = false;
-  loading:                    boolean = true;
+  form! :                                       UntypedFormGroup;
+  emptyForm :                                   boolean = false;
+  loading:                                      boolean = true;
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor(
     public _dialogRef: MatDialogRef<ClasseAnnoMateriaEditComponent>,
     @Inject(MAT_DIALOG_DATA) public classeAnnoMateriaID: number,
@@ -74,6 +75,10 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
     });
   }
 
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
+
   ngOnInit(): void {
     this.loadData();
   }
@@ -96,9 +101,9 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
     else 
       this.emptyForm = true
   }
+//#endregion
 
-
-//#region ----- Operazioni CRUD -------
+//#region ----- Operazioni CRUD ----------------
 
   save(){
 

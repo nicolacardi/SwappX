@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
@@ -19,6 +21,7 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 //components
 import { ClasseAnnoMateriaEditComponent } from '../classe-anno-materia-edit/classe-anno-materia-edit.component';
 
+//#endregion
 @Component({
   selector: 'app-classi-anni-materie-list',
   templateUrl: './classi-anni-materie-list.component.html',

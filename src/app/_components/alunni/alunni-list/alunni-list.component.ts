@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator }                         from '@angular/material/paginator';
 import { MatSort }                              from '@angular/material/sort';
@@ -23,6 +25,7 @@ import { NavigationService }                    from '../../utilities/navigation
 //classes
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 
+//#endregion
 @Component({
   selector:     'app-alunni-list',
   templateUrl:  './alunni-list.component.html',
@@ -31,7 +34,7 @@ import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno
 
 export class AlunniListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   matDataSource = new MatTableDataSource<ALU_Alunno>();
 
   displayedColumns: string[] =  [];
@@ -124,7 +127,7 @@ export class AlunniListComponent implements OnInit {
   };
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild(MatPaginator) paginator!:          MatPaginator;
   @ViewChild(MatSort) sort!:                    MatSort;
   @ViewChild("filterInput") filterInput!:       ElementRef;
@@ -140,6 +143,8 @@ export class AlunniListComponent implements OnInit {
 
 //#endregion
 
+//#region ----- Consructor ---------------------
+
   constructor(
     private svcAlunni:                          AlunniService,
     private router:                             Router,
@@ -148,8 +153,10 @@ export class AlunniListComponent implements OnInit {
     private _navigationService:                 NavigationService
   ) { }
   
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
+
   ngOnChanges() {
     //mentre classiDashboard ripassa per ngOnChanges quando classeSezioneAnnoID gli arriva (è una @Input)
     //alunniList non ci ripassa.
@@ -264,7 +271,8 @@ export class AlunniListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
+  
   applyFilter(event: Event) {
 
     this.filterValue = (event.target as HTMLInputElement).value;
@@ -320,7 +328,8 @@ export class AlunniListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
+
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -353,7 +362,7 @@ export class AlunniListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Right Click -------
+//#region ----- Right Click --------------------
   onRightClick(event: MouseEvent, element: ALU_Alunno) { 
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
@@ -387,7 +396,7 @@ export class AlunniListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Emit per alunno-edit -------
+//#region ----- Emit per alunno-edit -----------
   addToFamilyEmit(item: ALU_Alunno) {
     this.addToFamily.emit(item);
   }
@@ -398,7 +407,7 @@ export class AlunniListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Gestione Campo Checkbox -------
+//#region ----- Gestione Campo Checkbox --------
   selectedRow(element: ALU_Alunno) {
     this.selection.toggle(element);
   }
@@ -445,7 +454,7 @@ export class AlunniListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Altri metodi -------
+//#region ----- Altri metodi -------------------
   onResize(event: any) {
     this.displayedColumns = (event.target.innerWidth <= 800) ? 
       ["select", 

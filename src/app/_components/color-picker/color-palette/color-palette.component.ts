@@ -1,3 +1,4 @@
+//#region ----- IMPORTS ------------------------
 import {
   Component,
   ViewChild,
@@ -9,8 +10,8 @@ import {
   OnChanges,
   EventEmitter,
   HostListener,
-} from '@angular/core'
-
+}                                               from '@angular/core'
+//#endregion
 @Component({
   selector: 'app-color-palette',
   templateUrl: './color-palette.component.html',

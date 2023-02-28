@@ -8,6 +8,7 @@
     [style.width.px]="width"
     [style.height.px]="height" 
     [style.background-color] = "blocco.color"
+    
     [ngStyle]="{'border-top': blocco.borderTop? 'solid 1px grey':'none', 'border-right': blocco.borderRight? 'solid 1px grey':'none', 'border-bottom': blocco.borderBottom? 'solid 1px grey':'none', 'border-left': blocco.borderLeft? 'solid 1px grey':'none'}"
 
     [style.transform]="'translate3d('+ left + 'px,' + top + 'px,' + '0px)'"
@@ -19,11 +20,13 @@
 >
 
 <!-- [ngStyle] = "{'font-size': 10*zoom+'px'}" -->
-
-<div class="ql-editor" *ngIf="blocco.bloccoTesto" 
-    [innerHTML] ="blocco.bloccoTesto!.testo" 
-    style="word-break: break-all; "
-    >
+<div class="ql-container ql-snow" style="border-width: 0;" *ngIf="blocco.bloccoTesto">
+    <div class="ql-editor"  
+        [innerHTML] ="blocco.bloccoTesto!.testo" 
+        style="word-break: break-all; "
+        [style.font-size.px]="fontSizeN*zoom/2.2"
+        >
+    </div>
 </div>
 
 <div *ngIf="blocco.bloccoFoto" class="center">

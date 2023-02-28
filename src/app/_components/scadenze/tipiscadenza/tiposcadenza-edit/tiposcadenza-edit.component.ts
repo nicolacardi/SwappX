@@ -134,8 +134,8 @@ export class TipoScadenzaEditComponent implements OnInit {
     console.log( "passo", this.form.controls.color.value);
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '405px',
-      height: '460px',
+      width: '350px',
+      height: '475px',
       data: {ascRGB: this.form.controls.color.value},
     };
     const dialogRef = this._dialog.open(ColorPickerComponent, dialogConfig);

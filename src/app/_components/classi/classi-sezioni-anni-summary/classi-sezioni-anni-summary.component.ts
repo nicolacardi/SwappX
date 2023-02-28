@@ -1,25 +1,23 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatTableDataSource } from '@angular/material/table';
+//#region ----- IMPORTS ------------------------
+
+import { Component, OnInit, ViewChild }         from '@angular/core';
+import { Router }                               from '@angular/router';
+import { Observable }                           from 'rxjs';
+import { MatMenuTrigger }                       from '@angular/material/menu';
+import { MatTableDataSource }                   from '@angular/material/table';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
-
 //services
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { ClassiSezioniAnniService }             from '../classi-sezioni-anni.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
 
 //models
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
 
-//classes
-import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
-
-
-
+//#endregion
 @Component({
   selector: 'app-classi-sezioni-anni-summary',
   templateUrl: './classi-sezioni-anni-summary.component.html',
@@ -27,10 +25,10 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 })
 export class ClassiSezioniAnniSummaryComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
+  obsAnni$!:                            Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
 
   matDataSource = new MatTableDataSource<CLS_ClasseSezioneAnnoGroup>();
-  obsAnni$!:                            Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   form! :                               UntypedFormGroup;
   menuTopLeftPosition =  {x: '0', y: '0'} 
   displayedColumns: string[] =  [];
@@ -43,7 +41,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   ];
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 //#endregion
 
@@ -59,7 +57,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
     })
   }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
   ngOnInit(): void {
     this.obsAnni$= this.svcAnni.list();
     this.loadData();
@@ -86,8 +84,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   
 //#endregion
 
-
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- Right Click --------------------
   onRightClick(event: MouseEvent, element: CLS_ClasseSezioneAnnoGroup) { 
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
@@ -97,7 +94,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Altri Metodi            -------
+//#region ----- Altri Metodi -------------------
   getTotal() {
     return this.matDataSource.data.map(t => t.numAlunni).reduce((acc, value) => acc + value, 0)
   }

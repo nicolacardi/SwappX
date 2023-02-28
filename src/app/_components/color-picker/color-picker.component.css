@@ -6,6 +6,7 @@
   .color-wrapper {
     display: flex;
     height: 250px;
+    margin-top:60px;
   }
   
   .input-wrapper {

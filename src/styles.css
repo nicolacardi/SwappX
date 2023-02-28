@@ -754,7 +754,7 @@
     }
 
     ._btn-text {
-        color: white;
+        color: white !important;
         background-color: #044D7E !important;
     }
 

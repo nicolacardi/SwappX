@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -26,7 +28,7 @@ import { ALU_Genitore }                         from 'src/app/_models/ALU_Genito
 import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni';
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
 
-
+//#endregion
 
 @Component({
   selector:     'app-alunno-edit',
@@ -36,9 +38,14 @@ import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_mode
 
 export class AlunnoEditComponent implements OnInit {
 
-//#region ----- Variabili -------
-  public personaID!:                            number;
+//#region ----- Variabili ----------------------
+
   alunno$!:                                     Observable<ALU_Alunno>;
+  filteredComuni$!:                             Observable<_UT_Comuni[]>;
+  filteredComuniNascita$!:                      Observable<_UT_Comuni[]>;
+
+  public personaID!:                            number;
+
   alunnoNomeCognome:                            string = "";
   formPersona! :                                UntypedFormGroup;
   formAlunno! :                                 UntypedFormGroup;
@@ -49,21 +56,22 @@ export class AlunnoEditComponent implements OnInit {
   breakpoint!:                                  number;
   breakpoint2!:                                 number;
 
-  filteredComuni$!:                             Observable<_UT_Comuni[]>;
-  filteredComuniNascita$!:                      Observable<_UT_Comuni[]>;
   comuniIsLoading:                              boolean = false;
   comuniNascitaIsLoading:                       boolean = false;
   selectedTab:                                  number = 0;
 
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
+
   @ViewChild('genitoriFamiglia') genitoriFamigliaComponent!:            GenitoriListComponent; 
   @ViewChild('iscrizioniAlunno') classiAttendedComponent!:              ClassiSezioniAnniListComponent; 
   @ViewChild('classiSezioniAnniList') classiSezioniAnniListComponent!:  ClassiSezioniAnniListComponent; 
   @ViewChild(PersonaFormComponent) personaFormComponent!:               PersonaFormComponent; 
 
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor( 
     public _dialogRef:                          MatDialogRef<AlunnoEditComponent>,
@@ -94,13 +102,13 @@ export class AlunnoEditComponent implements OnInit {
     });
   }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#endregion
 
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit () {
     this.loadData();
   }
-
 
   loadData(){
 
@@ -125,10 +133,12 @@ export class AlunnoEditComponent implements OnInit {
     else this.emptyForm = true
         
   }
+
 //#endregion
 
-//#region ----- Operazioni CRUD -------
-  save(){
+//#region ----- Operazioni CRUD ----------------
+  
+save(){
 
     if (this.alunnoID == null || this.alunnoID == 0)    {
 
@@ -188,6 +198,7 @@ export class AlunnoEditComponent implements OnInit {
 //#endregion
 
 //#region ----- Metodi di gestione Genitori, Famiglia e Classi -------
+  
   addGenitore(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -275,16 +286,15 @@ export class AlunnoEditComponent implements OnInit {
       err=> { }
     )
   }
+
 //#endregion
 
-//#region ----- Eventi -------
+//#region ----- Eventi -------------------------
 
   onResize(event: any) {
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
     this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
   }
-//#endregion
-
 
   selectedTabValue(event: any){
     this.selectedTab = event.index;
@@ -293,5 +303,7 @@ export class AlunnoEditComponent implements OnInit {
   formValidEmitted(isValid: boolean) {
     this.isValid = isValid;
   }
+
+//#endregion
 }
 

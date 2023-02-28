@@ -1,27 +1,30 @@
-import { SelectionModel } from '@angular/cdk/collections';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+//#region ----- IMPORTS ------------------------
+
+import { SelectionModel }                       from '@angular/cdk/collections';
+import { CdkDragDrop, moveItemInArray }         from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
-
-//services
-import { LoadingService } from '../../../utilities/loading/loading.service';
-import { DocenzeService } from '../docenze.service';
-import { ClassiSezioniAnniService } from '../../classi-sezioni-anni.service';
-
-//models
-import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatMenuTrigger }                       from '@angular/material/menu';
+import { MatPaginator }                         from '@angular/material/paginator';
+import { MatSort }                              from '@angular/material/sort';
+import { MatTableDataSource }                   from '@angular/material/table';
+import { Observable }                           from 'rxjs';
 
 //components
-import { DocenzaEditComponent } from '../docenza-edit/docenza-edit.component';
-import { PersonaEditComponent } from '../../../persone/persona-edit/persona-edit.component';
+import { DocenzaEditComponent }                 from '../docenza-edit/docenza-edit.component';
+import { PersonaEditComponent }                 from '../../../persone/persona-edit/persona-edit.component';
+
+//services
+import { LoadingService }                       from '../../../utilities/loading/loading.service';
+import { DocenzeService }                       from '../docenze.service';
+import { ClassiSezioniAnniService }             from '../../classi-sezioni-anni.service';
+
+//models
+import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_ClasseDocenteMateria';
+import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_ClasseSezioneAnno';
 
 
+//#endregion
 @Component({
   selector: 'app-docenze-list',
   templateUrl: './docenze-list.component.html',
@@ -31,12 +34,12 @@ import { PersonaEditComponent } from '../../../persone/persona-edit/persona-edit
 export class DocenzeListComponent implements OnInit {
 
 //#region ----- Variabili -------
-  matDataSource = new           MatTableDataSource<CLS_ClasseDocenteMateria>();
-  storedFilterPredicate!:       any;
+  matDataSource = new                           MatTableDataSource<CLS_ClasseDocenteMateria>();
+  //storedFilterPredicate!:                       any;
   filterValue = '';
-  classeSezioneAnno!:           CLS_ClasseSezioneAnno;
+  classeSezioneAnno!:                           CLS_ClasseSezioneAnno;
 
-  displayedColumns: string[] = [
+  displayedColumns:                             string[] = [
     "select",
     "actionsColumn",
     "materia",
@@ -48,19 +51,20 @@ export class DocenzeListComponent implements OnInit {
 
   selection = new SelectionModel<CLS_ClasseDocenteMateria>(true, []);   //rappresenta la selezione delle checkbox
 
-  matSortActive!:               string;
-  matSortDirection!:            string;
+  matSortActive!:                               string;
+  matSortDirection!:                            string;
 
-  public page!:                 string;
+  public page!:                                 string;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   
-  toggleChecks:                 boolean = false;
-  showPageTitle:                boolean = true;
-  showTableRibbon:              boolean = true;
-  public ckSoloAttivi :         boolean = true;
+  toggleChecks:                                 boolean = false;
+  showPageTitle:                                boolean = true;
+  showTableRibbon:                              boolean = true;
+  public ckSoloAttivi :                         boolean = true;
+//#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
@@ -69,15 +73,16 @@ export class DocenzeListComponent implements OnInit {
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
 //#endregion
 
-
+//#region ----- Constructor ---------------------
   constructor(private svcDocenze:                 DocenzeService,
               private svcClasseSezioneAnno:       ClassiSezioniAnniService,
               private _loadingService:            LoadingService,
               public _dialog:                     MatDialog ) {
             
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
     if (this.classeSezioneAnnoID != undefined) {
@@ -113,7 +118,7 @@ export class DocenzeListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Right Click -------
+//#region ----- Right Click --------------------
 
   onRightClick(event: MouseEvent, element: CLS_ClasseDocenteMateria) { 
 
@@ -141,7 +146,7 @@ export class DocenzeListComponent implements OnInit {
 
 //#endregion
 
-  //#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
   addRecord(){
 
     //TODO!!!
@@ -181,7 +186,7 @@ export class DocenzeListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Gestione Campo Checkbox -------
+//#region ----- Gestione Campo Checkbox --------
   selectedRow(element: CLS_ClasseDocenteMateria) {
     this.selection.toggle(element);
   }

@@ -38,7 +38,7 @@ export class BloccoComponent implements OnInit {
   public tipoBloccoID!:                         number;
   public ckFill!:                               boolean;
   public testo!:                                string;
-
+  public fontSizeN:                            number = 1;
   private oldZoom:                              number = 1;
   public zoomratio:                             number =1 ;
 
@@ -86,7 +86,7 @@ export class BloccoComponent implements OnInit {
     this.classTipo = "tipo"+this.tipoBloccoID; 
     
     if (this.blocco.bloccoTesto) this.testo = this.blocco.bloccoTesto?.testo;
-
+    if (this.blocco.bloccoTesto) this.fontSizeN = parseInt(this.blocco.bloccoTesto?.fontSize.substring(0, this.blocco.bloccoTesto?.fontSize.length - 2));
     this.storeCurrPosSize()
     this.oldZoom = this.zoom;
   }
@@ -213,6 +213,7 @@ export class BloccoComponent implements OnInit {
   private resize(){
 
     //console.log (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (A4.width-10)));
+    console.log (this.boxPos.left);
 
     //console.log (this.mouse.x - this.boxPos.left*this.zoom + this.left*this.zoom - (A4.height-10)*this.zoom);
     if (this.mouse.x - this.boxPos.left <0) this.width = 0 //evita che si possa fare un rettangolo di larghezza negativa
@@ -225,9 +226,12 @@ export class BloccoComponent implements OnInit {
     }
     else this.width = this.mouse.x - this.boxPos.left;
 
-    //magnetismo a destra (TODO sistemare in base allo zoom)
+    
     if (this.magnete){ 
+      //magnetismo a destra
       if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (A4.width-10)) < 5) this.width = (A4.width-10)*this.zoom -this.left; 
+      //magnetismo a metà
+      if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (A4.width/2)) < 5) this.width = (A4.width/2)*this.zoom -this.left; 
     }
 
     if (this.griglia) { this.width = Math.round(this.width/10/this.zoom)*10*this.zoom}
@@ -244,9 +248,11 @@ export class BloccoComponent implements OnInit {
     //console.log ("this.width", this.width);
     //console.log ("this.height", this.height);
 
-    //magnetismo in basso (TODO sistemare in base allo zoom)
+    //magnetismo in basso
     if (this.magnete){ 
       if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - (A4.height-10)) < 5) this.height = (A4.height-10)*this.zoom -this.top; 
+      if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - (A4.height/2)) < 5) this.height = (A4.height/2)*this.zoom -this.top; 
+
     }
 
     if (this.griglia) { this.height = Math.round(this.height/10/this.zoom)*10*this.zoom}

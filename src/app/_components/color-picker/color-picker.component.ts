@@ -1,7 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DialogDataColoreMateria } from 'src/app/_models/DialogData';
+//#region ----- IMPORTS ------------------------
 
+import { Component, Inject, OnInit }            from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
+import { DialogDataColoreMateria }              from 'src/app/_models/DialogData';
+
+//#endregion
 @Component({
   selector: 'app-color-picker',
   templateUrl: './color-picker.component.html',

@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 import { ActivatedRoute, Router }               from '@angular/router';
@@ -26,6 +28,7 @@ import { NavigationService }                    from '../../utilities/navigation
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
 import { DocenzeService }                       from '../docenze/docenze.service';
 
+//#endregion
 
 @Component({
   selector: 'app-classi-dashboard',
@@ -85,12 +88,11 @@ export class ClassiDashboardComponent implements OnInit {
 
   public classeSezioneAnnoIDrouted!:        string;   //valore ricevuto (routed) dal ruoting
   public annoIDrouted!:         string;   //valore ricevuto (routed) dal ruoting
-
-
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-  //@ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
+
+//@ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
   @ViewChild(ClassiSezioniAnniListComponent) viewClassiSezioniAnni!: ClassiSezioniAnniListComponent; 
   @ViewChild(IscrizioniClasseListComponent) viewListIscrizioni!: IscrizioniClasseListComponent; 
   @ViewChild(DocenzeListComponent) viewDocenzeList!: DocenzeListComponent; 
@@ -98,8 +100,7 @@ export class ClassiDashboardComponent implements OnInit {
   @ViewChild('orarioDocenteDOM') viewOrarioDocente!: LezioniCalendarioComponent; 
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
 
-  //@Input () classeSezioneAnnoId!: number;
-//#endregion
+  //#endregion
 
   constructor(
     private svcIscrizioni:                      IscrizioniService,
@@ -132,7 +133,7 @@ export class ClassiDashboardComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- altri metodi-------
+//#region ----- altri metodi--------------------
 
   creaPdfIscrizioni() {
 

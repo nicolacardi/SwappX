@@ -19,42 +19,37 @@ import { PagineService } from '../pagine.service';
 })
 export class PaginaComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   public obsBlocchi$!:                          Observable<TEM_Blocco[]>;
   public blocchiArr!:                           TEM_Blocco[];
   public nLineeVert!:                           number[];
   public nLineeHor!:                            number[];
-
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
+
+  @ViewChildren('Blocco') Blocchi!: QueryList<any>;
 
   @Input() paginaID!:                           number;
   @Input() zoom!:                               number;
   @Input() magnete!:                            boolean;
   @Input() griglia!:                            boolean;
 
-
   @Output('deleteEmitted') deleteEmitter = new EventEmitter<number>(); //l'ID della pagina cancellata viene EMESSA quando la si cancella
 
-  @ViewChildren('Blocco') Blocchi!: QueryList<any>;
-
-
-  
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor(
     private svcBlocchi:                         BlocchiService,
     private svcPagine:                          PagineService,
-
     private _loadingService :                   LoadingService 
-
   ) {
-
     this.nLineeVert = Array(21).fill(0).map((x,i)=>i);
     this.nLineeHor = Array(30).fill(0).map((x,i)=>i);
-
    }
+//#endregion
+
 
   ngOnChanges() {
 
@@ -70,7 +65,7 @@ export class PaginaComponent implements OnInit {
 
     this.obsBlocchi$.subscribe(
       res=> {
-        // console.log ("Blocchi di pagina:", this.paginaID, res);
+         console.log ("Blocchi di pagina:", this.paginaID, res);
         this.blocchiArr = res
       }
     )

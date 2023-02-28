@@ -1,8 +1,8 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild }            from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, ValidatorFn }               from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { iif, Observable, of }                      from 'rxjs';
+import { Observable }                      from 'rxjs';
 import { concatMap, tap }                       from 'rxjs/operators';
 
 //components
@@ -11,24 +11,19 @@ import { tooWideValidator, tooHighValidator}    from '../../utilities/crossfield
 import { ColorPickerComponent }                 from '../../color-picker/color-picker.component';
 import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 import { Utility }                              from '../../utilities/utility.component';
+import { QuillEditorComponent }                 from 'ngx-quill'
 
 //services
 import { BlocchiService }                       from '../blocchi.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { BlocchiFotoService }                   from '../blocchifoto.service';
+import { BlocchiTestiService }                  from '../blocchitesti.service';
 
 //models
+import { A4 }                                   from 'src/environments/environment';
 import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
 import { TEM_BloccoFoto }                       from 'src/app/_models/TEM_BloccoFoto';
-import { TEM_BloccoTesto } from 'src/app/_models/TEM_BloccoTesto';
-import { BlocchiTestiService } from '../blocchitesti.service';
-
-
-import { CustomOption } from "ngx-quill";
-import { A4 } from 'src/environments/environment';
-import { Quill }                                from 'quill'
-
-
+import { TEM_BloccoTesto }                      from 'src/app/_models/TEM_BloccoTesto';
 
 
 @Component({
@@ -37,7 +32,7 @@ import { Quill }                                from 'quill'
   styleUrls: ['../templates.css']
 })
 export class BloccoEditComponent implements OnInit {
-//#region ----- Variabili -------
+//#region ----- Variabili --------------------
   blocco$!:                                     Observable<TEM_Blocco>;
   form! :                                       UntypedFormGroup;
   imgFile!:                                     string;
@@ -63,9 +58,9 @@ export class BloccoEditComponent implements OnInit {
 
   htmlText!:                                    string;        
   
-  // Size = Quill.import("attributors/style/size");
 
 
+  //QUILL
 
   //la customOption abilita l'effettiva applicazione di quello che viene selezionato
   public customOptions = [{
@@ -73,50 +68,42 @@ export class BloccoEditComponent implements OnInit {
     whitelist: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px']
   }];
 
-  quillOptions = {
+  currIndex:                                   number = 0;
+  // quillOptions = {                              //non servirà più
 
-    toolbar: 
-    // {container:
-    [
-      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      //['blockquote', 'code-block'],
-  
-      //[{ 'header': 1 }, { 'header': 2 }],               // custom button values
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-      //[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-      //[{ 'direction': 'rtl' }],                         // text direction
-  
-      [{ size: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px'] }],      // toggled buttons
-      // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-  
-      // [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-  
-      ['clean'],                                         // remove formatting button
-  
-      //['link', 'image', 'video']                         // link and image, video
-    ],
- 
-  
-  // }
+  //   toolbar: 
+
+  //   [
+  //     ['bold', 'italic', 'underline', 'strike'],          // toggled buttons
+  //     //['blockquote', 'code-block'],
+  //     //[{ 'header': 1 }, { 'header': 2 }],               // custom button values
+  //     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+  //     [{ 'script': 'sub'}, { 'script': 'super' }],        // superscript/subscript
+  //     //[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+  //     //[{ 'direction': 'rtl' }],                         // text direction
+  //     [{ size: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px'] }],      // toggled buttons
+  //     // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+  //     // [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+  //     [{ 'font': [] }],
+  //     [{ 'align': [] }],
+  //     ['clean'],                                          // remove formatting button
+  //     //['link', 'image', 'video']                         // link and image, video
+  //   ],
     
-  };
+  // };
   
 
 
 //#endregion
 
+//#region ----- ViewChild Input Output -------
+  @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
+  @ViewChild('QuillEditor', { static: false }) editor!: QuillEditorComponent
+  //@ViewChild('QuillEditor', { static: false }) quill!: Quill
 
+//#endregion
 
-
-
-
-
-@ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
-
-
+//#region ----- Constructor ------------------
   constructor(
     @Inject(MAT_DIALOG_DATA) public bloccoID:   number,
     private fb:                                 UntypedFormBuilder, 
@@ -148,11 +135,11 @@ export class BloccoEditComponent implements OnInit {
         borderTop:                              [],
         borderRight:                            [],
         borderBottom:                           [],
-        borderLeft:                             []
+        borderLeft:                             [],
+        fontSize:                               []
       }, { validators: [tooWideValidator, tooHighValidator]});
-
-
   }
+//#endregion 
 
 //#region ----- LifeCycle Hooks e simili-------
 
@@ -178,7 +165,10 @@ export class BloccoEditComponent implements OnInit {
                 this.imgSize.h = blocco.bloccoFoto.h;
                 this.imgSize.w = blocco.bloccoFoto.w;
               }
-              if (blocco.bloccoTesto) this.form.controls.testo.setValue(blocco.bloccoTesto!.testo);
+              if (blocco.bloccoTesto) {
+                this.form.controls.testo.setValue(blocco.bloccoTesto.testo);
+                this.form.controls.fontSize.setValue(blocco.bloccoTesto.fontSize);
+              }
 
             }
           )
@@ -188,145 +178,149 @@ export class BloccoEditComponent implements OnInit {
   }
 //#endregion
 
-save(){
-  //console.log("blocco-edit - save - form blocco da salvare", this.form.value);
+//#region ----- Operazioni CRUD ---------------
+
+  save(){
+    //console.log("blocco-edit - save - form blocco da salvare", this.form.value);
 
 
-  if (this.tipoBloccoDesc == "Immagine" && this.immagineDOM != undefined) {  //********* caso blocco di Foto  *******************
+    if (this.tipoBloccoDesc == "Immagine" && this.immagineDOM != undefined) {  //********* caso blocco di Foto  *******************
 
-    if (this.form.controls.bloccoFotoID.value) {  // PUT
-      let fotoObj : TEM_BloccoFoto = {
-        id:this.form.controls.bloccoFotoID.value,
-        foto: this.immagineDOM.nativeElement.src,
-        w: Math.floor(this.imgSize.w),
-        h: Math.floor(this.imgSize.h)
+      if (this.form.controls.bloccoFotoID.value) {  // PUT
+        let fotoObj : TEM_BloccoFoto = {
+          id:this.form.controls.bloccoFotoID.value,
+          foto: this.immagineDOM.nativeElement.src,
+          w: Math.floor(this.imgSize.w),
+          h: Math.floor(this.imgSize.h)
+        }
+        //console.log ("vado a salvare", fotoObj, "e blocco", this.form.value);
+        this.svcBlocchiFoto.put(fotoObj)
+        .pipe(
+          concatMap( ()=> this.svcBlocchi.put(this.form.value))
+        )
+        .subscribe( res=> {
+          //console.log("sto per chiudere e passare this.imgSize PUT", this.imgSize);
+            this.ritorno = {
+              //tipo: this.tipoBloccoDesc,
+              operazione: "PUT",
+              //contenuto: this.immagineDOM.nativeElement.src,
+              //bloccoSize:  {
+              //  w: Math.floor(this.imgSize.w),
+              //  h: Math.floor(this.imgSize.h)
+              //},
+              //bloccoPos: {
+              //  x: this.form.controls.x.value,
+              //  y: this.form.controls.y.value
+              //}
+            }
+            this._dialogRef.close(this.ritorno);
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
+          },
+          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        )
+      } else {
+        let fotoObj : TEM_BloccoFoto = {          // POST
+          foto: this.immagineDOM.nativeElement.src,
+          w: Math.floor(this.imgSize.w),
+          h: Math.floor(this.imgSize.h)
+        }
+        //console.log ("vado a salvare", fotoObj, "e blocco", this.form.value);
+
+        this.svcBlocchiFoto.post(fotoObj)
+        .pipe(
+          tap(bloccoFoto=> this.form.controls.bloccoFotoID.setValue(bloccoFoto.id)),
+          concatMap( ()=> this.svcBlocchi.put(this.form.value))
+        )
+        .subscribe( res=> {
+            //console.log("sto per chiudere e passare this.imgSize POST", this.imgSize);
+            this.ritorno = {
+              //tipo: this.tipoBloccoDesc,
+              operazione: "POST",
+              // contenuto: this.immagineDOM.nativeElement.src,
+              // bloccoSize:  {
+              //   w: Math.floor(this.imgSize.w),
+              //   h: Math.floor(this.imgSize.h)
+              // },
+              // bloccoPos: {
+              //   x: this.form.controls.x.value,
+              //   y: this.form.controls.y.value
+              // }
+            }
+            this._dialogRef.close(this.ritorno);
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
+          },
+          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        )
+        
       }
-      //console.log ("vado a salvare", fotoObj, "e blocco", this.form.value);
-      this.svcBlocchiFoto.put(fotoObj)
-      .pipe(
-        concatMap( ()=> this.svcBlocchi.put(this.form.value))
-      )
-      .subscribe( res=> {
-        //console.log("sto per chiudere e passare this.imgSize PUT", this.imgSize);
+
+
+    
+
+    } else if (this.tipoBloccoDesc == "Testo") {     //********* caso blocco di Testo *******************
+      let testoObj! : TEM_BloccoTesto;
+
+      if (this.form.controls.bloccoTestoID.value) { // PUT
+        testoObj = {
+          id: this.form.controls.bloccoTestoID.value,
+          testo: this.form.controls.testo.value,
+          fontSize: this.form.controls.fontSize.value,
+        }
+        this.svcBlocchiTesti.put(testoObj)
+        .pipe (
+          concatMap( ()=> this.svcBlocchi.put(this.form.value))
+        )
+        .subscribe( res=> {
           this.ritorno = {
             //tipo: this.tipoBloccoDesc,
-            operazione: "PUT",
-            //contenuto: this.immagineDOM.nativeElement.src,
-            //bloccoSize:  {
-            //  w: Math.floor(this.imgSize.w),
-            //  h: Math.floor(this.imgSize.h)
-            //},
-            //bloccoPos: {
-            //  x: this.form.controls.x.value,
-            //  y: this.form.controls.y.value
-            //}
-          }
-          this._dialogRef.close(this.ritorno);
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
-        },
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
-    } else {
-      let fotoObj : TEM_BloccoFoto = {          // POST
-        foto: this.immagineDOM.nativeElement.src,
-        w: Math.floor(this.imgSize.w),
-        h: Math.floor(this.imgSize.h)
-      }
-      //console.log ("vado a salvare", fotoObj, "e blocco", this.form.value);
-
-      this.svcBlocchiFoto.post(fotoObj)
-      .pipe(
-        tap(bloccoFoto=> this.form.controls.bloccoFotoID.setValue(bloccoFoto.id)),
-        concatMap( ()=> this.svcBlocchi.put(this.form.value))
-      )
-      .subscribe( res=> {
-          //console.log("sto per chiudere e passare this.imgSize POST", this.imgSize);
-          this.ritorno = {
-            //tipo: this.tipoBloccoDesc,
-            operazione: "POST",
-            // contenuto: this.immagineDOM.nativeElement.src,
+            operazione:"PUT",
+            // contenuto: "",
             // bloccoSize:  {
-            //   w: Math.floor(this.imgSize.w),
-            //   h: Math.floor(this.imgSize.h)
+            //   w: this.form.controls.w.value,
+            //   h: this.form.controls.h.value
             // },
             // bloccoPos: {
             //   x: this.form.controls.x.value,
             //   y: this.form.controls.y.value
             // }
           }
-          this._dialogRef.close(this.ritorno);
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
-        },
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
-      
-    }
-
-
-  
-
-  } else if (this.tipoBloccoDesc == "Testo") {     //********* caso blocco di Testo *******************
-    let testoObj! : TEM_BloccoTesto;
-
-    if (this.form.controls.bloccoTestoID.value) { // PUT
-      testoObj = {
-        id: this.form.controls.bloccoTestoID.value,
-        testo: this.form.controls.testo.value
-      }
-      this.svcBlocchiTesti.put(testoObj)
-      .pipe (
-        concatMap( ()=> this.svcBlocchi.put(this.form.value))
-      )
-      .subscribe( res=> {
-        this.ritorno = {
-          //tipo: this.tipoBloccoDesc,
-          operazione:"PUT",
-          // contenuto: "",
-          // bloccoSize:  {
-          //   w: this.form.controls.w.value,
-          //   h: this.form.controls.h.value
-          // },
-          // bloccoPos: {
-          //   x: this.form.controls.x.value,
-          //   y: this.form.controls.y.value
-          // }
+            this._dialogRef.close(this.ritorno);
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
+          },
+          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        )
+      } else {                                    // POST
+        testoObj = {
+          testo: this.form.controls.testo.value,
+          fontSize: this.form.controls.fontSize.value
         }
-          this._dialogRef.close(this.ritorno);
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
-        },
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
-    } else {                                    // POST
-      testoObj = {
-        testo: this.form.controls.testo.value
+        this.svcBlocchiTesti.post(testoObj)
+        .pipe (
+          tap(bloccoTesto=> {this.form.controls.bloccoTestoID.setValue(bloccoTesto.id)}),
+          concatMap( ()=> this.svcBlocchi.put(this.form.value))
+        )
+        .subscribe( res=> {
+          this.ritorno = {
+            //tipo: this.tipoBloccoDesc,
+            operazione: "POST",
+            // contenuto: "",
+            // bloccoSize:  {
+            //   w: this.form.controls.w.value,
+            //   h: this.form.controls.h.value
+            // },
+            // bloccoPos: {
+            //   x: this.form.controls.x.value,
+            //   y: this.form.controls.y.value
+            // }
+          }
+            this._dialogRef.close(this.ritorno);
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
+          },
+          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        )
       }
-      this.svcBlocchiTesti.post(testoObj)
-      .pipe (
-        tap(bloccoTesto=> {this.form.controls.bloccoTestoID.setValue(bloccoTesto.id)}),
-        concatMap( ()=> this.svcBlocchi.put(this.form.value))
-      )
-      .subscribe( res=> {
-        this.ritorno = {
-          //tipo: this.tipoBloccoDesc,
-          operazione: "POST",
-          // contenuto: "",
-          // bloccoSize:  {
-          //   w: this.form.controls.w.value,
-          //   h: this.form.controls.h.value
-          // },
-          // bloccoPos: {
-          //   x: this.form.controls.x.value,
-          //   y: this.form.controls.y.value
-          // }
-        }
-          this._dialogRef.close(this.ritorno);
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
-        },
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
     }
   }
-}
 
   delete() {
 
@@ -360,12 +354,15 @@ save(){
       )
     );
   }
+//#endregion
+
+//#region ----- Altri metodi (ColorPicker, imgChange, bordi ...) -------
 
   openColorPicker() {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '405px',
-      height: '460px',
+      width: '350px',
+      height: '475px',
       data: {ascRGB: this.form.controls.color.value},
     };
     const dialogRef = this._dialog.open(ColorPickerComponent, dialogConfig);
@@ -393,10 +390,7 @@ save(){
       reader.readAsDataURL(file);
       reader.onload = () => {
         this.imgFile = reader.result as string;
-//*************************************************************************************************************************************** */
-        //DA CAPIRE ! questa qui sotto non sembra funzionare mai, mentre la Utility.loadImage viene in verità chiamata e funziona
-        //infatti arr....viene popolata correttamente, ma qui non arriva....e tutto funziona lo stesso!
-        //loadImage restituisce un array nel quale il primo valore [0] è l'immagine, il secondo è la sua larghezza e il terzo l'altezza
+
         Utility.loadImage( this.imgFile, 500)
                .then((compressed: any) => {
 
@@ -405,7 +399,6 @@ save(){
                 let larghezzaDisp = A4.width - this.form.controls.x.value;
                 let altezzaDisp = A4.height - this.form.controls.y.value;
                 let ratiodisp = larghezzaDisp/altezzaDisp;
-
 
                 //ci sono diversi casi da contemplare
                 if (compressed[1] > larghezzaDisp && compressed[2] < altezzaDisp) {
@@ -440,19 +433,14 @@ save(){
                   this.imgSize.w = compressed[1];
                   this.imgSize.h = compressed[2];
                 }
-
-                
-
-                // console.log("this.imgSize.w h", this.imgSize);
-
               });
       };
     }
   }
 
-
-  onContentChanged = (event: any) =>{
-    console.log(event.html);
+  setTrasparenza(value: any) {
+    //console.log(value.checked);
+    if (value.checked) {this.form.controls.color.setValue("")}
   }
 
   bordersChange (event: any){
@@ -484,9 +472,35 @@ save(){
 
 
   }
-  
+//#endregion
 
-  insertPlaceholder(event: Event) {
-    console.log(event.target);
+//#region ----- Quill -------------------------
+  onSelectionChanged = (event: any) =>{
+    //salva la posizione in cui si trova il cursore!
+    this.currIndex = event.range.index;
   }
+
+
+  insertPlaceholder(event: any) {
+    //conosciamo l'API editor è QuillEditor....
+    //    const debug = this.editor.quillEditor.getContents();          //ritorna un fantomatico Delta Array un elemento per ogni riga
+    //    const debug = this.editor.quillEditor.getIndex.length;        //ritorna sempre 1
+    //    const deubg = this.editor.quillEditor.deleteText(2,3);        //cancella dal secondo carattere per tre caratteri
+    //    const debug = this.editor.quillEditor.getSelection()!.length; //non funziona proprio, nemmeno "null"
+    //    const debug = this.editor.quillEditor.getLines();             //restituisce il numero di linee
+    //    const debug = this.editor.quillEditor.getText();              //restituisce il testo intero
+    console.log ("insertPlaceholder", this.currIndex, event.target!.value);
+    this.editor.quillEditor.insertText (this.currIndex, event.target!.value, 'bold', true);  
+  }
+
+  applicaFontSize() {
+    console.log ("selezionatutt")
+    this.editor.quillEditor.setSelection(0, this.editor.quillEditor.getLength()) 
+  }
+  selezionaTutto() {
+    console.log("selezionatutto");
+  }
+//#endregion
+
 }
+

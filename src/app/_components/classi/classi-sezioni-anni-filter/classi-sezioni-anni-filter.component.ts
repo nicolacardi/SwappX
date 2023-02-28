@@ -1,6 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+//#region ----- IMPORTS ------------------------
 
+import { Component, Input, OnInit }             from '@angular/core';
+import { UntypedFormControl }                   from '@angular/forms';
+
+//#endregion
 //components
 import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 

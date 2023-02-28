@@ -1,9 +1,12 @@
-import { Component, Input, OnInit} from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+//#region ----- IMPORTS ------------------------
+
+import { Component, Input, OnInit}              from '@angular/core';
+import { UntypedFormControl }                   from '@angular/forms';
 
 //components
-import { AlunniListComponent } from '../alunni-list/alunni-list.component';
+import { AlunniListComponent }                  from '../alunni-list/alunni-list.component';
 
+//#endregion
 @Component({
   selector: 'app-alunni-filter',
   templateUrl: './alunni-filter.component.html',
@@ -12,7 +15,7 @@ import { AlunniListComponent } from '../alunni-list/alunni-list.component';
 
 export class AlunniFilterComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');
   dtNascitaFilter = new UntypedFormControl('');
@@ -24,13 +27,13 @@ export class AlunniFilterComponent implements OnInit {
   nomeCognomeGenitoreFilter = new UntypedFormControl('');
 //#endregion
   
-//#region ----- ViewChild Input Output -------  
+//#region ----- ViewChild Input Output ---------  
   @Input() alunniListComponent!: AlunniListComponent;
 //#endregion
 
   constructor() {}
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
 
@@ -107,9 +110,10 @@ export class AlunniFilterComponent implements OnInit {
     )
 
   }
+
 //#endregion
 
-//#region ----- Reset vari -------
+//#region ----- Reset vari ---------------------
 
   //AS: pulizia filtro di sinistra, chiamata su edit filtro di destra
   // PER IL MOMENTO NON UTILIZZATA

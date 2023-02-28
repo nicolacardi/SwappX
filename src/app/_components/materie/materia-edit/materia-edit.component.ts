@@ -139,8 +139,8 @@ export class MateriaEditComponent implements OnInit {
   openColorPicker() {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '405px',
-      height: '460px',
+      width: '350px',
+      height: '475px',
       data: {ascRGB: this.form.controls.color.value},
     };
     const dialogRef = this._dialog.open(ColorPickerComponent, dialogConfig);
