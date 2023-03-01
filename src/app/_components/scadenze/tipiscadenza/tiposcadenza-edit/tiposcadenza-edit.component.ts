@@ -25,7 +25,7 @@ import { CAL_TipoScadenza }                     from 'src/app/_models/CAL_TipoSc
 })
 export class TipoScadenzaEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   tiposcadenza$!:                                    Observable<CAL_TipoScadenza>;
 

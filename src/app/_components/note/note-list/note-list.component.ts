@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { CdkDragDrop, moveItemInArray }         from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
@@ -19,8 +21,8 @@ import { DocentiService }                       from '../../docenti/docenti.serv
 //models
 import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
-import { DOC_NotaIscrizione }                   from 'src/app/_models/DOC_NotaIscrizione';
 
+//#endregion
 
 @Component({
   selector: 'app-note-list',
@@ -29,7 +31,7 @@ import { DOC_NotaIscrizione }                   from 'src/app/_models/DOC_NotaIs
 })
 export class NoteListComponent implements OnInit {
   
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   matDataSource =                               new MatTableDataSource<DOC_Nota>();
 
@@ -80,7 +82,7 @@ export class NoteListComponent implements OnInit {
   };
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output --------
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!: number;
   @Input('dove') dove!:                         string;
 
@@ -94,6 +96,8 @@ export class NoteListComponent implements OnInit {
 
 //#endregion  
 
+//#region ----- Constructor --------------------
+
   constructor(
     private svcNote:                            NoteService,
     private svcDocenti:                         DocentiService,
@@ -102,7 +106,9 @@ export class NoteListComponent implements OnInit {
 
   }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
     
@@ -212,7 +218,7 @@ export class NoteListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
   applyFilter(event: Event) {
 
     this.filterValue = (event.target as HTMLInputElement).value;
@@ -279,7 +285,7 @@ export class NoteListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
 
   addRecord(){
     const dialogConfig : MatDialogConfig = {

@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -26,6 +28,7 @@ import { CAL_Scadenza, CAL_ScadenzaPersone }    from 'src/app/_models/CAL_Scaden
 import { DOC_NotaIscrizione }                   from 'src/app/_models/DOC_NotaIscrizione';
 import { DialogDataNota }                       from 'src/app/_models/DialogData';
 
+//#endregion
 @Component({
   selector: 'app-nota-edit',
   templateUrl: './nota-edit.component.html',
@@ -34,7 +37,7 @@ import { DialogDataNota }                       from 'src/app/_models/DialogData
 
 export class NotaEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   obsNota$!:                                    Observable<DOC_Nota>;
   obsIscrizioni$!:                              Observable<CLS_Iscrizione[]>;
   disabilitato:                                 boolean = false;
@@ -48,6 +51,8 @@ export class NotaEditComponent implements OnInit {
   loading:                                      boolean = true;
   breakpoint!:                                  number;
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor(public _dialogRef:                          MatDialogRef<NotaEditComponent>,
               private svcUser:                            UserService,
@@ -85,6 +90,9 @@ export class NotaEditComponent implements OnInit {
 
     this.obsIscrizioni$ = this.svcIscrizioni.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
   }
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
     this.loadData();
@@ -132,6 +140,10 @@ export class NotaEditComponent implements OnInit {
       );
     }
   }
+
+//#endregion
+
+//#region ----- Operazioni CRUD ----------------
 
   save() {
 
@@ -281,7 +293,9 @@ export class NotaEditComponent implements OnInit {
         )
     }
   }
+//#endregion
 
+//#region ----- Altri metodi -------------------
 
   insertGenitori(alunnoID: number, scadenzaID: number) {
 
@@ -381,6 +395,7 @@ export class NotaEditComponent implements OnInit {
       });
     }
   }
+//#endregion
 
 
 }

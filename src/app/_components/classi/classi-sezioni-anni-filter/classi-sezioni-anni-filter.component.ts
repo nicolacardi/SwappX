@@ -14,18 +14,18 @@ import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/clas
 })
 export class ClassiSezioniAnniFilterComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   classeFilter = new UntypedFormControl('');
   sezioneFilter = new UntypedFormControl('');
 //#endregion
 
-//#region ----- ViewChild Input Output -------  
+//#region ----- ViewChild Input Output --------- 
   @Input() classiSezioniAnniListComponent!: ClassiSezioniAnniListComponent;
 //#endregion 
 
   constructor() { }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
   ngOnInit() {
 
     this.classeFilter.valueChanges.subscribe(

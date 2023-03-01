@@ -28,7 +28,7 @@ import { PER_Persona }                          from 'src/app/_models/PER_Person
 })
 export class PersoneListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   matDataSource = new MatTableDataSource<PER_Persona>();
 

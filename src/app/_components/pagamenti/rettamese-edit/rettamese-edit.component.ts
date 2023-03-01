@@ -1,19 +1,23 @@
+//#region ----- IMPORTS ------------------------
+
+
 //TODO ngOnChanges scatta un numero enorme di volte su hover della lista pagamenti
 import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { BehaviorSubject, Observable, timer } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
+import { Observable }                           from 'rxjs';
+import { MatDialog }                            from '@angular/material/dialog';
 
 //components
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 
 //services
-import { RetteService } from '../rette.service';
+import { RetteService }                         from '../rette.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
 
 //models
-import { PAG_Retta } from 'src/app/_models/PAG_Retta';
-import { LoadingService } from '../../utilities/loading/loading.service';
+import { PAG_Retta }                            from 'src/app/_models/PAG_Retta';
 
+//#endregion
 @Component({
   selector: 'app-rettamese-edit',
   templateUrl: './rettamese-edit.component.html',
@@ -22,31 +26,28 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 
 export class RettameseEditComponent implements OnInit{
 
-//#region ----- Variabili -------
-  form! :                     UntypedFormGroup;
-
-  //private rettaIDSubject = new BehaviorSubject<number>(0);
-  //rettaIDObs$: Observable<number> = this.rettaIDSubject.asObservable();
-
-  retta$!:                    Observable<PAG_Retta>;
-  //obsRettaID$!:               Observable<number>;
+//#region ----- Variabili ----------------------
+  form! :                                       UntypedFormGroup;
+  retta$!:                                      Observable<PAG_Retta>;
   
-  emptyForm :                 boolean = false;
+  emptyForm :                                   boolean = false;
 //#endregion
 
 //#region ----- ViewChild Input Output -------
 
-  @Input() public rettaID!: number; 
-  @Input() public quotaConcordata!: number; 
-  @Input() public quotaDefault!: number; 
-  @Input() public totPagamenti!: number; 
-  @Input() public mese!: number; 
-  @Input() public indice!: number; //serve per poter azionare la save di ciascuna istanza di questo component
+  @Input() public rettaID!:                     number; 
+  @Input() public quotaConcordata!:             number; 
+  @Input() public quotaDefault!:                number; 
+  @Input() public totPagamenti!:                number; 
+  @Input() public mese!:                        number; 
+  @Input() public indice!:                      number; //serve per poter azionare la save di ciascuna istanza di questo component
   //@Input() public toHighlight!: number; 
 
   @Output('mesePagamentoClicked')
   clickOnpagamentoEmitter = new EventEmitter<number>();
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor(
     private fb:               UntypedFormBuilder,
@@ -67,6 +68,7 @@ export class RettameseEditComponent implements OnInit{
       totPagamenti:           [null],
     });
   }
+//#endregion
 
 //#region ----- LifeCycle Hooks e simili-------
 

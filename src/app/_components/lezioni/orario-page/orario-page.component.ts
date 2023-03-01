@@ -1,20 +1,17 @@
-import { Component, OnInit, ViewChild }  from '@angular/core';
-import { MatDialog }           from '@angular/material/dialog';
+//#region ----- IMPORTS ------------------------
 
+import { Component, OnInit, ViewChild }         from '@angular/core';
+import { MatDialog }                            from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 
-//models
-
-
 //components
-
 import { LezioniCalendarioComponent }           from '../lezioni-calendario/lezioni-calendario.component';
 import { ClassiSezioniAnniListComponent }       from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-
 
 //services
 import { DocenzeService }                       from '../../classi/docenze/docenze.service';
 
+//#endregion
 
 @Component({
   selector: 'app-orario-page',
@@ -24,12 +21,11 @@ import { DocenzeService }                       from '../../classi/docenze/docen
 
 export class OrarioPageComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   public classeSezioneAnnoID!:  number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public annoID!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public docenteID!:            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
-
 
 //#endregion
 
@@ -42,20 +38,15 @@ export class OrarioPageComponent implements OnInit {
 //#endregion
 
   constructor(
-    private svcDocenze:                         DocenzeService,
     public _dialog:                             MatDialog,    
-    private _snackBar:                          MatSnackBar
-  ) {
-    
-  }
+  ) {}
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
 
   }
 //#endregion
-
 
 //#region ----- ricezione emit -------
   annoIdEmitted(annoID: number) {

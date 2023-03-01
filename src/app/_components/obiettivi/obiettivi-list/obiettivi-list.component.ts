@@ -1,26 +1,28 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
+//#region ----- IMPORTS ------------------------
+
+import { Component, Input, OnInit, ViewChild }  from '@angular/core';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatSort }                              from '@angular/material/sort';
+import { MatTableDataSource }                   from '@angular/material/table';
+import { Observable }                           from 'rxjs';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { map }                                  from 'rxjs/operators';
 
 //components
-import { ObiettivoEditComponent } from '../obiettivo-edit/obiettivo-edit.component';
-import { ObiettiviFilterComponent } from '../obiettivi-filter/obiettivi-filter.component';
+import { ObiettivoEditComponent }               from '../obiettivo-edit/obiettivo-edit.component';
+import { ObiettiviFilterComponent }             from '../obiettivi-filter/obiettivi-filter.component';
 
 //services
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { ObiettiviService } from '../obiettivi.service';
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { ObiettiviService }                     from '../obiettivi.service';
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
 
 //classes
-import { MAT_Obiettivo } from 'src/app/_models/MAT_Obiettivo';
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
-import { map } from 'rxjs/operators';
+import { MAT_Obiettivo }                        from 'src/app/_models/MAT_Obiettivo';
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
 
-
+//#endregion
 @Component({
   selector: 'app-obiettivi-list',
   templateUrl: './obiettivi-list.component.html',
@@ -28,74 +30,78 @@ import { map } from 'rxjs/operators';
 })
 export class ObiettiviListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
-matDataSource = new MatTableDataSource<MAT_Obiettivo>();
+  matDataSource = new MatTableDataSource<MAT_Obiettivo>();
 
-obsObiettivi$!:               Observable<MAT_Obiettivo[]>;
+  obsObiettivi$!:               Observable<MAT_Obiettivo[]>;
 
-obsAnni$!:                    Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-form! :                       UntypedFormGroup;
+  obsAnni$!:                    Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  form! :                       UntypedFormGroup;
 
-displayedColumns: string[] = [
-    "actionsColumn", 
+  displayedColumns: string[] = [
+      "actionsColumn", 
+      "classe",
+      //"anno",
+      "materia",
+      "descrizione",
+
+  ];
+
+
+  rptTitle = 'Lista Obiettivi';
+  rptFileName = 'ListaObiettivi';
+  rptFieldsToKeep  = [
+
     "classe",
-    //"anno",
+    "anno",
     "materia",
     "descrizione",
 
-];
 
+  ];
 
-rptTitle = 'Lista Obiettivi';
-rptFileName = 'ListaObiettivi';
-rptFieldsToKeep  = [
+  rptColumnsNames  = [
+    "classe",
+    "anno",
+    "materia",
+    "descrizione",
+  ];
 
-  "classe",
-  "anno",
-  "materia",
-  "descrizione",
+  filterValue = '';       //Filtro semplice
 
-
-];
-
-rptColumnsNames  = [
-  "classe",
-  "anno",
-  "materia",
-  "descrizione",
-];
-
-filterValue = '';       //Filtro semplice
-
-filterValues = {
-  descrizione: '',
-  classeID: '',
-  annoID: '',
-  materiaID: '',
-  filtrosx: ''
-}
-//#endregion
-//#region ----- ViewChild Input Output -------
-
-@Input() obiettiviFilterComponent!:                            ObiettiviFilterComponent;
-
-@ViewChild(MatSort) sort!:                MatSort;
+  filterValues = {
+    descrizione: '',
+    classeID: '',
+    annoID: '',
+    materiaID: '',
+    filtrosx: ''
+  }
 //#endregion
 
-constructor(private svcObiettivi:                   ObiettiviService,
-            private svcAnni:                        AnniScolasticiService,
-            private fb:                             UntypedFormBuilder, 
-            private _loadingService:                LoadingService,
-            public _dialog:                         MatDialog) {
+//#region ----- ViewChild Input Output ---------
 
-  let obj = localStorage.getItem('AnnoCorrente');
-  this.form = this.fb.group({
-    selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
-  })      
+  @Input() obiettiviFilterComponent!:                            ObiettiviFilterComponent;
+
+  @ViewChild(MatSort) sort!:                MatSort;
+//#endregion
+
+//#region ----- Constructor --------------------
+
+  constructor(private svcObiettivi:                   ObiettiviService,
+              private svcAnni:                        AnniScolasticiService,
+              private fb:                             UntypedFormBuilder, 
+              private _loadingService:                LoadingService,
+              public _dialog:                         MatDialog) {
+
+    let obj = localStorage.getItem('AnnoCorrente');
+    this.form = this.fb.group({
+      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
+    })      
  }
+//#endregion
 
-
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
     this.obsAnni$= this.svcAnni.list();
@@ -123,9 +129,10 @@ constructor(private svcObiettivi:                   ObiettiviService,
     }
   );
 
-}
+  }
+//#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -149,7 +156,7 @@ constructor(private svcObiettivi:                   ObiettiviService,
   }
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
 
 
   sortCustom() {
@@ -193,6 +200,5 @@ constructor(private svcObiettivi:                   ObiettiviService,
     return filterFunction;
   }
 //#endregion
-
 
 }

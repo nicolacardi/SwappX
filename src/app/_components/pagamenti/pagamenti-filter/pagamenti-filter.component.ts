@@ -1,19 +1,21 @@
-import { ThisReceiver } from '@angular/compiler';
-import { Component, Input, OnInit} from '@angular/core';
-import { UntypedFormControl, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
+//#region ----- IMPORTS ------------------------
+
+import { Component, Input, OnInit}              from '@angular/core';
+import { UntypedFormControl }                   from '@angular/forms';
+import { Observable }                           from 'rxjs';
 
 //components
-import { PagamentiListComponent } from '../pagamenti-list/pagamenti-list.component';
+import { PagamentiListComponent }               from '../pagamenti-list/pagamenti-list.component';
 
 //services
-import { CausaliPagamentoService } from '../causaliPagamento.service';
-import { TipiPagamentoService } from '../tipiPagamento.service';
+import { CausaliPagamentoService }              from '../causaliPagamento.service';
+import { TipiPagamentoService }                 from '../tipiPagamento.service';
 
 //models
-import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
-import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
+import { PAG_CausalePagamento }                 from 'src/app/_models/PAG_CausalePagamento';
+import { PAG_TipoPagamento }                    from 'src/app/_models/PAG_TipoPagamento';
 
+//#endregion
 @Component({
   selector: 'app-pagamenti-filter',
   templateUrl: './pagamenti-filter.component.html',
@@ -21,30 +23,34 @@ import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 })
 export class PagamentiFilterComponent implements OnInit {
 
-//#region ----- Variabili -------
-  causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
-  tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
+//#region ----- Variabili ----------------------
+  causaliPagamento$!:                           Observable<PAG_CausalePagamento[]>;
+  tipiPagamento$!:                              Observable<PAG_TipoPagamento[]>;
   
-  tipoPagamentoFilter = new UntypedFormControl('');
-  causaleFilter = new UntypedFormControl('');
-  nomeFilter = new UntypedFormControl('');
-  cognomeFilter = new UntypedFormControl('');
-  importoPiuDiFilter = new UntypedFormControl('');
-  importoFilter = new UntypedFormControl('');
-  importoMenoDiFilter = new UntypedFormControl('');
-  dataDal = new UntypedFormControl('');
-  dataAl = new UntypedFormControl('');
+  tipoPagamentoFilter = new                     UntypedFormControl('');
+  causaleFilter = new                           UntypedFormControl('');
+  nomeFilter = new                              UntypedFormControl('');
+  cognomeFilter = new                           UntypedFormControl('');
+  importoPiuDiFilter = new                      UntypedFormControl('');
+  importoFilter = new                           UntypedFormControl('');
+  importoMenoDiFilter = new                     UntypedFormControl('');
+  dataDal = new                                 UntypedFormControl('');
+  dataAl = new                                  UntypedFormControl('');
 //#endregion
   
 //#region ----- ViewChild Input Output -------  
   @Input() pagamentiListComponent!: PagamentiListComponent;
 //#endregion
-  
-  constructor(               
-    private svcTipiPagamento:             TipiPagamentoService,
-    private svcCausaliPagamento:          CausaliPagamentoService,) {}
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- Constructor --------------------
+
+  constructor(               
+    private svcTipiPagamento:                   TipiPagamentoService,
+    private svcCausaliPagamento:                CausaliPagamentoService,) {}
+    
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
 

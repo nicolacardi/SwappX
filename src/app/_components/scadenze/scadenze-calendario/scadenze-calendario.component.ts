@@ -38,10 +38,8 @@ import { CAL_Scadenza }                         from 'src/app/_models/CAL_Scaden
 })
 export class ScadenzeCalendarioComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   Events: any[] = [];
-  
-
 
   calendarOptions: CalendarOptions = {
 

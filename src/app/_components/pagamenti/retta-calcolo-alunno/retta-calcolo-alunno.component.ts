@@ -1,23 +1,22 @@
 import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { concatMap, last, take, tap } from 'rxjs/operators';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { concatMap, tap }                       from 'rxjs/operators';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 //components
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 
 //services
-import { AlunniService } from '../../alunni/alunni.service';
-import { RetteService } from '../rette.service';
-import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { ParametriService } from 'src/app/_services/parametri.service';
+import { AlunniService }                        from '../../alunni/alunni.service';
+import { RetteService }                         from '../rette.service';
+import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { ParametriService }                     from 'src/app/_services/parametri.service';
 
-//classi
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
-import { PAG_Retta } from 'src/app/_models/PAG_Retta';
-import { interval } from 'rxjs';
+//mdoels
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
+import { PAG_Retta }                            from 'src/app/_models/PAG_Retta';
 
 @Component({
   selector: 'app-retta-calcolo-alunno',
@@ -26,8 +25,8 @@ import { interval } from 'rxjs';
 })
 export class RettaCalcoloAlunnoComponent implements OnInit {
 
-//#region ----- Variabili -------
-  form! :                             UntypedFormGroup;
+//#region ----- Variabili ----------------------
+form! :                             UntypedFormGroup;
 
   public mesiArr =                    [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=          ["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];

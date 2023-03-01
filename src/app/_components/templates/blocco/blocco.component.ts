@@ -26,7 +26,7 @@ const enum Status {
 export class BloccoComponent implements OnInit {
 
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   public width!:                                number;
   public widthImg!:                             number;
@@ -38,7 +38,7 @@ export class BloccoComponent implements OnInit {
   public tipoBloccoID!:                         number;
   public ckFill!:                               boolean;
   public testo!:                                string;
-  public fontSizeN:                            number = 1;
+  public fontSizeN:                             number = 1;
   private oldZoom:                              number = 1;
   public zoomratio:                             number =1 ;
 

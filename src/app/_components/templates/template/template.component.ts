@@ -21,7 +21,7 @@ import { TEM_Template } from 'src/app/_models/TEM_Template';
 })
 export class TemplateComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   public zoom:                                  number = 1;
   public templateID:                            number = 1;
   public numPagine:                             number = 1;

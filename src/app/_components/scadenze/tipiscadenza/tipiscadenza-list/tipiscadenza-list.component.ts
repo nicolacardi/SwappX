@@ -22,7 +22,7 @@ import { CAL_TipoScadenza }                     from 'src/app/_models/CAL_TipoSc
 })
 export class TipiScadenzaListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   matDataSource = new MatTableDataSource<CAL_TipoScadenza>();
 

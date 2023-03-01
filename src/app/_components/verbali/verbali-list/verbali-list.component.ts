@@ -29,7 +29,7 @@ import { tap } from 'rxjs/operators';
 })
 export class VerbaliListComponent implements OnInit, OnChanges {
   
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   matDataSource =                               new MatTableDataSource<DOC_Verbale>();
   form:                                         UntypedFormGroup;                                  

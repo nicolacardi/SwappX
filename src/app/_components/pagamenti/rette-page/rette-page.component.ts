@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { RetteListComponent } from '../rette-list/rette-list.component';
+//#region ----- IMPORTS ------------------------
 
+import { Component, OnInit, ViewChild }         from '@angular/core';
+import { RetteListComponent }                   from '../rette-list/rette-list.component';
+//#endregion
 @Component({
   selector: 'app-rette',
   templateUrl: './rette-page.component.html',
@@ -13,9 +15,7 @@ export class RettePageComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
 
   addRecord() {
     this.retteList.addRecord()

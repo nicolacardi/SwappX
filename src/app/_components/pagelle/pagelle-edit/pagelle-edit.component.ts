@@ -1,7 +1,9 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatButtonToggle, MatButtonToggleChange } from '@angular/material/button-toggle';
-import { iif, Observable, ReplaySubject } from 'rxjs';
-import { concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map} from 'rxjs/operators';
 import { jsPDF } from 'jspdf';
 
 //components
@@ -21,6 +23,7 @@ import { DOC_File } from 'src/app/_models/DOC_File';
 import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
+//#endregion
 @Component({
   selector: 'app-pagelle-edit',
   templateUrl: './pagelle-edit.component.html',
@@ -29,7 +32,7 @@ import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 export class PagellaEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   public objPagella!:                            DOC_Pagella;  
   lstPagellaVoti!:                               DOC_PagellaVoto[];
 
@@ -42,7 +45,7 @@ export class PagellaEditComponent implements OnInit {
 
 //#endregion  
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @Input('iscrizioneID') iscrizioneID!:          number;
   @Input('alunno') alunno!:                      ALU_Alunno;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:          number;
@@ -52,6 +55,8 @@ export class PagellaEditComponent implements OnInit {
 
 //#endregion  
 
+//#region ----- Constructor --------------------
+
   constructor(
     private svcPagelle:               PagelleService,
     private svcPagellaVoti:           PagellaVotiService,
@@ -60,6 +65,9 @@ export class PagellaEditComponent implements OnInit {
     private _snackBar:                MatSnackBar ,
     private _jspdf:                   JspdfService
     ) { }
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
     if (this.iscrizioneID != undefined) 
@@ -99,6 +107,9 @@ export class PagellaEditComponent implements OnInit {
         }
     );
   }
+//#endregion
+
+//#region ----- Altri metodi -------------------
 
   quadClick(e: MatButtonToggleChange) {
     this.quadrimestre = e.value;
@@ -205,4 +216,5 @@ export class PagellaEditComponent implements OnInit {
     this.svcPagelle.setStampato(this.objPagella.id!, true).subscribe();
     */
   }
+//#endregion
 }

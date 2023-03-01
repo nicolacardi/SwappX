@@ -12,7 +12,7 @@ import { VerbaliListComponent } from '../verbali-list/verbali-list.component';
 
 export class VerbaliFilterComponent implements OnInit {
 
-  //#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');
   tipoFilter = new UntypedFormControl('');
@@ -20,9 +20,9 @@ export class VerbaliFilterComponent implements OnInit {
   classeFilter = new UntypedFormControl('');
   titoloFilter = new UntypedFormControl('');
 
-  //#endregion
+//#endregion
 
-  //#region ----- ViewChild Input Output -------  
+//#region ----- ViewChild Input Output -------  
   @Input() verbaliListComponent!: VerbaliListComponent;
   //#endregion
 

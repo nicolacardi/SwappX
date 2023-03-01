@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { CdkDragDrop, moveItemInArray }         from '@angular/cdk/drag-drop';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
@@ -24,6 +26,7 @@ import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoSc
 import { PAG_Pagamento }                        from 'src/app/_models/PAG_Pagamento';
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
 
+//#endregion
 @Component({
   selector: 'app-pagamenti-list',
   templateUrl: './pagamenti-list.component.html',
@@ -32,7 +35,7 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 
 export class PagamentiListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   matDataSource = new MatTableDataSource<PAG_Pagamento>();
   pagamentoEmitter = new EventEmitter<number>();
 
@@ -116,7 +119,7 @@ export class PagamentiListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild(MatPaginator) paginator!:    MatPaginator;
   @ViewChild(MatSort) sort!:              MatSort;
   @ViewChild("filterInput") filterInput!:                     ElementRef;
@@ -131,6 +134,8 @@ export class PagamentiListComponent implements OnInit {
   //@Output('hoverPagamento');
 
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor(
     private fb:               UntypedFormBuilder, 
@@ -147,7 +152,9 @@ export class PagamentiListComponent implements OnInit {
     })
   }
 
-//#region ----- LifeCycle Hooks e simili-------
+  //#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
     this.loadData();
@@ -197,7 +204,7 @@ export class PagamentiListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
 
   applyFilter(event: Event) {
 
@@ -278,7 +285,7 @@ export class PagamentiListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
 
   addRecord(){
     this.editRecord(0);
@@ -306,7 +313,7 @@ export class PagamentiListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Right Click -------
+//#region ----- Right Click --------------------
 
   onRightClick(event: MouseEvent, element: PAG_Pagamento) { 
     event.preventDefault(); 
@@ -317,7 +324,7 @@ export class PagamentiListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Add Delete Edit Drop -------
+//#region ----- Add Delete Edit Drop -----------
   delete(pagamentoID: number){
 
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {

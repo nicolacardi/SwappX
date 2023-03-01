@@ -44,7 +44,7 @@ import { GenitoriService } from '../../genitori/genitori.service';
 })
 export class ScadenzaEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   currUser!:                                    User;
   form! :                                       UntypedFormGroup;
   personaIDArr!:                                number[];

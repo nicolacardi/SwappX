@@ -19,7 +19,7 @@ import { PER_TipoPersona } from 'src/app/_models/PER_Persone';
 
 export class PersoneFilterComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');

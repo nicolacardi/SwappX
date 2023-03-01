@@ -21,7 +21,7 @@ import { PER_Persona }                          from './_models/PER_Persone';
 
 export class AppComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   //isLoggedIn?: boolean;
   public isLoggedIn?:                           boolean = false;
   public currUser!:                             User;

@@ -1,5 +1,7 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Inject, OnInit,  }          from '@angular/core';
-import { UntypedFormGroup }                            from '@angular/forms';
+import { UntypedFormGroup }                     from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
 
@@ -11,6 +13,7 @@ import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.servi
 //models
 import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
 
+//#endregion
 
 @Component({
   selector: 'app-voti-compito-page',
@@ -18,17 +21,16 @@ import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
   styleUrls: ['../lezioni.css']
 })
 export class VotiCompitoPageComponent implements OnInit {
+//#region ----- Variabili ----------------------
 
   form! :                                       UntypedFormGroup;
   strClasseSezioneAnno!:                        string;
   dtStart!:                                     Date;
   strDtStart!:                                  string;
   strArgomento!:                                string;
-//#region ----- ViewChild Input Output -------
-  
-
-
 //#endregion
+
+//#region ----- Constructor --------------------
 
 constructor(
   public _dialogRef:                            MatDialogRef<VotiCompitoPageComponent>,
@@ -37,6 +39,8 @@ constructor(
   private svcClasseSezioneAnno:                 ClassiSezioniAnniService,
 
 ) { }
+
+//#endregion
 
 //#region ----- LifeCycle Hooks e simili-------
 
@@ -52,10 +56,5 @@ constructor(
 
   }
 //#endregion
-
-//#region ----- Add Edit Drop -------
-
-//#endregion
-
 
 }

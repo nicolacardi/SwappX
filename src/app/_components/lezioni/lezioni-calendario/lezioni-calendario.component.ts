@@ -1,12 +1,13 @@
+//#region ----- IMPORTS ------------------------
+
 import { ApplicationRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/core';
 import { FullCalendarComponent }                from '@fullcalendar/angular';//-->serve per il ViewChild
 
-
-import dayGridPlugin from '@fullcalendar/daygrid'
-import listPlugin from '@fullcalendar/list'
-import timegridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction'
+import dayGridPlugin                            from '@fullcalendar/daygrid'
+import listPlugin                               from '@fullcalendar/list'
+import timegridPlugin                           from '@fullcalendar/timegrid'
+import interactionPlugin                        from '@fullcalendar/interaction'
 
 import { EventResizeDoneArg }                   from '@fullcalendar/interaction';
 
@@ -29,11 +30,11 @@ import { DialogOkComponent }                    from '../../utilities/dialog-ok/
 import { LezioniService }                       from '../lezioni.service';
 import { UserService }                          from 'src/app/_user/user.service';
 
-//classes
+//models
 import { CAL_Lezione }                          from 'src/app/_models/CAL_Lezione';
 import { User }                                 from 'src/app/_user/Users';
 
-
+//#endregion
 @Component({
   selector: 'app-lezioni-calendario',
   templateUrl: './lezioni-calendario.component.html',
@@ -41,7 +42,7 @@ import { User }                                 from 'src/app/_user/Users';
 })
 export class LezioniCalendarioComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   private currUser!:                            User;
   toggleDocentiMaterie =                        "materie";
   Events: any[] = [];
@@ -225,13 +226,15 @@ export class LezioniCalendarioComponent implements OnInit {
 
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output --------
   @Input() classeSezioneAnnoID!:                     number;
   @Input() docenteID!:                            number;
   @Input() dove!:                         string;
   @ViewChild('calendarDOM') calendarDOM!: FullCalendarComponent;
 //#endregion
-  
+
+//#region ----- Constructor --------------------
+
   constructor( 
     private svcLezioni:       LezioniService,
     private svcUser:          UserService,
@@ -243,9 +246,9 @@ export class LezioniCalendarioComponent implements OnInit {
     this.currUser = Utility.getCurrentUser();
 
   }
+//#endregion
 
-
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
     //if (this.classeSezioneAnnoID != undefined  && this.dove != undefined) 
@@ -513,7 +516,7 @@ export class LezioniCalendarioComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Add Edit Eventi -------
+//#region ----- Add Edit Resize Drop -----------
 
   openDetail(clickInfo: EventClickArg) {
 
@@ -580,52 +583,7 @@ export class LezioniCalendarioComponent implements OnInit {
     calendarApi.unselect(); 
   }
 
-  openLezioniUtils () {
-    const dialogConfig : MatDialogConfig = {
-      panelClass: 'add-DetailDialog',
-      width: '650px',
-      height: '425px',
-      data:  {
-        start: this.calendarDOM.getApi().getDate(),
-        classeSezioneAnnoID: this.classeSezioneAnnoID
-      }
-    };
-    const dialogRef = this._dialog.open(LezioniUtilsComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(() =>  this.loadData());
-  }
-
-  mostraDocenti () {
-
-    if (this.dove == 'orario') {
-      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Docenti') {
-        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Lezioni"
-        this.setEventiDocenti();
-      } 
-      else {
-        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Docenti"
-        this.setEventiLezioni();
-      } 
-    } else {
-      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Classi') {
-        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Lezioni"
-        this.setEventiClassi();
-      } 
-      else {
-        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Classi"
-        this.setEventiLezioni();
-      } 
-    }
-  }
-
-  toggleEpoca(lezioneID: number) {
-    if (this.dove == 'orario')
-    this.svcLezioni.toggleEpoca(lezioneID).subscribe(() => this.loadData());
-  }
-
-  anotherMethod () {
-    // console.log ("fat-to");
-  }
-
+  
   handleResize (resizeInfo: EventResizeDoneArg) {
 
     //let dt : Date | null   = resizeInfo.event.start;
@@ -711,6 +669,55 @@ export class LezioniCalendarioComponent implements OnInit {
       }
     )
   }
+//#endregion
+
+//#region ----- Altri metodi -------------------
+
+  openLezioniUtils () {
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '650px',
+      height: '425px',
+      data:  {
+        start: this.calendarDOM.getApi().getDate(),
+        classeSezioneAnnoID: this.classeSezioneAnnoID
+      }
+    };
+    const dialogRef = this._dialog.open(LezioniUtilsComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() =>  this.loadData());
+  }
+
+  mostraDocenti () {
+
+    if (this.dove == 'orario') {
+      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Docenti') {
+        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Lezioni"
+        this.setEventiDocenti();
+      } 
+      else {
+        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Docenti"
+        this.setEventiLezioni();
+      } 
+    } else {
+      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Classi') {
+        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Lezioni"
+        this.setEventiClassi();
+      } 
+      else {
+        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Classi"
+        this.setEventiLezioni();
+      } 
+    }
+  }
+
+  toggleEpoca(lezioneID: number) {
+    if (this.dove == 'orario')
+    this.svcLezioni.toggleEpoca(lezioneID).subscribe(() => this.loadData());
+  }
+
+
+
+//#endregion
 }
 
 

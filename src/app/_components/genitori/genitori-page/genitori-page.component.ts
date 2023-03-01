@@ -28,7 +28,7 @@ export class GenitoriPageComponent implements OnInit {
 
   constructor(private _navigationService:  NavigationService) { }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
     this._navigationService.passPage("genitoriList");

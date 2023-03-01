@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -14,7 +16,7 @@ import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { PAG_RettePagamenti_Sum } from 'src/app/_models/PAG_Retta';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
-
+//#endregion
 @Component({
   selector: 'app-rettepagamenti-summary',
   templateUrl: './rettepagamenti-summary.component.html',
@@ -23,27 +25,29 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
 export class RettepagamentiSummaryComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
-matDataSource = new MatTableDataSource<PAG_RettePagamenti_Sum>();
+  matDataSource = new MatTableDataSource<PAG_RettePagamenti_Sum>();
 
-obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
 
-form! :                             UntypedFormGroup;
-menuTopLeftPosition =  {x: '0', y: '0'} 
-displayedColumns: string[] =  [];
-displayedColumnsRettePagamentiSummary: string[] = [
-    "annoRetta",
-    "meseRetta",
-    "quotaDefault",
-    "quotaConcordata",
-    "importo",
-];
+  form! :                             UntypedFormGroup;
+  menuTopLeftPosition =  {x: '0', y: '0'} 
+  displayedColumns: string[] =  [];
+  displayedColumnsRettePagamentiSummary: string[] = [
+      "annoRetta",
+      "meseRetta",
+      "quotaDefault",
+      "quotaConcordata",
+      "importo",
+  ];
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-@ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor(private fb:               UntypedFormBuilder,
               private svcRette:         RetteService,
@@ -55,8 +59,9 @@ displayedColumnsRettePagamentiSummary: string[] = [
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     })
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
   ngOnInit(): void {
     this.obsAnni$= this.svcAnni.list();
     this.loadData();
@@ -77,7 +82,7 @@ displayedColumnsRettePagamentiSummary: string[] = [
 
 //#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
   onRightClick(event: MouseEvent, element: PAG_RettePagamenti_Sum) { 
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
@@ -87,7 +92,7 @@ displayedColumnsRettePagamentiSummary: string[] = [
   }
 //#endregion
 
-//#region ----- Altri Metodi            -------
+//#region ----- Altri Metodi -------------------
 getTotalPagate() {
   return this.matDataSource.data.map(t => t.importo).reduce((acc, value) => acc + value, 0)
 }

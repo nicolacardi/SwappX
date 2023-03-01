@@ -25,7 +25,7 @@ import { User }                                 from 'src/app/_user/Users';
 })
 export class PersonaFormComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   persona$!:                                    Observable<PER_Persona>;
   obsTipiPersona$!:                             Observable<PER_TipoPersona[]>;

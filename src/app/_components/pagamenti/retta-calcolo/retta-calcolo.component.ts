@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatDialog, MatDialogRef }              from '@angular/material/dialog';
 import { Observable }                           from 'rxjs';
@@ -23,6 +25,7 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 import { PAG_Retta }                            from 'src/app/_models/PAG_Retta';
 
+//#endregion
 @Component({
   selector: 'app-retta-calcolo',
   templateUrl: './retta-calcolo.component.html',
@@ -30,6 +33,8 @@ import { PAG_Retta }                            from 'src/app/_models/PAG_Retta'
 })
 
 export class RettaCalcoloComponent implements OnInit {
+
+//#region ----- Variabili ----------------------
 
   obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   //obsQuoteDefault$!:                  Observable<_UT_Parametro>;
@@ -45,8 +50,15 @@ export class RettaCalcoloComponent implements OnInit {
   public QuoteDefault =                         "000000000000";
   public QuoteRidotteFratelli =                 false;
 
+//#endregion
+
+//#region ----- ViewChild Input Output ---------
+
   @ViewChild('ListClassi') viewListClassi!:     ClassiSezioniAnniListComponent; 
   @ViewChildren('QuoteListElement') QuoteList!: QueryList<any>;
+//#endregion
+
+//#region ----- Constructor --------------------
 
   constructor(
     public _dialogRef:                          MatDialogRef<RettaCalcoloComponent>,
@@ -73,9 +85,12 @@ export class RettaCalcoloComponent implements OnInit {
       });
   }
 
+//#endregion
+
   ngOnInit(): void {
   }
 
+//#region ----- Altri metodi -------------------
 
   calcola() {
     if (this.viewListClassi.isNoneSelected()) {
@@ -258,5 +273,7 @@ export class RettaCalcoloComponent implements OnInit {
       }
     )
   }
+
+//#endregion
 
 }

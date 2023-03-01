@@ -29,7 +29,7 @@ import { User }                                 from 'src/app/_user/Users';
 
 export class DocentiDashboardComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   public classeSezioneAnnoID!:  number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public annoID!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
@@ -64,7 +64,7 @@ export class DocentiDashboardComponent implements OnInit {
   ){
   }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
 

@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatSort }                              from '@angular/material/sort';
 import { Observable }                           from 'rxjs';
@@ -15,7 +17,7 @@ import { LezioniService }                       from '../lezioni.service';
 //models
 import { CAL_Lezione }                          from 'src/app/_models/CAL_Lezione';
 
-
+//#endregion
 @Component({
   selector:     'app-compiti-list',
   templateUrl:  './compiti-list.component.html',
@@ -24,7 +26,7 @@ import { CAL_Lezione }                          from 'src/app/_models/CAL_Lezion
 
 export class CompitiListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   matDataSource = new MatTableDataSource<CAL_Lezione>();
   
   displayedColumns: string[] = [ 
@@ -49,21 +51,23 @@ export class CompitiListComponent implements OnInit {
   };
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild(MatSort) sort!:                    MatSort;
   @Input() classeSezioneAnnoID!:                number;
   @Input() docenteID!:                          number;
 
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor( 
     private svcLezioni:                         LezioniService,
     private _loadingService:                    LoadingService,
     public _dialog:                             MatDialog, 
     ) {  
   }
+//#endregion
   
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
     this.loadData();
@@ -92,9 +96,7 @@ export class CompitiListComponent implements OnInit {
   }
 //#endregion
 
-  
-
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
 
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {

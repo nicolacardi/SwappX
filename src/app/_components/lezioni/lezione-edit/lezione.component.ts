@@ -1,9 +1,11 @@
+//#region ----- IMPORTS ------------------------
+
 import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
-import { concatMap, take, tap }                 from 'rxjs/operators';
+import { take, tap }                 from 'rxjs/operators';
 
 import { registerLocaleData }                   from '@angular/common';
 import localeIt                                 from '@angular/common/locales/it';
@@ -38,10 +40,8 @@ import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_Classe
 import { CAL_Presenza }                         from 'src/app/_models/CAL_Presenza';
 import { TST_VotoCompito }                      from 'src/app/_models/TST_VotiCompiti';
 import { DialogDataLezione }                    from 'src/app/_models/DialogData';
-import { MatTabGroup } from '@angular/material/tabs';
 
-
-
+//#endregion
 
 @Component({
   selector: 'app-lezione',
@@ -51,7 +51,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 })
 export class LezioneComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   form! :                                       UntypedFormGroup;
   docenteID!:                                   number;
@@ -87,6 +87,8 @@ export class LezioneComponent implements OnInit {
 
 
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor( 
     public _dialogRef:                          MatDialogRef<LezioneComponent>,
@@ -139,6 +141,10 @@ export class LezioneComponent implements OnInit {
       end:                                      ['']
     });
   }
+
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit () {
     this.form.controls.materiaID.valueChanges.subscribe( 
@@ -248,6 +254,9 @@ export class LezioneComponent implements OnInit {
       this.form.controls.h_End.setValue(this.strH_End);
     }
   }
+//#endregion
+
+//#region ----- Operazioni CRUD ----------------
 
   save() {
 
@@ -358,6 +367,10 @@ export class LezioneComponent implements OnInit {
       }
     );
   }
+
+//#endregion
+
+//#region ----- Altri metodi -------------------
 
   dp1Change() {
 
@@ -547,4 +560,5 @@ export class LezioneComponent implements OnInit {
     this.selectedTab = event.index;
   }
 
+//#endregion
 }

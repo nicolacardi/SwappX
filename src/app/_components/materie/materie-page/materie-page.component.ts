@@ -1,6 +1,9 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MaterieListComponent } from '../materie-list/materie-list.component';
 
+//#endregion
 @Component({
   selector: 'app-materie-page',
   templateUrl: './materie-page.component.html',
@@ -8,9 +11,11 @@ import { MaterieListComponent } from '../materie-list/materie-list.component';
 })
 export class MateriePageComponent implements OnInit {
 
+//#region ----- ViewChild Input Output ---------
 
   @ViewChild(MaterieListComponent) materieList!: MaterieListComponent; 
 
+  //#endregion
   
   constructor() { }
 

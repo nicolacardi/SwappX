@@ -1,19 +1,21 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, OnInit }                    from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { Observable }                           from 'rxjs';
 
 //components
-
+import { Utility }                              from '../../utilities/utility.component';
 
 //services
-import { DocentiService } from '../../docenti/docenti.service';
+import { DocentiService }                       from '../../docenti/docenti.service';
 
 //models
-import { PER_Docente } from 'src/app/_models/PER_Docente';
-import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
-import { Utility } from '../../utilities/utility.component';
-import { User } from 'src/app/_user/Users';
+import { PER_Docente }                          from 'src/app/_models/PER_Docente';
+import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
+import { User }                                 from 'src/app/_user/Users';
 
+//#endregion
 @Component({
   selector:     'app-orario-docente-page',
   templateUrl:  './orario-docente-page.component.html',
@@ -21,11 +23,17 @@ import { User } from 'src/app/_user/Users';
 })
 
 export class OrarioDocentePageComponent implements OnInit {
+
+//#region ----- Variabili ----------------------
+
   docenteID!:                                   number;
   currUser!:                                    User;
 
   obsDocenti$!:                                 Observable<PER_Docente[]>;
   form! :                                       UntypedFormGroup;
+//#endregion
+
+//#region ----- Constructor --------------------
 
   constructor(private svcDocenti:                         DocentiService,
               private fb:                                 UntypedFormBuilder  ) {
@@ -35,8 +43,10 @@ export class OrarioDocentePageComponent implements OnInit {
 
     });
   }
-  
-//#region ----- LifeCycle Hooks e simili-------
+
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   
   ngOnInit () {

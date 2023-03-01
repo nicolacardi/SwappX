@@ -15,7 +15,7 @@ import { GenitoriListComponent } from '../genitori-list/genitori-list.component'
 
 export class GenitoriFilterComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');
   dtNascitaFilter = new UntypedFormControl('');

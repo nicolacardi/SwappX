@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Inject, Injectable, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { DateAdapter }                          from '@angular/material/core';
@@ -14,6 +16,7 @@ import { LezioniService }                       from '../lezioni.service';
 //models
 import { DialogDataLezioniUtils }               from 'src/app/_models/DialogData';
 
+//#endregion
 
 //#region Injectable per la selezione dell'intervallo nel matdatepicker
   //si può creare una directive a sè oppure inserire un injectable qui e poi fornirlo come provider+useclass  al component
@@ -81,12 +84,14 @@ import { DialogDataLezioniUtils }               from 'src/app/_models/DialogData
 
 export class LezioniUtilsComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   form!:                     UntypedFormGroup;
   currMonday!:               Date;
 
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor( public _dialogRef: MatDialogRef<LezioniUtilsComponent>,
                private svcLezioni:                   LezioniService,         
@@ -103,6 +108,9 @@ export class LezioniUtilsComponent implements OnInit {
       ckTutteleClassi1:              [null],
     });
    }
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
 
@@ -111,6 +119,10 @@ export class LezioniUtilsComponent implements OnInit {
     this.currMonday = this._dateAdapter.addCalendarDays(currDate, offset);
     //this.currMonday = dtCopyToStart.toLocaleString('sv').replace(' ', 'T').substring(0,10);
   }
+
+//#endregion
+
+//#region ----- Vari metodi --------------------
 
   deleteByClasseSezioneAnnoAndDate() {
     
@@ -222,4 +234,5 @@ export class LezioniUtilsComponent implements OnInit {
     
   }
 
+//#endregion
 }

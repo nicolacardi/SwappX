@@ -28,7 +28,7 @@ import { CAL_ScadenzaPersone }                  from 'src/app/_models/CAL_Scaden
 
 export class MieScadenzeComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
 //public userID: string;
 public currUser!:                               User;

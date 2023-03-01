@@ -37,7 +37,7 @@ export interface DialogData {
 })
 export class IscrizioniClasseCalcoloComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
     public obsClassiSezioniAnni$!:          Observable<CLS_ClasseSezioneAnnoGroup[]>;
     private classeSezioneAnno!:             CLS_ClasseSezioneAnno;

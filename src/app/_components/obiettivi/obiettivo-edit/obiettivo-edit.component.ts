@@ -1,10 +1,11 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { iif, Observable, of }                           from 'rxjs';
-import { concatMap, tap }                                  from 'rxjs/operators';
-
+import { iif, Observable, of }                  from 'rxjs';
+import { concatMap, tap }                       from 'rxjs/operators';
 
 //components
 import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
@@ -18,13 +19,15 @@ import { LoadingService }                       from '../../utilities/loading/lo
 import { ObiettiviService }                     from '../obiettivi.service';
 import { PagellaVotoObiettiviService }          from '../../pagelle/pagella-voto-obiettivi.service';
 
-
 //models
 import { MAT_Obiettivo }                        from 'src/app/_models/MAT_Obiettivo';
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 import { CLS_Classe }                           from 'src/app/_models/CLS_Classe';
 import { MAT_Materia }                          from 'src/app/_models/MAT_Materia';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+
+//#endregion
+
 @Component({
   selector: 'app-obiettivo-edit',
   templateUrl: './obiettivo-edit.component.html',
@@ -32,48 +35,51 @@ import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component
 })
 export class ObiettivoEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
-obiettivo$!:                                    Observable<MAT_Obiettivo>;
-obsClassi$!:                                    Observable<CLS_Classe[]>;
-obsAnni$!:                                      Observable<ASC_AnnoScolastico[]>;
-obsMaterie$!:                                   Observable<MAT_Materia[]>;
+  obiettivo$!:                                  Observable<MAT_Obiettivo>;
+  obsClassi$!:                                  Observable<CLS_Classe[]>;
+  obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>;
+  obsMaterie$!:                                 Observable<MAT_Materia[]>;
 
 
-form! :                                         UntypedFormGroup;
-emptyForm :                                     boolean = false;
-loading:                                        boolean = true;
+  form! :                                       UntypedFormGroup;
+  emptyForm :                                   boolean = false;
+  loading:                                      boolean = true;
 //#endregion
 
-constructor(
-  public _dialogRef: MatDialogRef<ObiettivoEditComponent>,
-  @Inject(MAT_DIALOG_DATA) public obiettivoID:  number,
-  private svcObiettivi:                         ObiettiviService,
-  private svcPagellaVotoObiettivi:              PagellaVotoObiettiviService,
-  private svcClassi:                            ClassiService,
-  private svcAnni:                              AnniScolasticiService,
-  private svcMaterie:                           MaterieService,
+//#region ----- Constructor --------------------
+
+  constructor(
+    public _dialogRef: MatDialogRef<ObiettivoEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public obiettivoID:  number,
+    private svcObiettivi:                         ObiettiviService,
+    private svcPagellaVotoObiettivi:              PagellaVotoObiettiviService,
+    private svcClassi:                            ClassiService,
+    private svcAnni:                              AnniScolasticiService,
+    private svcMaterie:                           MaterieService,
 
 
-  private _loadingService :                     LoadingService,
-  private fb:                                   UntypedFormBuilder, 
-  public _dialog:                               MatDialog,
-  private _snackBar:                            MatSnackBar,
-  
-) { 
-  _dialogRef.disableClose = true;
-  
-  this.form = this.fb.group({
-    id:                         [null],
-    descrizione:                ['', { validators:[ Validators.required, Validators.maxLength(100)]}],
-    classeID:                   [''],
-    annoID:                     [''],
-    materiaID:                  ['']
-  });
+    private _loadingService :                     LoadingService,
+    private fb:                                   UntypedFormBuilder, 
+    public _dialog:                               MatDialog,
+    private _snackBar:                            MatSnackBar,
+    
+  ) { 
+    _dialogRef.disableClose = true;
+    
+    this.form = this.fb.group({
+      id:                         [null],
+      descrizione:                ['', { validators:[ Validators.required, Validators.maxLength(100)]}],
+      classeID:                   [''],
+      annoID:                     [''],
+      materiaID:                  ['']
+    });
 
-}
+  }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
     this.loadData();
@@ -103,7 +109,7 @@ constructor(
   }
 //#endregion
 
-//#region ----- Operazioni CRUD -------
+//#region ----- Operazioni CRUD ----------------
 
   save(){
 

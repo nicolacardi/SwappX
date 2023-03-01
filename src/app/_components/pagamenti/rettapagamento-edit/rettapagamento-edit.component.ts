@@ -1,6 +1,6 @@
+//#region ----- IMPORTS ------------------------
+
 //TODO causale.value == 1 va cagarissimo
-
-
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,6 +23,7 @@ import { TipiPagamentoService } from '../tipiPagamento.service';
 import { PAG_CausalePagamento } from 'src/app/_models/PAG_CausalePagamento';
 import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 
+//#endregion
 @Component({
   selector: 'app-rettapagamento-edit',
   templateUrl: './rettapagamento-edit.component.html',
@@ -30,7 +31,7 @@ import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 })
 export class RettapagamentoEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   formRetta! :                UntypedFormGroup;
   causaliPagamento$!:         Observable<PAG_CausalePagamento[]>;
   tipiPagamento$!:            Observable<PAG_TipoPagamento[]>;
@@ -39,7 +40,7 @@ export class RettapagamentoEditComponent implements OnInit {
   public placeholderMeseArr=["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild('causale')       public causale!: MatSelect;
 
   @Input() alunnoID!:       number;
@@ -48,6 +49,7 @@ export class RettapagamentoEditComponent implements OnInit {
   pagamentoEmitter = new EventEmitter<string>();
 //#endregion
 
+//#region ----- Constructor --------------------
 
   constructor(private fb:                           UntypedFormBuilder, 
               private svcTipiPagamento:             TipiPagamentoService,
@@ -69,8 +71,9 @@ export class RettapagamentoEditComponent implements OnInit {
       rettaID:                    ['']
     });
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
     this.loadData();
@@ -82,7 +85,7 @@ export class RettapagamentoEditComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Operazioni CRUD -------
+//#region ----- Operazioni CRUD ----------------
   save( ){
     //if (this.formRetta.controls['id'].value == null) { //non serve questo check: facciamo sempre la post mai la put
    if (this.alunnoID == 0) {
@@ -129,7 +132,7 @@ export class RettapagamentoEditComponent implements OnInit {
   }
 //#endregion  
 
-//#region ----- Altri metodi -------
+//#region ----- Altri metodi -------------------
 
   changedCausale(value: number) {
     if (value == 1) {

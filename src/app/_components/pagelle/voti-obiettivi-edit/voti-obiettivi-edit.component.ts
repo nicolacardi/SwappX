@@ -28,7 +28,7 @@ import { DOC_PagellaVoto }                      from 'src/app/_models/DOC_Pagell
 })
 
 export class VotiObiettiviEditComponent implements OnInit {
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   matDataSource = new                   MatTableDataSource<DOC_PagellaVotoObiettivo>();
   obsTipiLivelloObiettivo$!:            Observable<MAT_LivelloObiettivo[]>;

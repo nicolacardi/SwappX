@@ -1,15 +1,16 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Inject, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { Observable }                           from 'rxjs';
-import { map, tap }                                  from 'rxjs/operators';
+import { map, tap }                             from 'rxjs/operators';
 import { MatSelect }                            from '@angular/material/select';
 
 //components
 import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { Utility }                              from '../../utilities/utility.component';
 
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
@@ -25,7 +26,7 @@ import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 import { MaterieService } from '../../materie/materie.service';
 
-
+//#endregion
 @Component({
   selector: 'app-voto-interr-edit',
   templateUrl: './voto-interr-edit.component.html',
@@ -33,7 +34,7 @@ import { MaterieService } from '../../materie/materie.service';
 })
 export class VotoInterrEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   dateArr!:                                     string[];
   obsLezioni$!:                                 Observable<CAL_Lezione[]>;
   obsMaterie$!:                                 Observable<MAT_Materia[]>;
@@ -48,10 +49,12 @@ export class VotoInterrEditComponent implements OnInit {
   lezioneSelected!:                             CAL_Lezione;
 //#endregion
 
-
+//#region ----- ViewChild Input Output ---------
   @ViewChild('selectLezione') public selectLezione!: MatSelect;
   userFullName: any;
+//#endregion
 
+//#region ----- Constructor --------------------
 
   constructor( 
     @Inject(MAT_DIALOG_DATA) public data:       DialogDataVotoInterr,
@@ -77,8 +80,9 @@ export class VotoInterrEditComponent implements OnInit {
       giudizio:                                 ['']
     });
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
   ngOnInit() {
     this.loadData();
   }
@@ -166,7 +170,7 @@ export class VotoInterrEditComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Operazioni CRUD -------
+//#region ----- Operazioni CRUD ----------------
   save(){
 
     if (this.data.votoInterr == null){ 

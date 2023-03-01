@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, EventEmitter, HostListener, Inject, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -26,6 +28,7 @@ import { RettaCalcoloAlunnoComponent } from '../retta-calcolo-alunno/retta-calco
 import { RettaannoEditComponent } from '../rettaanno-edit/rettaanno-edit.component';
 import { DialogData } from 'src/app/_models/DialogData';
 
+//#endregion
 @Component({
   selector: 'app-retta-edit',
   templateUrl: './retta-edit.component.html',
@@ -34,7 +37,7 @@ import { DialogData } from 'src/app/_models/DialogData';
 
 export class RettaEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   public obsRette$!:          Observable<PAG_Retta[]>;
   obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
@@ -63,7 +66,7 @@ export class RettaEditComponent implements OnInit {
   public placeholderMeseArr=["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChildren(RettameseEditComponent) ChildrenRettaMese!:QueryList<RettameseEditComponent>;
   @ViewChild(RettaannoEditComponent) ChildRettaAnno!: RettaannoEditComponent;
   @ViewChild(PagamentiListComponent) ChildPagamenti!: PagamentiListComponent;
@@ -71,6 +74,8 @@ export class RettaEditComponent implements OnInit {
   @ViewChild(RettaCalcoloAlunnoComponent) ChildRettaCalcoloAlunno!: RettaCalcoloAlunnoComponent;
   @ViewChild(MatAutocomplete) matAutocomplete!: MatAutocomplete;
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor(
     public _dialogRef: MatDialogRef<RettaEditComponent>,
@@ -102,8 +107,9 @@ export class RettaEditComponent implements OnInit {
     //   nomeCognomeAlunno:          [null]
     // })
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
     this.filteredAlunni$ = this.formRetta.controls['nomeCognomeAlunno'].valueChanges
@@ -191,7 +197,7 @@ export class RettaEditComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Interazioni Varie Interfaccia -------
+//#region ----- Interazioni Varie Interfaccia --
 
   nuovoPagamentoArrivato(str: string) {
     //è stato inserito un nuovo pagamento: devo fare il refresh dei child: della lista (ChildPagamenti) e di retta edit che in cascata passa i totali aggiornati ai vari
@@ -285,7 +291,6 @@ export class RettaEditComponent implements OnInit {
     this.ChildRettapagamentoEdit.formRetta.controls['meseRetta'].setValue(meseRettaClicked - 1);
   }
 //#endregion
-
 
 //#region FUNZIONI NON PIU' UTILIZZATE ?
 
