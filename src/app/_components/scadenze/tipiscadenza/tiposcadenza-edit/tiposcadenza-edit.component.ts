@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -17,7 +19,7 @@ import { TipiScadenzaService }                  from '../../tipiscadenza.service
 //classes
 import { CAL_TipoScadenza }                     from 'src/app/_models/CAL_TipoScadenza';
 
-
+//#endregion
 @Component({
   selector: 'app-tiposcadenza-edit',
   templateUrl: './tiposcadenza-edit.component.html',
@@ -34,6 +36,7 @@ export class TipoScadenzaEditComponent implements OnInit {
   loading:                                      boolean = true;
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor(
     public _dialogRef: MatDialogRef<TipoScadenzaEditComponent>,
     @Inject(MAT_DIALOG_DATA) public tiposcadenzaID: number,
@@ -54,8 +57,9 @@ export class TipoScadenzaEditComponent implements OnInit {
     });
 
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
     this.loadData();
@@ -84,7 +88,7 @@ export class TipoScadenzaEditComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Operazioni CRUD -------
+//#region ----- Operazioni CRUD ----------------
 
   save(){
 

@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { CdkDragDrop, moveItemInArray }         from '@angular/cdk/drag-drop';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
@@ -20,7 +22,7 @@ import { LoadingService }                       from '../../utilities/loading/lo
 //models
 import { PER_Persona }                          from 'src/app/_models/PER_Persone';
 
-
+//#endregion
 @Component({
   selector: 'app-persone-list',
   templateUrl: './persone-list.component.html',
@@ -114,13 +116,15 @@ export class PersoneListComponent implements OnInit {
 
 //#endregion
 
+//#region ----- Constructor --------------------
 
   constructor( private svcPersone:       PersoneService,
                private _loadingService:  LoadingService,
                public _dialog:           MatDialog ) {    
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
     this.displayedColumns =  this.displayedColumnsPersoneList;
@@ -152,7 +156,7 @@ export class PersoneListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
 
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
@@ -198,7 +202,7 @@ export class PersoneListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -228,7 +232,7 @@ export class PersoneListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Gestione Campo Checkbox -------
+//#region ----- Gestione Campo Checkbox --------
 
 selectedRow(element: PER_Persona) {
   this.selection.toggle(element);
@@ -277,7 +281,8 @@ isAllSelected() {
 
 //#endregion
 
- 
+//#region ----- Right Click --------------------
+
   onRightClick(event: MouseEvent, element: PER_Persona) { 
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
@@ -285,6 +290,6 @@ isAllSelected() {
     this.matMenuTrigger.menuData = {item: element}   
     this.matMenuTrigger.openMenu(); 
   }
-
+//#endregion
   
 }

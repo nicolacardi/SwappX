@@ -1,10 +1,10 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, OnInit }                    from '@angular/core';
 import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable }                           from 'rxjs';
 import { MatDialog }                            from '@angular/material/dialog';
-import { tap }                                  from 'rxjs/operators';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-
 
 //components
 import { Utility }                              from '../../utilities/utility.component';
@@ -20,6 +20,8 @@ import { ScadenzePersoneService }               from '../scadenze-persone.servic
 import { User }                                 from 'src/app/_user/Users';
 import { CAL_ScadenzaPersone }                  from 'src/app/_models/CAL_Scadenza';
 
+//#endregion
+
 @Component({
   selector: 'app-mie-scadenze',
   templateUrl: './miescadenze.component.html',
@@ -30,31 +32,34 @@ export class MieScadenzeComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
-//public userID: string;
-public currUser!:                               User;
-public obsMieScadenze$!:                        Observable<CAL_ScadenzaPersone[]>
-public iscrizioneID:                            number = 43;
+  //public userID: string;
+  public currUser!:                               User;
+  public obsMieScadenze$!:                        Observable<CAL_ScadenzaPersone[]>
+  public iscrizioneID:                            number = 43;
 
-matDataSource = new MatTableDataSource<CAL_ScadenzaPersone>();
-displayedColumns: string[] = [
-  "message",
-  "actionsColumn",
-  "delete"
-];
+  matDataSource = new MatTableDataSource<CAL_ScadenzaPersone>();
+  displayedColumns: string[] = [
+    "message",
+    "actionsColumn",
+    "delete"
+  ];
 
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor( 
     private svcScadenzePersone:                 ScadenzePersoneService,
     private _loadingService:                    LoadingService,
     private _snackBar:                          MatSnackBar, 
     public _dialog:                             MatDialog,
-    
-    ) {
-
+  ) {
     this.currUser = Utility.getCurrentUser();   
-     
   }
+
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(){
     this.loadData();
@@ -67,6 +72,9 @@ displayedColumns: string[] = [
     this.obsMieScadenze$ =this._loadingService.showLoaderUntilCompleted(scadenze$);
     
   }
+//#endregion
+
+//#region ----- Altri metodi -------------------
 
   setLetto(element: CAL_ScadenzaPersone) {
 
@@ -107,7 +115,10 @@ displayedColumns: string[] = [
     }
   }
 
+//#endregion
+
   deleteMsg(id: number) {
+    //TODO??
     //da decidere cosa fare
     // this.svcScadenze.delete(id).subscribe(
     //   res=> this.loadData(),

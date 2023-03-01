@@ -1,4 +1,6 @@
-import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
+//#region ----- IMPORTS ------------------------
+
+import { Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
@@ -26,7 +28,6 @@ import { PersoneService }                       from '../../persone/persone.serv
 import { TipiPersonaService }                   from '../../persone/tipi-persona.service';
 import { TipiScadenzaService }                  from '../tipiscadenza.service';
 
-
 //models
 import { CAL_Scadenza, CAL_ScadenzaPersone }                          from 'src/app/_models/CAL_Scadenza';
 import { DialogDataScadenza }                   from 'src/app/_models/DialogData';
@@ -35,7 +36,7 @@ import { User }                                 from 'src/app/_user/Users';
 import { CAL_TipoScadenza } from 'src/app/_models/CAL_TipoScadenza';
 import { GenitoriService } from '../../genitori/genitori.service';
 
-
+//#endregion
 @Component({
   selector: 'app-scadenza-edit',
   templateUrl: './scadenza-edit.component.html',
@@ -83,6 +84,8 @@ export class ScadenzaEditComponent implements OnInit {
 
 //#endregion
 
+//#region ----- Constructor --------------------
+
   constructor( 
     public _dialogRef:                          MatDialogRef<ScadenzaEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data:       DialogDataScadenza,
@@ -128,6 +131,10 @@ export class ScadenzaEditComponent implements OnInit {
 
     this.currUser = Utility.getCurrentUser();
   }
+
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit () {
     this.loadData();
@@ -183,6 +190,7 @@ export class ScadenzaEditComponent implements OnInit {
     )
     .subscribe();
   }
+
 
   addMyself(i: number){
     //devo SEMPRE aggiungere me stesso se c'è in listArr a listSelArr
@@ -254,6 +262,10 @@ export class ScadenzaEditComponent implements OnInit {
       );
     }
   }
+
+//#endregion
+
+//#region ----- Operazioni CRUD ----------------
 
   save() {
 
@@ -362,6 +374,9 @@ export class ScadenzaEditComponent implements OnInit {
       }
     );
   }
+//#endregion
+
+//#region ----- Altri metodi -------------------
 
   dp1Change() {
 
@@ -426,13 +441,10 @@ export class ScadenzaEditComponent implements OnInit {
     if (this.form.controls.h_End.value <= this.form.controls.h_Ini.value) { this.form.controls.h_End.setValue (dtTimeNew) }
   }
 
-
-
   triggerResize() {
     // Wait for changes to be applied, then trigger textarea resize.
     this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
   }
-
 
   optChanged() {
 
@@ -502,27 +514,11 @@ export class ScadenzaEditComponent implements OnInit {
     )
     .subscribe();
 
-
-
-
-  
     //ordino per cognome
     this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
     
   }
 
-  // insertPersoneOLD(control: string, scadenzaID: number) {
-
-  //   if (this.form.controls[control].value) {
-  //     for (let i = 0; i<this.form.controls[control].value.length; i++) {
-  //       let objScadenzaPersona: CAL_ScadenzaPersone = {
-  //         personaID: this.form.controls[control].value[i],
-  //         scadenzaID : scadenzaID
-  //       }
-  //       this.svcScadenzePersone.post(objScadenzaPersona).subscribe();
-  //     }
-  //   }
-  // }
 
   insertPersone(scadenzaID: number) {
     for (let i = 0; i<this.personeListSelArr.length; i++) {
@@ -576,7 +572,7 @@ export class ScadenzaEditComponent implements OnInit {
       val=> this.colorSample = val.color
     );
   }
-
+//#endregion
 
   
 

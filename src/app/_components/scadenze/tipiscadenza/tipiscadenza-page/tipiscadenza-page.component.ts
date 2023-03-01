@@ -1,6 +1,8 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TipiScadenzaListComponent } from '../tipiscadenza-list/tipiscadenza-list.component';
-
+//#endregion
 @Component({
   selector: 'app-tipiscadenza-page',
   templateUrl: './tipiscadenza-page.component.html',
