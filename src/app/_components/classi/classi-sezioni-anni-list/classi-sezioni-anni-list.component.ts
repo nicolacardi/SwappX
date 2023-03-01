@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, DebugElement, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatSelect }                            from '@angular/material/select';
@@ -30,6 +32,7 @@ import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoSc
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
 
+//#endregion
 @Component({
   selector: 'app-classi-sezioni-anni-list',
   templateUrl: './classi-sezioni-anni-list.component.html',
@@ -169,6 +172,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor( 
     private svcClassiSezioniAnni:               ClassiSezioniAnniService,
     private svcAnni:                            AnniScolasticiService,
@@ -190,6 +194,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
       selectDocente: 0
     });
   }
+//#endregion
 
 //#region ----- LifeCycle Hooks e simili--------
  

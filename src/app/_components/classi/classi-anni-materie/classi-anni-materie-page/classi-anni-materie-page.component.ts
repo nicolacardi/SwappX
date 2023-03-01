@@ -20,11 +20,9 @@ export class ClassiAnniMateriePageComponent implements OnInit {
 
   @ViewChild(ClassiAnniMaterieListComponent) classiAnniMaterieList!: ClassiAnniMaterieListComponent;
 
-  //#endregion
+//#endregion
 
-  constructor(public _dialog: MatDialog ) {
-
-  }
+  constructor(public _dialog: MatDialog ) { }
 
   ngOnInit(): void {
   }

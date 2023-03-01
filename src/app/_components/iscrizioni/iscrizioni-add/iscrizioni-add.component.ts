@@ -1,22 +1,25 @@
+//#region ----- IMPORTS ------------------------
+
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable }                           from 'rxjs';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatAutocompleteSelectedEvent }         from '@angular/material/autocomplete';
+import { MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { debounceTime, finalize, map, switchMap, tap } from 'rxjs/operators';
-
-//services
-import { AlunniService } from 'src/app/_components/alunni/alunni.service';
-import { IscrizioniService } from '../iscrizioni.service';
-
-//models
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 //components
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 import { DialogData } from 'src/app/_models/DialogData';
 
+//services
+import { AlunniService }                        from 'src/app/_components/alunni/alunni.service';
+import { IscrizioniService } from '../iscrizioni.service';
+
+//models
+import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+
+//#endregion
 @Component({
   selector: 'app-iscrizioni-add',
   templateUrl: './iscrizioni-add.component.html',
@@ -25,21 +28,22 @@ import { DialogData } from 'src/app/_models/DialogData';
 
 export class IscrizioniAddComponent implements OnInit {
 
-//#region ----- Variabili -------
-  form! :                   UntypedFormGroup;
-  filteredAlunni$!:         Observable<ALU_Alunno[]>;
-  alunniSelezionati:        string[] = [];
-  idAlunniSelezionati:      number[] = [];
-  removable =               true;
-  selectable =              true;
-  alunniIsLoading:          boolean = false;
-  classeSezioneAnnoID!:                number;
+//#region ----- Variabili ----------------------
+  form! :                                       UntypedFormGroup;
+  filteredAlunni$!:                             Observable<ALU_Alunno[]>;
+  alunniSelezionati:                            string[] = [];
+  idAlunniSelezionati:                          number[] = [];
+  removable =                                   true;
+  selectable =                                  true;
+  alunniIsLoading:                              boolean = false;
+  classeSezioneAnnoID!:                         number;
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild('nomeCognomeAlunno') nomeCognomeAlunno!: ElementRef<HTMLInputElement>;
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor(private fb:                     UntypedFormBuilder,
               private svcAlunni:              AlunniService,
               private svcIscrizioni:          IscrizioniService,
@@ -51,8 +55,9 @@ export class IscrizioniAddComponent implements OnInit {
       nomeCognomeAlunno:     [null]
     });
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
   ngOnInit(): void {
 
     this.classeSezioneAnnoID = this.data.classeSezioneAnnoID;
@@ -76,7 +81,7 @@ export class IscrizioniAddComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Altri metodi -------
+//#region ----- Altri metodi -------------------
 
   selected(event: MatAutocompleteSelectedEvent): void {
 
@@ -102,7 +107,7 @@ export class IscrizioniAddComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Operazioni CRUD -------
+//#region ----- Operazioni CRUD ----------------
 
   save() {
     this.idAlunniSelezionati.forEach(

@@ -47,7 +47,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
   breakpoint!:                                  number;
 //#endregion
 
-//#region ----- constructor -------------------
+//#region ----- Constructor -------------------
   constructor( 
     @Inject(MAT_DIALOG_DATA) public classeSezioneAnnoID: number,
     public _dialogRef:                          MatDialogRef<ClasseSezioneAnnoEditComponent>,

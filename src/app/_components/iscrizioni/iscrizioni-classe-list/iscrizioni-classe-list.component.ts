@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -25,6 +27,7 @@ import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
+//#endregion
 
 @Component({
   selector:     'app-iscrizioni-classe-list',
@@ -34,7 +37,7 @@ import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 
 export class IscrizioniClasseListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   matDataSource = new MatTableDataSource<CLS_Iscrizione>();
   storedFilterPredicate!:       any;
   filterValue = '';
@@ -95,7 +98,7 @@ export class IscrizioniClasseListComponent implements OnInit {
   */
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild("filterInput") filterInput!:                     ElementRef;
@@ -108,9 +111,9 @@ export class IscrizioniClasseListComponent implements OnInit {
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('iscrizioneID') iscrizioneIdEmitter = new EventEmitter<number>();  
   @Output('alunno') alunnoEmitter = new EventEmitter<ALU_Alunno>();  
-
-
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor(private svcIscrizioni:          IscrizioniService,
               private svcClasseSezioneAnno:   ClassiSezioniAnniService,
@@ -118,9 +121,9 @@ export class IscrizioniClasseListComponent implements OnInit {
               private _loadingService:        LoadingService,
               private _navigationService:     NavigationService  ) {
   }
-  
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
 
@@ -217,7 +220,7 @@ export class IscrizioniClasseListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
 
 /*
   filterRightPanel(): (data: any, filter: string) => boolean {
@@ -263,7 +266,7 @@ export class IscrizioniClasseListComponent implements OnInit {
 */
 //#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
   addRecord(){
 
     //TODO!!!
@@ -303,7 +306,7 @@ export class IscrizioniClasseListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Right Click -------
+//#region ----- Right Click --------------------
 
   onRightClick(event: MouseEvent, element: CLS_Iscrizione) { 
     event.preventDefault(); 
@@ -333,7 +336,7 @@ export class IscrizioniClasseListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Gestione Campo Checkbox -------
+//#region ----- Gestione Campo Checkbox --------
   selectedRow(element: CLS_Iscrizione) {
     this.selection.toggle(element);
   }
@@ -380,7 +383,7 @@ export class IscrizioniClasseListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Altri metodi -------
+//#region ----- Altri metodi -------------------
   onResize(event: any) {
     this.displayedColumns = (event.target.innerWidth <= 800) ? 
       ["select", 

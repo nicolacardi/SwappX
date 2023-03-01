@@ -45,6 +45,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor(private svcClassiSezioniAnni:          ClassiSezioniAnniService,
               private svcAnni:            AnniScolasticiService,
               private fb:                 UntypedFormBuilder, 
@@ -56,6 +57,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     })
   }
+//#endregion
 
 //#region ----- LifeCycle Hooks e simili--------
   ngOnInit(): void {

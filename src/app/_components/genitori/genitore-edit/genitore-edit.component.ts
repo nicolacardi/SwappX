@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -25,6 +27,7 @@ import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 import { ALU_TipoGenitore }                     from 'src/app/_models/ALU_Tipogenitore';
 
+//#endregion
 
 @Component({
   selector: 'app-genitore-edit',
@@ -34,11 +37,15 @@ import { ALU_TipoGenitore }                     from 'src/app/_models/ALU_Tipoge
 
 export class GenitoreEditComponent implements OnInit {
 
-//#region ----- Variabili -------
-  public personaID!:                            number;
+//#region ----- Variabili ----------------------
+
 
   genitore$!:                                   Observable<ALU_Genitore>;
   obsTipiGenitore$!:                            Observable<ALU_TipoGenitore[]>;
+  filteredComuni$!:                             Observable<_UT_Comuni[]>;
+  filteredComuniNascita$!:                      Observable<_UT_Comuni[]>;
+
+  public personaID!:                            number;
   genitoreNomeCognome :                         string = "";
   formGenitore! :                               UntypedFormGroup;
 
@@ -46,8 +53,6 @@ export class GenitoreEditComponent implements OnInit {
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
 
-  filteredComuni$!:                             Observable<_UT_Comuni[]>;
-  filteredComuniNascita$!:                      Observable<_UT_Comuni[]>;
   comuniIsLoading:                              boolean = false;
   comuniNascitaIsLoading:                       boolean = false;
   breakpoint!:                                  number;
@@ -55,12 +60,13 @@ export class GenitoreEditComponent implements OnInit {
 
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild('alunniFamiglia') alunniFamigliaComponent!: AlunniListComponent; 
   @ViewChild(PersonaFormComponent) personaFormComponent!: PersonaFormComponent; 
 
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor(
     public _dialogRef: MatDialogRef<GenitoreEditComponent>,
     @Inject(MAT_DIALOG_DATA) public genitoreID: number,
@@ -87,7 +93,9 @@ export class GenitoreEditComponent implements OnInit {
     this.obsTipiGenitore$ = this.svcTipiGenitore.list();
   }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#endregion 
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
     this.loadData();
@@ -117,7 +125,7 @@ export class GenitoreEditComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Operazioni CRUD -------
+//#region ----- Operazioni CRUD ----------------
 
   save() {
 
@@ -176,8 +184,6 @@ export class GenitoreEditComponent implements OnInit {
     });
   }
 //#endregion
-
-
 
 //#region ----- Metodi di gestione Genitori, Famiglia e Classi -------
 

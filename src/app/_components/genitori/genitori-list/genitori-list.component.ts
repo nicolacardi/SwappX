@@ -1,28 +1,31 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { Observable, pipe } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { SelectionModel } from '@angular/cdk/collections';
-import { MatTableDataSource} from '@angular/material/table';
-import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatPaginator }                         from '@angular/material/paginator';
+import { MatSort }                              from '@angular/material/sort';
+import { Observable }                           from 'rxjs';
+import { map }                                  from 'rxjs/operators';
+import { SelectionModel }                       from '@angular/cdk/collections';
+import { MatTableDataSource}                    from '@angular/material/table';
+import { CdkDragDrop, moveItemInArray}          from '@angular/cdk/drag-drop';
+import { ActivatedRoute, Router }               from '@angular/router';
+import { MatMenuTrigger }                       from '@angular/material/menu';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 
 //components
-import { GenitoreEditComponent } from '../genitore-edit/genitore-edit.component';
-import { GenitoriFilterComponent } from '../genitori-filter/genitori-filter.component';
+import { GenitoreEditComponent }                from '../genitore-edit/genitore-edit.component';
+import { GenitoriFilterComponent }              from '../genitori-filter/genitori-filter.component';
 
 //services
-import { GenitoriService } from '../genitori.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { NavigationService } from '../../utilities/navigation/navigation.service';
-import { AlunniService } from '../../alunni/alunni.service';
+import { GenitoriService }                      from '../genitori.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { NavigationService }                    from '../../utilities/navigation/navigation.service';
+import { AlunniService }                        from '../../alunni/alunni.service';
 
 //models
-import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
+import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
 
+//#endregion
 @Component({
   selector: 'app-genitori-list',
   templateUrl: './genitori-list.component.html',
@@ -31,7 +34,7 @@ import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 
 export class GenitoriListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   matDataSource = new MatTableDataSource<ALU_Genitore>();
 
   displayedColumns: string[] =  [];
@@ -119,7 +122,7 @@ export class GenitoriListComponent implements OnInit {
   };
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild("filterInput") filterInput!:                     ElementRef;
@@ -135,6 +138,7 @@ export class GenitoriListComponent implements OnInit {
 
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor(private svcGenitori:      GenitoriService,
               private svcAlunni:        AlunniService,
               private route:            ActivatedRoute,
@@ -143,8 +147,9 @@ export class GenitoriListComponent implements OnInit {
               private _loadingService:  LoadingService,
               private _navigationService:    NavigationService ) {
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
     if (this.context != ''){
@@ -211,7 +216,7 @@ export class GenitoriListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
 
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
@@ -272,7 +277,7 @@ export class GenitoriListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -306,7 +311,7 @@ export class GenitoriListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Right Click -------
+//#region ----- Right Click --------------------
 
   onRightClick(event: MouseEvent, element: ALU_Genitore) { 
     event.preventDefault(); 
@@ -322,9 +327,7 @@ export class GenitoriListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Emit per alunno-edit -------
-
-//#region ----- Gestione Campo Checkbox -------
+//#region ----- Gestione Campo Checkbox --------
 selectedRow(element: ALU_Genitore) {
   this.selection.toggle(element);
 }
@@ -371,6 +374,7 @@ isAllSelected() {
 }
 //#endregion
 
+//#region ----- Emit per alunno-edit -----------
 
   addToFamilyEmit(item: ALU_Genitore) {
     this.addToFamily.emit(item);

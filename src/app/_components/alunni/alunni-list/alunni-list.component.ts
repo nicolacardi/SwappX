@@ -143,7 +143,7 @@ export class AlunniListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Consructor ---------------------
+//#region ----- Constructor --------------------
 
   constructor(
     private svcAlunni:                          AlunniService,

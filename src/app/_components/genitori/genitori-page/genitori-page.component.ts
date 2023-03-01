@@ -1,3 +1,4 @@
+//#region ----- IMPORTS ------------------------
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
@@ -9,6 +10,7 @@ import { GenitoriListComponent } from '../genitori-list/genitori-list.component'
 //services
 import { NavigationService } from '../../utilities/navigation/navigation.service';
 
+//#endregion
 
 @Component({
   selector: 'app-genitori-page',
@@ -16,17 +18,13 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
   styleUrls: ['../genitori.css']
 })
 
-
-
 export class GenitoriPageComponent implements OnInit {
-
 
 //#region ----- ViewChild Input Output -------
   @ViewChild(GenitoriListComponent) viewGenitoriList!: GenitoriListComponent; 
   @ViewChild(GenitoriFilterComponent) viewGenitoriFilter!: GenitoriFilterComponent; 
   @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
 //#endregion
-
 
   constructor(private _navigationService:  NavigationService) { }
 

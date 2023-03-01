@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, OnInit, ViewChild }         from '@angular/core';
 import { MatDialog }                            from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
@@ -18,6 +20,7 @@ import { DocentiService }                       from '../docenti.service';
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 import { User }                                 from 'src/app/_user/Users';
 
+//#endregion
 @Component({
   selector: 'app-docenti-dashboard',
   templateUrl: './docenti-dashboard.component.html',
@@ -26,7 +29,7 @@ import { User }                                 from 'src/app/_user/Users';
 
 export class DocentiDashboardComponent implements OnInit {
 
-  //#region ----- Variabili -------
+//#region ----- Variabili -------
 
   public classeSezioneAnnoID!:  number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public annoID!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
@@ -41,9 +44,9 @@ export class DocentiDashboardComponent implements OnInit {
   
   public currUser!: User;
   
-  //#endregion
+//#endregion
   
-  //#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output -------
   //@ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
   @ViewChild(ClassiSezioniAnniListComponent) viewClassiSezioniAnni!: ClassiSezioniAnniListComponent; 
   // @ViewChild(IscrizioniClasseListComponent) viewListIscrizioni!: IscrizioniClasseListComponent; 
@@ -52,17 +55,16 @@ export class DocentiDashboardComponent implements OnInit {
   // @ViewChild('orarioDocenteDOM') viewOrarioDocente!: LezioniCalendarioComponent; 
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
 
-  //#endregion
+//#endregion
 
-  constructor( private svcIscrizioni:                IscrizioniService,
-               private svcDocenti:                   DocentiService,
-               private _navigationService:           NavigationService,
-               public _dialog:                       MatDialog,
-               private _jspdf:                       JspdfService,
-               private actRoute:                     ActivatedRoute,
-               private router:                       Router,        
-               private _snackBar:                    MatSnackBar){
+  constructor( 
+    private svcDocenti:                   DocentiService,
+    public _dialog:                       MatDialog,
+    private actRoute:                     ActivatedRoute,
+  ){
   }
+
+//#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit() {
 
@@ -88,8 +90,9 @@ export class DocentiDashboardComponent implements OnInit {
       )
     }
   }
-  
-  //#region ----- ricezione emit -------
+//#endregion
+
+//#region ----- ricezione emit -------
     //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
     //serve per la successiva assegnazione ad una classe...in quanto il modale che va ad aggiungere
     //le classi ha bisogno di conoscere anche l'annoID per fare le proprie verifiche
@@ -114,7 +117,9 @@ export class DocentiDashboardComponent implements OnInit {
     this.alunno = alunno;
   }
 
-  //#endregion
+//#endregion
+
+//#region ----- Altri metodi ------------------
 
   selectedTabValue(event: any){
     //senza questo espediente non fa il primo render correttamente
@@ -126,5 +131,6 @@ export class DocentiDashboardComponent implements OnInit {
     // }
     
   }
-
+  
+//#endregion
 }

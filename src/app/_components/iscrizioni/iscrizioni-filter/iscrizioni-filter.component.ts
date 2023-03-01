@@ -1,9 +1,12 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
 //components
 import { IscrizioniListComponent } from '../iscrizioni-list/iscrizioni-list.component';
 
+//#endregion
 @Component({
   selector: 'app-iscrizioni-filter',
   templateUrl: './iscrizioni-filter.component.html',

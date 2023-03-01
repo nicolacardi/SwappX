@@ -1,26 +1,28 @@
-import { Component, Inject, OnInit } from '@angular/core';
+//#region ----- IMPORTS ------------------------
+
+import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { iif, Observable, of } from 'rxjs';
-import { concatMap, filter, map, tap } from 'rxjs/operators';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { iif, Observable, of }                  from 'rxjs';
+import { concatMap, map, tap }                  from 'rxjs/operators';
 
 //components
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 
 //services
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
-import { IscrizioniService } from '../iscrizioni.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
-
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
+import { IscrizioniService }                    from '../iscrizioni.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
 
 //models
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 
+//#endregion
 export interface DialogData {
   annoID:               number;
   classeSezioneAnno:    CLS_ClasseSezioneAnno;
@@ -49,6 +51,8 @@ export class IscrizioniClasseCalcoloComponent implements OnInit {
 
 //#endregion
 
+//#region ----- Constructor --------------------
+
     constructor(public _dialogRef:                      MatDialogRef<IscrizioniClasseCalcoloComponent>,
                 @Inject(MAT_DIALOG_DATA)                public data: DialogData,
                 public _dialog:                         MatDialog,
@@ -63,6 +67,10 @@ export class IscrizioniClasseCalcoloComponent implements OnInit {
       selectClasseSezioneAnno:       [null]
     })
   }
+
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
     
@@ -85,6 +93,10 @@ export class IscrizioniClasseCalcoloComponent implements OnInit {
         )
       )
   }
+
+//#endregion
+
+//#region ----- Altri metodi -------------------
 
   iscrivi() {
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
@@ -129,6 +141,9 @@ export class IscrizioniClasseCalcoloComponent implements OnInit {
       )
       .toPromise(); //necessario per ATTENDERE che finisca insieme alla await e async a inizio funzione
   }
+
+//#endregion
+
 }
 
 

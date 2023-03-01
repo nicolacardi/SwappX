@@ -1,20 +1,23 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
+//#region ----- IMPORTS ------------------------
 
-//models
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { Observable }                           from 'rxjs';
 
 //components
-import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
+import { SnackbarComponent }                    from '../utilities/snackbar/snackbar.component';
 
 //services 
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { ParametriService } from 'src/app/_services/parametri.service';
-import { LoadingService } from '../utilities/loading/loading.service';
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { ParametriService }                     from 'src/app/_services/parametri.service';
+import { LoadingService }                       from '../utilities/loading/loading.service';
 
+//models
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
+
+//#endregion
 @Component({
   selector: 'app-impostazioni',
   templateUrl: './impostazioni.component.html',
@@ -23,30 +26,32 @@ import { LoadingService } from '../utilities/loading/loading.service';
 
 export class ImpostazioniComponent implements OnInit {
 
-  obsAnni$!:                          Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-  form! :                             UntypedFormGroup;
+//#region ----- Variabili ----------------------
+
+  obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  form! :                                       UntypedFormGroup;
   
   public mesiArr =            [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=  ["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
   
-  public parAnnoCorrente!:              _UT_Parametro;
-  public parQuoteDefault!:              _UT_Parametro;
-  public parQuoteRidotteFratelli!:      _UT_Parametro;
+  public parAnnoCorrente!:                      _UT_Parametro;
+  public parQuoteDefault!:                      _UT_Parametro;
+  public parQuoteRidotteFratelli!:              _UT_Parametro;
 
   private arrElab = [true, false, false];
-  private arrMsg!: boolean[];
 
+//#endregion
 
   @ViewChildren('QuoteListElement') QuoteList!: QueryList<any>;
-  
-  constructor(
-    private fb:                       UntypedFormBuilder, 
-    private svcAnni:                  AnniScolasticiService,
-    private svcParametri:             ParametriService,
-    private _snackBar:                MatSnackBar,
-    private _loadingService :         LoadingService )  {
 
-    let obj = localStorage.getItem('AnnoCorrente');
+//#region ----- Constructor --------------------
+
+  constructor(
+    private fb:                                 UntypedFormBuilder, 
+    private svcAnni:                            AnniScolasticiService,
+    private svcParametri:                       ParametriService,
+    private _snackBar:                          MatSnackBar,
+  )  {
 
     this.form = this.fb.group({
       // selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
@@ -74,10 +79,16 @@ export class ImpostazioniComponent implements OnInit {
       }
     );
   }
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
     this.obsAnni$= this.svcAnni.list();
   }
+//#endregion
+
+//#region ----- Operazioni CRUD ----------------
 
   save(){
 
@@ -114,6 +125,8 @@ export class ImpostazioniComponent implements OnInit {
       err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Quote Fratelli]', panelClass: ['red-snackbar']})
     ); 
   }
+
+//#endregion
 
   //TODO: refactoring
   setMessage(n: number){

@@ -30,7 +30,7 @@ import { ClasseAnnoMateriaEditComponent } from '../classe-anno-materia-edit/clas
 export class ClassiAnniMaterieListComponent implements OnInit {
 
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
 matDataSource = new MatTableDataSource<CLS_ClasseAnnoMateria>();
 
@@ -74,10 +74,11 @@ filterValues = {
 
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
 @ViewChild(MatSort) sort!:                MatSort;
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor(private svcClasseAnnoMateria:           ClasseAnnoMateriaService,
               private svcAnni:                        AnniScolasticiService,
               private fb:                             UntypedFormBuilder, 
@@ -89,6 +90,9 @@ filterValues = {
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     })      
   }
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
     this.obsAnni$= this.svcAnni.list();
@@ -116,9 +120,9 @@ filterValues = {
       }
     );
   }
+//#endregion
 
-
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -146,7 +150,7 @@ filterValues = {
   }
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
 
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {
