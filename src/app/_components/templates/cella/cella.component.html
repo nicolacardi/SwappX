@@ -1,0 +1,24 @@
+<div class="_bordered-grey _pos-absolute"
+[style.width.px]="bloccoCella.w"
+[style.height.px]="bloccoCella.h"
+[style.left.px]="posx"
+(mousedown)="setStatus($event, 2)"
+(mouseup)="setStatus($event, 0)"
+>
+cella ID {{bloccoCella.id}}
+
+
+
+
+
+<!-- resize-action è il triangolino, classTipo dice se blu o giallo-->
+<div class="resize-action" (mousedown)="setStatus($event, 1)"></div>
+    <span class="w-legenda">{{width | number:'1.0-0'}}px</span>
+    <span class="h-legenda">{{height | number:'1.0-0'}}px</span>
+    <span class="size w100">{{(left | number:'1.0-0')}}-{{top | number:'1.0-0'}}</span>
+    <!-- </div> -->
+
+    
+</div>
+
+

@@ -89,11 +89,15 @@
 }
 
 .tipo1 {
-    border-color: transparent transparent transparent #2f66a5;
+  border-color: transparent transparent transparent #2f66a5;
 }
 
 .tipo2 {
-    border-color: transparent transparent transparent #de8a49;
+  border-color: transparent transparent transparent #de8a49;
+}
+
+.tipo3 {
+  border-color: transparent transparent transparent #0e9526;
 }
 
 
