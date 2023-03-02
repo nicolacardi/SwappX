@@ -74,6 +74,14 @@
                 </mat-grid-tile>
             </mat-grid-list>
 
+            <app-table 
+            
+                *ngIf="tipoBloccoDesc == 'Tabella'"
+                [bloccoID] = "bloccoID"
+            >
+
+            </app-table>
+
 <!-- ************ QUILL  ********************-->
 
             <quill-editor *ngIf="tipoBloccoDesc == 'Testo'"

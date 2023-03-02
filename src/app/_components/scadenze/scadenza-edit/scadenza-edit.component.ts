@@ -17,7 +17,6 @@ import { CdkTextareaAutosize }                  from '@angular/cdk/text-field';
 import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
-import { ColorPickerComponent }                 from '../../color-picker/color-picker.component';
 import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 
 //services
@@ -380,65 +379,46 @@ export class ScadenzaEditComponent implements OnInit {
 
   dp1Change() {
 
-    //prendo la data corrente
-    let dtTMP = new Date (this.data.start);
+    // //verifico anzitutto se l'ora che sto scrivendo è entro i limiti 8-15.30 altrimenti sistemo
+    // if (this.form.controls.h_Ini.value < "08:00") {this.form.controls.h_Ini.setValue ("08:00") }   //ora min di inizio 08:00:  sarà parametrica
+    // if (this.form.controls.h_Ini.value > "15:30") {this.form.controls.h_Ini.setValue ("15:30") }   //ora max di inizio 15:30: sarà parametrica
+    this.checkDurata();
 
-    //ci metto l'H_End
-    dtTMP.setHours(this.form.controls.h_End.value.substring(0,2));
-    dtTMP.setMinutes(this.form.controls.h_End.value.substring(3,5));
-
-    let setHours = 0;
-    let setMinutes = 0;
-
-    //tolgo un'ora, ma se vado sotto le 8 devo impostare le 8
-    if ((dtTMP.getHours() - 1) < 8) { 
-      setHours = 8;
-      setMinutes = 0;
-    } 
-    else { 
-      setHours = (dtTMP.getHours() - 1)
-      setMinutes = (dtTMP.getMinutes())
-    }
-
-    let dtTMP2 = new Date (dtTMP.setHours(setHours));
-    dtTMP2.setMinutes(setMinutes);
-    let dtISO = dtTMP2.toLocaleString();
-    let dtTimeNew = dtISO.substring(11,19);   //tutto quanto sopra per arrivare a questa dtTimeNew da impostare nel caso 3 sottostante
-
-    if (this.form.controls.h_Ini.value < "08:00") {this.form.controls.h_Ini.setValue ("08:00") }   //ora min di inizio 08:00:  sarà parametrica
-    if (this.form.controls.h_Ini.value > "15:30") {this.form.controls.h_Ini.setValue ("15:30") }   //ora max di inizio 15:30: sarà parametrica
-    if (this.form.controls.h_Ini.value >= this.form.controls.h_End.value) { this.form.controls.h_Ini.setValue (dtTimeNew) }
   }
 
   dp2Change() {
 
-    //prendo la data corrente
-    let dtTMP = new Date (this.data.start);
+    // //verifico anzitutto se l'ora che sto scrivendo è entro i limiti 8-15.30 altrimenti sistemo
+    // if (this.form.controls.h_End.value < "08:30") {this.form.controls.h_End.setValue ("08:30") } //ora min di fine 08:30:  sarà parametrica
+    // if (this.form.controls.h_End.value > "16:00") {this.form.controls.h_End.setValue ("16:00") } //ora max di fine 16:00:  sarà parametrica
+    this.checkDurata();
 
-    //ci metto l'H_Ini
-    dtTMP.setHours(this.form.controls.h_Ini.value.substring(0,2));
-    dtTMP.setMinutes(this.form.controls.h_Ini.value.substring(3,5));
+  }
 
-    let setHours = 0;
-    let setMinutes = 0;
+  checkDurata() {
 
-    //tolgo un'ora, ma se vado sopra le 15 devo impostare le 15
-    if ((dtTMP.getHours() - 1) > 15) { 
-      setHours = 15;
-      setMinutes = 0;
-    } 
-    else { 
-      setHours = (dtTMP.getHours() + 1)
-      setMinutes = (dtTMP.getMinutes())
+  //se la durata è > 30min imposto l'ora di fine a 30 min dopo 
+
+  if (this.form.controls.h_End.value) {
+    //prendo la data
+      let dtTMPEnd = new Date (this.data.start);
+      //ci metto l'H_End
+      dtTMPEnd.setHours(this.form.controls.h_End.value.substring(0,2));
+      dtTMPEnd.setMinutes(this.form.controls.h_End.value.substring(3,5));
+
+      let dtTMPStart = new Date (this.data.start);
+      //ci metto l'H_Ini
+      dtTMPStart.setHours(this.form.controls.h_Ini.value.substring(0,2));
+      dtTMPStart.setMinutes(this.form.controls.h_Ini.value.substring(3,5));
+
+      //calcolo la durata, se meno di 30 minuti modifico H_end
+      let durata = (dtTMPEnd.getTime() - dtTMPStart.getTime())/1000/60;
+      if (durata < 30) {
+        dtTMPEnd.setTime(dtTMPStart.getTime()+(30*1000*60));
+        let dtTimeNew = Utility.zeroPad(dtTMPEnd.getHours(), 2)+":"+Utility.zeroPad(dtTMPEnd.getMinutes(), 2);
+        this.form.controls.h_End.setValue (dtTimeNew)
+      }
     }
-    let dtTMP2 = new Date (dtTMP.setHours(setHours));
-    dtTMP2.setMinutes(setMinutes);
-    let dtISO = dtTMP2.toLocaleString();
-    let dtTimeNew = dtISO.substring(11,19); //tutto quanto sopra per arrivare a questa dtTimeNew da impostare nel caso 3 sottostante
-
-    if (this.form.controls.h_End.value < "08:30") {this.form.controls.h_End.setValue ("08:30") } //ora min di fine 08:30:  sarà parametrica
-    if (this.form.controls.h_End.value > "16:00") {this.form.controls.h_End.setValue ("16:00") } //ora max di fine 16:00:  sarà parametrica
-    if (this.form.controls.h_End.value <= this.form.controls.h_Ini.value) { this.form.controls.h_End.setValue (dtTimeNew) }
   }
 
   triggerResize() {

@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, ElementRef, Inject, OnInit, ViewChild }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
@@ -25,7 +27,7 @@ import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco
 import { TEM_BloccoFoto }                       from 'src/app/_models/TEM_BloccoFoto';
 import { TEM_BloccoTesto }                      from 'src/app/_models/TEM_BloccoTesto';
 
-
+//#endregion
 @Component({
   selector: 'app-blocco-edit',
   templateUrl: './blocco-edit.component.html',

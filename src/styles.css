@@ -787,6 +787,12 @@
         background-color: #10722cd4 !important;
     }
 
+    ._btn-add-table {
+        z-index: 1000;
+        position: absolute !important;
+        background-color: #0e9526 !important;
+    }
+
     ._btn-add-text {
         z-index: 1000;
         position: absolute !important;

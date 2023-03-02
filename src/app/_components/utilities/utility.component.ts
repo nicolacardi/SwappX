@@ -167,6 +167,25 @@ export abstract class Utility {
       return null;
     }
   }
+
+
+  public static msToTime(s: number) {
+    var ms = s % 1000;
+    s = (s - ms) / 1000;
+    var secs = s % 60;
+    s = (s - secs) / 60;
+    var mins = s % 60;
+    var hrs = (s - mins) / 60;
+  
+    return hrs + ':' + mins + ':' + secs;
+  }
+
+  public static zeroPad(n:number,length:number){
+    var s=n+"",needed=length-s.length;
+    if (needed>0) s=(Math.pow(10,needed)+"").slice(1)+s;
+    return s;
+  }
+
 }
 
   

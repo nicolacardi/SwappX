@@ -64,12 +64,15 @@ export class BloccoComponent implements OnInit {
   //https://medium.com/swlh/create-a-resizable-and-draggable-angular-component-in-the-easiest-way-bb67031866cb
   //https://stackblitz.com/edit/angular-resizable-draggable?file=src%2Fapp%2Fapp.component.ts
 //#endregion
+  
+//#region ----- Constructor --------------------
+
   constructor(
     private svcBlocchi:                         BlocchiService,
     public _dialog:                             MatDialog, 
   ) { }
 
-
+//#endregion
 
 
 
