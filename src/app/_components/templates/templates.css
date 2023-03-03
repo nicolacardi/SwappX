@@ -86,6 +86,8 @@
     transform: translate3d(-50%, -50%, 0) rotateZ(45deg);
     border-style: solid;
     border-width: 8px;
+
+
 }
 
 .tipo1 {
@@ -166,5 +168,11 @@
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {
   content: 'test' !important;
 } */
+
+
+
+
+
+
 
 

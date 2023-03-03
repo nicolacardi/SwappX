@@ -1,42 +1,75 @@
-import { Component, ComponentRef, Input, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+//#region ----- IMPORTS ------------------------
+
+import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 
 //components
-import { DialogOkComponent } from '../dialog-ok/dialog-ok.component';
-import { SceltaColonneComponent } from './scelta-colonne/scelta-colonne.component';
+import { DialogOkComponent }                    from '../dialog-ok/dialog-ok.component';
+import { SceltaColonneComponent }               from './scelta-colonne/scelta-colonne.component';
 
 //services
-import { ExcelService } from '../exceljs/exceljs.service';
-import { JspdfService } from '../jspdf/jspdf.service';
+import { ExcelService }                         from '../exceljs/exceljs.service';
+import { JspdfService }                         from '../jspdf/jspdf.service';
+import { TableColumnsService }                  from './tablecolumns.service';
+import { UserService }                          from 'src/app/_user/user.service';
 
-//classes
-import { _UT_GridLayout, _UT_GridLayoutColumn } from 'src/app/_models/_UT_GridLayout';
+//models
+import { User }                                 from 'src/app/_user/Users';
+import { _UT_TableColVisible } from 'src/app/_models/_UT_TableColVisible';
 
-
+//#endregion
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html'
 })
 
-export class ToolbarComponent {
-  rptColumnsNameArr !:                          [string[]]; //uno strano array di array di stringhe richiesto da jspdf
+export class ToolbarComponent implements OnInit{
+//#region ----- Variabili --------------------
 
+  rptColumnsNameArr !:                          [string[]]; //uno strano array di array di stringhe richiesto da jspdf
+  public currUser!:                             User;
+  columnsToDisplay!:                            _UT_TableColVisible[];
+//#endregion
+//#region ----- ViewChild Input Output ---------
+
+  @Input('tableName') tableName! :              string;
   @Input('rptTitle') rptTitle! :                string;
   @Input('rptFileName') rptFileName! :          string;
   @Input('rptFieldsToKeep') rptFieldsToKeep! :  string[];
   @Input('rptColumnsNames') rptColumnsNames! :  string[];
   @Input('rptData') rptData! :                  any;
 
+  @Output('refreshColumns') refreshColumns = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
+
+
 //columnsComponent serve per la scelta colonne: è di tipo any perchè potrebbe essere QUALSIASI ListComponent (AlunniList, GenitoriList ecc.)
   @Input('columnsComponent') columnsComponent! : any;     
 
+//#endregion
 
   constructor(
-    public _dialog:                MatDialog,
-    private _jspdf:                JspdfService,
-    private _xlsx:                 ExcelService
+    public _dialog:                             MatDialog,
+    private _jspdf:                             JspdfService,
+    private _xlsx:                              ExcelService,
+    private svcTableColumns:                    TableColumnsService,
+    private svcUser:                            UserService,
+
     ) { }
 
+  ngOnInit () {
+    this.svcUser.obscurrentUser.subscribe(val => {
+      this.currUser = val;
+    })
+
+    this.svcTableColumns.listByUserIDAndTable(this.currUser.userID, this.tableName).subscribe(
+      colonne => {
+        console.log ("colonne", colonne);
+        this.columnsToDisplay = colonne
+      }
+    );
+
+  }
+  
   PDF() {
     // console.log ("toolbar.component : this.rptTitle", this.rptTitle);
     // console.log ("toolbar.component : this.rptFieldsToKeep", this.rptFieldsToKeep);
@@ -66,37 +99,47 @@ export class ToolbarComponent {
       width: '850px',
       height: '580px',
       //data: component.displayedColumns
-      data:this.buildLayout()
+      data:this.columnsToDisplay
     };
     const dialogRef = this._dialog.open(SceltaColonneComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      cols => {
+
+        console.log("devo fare la reload di listAlunni"); 
+        this.refreshColumns.emit();
+      }
+  );
   }
 
-  private buildLayout(): _UT_GridLayout {
 
-    let obj: _UT_GridLayout= { 
-        id:0,
-        userID:"",
-        gridName: "alunniList",   //questa andrà collegata a una variabile in Input
-        context: "",
-        columns:this.loadColumns()
-    };
-    return obj;
-  }
+  // private buildLayout(): _UT_TableLayout {
 
-  private loadColumns(): _UT_GridLayoutColumn[]  {
+  //   let obj: _UT_TableLayout= { 
+  //       id:0,
+  //       tableName: this.tableName,
+  //       context: "",
+  //       columns:this.loadColumns()
+  //   };
+  //   return obj;
+  // }
 
-    let lst: _UT_GridLayoutColumn[]= [];
-    let obj: _UT_GridLayoutColumn ={columnName:"", isVisible:true, disabled:false} ;
+  // private loadColumns(): _UT_TableLayoutColumn[]  {
 
-    this.columnsComponent.displayedColumns.forEach((element:any) => {
-      if(element.startsWith("action")) 
-        obj ={columnName: element, isVisible:true, disabled: true};
-      else
-        obj ={columnName: element, isVisible:true, disabled: false};
+  //   let lst: _UT_TableLayoutColumn[]= [];
+  //   let obj: _UT_TableLayoutColumn ={columnName:"", userID: "", isVisible:true, disabled:false} ;
 
-      lst.push(obj);
-    });
+  //   //va a pescarsi da solo le colonne del componente (columnsComponent)del quale si stanno lavorando le colonne
+  //   //in teoria dovrebbe pescarle dalla tabella nella quale sono scritte
 
-    return lst;
-  }
+  //   this.columnsComponent.displayedColumns.forEach((element:any) => {
+  //     if(element.startsWith("action")) 
+  //       obj ={columnName: element, userID: "", isVisible:true, disabled: true};
+  //     else
+  //       obj ={columnName: element, userID: "", isVisible:true, disabled: false};
+
+  //     lst.push(obj);
+  //   });
+
+  //   return lst;
+  // }
 }

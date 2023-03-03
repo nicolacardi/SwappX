@@ -16,14 +16,17 @@ import { map }                                  from 'rxjs/operators';
 import { AlunnoEditComponent }                  from '../alunno-edit/alunno-edit.component';
 import { AlunniFilterComponent }                from '../alunni-filter/alunni-filter.component';
 import { RettaEditComponent }                   from '../../pagamenti/retta-edit/retta-edit.component';
+import { Utility }                              from '../../utilities/utility.component';
 
 //services
 import { AlunniService }                        from '../alunni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { NavigationService }                    from '../../utilities/navigation/navigation.service';
+import { TableColumnsService } from '../../utilities/toolbar/tablecolumns.service';
 
-//classes
+//models
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
+import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
 @Component({
@@ -35,8 +38,11 @@ import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno
 export class AlunniListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+  public currUser!:                             User;
+
   matDataSource = new MatTableDataSource<ALU_Alunno>();
 
+  tableName = "alunniList";
   displayedColumns: string[] =  [];
   displayedColumnsAlunniList: string[] = [
       "actionsColumn", 
@@ -75,15 +81,15 @@ export class AlunniListComponent implements OnInit {
   rptTitle = 'Lista Alunni';
   rptFileName = 'ListaAlunni';
   rptFieldsToKeep  = [
-    "nome", 
-    "cognome", 
-    "dtNascita", 
-    "indirizzo", 
-    "comune", 
-    "cap", 
-    "prov", 
-    "telefono",
-    "email", 
+    "persona.nome", 
+    "persona.cognome", 
+    "persona.dtNascita", 
+    "persona.indirizzo", 
+    "persona.comune", 
+    "persona.cap", 
+    "persona.prov", 
+    "persona.telefono",
+    "persona.email", 
      ];
 
   rptColumnsNames  = [
@@ -150,8 +156,12 @@ export class AlunniListComponent implements OnInit {
     private router:                             Router,
     public _dialog:                             MatDialog, 
     private _loadingService:                    LoadingService,
-    private _navigationService:                 NavigationService
-  ) { }
+    private _navigationService:                 NavigationService,
+    private svcTableColumns:                    TableColumnsService
+  ) { 
+    this.currUser = Utility.getCurrentUser();
+    
+  }
   
 //#endregion
 
@@ -185,7 +195,8 @@ export class AlunniListComponent implements OnInit {
 
     switch(this.context) {
       case 'alunni-page': 
-        this.displayedColumns =  this.displayedColumnsAlunniList;
+        this.loadLayout();
+        //this.displayedColumns =  this.displayedColumnsAlunniList;
         this._navigationService.getGenitore().subscribe(
           res=>{
             if (res!= '') {
@@ -216,6 +227,14 @@ export class AlunniListComponent implements OnInit {
       
       //se trovato, update colonne griglia
       //this.displayedColumns =  this.displayedColumnsAlunniList;
+      this.svcTableColumns.listVisibleByUserIDAndTable(this.currUser.userID, this.tableName)
+      .subscribe(
+        //qui bisogna implementare il default: se non ci sono record bisogna crearne...
+        //probabilmente il modo migliore è prendere le colonne di tableCols, e creare tutti i record su tableColsVisible impostandoli tutti a visibili
+        //prima però va fatta una modifica: disabled è un campo di tablecols non di tablecolsvisible
+        colonne => this.displayedColumns = colonne.map(a => a.tableCol!.colName)
+      );
+
 
   }
 
@@ -237,6 +256,7 @@ export class AlunniListComponent implements OnInit {
         val =>   {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
+          this.sortCustom();
           this.matDataSource.sort = this.sort; 
           this.matDataSource.filterPredicate = this.filterPredicate();
         }
@@ -250,6 +270,7 @@ export class AlunniListComponent implements OnInit {
         val =>  {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
+          this.sortCustom();
           this.matDataSource.sort = this.sort; 
           this.matDataSource.filterPredicate = this.filterPredicate();
         }
@@ -263,6 +284,7 @@ export class AlunniListComponent implements OnInit {
         val => {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
+          this.sortCustom();
           this.matDataSource.sort = this.sort; 
         }
       );
@@ -272,7 +294,23 @@ export class AlunniListComponent implements OnInit {
 //#endregion
 
 //#region ----- Filtri & Sort ------------------
-  
+  sortCustom() {
+    this.matDataSource.sortingDataAccessor = (item:any, property) => {
+      switch(property) {
+        case 'nome':                            return item.persona.nome;
+        case 'cognome':                         return item.persona.cognome;
+        case 'dtNascita':                       return item.persona.dtNascita;
+        case 'indirizzo':                       return item.persona.indirizzo;
+        case 'comune':                          return item.persona.comune;
+        case 'cap':                             return item.persona.cap;
+        case 'prov':                            return item.persona.prov;
+        case 'telefono':                        return item.persona.telefono;
+        case 'email':                           return item.persona.email;
+        default: return item[property]
+      }
+    };
+  }
+
   applyFilter(event: Event) {
 
     this.filterValue = (event.target as HTMLInputElement).value;
@@ -285,18 +323,27 @@ export class AlunniListComponent implements OnInit {
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
       let foundGenitore : boolean = false;
+      
+      //se il campo nomeCognomeGenitore è compilato deve restituire True se trova  mentre deve restituire false se non ci sono i genitori
+      //se il campo non è compilato deve sempre restituire True
 
       // if (Object.values(searchTerms).every(x => x === null || x === '')) 
-      if (data._Genitori.length == 0) //restituiva true se i Genitori non c'erano: sbagliato
-        foundGenitore = false;
-      else {
-        data._Genitori?.forEach(
-          (val: { genitore: {persona: { nome: any; cognome: any}} })=>  {   
-            const foundCognomeNome = foundGenitore || String(val.genitore.persona.cognome+" "+val.genitore.persona.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
-            const foundNomeCognome = foundGenitore || String(val.genitore.persona.nome+" "+val.genitore.persona.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
-            foundGenitore =  foundCognomeNome || foundNomeCognome;  //attenzione!!! _Genitori non sono i genitori ma ALU_AlunnoGenitore! ecco perchè val.genitore
-        })
+      if (searchTerms.nomeCognomeGenitore.length > 0){
+        if (data._Genitori.length == 0) //restituisce false se , avendo digitato qualcosa, i Genitori non ci sono proprio per l'alunno della riga
+          foundGenitore = false;
+        else {
+          data._Genitori?.forEach(
+            (val: { genitore: {persona: { nome: any; cognome: any}} })=>  {   
+              const foundCognomeNome = foundGenitore || String(val.genitore.persona.cognome+" "+val.genitore.persona.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
+              const foundNomeCognome = foundGenitore || String(val.genitore.persona.nome+" "+val.genitore.persona.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
+              foundGenitore =  foundCognomeNome || foundNomeCognome;  //attenzione!!! _Genitori non sono i genitori ma ALU_AlunnoGenitore! ecco perchè val.genitore
+          })
+        }
+      } else {
+        foundGenitore = true;
       }
+
+
       let dArr = data.persona.dtNascita.split("-");
       const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 
@@ -319,7 +366,6 @@ export class AlunniListComponent implements OnInit {
                 && String(data.persona.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
                 && String(data.persona.email).toLowerCase().indexOf(searchTerms.email) !== -1
                 && foundGenitore;
-      
 
       return boolSx && boolDx;
     }

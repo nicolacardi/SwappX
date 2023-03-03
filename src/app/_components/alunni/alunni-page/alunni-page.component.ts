@@ -52,5 +52,9 @@ export class AlunniPageComponent implements OnInit {
   openDrawer() {
     this.drawerFiltriAvanzati.open();
   }
+
+  refreshChildCols(){
+    this.alunniList.loadLayout();
+  }
 //#endregion
 }

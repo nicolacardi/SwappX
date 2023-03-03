@@ -208,6 +208,7 @@ export class GenitoriListComponent implements OnInit {
       val =>   {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
+        this.sortCustom();
         this.matDataSource.sort = this.sort;
         this.matDataSource.filterPredicate = this.filterPredicate();
       }
@@ -217,6 +218,23 @@ export class GenitoriListComponent implements OnInit {
 //#endregion
 
 //#region ----- Filtri & Sort ------------------
+
+  sortCustom() {
+    this.matDataSource.sortingDataAccessor = (item:any, property) => {
+      switch(property) {
+        case 'nome':                            return item.persona.nome;
+        case 'cognome':                         return item.persona.cognome;
+        case 'dtNascita':                       return item.persona.dtNascita;
+        case 'indirizzo':                       return item.persona.indirizzo;
+        case 'comune':                          return item.persona.comune;
+        case 'cap':                             return item.persona.cap;
+        case 'prov':                            return item.persona.prov;
+        case 'telefono':                        return item.persona.telefono;
+        case 'email':                           return item.persona.email;
+        default: return item[property]
+      }
+    };
+  }
 
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
@@ -236,15 +254,22 @@ export class GenitoriListComponent implements OnInit {
       let searchTerms = JSON.parse(filter);
       let foundAlunno : boolean = false;
       
+      //se il campo nomeCognomeGenitore è compilato deve restituire True se trova  mentre deve restituire false se non ci sono i genitori
+      //se il campo non è compilato deve sempre restituire True
       //if (Object.values(searchTerms).every(x => x === null || x === '')) 
-      if (data._Figli.length == 0)
+      if (searchTerms.nomeCognomeAlunno.length > 0){
+
+        if (data._Figli.length == 0) //restituisce false se , avendo digitato qualcosa, i figli non ci sono proprio per il genitore della riga
+          foundAlunno = false;
+        else {
+          data._Figli?.forEach((val : { alunno: {persona: { nome: any; cognome: any}}; })=>  {
+              const foundCognomeNome = foundAlunno || String(val.alunno.persona.cognome+" "+val.alunno.persona.nome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1;
+              const foundNomeCognome = foundAlunno || String(val.alunno.persona.nome+" "+val.alunno.persona.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1; 
+              foundAlunno = foundCognomeNome || foundNomeCognome;
+          })
+        }
+      } else {
         foundAlunno = true;
-      else {
-        data._Figli?.forEach((val : { alunno: {persona: { nome: any; cognome: any}}; })=>  {
-            const foundCognomeNome = foundAlunno || String(val.alunno.persona.cognome+" "+val.alunno.persona.nome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1;
-            const foundNomeCognome = foundAlunno || String(val.alunno.persona.nome+" "+val.alunno.persona.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1; 
-            foundAlunno = foundCognomeNome || foundNomeCognome;
-        })
       }
 
       let dArr = data.persona.dtNascita.split("-");
