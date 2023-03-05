@@ -14,13 +14,17 @@ import { map }                                  from 'rxjs/operators';
 //components
 import { PersonaEditComponent }                 from '../persona-edit/persona-edit.component';
 import { PersoneFilterComponent }               from '../persone-filter/persone-filter.component';
+import { Utility }                              from '../../utilities/utility.component';
 
 //services
 import { PersoneService }                       from '../persone.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { TableColsService }                     from '../../utilities/toolbar/tablecols.service';
+import { TableColsVisibleService }              from '../../utilities/toolbar/tablecolsvisible.service';
 
 //models
 import { PER_Persona }                          from 'src/app/_models/PER_Persone';
+import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
 @Component({
@@ -31,9 +35,11 @@ import { PER_Persona }                          from 'src/app/_models/PER_Person
 export class PersoneListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+  currUser!:                                    User;
 
   matDataSource = new MatTableDataSource<PER_Persona>();
 
+  tableName = "PersoneList";
   displayedColumns: string[] =  [];
   displayedColumnsPersoneList: string[] = [
     "actionsColumn", 
@@ -118,17 +124,32 @@ export class PersoneListComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor( private svcPersone:       PersoneService,
-               private _loadingService:  LoadingService,
-               public _dialog:           MatDialog ) {    
+  constructor( 
+    private svcPersone:                         PersoneService,
+    private _loadingService:                    LoadingService,
+    public _dialog:                             MatDialog,
+    private svcTableCols:                       TableColsService,
+    private svcTableColsVisible:                TableColsVisibleService
+  ) 
+  { 
+    this.currUser = Utility.getCurrentUser();
   }
 //#endregion
 
 //#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
-    this.displayedColumns =  this.displayedColumnsPersoneList;
+    //this.displayedColumns =  this.displayedColumnsPersoneList;
+    this.loadLayout();
     this.loadData(); 
+  }
+
+  loadLayout(){
+    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName)
+    .subscribe( colonne => {
+        if (colonne.length != 0) this.displayedColumns = colonne.map(a => a.tableCol!.colName)
+        else this.svcTableCols.listByTable(this.tableName).subscribe( colonne => this.displayedColumns = colonne.map(a => a.colName))      
+    });
   }
 
   loadData () {

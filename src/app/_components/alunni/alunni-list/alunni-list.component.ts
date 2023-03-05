@@ -22,7 +22,8 @@ import { Utility }                              from '../../utilities/utility.co
 import { AlunniService }                        from '../alunni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { NavigationService }                    from '../../utilities/navigation/navigation.service';
-import { TableColumnsService } from '../../utilities/toolbar/tablecolumns.service';
+import { TableColsService }                     from '../../utilities/toolbar/tablecols.service';
+import { TableColsVisibleService }              from '../../utilities/toolbar/tablecolsvisible.service';
 
 //models
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
@@ -38,11 +39,11 @@ import { User }                                 from 'src/app/_user/Users';
 export class AlunniListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
-  public currUser!:                             User;
+  currUser!:                                    User;
 
   matDataSource = new MatTableDataSource<ALU_Alunno>();
 
-  tableName = "alunniList";
+  tableName = "AlunniList";
   displayedColumns: string[] =  [];
   displayedColumnsAlunniList: string[] = [
       "actionsColumn", 
@@ -157,10 +158,10 @@ export class AlunniListComponent implements OnInit {
     public _dialog:                             MatDialog, 
     private _loadingService:                    LoadingService,
     private _navigationService:                 NavigationService,
-    private svcTableColumns:                    TableColumnsService
+    private svcTableCols:                       TableColsService,
+    private svcTableColsVisible:                TableColsVisibleService
   ) { 
     this.currUser = Utility.getCurrentUser();
-    
   }
   
 //#endregion
@@ -223,19 +224,11 @@ export class AlunniListComponent implements OnInit {
   }
 
   loadLayout(){
-      //chiamata al WS dei layout con nome utente e nome griglia e contesto (variabile 'context')
-      
-      //se trovato, update colonne griglia
-      //this.displayedColumns =  this.displayedColumnsAlunniList;
-      this.svcTableColumns.listVisibleByUserIDAndTable(this.currUser.userID, this.tableName)
-      .subscribe(
-        //qui bisogna implementare il default: se non ci sono record bisogna crearne...
-        //probabilmente il modo migliore è prendere le colonne di tableCols, e creare tutti i record su tableColsVisible impostandoli tutti a visibili
-        //prima però va fatta una modifica: disabled è un campo di tablecols non di tablecolsvisible
-        colonne => this.displayedColumns = colonne.map(a => a.tableCol!.colName)
-      );
-
-
+    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName)
+    .subscribe( colonne => {
+        if (colonne.length != 0) this.displayedColumns = colonne.map(a => a.tableCol!.colName)
+        else this.svcTableCols.listByTable(this.tableName).subscribe( colonne => this.displayedColumns = colonne.map(a => a.colName))      
+    });
   }
 
   loadData () {

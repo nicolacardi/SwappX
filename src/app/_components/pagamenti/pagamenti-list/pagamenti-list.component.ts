@@ -15,16 +15,20 @@ import { DialogYesNoComponent }                 from '../../utilities/dialog-yes
 import { RettaEditComponent }                   from '../retta-edit/retta-edit.component';
 import { PagamentiFilterComponent }             from '../pagamenti-filter/pagamenti-filter.component';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { Utility }                              from '../../utilities/utility.component';
 
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
 import { PagamentiService }                     from '../pagamenti.service';
+import { TableColsService }                     from '../../utilities/toolbar/tablecols.service';
+import { TableColsVisibleService }              from '../../utilities/toolbar/tablecolsvisible.service';
 
 //models
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 import { PAG_Pagamento }                        from 'src/app/_models/PAG_Pagamento';
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
+import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
 @Component({
@@ -36,6 +40,7 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 export class PagamentiListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+  currUser!:                                    User;
   matDataSource = new MatTableDataSource<PAG_Pagamento>();
   pagamentoEmitter = new EventEmitter<number>();
 
@@ -44,6 +49,7 @@ export class PagamentiListComponent implements OnInit {
 
   show: boolean = true;
  
+  tableName = "PagamentiList";
   displayedColumns: string[] =  [];
   displayedColumnsList: string[] = [
     "actionsColumn", 
@@ -81,8 +87,8 @@ export class PagamentiListComponent implements OnInit {
     "causale.descrizione",
     "retta.quotaConcordata",
     "retta.meseRetta",
-    "alunno.cognome",
-    "alunno.nome",
+    "alunno.persona.cognome",
+    "alunno.persona.nome",
     "note"];
 
   rptColumnsNames  = [
@@ -138,18 +144,21 @@ export class PagamentiListComponent implements OnInit {
 //#region ----- Constructor --------------------
 
   constructor(
-    private fb:               UntypedFormBuilder, 
-    private svcPagamenti:     PagamentiService,
-    private svcAnni:          AnniScolasticiService,
-    public _dialog:           MatDialog, 
-    private _snackBar:        MatSnackBar,
-    private _loadingService:  LoadingService
+    private fb:                                 UntypedFormBuilder, 
+    private svcPagamenti:                       PagamentiService,
+    private svcAnni:                            AnniScolasticiService,
+    public _dialog:                             MatDialog, 
+    private _snackBar:                          MatSnackBar,
+    private _loadingService:                    LoadingService,
+    private svcTableCols:                       TableColsService,
+    private svcTableColsVisible:                TableColsVisibleService
   ) {
    
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     })
+    this.currUser = Utility.getCurrentUser();
   }
 
   //#endregion
@@ -167,7 +176,8 @@ export class PagamentiListComponent implements OnInit {
       this.displayedColumns =  this.displayedColumnsListRettaEdit;
     } else {
       this.show = true;
-      this.displayedColumns =  this.displayedColumnsList;
+      // this.displayedColumns =  this.displayedColumnsList;
+      this.loadLayout();
     }
     this.loadData();
   }
@@ -175,6 +185,14 @@ export class PagamentiListComponent implements OnInit {
   updateList() {
     this.annoID = this.form.controls['selectAnnoScolastico'].value;
     this.loadData();
+  }
+
+  loadLayout(){
+    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName)
+    .subscribe( colonne => {
+        if (colonne.length != 0) this.displayedColumns = colonne.map(a => a.tableCol!.colName)
+        else this.svcTableCols.listByTable(this.tableName).subscribe( colonne => this.displayedColumns = colonne.map(a => a.colName))      
+    });
   }
 
   loadData () {

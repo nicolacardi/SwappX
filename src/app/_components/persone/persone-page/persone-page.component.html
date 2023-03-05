@@ -22,7 +22,10 @@
                      [rptColumnsNames]="apppersonelist.rptColumnsNames" 
                      [rptData]="apppersonelist.matDataSource.data"
                      [rptFileName]="apppersonelist.rptFileName"
-                     [columnsComponent] = "apppersonelist">
+                     [columnsComponent] = "apppersonelist"
+                     [tableName] = "'PersoneList'"
+                     (refreshColumns)="refreshChildCols()"
+                     >
         </app-toolbar>
     </mat-drawer>
 

@@ -8,22 +8,25 @@ import { map }                                  from 'rxjs/operators';
 import { SelectionModel }                       from '@angular/cdk/collections';
 import { MatTableDataSource}                    from '@angular/material/table';
 import { CdkDragDrop, moveItemInArray}          from '@angular/cdk/drag-drop';
-import { ActivatedRoute, Router }               from '@angular/router';
+import { Router }                               from '@angular/router';
 import { MatMenuTrigger }                       from '@angular/material/menu';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 
 //components
 import { GenitoreEditComponent }                from '../genitore-edit/genitore-edit.component';
 import { GenitoriFilterComponent }              from '../genitori-filter/genitori-filter.component';
+import { Utility }                              from '../../utilities/utility.component';
 
 //services
 import { GenitoriService }                      from '../genitori.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { NavigationService }                    from '../../utilities/navigation/navigation.service';
-import { AlunniService }                        from '../../alunni/alunni.service';
 
 //models
 import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
+import { User }                                 from 'src/app/_user/Users';
+import { TableColsService } from '../../utilities/toolbar/tablecols.service';
+import { TableColsVisibleService } from '../../utilities/toolbar/tablecolsvisible.service';
 
 //#endregion
 @Component({
@@ -35,8 +38,11 @@ import { ALU_Genitore }                         from 'src/app/_models/ALU_Genito
 export class GenitoriListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+  currUser!:                                    User;
+    
   matDataSource = new MatTableDataSource<ALU_Genitore>();
 
+  tableName = "GenitoriList";
   displayedColumns: string[] =  [];
   displayedColumnsAlunnoEditFamiglia: string[] = [
       "actionsColumn", 
@@ -77,13 +83,13 @@ export class GenitoriListComponent implements OnInit {
   rptFileName = 'ListaGenitori';
 
   rptFieldsToKeep  = [
-    "nome", 
-    "cognome", 
-    "tipoGenitoreID", 
-    "indirizzo", 
-    "telefono", 
-    "email", 
-    "dtNascita"];
+    "persona.nome", 
+    "persona.cognome", 
+    "tipoGenitore.descrizione", 
+    "persona.indirizzo", 
+    "persona.telefono", 
+    "persona.email", 
+    "persona.dtNascita"];
 
   rptColumnsNames  = [
     "nome", 
@@ -139,13 +145,17 @@ export class GenitoriListComponent implements OnInit {
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(private svcGenitori:      GenitoriService,
-              private svcAlunni:        AlunniService,
-              private route:            ActivatedRoute,
-              private router:           Router,
-              public _dialog:           MatDialog, 
-              private _loadingService:  LoadingService,
-              private _navigationService:    NavigationService ) {
+  constructor(
+    private svcGenitori:                        GenitoriService,
+    private router:                             Router,
+    public _dialog:                             MatDialog, 
+    private _loadingService:                    LoadingService,
+    private _navigationService:                 NavigationService,
+    private svcTableCols:                       TableColsService,
+    private svcTableColsVisible:                TableColsVisibleService
+    ) 
+  {
+     this.currUser = Utility.getCurrentUser();
   }
 //#endregion
 
@@ -170,7 +180,8 @@ export class GenitoriListComponent implements OnInit {
     switch(this.context) {
       case 'alunno-edit-list': this.displayedColumns = this.displayedColumnsAlunnoEditList; break;
       case 'alunno-edit-famiglia': this.displayedColumns = this.displayedColumnsAlunnoEditFamiglia; break;
-      default: this.displayedColumns = this.displayedColumnsGenitoriPage;
+      //default: this.displayedColumns = this.displayedColumnsGenitoriPage;
+      default: this.loadLayout();
     }
 
     this._navigationService.getAlunno().subscribe( val=>{
@@ -181,6 +192,14 @@ export class GenitoriListComponent implements OnInit {
         this.loadData(); 
       }
     });    
+  }
+
+  loadLayout(){
+    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName)
+    .subscribe( colonne => {
+        if (colonne.length != 0) this.displayedColumns = colonne.map(a => a.tableCol!.colName)
+        else this.svcTableCols.listByTable(this.tableName).subscribe( colonne => this.displayedColumns = colonne.map(a => a.colName))      
+    });
   }
 
   loadData () {

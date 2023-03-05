@@ -10,12 +10,15 @@ import { SceltaColonneComponent }               from './scelta-colonne/scelta-co
 //services
 import { ExcelService }                         from '../exceljs/exceljs.service';
 import { JspdfService }                         from '../jspdf/jspdf.service';
-import { TableColumnsService }                  from './tablecolumns.service';
+import { TableColsVisibleService }              from './tablecolsvisible.service';
 import { UserService }                          from 'src/app/_user/user.service';
+import { TableColsService }                     from './tablecols.service';
 
 //models
 import { User }                                 from 'src/app/_user/Users';
-import { _UT_TableColVisible } from 'src/app/_models/_UT_TableColVisible';
+import { _UT_TableColVisible }                  from 'src/app/_models/_UT_TableColVisible';
+import { _UT_TableCol }                         from 'src/app/_models/_UT_TableCol';
+import { combineLatest, tap } from 'rxjs';
 
 //#endregion
 @Component({
@@ -27,8 +30,10 @@ export class ToolbarComponent implements OnInit{
 //#region ----- Variabili --------------------
 
   rptColumnsNameArr !:                          [string[]]; //uno strano array di array di stringhe richiesto da jspdf
-  public currUser!:                             User;
-  columnsToDisplay!:                            _UT_TableColVisible[];
+  currUser!:                             User;
+  tableCols!:                                   _UT_TableCol[];
+
+  tableColsVisible!:                            _UT_TableColVisible[];
 //#endregion
 //#region ----- ViewChild Input Output ---------
 
@@ -51,24 +56,19 @@ export class ToolbarComponent implements OnInit{
     public _dialog:                             MatDialog,
     private _jspdf:                             JspdfService,
     private _xlsx:                              ExcelService,
-    private svcTableColumns:                    TableColumnsService,
+    private svcTableColsVisible:                TableColsVisibleService,
+    private svcTableCols:                       TableColsService,
+
     private svcUser:                            UserService,
 
     ) { }
 
-  ngOnInit () {
+  ngOnInit() {
     this.svcUser.obscurrentUser.subscribe(val => {
       this.currUser = val;
     })
-
-    this.svcTableColumns.listByUserIDAndTable(this.currUser.userID, this.tableName).subscribe(
-      colonne => {
-        console.log ("colonne", colonne);
-        this.columnsToDisplay = colonne
-      }
-    );
-
   }
+
   
   PDF() {
     // console.log ("toolbar.component : this.rptTitle", this.rptTitle);
@@ -94,52 +94,28 @@ export class ToolbarComponent implements OnInit{
 
   scegliColonne() {
 
-    const dialogConfig : MatDialogConfig = {
-      panelClass: 'add-DetailDialog',
-      width: '850px',
-      height: '580px',
-      //data: component.displayedColumns
-      data:this.columnsToDisplay
-    };
-    const dialogRef = this._dialog.open(SceltaColonneComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-      cols => {
+    let obsTableColsVisible$ = this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName)
+    .pipe(tap(colonne => this.tableColsVisible = colonne));
 
-        console.log("devo fare la reload di listAlunni"); 
-        this.refreshColumns.emit();
-      }
-  );
+    let obsTableCols$ = this.svcTableCols.listByTable(this.tableName)
+    .pipe(tap(colonne =>this.tableCols = colonne));
+
+    //devo attendere entrambi gli observable prima di aprire la dialog->uso combineLatest
+    combineLatest ([obsTableColsVisible$, obsTableCols$])
+    .subscribe( () => {
+      let columns = [this.tableName, this.tableCols, this.tableColsVisible]
+      const dialogConfig : MatDialogConfig = {
+        panelClass: 'add-DetailDialog',
+        width: '850px',
+        height: '580px',
+        data: columns
+      };
+      const dialogRef = this._dialog.open(SceltaColonneComponent, dialogConfig);
+      dialogRef.afterClosed().subscribe(
+        //devo fare la reload del component: ci pensa chi mi ha chiamato captando la emit
+        () => this.refreshColumns.emit()
+      );
+    })
   }
 
-
-  // private buildLayout(): _UT_TableLayout {
-
-  //   let obj: _UT_TableLayout= { 
-  //       id:0,
-  //       tableName: this.tableName,
-  //       context: "",
-  //       columns:this.loadColumns()
-  //   };
-  //   return obj;
-  // }
-
-  // private loadColumns(): _UT_TableLayoutColumn[]  {
-
-  //   let lst: _UT_TableLayoutColumn[]= [];
-  //   let obj: _UT_TableLayoutColumn ={columnName:"", userID: "", isVisible:true, disabled:false} ;
-
-  //   //va a pescarsi da solo le colonne del componente (columnsComponent)del quale si stanno lavorando le colonne
-  //   //in teoria dovrebbe pescarle dalla tabella nella quale sono scritte
-
-  //   this.columnsComponent.displayedColumns.forEach((element:any) => {
-  //     if(element.startsWith("action")) 
-  //       obj ={columnName: element, userID: "", isVisible:true, disabled: true};
-  //     else
-  //       obj ={columnName: element, userID: "", isVisible:true, disabled: false};
-
-  //     lst.push(obj);
-  //   });
-
-  //   return lst;
-  // }
 }

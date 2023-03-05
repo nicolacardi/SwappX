@@ -53,6 +53,11 @@ export class PagamentiPageComponent implements OnInit {
     this.drawerFiltriAvanzati.open();
     //console.log ("apriDrawer");
   }
+
+  
+  refreshChildCols(){
+    this.pagamentiList.loadLayout();
+  }
 //#endregion
 
 }

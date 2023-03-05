@@ -53,6 +53,10 @@ export class PersonePageComponent implements OnInit {
     this.drawerFiltriAvanzati.open();
     //console.log ("apriDrawer");
   }
+
+  refreshChildCols(){
+    this.personeList.loadLayout();
+  }
 //#endregion
 
 }

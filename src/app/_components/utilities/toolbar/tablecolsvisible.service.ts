@@ -11,7 +11,7 @@ import { _UT_TableColVisible }                  from 'src/app/_models/_UT_TableC
 @Injectable({
   providedIn: 'root'
 })
-export class TableColumnsService {
+export class TableColsVisibleService {
 
   constructor(private http: HttpClient) { }
 
@@ -26,10 +26,6 @@ export class TableColumnsService {
     //http://213.215.231.4/swappX/api/_UT_TablesColsVisible/ListByUserIDAndTable/75b01815-1282-4459-bbf5-61bc877a9100/AlunniList
   }
 
-  listVisibleByUserIDAndTable(UserID: string, TableName: string): Observable<_UT_TableColVisible[]>{
-    return this.http.get<_UT_TableColVisible[]>(environment.apiBaseUrl+'_UT_TablesColsVisible/listVisibleByUserIDAndTable/'+UserID+'/'+TableName);
-    //http://213.215.231.4/swappX/api/_UT_TablesColsVisible/listVisibleByUserIDAndTable/75b01815-1282-4459-bbf5-61bc877a9100/AlunniList
-  }
 
 
   get(TableColVisibleID: any): Observable<_UT_TableColVisible>{
@@ -47,6 +43,10 @@ export class TableColumnsService {
     console.log ("post", formData);
 
     return this.http.post( environment.apiBaseUrl  + '_UT_TablesColsVisible' , formData);  
+  }
+
+  deleteByUserAndTable(UserID: string, tableName: string): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + '_UT_TablesColsVisible/DeleteByUserAndTable/' + UserID+'/'+tableName);    
   }
 
   delete(BloccoID: number): Observable <any>{

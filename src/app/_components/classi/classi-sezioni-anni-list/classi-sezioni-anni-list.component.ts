@@ -103,13 +103,30 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   rptFieldsToKeep  = [
     "descrizione2",
     "sezione",
-    "numAlunni"
+    "numAlunni",
+    "numStato10",
+    "numStato20",
+    "numStato30",
+    "numStato40",
+    "numStato50",
+    "numStato60",
+    "numStato70",
+    "numStato80"
+
   ];
 
   rptColumnsNames  = [
     "descrizione",
     "sezione",
-    "numero alunni"
+    "numero alunni",
+    "Stato 10",
+    "Stato 20",
+    "Stato 30",
+    "Stato 40",
+    "Stato 50",
+    "Stato 60",
+    "Stato 70",
+    "Stato 80"
   ];
 
   selection =                                   new SelectionModel<CLS_ClasseSezioneAnnoGroup>(true, []);   //rappresenta la selezione delle checkbox
@@ -330,7 +347,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   }
 
   loadData () {
-    console.log("PASSO DI QUI");
+
     let annoID: number;
     annoID = this.form.controls["selectAnnoScolastico"].value;
 
