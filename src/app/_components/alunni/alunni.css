@@ -15,15 +15,27 @@
     overflow: auto;
   }
 
+    /* genitori dell'alunno selezionato */
+    ._classi-attended-container{
+      height: 150px;
+      overflow: auto;
+    }
+  
+    /* elenco tutti i genitori da cui attingere */
+    ._classi-list-container {
+      height: 240px;
+      overflow: auto;
+    }
+    
   /* elenco classi frequentate */
-  ._classi-attended-container {
-    height: 400px;
-    width: 380px;
+  ._classi-attended-container-vertical {
+    height: 500px;
+    width: 480px;
     overflow: auto;
   }
 
   /* elenco tutte le classi */
-  ._classi-list-container {
+  ._classi-list-container-vertical {
     height: 450px;
     width: 280px;
     overflow: auto;
@@ -33,8 +45,8 @@
   /* td accordion verticale elenco classi */
   ._classi-list-td-vertical-accordion {
     vertical-align: top;
-    padding-top: 12px;
-    max-width: 300px !important;
+    padding-top: 12px;                          /*questo è il padding superiore...*/
+    max-width: 300px !important;                /*larghezza max dell'accordion: va limitata altrimenti compare l'overflow x */
   }
 
   /* accordion verticale elenco classi */
@@ -98,5 +110,9 @@
         height: 55px !important;
     }
 
+
+    :host ::ng-deep .headerColored .mat-mdc-header-row {
+      background-color: #f9f9f9;
+    }
 
 

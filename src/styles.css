@@ -45,10 +45,16 @@
         font-family: 'Titillium Web', sans-serif; /* fix font dopo migrazione a ng v15 */
     }
 
-    .mat-mdc-list-item-title{                   /* directive aggiunta in menu per evitare text wrap a capo su Area Docente*/
-        letter-spacing: 0em;                    /* fix font dopo migrazione a ng v15 */
-        font-family: 'Titillium Web', sans-serif; /* fix font dopo migrazione a ng v15 */
+    /* .mat-mdc-list-item-title{                 
+        letter-spacing: 0em;                    
+    } */
+
+    
+    /* senza questa avviene l wordwrap nel menu nelle etichette espandibili*/
+    .leftSidenav .mat-expansion-panel-header-title {
+        flex-basis:auto !important;
     }
+
     
     .mdc-tab{
         letter-spacing: 0em;                    /* fix font dopo migrazione a ng v15 */
@@ -316,6 +322,12 @@
     .t10 {
         top: 10px;
     }
+    .t20 {
+        top: 20px;
+    }
+    .t40 {
+        top: 40px;
+    }
     
     /* bottom */
     .b0 {
@@ -348,6 +360,9 @@
     .l480 {
         left: 480px;
     }
+
+
+
 
     /* right */
     .r0 {
@@ -1137,6 +1152,8 @@
 
 /*#region ********** TABLES ************/
 
+
+
     .element-row:hover {
         background: whitesmoke;
     }
@@ -1443,7 +1460,7 @@
 .frameLabel{
     position: absolute;
     left: 10px;
-    top: 20px;
+
     background-color: white;
     padding-left: 5px;
     padding-right: 5px;
@@ -1452,6 +1469,9 @@
     z-index: 1000;
     margin-top: -20px;
 }
+
+
+
 
 .frameLabelTransparent{
     position: absolute;

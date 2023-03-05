@@ -116,6 +116,7 @@ export class AlunniListComponent implements OnInit {
   toggleChecks:                                 boolean = false;
   showPageTitle:                                boolean = true;
   showTableRibbon:                              boolean = true;
+  showFilter:                                   boolean = true;
   public ckSoloAttivi :                         boolean = true;
 
   filterValue = '';       //Filtro semplice
@@ -213,10 +214,13 @@ export class AlunniListComponent implements OnInit {
         this.displayedColumns = this.displayedColumnsGenitoreEditFamiglia;
         this.showPageTitle = false;
         this.showTableRibbon = false;
+        this.showFilter = false;
       break;
       case 'genitore-edit-list':
         this.displayedColumns = this.displayedColumnsGenitoreEditList;
         this.showPageTitle = false;
+        this.showTableRibbon = false;
+
       break;
       default: 
         this.displayedColumns =  this.displayedColumnsAlunniList;

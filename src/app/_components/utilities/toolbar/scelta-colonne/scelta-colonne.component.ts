@@ -151,4 +151,30 @@ export class SceltaColonneComponent implements OnInit {
     })
 
   }
+
+  default() {
+
+    this.lstDisabled = [];
+    this.lstHidden = [];
+    this.lstVisible = [];
+
+    this.tableCols.forEach (
+      colonna=> {
+          let tableColTMP : _UT_TableColTMP = {
+            colName:  colonna.colName,
+            disabled: colonna.disabled,
+            tableColID: colonna.id,
+            ordCol: colonna.ordColDefault
+          }
+        if (colonna.disabled) {
+          this.lstDisabled.push(tableColTMP);
+        }else {
+          this.lstVisible.push(tableColTMP);
+        }
+      }
+    )
+
+
+    
+  }
 }

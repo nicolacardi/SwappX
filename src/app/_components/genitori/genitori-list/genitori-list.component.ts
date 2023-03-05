@@ -107,10 +107,12 @@ export class GenitoriListComponent implements OnInit {
   
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
-  toggleChecks:                 boolean = false;
-  showPageTitle:                boolean = true;
-  showTableRibbon:              boolean = true;
-  public ckSoloAttivi :         boolean = true;
+  toggleChecks:                                 boolean = false;
+  showPageTitle:                                boolean = true;
+  showFilter:                                   boolean = true;
+
+  showTableRibbon:                              boolean = true;
+  public ckSoloAttivi :                         boolean = true;
 
   filterValue = '';       //Filtro semplice
    //filterValues contiene l'elenco dei filtri avanzati da applicare 
@@ -171,11 +173,15 @@ export class GenitoriListComponent implements OnInit {
 
   ngOnInit () {
 
-    if (this.context == "alunno-edit-list" || this.context == "alunno-edit-famiglia") 
+    if (this.context == "alunno-edit-list" || this.context == "alunno-edit-famiglia") {
       this.showPageTitle = false;
-    
-    if (this.context == "alunno-edit-famiglia") 
       this.showTableRibbon = false;
+    }
+    if (this.context == "alunno-edit-famiglia") 
+      this.showFilter = false;
+
+
+
     
     switch(this.context) {
       case 'alunno-edit-list': this.displayedColumns = this.displayedColumnsAlunnoEditList; break;

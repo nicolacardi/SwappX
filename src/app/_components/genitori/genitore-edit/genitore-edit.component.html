@@ -84,7 +84,7 @@
                         <button mat-mini-fab aria-label="Nuova anagrafica Alunno" matTooltip="Nuova anagrafica Alunno" class= "_btn-addModal" (click)="addAlunno()">
                             <mat-icon>add</mat-icon>
                         </button>
-                        <mat-label class="frameLabel">i figli di {{genitoreNomeCognome}}</mat-label>
+                        <mat-label class="frameLabel t40">i figli di {{genitoreNomeCognome}}</mat-label>
                         <div class="_alunni-container _cell-bordered mt30">
                             <app-alunni-list 
                                 [context]="'genitore-edit-famiglia'" 
@@ -103,7 +103,7 @@
                                   (fare click per aprire)
                                 </mat-panel-description>
                               </mat-expansion-panel-header>
-                                <mat-label class="frameLabel">Elenco degli alunni </mat-label>
+                                <!-- <mat-label class="frameLabel">Elenco degli alunni </mat-label> -->
                                 <div class="_alunni-list-container _cell-bordered mt10">
                                     <!-- <app-alunni-list [dove]="'genitore-edit-list'" (addToFamily) = "addToFamily($event)"></app-alunni-list> -->
                                     <app-alunni-list 
