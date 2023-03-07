@@ -1,6 +1,25 @@
-<!-- blocco ID {{bloccoID}} -->
-<app-cella *ngFor="let element of (obsBlocchiCelle$ | async)"
-    [bloccoCella] = "element"
-    >
+<div>
+    <button mat-mini-fab aria-label="Aggiungi Colonna" matTooltip="Aggiungi Colonna" class="btn ml10"
+    (click)="removeCol()" >
+    <img class="iconaMenuSidenav" src="./assets/delete_column_table.svg">
+    </button>
 
-</app-cella>
+    <button mat-mini-fab aria-label="Aggiungi Colonna" matTooltip="Aggiungi Colonna" class="btn ml10"
+    (click)="addCol()" >
+        <img class="iconaMenuSidenav" src="./assets/add_column_table.svg">
+    </button>
+</div>
+<table class="resizable _pos-absolute l0 t0 w630px" >
+    <thead>
+      <tr>
+        <th class="_bordered-lightgrey" *ngFor="let row of rowsArr; let i = index" 
+            [ngStyle]="{'width': wArr[i]+'px'}"
+        >Column {{i}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="_bordered-lightgrey" *ngFor="let row of rowsArr; let i = index">Column {{i}}</td>
+      </tr>
+    </tbody>
+  </table>

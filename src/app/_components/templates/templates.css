@@ -169,10 +169,39 @@
   content: 'test' !important;
 } */
 
+table {
+  table-layout: fixed;
+  border-collapse: collapse;
+}
 
 
+:host ::ng-deep .resize-bar-v {
+  position: absolute;
+  top: 0;
+  right: -20px;
+  bottom: 0;
+  width: 20px;
+  background-color: transparent;
+  /* border: red 1px solid; */
+  cursor: col-resize;
+  z-index: 2;
+}
 
+:host ::ng-deep .resize-bar-h {
+  position: absolute;
+  left:0;
+  right: 0;
+  bottom: -10px;
+  height: 20px;
+  background-color: transparent;
+  /* border: green 1px solid; */
+  cursor: row-resize;
+  z-index: 2;
+}
 
+td, th{
+padding: 0px;
+}
 
 
 

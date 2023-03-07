@@ -207,7 +207,7 @@ import { ClickDoubleDirective }                 from './_components/utilities/cl
 
 import { QuillModule }                          from 'ngx-quill';
 import { TableComponent } from './_components/templates/table/table.component';
-import { CellaComponent } from './_components/templates/cella/cella.component'
+
 
 
 // FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -365,8 +365,7 @@ import { CellaComponent } from './_components/templates/cella/cella.component'
       PaginaComponent,
       BloccoComponent,
       BloccoEditComponent,
-      TableComponent,
-      CellaComponent
+      TableComponent
     
 
   ],

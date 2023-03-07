@@ -35,6 +35,8 @@ import { TEM_BloccoTesto }                      from 'src/app/_models/TEM_Blocco
 })
 export class BloccoEditComponent implements OnInit {
 //#region ----- Variabili --------------------
+
+
   blocco$!:                                     Observable<TEM_Blocco>;
   form! :                                       UntypedFormGroup;
   imgFile!:                                     string;
@@ -101,7 +103,7 @@ export class BloccoEditComponent implements OnInit {
 //#region ----- ViewChild Input Output -------
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
   @ViewChild('QuillEditor', { static: false }) editor!: QuillEditorComponent
-  //@ViewChild('QuillEditor', { static: false }) quill!: Quill
+  @ViewChild('table') table!: ElementRef;
 
 //#endregion
 
@@ -503,6 +505,9 @@ export class BloccoEditComponent implements OnInit {
     console.log("selezionatutto");
   }
 //#endregion
+
+
+
 
 }
 

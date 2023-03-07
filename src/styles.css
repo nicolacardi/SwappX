@@ -548,12 +548,20 @@
         width: 400px;
     }
 
+    .w420px {
+        width: 420px;
+    }
+
     .w500px {
         width: 500px;
     }
 
     .w600px {
         width: 600px;
+    }
+
+    .w630px {
+        width: 630px;
     }
 
     .w700px {

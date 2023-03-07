@@ -356,7 +356,7 @@ export class BloccoComponent implements OnInit {
 
       const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
-        width: '600px',
+        width: '700px',
         height: '550px',
         data: this.blocco.id!
       };
