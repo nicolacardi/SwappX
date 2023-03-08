@@ -1,4 +1,4 @@
-<div>
+<div class="_pos-absolute t0 l0">
     <button mat-mini-fab aria-label="Aggiungi Colonna" matTooltip="Aggiungi Colonna" class="btn ml10"
     (click)="removeCol()" >
     <img class="iconaMenuSidenav" src="./assets/delete_column_table.svg">
@@ -9,17 +9,33 @@
         <img class="iconaMenuSidenav" src="./assets/add_column_table.svg">
     </button>
 </div>
-<table class="resizable _pos-absolute l0 t0 w630px" >
+
+<div class="_pos-absolute t50 l0">
+
+
+
+
+
+  <table class="resizable _pos-absolute l0 t40 w630px" >
     <thead>
       <tr>
-        <th class="_bordered-lightgrey" *ngFor="let row of rowsArr; let i = index" 
+        <th class="_bordered-lightgrey " style="position: relative; overflow: visible; height: 20px; padding-top: 8px;" *ngFor="let row of colsArr; let i = index" 
             [ngStyle]="{'width': wArr[i]+'px'}"
-        >Column {{i}}</th>
+        >
+       
+        <quill-editor [theme]="'bubble'"></quill-editor>
+
+        <span *ngIf="isResizing" class="w-legenda2">{{wArr[i] | number:'1.0-0'}}</span>
+        </th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td class="_bordered-lightgrey" *ngFor="let row of rowsArr; let i = index">Column {{i}}</td>
+        <td class="_bordered-lightgrey" style="height: 20px; padding-top: 8px;" *ngFor="let row of colsArr; let i = index">
+          <textarea rows="1" style="width: calc(100% - 10px); " class="ml3 h100 _noborder _noresize"></textarea>
+        </td>
       </tr>
     </tbody>
   </table>
+
+</div>

@@ -206,7 +206,7 @@ import { BloccoEditComponent }                  from './_components/templates/bl
 import { ClickDoubleDirective }                 from './_components/utilities/clickdouble/clickdouble.directive';
 
 import { QuillModule }                          from 'ngx-quill';
-import { TableComponent } from './_components/templates/table/table.component';
+import { TableComponent }                       from './_components/templates/table/table.component';
 
 
 

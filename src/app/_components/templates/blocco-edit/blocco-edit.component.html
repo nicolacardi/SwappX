@@ -74,14 +74,6 @@
                 </mat-grid-tile>
             </mat-grid-list>
 
-            <mat-grid-list  [cols]="1" rowHeight="250px">
-                <mat-grid-tile style="width: 630px">
-                    
-                    <app-table >
-                    </app-table>
-                
-                </mat-grid-tile>
-            </mat-grid-list>
 <!-- ************ QUILL  ********************-->
 
             <quill-editor *ngIf="tipoBloccoDesc == 'Testo'"
@@ -149,6 +141,17 @@
                     </span> -->
             
             </quill-editor>
+<!-- ************ TABLE  ********************-->
+
+            <mat-grid-list  *ngIf="tipoBloccoDesc == 'Tabella'" [cols]="1" rowHeight="250px">
+                <mat-grid-tile class="ml15">
+                    
+                    <app-table >
+                    </app-table>
+                
+                </mat-grid-tile>
+            </mat-grid-list>
+
 
 <!-- ************ Riempimento e Bordi ********************-->
             <mat-grid-list *ngIf="tipoBloccoDesc == 'Testo'" class=" _cell-bordered mt10" [cols]="4" rowHeight="60px">

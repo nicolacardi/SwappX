@@ -1,5 +1,5 @@
-/* @import '~quill/dist/quill.core.css';
-@import '~quill/dist/quill.bubble.css'; */
+/* @import '~quill/dist/quill.core.css';*/
+@import '~quill/dist/quill.bubble.css';
 @import '~quill/dist/quill.snow.css';
 
 /*#region ********** GENERALI **********/
@@ -327,6 +327,10 @@
     }
     .t40 {
         top: 40px;
+    }
+
+    .t50 {
+        top: 50px;
     }
     
     /* bottom */
@@ -742,6 +746,10 @@
 /*#region ********** OVERFLOW **********/
     ._oflow-hide {
         overflow: hidden
+    }
+
+    ._oflow-vis {
+        overflow: visible
     }
 /*#endregion ***************************/
 

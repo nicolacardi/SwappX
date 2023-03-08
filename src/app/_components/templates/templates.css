@@ -50,6 +50,16 @@
     display:none; 
 }
 
+.w-legenda2 {
+  font-size: 8px;
+  position: absolute;
+  left: 50%;                                  /* lo posiziona a metà box in larghezza*/
+  transform: translate3d(-50%, 0, 0);         /* lo sposta a sinistra del 50% di se stesso*/ 
+  top: -8px;
+}
+
+
+
 .resizable-draggable:active .w-legenda{
     display:block;
 }
@@ -178,9 +188,9 @@ table {
 :host ::ng-deep .resize-bar-v {
   position: absolute;
   top: 0;
-  right: -20px;
+  right: -15px;
   bottom: 0;
-  width: 20px;
+  width: 30px;
   background-color: transparent;
   /* border: red 1px solid; */
   cursor: col-resize;
