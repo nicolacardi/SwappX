@@ -16,17 +16,19 @@
 
 
 
+
+
   <table class="resizable _pos-absolute l0 t40 w630px" >
     <thead>
       <tr>
+
         <th class="_bordered-lightgrey " style="position: relative; overflow: visible; height: 20px; padding-top: 8px;" *ngFor="let row of colsArr; let i = index" 
-            [ngStyle]="{'width': wArr[i]+'px'}"
-        >
+            [ngStyle]="{'width': wArr[i]+'px'}">
        
-        <quill-editor [theme]="'bubble'"></quill-editor>
 
         <span *ngIf="isResizing" class="w-legenda2">{{wArr[i] | number:'1.0-0'}}</span>
         </th>
+
       </tr>
     </thead>
     <tbody>
@@ -38,4 +40,58 @@
     </tbody>
   </table>
 
+</div>
+<br>
+
+<div class="" style="top: 100px">
+  <div class="ql-container ql-bubble">
+
+    <div class="ql-editor">
+
+      <quill-editor theme="bubble">
+
+        <div quill-editor-toolbar>
+          
+      <span class="ql-formats">
+          <select class="ql-font" [title]="'Carattere'">
+          </select>
+      </span>
+
+      <span class="ql-formats">
+        <button class="ql-bold" [title]="'Grassetto'"></button>
+        <button class="ql-italic" [title]="'Corsivo'"></button>
+        <button class="ql-underline" [title]="'Sottolineato'"></button>
+        <button class="ql-strike" [title]="'Barrato'"></button>
+      </span>
+  
+      <span class="ql-formats">
+          <button class="ql-list ordered" value="ordered" [title]="'Elenco Numerato'"></button>
+          <button class="ql-list bullet" value="bullet" [title]="'Elenco Puntato'"></button>
+
+        </span>
+      <span class="ql-formats">
+        <select class="ql-size" [title]="'Dimensione Font'" formControlName="fontSize" >
+          <option value="10px"></option>
+          <option selected value="12px"></option>
+          <option value="14px"></option>
+          <option value="16px"></option>
+          <option value="18px"></option>
+        </select>
+      </span>
+  
+      <span class="ql-formats">                      
+          <select class="ql-align" [title]="'Allineamento'">
+          </select>
+      </span>
+
+      <span class="ql-formats">
+          <button class="ql-clean" [title]="'Pulizia Formato'"></button>
+        </span>
+  
+    </div>
+
+      </quill-editor>
+
+    </div>
+  </div>
 </div>

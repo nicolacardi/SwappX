@@ -209,6 +209,8 @@ import { QuillModule }                          from 'ngx-quill';
 import { TableComponent }                       from './_components/templates/table/table.component';
 
 
+// import { MatQuillModule } from './mat-quill/mat-quill-module'
+
 
 // FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   //dayGridPlugin, NC 16/02/23

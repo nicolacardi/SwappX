@@ -139,7 +139,7 @@
                         <mat-icon>add</mat-icon>
                     </button>
                     <br>
-                    <mat-label class="frameLabel t40">i genitori/tutori di {{alunnoNomeCognome}} </mat-label>
+                    <mat-label class="frameLabel t10">I genitori/tutori di {{alunnoNomeCognome}} </mat-label>
                     <div class="_genitori-container _cell-bordered mt10">
                         <app-genitori-list [context]="'alunno-edit-famiglia'"[alunnoID]="alunnoID"  (removeFromFamily) = "removeFromFamily($event)" #genitoriFamiglia></app-genitori-list>
                     </div>
@@ -159,7 +159,7 @@
 <!-- ********************************    MAT TAB CLASSI    ************************************* -->
                 <mat-tab label="Classi Frequentate" class="_pos-relative">  
                     <br>  
-                    <mat-label class="frameLabel t40">Le classi frequentate da {{alunnoNomeCognome}} </mat-label>
+                    <mat-label class="frameLabel t10">Le classi frequentate da {{alunnoNomeCognome}} </mat-label>
                     <div class="_classi-attended-container _cell-bordered mt10">
                         <app-iscrizioni-alunno-list [alunnoID] = "alunnoID" #iscrizioniAlunno 
                         (removeFromAttended) = "removeFromAttended($event)" >

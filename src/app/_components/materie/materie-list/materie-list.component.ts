@@ -42,11 +42,13 @@ export class MaterieListComponent implements OnInit {
   rptTitle = 'Lista Materie';
   rptFileName = 'ListaMaterie';
   rptFieldsToKeep  = [
-    "descrizione"
+    "descrizione",
+    "macroMateria.descrizione"
   ];
 
   rptColumnsNames  = [
-    "descrizione"
+    "descrizione",
+    "Macro Materia"
   ];
 
   filterValue = '';       //Filtro semplice

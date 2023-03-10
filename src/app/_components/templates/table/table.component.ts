@@ -1,25 +1,34 @@
-import { AfterViewInit, Component, ComponentFactoryResolver, ComponentRef, ViewContainerRef }             from '@angular/core';
+import { AfterViewInit, Component, ComponentFactoryResolver, ComponentRef, ViewChild, ViewContainerRef }             from '@angular/core';
 
 import { A4 }                                   from 'src/environments/environment';
 import { QuillEditorComponent }                 from 'ngx-quill'
-
+import Quill from 'quill'
+const parchment = Quill.import('parchment')
+const block = parchment.query('block')
+block.tagName = 'DIV'
+Quill.register(block /* or NewBlock */, true)
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['../templates.css']
 })
-export class TableComponent implements AfterViewInit{
 
+
+
+export class TableComponent implements AfterViewInit{
+  placeholder = 'placeholder';
   startWidth!:                                  number;
   cellWidth!:                                   number;
   isResizing:                                   boolean = false;
   public colsArr:                               number[] = [1]
   public wArr:                                  number[] = [625]
 
+
+
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
     
     private viewContainerRef: ViewContainerRef
-    
+
     ) {}
 
   ngAfterViewInit() {

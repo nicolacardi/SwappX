@@ -49,10 +49,10 @@ displayedColumns: string[] = [
 rptTitle = 'Lista Tipi Voto';
 rptFileName = 'ListaTipiVoto';
 rptFieldsToKeep  = [
-  "classe",
-  "anno",
-  "materia",
-  "tipoVoto"
+  "classe.descrizione",
+  "anno.annoscolastico",
+  "materia.descrizione",
+  "tipoVoto.descrizione"
 ];
 
 rptColumnsNames  = [

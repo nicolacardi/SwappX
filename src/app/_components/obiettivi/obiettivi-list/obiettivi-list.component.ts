@@ -53,9 +53,9 @@ export class ObiettiviListComponent implements OnInit {
   rptFileName = 'ListaObiettivi';
   rptFieldsToKeep  = [
 
-    "classe",
-    "anno",
-    "materia",
+    "classe.descrizione2",
+    "anno.annoscolastico",
+    "materia.descrizione",
     "descrizione",
 
 
