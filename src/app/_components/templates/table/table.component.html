@@ -1,16 +1,16 @@
-<div class="_pos-absolute t0 l0">
-    <button mat-mini-fab aria-label="Aggiungi Colonna" matTooltip="Aggiungi Colonna" class="btn ml10"
+
+    <button mat-mini-fab aria-label="Aggiungi Colonna" matTooltip="Aggiungi Colonna" class="_pos-absolute t0 l0 w100 btn ml10"
     (click)="removeCol()" >
     <img class="iconaMenuSidenav" src="./assets/delete_column_table.svg">
     </button>
 
-    <button mat-mini-fab aria-label="Aggiungi Colonna" matTooltip="Aggiungi Colonna" class="btn ml10"
+    <button mat-mini-fab aria-label="Aggiungi Colonna" matTooltip="Aggiungi Colonna" class="_pos-absolute t0 l0 w100 btn ml10"
     (click)="addCol()" >
         <img class="iconaMenuSidenav" src="./assets/add_column_table.svg">
     </button>
-</div>
 
-<div class="_pos-absolute t50 l0">
+
+<!-- <div class="_pos-absolute t50 l0"> -->
 
 
 
@@ -22,76 +22,74 @@
     <thead>
       <tr>
 
-        <th class="_bordered-lightgrey " style="position: relative; overflow: visible; height: 20px; padding-top: 8px;" *ngFor="let row of colsArr; let i = index" 
+        <th class="_bordered-lightgrey " style="overflow: visible; height: 20px; padding-top: 8px; z-index: 5" *ngFor="let row of colsArr; let i = index" 
             [ngStyle]="{'width': wArr[i]+'px'}">
        
 
-        <span *ngIf="isResizing" class="w-legenda2">{{wArr[i] | number:'1.0-0'}}</span>
+          <span *ngIf="isResizing" class="w-legenda2">{{wArr[i] | number:'1.0-0'}}</span>
+          <quill-editor 
+            theme="bubble" 
+            style="display: inline"
+            placeholder="..."
+            [customOptions]="customOptions"
+            >
+            <div quill-editor-toolbar style="width: 300px; position: relative; z-index: 10">
+
+              <select class="ql-custom tooltip" (change)="insertPlaceholder($event)" >
+                  <option value="0" selected></option>
+                  <option value="[anno scolastico]" >[anno scolastico]</option>
+                  <option value="[nome e cognome alunno]">[nome e cognome alunno]</option>
+                  <option value="[Indirizzo Scuola]">[Indirizzo scuola]</option>
+                  <option value="[Voto Italiano 1Q]">[Voto Italiano 1Q]</option>
+                  <option value="[Obiettivo 1 Italiano]">[Obiettivo 1 Italiano]</option>
+
+              </select>
+              <span class="ql-formats">
+                  <select class="ql-font" [title]="'Carattere'">
+                  </select>
+              </span>
+
+              <span class="ql-formats">
+                <button class="ql-bold" [title]="'Grassetto'"></button>
+                <button class="ql-italic" [title]="'Corsivo'"></button>
+                <button class="ql-underline" [title]="'Sottolineato'"></button>
+                <button class="ql-strike" [title]="'Barrato'"></button>
+              </span>
+      
+              <span class="ql-formats">
+                <select class="ql-size" [title]="'Dimensione Font'" formControlName="fontSize" >
+                  <option value="10px"></option>
+                  <option selected value="12px"></option>
+                  <option value="14px"></option>
+                  <option value="16px"></option>
+                  <option value="18px"></option>
+                </select>
+              </span>
+      
+              <span class="ql-formats">                      
+                  <select class="ql-align" [title]="'Allineamento'">
+                  </select>
+              </span>
+
+              <span class="ql-formats">
+                <button class="ql-clean" [title]="'Pulizia Formato'"></button>
+              </span>
+      
+            </div>
+          </quill-editor>
         </th>
 
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td class="_bordered-lightgrey" style="height: 20px; padding-top: 8px;" *ngFor="let row of colsArr; let i = index">
-          <textarea rows="1" style="width: calc(100% - 10px); " class="ml3 h100 _noborder _noresize"></textarea>
+        <td class="_bordered-lightgrey" style="height: 20px; padding-top: 8px; z-index: 5" *ngFor="let row of colsArr; let i = index">
+          <quill-editor theme="bubble" style="display: inline;" placeholder="..."></quill-editor>
         </td>
+      
       </tr>
     </tbody>
   </table>
 
-</div>
-<br>
+<!-- </div> -->
 
-<div class="" style="top: 100px">
-  <div class="ql-container ql-bubble">
-
-    <div class="ql-editor">
-
-      <quill-editor theme="bubble">
-
-        <div quill-editor-toolbar>
-          
-      <span class="ql-formats">
-          <select class="ql-font" [title]="'Carattere'">
-          </select>
-      </span>
-
-      <span class="ql-formats">
-        <button class="ql-bold" [title]="'Grassetto'"></button>
-        <button class="ql-italic" [title]="'Corsivo'"></button>
-        <button class="ql-underline" [title]="'Sottolineato'"></button>
-        <button class="ql-strike" [title]="'Barrato'"></button>
-      </span>
-  
-      <span class="ql-formats">
-          <button class="ql-list ordered" value="ordered" [title]="'Elenco Numerato'"></button>
-          <button class="ql-list bullet" value="bullet" [title]="'Elenco Puntato'"></button>
-
-        </span>
-      <span class="ql-formats">
-        <select class="ql-size" [title]="'Dimensione Font'" formControlName="fontSize" >
-          <option value="10px"></option>
-          <option selected value="12px"></option>
-          <option value="14px"></option>
-          <option value="16px"></option>
-          <option value="18px"></option>
-        </select>
-      </span>
-  
-      <span class="ql-formats">                      
-          <select class="ql-align" [title]="'Allineamento'">
-          </select>
-      </span>
-
-      <span class="ql-formats">
-          <button class="ql-clean" [title]="'Pulizia Formato'"></button>
-        </span>
-  
-    </div>
-
-      </quill-editor>
-
-    </div>
-  </div>
-</div>

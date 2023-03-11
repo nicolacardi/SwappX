@@ -85,16 +85,16 @@
                 
             <!-- COSI' SI AGGIUNGONO MENU CON AZIONI IN ALTERNATIVA AI MODULES -->
                 <div quill-editor-toolbar>
-                        <select class="ql-custom tooltip" (change)="insertPlaceholder($event)" >
-                            <option value="0" selected></option>
+                    <select class="ql-custom tooltip" (change)="insertPlaceholder($event)" >
+                        <option value="0" selected></option>
 
-                            <option value="[anno scolastico]" >[anno scolastico]</option>
-                            <option value="[nome e cognome alunno]">[nome e cognome alunno]</option>
-                            <option value="[Indirizzo Scuola]">[Indirizzo scuola]</option>
-                            <option value="[Voto Italiano 1Q]">[Voto Italiano 1Q]</option>
-                            <option value="[Obiettivo 1 Italiano]">[Obiettivo 1 Italiano]</option>
+                        <option value="[anno scolastico]" >[anno scolastico]</option>
+                        <option value="[nome e cognome alunno]">[nome e cognome alunno]</option>
+                        <option value="[Indirizzo Scuola]">[Indirizzo scuola]</option>
+                        <option value="[Voto Italiano 1Q]">[Voto Italiano 1Q]</option>
+                        <option value="[Obiettivo 1 Italiano]">[Obiettivo 1 Italiano]</option>
 
-                        </select>
+                    </select>
                     <span class="ql-formats">
                         <select class="ql-font" [title]="'Carattere'">
                         </select>
@@ -143,14 +143,11 @@
             </quill-editor>
 <!-- ************ TABLE  ********************-->
 
-            <mat-grid-list  *ngIf="tipoBloccoDesc == 'Tabella'" [cols]="1" rowHeight="250px">
-                <mat-grid-tile class="ml15">
-                    
-                    <app-table >
+
+            <div class="_pos-absolute" style="top:150px"> 
+                    <app-table *ngIf="tipoBloccoDesc == 'Tabella'">
                     </app-table>
-                
-                </mat-grid-tile>
-            </mat-grid-list>
+                </div>
 
 
 <!-- ************ Riempimento e Bordi ********************-->

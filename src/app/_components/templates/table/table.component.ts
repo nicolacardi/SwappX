@@ -16,6 +16,8 @@ Quill.register(block /* or NewBlock */, true)
 
 
 export class TableComponent implements AfterViewInit{
+  currIndex:                                    number = 0;
+
   placeholder = 'placeholder';
   startWidth!:                                  number;
   cellWidth!:                                   number;
@@ -23,7 +25,12 @@ export class TableComponent implements AfterViewInit{
   public colsArr:                               number[] = [1]
   public wArr:                                  number[] = [625]
 
+  public customOptions = [{
+    import: 'attributors/style/size',
+    whitelist: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px']
+  }];
 
+  @ViewChild('QuillEditor', { static: false }) editor!: QuillEditorComponent
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
     
@@ -177,5 +184,11 @@ export class TableComponent implements AfterViewInit{
       setTimeout(() => {console.log(this.setupTableResize());}, 300);
 
     }
+  }
+
+
+  insertPlaceholder(event: any) {
+    console.log ("insertPlaceholder", this.currIndex, event.target!.value);
+    this.editor.quillEditor.insertText (this.currIndex, event.target!.value, 'bold', true);  
   }
 }

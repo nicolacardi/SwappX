@@ -216,5 +216,17 @@ td, th{
 padding: 0px;
 }
 
+:host ::ng-deep .ql-bubble {
+
+  position: relative !important;
+  /* z-index: 10000; */
+}
+:host ::ng-deep .ql-tooltip {
+  left: 0px !important;
+  position: absolute !important;
+  /* z-index: 10000; */
+}
+
+
 
 

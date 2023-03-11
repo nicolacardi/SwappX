@@ -83,6 +83,7 @@ const routes: Routes = [
 
   { path: "change-psw",                         component: ChangePswComponent, canActivate:[AuthGuard] },
 
+
 ];
 
 @NgModule({
