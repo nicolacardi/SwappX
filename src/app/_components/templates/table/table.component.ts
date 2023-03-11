@@ -45,9 +45,12 @@ export class TableComponent implements AfterViewInit{
 
   setupTableResize() {
 
+
     const rows = document.querySelectorAll('.resizable thead tr,.resizable tbody tr');
     //const cols = document.querySelectorAll('.resizable th, .resizable td'); //non funziona sui td allora li tolgo
-    const cells = document.querySelectorAll('.resizable th, .resizable td');
+    const cells = document.querySelectorAll('.resizable th');
+
+
 
     for (let i = 0; i < cells.length; i++){
       let x = 0;
@@ -57,10 +60,17 @@ export class TableComponent implements AfterViewInit{
 
       //applico dinamicamente una classe resize-bar-v a tutte le celle sia th che td
       //questo si vede materialmente con la comparsa delle "handles di resize"
-      cells[i].classList.add('_pos-relative');
-      const resizeBar = document.createElement('div');
-      resizeBar.classList.add('resize-bar-v');
-      cells[i].appendChild(resizeBar);
+
+
+
+        cells[i].classList.add('_pos-relative');
+        const resizeBar = document.createElement('div');
+        resizeBar.classList.add('resize-bar-v');
+       
+      //controlla se già non ha un div con la classe resize-bar-v e solo se non c'è già ne aggiunge uno
+      if (!cells[i].querySelector('.resize-bar-v')) {
+        cells[i].appendChild(resizeBar);
+      }
       
       //questo è il metodo di mousedown che verrà applicato alle handle
       const mouseDownHandler =  (e: any) => {
@@ -106,7 +116,11 @@ export class TableComponent implements AfterViewInit{
       row.classList.add('_pos-relative');
       const resizeBar = document.createElement('div');
       resizeBar.classList.add('resize-bar-h');
-      row.appendChild(resizeBar);
+
+      if (!row.querySelector('.resize-bar-h')) {
+        row.appendChild(resizeBar);
+      }
+
 
       
 

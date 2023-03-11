@@ -194,10 +194,10 @@ table {
   right: -15px;
   bottom: 0;
   width: 30px;
-  background-color: transparent;
+  background-color: rgba(255, 0, 0, 0.45);
   /* border: red 1px solid; */
   cursor: col-resize;
-  z-index: 2;
+  z-index: 20;
 }
 
 :host ::ng-deep .resize-bar-h {
@@ -206,15 +206,23 @@ table {
   right: 0;
   bottom: -10px;
   height: 20px;
-  background-color: transparent;
+  background-color: rgba(0, 128, 0, 0.248);
   /* border: green 1px solid; */
   cursor: row-resize;
-  z-index: 2;
+  z-index: 20;
 }
 
 td, th{
 padding: 0px;
 }
+
+
+:host ::ng-deep .ql-editor {
+
+  padding: 0px !important;
+  /* z-index: 10000; */
+}
+
 
 :host ::ng-deep .ql-bubble {
 
