@@ -1,10 +1,10 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, ElementRef, Inject, OnInit, ViewChild }            from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
-import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
+import { Component, ElementRef, Inject, OnInit, ViewChild }             from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup }                         from '@angular/forms';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA }    from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { Observable }                      from 'rxjs';
+import { Observable }                           from 'rxjs';
 import { concatMap, tap }                       from 'rxjs/operators';
 
 //components
@@ -14,6 +14,11 @@ import { ColorPickerComponent }                 from '../../color-picker/color-p
 import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 import { Utility }                              from '../../utilities/utility.component';
 import { QuillEditorComponent }                 from 'ngx-quill'
+import 'quill-mention'
+
+//components
+import { TableComponent }                       from '../table/table.component';
+
 
 //services
 import { BlocchiService }                       from '../blocchi.service';
@@ -36,7 +41,6 @@ import { TEM_BloccoTesto }                      from 'src/app/_models/TEM_Blocco
 export class BloccoEditComponent implements OnInit {
 //#region ----- Variabili --------------------
 
-
   blocco$!:                                     Observable<TEM_Blocco>;
   form! :                                       UntypedFormGroup;
   imgFile!:                                     string;
@@ -45,7 +49,8 @@ export class BloccoEditComponent implements OnInit {
     w:                                          0,
     h:                                          0
   }
-  ritorno = {
+
+  ritorno = {                                   //oggetto che viene restituito in chiusura di dialog (volendo si può arricchire)
     //tipo:                                       "",
     operazione:                                 "",
     //contenuto:                                  "",
@@ -55,22 +60,50 @@ export class BloccoEditComponent implements OnInit {
     //    y:0
     //  }
   }
-  
-                                        
+                              
 
   tipoBloccoDesc!:                              string;
-
   htmlText!:                                    string;        
-  
 
 
-  //QUILL
-
+  //QUILL (se il blocco è di Testo)
   //la customOption abilita l'effettiva applicazione di quello che viene selezionato
   public customOptions = [{
     import: 'attributors/style/size',
     whitelist: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px']
   }];
+
+  modules = {
+    mention: {
+      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      onSelect: (item:any, insertItem:any) => {
+        const editor = this.editor.quillEditor
+        insertItem(item)
+        // necessary because quill-mention triggers changes as 'api' instead of 'user'
+        editor.insertText(editor.getLength() - 1, '', 'user')
+      },
+      source: (searchTerm:any, renderList:any) => {
+        const values = [
+          { id: 1, value: 'anno scolastico' },
+          { id: 2, value: 'nomeecognome alunno' }
+        ]
+
+        if (searchTerm.length === 0) {
+          renderList(values, searchTerm)
+        } else {
+          const matches :any = []
+
+          values.forEach((entry) => {
+            if (entry.value.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
+              matches.push(entry)
+            }
+          })
+          renderList(matches, searchTerm)
+        }
+      }
+    },
+    toolbar: []
+  }
 
   currIndex:                                   number = 0;
   // quillOptions = {                              //non servirà più
@@ -103,7 +136,8 @@ export class BloccoEditComponent implements OnInit {
 //#region ----- ViewChild Input Output -------
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
   @ViewChild('QuillEditor', { static: false }) editor!: QuillEditorComponent
-  @ViewChild('table') table!: ElementRef;
+
+  @ViewChild(TableComponent) TableComponent!: TableComponent; 
 
 //#endregion
 
@@ -186,7 +220,28 @@ export class BloccoEditComponent implements OnInit {
 
   save(){
     //console.log("blocco-edit - save - form blocco da salvare", this.form.value);
-
+    if (this.tipoBloccoDesc == "Tabella") {
+      //il salvataggio delle celle di una tabella viene delegato al component tableComponent
+      this.TableComponent.save()
+      .subscribe(() => {
+        this.ritorno = {
+          //tipo: this.tipoBloccoDesc,
+          operazione: "SAVE",
+          // contenuto: this.immagineDOM.nativeElement.src,
+          // bloccoSize:  {
+          //   w: Math.floor(this.imgSize.w),
+          //   h: Math.floor(this.imgSize.h)
+          // },
+          // bloccoPos: {
+          //   x: this.form.controls.x.value,
+          //   y: this.form.controls.y.value
+          // }
+        }
+        this._dialogRef.close(this.ritorno);
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Blocco Tabella salvato', panelClass: ['green-snackbar']})
+        }
+      )
+    }
 
     if (this.tipoBloccoDesc == "Immagine" && this.immagineDOM != undefined) {  //********* caso blocco di Foto  *******************
 
@@ -218,7 +273,7 @@ export class BloccoEditComponent implements OnInit {
               //}
             }
             this._dialogRef.close(this.ritorno);
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Blocco Immagine salvato', panelClass: ['green-snackbar']})
           },
           err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         )
@@ -257,11 +312,9 @@ export class BloccoEditComponent implements OnInit {
         )
         
       }
-
-
+    } 
     
-
-    } else if (this.tipoBloccoDesc == "Testo") {     //********* caso blocco di Testo *******************
+    if (this.tipoBloccoDesc == "Testo") {     //********* caso blocco di Testo *******************
       let testoObj! : TEM_BloccoTesto;
 
       if (this.form.controls.bloccoTestoID.value) { // PUT
@@ -318,12 +371,15 @@ export class BloccoEditComponent implements OnInit {
             // }
           }
             this._dialogRef.close(this.ritorno);
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Blocco Testo salvato', panelClass: ['green-snackbar']})
           },
           err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         )
       }
     }
+
+
+
   }
 
   delete() {

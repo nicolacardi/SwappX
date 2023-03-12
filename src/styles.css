@@ -1773,42 +1773,58 @@ div.inner img {
 
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="10px"]::before {
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="10px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="10px"]::before {
   content: "10px";
 }
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="12px"]::before {
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="12px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="12px"]::before {
   content: "12px";
 }
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="14px"]::before {
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="14px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="14px"]::before {
   content: "14px";
 }
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="16px"]::before {
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="16px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="16px"]::before {
   content: "16px";
 }
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="18px"]::before {
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="18px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="18px"]::before {
   content: "18px";
 }
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="20px"]::before {
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="20px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="20px"]::before {
   content: "20px";
 }
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="22px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="22px"]::before {
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="22px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="22px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="22px"]::before {
   content: "22px";
 }
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="24px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="24px"]::before {
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="24px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="24px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="24px"]::before {
   content: "24px";
 }
 
@@ -1827,3 +1843,66 @@ content: attr(data-label);
 .ql-custom .ql-picker-item:before {
     content: attr(data-label);
   }
+
+
+
+
+
+
+/* ****quill mention */
+
+.ql-mention-list-container {
+    width: 270px;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 12px 0 rgba(30, 30, 30, 0.08);
+    z-index: 9001;
+    overflow: auto;
+  }
+  
+  .ql-mention-loading {
+    line-height: 44px;
+    padding: 0 20px;
+    vertical-align: middle;
+    font-size: 16px;
+  }
+  
+  .ql-mention-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .ql-mention-list-item {
+    cursor: pointer;
+    line-height: 44px;
+    font-size: 16px;
+    padding: 0 20px;
+    vertical-align: middle;
+  }
+  
+  .ql-mention-list-item.disabled {
+    cursor: auto;
+  }
+  
+  .ql-mention-list-item.selected {
+    background-color: #d3e1ebd0;
+    text-decoration: none;
+  }
+  
+  .mention {
+    height: 24px;
+    width: 65px;
+    border-radius: 6px;
+    background-color: #d3e1ebd0;
+    padding: 3px 0;
+    margin-right: 2px;
+    user-select: all;
+  }
+  
+  .mention > span {
+    margin: 0 3px;
+  }
+  

@@ -45,6 +45,11 @@ export class BlocchiCelleService {
     return this.http.post( environment.apiBaseUrl  + 'TEM_BlocchiCelle' , formData);  
   }
 
+  deleteByBlocco(bloccoID: any): Observable<any>{
+    return this.http.delete(environment.apiBaseUrl+'TEM_BlocchiCelle/deleteByBlocco/'+bloccoID);   
+    //http://213.215.231.4/swappX/api/TEM_BlocchiCelle/deleteByBlocco/40
+  }
+
   delete(BloccoCellaID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'TEM_BlocchiCelle/' + BloccoCellaID);    
   }

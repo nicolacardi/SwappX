@@ -6,4 +6,5 @@ export interface TEM_BloccoCella {
         row:                                    number;
         w:                                      number;
         h:                                      number;
+        testo:                                  string;
 }

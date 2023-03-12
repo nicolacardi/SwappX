@@ -2,10 +2,13 @@
     <mat-card-content>
         <form *ngIf="blocco$ | async" class="data-form flex-form" [formGroup] = "form">
 
-            <!-- ********************************    BOTTONI     ************************************* -->
+<!--#region ************ BOTTONI ********************-->
             <div class="center">
 
-                <img class="iconaMenuBig" src="./assets/blocco_edit_T.svg">
+                <img *ngIf="tipoBloccoDesc == 'Testo'" class="iconaMenuBig" src="./assets/blocco_edit_testo_T.svg">
+                <img *ngIf="tipoBloccoDesc == 'Tabella'" class="iconaMenuBig" src="./assets/blocco_edit_tabella_T.svg">
+                <img *ngIf="tipoBloccoDesc == 'Immagine'" class="iconaMenuBig" src="./assets/blocco_edit_immagine_T.svg">
+
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
@@ -26,8 +29,9 @@
                 </button>
 
             </div>
+<!--#endregion-->
 
-<!-- ************ X W Y H ********************-->
+<!--#region ************ X W Y H ********************-->
 
             <mat-grid-list [cols]="2" rowHeight="20px" >
                 <mat-grid-tile>
@@ -73,19 +77,21 @@
                     </mat-form-field>
                 </mat-grid-tile>
             </mat-grid-list>
+<!--#endregion-->
 
-<!-- ************ QUILL  ********************-->
+<!--#region ************ QUILL x Testo **************-->
 
             <quill-editor *ngIf="tipoBloccoDesc == 'Testo'"
                 (onSelectionChanged)="onSelectionChanged($event)"
                 placeholder="Inserire il proprio testo..."
                 formControlName="testo"
                 [customOptions]="customOptions"
+                [modules] = "modules"
                 #QuillEditor>
                 
             <!-- COSI' SI AGGIUNGONO MENU CON AZIONI IN ALTERNATIVA AI MODULES -->
                 <div quill-editor-toolbar>
-                    <select class="ql-custom tooltip" (change)="insertPlaceholder($event)" >
+                    <!-- <select class="ql-custom tooltip" (change)="insertPlaceholder($event)" >
                         <option value="0" selected></option>
 
                         <option value="[anno scolastico]" >[anno scolastico]</option>
@@ -94,7 +100,7 @@
                         <option value="[Voto Italiano 1Q]">[Voto Italiano 1Q]</option>
                         <option value="[Obiettivo 1 Italiano]">[Obiettivo 1 Italiano]</option>
 
-                    </select>
+                    </select> -->
                     <span class="ql-formats">
                         <select class="ql-font" [title]="'Carattere'">
                         </select>
@@ -119,6 +125,9 @@
                         <option value="14px"></option>
                         <option value="16px"></option>
                         <option value="18px"></option>
+                        <option value="20px"></option>
+                        <option value="22px"></option>
+                        <option value="24px"></option>
                       </select>
                     </span>
                 
@@ -141,16 +150,9 @@
                     </span> -->
             
             </quill-editor>
-<!-- ************ TABLE  ********************-->
+<!--#endregion-->
 
-
-            <div style="background-color:rgba(250, 250, 210, 0.633)"> 
-                <app-table *ngIf="tipoBloccoDesc == 'Tabella'">
-                </app-table>
-            </div>
-
-
-<!-- ************ Riempimento e Bordi ********************-->
+<!--#region ************ Riempimento e Bordi x Testo -->
             <mat-grid-list *ngIf="tipoBloccoDesc == 'Testo'" class=" _cell-bordered mt10" [cols]="4" rowHeight="60px">
 
                 <mat-grid-tile>
@@ -175,6 +177,9 @@
                     <mat-button-toggle formControlName="borderLeft" value="borderleft" (change)="bordersChange($event)"  [checked]="form.controls.borderLeft.value"><mat-icon>border_left</mat-icon></mat-button-toggle>
                 </mat-grid-tile>
             </mat-grid-list>
+<!--endregion-->
+
+<!--#region ************ Immagine *******************-->
 
             <div *ngIf="tipoBloccoDesc == 'Immagine'" class="flex-container form-group mt20 ">
                 <div class="form-group">
@@ -192,6 +197,18 @@
                     
                     #myImg >
             </div>
+<!--#endregion-->
+
+<!--#region ************ TABLE **********************-->
+<div> 
+    <app-table 
+        *ngIf="tipoBloccoDesc == 'Tabella'"
+        [bloccoID] = "bloccoID"
+    >
+    </app-table>
+</div>
+<!-- endregion-->
+        
         </form>
     </mat-card-content>
 </mat-card>
