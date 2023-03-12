@@ -65,7 +65,7 @@ export class PaginaComponent implements OnInit {
 
     this.obsBlocchi$.subscribe(
       res=> {
-         console.log ("Blocchi di pagina:", this.paginaID, res);
+         console.log ("Blocchi di pagina numero:", this.paginaID, " -> ", res);
         this.blocchiArr = res
       }
     )

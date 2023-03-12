@@ -318,6 +318,8 @@ export class BloccoEditComponent implements OnInit {
       let testoObj! : TEM_BloccoTesto;
 
       if (this.form.controls.bloccoTestoID.value) { // PUT
+        console.log("put testo pre");
+
         testoObj = {
           id: this.form.controls.bloccoTestoID.value,
           testo: this.form.controls.testo.value,
@@ -328,6 +330,7 @@ export class BloccoEditComponent implements OnInit {
           concatMap( ()=> this.svcBlocchi.put(this.form.value))
         )
         .subscribe( res=> {
+          console.log("put testo");
           this.ritorno = {
             //tipo: this.tipoBloccoDesc,
             operazione:"PUT",
@@ -346,17 +349,22 @@ export class BloccoEditComponent implements OnInit {
           },
           err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         )
-      } else {                                    // POST
+      } else {            
+        console.log("post testo pre");
+        // POST
         testoObj = {
           testo: this.form.controls.testo.value,
           fontSize: this.form.controls.fontSize.value
         }
+        console.log ("testoObj", testoObj);
         this.svcBlocchiTesti.post(testoObj)
         .pipe (
           tap(bloccoTesto=> {this.form.controls.bloccoTestoID.setValue(bloccoTesto.id)}),
           concatMap( ()=> this.svcBlocchi.put(this.form.value))
         )
         .subscribe( res=> {
+          console.log("post testo");
+
           this.ritorno = {
             //tipo: this.tipoBloccoDesc,
             operazione: "POST",

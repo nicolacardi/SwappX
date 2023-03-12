@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
 
-import { AfterViewInit, Component, Input, ViewChild }  from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { A4 }                                   from 'src/environments/environment';
 import { QuillEditorComponent }                 from 'ngx-quill'
 import 'quill-mention'
@@ -17,7 +17,7 @@ import { tap } from 'rxjs';
   styleUrls: ['../templates.css']
 })
 
-export class TableComponent implements AfterViewInit{
+export class TableComponent implements OnInit, AfterViewInit{
 //#region ----- Variabili --------------------
 
   currIndex:                                    number = 0;
@@ -80,10 +80,43 @@ export class TableComponent implements AfterViewInit{
     private svcBloccoCella:                     BlocchiCelleService
   ) {}
 
+
+  ngOnInit() {
+    this.loadData();
+  }
+
   ngAfterViewInit() {
     this.setupTableResize();
 
   }
+
+  loadData() {
+
+
+    this.svcBloccoCella.listByBlocco(this.bloccoID)
+    .subscribe(
+      res => {
+        this.colsArr = [];
+        this.wArr = [];
+        
+        res.forEach( cell => {
+            if (!this.colsArr.includes(cell.col)) {
+              this.colsArr.push(cell.col);
+              this.wArr.push(cell.w);
+            }
+            }
+        )
+        console.log(res)
+      }
+    )
+    // caricare a partire da this.bloccoID
+    // popolare this.colsArr
+    // popolare this.wArr
+    // popolare this.hArr
+
+
+  }
+
 
   setupTableResize() {
 
