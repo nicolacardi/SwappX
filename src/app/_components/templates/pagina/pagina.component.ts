@@ -10,6 +10,13 @@ import { BlocchiService }                       from '../blocchi.service';
 //models
 import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
 import { PagineService } from '../pagine.service';
+import { TEM_BloccoCella } from 'src/app/_models/TEM_BloccoCella';
+import { BlocchiCelleService } from '../blocchicelle.service';
+import { TEM_BloccoTesto } from 'src/app/_models/TEM_BloccoTesto';
+import { BlocchiTestiService } from '../blocchitesti.service';
+import { BlocchiFotoService } from '../blocchifoto.service';
+import { TEM_BloccoFoto } from 'src/app/_models/TEM_BloccoFoto';
+import { immaginebase } from 'src/environments/environment';
 
 
 @Component({
@@ -24,6 +31,28 @@ export class PaginaComponent implements OnInit {
   public blocchiArr!:                           TEM_Blocco[];
   public nLineeVert!:                           number[];
   public nLineeHor!:                            number[];
+
+  defaultBloccoCella: TEM_BloccoCella = {
+    bloccoID: 0,
+    testo: '',
+    col: 1,
+    row: 1,
+    w: 95,
+    h: 10,
+    fontSize: '12px'
+  }
+
+  defaultBloccoTesto: TEM_BloccoTesto = {
+    testo: '',
+    fontSize: '12px'
+  }
+
+  defaultBloccoFoto: TEM_BloccoFoto = {
+    foto: immaginebase,
+    w: 0,
+    h: 0
+  }
+
 //#endregion
 
 //#region ----- ViewChild Input Output ---------
@@ -43,6 +72,9 @@ export class PaginaComponent implements OnInit {
   constructor(
     private svcBlocchi:                         BlocchiService,
     private svcPagine:                          PagineService,
+    private svcBlocchiCelle:                    BlocchiCelleService,
+    private svcBlocchiTesti:                    BlocchiTestiService,
+    private svcBlocchiFoto:                     BlocchiFotoService,
     private _loadingService :                   LoadingService 
   ) {
     this.nLineeVert = Array(21).fill(0).map((x,i)=>i);
@@ -60,12 +92,13 @@ export class PaginaComponent implements OnInit {
   }
 
   loadData() {
+    console.log("pagina.component - loadData");
     const obsBlocchiTMP$ = this.svcBlocchi.listByPagina(this.paginaID);
     this.obsBlocchi$ = this._loadingService.showLoaderUntilCompleted( obsBlocchiTMP$);
 
     this.obsBlocchi$.subscribe(
       res=> {
-         console.log ("Blocchi di pagina numero:", this.paginaID, " -> ", res);
+        console.log ("Pagina-component - Blocchi di pagina numero:", this.paginaID, " -> ", res);
         this.blocchiArr = res
       }
     )
@@ -91,10 +124,10 @@ export class PaginaComponent implements OnInit {
     let objBlocco : TEM_Blocco =
     { 
       paginaID: this.paginaID,
-      x: 0,
-      y: 0,
-      w: 0,
-      h: 0,
+      x: 10,
+      y: 10,
+      w: 95,
+      h: 50,
       ckFill: false,
       tipoBloccoID: tipoBloccoID,
       borderTop: false,
@@ -102,9 +135,38 @@ export class PaginaComponent implements OnInit {
       borderBottom: false,
       borderLeft: false
     }
-    this.svcBlocchi.post(objBlocco).subscribe(
-      res=> this.loadData()
-    )
+    if (tipoBloccoID == 1) { //blocco testo
+      //In questo caso prima creo il blocco testo e poi indico l'ID in blocco
+      this.svcBlocchiTesti.post(this.defaultBloccoTesto).subscribe(
+        res=> {
+          objBlocco.bloccoTestoID = res.id;
+          this.svcBlocchi.post(objBlocco).subscribe(()=> this.loadData())          
+        });
+    }
+
+    if (tipoBloccoID == 2) { //blocco immagine
+      //In questo caso prima creo il blocco testo e poi indico l'ID in blocco
+      this.svcBlocchiFoto.post(this.defaultBloccoFoto).subscribe(
+        res=> {
+          objBlocco.bloccoFotoID = res.id;
+          this.svcBlocchi.post(objBlocco).subscribe(()=> this.loadData())          
+        });
+    }
+
+    if (tipoBloccoID == 3) { //table
+      //In questo caso prima creo il blocco e poi le celle in quanto bloccoID va indicato in quelle
+      this.svcBlocchi.post(objBlocco).subscribe(
+        res=> {
+          this.defaultBloccoCella.bloccoID = res.id;
+          this.defaultBloccoCella.row = 1;
+          this.svcBlocchiCelle.post (this.defaultBloccoCella).subscribe(); //occhio alla sincronia
+          this.defaultBloccoCella.row = 2;
+          this.svcBlocchiCelle.post (this.defaultBloccoCella).subscribe(); //occhio alla sincronia
+          console.log ("pagina.component - addBlock - subscribe");
+          this.loadData();
+        });
+    }
+    
 
 
   }

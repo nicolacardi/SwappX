@@ -23,7 +23,7 @@ export class BlocchiCelleService {
 
   listByBlocco(BloccoID: any): Observable<TEM_BloccoCella[]>{
     return this.http.get<TEM_BloccoCella[]>(environment.apiBaseUrl+'TEM_BlocchiCelle/ListByBlocco/'+BloccoID);
-    //http://213.215.231.4/swappX/api/TEM_BlocchiCelle/2
+    //http://213.215.231.4/swappX/api/TEM_BlocchiCelle/ListByBlocco/40
   }
 
   listCelleSxRow(BloccoID: any, Row: number, Col: number): Observable<TEM_BloccoCella[]>{

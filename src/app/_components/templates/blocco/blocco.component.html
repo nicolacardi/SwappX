@@ -19,27 +19,41 @@
     
 >
 
-<!-- [ngStyle] = "{'font-size': 10*zoom+'px'}" -->
-<div class="ql-container ql-snow" style="border-width: 0;" *ngIf="blocco.bloccoTesto">
+<!-- [innerHTML] ="blocco.bloccoTesto!.testo" -->
+<div class="ql-container ql-snow" style="border-width: 0;" *ngIf="blocco.tipoBlocco!.descrizione == 'Testo'">
     <div class="ql-editor"  
-        [innerHTML] ="blocco.bloccoTesto!.testo" 
         style="word-break: break-all; "
         [style.font-size.px]="fontSizeN*zoom/2.2"
+        [innerHTML] ="blocco.bloccoTesto? blocco.bloccoTesto.testo: ''"
+
         >
     </div>
 </div>
 
+<app-table-show
+    *ngIf="blocco.tipoBlocco!.descrizione == 'Tabella'"
+    [bloccoID] = "blocco.id!"
+    [adapt] = "zoom"
+    
+    >
+</app-table-show>
 
 
+<div 
+    *ngIf="blocco.tipoBlocco!.descrizione == 'Immagine'"
+    class="center">
+    <img class="_pos-relative ma" 
+        [style.height.px]="height" 
+        style="width: 100%; height: 100%; object-fit: contain !important" 
+        [src]="blocco.bloccoFoto? blocco.bloccoFoto.foto: ''"
 
-<div *ngIf="blocco.bloccoFoto" class="center">
-    <img class="_pos-relative ma" [style.height.px]="height" style="width: 100%; height: 100%; object-fit: contain !important" [src]="blocco.bloccoFoto.foto">
+    >
 </div>
 
-<!-- resize-action è il triangolino, classTipo dice se blu o giallo-->
+
     <div class="resize-action" [ngClass] = "classTipo" (mousedown)="setStatus($event, 1)"></div>
     <span class="w-legenda">{{width/zoom | number:'1.0-0'}}px</span>
     <span class="h-legenda">{{height/zoom | number:'1.0-0'}}px</span>
     <span class="size w100">{{(left/zoom | number:'1.0-0')}}-{{top/zoom | number:'1.0-0'}}</span>
-<!-- </div> -->
+
 </div>

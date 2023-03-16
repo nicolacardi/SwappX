@@ -46,7 +46,7 @@
                 <mat-grid-tile>
                     <mat-form-field  appearance="outline">
                         <mat-label>Da sinistra</mat-label>
-                        <input matInput type="number" required formControlName="x">
+                        <input matInput type="number" required formControlName="x" #x>
                         <mat-error *ngIf="form.controls.x.errors?.required"> Obbligatorio</mat-error>
                     </mat-form-field>
                 </mat-grid-tile>
@@ -54,7 +54,7 @@
                 <mat-grid-tile>
                     <mat-form-field appearance="outline"> 
                         <mat-label>Larghezza</mat-label>
-                        <input matInput type="number" required formControlName="w">
+                        <input matInput type="number" required formControlName="w" #w>
                         <mat-error *ngIf="form.controls.w.errors?.required"> Obbligatorio</mat-error>
                     </mat-form-field>
 
@@ -72,7 +72,7 @@
                 <mat-grid-tile>
                     <mat-form-field appearance="outline">
                         <mat-label>Altezza</mat-label>
-                        <input matInput type="number" required formControlName="h">
+                        <input matInput type="number" required formControlName="h" #h>
                         <mat-error *ngIf="form.controls.h.errors?.required"> Obbligatorio</mat-error>
                     </mat-form-field>
                 </mat-grid-tile>
@@ -200,13 +200,15 @@
 <!--#endregion-->
 
 <!--#region ************ TABLE **********************-->
-<div> 
-    <app-table 
-        *ngIf="tipoBloccoDesc == 'Tabella'"
-        [bloccoID] = "bloccoID"
-    >
-    </app-table>
-</div>
+            <div> 
+                <app-table 
+                    *ngIf="tipoBloccoDesc == 'Tabella'"
+                    [bloccoID] = "bloccoID"
+                    [wBlocco] = "w.value"
+                    [hBlocco] = "h.value"
+                >
+                </app-table>
+            </div>
 <!-- endregion-->
         
         </form>

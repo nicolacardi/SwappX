@@ -1,6 +1,7 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
-import { debounceTime, fromEvent, merge, Observable } from 'rxjs';
 
 //components
 import { BloccoEditComponent }                  from '../blocco-edit/blocco-edit.component';
@@ -10,7 +11,8 @@ import { BlocchiService }                       from '../blocchi.service';
 
 //models
 import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
-import { A4 } from 'src/environments/environment';
+import { A4 }                                   from 'src/environments/environment';
+import { TableShowComponent }                   from '../tableshow/tableshow.component';
 
 const enum Status {
   OFF = 0,
@@ -18,13 +20,15 @@ const enum Status {
   MOVE = 2
 }
 
+
+
+//#endregion
 @Component({
   selector: 'app-blocco',
   templateUrl: './blocco.component.html',
   styleUrls: ['../templates.css']
 })
 export class BloccoComponent implements OnInit {
-
 
 //#region ----- Variabili ----------------------
 
@@ -49,9 +53,13 @@ export class BloccoComponent implements OnInit {
   public mouse!: {x: number, y: number}
   public status: Status = Status.OFF;
   private mouseClick!: {x: number, y: number, left: number, top: number}  //le 4 coordinate del click del mouse
+
+
+
+  
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
 
   @Input('blocco') public blocco!:              TEM_Blocco;
   @Input() zoom!:                               number;
@@ -61,6 +69,10 @@ export class BloccoComponent implements OnInit {
   @Output('recordEdited') recordEdited = new EventEmitter<number>();
 
   @ViewChild("box") public box!: ElementRef;
+
+  @ViewChild(TableShowComponent) public tableShowComponent!: TableShowComponent;
+
+
   //https://medium.com/swlh/create-a-resizable-and-draggable-angular-component-in-the-easiest-way-bb67031866cb
   //https://stackblitz.com/edit/angular-resizable-draggable?file=src%2Fapp%2Fapp.component.ts
 //#endregion
@@ -74,9 +86,11 @@ export class BloccoComponent implements OnInit {
 
 //#endregion
 
-
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
+    //console.log ("blocco-component ngOnChanges");
+
 
     //viene chiamata sia su SAVE che su cambio ZOOM
     this.zoomratio = this.zoom/this.oldZoom;
@@ -90,8 +104,11 @@ export class BloccoComponent implements OnInit {
     
     if (this.blocco.bloccoTesto) this.testo = this.blocco.bloccoTesto?.testo;
     if (this.blocco.bloccoTesto) this.fontSizeN = parseInt(this.blocco.bloccoTesto?.fontSize.substring(0, this.blocco.bloccoTesto?.fontSize.length - 2));
+
+
     this.storeCurrPosSize()
     this.oldZoom = this.zoom;
+    //console.log ("blocco-component fine di ngOnChanges");
   }
 
   ngOnInit(): void {
@@ -122,7 +139,7 @@ export class BloccoComponent implements OnInit {
 
   setStatus(event: MouseEvent, status: number){
 
-    //console.log("blocco - setStatus");
+    //console.log("blocco.component - setStatus");
 
     this.loadBox();
     this.loadContainer();
@@ -147,6 +164,8 @@ export class BloccoComponent implements OnInit {
 
 
   reloadData(w: number, h: number, x: number, y: number) {
+    //console.log("blocco.component - reloadData");
+
     //viene chiamata su save di ritorno da blocco-edit,
     // NON su cambio di zoom
     //serve perchè potrei aver modificato posizione e dimensioni
@@ -163,7 +182,7 @@ export class BloccoComponent implements OnInit {
   }
 
   loadBox(){
-    //console.log("blocco - loadBox");
+    //console.log("blocco.component - loadBox");
     //imposta l'oggetto boxPos tratteggiato estraendo la posizione in pixel (left, top) del box
     const {left, top} = this.box.nativeElement.getBoundingClientRect();
     this.boxPos = {left, top};
@@ -173,7 +192,7 @@ export class BloccoComponent implements OnInit {
   }
 
   loadContainer(){
-    //console.log("blocco - loadContainer");
+    //console.log("blocco.component - loadContainer");
     //imposta la dimensione del container bianco a partire da boxPos in quanto sottrae dalla x della box la x relativa al container (this.left)
     const left = this.boxPos.left - this.left;
     // console.log ("this.boxPos.left", this.boxPos.left);
@@ -189,13 +208,10 @@ export class BloccoComponent implements OnInit {
 
 
 
-
-
-  
-
-
   @HostListener('window:mousemove', ['$event'])
   onMouseMove(event: MouseEvent){
+    //console.log("blocco.component - window:mousemove");
+
     this.mouse = { x: event.clientX, y: event.clientY };
     if(this.status === Status.RESIZE) this.resize();
     else if(this.status === Status.MOVE) this.move();
@@ -211,9 +227,10 @@ export class BloccoComponent implements OnInit {
   //   this.setStatus(event, 0);
   // }
   
-
+//#endregion
 
   private resize(){
+    //console.log("blocco.component - resize");
 
     //console.log (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (A4.width-10)));
     console.log (this.boxPos.left);
@@ -267,7 +284,7 @@ export class BloccoComponent implements OnInit {
 
 
   move(){
-    //console.log("blocco - move");
+    //console.log("blocco.component - move");
 
     //this.mouse.x - this.mouseClick.x rappresenta quanta strada ha fatto il mouse verso dx da quando ha cliccato
     //questa va aggiunta alla posizione in cui si trovava il box (this.mouseClick.left) quando ha cliccato
@@ -319,6 +336,7 @@ export class BloccoComponent implements OnInit {
     this.blocco.h = this.height;
     this.blocco.y =  this.top;
     this.blocco.x = this.left;
+    //console.log ("blocco-component fine di StoreCurrPosSize");
   }
 
 
@@ -365,16 +383,23 @@ export class BloccoComponent implements OnInit {
         (res:any) => {
         
           //deve ripescarsi l'oggetto
-        if (res.operazione != "DELETE") 
-        this.svcBlocchi.get(this.blocco.id)
-        .subscribe(val=> {
-          this.blocco= val;
-          //devo adattare alla larghezza....
-          //console.log ("val", val);
-          //this.reloadData(res.bloccoSize.w, res.bloccoSize.h, res.bloccoPos.x, res.bloccoPos.y);
-          this.reloadData(val.w, val.h, val.x, val.y);
-        })
-        else this.recordEdited.emit(this.blocco.id!)
+          if (res.operazione == "DELETE") {
+            //se il blocco è stato cancellato allora va fatta una emit che la pagina recepisce per ricaricare tutto
+            this.recordEdited.emit(this.blocco.id!)
+            return;
+          } 
+          if (res.operazione == "SAVE TABELLA") {
+            //se il blocco è stato cancellato allora va fatta una emit che la pagina recepisce per ricaricare tutto
+            this.tableShowComponent.loadData();
+            return;
+          } 
+          //se NON è stato cancellato il blocco si richiama il svcBlocchi e si rifa la get per questo singolo blocco
+          this.svcBlocchi.get(this.blocco.id)
+          .subscribe(val=> {
+            this.blocco= val;
+            this.reloadData(val.w, val.h, val.x, val.y);
+          })
+           
         }
       );
     

@@ -1,0 +1,23 @@
+<!-- [style.font-size.px]="fontSizeN*zoom/2.2" -->
+<table>
+  <tbody>
+    <tr *ngFor="let row of rowsArr; let j = index">
+      <td class="_bordered-lightgrey _pos-relative" style="height: 10px; ;" *ngFor="let row of colsArr; let i = index" >
+        <div class="ql-container ql-snow" style="border-width: 0;">
+          <div class="ql-editor"
+              [innerHTML] = "testoCella[j][i]"
+              [style.width.px] = "colsWArr[i]"
+              [style.height.px] = "rowsHArr[j]"
+              [style.font-size.px]="fontSizeCella[j][i]*adapt"
+              style="word-break: break-all;"
+              >
+          <!-- va salvato il fontsize di ogni cella come si fa con il blocco di testo...stesso modo  -->
+
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+

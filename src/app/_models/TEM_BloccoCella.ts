@@ -7,4 +7,5 @@ export interface TEM_BloccoCella {
         w:                                      number;
         h:                                      number;
         testo:                                  string;
+        fontSize:                               string;
 }

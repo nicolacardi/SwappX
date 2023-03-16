@@ -568,6 +568,10 @@
         width: 500px;
     }
 
+    .w570px {
+        width: 570px;
+    }
+
     .w600px {
         width: 600px;
     }
@@ -728,7 +732,9 @@
         border: none;
     }
     
-
+    ._border-dotted {
+        outline: 0.5px dotted lightgrey;
+    }
 /*#endregion ***************************/
 
 /*#region ********** ALIGN *************/
