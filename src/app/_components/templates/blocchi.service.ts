@@ -26,6 +26,11 @@ export class BlocchiService {
   //http://213.215.231.4/swappX/api/TEM_Blocchi/ListByPagina/1
   }
 
+  listByTemplate (TemplateID: any){
+    return this.http.get<TEM_Blocco[]>(environment.apiBaseUrl+'TEM_Blocchi/listByTemplate/'+TemplateID);
+    //http://213.215.231.4/swappX/api/TEM_Blocchi/listByTemplate/1
+    }
+
   get(BloccoID: any): Observable<TEM_Blocco>{
     return this.http.get<TEM_Blocco>(environment.apiBaseUrl+'TEM_Blocchi/'+BloccoID);
     //http://213.215.231.4/swappX/api/TEM_Blocchi/25

@@ -1,15 +1,16 @@
-import { Injectable } from '@angular/core';
-import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
-import { HttpClient } from '@angular/common/http';
+import { Injectable }                           from '@angular/core';
+import { jsPDF }                                from 'jspdf';
+import autoTable                                from 'jspdf-autotable';
+import html2canvas                              from 'html2canvas';
 
 import '../../../../assets/fonts/TitilliumWeb-Regular-normal.js';
 import '../../../../assets/fonts/TitilliumWeb-SemiBold-normal.js';
 
-import { DOC_Pagella } from 'src/app/_models/DOC_Pagella.js';
-import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto.js';
+import { DOC_Pagella }                          from 'src/app/_models/DOC_Pagella.js';
+import { DOC_PagellaVoto }                      from 'src/app/_models/DOC_PagellaVoto.js';
 
-import { rptPagella } from 'src/app/_reports/rptPagella';
+import { rptPagella }                           from 'src/app/_reports/rptPagella';
+// import { rptBase }                              from 'src/app/_reports/rptBase';
 
 
 @Injectable({
@@ -31,6 +32,7 @@ export class JspdfService { defaultColor!:          string;
   constructor() {}
 
   //costruisce il report STANDARD e lancia il salvataggio
+
   public downloadPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string)  {
     let doc = this.buildReportPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle);
     this.salvaPdf(doc,rptFileName);
@@ -44,8 +46,102 @@ export class JspdfService { defaultColor!:          string;
     }
     doc.save(fileName);
   }
+
+
   
 //#region ----- dynamicRptPagella -----
+public async rptFromtemplate(rptBase: any) : Promise<jsPDF> {
+
+    
+  let pageW: number = 0;
+  let pageH: number = 0;
+
+
+  //Il primo elemento di rptBase DEVE essere SheetDefault
+  let element = rptBase[0]                      //  rptBase per ora è un oggetto esterno, poi sarà ciò che viene passato negli argomenti
+  
+//#region ----- caricamento dei valori di default -----    
+  if(element.tipo != "SheetDefault"){
+    let doc : jsPDF  = new jsPDF('l', 'mm', [100 , 100]);  
+    doc.text("ERRORE: manca il tag [SheetDefault] in rptBase",10, 50);
+    return doc;
+  }
+
+  pageW= parseInt(element.width);
+  pageH= parseInt(element.heigth);
+
+  this.defaultColor = element.defaultColor;
+  this.defaultFontSize = element.defaultFontSize;
+  this.defaultFontName = element.defaultFontName;
+  this.defaultMaxWidth = element.defaultMaxWidth;
+  this.defaultFillColor = element.defaultFillColor;
+  this.defaultLineColor = element.defaultLineColor;
+  this.defaultCellLineColor = element.defaultCellLineColor;
+  this.defaultLineWidth = element.defaultLineWidth;
+
+  let doc : jsPDF  = new jsPDF('l', 'mm', [pageW , pageH]);   //A3
+  doc.setFont('TitilliumWeb-Regular', 'normal');
+//#endregion
+  
+  //LA PROMISE.ALL NON SI COMPORTA COME SE CHIAMASSE TUTTE LE FUNZIONI IN MANIERA SINCRONA
+  //MA SEMPLICEMENTE NON FA PROCEDERE IL CODICE OLTRE PRIMA CHE TUTTE LE SUE PROMISE (AWAITED) SIANO TERMINATE
+  //MA QUESTE RESTANO SINGOLARMENTE ASINCRONE, QUINDI FINISCO IN ORDINE "SPARSO"
+  //IL CICLO FOR, INVECE, INSIEME CON IL COMANDO AWAIT FUNZIONA IN MANIERA SINCRONA
+  
+  //await Promise.all( rptBase.map(async (element: any) => { QUESTA LA PROMISE.ALL FALLACE     
+
+
+  for (let i = 1; i < rptBase.length; i++) {
+    let element = rptBase[i];
+    //console.log ("jspdf.service leggo da rptBase: element", element);
+    switch(element.tipo){
+      case "SheetDefault":
+        break;
+      case "Image":{
+        const ImageUrl = "./assets/photos/" + element.value;
+        await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
+        break;
+      }
+      case "Text":{
+        this.addText(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align, element.maxWidth );
+        break;
+      }
+      case "TextHtml":{
+        this.addTextHtml(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align, element.maxWidth );
+        break;
+      }
+      case "TableStatica":{
+        this.addTableStatica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge ,element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
+        break;
+      }
+      case "TableDinamica":{
+        this.addTableDinamica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge, element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
+        break;
+      }
+      case "TableDinamicaPagella":{
+        this.addTableDinamicaPagella(doc, element);
+        break;
+      }
+      case "Line":{
+        this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
+        break;
+      }
+      case "Rect":{
+        this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
+        break;
+      }
+      case "Page":{
+        doc.addPage()
+        break;
+      }
+      default:{
+        this.addText(doc,"[## WRONG TAG ##]",element.X,element.Y,"TitilliumWeb-SemiBold","normal",'#FF0000',24, element.align, element.maxWidth );
+        break;
+      }
+    }
+  }
+  return doc;
+}
 
   //questa è la routine BASE che viene chiamata dai report che si appoggiano al file rptPagella.ts
   public async dynamicRptPagella(objPagella: DOC_Pagella, lstPagellaVoti: DOC_PagellaVoto[]) : Promise<jsPDF> {
@@ -198,22 +294,23 @@ export class JspdfService { defaultColor!:          string;
     let i: number; //serve definirlo fuori dal ciclo for perchè poi serve tenere l'ultimo valore
 
     //****************   HEADER
-    for (i = 0; i < head.length; i++) {
+    for (i = 0; i < head.length; i++) {         //potrebbero esserci più righe di header
       headObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
       for (let j = 0; j < head[i].length; j++) {       
         headObj[i].push({ content: head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
+      }
     }
 
     //aggiunta riga vuota dopo l'header
     if (headEmptyRow ==1) {
       headObj.push([]);
-      for (let j = 0; j < head[0].length; j++) 
+      for (let j = 0; j < head[0].length; j++) {
         headObj[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
       }
     }
     //****************   FINE HEADER
 
-    for (let i = 0; i < body.length; i++) {
+    for (let i = 0; i < body.length; i++) { //ogni riga è body[i]
       bodyObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
       for (let j = 0; j < body[i].length; j++) {
         
@@ -230,9 +327,10 @@ export class JspdfService { defaultColor!:          string;
         else rowSpan = body.length;
 
         if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0))
-          bodyObj[i].push({ content: body[0][j], colSpan: 1, rowSpan: rowSpan, styles:{font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+          bodyObj[i].push({ content: body[i][j], colSpan: 1, rowSpan: rowSpan, styles:{font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
       }
     }
+    console.log ("headObj", headObj);
 
     autoTable(docPDF, {
       //startY: Y,
@@ -747,6 +845,72 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
     //console.log("dimensioni testo: ", dim);
   }  
 
+
+  private async getImageDataFromHtml(html: string): Promise<string> {
+    const options = {
+      scale: 1,
+      useCORS: true,
+    };
+  
+
+    //prendo il div "di servizio"
+    const tempElement = document.querySelector('#myDiv') as HTMLElement;
+    if (!tempElement) {throw new Error('necessario per sicurezza che esista');}
+    //applico al div il testo da convertire
+    tempElement!.innerHTML = html;
+  
+    // Convert the HTML to a canvas
+    const canvas = await html2canvas(tempElement, options);
+  
+    // Return the image data as a Promise
+    return canvas.toDataURL('image/png');
+  }
+
+
+  private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, align: any, maxWidth: number  ){
+  //  try { 
+    if(fontName == null || fontName == "") fontName = this.defaultFontName;
+    if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
+    if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
+    if(maxWidth == null || maxWidth == 0) maxWidth = this.defaultMaxWidth;
+
+    let imgWidth = 0;
+    let imgHeight = 0;
+
+        const options = {
+      scale: 1,
+      useCORS: true,
+    };
+
+    const html = text;
+
+    const imgData = await this.getImageDataFromHtml(html);
+
+    // const canvas = await html2canvas(tempElement, options);
+
+    // Creiamo una nuova immagine a partire dal canvas ottenuto
+    //const imgData = canvas.toDataURL('image/png');
+    
+    
+    
+    const imgTmp = new Image();
+    imgTmp.src = imgData;
+    imgTmp.onload = () => {
+      imgWidth = imgTmp.width;
+      imgHeight = imgTmp.height;
+      console.log ("qui l'immagine ce l'ho!", imgTmp);
+      // Aggiungiamo l'immagine al PDF
+      docPDF.addImage(imgTmp, 'png', X, Y, 100, 30, undefined,'FAST');
+    };
+
+  // } catch (error:any) {
+  //   console.log("Errore durante l'aggiunta del testo HTML: ", error);
+  // }
+
+    
+
+  }  
+
   private async addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
 
     let imgWidth = 0;
@@ -759,6 +923,9 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
     //costruisco la mia funzione promise custom (genero l'asincronia necessaria)
     //serve per creare un'altra Img (imgTmp) ed estrarne le dimensioni
     const loadImage = (src: string) => new Promise((resolve, reject) => {
+      
+      
+      
       const imgTmp = new Image();
       imgTmp.src = src;
       imgTmp.onload = () =>{          
@@ -801,6 +968,8 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
 //#endregion
 
 //#region ----- costruisce e stampa Report STANDARD -----
+
+
 
   //crea e scarica il report con la tabella dei dati della pagina   Metodo che include AUTOTABLE
   private buildReportPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string) {

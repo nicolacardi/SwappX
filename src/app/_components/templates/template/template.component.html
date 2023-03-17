@@ -20,6 +20,15 @@
     <img *ngIf="!griglia" class="iconaMenuSidenav" src="./assets/mainMenuWhite/griglia_off.svg">
 </button>
 
+<button  mat-mini-fab aria-label="Pubblica" matTooltip="Pubblica" class="_btn-add _btn-pos-right-7 _btn-pos-top-1" (click)="createRptDoc()">
+    <img class="iconaMenu" src="./assets/pubblica.svg">
+</button>
+
+<button  mat-mini-fab aria-label="Scarica" matTooltip="Scarica" class="_btn-add-fixed _btn-pos-right-6 _btn-pos-top-1" (click)="openPdf()">
+    <mat-icon>file_download</mat-icon>
+</button>
+
+
 <div *ngFor="let element of (obsPagine$ | async); let i = index" style="padding-top: 10px; background-color: lightgray">
     <div class="center mb20">Pagina {{i+1}} di {{numPagine}}</div>
     <app-pagina
@@ -35,4 +44,6 @@
         <div class="shadow"></div>
     </div>
 </div>
+
+<div id="myDiv"></div>
 
