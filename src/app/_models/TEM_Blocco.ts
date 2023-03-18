@@ -1,3 +1,4 @@
+import { TEM_BloccoCella } from "./TEM_BloccoCella";
 import { TEM_BloccoFoto } from "./TEM_BloccoFoto";
 import { TEM_BloccoTesto } from "./TEM_BloccoTesto";
 import { TEM_TipoBlocco } from "./TEM_TipoBlocco";
@@ -24,12 +25,16 @@ export interface TEM_Blocco {
 
         tipoBlocco?:                            TEM_TipoBlocco;
 
-        bloccoFotoID?:                          number;
+        // bloccoFotoID?:                          number;
 
-        bloccoTestoID?:                         number;
+        // bloccoTestoID?:                         number;
 
-        bloccoFoto?:                            TEM_BloccoFoto;
-        bloccoTesto?:                           TEM_BloccoTesto;
+        // bloccoFoto?:                            TEM_BloccoFoto;
+        // bloccoTesto?:                           TEM_BloccoTesto;
+
+        _BloccoTesti?:                           TEM_BloccoTesto[];
+        _BloccoFoto?:                            TEM_BloccoFoto[];
+        _BloccoCelle?:                           TEM_BloccoCella[];
 
 }
 

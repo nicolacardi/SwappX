@@ -108,7 +108,7 @@ export class TemplateComponent implements OnInit {
           rptBase.push({
             "tipo": "TextHtml",
             "alias": "html2canvas",
-            "value": blocco.bloccoTesto?.testo,
+            "value": "testotemp",
             "X": blocco.x,
             "Y": blocco.y,
             "W": blocco.w,

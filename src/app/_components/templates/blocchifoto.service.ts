@@ -35,6 +35,11 @@ export class BlocchiFotoService {
     return this.http.post( environment.apiBaseUrl  + 'TEM_BlocchiFoto' , formData);  
   }
 
+  deleteByBlocco(bloccoID: any): Observable<any>{
+    return this.http.delete(environment.apiBaseUrl+'TEM_BlocchiFoto/deleteByBlocco/'+bloccoID);   
+    //http://213.215.231.4/swappX/api/TEM_BlocchiFoto/deleteByBlocco/40
+  }
+
   delete(BloccoFotoID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'TEM_BlocchiFoto/' + BloccoFotoID);    
   }

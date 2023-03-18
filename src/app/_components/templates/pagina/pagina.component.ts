@@ -5,18 +5,20 @@ import { Observable }                           from 'rxjs';
 
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { PagineService }                        from '../pagine.service';
 import { BlocchiService }                       from '../blocchi.service';
+import { BlocchiTestiService }                  from '../blocchitesti.service';
+import { BlocchiFotoService }                   from '../blocchifoto.service';
+import { BlocchiCelleService }                  from '../blocchicelle.service';
 
 //models
 import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
-import { PagineService } from '../pagine.service';
-import { TEM_BloccoCella } from 'src/app/_models/TEM_BloccoCella';
-import { BlocchiCelleService } from '../blocchicelle.service';
-import { TEM_BloccoTesto } from 'src/app/_models/TEM_BloccoTesto';
-import { BlocchiTestiService } from '../blocchitesti.service';
-import { BlocchiFotoService } from '../blocchifoto.service';
-import { TEM_BloccoFoto } from 'src/app/_models/TEM_BloccoFoto';
-import { immaginebase } from 'src/environments/environment';
+import { TEM_BloccoCella }                      from 'src/app/_models/TEM_BloccoCella';
+import { TEM_BloccoTesto }                      from 'src/app/_models/TEM_BloccoTesto';
+import { TEM_BloccoFoto }                       from 'src/app/_models/TEM_BloccoFoto';
+
+
+import { immaginebase }                         from 'src/environments/environment';
 
 
 @Component({
@@ -43,11 +45,13 @@ export class PaginaComponent implements OnInit {
   }
 
   defaultBloccoTesto: TEM_BloccoTesto = {
+    bloccoID: 0,
     testo: '',
     fontSize: '12px'
   }
 
   defaultBloccoFoto: TEM_BloccoFoto = {
+    bloccoID: 0,
     foto: immaginebase,
     w: 0,
     h: 0
@@ -136,25 +140,27 @@ export class PaginaComponent implements OnInit {
       borderLeft: false
     }
     if (tipoBloccoID == 1) { //blocco testo
-      //In questo caso prima creo il blocco testo e poi indico l'ID in blocco
-      this.svcBlocchiTesti.post(this.defaultBloccoTesto).subscribe(
-        res=> {
-          objBlocco.bloccoTestoID = res.id;
-          this.svcBlocchi.post(objBlocco).subscribe(()=> this.loadData())          
-        });
+      this.svcBlocchi.post(objBlocco).subscribe(
+        res => {
+          this.defaultBloccoTesto.bloccoID = res.id;
+          this.svcBlocchiTesti.post(this.defaultBloccoTesto).subscribe( res=> this.loadData());
+           //questa combina un casino! perchè?
+        }
+      )
     }
 
     if (tipoBloccoID == 2) { //blocco immagine
-      //In questo caso prima creo il blocco testo e poi indico l'ID in blocco
-      this.svcBlocchiFoto.post(this.defaultBloccoFoto).subscribe(
-        res=> {
-          objBlocco.bloccoFotoID = res.id;
-          this.svcBlocchi.post(objBlocco).subscribe(()=> this.loadData())          
-        });
+      this.svcBlocchi.post(objBlocco).subscribe(
+        res => {
+          this.defaultBloccoFoto.bloccoID = res.id;
+          this.svcBlocchiFoto.post(this.defaultBloccoFoto).subscribe(res=> this.loadData());
+          //questa combina un casino!
+
+        }
+      )
     }
 
     if (tipoBloccoID == 3) { //table
-      //In questo caso prima creo il blocco e poi le celle in quanto bloccoID va indicato in quelle
       this.svcBlocchi.post(objBlocco).subscribe(
         res=> {
           this.defaultBloccoCella.bloccoID = res.id;

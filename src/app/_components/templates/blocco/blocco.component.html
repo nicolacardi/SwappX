@@ -19,12 +19,13 @@
     
 >
 
-<!-- [innerHTML] ="blocco.bloccoTesto!.testo" -->
+<!-- [innerHTML] ="blocco._bloccoTesti![0]? blocco._bloccoTesti[0].testo: ''" -->
 <div class="ql-container ql-snow" style="border-width: 0;" *ngIf="blocco.tipoBlocco!.descrizione == 'Testo'">
     <div class="ql-editor"  
         style="word-break: break-all; "
         [style.font-size.px]="fontSizeN*zoom/2.2"
-        [innerHTML] ="blocco.bloccoTesto? blocco.bloccoTesto.testo: ''"
+        [innerHTML] ="blocco._BloccoTesti? blocco._BloccoTesti[0].testo: ''"
+
 
         >
     </div>
@@ -45,7 +46,7 @@
     <img class="_pos-relative ma" 
         [style.height.px]="height" 
         style="width: 100%; height: 100%; object-fit: contain !important" 
-        [src]="blocco.bloccoFoto? blocco.bloccoFoto.foto: ''"
+        [src]="blocco._BloccoFoto? blocco._BloccoFoto[0].foto: ''"
 
     >
 </div>

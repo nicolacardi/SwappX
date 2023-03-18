@@ -35,6 +35,11 @@ export class BlocchiTestiService {
     return this.http.post( environment.apiBaseUrl  + 'TEM_BlocchiTesti' , formData);  
   }
 
+  deleteByBlocco(bloccoID: any): Observable<any>{
+    return this.http.delete(environment.apiBaseUrl+'TEM_BlocchiTesti/deleteByBlocco/'+bloccoID);   
+    //http://213.215.231.4/swappX/api/TEM_BlocchiTesti/deleteByBlocco/40
+  }
+
   delete(BloccoTestoID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'TEM_BlocchiTesti/' + BloccoTestoID);    
   }

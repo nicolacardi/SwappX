@@ -102,8 +102,8 @@ export class BloccoComponent implements OnInit {
     
     this.classTipo = "tipo"+this.tipoBloccoID; 
     
-    if (this.blocco.bloccoTesto) this.testo = this.blocco.bloccoTesto?.testo;
-    if (this.blocco.bloccoTesto) this.fontSizeN = parseInt(this.blocco.bloccoTesto?.fontSize.substring(0, this.blocco.bloccoTesto?.fontSize.length - 2));
+    if (this.blocco._BloccoTesti![0]) this.testo = this.blocco._BloccoTesti![0]?.testo;
+    if (this.blocco._BloccoTesti![0]) this.fontSizeN = parseInt(this.blocco._BloccoTesti![0]?.fontSize.substring(0, this.blocco._BloccoTesti![0]?.fontSize.length - 2));
 
 
     this.storeCurrPosSize()
@@ -353,8 +353,6 @@ export class BloccoComponent implements OnInit {
       h: Math.floor(this.height/this.zoom),
       color: this.blocco.color!,
       ckFill: this.blocco.ckFill,
-      bloccoFotoID: this.blocco.bloccoFotoID!,
-      bloccoTestoID: this.blocco.bloccoTestoID!,
       tipoBloccoID: this.blocco.tipoBloccoID,
       borderTop: this.blocco.borderTop,
       borderRight: this.blocco.borderRight,
