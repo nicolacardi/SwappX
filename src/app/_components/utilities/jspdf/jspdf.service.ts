@@ -49,13 +49,25 @@ export class JspdfService { defaultColor!:          string;
 
 
   
-//#region ----- dynamicRptPagella -----
+
+
+
+
+
+
+
+
+
+
+
+
+//#region ----- ****************************************************dynamicRptPagella -----
 public async rptFromtemplate(rptBase: any) : Promise<jsPDF> {
 
   let pageW: number = 0;
   let pageH: number = 0;
 
-  //Il primo elemento di rptBase DEVE essere SheetDefault
+  //Il primo elemento di rptBase DEVE essere SheetDefault sennò tutto si ferma e viene emesso un documento con un errore
   let sheetDefault = rptBase[0]                      //  rptBase per ora è un oggetto esterno, poi sarà ciò che viene passato negli argomenti
   
 //#region ----- caricamento dei valori di default -----    
@@ -86,7 +98,6 @@ public async rptFromtemplate(rptBase: any) : Promise<jsPDF> {
   //IL CICLO FOR, INVECE, INSIEME CON IL COMANDO AWAIT FUNZIONA IN MANIERA SINCRONA
   //await Promise.all( rptBase.map(async (element: any) => { QUESTA LA PROMISE.ALL FALLACE     
 
-
   for (let i = 1; i < rptBase.length; i++) {
     let element = rptBase[i];
     switch(element.tipo){
@@ -102,7 +113,7 @@ public async rptFromtemplate(rptBase: any) : Promise<jsPDF> {
         break;
       }
       case "TextHtml":{
-       await this.addTextHtml(doc,this.parseTextValue( element.value),element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,element.fontSize, element.maxWidth );
+       await this.addTextHtml(doc,this.parseTextValue( element.value),element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,element.fontSize, element.maxWidth, element.backgroundColor );
         break;
       }
       case "TableStatica":{
@@ -138,19 +149,28 @@ public async rptFromtemplate(rptBase: any) : Promise<jsPDF> {
   return doc;
 }
 
-private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, maxWidth: number  ){
+private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, maxWidth: number, backgroundColor: string  ){
 
   if(fontName == null || fontName == "") fontName = this.defaultFontName;   //da vedere se serve
   if(fontColor == null || fontColor == "") fontColor = this.defaultColor;   //da vedere se serve
   if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;    //da vedere se serve
   if(maxWidth == null || maxWidth == 0) maxWidth = this.defaultMaxWidth;    //da vedere se serve
-
+  
   let imgWidth = 0;
   let imgHeight = 0;
 
   const options = {
     scale: 1,
+    dpi: 300,
     useCORS: true,
+    backgroundColor: null,
+    padding: {
+      top: 5,
+      bottom: 5,
+      left: 5,
+      right: 5
+    }
+
   };
 
   const html = text;
@@ -159,30 +179,47 @@ private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, W: 
   const tempElement = document.querySelector('#myDiv') as HTMLElement;
   if (!tempElement) {throw new Error('necessario per sicurezza che esista');}
   //applico al div il testo da convertire
+  tempElement!.style.width = (W*5.91)+"px"; //senza questo è tutto troppo piccolo
+
+  //ora dovrei estrarre font-size: --px e sostituirlo con font-size che desidero...o no?
+
+
   tempElement!.innerHTML = html;
-  // Convert the HTML to a canvas
+  // Converto l'HTML a canvas
   const canvas = await html2canvas(tempElement, options);
-  //estrae il png 
+  //estraggo il png dal canvas
   const imgData = await canvas.toDataURL('image/png')
   
+  //attribuisco imgData a img.src
   let img = new Image();
   img.src = imgData;
-
+  
+  //estraggo le dimensioni dell'immagine (serve???)
   const promise =() => new Promise ((resolve,reject) => {
     const imgTmp = new Image();
     imgTmp.src = imgData;
     imgTmp.onload = () => {
       imgWidth = imgTmp.width;
       imgHeight = imgTmp.height;
-      // Aggiungiamo l'immagine al PDF
+      console.log ("imgWidth", imgWidth);
+      console.log ("imgHeight", imgHeight);
       resolve("hey");
     };
   })
 
   await promise();
-  console.log ("X,Y,W,H", X,Y,W,H);
-  this.addRect(docPDF,X,Y,W, W/imgWidth*imgHeight,'#110000', 0.5, 0);
-  docPDF.addImage(img, 'png', X, Y, W, W/imgWidth*imgHeight, undefined,'FAST');
+  console.log ("aggiunto textHtml in X Y W H", X, Y, W, H)
+  docPDF.setFillColor(backgroundColor);
+  docPDF.setDrawColor("222222");
+  docPDF.setLineWidth (0.3);
+  docPDF.rect(X,Y,W, H, 'F');
+
+
+  // docPDF.setLineWidth (0.8);
+
+  // docPDF.rect(X,Y,W, W*imgHeight/imgWidth);
+  docPDF.addImage(img, 'png', X, Y, W, W*imgHeight/imgWidth, undefined, 'FAST'
+  );
 
 }  
 

@@ -99,38 +99,34 @@ export class TemplateComponent implements OnInit {
 
 
   createRptDoc() {
-
+    //faccio una "deep copy" (object assign farebbe una shallow copy) di rptBase in rptFile e qui lavoro
+    let rptFile = JSON.parse(JSON.stringify(rptBase)); 
     this.svcBlocchi.listByTemplate(1)
     .subscribe( blocchi => {
-      blocchi.forEach(blocco => {
-        if (blocco.tipoBlocco!.descrizione=="Testo") {
-          console.log(blocco)
-          rptBase.push({
+      for (let i = 0; i<blocchi.length; i++) {
+        if (blocchi[i].tipoBlocco!.descrizione=="Testo") {
+          rptFile.push({
             "tipo": "TextHtml",
             "alias": "html2canvas",
-            "value": "testotemp",
-            "X": blocco.x,
-            "Y": blocco.y,
-            "W": blocco.w,
-            "H": blocco.h
+            "value": blocchi[i]._BloccoTesti![0].testo,
+            "X": blocchi[i].x,
+            "Y": blocchi[i].y,
+            "W": blocchi[i].w,
+            "H": blocchi[i].h,
+            "backgroundColor": blocchi[i].color
           });
-          console.log (rptBase);
-          this.savePdf();
         }
-      })
+      }
+      console.log ("rptFile", rptFile);
+      this.savePdf(rptFile);
     })
-    
   }
 
-
-
-
-  async savePdf() {
-
+  async savePdf(rptFile: any) {
 
     //Chiamata al motore di stampa e salvataggio
-    let rpt :jsPDF  = await this._jspdf.rptFromtemplate(rptBase);
-    let retcode = this.svcFiles.saveFilePagella(rpt,222);
+    let rpt :jsPDF  = await this._jspdf.rptFromtemplate(rptFile);
+    let retcode = this.svcFiles.saveFilePagella(rpt,222);  //Codice temporaneo 222 che viene scaricato con OpenPdf
 
     if(retcode == true)
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Documento salvato in Database', panelClass: ['green-snackbar']});

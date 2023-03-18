@@ -119,9 +119,9 @@
 
                       </span>
                     <span class="ql-formats">
-                      <select class="ql-size" [title]="'Dimensione Font'" formControlName="fontSize" >
+                      <select class="ql-size" [title]="'Dimensione Font'" formControlName="fontSize" (change)="changeFontSize()">
                         <option value="10px"></option>
-                        <option selected value="12px"></option>
+                        <option value="12px"></option>
                         <option value="14px"></option>
                         <option value="16px"></option>
                         <option value="18px"></option>

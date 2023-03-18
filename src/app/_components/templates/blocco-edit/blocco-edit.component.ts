@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, ElementRef, Inject, OnInit, ViewChild }             from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild }             from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }                         from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA }    from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
@@ -169,7 +169,7 @@ export class BloccoEditComponent implements OnInit {
         borderRight:                            [],
         borderBottom:                           [],
         borderLeft:                             [],
-        fontSize:                               []
+        fontSize:                               ['12px']
       }, { validators: [tooWideValidator, tooHighValidator]});
   }
 //#endregion 
@@ -179,6 +179,7 @@ export class BloccoEditComponent implements OnInit {
   ngOnInit(): void {
     this.loadData();
   }
+
 
   loadData(){
     //console.log ("blocco-edit loadData, this.bloccoID:", this.bloccoID);
@@ -216,6 +217,30 @@ export class BloccoEditComponent implements OnInit {
 //#region ----- Operazioni CRUD ---------------
 
   save(){
+
+
+//     console.log ("a paragone con", this.editor.quillEditor.getContents());
+
+
+
+//     const quillContents = this.editor.quillEditor.getContents();
+// let spansWithFontSize = [];
+
+// quillContents.ops!.forEach((op) => {
+//   if (op.attributes && op.attributes.size) {
+//     const fontSize = op.attributes.size;
+//     const span = `<span style="font-size:${fontSize}">${op.insert}</span>`;
+//     spansWithFontSize.push(span);
+//   } else {
+//     spansWithFontSize.push(op.insert);
+//   }
+// });
+
+
+
+
+
+    //return;
     //console.log("blocco-edit - save - form blocco da salvare", this.form.value);
     if (this.tipoBloccoDesc == "Tabella") {
       //il salvataggio delle celle di una tabella viene delegato al component tableComponent
@@ -281,13 +306,16 @@ export class BloccoEditComponent implements OnInit {
       let testoObj! : TEM_BloccoTesto;
 
       if (this.bloccoTestoID) { // PUT
-
+        
         testoObj = {
           id: this.bloccoTestoID,
           bloccoID: this.bloccoID,
           testo: this.form.controls.testo.value,
           fontSize: this.form.controls.fontSize.value,
         }
+
+
+        
         this.svcBlocchiTesti.put(testoObj)
         .pipe (
           concatMap( ()=> this.svcBlocchi.put(this.form.value))
@@ -506,12 +534,11 @@ export class BloccoEditComponent implements OnInit {
     this.editor.quillEditor.insertText (this.currIndex, event.target!.value, 'bold', true);  
   }
 
-  applicaFontSize() {
-    console.log ("selezionatutt")
+
+  changeFontSize() {
     this.editor.quillEditor.setSelection(0, this.editor.quillEditor.getLength()) 
-  }
-  selezionaTutto() {
-    console.log("selezionatutto");
+    this.editor.quillEditor.format('size', this.form.controls.fontSize.value);
+    this.form.controls.testo.setValue(this.editor.quillEditor.root.innerHTML);
   }
 //#endregion
 
