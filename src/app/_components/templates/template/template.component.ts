@@ -109,10 +109,10 @@ export class TemplateComponent implements OnInit {
             "tipo": "TextHtml",
             "alias": "html2canvas",
             "value": blocco.bloccoTesto?.testo,
-            "fontName": "Arial",
             "X": blocco.x,
             "Y": blocco.y,
-            "align": "left"
+            "W": blocco.w,
+            "H": blocco.h
           });
           console.log (rptBase);
           this.savePdf();

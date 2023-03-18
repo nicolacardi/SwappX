@@ -38,14 +38,11 @@ export class BlocchiService {
   }
 
   put(formData: any): Observable <any>{
-    console.log ("put", formData);
     return this.http.put( environment.apiBaseUrl  + 'TEM_Blocchi/' + formData.id , formData);    
   }
 
   post(formData: any): Observable <any>{
     formData.id = 0;
-    console.log ("post", formData);
-
     return this.http.post( environment.apiBaseUrl  + 'TEM_Blocchi' , formData);  
   }
 

@@ -3,7 +3,8 @@ export const rptBase: any = [
 	//#########################     IMPOSTAZIONI     #########################
 	{
 		"tipo": "SheetDefault",
-		"width": 420,
+		"orientation": "p",
+		"width": 210,
 		"heigth": 297,
 		"defaultFontName": "TitilliumWeb-Regular",
 		"defaultColor":"#C04F94",
@@ -14,16 +15,7 @@ export const rptBase: any = [
 		"defaultFillColor": "#CCCCCC",
 		"defaultLineWidth": 0.1
     },
-    //questo qua sotto bisgona riuscire a costruirlo a partire dall'estrazione
-    {
-		"tipo": "Text",
-        "alias":    "Titolo",
-		"value": "Documento di Valutazione",
-		"fontName": "TitilliumWeb-SemiBold",
-		"X": 315,
-		"Y": 120,
-		"align": "center"
-    },
+
 
 
     

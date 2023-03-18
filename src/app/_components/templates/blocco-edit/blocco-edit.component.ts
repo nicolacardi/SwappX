@@ -190,7 +190,7 @@ export class BloccoEditComponent implements OnInit {
   }
 
   loadData(){
-    console.log ("blocco-edit loadData, this.bloccoID:", this.bloccoID);
+    //console.log ("blocco-edit loadData, this.bloccoID:", this.bloccoID);
     if (this.bloccoID && this.bloccoID + '' != "0") {
       const obsBlocco$: Observable<TEM_Blocco> = this.svcBlocchi.get(this.bloccoID);
       const loadBlocco$ = this._loadingService.showLoaderUntilCompleted(obsBlocco$);
@@ -198,7 +198,7 @@ export class BloccoEditComponent implements OnInit {
       .pipe(
           tap(
             blocco => {
-              console.log ("blocco edit - loadData - blocco:", blocco);
+              //console.log ("blocco edit - loadData - blocco:", blocco);
               this.tipoBloccoDesc = blocco.tipoBlocco!.descrizione;
 
               this.form.patchValue(blocco);
@@ -287,7 +287,7 @@ export class BloccoEditComponent implements OnInit {
       let testoObj! : TEM_BloccoTesto;
 
       if (this.form.controls.bloccoTestoID.value) { // PUT
-        console.log("put testo pre");
+        //console.log("blocco-edit - save - put testo pre");
 
         testoObj = {
           id: this.form.controls.bloccoTestoID.value,
@@ -299,20 +299,8 @@ export class BloccoEditComponent implements OnInit {
           concatMap( ()=> this.svcBlocchi.put(this.form.value))
         )
         .subscribe( res=> {
-          console.log("put testo");
-          this.ritorno = {
-            //tipo: this.tipoBloccoDesc,
-            operazione:"PUT TESTO",
-            // contenuto: "",
-            // bloccoSize:  {
-            //   w: this.form.controls.w.value,
-            //   h: this.form.controls.h.value
-            // },
-            // bloccoPos: {
-            //   x: this.form.controls.x.value,
-            //   y: this.form.controls.y.value
-            // }
-          }
+          //console.log("blocco-edit - save - put testo");
+          this.ritorno = { operazione:"PUT TESTO"}
             this._dialogRef.close(this.ritorno);
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
           },
@@ -334,19 +322,7 @@ export class BloccoEditComponent implements OnInit {
         .subscribe( res=> {
           console.log("post testo");
 
-          this.ritorno = {
-            //tipo: this.tipoBloccoDesc,
-            operazione: "POST TESTO",
-            // contenuto: "",
-            // bloccoSize:  {
-            //   w: this.form.controls.w.value,
-            //   h: this.form.controls.h.value
-            // },
-            // bloccoPos: {
-            //   x: this.form.controls.x.value,
-            //   y: this.form.controls.y.value
-            // }
-          }
+          this.ritorno = { operazione: "POST TESTO" }
             this._dialogRef.close(this.ritorno);
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Blocco Testo salvato', panelClass: ['green-snackbar']})
           },
@@ -361,18 +337,42 @@ export class BloccoEditComponent implements OnInit {
 
   delete() {
 
-    //serve la delete anche dei record di BlocchiFoto e BlocchiTesti correlati TODO!!!!!
-    if (this.form.controls.bloccoFoto != null) this.svcBlocchiFoto.delete(this.form.controls.bloccoFotoID.value).subscribe();
-    if (this.form.controls.bloccoTesto != null) this.svcBlocchiTesti.delete(this.form.controls.bloccoTestoID.value).subscribe();
+    //Nel caso di Testo e Immagine devo prima cancellare il blocco e poi il bloccoTesto/BloccoFoto
+    //Nel caso di tabella, viceversa, prima devo cancellare le celle e poi il blocco
+    if (this.tipoBloccoDesc == "Immagine") {
+      this.svcBlocchi.delete(this.bloccoID)
+      .pipe(
+        concatMap(() => this.svcBlocchiFoto.delete(this.form.controls.bloccoFotoID.value))
+      )
+      .subscribe(
+        res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
+          this.ritorno = {operazione: "DELETE"};
+          this._dialogRef.close(this.ritorno);
+        },
+        err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
+      );
+    };
+    if (this.tipoBloccoDesc == "Testo") {
+      console.log ("blocco-edit - delete - cancello bloccotesto n.", this.form.controls.bloccoTestoID.value);
+      this.svcBlocchi.delete(this.bloccoID)
+      .pipe(
+        concatMap(() => this.svcBlocchiTesti.delete(this.form.controls.bloccoTestoID.value))
+      )
+      .subscribe(
+        res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
+          this.ritorno = {operazione: "DELETE"};
+          this._dialogRef.close(this.ritorno);
+        },
+        err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
+      );
+    }
     if (this.tipoBloccoDesc == 'Tabella') {
       this.svcBlocchiCelle.deleteByBlocco(this.bloccoID)
       .pipe(
         concatMap(() => this.svcBlocchi.delete(this.bloccoID))
       )
-      .subscribe(res=>{
-        this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']}
-        );
-        this.ritorno = {operazione: "DELETE"}
+      .subscribe(res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
+        this.ritorno = {operazione: "DELETE"};
         this._dialogRef.close(this.ritorno);
       },
       err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})));

@@ -52,48 +52,43 @@ export class JspdfService { defaultColor!:          string;
 //#region ----- dynamicRptPagella -----
 public async rptFromtemplate(rptBase: any) : Promise<jsPDF> {
 
-    
   let pageW: number = 0;
   let pageH: number = 0;
 
-
   //Il primo elemento di rptBase DEVE essere SheetDefault
-  let element = rptBase[0]                      //  rptBase per ora è un oggetto esterno, poi sarà ciò che viene passato negli argomenti
+  let sheetDefault = rptBase[0]                      //  rptBase per ora è un oggetto esterno, poi sarà ciò che viene passato negli argomenti
   
 //#region ----- caricamento dei valori di default -----    
-  if(element.tipo != "SheetDefault"){
-    let doc : jsPDF  = new jsPDF('l', 'mm', [100 , 100]);  
+  if(sheetDefault.tipo != "SheetDefault"){
+    let doc : jsPDF  = new jsPDF('p', 'mm', [297,210]);  
     doc.text("ERRORE: manca il tag [SheetDefault] in rptBase",10, 50);
     return doc;
   }
 
-  pageW= parseInt(element.width);
-  pageH= parseInt(element.heigth);
+  pageW= parseInt(sheetDefault.width);
+  pageH= parseInt(sheetDefault.heigth);
 
-  this.defaultColor = element.defaultColor;
-  this.defaultFontSize = element.defaultFontSize;
-  this.defaultFontName = element.defaultFontName;
-  this.defaultMaxWidth = element.defaultMaxWidth;
-  this.defaultFillColor = element.defaultFillColor;
-  this.defaultLineColor = element.defaultLineColor;
-  this.defaultCellLineColor = element.defaultCellLineColor;
-  this.defaultLineWidth = element.defaultLineWidth;
-
-  let doc : jsPDF  = new jsPDF('l', 'mm', [pageW , pageH]);   //A3
-  doc.setFont('TitilliumWeb-Regular', 'normal');
+  this.defaultColor = sheetDefault.defaultColor;
+  this.defaultFontSize = sheetDefault.defaultFontSize;
+  this.defaultFontName = sheetDefault.defaultFontName;
+  this.defaultMaxWidth = sheetDefault.defaultMaxWidth;
+  this.defaultFillColor = sheetDefault.defaultFillColor;
+  this.defaultLineColor = sheetDefault.defaultLineColor;
+  this.defaultCellLineColor = sheetDefault.defaultCellLineColor;
+  this.defaultLineWidth = sheetDefault.defaultLineWidth;
+  let doc : jsPDF  = new jsPDF(sheetDefault.orientation, 'mm', [pageW , pageH]);
+  doc.setFont(sheetDefault.defaultFontName, 'normal');
 //#endregion
   
   //LA PROMISE.ALL NON SI COMPORTA COME SE CHIAMASSE TUTTE LE FUNZIONI IN MANIERA SINCRONA
   //MA SEMPLICEMENTE NON FA PROCEDERE IL CODICE OLTRE PRIMA CHE TUTTE LE SUE PROMISE (AWAITED) SIANO TERMINATE
   //MA QUESTE RESTANO SINGOLARMENTE ASINCRONE, QUINDI FINISCO IN ORDINE "SPARSO"
   //IL CICLO FOR, INVECE, INSIEME CON IL COMANDO AWAIT FUNZIONA IN MANIERA SINCRONA
-  
   //await Promise.all( rptBase.map(async (element: any) => { QUESTA LA PROMISE.ALL FALLACE     
 
 
   for (let i = 1; i < rptBase.length; i++) {
     let element = rptBase[i];
-    //console.log ("jspdf.service leggo da rptBase: element", element);
     switch(element.tipo){
       case "SheetDefault":
         break;
@@ -107,7 +102,7 @@ public async rptFromtemplate(rptBase: any) : Promise<jsPDF> {
         break;
       }
       case "TextHtml":{
-        this.addTextHtml(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align, element.maxWidth );
+       await this.addTextHtml(doc,this.parseTextValue( element.value),element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,element.fontSize, element.maxWidth );
         break;
       }
       case "TableStatica":{
@@ -142,6 +137,80 @@ public async rptFromtemplate(rptBase: any) : Promise<jsPDF> {
   }
   return doc;
 }
+
+private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, maxWidth: number  ){
+
+  if(fontName == null || fontName == "") fontName = this.defaultFontName;   //da vedere se serve
+  if(fontColor == null || fontColor == "") fontColor = this.defaultColor;   //da vedere se serve
+  if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;    //da vedere se serve
+  if(maxWidth == null || maxWidth == 0) maxWidth = this.defaultMaxWidth;    //da vedere se serve
+
+  let imgWidth = 0;
+  let imgHeight = 0;
+
+  const options = {
+    scale: 1,
+    useCORS: true,
+  };
+
+  const html = text;
+
+  //prendo il div "di servizio"
+  const tempElement = document.querySelector('#myDiv') as HTMLElement;
+  if (!tempElement) {throw new Error('necessario per sicurezza che esista');}
+  //applico al div il testo da convertire
+  tempElement!.innerHTML = html;
+  // Convert the HTML to a canvas
+  const canvas = await html2canvas(tempElement, options);
+  //estrae il png 
+  const imgData = await canvas.toDataURL('image/png')
+  
+  let img = new Image();
+  img.src = imgData;
+
+  const promise =() => new Promise ((resolve,reject) => {
+    const imgTmp = new Image();
+    imgTmp.src = imgData;
+    imgTmp.onload = () => {
+      imgWidth = imgTmp.width;
+      imgHeight = imgTmp.height;
+      // Aggiungiamo l'immagine al PDF
+      resolve("hey");
+    };
+  })
+
+  await promise();
+  console.log ("X,Y,W,H", X,Y,W,H);
+  this.addRect(docPDF,X,Y,W, W/imgWidth*imgHeight,'#110000', 0.5, 0);
+  docPDF.addImage(img, 'png', X, Y, W, W/imgWidth*imgHeight, undefined,'FAST');
+
+}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   //questa è la routine BASE che viene chiamata dai report che si appoggiano al file rptPagella.ts
   public async dynamicRptPagella(objPagella: DOC_Pagella, lstPagellaVoti: DOC_PagellaVoto[]) : Promise<jsPDF> {
@@ -189,11 +258,15 @@ public async rptFromtemplate(rptBase: any) : Promise<jsPDF> {
 
 
     for (let i = 1; i < rptPagella.length; i++) {
+      console.log ("i", i);
+
       let element = rptPagella[i];
       switch(element.tipo){
         case "SheetDefault":
           break;
         case "Image":{
+          console.log ("element.tipo Image");
+
           const ImageUrl = "./assets/photos/" + element.value;
           await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
           break;
@@ -845,74 +918,10 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
     //console.log("dimensioni testo: ", dim);
   }  
 
-
-  private async getImageDataFromHtml(html: string): Promise<string> {
-    const options = {
-      scale: 1,
-      useCORS: true,
-    };
   
-
-    //prendo il div "di servizio"
-    const tempElement = document.querySelector('#myDiv') as HTMLElement;
-    if (!tempElement) {throw new Error('necessario per sicurezza che esista');}
-    //applico al div il testo da convertire
-    tempElement!.innerHTML = html;
-  
-    // Convert the HTML to a canvas
-    const canvas = await html2canvas(tempElement, options);
-  
-    // Return the image data as a Promise
-    return canvas.toDataURL('image/png');
-  }
-
-
-  private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, align: any, maxWidth: number  ){
-  //  try { 
-    if(fontName == null || fontName == "") fontName = this.defaultFontName;
-    if(fontColor == null || fontColor == "") fontColor = this.defaultColor;
-    if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;
-    if(maxWidth == null || maxWidth == 0) maxWidth = this.defaultMaxWidth;
-
-    let imgWidth = 0;
-    let imgHeight = 0;
-
-        const options = {
-      scale: 1,
-      useCORS: true,
-    };
-
-    const html = text;
-
-    const imgData = await this.getImageDataFromHtml(html);
-
-    // const canvas = await html2canvas(tempElement, options);
-
-    // Creiamo una nuova immagine a partire dal canvas ottenuto
-    //const imgData = canvas.toDataURL('image/png');
-    
-    
-    
-    const imgTmp = new Image();
-    imgTmp.src = imgData;
-    imgTmp.onload = () => {
-      imgWidth = imgTmp.width;
-      imgHeight = imgTmp.height;
-      console.log ("qui l'immagine ce l'ho!", imgTmp);
-      // Aggiungiamo l'immagine al PDF
-      docPDF.addImage(imgTmp, 'png', X, Y, 100, 30, undefined,'FAST');
-    };
-
-  // } catch (error:any) {
-  //   console.log("Errore durante l'aggiunta del testo HTML: ", error);
-  // }
-
-    
-
-  }  
 
   private async addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
-
+    console.log ("addImage");
     let imgWidth = 0;
     let imgHeight = 0;
 
@@ -938,6 +947,7 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
     });
 
     await loadImage(ImageUrl);
+    console.log ("img", img);
     docPDF.addImage(img, 'png', parseFloat(x), parseFloat(y), parseFloat(w), parseFloat(w)*(imgHeight/imgWidth), undefined,'FAST');
   }
 
@@ -950,19 +960,19 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
     docPDF.line(parseFloat(X1),parseFloat(Y1),parseFloat(X2),parseFloat(Y2));
   }
 
-  private async addRect(docPDF: jsPDF, X1: string, Y1: string, W: string, H: string, lineColor:string, lineWidth: string, borderRadius: string  ){
+  private async addRect(docPDF: jsPDF, X1: number, Y1: number, W: number, H: number, lineColor:string, lineWidth: number, borderRadius: number  ){
 
-    if(lineColor == null || lineColor == "") lineColor = this.defaultLineColor;
+    if(lineColor == null || lineColor == '') lineColor = this.defaultLineColor;
 
     docPDF.setDrawColor(lineColor);
-    docPDF.setLineWidth (parseFloat( lineWidth));
+    docPDF.setLineWidth (lineWidth);
     let rx: number=0;
-    if(borderRadius != '' && parseFloat(borderRadius)> 0){
-      rx=parseFloat( borderRadius);
-      docPDF.roundedRect(parseFloat(X1),parseFloat(Y1),parseFloat(W),parseFloat(H), rx, rx );
+    if(borderRadius != null && borderRadius> 0){
+      rx=borderRadius;
+      docPDF.roundedRect(X1,Y1,W,H, rx, rx );
     }
     else
-      docPDF.rect(parseFloat(X1),parseFloat(Y1),parseFloat(W),parseFloat(H) );
+      docPDF.rect(X1,Y1,W,H );
   }
 
 //#endregion
