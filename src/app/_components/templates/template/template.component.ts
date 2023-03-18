@@ -113,7 +113,8 @@ export class TemplateComponent implements OnInit {
             "Y": blocchi[i].y,
             "W": blocchi[i].w,
             "H": blocchi[i].h,
-            "backgroundColor": blocchi[i].color
+            "backgroundColor": blocchi[i].color,
+            "fontSize": blocchi[i]._BloccoTesti![0].fontSize
           });
         }
       }

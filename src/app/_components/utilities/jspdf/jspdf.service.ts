@@ -185,6 +185,41 @@ private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, W: 
 
 
   tempElement!.innerHTML = html;
+
+  
+
+
+
+
+  
+
+
+  // Define the new font size
+  const newFontSize = (fontSize); //va estratto il numero da moltiplicare per 5.91??
+  console.log ("newFontSize", newFontSize);
+  // Define a recursive function to update the font size of each node
+  function updateFontSize(node:any) {
+    // Update the font size of the current node
+    node.style.fontSize = newFontSize;
+  
+    // Recursively update the font size of each child node
+    const children = node.children;
+    for (let i = 0; i < children.length; i++) {
+      updateFontSize(children[i]);
+    }
+  }
+  // Call the function to update the font size of the entire hierarchy
+  updateFontSize(tempElement);
+
+
+
+
+
+
+
+
+
+
   // Converto l'HTML a canvas
   const canvas = await html2canvas(tempElement, options);
   //estraggo il png dal canvas
