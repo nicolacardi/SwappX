@@ -19,19 +19,18 @@ import 'quill-mention'
 //components
 import { TableComponent }                       from '../table/table.component';
 
-
 //services
 import { BlocchiService }                       from '../blocchi.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { BlocchiFotoService }                   from '../blocchifoto.service';
 import { BlocchiTestiService }                  from '../blocchitesti.service';
+import { BlocchiCelleService }                  from '../blocchicelle.service';
 
 //models
 import { A4 }                                   from 'src/environments/environment';
 import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
 import { TEM_BloccoFoto }                       from 'src/app/_models/TEM_BloccoFoto';
 import { TEM_BloccoTesto }                      from 'src/app/_models/TEM_BloccoTesto';
-import { BlocchiCelleService } from '../blocchicelle.service';
 
 //#endregion
 @Component({
@@ -65,7 +64,12 @@ export class BloccoEditComponent implements OnInit {
   public customOptions = [{
     import: 'attributors/style/size',
     whitelist: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px']
-  }];
+  },
+  // {
+  //   import: 'attributors/style/font',
+  //   whitelist: ['sans-serif', 'Serif', 'Monospace']
+  // }
+];
 
   modules = {
     mention: {
@@ -163,7 +167,7 @@ export class BloccoEditComponent implements OnInit {
         h:                                      [0],
         color:                                  [''],
         testo:                                  [''],
-        ckFill:                                 [],
+        ckTrasp:                                [true],
         tipoBloccoID:                           [0],
         borderTop:                              [],
         borderRight:                            [],
@@ -177,6 +181,7 @@ export class BloccoEditComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit(): void {
+
     this.loadData();
   }
 
@@ -190,18 +195,20 @@ export class BloccoEditComponent implements OnInit {
       .pipe(
           tap(
             blocco => {
+              console.log ("blocco-edit loadData, blocco", blocco);
+
               this.tipoBloccoDesc = blocco.tipoBlocco!.descrizione;
               this.form.patchValue(blocco);
 
-              if (this.tipoBloccoDesc == "Immagine") {
+              if (this.tipoBloccoDesc == "Image") {
                 this.imgFile = blocco._BloccoFoto![0].foto; 
                 this.imgSize.h = blocco._BloccoFoto![0].h;
                 this.imgSize.w = blocco._BloccoFoto![0].w;
                 this.bloccoFotoID = blocco._BloccoFoto![0].id!
               }
-              if (this.tipoBloccoDesc == "Testo") {
+              if (this.tipoBloccoDesc == "Text") {
                 this.form.controls.testo.setValue(blocco._BloccoTesti![0].testo);
-                this.form.controls.fontSize.setValue(blocco._BloccoTesti![0].fontSize);
+                this.form.controls.fontSize.setValue(blocco._BloccoTesti![0].fontSize+'px');
                 this.bloccoTestoID = blocco._BloccoTesti![0].id!
 
               }
@@ -220,9 +227,6 @@ export class BloccoEditComponent implements OnInit {
 
 
 //     console.log ("a paragone con", this.editor.quillEditor.getContents());
-
-
-
 //     const quillContents = this.editor.quillEditor.getContents();
 // let spansWithFontSize = [];
 
@@ -237,23 +241,54 @@ export class BloccoEditComponent implements OnInit {
 // });
 
 
-
-
-
     //return;
     //console.log("blocco-edit - save - form blocco da salvare", this.form.value);
-    if (this.tipoBloccoDesc == "Tabella") {
-      //il salvataggio delle celle di una tabella viene delegato al component tableComponent
-      this.TableComponent.save()
-      .subscribe(() => {
-        this.ritorno = {operazione: "SAVE TABELLA"}
-        this._dialogRef.close(this.ritorno);
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Blocco Tabella salvato', panelClass: ['green-snackbar']})
+    if (this.tipoBloccoDesc == "Text") {     //********* caso blocco di Testo *******************
+      let testoObj! : TEM_BloccoTesto;
+
+      if (this.bloccoTestoID) { // PUT
+        testoObj = {
+          id: this.bloccoTestoID,
+          bloccoID: this.bloccoID,
+          testo: this.form.controls.testo.value,
+          fontSize: this.form.controls.fontSize.value.substring(0, this.form.controls.fontSize.value.length -2)
         }
-      )
+
+        this.svcBlocchiTesti.put(testoObj)
+        .pipe (
+          concatMap( ()=> this.svcBlocchi.put(this.form.value))
+        )
+        .subscribe( res=> {
+          this.ritorno = { operazione:"PUT TESTO"}
+            this._dialogRef.close(this.ritorno);
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
+          },
+          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        )
+      } else {            
+        // POST
+        testoObj = {
+          bloccoID: this.bloccoID,
+          testo: this.form.controls.testo.value,
+          fontSize: this.form.controls.fontSize.value.substring(0, this.form.controls.fontSize.value.length -2)
+        }
+        this.svcBlocchiTesti.post(testoObj)
+        .pipe (
+          tap(bloccoTesto=> {this.form.controls.bloccoTestoID.setValue(bloccoTesto.id)}),
+          concatMap( ()=> this.svcBlocchi.put(this.form.value))
+        )
+        .subscribe( res=> {
+
+          this.ritorno = { operazione: "POST TESTO" }
+            this._dialogRef.close(this.ritorno);
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Blocco Testo salvato', panelClass: ['green-snackbar']})
+          },
+          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        )
+      }
     }
 
-    if (this.tipoBloccoDesc == "Immagine" && this.immagineDOM != undefined) {  //********* caso blocco di Foto  *******************
+    if (this.tipoBloccoDesc == "Image" && this.immagineDOM != undefined) {  //********* caso blocco di Foto  *******************
 
       if (this.bloccoFotoID) {  // PUT
         let fotoObj : TEM_BloccoFoto = {
@@ -301,55 +336,20 @@ export class BloccoEditComponent implements OnInit {
         
       }
     } 
-    
-    if (this.tipoBloccoDesc == "Testo") {     //********* caso blocco di Testo *******************
-      let testoObj! : TEM_BloccoTesto;
 
-      if (this.bloccoTestoID) { // PUT
-        
-        testoObj = {
-          id: this.bloccoTestoID,
-          bloccoID: this.bloccoID,
-          testo: this.form.controls.testo.value,
-          fontSize: this.form.controls.fontSize.value,
+    if (this.tipoBloccoDesc == "Table") {
+      //il salvataggio delle celle di una tabella viene delegato al component tableComponent
+      this.TableComponent.save()
+      .subscribe(() => {
+        this.ritorno = {operazione: "SAVE TABELLA"}
+        this._dialogRef.close(this.ritorno);
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Blocco Tabella salvato', panelClass: ['green-snackbar']})
         }
-
-
-        
-        this.svcBlocchiTesti.put(testoObj)
-        .pipe (
-          concatMap( ()=> this.svcBlocchi.put(this.form.value))
-        )
-        .subscribe( res=> {
-          this.ritorno = { operazione:"PUT TESTO"}
-            this._dialogRef.close(this.ritorno);
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
-          },
-          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
-      } else {            
-        // POST
-        testoObj = {
-          bloccoID: this.bloccoID,
-          testo: this.form.controls.testo.value,
-          fontSize: this.form.controls.fontSize.value
-        }
-        this.svcBlocchiTesti.post(testoObj)
-        .pipe (
-          tap(bloccoTesto=> {this.form.controls.bloccoTestoID.setValue(bloccoTesto.id)}),
-          concatMap( ()=> this.svcBlocchi.put(this.form.value))
-        )
-        .subscribe( res=> {
-
-          this.ritorno = { operazione: "POST TESTO" }
-            this._dialogRef.close(this.ritorno);
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Blocco Testo salvato', panelClass: ['green-snackbar']})
-          },
-          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
-      }
+      )
     }
 
+
+    
 
 
   }
@@ -357,7 +357,7 @@ export class BloccoEditComponent implements OnInit {
   delete() {
 
 
-    if (this.tipoBloccoDesc == "Immagine") {
+    if (this.tipoBloccoDesc == "Image") {
       this.svcBlocchiFoto.deleteByBlocco(this.bloccoID)
       .pipe(
         concatMap(() => this.svcBlocchi.delete(this.bloccoID))
@@ -370,7 +370,7 @@ export class BloccoEditComponent implements OnInit {
         err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
       );
     };
-    if (this.tipoBloccoDesc == "Testo") {
+    if (this.tipoBloccoDesc == "Text") {
       this.svcBlocchiTesti.deleteByBlocco(this.bloccoID)
       .pipe(
         concatMap(() => this.svcBlocchi.delete(this.bloccoID))
@@ -383,7 +383,7 @@ export class BloccoEditComponent implements OnInit {
         err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
       );
     }
-    if (this.tipoBloccoDesc == 'Tabella') {
+    if (this.tipoBloccoDesc == "Table") {
       this.svcBlocchiCelle.deleteByBlocco(this.bloccoID)
       .pipe(
         concatMap(() => this.svcBlocchi.delete(this.bloccoID))
@@ -482,6 +482,7 @@ export class BloccoEditComponent implements OnInit {
   setTrasparenza(value: any) {
     //console.log(value.checked);
     if (value.checked) {this.form.controls.color.setValue("")}
+    if (!value.checked) {this.form.controls.color.setValue("#FFFFFF")}
   }
 
   bordersChange (event: any){

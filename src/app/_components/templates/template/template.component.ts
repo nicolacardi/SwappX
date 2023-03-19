@@ -104,7 +104,7 @@ export class TemplateComponent implements OnInit {
     this.svcBlocchi.listByTemplate(1)
     .subscribe( blocchi => {
       for (let i = 0; i<blocchi.length; i++) {
-        if (blocchi[i].tipoBlocco!.descrizione=="Testo") {
+        if (blocchi[i].tipoBlocco!.descrizione=="Text") {
           rptFile.push({
             "tipo": "TextHtml",
             "alias": "html2canvas",
@@ -115,6 +115,19 @@ export class TemplateComponent implements OnInit {
             "H": blocchi[i].h,
             "backgroundColor": blocchi[i].color,
             "fontSize": blocchi[i]._BloccoTesti![0].fontSize
+          });
+        }
+        if (blocchi[i].tipoBlocco!.descrizione=="Image") {
+          rptFile.push({
+            "tipo": "ImageBase64",
+            "alias": "...",
+            "value": blocchi[i]._BloccoFoto![0].foto,
+            "X": blocchi[i].x,
+            "Y": blocchi[i].y,
+            "W": blocchi[i].w,
+            "H": blocchi[i].h,
+            "backgroundColor": blocchi[i].color,
+            // "fontSize": blocchi[i]._BloccoTesti![0].fontSize
           });
         }
       }

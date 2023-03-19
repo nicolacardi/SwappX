@@ -5,9 +5,9 @@
 <!--#region ************ BOTTONI ********************-->
             <div class="center">
 
-                <img *ngIf="tipoBloccoDesc == 'Testo'" class="iconaMenuBig" src="./assets/blocco_edit_testo_T.svg">
-                <img *ngIf="tipoBloccoDesc == 'Tabella'" class="iconaMenuBig" src="./assets/blocco_edit_tabella_T.svg">
-                <img *ngIf="tipoBloccoDesc == 'Immagine'" class="iconaMenuBig" src="./assets/blocco_edit_immagine_T.svg">
+                <img *ngIf="tipoBloccoDesc == 'Text'" class="iconaMenuBig" src="./assets/blocco_edit_testo_T.svg">
+                <img *ngIf="tipoBloccoDesc == 'Table'" class="iconaMenuBig" src="./assets/blocco_edit_tabella_T.svg">
+                <img *ngIf="tipoBloccoDesc == 'Image'" class="iconaMenuBig" src="./assets/blocco_edit_immagine_T.svg">
 
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
@@ -81,7 +81,7 @@
 
 <!--#region ************ QUILL x Testo **************-->
 
-            <quill-editor *ngIf="tipoBloccoDesc == 'Testo'"
+            <quill-editor *ngIf="tipoBloccoDesc == 'Text'"
                 (onSelectionChanged)="onSelectionChanged($event)"
                 placeholder="Inserire il proprio testo..."
                 formControlName="testo"
@@ -103,6 +103,9 @@
                     </select> -->
                     <span class="ql-formats">
                         <select class="ql-font" [title]="'Carattere'">
+                            <!-- <option value="Titillium Web"></option>
+                            <option value="Serif"></option>
+                            <option value="Monospace"></option> -->
                         </select>
                     </span>
 
@@ -153,16 +156,16 @@
 <!--#endregion-->
 
 <!--#region ************ Riempimento e Bordi x Testo -->
-            <mat-grid-list *ngIf="tipoBloccoDesc == 'Testo'" class=" _cell-bordered mt10" [cols]="4" rowHeight="60px">
+            <mat-grid-list *ngIf="tipoBloccoDesc == 'Text'" class=" _cell-bordered mt10" [cols]="4" rowHeight="60px">
 
                 <mat-grid-tile>
                     <mat-label>Trasparenza: </mat-label>
 
-                    <mat-checkbox color="primary" formControlName="ckFill" (change)="setTrasparenza($event)">
+                    <mat-checkbox color="primary" formControlName="ckTrasp" (change)="setTrasparenza($event)">
                     </mat-checkbox>
                 </mat-grid-tile>
 
-                <mat-grid-tile *ngIf="tipoBloccoDesc == 'Testo'" [ngClass]="{'invisible': form.controls.ckFill.value}">
+                <mat-grid-tile *ngIf="tipoBloccoDesc == 'Text'" [ngClass]="{'invisible': form.controls.ckTrasp.value}">
 
                     <button type="button" class="_btnColorPicker" 
                     (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
@@ -181,14 +184,14 @@
 
 <!--#region ************ Immagine *******************-->
 
-            <div *ngIf="tipoBloccoDesc == 'Immagine'" class="flex-container form-group mt20 ">
+            <div *ngIf="tipoBloccoDesc == 'Image'" class="flex-container form-group mt20 ">
                 <div class="form-group">
                     <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" formControlName="file" (change)="onImageChange($event)"hidden #selectFile>
                     <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile.click()" >Seleziona Immagine</button>
                 </div>
             </div>
             
-            <div *ngIf="tipoBloccoDesc == 'Immagine'" class=" ma-lr mt20" >
+            <div *ngIf="tipoBloccoDesc == 'Image'" class=" ma-lr mt20" >
                 <img  
                     *ngIf="imgFile" 
                     style="max-width: 250px; max-height: 250px;"
@@ -202,7 +205,7 @@
 <!--#region ************ TABLE **********************-->
             <div> 
                 <app-table 
-                    *ngIf="tipoBloccoDesc == 'Tabella'"
+                    *ngIf="tipoBloccoDesc == 'Table'"
                     [bloccoID] = "bloccoID"
                     [wBlocco] = "w.value"
                     [hBlocco] = "h.value"

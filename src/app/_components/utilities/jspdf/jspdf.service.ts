@@ -103,43 +103,47 @@ public async rptFromtemplate(rptBase: any) : Promise<jsPDF> {
     switch(element.tipo){
       case "SheetDefault":
         break;
-      case "Image":{
-        const ImageUrl = "./assets/photos/" + element.value;
-        await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
+      // case "Image":{
+      //   const ImageUrl = "./assets/photos/" + element.value;
+      //   await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
+      //   break;
+      // }
+      case "ImageBase64":{
+        doc.addImage(element.value, 'png', element.X, element.Y, element.W, element.H, undefined,'FAST');
         break;
       }
-      case "Text":{
-        this.addText(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align, element.maxWidth );
-        break;
-      }
+      // case "Text":{
+      //   this.addText(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align, element.maxWidth );
+      //   break;
+      // }
       case "TextHtml":{
        await this.addTextHtml(doc,this.parseTextValue( element.value),element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,element.fontSize, element.maxWidth, element.backgroundColor );
         break;
       }
-      case "TableStatica":{
-        this.addTableStatica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge ,element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
-        break;
-      }
-      case "TableDinamica":{
-        this.addTableDinamica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge, element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
-        break;
-      }
-      case "TableDinamicaPagella":{
-        this.addTableDinamicaPagella(doc, element);
-        break;
-      }
-      case "Line":{
-        this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
-        break;
-      }
-      case "Rect":{
-        this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
-        break;
-      }
-      case "Page":{
-        doc.addPage()
-        break;
-      }
+      // case "TableStatica":{
+      //   this.addTableStatica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge ,element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
+      //   break;
+      // }
+      // case "TableDinamica":{
+      //   this.addTableDinamica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge, element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
+      //   break;
+      // }
+      // case "TableDinamicaPagella":{
+      //   this.addTableDinamicaPagella(doc, element);
+      //   break;
+      // }
+      // case "Line":{
+      //   this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
+      //   break;
+      // }
+      // case "Rect":{
+      //   this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
+      //   break;
+      // }
+      // case "Page":{
+      //   doc.addPage()
+      //   break;
+      // }
       default:{
         this.addText(doc,"[## WRONG TAG ##]",element.X,element.Y,"TitilliumWeb-SemiBold","normal",'#FF0000',24, element.align, element.maxWidth );
         break;
@@ -182,9 +186,7 @@ private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, W: 
   tempElement!.style.width = (W*5.91)+"px"; //senza questo è tutto troppo piccolo
 
   //ora dovrei estrarre font-size: --px e sostituirlo con font-size che desidero...o no?
-
-
-  tempElement!.innerHTML = html;
+  tempElement!.innerHTML = '<div style="margin-left: 10px; margin-right: 10px"><p style="padding-top: 10px; padding-bottom: 10px;">'+html+'<p></div>';
 
   
 
@@ -192,17 +194,15 @@ private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, W: 
 
 
   
-
-
+  console.log ("tempElement prima di cambio font", tempElement);
   // Define the new font size
   const newFontSize = (fontSize); //va estratto il numero da moltiplicare per 5.91??
   console.log ("newFontSize", newFontSize);
   // Define a recursive function to update the font size of each node
   function updateFontSize(node:any) {
-    // Update the font size of the current node
-    node.style.fontSize = newFontSize;
-  
-    // Recursively update the font size of each child node
+    node.style.fontSize = newFontSize*2.25+'px';
+    node.style.lineHeight = '1.2em';
+
     const children = node.children;
     for (let i = 0; i < children.length; i++) {
       updateFontSize(children[i]);
@@ -210,15 +210,7 @@ private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, W: 
   }
   // Call the function to update the font size of the entire hierarchy
   updateFontSize(tempElement);
-
-
-
-
-
-
-
-
-
+  console.log ("tempElement dopo cambio font", tempElement);
 
   // Converto l'HTML a canvas
   const canvas = await html2canvas(tempElement, options);
@@ -257,6 +249,10 @@ private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, W: 
   );
 
 }  
+
+private async addImageBase64(docPDF: jsPDF, Image: string, x: number, y: number,w: number, h: number ) {
+  docPDF.addImage(Image, 'png', x, y, w, h, undefined,'FAST');
+}
 
 
 

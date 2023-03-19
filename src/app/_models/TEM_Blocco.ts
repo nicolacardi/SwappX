@@ -12,7 +12,7 @@ export interface TEM_Blocco {
         w:                                      number;
         h:                                      number;
 
-        ckFill?:                                 boolean;
+        ckTrasp?:                                 boolean;
         color?:                                 string;
 
         borderTop:                              boolean;
@@ -24,13 +24,6 @@ export interface TEM_Blocco {
         tipoBloccoID:                           number;
 
         tipoBlocco?:                            TEM_TipoBlocco;
-
-        // bloccoFotoID?:                          number;
-
-        // bloccoTestoID?:                         number;
-
-        // bloccoFoto?:                            TEM_BloccoFoto;
-        // bloccoTesto?:                           TEM_BloccoTesto;
 
         _BloccoTesti?:                           TEM_BloccoTesto[];
         _BloccoFoto?:                            TEM_BloccoFoto[];

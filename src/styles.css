@@ -1783,7 +1783,8 @@ div.inner img {
 
 
 
-/* QUILL: NON CAPISCO PERCHE' MA VA SCRITTO QUI: IN TEMPLATE.CSS NON FUNZIONA */
+/* QUILL: NON CHIARO PERCHE' MA VADA SCRITTO QUI: IN TEMPLATE.CSS NON FUNZIONA */
+
 
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
@@ -1842,25 +1843,11 @@ div.inner img {
   content: "24px";
 }
 
-.ql-picker.ql-placeholder {
-width: 118px;
-}
-
-.ql-picker.ql-placeholder > span.ql-picker-label::before {
-content: 'Placeholders';
-}
-
-.ql-picker.ql-placeholder > span.ql-picker-options > span.ql-picker-item::before {
-content: attr(data-label);
-}
-
-.ql-custom .ql-picker-item:before {
-    content: attr(data-label);
-  }
-
-
-
-
+/* non so se servano quelle che seguono*/
+/* .ql-picker.ql-placeholder {width: 118px;}
+.ql-picker.ql-placeholder > span.ql-picker-label::before {content: 'Placeholders';} 
+.ql-picker.ql-placeholder > span.ql-picker-options > span.ql-picker-item::before {content: attr(data-label);}
+.ql-custom .ql-picker-item:before {content: attr(data-label);} */
 
 
 /* ****quill mention */
@@ -1919,4 +1906,6 @@ content: attr(data-label);
   .mention > span {
     margin: 0 3px;
   }
+  
+  
   

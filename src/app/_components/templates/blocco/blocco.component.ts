@@ -40,7 +40,7 @@ export class BloccoComponent implements OnInit {
   public top!:                                  number;
   public color!:                                string;
   public tipoBloccoID!:                         number;
-  public ckFill!:                               boolean;
+  public ckTrasp!:                               boolean;
   public testo!:                                string;
   public fontSizeN:                             number = 1;
   private oldZoom:                              number = 1;
@@ -103,7 +103,7 @@ export class BloccoComponent implements OnInit {
     this.classTipo = "tipo"+this.tipoBloccoID; 
     
     if (this.blocco._BloccoTesti![0]) this.testo = this.blocco._BloccoTesti![0]?.testo;
-    if (this.blocco._BloccoTesti![0]) this.fontSizeN = parseInt(this.blocco._BloccoTesti![0]?.fontSize.substring(0, this.blocco._BloccoTesti![0]?.fontSize.length - 2));
+    if (this.blocco._BloccoTesti![0]) this.fontSizeN = this.blocco._BloccoTesti![0]?.fontSize;
 
 
     this.storeCurrPosSize()
@@ -352,7 +352,7 @@ export class BloccoComponent implements OnInit {
       w: Math.floor(this.width/this.zoom),
       h: Math.floor(this.height/this.zoom),
       color: this.blocco.color!,
-      ckFill: this.blocco.ckFill,
+      ckTrasp: this.blocco.ckTrasp,
       tipoBloccoID: this.blocco.tipoBloccoID,
       borderTop: this.blocco.borderTop,
       borderRight: this.blocco.borderRight,

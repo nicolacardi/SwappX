@@ -143,10 +143,7 @@
 }
 
 
-
-
-
-
+/* 
 .example-box {
     width: 200px;
     height: 200px;
@@ -181,7 +178,7 @@
     height: 400px;
     max-width: 100%;
     border: dotted #ccc 2px;
-  }
+  } */
 
 
   .ql-editor {
@@ -190,10 +187,10 @@
 
 
 
-  /* QUESTO FUNZIONA MA IL SUCCESSIVO NO, PERCHE? */
-  /* :host::ng-deep .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {  
-    font-size: 17px;
-  } */
+/* QUESTO FUNZIONA MA IL SUCCESSIVO NO, PERCHE? */
+/* :host::ng-deep .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {  
+  font-size: 17px;
+} */
 
   /* :host::ng-deep .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=small]::before,
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {
@@ -204,7 +201,6 @@ table {
   table-layout: fixed;
   border-collapse: collapse;
 }
-
 
 :host ::ng-deep .resize-bar-v {
   position: absolute;
@@ -234,35 +230,30 @@ td, th{
 padding: 0px;
 }
 
-
 :host ::ng-deep .ql-editor {
-
   padding: 5px !important;
-  /* z-index: 10000; */
 }
-
 
 :host ::ng-deep .ql-bubble {
-
   position: relative !important;
-  /* z-index: 10000; */
 }
 :host ::ng-deep .ql-tooltip {
-
-   
   position: absolute;
-  /* left: 0px !important; */
-
-
 }
 
 :host ::ng-deep .ql-bubble .ql-tooltip {
   border-radius: 0px;
 }
 
-:host ::ng-deep .ql-bubble .ql-tooltip-arrow {
+/* :host ::ng-deep .ql-bubble .ql-tooltip-arrow {} */
 
+
+:host ::ng-deep .blocco .ql-editor >* {
+  cursor: all-scroll
 }
+
+
+
 
 
 

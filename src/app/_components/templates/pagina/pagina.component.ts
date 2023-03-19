@@ -47,7 +47,7 @@ export class PaginaComponent implements OnInit {
   defaultBloccoTesto: TEM_BloccoTesto = {
     bloccoID: 0,
     testo: '',
-    fontSize: '12px'
+    fontSize: 12
   }
 
   defaultBloccoFoto: TEM_BloccoFoto = {
@@ -132,7 +132,7 @@ export class PaginaComponent implements OnInit {
       y: 10,
       w: 95,
       h: 50,
-      ckFill: false,
+      ckTrasp: true,
       tipoBloccoID: tipoBloccoID,
       borderTop: false,
       borderRight: false,
