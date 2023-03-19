@@ -11,7 +11,7 @@
     <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/add_block_picture.svg">
 </button>
 
-<div class="_pos-relative" style="margin: auto; width: 420px; height: 594px; background-color: white" 
+<div class="_pos-relative" style=" margin: auto; width: 420px; height: 594px; background-color: white" 
 
         [ngStyle]=
             "{
@@ -20,32 +20,32 @@
             }"
         >
 
-<div *ngIf="magnete">
-    <div class="_pos-absolute h100 _border-left-dot" [ngStyle]="{'left': 10*zoom+'px'}">
-    </div>
-    <div class="_pos-absolute h100 _border-left-dot" [ngStyle]="{'left': 200*zoom+'px'}">
-    </div>
-    <div class="_pos-absolute w100 _border-top-dot" [ngStyle]="{'top': 10*zoom+'px'}">
-    </div>
-    <div class="_pos-absolute w100 _border-top-dot" [ngStyle]="{'top': 287*zoom+'px'}">
-    </div>
-    <div class="_pos-absolute w10 _border-top-dot l0" [ngStyle]="{'top': 148.5*zoom+'px'}">
-    </div>
-    <div class="_pos-absolute w10 _border-top-dot r0" [ngStyle]="{'top': 148.5*zoom+'px'}">
-    </div>
-    <div class="_pos-absolute h10 _border-left-dot t0" [ngStyle]="{'left': 105*zoom+'px'}">
-    </div>
-    <div class="_pos-absolute h10 _border-left-dot b0" [ngStyle]="{'left': 105*zoom+'px'}">
-    </div>
-</div>
-
-<div *ngIf="griglia">
-    <div *ngFor="let n of nLineeVert" class="_pos-absolute h100 _border-left-dot" [ngStyle]="{'left': n*10*zoom+'px'}">
+    <div *ngIf="magnete">
+        <div class="_pos-absolute h100 _border-left-dot" [ngStyle]="{'left': 10*zoom+'px'}">
+        </div>
+        <div class="_pos-absolute h100 _border-left-dot" [ngStyle]="{'left': 200*zoom+'px'}">
+        </div>
+        <div class="_pos-absolute w100 _border-top-dot" [ngStyle]="{'top': 10*zoom+'px'}">
+        </div>
+        <div class="_pos-absolute w100 _border-top-dot" [ngStyle]="{'top': 287*zoom+'px'}">
+        </div>
+        <div class="_pos-absolute w10 _border-top-dot l0" [ngStyle]="{'top': 148.5*zoom+'px'}">
+        </div>
+        <div class="_pos-absolute w10 _border-top-dot r0" [ngStyle]="{'top': 148.5*zoom+'px'}">
+        </div>
+        <div class="_pos-absolute h10 _border-left-dot t0" [ngStyle]="{'left': 105*zoom+'px'}">
+        </div>
+        <div class="_pos-absolute h10 _border-left-dot b0" [ngStyle]="{'left': 105*zoom+'px'}">
+        </div>
     </div>
 
-    <div *ngFor="let n of nLineeHor" class="_pos-absolute w100 _border-top-dot" [ngStyle]="{'top': n*10*zoom+'px'}">
+    <div *ngIf="griglia">
+        <div *ngFor="let n of nLineeVert" class="_pos-absolute h100 _border-left-dot" [ngStyle]="{'left': n*10*zoom+'px'}">
+        </div>
+
+        <div *ngFor="let n of nLineeHor" class="_pos-absolute w100 _border-top-dot" [ngStyle]="{'top': n*10*zoom+'px'}">
+        </div>
     </div>
-</div>
     <div class="_pos-absolute">
         <div *ngFor="let element of blocchiArr" class="_pos-absolute" #Blocchi>
             <app-blocco

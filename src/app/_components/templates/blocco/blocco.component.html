@@ -5,7 +5,8 @@
 <div 
     #box class="resizable-draggable" 
     [style.width.px]="width"
-    [style.height.px]="height" 
+    [style.height.px]="height"
+    
     [style.background-color] = "blocco.ckTrasp? 'none': blocco.color"
     
     [ngStyle]="{'border-top': blocco.borderTop? 'solid 1px grey':'none', 'border-right': blocco.borderRight? 'solid 1px grey':'none', 'border-bottom': blocco.borderBottom? 'solid 1px grey':'none', 'border-left': blocco.borderLeft? 'solid 1px grey':'none'}"
@@ -20,11 +21,12 @@
 
 <!--La dimensione del font va adattata al livello di zoom...c'è però un fattore di adattamento ulteriore...perchè cambiando zoom cambiano gli a capo-->
 <!-- style="word-break: break-all; " -->
+<!-- [style.font-size.px]="fontSizeN*zoom/2.6"   -->
 
 <div class="blocco ql-container ql-snow" style="border-width: 0;" *ngIf="blocco.tipoBlocco!.descrizione == 'Text'">
     <div class="ql-editor"  
         style="word-break: normal;"
-        [style.font-size.px]="fontSizeN*zoom/2.6"  
+        [style.font-size.px]="fontSizeN"  
         [innerHTML] ="blocco._BloccoTesti? blocco._BloccoTesti[0].testo: ''"
         >
     </div>

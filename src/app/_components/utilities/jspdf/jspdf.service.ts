@@ -109,7 +109,7 @@ public async rptFromtemplate(rptBase: any) : Promise<jsPDF> {
       //   break;
       // }
       case "ImageBase64":{
-        doc.addImage(element.value, 'png', element.X, element.Y, element.W, element.H, undefined,'FAST');
+        await this.addImageBase64(doc, element.value, element.X ,element.Y, element.W, element.H);
         break;
       }
       // case "Text":{
@@ -240,18 +240,50 @@ private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, W: 
   docPDF.setDrawColor("222222");
   docPDF.setLineWidth (0.3);
   docPDF.rect(X,Y,W, H, 'F');
-
-
-  // docPDF.setLineWidth (0.8);
-
-  // docPDF.rect(X,Y,W, W*imgHeight/imgWidth);
   docPDF.addImage(img, 'png', X, Y, W, W*imgHeight/imgWidth, undefined, 'FAST'
   );
 
 }  
 
-private async addImageBase64(docPDF: jsPDF, Image: string, x: number, y: number,w: number, h: number ) {
-  docPDF.addImage(Image, 'png', x, y, w, h, undefined,'FAST');
+private async addImageBase64(docPDF: jsPDF, imgBase64: string, x: number, y: number,w: number, h: number ) {
+
+  console.log ("addImageBase64");
+  let imgWidth = 0;
+  let imgHeight = 0;
+
+  //creo l'oggetto img che passerò a docPDF.addImage corredandolo dei parametri di w e h corretti
+  let img = new Image();
+  img.src = imgBase64;
+
+  const promise =() => new Promise ((resolve,reject) => {
+    const imgTmp = new Image();
+    imgTmp.src = imgBase64;
+    imgTmp.onload = () => {
+      imgWidth = imgTmp.width;
+      imgHeight = imgTmp.height;
+      console.log ("imgWidth", imgWidth);
+      console.log ("imgHeight", imgHeight);
+      resolve("hey");
+    };
+  })
+
+
+  //bisogna ragionare un po' per determinare w e h d passare a addImage sulla base di w e h ricevuti e di imgHeight e imgWidth
+  await promise();
+  console.log ("w imgWidth h imgHeight", w, imgWidth, h, imgHeight);
+  if (w/h >= imgWidth/imgHeight) {
+    //fisso h e calcolo w
+    //devo però anche determinare x, y va bene come sta
+    x=x+w/2-h/imgHeight*imgWidth/2;
+    docPDF.addImage(img, 'png', x, y, h/imgHeight*imgWidth, h, undefined,'FAST');
+
+  } else {
+    //fisso w e calcolo h
+    //devo però anche determinare y, x va bene come sta
+    y=y+h/2-w*imgHeight/imgWidth/2;
+    docPDF.addImage(img, 'png', x, y, w, w*imgHeight/imgWidth, undefined,'FAST');
+
+  }
 }
 
 
