@@ -98,6 +98,11 @@ export class BloccoComponent implements OnInit {
     this.height = this.blocco.h * this.zoomratio;
     this.top =  this.blocco.y* this.zoomratio;
     this.left = this.blocco.x* this.zoomratio;
+    // this.width = this.blocco.w ;
+    // this.height = this.blocco.h ;
+    // this.top =  this.blocco.y ;
+    // this.left = this.blocco.x ;
+
     this.tipoBloccoID = this.blocco.tipoBloccoID;
     
     this.classTipo = "tipo"+this.tipoBloccoID; 

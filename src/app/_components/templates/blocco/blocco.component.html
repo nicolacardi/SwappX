@@ -21,12 +21,16 @@
 
 <!--La dimensione del font va adattata al livello di zoom...c'è però un fattore di adattamento ulteriore...perchè cambiando zoom cambiano gli a capo-->
 <!-- style="word-break: break-all; " -->
-<!-- [style.font-size.px]="fontSizeN*zoom/2.6"   -->
+<!-- [style.font-size]="zoom/3.5+'em'"  dà una proporzione "simile" a una pagina word-->
+
+    <!-- [style.transform]= "'scale('+zoom+')'" -->
 
 <div class="blocco ql-container ql-snow" style="border-width: 0;" *ngIf="blocco.tipoBlocco!.descrizione == 'Text'">
     <div class="ql-editor"  
-        style="word-break: normal;"
-        [style.font-size.px]="fontSizeN"  
+        style="word-break: normal; max-height: 100%; max-width: 100%;"
+        [style.font-size.px]="fontSizeN"
+        [style.font-size]="zoom/4+'em'"
+        [style.padding]="3*zoom+'px !important'"
         [innerHTML] ="blocco._BloccoTesti? blocco._BloccoTesti[0].testo: ''"
         >
     </div>
@@ -48,7 +52,6 @@
         [style.height.px]="height" 
         style="width: 100%; height: 100%; object-fit: contain !important" 
         [src]="blocco._BloccoFoto? blocco._BloccoFoto[0].foto: ''"
-
     >
 </div>
 

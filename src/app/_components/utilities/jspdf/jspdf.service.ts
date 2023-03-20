@@ -186,7 +186,7 @@ private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, W: 
   tempElement!.style.width = (W*5.91)+"px"; //senza questo è tutto troppo piccolo
 
   //ora dovrei estrarre font-size: --px e sostituirlo con font-size che desidero...o no?
-  tempElement!.innerHTML = '<div style="margin-left: 10px; margin-right: 10px"><p style="padding-top: 10px; padding-bottom: 10px;">'+html+'<p></div>';
+  tempElement!.innerHTML = '<div style="margin-left: 10px; margin-right: 10px"><p style="padding-top: 5px; padding-bottom: 5px;">'+html+'<p></div>';
 
   
 

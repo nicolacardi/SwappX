@@ -230,9 +230,9 @@ td, th{
 padding: 0px;
 }
 
-:host ::ng-deep .ql-editor {
+/* :host ::ng-deep .ql-editor {
   padding: 5px !important;
-}
+} */
 
 :host ::ng-deep .ql-bubble {
   position: relative !important;
