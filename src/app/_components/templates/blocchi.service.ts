@@ -34,7 +34,21 @@ export class BlocchiService {
   get(BloccoID: any): Observable<TEM_Blocco>{
     return this.http.get<TEM_Blocco>(environment.apiBaseUrl+'TEM_Blocchi/'+BloccoID);
     //http://213.215.231.4/swappX/api/TEM_Blocchi/25
-    //TODO la get butta fuori bloccotestoID e bloccofotoID null anche quando non lo sono!
+  }
+
+  getMaxPageOrd(PaginaID: any): Observable<TEM_Blocco>{
+    return this.http.get<TEM_Blocco>(environment.apiBaseUrl+'TEM_Blocchi/GetMaxPageOrd/'+PaginaID);
+    //http://213.215.231.4/swappX/api/TEM_Blocchi/GetMaxPageOrd/2
+  }
+
+  setPageOrdToMax(BloccoID: any, PaginaID: any): Observable<any>{
+    return this.http.get (environment.apiBaseUrl + 'TEM_Blocchi/setPageOrdToMax/' +BloccoID+'/'+PaginaID);
+    //http://213.215.231.4/swappX/api/TEM_Blocchi/setPageOrdToMax/192/2
+  }
+
+  setPageOrdToOne(BloccoID: any, PaginaID: any): Observable<any>{
+    return this.http.get (environment.apiBaseUrl + 'TEM_Blocchi/setPageOrdToOne/' +BloccoID+'/'+PaginaID);
+    //http://213.215.231.4/swappX/api/TEM_Blocchi/setPageOrdToOne/192/2
   }
 
   put(formData: any): Observable <any>{

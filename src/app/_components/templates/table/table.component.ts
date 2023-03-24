@@ -7,6 +7,8 @@ import 'quill-mention'
 //services
 import { BlocchiCelleService }                  from '../blocchicelle.service';
 import { TEM_BloccoCella } from 'src/app/_models/TEM_BloccoCella';
+import { TEM_MentionValue } from 'src/app/_models/TEM_MentionValue';
+
 import { tap } from 'rxjs';
 
 //#endregion
@@ -20,6 +22,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
 //#region ----- Variabili --------------------
   maxWidth!:                                    number;                 //larghezza massima (la larghezza del blocco wBlocco * 3)
   maxHeight!:                                   number;                 //altezza massima (l'altezza del blocco hBlocco * 3)
+
+  modules:                                      any = {}
+
+
 
   empty:                                        boolean = true;
   currIndex:                                    number = 0;
@@ -42,39 +48,44 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
     whitelist: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px']
   }];
 
-  modules = {
-    mention: {
-      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-      onSelect: (item:any, insertItem:any) => {
-        const editor = this.editor.quillEditor
-        insertItem(item)
-        // necessary because quill-mention triggers changes as 'api' instead of 'user'
-        editor.insertText(editor.getLength() - 1, '', 'user')
-      },
-      source: (searchTerm:any, renderList:any) => {
-        const values = [
-          { id: 1, value: 'anno_scolastico' },
-          { id: 2, value: 'nomeecognome_alunno' },
-          { id: 3, value: 'datadinascita_alunno' },
-          { id: 4, value: 'codicefiscale_alunno' }
-        ]
 
-        if (searchTerm.length === 0) {
-          renderList(values, searchTerm)
-        } else {
-          const matches :any = []
 
-          values.forEach((entry) => {
-            if (entry.value.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
-              matches.push(entry)
-            }
-          })
-          renderList(matches, searchTerm)
-        }
-      }
-    },
-    toolbar: []
-  }
+
+
+  
+  // modules = {
+  //   mention: {
+  //     allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+  //     onSelect: (item:any, insertItem:any) => {
+  //       const editor = this.editor.quillEditor
+  //       insertItem(item)
+  //       // necessary because quill-mention triggers changes as 'api' instead of 'user'
+  //       editor.insertText(editor.getLength() - 1, '', 'user')
+  //     },
+  //     source: (searchTerm:any, renderList:any) => {
+  //       const values = [
+  //         { id: 1, value: 'anno_scolastico' },
+  //         { id: 2, value: 'nomeecognome_alunno' },
+  //         { id: 3, value: 'datadinascita_alunno' },
+  //         { id: 4, value: 'codicefiscale_alunno' }
+  //       ]
+
+  //       if (searchTerm.length === 0) {
+  //         renderList(values, searchTerm)
+  //       } else {
+  //         const matches :any = []
+
+  //         values.forEach((entry) => {
+  //           if (entry.value.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
+  //             matches.push(entry)
+  //           }
+  //         })
+  //         renderList(matches, searchTerm)
+  //       }
+  //     }
+  //   },
+  //   toolbar: []
+  // }
 
 //#endregion
 
@@ -84,7 +95,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
   @Input('bloccoID') bloccoID! :                number;
   @Input('wBlocco') wBlocco!:                   string; 
   @Input('hBlocco') hBlocco!:                   string;
-
+  @Input('mentionValues') mentionValues!:       TEM_MentionValue[];
   @Input('adapt') adapt:                        number = 3;   //@Input con un default qualora non arrivasse da blocco
 
 
@@ -104,6 +115,27 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
   ngOnInit() {
     this.loadData();
 
+    this.modules = {
+      mention: {
+        allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+        mentionDenotationChars: ["@"],
+        source: (searchTerm: any, renderList: any) => {
+          const values = this.mentionValues;
+          if (searchTerm.length === 0) {
+            renderList(values, searchTerm);
+          } else {
+            const matches = [];
+            for (let i = 0; i < values.length; i++)
+              if (
+                ~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())
+              )
+                matches.push(values[i]);
+            renderList(matches, searchTerm);
+          }
+        }
+      },
+      toolbar: []
+    }
 
 
   }

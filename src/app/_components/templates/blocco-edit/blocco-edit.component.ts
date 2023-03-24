@@ -1,11 +1,11 @@
 //#region ----- IMPORTS ------------------------
 
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild }             from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, Input, NgZone, OnChanges, OnInit, ViewChild }             from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }                         from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA }    from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
-import { concatMap, tap }                       from 'rxjs/operators';
+import { concatMap, map, tap }                       from 'rxjs/operators';
 
 //components
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
@@ -13,7 +13,7 @@ import { tooWideValidator, tooHighValidator}    from '../../utilities/crossfield
 import { ColorPickerComponent }                 from '../../color-picker/color-picker.component';
 import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 import { Utility }                              from '../../utilities/utility.component';
-import { QuillEditorComponent }                 from 'ngx-quill'
+import { CustomOption, QuillEditorComponent }                 from 'ngx-quill'
 import 'quill-mention'
 
 //components
@@ -31,6 +31,9 @@ import { A4 }                                   from 'src/environments/environme
 import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
 import { TEM_BloccoFoto }                       from 'src/app/_models/TEM_BloccoFoto';
 import { TEM_BloccoTesto }                      from 'src/app/_models/TEM_BloccoTesto';
+import { TableColsService } from '../../utilities/toolbar/tablecols.service';
+import { _UT_TableCol } from 'src/app/_models/_UT_TableCol';
+import { TEM_MentionValue } from 'src/app/_models/TEM_MentionValue';
 
 //#endregion
 @Component({
@@ -38,9 +41,11 @@ import { TEM_BloccoTesto }                      from 'src/app/_models/TEM_Blocco
   templateUrl: './blocco-edit.component.html',
   styleUrls: ['../templates.css']
 })
-export class BloccoEditComponent implements OnInit {
+export class BloccoEditComponent implements OnInit, AfterViewInit {
 //#region ----- Variabili --------------------
-
+  obsCols$!:                                    Observable<_UT_TableCol[]>;
+  modules:                                      any = {}
+  mentionValues!:                               TEM_MentionValue[];
   blocco$!:                                     Observable<TEM_Blocco>;
   form! :                                       UntypedFormGroup;
   imgFile!:                                     string;
@@ -61,49 +66,15 @@ export class BloccoEditComponent implements OnInit {
 
   //QUILL (se il blocco è di Testo)
   //la customOption abilita l'effettiva applicazione di quello che viene selezionato
-  public customOptions = [{
-    import: 'attributors/style/size',
-    whitelist: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px']
-  },
-  // {
-  //   import: 'attributors/style/font',
-  //   whitelist: ['sans-serif', 'Serif', 'Monospace']
-  // }
-];
+  public customOptions = [
+    {
+      import: 'attributors/style/size',
+      whitelist: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px']
+    }
 
-  modules = {
-    mention: {
-      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-      onSelect: (item:any, insertItem:any) => {
-        const editor = this.editor.quillEditor
-        insertItem(item)
-        // necessary because quill-mention triggers changes as 'api' instead of 'user'
-        editor.insertText(editor.getLength() - 1, '', 'user')
-      },
-      source: (searchTerm:any, renderList:any) => {
-        const values = [
-          { id: 1, value: 'anno_scolastico' },
-          { id: 2, value: 'nomeecognome_alunno' },
-          { id: 3, value: 'datadinascita_alunno' },
-          { id: 4, value: 'codicefiscale_alunno' }
-        ]
+  ];
 
-        if (searchTerm.length === 0) {
-          renderList(values, searchTerm)
-        } else {
-          const matches :any = []
-
-          values.forEach((entry) => {
-            if (entry.value.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
-              matches.push(entry)
-            }
-          })
-          renderList(matches, searchTerm)
-        }
-      }
-    },
-    toolbar: []
-  }
+  
 
   currIndex:                                   number = 0;
   // quillOptions = {                              //non servirà più
@@ -149,13 +120,16 @@ export class BloccoEditComponent implements OnInit {
     private svcBlocchiFoto:                     BlocchiFotoService,
     private svcBlocchiTesti:                    BlocchiTestiService,
     private svcBlocchiCelle:                    BlocchiCelleService,
+    private svcTableCols:                       TableColsService,
 
     public _dialogRef:                          MatDialogRef<BloccoEditComponent>,
     public _dialog:                             MatDialog,
     private _snackBar:                          MatSnackBar,
     private _loadingService :                   LoadingService,
+    private cdr:                                ChangeDetectorRef,
     
   ) { 
+
 
     this.form = this.fb.group(
       {
@@ -173,18 +147,53 @@ export class BloccoEditComponent implements OnInit {
         borderRight:                            [],
         borderBottom:                           [],
         borderLeft:                             [],
-        fontSize:                               ['12px']
+        fontSize:                               ['12px'],
+        tableNames:                             ['AlunniList']
       }, { validators: [tooWideValidator, tooHighValidator]});
+
+
+      
+
   }
 //#endregion 
 
 //#region ----- LifeCycle Hooks e simili-------
 
-  ngOnInit(): void {
 
+
+  ngOnInit(): void {
+    this.obsCols$ = this.svcTableCols.listTableNames().pipe();
     this.loadData();
+
+    //l'oggetto che segue carica le opzioni e definisce il comportamento della dropdown "mention" che compare quando si digita @
+    //estrae i dati da this.mentionValues, che viene popolato dinamicamente
+    //this.mentionValues viene anche passato a table-app che usa la stessa estrazione, fatta quindi una sola volta, per ogni cella della tabella
+    this.modules = {
+      mention: {
+        allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+        mentionDenotationChars: ["@"],
+        source: (searchTerm: any, renderList: any) => {
+          const values = this.mentionValues;
+          if (searchTerm.length === 0) {
+            renderList(values, searchTerm);
+          } else {
+            const matches = [];
+            for (let i = 0; i < values.length; i++)
+              if (
+                values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())
+              )
+                matches.push(values[i]);
+            renderList(matches, searchTerm);
+          }
+        }
+      },
+      toolbar: []
+    }
   }
 
+  ngAfterViewInit() {
+    this.setCampiMention();
+  }
 
   loadData(){
     //console.log ("blocco-edit loadData, this.bloccoID:", this.bloccoID);
@@ -195,7 +204,7 @@ export class BloccoEditComponent implements OnInit {
       .pipe(
           tap(
             blocco => {
-              console.log ("blocco-edit loadData, blocco", blocco);
+              //console.log ("blocco-edit loadData, blocco", blocco);
 
               this.tipoBloccoDesc = blocco.tipoBlocco!.descrizione;
               this.form.patchValue(blocco);
@@ -543,6 +552,22 @@ export class BloccoEditComponent implements OnInit {
   }
 //#endregion
 
+
+
+
+  setCampiMention() {
+
+    console.log("blocco-edit - setCampiMention: this.form.controls.tableNames.value", this.form.controls.tableNames.value);
+    this.svcTableCols.listByTable(this.form.controls.tableNames.value)
+    .pipe(
+      map( (cols) => cols.map((col, i) => ({id: i+1, value: this.form.controls.tableNames.value+"."+col.colName})))
+    )
+    .subscribe(res => {
+      
+      this.mentionValues = res;
+    })
+    
+  }
 
 
 

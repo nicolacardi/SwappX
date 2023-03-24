@@ -1,4 +1,4 @@
-<mat-card appearance="outlined" class="form-card">
+<mat-card appearance="outlined" class="form-card" >
     <mat-card-content>
         <form *ngIf="blocco$ | async" class="data-form flex-form" [formGroup] = "form">
 
@@ -76,6 +76,19 @@
                         <mat-error *ngIf="form.controls.h.errors?.required"> Obbligatorio</mat-error>
                     </mat-form-field>
                 </mat-grid-tile>
+            </mat-grid-list>   
+            <mat-grid-list  rowHeight="80px" >
+                
+                <mat-grid-tile class="w100">
+                    <mat-form-field  class="w100" appearance="outline" >
+                        <mat-label>Campi dalla tabella ....</mat-label>
+                        <mat-select formControlName="tableNames" (selectionChange)="setCampiMention()">
+                            <mat-option *ngFor="let col of obsCols$ | async" [value]="col.tableName">
+                                {{col.tableName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
             </mat-grid-list>
 <!--#endregion-->
 
@@ -141,7 +154,9 @@
 
                     <span class="ql-formats">
                         <button class="ql-clean" [title]="'Pulizia Formato'"></button>
-                      </span>
+                    </span>
+
+
                 
                   </div>
                     <!-- <span class="ql-formats">
@@ -209,6 +224,7 @@
                     [bloccoID] = "bloccoID"
                     [wBlocco] = "w.value"
                     [hBlocco] = "h.value"
+                    [mentionValues] = "mentionValues"
                 >
                 </app-table>
             </div>

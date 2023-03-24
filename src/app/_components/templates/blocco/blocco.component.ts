@@ -13,6 +13,7 @@ import { BlocchiService }                       from '../blocchi.service';
 import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
 import { A4 }                                   from 'src/environments/environment';
 import { TableShowComponent }                   from '../tableshow/tableshow.component';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 const enum Status {
   OFF = 0,
@@ -54,6 +55,7 @@ export class BloccoComponent implements OnInit {
   public status: Status = Status.OFF;
   private mouseClick!: {x: number, y: number, left: number, top: number}  //le 4 coordinate del click del mouse
 
+  menuTopLeftPosition =  {x: '0', y: '0'} 
 
 
   
@@ -71,6 +73,7 @@ export class BloccoComponent implements OnInit {
   @ViewChild("box") public box!: ElementRef;
 
   @ViewChild(TableShowComponent) public tableShowComponent!: TableShowComponent;
+  @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
 
   //https://medium.com/swlh/create-a-resizable-and-draggable-angular-component-in-the-easiest-way-bb67031866cb
@@ -287,7 +290,6 @@ export class BloccoComponent implements OnInit {
 
   }
 
-
   move(){
     //console.log("blocco.component - move");
 
@@ -335,7 +337,6 @@ export class BloccoComponent implements OnInit {
 
   }
 
-
   storeCurrPosSize() {
     this.blocco.w = this.width;
     this.blocco.h = this.height;
@@ -344,7 +345,6 @@ export class BloccoComponent implements OnInit {
     //console.log ("blocco-component fine di StoreCurrPosSize");
   }
 
-
   public save() {
     // console.log("blocco - save");
 
@@ -352,6 +352,7 @@ export class BloccoComponent implements OnInit {
     { 
       id: this.blocco.id!,
       paginaID: this.blocco.paginaID,
+      pageOrd: 1,
       x: Math.floor(this.left/this.zoom),
       y: Math.floor(this.top/this.zoom),
       w: Math.floor(this.width/this.zoom),
@@ -409,7 +410,28 @@ export class BloccoComponent implements OnInit {
   }
 
 
+
+  onRightClick(event: MouseEvent, blocco: TEM_Blocco) { 
+    this.setStatus(event, 0);
+    event.preventDefault(); 
+    this.menuTopLeftPosition.x = event.clientX + 'px'; 
+    this.menuTopLeftPosition.y = event.clientY + 'px'; 
+    console.log (this.menuTopLeftPosition);
+    this.matMenuTrigger.menuData = {item: blocco}   
+    this.matMenuTrigger.openMenu(); 
+  }
+
+  portaInPrimoPiano(blocco: TEM_Blocco) {
+    console.log("porto in primo piano", blocco.id);
+    this.svcBlocchi.setPageOrdToMax(blocco.id, this.blocco.paginaID).subscribe(()=>this.recordEdited.emit(this.blocco.id!)
+    )
+  }
   
+  portaInSecondoPiano(blocco: TEM_Blocco) {
+    console.log("porto in secondo piano", blocco.id);
+    this.svcBlocchi.setPageOrdToOne(blocco.id, this.blocco.paginaID).subscribe(()=>this.recordEdited.emit(this.blocco.id!)
+    )
+  }
 
 
 }

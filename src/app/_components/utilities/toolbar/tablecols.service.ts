@@ -26,6 +26,11 @@ export class TableColsService {
     //http://213.215.231.4/swappX/api/_UT_TablesCols/listByTable/AlunniList
   }
 
+  listTableNames(): Observable<_UT_TableCol[]>{
+    return this.http.get<_UT_TableCol[]>(environment.apiBaseUrl+'_UT_TablesCols/ListTableNames');
+    //http://213.215.231.4/swappX/api/_UT_TablesCols/ListTableNames
+  }
+
 
   get(TableColID: any): Observable<_UT_TableCol>{
     return this.http.get<_UT_TableCol>(environment.apiBaseUrl+'_UT_TablesCols/'+TableColID);

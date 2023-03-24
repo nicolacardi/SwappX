@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren }             from '@angular/core';
-import { Observable }                           from 'rxjs';
+import { Observable, switchMap }                           from 'rxjs';
 
 //components
 
@@ -96,13 +96,12 @@ export class PaginaComponent implements OnInit {
   }
 
   loadData() {
-    console.log("pagina.component - loadData");
     const obsBlocchiTMP$ = this.svcBlocchi.listByPagina(this.paginaID);
     this.obsBlocchi$ = this._loadingService.showLoaderUntilCompleted( obsBlocchiTMP$);
 
     this.obsBlocchi$.subscribe(
       res=> {
-        console.log ("Pagina-component - Blocchi di pagina numero:", this.paginaID, " -> ", res);
+        console.log ("pagina-component - loadData - Blocchi di pagina ", this.paginaID, " -> ", res);
         this.blocchiArr = res
       }
     )
@@ -125,53 +124,99 @@ export class PaginaComponent implements OnInit {
   }
 
   addBlock(tipoBloccoID: number) {
-    let objBlocco : TEM_Blocco =
-    { 
-      paginaID: this.paginaID,
-      x: 10,
-      y: 10,
-      w: 95,
-      h: 50,
-      ckTrasp: true,
-      tipoBloccoID: tipoBloccoID,
-      borderTop: false,
-      borderRight: false,
-      borderBottom: false,
-      borderLeft: false
-    }
-    if (tipoBloccoID == 1) { //blocco testo
-      this.svcBlocchi.post(objBlocco).subscribe(
-        res => {
-          this.defaultBloccoTesto.bloccoID = res.id;
-          this.svcBlocchiTesti.post(this.defaultBloccoTesto).subscribe( res=> this.loadData());
-           //questa combina un casino! perchè?
+
+    this.svcBlocchi.getMaxPageOrd(this.paginaID)
+    .pipe(
+      switchMap(pageOrd => {
+        
+        let objBlocco : TEM_Blocco =
+        { 
+          paginaID: this.paginaID,
+          pageOrd: pageOrd? pageOrd.pageOrd + 1: 1,
+          x: 10,
+          y: 10,
+          w: 95,
+          h: 50,
+          ckTrasp: true,
+          tipoBloccoID: tipoBloccoID,
+          borderTop: false,
+          borderRight: false,
+          borderBottom: false,
+          borderLeft: false
         }
-      )
-    }
+        return this.svcBlocchi.post(objBlocco);
+      })
+    ).subscribe(res => {
+      // handle the response from the post request
+      if (tipoBloccoID == 1) {
+        this.defaultBloccoTesto.bloccoID = res.id;
+        this.svcBlocchiTesti.post(this.defaultBloccoTesto).subscribe(res => this.loadData());
+      }
+      else if (tipoBloccoID == 2) {
+        this.defaultBloccoFoto.bloccoID = res.id;
+        this.svcBlocchiFoto.post(this.defaultBloccoFoto).subscribe(res => this.loadData());
+      }
+      else if (tipoBloccoID == 3) {
+        this.defaultBloccoCella.bloccoID = res.id;
+        this.defaultBloccoCella.row = 1;
+        this.svcBlocchiCelle.post(this.defaultBloccoCella).subscribe();
+        this.defaultBloccoCella.row = 2;
+        this.svcBlocchiCelle.post(this.defaultBloccoCella).subscribe();
+        console.log("pagina.component - addBlock - subscribe");
+        this.loadData();
+      }
+    })
 
-    if (tipoBloccoID == 2) { //blocco immagine
-      this.svcBlocchi.post(objBlocco).subscribe(
-        res => {
-          this.defaultBloccoFoto.bloccoID = res.id;
-          this.svcBlocchiFoto.post(this.defaultBloccoFoto).subscribe(res=> this.loadData());
-          //questa combina un casino!
 
-        }
-      )
-    }
+    // let objBlocco : TEM_Blocco =
+    // { 
+    //   paginaID: this.paginaID,
+    //   pageOrd: 1,
+    //   x: 10,
+    //   y: 10,
+    //   w: 95,
+    //   h: 50,
+    //   ckTrasp: true,
+    //   tipoBloccoID: tipoBloccoID,
+    //   borderTop: false,
+    //   borderRight: false,
+    //   borderBottom: false,
+    //   borderLeft: false
+    // }
 
-    if (tipoBloccoID == 3) { //table
-      this.svcBlocchi.post(objBlocco).subscribe(
-        res=> {
-          this.defaultBloccoCella.bloccoID = res.id;
-          this.defaultBloccoCella.row = 1;
-          this.svcBlocchiCelle.post (this.defaultBloccoCella).subscribe(); //occhio alla sincronia
-          this.defaultBloccoCella.row = 2;
-          this.svcBlocchiCelle.post (this.defaultBloccoCella).subscribe(); //occhio alla sincronia
-          console.log ("pagina.component - addBlock - subscribe");
-          this.loadData();
-        });
-    }
+    // if (tipoBloccoID == 1) { //blocco testo
+    //   this.svcBlocchi.post(objBlocco).subscribe(
+    //     res => {
+    //       this.defaultBloccoTesto.bloccoID = res.id;
+    //       this.svcBlocchiTesti.post(this.defaultBloccoTesto).subscribe( res=> this.loadData());
+    //        //questa combina un casino! perchè?
+    //     }
+    //   )
+    // }
+
+    // if (tipoBloccoID == 2) { //blocco immagine
+    //   this.svcBlocchi.post(objBlocco).subscribe(
+    //     res => {
+    //       this.defaultBloccoFoto.bloccoID = res.id;
+    //       this.svcBlocchiFoto.post(this.defaultBloccoFoto).subscribe(res=> this.loadData());
+    //       //questa combina un casino!
+
+    //     }
+    //   )
+    // }
+
+    // if (tipoBloccoID == 3) { //table
+    //   this.svcBlocchi.post(objBlocco).subscribe(
+    //     res=> {
+    //       this.defaultBloccoCella.bloccoID = res.id;
+    //       this.defaultBloccoCella.row = 1;
+    //       this.svcBlocchiCelle.post (this.defaultBloccoCella).subscribe(); //occhio alla sincronia
+    //       this.defaultBloccoCella.row = 2;
+    //       this.svcBlocchiCelle.post (this.defaultBloccoCella).subscribe(); //occhio alla sincronia
+    //       console.log ("pagina.component - addBlock - subscribe");
+    //       this.loadData();
+    //     });
+    // }
     
 
 

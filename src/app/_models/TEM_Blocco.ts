@@ -7,6 +7,7 @@ export interface TEM_Blocco {
         id?:                                     number;
 
         paginaID:                               number;
+        pageOrd:                                number;
         x:                                      number;
         y:                                      number;
         w:                                      number;

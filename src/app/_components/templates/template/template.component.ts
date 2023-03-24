@@ -107,7 +107,7 @@ export class TemplateComponent implements OnInit {
         if (blocchi[i].tipoBlocco!.descrizione=="Text") {
           rptFile.push({
             "tipo": "TextHtml",
-            "alias": "html2canvas",
+            "alias": "...",
             "value": blocchi[i]._BloccoTesti![0].testo,
             "X": blocchi[i].x,
             "Y": blocchi[i].y,

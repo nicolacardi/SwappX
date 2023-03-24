@@ -10,7 +10,6 @@ import { DOC_Pagella }                          from 'src/app/_models/DOC_Pagell
 import { DOC_PagellaVoto }                      from 'src/app/_models/DOC_PagellaVoto.js';
 
 import { rptPagella }                           from 'src/app/_reports/rptPagella';
-// import { rptBase }                              from 'src/app/_reports/rptBase';
 
 
 @Injectable({
@@ -61,230 +60,219 @@ export class JspdfService { defaultColor!:          string;
 
 
 
-//#region ----- ****************************************************dynamicRptPagella -----
-public async rptFromtemplate(rptBase: any) : Promise<jsPDF> {
+//#region ----- ****************************************************rptFromtemplate -----
+  public async rptFromtemplate(rptBase: any) : Promise<jsPDF> {
 
-  let pageW: number = 0;
-  let pageH: number = 0;
+    let pageW: number = 0;
+    let pageH: number = 0;
 
-  //Il primo elemento di rptBase DEVE essere SheetDefault sennò tutto si ferma e viene emesso un documento con un errore
-  let sheetDefault = rptBase[0]                      //  rptBase per ora è un oggetto esterno, poi sarà ciò che viene passato negli argomenti
-  
-//#region ----- caricamento dei valori di default -----    
-  if(sheetDefault.tipo != "SheetDefault"){
-    let doc : jsPDF  = new jsPDF('p', 'mm', [297,210]);  
-    doc.text("ERRORE: manca il tag [SheetDefault] in rptBase",10, 50);
+    //Il primo elemento di rptBase DEVE essere SheetDefault sennò tutto si ferma e viene emesso un documento con un errore
+    let sheetDefault = rptBase[0]                      //  rptBase per ora è un oggetto esterno, poi sarà ciò che viene passato negli argomenti
+    
+  //#region ----- caricamento dei valori di default -----    
+    if(sheetDefault.tipo != "SheetDefault"){
+      let doc : jsPDF  = new jsPDF('p', 'mm', [297,210]);  
+      doc.text("ERRORE: manca il tag [SheetDefault] in rptBase",10, 50);
+      return doc;
+    }
+
+    pageW= parseInt(sheetDefault.width);
+    pageH= parseInt(sheetDefault.heigth);
+
+    this.defaultColor = sheetDefault.defaultColor;
+    this.defaultFontSize = sheetDefault.defaultFontSize;
+    this.defaultFontName = sheetDefault.defaultFontName;
+    this.defaultMaxWidth = sheetDefault.defaultMaxWidth;
+    this.defaultFillColor = sheetDefault.defaultFillColor;
+    this.defaultLineColor = sheetDefault.defaultLineColor;
+    this.defaultCellLineColor = sheetDefault.defaultCellLineColor;
+    this.defaultLineWidth = sheetDefault.defaultLineWidth;
+    let doc : jsPDF  = new jsPDF(sheetDefault.orientation, 'mm', [pageW , pageH]);
+    doc.setFont(sheetDefault.defaultFontName, 'normal');
+  //#endregion
+
+    for (let i = 1; i < rptBase.length; i++) {
+      let element = rptBase[i];
+      console.log ("element",element);
+      switch(element.tipo){
+        case "SheetDefault":
+          break;
+        // case "Image":{
+        //   const ImageUrl = "./assets/photos/" + element.value;
+        //   await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
+        //   break;
+        // }
+        case "ImageBase64":{
+          await this.addImageBase64(doc, element.value, element.X ,element.Y, element.W, element.H);
+          break;
+        }
+        // case "Text":{
+        //   this.addText(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align, element.maxWidth );
+        //   break;
+        // }
+        case "TextHtml":{
+          await this.addTextHtml(doc,element.value,element.X,element.Y,element.W, element.H, "", "normal", "",0, 0, element.backgroundColor );
+          break;
+        }
+        // case "TableStatica":{
+        //   this.addTableStatica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge ,element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
+        //   break;
+        // }
+        // case "TableDinamica":{
+        //   this.addTableDinamica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge, element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
+        //   break;
+        // }
+        // case "TableDinamicaPagella":{
+        //   this.addTableDinamicaPagella(doc, element);
+        //   break;
+        // }
+        // case "Line":{
+        //   this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
+        //   break;
+        // }
+        // case "Rect":{
+        //   this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
+        //   break;
+        // }
+        // case "Page":{
+        //   doc.addPage()
+        //   break;
+        // }
+        default:{
+          this.addText(doc,"[## WRONG TAG ##]",element.X,element.Y,"TitilliumWeb-SemiBold","normal",'#FF0000',24, element.align, element.maxWidth );
+          break;
+        }
+      }
+    }
     return doc;
   }
-
-  pageW= parseInt(sheetDefault.width);
-  pageH= parseInt(sheetDefault.heigth);
-
-  this.defaultColor = sheetDefault.defaultColor;
-  this.defaultFontSize = sheetDefault.defaultFontSize;
-  this.defaultFontName = sheetDefault.defaultFontName;
-  this.defaultMaxWidth = sheetDefault.defaultMaxWidth;
-  this.defaultFillColor = sheetDefault.defaultFillColor;
-  this.defaultLineColor = sheetDefault.defaultLineColor;
-  this.defaultCellLineColor = sheetDefault.defaultCellLineColor;
-  this.defaultLineWidth = sheetDefault.defaultLineWidth;
-  let doc : jsPDF  = new jsPDF(sheetDefault.orientation, 'mm', [pageW , pageH]);
-  doc.setFont(sheetDefault.defaultFontName, 'normal');
-//#endregion
   
-  //LA PROMISE.ALL NON SI COMPORTA COME SE CHIAMASSE TUTTE LE FUNZIONI IN MANIERA SINCRONA
-  //MA SEMPLICEMENTE NON FA PROCEDERE IL CODICE OLTRE PRIMA CHE TUTTE LE SUE PROMISE (AWAITED) SIANO TERMINATE
-  //MA QUESTE RESTANO SINGOLARMENTE ASINCRONE, QUINDI FINISCO IN ORDINE "SPARSO"
-  //IL CICLO FOR, INVECE, INSIEME CON IL COMANDO AWAIT FUNZIONA IN MANIERA SINCRONA
-  //await Promise.all( rptBase.map(async (element: any) => { QUESTA LA PROMISE.ALL FALLACE     
 
-  for (let i = 1; i < rptBase.length; i++) {
-    let element = rptBase[i];
-    switch(element.tipo){
-      case "SheetDefault":
-        break;
-      // case "Image":{
-      //   const ImageUrl = "./assets/photos/" + element.value;
-      //   await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
-      //   break;
-      // }
-      case "ImageBase64":{
-        await this.addImageBase64(doc, element.value, element.X ,element.Y, element.W, element.H);
-        break;
+  private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, maxWidth: number, backgroundColor: string  ){
+
+    if(fontName == null || fontName == "") fontName = this.defaultFontName;   //da vedere se serve
+    if(fontColor == null || fontColor == "") fontColor = this.defaultColor;   //da vedere se serve
+    if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;    //da vedere se serve
+    if(maxWidth == null || maxWidth == 0) maxWidth = this.defaultMaxWidth;    //da vedere se serve
+    
+    let imgWidth = 0;
+    let imgHeight = 0;
+
+    const options = {
+      scale: 1,
+      dpi: 300,
+      useCORS: true,
+      backgroundColor: null,
+      padding: {
+        top: 5,
+        bottom: 5,
+        left: 5,
+        right: 5
       }
-      // case "Text":{
-      //   this.addText(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align, element.maxWidth );
-      //   break;
-      // }
-      case "TextHtml":{
-       await this.addTextHtml(doc,this.parseTextValue( element.value),element.X,element.Y,element.W, element.H, element.fontName,"normal",element.color,element.fontSize, element.maxWidth, element.backgroundColor );
-        break;
-      }
-      // case "TableStatica":{
-      //   this.addTableStatica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge ,element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
-      //   break;
-      // }
-      // case "TableDinamica":{
-      //   this.addTableDinamica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge, element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
-      //   break;
-      // }
-      // case "TableDinamicaPagella":{
-      //   this.addTableDinamicaPagella(doc, element);
-      //   break;
-      // }
-      // case "Line":{
-      //   this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
-      //   break;
-      // }
-      // case "Rect":{
-      //   this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
-      //   break;
-      // }
-      // case "Page":{
-      //   doc.addPage()
-      //   break;
-      // }
-      default:{
-        this.addText(doc,"[## WRONG TAG ##]",element.X,element.Y,"TitilliumWeb-SemiBold","normal",'#FF0000',24, element.align, element.maxWidth );
-        break;
-      }
-    }
-  }
-  return doc;
-}
-
-private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, maxWidth: number, backgroundColor: string  ){
-
-  if(fontName == null || fontName == "") fontName = this.defaultFontName;   //da vedere se serve
-  if(fontColor == null || fontColor == "") fontColor = this.defaultColor;   //da vedere se serve
-  if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;    //da vedere se serve
-  if(maxWidth == null || maxWidth == 0) maxWidth = this.defaultMaxWidth;    //da vedere se serve
-  
-  let imgWidth = 0;
-  let imgHeight = 0;
-
-  const options = {
-    scale: 1,
-    dpi: 300,
-    useCORS: true,
-    backgroundColor: null,
-    padding: {
-      top: 5,
-      bottom: 5,
-      left: 5,
-      right: 5
-    }
-
-  };
-
-  const html = text;
-
-  //prendo il div "di servizio"
-  const tempElement = document.querySelector('#myDiv') as HTMLElement;
-  if (!tempElement) {throw new Error('necessario per sicurezza che esista');}
-  //applico al div il testo da convertire
-  tempElement!.style.width = (W*5.91)+"px"; //senza questo è tutto troppo piccolo
-
-  //ora dovrei estrarre font-size: --px e sostituirlo con font-size che desidero...o no?
-  tempElement!.innerHTML = '<div style="margin-left: 10px; margin-right: 10px"><p style="padding-top: 5px; padding-bottom: 5px;">'+html+'<p></div>';
-
-  
-
-
-
-
-  
-  console.log ("tempElement prima di cambio font", tempElement);
-  // Define the new font size
-  const newFontSize = (fontSize); //va estratto il numero da moltiplicare per 5.91??
-  console.log ("newFontSize", newFontSize);
-  // Define a recursive function to update the font size of each node
-  function updateFontSize(node:any) {
-    node.style.fontSize = newFontSize*2.25+'px';
-    node.style.lineHeight = '1.2em';
-
-    const children = node.children;
-    for (let i = 0; i < children.length; i++) {
-      updateFontSize(children[i]);
-    }
-  }
-  // Call the function to update the font size of the entire hierarchy
-  updateFontSize(tempElement);
-  console.log ("tempElement dopo cambio font", tempElement);
-
-  // Converto l'HTML a canvas
-  const canvas = await html2canvas(tempElement, options);
-  //estraggo il png dal canvas
-  const imgData = await canvas.toDataURL('image/png')
-  
-  //attribuisco imgData a img.src
-  let img = new Image();
-  img.src = imgData;
-  
-  //estraggo le dimensioni dell'immagine (serve???)
-  const promise =() => new Promise ((resolve,reject) => {
-    const imgTmp = new Image();
-    imgTmp.src = imgData;
-    imgTmp.onload = () => {
-      imgWidth = imgTmp.width;
-      imgHeight = imgTmp.height;
-      console.log ("imgWidth", imgWidth);
-      console.log ("imgHeight", imgHeight);
-      resolve("hey");
     };
-  })
 
-  await promise();
-  console.log ("aggiunto textHtml in X Y W H", X, Y, W, H)
-  docPDF.setFillColor(backgroundColor);
-  docPDF.setDrawColor("222222");
-  docPDF.setLineWidth (0.3);
-  docPDF.rect(X,Y,W, H, 'F');
-  docPDF.addImage(img, 'png', X, Y, W, W*imgHeight/imgWidth, undefined, 'FAST'
-  );
+    const html = text;
 
-}  
+    //prendo il div "di servizio"
+    const tempElement = document.querySelector('#myDiv') as HTMLElement;
+    if (!tempElement) {throw new Error('necessario per sicurezza che esista');}
+    //applico al div il testo da convertire
+    tempElement!.style.width = (W*10)+"px"; //senza questo è tutto enorme
+    //tempElement!.style.width = (W*5.91)+"px"; //senza questo è tutto troppo piccolo
 
-private async addImageBase64(docPDF: jsPDF, imgBase64: string, x: number, y: number,w: number, h: number ) {
+    tempElement!.innerHTML = html;
 
-  console.log ("addImageBase64");
-  let imgWidth = 0;
-  let imgHeight = 0;
-
-  //creo l'oggetto img che passerò a docPDF.addImage corredandolo dei parametri di w e h corretti
-  let img = new Image();
-  img.src = imgBase64;
-
-  const promise =() => new Promise ((resolve,reject) => {
-    const imgTmp = new Image();
-    imgTmp.src = imgBase64;
-    imgTmp.onload = () => {
-      imgWidth = imgTmp.width;
-      imgHeight = imgTmp.height;
-      console.log ("imgWidth", imgWidth);
-      console.log ("imgHeight", imgHeight);
-      resolve("hey");
-    };
-  })
+    
+    //ora devo estrarre font-size: --px e sostituirlo con font-size che desidero
 
 
-  //bisogna ragionare un po' per determinare w e h d passare a addImage sulla base di w e h ricevuti e di imgHeight e imgWidth
-  await promise();
-  console.log ("w imgWidth h imgHeight", w, imgWidth, h, imgHeight);
-  if (w/h >= imgWidth/imgHeight) {
-    //fisso h e calcolo w
-    //devo però anche determinare x, y va bene come sta
-    x=x+w/2-h/imgHeight*imgWidth/2;
-    docPDF.addImage(img, 'png', x, y, h/imgHeight*imgWidth, h, undefined,'FAST');
+    const newFontSize = (fontSize);
+    console.log ("newFontSize", newFontSize);
+    console.log ("tempElement prima di cambio font", tempElement);
 
-  } else {
-    //fisso w e calcolo h
-    //devo però anche determinare y, x va bene come sta
-    y=y+h/2-w*imgHeight/imgWidth/2;
-    docPDF.addImage(img, 'png', x, y, w, w*imgHeight/imgWidth, undefined,'FAST');
+        //definisco una funzione ricorsiva qui dentro e poi la chiamo
+        
+        function updateFontSize(node:any) {
+          node.style.fontSize = newFontSize/0.255+'px'; //per tentativi....ma è giusto?????
+          //node.style.fontSize = newFontSize/0.265+'px'; //sembra leggermente piccolo
+          node.style.lineHeight = '1.2em';
 
+          const children = node.children;
+          for (let i = 0; i < children.length; i++) {
+            updateFontSize(children[i]); //chiama se stessa per tutti i figli
+          }
+        }
+
+    updateFontSize(tempElement);
+    console.log ("tempElement dopo cambio font", tempElement);
+
+    // Converto l'HTML a canvas
+    const canvas = await html2canvas(tempElement, options);
+    //estraggo il png dal canvas
+    const imgData = await canvas.toDataURL('image/png')
+    
+    //attribuisco imgData a img.src
+    let img = new Image();
+    img.src = imgData;
+    
+    //estraggo le dimensioni dell'immagine (serve???)
+    const promise =() => new Promise ((resolve,reject) => {
+      const imgTmp = new Image();
+      imgTmp.src = imgData;
+      imgTmp.onload = () => {
+        imgWidth = imgTmp.width;
+        imgHeight = imgTmp.height;
+        console.log ("imgWidth", imgWidth);
+        console.log ("imgHeight", imgHeight);
+        resolve("hey");
+      };
+    })
+
+    await promise();
+    console.log ("aggiunto textHtml in X Y W H", X, Y, W, H)
+    docPDF.setFillColor(backgroundColor);
+    docPDF.setDrawColor("222222");
+    docPDF.setLineWidth (0.3);
+    docPDF.rect(X,Y,W, H, 'F');
+    docPDF.addImage(img, 'png', X, Y, W, W*imgHeight/imgWidth, undefined, 'FAST'
+    );
+
+  }  
+
+  private async addImageBase64(docPDF: jsPDF, imgBase64: string, x: number, y: number,w: number, h: number ) {
+
+    let imgWidth = 0;
+    let imgHeight = 0;
+
+    let img = new Image();
+    img.src = imgBase64;
+
+    const promise =() => new Promise ((resolve,reject) => {
+      const imgTmp = new Image();
+      imgTmp.src = imgBase64;
+      imgTmp.onload = () => {
+        imgWidth = imgTmp.width;
+        imgHeight = imgTmp.height;
+        resolve("hey");
+      };
+    })
+
+    //bisogna determinare w e/o h da passare a addImage sulla base di w e h ricevuti e di imgHeight e imgWidth nativi
+    //lo stesso per x e y. Il tutto dipende dalla relazione tra w/h e imgWidth/imgHeight
+    await promise();
+    if (w/h >= imgWidth/imgHeight) {
+      //fisso h e calcolo w
+      //devo però anche determinare x, y va bene come sta
+      x=x+w/2-h/imgHeight*imgWidth/2;
+      docPDF.addImage(img, 'png', x, y, h/imgHeight*imgWidth, h, undefined,'FAST');
+
+    } else {
+      //fisso w e calcolo h
+      //devo però anche determinare y, x va bene come sta
+      y=y+h/2-w*imgHeight/imgWidth/2;
+      docPDF.addImage(img, 'png', x, y, w, w*imgHeight/imgWidth, undefined,'FAST');
+    }
   }
-}
 
 
 

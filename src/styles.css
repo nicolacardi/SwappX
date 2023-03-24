@@ -1874,6 +1874,7 @@ div.inner img {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    z-index: 10000;
   }
   
   .ql-mention-list-item {

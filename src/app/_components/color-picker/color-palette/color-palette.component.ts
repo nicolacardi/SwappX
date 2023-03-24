@@ -40,7 +40,6 @@ export class ColorPaletteComponent implements AfterViewInit, OnChanges {
 
   ngAfterViewInit() {
     if (this.canvas) {
-      console.log ("this.canvas", this.canvas);
       this.draw()
     }
   }
