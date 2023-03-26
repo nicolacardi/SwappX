@@ -59,7 +59,6 @@ export class PaginatorService {
       });
     }
     if (blocco.tipoBlocco!.descrizione=="Table") {
-
       //estraggo il numero di righe e il numero di colonne
       const maxRow = Math.max(...blocco._BloccoCelle.map((cella: any) => cella.row));
       const maxCol = Math.max(...blocco._BloccoCelle.map((cella: any) => cella.col));
@@ -81,32 +80,34 @@ export class PaginatorService {
         if (!colVisitate[cella.col-1]) {
           colVisitate[cella.col-1] = true; 
           widthCumVal = widthCumVal + cella.w;
-          widthCum [cella.col] = widthCumVal;  //è la x di ogni colonna. Alla fine avrò colMax+1 valori.
+          widthCum [cella.col] = widthCumVal; //inserisco nella successiva colonna la x da cui dovrà partire
         }
         //se mi imbatto per la prima volta in una riga vado ad alimentare l'array delle altezze e calcolo y di conseguenza
 
         if (!rowVisitate[cella.row - 1]) {
           rowVisitate[cella.row-1] = true; 
-          heightCumVal = heightCumVal + cella.h; //rappresenta la larghezza cumulata delle celle fin qui trovate
-          heightCum [cella.row] = heightCumVal;
+          heightCumVal = heightCumVal + cella.h;
+          heightCum [cella.col] = heightCumVal;
         }
-        // console.log ("paginatorBuild - cella",cella);
-        // console.log ("paginatorBuild - col", cella.col, "row", cella.row);
-        // console.log ("paginatorBuild - colVisitate", rowVisitate);
-        // console.log ("paginatorBuild - widthCum", widthCum);
-        // console.log ("paginatorBuild - rowVisitate", rowVisitate);
-        // console.log ("paginatorBuild - heightCum", heightCum);
+        console.log ("cella",cella);
+
+        console.log ("col", cella.col, "row", cella.row);
+
+        console.log ("colVisitate", rowVisitate);
+        console.log ("widthCum", widthCum);
+
+        console.log ("rowVisitate", rowVisitate);
+        console.log ("heightCum", heightCum);
+
 
         let x  = widthCum [cella.col-1] + blocco.x ;
         let y  = heightCum [cella.row-1] + blocco.y;
 
-        let cleanText = this.replacer(cella.testo, objFields);
-
-        // console.log ("paginatorBuild - cella",cella, " - x", x, "- y", y);
+        console.log ("cella",cella, " - x", x, "- y", y);
         let topush = {
           "tipo": "TextHtml",
           "alias": "...",
-          "value": cleanText,
+          "value": cella.testo,
           "X": x,
           "Y": y,
           "W": cella.w,
@@ -114,7 +115,7 @@ export class PaginatorService {
           "backgroundColor": "#FFFFFF",
           "fontSize": 10
         }
-        // console.log ("paginatorBuild - topush:", topush);
+        console.log ("paginator - paginatorBuild - topush:", topush);
         rptFile.push(topush);
         
       })
