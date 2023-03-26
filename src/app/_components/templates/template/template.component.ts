@@ -19,6 +19,7 @@ import { MatSnackBar }                          from '@angular/material/snack-ba
 
 import { rptBase }                              from 'src/app/_reports/rptBase';
 import { BlocchiService }                       from '../blocchi.service';
+import { PaginatorService } from '../../utilities/paginator/paginator.service';
 
 
 
@@ -47,6 +48,7 @@ export class TemplateComponent implements OnInit {
     private _snackBar:                          MatSnackBar,
 
     private _loadingService :                   LoadingService,
+    private _paginator:                         PaginatorService,
     private _jspdf:                             JspdfService
 
   ) 
@@ -101,35 +103,14 @@ export class TemplateComponent implements OnInit {
   createRptDoc() {
     //faccio una "deep copy" (object assign farebbe una shallow copy) di rptBase in rptFile e qui lavoro
     let rptFile = JSON.parse(JSON.stringify(rptBase)); 
+    let objFields = {
+      AlunniList_email: "andrea.svegliado@gmail.com",
+      AlunniList_cap: "35136"
+    }
     this.svcBlocchi.listByTemplate(1)
     .subscribe( blocchi => {
       for (let i = 0; i<blocchi.length; i++) {
-        if (blocchi[i].tipoBlocco!.descrizione=="Text") {
-          rptFile.push({
-            "tipo": "TextHtml",
-            "alias": "...",
-            "value": blocchi[i]._BloccoTesti![0].testo,
-            "X": blocchi[i].x,
-            "Y": blocchi[i].y,
-            "W": blocchi[i].w,
-            "H": blocchi[i].h,
-            "backgroundColor": blocchi[i].color,
-            "fontSize": blocchi[i]._BloccoTesti![0].fontSize
-          });
-        }
-        if (blocchi[i].tipoBlocco!.descrizione=="Image") {
-          rptFile.push({
-            "tipo": "ImageBase64",
-            "alias": "...",
-            "value": blocchi[i]._BloccoFoto![0].foto,
-            "X": blocchi[i].x,
-            "Y": blocchi[i].y,
-            "W": blocchi[i].w,
-            "H": blocchi[i].h,
-            "backgroundColor": blocchi[i].color,
-            // "fontSize": blocchi[i]._BloccoTesti![0].fontSize
-          });
-        }
+        rptFile = this._paginator.paginatorBuild(rptFile, blocchi[i], objFields);
       }
       console.log ("rptFile", rptFile);
       this.savePdf(rptFile);

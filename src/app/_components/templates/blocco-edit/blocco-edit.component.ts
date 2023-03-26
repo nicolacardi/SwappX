@@ -557,10 +557,10 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
 
   setCampiMention() {
 
-    console.log("blocco-edit - setCampiMention: this.form.controls.tableNames.value", this.form.controls.tableNames.value);
+    // console.log("blocco-edit - setCampiMention: this.form.controls.tableNames.value", this.form.controls.tableNames.value);
     this.svcTableCols.listByTable(this.form.controls.tableNames.value)
     .pipe(
-      map( (cols) => cols.map((col, i) => ({id: i+1, value: this.form.controls.tableNames.value+"."+col.colName})))
+      map( (cols) => cols.map((col, i) => ({id: i+1, value: this.form.controls.tableNames.value+"_"+col.colName})))
     )
     .subscribe(res => {
       

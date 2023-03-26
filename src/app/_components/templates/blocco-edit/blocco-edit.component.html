@@ -77,7 +77,7 @@
                     </mat-form-field>
                 </mat-grid-tile>
             </mat-grid-list>   
-            <mat-grid-list  rowHeight="80px" >
+            <mat-grid-list  rowHeight="80px" *ngIf="tipoBloccoDesc == 'Text' || tipoBloccoDesc == 'Table'">
                 
                 <mat-grid-tile class="w100">
                     <mat-form-field  class="w100" appearance="outline" >
