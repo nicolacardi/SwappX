@@ -93,7 +93,7 @@ export class JspdfService { defaultColor!:          string;
 
     for (let i = 1; i < rptBase.length; i++) {
       let element = rptBase[i];
-      console.log ("element",element);
+      // console.log ("jspdf - rptFromtemplate - element",element);
       switch(element.tipo){
         case "SheetDefault":
           break;
@@ -177,8 +177,8 @@ export class JspdfService { defaultColor!:          string;
     const tempElement = document.querySelector('#myDiv') as HTMLElement;
     if (!tempElement) {throw new Error('necessario per sicurezza che esista');}
     //applico al div il testo da convertire
-    tempElement!.style.width = (W*10)+"px"; //senza questo è tutto enorme
-    //tempElement!.style.width = (W*5.91)+"px"; //senza questo è tutto troppo piccolo
+    tempElement!.style.width = (W*10)+"px";
+    tempElement!.style.height = (H*10)+"px";
 
     tempElement!.innerHTML = html;
 
@@ -187,8 +187,8 @@ export class JspdfService { defaultColor!:          string;
 
 
     const newFontSize = (fontSize);
-    console.log ("newFontSize", newFontSize);
-    console.log ("tempElement prima di cambio font", tempElement);
+    // console.log ("jspdf - addTextHtml - newFontSize", newFontSize);
+    // console.log ("jspdf - addTextHtml - tempElement prima di cambio font", tempElement);
 
         //definisco una funzione ricorsiva qui dentro e poi la chiamo
         
@@ -204,7 +204,7 @@ export class JspdfService { defaultColor!:          string;
         }
 
     updateFontSize(tempElement);
-    console.log ("tempElement dopo cambio font", tempElement);
+    // console.log ("jspdf - addTextHtml - tempElement dopo cambio font", tempElement);
 
     // Converto l'HTML a canvas
     const canvas = await html2canvas(tempElement, options);
@@ -215,25 +215,23 @@ export class JspdfService { defaultColor!:          string;
     let img = new Image();
     img.src = imgData;
     
-    //estraggo le dimensioni dell'immagine (serve???)
+    //estraggo le dimensioni dell'immagine
     const promise =() => new Promise ((resolve,reject) => {
       const imgTmp = new Image();
       imgTmp.src = imgData;
       imgTmp.onload = () => {
         imgWidth = imgTmp.width;
         imgHeight = imgTmp.height;
-        console.log ("imgWidth", imgWidth);
-        console.log ("imgHeight", imgHeight);
         resolve("hey");
       };
     })
 
     await promise();
-    console.log ("aggiunto textHtml in X Y W H", X, Y, W, H)
+    console.log ("jspdf -  addTextHtml - aggiunto blocco in stampa in X Y W H", X, Y, W, H)
     docPDF.setFillColor(backgroundColor);
     docPDF.setDrawColor("222222");
     docPDF.setLineWidth (0.3);
-    docPDF.rect(X,Y,W, H, 'F');
+    docPDF.rect(X,Y,W, H);
     docPDF.addImage(img, 'png', X, Y, W, W*imgHeight/imgWidth, undefined, 'FAST'
     );
 

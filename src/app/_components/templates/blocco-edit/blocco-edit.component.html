@@ -77,7 +77,7 @@
                     </mat-form-field>
                 </mat-grid-tile>
             </mat-grid-list>   
-            <mat-grid-list  rowHeight="80px" >
+            <mat-grid-list  rowHeight="80px" *ngIf="tipoBloccoDesc == 'Text' || tipoBloccoDesc == 'Table'">
                 
                 <mat-grid-tile class="w100">
                     <mat-form-field  class="w100" appearance="outline" >
@@ -92,10 +92,12 @@
             </mat-grid-list>
 <!--#endregion-->
 
-<!--#region ************ QUILL x Testo **************-->
 
+
+<!--#region ************ QUILL x Testo **************-->
+<!-- (onSelectionChanged)="onSelectionChanged($event)" -->
             <quill-editor *ngIf="tipoBloccoDesc == 'Text'"
-                (onSelectionChanged)="onSelectionChanged($event)"
+
                 placeholder="Inserire il proprio testo..."
                 formControlName="testo"
                 [customOptions]="customOptions"
@@ -104,21 +106,8 @@
                 
             <!-- COSI' SI AGGIUNGONO MENU CON AZIONI IN ALTERNATIVA AI MODULES -->
                 <div quill-editor-toolbar>
-                    <!-- <select class="ql-custom tooltip" (change)="insertPlaceholder($event)" >
-                        <option value="0" selected></option>
-
-                        <option value="[anno scolastico]" >[anno scolastico]</option>
-                        <option value="[nome e cognome alunno]">[nome e cognome alunno]</option>
-                        <option value="[Indirizzo Scuola]">[Indirizzo scuola]</option>
-                        <option value="[Voto Italiano 1Q]">[Voto Italiano 1Q]</option>
-                        <option value="[Obiettivo 1 Italiano]">[Obiettivo 1 Italiano]</option>
-
-                    </select> -->
                     <span class="ql-formats">
                         <select class="ql-font" [title]="'Carattere'">
-                            <!-- <option value="Titillium Web"></option>
-                            <option value="Serif"></option>
-                            <option value="Monospace"></option> -->
                         </select>
                     </span>
 
@@ -156,17 +145,8 @@
                         <button class="ql-clean" [title]="'Pulizia Formato'"></button>
                     </span>
 
-
-                
                   </div>
-                    <!-- <span class="ql-formats">
-                      <select class="ql-lineheight" [title]="'Line Height'">
-                        <option selected></option>
-                        <option value="1.0">1.0</option>
-                        <option value="2.0">2.0</option>
-                      </select>      
-                    </span> -->
-            
+
             </quill-editor>
 <!--#endregion-->
 

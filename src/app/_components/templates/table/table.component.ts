@@ -2,14 +2,16 @@
 
 import { AfterViewInit, Component, Input, OnChanges, OnInit, ViewChild }  from '@angular/core';
 import { QuillEditorComponent }                 from 'ngx-quill'
+import { tap }                                  from 'rxjs';
+
 import 'quill-mention'
 
 //services
 import { BlocchiCelleService }                  from '../blocchicelle.service';
-import { TEM_BloccoCella } from 'src/app/_models/TEM_BloccoCella';
-import { TEM_MentionValue } from 'src/app/_models/TEM_MentionValue';
 
-import { tap } from 'rxjs';
+//models
+import { TEM_BloccoCella }                      from 'src/app/_models/TEM_BloccoCella';
+import { TEM_MentionValue }                     from 'src/app/_models/TEM_MentionValue';
 
 //#endregion
 @Component({
@@ -90,16 +92,15 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-  @ViewChild('QuillEditor', { static: false }) editor!: QuillEditorComponent
 
+  @ViewChild('QuillEditor', { static: false }) editor!: QuillEditorComponent
   @Input('bloccoID') bloccoID! :                number;
   @Input('wBlocco') wBlocco!:                   string; 
   @Input('hBlocco') hBlocco!:                   string;
   @Input('mentionValues') mentionValues!:       TEM_MentionValue[];
   @Input('adapt') adapt:                        number = 3;   //@Input con un default qualora non arrivasse da blocco
-
-
 //#endregion
+
   constructor(
     private svcBloccoCella:                     BlocchiCelleService
   ) {}
@@ -342,11 +343,11 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
     this.isResizing = false;
   }
 
-
 //#endregion
 
-  addCol() {
+//#region ----- Altri metodi -------------------
 
+  addCol() {
 
     if (this.colsArr.length <10) {
       //aggiungo una colonna
@@ -397,11 +398,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
     }
   }
 
-  insertPlaceholder(event: any) {
-    console.log ("insertPlaceholder", this.currIndex, event.target!.value);
-    this.editor.quillEditor.insertText (this.currIndex, event.target!.value, 'bold', true);  
-  }
-
   save() {
 
     //il salvataggio delle celle viene delegato a questo component
@@ -442,4 +438,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
     console.log(select.value, j, i)
     this.fontSizeCella[j][i] = select.value;
   }
+
+//#endregion
+
 }

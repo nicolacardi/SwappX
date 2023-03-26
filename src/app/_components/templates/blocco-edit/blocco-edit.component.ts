@@ -25,15 +25,15 @@ import { LoadingService }                       from '../../utilities/loading/lo
 import { BlocchiFotoService }                   from '../blocchifoto.service';
 import { BlocchiTestiService }                  from '../blocchitesti.service';
 import { BlocchiCelleService }                  from '../blocchicelle.service';
+import { TableColsService }                     from '../../utilities/toolbar/tablecols.service';
 
 //models
 import { A4 }                                   from 'src/environments/environment';
 import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
 import { TEM_BloccoFoto }                       from 'src/app/_models/TEM_BloccoFoto';
 import { TEM_BloccoTesto }                      from 'src/app/_models/TEM_BloccoTesto';
-import { TableColsService } from '../../utilities/toolbar/tablecols.service';
-import { _UT_TableCol } from 'src/app/_models/_UT_TableCol';
-import { TEM_MentionValue } from 'src/app/_models/TEM_MentionValue';
+import { _UT_TableCol }                         from 'src/app/_models/_UT_TableCol';
+import { TEM_MentionValue }                     from 'src/app/_models/TEM_MentionValue';
 
 //#endregion
 @Component({
@@ -71,16 +71,13 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
       import: 'attributors/style/size',
       whitelist: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px']
     }
-
   ];
 
-  
-
   currIndex:                                   number = 0;
+
+  // le quillOptions vengono gestite direttamente nell'HTML
   // quillOptions = {                              //non servirà più
-
   //   toolbar: 
-
   //   [
   //     ['bold', 'italic', 'underline', 'strike'],          // toggled buttons
   //     //['blockquote', 'code-block'],
@@ -97,7 +94,6 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
   //     ['clean'],                                          // remove formatting button
   //     //['link', 'image', 'video']                         // link and image, video
   //   ],
-    
   // };
   
 
@@ -526,23 +522,9 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
 //#endregion
 
 //#region ----- Quill -------------------------
-  onSelectionChanged = (event: any) =>{
-    //salva la posizione in cui si trova il cursore!
-    this.currIndex = event.range.index;
-  }
-
-
-  insertPlaceholder(event: any) {
-    //conosciamo l'API editor è QuillEditor....
-    //    const debug = this.editor.quillEditor.getContents();          //ritorna un fantomatico Delta Array un elemento per ogni riga
-    //    const debug = this.editor.quillEditor.getIndex.length;        //ritorna sempre 1
-    //    const deubg = this.editor.quillEditor.deleteText(2,3);        //cancella dal secondo carattere per tre caratteri
-    //    const debug = this.editor.quillEditor.getSelection()!.length; //non funziona proprio, nemmeno "null"
-    //    const debug = this.editor.quillEditor.getLines();             //restituisce il numero di linee
-    //    const debug = this.editor.quillEditor.getText();              //restituisce il testo intero
-    console.log ("insertPlaceholder", this.currIndex, event.target!.value);
-    this.editor.quillEditor.insertText (this.currIndex, event.target!.value, 'bold', true);  
-  }
+  // onSelectionChanged = (event: any) =>{
+  //   this.currIndex = event.range.index;         //salva la posizione in cui si trova il cursore!
+  // }
 
 
   changeFontSize() {
@@ -552,15 +534,12 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
   }
 //#endregion
 
-
-
-
   setCampiMention() {
 
-    console.log("blocco-edit - setCampiMention: this.form.controls.tableNames.value", this.form.controls.tableNames.value);
+    // console.log("blocco-edit - setCampiMention: this.form.controls.tableNames.value", this.form.controls.tableNames.value);
     this.svcTableCols.listByTable(this.form.controls.tableNames.value)
     .pipe(
-      map( (cols) => cols.map((col, i) => ({id: i+1, value: this.form.controls.tableNames.value+"."+col.colName})))
+      map( (cols) => cols.map((col, i) => ({id: i+1, value: this.form.controls.tableNames.value+"_"+col.colName})))
     )
     .subscribe(res => {
       
