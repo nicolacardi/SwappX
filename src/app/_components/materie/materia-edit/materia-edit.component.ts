@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Inject, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -19,6 +21,7 @@ import { MAT_MacroMateria } from 'src/app/_models/MAT_MacroMateria';
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 import { ColorPickerComponent } from '../../color-picker/color-picker.component';
 
+//#endregion
 
 @Component({
   selector: 'app-materia-edit',
@@ -27,7 +30,7 @@ import { ColorPickerComponent } from '../../color-picker/color-picker.component'
 })
 export class MateriaEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   materia$!:                  Observable<MAT_Materia>;
   obsMacroMaterie$!:          Observable<MAT_MacroMateria[]>;
@@ -36,6 +39,8 @@ export class MateriaEditComponent implements OnInit {
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor(
     public _dialogRef: MatDialogRef<MateriaEditComponent>,
@@ -58,8 +63,9 @@ export class MateriaEditComponent implements OnInit {
     });
 
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
     this.loadData();
@@ -90,7 +96,7 @@ export class MateriaEditComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Operazioni CRUD -------
+//#region ----- Operazioni CRUD ----------------
 
   save(){
 
@@ -139,8 +145,8 @@ export class MateriaEditComponent implements OnInit {
   openColorPicker() {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '405px',
-      height: '460px',
+      width: '350px',
+      height: '475px',
       data: {ascRGB: this.form.controls.color.value},
     };
     const dialogRef = this._dialog.open(ColorPickerComponent, dialogConfig);

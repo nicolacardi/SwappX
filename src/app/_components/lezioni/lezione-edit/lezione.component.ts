@@ -1,9 +1,11 @@
+//#region ----- IMPORTS ------------------------
+
 import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
-import { concatMap, take, tap }                 from 'rxjs/operators';
+import { take, tap }                 from 'rxjs/operators';
 
 import { registerLocaleData }                   from '@angular/common';
 import localeIt                                 from '@angular/common/locales/it';
@@ -38,10 +40,8 @@ import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_Classe
 import { CAL_Presenza }                         from 'src/app/_models/CAL_Presenza';
 import { TST_VotoCompito }                      from 'src/app/_models/TST_VotiCompiti';
 import { DialogDataLezione }                    from 'src/app/_models/DialogData';
-import { MatTabGroup } from '@angular/material/tabs';
 
-
-
+//#endregion
 
 @Component({
   selector: 'app-lezione',
@@ -51,7 +51,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 })
 export class LezioneComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   form! :                                       UntypedFormGroup;
   docenteID!:                                   number;
@@ -87,6 +87,8 @@ export class LezioneComponent implements OnInit {
 
 
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor( 
     public _dialogRef:                          MatDialogRef<LezioneComponent>,
@@ -139,6 +141,10 @@ export class LezioneComponent implements OnInit {
       end:                                      ['']
     });
   }
+
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit () {
     this.form.controls.materiaID.valueChanges.subscribe( 
@@ -248,6 +254,9 @@ export class LezioneComponent implements OnInit {
       this.form.controls.h_End.setValue(this.strH_End);
     }
   }
+//#endregion
+
+//#region ----- Operazioni CRUD ----------------
 
   save() {
 
@@ -359,68 +368,54 @@ export class LezioneComponent implements OnInit {
     );
   }
 
+//#endregion
+
+//#region ----- Altri metodi -------------------
+
+  
   dp1Change() {
 
-    //prendo la data corrente
-    let dtTMP = new Date (this.data.start);
-
-    //ci metto l'H_End
-    dtTMP.setHours(this.form.controls.h_End.value.substring(0,2));
-    dtTMP.setMinutes(this.form.controls.h_End.value.substring(3,5));
-
-    let setHours = 0;
-    let setMinutes = 0;
-
-    //tolgo un'ora, ma se vado sotto le 8 devo impostare le 8
-    if ((dtTMP.getHours() - 1) < 8) { 
-      setHours = 8;
-      setMinutes = 0;
-    } 
-    else { 
-      setHours = (dtTMP.getHours() - 1)
-      setMinutes = (dtTMP.getMinutes())
-    }
-
-    let dtTMP2 = new Date (dtTMP.setHours(setHours));
-    dtTMP2.setMinutes(setMinutes);
-    let dtISO = dtTMP2.toLocaleString();
-    let dtTimeNew = dtISO.substring(11,19);   //tutto quanto sopra per arrivare a questa dtTimeNew da impostare nel caso 3 sottostante
-
+    //verifico anzitutto se l'ora che sto scrivendo è entro i limiti 8-15.30 altrimenti sistemo
     if (this.form.controls.h_Ini.value < "08:00") {this.form.controls.h_Ini.setValue ("08:00") }   //ora min di inizio 08:00:  sarà parametrica
     if (this.form.controls.h_Ini.value > "15:30") {this.form.controls.h_Ini.setValue ("15:30") }   //ora max di inizio 15:30: sarà parametrica
-    if (this.form.controls.h_Ini.value >= this.form.controls.h_End.value) { this.form.controls.h_Ini.setValue (dtTimeNew) }
+    this.checkDurata();
+
   }
 
   dp2Change() {
 
-    //prendo la data corrente
-    let dtTMP = new Date (this.data.start);
-
-    //ci metto l'H_Ini
-    dtTMP.setHours(this.form.controls.h_Ini.value.substring(0,2));
-    dtTMP.setMinutes(this.form.controls.h_Ini.value.substring(3,5));
-
-    let setHours = 0;
-    let setMinutes = 0;
-
-    //aggiungo un'ora, ma se vado sopra le 15 devo impostare le 15
-    if ((dtTMP.getHours() + 1) > 15) { //NC 28.01.23 era - 1, ho messo + 1
-      setHours = 15;
-      setMinutes = 0;
-    } 
-    else { 
-      setHours = (dtTMP.getHours() + 1)
-      setMinutes = (dtTMP.getMinutes())
-    }
-    let dtTMP2 = new Date (dtTMP.setHours(setHours));
-    dtTMP2.setMinutes(setMinutes);
-    let dtISO = dtTMP2.toLocaleString();
-    let dtTimeNew = dtISO.substring(11,19); //tutto quanto sopra per arrivare a questa dtTimeNew da impostare nel caso 3 sottostante
-
+    //verifico anzitutto se l'ora che sto scrivendo è entro i limiti 8-15.30 altrimenti sistemo
     if (this.form.controls.h_End.value < "08:30") {this.form.controls.h_End.setValue ("08:30") } //ora min di fine 08:30:  sarà parametrica
     if (this.form.controls.h_End.value > "16:00") {this.form.controls.h_End.setValue ("16:00") } //ora max di fine 16:00:  sarà parametrica
-    if (this.form.controls.h_End.value <= this.form.controls.h_Ini.value) { this.form.controls.h_End.setValue (dtTimeNew) }
+    this.checkDurata();
+
   }
+
+  checkDurata() {
+
+    //se la durata è > 30min imposto l'ora di fine a 30 min dopo 
+  
+    if (this.form.controls.h_End.value) {
+      //prendo la data
+        let dtTMPEnd = new Date (this.data.start);
+        //ci metto l'H_End
+        dtTMPEnd.setHours(this.form.controls.h_End.value.substring(0,2));
+        dtTMPEnd.setMinutes(this.form.controls.h_End.value.substring(3,5));
+  
+        let dtTMPStart = new Date (this.data.start);
+        //ci metto l'H_Ini
+        dtTMPStart.setHours(this.form.controls.h_Ini.value.substring(0,2));
+        dtTMPStart.setMinutes(this.form.controls.h_Ini.value.substring(3,5));
+  
+        //calcolo la durata, se meno di 30 minuti modifico H_end
+        let durata = (dtTMPEnd.getTime() - dtTMPStart.getTime())/1000/60;
+        if (durata < 30) {
+          dtTMPEnd.setTime(dtTMPStart.getTime()+(30*1000*60));
+          let dtTimeNew = Utility.zeroPad(dtTMPEnd.getHours(), 2)+":"+Utility.zeroPad(dtTMPEnd.getMinutes(), 2);
+          this.form.controls.h_End.setValue (dtTimeNew)
+        }
+      }
+    }
 
   ckAssenteChange() {
     if (this.form.controls.ckAssente.value != true) 
@@ -547,4 +542,5 @@ export class LezioneComponent implements OnInit {
     this.selectedTab = event.index;
   }
 
+//#endregion
 }

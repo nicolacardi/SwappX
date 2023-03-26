@@ -1,10 +1,20 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { _UT_GridLayout, _UT_GridLayoutColumn } from 'src/app/_models/_UT_GridLayout';
-import { UserService } from 'src/app/_user/user.service';
-import { AlunniListComponent } from '../../../alunni/alunni-list/alunni-list.component';
+//#region ----- IMPORTS ------------------------
 
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Component, Inject, OnInit }            from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
+
+//services
+import { UserService }                          from 'src/app/_user/user.service';
+import { TableColsVisibleService }              from '../tablecolsvisible.service';
+
+//models
+import { User }                                 from 'src/app/_user/Users';
+import { _UT_TableCol }                         from 'src/app/_models/_UT_TableCol';
+import { _UT_TableColTMP }                      from 'src/app/_models/_UT_TableColTMP';
+import { _UT_TableColVisible }                  from 'src/app/_models/_UT_TableColVisible';
+
+//#endregion
 @Component({
   selector: 'app-scelta-colonne',
   templateUrl: './scelta-colonne.component.html',
@@ -12,52 +22,85 @@ import { AlunniListComponent } from '../../../alunni/alunni-list/alunni-list.com
 })
 export class SceltaColonneComponent implements OnInit {
 
-  //griglia!: string;
-  //userID!: 
+  lstHidden!:                                   _UT_TableColTMP[]; //la lista di sinistra
+  lstVisible!:                                  _UT_TableColTMP[]; //la lista di destra
+  lstDisabled!:                                 _UT_TableColTMP[]; //la lista di quelli inamovibili
+  currUser!:                                    User;
 
-  lstColumns!: _UT_GridLayoutColumn[];
-  lstVisible!: _UT_GridLayoutColumn[];
-  
-  basket!: string[];
-  items!: string[];
-  
-  //1- Modificare costruttore: in input deve accettare il parametro [gridName] (l'utente va recuperato da this.uService.currentUser)
- 
-  /*
-  2-  Chiamare WS GET _UT_Layout [TODO asp.net core]
-  input:
-  //userID
-  //gridName
-  output:
-  //List< columnName, isVisible >
-  //
-  */
+  tableName!:                                   string;
+  tableColsVisible!:                            _UT_TableColVisible[]; //la lista in arrivo da toolbar per le colonne di sinistra
+  tableCols!:                                   _UT_TableCol[];     //la lista in arrivo da toolbar per le colonne di destra /disabled + non disabled
 
-  //3- Popolare le due liste in funzione del parametro isVisible
 
-  /* 
-  4- Save: Chiamare WS DELETE  (tutte le righe con chiave GridName e UserID)
-             Chiamare WS POST per tutti gli elementi delle due liste 
-  */
+  constructor(
+    public _dialogRef:                          MatDialogRef<SceltaColonneComponent>,
+    private svcTableColsVisible:                TableColsVisibleService,
 
-  //5- Refresh chiamante
-
-  constructor(@Inject(MAT_DIALOG_DATA) //public displayedColumns: string[],
-                                       public gridLayout:       _UT_GridLayout, 
-                                       private svcUser:        UserService) { 
-                    
-  }
+    @Inject(MAT_DIALOG_DATA)
+    //dentro data arrivano le colonne da mostrare, in un array di tre elementi: [tableName, tableCols, tableColsVisible]
+    public data:                                any, 
+    private svcUser:                            UserService,
+    ) 
+    { }
 
   ngOnInit(): void {
+    this.svcUser.obscurrentUser.subscribe(val => {
+      this.currUser = val;
+    })
 
-    this.lstColumns = this.gridLayout.columns.filter(x=> x.isVisible== false);
-    this.lstVisible = this.gridLayout.columns.filter(x=> x.isVisible== true);
+    //vado a MAPPARE le colonne visibili e quelle disponibili in lstHidden e lstVisible che sono di tipo_UT_tableColTMP
+
+    this.tableName = this.data[0];
+    this.tableCols = this.data[1];
+    this.tableColsVisible = this.data[2];
+
+    this.lstDisabled = [];
+    this.lstHidden = [];
+    this.lstVisible = [];
+
+    this.tableCols.forEach (
+      colonna=> {
+          let tableColTMP : _UT_TableColTMP = {
+            colName:  colonna.colName,
+            disabled: colonna.disabled,
+            tableColID: colonna.id,
+            ordCol: colonna.ordColDefault
+          }
+        if (colonna.disabled) {
+          this.lstDisabled.push(tableColTMP);
+        }else {
+          this.lstHidden.push(tableColTMP);
+        }
+      }
+    )
+
+    if (this.data[2].length == 0){  
+      this.lstVisible = this.lstHidden; //ecco il default: se non ci sono proprio record visibili allora ci metto quelle hidden
+      this.lstHidden = []; //e resetto quelle hidden
+    } else {
+      this.tableColsVisible.forEach (
+        colonna=> {
+          let tableColTMP : _UT_TableColTMP = {
+            colName:  colonna.tableCol!.colName,
+            disabled: colonna.tableCol!.disabled,
+            tableColID: colonna.tableCol!.id,
+            ordCol: colonna.ordCol
+          }
+          if (!colonna.tableCol!.disabled) {
+            this.lstVisible.push(tableColTMP);
+          }      
+        }
+      )
+    }
+
+    //ora devo rimuovere da lstHidden quelli che già sono in lstVisible
+    this.lstHidden  = this.lstHidden.filter(item1 => !this.lstVisible.some(item2 => item1.colName === item2.colName));
   }
 
   
-  drop(event: CdkDragDrop<_UT_GridLayoutColumn[]>) {
+  drop(event: CdkDragDrop<_UT_TableColTMP[]>) {
 
-    if(event.previousContainer.data.length <=1) return;
+    //if(event.previousContainer.data.length <=1) return;
 
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -72,11 +115,66 @@ export class SceltaColonneComponent implements OnInit {
   }
 
   save() {
-    //TODO: chiamata al WS
-    //...
 
-    //aggiornamento griglia chiamante
-    //...
+    //cancello tutte le precedenti e le riposto una a una
+
+    this.svcTableColsVisible.deleteByUserAndTable(this.currUser.userID, this.tableName).subscribe( res => {
+
+      //salvo prima le disabled che devono sempre esserci
+      let disabledItems : number = 0;
+      for (let i = 0; i<this.lstDisabled.length; i++) {
+        let tableColVisible : _UT_TableColVisible = {
+          userID:                               this.currUser.userID,
+          tableColID:                           this.lstDisabled[i].tableColID,
+          ordCol:                               i +1,
+        }
+        disabledItems ++;
+        //console.log ("scelta-colonne - salvataggio colonna disabled", tableColVisible);
+        this.svcTableColsVisible.post(tableColVisible).subscribe();
+      }      
+
+
+      for (let j = 0; j<this.lstVisible.length; j++) {
+        let tableColVisible : _UT_TableColVisible = {
+          userID:                               this.currUser.userID,
+          tableColID:                           this.lstVisible[j].tableColID,
+          ordCol:                               j + disabledItems +1,
+        }
+        console.log ("scelta-colonne - salvataggio colonna visibile", tableColVisible);
+
+        this.svcTableColsVisible.post(tableColVisible).subscribe();
+      }
+
+      //la chiusura della dialog dovrebbe arrivare in maniera SINCRONA dopo i salvataggi essendo due cicli for e non forEach
+      this._dialogRef.close(); //la chiusura scatenerà da parte della toolbar una emit che viene captata dalla page, che aggiorna il component
+      
+    })
+
+  }
+
+  default() {
+
+    this.lstDisabled = [];
+    this.lstHidden = [];
+    this.lstVisible = [];
+
+    this.tableCols.forEach (
+      colonna=> {
+          let tableColTMP : _UT_TableColTMP = {
+            colName:  colonna.colName,
+            disabled: colonna.disabled,
+            tableColID: colonna.id,
+            ordCol: colonna.ordColDefault
+          }
+        if (colonna.disabled) {
+          this.lstDisabled.push(tableColTMP);
+        }else {
+          this.lstVisible.push(tableColTMP);
+        }
+      }
+    )
+
+
     
   }
 }

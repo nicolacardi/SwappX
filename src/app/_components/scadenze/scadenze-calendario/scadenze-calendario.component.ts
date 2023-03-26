@@ -1,11 +1,13 @@
+//#region ----- IMPORTS ------------------------
+
 import { ApplicationRef, Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/core';
 import { FullCalendarComponent }                from '@fullcalendar/angular';//-->serve per il ViewChild
 
-import dayGridPlugin from '@fullcalendar/daygrid'
-import listPlugin from '@fullcalendar/list'
-import timegridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction'
+import dayGridPlugin                            from '@fullcalendar/daygrid'
+import listPlugin                               from '@fullcalendar/list'
+import timegridPlugin                           from '@fullcalendar/timegrid'
+import interactionPlugin                        from '@fullcalendar/interaction'
 
 import { EventResizeDoneArg }                   from '@fullcalendar/interaction';
 import { concatMap, tap }                       from 'rxjs/operators';
@@ -27,10 +29,10 @@ import { DialogOkComponent }                    from '../../utilities/dialog-ok/
 //services
 import { ScadenzeService }                      from '../scadenze.service';
 
-//classes
+//models
 import { CAL_Scadenza }                         from 'src/app/_models/CAL_Scadenza';
 
-
+//#endregion
 @Component({
   selector: 'app-scadenze-calendario',
   templateUrl: './scadenze-calendario.component.html',
@@ -38,10 +40,8 @@ import { CAL_Scadenza }                         from 'src/app/_models/CAL_Scaden
 })
 export class ScadenzeCalendarioComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   Events: any[] = [];
-  
-
 
   calendarOptions: CalendarOptions = {
 
@@ -150,22 +150,20 @@ export class ScadenzeCalendarioComponent implements OnInit {
 
 //#endregion
 
-//#region ----- ViewChild Input Output -------
-
-
+//#region ----- ViewChild Input Output ---------
   @ViewChild('calendarDOM') calendarDOM!: FullCalendarComponent;
 //#endregion
-  
+
+//#region ----- Constructor --------------------
+
   constructor( 
     private svcScadenze:                        ScadenzeService,
     private _loadingService:                    LoadingService,
     private _snackBar:                          MatSnackBar,
     public _dialog:                             MatDialog, 
     public appRef:                              ApplicationRef
-  ) {
-
-  }
-
+  ) {}
+//#endregion
 
 //#region ----- LifeCycle Hooks e simili-------
 
@@ -385,7 +383,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Add Edit Eventi -------
+//#region ----- Add & Edit Eventi --------------
 
   openDetail(clickInfo: EventClickArg) {
     // if (clickInfo.event.extendedProps.tipoScadenza.ckNota) {
@@ -558,6 +556,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
     }
         
   }
+//#endregion
 }
 
 

@@ -22,6 +22,11 @@
   }
 
 
+  :host ::ng-deep .headerColored .mat-mdc-header-row {
+    background-color: #f9f9f9;
+  }
+  
+  
 
     /* low-list-row è una classe creata per  ridurre l'altezza dei form:
     /* attenzione però: toglie il mat-hint sottostante !!!*/

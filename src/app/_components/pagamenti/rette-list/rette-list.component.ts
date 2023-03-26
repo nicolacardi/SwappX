@@ -1,22 +1,24 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSlideToggle, MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable, zip } from 'rxjs';
+//#region ----- IMPORTS ------------------------
+
+import { Component, OnInit, ViewChild }         from '@angular/core';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatPaginator }                         from '@angular/material/paginator';
+import { MatSlideToggle }                       from '@angular/material/slide-toggle';
+import { MatTableDataSource }                   from '@angular/material/table';
+import { Observable, zip }                      from 'rxjs';
 import { groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { MatMenuTrigger }                       from '@angular/material/menu';
 
 //components
-import { RettaEditComponent } from '../retta-edit/retta-edit.component';
-import { AlunnoEditComponent } from '../../alunni/alunno-edit/alunno-edit.component';
-import { RettaCalcoloComponent } from '../retta-calcolo/retta-calcolo.component';
+import { RettaEditComponent }                   from '../retta-edit/retta-edit.component';
+import { AlunnoEditComponent }                  from '../../alunni/alunno-edit/alunno-edit.component';
+import { RettaCalcoloComponent }                from '../retta-calcolo/retta-calcolo.component';
 
 //services
-import { RetteService } from '../rette.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
+import { RetteService }                         from '../rette.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
 
 //classes
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
@@ -25,6 +27,7 @@ import { PAG_RettaGroupObj } from 'src/app/_models/PAG_RetteGroupObj';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
+//#endregion
 @Component({
   selector: 'app-rette-list',
   templateUrl: './rette-list.component.html',
@@ -32,8 +35,8 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 })
 export class RetteListComponent implements OnInit {
   
-//#region ----- Variabili -------
-  matDataSource = new MatTableDataSource<PAG_RettaPivot>();
+//#region ----- Variabili ----------------------
+matDataSource = new MatTableDataSource<PAG_RettaPivot>();
 
   obsAnni$!:                Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   form:                     UntypedFormGroup;            //form fatto della sola combo anno scolastico
@@ -138,6 +141,8 @@ export class RetteListComponent implements OnInit {
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 //#endregion
 
+//#region ----- Constructor --------------------
+
   constructor(
     private svcRette:         RetteService,
     private svcAnni:          AnniScolasticiService,
@@ -150,6 +155,7 @@ export class RetteListComponent implements OnInit {
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     })
   }
+//#endregion
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit() {

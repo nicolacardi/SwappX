@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, DebugElement, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatSelect }                            from '@angular/material/select';
@@ -30,6 +32,7 @@ import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoSc
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
 
+//#endregion
 @Component({
   selector: 'app-classi-sezioni-anni-list',
   templateUrl: './classi-sezioni-anni-list.component.html',
@@ -38,7 +41,7 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 
 export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   currUser!:                                    User;
 
   matDataSourceIscrizioni =                     new MatTableDataSource<CLS_ClasseSezioneAnno>();
@@ -100,13 +103,30 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   rptFieldsToKeep  = [
     "descrizione2",
     "sezione",
-    "numAlunni"
+    "numAlunni",
+    "numStato10",
+    "numStato20",
+    "numStato30",
+    "numStato40",
+    "numStato50",
+    "numStato60",
+    "numStato70",
+    "numStato80"
+
   ];
 
   rptColumnsNames  = [
     "descrizione",
     "sezione",
-    "numero alunni"
+    "numero alunni",
+    "Stato 10",
+    "Stato 20",
+    "Stato 30",
+    "Stato 40",
+    "Stato 50",
+    "Stato 60",
+    "Stato 70",
+    "Stato 80"
   ];
 
   selection =                                   new SelectionModel<CLS_ClasseSezioneAnnoGroup>(true, []);   //rappresenta la selezione delle checkbox
@@ -146,11 +166,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     
 //#endregion
 
-//#region ----- ViewChild Input Output -------
-
-  @Input('dove') dove! :                                          string;
-  @Input('alunnoID') alunnoID! :                                  number;
-  @Input() classiSezioniAnniFilterComponent!:                     ClassiSezioniAnniFilterComponent;
+//#region ----- ViewChild Input Output ---------
   
   @ViewChild(MatPaginator) paginator!:                            MatPaginator;
   @ViewChild(MatSort) sort!:                                      MatSort;
@@ -160,6 +176,10 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   @ViewChildren("endedIcons", { read: ElementRef }) endedIcons!:  QueryList<ElementRef>   //elenco delle icone di fine procedura
   //@ViewChildren("ckSelected", { read: ElementRef }) ckSelected!:  QueryList<ElementRef>   //elenco delle icone di fine procedura)
   //@ViewChildren ('ckSelected' ) ckSelected!:QueryList<any>;
+  
+  @Input('dove') dove! :                                          string;
+  @Input('alunnoID') alunnoID! :                                  number;
+  @Input() classiSezioniAnniFilterComponent!:                     ClassiSezioniAnniFilterComponent;
 
   @Output('annoID') annoIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
   @Output('classeSezioneAnnoID') classeSezioneAnnoIDEmitter = new EventEmitter<number>(); //classeId viene EMESSO quando si clicca su una classe
@@ -169,6 +189,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor( 
     private svcClassiSezioniAnni:               ClassiSezioniAnniService,
     private svcAnni:                            AnniScolasticiService,
@@ -190,8 +211,9 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
       selectDocente: 0
     });
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
  
 
   ngOnInit() {
@@ -325,7 +347,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   }
 
   loadData () {
-    console.log("PASSO DI QUI");
+
     let annoID: number;
     annoID = this.form.controls["selectAnnoScolastico"].value;
 
@@ -382,7 +404,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#endregion
 
-//#region ----- Emit per alunno-edit -------
+//#region ----- Emit per alunno-edit -----------
 
   addToAttendedEmit(item: CLS_ClasseSezioneAnnoGroup) {
     this.addToAttended.emit(item);
@@ -390,7 +412,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
 
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
@@ -461,7 +483,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   }
 //#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
 
   addRecord(){
     const dialogConfig : MatDialogConfig = {
@@ -497,7 +519,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   }
 //#endregion
 
-//#region ----- Gestione Campo Checkbox -------
+//#region ----- Gestione Campo Checkbox --------
   selectedRow(element: CLS_ClasseSezioneAnnoGroup) {
       this.selection.toggle(element);
   }
@@ -548,7 +570,6 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     return numSelected === 0;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
   }
 //#endregion
-
 
 //non chiaro ma compareWith= compareObjects consente di impostare correttamente il valore di default NC 120123
   compareObjects(o1: any, o2: any): boolean {

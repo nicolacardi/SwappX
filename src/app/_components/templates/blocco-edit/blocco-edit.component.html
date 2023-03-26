@@ -1,11 +1,14 @@
-<mat-card appearance="outlined" class="form-card">
+<mat-card appearance="outlined" class="form-card" >
     <mat-card-content>
         <form *ngIf="blocco$ | async" class="data-form flex-form" [formGroup] = "form">
 
-            <!-- ********************************    BOTTONI     ************************************* -->
+<!--#region ************ BOTTONI ********************-->
             <div class="center">
 
-                <img class="iconaMenuBig" src="./assets/blocco_edit_T.svg">
+                <img *ngIf="tipoBloccoDesc == 'Text'" class="iconaMenuBig" src="./assets/blocco_edit_testo_T.svg">
+                <img *ngIf="tipoBloccoDesc == 'Table'" class="iconaMenuBig" src="./assets/blocco_edit_tabella_T.svg">
+                <img *ngIf="tipoBloccoDesc == 'Image'" class="iconaMenuBig" src="./assets/blocco_edit_immagine_T.svg">
+
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
@@ -26,8 +29,9 @@
                 </button>
 
             </div>
+<!--#endregion-->
 
-<!-- ************ X W Y H ********************-->
+<!--#region ************ X W Y H ********************-->
 
             <mat-grid-list [cols]="2" rowHeight="20px" >
                 <mat-grid-tile>
@@ -42,7 +46,7 @@
                 <mat-grid-tile>
                     <mat-form-field  appearance="outline">
                         <mat-label>Da sinistra</mat-label>
-                        <input matInput type="number" required formControlName="x">
+                        <input matInput type="number" required formControlName="x" #x>
                         <mat-error *ngIf="form.controls.x.errors?.required"> Obbligatorio</mat-error>
                     </mat-form-field>
                 </mat-grid-tile>
@@ -50,7 +54,7 @@
                 <mat-grid-tile>
                     <mat-form-field appearance="outline"> 
                         <mat-label>Larghezza</mat-label>
-                        <input matInput type="number" required formControlName="w">
+                        <input matInput type="number" required formControlName="w" #w>
                         <mat-error *ngIf="form.controls.w.errors?.required"> Obbligatorio</mat-error>
                     </mat-form-field>
 
@@ -68,86 +72,165 @@
                 <mat-grid-tile>
                     <mat-form-field appearance="outline">
                         <mat-label>Altezza</mat-label>
-                        <input matInput type="number" required formControlName="h">
+                        <input matInput type="number" required formControlName="h" #h>
                         <mat-error *ngIf="form.controls.h.errors?.required"> Obbligatorio</mat-error>
                     </mat-form-field>
                 </mat-grid-tile>
+            </mat-grid-list>   
+            <mat-grid-list  rowHeight="80px" *ngIf="tipoBloccoDesc == 'Text' || tipoBloccoDesc == 'Table'">
+                
+                <mat-grid-tile class="w100">
+                    <mat-form-field  class="w100" appearance="outline" >
+                        <mat-label>Campi dalla tabella ....</mat-label>
+                        <mat-select formControlName="tableNames" (selectionChange)="setCampiMention()">
+                            <mat-option *ngFor="let col of obsCols$ | async" [value]="col.tableName">
+                                {{col.tableName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
             </mat-grid-list>
+<!--#endregion-->
 
-            <!-- {{tipoBloccoDesc}}
-            <mat-grid-list class="_bordered-grey"  [cols]="2" rowHeight="80px" >
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <mat-label>BloccoTestoID</mat-label>
-                        <input matInput type="number"  formControlName="bloccoTestoID">
-                        
-                    </mat-form-field>
-                </mat-grid-tile>
+<!--#region ************ QUILL x Testo **************-->
 
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <mat-label>BloccoFotoID</mat-label>
-                        <input matInput type="number"  formControlName="bloccoFotoID">
-                       
-                        
-                    </mat-form-field>
-                </mat-grid-tile>
-            </mat-grid-list> -->
-            <!-- <mat-grid-list [cols]="1" rowHeight="200px" >
-                <mat-grid-tile *ngIf="tipoBloccoDesc == 'Testo'">
-                    <mat-form-field class="w100" appearance="outline">
-                        <mat-label>Testo</mat-label>
-                        <textarea matInput class="w100 _noresize" type="text" style="height: 120px" formControlName="testo"></textarea>
-                    </mat-form-field>
-                </mat-grid-tile>
-            </mat-grid-list> -->
-
-
-
-            <quill-editor *ngIf="tipoBloccoDesc == 'Testo'"
-                (onContentChanged)="onContentChanged($event)"
+            <quill-editor *ngIf="tipoBloccoDesc == 'Text'"
+                (onSelectionChanged)="onSelectionChanged($event)"
                 placeholder="Inserire il proprio testo..."
                 formControlName="testo"
-                [modules]="quillOptions"
                 [customOptions]="customOptions"
+                [modules] = "modules"
+                #QuillEditor>
+                
+            <!-- COSI' SI AGGIUNGONO MENU CON AZIONI IN ALTERNATIVA AI MODULES -->
+                <div quill-editor-toolbar>
+                    <!-- <select class="ql-custom tooltip" (change)="insertPlaceholder($event)" >
+                        <option value="0" selected></option>
 
-                >
+                        <option value="[anno scolastico]" >[anno scolastico]</option>
+                        <option value="[nome e cognome alunno]">[nome e cognome alunno]</option>
+                        <option value="[Indirizzo Scuola]">[Indirizzo scuola]</option>
+                        <option value="[Voto Italiano 1Q]">[Voto Italiano 1Q]</option>
+                        <option value="[Obiettivo 1 Italiano]">[Obiettivo 1 Italiano]</option>
 
-            
+                    </select> -->
+                    <span class="ql-formats">
+                        <select class="ql-font" [title]="'Carattere'">
+                            <!-- <option value="Titillium Web"></option>
+                            <option value="Serif"></option>
+                            <option value="Monospace"></option> -->
+                        </select>
+                    </span>
+
+                    <span class="ql-formats">
+                      <button class="ql-bold" [title]="'Grassetto'"></button>
+                      <button class="ql-italic" [title]="'Corsivo'"></button>
+                      <button class="ql-underline" [title]="'Sottolineato'"></button>
+                      <button class="ql-strike" [title]="'Barrato'"></button>
+                    </span>
+                
+                    <span class="ql-formats">
+                        <button class="ql-list ordered" value="ordered" [title]="'Elenco Numerato'"></button>
+                        <button class="ql-list bullet" value="bullet" [title]="'Elenco Puntato'"></button>
+
+                      </span>
+                    <span class="ql-formats">
+                      <select class="ql-size" [title]="'Dimensione Font'" formControlName="fontSize" (change)="changeFontSize()">
+                        <option value="10px"></option>
+                        <option value="12px"></option>
+                        <option value="14px"></option>
+                        <option value="16px"></option>
+                        <option value="18px"></option>
+                        <option value="20px"></option>
+                        <option value="22px"></option>
+                        <option value="24px"></option>
+                      </select>
+                    </span>
+                
+                    <span class="ql-formats">                      
+                        <select class="ql-align" [title]="'Allineamento'">
+                        </select>
+                    </span>
+
+                    <span class="ql-formats">
+                        <button class="ql-clean" [title]="'Pulizia Formato'"></button>
+                    </span>
+
+
+                
+                  </div>
+                    <!-- <span class="ql-formats">
+                      <select class="ql-lineheight" [title]="'Line Height'">
+                        <option selected></option>
+                        <option value="1.0">1.0</option>
+                        <option value="2.0">2.0</option>
+                      </select>      
+                    </span> -->
             
             </quill-editor>
+<!--#endregion-->
 
-<!-- ************ Riempimento ********************-->
-            <mat-grid-list *ngIf="tipoBloccoDesc == 'Testo'" class="_cell-bordered mt10" [cols]="4" rowHeight="60px">
+<!--#region ************ Riempimento e Bordi x Testo -->
+            <mat-grid-list *ngIf="tipoBloccoDesc == 'Text'" class=" _cell-bordered mt10" [cols]="4" rowHeight="60px">
 
                 <mat-grid-tile>
-                    <mat-label>Riempimento</mat-label>
+                    <mat-label>Trasparenza: </mat-label>
 
-                    <mat-checkbox color="primary" formControlName="ckFill">
+                    <mat-checkbox color="primary" formControlName="ckTrasp" (change)="setTrasparenza($event)">
                     </mat-checkbox>
                 </mat-grid-tile>
 
-                <mat-grid-tile *ngIf="tipoBloccoDesc == 'Testo'" [ngClass]="{'invisible': !form.controls.ckFill.value}">
+                <mat-grid-tile *ngIf="tipoBloccoDesc == 'Text'" [ngClass]="{'invisible': form.controls.ckTrasp.value}">
 
                     <button type="button" class="_btnColorPicker" 
                     (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
                 </mat-grid-tile>
+
+                <mat-grid-tile colspan="2">
+                    <mat-label>Bordi: </mat-label>
+
+                    <mat-button-toggle formControlName="borderTop" value="bordertop" (change)="bordersChange($event)" [checked]="form.controls.borderTop.value"><mat-icon>border_top</mat-icon></mat-button-toggle>
+                    <mat-button-toggle formControlName="borderRight" value="borderright" (change)="bordersChange($event)"  [checked]="form.controls.borderRight.value"><mat-icon>border_right</mat-icon></mat-button-toggle>
+                    <mat-button-toggle formControlName="borderBottom" value="borderbottom" (change)="bordersChange($event)"  [checked]="form.controls.borderBottom.value"><mat-icon>border_bottom</mat-icon></mat-button-toggle>
+                    <mat-button-toggle formControlName="borderLeft" value="borderleft" (change)="bordersChange($event)"  [checked]="form.controls.borderLeft.value"><mat-icon>border_left</mat-icon></mat-button-toggle>
+                </mat-grid-tile>
             </mat-grid-list>
+<!--endregion-->
 
-            <div *ngIf="tipoBloccoDesc == 'Immagine'" class="w100px h100px ma-lr mt20 shadowed" >
-                <img #myImg *ngIf="imgFile" class="w100px _bordered " [src]="imgFile">
-            </div>
+<!--#region ************ Immagine *******************-->
 
-            <div *ngIf="tipoBloccoDesc == 'Immagine'" class="flex-container form-group mt20 ">
+            <div *ngIf="tipoBloccoDesc == 'Image'" class="flex-container form-group mt20 ">
                 <div class="form-group">
                     <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" formControlName="file" (change)="onImageChange($event)"hidden #selectFile>
                     <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile.click()" >Seleziona Immagine</button>
-                    <!-- <div *ngIf="uf.file.touched && uf.file.invalid" class="alert alert-danger">
-                        <div *ngIf="uf.file.errors.required">Image file is required.</div>
-                    </div> -->
                 </div>
             </div>
+            
+            <div *ngIf="tipoBloccoDesc == 'Image'" class=" ma-lr mt20" >
+                <img  
+                    *ngIf="imgFile" 
+                    style="max-width: 250px; max-height: 250px;"
+                    class="_bordered-lightgrey " 
+                    [src]="imgFile"
+                    
+                    #myImg >
+            </div>
+<!--#endregion-->
 
+<!--#region ************ TABLE **********************-->
+            <div> 
+                <app-table 
+                    *ngIf="tipoBloccoDesc == 'Table'"
+                    [bloccoID] = "bloccoID"
+                    [wBlocco] = "w.value"
+                    [hBlocco] = "h.value"
+                    [mentionValues] = "mentionValues"
+                >
+                </app-table>
+            </div>
+<!-- endregion-->
+        
         </form>
     </mat-card-content>
 </mat-card>
+

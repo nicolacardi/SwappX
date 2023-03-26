@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDrawer } from '@angular/material/sidenav';
-import { IscrizioniListComponent } from '../iscrizioni-list/iscrizioni-list.component';
+//#region ----- IMPORTS ------------------------
 
+import { Component, OnInit, ViewChild }         from '@angular/core';
+import { IscrizioniListComponent }              from '../iscrizioni-list/iscrizioni-list.component';
+
+//#endregion
 @Component({
   selector: 'app-iscrizioni-page',
   templateUrl: './iscrizioni-page.component.html',
@@ -9,9 +11,9 @@ import { IscrizioniListComponent } from '../iscrizioni-list/iscrizioni-list.comp
 })
 export class IscrizioniPageComponent implements OnInit {
 
-
+//#region ----- ViewChild Input Output ---------
   @ViewChild(IscrizioniListComponent) iscrizioniList!: IscrizioniListComponent; 
-
+//#endregion
   
   // @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
   constructor() { }
@@ -23,11 +25,7 @@ export class IscrizioniPageComponent implements OnInit {
       this.iscrizioniList.addRecord()
   }
   resetFiltri() {
-
   }
 
-  // openDrawer() {
-  //   this.drawerFiltriAvanzati.open();
-  // }
 
 }

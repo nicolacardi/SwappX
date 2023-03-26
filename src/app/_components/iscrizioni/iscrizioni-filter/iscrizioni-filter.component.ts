@@ -1,9 +1,12 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
 //components
 import { IscrizioniListComponent } from '../iscrizioni-list/iscrizioni-list.component';
 
+//#endregion
 @Component({
   selector: 'app-iscrizioni-filter',
   templateUrl: './iscrizioni-filter.component.html',
@@ -11,7 +14,7 @@ import { IscrizioniListComponent } from '../iscrizioni-list/iscrizioni-list.comp
 })
 export class IscrizioniFilterComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   nomeFilter =      new UntypedFormControl('');
   cognomeFilter =   new UntypedFormControl('');
   classeFilter =    new UntypedFormControl('');
@@ -30,7 +33,7 @@ export class IscrizioniFilterComponent implements OnInit {
 //#endregion  
   constructor() { }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
   ngOnInit() {
 
     this.nomeFilter.valueChanges

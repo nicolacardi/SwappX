@@ -25,7 +25,10 @@
                      [rptColumnsNames]="apppagamentilist.rptColumnsNames" 
                      [rptData]="apppagamentilist.matDataSource.data"
                      [rptFileName]="apppagamentilist.rptFileName"
-                     [columnsComponent] = "apppagamentilist">
+                     [columnsComponent] = "apppagamentilist"
+                     [tableName] = "'PagamentiList'"
+                     (refreshColumns)="refreshChildCols()"
+                     >
         </app-toolbar>
     </mat-drawer>
 

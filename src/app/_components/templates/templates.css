@@ -1,4 +1,7 @@
-.h-divider {
+
+
+  /*il divisorio ombreggiato tra una pagina e la successiva*/
+  .h-divider {
     margin: auto;
     margin-top: 80px;
     width: 80%;
@@ -19,16 +22,14 @@
     border-radius: 125px/12px;
     box-shadow: 0 0 8px black;
   }
-
-
-
+  /**********************+*/
 
 
 
 .resizable-draggable {
     position: relative;
     z-index: 1;
-    outline: 1px dotted grey;
+    outline: 0.5px dotted lightgrey;
     font-style: inherit;
 }
 
@@ -47,11 +48,38 @@
 .w-legenda {
     font-size: 10px;
     position: absolute;
-    left: 50%;
-    transform: translate3d(-50%, -100%, 0);
-    margin-top: -20px;
+    left: 50%;                                  /* lo posiziona a metà box in larghezza*/
+    transform: translate3d(-50%, 0, 0);         /* lo sposta a sinistra del 50% di se stesso*/ 
+    top: -20px;
+    /* margin-top: -20px; */
     display:none; 
 }
+
+.w-legenda2 {
+  font-size: 10px;
+  position: absolute;
+  left: 50%;                                  /* lo posiziona a metà box in larghezza*/
+  background-color: rgb(211, 211, 211);
+  border-radius: 2px;
+  padding: 2px;
+  transform: translate3d(-50%, 0, 0);         /* lo sposta a sinistra del 50% di se stesso*/ 
+  top: -8px;
+}
+
+.h-legenda2 {
+  font-size: 10px;
+  position: absolute;
+  left:0px;                                  /* lo posiziona a metà box in larghezza*/
+  transform: translate3d(0, -50%, 0);         /* lo sposta a sinistra del 50% di se stesso*/ 
+  background-color: rgba(211, 211, 211, 0.651);
+  padding: 2px;
+  border-radius: 2px;
+  top: 50%;
+  /* margin-top: -20px; */
+
+}
+
+
 
 .resizable-draggable:active .w-legenda{
     display:block;
@@ -72,7 +100,9 @@
 .size {
     font-size: 10px;
     position: absolute;
-    transform: translate3d(-35px, -20px, 0);
+    /* transform: translate3d(-35px, -20px, 0); */
+    top: -20px;
+    left: -30px;
     display:none; 
 }
 
@@ -87,14 +117,20 @@
     transform: translate3d(-50%, -50%, 0) rotateZ(45deg);
     border-style: solid;
     border-width: 8px;
+
+
 }
 
 .tipo1 {
-    border-color: transparent transparent transparent #2f66a5;
+  border-color: transparent transparent transparent #2f66a5;
 }
 
 .tipo2 {
-    border-color: transparent transparent transparent #de8a49;
+  border-color: transparent transparent transparent #de8a49;
+}
+
+.tipo3 {
+  border-color: transparent transparent transparent #0e9526;
 }
 
 
@@ -107,10 +143,7 @@
 }
 
 
-
-
-
-
+/* 
 .example-box {
     width: 200px;
     height: 200px;
@@ -145,4 +178,85 @@
     height: 400px;
     max-width: 100%;
     border: dotted #ccc 2px;
+  } */
+
+
+  .ql-editor {
+    padding: 0px !important;
   }
+
+
+
+/* QUESTO FUNZIONA MA IL SUCCESSIVO NO, PERCHE? */
+/* :host::ng-deep .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {  
+  font-size: 17px;
+} */
+
+  /* :host::ng-deep .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=small]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {
+  content: 'test' !important;
+} */
+
+table {
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+:host ::ng-deep .resize-bar-v {
+  position: absolute;
+  top: 0;
+  right: -15px;
+  bottom: 0;
+  width: 30px;
+  /* background-color: rgba(255, 0, 0, 0.45);  */
+  /* border: red 1px solid; */
+  cursor: col-resize;
+  z-index: 9;
+}
+
+:host ::ng-deep .resize-bar-h {
+  position: absolute;
+  left:0;
+  right: 0;
+  bottom: -10px;
+  height: 20px;
+  /* background-color: rgba(0, 128, 0, 0.248);  */
+  /* border: green 1px solid; */
+  cursor: row-resize;
+  z-index: 9;
+}
+
+td, th{
+padding: 0px;
+}
+
+/* :host ::ng-deep .ql-editor {
+  padding: 5px !important;
+} */
+
+:host ::ng-deep .ql-bubble {
+  position: relative !important;
+}
+:host ::ng-deep .ql-tooltip {
+  position: absolute;
+}
+
+:host ::ng-deep .ql-bubble .ql-tooltip {
+  border-radius: 0px;
+}
+
+/* :host ::ng-deep .ql-bubble .ql-tooltip-arrow {} */
+
+
+:host ::ng-deep .blocco .ql-editor >* {
+  cursor: all-scroll
+}
+
+
+
+
+
+
+
+
+

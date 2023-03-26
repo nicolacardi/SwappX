@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatSort }                              from '@angular/material/sort';
 import { Observable }                           from 'rxjs';
@@ -13,6 +15,7 @@ import { PresenzeService }                      from '../presenze.service';
 //models
 import { CAL_Presenza }                         from 'src/app/_models/CAL_Presenza';
 
+//#endregion
 
 @Component({
   selector:     'app-presenze-list',
@@ -22,8 +25,8 @@ import { CAL_Presenza }                         from 'src/app/_models/CAL_Presen
 
 export class PresenzeListComponent implements OnInit {
 
-//#region ----- Variabili -------
-  matDataSource = new MatTableDataSource<CAL_Presenza>();
+//#region ----- Variabili ----------------------
+matDataSource = new MatTableDataSource<CAL_Presenza>();
   
   displayedColumns: string[] = [
       "ckPresente",
@@ -32,7 +35,7 @@ export class PresenzeListComponent implements OnInit {
   ];
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild(MatSort) sort!:                    MatSort;
   @Input() lezioneID!:                          number;
 //#endregion
@@ -42,7 +45,7 @@ export class PresenzeListComponent implements OnInit {
     private _loadingService:                    LoadingService,
   ) { }
   
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
   ngOnInit () {
     this.loadData();
   }
@@ -66,6 +69,8 @@ export class PresenzeListComponent implements OnInit {
   }
 //#endregion
 
+//#region ----- Altri metodi -------------------
+
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {
       switch(property) {
@@ -81,6 +86,7 @@ export class PresenzeListComponent implements OnInit {
     this.svcPresenze.put(presenza).subscribe();
   }
 
+//#endregion
 }
 
 

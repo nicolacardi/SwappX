@@ -1,9 +1,12 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Input, OnInit} from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
 //components
 import { NoteListComponent } from '../note-list/note-list.component';
 
+//#endregion
 @Component({
   selector: 'app-note-filter',
   templateUrl: './note-filter.component.html',
@@ -11,23 +14,22 @@ import { NoteListComponent } from '../note-list/note-list.component';
 })
 export class NoteFilterComponent implements OnInit {
 
-//#region ----- Variabili -------
-dtNotaFilter = new UntypedFormControl('');
-notaFilter = new UntypedFormControl('');
-quadrimestreFilter = new UntypedFormControl('');
-dtFirmaFilter = new UntypedFormControl('');
-docenteFilter = new UntypedFormControl('');
-alunnoFilter = new UntypedFormControl('');
-
+//#region ----- Variabili ----------------------
+  dtNotaFilter = new UntypedFormControl('');
+  notaFilter = new UntypedFormControl('');
+  quadrimestreFilter = new UntypedFormControl('');
+  dtFirmaFilter = new UntypedFormControl('');
+  docenteFilter = new UntypedFormControl('');
+  alunnoFilter = new UntypedFormControl('');
 //#endregion
 
 //#region ----- ViewChild Input Output -------  
-@Input() noteListComponent!: NoteListComponent;
+  @Input() noteListComponent!: NoteListComponent;
 //#endregion
 
 constructor() {}
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
 
@@ -81,8 +83,8 @@ constructor() {}
 
 //#region ----- Reset vari -------
 
-//AS: pulizia filtro di sinistra, chiamata su edit filtro di destra
-// PER IL MOMENTO NON UTILIZZATA
+  //AS: pulizia filtro di sinistra, chiamata su edit filtro di destra
+  // PER IL MOMENTO NON UTILIZZATA
   resetFilterSx() {
       // this.noteListComponent.matDataSource.filter = ''; 
       // this.noteListComponent.filterValue = '';
@@ -108,5 +110,6 @@ constructor() {}
     this.docenteFilter.setValue('');
     this.alunnoFilter.setValue('');
   }
+//#endregion
 
 }

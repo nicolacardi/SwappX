@@ -2,37 +2,86 @@
 <!-- mousedown all'interno del div trasforma lo status in 2 (MOVE) -->
 <!-- mouseup fuori dal div resetta a 0 lo status -->
 
-
 <div 
     #box class="resizable-draggable" 
     [style.width.px]="width"
-    [style.height.px]="height" 
-    [style.background-color] = "blocco.color"
+    [style.height.px]="height"
+    
+    [style.background-color] = "blocco.ckTrasp? 'none': blocco.color"
+    
+    [ngStyle]="{'border-top': blocco.borderTop? 'solid 1px grey':'none', 'border-right': blocco.borderRight? 'solid 1px grey':'none', 'border-bottom': blocco.borderBottom? 'solid 1px grey':'none', 'border-left': blocco.borderLeft? 'solid 1px grey':'none'}"
+
     [style.transform]="'translate3d('+ left + 'px,' + top + 'px,' + '0px)'"
     [class.active]="status === 1 || status === 2"
     (mousedown)="setStatus($event, 2)"
     (mouseup)="setStatus($event, 0)"
     (dblclick)="openDetail()"
+
+    (contextmenu)="onRightClick($event, blocco)"
+    
 >
 
-<!-- [ngStyle] = "{'font-size': 10*zoom+'px'}" -->
+    <!--La dimensione del font va adattata al livello di zoom...c'è però un fattore di adattamento ulteriore...perchè cambiando zoom cambiano gli a capo-->
+    <!-- style="word-break: break-all; " -->
+    <!-- [style.font-size]="zoom/4+'em'"  una alternativa: il 4 dà una proporzione "simile" a una pagina word-->
 
-<div *ngIf="blocco.bloccoTesto" 
-    [innerHTML] ="blocco.bloccoTesto!.testo" 
-    style="word-break: break-all; line-height: 0.3em; font-family: initial"
-    >
-</div>
+        <!-- [style.transform]= "'scale('+zoom+')'" -->
+    <div class="blocco ql-container ql-snow" style="border-width: 0;" *ngIf="blocco.tipoBlocco!.descrizione == 'Text'">
+        <div class="ql-editor"  
+            style="word-break: normal; max-height: 100%; max-width: 100%;"
+            [style.font-size.px]="fontSizeN/2.65*zoom"
+            [style.padding]="3*zoom+'px !important'"
+            [innerHTML] ="blocco._BloccoTesti? blocco._BloccoTesti[0].testo: ''"
+            >
+        </div>
+    </div>
 
-<div *ngIf="blocco.bloccoFoto">
-    <mat-label>ciao</mat-label>
+    <app-table-show
+        *ngIf="blocco.tipoBlocco!.descrizione == 'Table'"
+        [bloccoID] = "blocco.id!"
+        [adapt] = "zoom"
+        
+        >
+    </app-table-show>
 
 
-</div>
+    <div 
+        *ngIf="blocco.tipoBlocco!.descrizione == 'Image'"
+        class="center">
+        <img class="_pos-relative ma" 
+            [style.height.px]="height" 
+            style="width: 100%; height: 100%; object-fit: contain !important" 
+            [src]="blocco._BloccoFoto? blocco._BloccoFoto[0].foto: ''"
+        >
+    </div>
 
-<!-- resize-action è il triangolino, classTipo dice se blu o giallo-->
+
     <div class="resize-action" [ngClass] = "classTipo" (mousedown)="setStatus($event, 1)"></div>
     <span class="w-legenda">{{width/zoom | number:'1.0-0'}}px</span>
     <span class="h-legenda">{{height/zoom | number:'1.0-0'}}px</span>
     <span class="size w100">{{(left/zoom | number:'1.0-0')}}-{{top/zoom | number:'1.0-0'}}</span>
-<!-- </div> -->
+
+
+
+    
+
 </div>
+
+    <!-- right click menu -->
+    <div style="visibility: hidden; position: fixed;" 
+        [style.left]="menuTopLeftPosition.x" 
+        [style.top]="menuTopLeftPosition.y" 
+        [matMenuTriggerFor]="rightMenu">
+    </div> 
+
+    <mat-menu #rightMenu="matMenu" style="position: fixed;"> 
+        <ng-template matMenuContent let-item="item"> 
+            <mat-label class="_titolo-filtri-avanzati">ORDINAMENTO</mat-label> 
+            <button mat-menu-item (click)="portaInPrimoPiano(item)">
+                <img class="iconaMenu" src="./assets/bring_to_front.svg">Porta davanti
+            </button> 
+            <button mat-menu-item (click)="portaInSecondoPiano(item)">
+                <img class="iconaMenu" src="./assets/bring_to_back.svg">Porta dietro
+            </button> 
+        </ng-template> 
+    </mat-menu> 

@@ -1,27 +1,30 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { iif, Observable, of } from 'rxjs';
+import { iif, Observable, of }                  from 'rxjs';
 import { concatMap, debounceTime, switchMap, tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-
-//services
-import { DocenzeService } from '../docenze.service';
-import { DocentiService } from '../../../docenti/docenti.service';
-import { ClassiSezioniAnniService } from '../../classi-sezioni-anni.service';
-import { MaterieService } from 'src/app/_components/materie/materie.service';
-
-//models
-import { PER_Docente } from 'src/app/_models/PER_Docente';
-import { MAT_Materia } from 'src/app/_models/MAT_Materia';
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { MatAutocompleteSelectedEvent }         from '@angular/material/autocomplete';
 
 //components
-import { SnackbarComponent } from '../../../utilities/snackbar/snackbar.component';
-import { DialogOkComponent } from '../../../utilities/dialog-ok/dialog-ok.component';
-import { DialogData } from 'src/app/_models/DialogData';
+import { SnackbarComponent }                    from '../../../utilities/snackbar/snackbar.component';
+import { DialogOkComponent }                    from '../../../utilities/dialog-ok/dialog-ok.component';
+import { DialogData }                           from 'src/app/_models/DialogData';
 
+//services
+import { DocenzeService }                       from '../docenze.service';
+import { DocentiService }                       from '../../../docenti/docenti.service';
+import { ClassiSezioniAnniService }             from '../../classi-sezioni-anni.service';
+import { MaterieService }                       from 'src/app/_components/materie/materie.service';
+
+//models
+import { PER_Docente }                          from 'src/app/_models/PER_Docente';
+import { MAT_Materia }                          from 'src/app/_models/MAT_Materia';
+import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_ClasseSezioneAnno';
+
+//#endregion
 @Component({
   selector: 'app-docenze-add',
   templateUrl: './docenze-add.component.html',
@@ -30,20 +33,22 @@ import { DialogData } from 'src/app/_models/DialogData';
 
 export class DocenzeAddComponent implements OnInit {
 
-//#region ----- Variabili -------
-  form! :                     UntypedFormGroup;
-  obsFilteredDocenti$!:       Observable<PER_Docente[]>;
-  obsMaterie$!:               Observable<MAT_Materia[]>;
-  docentiIsLoading:           boolean = false;
-  classeSezioneAnno!:         CLS_ClasseSezioneAnno;
-  public docenteSelectedID!:         number;
-  public materiaSelectedID!:         number;
+//#region ----- Variabili ----------------------
+  obsFilteredDocenti$!:                         Observable<PER_Docente[]>;
+  obsMaterie$!:                                 Observable<MAT_Materia[]>;
+  form! :                                       UntypedFormGroup;
+
+  docentiIsLoading:                             boolean = false;
+  classeSezioneAnno!:                           CLS_ClasseSezioneAnno;
+  public docenteSelectedID!:                    number;
+  public materiaSelectedID!:                    number;
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild('nomeCognomeDocente') nomeCognomeDocente!: ElementRef<HTMLInputElement>;
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor(private fb:                             UntypedFormBuilder,
               private svcMaterie:                     MaterieService,
               private svcDocenti:                     DocentiService,
@@ -60,7 +65,10 @@ export class DocenzeAddComponent implements OnInit {
     });
   }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
+
   ngOnInit(): void {
   
     this.svcClasseSezioneAnno.get(this.data.classeSezioneAnnoID).subscribe(
@@ -92,11 +100,8 @@ export class DocenzeAddComponent implements OnInit {
   }
 
 //#endregion
-docenteSelected(event: MatAutocompleteSelectedEvent): void {
-  this.docenteSelectedID = parseInt(event.option.id);
-}
 
-//#region ----- Operazioni CRUD -------
+//#region ----- Operazioni CRUD ----------------
 
   save() {
 
@@ -156,4 +161,8 @@ docenteSelected(event: MatAutocompleteSelectedEvent): void {
   }
 
 //#endregion
+
+docenteSelected(event: MatAutocompleteSelectedEvent): void {
+  this.docenteSelectedID = parseInt(event.option.id);
+}
 }

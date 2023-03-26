@@ -1,11 +1,12 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog }                            from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-
 
 //services
 import { LoadingService } from '../../utilities/loading/loading.service';
@@ -15,6 +16,7 @@ import { IscrizioniService } from '../iscrizioni.service';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 
+//#endregion
 @Component({
   selector: 'app-iscrizioni-alunno-list',
   templateUrl: './iscrizioni-alunno-list.component.html',
@@ -22,9 +24,11 @@ import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 })
 export class IscrizioniAlunnoListComponent implements OnInit {
 
-  matDataSource = new           MatTableDataSource<CLS_Iscrizione>();
+//#region ----- Variabili ---------------------
 
-  displayedColumns:             string[] = [
+  matDataSource = new                           MatTableDataSource<CLS_Iscrizione>();
+
+  displayedColumns:                             string[] = [
     "classe",
     "sezione",
     "annoscolastico",
@@ -33,22 +37,24 @@ export class IscrizioniAlunnoListComponent implements OnInit {
   ];
   showPageTitle = false;
   showTableRibbon = false;
+//#endregion
+
+//#region ----- ViewChild Input Output ---------
 
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild(MatSort) sort!:                                  MatSort;
 
   @Input('alunnoID') alunnoID! :                              number;
   @Output('removeFromAttended') removeFromAttended = new EventEmitter<CLS_ClasseSezioneAnno>(); //EMESSO quando si clicca sul (-) del rimuovi da classi frequentate
+//#endregion
 
   constructor(
     private svcIscrizioni:    IscrizioniService,
     public _dialog:           MatDialog, 
     private _loadingService:  LoadingService ) { 
-
     }
 
-
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit () {
     this.loadData();
@@ -80,14 +86,13 @@ export class IscrizioniAlunnoListComponent implements OnInit {
   }
 //#endregion
 
-
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
   }
 //#endregion
 
-//#region ----- Emit per alunno-edit -------
+//#region ----- Emit per alunno-edit -----------
   removeFromAttendedEmit(item: any) {
     this.removeFromAttended.emit(item);
   }

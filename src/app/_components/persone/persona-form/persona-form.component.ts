@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, EventEmitter, Input, OnInit, Output }             from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { MatDialog, MatDialogRef }              from '@angular/material/dialog';
@@ -18,6 +20,7 @@ import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni
 import { TipiPersonaService }                   from '../tipi-persona.service';
 import { User }                                 from 'src/app/_user/Users';
 
+//#endregion
 @Component({
   selector: 'app-persona-form',
   templateUrl: './persona-form.component.html',
@@ -25,7 +28,7 @@ import { User }                                 from 'src/app/_user/Users';
 })
 export class PersonaFormComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   persona$!:                                    Observable<PER_Persona>;
   obsTipiPersona$!:                             Observable<PER_TipoPersona[]>;
@@ -49,10 +52,9 @@ export class PersonaFormComponent implements OnInit {
   @Output('formValid') formValid = new EventEmitter<boolean>();
 //#endregion
 
-  constructor(
+//#region ----- Constructor --------------------
 
-    
-    //public _dialogRef:                          MatDialogRef<PersonaFormComponent>,
+  constructor(
     public _dialog:                             MatDialog,
     private fb:                                 UntypedFormBuilder, 
     private svcPersone:                         PersoneService,
@@ -86,6 +88,7 @@ export class PersonaFormComponent implements OnInit {
     this.currPersona = Utility.getCurrentUser();
     this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.TipoPersona!.livello);
   }
+//#endregion
 
 //#region ----- LifeCycle Hooks e simili-------
 
@@ -160,7 +163,6 @@ export class PersonaFormComponent implements OnInit {
   }
 
 //#endregion
-
 
 //#region ----- Altri metodi -------
 

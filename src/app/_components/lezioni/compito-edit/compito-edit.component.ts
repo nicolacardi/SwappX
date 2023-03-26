@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Inject, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -21,7 +23,7 @@ import { VotiCompitiService }                   from '../voti-compiti.service';
 import { CAL_Lezione }                          from 'src/app/_models/CAL_Lezione';
 import { TST_VotoCompito }                      from 'src/app/_models/TST_VotiCompiti';
 
-
+//#endregion
 @Component({
   selector: 'app-compito-edit',
   templateUrl: './compito-edit.component.html',
@@ -29,7 +31,7 @@ import { TST_VotoCompito }                      from 'src/app/_models/TST_VotiCo
 })
 export class CompitoEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   dateArr!:                                     string[];
   obsLezioni$!:                                 Observable<CAL_Lezione[]>;
   lezione$!:                                    Observable<CAL_Lezione>;
@@ -37,14 +39,18 @@ export class CompitoEditComponent implements OnInit {
   form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
   breakpoint!:                                  number;
+  userFullName: any;
 
   lezioneSelected!:                             CAL_Lezione;
 //#endregion
 
+//#region ----- ViewChild Input Output ---------
 
-@ViewChild('selectLezione') public selectLezione!: MatSelect;
-  userFullName: any;
+  @ViewChild('selectLezione') public selectLezione!: MatSelect;
 
+//#endregion
+
+//#region ----- Constructor --------------------
 
   constructor( 
     @Inject(MAT_DIALOG_DATA) public data:       CAL_Lezione,
@@ -74,9 +80,9 @@ export class CompitoEditComponent implements OnInit {
 
   }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#endregion
 
-
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
     this.loadData();
@@ -128,7 +134,7 @@ export class CompitoEditComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Operazioni CRUD -------
+//#region ----- Operazioni CRUD ----------------
   save(){
     //this.form.controls.ckCompito.setValue(true);
 

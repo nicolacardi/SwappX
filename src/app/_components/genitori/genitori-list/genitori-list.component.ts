@@ -1,28 +1,34 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { Observable, pipe } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { SelectionModel } from '@angular/cdk/collections';
-import { MatTableDataSource} from '@angular/material/table';
-import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatPaginator }                         from '@angular/material/paginator';
+import { MatSort }                              from '@angular/material/sort';
+import { Observable }                           from 'rxjs';
+import { map }                                  from 'rxjs/operators';
+import { SelectionModel }                       from '@angular/cdk/collections';
+import { MatTableDataSource}                    from '@angular/material/table';
+import { CdkDragDrop, moveItemInArray}          from '@angular/cdk/drag-drop';
+import { Router }                               from '@angular/router';
+import { MatMenuTrigger }                       from '@angular/material/menu';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 
 //components
-import { GenitoreEditComponent } from '../genitore-edit/genitore-edit.component';
-import { GenitoriFilterComponent } from '../genitori-filter/genitori-filter.component';
+import { GenitoreEditComponent }                from '../genitore-edit/genitore-edit.component';
+import { GenitoriFilterComponent }              from '../genitori-filter/genitori-filter.component';
+import { Utility }                              from '../../utilities/utility.component';
 
 //services
-import { GenitoriService } from '../genitori.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { NavigationService } from '../../utilities/navigation/navigation.service';
-import { AlunniService } from '../../alunni/alunni.service';
+import { GenitoriService }                      from '../genitori.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { NavigationService }                    from '../../utilities/navigation/navigation.service';
 
 //models
-import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
+import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
+import { User }                                 from 'src/app/_user/Users';
+import { TableColsService } from '../../utilities/toolbar/tablecols.service';
+import { TableColsVisibleService } from '../../utilities/toolbar/tablecolsvisible.service';
 
+//#endregion
 @Component({
   selector: 'app-genitori-list',
   templateUrl: './genitori-list.component.html',
@@ -31,9 +37,12 @@ import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
 
 export class GenitoriListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
+  currUser!:                                    User;
+    
   matDataSource = new MatTableDataSource<ALU_Genitore>();
 
+  tableName = "GenitoriList";
   displayedColumns: string[] =  [];
   displayedColumnsAlunnoEditFamiglia: string[] = [
       "actionsColumn", 
@@ -74,13 +83,13 @@ export class GenitoriListComponent implements OnInit {
   rptFileName = 'ListaGenitori';
 
   rptFieldsToKeep  = [
-    "nome", 
-    "cognome", 
-    "tipoGenitoreID", 
-    "indirizzo", 
-    "telefono", 
-    "email", 
-    "dtNascita"];
+    "persona.nome", 
+    "persona.cognome", 
+    "tipoGenitore.descrizione", 
+    "persona.indirizzo", 
+    "persona.telefono", 
+    "persona.email", 
+    "persona.dtNascita"];
 
   rptColumnsNames  = [
     "nome", 
@@ -98,10 +107,12 @@ export class GenitoriListComponent implements OnInit {
   
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
-  toggleChecks:                 boolean = false;
-  showPageTitle:                boolean = true;
-  showTableRibbon:              boolean = true;
-  public ckSoloAttivi :         boolean = true;
+  toggleChecks:                                 boolean = false;
+  showPageTitle:                                boolean = true;
+  showFilter:                                   boolean = true;
+
+  showTableRibbon:                              boolean = true;
+  public ckSoloAttivi :                         boolean = true;
 
   filterValue = '';       //Filtro semplice
    //filterValues contiene l'elenco dei filtri avanzati da applicare 
@@ -119,7 +130,7 @@ export class GenitoriListComponent implements OnInit {
   };
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild("filterInput") filterInput!:                     ElementRef;
@@ -135,16 +146,22 @@ export class GenitoriListComponent implements OnInit {
 
 //#endregion
 
-  constructor(private svcGenitori:      GenitoriService,
-              private svcAlunni:        AlunniService,
-              private route:            ActivatedRoute,
-              private router:           Router,
-              public _dialog:           MatDialog, 
-              private _loadingService:  LoadingService,
-              private _navigationService:    NavigationService ) {
+//#region ----- Constructor --------------------
+  constructor(
+    private svcGenitori:                        GenitoriService,
+    private router:                             Router,
+    public _dialog:                             MatDialog, 
+    private _loadingService:                    LoadingService,
+    private _navigationService:                 NavigationService,
+    private svcTableCols:                       TableColsService,
+    private svcTableColsVisible:                TableColsVisibleService
+    ) 
+  {
+     this.currUser = Utility.getCurrentUser();
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
     if (this.context != ''){
@@ -156,16 +173,21 @@ export class GenitoriListComponent implements OnInit {
 
   ngOnInit () {
 
-    if (this.context == "alunno-edit-list" || this.context == "alunno-edit-famiglia") 
+    if (this.context == "alunno-edit-list" || this.context == "alunno-edit-famiglia") {
       this.showPageTitle = false;
-    
-    if (this.context == "alunno-edit-famiglia") 
       this.showTableRibbon = false;
+    }
+    if (this.context == "alunno-edit-famiglia") 
+      this.showFilter = false;
+
+
+
     
     switch(this.context) {
       case 'alunno-edit-list': this.displayedColumns = this.displayedColumnsAlunnoEditList; break;
       case 'alunno-edit-famiglia': this.displayedColumns = this.displayedColumnsAlunnoEditFamiglia; break;
-      default: this.displayedColumns = this.displayedColumnsGenitoriPage;
+      //default: this.displayedColumns = this.displayedColumnsGenitoriPage;
+      default: this.loadLayout();
     }
 
     this._navigationService.getAlunno().subscribe( val=>{
@@ -176,6 +198,14 @@ export class GenitoriListComponent implements OnInit {
         this.loadData(); 
       }
     });    
+  }
+
+  loadLayout(){
+    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName)
+    .subscribe( colonne => {
+        if (colonne.length != 0) this.displayedColumns = colonne.map(a => a.tableCol!.colName)
+        else this.svcTableCols.listByTable(this.tableName).subscribe( colonne => this.displayedColumns = colonne.map(a => a.colName))      
+    });
   }
 
   loadData () {
@@ -203,6 +233,7 @@ export class GenitoriListComponent implements OnInit {
       val =>   {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
+        this.sortCustom();
         this.matDataSource.sort = this.sort;
         this.matDataSource.filterPredicate = this.filterPredicate();
       }
@@ -211,7 +242,24 @@ export class GenitoriListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
+
+  sortCustom() {
+    this.matDataSource.sortingDataAccessor = (item:any, property) => {
+      switch(property) {
+        case 'nome':                            return item.persona.nome;
+        case 'cognome':                         return item.persona.cognome;
+        case 'dtNascita':                       return item.persona.dtNascita;
+        case 'indirizzo':                       return item.persona.indirizzo;
+        case 'comune':                          return item.persona.comune;
+        case 'cap':                             return item.persona.cap;
+        case 'prov':                            return item.persona.prov;
+        case 'telefono':                        return item.persona.telefono;
+        case 'email':                           return item.persona.email;
+        default: return item[property]
+      }
+    };
+  }
 
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
@@ -231,15 +279,22 @@ export class GenitoriListComponent implements OnInit {
       let searchTerms = JSON.parse(filter);
       let foundAlunno : boolean = false;
       
+      //se il campo nomeCognomeGenitore è compilato deve restituire True se trova  mentre deve restituire false se non ci sono i genitori
+      //se il campo non è compilato deve sempre restituire True
       //if (Object.values(searchTerms).every(x => x === null || x === '')) 
-      if (data._Figli.length == 0)
+      if (searchTerms.nomeCognomeAlunno.length > 0){
+
+        if (data._Figli.length == 0) //restituisce false se , avendo digitato qualcosa, i figli non ci sono proprio per il genitore della riga
+          foundAlunno = false;
+        else {
+          data._Figli?.forEach((val : { alunno: {persona: { nome: any; cognome: any}}; })=>  {
+              const foundCognomeNome = foundAlunno || String(val.alunno.persona.cognome+" "+val.alunno.persona.nome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1;
+              const foundNomeCognome = foundAlunno || String(val.alunno.persona.nome+" "+val.alunno.persona.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1; 
+              foundAlunno = foundCognomeNome || foundNomeCognome;
+          })
+        }
+      } else {
         foundAlunno = true;
-      else {
-        data._Figli?.forEach((val : { alunno: {persona: { nome: any; cognome: any}}; })=>  {
-            const foundCognomeNome = foundAlunno || String(val.alunno.persona.cognome+" "+val.alunno.persona.nome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1;
-            const foundNomeCognome = foundAlunno || String(val.alunno.persona.nome+" "+val.alunno.persona.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1; 
-            foundAlunno = foundCognomeNome || foundNomeCognome;
-        })
       }
 
       let dArr = data.persona.dtNascita.split("-");
@@ -272,7 +327,7 @@ export class GenitoriListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -306,7 +361,7 @@ export class GenitoriListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Right Click -------
+//#region ----- Right Click --------------------
 
   onRightClick(event: MouseEvent, element: ALU_Genitore) { 
     event.preventDefault(); 
@@ -322,9 +377,7 @@ export class GenitoriListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Emit per alunno-edit -------
-
-//#region ----- Gestione Campo Checkbox -------
+//#region ----- Gestione Campo Checkbox --------
 selectedRow(element: ALU_Genitore) {
   this.selection.toggle(element);
 }
@@ -371,6 +424,7 @@ isAllSelected() {
 }
 //#endregion
 
+//#region ----- Emit per alunno-edit -----------
 
   addToFamilyEmit(item: ALU_Genitore) {
     this.addToFamily.emit(item);

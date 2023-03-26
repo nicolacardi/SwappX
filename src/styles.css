@@ -1,4 +1,8 @@
+
+
 @import '~quill/dist/quill.snow.css';
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
 
 /*#region ********** GENERALI **********/
     html, body { 
@@ -43,10 +47,16 @@
         font-family: 'Titillium Web', sans-serif; /* fix font dopo migrazione a ng v15 */
     }
 
-    .mat-mdc-list-item-title{                   /* directive aggiunta in menu per evitare text wrap a capo su Area Docente*/
-        letter-spacing: 0em;                    /* fix font dopo migrazione a ng v15 */
-        font-family: 'Titillium Web', sans-serif; /* fix font dopo migrazione a ng v15 */
+    /* .mat-mdc-list-item-title{                 
+        letter-spacing: 0em;                    
+    } */
+
+    
+    /* senza questa avviene l wordwrap nel menu nelle etichette espandibili*/
+    .leftSidenav .mat-expansion-panel-header-title {
+        flex-basis:auto !important;
     }
+
     
     .mdc-tab{
         letter-spacing: 0em;                    /* fix font dopo migrazione a ng v15 */
@@ -70,7 +80,12 @@
     }
 
     .mat-mdc-card-outlined{   
-        /* --mdc-outlined-card-outline-color: transparent;  */
+        --mdc-outlined-card-outline-color: transparent; 
+    }
+
+    
+    .home .mat-mdc-card-outlined{   
+        --mdc-outlined-card-outline-color: lightgrey; 
     }
 
     .mat-mdc-floating-label{   
@@ -276,15 +291,18 @@
     .mt15 {
         margin-top: 15px;
     }
-
     .mt20 {
         margin-top: 20px;
     }
-
+    .mt25 {
+        margin-top: 25px;
+    }
     .mt30 {
         margin-top: 30px;
     }
-
+    .mt40 {
+        margin-top: 40px;
+    }
     .mt50 {
         margin-top: 50px;
     }
@@ -308,6 +326,19 @@
     }
     .t10 {
         top: 10px;
+    }
+    .t20 {
+        top: 20px;
+    }
+    .t25 {
+        top: 25px;
+    }
+    .t40 {
+        top: 40px;
+    }
+
+    .t50 {
+        top: 50px;
     }
     
     /* bottom */
@@ -341,6 +372,9 @@
     .l480 {
         left: 480px;
     }
+
+
+
 
     /* right */
     .r0 {
@@ -427,6 +461,16 @@
 /*#region ********** WIDTH *************/
 
     /* percentuali */
+
+    .w5 {
+        width: 5%;
+    }
+
+    .w10 {
+        width: 10%;
+    }
+
+
     .w20 {
         width: 20%;
     }
@@ -516,12 +560,24 @@
         width: 400px;
     }
 
+    .w420px {
+        width: 420px;
+    }
+
     .w500px {
         width: 500px;
     }
 
+    .w570px {
+        width: 570px;
+    }
+
     .w600px {
         width: 600px;
+    }
+
+    .w630px {
+        width: 630px;
     }
 
     .w700px {
@@ -540,11 +596,25 @@
 /*#region ********** HEIGHT ************/
 
     /* percentuali */
+
+    .h10 {
+        height: 10%;
+    }
+
     .h75 {
         height: 75%;
     }
 
+    .h100 {
+        height: 100%;
+    }
+
+
     /* pixels */
+    .h10px {
+        height: 10px;
+    }
+
     .h16px {
         height: 16px;
     }
@@ -616,6 +686,14 @@
         border-left: 1px solid grey;
     }
 
+    ._border-left-dot {
+        border-left: 1px dotted grey;
+    }
+
+    ._border-top-dot {
+        border-top: 1px dotted grey;
+    }
+
     ._border-top {
         border-top: 0.5px solid rgba(86, 86, 86, 0.279) !important;
     }
@@ -636,6 +714,10 @@
     ._bordered-grey {
         border: 1px solid grey;
     }
+
+    ._bordered-lightgrey {
+        border: 1px solid lightgrey;
+    }
     
     
     ._bordered-bottom {
@@ -650,7 +732,9 @@
         border: none;
     }
     
-
+    ._border-dotted {
+        outline: 0.5px dotted lightgrey;
+    }
 /*#endregion ***************************/
 
 /*#region ********** ALIGN *************/
@@ -676,6 +760,10 @@
 /*#region ********** OVERFLOW **********/
     ._oflow-hide {
         overflow: hidden
+    }
+
+    ._oflow-vis {
+        overflow: visible
     }
 /*#endregion ***************************/
 
@@ -711,7 +799,7 @@
     }
 
     ._btn-text {
-        color: white;
+        color: white !important;
         background-color: #044D7E !important;
     }
 
@@ -742,6 +830,12 @@
         z-index: 1000;
         position: absolute !important;
         background-color: #10722cd4 !important;
+    }
+
+    ._btn-add-table {
+        z-index: 1000;
+        position: absolute !important;
+        background-color: #0e9526 !important;
     }
 
     ._btn-add-text {
@@ -796,6 +890,18 @@
 
     ._btn-pos-right-4 {
         right: 165px;
+    }
+
+    ._btn-pos-right-5 {
+        right: 210px;
+    }
+
+    ._btn-pos-right-6 {
+        right: 255px;
+    }
+
+    ._btn-pos-right-7 {
+        right: 300px;
     }
 
     ._btn-pos-top-0 {
@@ -1084,6 +1190,8 @@
 
 /*#region ********** TABLES ************/
 
+
+
     .element-row:hover {
         background: whitesmoke;
     }
@@ -1122,10 +1230,9 @@
 
     /*evidenziazione della riga che rimane selezionata - usata da classi-sezioni-anni in classi-dashboard come ngClass*/
     ._table-row-selected-highlight{
-        background: rgba(100, 100, 100, 0.2);
+        background: rgba(100, 100, 100, 0.2) !important;
         cursor: pointer;
     }
-
 
     ._grey-background {
         background-color: rgba(173, 173, 173, 0.142);
@@ -1148,13 +1255,13 @@
         /* flex: 0 0 8% !important; */
         width: 40px !important;
     }
+    .mat-column-blank {
+        /* flex: 0 0 8% !important; */
+        width: 40px !important;
+    }
 
     .mat-column-actionsColumn2 {
         width: 50px !important;
-    }
-
-    .mat-column-blank {
-        flex: 0 0 8% !important; /*Colonne usate in rette sotto la actions column*/
     }
 
     .mat-column-tipo {
@@ -1289,6 +1396,9 @@
         color: white;
     }
 
+
+
+
     .mat-drawer-backdrop.mat-drawer-shown {
         background-color: rgba(0,0,0,0.2);
     }
@@ -1390,15 +1500,17 @@
 .frameLabel{
     position: absolute;
     left: 10px;
-    top: 20px;
+
     background-color: white;
     padding-left: 5px;
     padding-right: 5px;
     font-size: 11px;
     color: grey;
     z-index: 1000;
-    margin-top: -20px;
 }
+
+
+
 
 .frameLabelTransparent{
     position: absolute;
@@ -1659,3 +1771,142 @@ div.inner img {
     right:-50%;
     opacity: .5; /* for demo */
 }
+
+
+
+/* taglia il testo negli eventi del fullcalendar che altrimenti deborda */
+.fc-v-event .fc-event-title {
+    max-height: calc(100% - 25px) !important;
+  }
+
+
+
+
+
+/* QUILL: NON CHIARO PERCHE' MA VADA SCRITTO QUI: IN TEMPLATE.CSS NON FUNZIONA */
+
+
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="10px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="10px"]::before {
+  content: "10px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="12px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="12px"]::before {
+  content: "12px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="14px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="14px"]::before {
+  content: "14px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="16px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="16px"]::before {
+  content: "16px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="18px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="18px"]::before {
+  content: "18px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="20px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="20px"]::before {
+  content: "20px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="22px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="22px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="22px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="22px"]::before {
+  content: "22px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="24px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="24px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="24px"]::before,
+.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="24px"]::before {
+  content: "24px";
+}
+
+/* non so se servano quelle che seguono*/
+/* .ql-picker.ql-placeholder {width: 118px;}
+.ql-picker.ql-placeholder > span.ql-picker-label::before {content: 'Placeholders';} 
+.ql-picker.ql-placeholder > span.ql-picker-options > span.ql-picker-item::before {content: attr(data-label);}
+.ql-custom .ql-picker-item:before {content: attr(data-label);} */
+
+
+/* ****quill mention */
+
+.ql-mention-list-container {
+    width: 270px;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 12px 0 rgba(30, 30, 30, 0.08);
+    z-index: 9001;
+    overflow: auto;
+  }
+  
+  .ql-mention-loading {
+    line-height: 44px;
+    padding: 0 20px;
+    vertical-align: middle;
+    font-size: 16px;
+  }
+  
+  .ql-mention-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    z-index: 10000;
+  }
+  
+  .ql-mention-list-item {
+    cursor: pointer;
+    line-height: 44px;
+    font-size: 16px;
+    padding: 0 20px;
+    vertical-align: middle;
+  }
+  
+  .ql-mention-list-item.disabled {
+    cursor: auto;
+  }
+  
+  .ql-mention-list-item.selected {
+    background-color: #d3e1ebd0;
+    text-decoration: none;
+  }
+  
+  .mention {
+    height: 24px;
+    width: 65px;
+    border-radius: 6px;
+    background-color: #d3e1ebd0;
+    padding: 3px 0;
+    margin-right: 2px;
+    user-select: all;
+  }
+  
+  .mention > span {
+    margin: 0 3px;
+  }
+  
+  
+  

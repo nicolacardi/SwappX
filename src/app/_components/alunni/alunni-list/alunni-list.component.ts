@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator }                         from '@angular/material/paginator';
 import { MatSort }                              from '@angular/material/sort';
@@ -14,15 +16,20 @@ import { map }                                  from 'rxjs/operators';
 import { AlunnoEditComponent }                  from '../alunno-edit/alunno-edit.component';
 import { AlunniFilterComponent }                from '../alunni-filter/alunni-filter.component';
 import { RettaEditComponent }                   from '../../pagamenti/retta-edit/retta-edit.component';
+import { Utility }                              from '../../utilities/utility.component';
 
 //services
 import { AlunniService }                        from '../alunni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { NavigationService }                    from '../../utilities/navigation/navigation.service';
+import { TableColsService }                     from '../../utilities/toolbar/tablecols.service';
+import { TableColsVisibleService }              from '../../utilities/toolbar/tablecolsvisible.service';
 
-//classes
+//models
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
+import { User }                                 from 'src/app/_user/Users';
 
+//#endregion
 @Component({
   selector:     'app-alunni-list',
   templateUrl:  './alunni-list.component.html',
@@ -31,9 +38,12 @@ import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno
 
 export class AlunniListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
+  currUser!:                                    User;
+
   matDataSource = new MatTableDataSource<ALU_Alunno>();
 
+  tableName = "AlunniList";
   displayedColumns: string[] =  [];
   displayedColumnsAlunniList: string[] = [
       "actionsColumn", 
@@ -72,15 +82,15 @@ export class AlunniListComponent implements OnInit {
   rptTitle = 'Lista Alunni';
   rptFileName = 'ListaAlunni';
   rptFieldsToKeep  = [
-    "nome", 
-    "cognome", 
-    "dtNascita", 
-    "indirizzo", 
-    "comune", 
-    "cap", 
-    "prov", 
-    "telefono",
-    "email", 
+    "persona.nome", 
+    "persona.cognome", 
+    "persona.dtNascita", 
+    "persona.indirizzo", 
+    "persona.comune", 
+    "persona.cap", 
+    "persona.prov", 
+    "persona.telefono",
+    "persona.email", 
      ];
 
   rptColumnsNames  = [
@@ -106,6 +116,7 @@ export class AlunniListComponent implements OnInit {
   toggleChecks:                                 boolean = false;
   showPageTitle:                                boolean = true;
   showTableRibbon:                              boolean = true;
+  showFilter:                                   boolean = true;
   public ckSoloAttivi :                         boolean = true;
 
   filterValue = '';       //Filtro semplice
@@ -124,7 +135,7 @@ export class AlunniListComponent implements OnInit {
   };
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild(MatPaginator) paginator!:          MatPaginator;
   @ViewChild(MatSort) sort!:                    MatSort;
   @ViewChild("filterInput") filterInput!:       ElementRef;
@@ -140,16 +151,24 @@ export class AlunniListComponent implements OnInit {
 
 //#endregion
 
+//#region ----- Constructor --------------------
+
   constructor(
     private svcAlunni:                          AlunniService,
     private router:                             Router,
     public _dialog:                             MatDialog, 
     private _loadingService:                    LoadingService,
-    private _navigationService:                 NavigationService
-  ) { }
+    private _navigationService:                 NavigationService,
+    private svcTableCols:                       TableColsService,
+    private svcTableColsVisible:                TableColsVisibleService
+  ) { 
+    this.currUser = Utility.getCurrentUser();
+  }
   
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
+
   ngOnChanges() {
     //mentre classiDashboard ripassa per ngOnChanges quando classeSezioneAnnoID gli arriva (è una @Input)
     //alunniList non ci ripassa.
@@ -178,7 +197,8 @@ export class AlunniListComponent implements OnInit {
 
     switch(this.context) {
       case 'alunni-page': 
-        this.displayedColumns =  this.displayedColumnsAlunniList;
+        this.loadLayout();
+        //this.displayedColumns =  this.displayedColumnsAlunniList;
         this._navigationService.getGenitore().subscribe(
           res=>{
             if (res!= '') {
@@ -194,10 +214,13 @@ export class AlunniListComponent implements OnInit {
         this.displayedColumns = this.displayedColumnsGenitoreEditFamiglia;
         this.showPageTitle = false;
         this.showTableRibbon = false;
+        this.showFilter = false;
       break;
       case 'genitore-edit-list':
         this.displayedColumns = this.displayedColumnsGenitoreEditList;
         this.showPageTitle = false;
+        this.showTableRibbon = false;
+
       break;
       default: 
         this.displayedColumns =  this.displayedColumnsAlunniList;
@@ -205,11 +228,11 @@ export class AlunniListComponent implements OnInit {
   }
 
   loadLayout(){
-      //chiamata al WS dei layout con nome utente e nome griglia e contesto (variabile 'context')
-      
-      //se trovato, update colonne griglia
-      //this.displayedColumns =  this.displayedColumnsAlunniList;
-
+    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName)
+    .subscribe( colonne => {
+        if (colonne.length != 0) this.displayedColumns = colonne.map(a => a.tableCol!.colName)
+        else this.svcTableCols.listByTable(this.tableName).subscribe( colonne => this.displayedColumns = colonne.map(a => a.colName))      
+    });
   }
 
   loadData () {
@@ -230,6 +253,7 @@ export class AlunniListComponent implements OnInit {
         val =>   {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
+          this.sortCustom();
           this.matDataSource.sort = this.sort; 
           this.matDataSource.filterPredicate = this.filterPredicate();
         }
@@ -243,6 +267,7 @@ export class AlunniListComponent implements OnInit {
         val =>  {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
+          this.sortCustom();
           this.matDataSource.sort = this.sort; 
           this.matDataSource.filterPredicate = this.filterPredicate();
         }
@@ -256,6 +281,7 @@ export class AlunniListComponent implements OnInit {
         val => {
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
+          this.sortCustom();
           this.matDataSource.sort = this.sort; 
         }
       );
@@ -264,7 +290,24 @@ export class AlunniListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
+  sortCustom() {
+    this.matDataSource.sortingDataAccessor = (item:any, property) => {
+      switch(property) {
+        case 'nome':                            return item.persona.nome;
+        case 'cognome':                         return item.persona.cognome;
+        case 'dtNascita':                       return item.persona.dtNascita;
+        case 'indirizzo':                       return item.persona.indirizzo;
+        case 'comune':                          return item.persona.comune;
+        case 'cap':                             return item.persona.cap;
+        case 'prov':                            return item.persona.prov;
+        case 'telefono':                        return item.persona.telefono;
+        case 'email':                           return item.persona.email;
+        default: return item[property]
+      }
+    };
+  }
+
   applyFilter(event: Event) {
 
     this.filterValue = (event.target as HTMLInputElement).value;
@@ -277,18 +320,27 @@ export class AlunniListComponent implements OnInit {
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
       let foundGenitore : boolean = false;
+      
+      //se il campo nomeCognomeGenitore è compilato deve restituire True se trova  mentre deve restituire false se non ci sono i genitori
+      //se il campo non è compilato deve sempre restituire True
 
       // if (Object.values(searchTerms).every(x => x === null || x === '')) 
-      if (data._Genitori.length == 0) //restituiva true se i Genitori non c'erano: sbagliato
-        foundGenitore = false;
-      else {
-        data._Genitori?.forEach(
-          (val: { genitore: {persona: { nome: any; cognome: any}} })=>  {   
-            const foundCognomeNome = foundGenitore || String(val.genitore.persona.cognome+" "+val.genitore.persona.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
-            const foundNomeCognome = foundGenitore || String(val.genitore.persona.nome+" "+val.genitore.persona.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
-            foundGenitore =  foundCognomeNome || foundNomeCognome;  //attenzione!!! _Genitori non sono i genitori ma ALU_AlunnoGenitore! ecco perchè val.genitore
-        })
+      if (searchTerms.nomeCognomeGenitore.length > 0){
+        if (data._Genitori.length == 0) //restituisce false se , avendo digitato qualcosa, i Genitori non ci sono proprio per l'alunno della riga
+          foundGenitore = false;
+        else {
+          data._Genitori?.forEach(
+            (val: { genitore: {persona: { nome: any; cognome: any}} })=>  {   
+              const foundCognomeNome = foundGenitore || String(val.genitore.persona.cognome+" "+val.genitore.persona.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1;
+              const foundNomeCognome = foundGenitore || String(val.genitore.persona.nome+" "+val.genitore.persona.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore) !== -1; 
+              foundGenitore =  foundCognomeNome || foundNomeCognome;  //attenzione!!! _Genitori non sono i genitori ma ALU_AlunnoGenitore! ecco perchè val.genitore
+          })
+        }
+      } else {
+        foundGenitore = true;
       }
+
+
       let dArr = data.persona.dtNascita.split("-");
       const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 
@@ -311,7 +363,6 @@ export class AlunniListComponent implements OnInit {
                 && String(data.persona.telefono).toLowerCase().indexOf(searchTerms.telefono) !== -1
                 && String(data.persona.email).toLowerCase().indexOf(searchTerms.email) !== -1
                 && foundGenitore;
-      
 
       return boolSx && boolDx;
     }
@@ -320,7 +371,8 @@ export class AlunniListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
+
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -353,7 +405,7 @@ export class AlunniListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Right Click -------
+//#region ----- Right Click --------------------
   onRightClick(event: MouseEvent, element: ALU_Alunno) { 
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
@@ -387,7 +439,7 @@ export class AlunniListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Emit per alunno-edit -------
+//#region ----- Emit per alunno-edit -----------
   addToFamilyEmit(item: ALU_Alunno) {
     this.addToFamily.emit(item);
   }
@@ -398,7 +450,7 @@ export class AlunniListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Gestione Campo Checkbox -------
+//#region ----- Gestione Campo Checkbox --------
   selectedRow(element: ALU_Alunno) {
     this.selection.toggle(element);
   }
@@ -445,7 +497,7 @@ export class AlunniListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Altri metodi -------
+//#region ----- Altri metodi -------------------
   onResize(event: any) {
     this.displayedColumns = (event.target.innerWidth <= 800) ? 
       ["select", 

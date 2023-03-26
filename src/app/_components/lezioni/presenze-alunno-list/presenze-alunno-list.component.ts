@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatSort }                              from '@angular/material/sort';
 import { Observable }                           from 'rxjs';
@@ -13,6 +15,7 @@ import { PresenzeService }                      from '../presenze.service';
 //models
 import { CAL_Presenza }                         from 'src/app/_models/CAL_Presenza';
 
+//#endregion
 
 @Component({
   selector:     'app-presenze-alunno-list',
@@ -22,8 +25,8 @@ import { CAL_Presenza }                         from 'src/app/_models/CAL_Presen
 
 export class PresenzeAlunnoListComponent implements OnInit {
 
-//#region ----- Variabili -------
-  matDataSource = new MatTableDataSource<CAL_Presenza>();
+//#region ----- Variabili ----------------------
+matDataSource = new MatTableDataSource<CAL_Presenza>();
   
   displayedColumns: string[] = [
       "ckPresente",
@@ -35,6 +38,7 @@ export class PresenzeAlunnoListComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output -------
+  
   @ViewChild(MatSort) sort!:                    MatSort;
   @Input() alunnoID!:                          number;
 
@@ -68,6 +72,8 @@ export class PresenzeAlunnoListComponent implements OnInit {
   }
 //#endregion
 
+//#region ----- Altri metodi -------------------
+
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {
       switch(property) {
@@ -82,6 +88,8 @@ export class PresenzeAlunnoListComponent implements OnInit {
     presenza.ckPresente = checked;
     this.svcPresenze.put(presenza).subscribe();
   }
+  
+//#endregion
 
 }
 

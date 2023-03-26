@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
@@ -14,6 +16,8 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 //classes
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 
+//#endregion
+
 @Component({
   selector: 'app-materie-list',
   templateUrl: './materie-list.component.html',
@@ -21,7 +25,7 @@ import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 })
 export class MaterieListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   matDataSource = new MatTableDataSource<MAT_Materia>();
 
@@ -35,16 +39,16 @@ export class MaterieListComponent implements OnInit {
 
   ];
 
-
   rptTitle = 'Lista Materie';
   rptFileName = 'ListaMaterie';
   rptFieldsToKeep  = [
-    "descrizione"
-
+    "descrizione",
+    "macroMateria.descrizione"
   ];
 
   rptColumnsNames  = [
-    "descrizione"
+    "descrizione",
+    "Macro Materia"
   ];
 
   filterValue = '';       //Filtro semplice
@@ -54,20 +58,23 @@ export class MaterieListComponent implements OnInit {
     filtrosx: ''
   }
 //#endregion
-//#region ----- ViewChild Input Output -------
+
+//#region ----- ViewChild Input Output ---------
   @ViewChild(MatSort) sort!:                MatSort;
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor(
     private svcMaterie:                     MaterieService,
 
     private _loadingService:                LoadingService,
-    public _dialog:                         MatDialog, 
-
+    public _dialog:                         MatDialog,
 
   ) { }
-
+//#endregion
  
+//#region ----- LifeCycle Hooks e simili--------
   
   ngOnInit(): void {
     this.loadData();
@@ -89,8 +96,9 @@ export class MaterieListComponent implements OnInit {
       }
     );
   }
+//#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -114,7 +122,7 @@ export class MaterieListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
 
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {

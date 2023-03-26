@@ -22,7 +22,10 @@
                      [rptColumnsNames]="appgenitorilist.rptColumnsNames" 
                      [rptData]="appgenitorilist.matDataSource.data"
                      [rptFileName]="appgenitorilist.rptFileName"
-                     [columnsComponent] = "appgenitorilist">
+                     [columnsComponent] = "appgenitorilist"
+                     [tableName] = "'GenitoriList'"
+                     (refreshColumns)="refreshChildCols()"
+                     >
         </app-toolbar>
     </mat-drawer>
 

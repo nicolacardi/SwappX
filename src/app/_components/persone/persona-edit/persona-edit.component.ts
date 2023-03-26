@@ -1,24 +1,27 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { Observable }                           from 'rxjs';
+import { tap }                                  from 'rxjs/operators';
 
 //components
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { PersonaFormComponent }                 from '../persona-form/persona-form.component';
 
 //services
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { PersoneService } from '../persone.service';
-import { TipiPersonaService } from '../tipi-persona.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { PersoneService }                       from '../persone.service';
+import { TipiPersonaService }                   from '../tipi-persona.service';
 
 //models
-import { PER_Persona, PER_TipoPersona } from 'src/app/_models/PER_Persone';
-import { PersonaFormComponent } from '../persona-form/persona-form.component';
-import { User } from 'src/app/_user/Users';
+import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
+import { User }                                 from 'src/app/_user/Users';
 
+//#endregion
 
 @Component({
   selector: 'app-persona-edit',
@@ -27,7 +30,7 @@ import { User } from 'src/app/_user/Users';
 })
 export class PersonaEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   persona$!:                                    Observable<PER_Persona>;
   obsTipiPersona$!:                             Observable<PER_TipoPersona[]>;
   currPersona!:                                 User;
@@ -41,11 +44,13 @@ export class PersonaEditComponent implements OnInit {
   breakpoint2!:                                 number;
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
 
   @ViewChild(PersonaFormComponent) personaFormComponent!: PersonaFormComponent; 
 
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor(
     
@@ -86,7 +91,9 @@ export class PersonaEditComponent implements OnInit {
     // });
   }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
     //this.currPersona = Utility.getCurrentUser();
@@ -118,7 +125,7 @@ export class PersonaEditComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Operazioni CRUD -------
+//#region ----- Operazioni CRUD ----------------
 
   save()
   {
@@ -155,7 +162,7 @@ export class PersonaEditComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Altri metodi -------
+//#region ----- Altri metodi -------------------
 
   onResize(event: any) {
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;

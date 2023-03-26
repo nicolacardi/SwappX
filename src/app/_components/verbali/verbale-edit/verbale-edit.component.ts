@@ -35,7 +35,7 @@ import { DialogDataVerbale }                    from 'src/app/_models/DialogData
 
 export class VerbaleEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   obsVerbale$!:                                 Observable<DOC_Verbale>;
   obsTipiVerbale$!:                             Observable<DOC_TipoVerbale[]>;
   obsPersonaleScuola$!:                         Observable<PER_Persona[]>;

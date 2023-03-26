@@ -1,5 +1,7 @@
 export interface TEM_BloccoTesto {
-        id?:                                     number;
+        id?:                                    number;
 
-        testo:                                   string;
+        bloccoID:                               number;
+        testo:                                  string;
+        fontSize:                               number; 
 }

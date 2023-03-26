@@ -28,14 +28,13 @@
                 </mat-form-field>
             </div> -->
         <!-- </form> -->
+        <mat-label class="frameLabel">Elenco classi dell'anno </mat-label>
         <div class="_pos-relative">
-            <mat-label class="frameLabel">Elenco classi dell'anno </mat-label>
-
+            
             <div class="_scrollable-classi-list-container _cell-bordered mt20 ">
-
                 <app-classi-sezioni-anni-list [dove] = "'retta-calcolo'" #ListClassi></app-classi-sezioni-anni-list>
             </div>
-     </div>
+        </div>
         
         <div mat-dialog-actions class="mat-dialog-buttonsContainer">
             <button class="_btn-text" mat-button cdkFocusInitial (click)="calcola()">Calcola</button> 

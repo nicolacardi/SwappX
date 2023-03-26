@@ -1,27 +1,30 @@
-import { Component, Inject, OnInit } from '@angular/core';
+//#region ----- IMPORTS ------------------------
+
+import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { concat, Observable, Subscription } from 'rxjs';
-import { concatMap, subscribeOn, switchMap, tap } from 'rxjs/operators';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { Observable, Subscription }             from 'rxjs';
+import { concatMap, tap }                       from 'rxjs/operators';
 
 //components
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 //services
-import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
-import { ClassiSezioniService } from '../classi-sezioni.service';
-import { ClassiService } from '../classi.service';
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
+import { ClassiSezioniAnniService }             from '../classi-sezioni-anni.service';
+import { ClassiSezioniService }                 from '../classi-sezioni.service';
+import { ClassiService }                        from '../classi.service';
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
 
 //models
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { CLS_Classe } from 'src/app/_models/CLS_Classe';
-import { CLS_ClasseSezione } from 'src/app/_models/CLS_ClasseSezione';
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { CLS_Classe }                           from 'src/app/_models/CLS_Classe';
+import { CLS_ClasseSezione }                    from 'src/app/_models/CLS_ClasseSezione';
 
+//#endregion
 @Component({
   selector: 'app-classe-sezione-anno-edit',
   templateUrl: './classe-sezione-anno-edit.component.html',
@@ -29,22 +32,22 @@ import { CLS_ClasseSezione } from 'src/app/_models/CLS_ClasseSezione';
 })
 export class ClasseSezioneAnnoEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ---------------------
 
-  classeSezioneAnno$!:        Observable<CLS_ClasseSezioneAnno>;
-  
-  obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-  obsClassi$!:                Observable<CLS_Classe[]>;
-  obsClassiSezioniAnniSucc$!: Observable<CLS_ClasseSezioneAnnoGroup[]>;
-  obsClasseSezione$!:         Observable<CLS_ClasseSezione>;
+  classeSezioneAnno$!:                          Observable<CLS_ClasseSezioneAnno>;
+  obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>;
+  obsClassi$!:                                  Observable<CLS_Classe[]>;
+  obsClassiSezioniAnniSucc$!:                   Observable<CLS_ClasseSezioneAnnoGroup[]>;
+  obsClasseSezione$!:                           Observable<CLS_ClasseSezione>;
 
-  obs!: Subscription;
+  obs!:                                         Subscription;
 
-  form! :                     UntypedFormGroup;
-  emptyForm :                 boolean = false;
-  breakpoint!:                number;
+  form! :                                       UntypedFormGroup;
+  emptyForm :                                   boolean = false;
+  breakpoint!:                                  number;
 //#endregion
 
+//#region ----- Constructor -------------------
   constructor( 
     @Inject(MAT_DIALOG_DATA) public classeSezioneAnnoID: number,
     public _dialogRef:                          MatDialogRef<ClasseSezioneAnnoEditComponent>,
@@ -58,17 +61,19 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
     private _loadingService :                   LoadingService
   ) { 
     _dialogRef.disableClose = true;
+
     this.form = this.fb.group({
       id:                         [null],
       annoID:                     ['', Validators.required],
       classeSezioneAnnoSuccID:    [''],
       classeSezioneID:            [null],
-      
       sezione:                    ['', Validators.required],
       classeID:                   ['', Validators.required]
     });
 
   }
+
+//#endregion 
 
 //#region ----- LifeCycle Hooks e simili-------
 
@@ -119,7 +124,7 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Operazioni CRUD -------
+//#region ----- Operazioni CRUD ---------------
   save(){
     //console.log ("form.id", this.form.controls['id'].value );
 
@@ -166,6 +171,10 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
         }
     });
   }
+
+//#endregion
+
+//#region ----- Altri metodi ------------------
 
   updateAnnoSucc(selectedAnno: number) {
 

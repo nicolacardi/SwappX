@@ -205,7 +205,10 @@ import { BloccoEditComponent }                  from './_components/templates/bl
 
 import { ClickDoubleDirective }                 from './_components/utilities/clickdouble/clickdouble.directive';
 
-import { QuillModule }                          from 'ngx-quill'
+import { QuillModule }                          from 'ngx-quill';
+import { TableComponent }                       from './_components/templates/table/table.component';
+import { TableShowComponent }                   from './_components/templates/tableshow/tableshow.component';
+
 
 
 // FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -214,6 +217,7 @@ import { QuillModule }                          from 'ngx-quill'
   //timegridPlugin, NS 16/02/23
   //interactionPlugin NC 16/02/23
 // ]);
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -361,7 +365,10 @@ import { QuillModule }                          from 'ngx-quill'
       TemplateComponent,
       PaginaComponent,
       BloccoComponent,
-      BloccoEditComponent
+      BloccoEditComponent,
+      TableComponent,
+      TableShowComponent
+  
     
 
   ],

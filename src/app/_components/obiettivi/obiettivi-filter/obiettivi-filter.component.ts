@@ -1,19 +1,23 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
-import { ObiettiviListComponent } from '../obiettivi-list/obiettivi-list.component';
+//#region ----- IMPORTS ------------------------
+
+import { Component, Input, OnInit }             from '@angular/core';
+import { UntypedFormControl }                   from '@angular/forms';
+
+//components
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { ObiettiviListComponent }               from 'src/app/_components/obiettivi/obiettivi-list/obiettivi-list.component';
 
 //services
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { ClassiService } from '../../classi/classi.service';
-import { MaterieService } from '../../materie/materie.service';
-import { ObiettiviService } from '../../obiettivi/obiettivi.service';
+import { ClassiService }                        from 'src/app/_components/classi/classi.service';
+import { MaterieService }                       from 'src/app/_components/materie/materie.service';
 
 //classes
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { CLS_Classe } from 'src/app/_models/CLS_Classe';
-import { MAT_Materia } from 'src/app/_models/MAT_Materia';
-import { Observable } from 'rxjs';
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { CLS_Classe }                           from 'src/app/_models/CLS_Classe';
+import { MAT_Materia }                          from 'src/app/_models/MAT_Materia';
+import { Observable }                           from 'rxjs';
 
+//#endregion
 
 @Component({
   selector: 'app-obiettivi-filter',
@@ -22,7 +26,7 @@ import { Observable } from 'rxjs';
 })
 export class ObiettiviFilterComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   obsClassi$!:                Observable<CLS_Classe[]>;
   obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;
   obsMaterie$!:               Observable<MAT_Materia[]>;
@@ -34,14 +38,18 @@ export class ObiettiviFilterComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output -------  
-@Input() obiettiviListComponent!: ObiettiviListComponent;
+  @Input() obiettiviListComponent!: ObiettiviListComponent;
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor(
     private svcClassi:                      ClassiService,
     private svcAnni:                        AnniScolasticiService,
     private svcMaterie:                     MaterieService,
   ) { }
+//#endregion
+  
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(){
 
@@ -73,7 +81,9 @@ export class ObiettiviFilterComponent implements OnInit {
       }
     )
   }
+//#endregion
 
+//#region ----- Reset vari ---------------------
   resetAllInputs() {
     this.classeFilter.setValue('', {emitEvent:false});
     this.annoFilter.setValue('', {emitEvent:false});
@@ -87,5 +97,5 @@ export class ObiettiviFilterComponent implements OnInit {
     this.materiaFilter.setValue('');
     this.tipoVotoFilter.setValue('');
   }
-
+//#endregion
 }

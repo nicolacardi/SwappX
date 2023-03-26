@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatSort }                              from '@angular/material/sort';
 import { Observable }                           from 'rxjs';
@@ -15,6 +17,7 @@ import { TST_VotoInterr }                   from 'src/app/_models/TST_VotiInterr
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { VotoInterrEditComponent } from '../voto-interr-edit/voto-interr-edit.component';
 
+//#endregion
 
 @Component({
   selector:     'app-voti-interr-list',
@@ -24,11 +27,10 @@ import { VotoInterrEditComponent } from '../voto-interr-edit/voto-interr-edit.co
 
 export class VotiInterrListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   showPageTitle:                                boolean = true;
   showTableRibbon:                              boolean = true;
-
 
   matDataSource = new MatTableDataSource<TST_VotoInterr>();
   
@@ -56,25 +58,29 @@ export class VotiInterrListComponent implements OnInit {
 
   filterValue = '';       //Filtro semplice
   //filterValues contiene l'elenco dei filtri avanzati da applicare 
- filterValues = {
-   nome: '',
-   cognome: '',
-   dtCalendario: '',
-   h_Ini: '',
-   voto: '',
-   giudizio: '',
-   argomento: '',
-   filtrosx: ''
- };
+  filterValues = {
+    nome: '',
+    cognome: '',
+    dtCalendario: '',
+    h_Ini: '',
+    voto: '',
+    giudizio: '',
+    argomento: '',
+    filtrosx: ''
+  };
 //#endregion
 
-//#region ----- ViewChild Input Output -------
-  @ViewChild(MatSort) sort!:                    MatSort;
+//#region ----- ViewChild Input Output ---------
+
   @Input() lezioneID!:                          number;
   @Input() docenteID!:                          number;
   @Input() classeSezioneAnnoID!:                number;
 
+  @ViewChild(MatSort) sort!:                    MatSort;
+
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor( 
     private svcVotiInterr:                      VotiInterrService,
@@ -82,8 +88,10 @@ export class VotiInterrListComponent implements OnInit {
     public _dialog:                             MatDialog, 
     ) { 
   }
+
+//#endregion
   
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
       this.loadData();
@@ -150,7 +158,7 @@ export class VotiInterrListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
 
   applyFilter(event: Event) {
 
@@ -232,6 +240,8 @@ export class VotiInterrListComponent implements OnInit {
 
   // }
 
+//#region ----- Altri metodi -------------------
+
   addRecord() {
 
     const dialogConfig : MatDialogConfig = {
@@ -270,6 +280,7 @@ export class VotiInterrListComponent implements OnInit {
       () => this.loadData()
     );
   }
+//#endregion
 
 
 }

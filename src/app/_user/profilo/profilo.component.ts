@@ -27,7 +27,7 @@ import { User }                                 from 'src/app/_user/Users';
 
 export class ProfiloComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   imgFile!:                                     string;
   foto!:                                        string;
   fotoObj!:                                     _UT_UserFoto

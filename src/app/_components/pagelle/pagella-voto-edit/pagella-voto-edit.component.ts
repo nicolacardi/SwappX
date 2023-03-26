@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,6 +21,7 @@ import { LoadingService } from '../../utilities/loading/loading.service';
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
 import { DOC_PagellaVoto, DOC_TipoGiudizio } from 'src/app/_models/DOC_PagellaVoto';
 
+//#endregion
 @Component({
   selector: 'app-pagella-voto-edit',
   templateUrl: './pagella-voto-edit.component.html',
@@ -27,7 +30,7 @@ import { DOC_PagellaVoto, DOC_TipoGiudizio } from 'src/app/_models/DOC_PagellaVo
 
 export class PagellaVotoEditComponent implements OnInit  {
   
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   matDataSource = new           MatTableDataSource<DOC_PagellaVoto>();
 
   obsTipiGiudizio$!:            Observable<DOC_TipoGiudizio[]>;
@@ -40,13 +43,15 @@ export class PagellaVotoEditComponent implements OnInit  {
   ];
 //#endregion  
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @Input('objPagella') objPagella!:                     DOC_Pagella;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:   number;
 
   @Output('reloadParent') reloadParent = new EventEmitter(); //EMESSO quando si clicca sul (+) di aggiunta alle classi frequentate
 
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor( 
     private svcPagella:                         PagelleService,
@@ -57,6 +62,10 @@ export class PagellaVotoEditComponent implements OnInit  {
     private _snackBar:                          MatSnackBar,
     public _dialog:                             MatDialog  ) { 
   }
+
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
     if (this.objPagella != undefined) 
@@ -78,6 +87,53 @@ export class PagellaVotoEditComponent implements OnInit  {
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
     loadPagella$.subscribe(val => this.matDataSource.data = val );
   }
+//#endregion
+
+//#region ----- Operazioni CRUD ----------------
+
+
+  save (formInput: DOC_PagellaVoto) {
+
+    //pulizia forminput da oggetti composti
+    delete formInput.iscrizione;
+    delete formInput.materia;
+    delete formInput.tipoGiudizio;
+    delete formInput._ObiettiviCompleti;
+
+    //nel caso la pagella ancora non sia stata creata, va inserita
+    if (this.objPagella.id == -1) {
+      this.svcPagella.post(this.objPagella)
+        .pipe (
+          tap( x =>  {
+            formInput.pagellaID = x.id! 
+          } ),
+          concatMap( () =>   
+            iif( () => formInput.id == 0 || formInput.id == undefined,
+              this.svcPagellaVoti.post(formInput),
+              this.svcPagellaVoti.put(formInput)
+          )
+        )
+      ).subscribe()
+    }
+    else {    //caso pagella già presente
+      //console.log("2 Pagella.id <> -1: C'è una Pagella --->post o put del PagellaVoto");
+
+      if (formInput.id == 0) {
+        this.svcPagellaVoti.post(formInput).subscribe(
+          res => this.loadData() ,
+          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
+        )
+      } else {
+        this.svcPagellaVoti.put(formInput).subscribe(
+          res => { },
+          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})
+        )
+      }
+    }
+  }
+//#endregion
+
+//#region ----- Altri metodi -------------------
 
   changeSelectGiudizio(formData: DOC_PagellaVoto, tipoGiudizioID: number) {
 
@@ -122,46 +178,6 @@ export class PagellaVotoEditComponent implements OnInit  {
 
     if (this.objPagella.ckStampato) this.resetStampato();
   }
-  
-  save (formInput: DOC_PagellaVoto) {
-
-    //pulizia forminput da oggetti composti
-    delete formInput.iscrizione;
-    delete formInput.materia;
-    delete formInput.tipoGiudizio;
-    delete formInput._ObiettiviCompleti;
-
-    //nel caso la pagella ancora non sia stata creata, va inserita
-    if (this.objPagella.id == -1) {
-      this.svcPagella.post(this.objPagella)
-        .pipe (
-          tap( x =>  {
-            formInput.pagellaID = x.id! 
-          } ),
-          concatMap( () =>   
-            iif( () => formInput.id == 0 || formInput.id == undefined,
-              this.svcPagellaVoti.post(formInput),
-              this.svcPagellaVoti.put(formInput)
-          )
-        )
-      ).subscribe()
-    }
-    else {    //caso pagella già presente
-      //console.log("2 Pagella.id <> -1: C'è una Pagella --->post o put del PagellaVoto");
-
-      if (formInput.id == 0) {
-        this.svcPagellaVoti.post(formInput).subscribe(
-          res => this.loadData() ,
-          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
-        )
-      } else {
-        this.svcPagellaVoti.put(formInput).subscribe(
-          res => { },
-          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})
-        )
-      }
-    }
-  }
 
   openObiettivi(element: DOC_PagellaVoto) {
 
@@ -190,4 +206,5 @@ export class PagellaVotoEditComponent implements OnInit  {
   resetStampato() {
     this.svcPagella.setStampato(this.objPagella.id!, false).subscribe();
   }
+//#endregion
 }

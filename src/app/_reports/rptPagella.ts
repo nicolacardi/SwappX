@@ -17,6 +17,13 @@ export const rptPagella: any = [
 	
 	//#########################     COPERTINA     #########################
 	{
+		"tipo": "Image",
+		"value": "logodefViola.png",
+		"X": 275,
+		"Y": 30,
+		"W": 80
+	},
+	{
 		"tipo": "Text",
 		"value": "Documento di Valutazione",
 		"fontName": "TitilliumWeb-SemiBold",
@@ -72,13 +79,7 @@ export const rptPagella: any = [
 		"align": "center" ,
 		"maxWidth": 100
 	},
-	{
-		"tipo": "Image",
-		"value": "logodefViola.png",
-		"X": 275,
-		"Y": 30,
-		"W": 80
-	},
+
 	{
 		"tipo": "Line",
 		"thickness": 0.2,

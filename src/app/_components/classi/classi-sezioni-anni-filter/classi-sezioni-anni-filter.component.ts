@@ -1,6 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+//#region ----- IMPORTS ------------------------
 
+import { Component, Input, OnInit }             from '@angular/core';
+import { UntypedFormControl }                   from '@angular/forms';
+
+//#endregion
 //components
 import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 
@@ -11,18 +14,18 @@ import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/clas
 })
 export class ClassiSezioniAnniFilterComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   classeFilter = new UntypedFormControl('');
   sezioneFilter = new UntypedFormControl('');
 //#endregion
 
-//#region ----- ViewChild Input Output -------  
+//#region ----- ViewChild Input Output --------- 
   @Input() classiSezioniAnniListComponent!: ClassiSezioniAnniListComponent;
 //#endregion 
 
   constructor() { }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
   ngOnInit() {
 
     this.classeFilter.valueChanges.subscribe(

@@ -43,7 +43,7 @@
                                     formControlName = "h_Ini"
                                     type="time"
                                     placeholder="Ora Inizio"
-                                    (change)="dp1Change()">
+                                    (focusout)="dp1Change()">
                                 <mat-datepicker></mat-datepicker>
                                 <!-- <mat-error *ngIf="form.controls.start.errors?.required"> Campo obbligatorio</mat-error> -->
                             </mat-form-field>
@@ -55,7 +55,7 @@
                                        formControlName = "h_End"
                                        type="time"
                                        placeholder="Ora Fine"
-                                       (change)="dp2Change()">
+                                       (focusout)="dp2Change()">
                                 <mat-datepicker #dpEnd ></mat-datepicker>
                                 <!-- <mat-error *ngIf="form.controls.end.errors?.required"> Campo obbligatorio</mat-error> -->
                             </mat-form-field>

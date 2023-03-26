@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
@@ -19,6 +21,7 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 //components
 import { ClasseAnnoMateriaEditComponent } from '../classe-anno-materia-edit/classe-anno-materia-edit.component';
 
+//#endregion
 @Component({
   selector: 'app-classi-anni-materie-list',
   templateUrl: './classi-anni-materie-list.component.html',
@@ -27,7 +30,7 @@ import { ClasseAnnoMateriaEditComponent } from '../classe-anno-materia-edit/clas
 export class ClassiAnniMaterieListComponent implements OnInit {
 
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
 matDataSource = new MatTableDataSource<CLS_ClasseAnnoMateria>();
 
@@ -46,10 +49,10 @@ displayedColumns: string[] = [
 rptTitle = 'Lista Tipi Voto';
 rptFileName = 'ListaTipiVoto';
 rptFieldsToKeep  = [
-  "classe",
-  "anno",
-  "materia",
-  "tipoVoto"
+  "classe.descrizione",
+  "anno.annoscolastico",
+  "materia.descrizione",
+  "tipoVoto.descrizione"
 ];
 
 rptColumnsNames  = [
@@ -71,10 +74,11 @@ filterValues = {
 
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
 @ViewChild(MatSort) sort!:                MatSort;
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor(private svcClasseAnnoMateria:           ClasseAnnoMateriaService,
               private svcAnni:                        AnniScolasticiService,
               private fb:                             UntypedFormBuilder, 
@@ -86,6 +90,9 @@ filterValues = {
       selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
     })      
   }
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
     this.obsAnni$= this.svcAnni.list();
@@ -113,9 +120,9 @@ filterValues = {
       }
     );
   }
+//#endregion
 
-
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -143,7 +150,7 @@ filterValues = {
   }
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
 
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {

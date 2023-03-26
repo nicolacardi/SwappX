@@ -77,6 +77,55 @@ export abstract class Utility {
   }
 
 
+
+
+
+   
+  //Utility per caricare una foto nel template
+  public static loadImage(src: any, newX: number) {
+    return new Promise((res, rej) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        const elem = document.createElement('canvas');
+
+        let posX = 0;
+        let posY = 0;
+        let newY : number;
+
+        const ratio = img.height / img.width;
+
+        //ridimensiona
+        elem.width = newX;                      //imposta la larghezza al valore ricevuto
+        elem.height = newX*ratio;               //imposta l'altezza corrispondente
+        // if (ratio>1) {
+          newY = newX*ratio;          //rende il taglio proporzionato
+          posY = 0;    //posiziona il taglio
+        // } else { 
+        //   newX = newY/ratio;          //rende il taglio proporzionato
+        //   posX = (newX-newY)/2;       //posiziona il taglio
+        // }
+        
+        const ctx = elem.getContext('2d');
+        ctx!.drawImage(img, -posX, -posY, newX, newY);
+        
+        const data = ctx!.canvas.toDataURL();
+        let arrReturn = [data, newX, newY];
+        // console.log (" utility.loadImage - sto per restituire", arrReturn);
+
+        res(arrReturn);
+      }
+      img.onerror = error =>{ 
+        // console.log ("c'è un errore nella promise");
+
+        rej(error);
+      }
+    })
+  }
+
+
+
+
   public static getCurrentUser() : User {
     let obj: any;
     let tmp = localStorage.getItem('currentUser');
@@ -118,6 +167,25 @@ export abstract class Utility {
       return null;
     }
   }
+
+
+  public static msToTime(s: number) {
+    var ms = s % 1000;
+    s = (s - ms) / 1000;
+    var secs = s % 60;
+    s = (s - secs) / 60;
+    var mins = s % 60;
+    var hrs = (s - mins) / 60;
+  
+    return hrs + ':' + mins + ':' + secs;
+  }
+
+  public static zeroPad(n:number,length:number){
+    var s=n+"",needed=length-s.length;
+    if (needed>0) s=(Math.pow(10,needed)+"").slice(1)+s;
+    return s;
+  }
+
 }
 
   

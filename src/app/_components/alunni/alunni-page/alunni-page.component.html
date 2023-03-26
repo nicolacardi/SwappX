@@ -23,7 +23,10 @@
                      [rptColumnsNames]="appalunnilist.rptColumnsNames" 
                      [rptData]="appalunnilist.matDataSource.data"
                      [rptFileName]="appalunnilist.rptFileName"
-                     [columnsComponent] = "appalunnilist">
+                     [columnsComponent] = "appalunnilist"
+                     [tableName] = "'AlunniList'"
+                     (refreshColumns)="refreshChildCols()"
+                     >
         </app-toolbar>
     </mat-drawer>
 

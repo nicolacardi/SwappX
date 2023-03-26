@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Inject, OnInit }            from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
 import { MatTableDataSource }                   from '@angular/material/table';
@@ -21,6 +23,7 @@ import { MAT_LivelloObiettivo }                 from 'src/app/_models/MAT_Livell
 import { DOC_Pagella }                          from 'src/app/_models/DOC_Pagella';
 import { DOC_PagellaVoto }                      from 'src/app/_models/DOC_PagellaVoto';
 
+//#endregion
 @Component({
   selector: 'app-voti-obiettivi-edit',
   templateUrl: './voti-obiettivi-edit.component.html',
@@ -28,7 +31,7 @@ import { DOC_PagellaVoto }                      from 'src/app/_models/DOC_Pagell
 })
 
 export class VotiObiettiviEditComponent implements OnInit {
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   matDataSource = new                   MatTableDataSource<DOC_PagellaVotoObiettivo>();
   obsTipiLivelloObiettivo$!:            Observable<MAT_LivelloObiettivo[]>;
@@ -40,9 +43,7 @@ export class VotiObiettiviEditComponent implements OnInit {
 
 //#endregion 
 
-//#region ----- ViewChild Input Output -------
-
-//#endregion
+//#region ----- Constructor --------------------
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data:       DialogDataVotiObiettivi,
@@ -55,6 +56,9 @@ export class VotiObiettiviEditComponent implements OnInit {
   ) { 
 
   }
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
     this.loadData();
@@ -70,6 +74,10 @@ export class VotiObiettiviEditComponent implements OnInit {
     let loadObiettivi$ =this._loadingService.showLoaderUntilCompleted(obsPagellaVotoObiettivi$)
     loadObiettivi$.subscribe(val =>  this.matDataSource.data = val );
   }
+
+//#endregion
+
+//#region ----- Altri metodi -------------------
 
   changeSelectObiettivo(element: DOC_PagellaVotoObiettivo, valLivello: number) {
     //console.log ("element", element);
@@ -173,5 +181,5 @@ export class VotiObiettiviEditComponent implements OnInit {
   resetStampato() {
     this.svcPagella.setStampato(this.data.pagellaID, false).subscribe();
   }
-
+//#endregion
 }

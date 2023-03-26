@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -11,6 +13,7 @@ import { TipiPersonaService } from '../tipi-persona.service';
 //models
 import { PER_TipoPersona } from 'src/app/_models/PER_Persone';
 
+//#endregion
 @Component({
   selector: 'app-persone-filter',
   templateUrl: './persone-filter.component.html',
@@ -19,7 +22,7 @@ import { PER_TipoPersona } from 'src/app/_models/PER_Persone';
 
 export class PersoneFilterComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');
@@ -35,14 +38,13 @@ export class PersoneFilterComponent implements OnInit {
 
 //#endregion
 
-//#region ----- ViewChild Input Output -------  
+//#region ----- ViewChild Input Output ---------  
   @Input() personeListComponent!: PersoneListComponent;
 //#endregion
-  constructor( private svcTipiPersona: TipiPersonaService ) {
 
-   }
+  constructor( private svcTipiPersona: TipiPersonaService ) {}
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
 
@@ -105,7 +107,7 @@ export class PersoneFilterComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Reset vari -------
+//#region ----- Reset vari ---------------------
   resetFilterSx() {
       //this.personeListComponent.matDataSource.filter = ''; 
       //this.personeListComponent.filterValue = '';

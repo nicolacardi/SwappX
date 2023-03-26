@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatSort }                              from '@angular/material/sort';
 import { Observable }                           from 'rxjs';
@@ -13,7 +15,7 @@ import { VotiCompitiService }                   from '../voti-compiti.service';
 //models
 import { TST_VotoCompito }                      from 'src/app/_models/TST_VotiCompiti';
 
-
+//#endregion
 @Component({
   selector:     'app-voti-compito-list',
   templateUrl:  './voti-compito-list.component.html',
@@ -22,7 +24,7 @@ import { TST_VotoCompito }                      from 'src/app/_models/TST_VotiCo
 
 export class VotiCompitoListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   matDataSource = new MatTableDataSource<TST_VotoCompito>();
   
   displayedColumns: string[] = [ 
@@ -33,7 +35,7 @@ export class VotiCompitoListComponent implements OnInit {
   ];
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild(MatSort) sort!:                    MatSort;
   @Input() lezioneID!:                          number;
 //#endregion
@@ -43,7 +45,7 @@ export class VotiCompitoListComponent implements OnInit {
     private _loadingService:                    LoadingService ) { 
   }
   
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
   ngOnInit () {
     this.loadData();
   }
@@ -66,6 +68,8 @@ export class VotiCompitoListComponent implements OnInit {
     } 
   }
 //#endregion
+
+//#region ----- Altri metodi -------------------
 
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {
@@ -93,9 +97,9 @@ export class VotiCompitoListComponent implements OnInit {
     element.giudizio = giudizio;
 
     this.svcVotiCompiti.put(element).subscribe();
-
   }
 
+//#endregion
 
 }
 

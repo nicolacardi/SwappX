@@ -1,20 +1,23 @@
-import { Component, Inject, OnInit } from '@angular/core';
+//#region ----- IMPORTS ------------------------
+
+import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { MatDialogRef, MAT_DIALOG_DATA }        from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { Observable }                           from 'rxjs';
+import { tap }                                  from 'rxjs/operators';
 
 //models
-import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
+import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_ClasseDocenteMateria';
 
 //components
-import { SnackbarComponent } from '../../../utilities/snackbar/snackbar.component';
+import { SnackbarComponent }                    from '../../../utilities/snackbar/snackbar.component';
 
 //services
-import { LoadingService } from '../../../utilities/loading/loading.service';
-import { DocenzeService } from '../docenze.service';
+import { LoadingService }                       from '../../../utilities/loading/loading.service';
+import { DocenzeService }                       from '../docenze.service';
 
+//#endregion
 @Component({
   selector: 'app-docenza-edit',
   templateUrl: './docenza-edit.component.html',
@@ -22,7 +25,7 @@ import { DocenzeService } from '../docenze.service';
 })
 export class DocenzaEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   docenza$!:                  Observable<CLS_ClasseDocenteMateria>;
   strMateria!:                string;
@@ -32,6 +35,7 @@ export class DocenzaEditComponent implements OnInit {
   form! :                     UntypedFormGroup;
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor(
     @Inject(MAT_DIALOG_DATA) public idDocenza: number,
     public _dialogRef:                          MatDialogRef<DocenzaEditComponent>,
@@ -49,6 +53,9 @@ export class DocenzaEditComponent implements OnInit {
       classeSezioneAnnoID:        ['']
     });
   }
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(){
     this.loadData();
@@ -71,7 +78,9 @@ export class DocenzaEditComponent implements OnInit {
       );
     }
   }
+//#endregion
 
+//#region ----- Operazioni CRUD ----------------
   save() {
 
     // if (this.form.controls['id'].value == null) //ma non sarebbe == 0?
@@ -115,4 +124,5 @@ export class DocenzaEditComponent implements OnInit {
       err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore durante la cancellazione', panelClass: ['red-snackbar']})
     );
   }
+//#endregion
 }

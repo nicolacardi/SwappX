@@ -1,9 +1,12 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Input, OnInit} from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
 //components
 import { GenitoriListComponent } from '../genitori-list/genitori-list.component';
 
+//#endregion
 @Component({
   selector: 'app-genitori-filter',
   templateUrl: './genitori-filter.component.html',
@@ -12,7 +15,7 @@ import { GenitoriListComponent } from '../genitori-list/genitori-list.component'
 
 export class GenitoriFilterComponent implements OnInit {
 
- //#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');
   dtNascitaFilter = new UntypedFormControl('');

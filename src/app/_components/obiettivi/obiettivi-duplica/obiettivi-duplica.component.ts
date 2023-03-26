@@ -1,38 +1,46 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+//#region ----- IMPORTS ------------------------
+
+import { Component, OnInit }                    from '@angular/core';
+import { Observable }                           from 'rxjs';
+import { MatDialog, MatDialogRef }              from '@angular/material/dialog';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 //components
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
-
-//services
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { ObiettiviService } from '../obiettivi.service';
-
-//classes
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
+//services
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { ObiettiviService }                     from '../obiettivi.service';
 
+//classes
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+
+//#endregion
 @Component({
   selector: 'app-obiettivi-duplica',
   templateUrl: './obiettivi-duplica.component.html',
   styleUrls: ['./../obiettivi.css']
 })
+
 export class ObiettiviDuplicaComponent implements OnInit {
-  obsAnni$!:            Observable<ASC_AnnoScolastico[]>
-  form!:                UntypedFormGroup;
+
+//#region ----- Variabili ----------------------
+
+  obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>
+  form!:                                        UntypedFormGroup;
+//#endregion
+
+//#region ----- Constructor --------------------
 
   constructor(
-    public _dialogRef:                      MatDialogRef<ObiettiviDuplicaComponent>,
-    private svcAnni:                        AnniScolasticiService,
-    private svcObiettivi:                   ObiettiviService,
-    private fb:                             UntypedFormBuilder,
-    public _dialog:                         MatDialog,
-    private _snackBar:                      MatSnackBar
-
+    public _dialogRef:                          MatDialogRef<ObiettiviDuplicaComponent>,
+    private svcAnni:                            AnniScolasticiService,
+    private svcObiettivi:                       ObiettiviService,
+    private fb:                                 UntypedFormBuilder,
+    public _dialog:                             MatDialog,
+    private _snackBar:                          MatSnackBar
   ) {
     _dialogRef.disableClose = true;
 
@@ -41,10 +49,16 @@ export class ObiettiviDuplicaComponent implements OnInit {
       selectAnnoTo: [null],
     })
   }
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
     this.obsAnni$ = this.svcAnni.list();
   }
+//#endregion
+
+//#region ----- Altri metodi -------------------
 
   duplica() {
     if (this.form.controls.selectAnnoFrom.value == this.form.controls.selectAnnoTo.value) {
@@ -61,5 +75,6 @@ export class ObiettiviDuplicaComponent implements OnInit {
       }
     );
   }
+//#endregion
 
 }

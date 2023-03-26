@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
@@ -6,6 +8,7 @@ import { NavigationService } from '../../utilities/navigation/navigation.service
 import { PagamentiFilterComponent } from '../pagamenti-filter/pagamenti-filter.component';
 import { PagamentiListComponent } from '../pagamenti-list/pagamenti-list.component';
 
+//#endregion
 @Component({
   selector: 'app-pagamenti-page',
   templateUrl: './pagamenti-page.component.html',
@@ -21,20 +24,20 @@ export class PagamentiPageComponent implements OnInit {
 
   constructor(private _navigationService:  NavigationService) { }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
   ngOnInit(): void {
     this._navigationService.passPage("pagamentiPage");
   }
 //#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
 
   addRecord() {
     this.pagamentiList.addRecord()
   }
 //#endregion
 
-//#region ----- Reset vari -------
+//#region ----- Reset vari ---------------------
 
   resetFiltri() {
 
@@ -49,6 +52,11 @@ export class PagamentiPageComponent implements OnInit {
   openDrawer() {
     this.drawerFiltriAvanzati.open();
     //console.log ("apriDrawer");
+  }
+
+  
+  refreshChildCols(){
+    this.pagamentiList.loadLayout();
   }
 //#endregion
 

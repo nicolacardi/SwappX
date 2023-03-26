@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, OnInit, ViewChild }         from '@angular/core';
 import { MatDrawer }                            from '@angular/material/sidenav';
 
@@ -8,6 +10,7 @@ import { AlunniListComponent }                  from '../alunni-list/alunni-list
 //services
 import { NavigationService }                    from '../../utilities/navigation/navigation.service';
 
+//#endregion
 
 @Component({
   selector: 'app-alunni-page',
@@ -17,35 +20,41 @@ import { NavigationService }                    from '../../utilities/navigation
 
 export class AlunniPageComponent implements OnInit {
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild(AlunniListComponent) alunniList!: AlunniListComponent; 
   @ViewChild(AlunniFilterComponent) alunniFilterComponent!: AlunniFilterComponent; 
   @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
 //#endregion
   
-  constructor(private _navigationService:  NavigationService) { }
+  constructor(
+    private _navigationService:  NavigationService
+  ) { }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
   ngOnInit(): void {
     this._navigationService.passPage("alunniPage");
   }
 //#endregion
   
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
   addRecord() {
     this.alunniList.addRecord()
   }
 //#endregion
   
-//#region ----- Reset vari -------
+//#region ----- Reset vari ---------------------
   resetFiltri() {
     this.alunniFilterComponent.resetAllInputs();
   }
 //#endregion
 
-//#region ----- Altri metodi -------
+//#region ----- Altri metodi -------------------
   openDrawer() {
     this.drawerFiltriAvanzati.open();
+  }
+
+  refreshChildCols(){
+    this.alunniList.loadLayout();
   }
 //#endregion
 }

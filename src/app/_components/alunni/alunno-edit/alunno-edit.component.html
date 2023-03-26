@@ -134,12 +134,12 @@
                     </form> 
                 </mat-tab>
 <!-- ********************************    MAT TAB GENITORI ************************************ -->
-                <mat-tab label="Famiglia">    
+                <mat-tab label="Famiglia" class="_pos-relative">    
                     <button mat-mini-fab aria-label="Nuova anagrafica Genitore" matTooltip="Nuova anagrafica Genitore" class= "_btn-addModal" (click)="addGenitore()">
                         <mat-icon>add</mat-icon>
                     </button>
                     <br>
-                    <mat-label class="frameLabel">i genitori/tutori di {{alunnoNomeCognome}} </mat-label>
+                    <mat-label class="frameLabel t10">I genitori/tutori di {{alunnoNomeCognome}} </mat-label>
                     <div class="_genitori-container _cell-bordered mt10">
                         <app-genitori-list [context]="'alunno-edit-famiglia'"[alunnoID]="alunnoID"  (removeFromFamily) = "removeFromFamily($event)" #genitoriFamiglia></app-genitori-list>
                     </div>
@@ -149,35 +149,61 @@
                                 <mat-panel-title>Elenco di tutti i genitori/tutori</mat-panel-title>
                                 <mat-panel-description>(fare click per aprire)</mat-panel-description>
                             </mat-expansion-panel-header>
-                            <mat-label class="frameLabel">Elenco dei genitori/tutori </mat-label>
+                            <!-- <mat-label class="frameLabel">Elenco dei genitori/tutori </mat-label> -->
                             <div class="_genitori-list-container _cell-bordered mt10">
                                 <app-genitori-list [context]="'alunno-edit-list'" (addToFamily) = "addToFamily($event)"></app-genitori-list>
                             </div>
                         </mat-expansion-panel>
                     </mat-accordion>
-
                 </mat-tab>
 <!-- ********************************    MAT TAB CLASSI    ************************************* -->
-                <mat-tab label="Classi Frequentate" style="overflow-x: hideen;">
+                <mat-tab label="Classi Frequentate" class="_pos-relative">  
+                    <br>  
+                    <mat-label class="frameLabel t10">Le classi frequentate da {{alunnoNomeCognome}} </mat-label>
+                    <div class="_classi-attended-container _cell-bordered mt10">
+                        <app-iscrizioni-alunno-list [alunnoID] = "alunnoID" #iscrizioniAlunno 
+                        (removeFromAttended) = "removeFromAttended($event)" >
+                        </app-iscrizioni-alunno-list>
+                    </div>
+                    <mat-accordion>
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Elenco di tutte le classi</mat-panel-title>
+                                <mat-panel-description>(fare click per aprire)</mat-panel-description>
+                            </mat-expansion-panel-header>
+                            <div class="_classi-list-container _cell-bordered mt10">
+                                <app-classi-sezioni-anni-list [dove] = "'alunno-edit-list'"
+                                (addToAttended) = "addToAttended($event)"
+                                #classiSezioniAnniList>
+                                </app-classi-sezioni-anni-list>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </mat-tab>
+
+                <!-- Nella versione commentata l'accordion è ruotato...difficile da governare come css e fuori standard -->
+                <!-- <mat-tab label="Classi Frequentate" >
                     <table>
                         <tr>
                             <td>
-                                <mat-label class="frameLabel">Le classi frequentate da {{alunnoNomeCognome}} </mat-label>
-                                <div class="_classi-attended-container _cell-bordered mt10">
+                                <div class="_classi-attended-container-vertical _cell-bordered mt10">
+                                    <mat-label class="frameLabel t20">Le classi frequentate da {{alunnoNomeCognome}} </mat-label>
+
                                     <app-iscrizioni-alunno-list [alunnoID] = "alunnoID" #iscrizioniAlunno 
                                                                 (removeFromAttended) = "removeFromAttended($event)" >
                                     </app-iscrizioni-alunno-list>
                                 </div>
                             </td>
-                            <td class="_classi-list-td-vertical-accordion">
+                            <td class="_classi-list-td-vertical-accordion _pos-relative">
+                                <mat-label class="frameLabel">Elenco delle classi</mat-label>
                                 <mat-accordion class="_rotated-accordion">
                                     <mat-expansion-panel hideToggle>
                                         <mat-expansion-panel-header>
                                         <mat-panel-title>Tutte le classi</mat-panel-title>
                                         <mat-panel-description>(fare click per aprire)</mat-panel-description>
                                         </mat-expansion-panel-header>
-                                        <mat-label class="frameLabel l480">Elenco delle classi</mat-label>
-                                        <div class="_panel-content _classi-list-container _cell-bordered mt10">
+                                        
+                                        <div class="_panel-content _classi-list-container-vertical _cell-bordered mt10">
                                             <app-classi-sezioni-anni-list [dove] = "'alunno-edit-list'"
                                                                           (addToAttended) = "addToAttended($event)"
                                                                           #classiSezioniAnniList>
@@ -188,7 +214,7 @@
                             </td>
                         </tr>
                     </table>
-                </mat-tab>
+                </mat-tab> -->
 <!-- ********************************    MAT TAB PAGELLE ************************************** -->
                 <mat-tab label="Pagelle">
 

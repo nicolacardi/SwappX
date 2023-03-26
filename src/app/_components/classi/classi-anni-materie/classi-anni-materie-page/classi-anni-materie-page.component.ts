@@ -1,15 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+//#region ----- IMPORTS ------------------------
 
-//services
-
-//models
+import { Component, OnInit, ViewChild }         from '@angular/core';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 
 //components
 import { ClassiAnniMaterieDuplicaComponent } from '../classi-anni-materie-duplica/classi-anni-materie-duplica.component';
 import { ClassiAnniMaterieListComponent } from '../classi-anni-materie-list/classi-anni-materie-list.component';
 
-
+//#endregion
 @Component({
   selector: 'app-classi-anni-materie-page',
   templateUrl: './classi-anni-materie-page.component.html',
@@ -18,11 +16,13 @@ import { ClassiAnniMaterieListComponent } from '../classi-anni-materie-list/clas
 
 export class ClassiAnniMateriePageComponent implements OnInit {
 
+//#region ----- ViewChild Input Output ---------  
+
   @ViewChild(ClassiAnniMaterieListComponent) classiAnniMaterieList!: ClassiAnniMaterieListComponent;
 
-  constructor(public _dialog: MatDialog ) {
+//#endregion
 
-  }
+  constructor(public _dialog: MatDialog ) { }
 
   ngOnInit(): void {
   }

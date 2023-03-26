@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatDrawer }                            from '@angular/material/sidenav';
 
@@ -8,13 +10,15 @@ import { NoteListComponent }                    from '../note-list/note-list.com
 //services
 import { NavigationService }                    from '../../utilities/navigation/navigation.service';
 
+//#endregion
 @Component({
   selector: 'app-note-page',
   templateUrl: './note-page.component.html',
   styleUrls: ['../note.css']
 })
 export class NotePageComponent implements OnInit {
-//#region ----- ViewChild Input Output -------
+  
+//#region ----- ViewChild Input Output ---------
   @ViewChild(NoteListComponent) noteList!: NoteListComponent; 
   @ViewChild(NoteFilterComponent) noteFilterComponent!: NoteFilterComponent; 
   @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
@@ -27,26 +31,26 @@ export class NotePageComponent implements OnInit {
 
 constructor(private _navigationService:  NavigationService) { }
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
     this._navigationService.passPage("notePage");
   }
 //#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
   addRecord() {
     this.noteList.addRecord()
   }
 //#endregion
 
-//#region ----- Reset vari -------
+//#region ----- Reset vari ---------------------
   resetFiltri() {
     this.noteFilterComponent.resetAllInputs();
   }
 //#endregion
 
-//#region ----- Altri metodi -------
+//#region ----- Altri metodi -------------------
   openDrawer() {
     this.drawerFiltriAvanzati.open();
   }

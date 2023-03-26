@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { CdkDragDrop, moveItemInArray }         from '@angular/cdk/drag-drop';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
@@ -12,15 +14,19 @@ import { map }                                  from 'rxjs/operators';
 //components
 import { PersonaEditComponent }                 from '../persona-edit/persona-edit.component';
 import { PersoneFilterComponent }               from '../persone-filter/persone-filter.component';
+import { Utility }                              from '../../utilities/utility.component';
 
 //services
 import { PersoneService }                       from '../persone.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { TableColsService }                     from '../../utilities/toolbar/tablecols.service';
+import { TableColsVisibleService }              from '../../utilities/toolbar/tablecolsvisible.service';
 
 //models
 import { PER_Persona }                          from 'src/app/_models/PER_Persone';
+import { User }                                 from 'src/app/_user/Users';
 
-
+//#endregion
 @Component({
   selector: 'app-persone-list',
   templateUrl: './persone-list.component.html',
@@ -28,10 +34,12 @@ import { PER_Persona }                          from 'src/app/_models/PER_Person
 })
 export class PersoneListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
+  currUser!:                                    User;
 
   matDataSource = new MatTableDataSource<PER_Persona>();
 
+  tableName = "PersoneList";
   displayedColumns: string[] =  [];
   displayedColumnsPersoneList: string[] = [
     "actionsColumn", 
@@ -114,17 +122,34 @@ export class PersoneListComponent implements OnInit {
 
 //#endregion
 
+//#region ----- Constructor --------------------
 
-  constructor( private svcPersone:       PersoneService,
-               private _loadingService:  LoadingService,
-               public _dialog:           MatDialog ) {    
+  constructor( 
+    private svcPersone:                         PersoneService,
+    private _loadingService:                    LoadingService,
+    public _dialog:                             MatDialog,
+    private svcTableCols:                       TableColsService,
+    private svcTableColsVisible:                TableColsVisibleService
+  ) 
+  { 
+    this.currUser = Utility.getCurrentUser();
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
-    this.displayedColumns =  this.displayedColumnsPersoneList;
+    //this.displayedColumns =  this.displayedColumnsPersoneList;
+    this.loadLayout();
     this.loadData(); 
+  }
+
+  loadLayout(){
+    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName)
+    .subscribe( colonne => {
+        if (colonne.length != 0) this.displayedColumns = colonne.map(a => a.tableCol!.colName)
+        else this.svcTableCols.listByTable(this.tableName).subscribe( colonne => this.displayedColumns = colonne.map(a => a.colName))      
+    });
   }
 
   loadData () {
@@ -152,7 +177,7 @@ export class PersoneListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
 
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
@@ -198,7 +223,7 @@ export class PersoneListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -228,7 +253,7 @@ export class PersoneListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Gestione Campo Checkbox -------
+//#region ----- Gestione Campo Checkbox --------
 
 selectedRow(element: PER_Persona) {
   this.selection.toggle(element);
@@ -277,7 +302,8 @@ isAllSelected() {
 
 //#endregion
 
- 
+//#region ----- Right Click --------------------
+
   onRightClick(event: MouseEvent, element: PER_Persona) { 
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
@@ -285,6 +311,6 @@ isAllSelected() {
     this.matMenuTrigger.menuData = {item: element}   
     this.matMenuTrigger.openMenu(); 
   }
-
+//#endregion
   
 }

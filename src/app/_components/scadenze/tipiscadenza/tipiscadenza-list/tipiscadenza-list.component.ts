@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, OnInit, ViewChild }         from '@angular/core';
 import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable }                           from 'rxjs';
@@ -14,7 +16,7 @@ import { TipiScadenzaService }                  from '../../tipiscadenza.service
 //models
 import { CAL_TipoScadenza }                     from 'src/app/_models/CAL_TipoScadenza';
 
-
+//#endregion
 @Component({
   selector: 'app-tipiscadenza-list',
   templateUrl: './tipiscadenza-list.component.html',
@@ -22,7 +24,7 @@ import { CAL_TipoScadenza }                     from 'src/app/_models/CAL_TipoSc
 })
 export class TipiScadenzaListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   matDataSource = new MatTableDataSource<CAL_TipoScadenza>();
 
@@ -55,21 +57,23 @@ export class TipiScadenzaListComponent implements OnInit {
     filtrosx: ''
   }
 //#endregion
-//#region ----- ViewChild Input Output -------
+
+//#region ----- ViewChild Input Output ---------
   @ViewChild(MatSort) sort!:                    MatSort;
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor(
     private svcTipiscadenza:                    TipiScadenzaService,
 
     private _loadingService:                    LoadingService,
     public _dialog:                             MatDialog, 
-
-
   ) { }
-
+//#endregion
  
-  
+//#region ----- LifeCycle Hooks e simili--------
+
   ngOnInit(): void {
     this.loadData();
   }
@@ -91,7 +95,9 @@ export class TipiScadenzaListComponent implements OnInit {
     );
   }
 
-//#region ----- Add Edit Drop -------
+//#endregion
+
+//#region ----- Add Edit Drop ------------------
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
@@ -115,7 +121,7 @@ export class TipiScadenzaListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
 
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {

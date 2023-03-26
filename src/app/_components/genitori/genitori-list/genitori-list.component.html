@@ -1,6 +1,6 @@
 <h1 class="_titolo-pagina" *ngIf="showPageTitle">Genitori</h1>
     <!-- **************************   FILTER   ******************* -->
-    <mat-form-field *ngIf="showTableRibbon" class="_pos-relative ml20 topZIndex">
+    <mat-form-field *ngIf="showFilter" class="_pos-relative ml20 topZIndex">
         <mat-label>Filtro</mat-label>
         <input matInput (keyup)="applyFilter($event)" #filterInput>
     </mat-form-field>
@@ -9,7 +9,7 @@
     <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="10" [pageSizeOptions]="[5, 10]" showFirstLastButtons></mat-paginator>
 
     <!-- **************************   MAT-TABLE   ******************* -->
-    <table mat-table class="_table-row-low transparent w100" [dataSource]="matDataSource"
+    <table mat-table class="_table-row-low transparent w100 headerColored" [dataSource]="matDataSource"
         matSort
         cdkDropList
         cdkDropListOrientation="horizontal"
@@ -116,7 +116,7 @@
         </ng-container>
         
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
-        <tr mat-header-row class="_table-title-low" *matHeaderRowDef="displayedColumns; "></tr>
+        <tr mat-header-row class="_table-title-low" *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         
         <!-- **************************   MAT-ROW   ******************* -->
         <tr mat-row *matRowDef="let element; columns: displayedColumns"

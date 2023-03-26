@@ -1,39 +1,41 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { Observable } from 'rxjs';
-import { MatTableDataSource} from '@angular/material/table';
-import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { SelectionModel } from '@angular/cdk/collections';
+import { MatPaginator }                         from '@angular/material/paginator';
+import { MatSort }                              from '@angular/material/sort';
+import { Observable }                           from 'rxjs';
+import { MatTableDataSource}                    from '@angular/material/table';
+import { CdkDragDrop, moveItemInArray}          from '@angular/cdk/drag-drop';
+import { MatMenuTrigger }                       from '@angular/material/menu';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { SelectionModel }                       from '@angular/cdk/collections';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //components
-import { IscrizioniFilterComponent } from '../iscrizioni-filter/iscrizioni-filter.component';
-import { AlunnoEditComponent } from '../../alunni/alunno-edit/alunno-edit.component';
-import { RettaEditComponent } from '../../pagamenti/retta-edit/retta-edit.component';
+import { IscrizioniFilterComponent }            from '../iscrizioni-filter/iscrizioni-filter.component';
+import { AlunnoEditComponent }                  from '../../alunni/alunno-edit/alunno-edit.component';
+import { RettaEditComponent }                   from '../../pagamenti/retta-edit/retta-edit.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { Utility }                              from '../../utilities/utility.component';
+
+//services
+import { IscrizioniService }                    from '../iscrizioni.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { ScadenzeService }                      from '../../scadenze/scadenze.service';
+import { ScadenzePersoneService }               from '../../scadenze/scadenze-persone.service';
+import { GenitoriService }                      from '../../genitori/genitori.service';
 
 //models
-import { IscrizioniService } from '../iscrizioni.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
+import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
+import { CAL_Scadenza, CAL_ScadenzaPersone }    from 'src/app/_models/CAL_Scadenza';
+import { User }                                 from 'src/app/_user/Users';
+import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
 
-//classes
-import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
-import { CAL_Scadenza, CAL_ScadenzaPersone } from 'src/app/_models/CAL_Scadenza';
-import { ScadenzeService } from '../../scadenze/scadenze.service';
-import { Utility } from '../../utilities/utility.component';
-import { User } from 'src/app/_user/Users';
-import { ScadenzePersoneService } from '../../scadenze/scadenze-persone.service';
-import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
-import { GenitoriService } from '../../genitori/genitori.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { concatMap, tap } from 'rxjs/operators';
-
+//#endregion
 @Component({
   selector:     'app-iscrizioni-list',
   templateUrl:  './iscrizioni-list.component.html',
@@ -42,7 +44,7 @@ import { concatMap, tap } from 'rxjs/operators';
 
 export class IscrizioniListComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
   public currUser!:                             User;
 
   matDataSource = new                           MatTableDataSource<CLS_Iscrizione>();
@@ -125,7 +127,7 @@ export class IscrizioniListComponent implements OnInit {
 
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild(MatPaginator) paginator!:                        MatPaginator;
   @ViewChild(MatSort) sort!:                                  MatSort;
   @ViewChild("filterInput") filterInput!:                     ElementRef;
@@ -138,6 +140,8 @@ export class IscrizioniListComponent implements OnInit {
   @Output('openDrawer') toggleDrawer = new                    EventEmitter<number>();
 
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor(
     private svcIscrizioni:                      IscrizioniService,
@@ -159,8 +163,9 @@ export class IscrizioniListComponent implements OnInit {
     });
     this.currUser = Utility.getCurrentUser();
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
   
   ngOnInit () {
     this.obsAnni$= this.svcAnni.list();
@@ -192,7 +197,7 @@ export class IscrizioniListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Filtri & Sort -------
+//#region ----- Filtri & Sort ------------------
 
   resetSearch(){
     this.filterInput.nativeElement.value = "";
@@ -283,7 +288,7 @@ export class IscrizioniListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Add Edit Drop -------
+//#region ----- Add Edit Drop ------------------
 
   addRecord(){
 
@@ -323,7 +328,7 @@ export class IscrizioniListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Right Click -------
+//#region ----- Right Click --------------------
 
   onRightClick(event: MouseEvent, element: CLS_Iscrizione) { 
     event.preventDefault(); 
@@ -352,7 +357,7 @@ export class IscrizioniListComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Gestione Campo Checkbox -------
+//#region ----- Gestione Campo Checkbox --------
   selectedRow(element: CLS_Iscrizione) {
     this.selection.toggle(element);
   }
@@ -400,6 +405,8 @@ export class IscrizioniListComponent implements OnInit {
     return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
   }
 //#endregion
+
+//#region ----- Altri metodi -------------------
 
   makeScadenza(iscrizione: CLS_Iscrizione) {
     //console.log ("iscrizioni-list-makeScadenza - iscrizione:", iscrizione);
@@ -465,8 +472,6 @@ export class IscrizioniListComponent implements OnInit {
     ) 
   }
 
-
-
   insertGenitori(alunnoID: number, scadenzaID: number, iscrizioneID: number) {
     //Se si volesse inserire il creatore della scadenza (il maestro per una nota) tra coloro che lo ricevono...
     // let objScadenzaPersona: CAL_ScadenzaPersone = {
@@ -508,6 +513,7 @@ export class IscrizioniListComponent implements OnInit {
     );  
   }
 
+//#endregion
 
 }
 

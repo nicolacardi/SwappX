@@ -1,26 +1,27 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, ContentChildren, Input, OnInit, QueryList, ViewChild, ViewChildren }                    from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
-import { concatMap, map }                            from 'rxjs/operators';
 import { Observable }                           from 'rxjs';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { MatStepper }                           from '@angular/material/stepper';
+import { ActivatedRoute }                       from '@angular/router';
 
 //components
+import { SnackbarComponent }                    from '../utilities/snackbar/snackbar.component';
+import { PersonaFormComponent }                 from '../persone/persona-form/persona-form.component';
 
 //services
-
+import { PersoneService }                       from '../persone/persone.service';
+import { IscrizioniService }                    from '../iscrizioni/iscrizioni.service';
 
 //models
 import { User }                                 from 'src/app/_user/Users';
-import { ActivatedRoute } from '@angular/router';
-import { IscrizioniService } from '../iscrizioni/iscrizioni.service';
-import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
-import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
-import { ALU_GenitoreAlunno } from 'src/app/_models/ALU_GenitoreAlunno';
-import { PersonaFormComponent } from '../persone/persona-form/persona-form.component';
-import { MatStepper } from '@angular/material/stepper';
-import { PersoneService } from '../persone/persone.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
+import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
+import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
+import { ALU_GenitoreAlunno }                   from 'src/app/_models/ALU_GenitoreAlunno';
 
+//#endregion
 @Component({
   selector: 'app-procedura-iscrizione',
   templateUrl: './procedura-iscrizione.component.html',
@@ -28,22 +29,23 @@ import { SnackbarComponent } from '../utilities/snackbar/snackbar.component';
 })
 export class ProceduraIscrizioneComponent implements OnInit {
 
-  private currUser!:                            User;
+//#region ----- Variabili ----------------------
 
-  //public obsFigli$!:                            Observable<ALU_Alunno[]>;
   public obsIscrizione$!:                       Observable<CLS_Iscrizione>;
   public genitoriArr:                           ALU_Genitore[] = [];
   public iscrizione!:                           CLS_Iscrizione;
-
-
   private form! :                               UntypedFormGroup;
   public iscrizioneID!:                         number;
 
-  
+//#endregion
+
+//#region ----- ViewChild Input Output ---------
+
   @ViewChildren(PersonaFormComponent) PersonaFormComponent!: QueryList<PersonaFormComponent>;
-
   @ViewChild('stepper') stepper!:               MatStepper;
+//#endregion
 
+//#region ----- Constructor --------------------
 
   constructor(
     private fb:                                 UntypedFormBuilder,
@@ -51,12 +53,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
     private svcPersone:                         PersoneService,
     private actRoute:                           ActivatedRoute,
     private _snackBar:                          MatSnackBar
-
-
   ) { 
-
-
-
     this.form = this.fb.group({
       id:                         [null],
       
@@ -81,10 +78,10 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
       //ckAttivo:                   [true]
     });
-
-
-
   }
+//#endregion
+
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
     //estraggo lo user
@@ -137,6 +134,9 @@ export class ProceduraIscrizioneComponent implements OnInit {
     )
     ;
   }
+//#endregion
+
+//#region ----- Altri metodi -------------------
 
   salvaPersona(n: number){
     //console.log(this.stepper.selectedIndex);
@@ -149,15 +149,12 @@ export class ProceduraIscrizioneComponent implements OnInit {
       res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
 
       err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-  );
-
-
-
+    );
   }
 
   formValidEmitted(valid: boolean){
     console.log("ciao", valid);
   }
-
+//#endregion
 
 }

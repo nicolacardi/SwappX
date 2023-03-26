@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -17,7 +19,7 @@ import { TipiScadenzaService }                  from '../../tipiscadenza.service
 //classes
 import { CAL_TipoScadenza }                     from 'src/app/_models/CAL_TipoScadenza';
 
-
+//#endregion
 @Component({
   selector: 'app-tiposcadenza-edit',
   templateUrl: './tiposcadenza-edit.component.html',
@@ -25,7 +27,7 @@ import { CAL_TipoScadenza }                     from 'src/app/_models/CAL_TipoSc
 })
 export class TipoScadenzaEditComponent implements OnInit {
 
-//#region ----- Variabili -------
+//#region ----- Variabili ----------------------
 
   tiposcadenza$!:                                    Observable<CAL_TipoScadenza>;
 
@@ -34,6 +36,7 @@ export class TipoScadenzaEditComponent implements OnInit {
   loading:                                      boolean = true;
 //#endregion
 
+//#region ----- Constructor --------------------
   constructor(
     public _dialogRef: MatDialogRef<TipoScadenzaEditComponent>,
     @Inject(MAT_DIALOG_DATA) public tiposcadenzaID: number,
@@ -54,8 +57,9 @@ export class TipoScadenzaEditComponent implements OnInit {
     });
 
   }
+//#endregion
 
-//#region ----- LifeCycle Hooks e simili-------
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
     this.loadData();
@@ -84,7 +88,7 @@ export class TipoScadenzaEditComponent implements OnInit {
   }
 //#endregion
 
-//#region ----- Operazioni CRUD -------
+//#region ----- Operazioni CRUD ----------------
 
   save(){
 
@@ -134,8 +138,8 @@ export class TipoScadenzaEditComponent implements OnInit {
     console.log( "passo", this.form.controls.color.value);
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '405px',
-      height: '460px',
+      width: '350px',
+      height: '475px',
       data: {ascRGB: this.form.controls.color.value},
     };
     const dialogRef = this._dialog.open(ColorPickerComponent, dialogConfig);

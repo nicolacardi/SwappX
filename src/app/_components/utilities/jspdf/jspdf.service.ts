@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
-import { HttpClient } from '@angular/common/http';
+import { Injectable }                           from '@angular/core';
+import { jsPDF }                                from 'jspdf';
+import autoTable                                from 'jspdf-autotable';
+import html2canvas                              from 'html2canvas';
 
 import '../../../../assets/fonts/TitilliumWeb-Regular-normal.js';
 import '../../../../assets/fonts/TitilliumWeb-SemiBold-normal.js';
 
-import { DOC_Pagella } from 'src/app/_models/DOC_Pagella.js';
-import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto.js';
+import { DOC_Pagella }                          from 'src/app/_models/DOC_Pagella.js';
+import { DOC_PagellaVoto }                      from 'src/app/_models/DOC_PagellaVoto.js';
 
-import { rptPagella } from 'src/app/_reports/rptPagella';
+import { rptPagella }                           from 'src/app/_reports/rptPagella';
 
 
 @Injectable({
@@ -31,6 +31,7 @@ export class JspdfService { defaultColor!:          string;
   constructor() {}
 
   //costruisce il report STANDARD e lancia il salvataggio
+
   public downloadPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string, rptFileName: string)  {
     let doc = this.buildReportPdf (rptData, rptColumnsNameArr, rptFieldsToKeep, rptTitle);
     this.salvaPdf(doc,rptFileName);
@@ -44,8 +45,258 @@ export class JspdfService { defaultColor!:          string;
     }
     doc.save(fileName);
   }
+
+
   
-//#region ----- dynamicRptPagella -----
+
+
+
+
+
+
+
+
+
+
+
+
+//#region ----- ****************************************************rptFromtemplate -----
+  public async rptFromtemplate(rptBase: any) : Promise<jsPDF> {
+
+    let pageW: number = 0;
+    let pageH: number = 0;
+
+    //Il primo elemento di rptBase DEVE essere SheetDefault sennò tutto si ferma e viene emesso un documento con un errore
+    let sheetDefault = rptBase[0]                      //  rptBase per ora è un oggetto esterno, poi sarà ciò che viene passato negli argomenti
+    
+  //#region ----- caricamento dei valori di default -----    
+    if(sheetDefault.tipo != "SheetDefault"){
+      let doc : jsPDF  = new jsPDF('p', 'mm', [297,210]);  
+      doc.text("ERRORE: manca il tag [SheetDefault] in rptBase",10, 50);
+      return doc;
+    }
+
+    pageW= parseInt(sheetDefault.width);
+    pageH= parseInt(sheetDefault.heigth);
+
+    this.defaultColor = sheetDefault.defaultColor;
+    this.defaultFontSize = sheetDefault.defaultFontSize;
+    this.defaultFontName = sheetDefault.defaultFontName;
+    this.defaultMaxWidth = sheetDefault.defaultMaxWidth;
+    this.defaultFillColor = sheetDefault.defaultFillColor;
+    this.defaultLineColor = sheetDefault.defaultLineColor;
+    this.defaultCellLineColor = sheetDefault.defaultCellLineColor;
+    this.defaultLineWidth = sheetDefault.defaultLineWidth;
+    let doc : jsPDF  = new jsPDF(sheetDefault.orientation, 'mm', [pageW , pageH]);
+    doc.setFont(sheetDefault.defaultFontName, 'normal');
+  //#endregion
+
+    for (let i = 1; i < rptBase.length; i++) {
+      let element = rptBase[i];
+      // console.log ("jspdf - rptFromtemplate - element",element);
+      switch(element.tipo){
+        case "SheetDefault":
+          break;
+        // case "Image":{
+        //   const ImageUrl = "./assets/photos/" + element.value;
+        //   await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
+        //   break;
+        // }
+        case "ImageBase64":{
+          await this.addImageBase64(doc, element.value, element.X ,element.Y, element.W, element.H);
+          break;
+        }
+        // case "Text":{
+        //   this.addText(doc,this.parseTextValue( element.value),element.X,element.Y,element.fontName,"normal",element.color,element.fontSize, element.align, element.maxWidth );
+        //   break;
+        // }
+        case "TextHtml":{
+          await this.addTextHtml(doc,element.value,element.X,element.Y,element.W, element.H, "", "normal", "",0, 0, element.backgroundColor );
+          break;
+        }
+        // case "TableStatica":{
+        //   this.addTableStatica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge ,element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
+        //   break;
+        // }
+        // case "TableDinamica":{
+        //   this.addTableDinamica(doc, element.head, element.headEmptyRow, element.body, element.colWidths, element.cellBorders, element.rowsMerge, element.colFills, element.fontName, element.X,element.Y,element.W, element.H, "normal",element.color,20, element.lineColor, element.cellLineColor, element.fillColor, element.lineWidth, element.align, element.colSpans);
+        //   break;
+        // }
+        // case "TableDinamicaPagella":{
+        //   this.addTableDinamicaPagella(doc, element);
+        //   break;
+        // }
+        // case "Line":{
+        //   this.addLine(doc,element.X1,element.Y1,element.X2,element.Y2, element.color, element.thickness);
+        //   break;
+        // }
+        // case "Rect":{
+        //   this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
+        //   break;
+        // }
+        // case "Page":{
+        //   doc.addPage()
+        //   break;
+        // }
+        default:{
+          this.addText(doc,"[## WRONG TAG ##]",element.X,element.Y,"TitilliumWeb-SemiBold","normal",'#FF0000',24, element.align, element.maxWidth );
+          break;
+        }
+      }
+    }
+    return doc;
+  }
+  
+
+  private async addTextHtml(docPDF: jsPDF, text: string, X: number, Y: number, W: number, H: number, fontName: string, fontStyle: string , fontColor:string, fontSize: number, maxWidth: number, backgroundColor: string  ){
+
+    if(fontName == null || fontName == "") fontName = this.defaultFontName;   //da vedere se serve
+    if(fontColor == null || fontColor == "") fontColor = this.defaultColor;   //da vedere se serve
+    if(fontSize == null || fontSize == 0) fontSize = this.defaultFontSize;    //da vedere se serve
+    if(maxWidth == null || maxWidth == 0) maxWidth = this.defaultMaxWidth;    //da vedere se serve
+    
+    let imgWidth = 0;
+    let imgHeight = 0;
+
+    const options = {
+      scale: 1,
+      dpi: 300,
+      useCORS: true,
+      backgroundColor: null,
+      padding: {
+        top: 5,
+        bottom: 5,
+        left: 5,
+        right: 5
+      }
+    };
+
+    const html = text;
+
+    //prendo il div "di servizio"
+    const tempElement = document.querySelector('#myDiv') as HTMLElement;
+    if (!tempElement) {throw new Error('necessario per sicurezza che esista');}
+    //applico al div il testo da convertire
+    tempElement!.style.width = (W*10)+"px";
+    tempElement!.style.height = (H*10)+"px";
+
+    tempElement!.innerHTML = html;
+
+    
+    //ora devo estrarre font-size: --px e sostituirlo con font-size che desidero
+
+
+    const newFontSize = (fontSize);
+    // console.log ("jspdf - addTextHtml - newFontSize", newFontSize);
+    // console.log ("jspdf - addTextHtml - tempElement prima di cambio font", tempElement);
+
+        //definisco una funzione ricorsiva qui dentro e poi la chiamo
+        
+        function updateFontSize(node:any) {
+          node.style.fontSize = newFontSize/0.255+'px'; //per tentativi....ma è giusto?????
+          //node.style.fontSize = newFontSize/0.265+'px'; //sembra leggermente piccolo
+          node.style.lineHeight = '1.2em';
+
+          const children = node.children;
+          for (let i = 0; i < children.length; i++) {
+            updateFontSize(children[i]); //chiama se stessa per tutti i figli
+          }
+        }
+
+    updateFontSize(tempElement);
+    // console.log ("jspdf - addTextHtml - tempElement dopo cambio font", tempElement);
+
+    // Converto l'HTML a canvas
+    const canvas = await html2canvas(tempElement, options);
+    //estraggo il png dal canvas
+    const imgData = await canvas.toDataURL('image/png')
+    
+    //attribuisco imgData a img.src
+    let img = new Image();
+    img.src = imgData;
+    
+    //estraggo le dimensioni dell'immagine
+    const promise =() => new Promise ((resolve,reject) => {
+      const imgTmp = new Image();
+      imgTmp.src = imgData;
+      imgTmp.onload = () => {
+        imgWidth = imgTmp.width;
+        imgHeight = imgTmp.height;
+        resolve("hey");
+      };
+    })
+
+    await promise();
+    console.log ("jspdf -  addTextHtml - aggiunto blocco in stampa in X Y W H", X, Y, W, H)
+    docPDF.setFillColor(backgroundColor);
+    docPDF.setDrawColor("222222");
+    docPDF.setLineWidth (0.3);
+    docPDF.rect(X,Y,W, H);
+    docPDF.addImage(img, 'png', X, Y, W, W*imgHeight/imgWidth, undefined, 'FAST'
+    );
+
+  }  
+
+  private async addImageBase64(docPDF: jsPDF, imgBase64: string, x: number, y: number,w: number, h: number ) {
+
+    let imgWidth = 0;
+    let imgHeight = 0;
+
+    let img = new Image();
+    img.src = imgBase64;
+
+    const promise =() => new Promise ((resolve,reject) => {
+      const imgTmp = new Image();
+      imgTmp.src = imgBase64;
+      imgTmp.onload = () => {
+        imgWidth = imgTmp.width;
+        imgHeight = imgTmp.height;
+        resolve("hey");
+      };
+    })
+
+    //bisogna determinare w e/o h da passare a addImage sulla base di w e h ricevuti e di imgHeight e imgWidth nativi
+    //lo stesso per x e y. Il tutto dipende dalla relazione tra w/h e imgWidth/imgHeight
+    await promise();
+    if (w/h >= imgWidth/imgHeight) {
+      //fisso h e calcolo w
+      //devo però anche determinare x, y va bene come sta
+      x=x+w/2-h/imgHeight*imgWidth/2;
+      docPDF.addImage(img, 'png', x, y, h/imgHeight*imgWidth, h, undefined,'FAST');
+
+    } else {
+      //fisso w e calcolo h
+      //devo però anche determinare y, x va bene come sta
+      y=y+h/2-w*imgHeight/imgWidth/2;
+      docPDF.addImage(img, 'png', x, y, w, w*imgHeight/imgWidth, undefined,'FAST');
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   //questa è la routine BASE che viene chiamata dai report che si appoggiano al file rptPagella.ts
   public async dynamicRptPagella(objPagella: DOC_Pagella, lstPagellaVoti: DOC_PagellaVoto[]) : Promise<jsPDF> {
@@ -93,11 +344,15 @@ export class JspdfService { defaultColor!:          string;
 
 
     for (let i = 1; i < rptPagella.length; i++) {
+      console.log ("i", i);
+
       let element = rptPagella[i];
       switch(element.tipo){
         case "SheetDefault":
           break;
         case "Image":{
+          console.log ("element.tipo Image");
+
           const ImageUrl = "./assets/photos/" + element.value;
           await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
           break;
@@ -198,22 +453,23 @@ export class JspdfService { defaultColor!:          string;
     let i: number; //serve definirlo fuori dal ciclo for perchè poi serve tenere l'ultimo valore
 
     //****************   HEADER
-    for (i = 0; i < head.length; i++) {
+    for (i = 0; i < head.length; i++) {         //potrebbero esserci più righe di header
       headObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
       for (let j = 0; j < head[i].length; j++) {       
         headObj[i].push({ content: head[i][j], styles: {font: fontName, lineColor: cellLineColor} })
+      }
     }
 
     //aggiunta riga vuota dopo l'header
     if (headEmptyRow ==1) {
       headObj.push([]);
-      for (let j = 0; j < head[0].length; j++) 
+      for (let j = 0; j < head[0].length; j++) {
         headObj[i].push({ content: "", styles: {lineWidth: 0, fillColor: false, minCellHeight: 1, cellPadding: 0} })        
       }
     }
     //****************   FINE HEADER
 
-    for (let i = 0; i < body.length; i++) {
+    for (let i = 0; i < body.length; i++) { //ogni riga è body[i]
       bodyObj.push([]);  //va prima inserito un array vuoto altrimenti risponde con un Uncaught in promise
       for (let j = 0; j < body[i].length; j++) {
         
@@ -230,9 +486,10 @@ export class JspdfService { defaultColor!:          string;
         else rowSpan = body.length;
 
         if ((i==0) || (i!=0 && rowsMerge == undefined) || (i!=0 && rowsMerge[j] == 0))
-          bodyObj[i].push({ content: body[0][j], colSpan: 1, rowSpan: rowSpan, styles:{font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
+          bodyObj[i].push({ content: body[i][j], colSpan: 1, rowSpan: rowSpan, styles:{font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
       }
     }
+    console.log ("headObj", headObj);
 
     autoTable(docPDF, {
       //startY: Y,
@@ -747,8 +1004,10 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
     //console.log("dimensioni testo: ", dim);
   }  
 
-  private async addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
+  
 
+  private async addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
+    console.log ("addImage");
     let imgWidth = 0;
     let imgHeight = 0;
 
@@ -759,6 +1018,9 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
     //costruisco la mia funzione promise custom (genero l'asincronia necessaria)
     //serve per creare un'altra Img (imgTmp) ed estrarne le dimensioni
     const loadImage = (src: string) => new Promise((resolve, reject) => {
+      
+      
+      
       const imgTmp = new Image();
       imgTmp.src = src;
       imgTmp.onload = () =>{          
@@ -771,6 +1033,7 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
     });
 
     await loadImage(ImageUrl);
+    console.log ("img", img);
     docPDF.addImage(img, 'png', parseFloat(x), parseFloat(y), parseFloat(w), parseFloat(w)*(imgHeight/imgWidth), undefined,'FAST');
   }
 
@@ -783,24 +1046,26 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
     docPDF.line(parseFloat(X1),parseFloat(Y1),parseFloat(X2),parseFloat(Y2));
   }
 
-  private async addRect(docPDF: jsPDF, X1: string, Y1: string, W: string, H: string, lineColor:string, lineWidth: string, borderRadius: string  ){
+  private async addRect(docPDF: jsPDF, X1: number, Y1: number, W: number, H: number, lineColor:string, lineWidth: number, borderRadius: number  ){
 
-    if(lineColor == null || lineColor == "") lineColor = this.defaultLineColor;
+    if(lineColor == null || lineColor == '') lineColor = this.defaultLineColor;
 
     docPDF.setDrawColor(lineColor);
-    docPDF.setLineWidth (parseFloat( lineWidth));
+    docPDF.setLineWidth (lineWidth);
     let rx: number=0;
-    if(borderRadius != '' && parseFloat(borderRadius)> 0){
-      rx=parseFloat( borderRadius);
-      docPDF.roundedRect(parseFloat(X1),parseFloat(Y1),parseFloat(W),parseFloat(H), rx, rx );
+    if(borderRadius != null && borderRadius> 0){
+      rx=borderRadius;
+      docPDF.roundedRect(X1,Y1,W,H, rx, rx );
     }
     else
-      docPDF.rect(parseFloat(X1),parseFloat(Y1),parseFloat(W),parseFloat(H) );
+      docPDF.rect(X1,Y1,W,H );
   }
 
 //#endregion
 
 //#region ----- costruisce e stampa Report STANDARD -----
+
+
 
   //crea e scarica il report con la tabella dei dati della pagina   Metodo che include AUTOTABLE
   private buildReportPdf (rptData :any, rptColumnsNameArr: any, rptFieldsToKeep: any, rptTitle: string) {

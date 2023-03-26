@@ -1,12 +1,19 @@
-import { validateHorizontalPosition } from '@angular/cdk/overlay';
+//#region ----- IMPORTS ------------------------
+
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { PAG_Retta } from 'src/app/_models/PAG_Retta';
+
+//components
+
+//services
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { RetteService } from '../rette.service';
 
+//models
+import { PAG_Retta } from 'src/app/_models/PAG_Retta';
+
+//#endregion
 @Component({
   selector: 'app-rettaanno-edit',
   templateUrl: './rettaanno-edit.component.html',
@@ -14,25 +21,24 @@ import { RetteService } from '../rette.service';
 })
 export class RettaannoEditComponent implements OnInit {
 
-//#region ----- Variabili -------
-  form! :                     UntypedFormGroup;
-  emptyForm :                 boolean = false;
-  totDefault!:                number;
-  totConcordate!:             number;
-  totPagamenti!:              number;
-  retta$!:                    Observable<PAG_Retta[]>;
-
-
+//#region ----- Variabili ----------------------
+  form! :                                       UntypedFormGroup;
+  emptyForm :                                   boolean = false;
+  totDefault!:                                  number;
+  totConcordate!:                               number;
+  totPagamenti!:                                number;
+  retta$!:                                      Observable<PAG_Retta[]>;
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-  @Input() alunnoID!:       number;
-  @Input() annoID!:         number;
-  @Input() public quotaConcordataAnno!: number; 
-  @Input() public quotaDefaultAnno!: number; 
-  @Input() public totPagamentiAnno!: number; 
-
+  @Input() alunnoID!:                           number;
+  @Input() annoID!:                             number;
+  @Input() public quotaConcordataAnno!:         number; 
+  @Input() public quotaDefaultAnno!:            number; 
+  @Input() public totPagamentiAnno!:            number; 
 //#endregion
+
+//#region ----- Constructor --------------------
 
   constructor( private fb:               UntypedFormBuilder,
                private svcRette:         RetteService,
@@ -44,6 +50,9 @@ export class RettaannoEditComponent implements OnInit {
       totPagamentiAnno:         [null],
     });
    }
+//#endregion
+
+//#region ----- ViewChild Input Output ---------
 
    ngOnChanges() {
     if (this.alunnoID && this.alunnoID + '' != "0" && this.quotaDefaultAnno > 0) 
@@ -96,8 +105,10 @@ export class RettaannoEditComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  save() {
+//#endregion
 
+  save() {
+    //TODO??
   }
 
 }
