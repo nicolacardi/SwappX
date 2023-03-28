@@ -1,51 +1,81 @@
-<button mat-mini-fab aria-label="Nuova Pagina" matTooltip="Nuova Pagina" class="_btn-add-fixed _btn-pos-right-1 _btn-pos-top-1" (click)="addPage()">
+<button mat-mini-fab aria-label="Nuova Pagina" matTooltip="Nuova Pagina" class="_btn-add-fixed _btn-pos-left-1 _btn-pos-top-1" (click)="drawer.toggle()">
+    <mat-icon>chevron_right</mat-icon>
+</button>
+
+<button mat-mini-fab aria-label="Nuova Pagina" matTooltip="Nuova Pagina" class="_btn-add-fixed _btn-pos-left-2 _btn-pos-top-1" (click)="addPage()">
     <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/add_pagina.svg">
 </button>
 
-<button mat-mini-fab aria-label="Zoom Out" matTooltip="Zoom Out" class="_btn-add-fixed _btn-pos-right-2 _btn-pos-top-1" (click)="incZoom()">
-    <mat-icon>add_circle_outline</mat-icon>
-</button>
-
-<button mat-mini-fab aria-label="Zoom In" matTooltip="Zoom In" class="_btn-add-fixed _btn-pos-right-3 _btn-pos-top-1" (click)="decZoom()">
+<button mat-mini-fab aria-label="Zoom In" matTooltip="Zoom In" class="_btn-add-fixed _btn-pos-left-3 _btn-pos-top-1" (click)="decZoom()">
     <mat-icon>remove_circle_outline</mat-icon>
 </button>
 
-<button mat-mini-fab aria-label="Aggancia ai Margini" matTooltip="Aggancia ai Margini"  class="_btn-add-fixed _btn-pos-right-4 _btn-pos-top-1" (click)="toggleMagnete()">
+<button mat-mini-fab aria-label="Zoom Out" matTooltip="Zoom Out" class="_btn-add-fixed _btn-pos-left-4 _btn-pos-top-1" (click)="incZoom()">
+    <mat-icon>add_circle_outline</mat-icon>
+</button>
+
+
+
+<button mat-mini-fab aria-label="Aggancia ai Margini" matTooltip="Aggancia ai Margini"  class="_btn-add-fixed _btn-pos-left-5 _btn-pos-top-1" (click)="toggleMagnete()">
     <img *ngIf="magnete" class="iconaMenuSidenav" src="./assets/mainMenuWhite/magnete_on.svg">
     <img *ngIf="!magnete" class="iconaMenuSidenav" src="./assets/mainMenuWhite/magnete_off.svg">
 </button>
 
-<button mat-mini-fab aria-label="Aggancia alla griglia" matTooltip="Aggancia alla griglia"  class="_btn-add-fixed _btn-pos-right-5 _btn-pos-top-1" (click)="toggleGriglia()">
+<button mat-mini-fab aria-label="Aggancia alla griglia" matTooltip="Aggancia alla griglia"  class="_btn-add-fixed _btn-pos-left-6 _btn-pos-top-1" (click)="toggleGriglia()">
     <img *ngIf="griglia" class="iconaMenuSidenav" src="./assets/mainMenuWhite/griglia_on.svg">
     <img *ngIf="!griglia" class="iconaMenuSidenav" src="./assets/mainMenuWhite/griglia_off.svg">
 </button>
 
 
-<button  mat-mini-fab aria-label="Scarica" matTooltip="Scarica" class="_btn-add-fixed _btn-pos-right-6 _btn-pos-top-1" (click)="openPdf()">
+<button  mat-mini-fab aria-label="Scarica" matTooltip="Scarica" class="_btn-add-fixed _btn-pos-left-7 _btn-pos-top-1" (click)="openPdf()">
     <mat-icon>file_download</mat-icon>
 </button>
 
-<button  mat-mini-fab aria-label="Pubblica" matTooltip="Pubblica" class="_btn-add-fixed _btn-pos-right-7 _btn-pos-top-1" (click)="createRptDoc()">
+<button  mat-mini-fab aria-label="Pubblica" matTooltip="Pubblica" class="_btn-add-fixed _btn-pos-left-8 _btn-pos-top-1" (click)="createRptDoc()">
     <img class="iconaMenu" src="./assets/pubblica.svg">
 </button>
 
 
+<mat-drawer-container autosize>
+    <mat-drawer #drawer class="subsidenav" mode="side">
+        <div class="mt70"></div>
+        <table mat-table class=" w100 transparent headerColored" [dataSource]="matDataSource">
+            <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+            <ng-container matColumnDef="descrizione">
+                <th mat-header-cell *matHeaderCellDef>Documento</th>
+                <td mat-cell *matCellDef="let element" [innerHTML]="element.descrizione"></td>
+            </ng-container>
+            <!-- **************************   MAT-HEADER-ROW   ******************* -->
+            <tr mat-header-row class="_table-title-low" *matHeaderRowDef="displayedColumnsTemplates;  sticky: true" ></tr>
+            <!-- **************************   MAT-ROW   ******************* -->
+            <tr mat-row *matRowDef="let element;columns: displayedColumnsTemplates"
+                class="element-row _table-row-selected-highlight _row-pointercursor"
 
-<div *ngFor="let element of (obsPagine$ | async); let i = index" style="padding-top: 10px; background-color: lightgray">
-    <div class="center mb20">Pagina {{i+1}} di {{numPagine}}</div>
-    <app-pagina
-        [paginaID]="element.id"
-        [zoom]="zoom"
-        [magnete]="magnete"
-        [griglia]="griglia"
-        (deleteEmitted)="deletedPage($event)"
-        >
-    </app-pagina>
 
-    <div class="h-divider">  
-        <div class="shadow"></div>
+                (click)="rowclicked(element.id)" >
+            </tr>
+        </table>
+    </mat-drawer>
+
+
+    <div *ngFor="let element of (obsPagine$ | async); let i = index" style="padding-top: 10px; background-color: lightgray">
+        <div class="center mb20">Pagina {{i+1}} di {{numPagine}}</div>
+        <app-pagina
+            [paginaID]="element.id"
+            [zoom]="zoom"
+            [magnete]="magnete"
+            [griglia]="griglia"
+            (deleteEmitted)="deletedPage($event)"
+            >
+        </app-pagina>
+
+        <div class="h-divider">  
+            <div class="shadow"></div>
+        </div>
     </div>
-</div>
 
-<div id="myDiv" style="padding: 30px"></div>
+    <div id="myDiv" style="padding: 30px"></div>
+
+
+</mat-drawer-container>
 

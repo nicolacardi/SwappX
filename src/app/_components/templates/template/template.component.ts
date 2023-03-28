@@ -20,6 +20,8 @@ import { MatSnackBar }                          from '@angular/material/snack-ba
 import { rptBase }                              from 'src/app/_reports/rptBase';
 import { BlocchiService }                       from '../blocchi.service';
 import { PaginatorService } from '../../utilities/paginator/paginator.service';
+import { TemplatesService } from '../templates.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 
@@ -34,14 +36,20 @@ export class TemplateComponent implements OnInit {
   public zoom:                                  number = 1;
   public templateID:                            number = 1;
   public numPagine:                             number = 1;
-  public obsTemplate$!:                         Observable<TEM_Template>;
+  public obsTemplates$!:                        Observable<TEM_Template[]>;
   public obsPagine$!:                           Observable<TEM_Pagina[]>;
+
+  matDataSource =                               new MatTableDataSource<TEM_Template>();
+  displayedColumnsTemplates:                    string[] =  ["descrizione"];
   public magnete:                               boolean = true;
   public griglia:                               boolean = false;
-
+  templatesArr = [
+    {value: 1, description: 'Pagella'},
+    {value: 2, description: 'Certificazione competenze'}];
 //#endregion
 
   constructor(
+    private svcTemplates:                       TemplatesService,
     private svcPagine:                          PagineService,
     private svcFiles:                           FilesService,
     private svcBlocchi:                         BlocchiService,
@@ -60,6 +68,15 @@ export class TemplateComponent implements OnInit {
   }
 
   loadData() {
+
+
+    this.obsTemplates$= this.svcTemplates.list();
+    const loadTemplates$ =this._loadingService.showLoaderUntilCompleted(this.obsTemplates$);
+    loadTemplates$.subscribe( val =>   {
+      console.log(val);
+      this.matDataSource.data = val;
+    });
+  
     const obsPagineTMP$ = this.svcPagine.listByTemplate(this.templateID)
     .pipe(
       tap(val=> this.numPagine = val.length)
@@ -105,7 +122,22 @@ export class TemplateComponent implements OnInit {
     let rptFile = JSON.parse(JSON.stringify(rptBase)); 
     let objFields = {
       AlunniList_email: "andrea.svegliado@gmail.com",
-      AlunniList_cap: "35136"
+      AlunniList_cap: "35136",
+      AlunniList: [{
+        nome: "Toni",
+        cognome: "Manero",
+        indirizzo: "Roma"
+      },
+      {
+        nome: "Bepi",
+        cognome: "Manego",
+        indirizzo: "Padova"
+      },
+      {
+        nome: "Guido",
+        cognome: "La Moto",
+        indirizzo: "Vicenza"
+      }]
     }
     this.svcBlocchi.listByTemplate(1)
     .subscribe( blocchi => {
@@ -146,5 +178,11 @@ export class TemplateComponent implements OnInit {
         },
         err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di caricamento', panelClass: ['red-snackbar']})
       );
+  }
+
+  rowclicked(templateID: number) {
+    console.log (templateID);
+    this.templateID = templateID;
+    this.loadData();  //Serve?
   }
 }

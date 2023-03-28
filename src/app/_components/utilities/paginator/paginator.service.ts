@@ -29,7 +29,7 @@ export class PaginatorService {
   }
 
   paginatorBuild(rptFile: any, blocco: any, objFields: any): any {
-
+    console.log ("PaginatorBuil - ricevuto blocco", blocco);
     if (blocco.tipoBlocco!.descrizione=="Text") {
       //console.log ("blocco._BloccoTesti![0].testo", blocco._BloccoTesti![0].testo);
       let cleanText = this.replacer(blocco._BloccoTesti![0].testo, objFields);
@@ -59,6 +59,7 @@ export class PaginatorService {
       });
     }
     if (blocco.tipoBlocco!.descrizione=="Table") {
+
       //estraggo il numero di righe e il numero di colonne
       const maxRow = Math.max(...blocco._BloccoCelle.map((cella: any) => cella.row));
       const maxCol = Math.max(...blocco._BloccoCelle.map((cella: any) => cella.col));
@@ -74,6 +75,9 @@ export class PaginatorService {
       let widthCumVal = 0;
       let heightCumVal = 0;
 
+      //creo anzitutto le matrici con le altezze e larghezze delle celle a partire dalle due righe ricevute
+
+
       blocco._BloccoCelle.forEach((cella:any) => {
 
         //se mi imbatto per la prima volta in una colonna vado ad alimentare l'array delle larghezze e calcolo x di conseguenza
@@ -87,27 +91,27 @@ export class PaginatorService {
         if (!rowVisitate[cella.row - 1]) {
           rowVisitate[cella.row-1] = true; 
           heightCumVal = heightCumVal + cella.h;
-          heightCum [cella.col] = heightCumVal;
+          heightCum [cella.row] = heightCumVal;
         }
-        console.log ("cella",cella);
+      });
+      //se ho due righe e tre colonne ad esempio con hriga =[16,19] e wcolonna = [52,38,62]
+      //da qui esco con heightCum [0,16,35] e widthCum [0,52,90,152]. L'ultimo valore mi dice anche quanto alta e larga è la tabella in tutto
 
-        console.log ("col", cella.col, "row", cella.row);
+      //ora costruisco la riga dell'intestazione
 
-        console.log ("colVisitate", rowVisitate);
-        console.log ("widthCum", widthCum);
+      let intestazione = blocco._BloccoCelle.filter((cella:any) => cella.row === 1);
 
-        console.log ("rowVisitate", rowVisitate);
-        console.log ("heightCum", heightCum);
+      let cleanText = '';
 
 
+      intestazione.forEach((cella:any) => {
         let x  = widthCum [cella.col-1] + blocco.x ;
         let y  = heightCum [cella.row-1] + blocco.y;
-
-        console.log ("cella",cella, " - x", x, "- y", y);
+        cleanText = this.replacer(cella.testo, objFields);
         let topush = {
           "tipo": "TextHtml",
           "alias": "...",
-          "value": cella.testo,
+          "value": cleanText,
           "X": x,
           "Y": y,
           "W": cella.w,
@@ -115,9 +119,65 @@ export class PaginatorService {
           "backgroundColor": "#FFFFFF",
           "fontSize": 10
         }
-        console.log ("paginator - paginatorBuild - topush:", topush);
-        rptFile.push(topush);
+        rptFile.push(topush); 
+      });
+
+      let rigaDaRipetere = blocco._BloccoCelle.filter((cella:any) => cella.row === 2);
+      rigaDaRipetere.forEach((cella:any) => {
+        let x  = widthCum [cella.col-1] + blocco.x ;
+        let y  = heightCum [cella.row-1] + blocco.y;
+
+
+
+        //estraggo il nome del campo (AlunniList_email)
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(cella.testo, "text/html");
+        const mentions = doc.querySelectorAll(`span[data-denotation-char="@"]`); //dovrei trovare un solo data-denotation-cahr = '@'
+        let campo = '';
+        mentions.forEach((mention) => {
+          campo = mention.getAttribute("data-value")!;
+        });
+        //estraggo il nom della tabella (primi caratteri fino a _ compreso)
+        const startIdx = campo.indexOf('@') + 1; // add 1 to exclude '@'
+        const endIdx = campo.indexOf('_');
+        const tabella = campo.substring(startIdx, endIdx);
+        const tabella_ = tabella+"_";
+
+        let datiAlunni = objFields[tabella];
+
+        let nomeProprieta = campo.replace(tabella_, "");
+
+        console.log("nomeProprieta", nomeProprieta);
+        console.log("datiAlunni", datiAlunni);
+        //ora entro nella singola cella che è da ripetere tante volte quanti i valori che vengono trovati per quel campo dentro objFields
+        for (let j = 0; j < datiAlunni.length; j++) {
+
+          console.log ("cella.testo", cella.testo);
+          //console.log("datiAlunni[j]", datiAlunni[j]);
+          let cellaTestoNoTabella =  cella.testo.replace(tabella_, "");
+          console.log ("cella.testo dopo replace", cellaTestoNoTabella);
+
+          cleanText = this.replacer(cellaTestoNoTabella, datiAlunni[j]);
+          console.log("cleanText", cleanText);
+          
+          //let cleanText = this.replacer(cella.testo, objFields);
+          let topush = {
+            "tipo": "TextHtml",
+            "alias": "...",
+            "value": cleanText,
+            "X": x,
+            "Y": y + j* cella.h,
+            "W": cella.w,
+            "H": cella.h,
+            "backgroundColor": "#FFFFFF",
+            "fontSize": 10
+          }
+          rptFile.push(topush); 
+          console.log ("paginator - paginatorBuild - topush:", topush);
+        }
+
         
+       
       })
       
     }

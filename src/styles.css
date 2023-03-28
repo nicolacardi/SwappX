@@ -868,9 +868,40 @@
         left: 105px;
     }
 
-    ._btn-pos-left-25 {
+    ._btn-pos-left-3 {
         left: 150px;
     }
+
+    ._btn-pos-left-4 {
+        left: 195px;
+    }
+
+    ._btn-pos-left-5 {
+        left: 240px;
+    }
+
+    ._btn-pos-left-6 {
+        left: 285px;
+    }
+
+    ._btn-pos-left-7 {
+        left: 330px;
+    }
+
+    ._btn-pos-left-8 {
+        left: 375px;
+    }
+
+    ._btn-pos-left-30 {
+        left: 320px;
+    }
+    ._btn-pos-left-40 {
+        left: 370px;
+    }
+
+
+
+
 
     ._btn-pos-top-0 {
         top: 15px;
@@ -904,6 +935,11 @@
         right: 300px;
     }
 
+    ._btn-pos-right-8 {
+        right: 345px;
+    }
+
+
     ._btn-pos-top-0 {
         top: 20px;
     }
@@ -913,15 +949,6 @@
     }
 
 
-    ._btn-pos-left-3 {
-        left: 320px;
-    }
-    ._btn-pos-left-4 {
-        left: 370px;
-    }
-    ._btn-pos-left-5 {
-        left: 420px;
-    }
 
 
     ._btn-add:hover{
@@ -1445,6 +1472,15 @@
         opacity: 0;
         transition: opacity 0.5s ease-in;
     }
+
+
+
+      .subsidenav {
+        width: 300px;
+        padding: 20px;
+      }
+
+
 /*#endregion *********************************/
 
 /*#region ********** VISIBILITY ********/
@@ -1852,7 +1888,7 @@ div.inner img {
 
 /* ****quill mention */
 
-.ql-mention-list-container {
+  .ql-mention-list-container {
     width: 270px;
     border: 1px solid #f0f0f0;
     border-radius: 4px;
@@ -1860,13 +1896,15 @@ div.inner img {
     box-shadow: 0 2px 12px 0 rgba(30, 30, 30, 0.08);
     z-index: 9001;
     overflow: auto;
+    /* overflow: visible !important; */
+    position: absolute;
   }
   
   .ql-mention-loading {
-    line-height: 44px;
+    line-height: 30px;
     padding: 0 20px;
     vertical-align: middle;
-    font-size: 16px;
+    font-size: 12px;
   }
   
   .ql-mention-list {
@@ -1879,8 +1917,8 @@ div.inner img {
   
   .ql-mention-list-item {
     cursor: pointer;
-    line-height: 44px;
-    font-size: 16px;
+    line-height: 30px;
+    font-size: 12px;
     padding: 0 20px;
     vertical-align: middle;
   }
@@ -1907,6 +1945,4 @@ div.inner img {
   .mention > span {
     margin: 0 3px;
   }
-  
-  
   
