@@ -29,9 +29,19 @@ export class PaginatorService {
   }
 
   paginatorBuild(rptFile: any, blocco: any, objFields: any): any {
-    console.log ("PaginatorBuil - ricevuto blocco", blocco);
+    //Paginator deve anche aggiungere il salto pagina
+    //questo se riceve un blocco di tipo Page ma anche se in fase di paginazione (quindi in solo caso Tabella) si è raggiunta la fine della pagina
+    console.log ("PaginatorBuild - ricevuto blocco", blocco);
+    
+    if (blocco.tipoBlocco!.descrizione=="Page") {
+      console.log ("Page - salto pagina");
+      rptFile.push({
+        "tipo": "Page"
+      });
+    }
+
     if (blocco.tipoBlocco!.descrizione=="Text") {
-      //console.log ("blocco._BloccoTesti![0].testo", blocco._BloccoTesti![0].testo);
+      // console.log ("blocco._BloccoTesti![0].testo", blocco._BloccoTesti![0].testo);
       let cleanText = this.replacer(blocco._BloccoTesti![0].testo, objFields);
       rptFile.push({
         "tipo": "TextHtml",
@@ -45,7 +55,9 @@ export class PaginatorService {
         "fontSize": blocco._BloccoTesti![0].fontSize
       });
     }
+
     if (blocco.tipoBlocco!.descrizione=="Image") {
+      //console.log ("blocco._BloccoTesti![0].testo", blocco._BloccoTesti![0].testo);
       rptFile.push({
         "tipo": "ImageBase64",
         "alias": "...",
@@ -58,12 +70,16 @@ export class PaginatorService {
         // "fontSize": blocchi[i]._BloccoTesti![0].fontSize
       });
     }
-    if (blocco.tipoBlocco!.descrizione=="Table") {
 
-      //estraggo il numero di righe e il numero di colonne
+
+    if (blocco.tipoBlocco!.descrizione=="Table") {
+      const limiteY = blocco.y+ blocco.h;  //rappresenta il valore massimo che può avere la y, se lo si supera si deve creare una nuova pagina
+      //dovrò assicurarmi che i record arrivino ordinati prima per riga e poi per colonna!!!
+      
+      //estraggo il numero di righe e il numero di colonne: basta cercare il massimo valore che ha cella.row e il massimo valore che ha cella.col
       const maxRow = Math.max(...blocco._BloccoCelle.map((cella: any) => cella.row));
       const maxCol = Math.max(...blocco._BloccoCelle.map((cella: any) => cella.col));
-
+      //costruisco ed inizializzo due array della dimensione del numero di colonne e righe che conterranno la larghezza e altezza cumulate
       let widthCum = new Array(maxCol).fill(0); // larghezza totale delle celle precedenti nella stessa colonna
       let heightCum = new Array(maxRow).fill(0); // altezza totale delle celle precedenti nella stessa riga
       
@@ -76,7 +92,6 @@ export class PaginatorService {
       let heightCumVal = 0;
 
       //creo anzitutto le matrici con le altezze e larghezze delle celle a partire dalle due righe ricevute
-
 
       blocco._BloccoCelle.forEach((cella:any) => {
 

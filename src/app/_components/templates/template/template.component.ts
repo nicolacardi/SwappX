@@ -125,12 +125,57 @@ export class TemplateComponent implements OnInit {
       AlunniList_cap: "35136",
       AlunniList: [{
         nome: "Toni",
-        cognome: "Manero",
+        cognome: "1",
         indirizzo: "Roma"
       },
       {
         nome: "Bepi",
-        cognome: "Manego",
+        cognome: "2",
+        indirizzo: "Padova"
+      },
+      {
+        nome: "Bepi",
+        cognome: "3",
+        indirizzo: "Padova"
+      },
+      {
+        nome: "Bepi",
+        cognome: "4",
+        indirizzo: "Padova"
+      },
+      {
+        nome: "Bepi",
+        cognome: "5",
+        indirizzo: "Padova"
+      },
+      {
+        nome: "Bepi",
+        cognome: "6",
+        indirizzo: "Padova"
+      },
+      {
+        nome: "Bepi",
+        cognome: "7",
+        indirizzo: "Padova"
+      },
+      {
+        nome: "Bepi",
+        cognome: "8",
+        indirizzo: "Padova"
+      },
+      {
+        nome: "Bepi",
+        cognome: "9",
+        indirizzo: "Padova"
+      },
+      {
+        nome: "Bepi",
+        cognome: "10",
+        indirizzo: "Padova"
+      },
+      {
+        nome: "Bepi",
+        cognome: "11",
         indirizzo: "Padova"
       },
       {
@@ -141,8 +186,23 @@ export class TemplateComponent implements OnInit {
     }
     this.svcBlocchi.listByTemplate(1)
     .subscribe( blocchi => {
+      let currPaginaID = 0;
       for (let i = 0; i<blocchi.length; i++) {
+        //verifico se devo saltare pagina. Salvo il caso in cui questo sia il primo blocco della serie
+        if (i == 0) currPaginaID = blocchi[i].paginaID;
+        else {
+          if (blocchi[i].paginaID != currPaginaID ) {
+            //aggiungo un blocco di salto pagina
+            let saltoPagina = {
+             tipoBlocco : {
+              descrizione :  "Page"
+             }
+            }
+            rptFile = this._paginator.paginatorBuild(rptFile, saltoPagina, null);
+          }
+        }
         rptFile = this._paginator.paginatorBuild(rptFile, blocchi[i], objFields);
+        currPaginaID = blocchi[i].paginaID;
       }
       console.log ("rptFile", rptFile);
       this.savePdf(rptFile);

@@ -1,6 +1,6 @@
 import { HttpClient }                           from '@angular/common/http';
 import { Injectable }                           from '@angular/core';
-import { Observable }                           from 'rxjs';
+import { map, Observable }                           from 'rxjs';
 
 //components
 import { environment }                          from 'src/environments/environment';
@@ -27,9 +27,18 @@ export class BlocchiService {
   }
 
   listByTemplate (TemplateID: any){
-    return this.http.get<TEM_Blocco[]>(environment.apiBaseUrl+'TEM_Blocchi/listByTemplate/'+TemplateID);
+    return this.http.get<TEM_Blocco[]>(environment.apiBaseUrl+'TEM_Blocchi/listByTemplate/'+TemplateID)
+    .pipe(
+      map((temPaginas: TEM_Blocco[]) => {
+        return temPaginas.sort((a, b) => {
+          if (a.paginaID < b.paginaID) return -1;
+          if (a.paginaID > b.paginaID) return 1;
+          return 0;
+        });
+      })
+    );  
     //http://213.215.231.4/swappX/api/TEM_Blocchi/listByTemplate/1
-    }
+  }
 
   get(BloccoID: any): Observable<TEM_Blocco>{
     return this.http.get<TEM_Blocco>(environment.apiBaseUrl+'TEM_Blocchi/'+BloccoID);

@@ -134,10 +134,10 @@ export class JspdfService { defaultColor!:          string;
         //   this.addRect(doc,element.X,element.Y,element.W,element.H, element.color, element.thickness, element.borderRadius);
         //   break;
         // }
-        // case "Page":{
-        //   doc.addPage()
-        //   break;
-        // }
+        case "Page":{
+          doc.addPage()
+          break;
+        }
         default:{
           this.addText(doc,"[## WRONG TAG ##]",element.X,element.Y,"TitilliumWeb-SemiBold","normal",'#FF0000',24, element.align, element.maxWidth );
           break;
