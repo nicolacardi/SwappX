@@ -13,7 +13,7 @@ import { tooWideValidator, tooHighValidator}    from '../../utilities/crossfield
 import { ColorPickerComponent }                 from '../../color-picker/color-picker.component';
 import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 import { Utility }                              from '../../utilities/utility.component';
-import { CustomOption, QuillEditorComponent }                 from 'ngx-quill'
+import { CustomOption, QuillEditorComponent }   from 'ngx-quill'
 import 'quill-mention'
 
 //components
@@ -28,7 +28,7 @@ import { BlocchiCelleService }                  from '../blocchicelle.service';
 import { TableColsService }                     from '../../utilities/toolbar/tablecols.service';
 
 //models
-import { A4 }                                   from 'src/environments/environment';
+import { A4V }                                   from 'src/environments/environment';
 import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
 import { TEM_BloccoFoto }                       from 'src/app/_models/TEM_BloccoFoto';
 import { TEM_BloccoTesto }                      from 'src/app/_models/TEM_BloccoTesto';
@@ -43,6 +43,7 @@ import { TEM_MentionValue }                     from 'src/app/_models/TEM_Mentio
 })
 export class BloccoEditComponent implements OnInit, AfterViewInit {
 //#region ----- Variabili --------------------
+  bloccoID!:                                    number;
   obsCols$!:                                    Observable<_UT_TableCol[]>;
   modules:                                      any = {}
   mentionValues!:                               TEM_MentionValue[];
@@ -110,7 +111,7 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
 
 //#region ----- Constructor ------------------
   constructor(
-    @Inject(MAT_DIALOG_DATA) public bloccoID:   number,
+    @Inject(MAT_DIALOG_DATA) public objPass:   any,
     private fb:                                 UntypedFormBuilder, 
     private svcBlocchi:                         BlocchiService,
     private svcBlocchiFoto:                     BlocchiFotoService,
@@ -126,6 +127,8 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
     
   ) { 
 
+    this.bloccoID = objPass.bloccoID
+    console.log (objPass.formatoPagina);
 
     this.form = this.fb.group(
       {
@@ -145,7 +148,7 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
         borderLeft:                             [],
         fontSize:                               ['12px'],
         tableNames:                             ['AlunniList']
-      }, { validators: [tooWideValidator, tooHighValidator]});
+      }, { validators: [tooWideValidator(objPass.formatoPagina), tooHighValidator(objPass.formatoPagina)]});
 
 
       
@@ -155,9 +158,12 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
 
 //#region ----- LifeCycle Hooks e simili-------
 
-
+  // ngOnChanges () {
+  //   this.bloccoID =  this.obj.bloccoID;
+  // }
 
   ngOnInit(): void {
+
     this.obsCols$ = this.svcTableCols.listTableNames().pipe();
     this.loadData();
 
@@ -442,8 +448,8 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
 
                 this.immagineDOM.nativeElement.src = compressed[0];
                 
-                let larghezzaDisp = A4.width - this.form.controls.x.value;
-                let altezzaDisp = A4.height - this.form.controls.y.value;
+                let larghezzaDisp = A4V.width - this.form.controls.x.value;
+                let altezzaDisp = A4V.height - this.form.controls.y.value;
                 let ratiodisp = larghezzaDisp/altezzaDisp;
 
                 //ci sono diversi casi da contemplare

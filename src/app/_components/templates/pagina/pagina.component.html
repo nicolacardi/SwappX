@@ -15,27 +15,27 @@
 
         [ngStyle]=
             "{
-            'width': 210*zoom+'px',
-            'height': 297*zoom+'px'
+            'width': pageW*zoom+'px',
+            'height': pageH*zoom+'px'
             }"
         >
 
     <div *ngIf="magnete">
-        <div class="_pos-absolute h100 _border-left-dot" [ngStyle]="{'left': 10*zoom+'px'}">
+        <div class="_pos-absolute h100 _border-left-dot" [ngStyle]="{'left': pageMarginLeft*zoom+'px'}">
         </div>
-        <div class="_pos-absolute h100 _border-left-dot" [ngStyle]="{'left': 200*zoom+'px'}">
+        <div class="_pos-absolute h100 _border-left-dot" [ngStyle]="{'left': pageMarginRight*zoom+'px'}">
         </div>
-        <div class="_pos-absolute w100 _border-top-dot" [ngStyle]="{'top': 10*zoom+'px'}">
+        <div class="_pos-absolute w100 _border-top-dot" [ngStyle]="{'top': pageMarginTop*zoom+'px'}">
         </div>
-        <div class="_pos-absolute w100 _border-top-dot" [ngStyle]="{'top': 287*zoom+'px'}">
+        <div class="_pos-absolute w100 _border-top-dot" [ngStyle]="{'top': pageMarginBottom*zoom+'px'}">
         </div>
-        <div class="_pos-absolute w10 _border-top-dot l0" [ngStyle]="{'top': 148.5*zoom+'px'}">
+        <div class="_pos-absolute w10 _border-top-dot l0" [ngStyle]="{'top': pageH/2*zoom+'px'}">
         </div>
-        <div class="_pos-absolute w10 _border-top-dot r0" [ngStyle]="{'top': 148.5*zoom+'px'}">
+        <div class="_pos-absolute w10 _border-top-dot r0" [ngStyle]="{'top': pageH/2*zoom+'px'}">
         </div>
-        <div class="_pos-absolute h10 _border-left-dot t0" [ngStyle]="{'left': 105*zoom+'px'}">
+        <div class="_pos-absolute h10 _border-left-dot t0" [ngStyle]="{'left': pageW/2*zoom+'px'}">
         </div>
-        <div class="_pos-absolute h10 _border-left-dot b0" [ngStyle]="{'left': 105*zoom+'px'}">
+        <div class="_pos-absolute h10 _border-left-dot b0" [ngStyle]="{'left': pageW/2*zoom+'px'}">
         </div>
     </div>
 
@@ -53,6 +53,7 @@
                 [zoom]= "zoom"
                 [magnete] = "magnete"
                 [griglia] = "griglia"
+                [formatopagina]="formatopagina"
                 (recordEdited) ="bloccoEditedEmitted($event)"
                 #Blocco
                 >

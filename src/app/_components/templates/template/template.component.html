@@ -14,8 +14,6 @@
     <mat-icon>add_circle_outline</mat-icon>
 </button>
 
-
-
 <button mat-mini-fab aria-label="Aggancia ai Margini" matTooltip="Aggancia ai Margini"  class="_btn-add-fixed _btn-pos-left-5 _btn-pos-top-1" (click)="toggleMagnete()">
     <img *ngIf="magnete" class="iconaMenuSidenav" src="./assets/magnete_on.svg">
     <img *ngIf="!magnete" class="iconaMenuSidenav" src="./assets/magnete_off.svg">
@@ -35,23 +33,26 @@
     <img class="iconaMenu" src="./assets/pubblica.svg">
 </button>
 
+<button  mat-mini-fab aria-label="Formato pagina" matTooltip="Formato Pagina" class="_btn-add-fixed _btn-pos-left-9 _btn-pos-top-1" (click)="switchA4A3()">
+    <img class="iconaMenu" src="./assets/A4A3.svg">
+</button>
+
+<button  mat-mini-fab aria-label="Orientamento pagina" matTooltip="Orientamento Pagina" class="_btn-add-fixed _btn-pos-left-10 _btn-pos-top-1" (click)="switchOrientation()">
+    <img class="iconaMenu" src="./assets/page_orientation.svg">
+</button>
+
 
 <mat-drawer-container autosize>
     <mat-drawer #drawer class="subsidenav" mode="side">
         <div class="mt70"></div>
         <table mat-table class=" w100 transparent headerColored" [dataSource]="matDataSource">
-            <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
             <ng-container matColumnDef="descrizione">
                 <th mat-header-cell *matHeaderCellDef>Documento</th>
                 <td mat-cell *matCellDef="let element" [innerHTML]="element.descrizione"></td>
             </ng-container>
-            <!-- **************************   MAT-HEADER-ROW   ******************* -->
             <tr mat-header-row class="_table-title-low" *matHeaderRowDef="displayedColumnsTemplates;  sticky: true" ></tr>
-            <!-- **************************   MAT-ROW   ******************* -->
             <tr mat-row *matRowDef="let element;columns: displayedColumnsTemplates"
                 class="element-row _table-row-selected-highlight _row-pointercursor"
-
-
                 (click)="rowclicked(element.id)" >
             </tr>
         </table>
@@ -59,13 +60,16 @@
 
 
     <div *ngFor="let element of (obsPagine$ | async); let i = index" style="padding-top: 10px; background-color: lightgray">
-        <div class="center mb20">Pagina {{i+1}} di {{numPagine}}</div>
+        <div class="center mb20">Pagina {{i+1}} di {{numPagine}} <span class="fs10">({{A4A3}})</span></div>
         <app-pagina
             [paginaID]="element.id"
             [zoom]="zoom"
             [magnete]="magnete"
             [griglia]="griglia"
+            [formatopagina] = "A4A3"
+
             (deleteEmitted)="deletedPage($event)"
+
             >
         </app-pagina>
 
@@ -74,8 +78,7 @@
         </div>
     </div>
 
+    <!-- Nel seguente div vengono temporaneamente scritti i contenuti poi passati a html2canvas -->
     <div id="myDiv" style="padding: 30px"></div>
-
-
 </mat-drawer-container>
 

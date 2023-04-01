@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren }             from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChildren }             from '@angular/core';
 import { Observable, switchMap }                           from 'rxjs';
 
 //components
@@ -17,6 +17,7 @@ import { TEM_BloccoCella }                      from 'src/app/_models/TEM_Blocco
 import { TEM_BloccoTesto }                      from 'src/app/_models/TEM_BloccoTesto';
 import { TEM_BloccoFoto }                       from 'src/app/_models/TEM_BloccoFoto';
 
+import { A4V, A4H, A3V, A3H }                   from 'src/environments/environment';
 
 import { immaginebase }                         from 'src/environments/environment';
 
@@ -26,13 +27,14 @@ import { immaginebase }                         from 'src/environments/environme
   templateUrl: './pagina.component.html',
   styleUrls: ['../templates.css']
 })
-export class PaginaComponent implements OnInit {
+export class PaginaComponent implements OnInit, OnChanges {
 
 //#region ----- Variabili ----------------------
   public obsBlocchi$!:                          Observable<TEM_Blocco[]>;
   public blocchiArr!:                           TEM_Blocco[];
   public nLineeVert!:                           number[];
   public nLineeHor!:                            number[];
+
 
   defaultBloccoCella: TEM_BloccoCella = {
     bloccoID: 0,
@@ -57,6 +59,14 @@ export class PaginaComponent implements OnInit {
     h: 0
   }
 
+  pageW!:                                       number;
+  pageH!:                                       number;
+  pageMarginLeft!:                              number;
+  pageMarginRight!:                             number;
+  pageMarginTop!:                               number;
+  pageMarginBottom!:                            number;
+
+
 //#endregion
 
 //#region ----- ViewChild Input Output ---------
@@ -67,6 +77,8 @@ export class PaginaComponent implements OnInit {
   @Input() zoom!:                               number;
   @Input() magnete!:                            boolean;
   @Input() griglia!:                            boolean;
+  @Input() formatopagina!:                      string;
+
 
   @Output('deleteEmitted') deleteEmitter = new EventEmitter<number>(); //l'ID della pagina cancellata viene EMESSA quando la si cancella
 
@@ -86,10 +98,27 @@ export class PaginaComponent implements OnInit {
    }
 //#endregion
 
+   ngOnChanges() {
+    switch(this.formatopagina) {
+      case 'A4V': this.setPageProperties(Object.assign({}, A4V)); break;
+      case 'A4H': this.setPageProperties(Object.assign({}, A4H)); break;
+      case 'A3V': this.setPageProperties(Object.assign({}, A3V)); break;
+      case 'A3H': this.setPageProperties(Object.assign({}, A3H)); break;
+    }
+   }
 
-  ngOnChanges() {
+   private setPageProperties(page: any): void {
+    this.pageW = page.width;
+    this.pageH = page.height;
+    this.pageMarginLeft = page.marginleft;
+    this.pageMarginRight = page.marginright;
+    this.pageMarginTop = page.margintop;
+    this.pageMarginBottom = page.marginbottom;
+    this.nLineeVert = Array(page.lineeVert).fill(0).map((x,i)=>i);
+    this.nLineeHor = Array(page.lineeHor).fill(0).map((x,i)=>i);
 
   }
+
 
   ngOnInit() {
     this.loadData();

@@ -1,7 +1,8 @@
 import { Component, OnInit }                    from '@angular/core';
 import { Observable }                           from 'rxjs';
 import { tap }                                  from 'rxjs/operators';
-import jsPDF from 'jspdf';
+import jsPDF                                    from 'jspdf';
+import { MatTableDataSource }                   from '@angular/material/table';
 
 //components
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
@@ -10,6 +11,9 @@ import { SnackbarComponent }                    from '../../utilities/snackbar/s
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { PagineService }                        from '../pagine.service';
 import { JspdfService }                         from '../../utilities/jspdf/jspdf.service';
+import { BlocchiService }                       from '../blocchi.service';
+import { PaginatorService }                     from '../../utilities/paginator/paginator.service';
+import { TemplatesService }                     from '../templates.service';
 
 //models
 import { TEM_Pagina }                           from 'src/app/_models/TEM_Pagina';
@@ -17,12 +21,8 @@ import { TEM_Template }                         from 'src/app/_models/TEM_Templa
 import { FilesService }                         from '../../pagelle/files.service';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 
-import { rptBase }                              from 'src/app/_reports/rptBase';
-import { BlocchiService }                       from '../blocchi.service';
-import { PaginatorService } from '../../utilities/paginator/paginator.service';
-import { TemplatesService } from '../templates.service';
-import { MatTableDataSource } from '@angular/material/table';
 
+import { rptBase }                              from 'src/app/_reports/rptBase';
 
 
 @Component({
@@ -36,6 +36,11 @@ export class TemplateComponent implements OnInit {
   public zoom:                                  number = 1;
   public templateID:                            number = 1;
   public numPagine:                             number = 1;
+  public A4A3:                                  string = 'A4V';
+  public pageW!:                                number;
+  public pageH!:                                number;
+
+
   public obsTemplates$!:                        Observable<TEM_Template[]>;
   public obsPagine$!:                           Observable<TEM_Pagina[]>;
 
@@ -245,4 +250,39 @@ export class TemplateComponent implements OnInit {
     this.templateID = templateID;
     this.loadData();  //Serve?
   }
+
+  switchOrientation() {
+    switch(this.A4A3) {
+      case 'A4V': 
+        this.A4A3 = "A4H"
+      break;
+      case 'A4H': 
+        this.A4A3 = "A4V"
+      break;
+      case 'A3V': 
+        this.A4A3 = "A3H"
+      break;
+      case 'A3H': 
+        this.A4A3 = "A3V"
+      break;
+    }
+  }
+
+  switchA4A3() {
+    switch(this.A4A3) {
+      case 'A4V': 
+        this.A4A3 = "A3V"
+      break;
+      case 'A4H': 
+        this.A4A3 = "A3H"
+      break;
+      case 'A3V': 
+        this.A4A3 = "A4V"
+      break;
+      case 'A3H': 
+        this.A4A3 = "A4H"
+      break;
+    }
+  }
+
 }

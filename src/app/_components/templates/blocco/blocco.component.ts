@@ -11,9 +11,9 @@ import { BlocchiService }                       from '../blocchi.service';
 
 //models
 import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
-import { A4 }                                   from 'src/environments/environment';
+import { A4H, A4V , A3H, A3V }                   from 'src/environments/environment';
 import { TableShowComponent }                   from '../tableshow/tableshow.component';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { MatMenuTrigger }                       from '@angular/material/menu';
 
 const enum Status {
   OFF = 0,
@@ -46,7 +46,7 @@ export class BloccoComponent implements OnInit {
   public fontSizeN:                             number = 1;
   private oldZoom:                              number = 1;
   public zoomratio:                             number =1 ;
-
+  public objFormatoPagina!:                     any;
   public classTipo!:                             string;
 
   private boxPos!: { left: number, top: number }; //la posizione del blocco
@@ -57,7 +57,12 @@ export class BloccoComponent implements OnInit {
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
-
+  pageW!:                                       number;
+  pageH!:                                       number;
+  pageMarginLeft!:                              number;
+  pageMarginRight!:                             number;
+  pageMarginTop!:                               number;
+  pageMarginBottom!:                            number;
   
 //#endregion
 
@@ -67,6 +72,7 @@ export class BloccoComponent implements OnInit {
   @Input() zoom!:                               number;
   @Input() magnete!:                            boolean;
   @Input() griglia!:                            boolean;
+  @Input() formatopagina!:                      string;
 
   @Output('recordEdited') recordEdited = new EventEmitter<number>();
 
@@ -117,7 +123,25 @@ export class BloccoComponent implements OnInit {
     this.storeCurrPosSize()
     this.oldZoom = this.zoom;
     //console.log ("blocco-component fine di ngOnChanges");
+
+    switch(this.formatopagina) {
+      case 'A4V': this.setPageProperties(Object.assign({}, A4V)); break;
+      case 'A4H': this.setPageProperties(Object.assign({}, A4H)); break;
+      case 'A3V': this.setPageProperties(Object.assign({}, A3V)); break;
+      case 'A3H': this.setPageProperties(Object.assign({}, A3H)); break;
+    }
+   }
+
+   private setPageProperties(page: any): void {
+    this.pageW = page.width;
+    this.pageH = page.height;
+    this.pageMarginLeft = page.marginleft;
+    this.pageMarginRight = page.marginright;
+    this.pageMarginTop = page.margintop;
+    this.pageMarginBottom = page.marginbottom;
+    this.objFormatoPagina = page;
   }
+
 
   ngOnInit(): void {
 
@@ -183,7 +207,6 @@ export class BloccoComponent implements OnInit {
       this.blocco.x = x *this.zoom;
       this.blocco.y = y *this.zoom;
 
-
       this.oldZoom = this.zoom;
       this.ngOnChanges();
 
@@ -206,15 +229,12 @@ export class BloccoComponent implements OnInit {
     // console.log ("this.boxPos.left", this.boxPos.left);
     // console.log ("this.left", this.left);
     const top = this.boxPos.top - this.top;
-    const right = left + A4.width *this.zoom;
-    const bottom = top + A4.height *this.zoom;
+    const right = left + this.pageW *this.zoom;
+    const bottom = top + this.pageH *this.zoom;
     this.contPos = { left, top, right, bottom };
     // console.log ("this.contPos", this.contPos);
 
   }
-
-
-
 
   @HostListener('window:mousemove', ['$event'])
   onMouseMove(event: MouseEvent){
@@ -240,10 +260,10 @@ export class BloccoComponent implements OnInit {
   private resize(){
     //console.log("blocco.component - resize");
 
-    //console.log (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (A4.width-10)));
+    //console.log (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (this.pageW-10)));
     console.log (this.boxPos.left);
 
-    //console.log (this.mouse.x - this.boxPos.left*this.zoom + this.left*this.zoom - (A4.height-10)*this.zoom);
+    //console.log (this.mouse.x - this.boxPos.left*this.zoom + this.left*this.zoom - (this.pageH-10)*this.zoom);
     if (this.mouse.x - this.boxPos.left <0) this.width = 0 //evita che si possa fare un rettangolo di larghezza negativa
     else if (this.mouse.x > this.contPos.right) {
       // console.log ("this.contPos.right", this.contPos.right);
@@ -257,9 +277,9 @@ export class BloccoComponent implements OnInit {
     
     if (this.magnete){ 
       //magnetismo a destra
-      if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (A4.width-10)) < 5) this.width = (A4.width-10)*this.zoom -this.left; 
+      if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (this.pageW-10)) < 5) this.width = (this.pageW-10)*this.zoom -this.left; 
       //magnetismo a metà
-      if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (A4.width/2)) < 5) this.width = (A4.width/2)*this.zoom -this.left; 
+      if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (this.pageW/2)) < 5) this.width = (this.pageW/2)*this.zoom -this.left; 
     }
 
     if (this.griglia) { this.width = Math.round(this.width/10/this.zoom)*10*this.zoom}
@@ -278,8 +298,8 @@ export class BloccoComponent implements OnInit {
 
     //magnetismo in basso
     if (this.magnete){ 
-      if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - (A4.height-10)) < 5) this.height = (A4.height-10)*this.zoom -this.top; 
-      if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - (A4.height/2)) < 5) this.height = (A4.height/2)*this.zoom -this.top; 
+      if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - (this.pageH-10)) < 5) this.height = (this.pageH-10)*this.zoom -this.top; 
+      if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - (this.pageH/2)) < 5) this.height = (this.pageH/2)*this.zoom -this.top; 
 
     }
 
@@ -296,14 +316,23 @@ export class BloccoComponent implements OnInit {
     //this.mouse.x - this.mouseClick.x rappresenta quanta strada ha fatto il mouse verso dx da quando ha cliccato
     //questa va aggiunta alla posizione in cui si trovava il box (this.mouseClick.left) quando ha cliccato
     let xTemp = this.mouseClick.left + this.mouse.x - this.mouseClick.x;
-
+    console.log (xTemp);
     
     //magnetismo su Bordi e centro
     let mezzeriaX = (this.contPos.right+ this.contPos.left)/2;
+    let quartoX = this.contPos.left + (this.contPos.right - this.contPos.left)/4;
+    let trequartiX = this.contPos.left + (this.contPos.right - this.contPos.left)/4*3;
+
     if (this.magnete){ 
       if (Math.abs(xTemp - 10*this.zoom) < 5*this.zoom) xTemp = 10*this.zoom; 
-      if (Math.abs(xTemp + this.width - (A4.width-10)*this.zoom) < 5*this.zoom) xTemp = (A4.width-10)*this.zoom - this.width;
+      if (Math.abs(xTemp + this.width - (this.pageW-10)*this.zoom) < 5*this.zoom) xTemp = (this.pageW-10)*this.zoom - this.width;
+      //magnete sulla mezzeria
       if (Math.abs(xTemp + 0.5*this.width +this.contPos.left - mezzeriaX) < 5*this.zoom)   xTemp = mezzeriaX - this.contPos.left - this.width*0.5;
+      //magnete sul quarto
+      if (Math.abs(xTemp + 0.5*this.width +this.contPos.left - quartoX) < 5*this.zoom)   xTemp = quartoX - this.contPos.left - this.width*0.5;
+      //magnete sui 3/4
+      if (Math.abs(xTemp + 0.5*this.width +this.contPos.left - trequartiX) < 5*this.zoom)   xTemp = trequartiX - this.contPos.left - this.width*0.5;
+
     }
 
     if (this.griglia) { xTemp = Math.round(xTemp/10/this.zoom)*10*this.zoom}
@@ -320,7 +349,7 @@ export class BloccoComponent implements OnInit {
     //magnetismo su Bordi e centro
     if (this.magnete){ 
       if (Math.abs(yTemp - 10*this.zoom) < 5*this.zoom) yTemp = 10*this.zoom; 
-      if (Math.abs(yTemp + this.height - (A4.height-10)*this.zoom) < 5*this.zoom) yTemp = (A4.height-10)*this.zoom - this.height;
+      if (Math.abs(yTemp + this.height - (this.pageH-10)*this.zoom) < 5*this.zoom) yTemp = (this.pageH-10)*this.zoom - this.height;
       if (Math.abs(yTemp + 0.5*this.height +this.contPos.top - mezzeriaY) < 5*this.zoom)   yTemp = mezzeriaY - this.contPos.top - this.height*0.5;
 
     }
@@ -375,12 +404,16 @@ export class BloccoComponent implements OnInit {
 
   public openDetail() {
     //console.log("blocco - openDetail");
-
+      let objPass = {
+        bloccoID: this.blocco.id!,
+        formatoPagina: this.objFormatoPagina
+      }
       const dialogConfig : MatDialogConfig = {
         panelClass: 'add-DetailDialog',
         width: '700px',
         height: '550px',
-        data: this.blocco.id!
+        //data: this.blocco.id!
+        data: objPass
       };
       const dialogRef = this._dialog.open(BloccoEditComponent, dialogConfig);
       dialogRef.afterClosed().subscribe(
@@ -408,8 +441,6 @@ export class BloccoComponent implements OnInit {
       );
     
   }
-
-
 
   onRightClick(event: MouseEvent, blocco: TEM_Blocco) { 
     this.setStatus(event, 0);

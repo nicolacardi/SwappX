@@ -8,10 +8,60 @@ export const environment = {
   apiBaseUrl: "http://213.215.231.4/SwappX/api/"
 };
 
-export const A4 = {
+
+export const A4V = {
   width: 210,  
-  height: 297
+  height: 297,
+  marginleft: 10,
+  marginright: 200,
+  margintop: 10,
+  marginbottom: 287, 
+  lineeVert: 22,
+  lineeHor: 30
 };
+
+export const A3V = {
+  width: 297,  
+  height: 420,
+  marginleft: 10,
+  marginright: 287,
+  margintop: 10,
+  marginbottom: 410,
+  lineeVert: 30,
+  lineeHor: 42
+};
+
+export const A4H = {
+  width: 297,  
+  height: 210,
+  marginleft: 10,
+  marginright: 287,
+  margintop: 10,
+  marginbottom: 200,
+  lineeVert: 30,
+  lineeHor: 22
+};
+
+export const A3H = {
+  width: 420,  
+  height: 297,
+  marginleft: 10,
+  marginright: 410,
+  margintop: 10,
+  marginbottom: 287,
+  lineeVert: 42,
+  lineeHor: 30
+};
+
+
+
+
+
+
+
+
+
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
