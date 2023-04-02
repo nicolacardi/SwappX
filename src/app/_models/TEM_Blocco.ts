@@ -13,7 +13,7 @@ export interface TEM_Blocco {
         w:                                      number;
         h:                                      number;
 
-        ckTrasp?:                                 boolean;
+        ckTrasp?:                               boolean;
         color?:                                 string;
 
         borderTop:                              boolean;
@@ -21,14 +21,16 @@ export interface TEM_Blocco {
         borderBottom:                           boolean;
         borderLeft:                             boolean;
 
+        //borderColor:                            string; //#RRGGBB
+        //borderType:                             string; //solid|dashed|dotted
 
         tipoBloccoID:                           number;
 
         tipoBlocco?:                            TEM_TipoBlocco;
 
-        _BloccoTesti?:                           TEM_BloccoTesto[];
-        _BloccoFoto?:                            TEM_BloccoFoto[];
-        _BloccoCelle?:                           TEM_BloccoCella[];
+        _BloccoTesti?:                          TEM_BloccoTesto[];
+        _BloccoFoto?:                           TEM_BloccoFoto[];
+        _BloccoCelle?:                          TEM_BloccoCella[];
 
 }
 

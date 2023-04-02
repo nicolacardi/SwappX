@@ -316,7 +316,6 @@ export class BloccoComponent implements OnInit {
     //this.mouse.x - this.mouseClick.x rappresenta quanta strada ha fatto il mouse verso dx da quando ha cliccato
     //questa va aggiunta alla posizione in cui si trovava il box (this.mouseClick.left) quando ha cliccato
     let xTemp = this.mouseClick.left + this.mouse.x - this.mouseClick.x;
-    console.log (xTemp);
     
     //magnetismo su Bordi e centro
     let mezzeriaX = (this.contPos.right+ this.contPos.left)/2;
@@ -332,7 +331,6 @@ export class BloccoComponent implements OnInit {
       if (Math.abs(xTemp + 0.5*this.width +this.contPos.left - quartoX) < 5*this.zoom)   xTemp = quartoX - this.contPos.left - this.width*0.5;
       //magnete sui 3/4
       if (Math.abs(xTemp + 0.5*this.width +this.contPos.left - trequartiX) < 5*this.zoom)   xTemp = trequartiX - this.contPos.left - this.width*0.5;
-
     }
 
     if (this.griglia) { xTemp = Math.round(xTemp/10/this.zoom)*10*this.zoom}
@@ -345,13 +343,19 @@ export class BloccoComponent implements OnInit {
     let yTemp = this.mouseClick.top - this.mouseClick.y + this.mouse.y ;
 
     let mezzeriaY = (this.contPos.bottom+ this.contPos.top)/2;
+    let quartoY = this.contPos.top + (this.contPos.bottom - this.contPos.top)/4;
+    let trequartiY = this.contPos.top + (this.contPos.bottom - this.contPos.top)/4*3;
 
     //magnetismo su Bordi e centro
     if (this.magnete){ 
       if (Math.abs(yTemp - 10*this.zoom) < 5*this.zoom) yTemp = 10*this.zoom; 
       if (Math.abs(yTemp + this.height - (this.pageH-10)*this.zoom) < 5*this.zoom) yTemp = (this.pageH-10)*this.zoom - this.height;
+      //magnete sulla mezzeria
       if (Math.abs(yTemp + 0.5*this.height +this.contPos.top - mezzeriaY) < 5*this.zoom)   yTemp = mezzeriaY - this.contPos.top - this.height*0.5;
-
+      //magnete sul quarto
+      if (Math.abs(yTemp + 0.5*this.height +this.contPos.top - quartoY) < 5*this.zoom)   yTemp = quartoY - this.contPos.top - this.height*0.5;
+      //magnete sui 3/4
+      if (Math.abs(yTemp + 0.5*this.height +this.contPos.top - trequartiY) < 5*this.zoom)   yTemp = trequartiY - this.contPos.top - this.height*0.5;
     }
 
     if (this.griglia) { yTemp = Math.round(yTemp/10/this.zoom)*10*this.zoom}

@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
 
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, Input, NgZone, OnChanges, OnInit, ViewChild }             from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild }             from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }                         from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA }    from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
@@ -9,7 +9,7 @@ import { concatMap, map, tap }                       from 'rxjs/operators';
 
 //components
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
-import { tooWideValidator, tooHighValidator}    from '../../utilities/crossfieldvalidators/tooWide';
+import { tooWideValidator, tooHighValidator}    from '../../utilities/crossfieldvalidators/tooBig';
 import { ColorPickerComponent }                 from '../../color-picker/color-picker.component';
 import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 import { Utility }                              from '../../utilities/utility.component';
@@ -42,7 +42,7 @@ import { TEM_MentionValue }                     from 'src/app/_models/TEM_Mentio
   styleUrls: ['../templates.css']
 })
 export class BloccoEditComponent implements OnInit, AfterViewInit {
-//#region ----- Variabili --------------------
+//#region ----- Variabili ----------------------
   bloccoID!:                                    number;
   obsCols$!:                                    Observable<_UT_TableCol[]>;
   modules:                                      any = {}
@@ -96,20 +96,16 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
   //     //['link', 'image', 'video']                         // link and image, video
   //   ],
   // };
-  
-
 
 //#endregion
 
-//#region ----- ViewChild Input Output -------
+//#region ----- ViewChild Input Output ---------
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
   @ViewChild('QuillEditor', { static: false }) editor!: QuillEditorComponent
-
   @ViewChild(TableComponent) TableComponent!: TableComponent; 
-
 //#endregion
 
-//#region ----- Constructor ------------------
+//#region ----- Constructor --------------------
   constructor(
     @Inject(MAT_DIALOG_DATA) public objPass:   any,
     private fb:                                 UntypedFormBuilder, 
@@ -123,13 +119,8 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
     public _dialog:                             MatDialog,
     private _snackBar:                          MatSnackBar,
     private _loadingService :                   LoadingService,
-    private cdr:                                ChangeDetectorRef,
-    
   ) { 
-
-    this.bloccoID = objPass.bloccoID
-    console.log (objPass.formatoPagina);
-
+    this.bloccoID = objPass.bloccoID;           //l'oggetto objPass contiene oltre a bloccoID anche il formatoPagina x il Validator
     this.form = this.fb.group(
       {
         id:                                     [null],
@@ -139,28 +130,25 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
         w:                                      [0],
         h:                                      [0],
         color:                                  [''],
+        colorBorders:                           [''],
+
         testo:                                  [''],
-        ckTrasp:                                [true],
+        ckTraspFill:                            [true],
+        ckTraspBorders:                         [true],
         tipoBloccoID:                           [0],
         borderTop:                              [],
         borderRight:                            [],
         borderBottom:                           [],
         borderLeft:                             [],
+        borderType:                             [],
         fontSize:                               ['12px'],
+        alignment:                              ['left'],
         tableNames:                             ['AlunniList']
       }, { validators: [tooWideValidator(objPass.formatoPagina), tooHighValidator(objPass.formatoPagina)]});
-
-
-      
-
   }
 //#endregion 
 
-//#region ----- LifeCycle Hooks e simili-------
-
-  // ngOnChanges () {
-  //   this.bloccoID =  this.obj.bloccoID;
-  // }
+//#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
 
@@ -232,38 +220,22 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
   }
 //#endregion
 
-//#region ----- Operazioni CRUD ---------------
+//#region ----- Operazioni CRUD ----------------
 
   save(){
 
-
-//     console.log ("a paragone con", this.editor.quillEditor.getContents());
-//     const quillContents = this.editor.quillEditor.getContents();
-// let spansWithFontSize = [];
-
-// quillContents.ops!.forEach((op) => {
-//   if (op.attributes && op.attributes.size) {
-//     const fontSize = op.attributes.size;
-//     const span = `<span style="font-size:${fontSize}">${op.insert}</span>`;
-//     spansWithFontSize.push(span);
-//   } else {
-//     spansWithFontSize.push(op.insert);
-//   }
-// });
-
-
-    //return;
     //console.log("blocco-edit - save - form blocco da salvare", this.form.value);
     if (this.tipoBloccoDesc == "Text") {     //********* caso blocco di Testo *******************
       let testoObj! : TEM_BloccoTesto;
 
-      if (this.bloccoTestoID) { // PUT
-        testoObj = {
-          id: this.bloccoTestoID,
-          bloccoID: this.bloccoID,
-          testo: this.form.controls.testo.value,
-          fontSize: this.form.controls.fontSize.value.substring(0, this.form.controls.fontSize.value.length -2)
-        }
+      testoObj = {
+        bloccoID: this.bloccoID,
+        testo: this.form.controls.testo.value? this.form.controls.testo.value: '',
+        fontSize: this.form.controls.fontSize.value.substring(0, this.form.controls.fontSize.value.length -2)
+      }
+      if (this.bloccoTestoID) { 
+        // PUT
+        testoObj.id = this.bloccoTestoID;
 
         this.svcBlocchiTesti.put(testoObj)
         .pipe (
@@ -277,12 +249,8 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
           err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         )
       } else {            
-        // POST
-        testoObj = {
-          bloccoID: this.bloccoID,
-          testo: this.form.controls.testo.value,
-          fontSize: this.form.controls.fontSize.value.substring(0, this.form.controls.fontSize.value.length -2)
-        }
+        // POST forse di qui non si passa MAI??
+        console.log ("post testo");
         this.svcBlocchiTesti.post(testoObj)
         .pipe (
           tap(bloccoTesto=> {this.form.controls.bloccoTestoID.setValue(bloccoTesto.id)}),
@@ -359,10 +327,6 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
       )
     }
 
-
-    
-
-
   }
 
   delete() {
@@ -410,7 +374,7 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
 
 //#region ----- Altri metodi (ColorPicker, imgChange, bordi ...) -------
 
-  openColorPicker() {
+  openColorPickerFill() {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '350px',
@@ -421,7 +385,21 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(
       result => { 
         if (result) this.form.controls.color.setValue(result);
-        //this.loadData(); 
+      }
+    );
+  }
+
+  openColorPickerBorders() {
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '350px',
+      height: '475px',
+      data: {ascRGB: this.form.controls.color.value},
+    };
+    const dialogRef = this._dialog.open(ColorPickerComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      result => { 
+        if (result) this.form.controls.colorBorders.setValue(result);
       }
     );
   }
@@ -490,11 +468,24 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setTrasparenza(value: any) {
-    //console.log(value.checked);
+  setTraspFill(value: any) {
     if (value.checked) {this.form.controls.color.setValue("")}
     if (!value.checked) {this.form.controls.color.setValue("#FFFFFF")}
   }
+
+  setTraspBorders(value: any) {
+    if (value.checked) {this.form.controls.colorBorders.setValue("")}
+    if (!value.checked) {
+      this.form.controls.colorBorders.setValue("#000000")
+      this.form.controls.borderTop.setValue (false);
+      this.form.controls.borderRight.setValue (false);
+      this.form.controls.borderLeft.setValue (false);
+      this.form.controls.borderBottom.setValue (false);
+      this.form.controls.borderType.setValue("solid");
+
+    }
+  }
+
 
   bordersChange (event: any){
     console.log("bordersChange", event.source.value, event.source.checked);
@@ -505,7 +496,6 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
       } 
       case 'borderright': { 
         this.form.controls.borderRight.setValue(event.source.checked);
-
         break; 
       }   
       case 'borderbottom': { 
@@ -516,44 +506,48 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
         this.form.controls.borderLeft.setValue(event.source.checked);
         break; 
       } 
-
       default: { 
          //statements; 
          break; 
       } 
    } 
-
-
   }
+
+  bordersTypeChange (event: any){
+    this.form.controls.bordersType.setValue(event.source.value)
+  }
+
 //#endregion
 
-//#region ----- Quill -------------------------
+//#region ----- Quill e Mention ----------------
   // onSelectionChanged = (event: any) =>{
   //   this.currIndex = event.range.index;         //salva la posizione in cui si trova il cursore!
   // }
-
 
   changeFontSize() {
     this.editor.quillEditor.setSelection(0, this.editor.quillEditor.getLength()) 
     this.editor.quillEditor.format('size', this.form.controls.fontSize.value);
     this.form.controls.testo.setValue(this.editor.quillEditor.root.innerHTML);
   }
-//#endregion
+
+  changeAlignment() {
+    this.editor.quillEditor.setSelection(0, this.editor.quillEditor.getLength()) 
+    this.editor.quillEditor.format('align', this.form.controls.alignment.value);
+    this.form.controls.testo.setValue(this.editor.quillEditor.root.innerHTML);
+  }
 
   setCampiMention() {
-
     // console.log("blocco-edit - setCampiMention: this.form.controls.tableNames.value", this.form.controls.tableNames.value);
     this.svcTableCols.listByTable(this.form.controls.tableNames.value)
     .pipe(
       map( (cols) => cols.map((col, i) => ({id: i+1, value: this.form.controls.tableNames.value+"_"+col.colName})))
     )
     .subscribe(res => {
-      
       this.mentionValues = res;
     })
     
   }
-
+//#endregion
 
 
 }

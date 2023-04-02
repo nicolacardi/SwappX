@@ -4,4 +4,5 @@ export interface TEM_BloccoTesto {
         bloccoID:                               number;
         testo:                                  string;
         fontSize:                               number; 
+        //alignment:                              string;
 }

@@ -1,4 +1,4 @@
-<button mat-mini-fab aria-label="Cancella Pagina" matTooltip="Cancella Pagina" class="_btn-delete-pagina _btn-pos-right-1" (click)="deletePage()">
+<button mat-mini-fab aria-label="Rimuovi Pagina" matTooltip="Rimuovi Pagina" class="_btn-delete-pagina _btn-pos-right-1" (click)="deletePage()">
     <img class="iconaMenuSidenav" src="./assets/delete_pagina.svg">
 </button>
 <button mat-mini-fab aria-label="Aggiungi Blocco Tabella" matTooltip="Aggiungi Blocco Tabella" class="_btn-add-table _btn-pos-right-2" (click)="addBlock(3)">
@@ -21,22 +21,27 @@
         >
 
     <div *ngIf="magnete">
-        <div class="_pos-absolute h100 _border-left-dot" [ngStyle]="{'left': pageMarginLeft*zoom+'px'}">
-        </div>
-        <div class="_pos-absolute h100 _border-left-dot" [ngStyle]="{'left': pageMarginRight*zoom+'px'}">
-        </div>
-        <div class="_pos-absolute w100 _border-top-dot" [ngStyle]="{'top': pageMarginTop*zoom+'px'}">
-        </div>
-        <div class="_pos-absolute w100 _border-top-dot" [ngStyle]="{'top': pageMarginBottom*zoom+'px'}">
-        </div>
-        <div class="_pos-absolute w10 _border-top-dot l0" [ngStyle]="{'top': pageH/2*zoom+'px'}">
-        </div>
-        <div class="_pos-absolute w10 _border-top-dot r0" [ngStyle]="{'top': pageH/2*zoom+'px'}">
-        </div>
-        <div class="_pos-absolute h10 _border-left-dot t0" [ngStyle]="{'left': pageW/2*zoom+'px'}">
-        </div>
-        <div class="_pos-absolute h10 _border-left-dot b0" [ngStyle]="{'left': pageW/2*zoom+'px'}">
-        </div>
+        <div class="_pos-absolute h100 _border-left-dot" [ngStyle]="{'left': pageMarginLeft*zoom+'px'}"></div>
+        <div class="_pos-absolute h100 _border-left-dot" [ngStyle]="{'left': pageMarginRight*zoom+'px'}"></div>
+        
+        <div class="_pos-absolute w100 _border-top-dot" [ngStyle]="{'top': pageMarginTop*zoom+'px'}"></div>
+        <div class="_pos-absolute w100 _border-top-dot" [ngStyle]="{'top': pageMarginBottom*zoom+'px'}"></div>
+
+        <div class="_pos-absolute w10 _border-top-dot l0" [ngStyle]="{'top': pageH/2*zoom+'px'}"></div>
+        <div class="_pos-absolute w10 _border-top-dot r0" [ngStyle]="{'top': pageH/2*zoom+'px'}"></div>
+
+        <div class="_pos-absolute w10px _border-top-dot l0" [ngStyle]="{'top': pageH/4*zoom+'px'}"></div>
+        <div class="_pos-absolute w10px _border-top-dot r0" [ngStyle]="{'top': pageH/4*zoom+'px'}"></div>
+        <div class="_pos-absolute w10px _border-top-dot l0" [ngStyle]="{'top': pageH/4*3*zoom+'px'}"></div>
+        <div class="_pos-absolute w10px _border-top-dot r0" [ngStyle]="{'top': pageH/4*3*zoom+'px'}"></div>
+        
+        <div class="_pos-absolute h10 _border-left-dot t0" [ngStyle]="{'left': pageW/2*zoom+'px'}"></div>
+        <div class="_pos-absolute h10 _border-left-dot b0" [ngStyle]="{'left': pageW/2*zoom+'px'}"></div>
+        
+        <div class="_pos-absolute h10px _border-left-dot t0" [ngStyle]="{'left': pageW/4*zoom+'px'}"></div>
+        <div class="_pos-absolute h10px _border-left-dot b0" [ngStyle]="{'left': pageW/4*zoom+'px'}"></div>
+        <div class="_pos-absolute h10px _border-left-dot t0" [ngStyle]="{'left': pageW/4*3*zoom+'px'}"></div>
+        <div class="_pos-absolute h10px _border-left-dot b0" [ngStyle]="{'left': pageW/4*3*zoom+'px'}"></div>
     </div>
 
     <div *ngIf="griglia">

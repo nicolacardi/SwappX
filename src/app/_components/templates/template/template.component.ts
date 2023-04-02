@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, OnInit }                    from '@angular/core';
 import { Observable }                           from 'rxjs';
 import { tap }                                  from 'rxjs/operators';
@@ -21,8 +23,8 @@ import { TEM_Template }                         from 'src/app/_models/TEM_Templa
 import { FilesService }                         from '../../pagelle/files.service';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 
-
 import { rptBase }                              from 'src/app/_reports/rptBase';
+//#endregion
 
 
 @Component({
@@ -63,18 +65,16 @@ export class TemplateComponent implements OnInit {
     private _loadingService :                   LoadingService,
     private _paginator:                         PaginatorService,
     private _jspdf:                             JspdfService
-
   ) 
   { }
 
+//#region ----- LifeCycle Hooks e simili--------
+
   ngOnInit(): void {
     this.loadData();
-
   }
 
   loadData() {
-
-
     this.obsTemplates$= this.svcTemplates.list();
     const loadTemplates$ =this._loadingService.showLoaderUntilCompleted(this.obsTemplates$);
     loadTemplates$.subscribe( val =>   {
@@ -88,6 +88,9 @@ export class TemplateComponent implements OnInit {
     );
     this.obsPagine$ = this._loadingService.showLoaderUntilCompleted( obsPagineTMP$);
   }
+//#endregion
+
+//#region ----- Altri metodi (Zoom, Add/deletePage, snap, formatoPagina) -------------------
 
   addPage() {
     let objPagina = {
@@ -102,26 +105,59 @@ export class TemplateComponent implements OnInit {
   }
 
   incZoom(){
-    if (this.zoom < 4) this.zoom++;
+    if (this.zoom < 3) this.zoom++;
   }
 
   decZoom(){
     if (this.zoom > 1) this.zoom--;
   }
 
+  switchOrientation() {
+    switch(this.A4A3) {
+      case 'A4V': 
+        this.A4A3 = "A4H"
+      break;
+      case 'A4H': 
+        this.A4A3 = "A4V"
+      break;
+      case 'A3V': 
+        this.A4A3 = "A3H"
+      break;
+      case 'A3H': 
+        this.A4A3 = "A3V"
+      break;
+    }
+  }
+
+  switchA4A3() {
+    switch(this.A4A3) {
+      case 'A4V': 
+        this.A4A3 = "A3V"
+      break;
+      case 'A4H': 
+        this.A4A3 = "A3H"
+      break;
+      case 'A3V': 
+        this.A4A3 = "A4V"
+      break;
+      case 'A3H': 
+        this.A4A3 = "A4H"
+      break;
+    }
+  }
+
   toggleMagnete() {
     this.magnete = !this.magnete;
     if (this.magnete) this.griglia = false;
-
   }
 
   toggleGriglia() {
     this.griglia = !this.griglia;
     if (this.griglia) this.magnete = false;
   }
+//#endregion
 
-
-
+//#region ----- Stampa -------------------------
   createRptDoc() {
     //faccio una "deep copy" (object assign farebbe una shallow copy) di rptBase in rptFile e qui lavoro
     let rptFile = JSON.parse(JSON.stringify(rptBase)); 
@@ -244,6 +280,7 @@ export class TemplateComponent implements OnInit {
         err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di caricamento', panelClass: ['red-snackbar']})
       );
   }
+//#endregion
 
   rowclicked(templateID: number) {
     console.log (templateID);
@@ -251,38 +288,5 @@ export class TemplateComponent implements OnInit {
     this.loadData();  //Serve?
   }
 
-  switchOrientation() {
-    switch(this.A4A3) {
-      case 'A4V': 
-        this.A4A3 = "A4H"
-      break;
-      case 'A4H': 
-        this.A4A3 = "A4V"
-      break;
-      case 'A3V': 
-        this.A4A3 = "A3H"
-      break;
-      case 'A3H': 
-        this.A4A3 = "A3V"
-      break;
-    }
-  }
-
-  switchA4A3() {
-    switch(this.A4A3) {
-      case 'A4V': 
-        this.A4A3 = "A3V"
-      break;
-      case 'A4H': 
-        this.A4A3 = "A3H"
-      break;
-      case 'A3V': 
-        this.A4A3 = "A4V"
-      break;
-      case 'A3H': 
-        this.A4A3 = "A4H"
-      break;
-    }
-  }
 
 }
