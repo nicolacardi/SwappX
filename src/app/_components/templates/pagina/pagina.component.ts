@@ -119,7 +119,7 @@ export class PaginaComponent implements OnInit, OnChanges {
 
   }
 
-
+//#region ----- LifeCycle Hooks e simili--------
   ngOnInit() {
     this.loadData();
   }
@@ -135,7 +135,9 @@ export class PaginaComponent implements OnInit, OnChanges {
       }
     )
   }
+//#endregion
 
+//#region ----- Delete Page, Save Page ---------
   deletePage() {
     this.svcPagine.delete(this.paginaID).subscribe(
       res=> {
@@ -151,9 +153,11 @@ export class PaginaComponent implements OnInit, OnChanges {
       BlocchiArr[i].save();
     }
   }
+//#endregion
 
+//#region ----- AddBlock -----------------------
   addBlock(tipoBloccoID: number) {
-
+    console.log ("pagina.component - addBlock this.paginaID:", this.paginaID);
     this.svcBlocchi.getMaxPageOrd(this.paginaID)
     .pipe(
       switchMap(pageOrd => {
@@ -176,7 +180,6 @@ export class PaginaComponent implements OnInit, OnChanges {
         return this.svcBlocchi.post(objBlocco);
       })
     ).subscribe(res => {
-      // handle the response from the post request
       if (tipoBloccoID == 1) {
         this.defaultBloccoTesto.bloccoID = res.id;
         this.svcBlocchiTesti.post(this.defaultBloccoTesto).subscribe(res => this.loadData());
@@ -195,7 +198,7 @@ export class PaginaComponent implements OnInit, OnChanges {
         this.loadData();
       }
     })
-
+//#endregion
 
     // let objBlocco : TEM_Blocco =
     // { 

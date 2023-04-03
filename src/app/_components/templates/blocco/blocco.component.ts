@@ -14,13 +14,21 @@ import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco
 import { A4H, A4V , A3H, A3V }                   from 'src/environments/environment';
 import { TableShowComponent }                   from '../tableshow/tableshow.component';
 import { MatMenuTrigger }                       from '@angular/material/menu';
+import { concatMap, switchMap } from 'rxjs';
+import { BlocchiCelleService } from '../blocchicelle.service';
+import { BlocchiTestiService } from '../blocchitesti.service';
+import { BlocchiFotoService } from '../blocchifoto.service';
+import { TEM_BloccoTesto } from 'src/app/_models/TEM_BloccoTesto';
+import { TEM_BloccoFoto } from 'src/app/_models/TEM_BloccoFoto';
+import { TEM_BloccoCella } from 'src/app/_models/TEM_BloccoCella';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 const enum Status {
   OFF = 0,
   RESIZE = 1,
   MOVE = 2
 }
-
 
 
 //#endregion
@@ -35,7 +43,7 @@ export class BloccoComponent implements OnInit {
 
   public width!:                                number;
   public widthImg!:                             number;
-
+  public snapToObject:                         boolean= true;
   public height!:                               number;
   public left!:                                 number;
   public top!:                                  number;
@@ -49,6 +57,7 @@ export class BloccoComponent implements OnInit {
   public objFormatoPagina!:                     any;
   public classTipo!:                             string;
 
+  public verticiAltriBlocchi: { x: number, y: number }[] = [];
   private boxPos!: { left: number, top: number }; //la posizione del blocco
   private contPos!: { left: number, top: number, right: number, bottom: number };  //le 4 coordinate dei due punti alto sx e basso dx del contenitore
   public mouse!: {x: number, y: number}
@@ -90,7 +99,11 @@ export class BloccoComponent implements OnInit {
 
   constructor(
     private svcBlocchi:                         BlocchiService,
+    private svcBlocchiCelle:                    BlocchiCelleService,
+    private svcBlocchiTesti:                    BlocchiTestiService,
+    private svcBlocchiFoto:                     BlocchiFotoService,
     public _dialog:                             MatDialog, 
+    private _snackBar:                          MatSnackBar,
   ) { }
 
 //#endregion
@@ -130,6 +143,31 @@ export class BloccoComponent implements OnInit {
       case 'A3V': this.setPageProperties(Object.assign({}, A3V)); break;
       case 'A3H': this.setPageProperties(Object.assign({}, A3H)); break;
     }
+
+
+
+    //estraggo per lo snaptoObject le coppie x e y dei quattro vertici tutti gli ALTRI blocchi (!==this.blocco.id)
+    // this.svcBlocchi.listByPagina(this.blocco.paginaID)
+    // .pipe(
+    //   mergeMap(listaBlocchi => {
+    //     const listaAltriBlocchi = listaBlocchi.filter(blocco => blocco.id !== this.blocco.id);
+    //     return from(listaAltriBlocchi).pipe(
+    //       flatMap(blocco => [
+    //         { x: blocco.x, y: blocco.y },
+    //         { x: blocco.x + blocco.w, y: blocco.y },
+    //         { x: blocco.x, y: blocco.y + blocco.h },
+    //         { x: blocco.x + blocco.w, y: blocco.y + blocco.h }
+    //       ]),
+    //       toArray()
+    //     );
+    //   })
+    // )
+    // .subscribe(elencoCoppieValori => {
+    //   this.verticiAltriBlocchi = elencoCoppieValori;
+    // });
+
+
+
    }
 
    private setPageProperties(page: any): void {
@@ -144,6 +182,10 @@ export class BloccoComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    
+
+
 
   }
 
@@ -323,6 +365,13 @@ export class BloccoComponent implements OnInit {
     let trequartiX = this.contPos.left + (this.contPos.right - this.contPos.left)/4*3;
 
     if (this.magnete){ 
+
+      //in generale per fermarsi in un punto a distanza xSet con la x del blocco
+      //if (Math.abs(xTemp - xSet*this.zoom) < 5*this.zoom) xTemp = xSet*this.zoom; 
+      //in generale per fermarsi in un punto a distanza xSet con la x+w del blocco
+      //if (Math.abs(xTemp + this.width - xSet*this.zoom) < 5*this.zoom) xTemp = xSet*this.zoom - this.width;
+
+
       if (Math.abs(xTemp - 10*this.zoom) < 5*this.zoom) xTemp = 10*this.zoom; 
       if (Math.abs(xTemp + this.width - (this.pageW-10)*this.zoom) < 5*this.zoom) xTemp = (this.pageW-10)*this.zoom - this.width;
       //magnete sulla mezzeria
@@ -364,7 +413,24 @@ export class BloccoComponent implements OnInit {
     if (yTemp+this.contPos.top+this.height>this.contPos.bottom) this.top = this.contPos.bottom - this.contPos.top - this.height;
     else if (yTemp <0) this.top = 0
     else this.top = yTemp;
-    //console.log ("this.contPos.left", this.contPos.left);
+
+
+
+    // if (this.snapToObject) {
+
+    //   const snapDistance = 20 * this.zoom;
+    //   const filteredVertice1 = this.verticiAltriBlocchi.filter(coppia => {
+    //     const { x, y } = coppia;
+    //     return (
+    //       Math.abs(xTemp - x * this.zoom) < snapDistance &&
+    //       Math.abs(yTemp - y * this.zoom) < snapDistance
+    //     );
+    //   });
+    //   console.log(filteredVertice1);
+    //   if (filteredVertice1.length !=0) {console.log ("EUREKA"); xTemp = filteredVertice1[0].x; yTemp = filteredVertice1[0].y}
+    // }
+
+
 
     this.storeCurrPosSize();
 
@@ -385,7 +451,7 @@ export class BloccoComponent implements OnInit {
     { 
       id: this.blocco.id!,
       paginaID: this.blocco.paginaID,
-      pageOrd: 1,
+      pageOrd: this.blocco.pageOrd,
       x: Math.floor(this.left/this.zoom),
       y: Math.floor(this.top/this.zoom),
       w: Math.floor(this.width/this.zoom),
@@ -467,6 +533,98 @@ export class BloccoComponent implements OnInit {
     this.svcBlocchi.setPageOrdToOne(blocco.id, this.blocco.paginaID).subscribe(()=>this.recordEdited.emit(this.blocco.id!)
     )
   }
+
+  duplica (blocco: TEM_Blocco) {
+
+
+    const bloccoTesti: TEM_BloccoTesto[] = [...blocco._BloccoTesti!];
+    const bloccoFoto: TEM_BloccoFoto[] = [...blocco._BloccoFoto!];
+    const bloccoCelle: TEM_BloccoCella[] = [...blocco._BloccoCelle!];
+    const bloccoCopia: TEM_Blocco = {...blocco};
+
+    bloccoCopia.x = Math.floor(blocco.x/this.zoom);
+    bloccoCopia.y = Math.floor(blocco.y/this.zoom);
+    bloccoCopia.w = Math.floor(blocco.w/this.zoom);
+    bloccoCopia.h = Math.floor(blocco.h/this.zoom);
+
+    delete bloccoCopia.id;
+    delete bloccoCopia._BloccoTesti;
+    delete bloccoCopia._BloccoFoto;
+    delete bloccoCopia._BloccoCelle;
+    delete bloccoCopia.tipoBlocco;
+
+    this.svcBlocchi.getMaxPageOrd(bloccoCopia.paginaID)
+    .pipe(
+      switchMap(pageOrd => {
+        bloccoCopia.pageOrd = pageOrd? pageOrd.pageOrd + 1: 1;
+        console.log("in fase di salvataggio...", bloccoCopia)
+        return this.svcBlocchi.post(bloccoCopia);
+      })
+    ).subscribe(res => {
+
+      //quello che segue si potrebbe anche fare meglio, definendo un oggetto svc che prende uno dei tre valori svcBlocchiTesti/Foto/Celle, ma sarebbe meno chiaro.
+      switch(bloccoCopia.tipoBloccoID) {
+        case 1:
+          for (let i = 0; i<bloccoTesti!.length; i++) {
+           bloccoTesti![i].bloccoID = res.id
+           this.svcBlocchiTesti.post(bloccoTesti![i]).subscribe(res => {this.recordEdited.emit(this.blocco.id!)});
+          }
+        break;
+        case 2:
+          for (let i = 0; i<bloccoFoto!.length; i++) {
+            bloccoFoto![i].bloccoID = res.id
+            this.svcBlocchiFoto.post(bloccoFoto![i]).subscribe(res => {this.recordEdited.emit(this.blocco.id!)});
+           }
+        break;
+        case 3:
+          for (let i = 0; i<bloccoCelle!.length; i++) {
+            bloccoCelle![i].bloccoID = res.id
+            this.svcBlocchiCelle.post(bloccoCelle![i]).subscribe(res => {this.recordEdited.emit(this.blocco.id!)});
+           }
+        break;
+      }
+    })
+  }
+
+  delete(blocco: TEM_Blocco) {
+
+    if (blocco.tipoBlocco!.descrizione == "Image") {
+      this.svcBlocchiFoto.deleteByBlocco(blocco.id)
+      .pipe(
+        concatMap(() => this.svcBlocchi.delete(blocco.id!))
+      )
+      .subscribe(
+        res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
+        this.recordEdited.emit(this.blocco.id!)
+        },
+        err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
+      );
+    };
+    if (blocco.tipoBlocco!.descrizione == "Text") {
+      this.svcBlocchiTesti.deleteByBlocco(blocco.id)
+      .pipe(
+        concatMap(() => this.svcBlocchi.delete(blocco.id!))
+      )
+      .subscribe(
+        res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
+        this.recordEdited.emit(this.blocco.id!)
+        },
+        err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
+      );
+    }
+    if (blocco.tipoBlocco!.descrizione == "Table") {
+      this.svcBlocchiCelle.deleteByBlocco(blocco.id)
+      .pipe(
+        concatMap(() => this.svcBlocchi.delete(blocco.id!))
+      )
+      .subscribe(res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
+      this.recordEdited.emit(this.blocco.id!)
+      },
+      err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})));
+    } 
+  }
+
+
 
 
 }

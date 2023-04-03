@@ -76,12 +76,21 @@
 
     <mat-menu #rightMenu="matMenu" style="position: fixed;"> 
         <ng-template matMenuContent let-item="item"> 
-            <mat-label class="_titolo-filtri-avanzati">ORDINAMENTO</mat-label> 
+            <!-- <mat-label class="_titolo-filtri-avanzati">MENU</mat-label>  -->
             <button mat-menu-item (click)="portaInPrimoPiano(item)">
-                <img class="iconaMenu" src="./assets/bring_to_front.svg">Porta davanti
+                <img class="iconaMenu mr15" src="./assets/bring_to_front.svg">Porta davanti
             </button> 
             <button mat-menu-item (click)="portaInSecondoPiano(item)">
-                <img class="iconaMenu" src="./assets/bring_to_back.svg">Porta dietro
+                <img class="iconaMenu mr15" src="./assets/bring_to_back.svg">Porta dietro
+            </button> 
+            <button mat-menu-item (click)="duplica(item)">
+                <img class="iconaMenu mr15" src="./assets/duplicate.svg">Duplica
+            </button> 
+            <button mat-menu-item (click)="delete(item)">
+                <mat-icon>delete</mat-icon>Elimina
+            </button> 
+            <button mat-menu-item (click)="openDetail()">
+                <mat-icon>edit</mat-icon>Modifica
             </button> 
         </ng-template> 
     </mat-menu> 

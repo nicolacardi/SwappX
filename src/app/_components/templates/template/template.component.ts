@@ -41,6 +41,7 @@ export class TemplateComponent implements OnInit {
   public A4A3:                                  string = 'A4V';
   public pageW!:                                number;
   public pageH!:                                number;
+  public selectedRowIndex:                      number = 1;
 
 
   public obsTemplates$!:                        Observable<TEM_Template[]>;
@@ -283,6 +284,9 @@ export class TemplateComponent implements OnInit {
 //#endregion
 
   rowclicked(templateID: number) {
+
+    this.selectedRowIndex = templateID;
+
     console.log (templateID);
     this.templateID = templateID;
     this.loadData();  //Serve?

@@ -40,6 +40,8 @@
     <img class="iconaMenu" src="./assets/page_orientation.svg">
 </button>
 
+<div class="_htot_toolbar" style="background-color: lightgray">
+
 
 <mat-drawer-container autosize>
     <mat-drawer #drawer class="subsidenav " style="padding-left: 70px; position: fixed" mode="side">
@@ -51,6 +53,10 @@
             </ng-container>
             <tr mat-header-row class="_table-title-low" *matHeaderRowDef="displayedColumnsTemplates;  sticky: true" ></tr>
             <tr mat-row *matRowDef="let element;columns: displayedColumnsTemplates"
+
+            [ngClass]="{'_table-row-selected-highlight': selectedRowIndex == element.id}"
+
+
                 class="element-row _table-row-selected-highlight _row-pointercursor"
                 (click)="rowclicked(element.id)" >
             </tr>
@@ -78,6 +84,7 @@
     </div>
 
     <!-- Nel seguente div vengono temporaneamente scritti i contenuti poi passati a html2canvas -->
-    <div id="myDiv" style="padding: 30px"></div>
+    <div id="myDiv" style="background-color: lightgray; padding: 30px"></div>
 </mat-drawer-container>
 
+</div>

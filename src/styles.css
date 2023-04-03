@@ -275,6 +275,10 @@
         margin-right: 10px;
     }
 
+    .mr15 {
+        margin-right: 15px;
+    }
+
     .mr20 {
         margin-right: 20px;
     }
@@ -639,10 +643,15 @@
         height: 75%;
     }
 
+
+
     .h100 {
         height: 100%;
     }
 
+    ._htot_toolbar {
+        height: calc(100% - 63px);
+    }
 
     /* pixels */
     .h5px {
