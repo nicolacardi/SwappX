@@ -7,9 +7,13 @@
     [style.width.px]="width"
     [style.height.px]="height"
     
-    [style.background-color] = "blocco.ckTrasp? 'none': blocco.color"
+    [style.background-color] = "blocco.ckTraspFill? 'transparent': blocco.color"
     
-    [ngStyle]="{'border-top': blocco.borderTop? 'solid 1px grey':'none', 'border-right': blocco.borderRight? 'solid 1px grey':'none', 'border-bottom': blocco.borderBottom? 'solid 1px grey':'none', 'border-left': blocco.borderLeft? 'solid 1px grey':'none'}"
+    [ngStyle]="{
+        'border-top': blocco.borderTop? blocco.typeBorders + ' ' + spessore*zoom + 'px ' + blocco.colorBorders:'none', 
+        'border-right': blocco.borderRight? blocco.typeBorders + ' ' +spessore*zoom + 'px ' + blocco.colorBorders:'none', 
+        'border-bottom': blocco.borderBottom? blocco.typeBorders + ' ' +spessore*zoom + 'px ' + blocco.colorBorders:'none', 
+        'border-left': blocco.borderLeft? blocco.typeBorders + ' ' +spessore*zoom + 'px ' + blocco.colorBorders:'none'}"
 
     [style.transform]="'translate3d('+ left + 'px,' + top + 'px,' + '0px)'"
     [class.active]="status === 1 || status === 2"

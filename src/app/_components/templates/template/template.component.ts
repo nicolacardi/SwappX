@@ -49,6 +49,7 @@ export class TemplateComponent implements OnInit {
 
   matDataSource =                               new MatTableDataSource<TEM_Template>();
   displayedColumnsTemplates:                    string[] =  ["descrizione"];
+  public snapObjects:                           boolean = true;
   public magnete:                               boolean = true;
   public griglia:                               boolean = false;
   templatesArr = [
@@ -145,6 +146,10 @@ export class TemplateComponent implements OnInit {
         this.A4A3 = "A4H"
       break;
     }
+  }
+
+  toggleSnapObjects() {
+    this.snapObjects = !this.snapObjects;
   }
 
   toggleMagnete() {

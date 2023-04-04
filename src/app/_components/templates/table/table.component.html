@@ -19,7 +19,8 @@
           <td class="_bordered-lightgrey _pos-relative" style="height: 30px;" *ngFor="let row of colsArr; let i = index" >
             <span *ngIf="isResizing" class="w-legenda2 topZindex">{{colsWArr[i]/3 | number:'1.0-0'}}</span>
             <span *ngIf="isResizing" class="h-legenda2 topZindex">{{rowsHArr[j]/3 | number:'1.0-0'}}</span>
-            <div class="resize-bar-v" (mouseleave)="stopResize()"></div>
+            <div *ngIf="j==0" class="resize-bar-v" (mouseleave)="stopResize()"></div>
+            
             <quill-editor 
               theme="bubble" 
               bounds="self"

@@ -56,10 +56,13 @@
             <app-blocco
                 [blocco] = "element"
                 [zoom]= "zoom"
+                [snapObjects] = "snapObjects"
                 [magnete] = "magnete"
                 [griglia] = "griglia"
                 [formatopagina]="formatopagina"
                 (recordEdited) ="bloccoEditedEmitted($event)"
+                (bloccoMoved) ="bloccoMovedEmitted($event)"
+
                 #Blocco
                 >
             </app-blocco>

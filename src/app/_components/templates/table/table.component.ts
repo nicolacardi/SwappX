@@ -154,7 +154,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
 
   loadData() {
 
-    //fa schifissimo lo so Andrew ma non so come fare altrimenti a inizializzre una matrice a due dimensioni
+    //fa schifissimo lo so ma non so come fare altrimenti a inizializzre una matrice a due dimensioni
     //creo un array a due dimensioni e lo popolo x inizializzarlo
     //è l'array che contiene i testi
     const rows = 10;

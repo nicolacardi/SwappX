@@ -14,29 +14,34 @@
     <mat-icon>add_circle_outline</mat-icon>
 </button>
 
-<button mat-mini-fab aria-label="Aggancia ai Margini" matTooltip="Aggancia ai Margini"  matTooltipPosition="right" class="_btn-add-fixed _btn-pos-left-1 _btn-pos-top-5" (click)="toggleMagnete()">
-    <img *ngIf="magnete" class="iconaMenuSidenav" src="./assets/magnete_on.svg">
-    <img *ngIf="!magnete" class="iconaMenuSidenav" src="./assets/magnete_off.svg">
+<button mat-mini-fab aria-label="Aggancia agli altri Oggetti" matTooltip="Aggancia agli altri Oggetti"  matTooltipPosition="right" class="_btn-snap-fixed _btn-pos-left-1 _btn-pos-top-5" (click)="toggleSnapObjects()">
+    <img *ngIf="snapObjects" class="iconaMenuSidenav" src="./assets/magnete_on.svg">
+    <img *ngIf="!snapObjects" class="iconaMenuSidenav" src="./assets/magnete_off.svg">
 </button>
 
-<button mat-mini-fab aria-label="Aggancia alla griglia" matTooltip="Aggancia alla griglia"  matTooltipPosition="right" class="_btn-add-fixed _btn-pos-left-1 _btn-pos-top-6" (click)="toggleGriglia()">
+<button mat-mini-fab aria-label="Aggancia ai Margini" matTooltip="Aggancia ai Margini"  matTooltipPosition="right" class="_btn-snap-fixed _btn-pos-left-1 _btn-pos-top-6" (click)="toggleMagnete()">
+    <img *ngIf="magnete" class="iconaMenuSidenav" src="./assets/snap_margins_on.svg">
+    <img *ngIf="!magnete" class="iconaMenuSidenav" src="./assets/snap_margins_off.svg">
+</button>
+
+<button mat-mini-fab aria-label="Aggancia alla griglia" matTooltip="Aggancia alla griglia"  matTooltipPosition="right" class="_btn-snap-fixed _btn-pos-left-1 _btn-pos-top-7" (click)="toggleGriglia()">
     <img *ngIf="griglia" class="iconaMenuSidenav" src="./assets/griglia_on.svg">
     <img *ngIf="!griglia" class="iconaMenuSidenav" src="./assets/griglia_off.svg">
 </button>
 
-<button  mat-mini-fab aria-label="Pubblica" matTooltip="Pubblica" matTooltipPosition="right" class="_btn-add-fixed _btn-pos-left-1 _btn-pos-top-7" (click)="createRptDoc()">
+<button  mat-mini-fab aria-label="Pubblica" matTooltip="Pubblica" matTooltipPosition="right" class="_btn-add-fixed _btn-pos-left-1 _btn-pos-top-8" (click)="createRptDoc()">
     <img class="iconaMenu" src="./assets/pubblica.svg">
 </button>
 
-<button  mat-mini-fab aria-label="Scarica" matTooltip="Scarica" matTooltipPosition="right" class="_btn-add-fixed _btn-pos-left-1 _btn-pos-top-8" (click)="openPdf()">
+<button  mat-mini-fab aria-label="Scarica" matTooltip="Scarica" matTooltipPosition="right" class="_btn-add-fixed _btn-pos-left-1 _btn-pos-top-9" (click)="openPdf()">
     <mat-icon>file_download</mat-icon>
 </button>
 
-<button  mat-mini-fab aria-label="Formato pagina" matTooltip="Formato Pagina" matTooltipPosition="right" class="_btn-add-fixed _btn-pos-left-1 _btn-pos-top-9" (click)="switchA4A3()">
+<button  mat-mini-fab aria-label="Formato pagina" matTooltip="Formato Pagina" matTooltipPosition="right" class="_btn-add-fixed _btn-pos-left-1 _btn-pos-top-10" (click)="switchA4A3()">
     <img class="iconaMenu" src="./assets/A4A3.svg">
 </button>
 
-<button  mat-mini-fab aria-label="Orientamento pagina" matTooltip="Orientamento Pagina" matTooltipPosition="right" class="_btn-add-fixed _btn-pos-left-1 _btn-pos-top-10" (click)="switchOrientation()">
+<button  mat-mini-fab aria-label="Orientamento pagina" matTooltip="Orientamento Pagina" matTooltipPosition="right" class="_btn-add-fixed _btn-pos-left-1 _btn-pos-top-11" (click)="switchOrientation()">
     <img class="iconaMenu" src="./assets/page_orientation.svg">
 </button>
 
@@ -48,7 +53,7 @@
         <div class="mt50 ml50"></div>
         <table mat-table class=" w150px transparent headerColored" [dataSource]="matDataSource">
             <ng-container matColumnDef="descrizione">
-                <th mat-header-cell *matHeaderCellDef>Documento</th>
+                <th mat-header-cell *matHeaderCellDef>ELENCO TEMPLATE</th>
                 <td mat-cell *matCellDef="let element" [innerHTML]="element.descrizione"></td>
             </ng-container>
             <tr mat-header-row class="_table-title-low" *matHeaderRowDef="displayedColumnsTemplates;  sticky: true" ></tr>
@@ -70,6 +75,8 @@
             [paginaID]="element.id"
             [zoom]="zoom"
             [magnete]="magnete"
+            [snapObjects]="snapObjects"
+
             [griglia]="griglia"
             [formatopagina] = "A4A3"
 

@@ -125,6 +125,8 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
       {
         id:                                     [null],
         paginaID:                               [0],
+        tipoBloccoID:                           [0],
+
         x:                                      [0],
         y:                                      [0],
         w:                                      [0],
@@ -134,8 +136,10 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
 
         testo:                                  [''],
         ckTraspFill:                            [true],
-        ckTraspBorders:                         [true],
-        tipoBloccoID:                           [0],
+        ckNoBorders:                            [true],
+        typeBorders:                            [''],
+        thicknBorders:                          [''],
+
         borderTop:                              [],
         borderRight:                            [],
         borderBottom:                           [],
@@ -194,7 +198,7 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
       .pipe(
           tap(
             blocco => {
-              //console.log ("blocco-edit loadData, blocco", blocco);
+              console.log ("blocco-edit loadData, blocco", blocco);
 
               this.tipoBloccoDesc = blocco.tipoBlocco!.descrizione;
               this.form.patchValue(blocco);
@@ -473,7 +477,7 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
     if (!value.checked) {this.form.controls.color.setValue("#FFFFFF")}
   }
 
-  setTraspBorders(value: any) {
+  setNoBorders(value: any) {
     if (value.checked) {this.form.controls.colorBorders.setValue("")}
     if (!value.checked) {
       this.form.controls.colorBorders.setValue("#000000")
@@ -485,7 +489,6 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
 
     }
   }
-
 
   bordersChange (event: any){
     console.log("bordersChange", event.source.value, event.source.checked);

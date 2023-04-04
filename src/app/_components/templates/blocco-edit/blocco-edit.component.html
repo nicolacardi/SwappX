@@ -154,7 +154,7 @@
                 <mat-label class="frameLabel t10 fs12">RIEMPIMENTO </mat-label>
                 </mat-grid-tile>
 
-                <mat-grid-tile>
+                <mat-grid-tile colspan="2">
                     <mat-label class="_pos-absolute t0">Trasparente</mat-label>
                     <mat-checkbox class="_pos-absolute t10" color="primary" formControlName="ckTraspFill" (change)="setTraspFill($event)">
                     </mat-checkbox>
@@ -164,44 +164,64 @@
                     <mat-label class="_pos-absolute t0">Colore</mat-label>
 
                     <button type="button" class="_btnColorPicker _pos-absolute t25" 
-                    (click)="openColorPickerFill()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
+                    (click)="openColorPickerFill()"  [ngStyle]="{'background-color': form.controls.color?form.controls.color.value: '#FFFFFF'}" > </button>
                 </mat-grid-tile>
 
             </mat-grid-list>
 
-           
 
-            <mat-grid-list *ngIf="tipoBloccoDesc == 'Text'" class=" _cell-bordered mt10" [cols]="7" rowHeight="60px">
+
+
+
+            <mat-grid-list *ngIf="tipoBloccoDesc == 'Text'" class=" _cell-bordered mt10" [cols]="8" rowHeight="90px">
                 <mat-grid-tile>
                     <mat-label class="frameLabel t10 fs12">BORDI </mat-label>
                     </mat-grid-tile>
     
-                    <mat-grid-tile>
-                        <mat-label class="_pos-absolute t0">Nessun Bordo</mat-label>
-                        <mat-checkbox class="_pos-absolute t10" color="primary" formControlName="ckTraspBorders" (change)="setTraspBorders($event)">
-                        </mat-checkbox>
-                    </mat-grid-tile>
 
-                <mat-grid-tile [ngClass]="{'invisible': form.controls.ckTraspBorders.value}">
-                    <mat-label class="_pos-absolute t0">Colore</mat-label>
 
-                    <button type="button" class="_btnColorPicker _pos-absolute t25" 
-                    (click)="openColorPickerBorders()"  [ngStyle]="{'background-color': form.controls.colorBorders.value}" > </button>
+                <!-- <mat-grid-tile [ngClass]="{'invisible': form.controls.ckNoBorders.value}"> -->
+               
+
+                <!-- <mat-grid-tile [ngClass]="{'invisible': form.controls.ckNoBorders.value}" colspan="2" > -->
+                <mat-grid-tile colspan="2" >
+                    <mat-label class="_pos-absolute t0">Lati Attivi</mat-label>
+
+                    <mat-button-toggle class="_pos-absolute t8" formControlName="borderTop" value="bordertop" (change)="bordersChange($event)" [checked]="form.controls.borderTop.value"><mat-icon>border_top</mat-icon></mat-button-toggle>
+                    <mat-button-toggle class="_pos-absolute t8" formControlName="borderRight" value="borderright" (change)="bordersChange($event)"  [checked]="form.controls.borderRight.value"><mat-icon>border_right</mat-icon></mat-button-toggle>
+                    <mat-button-toggle class="_pos-absolute t8" formControlName="borderBottom" value="borderbottom" (change)="bordersChange($event)"  [checked]="form.controls.borderBottom.value"><mat-icon>border_bottom</mat-icon></mat-button-toggle>
+                    <mat-button-toggle class="_pos-absolute t8" formControlName="borderLeft" value="borderleft" (change)="bordersChange($event)"  [checked]="form.controls.borderLeft.value"><mat-icon>border_left</mat-icon></mat-button-toggle>
                 </mat-grid-tile>
 
-                <mat-grid-tile [ngClass]="{'invisible': form.controls.ckTraspBorders.value}" colspan="2" >
-                    <mat-button-toggle formControlName="borderTop" value="bordertop" (change)="bordersChange($event)" [checked]="form.controls.borderTop.value"><mat-icon>border_top</mat-icon></mat-button-toggle>
-                    <mat-button-toggle formControlName="borderRight" value="borderright" (change)="bordersChange($event)"  [checked]="form.controls.borderRight.value"><mat-icon>border_right</mat-icon></mat-button-toggle>
-                    <mat-button-toggle formControlName="borderBottom" value="borderbottom" (change)="bordersChange($event)"  [checked]="form.controls.borderBottom.value"><mat-icon>border_bottom</mat-icon></mat-button-toggle>
-                    <mat-button-toggle formControlName="borderLeft" value="borderleft" (change)="bordersChange($event)"  [checked]="form.controls.borderLeft.value"><mat-icon>border_left</mat-icon></mat-button-toggle>
-                </mat-grid-tile>
 
-                <mat-grid-tile [ngClass]="{'invisible': form.controls.ckTraspBorders.value}" colspan="2" >
-                    <mat-button-toggle-group formControlName="borderType" aria-label="Font Style" (change)="bordersTypeChange($event)">
+                <!-- <mat-grid-tile [ngClass]="{'invisible': form.controls.ckNoBorders.value}" colspan="2" > -->
+                <mat-grid-tile colspan="2" >
+                    <mat-label class="_pos-absolute t0">Tratteggio</mat-label>
+
+                    <mat-button-toggle-group class="_pos-absolute t8" formControlName="typeBorders" aria-label="Font Style" (change)="bordersTypeChange($event)">
                         <mat-button-toggle value="solid" ><img class="w24px" src="./assets/border_solid.svg"></mat-button-toggle>
                         <mat-button-toggle value="dashed" ><img class="w24px" src="./assets/border_dashed.svg"></mat-button-toggle>
                         <mat-button-toggle value="dotted" ><img class="w24px" src="./assets/border_dotted.svg"></mat-button-toggle>
                     </mat-button-toggle-group>
+                </mat-grid-tile>
+
+                <mat-grid-tile colspan="2" >
+                    <mat-label class="_pos-absolute t0">Spessore</mat-label>
+
+                    <mat-button-toggle-group class="_pos-absolute t8" formControlName="thicknBorders">
+                        <mat-button-toggle value="sottili" ><img class="w24px" src="./assets/border_solid.svg"></mat-button-toggle>
+                        <mat-button-toggle value="spessi" ><img class="w24px" src="./assets/border_solid_thick.svg"></mat-button-toggle>
+                        <mat-button-toggle value="enormi" ><img class="w24px" src="./assets/border_solid_huge.svg"></mat-button-toggle>
+
+                    </mat-button-toggle-group>
+                </mat-grid-tile>
+
+                <mat-grid-tile >
+
+                    <mat-label class="_pos-absolute t0">Colore</mat-label>
+
+                    <button type="button" class="_btnColorPicker _pos-absolute t30" 
+                    (click)="openColorPickerBorders()"  [ngStyle]="{'background-color': form.controls.colorBorders?form.controls.colorBorders.value: '#000000'}" > </button>
                 </mat-grid-tile>
 
             </mat-grid-list>

@@ -75,6 +75,7 @@ export class PaginaComponent implements OnInit, OnChanges {
 
   @Input() paginaID!:                           number;
   @Input() zoom!:                               number;
+  @Input() snapObjects!:                            boolean;
   @Input() magnete!:                            boolean;
   @Input() griglia!:                            boolean;
   @Input() formatopagina!:                      string;
@@ -161,22 +162,25 @@ export class PaginaComponent implements OnInit, OnChanges {
     this.svcBlocchi.getMaxPageOrd(this.paginaID)
     .pipe(
       switchMap(pageOrd => {
-        
         let objBlocco : TEM_Blocco =
         { 
-          paginaID: this.paginaID,
+          paginaID:                             this.paginaID,
           pageOrd: pageOrd? pageOrd.pageOrd + 1: 1,
-          x: 10,
-          y: 10,
-          w: 95,
-          h: 50,
-          ckTrasp: true,
-          tipoBloccoID: tipoBloccoID,
-          borderTop: false,
-          borderRight: false,
-          borderBottom: false,
-          borderLeft: false
+          x:                                    10,
+          y:                                    10,
+          w:                                    95,
+          h:                                    50,
+          ckTraspFill:                          true,
+          typeBorders:                          "solid", 
+          thicknBorders:                         "sottili",
+          tipoBloccoID:                         tipoBloccoID,
+          borderTop:                            false,
+          borderRight:                          false,
+          borderBottom:                         false,
+          borderLeft:                           false
         }
+
+        console.log("addBlock:", objBlocco);
         return this.svcBlocchi.post(objBlocco);
       })
     ).subscribe(res => {
@@ -260,6 +264,14 @@ export class PaginaComponent implements OnInit, OnChanges {
     this.loadData();
     this.zoom = zoomStore;
   }
+
+
+  bloccoMovedEmitted(bloccoID: number){
+    console.log ("bloccoMovedEmitted");
+    //quando si muove un blocco bisogna dirlo a tutti gli altri e lanciare tutti i loro metodi setupSnapToObjects 
+    this.Blocchi.forEach(blocco => blocco.setupSnapToObjects());
+  }
+
 
 
 }

@@ -2,27 +2,29 @@
 
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { concatMap, mergeMap, of, switchMap } from 'rxjs';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { MatMenuTrigger }                       from '@angular/material/menu';
+
 
 //components
 import { BloccoEditComponent }                  from '../blocco-edit/blocco-edit.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { TableShowComponent }                   from '../tableshow/tableshow.component';
 
 //services
 import { BlocchiService }                       from '../blocchi.service';
+import { BlocchiCelleService }                  from '../blocchicelle.service';
+import { BlocchiTestiService }                  from '../blocchitesti.service';
+import { BlocchiFotoService }                   from '../blocchifoto.service';
 
 //models
 import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
+import { TEM_BloccoTesto }                      from 'src/app/_models/TEM_BloccoTesto';
+import { TEM_BloccoFoto }                       from 'src/app/_models/TEM_BloccoFoto';
+import { TEM_BloccoCella }                      from 'src/app/_models/TEM_BloccoCella';
 import { A4H, A4V , A3H, A3V }                   from 'src/environments/environment';
-import { TableShowComponent }                   from '../tableshow/tableshow.component';
-import { MatMenuTrigger }                       from '@angular/material/menu';
-import { concatMap, switchMap } from 'rxjs';
-import { BlocchiCelleService } from '../blocchicelle.service';
-import { BlocchiTestiService } from '../blocchitesti.service';
-import { BlocchiFotoService } from '../blocchifoto.service';
-import { TEM_BloccoTesto } from 'src/app/_models/TEM_BloccoTesto';
-import { TEM_BloccoFoto } from 'src/app/_models/TEM_BloccoFoto';
-import { TEM_BloccoCella } from 'src/app/_models/TEM_BloccoCella';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+
 
 const enum Status {
   OFF = 0,
@@ -43,21 +45,24 @@ export class BloccoComponent implements OnInit {
 
   public width!:                                number;
   public widthImg!:                             number;
-  public snapToObject:                         boolean= true;
   public height!:                               number;
   public left!:                                 number;
   public top!:                                  number;
   public color!:                                string;
   public tipoBloccoID!:                         number;
-  public ckTrasp!:                               boolean;
+  public ckTraspFill!:                               boolean;
   public testo!:                                string;
   public fontSizeN:                             number = 1;
   private oldZoom:                              number = 1;
   public zoomratio:                             number =1 ;
   public objFormatoPagina!:                     any;
   public classTipo!:                             string;
+  public spessore!:                             number;
 
-  public verticiAltriBlocchi: { x: number, y: number }[] = [];
+  // public verticiAltriBlocchi: { x: number, y: number }[] = [];
+  public arrSetX:                               number[] = [];
+  public arrSetY:                               number[] = [];
+
   private boxPos!: { left: number, top: number }; //la posizione del blocco
   private contPos!: { left: number, top: number, right: number, bottom: number };  //le 4 coordinate dei due punti alto sx e basso dx del contenitore
   public mouse!: {x: number, y: number}
@@ -79,11 +84,13 @@ export class BloccoComponent implements OnInit {
 
   @Input('blocco') public blocco!:              TEM_Blocco;
   @Input() zoom!:                               number;
+  @Input() snapObjects!:                        boolean;
   @Input() magnete!:                            boolean;
   @Input() griglia!:                            boolean;
   @Input() formatopagina!:                      string;
 
   @Output('recordEdited') recordEdited = new EventEmitter<number>();
+  @Output('bloccoMoved') bloccoMoved = new EventEmitter<number>();
 
   @ViewChild("box") public box!: ElementRef;
 
@@ -144,27 +151,14 @@ export class BloccoComponent implements OnInit {
       case 'A3H': this.setPageProperties(Object.assign({}, A3H)); break;
     }
 
+    switch(this.blocco.thicknBorders) {
+      case 'sottili': this.spessore = 0.5; break;
+      case 'spessi': this.spessore = 1; break;
+      case 'enormi': this.spessore = 3; break;
+    }
 
 
-    //estraggo per lo snaptoObject le coppie x e y dei quattro vertici tutti gli ALTRI blocchi (!==this.blocco.id)
-    // this.svcBlocchi.listByPagina(this.blocco.paginaID)
-    // .pipe(
-    //   mergeMap(listaBlocchi => {
-    //     const listaAltriBlocchi = listaBlocchi.filter(blocco => blocco.id !== this.blocco.id);
-    //     return from(listaAltriBlocchi).pipe(
-    //       flatMap(blocco => [
-    //         { x: blocco.x, y: blocco.y },
-    //         { x: blocco.x + blocco.w, y: blocco.y },
-    //         { x: blocco.x, y: blocco.y + blocco.h },
-    //         { x: blocco.x + blocco.w, y: blocco.y + blocco.h }
-    //       ]),
-    //       toArray()
-    //     );
-    //   })
-    // )
-    // .subscribe(elencoCoppieValori => {
-    //   this.verticiAltriBlocchi = elencoCoppieValori;
-    // });
+
 
 
 
@@ -182,11 +176,25 @@ export class BloccoComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.setupSnapToObjects();
+  }
 
-    
+  setupSnapToObjects() {
+    this.svcBlocchi.listByPagina(this.blocco.paginaID)
+    .pipe(
+      mergeMap(listaBlocchi => {
+        const listaAltriBlocchi = listaBlocchi.filter(blocco => blocco.id !== this.blocco.id);
+        const arrSetX = listaAltriBlocchi.map(blocco => blocco.x).concat(listaAltriBlocchi.map(blocco => blocco.x + blocco.w));
+        const arrSetY = listaAltriBlocchi.map(blocco => blocco.y).concat(listaAltriBlocchi.map(blocco => blocco.y + blocco.h));
+        return of({arrSetX, arrSetY});
+      })
+    )
+    .subscribe(({arrSetX, arrSetY}) => {
+      this.arrSetX = arrSetX;
+      this.arrSetY = arrSetY;
+      console.log("blocco.component - setupSnapToObject blocco.id", this.blocco.id, "- magnete:", this.magnete, " - this.arrSetX", this.arrSetX);
 
-
-
+    });
   }
 
   // ngAfterViewInit(): void {
@@ -233,6 +241,9 @@ export class BloccoComponent implements OnInit {
       //per di qua passa anche alla fine del move quindi SALVO la posizione in DB ma solo se lo status è 0 (ho liberato la selezione)
       // console.log("blocco - setStatus - lancio la save");
       this.save();
+      //qui bisogna mandare un segnale alla pagina (quindi un'emit) affinchè dica a tutti i suoi figli component blocchi di rilanciare il metodo setupSnapToObjects
+      this.bloccoMoved.emit(this.blocco.id!)
+
     }
   }
 
@@ -317,11 +328,20 @@ export class BloccoComponent implements OnInit {
     else this.width = this.mouse.x - this.boxPos.left;
 
     
+      //in generale per fermarsi nel resize in un punto a distanza xSet dalla sinistra della pagina...
+      //if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (xSet)) < 5) this.width = (xSet)*this.zoom -this.left; 
+
     if (this.magnete){ 
       //magnetismo a destra
       if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (this.pageW-10)) < 5) this.width = (this.pageW-10)*this.zoom -this.left; 
       //magnetismo a metà
       if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - (this.pageW/2)) < 5) this.width = (this.pageW/2)*this.zoom -this.left; 
+    }
+
+    if (this.snapObjects) {
+      for (let i =0; i< this.arrSetX.length; i++) {
+        if (Math.abs( (this.mouse.x - this.boxPos.left)/this.zoom + this.left/this.zoom - this.arrSetX[i]) < 5) this.width = this.arrSetX[i]*this.zoom -this.left; 
+      }
     }
 
     if (this.griglia) { this.width = Math.round(this.width/10/this.zoom)*10*this.zoom}
@@ -343,6 +363,12 @@ export class BloccoComponent implements OnInit {
       if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - (this.pageH-10)) < 5) this.height = (this.pageH-10)*this.zoom -this.top; 
       if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - (this.pageH/2)) < 5) this.height = (this.pageH/2)*this.zoom -this.top; 
 
+    }
+
+    if (this.snapObjects) {
+      for (let i =0; i< this.arrSetY.length; i++) {
+        if (Math.abs( (this.mouse.y - this.boxPos.top)/this.zoom + this.top/this.zoom - this.arrSetY[i]) < 5) this.height = this.arrSetY[i]*this.zoom -this.top; 
+      }
     }
 
     if (this.griglia) { this.height = Math.round(this.height/10/this.zoom)*10*this.zoom}
@@ -384,10 +410,21 @@ export class BloccoComponent implements OnInit {
 
     if (this.griglia) { xTemp = Math.round(xTemp/10/this.zoom)*10*this.zoom}
      
+    if (this.snapObjects) {
+      for (let i =0; i< this.arrSetX.length; i++) {
+        if (Math.abs(xTemp - this.arrSetX[i]*this.zoom) < 5*this.zoom) xTemp = this.arrSetX[i]*this.zoom;
+        if (Math.abs(xTemp + this.width - this.arrSetX[i]*this.zoom) < 5*this.zoom) xTemp = this.arrSetX[i]*this.zoom - this.width;
+      }
+    }
+
     //viene verificata xTemp per essere sicuri che non vada oltre i limiti consentiti
     if (xTemp+this.contPos.left+this.width>this.contPos.right) this.left = this.contPos.right - this.contPos.left - this.width;
     else if (xTemp <0) this.left = 0
-    else this.left = xTemp;
+    else this.left = xTemp; //QUI VIENE BENEDETTA LA xTemp
+
+
+
+
 
     let yTemp = this.mouseClick.top - this.mouseClick.y + this.mouse.y ;
 
@@ -407,6 +444,12 @@ export class BloccoComponent implements OnInit {
       if (Math.abs(yTemp + 0.5*this.height +this.contPos.top - trequartiY) < 5*this.zoom)   yTemp = trequartiY - this.contPos.top - this.height*0.5;
     }
 
+    if (this.snapObjects) {
+      for (let i =0; i< this.arrSetY.length; i++) {
+        if (Math.abs(yTemp - this.arrSetY[i]*this.zoom) < 5*this.zoom) yTemp = this.arrSetY[i]*this.zoom;
+        if (Math.abs(yTemp + this.height - this.arrSetY[i]*this.zoom) < 5*this.zoom) yTemp = this.arrSetY[i]*this.zoom - this.height;
+      }
+    }
     if (this.griglia) { yTemp = Math.round(yTemp/10/this.zoom)*10*this.zoom}
 
     
@@ -457,7 +500,10 @@ export class BloccoComponent implements OnInit {
       w: Math.floor(this.width/this.zoom),
       h: Math.floor(this.height/this.zoom),
       color: this.blocco.color!,
-      ckTrasp: this.blocco.ckTrasp,
+      ckTraspFill: this.blocco.ckTraspFill,
+      colorBorders: this.blocco.colorBorders,
+      typeBorders: this.blocco.typeBorders,
+      thicknBorders: this.blocco.thicknBorders,
       tipoBloccoID: this.blocco.tipoBloccoID,
       borderTop: this.blocco.borderTop,
       borderRight: this.blocco.borderRight,

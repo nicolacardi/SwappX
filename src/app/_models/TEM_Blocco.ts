@@ -13,7 +13,7 @@ export interface TEM_Blocco {
         w:                                      number;
         h:                                      number;
 
-        ckTrasp?:                               boolean;
+        ckTraspFill:                            boolean;
         color?:                                 string;
 
         borderTop:                              boolean;
@@ -21,8 +21,11 @@ export interface TEM_Blocco {
         borderBottom:                           boolean;
         borderLeft:                             boolean;
 
-        //borderColor:                            string; //#RRGGBB
-        //borderType:                             string; //solid|dashed|dotted
+
+        colorBorders?:                          string; //#RRGGBB
+        typeBorders:                            string; //solid|dashed|dotted
+        thicknBorders:                          string; //sottili|spessi|enormi
+
 
         tipoBloccoID:                           number;
 
