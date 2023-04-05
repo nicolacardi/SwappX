@@ -397,7 +397,6 @@ export class BloccoComponent implements OnInit {
       //in generale per fermarsi in un punto a distanza xSet con la x+w del blocco
       //if (Math.abs(xTemp + this.width - xSet*this.zoom) < 5*this.zoom) xTemp = xSet*this.zoom - this.width;
 
-
       if (Math.abs(xTemp - 10*this.zoom) < 5*this.zoom) xTemp = 10*this.zoom; 
       if (Math.abs(xTemp + this.width - (this.pageW-10)*this.zoom) < 5*this.zoom) xTemp = (this.pageW-10)*this.zoom - this.width;
       //magnete sulla mezzeria
@@ -434,6 +433,7 @@ export class BloccoComponent implements OnInit {
 
     //magnetismo su Bordi e centro
     if (this.magnete){ 
+      
       if (Math.abs(yTemp - 10*this.zoom) < 5*this.zoom) yTemp = 10*this.zoom; 
       if (Math.abs(yTemp + this.height - (this.pageH-10)*this.zoom) < 5*this.zoom) yTemp = (this.pageH-10)*this.zoom - this.height;
       //magnete sulla mezzeria
