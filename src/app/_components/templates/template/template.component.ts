@@ -24,7 +24,12 @@ import { FilesService }                         from '../../pagelle/files.servic
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 import { rptBase }                              from 'src/app/_reports/rptBase';
+import { PdfmakeService } from '../../utilities/pdfmake/pdfmake.service';
 //#endregion
+
+
+
+
 
 
 @Component({
@@ -66,7 +71,8 @@ export class TemplateComponent implements OnInit {
 
     private _loadingService :                   LoadingService,
     private _paginator:                         PaginatorService,
-    private _jspdf:                             JspdfService
+    private _jspdf:                             JspdfService,
+    private svcPdfMake:                         PdfmakeService    
   ) 
   { }
 
@@ -164,6 +170,7 @@ export class TemplateComponent implements OnInit {
 //#endregion
 
 //#region ----- Stampa -------------------------
+
   createRptDoc() {
     //faccio una "deep copy" (object assign farebbe una shallow copy) di rptBase in rptFile e qui lavoro
     let rptFile = JSON.parse(JSON.stringify(rptBase)); 
@@ -269,6 +276,8 @@ export class TemplateComponent implements OnInit {
       
   }
 
+
+  
   openPdf(){
 
     let docID = 222;
@@ -298,4 +307,8 @@ export class TemplateComponent implements OnInit {
   }
 
 
+
+  runPdfMake() {
+    this.svcPdfMake.generatePDF();
+  }
 }

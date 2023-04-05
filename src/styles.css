@@ -1060,6 +1060,10 @@
         top: 530px;
     }
 
+    ._btn-pos-top-12 {
+        top: 575px;
+    }
+
 
     ._btn-add:hover{
         transform: scale(1.05);
