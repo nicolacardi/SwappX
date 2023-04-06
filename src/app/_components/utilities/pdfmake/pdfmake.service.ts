@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as pdfMake from "pdfmake/build/pdfmake";  
 import * as pdfFonts from "pdfmake/build/vfs_fonts";  
-
+const htmlToPdfMake = require('html-to-pdfmake');
 
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -11,6 +11,12 @@ import * as pdfFonts from "pdfmake/build/vfs_fonts";
 export class PdfmakeService {
   // https://www.ngdevelop.tech/client-side-pdf-generation-in-angular-with-pdfmake/
   constructor() { }
+
+  htmlToPdf(html: string): any {
+    const pdfMakeConfig = htmlToPdfMake(html);
+    console.log("pdfMakeConfig", pdfMakeConfig);
+    return pdfMakeConfig;
+  }
 
   generatePDF() {  
     let docDefinition = {  
@@ -29,7 +35,7 @@ export class PdfmakeService {
       //   }
       // },
       content: [
-        'test'
+        this.htmlToPdf("<div><span style='font-size: 90px'>testo<em>lina</em></span></div>")  //RENDERIZZA HTML come TESTO!!! da vedere come si comporta con quill
       ],
     
       images: {

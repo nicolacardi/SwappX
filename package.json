@@ -52,6 +52,7 @@
     "@angular-devkit/build-angular": "^15.2.0",
     "@angular/compiler-cli": "^15.2.0",
     "@types/file-saver": "^2.0.5",
+    "@types/html-to-pdfmake": "^2.4.0",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
     "@types/pdfmake": "^0.2.2",

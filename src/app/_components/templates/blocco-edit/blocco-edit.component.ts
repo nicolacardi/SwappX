@@ -140,6 +140,7 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
         typeBorders:                            [''],
         thicknBorders:                          [''],
 
+        latiAttivi:                             [],
         borderTop:                              [],
         borderRight:                            [],
         borderBottom:                           [],

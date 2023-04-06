@@ -254,20 +254,17 @@ export class PaginaComponent implements OnInit, OnChanges {
     //     });
     // }
     
-
-
   }
 
   bloccoEditedEmitted(bloccoID: number){
-    console.log ("bloccoEditedEmitted");
+    // console.log ("bloccoEditedEmitted");
     let zoomStore = this.zoom;
     this.loadData();
     this.zoom = zoomStore;
   }
 
-
   bloccoMovedEmitted(bloccoID: number){
-    console.log ("bloccoMovedEmitted");
+    // console.log ("bloccoMovedEmitted");
     //quando si muove un blocco bisogna dirlo a tutti gli altri e lanciare tutti i loro metodi setupSnapToObjects 
     this.Blocchi.forEach(blocco => blocco.setupSnapToObjects());
   }

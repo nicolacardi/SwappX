@@ -192,7 +192,7 @@ export class BloccoComponent implements OnInit {
     .subscribe(({arrSetX, arrSetY}) => {
       this.arrSetX = arrSetX;
       this.arrSetY = arrSetY;
-      console.log("blocco.component - setupSnapToObject blocco.id", this.blocco.id, "- magnete:", this.magnete, " - this.arrSetX", this.arrSetX);
+      // console.log("blocco.component - setupSnapToObject blocco.id", this.blocco.id, "- magnete:", this.magnete, " - this.arrSetX", this.arrSetX);
 
     });
   }
