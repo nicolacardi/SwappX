@@ -138,7 +138,7 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
         ckTraspFill:                            [true],
         ckNoBorders:                            [true],
         typeBorders:                            [''],
-        thicknBorders:                          [''],
+        thicknBorders:                          [],
 
         latiAttivi:                             [],
         borderTop:                              [],
@@ -232,7 +232,7 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
     //console.log("blocco-edit - save - form blocco da salvare", this.form.value);
     if (this.tipoBloccoDesc == "Text") {     //********* caso blocco di Testo *******************
       let testoObj! : TEM_BloccoTesto;
-
+      console.log("this.form.value", this.form.value);
       testoObj = {
         bloccoID: this.bloccoID,
         testo: this.form.controls.testo.value? this.form.controls.testo.value: '',
@@ -519,6 +519,11 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
 
   bordersTypeChange (event: any){
     this.form.controls.bordersType.setValue(event.source.value)
+  }
+
+  thicknBordersChange (event: any) {
+    //this.form.controls.thicknBorders.setValue(+this.form.controls.thicknBorders.setValue);
+
   }
 
 //#endregion

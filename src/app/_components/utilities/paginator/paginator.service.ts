@@ -31,10 +31,10 @@ export class PaginatorService {
   paginatorBuild(rptFile: any, blocco: any, objFields: any): any {
     //Paginator deve anche aggiungere il salto pagina
     //questo se riceve un blocco di tipo Page ma anche se in fase di paginazione (quindi in solo caso Tabella) si è raggiunta la fine della pagina
-    console.log ("PaginatorBuild - ricevuto blocco", blocco);
+    //console.log ("PaginatorBuild - ricevuto blocco", blocco);
     
     if (blocco.tipoBlocco!.descrizione=="Page") {
-      console.log ("Page - salto pagina");
+      //console.log ("Page - salto pagina");
       rptFile.push({
         "tipo": "Page"
       });
@@ -44,15 +44,22 @@ export class PaginatorService {
       // console.log ("blocco._BloccoTesti![0].testo", blocco._BloccoTesti![0].testo);
       let cleanText = this.replacer(blocco._BloccoTesti![0].testo, objFields);
       rptFile.push({
-        "tipo": "TextHtml",
-        "alias": "...",
-        "value": cleanText,
-        "X": blocco.x,
-        "Y": blocco.y,
-        "W": blocco.w,
-        "H": blocco.h,
-        "backgroundColor": blocco.color,
-        "fontSize": blocco._BloccoTesti![0].fontSize
+        tipo: "TextHtml",
+        alias: "...",
+        value: cleanText,
+        X: blocco.x,
+        Y: blocco.y,
+        W: blocco.w,
+        H: blocco.h,
+        borderTop: blocco.borderTop,
+        borderRight: blocco.borderRight,
+        borderBottom: blocco.borderBottom,
+        borderLeft: blocco.borderLeft,
+        backgroundColor: blocco.color,
+        colorBorders: blocco.colorBorders,
+        thicknBorders: blocco.thicknBorders,
+        typeBorders: blocco.typeBorders,
+        fontSize: blocco._BloccoTesti![0].fontSize
       });
     }
 
@@ -66,6 +73,8 @@ export class PaginatorService {
         "Y": blocco.y,
         "W": blocco.w,
         "H": blocco.h,
+        "imgW": blocco._BloccoFoto![0].w,
+        "imgH": blocco._BloccoFoto![0].h,
         "backgroundColor": blocco.color,
         // "fontSize": blocchi[i]._BloccoTesti![0].fontSize
       });
@@ -87,7 +96,7 @@ export class PaginatorService {
       let colVisitate = new Array(maxCol).fill(false);
       let rowVisitate = new Array(maxRow).fill(false);
 
-      console.log ("paginator - paginatorBuild - blocco",blocco);
+      //console.log ("paginator - paginatorBuild - blocco",blocco);
       let widthCumVal = 0;
       let heightCumVal = 0;
 

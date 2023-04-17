@@ -111,6 +111,7 @@ export class JspdfService { defaultColor!:          string;
         //   break;
         // }
         case "TextHtml":{
+          
           await this.addTextHtml(doc,element.value,element.X,element.Y,element.W, element.H, "", "normal", "",0, 0, element.backgroundColor );
           break;
         }

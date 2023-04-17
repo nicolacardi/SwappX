@@ -10,10 +10,10 @@
     [style.background-color] = "blocco.ckTraspFill? 'transparent': blocco.color"
     
     [ngStyle]="{
-        'border-top': blocco.borderTop? blocco.typeBorders + ' ' + spessore*zoom + 'px ' + blocco.colorBorders:'none', 
-        'border-right': blocco.borderRight? blocco.typeBorders + ' ' +spessore*zoom + 'px ' + blocco.colorBorders:'none', 
-        'border-bottom': blocco.borderBottom? blocco.typeBorders + ' ' +spessore*zoom + 'px ' + blocco.colorBorders:'none', 
-        'border-left': blocco.borderLeft? blocco.typeBorders + ' ' +spessore*zoom + 'px ' + blocco.colorBorders:'none'}"
+        'border-top': blocco.borderTop? blocco.typeBorders + ' ' + thicknBorders*zoom + 'px ' + blocco.colorBorders:'none', 
+        'border-right': blocco.borderRight? blocco.typeBorders + ' ' +thicknBorders*zoom + 'px ' + blocco.colorBorders:'none', 
+        'border-bottom': blocco.borderBottom? blocco.typeBorders + ' ' +thicknBorders*zoom + 'px ' + blocco.colorBorders:'none', 
+        'border-left': blocco.borderLeft? blocco.typeBorders + ' ' +thicknBorders*zoom + 'px ' + blocco.colorBorders:'none'}"
 
     [style.transform]="'translate3d('+ left + 'px,' + top + 'px,' + '0px)'"
     [class.active]="status === 1 || status === 2"

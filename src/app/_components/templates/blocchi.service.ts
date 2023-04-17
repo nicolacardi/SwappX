@@ -27,17 +27,31 @@ export class BlocchiService {
   }
 
   listByTemplate (TemplateID: any){
-    return this.http.get<TEM_Blocco[]>(environment.apiBaseUrl+'TEM_Blocchi/listByTemplate/'+TemplateID)
-    .pipe(
-      map((temPaginas: TEM_Blocco[]) => {
-        return temPaginas.sort((a, b) => {
-          if (a.paginaID < b.paginaID) return -1;
-          if (a.paginaID > b.paginaID) return 1;
-          return 0;
-        });
-      })
-    );  
+    return this.http.get<TEM_Blocco[]>(environment.apiBaseUrl+'TEM_Blocchi/listByTemplate/'+TemplateID);
+    // .pipe( //avevo usato questo pipe per ordinare per pagina in quanto non potevo accedere al server e scrivere order by paginaID, ora dovrebbe essere ok
+    //   map((temPaginas: TEM_Blocco[]) => {
+    //     return temPaginas.sort((a, b) => {
+    //       if (a.paginaID < b.paginaID) return -1;
+    //       if (a.paginaID > b.paginaID) return 1;
+    //       return 0;
+    //     });
+    //   })
+    // );  
     //http://213.215.231.4/swappX/api/TEM_Blocchi/listByTemplate/1
+  }
+
+  listByTemplateZA (TemplateID: any){
+    return this.http.get<TEM_Blocco[]>(environment.apiBaseUrl+'TEM_Blocchi/listByTemplateZA/'+TemplateID);
+    // .pipe(
+    //   map((temPaginas: TEM_Blocco[]) => {
+    //     return temPaginas.sort((a, b) => {
+    //       if (a.paginaID < b.paginaID) return -1;
+    //       if (a.paginaID > b.paginaID) return 1;
+    //       return 0;
+    //     });
+    //   })
+    // );  
+    //http://213.215.231.4/swappX/api/TEM_Blocchi/listByTemplateZA/1
   }
 
   get(BloccoID: any): Observable<TEM_Blocco>{

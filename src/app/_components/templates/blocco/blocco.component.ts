@@ -56,8 +56,8 @@ export class BloccoComponent implements OnInit {
   private oldZoom:                              number = 1;
   public zoomratio:                             number =1 ;
   public objFormatoPagina!:                     any;
-  public classTipo!:                             string;
-  public spessore!:                             number;
+  public classTipo!:                            string;
+  public thicknBorders!:                        number;
 
   // public verticiAltriBlocchi: { x: number, y: number }[] = [];
   public arrSetX:                               number[] = [];
@@ -151,11 +151,12 @@ export class BloccoComponent implements OnInit {
       case 'A3H': this.setPageProperties(Object.assign({}, A3H)); break;
     }
 
-    switch(this.blocco.thicknBorders) {
-      case 'sottili': this.spessore = 0.5; break;
-      case 'spessi': this.spessore = 1; break;
-      case 'enormi': this.spessore = 3; break;
-    }
+    // switch(this.blocco.thicknBorders) {
+    //   case 'sottili': this.spessore = 0.5; break;
+    //   case 'spessi': this.spessore = 1; break;
+    //   case 'enormi': this.spessore = 3; break;
+    // }
+    this.thicknBorders = this.blocco.thicknBorders;
 
 
 

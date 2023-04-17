@@ -24,7 +24,7 @@ export interface TEM_Blocco {
 
         colorBorders?:                          string; //#RRGGBB
         typeBorders:                            string; //solid|dashed|dotted
-        thicknBorders:                          string; //sottili|spessi|enormi
+        thicknBorders:                          number; //sottili|spessi|enormi
 
 
         tipoBloccoID:                           number;

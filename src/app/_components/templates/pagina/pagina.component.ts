@@ -55,8 +55,8 @@ export class PaginaComponent implements OnInit, OnChanges {
   defaultBloccoFoto: TEM_BloccoFoto = {
     bloccoID: 0,
     foto: immaginebase,
-    w: 0,
-    h: 0
+    w: 500,
+    h: 140
   }
 
   pageW!:                                       number;
@@ -172,7 +172,7 @@ export class PaginaComponent implements OnInit, OnChanges {
           h:                                    50,
           ckTraspFill:                          true,
           typeBorders:                          "solid", 
-          thicknBorders:                         "sottili",
+          thicknBorders:                        0.5,
           tipoBloccoID:                         tipoBloccoID,
           borderTop:                            false,
           borderRight:                          false,

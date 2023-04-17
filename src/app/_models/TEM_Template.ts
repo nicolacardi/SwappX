@@ -3,7 +3,7 @@ export interface TEM_Template {
 
         tipoTemplateID:                         number;
         descrizione:                            string;
-        // formatoPagina:                          string; //  A4V|A4H|A3V|A3H
+        formatoPagina:                          string; //  A4V|A4H|A3V|A3H
 
 }
 
