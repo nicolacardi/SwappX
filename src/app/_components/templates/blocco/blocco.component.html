@@ -1,8 +1,10 @@
 <!-- style trasform funziona quando si ridimensiona -->
 <!-- mousedown all'interno del div trasforma lo status in 2 (MOVE) -->
 <!-- mouseup fuori dal div resetta a 0 lo status -->
-
+<!-- thicknBorders lo divido per 2 in quanto come sta viene rappresentato troppo spesso rispetto a quanto poi si vede nella stampa  -->
+<!-- box-sizing: border-box serve a far finire il bordo "dentro" al box e non fuori -->
 <div 
+    style="box-sizing: border-box"
     #box class="resizable-draggable" 
     [style.width.px]="width"
     [style.height.px]="height"
@@ -10,10 +12,10 @@
     [style.background-color] = "blocco.ckTraspFill? 'transparent': blocco.color"
     
     [ngStyle]="{
-        'border-top': blocco.borderTop? blocco.typeBorders + ' ' + thicknBorders*zoom + 'px ' + blocco.colorBorders:'none', 
-        'border-right': blocco.borderRight? blocco.typeBorders + ' ' +thicknBorders*zoom + 'px ' + blocco.colorBorders:'none', 
-        'border-bottom': blocco.borderBottom? blocco.typeBorders + ' ' +thicknBorders*zoom + 'px ' + blocco.colorBorders:'none', 
-        'border-left': blocco.borderLeft? blocco.typeBorders + ' ' +thicknBorders*zoom + 'px ' + blocco.colorBorders:'none'}"
+        'border-top': blocco.borderTop? blocco.typeBorders + ' ' + thicknBorders/2*zoom + 'px ' + blocco.colorBorders:'none', 
+        'border-right': blocco.borderRight? blocco.typeBorders + ' ' +thicknBorders/2*zoom + 'px ' + blocco.colorBorders:'none', 
+        'border-bottom': blocco.borderBottom? blocco.typeBorders + ' ' +thicknBorders/2*zoom + 'px ' + blocco.colorBorders:'none', 
+        'border-left': blocco.borderLeft? blocco.typeBorders + ' ' +thicknBorders/2*zoom + 'px ' + blocco.colorBorders:'none'}"
 
     [style.transform]="'translate3d('+ left + 'px,' + top + 'px,' + '0px)'"
     [class.active]="status === 1 || status === 2"
@@ -27,14 +29,15 @@
 
     <!--La dimensione del font va adattata al livello di zoom...c'è però un fattore di adattamento ulteriore...perchè cambiando zoom cambiano gli a capo-->
     <!-- style="word-break: break-all; " -->
-    <!-- [style.font-size]="zoom/4+'em'"  una alternativa: il 4 dà una proporzione "simile" a una pagina word-->
+    <!-- [style.font-size]="zoom/4+'em'"  una alternativa: il 4 dà una proporzione "simile" a una pagina word...poi ho messo 2,65 poi 3-->
+    <!-- [style.padding]="3*zoom+'px !important'" ?-->
 
         <!-- [style.transform]= "'scale('+zoom+')'" -->
     <div class="blocco ql-container ql-snow" style="border-width: 0;" *ngIf="blocco.tipoBlocco!.descrizione == 'Text'">
         <div class="ql-editor"  
             style="word-break: normal; max-height: 100%; max-width: 100%;"
-            [style.font-size.px]="fontSizeN/2.65*zoom"
-            [style.padding]="3*zoom+'px !important'"
+            [style.font-size.px]="fontSizeN/3.5*zoom"
+            [style.padding]="2*zoom+'px !important'"
             [innerHTML] ="blocco._BloccoTesti? blocco._BloccoTesti[0].testo: ''"
             >
         </div>

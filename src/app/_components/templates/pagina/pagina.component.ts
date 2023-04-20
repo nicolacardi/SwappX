@@ -172,7 +172,7 @@ export class PaginaComponent implements OnInit, OnChanges {
           h:                                    50,
           ckTraspFill:                          true,
           typeBorders:                          "solid", 
-          thicknBorders:                        0.5,
+          thicknBorders:                        1,
           tipoBloccoID:                         tipoBloccoID,
           borderTop:                            false,
           borderRight:                          false,

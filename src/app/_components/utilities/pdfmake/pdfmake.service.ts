@@ -1,18 +1,29 @@
 import { Injectable } from '@angular/core';
-import * as pdfMake from "pdfmake/build/pdfmake";  
-import * as pdfFonts from "pdfmake/build/vfs_fonts";  
+
+const pdfMake = require('pdfmake/build/pdfmake.js');
+const pdfFonts = require("pdfmake/build/vfs_fonts");
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+
+
+//import * as pdfMake from "pdfmake/build/pdfmake";  
+//import * as pdfFonts from "pdfmake/build/vfs_fonts";  
+
 //import * as customFonts from "pdfmake/custom_fonts";  //NON FUNZIONA
 
 const htmlToPdfMake = require('html-to-pdfmake');
 
-(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+//(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 const f = 2.83464567;
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class PdfmakeService {
   // https://www.ngdevelop.tech/client-side-pdf-generation-in-angular-with-pdfmake/
+  //https://stackoverflow.com/questions/50576746/import-pdfmake-js-file-to-my-ts-file/56535907#56535907
   constructor() { }
 
   generatePDF(rptFile: any) {
@@ -25,14 +36,20 @@ export class PdfmakeService {
     const pageWidth = sheetDefaultObj.width * f;
     const pageHeight = sheetDefaultObj.height * f;
 
-   
+    // pdfMake.fonts = {
+    //   TitilliumWeb: {
+    //     normal: 'TitilliumWeb-Regular.ttf',
+    //     bold: 'TitilliumWeb-Bold.ttf',
+    //     italics: 'TitilliumWeb-Italic.ttf',
+    //     bolditalics: 'TitilliumWeb-BoldItalic.ttf'
+    //   }
+    // } 
     let content = [];
 
     for (let i = 0; i < rptFile.length; i++) {
       if (rptFile[i].tipo == "TextHtml"){
-        let thick = rptFile[i].thicknBorders;   //incredibilmente se passo nella funzione hLineWidth rptFile[i].thickBorders non funziona
-        let typeBorders = rptFile[i].typeBorders;   //incredibilmente se passo nella funzione hLineWidth rptFile[i].thickBorders non funziona
-
+        let thick = rptFile[i].thicknBorders;   
+        let typeBorders = rptFile[i].typeBorders;
 
         let obj = {
           absolutePosition: { x: rptFile[i].X*f, y: rptFile[i].Y*f },
@@ -41,22 +58,19 @@ export class PdfmakeService {
             widths: [rptFile[i].W*f -10],
             heights: [rptFile[i].H*f -10],
             body: [[{
-              text: rptFile[i].value,
+              text: htmlToPdfMake(rptFile[i].value),
               fillColor: rptFile[i].backgroundColor,
               border: [rptFile[i].borderLeft, rptFile[i].borderTop, rptFile[i].borderRight, rptFile[i].borderBottom ],
-              borderColor: [rptFile[i].colorBorders,rptFile[i].colorBorders,rptFile[i].colorBorders,rptFile[i].colorBorders], // imposta il bordo della cella
-              //borderWidth: [10,10,10,10], // imposta il bordo della cella
-
+              borderColor: [rptFile[i].colorBorders,rptFile[i].colorBorders,rptFile[i].colorBorders,rptFile[i].colorBorders],
               fontSize: rptFile[i].fontSize,
-              //style: 'cellStyle'
             }]]
           },
           layout: { 
             hLineWidth: function (i:any, node:any) { return (i === 0 || i === node.table.body.length) ? thick: 0;  },
             vLineWidth: function (i:any, node:any) { return (i === 0 || i === node.table.widths.length) ? thick: 0; },
-            hLineStyle: function (i:any, node:any) { return (typeBorders == "dashed") ? {dash: {length: 10, space: 4}} : (typeBorders == "dotted")? {dash: {length: 2, space: 2}} : null; },
-            vLineStyle: function (i:any, node:any) { return (typeBorders == "dashed") ? {dash: {length: 10, space: 4}} : (typeBorders == "dotted")? {dash: {length: 2, space: 2}} : null; },
-
+            hLineStyle: function (i:any) { return (typeBorders == "dashed") ? {dash: {length: 10, space: 4}} : (typeBorders == "dotted")? {dash: {length: 2, space: 2}} : null; },
+            vLineStyle: function (i:any) { return (typeBorders == "dashed") ? {dash: {length: 10, space: 4}} : (typeBorders == "dotted")? {dash: {length: 2, space: 2}} : null; },
+            //imposto i 4 padding a 5 pt
             paddingTop: function(i:any, node:any) { return 5; },
             paddingBottom: function(i:any, node:any) { return 5; },
             paddingLeft: function(i:any, node:any) { return 5; },
@@ -119,6 +133,9 @@ export class PdfmakeService {
       //     borderWidth: [10,0,0,1]
       //   }
       // }
+      // defaultStyle: {
+      //   font: 'TitilliumWeb'
+      // },
     }
 
     console.log ("docDefinition", docDefinition);
