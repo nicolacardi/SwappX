@@ -374,6 +374,8 @@ export class TemplateComponent implements OnInit {
       }
       console.log ("template.component - createPdfMakeDoc rptFile", rptFile);
       this.svcPdfMake.generatePDF(rptFile);
+      //this.svcPdfMake.testFn();
+
     })
   }
 

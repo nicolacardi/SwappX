@@ -1,19 +1,13 @@
 import { Injectable } from '@angular/core';
 
 const pdfMake = require('pdfmake/build/pdfmake.js');
-const pdfFonts = require("pdfmake/build/vfs_fonts");
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
-
 
 //import * as pdfMake from "pdfmake/build/pdfmake";  
 //import * as pdfFonts from "pdfmake/build/vfs_fonts";  
-
-//import * as customFonts from "pdfmake/custom_fonts";  //NON FUNZIONA
+//import * as customFonts from "pdfmake/custom_fonts";
+//(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 const htmlToPdfMake = require('html-to-pdfmake');
-
-//(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 const f = 2.83464567;
 
@@ -23,10 +17,34 @@ const f = 2.83464567;
 })
 export class PdfmakeService {
   // https://www.ngdevelop.tech/client-side-pdf-generation-in-angular-with-pdfmake/
-  //https://stackoverflow.com/questions/50576746/import-pdfmake-js-file-to-my-ts-file/56535907#56535907
-  constructor() { }
+  // https://stackoverflow.com/questions/50576746/import-pdfmake-js-file-to-my-ts-file/56535907#56535907
+  constructor() {
 
+
+   }
+
+  testFn() {
+    //const pdfMake = require('pdfmake/build/pdfmake.js');
+    const pdfFonts = require("pdfmake/build/vfs_fonts"); //vado a pescare il file vts_fonts.js che contiene tutte le codifiche dei font che voglio inserire e le assegno a pdfFonts
+
+    //pdfMake.vfs = pdfFonts.pdfMake.vfs; //del file pdfFonts pesco pdfMake.vfs
+    console.log("Fonts available in pdfMake:", pdfFonts.pdfMake.vfs); //MA PERCHE'BUTTA FUORI ROBOTO CHE NON C'E' IN VFS_FONTS?????????
+    //console.log("Fonts available in pdfMake:", pdfFonts.fonts); //MA PERCHE'BUTTA FUORI ROBOTO CHE NON C'E' IN VFS_FONTS?????????
+
+  }
+  
   generatePDF(rptFile: any) {
+
+   
+    // pdfMake.fonts = {
+    //   TitilliumWeb: {
+    //     normal: 'TitilliumWeb-Regular.ttf',
+    //     bold: 'TitilliumWeb-Bold.ttf',
+    //     italics: 'TitilliumWeb-Italic.ttf',
+    //     bolditalics: 'TitilliumWeb-BoldItalic.ttf'
+    //   }
+    // };
+
 
     console.log ("pdfMake Service - rptFile ricevuto da Template component dopo paginatorBuild", rptFile);
 
@@ -36,14 +54,9 @@ export class PdfmakeService {
     const pageWidth = sheetDefaultObj.width * f;
     const pageHeight = sheetDefaultObj.height * f;
 
-    // pdfMake.fonts = {
-    //   TitilliumWeb: {
-    //     normal: 'TitilliumWeb-Regular.ttf',
-    //     bold: 'TitilliumWeb-Bold.ttf',
-    //     italics: 'TitilliumWeb-Italic.ttf',
-    //     bolditalics: 'TitilliumWeb-BoldItalic.ttf'
-    //   }
-    // } 
+
+
+
     let content = [];
 
     for (let i = 0; i < rptFile.length; i++) {
@@ -123,27 +136,34 @@ export class PdfmakeService {
 
 
 
-
+;
     let docDefinition = {
       pageOrientation: pageOrientation,
       pageSize: {width: pageWidth, height: pageHeight},
       content: content,
+      // styles: {
+      //   tableStyle: {
+      //     font: 'TitilliumWeb'
+      //   }
+      // }
       // style: {
       //   cellStyle: {
       //     borderWidth: [10,0,0,1]
       //   }
       // }
+
       // defaultStyle: {
       //   font: 'TitilliumWeb'
-      // },
+      // }
     }
 
     console.log ("docDefinition", docDefinition);
 
 
 
-
     pdfMake.createPdf(docDefinition).download();
+
+    //pdfMake.createPdf(docDefinition,fonts).download();
 
   }
 
