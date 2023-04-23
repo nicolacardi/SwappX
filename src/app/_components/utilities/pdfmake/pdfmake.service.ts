@@ -1,11 +1,23 @@
 import { Injectable } from '@angular/core';
 
-const pdfMake = require('pdfmake/build/pdfmake.js');
 
-//import * as pdfMake from "pdfmake/build/pdfmake";  
-//import * as pdfFonts from "pdfmake/build/vfs_fonts";  
-//import * as customFonts from "pdfmake/custom_fonts";
-//(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+// In alternativa a 
+// import * as pdfMake from "pdfmake/build/pdfmake";
+// import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+// (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+
+const pdfMake = require('pdfmake/build/pdfmake.js');
+const pdfFonts = require("pdfmake/build/vfs_fonts.js");
+
+console.log("XXX pdfFonts.pdfMake.vfs:", pdfFonts.pdfMake.vfs); //MA PERCHE' CAZZO BUTTA FUORI ROBOTO CHE NON C'E' IN VFS_FONTS?????????
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs; //del file pdfFonts pesco pdfMake.vfs
+//questa sembra accettare pdfMake.fonts che però poi non funziona
+
+// import * as pdfMake from "pdfmake/build/pdfmake";
+// import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+// (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+
 
 const htmlToPdfMake = require('html-to-pdfmake');
 
@@ -24,24 +36,46 @@ export class PdfmakeService {
    }
 
   testFn() {
-    //const pdfMake = require('pdfmake/build/pdfmake.js');
-    const pdfFonts = require("pdfmake/build/vfs_fonts"); //vado a pescare il file vts_fonts.js che contiene tutte le codifiche dei font che voglio inserire e le assegno a pdfFonts
 
+
+    console.log ("testFn");
+
+    // const pdfFonts = require("pdfmake/build/vfs_TitilliumWeb"); //vado a pescare il file vts_fonts.js che contiene tutte le codifiche dei font che voglio inserire e le assegno a pdfFonts
     //pdfMake.vfs = pdfFonts.pdfMake.vfs; //del file pdfFonts pesco pdfMake.vfs
-    console.log("Fonts available in pdfMake:", pdfFonts.pdfMake.vfs); //MA PERCHE'BUTTA FUORI ROBOTO CHE NON C'E' IN VFS_FONTS?????????
-    //console.log("Fonts available in pdfMake:", pdfFonts.fonts); //MA PERCHE'BUTTA FUORI ROBOTO CHE NON C'E' IN VFS_FONTS?????????
+    console.log("pdfFonts.pdfMake.vfs:", pdfFonts.pdfMake.vfs); //MA PERCHE'BUTTA FUORI ROBOTO CHE NON C'E' IN VFS_FONTS?????????
+    pdfMake.fonts = {
+      TitilliumWeb: {
+        normal: 'TitilliumWeb-Regular.ttf',
+        bold: 'TitilliumWeb-Bold.ttf',
+        italics: 'TitilliumWeb-Italic.ttf',
+        bolditalics: 'TitilliumWeb-BoldItalic.ttf'
+      }
+    };
+    console.log("pdfMake.fonts:", pdfMake.fonts); //MA PERCHE'BUTTA FUORI ROBOTO CHE NON C'E' IN VFS_FONTS?????????
 
   }
   
   generatePDF(rptFile: any) {
 
    
+
+    pdfMake.fonts = {
+      TitilliumWeb: {
+        normal: 'TitilliumWeb-Regular.ttf',
+        bold: 'TitilliumWeb-Bold.ttf',
+        italics: 'TitilliumWeb-Italic.ttf',
+        bolditalics: 'TitilliumWeb-BoldItalic.ttf'
+      }
+    };
+    
+
+
     // pdfMake.fonts = {
-    //   TitilliumWeb: {
-    //     normal: 'TitilliumWeb-Regular.ttf',
-    //     bold: 'TitilliumWeb-Bold.ttf',
-    //     italics: 'TitilliumWeb-Italic.ttf',
-    //     bolditalics: 'TitilliumWeb-BoldItalic.ttf'
+    //   Roboto: {
+    //     normal: 'Roboto-Regular.ttf',
+    //     bold: 'Roboto-Medium.ttf',
+    //     italics: 'Roboto-Italic.ttf',
+    //     bolditalics: 'Roboto-MediumItalic.ttf'
     //   }
     // };
 
@@ -132,11 +166,9 @@ export class PdfmakeService {
 
         content.push(obj);
       }
-    }
+    };
 
 
-
-;
     let docDefinition = {
       pageOrientation: pageOrientation,
       pageSize: {width: pageWidth, height: pageHeight},
@@ -152,14 +184,12 @@ export class PdfmakeService {
       //   }
       // }
 
-      // defaultStyle: {
-      //   font: 'TitilliumWeb'
-      // }
+      defaultStyle: {
+        font: 'TitilliumWeb'
+      }
     }
 
     console.log ("docDefinition", docDefinition);
-
-
 
     pdfMake.createPdf(docDefinition).download();
 
