@@ -29,10 +29,6 @@ import { PdfmakeService }                       from '../../utilities/pdfmake/pd
 //#endregion
 
 
-
-
-
-
 @Component({
   selector: 'app-template',
   templateUrl: './template.component.html',
@@ -372,10 +368,8 @@ export class TemplateComponent implements OnInit {
         rptFile = this._paginator.paginatorBuild(rptFile, blocchi[i], this.objFields);
         currPaginaID = blocchi[i].paginaID;
       }
-      console.log ("template.component - createPdfMakeDoc rptFile", rptFile);
+      //console.log ("template.component - createPdfMakeDoc rptFile", rptFile);
       this.svcPdfMake.generatePDF(rptFile);
-      //this.svcPdfMake.testFn();
-
     })
   }
 

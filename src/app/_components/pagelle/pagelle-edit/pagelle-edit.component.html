@@ -5,10 +5,12 @@
         <img class="iconaMenu" src="./assets/pubblica.svg">
     </button>
        
-    <button  mat-mini-fab aria-label="Stampa Pagella" matTooltip="Scarica Pagella" class="_btn-add _btn-pos-left-40" (click)="openPdfPagella()">
+    <!-- <button  mat-mini-fab aria-label="Stampa Pagella" matTooltip="Scarica Pagella" class="_btn-add _btn-pos-left-40" (click)="openPdfPagella()">
+        <mat-icon>file_download</mat-icon>
+    </button> -->
+    <button  mat-mini-fab aria-label="Stampa Pagella" matTooltip="Scarica Pagella" class="_btn-add _btn-pos-left-40" (click)="openXML()">
         <mat-icon>file_download</mat-icon>
     </button>
-
 
     <span class="fs16">
         <mat-button-toggle-group name="quadrimestre" value="1" (change)="quadClick($event)" #toggleQuad>

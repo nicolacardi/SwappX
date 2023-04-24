@@ -22,6 +22,7 @@ import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
 import { DOC_File } from 'src/app/_models/DOC_File';
 import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { OpenXMLService } from '../../utilities/openXML/open-xml.service';
 
 //#endregion
 @Component({
@@ -61,6 +62,7 @@ export class PagellaEditComponent implements OnInit {
     private svcPagelle:               PagelleService,
     private svcPagellaVoti:           PagellaVotiService,
     private svcFiles:                 FilesService,
+    private svcOpenXML:               OpenXMLService,
     private _loadingService:          LoadingService,
     private _snackBar:                MatSnackBar ,
     private _jspdf:                   JspdfService
@@ -124,6 +126,10 @@ export class PagellaEditComponent implements OnInit {
     }
   }
 
+  openXML() {
+    this.svcOpenXML.downloadFile();
+  }
+  
   openPdfPagella(){
 
     if(this.objPagella == null || this.objPagella.id! <0) {

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-
 // In alternativa a 
 // import * as pdfMake from "pdfmake/build/pdfmake";
 // import * as pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -9,14 +8,8 @@ import { Injectable } from '@angular/core';
 const pdfMake = require('pdfmake/build/pdfmake.js');
 const pdfFonts = require("pdfmake/build/vfs_fonts.js");
 
-console.log("XXX pdfFonts.pdfMake.vfs:", pdfFonts.pdfMake.vfs); //MA PERCHE' CAZZO BUTTA FUORI ROBOTO CHE NON C'E' IN VFS_FONTS?????????
-
+//console.log("XXX pdfFonts.pdfMake.vfs:", pdfFonts.pdfMake.vfs); //MA PERCHE' CAZZO BUTTA FUORI ROBOTO CHE NON C'E' IN VFS_FONTS?????????
 pdfMake.vfs = pdfFonts.pdfMake.vfs; //del file pdfFonts pesco pdfMake.vfs
-//questa sembra accettare pdfMake.fonts che però poi non funziona
-
-// import * as pdfMake from "pdfmake/build/pdfmake";
-// import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-// (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 
 const htmlToPdfMake = require('html-to-pdfmake');
@@ -30,66 +23,28 @@ const f = 2.83464567;
 export class PdfmakeService {
   // https://www.ngdevelop.tech/client-side-pdf-generation-in-angular-with-pdfmake/
   // https://stackoverflow.com/questions/50576746/import-pdfmake-js-file-to-my-ts-file/56535907#56535907
-  constructor() {
+  constructor() {}
 
 
-   }
-
-  testFn() {
-
-
-    console.log ("testFn");
-
-    // const pdfFonts = require("pdfmake/build/vfs_TitilliumWeb"); //vado a pescare il file vts_fonts.js che contiene tutte le codifiche dei font che voglio inserire e le assegno a pdfFonts
-    //pdfMake.vfs = pdfFonts.pdfMake.vfs; //del file pdfFonts pesco pdfMake.vfs
-    console.log("pdfFonts.pdfMake.vfs:", pdfFonts.pdfMake.vfs); //MA PERCHE'BUTTA FUORI ROBOTO CHE NON C'E' IN VFS_FONTS?????????
-    pdfMake.fonts = {
-      TitilliumWeb: {
-        normal: 'TitilliumWeb-Regular.ttf',
-        bold: 'TitilliumWeb-Bold.ttf',
-        italics: 'TitilliumWeb-Italic.ttf',
-        bolditalics: 'TitilliumWeb-BoldItalic.ttf'
-      }
-    };
-    console.log("pdfMake.fonts:", pdfMake.fonts); //MA PERCHE'BUTTA FUORI ROBOTO CHE NON C'E' IN VFS_FONTS?????????
-
-  }
   
   generatePDF(rptFile: any) {
 
-   
-
-    pdfMake.fonts = {
-      TitilliumWeb: {
-        normal: 'TitilliumWeb-Regular.ttf',
-        bold: 'TitilliumWeb-Bold.ttf',
-        italics: 'TitilliumWeb-Italic.ttf',
-        bolditalics: 'TitilliumWeb-BoldItalic.ttf'
-      }
-    };
-    
-
-
     // pdfMake.fonts = {
-    //   Roboto: {
-    //     normal: 'Roboto-Regular.ttf',
-    //     bold: 'Roboto-Medium.ttf',
-    //     italics: 'Roboto-Italic.ttf',
-    //     bolditalics: 'Roboto-MediumItalic.ttf'
+    //   TitilliumWeb: {
+    //     normal: 'TitilliumWeb-Regular.ttf',
+    //     bold: 'TitilliumWeb-Bold.ttf',
+    //     italics: 'TitilliumWeb-Italic.ttf',
+    //     bolditalics: 'TitilliumWeb-BoldItalic.ttf'
     //   }
     // };
 
-
-    console.log ("pdfMake Service - rptFile ricevuto da Template component dopo paginatorBuild", rptFile);
+    //console.log ("pdfMake Service - rptFile ricevuto da Template component dopo paginatorBuild", rptFile);
 
     //l'item di tipo SheetDefault contiene le impostazioni della pagina
     const sheetDefaultObj = rptFile.find((item:any) => item.tipo === "SheetDefault");
     const pageOrientation = sheetDefaultObj.pageOrientation;
     const pageWidth = sheetDefaultObj.width * f;
     const pageHeight = sheetDefaultObj.height * f;
-
-
-
 
     let content = [];
 
@@ -184,16 +139,12 @@ export class PdfmakeService {
       //   }
       // }
 
-      defaultStyle: {
-        font: 'TitilliumWeb'
-      }
+      // defaultStyle: {
+      //   font: 'TitilliumWeb'
+      // }
     }
-
-    console.log ("docDefinition", docDefinition);
-
+    //console.log ("docDefinition", docDefinition);
     pdfMake.createPdf(docDefinition).download();
-
-    //pdfMake.createPdf(docDefinition,fonts).download();
 
   }
 

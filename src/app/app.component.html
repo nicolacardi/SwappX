@@ -179,11 +179,12 @@
                 <span *ngIf="isExpanded">Verbali</span>
             </a>
 
-            <a mat-list-item class="h35px" routerLink="template" (click)="clickMenuItem()">
+            <!-- <a mat-list-item class="h35px" routerLink="template" (click)="clickMenuItem()">
                 <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/template.svg">
                 <span *ngIf="isExpanded">Template</span>
-            </a>
+            </a> -->
 
+            
 
 
             <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.TipoPersona!.ckPersonale == true">
