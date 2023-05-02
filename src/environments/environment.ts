@@ -2,11 +2,115 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+
 export const environment = {
   //production: false,  apiBaseUrl: "http://213.215.231.4/SwappX/api/"
   production: false,  
   apiBaseUrl: "http://213.215.231.4/SwappX/api/"
 };
+
+export const tagDocument = {
+  TemplateName: "PagellaElementari",
+  TagFields:
+  [
+    { TagName: "AnnoScolastico", TagValue: "2022-23"},
+    { TagName: "ComuneNascita", TagValue: "Mestrino"},
+    { TagName: "ProvNascita", TagValue: "PD"},
+    { TagName: "DtNascita", TagValue: "30/04/1971"},
+    { TagName: "Alunno" , TagValue: "Marietto"}
+  ],
+  TagTables:
+  [
+    {
+      TagTableTitle: "TblVoti",
+      TagTableRows:
+      [
+        {
+          TagFields: 
+          [
+            { TagName: "Materia", TagValue: "Italiano"},
+            { TagName: "Giudizio", TagValue: " Mona "},
+          ]
+        },
+        {
+          TagFields: 
+          [
+            { TagName: "Materia", TagValue: "Matematica"},
+            { TagName: "Giudizio", TagValue: " Chi "},
+          ]
+        },
+        {
+          TagFields: 
+          [
+            { TagName: "Materia", TagValue: "Storia"},
+            { TagName: "Giudizio", TagValue: " legge "},
+          ]
+        },
+        {
+          TagFields: 
+          [
+            { TagName: "Materia", TagValue: "Scienze"},
+            { TagName: "Giudizio", TagValue: "...e chi ha orecchie "},
+          ]
+        },
+        {
+          TagFields: 
+          [
+            { TagName: "Materia", TagValue: "Ginnastica"},
+            { TagName: "Giudizio", TagValue: " per intendere "},
+          ]
+        },
+        {
+          TagFields: 
+          [
+            { TagName: "Materia", TagValue: "Orticoltura"},
+            { TagName: "Giudizio", TagValue: " IN TENDA "},
+          ]
+        }
+      ]
+    },
+
+
+
+    {
+      TagTableTitle: "TblAlunni",
+      TagTableRows:
+      [
+        {
+          TagFields: 
+          [
+            { TagName: "Nome", TagValue: "Silvan"},
+            { TagName: "Cognome", TagValue: " Cangurotto "},
+          ]
+        },
+        {
+          TagFields: 
+          [
+            { TagName: "Nome", TagValue: "Nicola"},
+            { TagName: "Cognome", TagValue: " Cardi "},
+          ]
+        },
+        {
+          TagFields: 
+          [
+            { TagName: "Nome", TagValue: "Andrea"},
+            { TagName: "Cognome", TagValue: " Svegliado "},
+          ]
+        },
+        {
+          TagFields: 
+          [
+            { TagName: "Nome", TagValue: "Matteo"},
+            { TagName: "Cognome", TagValue: " Boribombo "},
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+;
+
 
 
 export const A4V = {
