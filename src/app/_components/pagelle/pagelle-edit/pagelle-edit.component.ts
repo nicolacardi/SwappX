@@ -1,28 +1,31 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatButtonToggle, MatButtonToggleChange } from '@angular/material/button-toggle';
-import { Observable } from 'rxjs';
-import { map} from 'rxjs/operators';
-import { jsPDF } from 'jspdf';
+import { Observable }                           from 'rxjs';
+import { map}                                   from 'rxjs/operators';
+import { jsPDF }                                from 'jspdf';
 
 //components
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 
 //services
-import { PagellaVotiService } from '../pagella-voti.service';
-import { PagelleService } from '../pagelle.service';
-import { FilesService } from '../files.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { JspdfService } from '../../utilities/jspdf/jspdf.service';
+import { PagellaVotiService }                   from '../pagella-voti.service';
+import { PagelleService }                       from '../pagelle.service';
+import { FilesService }                         from '../files.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { JspdfService }                         from '../../utilities/jspdf/jspdf.service';
+import { OpenXMLService }                       from '../../utilities/openXML/open-xml.service';
+import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
+
 
 //classes
-import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
-import { DOC_File } from 'src/app/_models/DOC_File';
-import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto';
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { OpenXMLService } from '../../utilities/openXML/open-xml.service';
+import { DOC_Pagella }                          from 'src/app/_models/DOC_Pagella';
+import { DOC_File }                             from 'src/app/_models/DOC_File';
+import { DOC_PagellaVoto }                      from 'src/app/_models/DOC_PagellaVoto';
+import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
+import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 
 //#endregion
 @Component({
@@ -34,6 +37,8 @@ import { OpenXMLService } from '../../utilities/openXML/open-xml.service';
 export class PagellaEditComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+  public iscrizione!:                           CLS_Iscrizione;
+
   public objPagella!:                            DOC_Pagella;  
   lstPagellaVoti!:                               DOC_PagellaVoto[];
 
@@ -59,13 +64,15 @@ export class PagellaEditComponent implements OnInit {
 //#region ----- Constructor --------------------
 
   constructor(
-    private svcPagelle:               PagelleService,
-    private svcPagellaVoti:           PagellaVotiService,
-    private svcFiles:                 FilesService,
-    private svcOpenXML:               OpenXMLService,
-    private _loadingService:          LoadingService,
-    private _snackBar:                MatSnackBar ,
-    private _jspdf:                   JspdfService
+    private svcPagelle:                         PagelleService,
+    private svcPagellaVoti:                     PagellaVotiService,
+    private svcFiles:                           FilesService,
+    private svcIscrizioni:                      IscrizioniService,
+
+    private svcOpenXML:                         OpenXMLService,
+    private _loadingService:                    LoadingService,
+    private _snackBar:                          MatSnackBar ,
+    private _jspdf:                             JspdfService
     ) { }
 //#endregion
 
@@ -108,6 +115,13 @@ export class PagellaEditComponent implements OnInit {
           }
         }
     );
+
+
+    this.svcIscrizioni.get(this.iscrizioneID)
+    .subscribe(res => {
+      this.iscrizione = res;
+    });
+
   }
 //#endregion
 
@@ -126,11 +140,123 @@ export class PagellaEditComponent implements OnInit {
     }
   }
 
+
   openXML() {
-    this.svcOpenXML.downloadFile();
+    ;
+    this.svcOpenXML.downloadFile(this.openXMLPreparaOggetto());
+  }
+  
+  openXMLPreparaOggetto () {
+
+    let tagDocument = {
+      TemplateName: "PagellaElementari",
+      TagFields:
+      [
+        { TagName: "AnnoScolastico", TagValue: "2022-23"},
+        { TagName: "ComuneNascita", TagValue: this.alunno.persona.comuneNascita},
+        { TagName: "ProvNascita", TagValue: this.alunno.persona.provNascita},
+        { TagName: "DtNascita", TagValue: this.alunno.persona.dtNascita},
+        { TagName: "Alunno" , TagValue: this.alunno.persona.nome+" "+this.alunno.persona.cognome},
+        { TagName: "Classe" , TagValue: "QUINTA"},
+        { TagName: "Sezione" , TagValue: "A"},
+        { TagName: "ObStoria" , TagValue: "CENNI DI ORGANIZZAZIONE SPAZIO TEMPORALE: ordinare e collocare nel tempo fatti personali ed eventi narrati.</w:t><w:br/><w:t>PRODUZIONE SCRITTA E ORALE: rappresentare gli eventi narrati tramite disegni."},
+    
+      ],
+      TagTables:
+      [
+        {
+          TagTableTitle: "TblVoti",
+          TagTableRows:
+          [
+            {
+              TagFields: 
+              [
+                { TagName: "Materia", TagValue: "Italiano"},
+                { TagName: "Giudizio", TagValue: " Mona "},
+              ]
+            },
+            {
+              TagFields: 
+              [
+                { TagName: "Materia", TagValue: "Matematica"},
+                { TagName: "Giudizio", TagValue: " Chi "},
+              ]
+            },
+            {
+              TagFields: 
+              [
+                { TagName: "Materia", TagValue: "Storia"},
+                { TagName: "Giudizio", TagValue: " legge "},
+              ]
+            },
+            {
+              TagFields: 
+              [
+                { TagName: "Materia", TagValue: "Scienze"},
+                { TagName: "Giudizio", TagValue: "...e chi ha orecchie "},
+              ]
+            },
+            {
+              TagFields: 
+              [
+                { TagName: "Materia", TagValue: "Ginnastica"},
+                { TagName: "Giudizio", TagValue: " per intendere "},
+              ]
+            },
+            {
+              TagFields: 
+              [
+                { TagName: "Materia", TagValue: "Orticoltura"},
+                { TagName: "Giudizio", TagValue: " IN TENDA "},
+              ]
+            }
+          ]
+        },
+    
+    
+    
+        {
+          TagTableTitle: "TblAlunni",
+          TagTableRows:
+          [
+            {
+              TagFields: 
+              [
+                { TagName: "Nome", TagValue: "Silvan"},
+                { TagName: "Cognome", TagValue: " Cangurotto "},
+              ]
+            },
+            {
+              TagFields: 
+              [
+                { TagName: "Nome", TagValue: "Nicola"},
+                { TagName: "Cognome", TagValue: " Cardi "},
+              ]
+            },
+            {
+              TagFields: 
+              [
+                { TagName: "Nome", TagValue: "Andrea"},
+                { TagName: "Cognome", TagValue: " Svegliado "},
+              ]
+            },
+            {
+              TagFields: 
+              [
+                { TagName: "Nome", TagValue: "Matteo"},
+                { TagName: "Cognome", TagValue: " Boribombo "},
+              ]
+            }
+          ]
+        }
+      ]
+    }
+    console.log (tagDocument);
+    return tagDocument;
   }
   
   openPdfPagella(){
+    //questa andrà in pensione
 
     if(this.objPagella == null || this.objPagella.id! <0) {
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella non ancora generata', panelClass: ['red-snackbar']})

@@ -14,10 +14,15 @@ export const tagDocument = {
   TagFields:
   [
     { TagName: "AnnoScolastico", TagValue: "2022-23"},
+
     { TagName: "ComuneNascita", TagValue: "Mestrino"},
     { TagName: "ProvNascita", TagValue: "PD"},
     { TagName: "DtNascita", TagValue: "30/04/1971"},
-    { TagName: "Alunno" , TagValue: "Marietto"}
+    { TagName: "Alunno" , TagValue: "Nicola cardi"},
+    { TagName: "Classe" , TagValue: "QUINTA"},
+    { TagName: "Sezione" , TagValue: "A"},
+    { TagName: "ObStoria" , TagValue: "CENNI DI ORGANIZZAZIONE SPAZIO TEMPORALE: ordinare e collocare nel tempo fatti personali ed eventi narrati.</w:t><w:br/><w:t>PRODUZIONE SCRITTA E ORALE: rappresentare gli eventi narrati tramite disegni."},
+
   ],
   TagTables:
   [

@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { saveAs } from 'file-saver';
-import { environment, tagDocument } from 'src/environments/environment';
+import { Injectable }                           from '@angular/core';
+import { HttpClient }                           from '@angular/common/http';
+import { saveAs }                               from 'file-saver';
+import { environment }                          from 'src/environments/environment';
   
 
 @Injectable({
@@ -12,7 +12,7 @@ export class OpenXMLService {
   constructor(private http: HttpClient) { }
 
 
-  downloadFile(): void {
+  downloadFile(tagDocument: any): void {
 
     // this.http.get(environment.apiBaseUrl+'openXML/DownloadOutputFile', { responseType: 'blob' })
 
