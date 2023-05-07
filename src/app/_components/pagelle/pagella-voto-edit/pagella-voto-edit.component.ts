@@ -1,25 +1,25 @@
 //#region ----- IMPORTS ------------------------
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
-import { iif, Observable } from 'rxjs';
-import { concatMap, tap } from 'rxjs/operators';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { MatTableDataSource }                   from '@angular/material/table';
+import { iif, Observable }                      from 'rxjs';
+import { concatMap, tap }                       from 'rxjs/operators';
 
 //components
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { VotiObiettiviEditComponent } from '../voti-obiettivi-edit/voti-obiettivi-edit.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { VotiObiettiviEditComponent }           from '../voti-obiettivi-edit/voti-obiettivi-edit.component';
 
 //services
-import { PagellaVotiService } from '../pagella-voti.service';
-import { PagelleService } from '../pagelle.service';
-import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
+import { PagellaVotiService }                   from '../pagella-voti.service';
+import { PagelleService }                       from '../pagelle.service';
+import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
 
 //classes
-import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
-import { DOC_PagellaVoto, DOC_TipoGiudizio } from 'src/app/_models/DOC_PagellaVoto';
+import { DOC_Pagella }                          from 'src/app/_models/DOC_Pagella';
+import { DOC_PagellaVoto, DOC_TipoGiudizio }    from 'src/app/_models/DOC_PagellaVoto';
 
 //#endregion
 @Component({
@@ -31,10 +31,10 @@ import { DOC_PagellaVoto, DOC_TipoGiudizio } from 'src/app/_models/DOC_PagellaVo
 export class PagellaVotoEditComponent implements OnInit  {
   
 //#region ----- Variabili ----------------------
-  matDataSource = new           MatTableDataSource<DOC_PagellaVoto>();
-
-  obsTipiGiudizio$!:            Observable<DOC_TipoGiudizio[]>;
-  showPageTitle:                boolean = true;
+  matDataSource = new                           MatTableDataSource<DOC_PagellaVoto>();
+  obsTipiGiudizio$!:                            Observable<DOC_TipoGiudizio[]>;
+  showPageTitle:                                boolean = true;
+  lstPagellaVoti!:                              DOC_PagellaVoto[];
 
   displayedColumns: string[] = [
     "materia", 

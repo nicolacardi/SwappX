@@ -62,9 +62,9 @@
         </ng-container>
 
         <ng-container matColumnDef="note">
-            <th mat-header-cell *matHeaderCellDef  >Commento</th>
+            <th mat-header-cell *matHeaderCellDef >Commento</th>
             <td mat-cell class="h60px _td-note1" *matCellDef="let element">
-                <textarea *ngIf="objPagella.iscrizioneID>0" class="h50px _noresize _text-area-note1" matInput (change)="changeNote(element, note.value)" #note>{{element.note}}</textarea>
+                <textarea *ngIf="objPagella.iscrizioneID>0" class="w400px h50px _noresize _text-area-note1" matInput (change)="changeNote(element, note.value)" #note>{{element.note}}</textarea>
             </td>
         </ng-container>
 

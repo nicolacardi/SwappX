@@ -14,8 +14,6 @@ export class OpenXMLService {
 
   downloadFile(tagDocument: any): void {
 
-    // this.http.get(environment.apiBaseUrl+'openXML/DownloadOutputFile', { responseType: 'blob' })
-
       this.http.post(environment.apiBaseUrl+'openXML/CreaDocumento',tagDocument, { responseType: 'blob' })
       .subscribe((response:any) => {
         const blob = new Blob([response], { type: 'application/octet-stream' });

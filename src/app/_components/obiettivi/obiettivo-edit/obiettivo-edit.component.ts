@@ -70,7 +70,7 @@ export class ObiettivoEditComponent implements OnInit {
     
     this.form = this.fb.group({
       id:                         [null],
-      descrizione:                ['', { validators:[ Validators.required, Validators.maxLength(100)]}],
+      descrizione:                ['', { validators:[ Validators.required, Validators.maxLength(255)]}],
       classeID:                   [''],
       annoID:                     [''],
       materiaID:                  ['']

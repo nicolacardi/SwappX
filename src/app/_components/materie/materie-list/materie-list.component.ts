@@ -103,7 +103,7 @@ export class MaterieListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '400px',
-      height: '300px',
+      height: '370px',
       data: 0
     };
     const dialogRef = this._dialog.open(MateriaEditComponent, dialogConfig);
