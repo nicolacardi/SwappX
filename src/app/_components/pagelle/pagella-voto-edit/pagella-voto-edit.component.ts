@@ -1,7 +1,8 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatSort }                              from '@angular/material/sort';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { MatTableDataSource }                   from '@angular/material/table';
 import { iif, Observable }                      from 'rxjs';
@@ -44,6 +45,8 @@ export class PagellaVotoEditComponent implements OnInit  {
 //#endregion  
 
 //#region ----- ViewChild Input Output ---------
+  @ViewChild(MatSort) sort!:                MatSort;
+
   @Input('objPagella') objPagella!:                     DOC_Pagella;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:   number;
 
@@ -85,7 +88,10 @@ export class PagellaVotoEditComponent implements OnInit  {
       ));
 
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
-    loadPagella$.subscribe(val => this.matDataSource.data = val );
+    loadPagella$.subscribe(val => { 
+        this.matDataSource.data = val ;
+        this.matDataSource.sort = this.sort; 
+    });
   }
 //#endregion
 

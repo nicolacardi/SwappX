@@ -94,6 +94,28 @@
                     </app-voti-interr-list>
                 </mat-tab>
 
+                <mat-tab  *ngIf="classeSezioneAnnoID" label="Pagelle">
+                    <table>
+                        <tr>
+                            <td class="_cell-align-top w300px">
+                                <app-iscrizioni-classe-list [dove]="'pagella'"  
+                                    [classeSezioneAnnoID]="classeSezioneAnnoID"  
+                                    (iscrizioneID)="iscrizioneIDEmitted($event)"
+                                    (alunno)="alunnoEmitted($event)" >
+                                </app-iscrizioni-classe-list>
+                            </td>
+                            <td class="_cell-align-top pl10 _border-left w750px">
+                                <app-pagelle-edit
+                                    [iscrizioneID]="iscrizioneID"
+                                    [docenteID]="docenteID"
+                                    [classeSezioneAnnoID]="classeSezioneAnnoID" 
+                                    [alunno]="alunno">
+                                </app-pagelle-edit>
+                            </td>
+                        </tr>
+                    </table>
+                </mat-tab>
+
             </mat-tab-group>
    
         </td>

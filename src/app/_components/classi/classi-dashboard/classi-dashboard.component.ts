@@ -96,7 +96,7 @@ export class ClassiDashboardComponent implements OnInit {
   @ViewChild(ClassiSezioniAnniListComponent) viewClassiSezioniAnni!: ClassiSezioniAnniListComponent; 
   @ViewChild(IscrizioniClasseListComponent) viewListIscrizioni!: IscrizioniClasseListComponent; 
   @ViewChild(DocenzeListComponent) viewDocenzeList!: DocenzeListComponent; 
-  @ViewChild('orarioLezioniDOM') viewOrarioLezioni!: LezioniCalendarioComponent; 
+  //@ViewChild('orarioLezioniDOM') viewOrarioLezioni!: LezioniCalendarioComponent; 
   @ViewChild('orarioDocenteDOM') viewOrarioDocente!: LezioniCalendarioComponent; 
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
 
@@ -344,15 +344,17 @@ export class ClassiDashboardComponent implements OnInit {
 
   //#endregion
 
+  /*
   selectedTabValue(event: any){
     //senza questo espediente non fa il primo render correttamente
     if (this.tabGroup.selectedIndex == 2) {
-      this.viewOrarioLezioni.calendarDOM.getApi().render();
+       this.viewOrarioLezioni.calendarDOM.getApi().render();
       this.viewOrarioLezioni.loadData();
     }
-    // if (this.tabGroup.selectedIndex == 3) {
-    //   this.viewOrarioDocente.calendarDOM.getApi().render();
-    //   this.viewOrarioDocente.loadData()
-    // }
+    if (this.tabGroup.selectedIndex == 3) {
+      this.viewOrarioDocente.calendarDOM.getApi().render();
+      this.viewOrarioDocente.loadData()
+    }
   }
+  */
 }
