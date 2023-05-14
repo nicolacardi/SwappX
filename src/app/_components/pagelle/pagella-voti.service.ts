@@ -17,6 +17,11 @@ export class PagellaVotiService {
     return this.http.get<DOC_PagellaVoto[]>(environment.apiBaseUrl+'DOC_PagellaVoti/ListByAnnoClassePagella/'+annoID+'/'+classeID+'/'+pagellaID);   
     //http://213.215.231.4/swappX/api/DOC_PagellaVoti/ListByAnnoClassePagella/2/1/33
   }
+
+  listByCSAMateria(classeSezioneAnnoID: number, materiaID: number): Observable<DOC_PagellaVoto[]>{
+    return this.http.get<DOC_PagellaVoto[]>(environment.apiBaseUrl+'DOC_PagellaVoti/ListByCSAMateria/'+classeSezioneAnnoID+'/'+materiaID);   
+    //http://213.215.231.4/swappX/api/DOC_PagellaVoti/ListByCSAMateria/16/1002
+  }
   
   put(formData: any): Observable <any>{
     //console.log ("pagellavoto.put", formData);
