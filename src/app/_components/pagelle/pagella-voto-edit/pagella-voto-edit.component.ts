@@ -2,7 +2,7 @@
 
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
-import { MatSort }                              from '@angular/material/sort';
+import { MatSort, Sort }                              from '@angular/material/sort';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { MatTableDataSource }                   from '@angular/material/table';
 import { iif, Observable }                      from 'rxjs';
@@ -63,7 +63,7 @@ export class PagellaVotoEditComponent implements OnInit  {
     
     private _loadingService:                    LoadingService,
     private _snackBar:                          MatSnackBar,
-    public _dialog:                             MatDialog  ) { 
+    public _dialog:                             MatDialog ) { 
   }
 
 //#endregion
@@ -84,15 +84,30 @@ export class PagellaVotoEditComponent implements OnInit  {
 
     let obsPagella$: Observable<DOC_PagellaVoto[]>;
     obsPagella$ = this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID).pipe (
-        concatMap( val => this.svcPagellaVoti.listByAnnoClassePagella(val.annoID, val.classeSezione.classeID, this.objPagella.id!)
-      ));
+      concatMap( val => this.svcPagellaVoti.listByAnnoClassePagella(val.annoID, val.classeSezione.classeID, this.objPagella.id!)
+    ));
 
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
     loadPagella$.subscribe(val => { 
-        this.matDataSource.data = val ;
-        this.matDataSource.sort = this.sort; 
+      this.matDataSource.data = val ;
+      this.sortCustom();
+      this.matDataSource.sort = this.sort; 
     });
   }
+
+//#endregion
+
+//#region ----- Filtri & Sort ------------------
+
+  sortCustom() {
+    this.matDataSource.sortingDataAccessor = (item:any, property) => {
+      switch(property) {
+        case 'materia':                         return item.materia.descrizione;
+        default: return item[property]
+      }
+    };
+  }
+
 //#endregion
 
 //#region ----- Operazioni CRUD ----------------
@@ -137,6 +152,8 @@ export class PagellaVotoEditComponent implements OnInit  {
       }
     }
   }
+
+
 //#endregion
 
 //#region ----- Altri metodi -------------------
@@ -212,5 +229,6 @@ export class PagellaVotoEditComponent implements OnInit  {
   resetStampato() {
     this.svcPagella.setStampato(this.objPagella.id!, false).subscribe();
   }
+  
 //#endregion
 }
