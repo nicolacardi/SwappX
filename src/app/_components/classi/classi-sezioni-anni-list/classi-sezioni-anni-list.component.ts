@@ -190,16 +190,14 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor( 
-    private svcClassiSezioniAnni:               ClassiSezioniAnniService,
-    private svcAnni:                            AnniScolasticiService,
-    private svcDocenti:                         DocentiService,
-    private _loadingService:                    LoadingService,
-    private fb:                                 UntypedFormBuilder, 
-    public _dialog:                             MatDialog, 
-    private actRoute:                           ActivatedRoute,
-    private _snackBar:                          MatSnackBar
-  ) {
+  constructor(private svcClassiSezioniAnni:               ClassiSezioniAnniService,
+              private svcAnni:                            AnniScolasticiService,
+              private svcDocenti:                         DocentiService,
+              private _loadingService:                    LoadingService,
+              private fb:                                 UntypedFormBuilder, 
+              public _dialog:                             MatDialog, 
+              private actRoute:                           ActivatedRoute,
+              private _snackBar:                          MatSnackBar ) {
 
     //let objAnno = localStorage.getItem('AnnoCorrente');
     
@@ -211,13 +209,12 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
       selectDocente: 0
     });
   }
+
 //#endregion
 
 //#region ----- LifeCycle Hooks e simili--------
  
-
   ngOnInit() {
-
 
     this.actRoute.queryParams.subscribe(
       params => {
@@ -231,7 +228,6 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
         finalize( () => {
             //se arrivo da home
             if (this.annoIDrouted) this.form.controls.selectAnnoScolastico.setValue(parseInt(this.annoIDrouted));
-
           }
         )
       );
@@ -298,7 +294,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
         this.showPageTitle = false;
         this.showTableRibbon = false;
 
-        if(this.currUser.personaID != undefined && this.currUser.personaID != 0){
+        if(this.currUser.personaID != undefined && this.currUser.personaID != 0) {
 
           //AS: ATTENZIONE: se la persona non è un docente, la chiamata al WS restituisce un errore 404, che viene fuori nel console.log
           //bisogna modificare il WS in modo che ritorni null e non errore 
@@ -343,7 +339,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnChanges() {
+  ngOnChanges() { 
+    
   }
 
   loadData () {
@@ -361,7 +358,6 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
     loadClassi$.subscribe( val =>   {
-      console.log(val);
       this.matDataSource.data = val;
       this.matDataSource.paginator = this.paginator;
 
@@ -375,9 +371,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
       if(this.matDataSource.data.length >0){
         if (this.classeSezioneAnnoIDrouted) 
           this.rowclicked(this.classeSezioneAnnoIDrouted);  
-        else{
+        else
           this.rowclicked(this.matDataSource.data[0].id); //seleziona per default la prima riga DA TESTARE
-        }
       }
       else
         this.rowclicked(undefined);
