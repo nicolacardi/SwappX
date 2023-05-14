@@ -18,7 +18,7 @@ import { LoadingService }                       from '../../utilities/loading/lo
 import { JspdfService }                         from '../../utilities/jspdf/jspdf.service';
 import { OpenXMLService }                       from '../../utilities/openXML/open-xml.service';
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
-
+import { Utility, FormatoData }                 from '../../utilities/utility.component';
 
 //classes
 import { DOC_Pagella }                          from 'src/app/_models/DOC_Pagella';
@@ -26,8 +26,6 @@ import { DOC_File }                             from 'src/app/_models/DOC_File';
 import { DOC_PagellaVoto }                      from 'src/app/_models/DOC_PagellaVoto';
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
-import { Utility } from '../../utilities/utility.component';
-import { FormatoData } from '../../utilities/utility.component';
 
 //#endregion
 @Component({
@@ -182,6 +180,7 @@ export class PagellaEditComponent implements OnInit {
       return null;
     }
 
+    console.log("this.alunno", alunno);
     let tagDocument = {
       TemplateName: "PagellaElementari",
       TagFields:

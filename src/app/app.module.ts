@@ -208,6 +208,7 @@ import { ClickDoubleDirective }                 from './_components/utilities/cl
 import { QuillModule }                          from 'ngx-quill';
 import { TableComponent }                       from './_components/templates/table/table.component';
 import { TableShowComponent }                   from './_components/templates/tableshow/tableshow.component';
+import { TemplatesManagerComponent } from './_components/templates-manager/templates-manager.component';
 
 
 
@@ -367,7 +368,8 @@ import { TableShowComponent }                   from './_components/templates/ta
       BloccoComponent,
       BloccoEditComponent,
       TableComponent,
-      TableShowComponent
+      TableShowComponent,
+      TemplatesManagerComponent
   
     
 
