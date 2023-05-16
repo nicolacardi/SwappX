@@ -1,25 +1,25 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Component, OnInit, ViewChild }         from '@angular/core';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatSort }                              from '@angular/material/sort';
+import { MatTableDataSource }                   from '@angular/material/table';
+import { Observable }                           from 'rxjs';
+import { map }                                  from 'rxjs/operators';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 //services
-import { ClasseAnnoMateriaService } from '../classe-anno-materia.service';
-import { LoadingService } from '../../../utilities/loading/loading.service';
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
+import { ClasseAnnoMateriaService }             from '../classe-anno-materia.service';
+import { LoadingService }                       from '../../../utilities/loading/loading.service';
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
 
 //models
-import { CLS_ClasseAnnoMateria } from 'src/app/_models/CLS_ClasseAnnoMateria';
-import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
+import { CLS_ClasseAnnoMateria }                from 'src/app/_models/CLS_ClasseAnnoMateria';
+import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
 
 //components
-import { ClasseAnnoMateriaEditComponent } from '../classe-anno-materia-edit/classe-anno-materia-edit.component';
+import { ClasseAnnoMateriaEditComponent }       from '../classe-anno-materia-edit/classe-anno-materia-edit.component';
 
 //#endregion
 @Component({
@@ -34,10 +34,10 @@ export class ClassiAnniMaterieListComponent implements OnInit {
 
 matDataSource = new MatTableDataSource<CLS_ClasseAnnoMateria>();
 
-obsClassiAnniMaterie$!:               Observable<CLS_ClasseAnnoMateria[]>;
+obsClassiAnniMaterie$!:                         Observable<CLS_ClasseAnnoMateria[]>;
 
-obsAnni$!:                            Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-form! :                               UntypedFormGroup;
+obsAnni$!:                                      Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+form! :                                         UntypedFormGroup;
 
 displayedColumns: string[] = [
     "actionsColumn", 
@@ -75,15 +75,16 @@ filterValues = {
 //#endregion
 
 //#region ----- ViewChild Input Output ---------
-@ViewChild(MatSort) sort!:                MatSort;
+@ViewChild(MatSort) sort!:                      MatSort;
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(private svcClasseAnnoMateria:           ClasseAnnoMateriaService,
-              private svcAnni:                        AnniScolasticiService,
-              private fb:                             UntypedFormBuilder, 
-              private _loadingService:                LoadingService,
-              public _dialog:                         MatDialog ) {
+  constructor(
+    private svcClasseAnnoMateria:               ClasseAnnoMateriaService,
+    private svcAnni:                            AnniScolasticiService,
+    private fb:                                 UntypedFormBuilder, 
+    private _loadingService:                    LoadingService,
+    public _dialog:                             MatDialog ) {
               
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({

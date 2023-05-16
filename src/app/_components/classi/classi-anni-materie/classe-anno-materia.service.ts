@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup, CLS_ClasseSezioneAnno_Sum } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { CLS_ClasseAnnoMateria } from 'src/app/_models/CLS_ClasseAnnoMateria';
 
 @Injectable({
@@ -30,6 +29,8 @@ export class ClasseAnnoMateriaService {
     return this.http.get<CLS_ClasseAnnoMateria[]>(environment.apiBaseUrl+'CLS_ClassiAnniMaterie');
     //http://213.215.231.4/swappX/api/CLS_ClassiAnniMaterie
   }
+
+
   
   put(formData: any): Observable <any>{
     return this.http.put( environment.apiBaseUrl  + 'CLS_ClassiAnniMaterie/' + formData.id , formData);  

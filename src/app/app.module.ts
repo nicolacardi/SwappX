@@ -209,6 +209,7 @@ import { QuillModule }                          from 'ngx-quill';
 import { TableComponent }                       from './_components/templates/table/table.component';
 import { TableShowComponent }                   from './_components/templates/tableshow/tableshow.component';
 import { TemplatesManagerComponent } from './_components/templates-manager/templates-manager.component';
+import { PagelleClasseEditComponent } from './_components/pagelle/pagelle-classe-edit/pagelle-classe-edit.component';
 
 
 
@@ -369,7 +370,8 @@ import { TemplatesManagerComponent } from './_components/templates-manager/templ
       BloccoEditComponent,
       TableComponent,
       TableShowComponent,
-      TemplatesManagerComponent
+      TemplatesManagerComponent,
+      PagelleClasseEditComponent
   
     
 

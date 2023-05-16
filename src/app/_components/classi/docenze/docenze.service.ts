@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import { CLS_ClasseDocenteMateria } from 'src/app/_models/CLS_ClasseDocenteMateria';
 import { environment } from 'src/environments/environment';
@@ -22,6 +22,20 @@ export class DocenzeService {
     return this.http.get<CLS_ClasseDocenteMateria[]>(environment.apiBaseUrl+'CLS_ClassiDocentiMaterie/ListByClasseSezioneAnno/'+classeSezioneAnnoID);
     //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/ListByClasseSezioneAnno/16
   }
+
+  listByClasseSezioneAnnoDocente(classeSezioneAnnoID: number, docenteID: number): Observable<CLS_ClasseDocenteMateria[]>{
+    return this.http.get<CLS_ClasseDocenteMateria[]>(environment.apiBaseUrl+'CLS_ClassiDocentiMaterie/ListByClasseSezioneAnno/'+classeSezioneAnnoID)
+    .pipe(
+      map((classes: CLS_ClasseDocenteMateria[]) => {
+        return classes.filter((cls: CLS_ClasseDocenteMateria) => {
+          return cls.classeSezioneAnnoID === classeSezioneAnnoID && cls.docenteID === docenteID;
+        });
+      })
+    );
+    //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/ListByClasseSezioneAnno/16
+  }
+
+
 
   get(docenzaID: any): Observable<CLS_ClasseDocenteMateria>{
     return this.http.get<CLS_ClasseDocenteMateria>(environment.apiBaseUrl+'CLS_ClassiDocentiMaterie/'+docenzaID);

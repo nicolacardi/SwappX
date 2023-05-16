@@ -2,23 +2,24 @@
 
 import { Component, OnInit, ViewChild }         from '@angular/core';
 import { MatDialog }                            from '@angular/material/dialog';
-import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { MatTabGroup }                          from '@angular/material/tabs';
-import { ActivatedRoute, Router }               from '@angular/router';
+import { ActivatedRoute }                       from '@angular/router';
 
 //components
 import { ClassiSezioniAnniListComponent }       from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { NavigationService }                    from '../../utilities/navigation/navigation.service';
 import { Utility }                              from '../../utilities/utility.component';
 
 //services
-import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
-import { JspdfService }                         from '../../utilities/jspdf/jspdf.service';
 import { DocentiService }                       from '../docenti.service';
+import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_ClasseDocenteMateria';
+
 
 //models
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 import { User }                                 from 'src/app/_user/Users';
+import { DocenzeService } from '../../classi/docenze/docenze.service';
+import { Observable } from 'rxjs';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 //#endregion
 @Component({
@@ -31,19 +32,24 @@ export class DocentiDashboardComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
-  public classeSezioneAnnoID!:  number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
-  public annoID!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
-  public docenteID!:            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
+  public classeSezioneAnnoID!:                  number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
+  public annoID!:                               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
+  public docenteID!:                            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
 
-  public iscrizioneID!:         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
-  public alunno!:               ALU_Alunno;   //valore ricevuto (emitted) dal child IscrizioniClasseList
+  public iscrizioneID!:                         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
+  public alunno!:                               ALU_Alunno;   //valore ricevuto (emitted) dal child IscrizioniClasseList
 
-  public classeSezioneAnnoIDrouted!:        string;   //valore ricevuto (routed) dal ruoting
-  public annoIDrouted!:         string;   //valore ricevuto (routed) dal ruoting
+  public classeSezioneAnnoIDrouted!:            string;   //valore ricevuto (routed) dal ruoting
+  public annoIDrouted!:                         string;   //valore ricevuto (routed) dal ruoting
   isOpen = true;
   
-  public currUser!: User;
+  public currUser!:                             User;
   
+  obsMaterie$!:                                 Observable<CLS_ClasseDocenteMateria[]>;
+
+  form! :                                       UntypedFormGroup;
+  public materiaID!:                            number;
+
 //#endregion
   
 //#region ----- ViewChild Input Output -------
@@ -58,10 +64,18 @@ export class DocentiDashboardComponent implements OnInit {
 //#endregion
 
   constructor( 
-    private svcDocenti:                   DocentiService,
-    public _dialog:                       MatDialog,
-    private actRoute:                     ActivatedRoute,
+    private svcDocenti:                         DocentiService,
+    public _dialog:                             MatDialog,
+    private actRoute:                           ActivatedRoute,
+    private svcDocenze:                         DocenzeService,
+    private fb:                                 UntypedFormBuilder, 
+
+
   ){
+
+    this.form = this.fb.group( {
+      selectMaterieDocenteClasse: 0
+    });
   }
 
 //#region ----- LifeCycle Hooks e simili--------
@@ -89,6 +103,11 @@ export class DocentiDashboardComponent implements OnInit {
         //err => console.log("getDocenteBypersonaID- KO:", err)
       )
     }
+
+    this.form.controls.selectMaterieDocenteClasse.valueChanges.subscribe(
+      sel => this.materiaID = sel );
+
+
   }
 //#endregion
 
@@ -103,10 +122,15 @@ export class DocentiDashboardComponent implements OnInit {
 
   classeSezioneAnnoIDEmitted(classeSezioneAnnoID: number) {
     this.classeSezioneAnnoID = classeSezioneAnnoID;
+        //estraggo le materie di questo docente in questa classe e le metto nella combo
+    this.obsMaterie$ = this.svcDocenze.listByClasseSezioneAnnoDocente(classeSezioneAnnoID, this.docenteID);
   }
 
   docenteIdEmitted(docenteId: number) {
     this.docenteID = docenteId;
+
+
+
   }
 
   iscrizioneIDEmitted(iscrizioneID: number) {

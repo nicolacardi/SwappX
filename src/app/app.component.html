@@ -37,9 +37,9 @@
 </mat-menu>
 
 <mat-sidenav-container fullscreen autosize>
-    <mat-sidenav *ngIf="isLoggedIn" #start class="leftSidenav" mode="side" opened="true" disableClose>
+    <mat-sidenav *ngIf="isLoggedIn" class="leftSidenav" mode="side" opened="true" disableClose>
 
-        <mat-nav-list >
+        <mat-nav-list class="mynavlist">
             <!-- <div mat-list-item>
                 <img  class="logo-img ml15 mt50" src="./assets/logoscrittaazzurro.svg">
             </div> -->
@@ -48,7 +48,7 @@
 
             </a> -->
 
-            <a mat-list-item class="h35px mt60" routerLink="home" (click)="clickMenuItem()" >
+            <a mat-list-item class="h35px mt60" routerLink="home" (click)="clickMenuItem()"  >
                 <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/home.svg">
                 <span *ngIf="isExpanded">Home</span>
 
@@ -99,7 +99,7 @@
                 <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
                   <mat-panel-title>
                     <img class="iconaMenuSidenav mr10"  src="./assets/mainMenuWhite/classiSezioniAnni.svg">
-                    <span class="fs16" >Classi</span>
+                    <span class="fs16" >Area Coord. Did.</span>
                   </mat-panel-title>
                   <mat-panel-description> </mat-panel-description>
                 </mat-expansion-panel-header>
@@ -113,7 +113,7 @@
 
                 <a mat-list-item class="h35px" routerLink="classi-dashboard" (click)="clickMenuItem()">
                     <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/classiSezioniAnniDashboard.svg">
-                    <span>Gestione Classi</span>
+                    <span>Cruscotto Coord. Did.</span>
                 </a>
                 <mat-divider></mat-divider>
             </mat-expansion-panel>
@@ -202,7 +202,7 @@
                 <span *ngIf="isExpanded">Procedura Iscrizione</span>
             </a>
 
-            <a mat-list-item class="_pos-absolute_i _border-top _grey-background b0 topZindex"
+            <a mat-list-item class="_pos-absolute_i _border-top _grey-background b0 topZindex" 
                 routerLink="impostazioni"
                 (click)="clickMenuItem()"  
                 *ngIf="currUser && currUser.TipoPersona!.descrizione == 'SysAdmin'">

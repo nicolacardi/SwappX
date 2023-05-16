@@ -34,7 +34,7 @@ import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_Classe
 export class DocenzeListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
-matDataSource = new                           MatTableDataSource<CLS_ClasseDocenteMateria>();
+matDataSource = new                             MatTableDataSource<CLS_ClasseDocenteMateria>();
   //storedFilterPredicate!:                       any;
   filterValue = '';
   classeSezioneAnno!:                           CLS_ClasseSezioneAnno;

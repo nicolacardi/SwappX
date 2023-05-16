@@ -55,6 +55,7 @@
     /* senza questa avviene l wordwrap nel menu nelle etichette espandibili*/
     .leftSidenav .mat-expansion-panel-header-title {
         flex-basis:auto !important;
+        /* width: 500px; */
     }
 
     
@@ -77,6 +78,10 @@
 
     .mdc-list-item {
         font-family: 'Titillium Web', sans-serif; /* fix font dopo migrazione a ng v15 */
+    }
+
+    .mat-mdc-list-base {
+        --mdc-list-list-item-hover-label-text-color: rgb(79, 79, 79);
     }
 
     .mat-mdc-card-outlined{   
@@ -1802,6 +1807,10 @@
 
     ._pos-absolute {
         position: absolute;
+    }
+
+    ._pos-absolute_i {
+        position: absolute !important;
     }
 
     ._pos-fixed {
