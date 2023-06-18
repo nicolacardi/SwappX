@@ -31,6 +31,8 @@ export interface DOC_PagellaVoto {
         countVotiObiettivi?:                    number;
         countTotObiettivi?:                     number;
         _ObiettiviCompleti?:                    DOC_ObiettivoCompleto[];
+
+        periodo?:                               number;
 }
 
 export interface DOC_TipoGiudizio {

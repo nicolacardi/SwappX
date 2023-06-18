@@ -29,13 +29,15 @@ export class PagelleClasseEditComponent {
 
   @Input('classeSezioneAnnoID') classeSezioneAnnoID! : number;
   @Input('materiaID') materiaID! :              number;
+  @Input('periodo') periodo! :                  number;
 
 
   displayedColumns: string[] = [
     // "actionsColumn", 
     "alunnoID", 
-    // "cognome", 
-    // "voto"
+    "nome",
+    "cognome", 
+    "voto"
 
   ];
 
@@ -60,13 +62,14 @@ export class PagelleClasseEditComponent {
 
     let obsPagelleVoti$: Observable<DOC_PagellaVoto[]>;
 
-    obsPagelleVoti$= this.svcPagellaVoti.listByCSAMateria(this.classeSezioneAnnoID, this.materiaID);
+    obsPagelleVoti$= this.svcPagellaVoti.listByCSAMateria(this.classeSezioneAnnoID, this.materiaID, this.periodo);
       
     const loadPagelleVoti$ =this._loadingService.showLoaderUntilCompleted(obsPagelleVoti$);
 
     loadPagelleVoti$.subscribe(
         val =>   {
           this.matDataSource.data = val;
+          console.log ("estraggo:", val);
         }
       );
 
