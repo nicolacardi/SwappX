@@ -29,6 +29,7 @@ export class PagelleService {
   }
 
   post(formData: any): Observable <DOC_Pagella>{
+    console.log("pagelle-service - post", formData);
     delete formData.id;
     return this.http.post<DOC_Pagella>( environment.apiBaseUrl  + 'DOC_Pagelle' , formData);  
   }

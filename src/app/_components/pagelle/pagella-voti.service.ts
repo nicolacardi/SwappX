@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
+import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { DOC_PagellaVoto, DOC_TipoGiudizio } from 'src/app/_models/DOC_PagellaVoto';
 
 import { environment } from 'src/environments/environment';
@@ -18,12 +19,13 @@ export class PagellaVotiService {
     //http://213.215.231.4/swappX/api/DOC_PagellaVoti/ListByAnnoClassePagella/2/1/33
   }
 
-  listByCSAMateria(classeSezioneAnnoID: number, materiaID: number, periodo: number): Observable<DOC_PagellaVoto[]>{
-    return this.http.get<DOC_PagellaVoto[]>(environment.apiBaseUrl+'DOC_PagellaVoti/ListByCSAMateria/'+classeSezioneAnnoID+'/'+materiaID)
-    .pipe (
-           map(val=> val.filter(val=>(val.periodo == periodo || val.periodo == 0)))
-    );   
-    //http://213.215.231.4/swappX/api/DOC_PagellaVoti/ListByCSAMateria/16/1002
+  listByCSAMateria(classeSezioneAnnoID: number, materiaID: number): Observable<CLS_Iscrizione[]>{
+
+    return this.http.get<CLS_Iscrizione[]>(environment.apiBaseUrl+'DOC_PagellaVoti/ListByCSAMateria/'+classeSezioneAnnoID+'/'+materiaID);
+    // .pipe (
+    //        map(val=> val.filter(val=>(val.periodo == periodo || val.periodo == 0)))
+    // );   
+    //http://213.215.231.4/swappX/api/DOC_PagellaVoti/ListByCSAMateria/18/1002
   }
   
   put(formData: any): Observable <any>{

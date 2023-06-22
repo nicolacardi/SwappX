@@ -1,5 +1,5 @@
-<table>
-    <tr>
+<table class="h90">
+    <tr >
         <td class="_columnleft-dashboard _cell-align-top">
             <div class="_table-container">
                 <app-classi-sezioni-anni-list 
@@ -19,58 +19,13 @@
 
             <mat-tab-group (selectedTabChange)="selectedTabValue($event)">
                 <mat-tab  *ngIf="classeSezioneAnnoID"  label="Alunni">
-                    <!-- <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" class="_btn-addAlunno" (click)="addAlunnoToClasse()" >
-                        <img class="iconaMenu" src="../../../../assets/alunnoPlus.svg">
-                    </button> -->
-
-                    <!-- <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" class="_btn-Red" (click)="removeAlunnoFromClasse()">
-                        <img class="iconaMenu" src="../../../../assets/alunnoMinus.svg">
-                    </button> -->
-                    <!-- <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="esporta Pdf" class="_btn-Blu" (click)="creaPdfIscrizioni()">
-                        <img class="iconaMenu" src="../../../../assets/PDFiconGreys.svg">
-                    </button> -->
-                    <!-- <button mat-mini-fab aria-label="Promuovi alunni" matTooltip="Promuovi" class="_btn-Green" (click)="promuovi()">
-                        <img class="iconaMenu" src="../../../../assets/promuovi_white.svg">
-                    </button> -->
-                    <!-- <mat-card class=" card mat-elevation-z8" style="height: 100%"> -->
                         <div class="_table-container">
                             <app-iscrizioni-classe-list  
                                 [dove]="'lista-alunni'" 
                                 [classeSezioneAnnoID]="classeSezioneAnnoID">
                             </app-iscrizioni-classe-list>
                         </div>
-                    <!-- </mat-card> -->
                 </mat-tab>
-                
-                <!-- <mat-tab  label="Orario Per Docente">
-                    <app-lezioni-calendario 
-                        [docenteID] = "docenteID" 
-                        [dove]="'orarioDocente'" #orarioDocenteDOM>
-                    </app-lezioni-calendario>
-                </mat-tab> -->
-
-                <!--
-                <mat-tab  label="Pagelle">
-                    <table>
-                        <tr>
-                            <td class="_cell-align-top w300px">
-                                <app-iscrizioni-classe-list [dove]="'pagella'"  
-                                    [classeSezioneAnnoID]="classeSezioneAnnoID"  
-                                    (iscrizioneID)="iscrizioneIDEmitted($event)"
-                                    (alunno)="alunnoEmitted($event)" >
-                                </app-iscrizioni-classe-list>
-                            </td>
-                            <td class="_cell-align-top pl10 _border-left w750px">
-                                <app-pagelle-edit
-                                    [iscrizioneID]="iscrizioneID"
-                                    [classeSezioneAnnoID]="classeSezioneAnnoID" 
-                                    [alunno]="alunno">
-                                </app-pagelle-edit>
-                            </td>
-                        </tr>
-                    </table>
-                </mat-tab>
-            -->
 
                 <mat-tab  *ngIf="classeSezioneAnnoID" label="Note Disciplinari"  >
                     <app-note-page 
@@ -97,7 +52,7 @@
                 <mat-tab  *ngIf="classeSezioneAnnoID" label="Pagelle">
                     <table>
                         <tr>
-                            <td class="_cell-align-top w300px">
+                            <td class="_cell-align-top w300px ">
                                 <app-iscrizioni-classe-list [dove]="'pagella'"  
                                     [classeSezioneAnnoID]="classeSezioneAnnoID"  
                                     (iscrizioneID)="iscrizioneIDEmitted($event)"
@@ -117,21 +72,23 @@
                 </mat-tab>
 
                 <mat-tab  *ngIf="classeSezioneAnnoID" label="Pagelle2">
-
+                    <h1 class="_titolo-pagina">Pagelle per materia</h1>
                         <!-- combo materie del docente -->
                     <form [formGroup] = "form">
                         <mat-form-field  class="_pos-relative ml20 mt10 topZIndex noBottomPadding"  #materia>
                             <mat-label>Materie</mat-label>
                             <mat-select formControlName="selectMaterieDocenteClasse">
-                                <mat-option *ngFor="let element of (obsMaterie$ | async)" [value]="element.id">
+                                <!-- <mat-option *ngFor="let element of (obsMaterie$ | async)" [value]="element.materiaID"> -->
+
+                                <mat-option *ngFor="let element of arrMaterie" [value]="element.materiaID">
                                     {{element.materia.descrizione}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                         <app-pagelle-classe-edit  
                         [classeSezioneAnnoID]="classeSezioneAnnoID"  
-                        [periodo] = "1"
-                        [materiaID]="materiaID">
+                        [materiaID]="materiaID"
+                        [tipoVoto]="tipoVoto">
                         </app-pagelle-classe-edit>
                     </form>
                 </mat-tab>

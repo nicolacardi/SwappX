@@ -113,39 +113,45 @@ export class PagellaVotoEditComponent implements OnInit  {
 //#region ----- Operazioni CRUD ----------------
 
 
-  save (formInput: DOC_PagellaVoto) {
+  save (pagellaVoto: DOC_PagellaVoto) {
 
     //pulizia forminput da oggetti composti
-    delete formInput.iscrizione;
-    delete formInput.materia;
-    delete formInput.tipoGiudizio;
-    delete formInput._ObiettiviCompleti;
+    delete pagellaVoto.iscrizione;
+    delete pagellaVoto.materia;
+    delete pagellaVoto.tipoGiudizio;
+    delete pagellaVoto._ObiettiviCompleti;
 
+    console.log("pagella voto-edit - this.objPagella", this.objPagella);
     //nel caso la pagella ancora non sia stata creata, va inserita
     if (this.objPagella.id == -1) {
+      console.log("Pagella.id = -1: Non C'è una Pagella --->post pagella e poi postpagellaVoto");
+
       this.svcPagella.post(this.objPagella)
         .pipe (
           tap( x =>  {
-            formInput.pagellaID = x.id! 
+            pagellaVoto.pagellaID = x.id! 
           } ),
           concatMap( () =>   
-            iif( () => formInput.id == 0 || formInput.id == undefined,
-              this.svcPagellaVoti.post(formInput),
-              this.svcPagellaVoti.put(formInput)
+            iif( () => pagellaVoto.id == 0 || pagellaVoto.id == undefined,
+              this.svcPagellaVoti.post(pagellaVoto),
+              this.svcPagellaVoti.put(pagellaVoto)
           )
         )
       ).subscribe()
     }
     else {    //caso pagella già presente
-      //console.log("2 Pagella.id <> -1: C'è una Pagella --->post o put del PagellaVoto");
+      console.log("Pagella.id <> -1: C'è una Pagella --->post o put del PagellaVoto");
+      console.log("PagellaVoto: ", pagellaVoto);
 
-      if (formInput.id == 0) {
-        this.svcPagellaVoti.post(formInput).subscribe(
+      if (pagellaVoto.id == 0) {
+        console.log("post pagellaVoto");
+        this.svcPagellaVoti.post(pagellaVoto).subscribe(
           res => this.loadData() ,
           err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
         )
       } else {
-        this.svcPagellaVoti.put(formInput).subscribe(
+        console.log("put pagellaVoto");
+        this.svcPagellaVoti.put(pagellaVoto).subscribe(
           res => { },
           err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})
         )
@@ -177,6 +183,8 @@ export class PagellaVotoEditComponent implements OnInit  {
     if (votoN >10 ) votoN = 10
     if (votoN <0 )  votoN = 0
     formData.voto = votoN;
+        //vediamo intanto cosa arriva
+        console.log ("pagella-voto-edit ->", formData);
     formData.pagellaID = this.objPagella.id;
     //nel caso di post l'ID del giudizio va messo a 1
     if (formData.tipoGiudizioID == null) 
@@ -203,6 +211,8 @@ export class PagellaVotoEditComponent implements OnInit  {
   }
 
   openObiettivi(element: DOC_PagellaVoto) {
+
+    console.log ( "pagellavoto-edit - openObiettivi - valori per aprire dialog", this.objPagella.iscrizioneID,    this.objPagella.id, this.objPagella.periodo, element.id, element.materiaID, this.classeSezioneAnnoID);
 
     const dialogConfig : MatDialogConfig = {
     panelClass: 'add-DetailDialog',

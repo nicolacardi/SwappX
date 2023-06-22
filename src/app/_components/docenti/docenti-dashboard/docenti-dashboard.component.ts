@@ -4,6 +4,9 @@ import { Component, OnInit, ViewChild }         from '@angular/core';
 import { MatDialog }                            from '@angular/material/dialog';
 import { MatTabGroup }                          from '@angular/material/tabs';
 import { ActivatedRoute }                       from '@angular/router';
+import { Observable, concatMap, tap }                           from 'rxjs';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+
 
 //components
 import { ClassiSezioniAnniListComponent }       from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
@@ -11,15 +14,16 @@ import { Utility }                              from '../../utilities/utility.co
 
 //services
 import { DocentiService }                       from '../docenti.service';
+import { DocenzeService }                       from '../../classi/docenze/docenze.service';
+
 import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_ClasseDocenteMateria';
 
 
 //models
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 import { User }                                 from 'src/app/_user/Users';
-import { DocenzeService } from '../../classi/docenze/docenze.service';
-import { Observable } from 'rxjs';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { ClasseAnnoMateriaService } from '../../classi/classi-anni-materie/classe-anno-materia.service';
+import { PagelleClasseEditComponent } from '../../pagelle/pagelle-classe-edit/pagelle-classe-edit.component';
 
 //#endregion
 @Component({
@@ -35,7 +39,7 @@ export class DocentiDashboardComponent implements OnInit {
   public classeSezioneAnnoID!:                  number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public annoID!:                               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public docenteID!:                            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
-
+  public tipoVoto!:                             string;
   public iscrizioneID!:                         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
   public alunno!:                               ALU_Alunno;   //valore ricevuto (emitted) dal child IscrizioniClasseList
 
@@ -46,7 +50,7 @@ export class DocentiDashboardComponent implements OnInit {
   public currUser!:                             User;
   
   obsMaterie$!:                                 Observable<CLS_ClasseDocenteMateria[]>;
-
+  arrMaterie!:                                  CLS_ClasseDocenteMateria[];
   form! :                                       UntypedFormGroup;
   public materiaID!:                            number;
 
@@ -61,6 +65,7 @@ export class DocentiDashboardComponent implements OnInit {
   // @ViewChild('orarioDocenteDOM') viewOrarioDocente!: LezioniCalendarioComponent; 
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
 
+  
 //#endregion
 
   constructor( 
@@ -69,6 +74,7 @@ export class DocentiDashboardComponent implements OnInit {
     private actRoute:                           ActivatedRoute,
     private svcDocenze:                         DocenzeService,
     private fb:                                 UntypedFormBuilder, 
+    private svcClasseAnnoMateria:               ClasseAnnoMateriaService,
 
 
   ){
@@ -104,8 +110,11 @@ export class DocentiDashboardComponent implements OnInit {
       )
     }
 
-    this.form.controls.selectMaterieDocenteClasse.valueChanges.subscribe(
-      sel => this.materiaID = sel );
+    this.form.controls.selectMaterieDocenteClasse.valueChanges.pipe(
+      tap(res => this.materiaID = res),
+      concatMap(res=> this.svcClasseAnnoMateria.getByMateriaAndClasseSezioneAnno(this.materiaID, this.classeSezioneAnnoID))
+    )
+    .subscribe(res => this.tipoVoto = res.tipoVoto!.descrizione);
 
 
   }
@@ -121,16 +130,23 @@ export class DocentiDashboardComponent implements OnInit {
   }
 
   classeSezioneAnnoIDEmitted(classeSezioneAnnoID: number) {
+
+    this.tipoVoto = "";
+    this.materiaID = 0;
     this.classeSezioneAnnoID = classeSezioneAnnoID;
-        //estraggo le materie di questo docente in questa classe e le metto nella combo
-    this.obsMaterie$ = this.svcDocenze.listByClasseSezioneAnnoDocente(classeSezioneAnnoID, this.docenteID);
+    // Estraggo le materie di questo docente in questa classe e le metto nella combo
+    this.svcDocenze.listByClasseSezioneAnnoDocente(classeSezioneAnnoID, this.docenteID)
+    .subscribe(materie=> {
+      this.arrMaterie = materie;
+      //console.log("docenti-dashboard - classeSezioneAnnoIDEmitted - vado a impostare la materia con ID:", materie[0].materiaID);
+      this.form.controls.selectMaterieDocenteClasse.setValue(materie[0].materiaID);
+    })
+
+
   }
 
   docenteIdEmitted(docenteId: number) {
     this.docenteID = docenteId;
-
-
-
   }
 
   iscrizioneIDEmitted(iscrizioneID: number) {

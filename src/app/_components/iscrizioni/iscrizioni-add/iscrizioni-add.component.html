@@ -17,7 +17,6 @@
                 <mat-chip-grid #chipList aria-label="Selezione Alunni">
                     <!-- [selectable]="selectable" -->
                     <mat-chip-row *ngFor="let alunnoSelezionato of alunniSelezionati"
-                            
                             [removable]="removable"
                             (removed)="remove(alunnoSelezionato)">
                         {{alunnoSelezionato}}

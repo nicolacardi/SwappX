@@ -66,14 +66,15 @@ export class PagellaEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor( private svcPagelle:                         PagelleService,
-               private svcPagellaVoti:                     PagellaVotiService,
-               private svcFiles:                           FilesService,
-               private svcIscrizioni:                      IscrizioniService,
-               private svcOpenXML:                         OpenXMLService,
-               private _loadingService:                    LoadingService,
-               private _snackBar:                          MatSnackBar ,
-               private _jspdf:                             JspdfService) {
+  constructor( 
+    private svcPagelle:                         PagelleService,
+    private svcPagellaVoti:                     PagellaVotiService,
+    private svcFiles:                           FilesService,
+    private svcIscrizioni:                      IscrizioniService,
+    private svcOpenXML:                         OpenXMLService,
+    private _loadingService:                    LoadingService,
+    private _snackBar:                          MatSnackBar ,
+    private _jspdf:                             JspdfService) {
 
   }
 

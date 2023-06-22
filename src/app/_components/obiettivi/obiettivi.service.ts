@@ -41,7 +41,10 @@ export class ObiettiviService {
     //http://213.215.231.4/swappX/api/MAT_Obiettivi/ListByMateriaAndClasseAndAnno/4/1/2
   }
 
-
+  countByMateriaAndClasseAndAnno (materiaID: number, classeID: number, annoID: number): Observable<number>{
+    return this.http.get<number>(environment.apiBaseUrl+'MAT_Obiettivi/CountByMateriaAndClasseAndAnno/'+materiaID+'/'+classeID+'/'+annoID);
+    //http://213.215.231.4/swappX/api/MAT_Obiettivi/CountByMateriaAndClasseAndAnno/4/1/2
+  }
 
 
   get(obiettivoID: any): Observable<MAT_Obiettivo>{

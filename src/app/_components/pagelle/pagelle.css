@@ -16,3 +16,179 @@
     padding-top: 0px;
     padding-bottom: 5px;
 }
+
+.mat-column-nome {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 120px !important;
+    width: 120px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .mat-column-cognome {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 120px !important;
+    width: 120px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .mat-column-openOb1 {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 100px !important;
+    width: 100px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .mat-column-openOb2 {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 100px !important;
+    width: 100px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .mat-column-VotiOb1 {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 60px !important;
+    width: 60px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .mat-column-VotiOb2 {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 60px !important;
+    width: 60px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .mat-column-idle {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 10px !important;
+    width: 10px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .mat-column-VotiNum1 {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 80px !important;
+    width: 80px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .mat-column-VotiNum2 {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 80px !important;
+    width: 80px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .mat-column-VotiGiu1 {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 140px !important;
+    width: 140px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .mat-column-VotiGiu2 {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 140px !important;
+    width: 140px !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
