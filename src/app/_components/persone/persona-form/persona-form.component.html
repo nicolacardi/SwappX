@@ -61,13 +61,13 @@
         <mat-grid-tile>
             <mat-form-field class="w70">
                 <mat-label>Data di Nascita</mat-label>
-                <input matInput #date required
+                <input matInput #dtNascita required
                       formControlName = "dtNascita"
                       [matDatepicker]= "dpDtNascita"
+                      (change) = updateDtNascita(dtNascita.value)
                       >
                 <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
                 <mat-datepicker #dpDtNascita  ></mat-datepicker>
-                <!-- <mat-error *ngIf="form.controls.dtNascita.errors?.required"> Campo obbligatorio</mat-error> -->
             </mat-form-field>
         </mat-grid-tile>
     </mat-grid-list>

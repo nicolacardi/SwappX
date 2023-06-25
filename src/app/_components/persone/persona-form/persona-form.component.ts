@@ -177,6 +177,26 @@ export class PersonaFormComponent implements OnInit {
     this.form.controls['nazioneNascita'].setValue('ITA');
   }
 
+  updateDtNascita(dtNascita: string){
+
+    //prendo la stringa e ne estraggo i pezzi
+    const parts = dtNascita.split('/'); // Split the input string by '/'
+    const day = parts[0];
+    const month = parts[1];
+    const year = parts[2];
+  
+    // creo la nuova data con i valori estratti (assumendo l'ordine day/month/year)
+    const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  
+    // formatto la data al tipo richiesto dal controllo data ('yyyy-MM-dd')
+    let formattedDate = date.toISOString().slice(0, 10);
+  
+    //piccolo step per evitare che 1/1/2008 diventi 31/12/2007
+    formattedDate = Utility.formatDate(date, FormatoData.yyyy_mm_dd);
+
+    //impostazione della data finale
+    this.form.controls['dtNascita'].setValue(formattedDate);
+  }
 //#endregion
 
 
