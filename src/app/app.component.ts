@@ -40,8 +40,8 @@ export class AppComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-  @ViewChild('start') public leftSidenav!: MatSidenav;
-  @ViewChild('end') public rightSidenav!: MatSidenav;
+  // @ViewChild('start') public leftSidenav!: MatSidenav;
+  // @ViewChild('end') public rightSidenav!: MatSidenav;
   @ViewChild('expansionClassi') public expansionClassi!: MatExpansionPanel;
   @ViewChild('expansionPagamenti') public expansionPagamenti!: MatExpansionPanel;
   @ViewChild('expansionDocenti') public expansionDocenti!: MatExpansionPanel;
@@ -108,7 +108,7 @@ export class AppComponent implements OnInit {
   clickMenuItem() {
     if (!this.isPinned) {
       this.isExpanded = false
-      this.leftSidenav.mode = "side";
+      // this.leftSidenav.mode = "side";
     }
   }
 
@@ -116,20 +116,20 @@ export class AppComponent implements OnInit {
     if (!this.isPinned) 
       this.isExpanded = !this.isExpanded
     
-    if(this.isExpanded) 
-      this.leftSidenav.mode = "over";
-    else 
-      this.leftSidenav.mode = "side";
+    // if(this.isExpanded) 
+    //   this.leftSidenav.mode = "over";
+    // else 
+    //   this.leftSidenav.mode = "side";
   }
 
   clickPin() {
     this.isPinned = true
-    this.leftSidenav.mode = "side";
+    //this.leftSidenav.mode = "side";
   }
 
   clikUnPin() {
     this.isPinned = false; 
     this.isExpanded = false;
-    this.leftSidenav.mode = "side";
+    //this.leftSidenav.mode = "side";
   }
 }
