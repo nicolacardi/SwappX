@@ -6,4 +6,5 @@ export interface MAT_Materia {
         descrizione:                            string;
 
         macroMateria:                           MAT_MacroMateria
+        seq?:                                   number;
 }

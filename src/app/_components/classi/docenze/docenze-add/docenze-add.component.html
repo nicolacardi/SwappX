@@ -13,7 +13,7 @@
             </div>
             <br>
             <mat-label class="center">AGGIUNTA DOCENZA PER LA CLASSE:</mat-label>
-            <mat-label class="center" *ngIf="classeSezioneAnno">{{classeSezioneAnno.classeSezione.classe.descrizione2}} {{classeSezioneAnno.classeSezione.sezione}}</mat-label>
+            <mat-label class="center" *ngIf="classeSezioneAnno">{{classeSezioneAnno.classeSezione.classe!.descrizione2}} {{classeSezioneAnno.classeSezione.sezione}}</mat-label>
             <mat-form-field  class="ml20 mt20 topZIndex">
                 <mat-label>Materia</mat-label>
                 <mat-select formControlName="selectMateria">

@@ -74,3 +74,10 @@ export interface DialogDataVotoInterr {
         lezioneID:                              number;  //se undefined serve a capire che ci troviamo in orario-docenti!
 
       }
+
+export interface DialogDataMateriaEdit {
+      materiaID:                                number;
+      maxSeq:                                   number;
+
+
+    }

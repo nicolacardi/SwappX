@@ -18,4 +18,11 @@ export class ClassiSezioniService {
     return this.http.get <CLS_ClasseSezione>( environment.apiBaseUrl  + 'CLS_ClassiSezioni/GetByClasseSezione/' + classeID + "/" + Sezione );  
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioni/GetByClasseSezione/6/A
   }
+
+  post(formData: any): Observable <any>{
+    formData.id = 0;
+    return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiSezioni' , formData);  
+  }
+
+
 }

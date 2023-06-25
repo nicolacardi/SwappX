@@ -23,6 +23,7 @@ import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_Classe
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 import { PagelleService } from '../pagelle.service';
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
+import { FormatoData, Utility } from '../../utilities/utility.component';
 
 
 //#endregion
@@ -134,8 +135,7 @@ export class PagelleClasseEditComponent{
     loadPagelleVoti$.subscribe(
         val =>   {
           this.matDataSource.data = val;
-          console.log ("classeSezioneAnnoID: ", this.classeSezioneAnnoID, " - materiaID: ", this.materiaID);
-
+          console.log ("pagelle-classe-edit - lodData - classeSezioneAnnoID: ", this.classeSezioneAnnoID, " - materiaID: ", this.materiaID);
           console.log ("pagelle-classe-edit - loadData - val: ", val);
           this.matDataSource.filterPredicate = this.filterPredicate();
 
@@ -184,58 +184,92 @@ export class PagelleClasseEditComponent{
         this.loadData(); 
       });
   }
+
+  changeSelectGiudizio(iscrizioneID: number, pagella: DOC_Pagella, pagellaVoto: DOC_PagellaVoto, tipoGiudizioID: number, periodo: number) {
+
+    let objPagellaVoto : DOC_PagellaVoto = {
+      id: pagellaVoto? pagellaVoto.id: 0,
+      pagellaID : pagella? pagella.id : 0,
+      materiaID : this.materiaID,
+      countTotObiettivi : 0,
+      countVotiObiettivi :0,
+      ckFrequenza: false,
+      ckAmmesso: false,
+      dtVoto: "2023-01-01T00:00:00",//ci va la data di oggi
+      tipoGiudizioID: tipoGiudizioID,
+      n_assenze : 0,
+      periodo : periodo
+    }
+
+    let pagellaVoto2 = Object.assign({}, objPagellaVoto);
+    this.save(iscrizioneID, pagellaVoto2, pagella, periodo);
+
+    //if (this.objPagella.ckStampato) this.resetStampato();
+  }
+
+
   changeVoto(iscrizioneID: number, pagella: DOC_Pagella, pagellaVoto: DOC_PagellaVoto, voto: any, periodo: number) {
-
-   
-
-    //potrei costruire l'ggetto objPagella come in pagella-voto-edit e poi darlo in pasto alla save di pagella-voto-edit.
-    //quella si occupa ad esempio di creare la pagella se già non c'è
-    //oppure qui gestire il solo salvataggio del voto in questione, ma appunto, sviscerare tutti i casi come è stato fatto lì
-
     let votoN = parseInt(voto);
     if (votoN >10 ) votoN = 10
     if (votoN <0 )  votoN = 0
 
-    //vediamo intanto cosa arriva
-    console.log ("pagelle-classe-edit ->", pagellaVoto);
-    if (!pagella) console.log ("non c'è pagella!");
-    if (pagella) console.log ("c'è pagella!");
-    if (!pagellaVoto) console.log ("non c'è pagellaVoto!");
-    if (pagellaVoto) console.log ("c'è pagellaVoto!");
-    console.log ("voto da impostare", votoN);
-    console.log ("*****************************************");
-
+    //console.log ("pagelle-classe-edit ->", pagellaVoto);
+    //if (!pagella) console.log ("non c'è pagella!");
+    //if (pagella) console.log ("c'è pagella!");
+    //if (!pagellaVoto) console.log ("non c'è pagellaVoto!");
+    //if (pagellaVoto) console.log ("c'è pagellaVoto!");
+    //console.log ("voto da impostare", votoN);
+    //console.log ("*****************************************");
 
     let today = new Date;
     let objPagellaVoto : DOC_PagellaVoto = {
+      id: pagellaVoto? pagellaVoto.id: 0,
       pagellaID : pagella? pagella.id : 0,
       materiaID : this.materiaID,
-
+      countTotObiettivi : 0,
+      countVotiObiettivi :0,
       ckFrequenza: false,
       ckAmmesso: false,
       voto: votoN,
-      dtVoto: today.toString(),//data di oggi
+      dtVoto: "2023-01-01T00:00:00",//ci va la data di oggi
       tipoGiudizioID : 1,
       n_assenze : 0,
       periodo : periodo
     }
 
-    pagellaVoto.voto = votoN;
-    if (pagellaVoto.tipoGiudizioID == null) 
-        pagellaVoto.tipoGiudizioID = 1;
-
-    let pagellaVoto2 = Object.assign({}, pagellaVoto);
-    
+    let pagellaVoto2 = Object.assign({}, objPagellaVoto);
     this.save(iscrizioneID, pagellaVoto2, pagella, periodo);
     
 
     //if (this.objPagella.ckStampato) this.resetStampato();
   }
 
+  changeNote(iscrizioneID: number, pagella: DOC_Pagella, pagellaVoto: DOC_PagellaVoto, nota: string, periodo: number) {
+    
+    let objPagellaVoto : DOC_PagellaVoto = {
+      id: pagellaVoto? pagellaVoto.id: 0,
+      pagellaID : pagella? pagella.id : 0,
+      materiaID : this.materiaID,
+      countTotObiettivi : 0,
+      countVotiObiettivi :0,
+      ckFrequenza: false,
+      ckAmmesso: false,
+      note: nota,
+      dtVoto: "2023-01-01T00:00:00",//ci va la data di oggi
+      tipoGiudizioID : 1,
+      n_assenze : 0,
+      periodo : periodo
+    }
 
+    console.log ("pagelle-classe-edit - changeNote - objPagellaVoto", objPagellaVoto);
+    let pagellaVoto2 = Object.assign({}, objPagellaVoto);
+    this.save(iscrizioneID, pagellaVoto2, pagella, periodo);
+
+
+  }
   
   save (iscrizioneID: number, pagellaVoto: DOC_PagellaVoto, pagella: DOC_Pagella, periodo: number) {
-    
+
     //pulizia pagellaVoto da oggetti composti
     delete pagellaVoto.iscrizione;
     delete pagellaVoto.materia;
@@ -253,7 +287,7 @@ export class PagelleClasseEditComponent{
 
     //nel caso la pagella ancora non sia stata creata, va inserita
     if (objPagella.id == -1) {
-      console.log("Pagella.id = -1: Non C'è una Pagella --->post pagella e poi postpagellaVoto");
+      //console.log("pagelle-classe-edit - save - Pagella.id = -1: Non C'è una Pagella --->post pagella e poi postpagellaVoto");
 
       this.svcPagella.post(objPagella)
         .pipe (
@@ -264,24 +298,30 @@ export class PagelleClasseEditComponent{
             iif( () => pagellaVoto.id == 0 || pagellaVoto.id == undefined,
               this.svcPagellaVoti.post(pagellaVoto),
               this.svcPagellaVoti.put(pagellaVoto)
+            )
           )
+        ).subscribe(
+          res => {this.loadData(); this._snackBar.openFromComponent(SnackbarComponent, {data: 'post pagella + post pagellaVoto eseguite', panelClass: ['green-snackbar']})},
         )
-      ).subscribe()
     }
     else {    //caso pagella già presente
-      console.log("Pagella.id <> -1: C'è una Pagella --->post o put del PagellaVoto");
-      console.log("PagellaVoto: ", pagellaVoto);
+      //console.log("pagelle-classe-edit - save - Pagella.id <> -1: C'è una Pagella --->post o put del PagellaVoto");
+      //console.log("pagelle-classe-edit - save - PagellaVoto: ", pagellaVoto);
 
-      if (pagellaVoto == null) { //rispetto a pagella-voto-edit qui è un po' diverso
-        console.log("post pagellaVoto");
+      if (pagellaVoto.id == 0) {
+        console.log("pagelle-classe-edit - save - post pagellaVoto");
+        console.log("********************************");
+
         this.svcPagellaVoti.post(pagellaVoto).subscribe(
-          res => this.loadData(),
+          res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'post pagellaVoto eseguita', panelClass: ['green-snackbar']}); this.loadData();},
           err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
         )
       } else {
-        console.log("put pagellaVoto");
+        console.log("pagelle-classe-edit - save - put pagellaVoto");
+        console.log("********************************");
+
         this.svcPagellaVoti.put(pagellaVoto).subscribe(
-          res => {},
+          res => {this.loadData(); this._snackBar.openFromComponent(SnackbarComponent, {data: 'put PagellaVoto eseguita', panelClass: ['red-snackbar']}); this.loadData();},
           err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})
         )
       }

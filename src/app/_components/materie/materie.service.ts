@@ -27,6 +27,17 @@ export class MaterieService {
     //http://213.215.231.4/swappX/api/MAT_Materie/ListByClasseSezioneAnnoAndDocente/48/1005
   }
 
+  aggiornaSeq(seqInitial: number, seqFinal: number): Observable <any>{
+    console.log(seqInitial, seqFinal);
+    return this.http.put(environment.apiBaseUrl+'MAT_Materie/aggiornaSeq/'+seqInitial+'/'+seqFinal, seqInitial);
+    //http://213.215.231.4/swappX/api/MAT_Materie/aggiornaSeq/1/2
+  }
+
+  renumberSeq() {
+    const url = `${environment.apiBaseUrl}MAT_Materie/RenumberSeq`;
+    return this.http.put(url, null);
+  }
+
   get(materiaID: any): Observable<MAT_Materia>{
     return this.http.get<MAT_Materia>(environment.apiBaseUrl+'MAT_Materie/'+materiaID);
     //http://213.215.231.4/swappX/api/MAT_Materie/3

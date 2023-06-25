@@ -27,12 +27,15 @@ export class MaterieListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
+  maxSeq!:                                       number;
   matDataSource = new MatTableDataSource<MAT_Materia>();
 
   obsMaterie$!:               Observable<MAT_Materia[]>;
 
   displayedColumns: string[] = [
+
       "actionsColumn", 
+      "seq",
       "descrizione", 
       "macroMateria",
       "color"
@@ -93,6 +96,11 @@ export class MaterieListComponent implements OnInit {
         this.sortCustom(); 
         this.matDataSource.sort = this.sort; 
         this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
+      
+        this.maxSeq = val.reduce((max, item) => {
+          return item.seq! > max ? item.seq! : max;
+        }, 0);
+
       }
     );
   }
@@ -104,7 +112,10 @@ export class MaterieListComponent implements OnInit {
       panelClass: 'add-DetailDialog',
       width: '400px',
       height: '370px',
-      data: 0
+      data: {
+        materiaID:                              0,
+        maxSeq:                                 this.maxSeq
+      }
     };
     const dialogRef = this._dialog.open(MateriaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() => this.loadData());
@@ -115,7 +126,11 @@ export class MaterieListComponent implements OnInit {
       panelClass: 'add-DetailDialog',
       width: '400px',
       height: '370px',
-      data: materiaID
+      data: {
+        materiaID:                              materiaID,
+        maxSeq:                                 this.maxSeq
+      }
+
     };
     const dialogRef = this._dialog.open(MateriaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() => this.loadData());
@@ -150,6 +165,11 @@ export class MaterieListComponent implements OnInit {
       return boolSx;
     }
     return filterFunction;
+  }
+
+  drop(event: any){
+    this.svcMaterie.aggiornaSeq(event.previousIndex+1, event.currentIndex+1 )
+    .subscribe(res=> this.loadData());
   }
 //#endregion
 

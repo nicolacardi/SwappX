@@ -164,8 +164,8 @@
   .mat-column-VotiGiu1 {
     word-wrap: break-word !important;
     white-space: unset !important;
-    flex: 0 0 140px !important;
-    width: 140px !important;
+    flex: 0 0 160px !important;
+    width: 160px !important;
     overflow-wrap: break-word;
     word-wrap: break-word;
   
@@ -180,8 +180,8 @@
   .mat-column-VotiGiu2 {
     word-wrap: break-word !important;
     white-space: unset !important;
-    flex: 0 0 140px !important;
-    width: 140px !important;
+    flex: 0 0 160px !important;
+    width: 160px !important;
     overflow-wrap: break-word;
     word-wrap: break-word;
   
@@ -192,3 +192,11 @@
     -webkit-hyphens: auto;
     hyphens: auto;
   }
+
+
+/* togliamo i selettori dalla input numerica nelle pagelle */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

@@ -144,13 +144,13 @@ export class ClassiDashboardComponent implements OnInit {
     this._jspdf.downloadPdf( this.viewListIscrizioni.matDataSource.data, 
                              columnsNames,
                              fieldsToKeep,
-                             "Classe "+ this.viewListIscrizioni.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewListIscrizioni.classeSezioneAnno.classeSezione.sezione,
+                             "Classe "+ this.viewListIscrizioni.classeSezioneAnno.classeSezione.classe!.descrizione2+" "+this.viewListIscrizioni.classeSezioneAnno.classeSezione.sezione,
                              "ListaIscrizioni");
 
      this._jspdf.downloadPdf(this.viewListIscrizioni.matDataSource.data, 
                              columnsNames,
                              fieldsToKeep,
-                             "Classe "+ this.viewListIscrizioni.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewListIscrizioni.classeSezioneAnno.classeSezione.sezione,
+                             "Classe "+ this.viewListIscrizioni.classeSezioneAnno.classeSezione.classe!.descrizione2+" "+this.viewListIscrizioni.classeSezioneAnno.classeSezione.sezione,
                              "ListaIscrizioni");
   }
 
@@ -162,7 +162,7 @@ export class ClassiDashboardComponent implements OnInit {
     this._jspdf.downloadPdf( this.viewDocenzeList.matDataSource.data,
                              columnsNames,
                              fieldsToKeep,
-                             "Docenti Classe "+ this.viewDocenzeList.classeSezioneAnno.classeSezione.classe.descrizione2+" "+this.viewDocenzeList.classeSezioneAnno.classeSezione.sezione,
+                             "Docenti Classe "+ this.viewDocenzeList.classeSezioneAnno.classeSezione.classe!.descrizione2+" "+this.viewDocenzeList.classeSezioneAnno.classeSezione.sezione,
                              "ListaDocenze");
   }
 
@@ -229,8 +229,8 @@ export class ClassiDashboardComponent implements OnInit {
 
     const dialogRef = this._dialog.open(DocenzeAddComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
-        result => {
-          if(result == undefined) this.viewDocenzeList.loadData()
+        res => {
+          if(res == undefined) this.viewDocenzeList.loadData()
     });
   }
 

@@ -178,7 +178,7 @@ export class LezioneComponent implements OnInit {
 
     if (this.data.classeSezioneAnnoID != null && this.data.classeSezioneAnnoID != undefined) {
       this.svcClasseSezioneAnno.get(this.data.classeSezioneAnnoID).subscribe(
-        val => this.strClasseSezioneAnno = val.classeSezione.classe.descrizione2 + " " + val.classeSezione.sezione
+        val => this.strClasseSezioneAnno = val.classeSezione.classe!.descrizione2 + " " + val.classeSezione.sezione
       );
     }
 
@@ -268,7 +268,7 @@ export class LezioneComponent implements OnInit {
       if (val.length > 0) {
         let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
         val.forEach (x =>
-          {strMsg = strMsg + "\n - " + x.classeSezioneAnno.classeSezione.classe.descrizione2 + ' ' + x.classeSezioneAnno.classeSezione.sezione;}
+          {strMsg = strMsg + "\n - " + x.classeSezioneAnno.classeSezione.classe!.descrizione2 + ' ' + x.classeSezioneAnno.classeSezione.sezione;}
         )
 
         this._dialog.open(DialogOkComponent, {

@@ -27,7 +27,7 @@
    
         <ng-container matColumnDef="classe">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Classe</th>
-            <td mat-cell *matCellDef="let element" >{{element.classeSezioneAnno.classeSezione.classe.descrizioneBreve}}</td>
+            <td mat-cell *matCellDef="let element" >{{element.classeSezioneAnno.classeSezione.classe!.descrizioneBreve}}</td>
         </ng-container>
 
         <ng-container matColumnDef="sezione">

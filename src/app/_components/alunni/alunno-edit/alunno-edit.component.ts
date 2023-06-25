@@ -149,26 +149,26 @@ save(){
         }),
         concatMap( () => this.svcAlunni.post(this.formAlunno.value))
       )
-      .subscribe(
-        res=> {
+      .subscribe({
+        next: res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
+        error: err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      })
     }
     else {
       this.personaFormComponent.save()
       .pipe(
         concatMap( () => this.svcAlunni.put(this.formAlunno.value))
       )
-      .subscribe(
-        res=> {
+      .subscribe({
+        next: res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
+        error: err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      })
     }
   }
 
@@ -184,13 +184,13 @@ save(){
         this.svcAlunni.delete(Number(this.alunnoID))
         .pipe(
           concatMap(()=> this.personaFormComponent.delete())
-        ).subscribe(
-          res=>{
+        ).subscribe({
+          next: res=>{
             this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
             this._dialogRef.close();
           },
-          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-        );
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+        });
       }
     });
   }

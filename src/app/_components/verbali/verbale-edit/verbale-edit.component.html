@@ -81,7 +81,7 @@
                         <mat-label>Classe</mat-label>
                         <mat-select formControlName="classeSezioneAnnoID">
                             <mat-option *ngFor="let element of (obsClassiSezioniAnni$ | async)" [value]="element.id">
-                            {{element.classeSezione.classe.descrizioneBreve}} {{element.classeSezione.sezione}}
+                            {{element.classeSezione.classe!.descrizioneBreve}} {{element.classeSezione.sezione}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>

@@ -138,26 +138,26 @@ export class GenitoreEditComponent implements OnInit {
         }),
         concatMap( () => this.svcGenitori.post(this.formGenitore.value))
       )
-      .subscribe(
-        res=> {
+      .subscribe({
+        next: res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
+        error: err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      })
     } else
     {
       this.personaFormComponent.save()
       .pipe(
         concatMap( () => this.svcGenitori.put(this.formGenitore.value))
       )
-      .subscribe(
-        res=> {
+      .subscribe({
+        next: res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
+        error: err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      })
     }
   }
 

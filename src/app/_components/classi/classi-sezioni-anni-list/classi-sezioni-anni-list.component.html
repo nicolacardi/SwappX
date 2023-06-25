@@ -111,7 +111,7 @@
 
     <ng-container matColumnDef="descrizioneAnnoSuccessivo">
         <th mat-header-cell *matHeaderCellDef >Classe Successiva</th>
-        <td mat-cell *matCellDef="let element">{{(element.classeSezioneAnnoSucc) === null ? "" : element.classeSezioneAnnoSucc.classeSezione.classe.descrizioneBreve}}</td>
+        <td mat-cell *matCellDef="let element">{{(element.classeSezioneAnnoSucc) === null ? "" : element.classeSezioneAnnoSucc.classeSezione.classe!.descrizioneBreve}}</td>
     </ng-container>
 
     <ng-container matColumnDef="sezioneAnnoSuccessivo">

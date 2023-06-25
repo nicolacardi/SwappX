@@ -101,6 +101,10 @@ export class AlunniService {
   }
 
   listByAnnoNoClasse(searchstring: string, annoID: number): Observable<ALU_Alunno[]>{
+
+    //deve restituire l'elenco degli ALUNNI (primo filtro) che in un certo anno (secondo filtro) NON sono iscritti a un'altra classe
+    // qui in angular filtriamo in base alla searchstring
+
     if (searchstring != null && (typeof searchstring === 'string')) {
       return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'CLS_Iscrizioni/ListByAnnoNoClasse/'+annoID)
       //http://213.215.231.4/swappX/api/CLS_Iscrizioni/ListByAnnoNoClasse/2

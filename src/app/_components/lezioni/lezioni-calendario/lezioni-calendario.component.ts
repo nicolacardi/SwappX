@@ -598,7 +598,7 @@ export class LezioniCalendarioComponent implements OnInit {
         if (val.length > 0) {
           let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
           val.forEach (x =>
-            { strMsg = strMsg + "\n - " + x.classeSezioneAnno.classeSezione.classe.descrizione2 + ' ' + x.classeSezioneAnno.classeSezione.sezione;}
+            { strMsg = strMsg + "\n - " + x.classeSezioneAnno.classeSezione.classe!.descrizione2 + ' ' + x.classeSezioneAnno.classeSezione.sezione;}
           )
           this._dialog.open(DialogOkComponent, {
             width: '320px',
@@ -640,7 +640,7 @@ export class LezioniCalendarioComponent implements OnInit {
         if (val.length > 0) {
           let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
           val.forEach (x =>
-            {strMsg = strMsg + "\n - " + x.classeSezioneAnno.classeSezione.classe.descrizione2 + ' ' + x.classeSezioneAnno.classeSezione.sezione;}
+            {strMsg = strMsg + "\n - " + x.classeSezioneAnno.classeSezione.classe!.descrizione2 + ' ' + x.classeSezioneAnno.classeSezione.sezione;}
           )
           this._dialog.open(DialogOkComponent, {
             width: '320px',

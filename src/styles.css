@@ -515,6 +515,10 @@
         width: 50%;
     }
 
+    .w60 {
+        width: 60%;
+    }
+
     .w70 {
         width: 70%;
     }
@@ -809,6 +813,10 @@
     .left {
         text-align: left;
     }
+
+    .right {
+        text-align: right;
+    }
 /*#endregion ***************************/
 
 /*#region ********** CURSOR ************/
@@ -837,6 +845,7 @@
         text-align: center;
         margin-top: 10px !important;
     }
+
 
     ._titolo-pagina-home {
         float: right;
@@ -1635,6 +1644,7 @@
     }
 
 /*#endregion ***************************/
+
 
 
 /*le icone nei mat-mini-fab sono scentrate verso il basso: questo css rimedia*/

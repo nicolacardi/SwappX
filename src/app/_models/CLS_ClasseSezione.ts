@@ -1,9 +1,9 @@
 import { CLS_Classe }                           from './CLS_Classe';
 
 export interface CLS_ClasseSezione {
-        id:                                     number;
+        id?:                                     number;
         classeID:                               number;
         sezione:                                string;
 
-        classe:                                 CLS_Classe;
+        classe?:                                 CLS_Classe;
 }

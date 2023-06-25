@@ -19,8 +19,11 @@
                         (change)="changeVoto(element, voto.value)" 
                         maxlength="2" #voto>
 
-
-                <mat-select  *ngIf="element.tipoVotoID == 2 && objPagella.iscrizioneID>0"  [value]="element.tipoGiudizioID? element.tipoGiudizioID : 1" placeholder="giudizio"  (selectionChange)="changeSelectGiudizio(element, selectGiudizio.value)" #selectGiudizio> 
+                <mat-select class="fs12"   
+                    *ngIf="element.tipoVotoID == 2 && objPagella.iscrizioneID>0"  
+                    [value]="element.tipoGiudizioID? element.tipoGiudizioID : 1" 
+                    placeholder="giudizio"  
+                    (selectionChange)="changeSelectGiudizio(element, selectGiudizio.value)" #selectGiudizio> 
                     <mat-option *ngFor="let giudizio of (obsTipiGiudizio$ | async)"  [value]="giudizio.id">
                         {{giudizio.descrizione}}
                     </mat-option>
@@ -36,7 +39,9 @@
         <ng-container matColumnDef="note">
             <th mat-header-cell *matHeaderCellDef >Commento</th>
             <td mat-cell class="h60px _td-note1" *matCellDef="let element">
-                <textarea *ngIf="objPagella.iscrizioneID>0" class="w400px h50px _noresize _text-area-note1" matInput (change)="changeNote(element, note.value)" #note>{{element.note}}</textarea>
+                <textarea *ngIf="objPagella.iscrizioneID>0" 
+                    class="w400px h50px _noresize _text-area-note1" matInput 
+                    (change)="changeNote(element, note.value)" #note>{{element.note}}</textarea>
             </td>
         </ng-container>
 

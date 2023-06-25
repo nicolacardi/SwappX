@@ -5,7 +5,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
-import { Observable, Subscription }             from 'rxjs';
+import { Observable, Subscription, iif, of }             from 'rxjs';
 import { concatMap, tap }                       from 'rxjs/operators';
 
 //components
@@ -104,17 +104,17 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
             //this.form.patchValue(classe); //non funziona bene, perchè ci sono dei "sotto-oggetti"
             this.form.controls.id.setValue(classe.id); //NB in questo modo si setta il valore di un campo del formBuilder quando NON compare anche come Form-field nell'HTML
             this.form.controls['sezione'].setValue(classe.classeSezione.sezione); 
-            this.form.controls['classeID'].setValue(classe.classeSezione.classe.id);
+            this.form.controls['classeID'].setValue(classe.classeSezione.classe!.id);
             this.form.controls['annoID'].setValue(classe.anno.id);
 
             let annoIDsucc=0;
             this.svcAnni.getAnnoSucc(classe.anno.id).pipe (
               tap ( val   =>  annoIDsucc= val.id),
               concatMap(() => this.obsClassiSezioniAnniSucc$ = this.svcClasseSezioneAnno.listByAnnoGroupByClasse(annoIDsucc))
-            ).subscribe(
-              res=> { },
-              err=> this.obs.unsubscribe()  ///NC ??? serve nel caso di errore, ma qui dentro cosa accade se c'è un errore?
-            );
+            ).subscribe({
+              next: res=> { },
+              error: err=> this.obs.unsubscribe()  ///NC ??? serve nel caso di errore, ma qui dentro cosa accade se c'è un errore?
+            });
             this.form.controls['classeSezioneAnnoSuccID'].setValue(classe.ClasseSezioneAnnoSucc?.id); 
           })
       );
@@ -126,28 +126,41 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 
 //#region ----- Operazioni CRUD ---------------
   save(){
-    //console.log ("form.id", this.form.controls['id'].value );
 
     let classeID = this.form.controls['classeID'].value;
     let sezione = this.form.controls['sezione'].value;
 
+    //console.log ("classe-sezione-anno-edit - save - form.id", this.form.controls['id'].value );
+    //console.log ("classe-sezione-anno-edit - save - classeID", classeID );
+    //console.log ("classe-sezione-anno-edit - save - sezione", sezione );
+
     if (this.form.controls['id'].value == null){
       this.svcClasseSezione.getByClasseSezione (classeID, sezione) 
         .pipe (
+          concatMap(classeSezione => {
+            if (classeSezione) {
+              return of(classeSezione); // La classeSezione esiste già, restituisci direttamente l'oggetto
+            } else {
+              const newClasseSezione : CLS_ClasseSezione = { classeID: classeID, sezione: sezione }; // Creazione di una nuova classeSezione
+              return this.svcClasseSezione.post(newClasseSezione); // Esegui una richiesta POST per creare la nuova classeSezione
+            }
+          }),
           tap ( val   =>   this.form.controls['classeSezioneID'].setValue(val.id)),
           concatMap(() => this.svcClasseSezioneAnno.post(this.form.value))
-        ).subscribe(
-          val => this._dialogRef.close(),
-          err=>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        ).subscribe({
+          next: () => this._dialogRef.close(),
+          error: ()=>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          }
         );
     }
     else {
       this.svcClasseSezione.getByClasseSezione (classeID, sezione).pipe (
           tap ( val   =>   this.form.controls['classeSezioneID'].setValue(val.id)),
           concatMap(() => this.svcClasseSezioneAnno.put(this.form.value))
-        ).subscribe(
-          res => this._dialogRef.close(),
-          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        ).subscribe({
+          next: () => this._dialogRef.close(),
+          error: ()=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          }
         );
     }
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
@@ -161,13 +174,13 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 
     dialogYesNo.afterClosed().subscribe( result => {
         if(result) {
-          this.svcClasseSezioneAnno.delete(Number(this.classeSezioneAnnoID)).subscribe(
-            res=>{
+          this.svcClasseSezioneAnno.delete(Number(this.classeSezioneAnnoID)).subscribe({
+            next: ()=>{
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();
             },
-            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          );
+            error: ()=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          });
         }
     });
   }
@@ -186,9 +199,10 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
     this.obs=  this.svcAnni.getAnnoSucc(selectedAnno).pipe (
         tap ( val   =>  annoIDsucc= val.id),
         concatMap(() => this.obsClassiSezioniAnniSucc$= this.svcClasseSezioneAnno.listByAnnoGroupByClasse(annoIDsucc))
-      ).subscribe(
-        res=> { },
-        err=> this.obs.unsubscribe()
+      ).subscribe({
+        next: ()=> { },
+        error: ()=> this.obs.unsubscribe()
+        }
       );
   }
   

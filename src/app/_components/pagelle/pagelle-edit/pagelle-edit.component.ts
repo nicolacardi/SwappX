@@ -185,7 +185,7 @@ export class PagellaEditComponent implements OnInit {
         { tagName: "CF",                        tagValue: alunno.persona.cf},
         { tagName: "DtNascita",                 tagValue: Utility.formatDate(alunno.persona.dtNascita, FormatoData.dd_mm_yyyy)},
         { tagName: "Alunno" ,                   tagValue: alunno.persona.nome+" "+alunno.persona.cognome},
-        { tagName: "Classe" ,                   tagValue: iscrizione.classeSezioneAnno.classeSezione.classe.descrizione2},
+        { tagName: "Classe" ,                   tagValue: iscrizione.classeSezioneAnno.classeSezione.classe!.descrizione2},
         { tagName: "Sezione" ,                  tagValue: iscrizione.classeSezioneAnno.classeSezione.sezione},
         { tagName: "DataDoc" ,                  tagValue: Utility.formatDate(objPagella.dtIns, FormatoData.dd_mm_yyyy)},
 

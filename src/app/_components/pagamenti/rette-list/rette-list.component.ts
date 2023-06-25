@@ -352,7 +352,7 @@ matDataSource = new MatTableDataSource<PAG_RettaPivot>();
       
       switch(key) { 
         case "iscrizione": { 
-          return currentTerm + data.iscrizione?.classeSezioneAnno.classeSezione.classe.descrizioneBreve+" "+data.iscrizione?.classeSezioneAnno.classeSezione.sezione ; 
+          return currentTerm + data.iscrizione?.classeSezioneAnno.classeSezione.classe!.descrizioneBreve+" "+data.iscrizione?.classeSezioneAnno.classeSezione.sezione ; 
            break; 
         } 
 

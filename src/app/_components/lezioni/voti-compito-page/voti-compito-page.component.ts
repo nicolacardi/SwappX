@@ -48,7 +48,7 @@ constructor(
 
     if (this.data.classeSezioneAnnoID != null && this.data.classeSezioneAnnoID != undefined) {
       this.svcClasseSezioneAnno.get(this.data.classeSezioneAnnoID).subscribe(
-        val => this.strClasseSezioneAnno = val.classeSezione.classe.descrizione2 + " " + val.classeSezione.sezione
+        val => this.strClasseSezioneAnno = val.classeSezione.classe!.descrizione2 + " " + val.classeSezione.sezione
       );
     }
     this.dtStart = new Date (this.data.start);

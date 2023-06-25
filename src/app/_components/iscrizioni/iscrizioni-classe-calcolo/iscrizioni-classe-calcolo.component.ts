@@ -74,7 +74,7 @@ export class IscrizioniClasseCalcoloComponent implements OnInit {
 
   ngOnInit(): void {
     
-    const seq = this.data.classeSezioneAnno.classeSezione.classe.seq; //questo è il valore seq della classe a cui è iscritto...vale uguale o +1
+    const seq = this.data.classeSezioneAnno.classeSezione.classe!.seq; //questo è il valore seq della classe a cui è iscritto...vale uguale o +1
     
     const obsClasseSezioneAnno$: Observable<CLS_ClasseSezioneAnno> = this.svcClasseSezioneAnno.getWithClasseSezioneAnno(this.data.classeSezioneAnnoID);
     obsClasseSezioneAnno$.subscribe(

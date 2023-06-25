@@ -75,7 +75,7 @@ export class IscrizioniAddComponent implements OnInit {
         // switchMap(() => 
         //   this.svcAlunni.listByAnnoNoClasse(this.form.value.nomeCognomeAlunno, this.data.annoID)
         // )
-        tap(val=> console.log(val)),
+        tap(val=> console.log("iscrizioni-add alunni disponibili in abse a anno: ", this.data.annoID, "...e ad aver scritto:", this.form.value.nomeCognomeAlunno, " ->", val)),
         tap(() => this.alunniIsLoading = false)
     )
   }

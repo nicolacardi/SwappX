@@ -121,10 +121,10 @@ export class PagellaVotoEditComponent implements OnInit  {
     delete pagellaVoto.tipoGiudizio;
     delete pagellaVoto._ObiettiviCompleti;
 
-    console.log("pagella voto-edit - this.objPagella", this.objPagella);
+    console.log("pagella voto-edit - save - this.objPagella", this.objPagella);
     //nel caso la pagella ancora non sia stata creata, va inserita
     if (this.objPagella.id == -1) {
-      console.log("Pagella.id = -1: Non C'è una Pagella --->post pagella e poi postpagellaVoto");
+      console.log("pagella voto-edit - save - Pagella.id = -1: Non C'è una Pagella --->post pagella e poi postpagellaVoto");
 
       this.svcPagella.post(this.objPagella)
         .pipe (
@@ -140,17 +140,20 @@ export class PagellaVotoEditComponent implements OnInit  {
       ).subscribe()
     }
     else {    //caso pagella già presente
-      console.log("Pagella.id <> -1: C'è una Pagella --->post o put del PagellaVoto");
-      console.log("PagellaVoto: ", pagellaVoto);
+      console.log("pagella voto-edit - save -  Pagella.id <> -1: C'è una Pagella --->post o put del PagellaVoto");
+      console.log("pagella voto-edit - save -  PagellaVoto: ", pagellaVoto);
 
       if (pagellaVoto.id == 0) {
-        console.log("post pagellaVoto");
+        console.log("pagella voto-edit - save -  post pagellaVoto");
+        console.log("********************************");
         this.svcPagellaVoti.post(pagellaVoto).subscribe(
           res => this.loadData() ,
           err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
         )
       } else {
-        console.log("put pagellaVoto");
+        console.log("pagella voto-edit - save -  put pagellaVoto");
+        console.log("********************************");
+
         this.svcPagellaVoti.put(pagellaVoto).subscribe(
           res => { },
           err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})

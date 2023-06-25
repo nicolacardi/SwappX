@@ -506,7 +506,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
   updateImporto(element: CLS_ClasseSezioneAnno, value: any) {
 
-    element.classeSezione.classe.importo = parseFloat(value);
+    element.classeSezione.classe!.importo = parseFloat(value);
 
     this.svcClassiSezioniAnni.put(element).subscribe(
       res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Importo salvato', panelClass: ['green-snackbar']}),  //MOSTRA ESITO OK MA NON SALVA,
