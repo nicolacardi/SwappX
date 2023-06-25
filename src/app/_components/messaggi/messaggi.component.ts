@@ -72,18 +72,18 @@ export class MessaggiComponent implements OnInit {
 
     element.closed = !element.closed;
 
-    this.svcMessages.put(element).subscribe(
-      res=> this.loadData(),
-      err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella chuisura  del messaggio ', panelClass: ['red-snackbar']})
-    );
+    this.svcMessages.put(element).subscribe({
+      next: res=> this.loadData(),
+      error: err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella chuisura  del messaggio ', panelClass: ['red-snackbar']})
+    });
   }
 
   deleteMsg(id: number) {
 
-    this.svcMessages.delete(id).subscribe(
-      res=> this.loadData(),
-      err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella cancellazione  del messaggio ', panelClass: ['red-snackbar']})
-    );
+    this.svcMessages.delete(id).subscribe({
+      next: res=> this.loadData(),
+      error: err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella cancellazione  del messaggio ', panelClass: ['red-snackbar']})
+    });
   }
 //#endregion
 }

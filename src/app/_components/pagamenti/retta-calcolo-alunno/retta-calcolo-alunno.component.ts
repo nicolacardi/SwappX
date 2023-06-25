@@ -188,10 +188,10 @@ form! :                             UntypedFormGroup;
             userIns:                1,
             userUpd:                1
           };
-          this.svcRette.post(rettaMese).subscribe(
-            res =>   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']}),
-            err =>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore durante l\'inserimento delle rette', panelClass: ['red-snackbar']})
-          );
+          this.svcRette.post(rettaMese).subscribe({
+            next: res =>   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Rette inserite per l\'alunno', panelClass: ['green-snackbar']}),
+            error: err=>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore durante l\'inserimento delle rette', panelClass: ['red-snackbar']})
+          });
         } 
       } else {
 

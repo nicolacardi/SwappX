@@ -114,22 +114,22 @@ export class ObiettivoEditComponent implements OnInit {
   save(){
 
     if (this.form.controls['id'].value == null) {
-      this.svcObiettivi.post(this.form.value).subscribe(
-        res=> {
+      this.svcObiettivi.post(this.form.value).subscribe({
+        next: res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      );
+        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      });
     }
     else {
-      this.svcObiettivi.put(this.form.value).subscribe(
-        res=> {
+      this.svcObiettivi.put(this.form.value).subscribe({
+        next: res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      );
+        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+     });
     }
   }
 
@@ -145,26 +145,26 @@ export class ObiettivoEditComponent implements OnInit {
         if(result) {
           //bisogna verificare se per caso questo obiettivoID non sia utilizzato già in qualche voto
           this.svcPagellaVotoObiettivi.ListByObiettivo(this.obiettivoID)
-            .pipe(
-              tap(res => {
-                if (res.length !=0) {
-                  const dialogRef = this._dialog.open(DialogOkComponent, {
-                    width: '320px',
-                    data: {titolo: "ATTENZIONE", sottoTitolo: "Questo obiettivo è utilizzato in qualche pagella"}
-                  });
-                  return;
-                }
-              }),
-              concatMap(res=> iif (()=> res.length == 0, this.svcObiettivi.delete(Number(this.obiettivoID)), of() ))
-            )
-            .subscribe(
-              res => {
-                console.log(res);
-                this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
-                this._dialogRef.close();
-              },
-              err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-            );
+          .pipe(
+            tap(res => {
+              if (res.length !=0) {
+                const dialogRef = this._dialog.open(DialogOkComponent, {
+                  width: '320px',
+                  data: {titolo: "ATTENZIONE", sottoTitolo: "Questo obiettivo è utilizzato in qualche pagella"}
+                });
+                return;
+              }
+            }),
+            concatMap(res=> iif (()=> res.length == 0, this.svcObiettivi.delete(Number(this.obiettivoID)), of() ))
+          )
+          .subscribe({
+            next: res => {
+              console.log(res);
+              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
+              this._dialogRef.close();
+            },
+            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          });
         }
     });
   }

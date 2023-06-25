@@ -44,19 +44,19 @@ export class LoginComponent implements OnInit {
     let obsUser$= this.svcUser.Login(this.form.value);
     const loadUser$ =this._loadingService.showLoaderUntilCompleted(obsUser$);
     
-    loadUser$.subscribe(
-        res => {
-          this.eventEmitterService.onAccountSaveProfile();
-          //nel caso di forkJoin res[0] è relativo al primo Observable 
-          //this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + res[0].fullname , panelClass: ['green-snackbar']}); 
-          this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + res.nome + ' ' + res.cognome , panelClass: ['green-snackbar']});  
-          this.router.navigateByUrl('/home');
-        },
-        err => {
-          this.loading = false;
-          this._snackBar.openFromComponent(SnackbarComponent, { data: err, panelClass: ['red-snackbar'] });
-        }
-    );
+    loadUser$.subscribe({
+      next: res => {
+        this.eventEmitterService.onAccountSaveProfile();
+        //nel caso di forkJoin res[0] è relativo al primo Observable 
+        //this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + res[0].fullname , panelClass: ['green-snackbar']}); 
+        this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + res.nome + ' ' + res.cognome , panelClass: ['green-snackbar']});  
+        this.router.navigateByUrl('/home');
+      },
+      error: err=> {
+        this.loading = false;
+        this._snackBar.openFromComponent(SnackbarComponent, { data: err, panelClass: ['red-snackbar'] });
+      }
+    });
   }
   
   forgotPassword(e: Event){

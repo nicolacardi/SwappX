@@ -135,21 +135,21 @@ export class ProfiloComponent implements OnInit {
       //FullName:   this.form.controls.fullname.value,
     };
 
-    this.svcUser.put(formData).subscribe(
-      res => {
+    this.svcUser.put(formData).subscribe({
+      next: res => {
         this.currUser.username = this.form.controls.username.value;
         this.currUser.email =this.form.controls.email.value;
         this.currUser.fullname = this.form.controls.fullname.value;
 
         localStorage.setItem('currentUser', JSON.stringify(this.currUser));
       },
-      err => console.log("[profilo.component] - save: ERRORE this.svcUser.put", formData)
-    );
+      error: err=> console.log("[profilo.component] - save: ERRORE this.svcUser.put", formData)
+    });
 
-    this.svcPersone.put(this.personaFormComponent.form.value).subscribe(
-      res => console.log("persona salvata", this.personaFormComponent.form.value),
-      err => console.log("[profilo.component] - save: ERRORE this.svcPersone.put", this.personaFormComponent.form.value)
-    );
+    this.svcPersone.put(this.personaFormComponent.form.value).subscribe({
+      next: res => console.log("persona salvata", this.personaFormComponent.form.value),
+      error: err=> console.log("[profilo.component] - save: ERRORE this.svcPersone.put", this.personaFormComponent.form.value)
+    });
 
     if(this.immagineDOM != undefined){
       this.fotoObj.userID = this.currUser.userID;

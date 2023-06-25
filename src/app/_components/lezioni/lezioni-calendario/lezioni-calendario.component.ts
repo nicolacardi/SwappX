@@ -614,12 +614,12 @@ export class LezioniCalendarioComponent implements OnInit {
               form.h_End = dtISOLocaleEnd.substring(11,19);
             }),
             concatMap(() => this.svcLezioni.put(form))
-          ).subscribe(
-            res=>{
+          ).subscribe({
+            next: res=>{
               //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
             },
-            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          );
+            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          });
         }
       }
     )
@@ -657,14 +657,14 @@ export class LezioniCalendarioComponent implements OnInit {
               form.h_End = strH_END;
             }),
             concatMap(() => this.svcLezioni.put(form))
-          ).subscribe(
-            res=>{
+          ).subscribe({
+            next: res=>{
               //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
             },
-            err=>{
+            error: err=>{
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
             }
-          );  
+          });  
         }
       }
     )

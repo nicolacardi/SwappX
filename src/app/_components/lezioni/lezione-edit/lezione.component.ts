@@ -323,26 +323,24 @@ export class LezioneComponent implements OnInit {
 
           
           objLezione.id = 0;
-          //this.svcLezioni.post(this.form.value).subscribe(
-          this.svcLezioni.post(objLezione).subscribe(
-            res => {
+          this.svcLezioni.post(objLezione).subscribe({
+            next: res => {
               this._dialogRef.close();
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
             },
-            err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          );
+            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          });
         } 
         else  {
           //this.svcLezioni.put(this.form.value).subscribe(
             objLezione.id = this.form.controls.id.value;
-            this.svcLezioni.put(objLezione).subscribe(
-
-            res=> {
+            this.svcLezioni.put(objLezione).subscribe({
+            next: res=> {
               this._dialogRef.close();
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
             },
-            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          );
+            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+         });
         }
       }
     });
@@ -356,13 +354,13 @@ export class LezioneComponent implements OnInit {
     dialogYesNo.afterClosed().subscribe(
       result => {
         if(result){
-          this.svcLezioni.delete (this.data.lezioneID).subscribe(
-            res =>{
+          this.svcLezioni.delete (this.data.lezioneID).subscribe({
+            next: res =>{
               this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();
             },
-            err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          );
+            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          });
         }
       }
     );
@@ -460,12 +458,12 @@ export class LezioneComponent implements OnInit {
             this.form.value[prop] = this.form.controls[prop].value;
           }
         
-          this.svcLezioni.put(this.form.value).subscribe(
-            res=> {
+          this.svcLezioni.put(this.form.value).subscribe({
+            next: res=> {
               this.PresenzeListComponent.loadData(); //NON VA. #ERROR cannot read properties of undefined reading loadData
             },  
-            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          );
+            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          });
         });
       }
     });
@@ -501,10 +499,10 @@ export class LezioneComponent implements OnInit {
           this.form.value[prop] = this.form.controls[prop].value;
         }
       
-        this.svcLezioni.put(this.form.value).subscribe(
-          res=> this.VotiCompitoListComponent.loadData(),//qui funziona 
-          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        );
+        this.svcLezioni.put(this.form.value).subscribe({
+          next: res=> this.VotiCompitoListComponent.loadData(),//qui funziona 
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        });
       });
     }
     else {
@@ -523,11 +521,11 @@ export class LezioneComponent implements OnInit {
             this.form.value[prop] = this.form.controls[prop].value;
           }
         
-          this.svcLezioni.put(this.form.value).subscribe(
-            res=> console.log ("ho cancellato i voti ma non faccio la refresh, non serve, i voti sono nascosti dalla ngIf"),
+          this.svcLezioni.put(this.form.value).subscribe({
+            next: res=> console.log ("ho cancellato i voti ma non faccio la refresh, non serve, i voti sono nascosti dalla ngIf"),
             //this.VotiCompitoListComponent.loadData(),  //qui non serve fare la loadData, c'è un ngIf e quindi è nascosto, e poi non funzionerebbe per questo stesso motivo
-            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          );
+            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          });
         } 
         else {
           this.form.controls.ckCompito.setValue(true);

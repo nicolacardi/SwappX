@@ -175,13 +175,13 @@ export class VerbaleEditComponent implements OnInit {
       result => {
         if(result){
           this.svcVerbaliPresenti.deleteByVerbale(this.form.controls.id.value);
-          this.svcVerbali.delete (this.form.controls.id.value).subscribe(
-            res =>{
+          this.svcVerbali.delete (this.form.controls.id.value).subscribe({
+            next: res =>{
               this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();
             },
-            err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          );
+            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          });
         }
       }
     );
@@ -210,16 +210,16 @@ export class VerbaleEditComponent implements OnInit {
         //imposto per default l'anno corrente
         //let objAnno = localStorage.getItem('AnnoCorrente');
         //this.form.controls.annoID.setValue(JSON.parse(objAnno!).id);
-        this.svcVerbali.post(this.form.value).subscribe(
-          res=> {  
+        this.svcVerbali.post(this.form.value).subscribe({
+          next: res=> {  
             this.insertPresenze("personale", res.id);
             this.insertPresenze("genitori", res.id);
 
             this._dialogRef.close();
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
           },
-          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        );
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        });
       }
       else { 
 
@@ -238,17 +238,13 @@ export class VerbaleEditComponent implements OnInit {
           .pipe(
             concatMap(()=>cancellaeRipristinaPresenze)
           )
-          .subscribe(
-            //next: (v) => console.log(v),
-            //error: (e) => console.error(e),
-            //complete: () => console.info('complete') 
-
-             res=> {  
-               this._dialogRef.close();
-               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-             },
-             err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          );
+          .subscribe({
+            next: res=> {  
+              this._dialogRef.close();
+              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+            },
+            error:  err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          });
       }
     }
   }

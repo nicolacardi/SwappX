@@ -153,13 +153,13 @@ export class UserEditComponent implements OnInit {
     dialogYesNo.afterClosed().subscribe(
       result => {
         if(result){
-          this.svcUser.delete(this.idUser).subscribe(
-            res => {
+          this.svcUser.delete(this.idUser).subscribe({
+            next: res => {
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();
             },
-            err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          );
+            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          });
         }
     });
   }
@@ -184,26 +184,26 @@ export class UserEditComponent implements OnInit {
         });
         return;        
       }
-      this.svcUser.post(this.form.value).subscribe(
-        res=> this._dialogRef.close(),
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio POST', panelClass: ['red-snackbar']})  
-      );
+      this.svcUser.post(this.form.value).subscribe({
+        next: res=> this._dialogRef.close(),
+        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio POST', panelClass: ['red-snackbar']})  
+      });
     } else {
-      this.svcUser.put(formData).subscribe( 
-        res => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo utente salvato', panelClass: ['green-snackbar']}),
-        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvaggio PUT', panelClass: ['red-snackbar']})
-      );
+      this.svcUser.put(formData).subscribe({
+        next: res => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Profilo utente salvato', panelClass: ['green-snackbar']}),
+        error:err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvaggio PUT', panelClass: ['red-snackbar']})
+      });
     }
 
     if(formData.userID != "0" && this.form.controls.password.dirty && this.form.controls.password.value != "" ){
       
-      this.svcUser.ResetPassword(this.idUser, this.form.controls.password.value).subscribe( 
-        res => {
+      this.svcUser.ResetPassword(this.idUser, this.form.controls.password.value).subscribe({
+        next: res => {
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password modificata', panelClass: ['green-snackbar']});
           this._dialogRef.close();
         },
-        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel cambio password', panelClass: ['red-snackbar']})
-      );
+        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel cambio password', panelClass: ['red-snackbar']})
+      });
     }
   }
 

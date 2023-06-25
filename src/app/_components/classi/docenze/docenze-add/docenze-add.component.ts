@@ -154,10 +154,10 @@ export class DocenzeAddComponent implements OnInit {
     checks$.pipe(
        concatMap( res => iif (()=> res == null, this.svcDocenze.post(objDocenza) , of() )
       )
-    ).subscribe(
-      res=> this.dialogRef.close(),
-      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']}) 
-    )
+    ).subscribe({
+      next: res=> this.dialogRef.close(),
+      error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']}) 
+    })
 
     //ATTENZIONE!!! MANCA UNA COSA IMPORTANTE!!! POTREBBE NON ESSERCI GIA' IL RECORD IN CLASSE ANNO MATERIA E BISOGNA INSERIRLO!!!! ERRORONE!!!
     //O LASCIAMO ALL'UTENTE L'ONERE DI ACCORGERSENE???

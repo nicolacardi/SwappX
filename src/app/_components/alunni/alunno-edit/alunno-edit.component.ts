@@ -154,7 +154,7 @@ save(){
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        error: err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       })
     }
     else {
@@ -167,7 +167,7 @@ save(){
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        error: err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       })
     }
   }
@@ -222,18 +222,18 @@ save(){
     this.svcAlunni.listByGenitoreAlunno(genitore.id, this.alunnoID)
     .pipe(
       concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(genitore.id, this.alunnoID), of() ))
-    ).subscribe(
-      res=> this.genitoriFamigliaComponent.loadData(),
-      err=> { }
-    )
+    ).subscribe({
+      next: res=> this.genitoriFamigliaComponent.loadData(),
+      error: err=> { }
+    })
   }
 
   removeFromFamily(genitore: ALU_Genitore) {
     const alunnoID = this.alunnoID;
-    this.svcAlunni.deleteByGenitoreAlunno(genitore.id, this.alunnoID).subscribe(
-      res=> this.genitoriFamigliaComponent.loadData(),
-      err=> { }
-    )
+    this.svcAlunni.deleteByGenitoreAlunno(genitore.id, this.alunnoID).subscribe({
+      next: res=> this.genitoriFamigliaComponent.loadData(),
+      error: err=> { }
+    })
   }
 
   addToAttended(classeSezioneAnno: CLS_ClasseSezioneAnnoGroup) {
@@ -274,17 +274,17 @@ save(){
     checks$.pipe(
       concatMap( res => iif (()=> res == null, this.svcIscrizioni.post(objClasseSezioneAnnoAlunno) , of() )
       )
-    ).subscribe(
-      res=> { this.classiAttendedComponent.loadData() },
-      err=> { }
-    )
+    ).subscribe({
+      next: res=> { this.classiAttendedComponent.loadData() },
+      error: err=> { }
+    })
   }
 
   removeFromAttended(classeSezioneAnno: CLS_ClasseSezioneAnno) {
-    this.svcIscrizioni.deleteByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id , this.alunnoID).subscribe(
-      res=> { this.classiAttendedComponent.loadData() },
-      err=> { }
-    )
+    this.svcIscrizioni.deleteByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id , this.alunnoID).subscribe({
+      next: res=> { this.classiAttendedComponent.loadData() },
+      error: err=> { }
+    })
   }
 
 //#endregion

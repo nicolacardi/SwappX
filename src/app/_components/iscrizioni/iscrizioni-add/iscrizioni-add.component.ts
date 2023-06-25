@@ -118,10 +118,10 @@ export class IscrizioniAddComponent implements OnInit {
           ClasseSezioneAnnoID: this.data.classeSezioneAnnoID
         };
         this.svcIscrizioni.post(objIscrizione)
-          .pipe( finalize(()=>this.dialogRef.close())).subscribe(
-            res =>{},
-            err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          );
+          .pipe( finalize(()=>this.dialogRef.close())).subscribe({
+            next: res =>{},
+            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        });
       });
   }
 

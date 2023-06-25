@@ -258,12 +258,12 @@ export class ClassiDashboardComponent implements OnInit {
             for (const element of objIdToRemove) {
               // await this.svcIscrizioni.delete(element.id)
               // .toPromise();
-              this.svcIscrizioni.delete(element.id).subscribe(
-                res=>{},
-                err=>{
+              this.svcIscrizioni.delete(element.id).subscribe({
+                next : res=>{},
+                error: err=>{
                   this._snackBar.openFromComponent(SnackbarComponent, {data: err, panelClass: ['red-snackbar']});
                 }
-              );
+              });
             }
 
             this.viewClassiSezioniAnni.loadData()            

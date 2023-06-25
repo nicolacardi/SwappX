@@ -58,8 +58,8 @@ export class OrarioDocentePageComponent implements OnInit {
     this.obsDocenti$ = this.svcDocenti.list()
 
     this.currUser = Utility.getCurrentUser();
-    this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe( 
-      res => {   
+    this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe( {
+      next: res => {   
         if(res)
           this.docenteID = res.id;
         else
@@ -67,11 +67,11 @@ export class OrarioDocentePageComponent implements OnInit {
               
         this.form.controls.selectDocente.setValue(this.docenteID);
       },
-      err => {
+      error: err=> {
         this.form.controls.selectDocente.setValue(0);
         this.docenteID = 0;
       }
-    );
+    });
   }
 
   //#endregion

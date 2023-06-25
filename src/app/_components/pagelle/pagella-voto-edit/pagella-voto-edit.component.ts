@@ -146,18 +146,18 @@ export class PagellaVotoEditComponent implements OnInit  {
       if (pagellaVoto.id == 0) {
         console.log("pagella voto-edit - save -  post pagellaVoto");
         console.log("********************************");
-        this.svcPagellaVoti.post(pagellaVoto).subscribe(
-          res => this.loadData() ,
-          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
-        )
+        this.svcPagellaVoti.post(pagellaVoto).subscribe({
+          next: res => this.loadData() ,
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
+        })
       } else {
         console.log("pagella voto-edit - save -  put pagellaVoto");
         console.log("********************************");
 
-        this.svcPagellaVoti.put(pagellaVoto).subscribe(
-          res => { },
-          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})
-        )
+        this.svcPagellaVoti.put(pagellaVoto).subscribe({
+          next: res => { },
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})
+        })
       }
     }
   }

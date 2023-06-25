@@ -94,14 +94,10 @@ export class ImpostazioniComponent implements OnInit {
 
     //Anno scolastico
     this.parAnnoCorrente.parValue = this.form.controls['selectAnnoScolastico'].value;
-    this.svcParametri.put(this.parAnnoCorrente).subscribe(
-      res=>{
-        this.setMessage(0);
-      },
-      err=>{
-        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Anno Scolastico]', panelClass: ['red-snackbar']});
-      }
-    ); 
+    this.svcParametri.put(this.parAnnoCorrente).subscribe({
+      next: res=>{this.setMessage(0);},
+      error: err=>{this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Anno Scolastico]', panelClass: ['red-snackbar']});}
+    }); 
 
     //Costruisco la stringa del parametro QuoteDefault
     let arrCheckboxes = this.QuoteList.toArray();
@@ -114,16 +110,16 @@ export class ImpostazioniComponent implements OnInit {
         strCheckboxes += "0";
     });
     this.parQuoteDefault.parValue = strCheckboxes;
-    this.svcParametri.put(this.parQuoteDefault).subscribe( 
-      res=> this.setMessage(1),
-      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Quote Default]', panelClass: ['red-snackbar']})
-    );
+    this.svcParametri.put(this.parQuoteDefault).subscribe( {
+      next: res=> this.setMessage(1),
+      error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Quote Default]', panelClass: ['red-snackbar']})
+    });
   
     this.parQuoteRidotteFratelli.parValue = this.form.controls['quoteRidotteFratelli'].value;
-    this.svcParametri.put(this.parQuoteRidotteFratelli).subscribe(
-      res=> this.setMessage(2),
-      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Quote Fratelli]', panelClass: ['red-snackbar']})
-    ); 
+    this.svcParametri.put(this.parQuoteRidotteFratelli).subscribe( {
+      next: res=> this.setMessage(2),
+      error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio [Quote Fratelli]', panelClass: ['red-snackbar']})
+    }); 
   }
 
 //#endregion

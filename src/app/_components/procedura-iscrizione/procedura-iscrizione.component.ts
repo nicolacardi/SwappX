@@ -145,11 +145,10 @@ export class ProceduraIscrizioneComponent implements OnInit {
     //console.log ("form del child", PersonaFormComponentArray[this.stepper.selectedIndex-1].form.value);
     this.form.patchValue(PersonaFormComponentArray[this.stepper.selectedIndex-1].form.value);
     //console.log("sto per salvare", this.form.value);
-    this.svcPersone.put(this.form.value).subscribe(
-      res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
-
-      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    );
+    this.svcPersone.put(this.form.value).subscribe({
+      next: res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
+      error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+    });
   }
 
   formValidEmitted(valid: boolean){

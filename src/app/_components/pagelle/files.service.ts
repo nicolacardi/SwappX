@@ -72,10 +72,10 @@ export class FilesService {
           return this.put(formDataFile)
         }
       }),
-    ).subscribe(
-      res => { return true} ,
-      err => { return false}
-    );
+    ).subscribe({
+      next: res => { return true} ,
+      error: err=> { return false}
+    });
   return true;
 
     //return result;

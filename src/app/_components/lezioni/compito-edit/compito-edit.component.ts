@@ -153,13 +153,10 @@ export class CompitoEditComponent implements OnInit {
             giudizio: ''
           };
 
-          this.svcVotiCompiti.post(objVoto).subscribe(
-
-            res=> {},
-            err=> {console.log ("fallito inserimento objVoto", objVoto)}
-
-
-          );
+          this.svcVotiCompiti.post(objVoto).subscribe({
+            next: res=> {},
+            error: err=> {console.log ("fallito inserimento objVoto", objVoto)}
+          });
         }
 
         //ora deve salvare il ckCompito e l'argomentoCompito nella lezione: 
@@ -168,13 +165,13 @@ export class CompitoEditComponent implements OnInit {
         this.lezioneSelected.argomentoCompito = this.form.controls.argomentoCompito.value;
 
 
-        this.svcLezioni.put(this.lezioneSelected).subscribe(
-          res=> {
+        this.svcLezioni.put(this.lezioneSelected).subscribe({
+          next: res=> {
             this._dialogRef.close();
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
           },
-          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        );
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        });
       });
 
 
@@ -184,13 +181,13 @@ export class CompitoEditComponent implements OnInit {
       this.data.argomentoCompito = this.form.controls.argomentoCompito.value;
 
       this.svcLezioni.put(this.data)
-      .subscribe(
-        val => {
+      .subscribe({
+        next: res => {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err=>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      );
+        error: err=>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      });
 
     }
     
@@ -215,14 +212,14 @@ export class CompitoEditComponent implements OnInit {
 
         this.data.ckCompito = false;
 
-        this.svcLezioni.put(this.data).subscribe(
-          res=> {
+        this.svcLezioni.put(this.data).subscribe({
+          next: res=> {
             this._dialogRef.close();
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record Cancellato', panelClass: ['red-snackbar']});
           },
           //this.VotiCompitoListComponent.loadData(),  //qui non serve fare la loadData, c'è un ngIf e quindi è nascosto, e poi non funzionerebbe per questo stesso motivo
-          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        );
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        });
       } 
       else {
         this.data.ckCompito = true;

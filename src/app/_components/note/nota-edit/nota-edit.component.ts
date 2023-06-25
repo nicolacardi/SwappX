@@ -183,8 +183,8 @@ export class NotaEditComponent implements OnInit {
     if (this.form.controls.id.value == null) {
       // caso 00 : Nuova Nota
       //console.log ("nuova nota");     
-      this.svcNote.post(this.form.value).subscribe(
-        nota=> {
+      this.svcNote.post(this.form.value).subscribe({
+        next: nota=> {
             this.form.controls.iscrizioni.value.forEach( (iscrizione: number) => {
             const objNotaIscrizione = <DOC_NotaIscrizione>{
               notaID: nota.id,
@@ -230,15 +230,15 @@ export class NotaEditComponent implements OnInit {
             })
           }
         },
-        err=>this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      )
+        error: err=>this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      })
     } 
     else {
       //console.log ("nota esistente");     
 
-        this.svcNote.put(this.form.value).subscribe(
+        this.svcNote.put(this.form.value).subscribe({
           //devo cancellare le noteIscrizioni e poi reinserirle
-          nota=> {
+          next: nota=> {
             this.svcNoteIscrizioni.deleteByNota(nota.id)
             .subscribe(()=>{
               this.form.controls.iscrizioni.value.forEach( (iscrizione: number) => {
@@ -289,8 +289,8 @@ export class NotaEditComponent implements OnInit {
               })
             }
           },
-          err=>this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
+          error: err=>this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        })
     }
   }
 //#endregion
@@ -312,8 +312,8 @@ export class NotaEditComponent implements OnInit {
     //estraggo i personaID dei genitori
     //console.log ("nota-edit - insertpersone - alunnoID", alunnoID, "scadenzaID", scadenzaID);
 
-    this.svcGenitori.listByAlunno(alunnoID).subscribe(
-      res=> {
+    this.svcGenitori.listByAlunno(alunnoID).subscribe({
+      next: res=> {
         if (res.length != 0) {
           res.forEach( genitore => {
             let objScadenzaPersona: CAL_ScadenzaPersone = {
@@ -332,8 +332,8 @@ export class NotaEditComponent implements OnInit {
         
         return;
       },
-      err=> {console.log ("errore in inserimento genitori", err)}
-    );  
+      error: err=> {console.log ("errore in inserimento genitori", err)}
+    });  
   }
 
     delete() {
@@ -367,12 +367,13 @@ export class NotaEditComponent implements OnInit {
               this.svcNoteIscrizioni.deleteByNota(this.data.notaID)
               .pipe(
                 concatMap(()=> this.svcNote.delete(this.data.notaID))
-              ).subscribe(            
-                res=> {
+              ).subscribe({            
+                next: res=> {
                   this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
                   this._dialogRef.close();
                 },
-                err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}) )
+                error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}) 
+              })
             }
           )
         }

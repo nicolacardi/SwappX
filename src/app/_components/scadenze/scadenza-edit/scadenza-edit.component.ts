@@ -307,14 +307,14 @@ export class ScadenzaEditComponent implements OnInit {
       
       objScadenza.id = 0;
       //this.svcLezioni.post(this.form.value).subscribe(
-      this.svcScadenze.post(objScadenza).subscribe(
-        res => {
+      this.svcScadenze.post(objScadenza).subscribe({
+        next: res => {
           this.insertPersone(res.id);
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      );
+        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      });
     } 
     else  {
 
@@ -334,13 +334,13 @@ export class ScadenzaEditComponent implements OnInit {
         .pipe(
           concatMap(()=>cancellaeRipristinaPersone)
         )
-        .subscribe(
-        res=> {
+        .subscribe({
+        next: res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      );
+        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      });
     }
   }
 
@@ -361,13 +361,13 @@ export class ScadenzaEditComponent implements OnInit {
             concatMap(()=>this.svcScadenze.delete (this.data.scadenzaID)
             )
           )
-          .subscribe(
-            res =>{
+          .subscribe({
+            next: res =>{
               this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();
             },
-            err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          );;
+            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          });
 
         }
       }

@@ -191,13 +191,13 @@ export class VotoInterrEditComponent implements OnInit {
       // console.log ("voto-interr-edit save POST this.form.value", this.form.value);
       // console.log ("voto-interr-edit save POST votoInterrObj", votoInterrObj);
       this.form.controls.id.setValue(0);
-      this.svcVotiInterr.post(votoInterrObj).subscribe(
-        res=> {
+      this.svcVotiInterr.post(votoInterrObj).subscribe({
+        next: res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      );
+        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      });
 
     } else { 
       //Update interrogazione
@@ -208,13 +208,13 @@ export class VotoInterrEditComponent implements OnInit {
       
       console.log ("voto-interr-edit save PUT this.form.value", this.form.value);
       this.svcVotiInterr.put(this.form.value)
-      .subscribe(
-        res => {
+      .subscribe({
+        next: res => {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err=>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      );
+        error: err=>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      });
 
     }
     
@@ -229,13 +229,13 @@ export class VotoInterrEditComponent implements OnInit {
     dialogYesNo.afterClosed().subscribe(result => {
       if(result) {
 
-        this.svcVotiInterr.delete(this.data.votoInterr.id!).subscribe(
-          res => {
+        this.svcVotiInterr.delete(this.data.votoInterr.id!).subscribe({
+          next: res => {
             this._dialogRef.close();
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
           },
-          err=>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        );
+          error: err=>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        });
 
         for (const prop in this.form.controls) {
           this.form.value[prop] = this.form.controls[prop].value;

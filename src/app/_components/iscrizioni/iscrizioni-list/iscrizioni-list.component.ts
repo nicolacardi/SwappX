@@ -456,8 +456,8 @@ export class IscrizioniListComponent implements OnInit {
         }
 
         this.svcScadenze.post(objScadenza)
-        .subscribe(
-          scad => {
+        .subscribe({
+          next: scad => {
             //inserisco i genitori nella tabella ScadenzaPersone: per ora prendo lo stesso metodo usato in notaedit
             //potrebbe stare fuori da entrambi, per esempio in Utility
             
@@ -466,8 +466,8 @@ export class IscrizioniListComponent implements OnInit {
             this.svcIscrizioni.updateStato(formData).subscribe(res=>this.loadData());
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta inviata', panelClass: ['green-snackbar']});
           },
-          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore invio richiesta', panelClass: ['red-snackbar']})
-        )
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore invio richiesta', panelClass: ['red-snackbar']})
+        })
       }
     ) 
   }
@@ -488,8 +488,8 @@ export class IscrizioniListComponent implements OnInit {
     //estraggo i personaID dei genitori
     //console.log ("nota-edit - insertpersone - alunnoID", alunnoID, "scadenzaID", scadenzaID);
 
-    this.svcGenitori.listByAlunno(alunnoID).subscribe(
-      (res: ALU_Genitore[]) => {
+    this.svcGenitori.listByAlunno(alunnoID).subscribe({
+      next: (res: ALU_Genitore[]) => {
         if (res.length != 0) {
           res.forEach( genitore => {
             let objScadenzaPersona: CAL_ScadenzaPersone = {
@@ -509,8 +509,8 @@ export class IscrizioniListComponent implements OnInit {
         
         return;
       },
-      (err: any)=> {console.log ("errore in inserimento genitori", err)}
-    );  
+      error: (err: any)=> {console.log ("errore in inserimento genitori", err)}
+    });  
   }
 
 //#endregion

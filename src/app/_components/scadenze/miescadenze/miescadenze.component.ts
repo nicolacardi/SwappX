@@ -81,20 +81,20 @@ export class MieScadenzeComponent implements OnInit {
     //element.ckLetto = !element.ckLetto;
     element.ckLetto = true;
 
-    this.svcScadenzePersone.put(element).subscribe(
-      res=> this.loadData(),
-      err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella chuisura della scadenza ', panelClass: ['red-snackbar']})
-    );
+    this.svcScadenzePersone.put(element).subscribe({
+      next: res=> this.loadData(),
+      error: err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella chuisura della scadenza ', panelClass: ['red-snackbar']})
+    });
   }
 
   setAccettato(element: CAL_ScadenzaPersone) {
     console.log(element);
     element.ckAccettato = true;
     element.ckRespinto = false;
-    this.svcScadenzePersone.put(element).subscribe(
-      res=> {},
-      err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella chuisura della scadenza ', panelClass: ['red-snackbar']})
-    );
+    this.svcScadenzePersone.put(element).subscribe({
+      next: res=> {},
+      error: err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella chuisura della scadenza ', panelClass: ['red-snackbar']})
+    });
   }
 
   setRespinto(element: CAL_ScadenzaPersone) {
@@ -108,10 +108,10 @@ export class MieScadenzeComponent implements OnInit {
       console.log(element);
       element.ckAccettato = false;
       element.ckRespinto = true;
-      this.svcScadenzePersone.put(element).subscribe(
-        res=> {},
-        err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella chuisura della scadenza ', panelClass: ['red-snackbar']})
-      );
+      this.svcScadenzePersone.put(element).subscribe({
+        next: res=> {},
+        error: err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella chuisura della scadenza ', panelClass: ['red-snackbar']})
+      });
     }
   }
 

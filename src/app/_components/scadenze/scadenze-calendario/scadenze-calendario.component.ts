@@ -510,12 +510,11 @@ export class ScadenzeCalendarioComponent implements OnInit {
             form.h_End = dtISOLocaleEnd.substring(11,19);
           }),
           concatMap(() => this.svcScadenze.put(form))
-        ).subscribe(
-          res=>{
-            //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        ).subscribe({
+          next: res=>{//this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
           },
-          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        );
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        });
       }
 
       
@@ -545,14 +544,14 @@ export class ScadenzeCalendarioComponent implements OnInit {
 
         }),
         concatMap(() => this.svcScadenze.put(form))
-      ).subscribe(
-        res=>{
+      ).subscribe({
+        next: res=>{
           //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
-        err=>{
+        error: err=>{
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         }
-      );  
+      });  
     }
         
   }

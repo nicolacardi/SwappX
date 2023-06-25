@@ -66,14 +66,6 @@ export class UsersFilterComponent implements OnInit {
       }
     )
 
-    // this.badgeFilter.valueChanges.subscribe(
-    //   val => {
-    //     //this.resetFilterSx();
-    //     this.usersListComponent.filterValues.badge = val.toLowerCase();
-    //     this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
-    //   }
-    // )
-
   }
 //#endregion
 

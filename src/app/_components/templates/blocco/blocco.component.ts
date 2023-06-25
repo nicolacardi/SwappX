@@ -640,34 +640,36 @@ export class BloccoComponent implements OnInit {
       .pipe(
         concatMap(() => this.svcBlocchi.delete(blocco.id!))
       )
-      .subscribe(
-        res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
+      .subscribe({
+        next: res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
         this.recordEdited.emit(this.blocco.id!)
         },
-        err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
-      );
+        error: err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
+      });
     };
     if (blocco.tipoBlocco!.descrizione == "Text") {
       this.svcBlocchiTesti.deleteByBlocco(blocco.id)
       .pipe(
         concatMap(() => this.svcBlocchi.delete(blocco.id!))
       )
-      .subscribe(
-        res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
+      .subscribe({
+        next: res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
         this.recordEdited.emit(this.blocco.id!)
         },
-        err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
-      );
+        error: err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
+      });
     }
     if (blocco.tipoBlocco!.descrizione == "Table") {
       this.svcBlocchiCelle.deleteByBlocco(blocco.id)
       .pipe(
         concatMap(() => this.svcBlocchi.delete(blocco.id!))
       )
-      .subscribe(res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
-      this.recordEdited.emit(this.blocco.id!)
-      },
-      err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})));
+      .subscribe({
+        next: res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
+        this.recordEdited.emit(this.blocco.id!)
+        },
+        error: err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
+      });
     } 
   }
 

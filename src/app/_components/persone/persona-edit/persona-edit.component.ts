@@ -130,13 +130,14 @@ export class PersonaEditComponent implements OnInit {
   save()
   {
     this.personaFormComponent.save()
-    .subscribe(
-      res=> {
+    .subscribe({
+      next: res=> {
         this._dialogRef.close();
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
       },
-      err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    )
+      error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+    
+    })
   
   }
 
@@ -150,13 +151,13 @@ export class PersonaEditComponent implements OnInit {
         if(result){
 
           this.personaFormComponent.delete()
-          .subscribe(  
-            res=> { 
+          .subscribe( {
+            next: res=> { 
               this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();
             },
-            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          );
+            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          });
         }
     });
   }

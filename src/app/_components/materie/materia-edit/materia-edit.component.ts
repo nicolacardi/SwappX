@@ -107,26 +107,28 @@ export class MateriaEditComponent implements OnInit {
     if (this.form.controls['id'].value == null) {
       this.form.controls.seq.setValue(this.data.maxSeq +1);
       this.svcMaterie.post(this.form.value)
-        .subscribe(res=> {
-          this._dialogRef.close();
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-        },
-        err=> (
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
-      );
+        .subscribe({
+          next: res=> {
+            this._dialogRef.close();
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+          },
+          error: err=> (
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          )
+        });
     }
     else {
       console.log ("salvo", this.form.value);
       this.svcMaterie.put(this.form.value)
-        .subscribe(res=> {
-          this._dialogRef.close();
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-        },
-        err=> (
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
-      );
+        .subscribe({
+          next: res=> {
+            this._dialogRef.close();
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+          },
+          error: err=> (
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          )
+        });
     }
   }
 
@@ -139,14 +141,14 @@ export class MateriaEditComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       result => {
         if(result){
-          this.svcMaterie.delete(Number(this.data.materiaID)).subscribe(
-            res=>{
+          this.svcMaterie.delete(Number(this.data.materiaID)).subscribe({
+            next: res=>{
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
               this.svcMaterie.renumberSeq().subscribe();
               this._dialogRef.close();
             },
-            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          );
+            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          });
         }
     });
   }

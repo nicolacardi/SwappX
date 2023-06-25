@@ -296,8 +296,8 @@ export class PagellaEditComponent implements OnInit {
       return;
     }
 
-    this.svcFiles.getByDocAndTipo(this.objPagella.id,"Pagella").subscribe(
-        res => {
+    this.svcFiles.getByDocAndTipo(this.objPagella.id,"Pagella").subscribe({
+        next: res => {
           //si crea un elemento fittizio che scarica il file di tipo base64 che gli viene assegnato
           const source = `data:application/pdf;base64,${res.fileBase64}`;
           const link = document.createElement("a");
@@ -306,8 +306,8 @@ export class PagellaEditComponent implements OnInit {
           link.download = `${"test"}.pdf`
           link.click();
         },
-        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di caricamento', panelClass: ['red-snackbar']})
-      );
+        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di caricamento', panelClass: ['red-snackbar']})
+    });
   }
 
   async savePdfPagella() {
@@ -376,7 +376,7 @@ export class PagellaEditComponent implements OnInit {
       }),
     ).subscribe(
       res => ( this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella salvata in Database', panelClass: ['green-snackbar']})),
-      err =>  {}
+      err=>  {}
     );
     this.svcPagelle.setStampato(this.objPagella.id!, true).subscribe();
     */

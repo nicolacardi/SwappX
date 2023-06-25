@@ -48,14 +48,14 @@ export class ChangePswComponent implements OnInit {
       newPassword:  this.form.controls.newPassword.value
     };
 
-    this.svcUser.ChangePassword(formData).subscribe(
-      res =>  {
+    this.svcUser.ChangePassword(formData).subscribe({
+      next: res =>  {
         if(res.succeeded == false)
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password attuale non corretta', panelClass: ['red-snackbar']});
         else
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password modificata', panelClass: ['green-snackbar']});
       },
-      err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio della password', panelClass: ['red-snackbar']})
-    );
+      error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio della password', panelClass: ['red-snackbar']})
+    });
   }
 }

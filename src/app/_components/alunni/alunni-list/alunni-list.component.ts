@@ -250,8 +250,8 @@ export class AlunniListComponent implements OnInit {
       const loadAlunni$ =this._loadingService.showLoaderUntilCompleted(obsAlunni$);
 
       loadAlunni$.subscribe(
-        val =>   {
-          this.matDataSource.data = val;
+        res =>   {
+          this.matDataSource.data = res;
           this.matDataSource.paginator = this.paginator;
           this.sortCustom();
           this.matDataSource.sort = this.sort; 

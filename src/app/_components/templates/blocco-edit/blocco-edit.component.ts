@@ -246,13 +246,14 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
         .pipe (
           concatMap( ()=> this.svcBlocchi.put(this.form.value))
         )
-        .subscribe( res=> {
+        .subscribe( { 
+          next: res=> {
           this.ritorno = { operazione:"PUT TESTO"}
             this._dialogRef.close(this.ritorno);
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
           },
-          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        })
       } else {            
         // POST forse di qui non si passa MAI??
         console.log ("post testo");
@@ -261,14 +262,14 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
           tap(bloccoTesto=> {this.form.controls.bloccoTestoID.setValue(bloccoTesto.id)}),
           concatMap( ()=> this.svcBlocchi.put(this.form.value))
         )
-        .subscribe( res=> {
-
-          this.ritorno = { operazione: "POST TESTO" }
+        .subscribe({ 
+          next: res=> {
+            this.ritorno = { operazione: "POST TESTO" }
             this._dialogRef.close(this.ritorno);
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Blocco Testo salvato', panelClass: ['green-snackbar']})
           },
-          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        })
       }
     }
 
@@ -287,14 +288,15 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
         .pipe(
           concatMap( ()=> this.svcBlocchi.put(this.form.value))
         )
-        .subscribe( res=> {
+        .subscribe({ 
+          next: res=> {
           //console.log("sto per chiudere e passare this.imgSize PUT", this.imgSize);
             this.ritorno = {operazione: "PUT IMMAGINE"}
             this._dialogRef.close(this.ritorno);
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Blocco Immagine salvato', panelClass: ['green-snackbar']})
           },
-          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        })
       } else {
         let fotoObj : TEM_BloccoFoto = {          // POST
           bloccoID: this.bloccoID,
@@ -309,14 +311,15 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
           tap(bloccoFoto=> this.form.controls.bloccoFotoID.setValue(bloccoFoto.id)),
           concatMap( ()=> this.svcBlocchi.put(this.form.value))
         )
-        .subscribe( res=> {
+        .subscribe({ 
+          next: res=> {
             //console.log("sto per chiudere e passare this.imgSize POST", this.imgSize);
             this.ritorno = {operazione: "POST IMMAGINE"}
             this._dialogRef.close(this.ritorno);
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']})
           },
-          err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-        )
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        })
         
       }
     } 
@@ -342,37 +345,39 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
       .pipe(
         concatMap(() => this.svcBlocchi.delete(this.bloccoID))
       )
-      .subscribe(
-        res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
+      .subscribe({
+        next: res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
           this.ritorno = {operazione: "DELETE"};
           this._dialogRef.close(this.ritorno);
         },
-        err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
-      );
+        error: err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
+      });
     };
     if (this.tipoBloccoDesc == "Text") {
       this.svcBlocchiTesti.deleteByBlocco(this.bloccoID)
       .pipe(
         concatMap(() => this.svcBlocchi.delete(this.bloccoID))
       )
-      .subscribe(
-        res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
+      .subscribe({
+        next: res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
           this.ritorno = {operazione: "DELETE"};
           this._dialogRef.close(this.ritorno);
         },
-        err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
-      );
+        error: err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
+      });
     }
     if (this.tipoBloccoDesc == "Table") {
       this.svcBlocchiCelle.deleteByBlocco(this.bloccoID)
       .pipe(
         concatMap(() => this.svcBlocchi.delete(this.bloccoID))
       )
-      .subscribe(res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
+      .subscribe({
+        next: res=>{this._snackBar.openFromComponent(SnackbarComponent,{data: 'Blocco cancellato', panelClass: ['red-snackbar']});
         this.ritorno = {operazione: "DELETE"};
         this._dialogRef.close(this.ritorno);
       },
-      err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})));
+        error: err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))
+      });
     } 
   }
 //#endregion

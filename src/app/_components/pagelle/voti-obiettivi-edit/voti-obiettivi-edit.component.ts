@@ -91,10 +91,10 @@ export class VotiObiettiviEditComponent implements OnInit {
       };
       
       this.svcPagellaVotoObiettivi.put(formDataPagella)
-        .subscribe(
-          res => { },
-          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
-        );
+        .subscribe({
+          next: res => { },
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
+      });
     } 
     else {
       //manca l'id obiettivo, bisogna fare una post dell'obiettivo

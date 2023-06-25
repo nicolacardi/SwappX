@@ -312,18 +312,18 @@ export class PagelleClasseEditComponent{
         console.log("pagelle-classe-edit - save - post pagellaVoto");
         console.log("********************************");
 
-        this.svcPagellaVoti.post(pagellaVoto).subscribe(
-          res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'post pagellaVoto eseguita', panelClass: ['green-snackbar']}); this.loadData();},
-          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
-        )
+        this.svcPagellaVoti.post(pagellaVoto).subscribe({
+          next: res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'post pagellaVoto eseguita', panelClass: ['green-snackbar']}); this.loadData();},
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
+        })
       } else {
         console.log("pagelle-classe-edit - save - put pagellaVoto");
         console.log("********************************");
 
-        this.svcPagellaVoti.put(pagellaVoto).subscribe(
-          res => {this.loadData(); this._snackBar.openFromComponent(SnackbarComponent, {data: 'put PagellaVoto eseguita', panelClass: ['red-snackbar']}); this.loadData();},
-          err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})
-        )
+        this.svcPagellaVoti.put(pagellaVoto).subscribe({
+          next: res => {this.loadData(); this._snackBar.openFromComponent(SnackbarComponent, {data: 'put PagellaVoto eseguita', panelClass: ['red-snackbar']}); this.loadData();},
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})
+        })
       }
     }
   }

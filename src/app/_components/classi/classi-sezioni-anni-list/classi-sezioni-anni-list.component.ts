@@ -316,7 +316,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
               
               this.form.controls.selectDocente.setValue(this.docenteID);
             },
-            err => {
+            err=> {
               //console.log("getDocenteBypersonaID- KO:", err);
               this.docenteID = 0;
             }
@@ -508,10 +508,10 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
     element.classeSezione.classe!.importo = parseFloat(value);
 
-    this.svcClassiSezioniAnni.put(element).subscribe(
-      res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Importo salvato', panelClass: ['green-snackbar']}),  //MOSTRA ESITO OK MA NON SALVA,
-      err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    ); 
+    this.svcClassiSezioniAnni.put(element).subscribe({
+      next: res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Importo salvato', panelClass: ['green-snackbar']}),  //MOSTRA ESITO OK MA NON SALVA,
+      error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+    }); 
   }
 //#endregion
 

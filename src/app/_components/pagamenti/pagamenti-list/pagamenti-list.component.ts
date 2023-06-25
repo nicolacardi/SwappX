@@ -356,16 +356,16 @@ export class PagamentiListComponent implements OnInit {
           //.pipe (
           //  finalize(()=>this.router.navigate(['/alunni']))
           //)
-          .subscribe(
-            res=> {
+          .subscribe({
+            next: res=> {
               this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
               //this._dialogRef.close();
               this.loadData();
               this.pagamentoEliminatoEmitter.emit();
               //AS: attenzione: se non faccio refresh la griglia non si aggiorna: perchè ???
             },
-            err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          );
+            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+          });
         }
     });
   }

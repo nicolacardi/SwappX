@@ -291,18 +291,18 @@ export class TemplateComponent implements OnInit {
 
     let docID = 222;
 
-    this.svcFiles.getByDocAndTipo(docID,"Pagella").subscribe(
-        res => {
-          //si crea un elemento fittizio che scarica il file di tipo base64 che gli viene assegnato
-          const source = `data:application/pdf;base64,${res.fileBase64}`;
-          const link = document.createElement("a");
+    this.svcFiles.getByDocAndTipo(docID,"Pagella").subscribe({
+      next: res => {
+        //si crea un elemento fittizio che scarica il file di tipo base64 che gli viene assegnato
+        const source = `data:application/pdf;base64,${res.fileBase64}`;
+        const link = document.createElement("a");
 
-          link.href = source;
-          link.download = `${"test"}.pdf`
-          link.click();
-        },
-        err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di caricamento', panelClass: ['red-snackbar']})
-      );
+        link.href = source;
+        link.download = `${"test"}.pdf`
+        link.click();
+      },
+      error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di caricamento', panelClass: ['red-snackbar']})
+    });
   }
 //#endregion
 

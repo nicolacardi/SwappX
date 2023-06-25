@@ -106,7 +106,7 @@ export class DocentiDashboardComponent implements OnInit {
           else
             this.docenteID = 0;
         },
-        //err => console.log("getDocenteBypersonaID- KO:", err)
+        //err=> console.log("getDocenteBypersonaID- KO:", err)
       )
     }
 

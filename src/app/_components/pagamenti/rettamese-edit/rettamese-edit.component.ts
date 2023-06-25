@@ -100,13 +100,14 @@ export class RettameseEditComponent implements OnInit{
     
     if (this.rettaID && this.form.dirty) {
         this.svcRette.put(this.form.value)        
-          .subscribe(res=> {
+          .subscribe({
+            next: res=> {
             //return true;
-          },
-          err=>  {
+            },
+            error: err=>  {
             //return false;
-          }
-      );
+            }
+          });
     } else {
       //post
       this._dialog.open(DialogOkComponent, {
