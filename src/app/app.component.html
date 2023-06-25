@@ -52,10 +52,12 @@
                 <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/home.svg">
                 <span *ngIf="isExpanded">Home</span>
 
-                <img *ngIf="isExpanded && !isPinned" class="_pinIcon _pos-absolute r0" src="./assets/mainMenuWhite/pinMenu.svg" (click)="clickPin()" >
-                <img *ngIf="isExpanded && isPinned" class="_pinIcon _pos-absolute r0" src="./assets/mainMenuWhite/unpinMenu.svg" (click)="clikUnPin()" >
 
             </a>
+            <div class="_pos-absolute" style="width: 20px; top: 75px; left: 210px;">
+                <img *ngIf="isExpanded && !isPinned" class="_pinIcon _pos-absolute r0" src="./assets/mainMenuWhite/pinMenu.svg" (click)="clickPin()" >
+                <img *ngIf="isExpanded && isPinned" class="_pinIcon _pos-absolute r0" src="./assets/mainMenuWhite/unpinMenu.svg" (click)="clikUnPin()" >
+            </div>
 
             <a mat-list-item class="h35px" routerLink="calendario" (click)="clickMenuItem()">
                 <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/calendar.svg">
