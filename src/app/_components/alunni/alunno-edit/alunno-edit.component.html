@@ -151,7 +151,7 @@
                             </mat-expansion-panel-header>
                             <!-- <mat-label class="frameLabel">Elenco dei genitori/tutori </mat-label> -->
                             <div class="_genitori-list-container _cell-bordered mt10">
-                                <app-genitori-list [context]="'alunno-edit-list'" (addToFamily) = "addToFamily($event)"></app-genitori-list>
+                                <app-genitori-list [context]="'alunno-edit-list'" (addToFamily) = "addToFamily($event)" #genitoriDisponibili></app-genitori-list>
                             </div>
                         </mat-expansion-panel>
                     </mat-accordion>

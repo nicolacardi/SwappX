@@ -65,6 +65,8 @@ export class AlunnoEditComponent implements OnInit {
 //#region ----- ViewChild Input Output ---------
 
   @ViewChild('genitoriFamiglia') genitoriFamigliaComponent!:            GenitoriListComponent; 
+  @ViewChild('genitoriDisponibili') genitoriDisponibiliComponent!:      GenitoriListComponent; 
+
   @ViewChild('iscrizioniAlunno') classiAttendedComponent!:              ClassiSezioniAnniListComponent; 
   @ViewChild('classiSezioniAnniList') classiSezioniAnniListComponent!:  ClassiSezioniAnniListComponent; 
   @ViewChild(PersonaFormComponent) personaFormComponent!:               PersonaFormComponent; 
@@ -209,7 +211,10 @@ save(){
 
     const dialogRef = this._dialog.open(GenitoreEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
-        () => this.loadData()
+        () => {
+          this.loadData()
+          this.genitoriDisponibiliComponent.loadData();
+        }
     );
   }
 

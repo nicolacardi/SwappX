@@ -382,7 +382,7 @@ export class NotaEditComponent implements OnInit {
   }
   
   warnDisabilitazione() {
-    if (this.form.controls.ckInvioMsg.value == false) {
+    if (this.form.controls.ckInvioMsg.value == true) {
 
       const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
         width: '320px',

@@ -32,3 +32,8 @@ table {
     flex: 0 0 28% !important;
     width: 28% !important;
   }
+
+/* senza questo per qualche motivo il paginator si spezza in due righe...solo qui*/
+:host ::ng-deep  .mat-mdc-paginator-container {
+    width: 100% !important; 
+}
