@@ -2,8 +2,8 @@
 
 import { Component, EventEmitter, Input, OnInit, Output }             from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
-import { MatDialog, MatDialogRef }              from '@angular/material/dialog';
-import { Observable, of }                           from 'rxjs';
+import { MatDialog }                            from '@angular/material/dialog';
+import { Observable, of }                       from 'rxjs';
 import { debounceTime, switchMap, tap }         from 'rxjs/operators';
 
 //components
@@ -122,14 +122,18 @@ export class PersonaFormComponent implements OnInit {
       this.emptyForm = true
 
       //********************* FILTRO COMUNE *******************
-    this.filteredComuni$ = this.form.controls.comune.valueChanges
-      .pipe( 
-        tap(),
-        debounceTime(300),
-        tap(() => this.comuniIsLoading = true),
-        switchMap(() => this.svcComuni.filterList(this.form.value.comune)),
-        tap(() => this.comuniIsLoading = false)
-      )
+
+      this.filteredComuni$ = this.form.controls.comune.valueChanges
+        .pipe( 
+          tap(),
+          debounceTime(300),
+          tap(() => this.comuniIsLoading = true),
+          switchMap(() => 
+                  this.svcComuni.filterList(this.form.value.comune)
+          ),
+          tap(() => this.comuniIsLoading = false)
+        )
+      
 
     //********************* FILTRO COMUNE NASCITA ***********
     this.filteredComuniNascita$ = this.form.controls.comuneNascita.valueChanges
