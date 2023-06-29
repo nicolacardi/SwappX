@@ -43,6 +43,7 @@ export class AlunniService {
 
   getWithParents(classeSezioneAnnoID: any): Observable<ALU_Alunno>{
     return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/GetWithParents/'+classeSezioneAnnoID);
+    //http://213.215.231.4/swappX/api/ALU_Alunni/GetWithParents/3
   }
 
 

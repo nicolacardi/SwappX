@@ -34,7 +34,7 @@
                 <mat-autocomplete #auto="matAutocomplete" (optionSelected)="docenteSelected($event)">
                     <mat-progress-bar class="is-loading" *ngIf="docentiIsLoading" mode="indeterminate"></mat-progress-bar>
                     <mat-option *ngFor="let element of (obsFilteredDocenti$ | async)" [value]="element.persona.nome + ' ' + element.persona.cognome" [id]="element.id.toString()" #option>
-                        <small>{{element.persona.nome}} {{element.persona.cognome}}</small>
+                        <small>{{element.persona!.nome}} {{element.persona!.cognome}}</small>
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>

@@ -104,7 +104,7 @@
                                 <mat-label>Docente</mat-label>
                                 <mat-select required formControlName="docenteID">
                                     <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
-                                        {{element.persona.nome}} {{element.persona.cognome}}
+                                        {{element.persona!.nome}} {{element.persona!.cognome}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -128,7 +128,7 @@
                                 <mat-label>Supplente</mat-label>
                                 <mat-select formControlName="supplenteID">
                                     <mat-option *ngFor="let element of (obsSupplenti$ | async)" [value]="element.id">
-                                        {{element.persona.nome}} {{element.persona.cognome}}
+                                        {{element.persona!.nome}} {{element.persona!.cognome}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>

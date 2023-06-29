@@ -39,7 +39,7 @@ export class DocentiService {
         .pipe ( 
           map( 
           val => val.filter(
-            val=>(val.persona.nome.toLowerCase() + ' ' + val.persona.cognome.toLowerCase()).includes(searchstring.toLowerCase())
+            val=>(val.persona!.nome.toLowerCase() + ' ' + val.persona!.cognome.toLowerCase()).includes(searchstring.toLowerCase())
           )
         )
       );
@@ -58,6 +58,8 @@ export class DocentiService {
     // } else {
     //   return of();
     // }
+        //http://213.215.231.4/SwappX/api/PER_Docenti
+
   }
 
   get(docenteID: any): Observable<PER_Docente>{

@@ -82,7 +82,8 @@
                         [matAutocomplete]="auto1">
                 <mat-autocomplete #auto1="matAutocomplete" >
                     <mat-spinner *ngIf="comuniNascitaIsLoading" class="_spinner-is-loading-mini" diameter="40"></mat-spinner>
-                    <mat-option *ngFor="let element of (filteredComuniNascita$ | async)" [value]="element.comune" (click)="popolaProvNascita(element.provincia)">
+                    <!-- <mat-option *ngFor="let element of (filteredComuniNascita$ | async)" [value]="element.comune" (click)="popolaProvNascita(element.provincia)"> -->
+                    <mat-option *ngFor="let element of filteredComuniNascitaArr" [value]="element.comune" (click)="popolaProvNascita(element.provincia)">
                         <small>{{element.comune}}</small>
                     </mat-option>
                 </mat-autocomplete>
@@ -115,7 +116,8 @@
                 <mat-autocomplete #auto2="matAutocomplete" >
                     <mat-spinner *ngIf="comuniIsLoading" class="_spinner-is-loading-mini" diameter="40"></mat-spinner>
                     <ng-container >
-                        <mat-option *ngFor="let element of (filteredComuni$ | async)" [value]="element.comune" (click)="popolaProv(element.provincia,  element.cap)">
+                        <!-- MODO RXJS <mat-option *ngFor="let element of (filteredComuni$ | async)" [value]="element.comune" (click)="popolaProv(element.provincia,  element.cap)"> -->
+                        <mat-option *ngFor="let element of filteredComuniArr" [value]="element.comune" (click)="popolaProv(element.provincia,  element.cap)">
                             <small>{{element.comune}}</small>
                         </mat-option>
                     </ng-container>

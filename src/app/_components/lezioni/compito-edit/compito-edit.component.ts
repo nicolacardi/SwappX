@@ -76,7 +76,7 @@ export class CompitoEditComponent implements OnInit {
       let currUser = Utility.getCurrentUser();
       this.prof = currUser.fullname;
     } else 
-    this.prof = this.data.docente.persona.nome + ' ' + this.data.docente.persona.cognome;
+    this.prof = this.data.docente.persona!.nome + ' ' + this.data.docente.persona!.cognome;
 
   }
 

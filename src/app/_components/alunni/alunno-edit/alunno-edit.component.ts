@@ -27,6 +27,7 @@ import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno
 import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
 import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni';
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { ALU_GenitoreAlunno } from 'src/app/_models/ALU_GenitoreAlunno';
 
 //#endregion
 
@@ -39,11 +40,11 @@ import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_mode
 export class AlunnoEditComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
-
+  genitore!:                                    ALU_GenitoreAlunno;
   alunno$!:                                     Observable<ALU_Alunno>;
   filteredComuni$!:                             Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:                      Observable<_UT_Comuni[]>;
-
+  genitoriArr :                                 ALU_GenitoreAlunno[] = []
   public personaID!:                            number;
 
   alunnoNomeCognome:                            string = "";
@@ -100,7 +101,8 @@ export class AlunnoEditComponent implements OnInit {
       ckDisabile:                             [false],
       ckAuthFoto:                             [false],
       ckAuthUsoMateriale:                     [false],
-      ckAuthUscite:                           [false]
+      ckAuthUscite:                           [false],
+
     });
   }
 
@@ -114,12 +116,13 @@ export class AlunnoEditComponent implements OnInit {
 
   loadData(){
 
+
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
  
     if (this.alunnoID && this.alunnoID + '' != "0") {
 
-      const obsAlunno$: Observable<ALU_Alunno> = this.svcAlunni.get(this.alunnoID);
+      const obsAlunno$: Observable<ALU_Alunno> = this.svcAlunni.getWithParents(this.alunnoID);
       const loadAlunno$ = this._loadingService.showLoaderUntilCompleted(obsAlunno$);
       this.alunno$ = loadAlunno$
       .pipe(
@@ -128,8 +131,19 @@ export class AlunnoEditComponent implements OnInit {
               this.personaID = alunno.personaID;
               this.alunnoNomeCognome = alunno.persona.nome + " " + alunno.persona.cognome;
               this.formAlunno.patchValue(alunno);
+              console.log (alunno);
             }       
-          )
+          ),
+          // tap(
+          //   alunno => {
+              
+          //     this.genitoriArr = [
+          //       ...(this.genitoriArr || []), // Ensure genitoriArr is initialized as an array
+          //       ...(alunno._Genitori || []).filter(genitore => genitore !== undefined)
+          //     ];
+
+          //   }
+          // )
       );
     }
     else this.emptyForm = true

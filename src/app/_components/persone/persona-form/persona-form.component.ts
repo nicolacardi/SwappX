@@ -3,8 +3,8 @@
 import { Component, EventEmitter, Input, OnInit, Output }             from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { MatDialog }                            from '@angular/material/dialog';
-import { Observable, of }                       from 'rxjs';
-import { debounceTime, switchMap, tap }         from 'rxjs/operators';
+import { Observable, iif, of }                       from 'rxjs';
+import { concatMap, debounceTime, switchMap, tap }         from 'rxjs/operators';
 
 //components
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
@@ -13,12 +13,14 @@ import { FormatoData, Utility }                 from '../../utilities/utility.co
 import { ComuniService }                        from 'src/app/_services/comuni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { PersoneService }                       from '../persone.service';
+import { DocentiService }                       from '../../docenti/docenti.service';
 
 //models
 import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
 import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni';
 import { TipiPersonaService }                   from '../tipi-persona.service';
 import { User }                                 from 'src/app/_user/Users';
+import { PER_Docente } from 'src/app/_models/PER_Docente';
 
 //#endregion
 @Component({
@@ -36,6 +38,10 @@ export class PersonaFormComponent implements OnInit {
 
   public form! :                                UntypedFormGroup;
   emptyForm :                                   boolean = false;
+  comuniArr!:                                   _UT_Comuni[];
+  filteredComuniArr!:                           _UT_Comuni[];
+  filteredComuniNascitaArr!:                           _UT_Comuni[];
+
   filteredComuni$!:                             Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:                      Observable<_UT_Comuni[]>;
   comuniIsLoading:                              boolean = false;
@@ -60,6 +66,8 @@ export class PersonaFormComponent implements OnInit {
     private svcPersone:                         PersoneService,
     private svcTipiPersona:                     TipiPersonaService,
     private svcComuni:                          ComuniService,
+    private svcDocenti:                         DocentiService,
+
     private _loadingService :                   LoadingService  ) { 
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 
@@ -94,6 +102,7 @@ export class PersonaFormComponent implements OnInit {
 
   ngOnInit(){
     this.loadData();
+    this.svcComuni.list().subscribe( res => this.comuniArr = res); //altra strada
     this.form.valueChanges
     .subscribe(
       res=> this.formValid.emit(this.form.valid)
@@ -123,33 +132,77 @@ export class PersonaFormComponent implements OnInit {
 
       //********************* FILTRO COMUNE *******************
 
-      this.filteredComuni$ = this.form.controls.comune.valueChanges
-        .pipe( 
-          tap(),
-          debounceTime(300),
-          tap(() => this.comuniIsLoading = true),
-          switchMap(() => 
-                  this.svcComuni.filterList(this.form.value.comune)
-          ),
-          tap(() => this.comuniIsLoading = false)
-        )
-      
-
-    //********************* FILTRO COMUNE NASCITA ***********
-    this.filteredComuniNascita$ = this.form.controls.comuneNascita.valueChanges
-      .pipe( 
-        tap(),
-        debounceTime(300),
-        tap(() => this.comuniNascitaIsLoading = true),
-        switchMap(() => this.svcComuni.filterList(this.form.value.comuneNascita)),
-        tap(() => this.comuniNascitaIsLoading = false)
+      this.form.controls.comune.valueChanges
+      .subscribe( res=> {
+        this.comuniIsLoading = true
+          if (res.length >=3) {
+            this.filteredComuniArr = this.comuniArr.filter
+            (val => val.comune.toLowerCase().includes(res.toLowerCase())
+            );
+            this.comuniIsLoading = false
+          } else {
+            this.filteredComuniArr = [];
+            this.comuniIsLoading = false
+          }
+        }
       )
+
+      this.form.controls.comuneNascita.valueChanges
+      .subscribe( res=> {
+        this.comuniNascitaIsLoading = true
+          if (res.length >=3) {
+            this.filteredComuniNascitaArr = this.comuniArr.filter
+            (val => val.comune.toLowerCase().includes(res.toLowerCase())
+            );
+            this.comuniNascitaIsLoading = false
+          } else {
+            this.filteredComuniNascitaArr = [];
+            this.comuniNascitaIsLoading = false
+          }
+        }
+      )
+      //MODALITA' PRECEDENTE TUTTA RXJS MA FUNZIONA MALE E OGNI VOLTA DEVE FARE UNA CHIAMATA
+      // this.filteredComuni$ = this.form.controls.comune.valueChanges
+      //   .pipe( 
+      //     debounceTime(300),
+      //     tap(() => this.comuniIsLoading = true),
+      //     tap(() => console.log("cerco" + this.form.value.comune)),
+      //     switchMap(() =>  
+      //     { //voglio cercare SOLO se l'utente digita + di tre caratteri
+      //       if (this.form.controls.comune.value.length >= 3) {
+      //         return this.svcComuni.filterList(this.form.value.comune);
+      //       } else {
+      //         this.comuniIsLoading = false;
+      //         return of([]);
+      //       }
+      //     }
+      //     ),
+      //     tap(() => this.comuniIsLoading = false),
+
+      //   )
+        // concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(genitore.id, this.alunnoID), of() ))
+
+
+
   }
 
   save() :Observable<any>{
 
     if (this.personaID == null || this.personaID == 0) {
-      return this.svcPersone.post(this.form.value)
+      return this.svcPersone.post(this.form.value).pipe(
+        tap( res=>{
+          if (this.form.controls.tipoPersonaID.value == 6 || this.form.controls.tipoPersonaID.value == 7) //TODO fa schifo lo so
+            {
+              // let docente :PER_Docente = {  //TODO
+              //   personaID : res.id,
+              //   ckAttivo : true
+              //   persona: {}
+              // }
+              // this.svcDocenti.post(docente).subscribe()
+            }
+          }
+        )
+      )
     }
     else {
       this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));

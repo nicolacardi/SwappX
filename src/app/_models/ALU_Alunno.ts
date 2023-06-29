@@ -24,6 +24,7 @@ export interface ALU_Alunno {
 
         //_Genitori?:                             ALU_Genitore[]; /// forse dovrebbe essere ALU_GenitoreAlunno?????? NC 30 01 2023
         _Genitori?:                             ALU_GenitoreAlunno[]; /// forse dovrebbe essere ALU_GenitoreAlunno?????? NC 30 01 2023
+        
 
 }
 

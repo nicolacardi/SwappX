@@ -596,7 +596,7 @@ export class LezioniCalendarioComponent implements OnInit {
     .subscribe(
       (val : CAL_Lezione[])=> {
         if (val.length > 0) {
-          let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
+          let strMsg = "il Maestro " + val[0].docente.persona!.nome + " " + val[0].docente.persona!.cognome + " \n è già impegnato in questo slot in ";
           val.forEach (x =>
             { strMsg = strMsg + "\n - " + x.classeSezioneAnno.classeSezione.classe!.descrizione2 + ' ' + x.classeSezioneAnno.classeSezione.sezione;}
           )
@@ -638,7 +638,7 @@ export class LezioniCalendarioComponent implements OnInit {
 
       (val: CAL_Lezione[]) => {
         if (val.length > 0) {
-          let strMsg = "il Maestro " + val[0].docente.persona.nome + " " + val[0].docente.persona.cognome + " \n è già impegnato in questo slot in ";
+          let strMsg = "il Maestro " + val[0].docente.persona!.nome + " " + val[0].docente.persona!.cognome + " \n è già impegnato in questo slot in ";
           val.forEach (x =>
             {strMsg = strMsg + "\n - " + x.classeSezioneAnno.classeSezione.classe!.descrizione2 + ' ' + x.classeSezioneAnno.classeSezione.sezione;}
           )

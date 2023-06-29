@@ -130,6 +130,14 @@
                                     Autorizz. Uso Mat.
                                 </mat-checkbox>
                             </mat-grid-tile>
+
+                            <mat-grid-tile class="_pos-absolute" style="position: absolute; top: 0px">
+                                <div >
+                                    <button mat-button *ngFor="let genitore of (alunno$ | async)?._Genitori; let i = index">
+                                        copia residenza da genitore {{genitore.id}}  <!-- qui mettere "padre" "madre"-->
+                                    </button>
+                                </div>
+                            </mat-grid-tile>
                         </mat-grid-list>
                     </form> 
                 </mat-tab>

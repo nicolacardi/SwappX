@@ -25,6 +25,7 @@ import { LoadingService }                       from '../../utilities/loading/lo
 import { ScadenzeService }                      from '../../scadenze/scadenze.service';
 import { ScadenzePersoneService }               from '../../scadenze/scadenze-persone.service';
 import { GenitoriService }                      from '../../genitori/genitori.service';
+import { MailService }                          from '../../utilities/mail/mail.service';
 
 //models
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
@@ -34,6 +35,7 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 import { CAL_Scadenza, CAL_ScadenzaPersone }    from 'src/app/_models/CAL_Scadenza';
 import { User }                                 from 'src/app/_user/Users';
 import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 //#endregion
 @Component({
@@ -148,6 +150,7 @@ export class IscrizioniListComponent implements OnInit {
     private svcAnni:                            AnniScolasticiService,
     private svcScadenze:                        ScadenzeService,
     private svcGenitori:                        GenitoriService,
+    private svcMail:                            MailService,
 
     private svcScadenzePersone:                 ScadenzePersoneService,
     private fb:                                 UntypedFormBuilder, 
@@ -462,14 +465,75 @@ export class IscrizioniListComponent implements OnInit {
             //potrebbe stare fuori da entrambi, per esempio in Utility
             
             this.insertGenitori(iscrizione.alunnoID, scad.id, iscrizione.id);
-            
+            this.inviaMailGenitori(iscrizione.alunnoID, iscrizione.id);
             this.svcIscrizioni.updateStato(formData).subscribe(res=>this.loadData());
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta inviata', panelClass: ['green-snackbar']});
           },
           error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore invio richiesta', panelClass: ['red-snackbar']})
         })
+
+
       }
     ) 
+  }
+
+  inviaMailGenitori (alunnoID: number, iscrizioneID: number) {
+    this.svcGenitori.listByAlunno(alunnoID).subscribe({
+      next: (res: ALU_Genitore[]) => {
+        let mailAddress: string;
+        let mailAddresses: string = "";
+        let mailAddressesNo: number = 0;
+
+        let testoMail= "testodellamail";
+        let titoloMail = "invito_per_iscrizione";
+
+        if (res.length != 0) {          
+          for (let i =0; i < res.length; i++) {
+            mailAddress = res[i].persona.email;
+            console.log ("mailAddress trovato i", mailAddress, i);
+            if (mailAddress != null && mailAddress != '') {
+              
+              mailAddressesNo++;
+              mailAddresses = mailAddresses + " "+ mailAddress;
+              mailAddress = "nicola.cardi@gmail.com"; //per evitare di spammare il mondo in questa fase
+              console.log ("mailAddress, testoMail, titoloMail", mailAddress, testoMail, titoloMail);
+
+              this.svcMail.inviaMail(mailAddress, testoMail, titoloMail);
+            } else {
+              console.log ("indirizzo mail mancante per il genitore", res[i].persona.nome+ " "+ res[i].persona.cognome);
+            }
+          }
+          console.log (mailAddressesNo, "mailAddressesNo");
+          console.log (mailAddresses, "mailAddresses");
+
+          if (mailAddressesNo == 0) {
+            this._dialog.open(DialogOkComponent, {
+              width: '320px',
+              data: {titolo: "ATTENZIONE!", sottoTitolo: "Non sono presenti indirizzi email per l'invio"}
+            });
+          } else {
+            this._dialog.open(DialogOkComponent, {
+              width: '320px',
+              data: {titolo: "ATTENZIONE!", sottoTitolo: "Inviata email a " + mailAddresses}
+            });
+
+          }
+          
+          // "<html><body><h1>Invito per iscrizione</h1>" +
+          // "Con questa mail ti invitiamo a iscriverti al portale" +
+          // "<h1>STOODY</h1>" +
+          // "(mail da inviare a " + 
+          
+
+        } 
+        else 
+          console.log ("non ci sono genitori! ", res);
+        
+        return;
+      },
+      error: (err: any)=> {console.log ("errore in inserimento genitori", err)}
+    });  
+
   }
 
   insertGenitori(alunnoID: number, scadenzaID: number, iscrizioneID: number) {
@@ -486,7 +550,7 @@ export class IscrizioniListComponent implements OnInit {
     // this.svcScadenzePersone.post(objScadenzaPersona).subscribe();
 
     //estraggo i personaID dei genitori
-    //console.log ("nota-edit - insertpersone - alunnoID", alunnoID, "scadenzaID", scadenzaID);
+    //console.log ("iscrizioni-list - insertGenitori - alunnoID", alunnoID, "scadenzaID", scadenzaID);
 
     this.svcGenitori.listByAlunno(alunnoID).subscribe({
       next: (res: ALU_Genitore[]) => {
@@ -500,7 +564,7 @@ export class IscrizioniListComponent implements OnInit {
               ckRespinto: false,
               link: iscrizioneID.toString()
             }
-            //console.log ("nota-edit - insertpersone - genitore", genitore);
+            //console.log ("iscrizioni-list - insertGenitori - genitore", genitore);
             this.svcScadenzePersone.post(objScadenzaPersona).subscribe();
           })
         } 
