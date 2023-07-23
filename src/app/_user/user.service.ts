@@ -135,7 +135,7 @@ export class UserService {
     this.BehaviourSubjectcurrentUser.next(logOutUser);
   }
 
-  Register() {
+  Register() { //non viene mai usata
 
     let body = {
       UserName:   this.formModel.value.UserName,

@@ -65,3 +65,10 @@ background-color: #f9f9f9;
     :host ::ng-deep ._low-list-row {
         height: 55px !important;
     }
+
+
+    .mat-column-emailgenitori {
+      white-space: normal;
+      word-wrap: break-word;
+      max-width: 200px;
+  }

@@ -36,6 +36,7 @@ import { CAL_Scadenza, CAL_ScadenzaPersone }    from 'src/app/_models/CAL_Scaden
 import { User }                                 from 'src/app/_user/Users';
 import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { _UT_MailMessage } from 'src/app/_models/_UT_MailMessage';
 
 //#endregion
 @Component({
@@ -55,17 +56,18 @@ export class IscrizioniListComponent implements OnInit {
       "actionsColumn", 
       "nome", 
       "cognome", 
-      "classe",
-      "sezione",
+      "classesezione",
+      // "sezione",
       "stato",
       "actionsColumn2",
       "cf",
-      "email", 
-      "telefono",
+      // "email",
+      "emailgenitori", 
+      //"telefono",
       "dtNascita", 
       // "indirizzo", 
-      "comune", 
-      "prov"
+      //"comune", 
+      //"prov"
   ];
 
   rptTitle = 'Lista Iscrizioni';
@@ -189,6 +191,7 @@ export class IscrizioniListComponent implements OnInit {
 
       loadIscrizioni$.subscribe(
         val =>  {
+          console.log (val);
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;          
           this.sortCustom();
@@ -411,9 +414,45 @@ export class IscrizioniListComponent implements OnInit {
 
 //#region ----- Altri metodi -------------------
 
-  makeScadenza(iscrizione: CLS_Iscrizione) {
-    //console.log ("iscrizioni-list-makeScadenza - iscrizione:", iscrizione);
+  makeScadenzaAndSendEmail (iscrizione: CLS_Iscrizione) {
 
+    console.log ("iscrizioni-list - makeScadenzaAndSendEmail - iscrizione:", iscrizione);
+
+    let Genitori = iscrizione.alunno._Genitori!;
+    if (Genitori.length == 0) {
+      //Se non ci sono genitori si ferma tutto
+      this._dialog.open(DialogOkComponent, {
+        width: '450px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "Non sono presenti genitori ai quali inviare la mail"}
+      });
+    } else {
+      let emailGenitori = 0;
+      for (let i = 0; i < Genitori.length; i++) {
+        if (Genitori[i].genitore!.persona.email != null && Genitori[i].genitore!.persona.email != '') {
+          emailGenitori++;
+        }
+      }
+
+      //Se ci sono genitori ma questi non hanno mail si ferma tutto
+      if (emailGenitori == 0) {
+        this._dialog.open(DialogOkComponent, {
+          width: '450px',
+          data: {titolo: "ATTENZIONE!", sottoTitolo: "Non sono presenti indirizzi email dei genitori<br>a cui inviare l'avviso."}
+        });
+      } else {
+        //this.makeScadenza(iscrizione);  //DA RI-ATTIVARE
+        this.inviaMailGenitori(iscrizione);
+      }
+    }
+  }
+
+
+  makeScadenza(iscrizione: CLS_Iscrizione) {
+    //questa routine 
+    //- crea la Scadenza nell'elenco scadenze (svcSacdenze.post)
+    //- chiama insertScadenzaGenitori, che inserisce i nomi dei genitori in ScadenzaPersone onde mostrare loro la scadenza
+    //- aggiorna lo stato dell'iscrizione al valore successivo (svcIscrizioni.updateStato)
+    console.log ("iscrizioni-list - makeScadenza - iscrizione:", iscrizione);
 
     //prendo la data corrente
     let dtTMP = new Date ();
@@ -432,150 +471,113 @@ export class IscrizioniListComponent implements OnInit {
     let h_Ini = dtTMP.toLocaleString('sv').replace(' ', 'T').substring(11,19)
     let h_End = dtTMP2.toLocaleString('sv').replace(' ', 'T').substring(11,19)
 
-
-    this.svcIscrizioni.get(iscrizione.id).subscribe(
-      iscrizione => {
-        //console.log ("iscrizioni-list - makeScadenza - iscrizione estratta:", iscrizione)
-        //inserisco la scadenza
-        const objScadenza = <CAL_Scadenza>{
-          dtCalendario: dtScadenza,
-          title: "RICHIESTA DI ISCRIZIONE PER " + iscrizione.alunno!.persona.nome + ' ' + iscrizione.alunno!.persona.cognome,
-          start: dtScadenza,
-          end: dtScadenza,
-          color: "#FF0000", //fa schifetto TODO
-          ckPromemoria: true,
-          ckRisposta: false,
-          h_Ini: h_Ini,
-          h_End: h_End,
-          PersonaID: this.currUser.personaID,
-          TipoScadenzaID: 6,  //Fa schifetto  TODO
-        }
-
-        iscrizione.stato.codice = iscrizione.stato.codice + 10; //fa schifetto TODO come facciamo a dire "passa allo stato successivo?"
-
-        let formData = {
-          id: iscrizione.id,
-          codiceStato: iscrizione.stato.codiceSucc
-        }
-
-        this.svcScadenze.post(objScadenza)
-        .subscribe({
-          next: scad => {
-            //inserisco i genitori nella tabella ScadenzaPersone: per ora prendo lo stesso metodo usato in notaedit
-            //potrebbe stare fuori da entrambi, per esempio in Utility
-            
-            this.insertGenitori(iscrizione.alunnoID, scad.id, iscrizione.id);
-            this.inviaMailGenitori(iscrizione.alunnoID, iscrizione.id);
-            this.svcIscrizioni.updateStato(formData).subscribe(res=>this.loadData());
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta inviata', panelClass: ['green-snackbar']});
-          },
-          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore invio richiesta', panelClass: ['red-snackbar']})
-        })
+    //inserisco la scadenza
+    const objScadenza = <CAL_Scadenza>{
+      dtCalendario: dtScadenza,
+      title: "RICHIESTA DI ISCRIZIONE PER " + iscrizione.alunno!.persona.nome + ' ' + iscrizione.alunno!.persona.cognome,
+      start: dtScadenza,
+      end: dtScadenza,
+      color: "#FF0000", //fa schifetto TODO
+      ckPromemoria: true,
+      ckRisposta: false,
+      h_Ini: h_Ini,
+      h_End: h_End,
+      PersonaID: this.currUser.personaID,
+      TipoScadenzaID: 6,  //fa schifetto  TODO
+    }
 
 
+    let formData = {
+      id: iscrizione.id,
+      codiceStato: iscrizione.stato.codiceSucc  
+    }
+
+    this.svcScadenze.post(objScadenza)
+    .subscribe({
+      next: scad => {
+        this.insertScadenzaGenitori(iscrizione, scad.id); 
+        this.svcIscrizioni.updateStato(formData).subscribe(res=>this.loadData());
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta inviata', panelClass: ['green-snackbar']});
+      },
+      error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore invio richiesta', panelClass: ['red-snackbar']})
+    })
+  }
+
+  insertScadenzaGenitori(iscrizione: CLS_Iscrizione, scadenzaID: number) {
+    //iscrizione è un oggetto complesso che dentro _Genitori contiene già gli eventuali genitori (almeno 1 sennò qui non ci si arriva)
+    console.log ("iscrizioni-list - insertScadenzaGenitori - iscrizione", iscrizione, "scadenzaID", scadenzaID);
+    iscrizione.alunno._Genitori!.forEach (genitori => {
+      let objScadenzaPersona: CAL_ScadenzaPersone = {
+        personaID: genitori.genitore!.persona.id,
+        scadenzaID : scadenzaID,
+        ckLetto: false,
+        ckAccettato: false,
+        ckRespinto: false,
+        link: iscrizione.id.toString()
       }
-    ) 
-  }
+      console.log ("iscrizioni-list - insertScadenzaGenitori - objScadenzaPersona", objScadenzaPersona);
+      this.svcScadenzePersone.post(objScadenzaPersona).subscribe();
+    });
+   }
 
-  inviaMailGenitori (alunnoID: number, iscrizioneID: number) {
-    this.svcGenitori.listByAlunno(alunnoID).subscribe({
-      next: (res: ALU_Genitore[]) => {
-        let mailAddress: string;
-        let mailAddresses: string = "";
-        let mailAddressesNo: number = 0;
+  inviaMailGenitori (iscrizione: CLS_Iscrizione) {
 
-        let testoMail= "testodellamail";
-        let titoloMail = "invito_per_iscrizione";
+      //DA FINIRE DI SISTEMARE E TESTARE
+    let mailAddress: string;
+    let mailAddresses: string = "";
+    let mailAddressesNo: number = 0;
+    let desinenza = "o";
+    if (iscrizione.alunno.persona.genere = "F") { desinenza = "a"}
 
-        if (res.length != 0) {          
-          for (let i =0; i < res.length; i++) {
-            mailAddress = res[i].persona.email;
-            console.log ("mailAddress trovato i", mailAddress, i);
-            if (mailAddress != null && mailAddress != '') {
-              
-              mailAddressesNo++;
-              mailAddresses = mailAddresses + " "+ mailAddress;
-              mailAddress = "nicola.cardi@gmail.com"; //per evitare di spammare il mondo in questa fase
-              console.log ("mailAddress, testoMail, titoloMail", mailAddress, testoMail, titoloMail);
+    let testoMail =  "<html><body><h2>Invito per iscrizione</h2>"+
+    "Con questa mail vi invitiamo a iscrivere vostr" + desinenza + " figli" + desinenza + " " + iscrizione.alunno.persona.nome  +
+    " alla classe " + iscrizione.classeSezioneAnno.classeSezione.classe!.descrizione + " per l'a.s. " + iscrizione.classeSezioneAnno.anno.annoscolastico + ".<br>" +
+    "A questo scopo vi inoltriamo il link per accedere al portale:"+ 
+    "<h2 style='color: lightseagreen'>STOODY</h2>";
+    console.log (testoMail);
+    let titoloMail = "STOODY: Procedura di Iscrizione";
 
-              this.svcMail.inviaMail(mailAddress, testoMail, titoloMail);
-            } else {
-              console.log ("indirizzo mail mancante per il genitore", res[i].persona.nome+ " "+ res[i].persona.cognome);
-            }
-          }
-          console.log (mailAddressesNo, "mailAddressesNo");
-          console.log (mailAddresses, "mailAddresses");
+    for (let i =0; i < iscrizione.alunno._Genitori!.length; i++) {
+      //VERIFICA SE IL GENITORE HA GIA' UNO USER
+      
+      //SE NON CE L'HA CREARLO PER INSERIRLO NELLA MAIL
+      //iscrizione.alunno._Genitori!.forEach (genitori => { //foreach è asincrona meglio un for  QUI!!!!
 
-          if (mailAddressesNo == 0) {
-            this._dialog.open(DialogOkComponent, {
-              width: '320px',
-              data: {titolo: "ATTENZIONE!", sottoTitolo: "Non sono presenti indirizzi email per l'invio"}
-            });
-          } else {
-            this._dialog.open(DialogOkComponent, {
-              width: '320px',
-              data: {titolo: "ATTENZIONE!", sottoTitolo: "Inviata email a " + mailAddresses}
-            });
-
-          }
-          
-          // "<html><body><h1>Invito per iscrizione</h1>" +
-          // "Con questa mail ti invitiamo a iscriverti al portale" +
-          // "<h1>STOODY</h1>" +
-          // "(mail da inviare a " + 
-          
-
-        } 
-        else 
-          console.log ("non ci sono genitori! ", res);
+      mailAddress = iscrizione.alunno._Genitori![i].genitore!.persona.email;
+      console.log ("mailAddress trovato i", mailAddress);
+      if (mailAddress != null && mailAddress != '') {
         
-        return;
-      },
-      error: (err: any)=> {console.log ("errore in inserimento genitori", err)}
-    });  
+        mailAddressesNo++;
+        mailAddresses = mailAddresses + " "+ mailAddress;
+        mailAddress = "nicola.cardi@gmail.com"; //per evitare di spammare il mondo in questa fase
+        console.log ("mailAddress, testoMail, titoloMail", mailAddress, testoMail, titoloMail);
+
+        let objMail: _UT_MailMessage= {
+          emailAddress: mailAddress,
+          testoMail: testoMail,
+          titoloMail: titoloMail
+        }
+        //this.svcMail.inviaMail(mailAddress, testoMail, titoloMail);
+        this.svcMail.inviaMail(objMail);
+      } else {
+        console.log ("indirizzo mail mancante per il genitore", iscrizione.alunno._Genitori![i].genitore!.persona.nome+ " "+ iscrizione.alunno._Genitori![i].genitore!.persona.cognome);
+      }
+          //console.log (mailAddressesNo, "mailAddressesNo");
+          //console.log (mailAddresses, "mailAddresses");
+    //});
+    }
+
+
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "Inviata email a " + mailAddresses}
+      });
+    
+
 
   }
 
-  insertGenitori(alunnoID: number, scadenzaID: number, iscrizioneID: number) {
-    //Se si volesse inserire il creatore della scadenza (il maestro per una nota) tra coloro che lo ricevono...
-    // let objScadenzaPersona: CAL_ScadenzaPersone = {
-    //   personaID: this.currUser.personaID,
-    //   scadenzaID : scadenzaID,
-    //   ckLetto: false,
-    //   ckAccettato: false,
-    //   ckRespinto: false,
-    //   link: iscrizioneID.toString()
-    // }
-
-    // this.svcScadenzePersone.post(objScadenzaPersona).subscribe();
-
-    //estraggo i personaID dei genitori
-    //console.log ("iscrizioni-list - insertGenitori - alunnoID", alunnoID, "scadenzaID", scadenzaID);
-
-    this.svcGenitori.listByAlunno(alunnoID).subscribe({
-      next: (res: ALU_Genitore[]) => {
-        if (res.length != 0) {
-          res.forEach( genitore => {
-            let objScadenzaPersona: CAL_ScadenzaPersone = {
-              personaID: genitore.persona.id,
-              scadenzaID : scadenzaID,
-              ckLetto: false,
-              ckAccettato: false,
-              ckRespinto: false,
-              link: iscrizioneID.toString()
-            }
-            //console.log ("iscrizioni-list - insertGenitori - genitore", genitore);
-            this.svcScadenzePersone.post(objScadenzaPersona).subscribe();
-          })
-        } 
-        else 
-          console.log ("nessun genitore da inserire, ", res);
-        
-        return;
-      },
-      error: (err: any)=> {console.log ("errore in inserimento genitori", err)}
-    });  
-  }
+  
 
 //#endregion
 

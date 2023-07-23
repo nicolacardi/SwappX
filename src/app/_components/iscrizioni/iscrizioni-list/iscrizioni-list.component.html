@@ -52,15 +52,16 @@
             <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.cognome | highlight: filterValue"></td>
         </ng-container>
 
-        <ng-container matColumnDef="classe">
+        <ng-container matColumnDef="classesezione">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Classe</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.classeSezioneAnno.classeSezione.classe!.descrizioneBreve | highlight: filterValue"></td>
+            <td mat-cell *matCellDef="let element" 
+            [innerHTML]="element.classeSezioneAnno.classeSezione.classe!.descrizioneBreve + ' ' + element.classeSezioneAnno.classeSezione.sezione| highlight: filterValue"></td>
         </ng-container>
 
-        <ng-container matColumnDef="sezione">
+        <!-- <ng-container matColumnDef="sezione">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>Sez</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.classeSezioneAnno.classeSezione.sezione | highlight: filterValue"></td>
-        </ng-container>
+        </ng-container> -->
 
         <ng-container matColumnDef="cf">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>CF</th>
@@ -79,7 +80,7 @@
                     class="pointer" 
                     matTooltip="invia richiesta di iscrizione ai genitori di {{element.alunno.persona.nome}} {{element.alunno.persona.cognome}}" 
                     [ngClass]="{'invisible': !element.stato.ckInvioIscrizione}" 
-                    (click)="makeScadenza(element)">
+                    (click)="makeScadenzaAndSendEmail(element)">
                     outgoing_mail
                 </mat-icon>
             </td>
@@ -91,9 +92,10 @@
             <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.dtNascita | highlightDate: filterValue"></td>
         </ng-container>
 
-        <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.persona.email==null?'': element.alunno.persona.email | highlight: filterValue"></td>
+        <ng-container matColumnDef="emailgenitori">
+            <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email genitori</th>
+            <td mat-cell *matCellDef="let element" 
+            [innerHTML]="(element.alunno._Genitori[0]? element.alunno._Genitori[0].genitore.persona.email: '') + ' ' + (element.alunno._Genitori[1]? element.alunno._Genitori[1].genitore.persona.email: '')"></td>
         </ng-container>
 
         <ng-container matColumnDef="telefono">

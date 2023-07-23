@@ -1,19 +1,21 @@
-<div class="_pos-relative">
-    <img class="iconaMenuBig" src="./assets/warning.svg">
-</div>
-<h3 class="center" mat-dialog-title>{{data.titolo}}</h3>
+
+    <div class="_pos-relative">
+        <img class="iconaMenuBig" src="./assets/warning.svg">
+    </div>
+    <h3 class="center" mat-dialog-title>{{data.titolo}}</h3>
 
 
-<div class="center" mat-dialog-content>
+    <div class="center" mat-dialog-content>
 
-    <p>{{data.sottoTitolo}}</p>
-    <!--
-    <mat-form-field>
-        <mat-label>Favorite Animal</mat-label>
-        <input matInput [(ngModel)]="data.titolo">
-    </mat-form-field>
-    -->
-</div>
-<div mat-dialog-actions class="mat-dialog-buttonsContainer">
-    <button mat-button [mat-dialog-close]="false" cdkFocusInitial>Ok</button> 
-</div>
+        <p style="white-space: normal" innerHTML="{{data.sottoTitolo}}"></p>
+        
+    </div>
+    <div mat-dialog-actions class="mat-dialog-buttonsContainer">
+        <button mat-button [mat-dialog-close]="false" cdkFocusInitial>Ok</button> 
+    </div>
+
+
+
+    
+
+
