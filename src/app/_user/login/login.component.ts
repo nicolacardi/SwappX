@@ -1,14 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+//#region ----- IMPORTS ------------------------
+import { Component, EventEmitter, OnInit, Output }                    from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { EventEmitterService } from 'src/app/_services/event-emitter.service';
- 
-import { UserService } from '../user.service';
+import { Router }                               from '@angular/router';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { EventEmitterService }                  from 'src/app/_services/event-emitter.service';
+import { MatDialog }                            from '@angular/material/dialog';
 
-import { MatDialog } from '@angular/material/dialog';
-import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
+//components
+import { SnackbarComponent }                    from 'src/app/_components/utilities/snackbar/snackbar.component';
+
+//services
+import { UserService } from '../user.service';
 import { LoadingService } from 'src/app/_components/utilities/loading/loading.service';
+
+//models
+
+//#endregion
 
 @Component({
   selector: 'app-login',
@@ -18,22 +25,35 @@ import { LoadingService } from 'src/app/_components/utilities/loading/loading.se
 
 export class LoginComponent implements OnInit {
   
+//#region ----- Variabili ----------------------
+
   loading = false;
   form! :                     UntypedFormGroup;
-  
-  constructor(private svcUser:         UserService,
-              private router:          Router,
-              private fb:              UntypedFormBuilder,
-              private eventEmitterService:  EventEmitterService,
-              public _dialog:          MatDialog,
-              private _loadingService: LoadingService,
-              private _snackBar:       MatSnackBar ) {
+//#endregion
+
+//#region ----- ViewChild Input Output ---------
+  @Output('reloadRoutes') reloadRoutes = new EventEmitter<string>();
+//#endregion
+
+//#region ----- Constructor --------------------
+
+  constructor(
+    private svcUser:                            UserService,
+    private router:                             Router,
+    private fb:                                 UntypedFormBuilder,
+    private eventEmitterService:                EventEmitterService,
+    public _dialog:                             MatDialog,
+    private _loadingService:                    LoadingService,
+    private _snackBar:                          MatSnackBar
+    ) {
 
     this.form = this.fb.group({
       UserName:                   ['a', Validators.required],
       Password:                   ['1234', { validators:[ Validators.required, Validators.maxLength(50)]}]
     })
   }
+
+//#endregion
 
   ngOnInit() {
     if(localStorage.getItem('token') != null)
@@ -61,16 +81,18 @@ export class LoginComponent implements OnInit {
   
   forgotPassword(e: Event){
     e.preventDefault();
-    //console.log(this.validateEmail(this.form.controls.UserName.value));
-    if(!this.validateEmail(this.form.controls.UserName.value)){ 
-      this._snackBar.openFromComponent(SnackbarComponent, { data: "Inserire una email valida"  , panelClass: ['red-snackbar']});
-      return;
-    }
+    this.reloadRoutes.emit('send-mail');
 
+    //console.log(this.validateEmail(this.form.controls.UserName.value));
+    //this.router.navigateByUrl('/user/send-mail');
+    // if(!this.validateEmail(this.form.controls.UserName.value)){ 
+    //   this._snackBar.openFromComponent(SnackbarComponent, { data: "Inserire una email valida"  , panelClass: ['red-snackbar']});
+    //   return;
+    // } else {
+    // }
     //invio mail di reset
     //TODO 
-  
-    this._snackBar.openFromComponent(SnackbarComponent, { data: "E' stata inviata una mail con un link di reset a " + this.form.controls.UserName.value , panelClass: ['green-snackbar']});
+    // this._snackBar.openFromComponent(SnackbarComponent, { data: "E' stata inviata una mail con un link di reset a " + this.form.controls.UserName.value , panelClass: ['green-snackbar']});
   }
 
   validateEmail(email: string) {

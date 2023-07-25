@@ -56,17 +56,19 @@ export class UserEditComponent implements OnInit {
   @ViewChild(MatAutocompleteTrigger) trigger!: MatAutocompleteTrigger; //non sembra "agganciarsi" al matautocompleteTrigger
   @ViewChild(MatAutocomplete) MatAutoComplete!: MatAutocomplete;
 
-  constructor( @Inject(MAT_DIALOG_DATA) 
-               public idUser: string,
-               public _dialogRef: MatDialogRef<UserEditComponent>,
-               private svcUser:                            UserService,
-               //private svcRuoli:                         RuoliService,
-               private svcTipiPersona:                     TipiPersonaService,
-               private svcPersone:                         PersoneService,
-               public _dialog:                             MatDialog,
-               private _snackBar:                          MatSnackBar,
-               private _loadingService :                   LoadingService,
-               private fb:                                 UntypedFormBuilder ) { 
+  constructor( 
+    @Inject(MAT_DIALOG_DATA) 
+    public idUser: string,
+    public _dialogRef: MatDialogRef<UserEditComponent>,
+    private svcUser:                            UserService,
+    //private svcRuoli:                         RuoliService,
+    private svcTipiPersona:                     TipiPersonaService,
+    private svcPersone:                         PersoneService,
+    public _dialog:                             MatDialog,
+    private _snackBar:                          MatSnackBar,
+    private _loadingService :                   LoadingService,
+    private fb:                                 UntypedFormBuilder 
+  ) { 
 
     _dialogRef.disableClose = true;
     

@@ -139,6 +139,7 @@ import { UserEditComponent }                    from './_components/users/user-e
 import { ProfiloComponent }                     from './_user/profilo/profilo.component';
 import { ChangePswComponent }                   from './_user/change-psw/change-psw.component';
 import { ResetPasswordComponent }               from './_user/reset-password/reset-password.component';
+import { SendMailComponent }                    from './_user/send-mail/send-mail.component';
 
 //Messaggi
 import { MessaggiComponent }                    from './_components/messaggi/messaggi.component';
@@ -371,7 +372,8 @@ import { PagelleClasseEditComponent } from './_components/pagelle/pagelle-classe
       TableComponent,
       TableShowComponent,
       TemplatesManagerComponent,
-      PagelleClasseEditComponent
+      PagelleClasseEditComponent,
+      SendMailComponent
   
     
 

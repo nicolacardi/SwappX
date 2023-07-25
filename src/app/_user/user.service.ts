@@ -156,6 +156,16 @@ export class UserService {
     //http://213.215.231.4/swappX/api/ApplicationUser/GetByUsername/a
   }
 
+  getByPersonaID(personaID: number): Observable<User>{
+    return this.http.get<User>(environment.apiBaseUrl+'ApplicationUser/GetByPersonaID/' + personaID);
+    //http://213.215.231.4/swappX/api/ApplicationUser/GetByPersonaID/19
+  }
+
+  getByMailAddress(mailAddress: string): Observable<User>{
+    return this.http.get<User>(environment.apiBaseUrl+'ApplicationUser/GetByMailAddress/' + mailAddress);
+    //http://213.215.231.4/swappX/api/ApplicationUser/GetByMailAddress/nicola.cardi@gmail.com
+  }
+
   put(formData: any): Observable <any>{
     console.log(formData);
     return this.http.put(environment.apiBaseUrl +'ApplicationUser/'+ formData.userID, formData );

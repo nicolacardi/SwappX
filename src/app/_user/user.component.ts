@@ -12,10 +12,22 @@ export class UserComponent implements OnInit {
   constructor()  {
   }
 
+
+
   ngOnInit() {
-    const str = window.location.href;
-    const lastUrlSegment= str.split('?')[0].split('/').pop();
-    this.routerPage =lastUrlSegment!;
+    this.routerPage = "login";
+  }
+
+  // loadRoute() {
+  //   console.log("loadRoute");
+  //   let str = window.location.href;
+  //   let lastUrlSegment= str.split('?')[0].split('/').pop();
+  //   this.routerPage =lastUrlSegment!;
+  //   console.log ("this.routerPage", window.location.href);
+  // }
+
+  reloadRoutesEmitted(route: string) {
+    this.routerPage = route;
   }
 
 }

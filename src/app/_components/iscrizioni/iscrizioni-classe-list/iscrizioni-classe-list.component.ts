@@ -1,31 +1,31 @@
 //#region ----- IMPORTS ------------------------
 
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { Observable } from 'rxjs';
-import { MatTableDataSource} from '@angular/material/table';
-import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { SelectionModel } from '@angular/cdk/collections';
+import { MatPaginator }                         from '@angular/material/paginator';
+import { MatSort }                              from '@angular/material/sort';
+import { Observable }                           from 'rxjs';
+import { MatTableDataSource}                    from '@angular/material/table';
+import { CdkDragDrop, moveItemInArray}          from '@angular/cdk/drag-drop';
+import { MatMenuTrigger }                       from '@angular/material/menu';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { SelectionModel }                       from '@angular/cdk/collections';
 
 //components
 //import { IscrizioneEditComponent } from '../iscrizione-edit/iscrizione-edit.component';           //TODO!!!
 //import { IscrizioniFilterComponent } from '../iscrizioni-filter/iscrizioni-filter.component';     //TODO!!!
-import { AlunnoEditComponent } from '../../alunni/alunno-edit/alunno-edit.component';
-import { RettaEditComponent } from '../../pagamenti/retta-edit/retta-edit.component';
+import { AlunnoEditComponent }                  from '../../alunni/alunno-edit/alunno-edit.component';
+import { RettaEditComponent }                   from '../../pagamenti/retta-edit/retta-edit.component';
 
 //services
-import { IscrizioniService } from '../iscrizioni.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { NavigationService } from '../../utilities/navigation/navigation.service';
-import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
+import { IscrizioniService }                    from '../iscrizioni.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { NavigationService }                    from '../../utilities/navigation/navigation.service';
+import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
 
 //models
-import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
+import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 
 //#endregion
 

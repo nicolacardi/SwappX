@@ -21,15 +21,24 @@
 <div class="login-background">
     <mat-card appearance="outlined" class="user-container login-card">
         <mat-card-header >
-            <img class="logo-login ma" src="./assets/logoscrittacolor.png">
+            <img class="logo-login ma" *ngIf="routerPage=='login'" src="./assets/logoscrittacolor.png">
+            <img class="logo-login ma" *ngIf="routerPage=='send-mail'" src="./assets/logoscrittaazzurro.png">
+
         </mat-card-header>
         <mat-card-content class="mt20">
             <!-- <mat-tab-group mat-align-tabs="center">
                 <mat-tab  label="Login"> -->
                     <div class="row center">
-                        <app-login *ngIf="routerPage=='login'"></app-login>
-                        <app-reset-password *ngIf="routerPage=='reset-password'"></app-reset-password>
-                        <app-register *ngIf="routerPage=='register'"></app-register>
+                        <app-login 
+                        *ngIf="routerPage=='login'"
+                        (reloadRoutes)="reloadRoutesEmitted($event)"
+                        ></app-login>
+                        <!-- <app-reset-password *ngIf="routerPage=='reset-password'"></app-reset-password>
+                        <app-register *ngIf="routerPage=='register'"></app-register> -->
+                        <app-send-mail 
+                        *ngIf="routerPage=='send-mail'"
+                        (reloadRoutes)="reloadRoutesEmitted($event)"
+                        ></app-send-mail>
                     </div>
                 <!-- </mat-tab> -->
                 <!-- <mat-tab  label="Registrazione">
@@ -41,3 +50,4 @@
         </mat-card-content>
     </mat-card>
 </div>
+
