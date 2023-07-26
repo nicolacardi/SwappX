@@ -565,7 +565,7 @@ export class IscrizioniListComponent implements OnInit {
           "Potete utilizzare lo username : "+ userGenitore.userName;
         } else {
           //se non ha username vado a crearlo
-          let rndPassword = this.generateRandomString();
+          let rndPassword = Utility.generateRandomString();
           let formData = {
             UserName:   mailAddress,
             Email:      mailAddress,
@@ -591,7 +591,15 @@ export class IscrizioniListComponent implements OnInit {
           titoloMail: titoloMail
         }
         //this.svcMail.inviaMail(mailAddress, testoMail, titoloMail);
-        this.svcMail.inviaMail(objMail);
+        this.svcMail.inviaMail(objMail).subscribe({
+          next: res=> {
+            this._dialog.open(DialogOkComponent, {
+              width: '320px',
+              data: {titolo: "ATTENZIONE!", sottoTitolo: "Inviata email a " + mailAddresses}
+            });
+          },
+          error: err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: "Errore durante l'invio", panelClass: ['red-snackbar']}))
+        });
       } else {
         console.log ("indirizzo mail mancante per il genitore", iscrizione.alunno._Genitori![i].genitore!.persona.nome+ " "+ iscrizione.alunno._Genitori![i].genitore!.persona.cognome);
       }
@@ -599,25 +607,11 @@ export class IscrizioniListComponent implements OnInit {
       //console.log (mailAddresses, "mailAddresses");
 
     }
-      this._dialog.open(DialogOkComponent, {
-        width: '320px',
-        data: {titolo: "ATTENZIONE!", sottoTitolo: "Inviata email a " + mailAddresses}
-      });
+
   }
 
 
-  generateRandomString(): string {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ0123456789_';
-    let randomString = '';
-    const charactersLength = characters.length;
-  
-    for (let i = 0; i < 10; i++) {
-      const randomIndex = Math.floor(Math.random() * charactersLength);
-      randomString += characters.charAt(randomIndex);
-    }
-  
-    return randomString;
-  }
+
 
 
 //#endregion

@@ -186,6 +186,24 @@ export abstract class Utility {
     return s;
   }
 
+  public static generateRandomString(): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ0123456789_';
+    let randomString = '';
+    const charactersLength = characters.length;
+  
+    for (let i = 0; i < 10; i++) {
+      const randomIndex = Math.floor(Math.random() * charactersLength);
+      randomString += characters.charAt(randomIndex);
+    }
+  
+    return randomString;
+  }
+
+  public static validateEmail(email: string) {
+    const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regularExpression.test(String(email).toLowerCase());
+  }
+
 }
 
   
