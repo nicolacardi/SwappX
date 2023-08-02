@@ -34,27 +34,17 @@ const routes: Routes = [
 
   { path: '', redirectTo: 'user/login', pathMatch: 'full' }, //questo indica che un route vuoto viene tradotto in user/login
   {
+      //  { path:'user' , redirectTo: 'user/login', pathMatch: 'full' },
     path: 'user',                               //user ha due children, login e send-mail
     component: UserComponent,
     children: [
       { path: 'login', component:               LoginComponent },
-      { path: 'send-mail', component:           SendMailComponent }
+      //{path:'registration',                   component: RegisterComponent },
+      //{path:'reset-password',                 component: ResetPasswordComponent },
+      //{path: 'send-mail',                     component: SendMailComponent } //non serve, viene gestita altrimenti
     ]
   },
 
-
-  //  { path:'' , redirectTo: 'user/login', pathMatch: 'full' },
-  //  { path:'user' , redirectTo: 'user/login', pathMatch: 'full' },
-  //  { 
-  //   path:'user',                                component: UserComponent,
-  //   children:[
-  //     {path:'login',                            component: LoginComponent },
-  //     {path:'registration',                     component: RegisterComponent },
-  //     {path:'reset-password',                   component: ResetPasswordComponent },
-  //     {path:'send-mail',                        component: SendMailComponent }
-
-  //   ]
-  //  },
 
   { path:'home',                                component: HomeComponent, canActivate:[AuthGuard]  },
 
