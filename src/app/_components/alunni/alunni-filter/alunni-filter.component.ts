@@ -38,30 +38,20 @@ export class AlunniFilterComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
-
     this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
-
     this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
-
     this.dtNascitaFilter.valueChanges.subscribe(val => {this.applyFilterDx('dtNascita', val);})
-
     this.indirizzoFilter.valueChanges.subscribe(val => {this.applyFilterDx('indirizzo', val);})
-
     this.comuneFilter.valueChanges.subscribe(val => {this.applyFilterDx('comune', val);})
-
     this.provFilter.valueChanges.subscribe(val => {this.applyFilterDx('prov', val);})
-
     this.emailFilter.valueChanges.subscribe(val => {this.applyFilterDx('email', val);})
-
     this.telefonoFilter.valueChanges.subscribe(val => {this.applyFilterDx('telefono', val);})
-
     this.nomeCognomeGenitoreFilter.valueChanges.subscribe(val => {this.applyFilterDx('nomeCognomeGenitore', val);})
-
   }
 
   applyFilterDx(field: keyof typeof this.alunniListComponent.filterValues, val: string) {
     //this.resetFilterSx();
-    this.alunniListComponent.filterValues[field] = val.toLowerCase();
+    this.alunniListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
     this.alunniListComponent.getEmailAddresses();
   }

@@ -43,18 +43,15 @@ export class UsersFilterComponent implements OnInit {
     this.obsTipiPersona$ = this.svcTipiPersona.list();
 
     this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
-
     this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
-
     this.emailFilter.valueChanges.subscribe(val => {this.applyFilterDx('email', val);})
-
     this.tipoPersonaFilter.valueChanges.subscribe(val => {this.applyFilterDx('tipoPersona', val);})
 
   }
 
   applyFilterDx(field: keyof typeof this.usersListComponent.filterValues, val: string) {
     //this.resetFilterSx();
-    this.usersListComponent.filterValues[field] = val.toLowerCase();
+    this.usersListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
     this.usersListComponent.getEmailAddresses();
   }

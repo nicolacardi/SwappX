@@ -62,13 +62,7 @@ export class PersoneFilterComponent implements OnInit {
   }
 
   applyFilterDx(field: keyof typeof this.personeListComponent.filterValues, val: string) {
-
-//    bella merda
-    if(isNaN(+val))
-      this.personeListComponent.filterValues[field] = val.toLowerCase();
-    else
-      this.personeListComponent.filterValues[field] = val;
-
+    this.personeListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.personeListComponent.filterValues[field] = val;
     this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
     this.personeListComponent.getEmailAddresses();

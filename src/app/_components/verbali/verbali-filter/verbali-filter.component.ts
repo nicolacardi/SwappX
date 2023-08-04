@@ -33,25 +33,17 @@ export class VerbaliFilterComponent implements OnInit {
   //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit() {
-
     this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
-
     this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
-
     this.tipoFilter.valueChanges.subscribe(val => {this.applyFilterDx('tipo', val);})
-
     this.dtVerbaleFilter.valueChanges.subscribe(val => {this.applyFilterDx('dtVerbale', val);})
-
     this.classeFilter.valueChanges.subscribe(val => {this.applyFilterDx('classe', val);})
-
     this.titoloFilter.valueChanges.subscribe(val => {this.applyFilterDx('titolo', val);})
-
-
   }
 
   applyFilterDx(field: keyof typeof this.verbaliListComponent.filterValues, val: string) {
     //this.resetFilterSx();
-    this.verbaliListComponent.filterValues[field] = val.toLowerCase();
+    this.verbaliListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.verbaliListComponent.matDataSource.filter = JSON.stringify(this.verbaliListComponent.filterValues);
     //this.verbaliListComponent.updateEmailAddresses();
   }

@@ -58,17 +58,14 @@ export class ObiettiviFilterComponent implements OnInit {
     this.obsMaterie$ = this.svcMaterie.list();
 
     this.classeFilter.valueChanges.subscribe(val => {this.applyFilterDx('classeID', val);})
-
     this.materiaFilter.valueChanges.subscribe(val => {this.applyFilterDx('materiaID', val);})
-
     this.annoFilter.valueChanges.subscribe(val => {this.applyFilterDx('annoID', val);})
-
   }
 
   
   applyFilterDx(field: keyof typeof this.obiettiviListComponent.filterValues, val: string) {
     //this.resetFilterSx();
-    this.obiettiviListComponent.filterValues[field] = val.toLowerCase();
+    this.obiettiviListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.obiettiviListComponent.matDataSource.filter = JSON.stringify(this.obiettiviListComponent.filterValues);
     // this.obiettiviListComponent.updateEmailAddresses();
   }

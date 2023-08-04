@@ -78,7 +78,7 @@ export class PagamentiFilterComponent implements OnInit {
 
   applyFilterDx(field: keyof typeof this.pagamentiListComponent.filterValues, val: string) {
     //this.resetFilterSx();
-    this.pagamentiListComponent.filterValues[field] = val.toLowerCase();
+    this.pagamentiListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
     // this.pagamentiListComponent.updateEmailAddresses();
   }

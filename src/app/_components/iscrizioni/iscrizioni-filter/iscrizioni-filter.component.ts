@@ -35,34 +35,22 @@ export class IscrizioniFilterComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili--------
   ngOnInit() {
-
     this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
-
     this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
-
     this.classeFilter.valueChanges.subscribe(val => {this.applyFilterDx('classe', val);})
-
     this.sezioneFilter.valueChanges.subscribe(val => {this.applyFilterDx('sezione', val);})
-
     this.cfFilter.valueChanges.subscribe(val => {this.applyFilterDx('cf', val);})
-
     this.emailFilter.valueChanges.subscribe(val => {this.applyFilterDx('email', val);})
-
     this.telefonoFilter.valueChanges.subscribe(val => {this.applyFilterDx('telefono', val);})
-
     this.dtNascitaFilter.valueChanges.subscribe(val => {this.applyFilterDx('dtNascita', val);})
-
     this.indirizzoFilter.valueChanges.subscribe(val => {this.applyFilterDx('indirizzo', val);})
-    
     this.comuneFilter.valueChanges.subscribe(val => {this.applyFilterDx('comune', val);})
-
     this.provFilter.valueChanges.subscribe(val => {this.applyFilterDx('prov', val);})
-
   }
 
   applyFilterDx(field: keyof typeof this.iscrizioniListComponent.filterValues, val: string) {
     //this.resetFilterSx();
-    this.iscrizioniListComponent.filterValues[field] = val.toLowerCase();
+    this.iscrizioniListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
     this.iscrizioniListComponent.getEmailAddresses();
   }

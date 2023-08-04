@@ -38,28 +38,19 @@ export class GenitoriFilterComponent implements OnInit {
   ngOnInit() {
 
     this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
-
     this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
-
     this.dtNascitaFilter.valueChanges.subscribe(val => {this.applyFilterDx('dtNascita', val);})
-
     this.indirizzoFilter.valueChanges.subscribe(val => {this.applyFilterDx('indirizzo', val);})
-
     this.comuneFilter.valueChanges.subscribe(val => {this.applyFilterDx('comune', val);})
-
     this.provFilter.valueChanges.subscribe(val => {this.applyFilterDx('prov', val);})
-
     this.emailFilter.valueChanges.subscribe(val => {this.applyFilterDx('email', val);})
-
     this.telefonoFilter.valueChanges.subscribe(val => {this.applyFilterDx('telefono', val);})
-
     this.nomeCognomeAlunnoFilter.valueChanges.subscribe(val => {this.applyFilterDx('nomeCognomeAlunno', val);})
-
   }
 
   applyFilterDx(field: keyof typeof this.genitoriListComponent.filterValues, val: string) {
     //this.resetFilterSx();
-    this.genitoriListComponent.filterValues[field] = val.toLowerCase();
+    this.genitoriListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
     this.genitoriListComponent.getEmailAddresses();
   }
