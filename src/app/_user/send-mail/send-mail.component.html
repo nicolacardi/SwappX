@@ -1,16 +1,15 @@
 <form [formGroup]="form" autocomplete="off" (submit)="onSubmit()" style="overflow-y: hidden" >
     <div>
-        
         <mat-form-field>
             <input matInput required type="email" placeholder="Email" formControlName="Email">
         </mat-form-field>
     </div>
     <div>
         <button type="submit" mat-stroked-button [disabled]="form.invalid">
-        Invia mail
+            Reset Password
         </button>
     </div>
     <div class="mt20">
-        <button mat-flat-button (click)="backToLogin($event)">Pagina di Login</button>
+        <button mat-flat-button (click)="backToLogin($event)">Torna alla pagina di Login</button>
     </div>
 </form>
