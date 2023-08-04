@@ -147,15 +147,11 @@ constructor(private fb:                                   UntypedFormBuilder,
       error: err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: "Errore durante l'invio", panelClass: ['red-snackbar']}))
     });
 
-
     this.form.controls.Email.setValue('');
-
-
-
+    this.reloadRoutes.emit("login");      
 
     //this.form.controls.Email.markAsUntouched();
     //this.form.controls.Email.markAsPristine();
-
   }
 
 }
