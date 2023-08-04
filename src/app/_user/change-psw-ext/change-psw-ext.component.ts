@@ -52,8 +52,7 @@ export class ChangePswExtComponent {
                private renderer:                Renderer2,
                private route:                   ActivatedRoute,
                private router:                  Router,
-               public _dialog:                  MatDialog, 
-               ) { 
+               public _dialog:                  MatDialog    ) { 
 
     this.route.queryParams.subscribe(params => {
       this.routedUsername = params['username'];
@@ -107,11 +106,12 @@ export class ChangePswExtComponent {
 
     console.log ("userNoTmpPassword", userNoTmpPassword);
 
-    this.svcUser.ResetPassword(this.user.id, this.form.controls.newPassword.value)
-    .subscribe({
+    this.svcUser.ResetPassword(this.user.id, this.form.controls.newPassword.value).subscribe({
       next: res =>  {
           //ora vado a cancellare la password temporanea tmpPassword in modo che non si possa più utilizzare
-          this.svcUser.put(userNoTmpPassword).subscribe({
+          this.svcUser.put(userNoTmpPassword).subscribe();
+          /*
+            {
             next: res =>  {
               console.log ("tmpPassword azzerata")
             },
@@ -119,7 +119,7 @@ export class ChangePswExtComponent {
               console.log ("errore in azzeramento tmpPassword")
             }
           });
-
+          */
           //mostro conferma e - su chiusura - passo alla pagina di Login
 
           const dialogRef = this._dialog.open(DialogOkComponent, {
@@ -127,10 +127,6 @@ export class ChangePswExtComponent {
             data: {titolo: "CAMBIO PASSWORD", sottoTitolo: "La password è stata modificata<br>con successo.<br>Verrai reindirizzato<br>alla pagina di login."}
           });
           dialogRef.afterClosed().subscribe(() => {this.router.navigate(['/user/login']);});
-
-
-
-
       },
       error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio della password', panelClass: ['red-snackbar']})
     });

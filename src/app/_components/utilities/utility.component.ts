@@ -75,11 +75,6 @@ export abstract class Utility {
       }
     })
   }
-
-
-
-
-
    
   //Utility per caricare una foto nel template
   public static loadImage(src: any, newX: number) {
@@ -123,9 +118,6 @@ export abstract class Utility {
     })
   }
 
-
-
-
   public static getCurrentUser() : User {
     let obj: any;
     let tmp = localStorage.getItem('currentUser');
@@ -133,13 +125,54 @@ export abstract class Utility {
     return obj;
   }
   
+  public static msToTime(s: number) {
+    var ms = s % 1000;
+    s = (s - ms) / 1000;
+    var secs = s % 60;
+    s = (s - secs) / 60;
+    var mins = s % 60;
+    var hrs = (s - mins) / 60;
+  
+    return hrs + ':' + mins + ':' + secs;
+  }
+
+  public static zeroPad(n:number,length:number){
+    var s=n+"",needed=length-s.length;
+    if (needed>0) s=(Math.pow(10,needed)+"").slice(1)+s;
+    return s;
+  }
+
+  
+
+
+  
+  //#region  Email validaation & Password 
+  
+  public static validateEmail(email: string) {
+    const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regularExpression.test(String(email).toLowerCase());
+  }
+
+  public static generateRandomString(): string {
+
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ0123456789_';
+    let randomString = '';
+    const charactersLength = characters.length;
+  
+    for (let i = 0; i < 10; i++) {
+      const randomIndex = Math.floor(Math.random() * charactersLength);
+      randomString += characters.charAt(randomIndex);
+    }
+  
+    return randomString;
+  }
 
   public static matchingPasswords(PasswordField : string, ConfirmPasswordField: string) {
     return (controls: AbstractControl) => {
       if (controls) {
         const Password = controls.get(PasswordField)!.value;
         const ConfirmPassword = controls.get(ConfirmPasswordField)!.value;
-        //console.log ("check what is passed to the validator", password, confirmPassword);
+        
         if (Password !== ConfirmPassword) { 
           //this is an error set for a specific control which you can use in a mat-error
           controls.get(ConfirmPasswordField)?.setErrors({not_the_same: true});  
@@ -167,42 +200,8 @@ export abstract class Utility {
       return null;
     }
   }
-
-
-  public static msToTime(s: number) {
-    var ms = s % 1000;
-    s = (s - ms) / 1000;
-    var secs = s % 60;
-    s = (s - secs) / 60;
-    var mins = s % 60;
-    var hrs = (s - mins) / 60;
   
-    return hrs + ':' + mins + ':' + secs;
-  }
-
-  public static zeroPad(n:number,length:number){
-    var s=n+"",needed=length-s.length;
-    if (needed>0) s=(Math.pow(10,needed)+"").slice(1)+s;
-    return s;
-  }
-
-  public static generateRandomString(): string {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ0123456789_';
-    let randomString = '';
-    const charactersLength = characters.length;
-  
-    for (let i = 0; i < 10; i++) {
-      const randomIndex = Math.floor(Math.random() * charactersLength);
-      randomString += characters.charAt(randomIndex);
-    }
-  
-    return randomString;
-  }
-
-  public static validateEmail(email: string) {
-    const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return regularExpression.test(String(email).toLowerCase());
-  }
+//#endregion
 
 }
 

@@ -38,15 +38,11 @@ export class ResetPswComponent {
 
 //#region ----- Constructor --------------------
 
-constructor(
-
-  private fb:                                   UntypedFormBuilder,
-  private _snackBar:                            MatSnackBar,
-  private svcUser:                              UserService,
-  private svcMail:                              MailService,
-  public _dialog:                               MatDialog, 
-
-  ) {
+constructor(private fb:                                   UntypedFormBuilder,
+            private _snackBar:                            MatSnackBar,
+            private svcUser:                              UserService,
+            private svcMail:                              MailService,
+            public _dialog:                               MatDialog  ) {
 
   this.form = this.fb.group({
     Email:                   ['', Validators.required],
@@ -55,7 +51,7 @@ constructor(
 //#endregion
 
   backToLogin(e: Event){
-      e.preventDefault();
+    e.preventDefault();
     this.reloadRoutes.emit("login");
   }
 
@@ -71,17 +67,15 @@ constructor(
           
     let user : any;
     //interrogo e aspetto il DB per ottenere lo user che ha questa mail 
-          //(TODO: bloccare possibilità di inserimento più utenti con una stessa mail!)
+    //(TODO: bloccare possibilità di inserimento più utenti con una stessa mail!)
     await firstValueFrom(this.svcUser.getByMailAddress(mailAddress)
       .pipe(
         tap(res => { user = res;}
       )
     ));
     
-    //console.log ("user trovato", user);
-
     if (!user) {
-      this._snackBar.openFromComponent(SnackbarComponent, { data: "L'Email non è presente per alcun utente"  , panelClass: ['red-snackbar']});
+      this._snackBar.openFromComponent(SnackbarComponent, { data: "L'Email non registrata"  , panelClass: ['red-snackbar']});
       return;
     }
 
@@ -90,7 +84,6 @@ constructor(
     //Reset Password con utente e pagina random generata AVVENIVA COSI' PRIMA DI RIFARE IL GIRO CON INVIO E SALVATAGGIO PSW TEMPORANEA
     //await firstValueFrom(this.svcUser.ResetPassword(user.id, rndPassword));                //sincrono
     //this.svcUser.ResetPassword(user.id, rndPassword).subscribe();                         //asincrono
-
 
     //ora devo salvare la password temporanea
 
@@ -106,8 +99,9 @@ constructor(
 
     //const formData = { ...user, tmpPassword: rndPassword }; //così purtroppo non funziona (SAREBBE STATO + ELEGANTE)
 
-    //console.log ("imposto tmpPassword tramite formData", formData);
-    this.svcUser.put(formData).subscribe({
+    this.svcUser.put(formData).subscribe();
+    /*
+      {
       next: res =>  {
         //console.log ("tmpPassword impostata")
       },
@@ -115,7 +109,7 @@ constructor(
         //console.log ("errore in impostazione tmpPassword")
       }
     });
-  
+    */
     let titoloMail = "STOODY: Invio Password Temporanea";
     let testoMail =  "<html><body>"+
     
