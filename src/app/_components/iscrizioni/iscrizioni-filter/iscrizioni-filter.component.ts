@@ -36,104 +36,35 @@ export class IscrizioniFilterComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili--------
   ngOnInit() {
 
-    this.nomeFilter.valueChanges
-    .subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.iscrizioniListComponent.filterValues.nome = val.toLowerCase(); 
-        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
-      }
-    )
-    this.cognomeFilter.valueChanges
-    .subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.iscrizioniListComponent.filterValues.cognome = val.toLowerCase();  
-        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
-      }
-    )
+    this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
 
-    this.classeFilter.valueChanges
-    .subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.iscrizioniListComponent.filterValues.classe = val.toLowerCase(); 
-        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
-      }
-    )
+    this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
 
-    this.sezioneFilter.valueChanges
-    .subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.iscrizioniListComponent.filterValues.sezione = val.toLowerCase(); 
-        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
-      }
-    )
+    this.classeFilter.valueChanges.subscribe(val => {this.applyFilterDx('classe', val);})
 
-    this.cfFilter.valueChanges
-    .subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.iscrizioniListComponent.filterValues.cf = val.toLowerCase(); 
-        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
-      }
-    )
+    this.sezioneFilter.valueChanges.subscribe(val => {this.applyFilterDx('sezione', val);})
 
-    this.emailFilter.valueChanges
-    .subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.iscrizioniListComponent.filterValues.email = val.toLowerCase(); 
-        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
-      }
-    )
+    this.cfFilter.valueChanges.subscribe(val => {this.applyFilterDx('cf', val);})
 
-    this.telefonoFilter.valueChanges
-    .subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.iscrizioniListComponent.filterValues.telefono = val.toLowerCase(); 
-        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
-      }
-    )
+    this.emailFilter.valueChanges.subscribe(val => {this.applyFilterDx('email', val);})
 
-    this.dtNascitaFilter.valueChanges
-    .subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.iscrizioniListComponent.filterValues.dtNascita = val.toLowerCase(); 
-        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
-      }
-    )
+    this.telefonoFilter.valueChanges.subscribe(val => {this.applyFilterDx('telefono', val);})
 
-    this.indirizzoFilter.valueChanges
-    .subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.iscrizioniListComponent.filterValues.indirizzo = val.toLowerCase(); 
-        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
-      }
-    )
+    this.dtNascitaFilter.valueChanges.subscribe(val => {this.applyFilterDx('dtNascita', val);})
 
-    this.comuneFilter.valueChanges
-    .subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.iscrizioniListComponent.filterValues.comune = val.toLowerCase(); 
-        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
-      }
-    )
+    this.indirizzoFilter.valueChanges.subscribe(val => {this.applyFilterDx('indirizzo', val);})
+    
+    this.comuneFilter.valueChanges.subscribe(val => {this.applyFilterDx('comune', val);})
 
-    this.provFilter.valueChanges
-    .subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.iscrizioniListComponent.filterValues.prov = val.toLowerCase(); 
-        this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
-      }
-    )
+    this.provFilter.valueChanges.subscribe(val => {this.applyFilterDx('prov', val);})
 
+  }
+
+  applyFilterDx(field: keyof typeof this.iscrizioniListComponent.filterValues, val: string) {
+    //this.resetFilterSx();
+    this.iscrizioniListComponent.filterValues[field] = val.toLowerCase();
+    this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
+    this.iscrizioniListComponent.updateEmailAddresses();
   }
 //#endregion
 

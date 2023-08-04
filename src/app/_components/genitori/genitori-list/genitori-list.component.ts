@@ -102,9 +102,10 @@ export class GenitoriListComponent implements OnInit {
 
   selection = new SelectionModel<ALU_Genitore>(true, []);   //rappresenta la selezione delle checkbox
 
-  public passedAlunno!:         string;
-  public page!:                 string;
-  
+  public passedAlunno!:                         string;
+  public page!:                                 string;
+  emailAddresses!:                              string;
+
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
   toggleChecks:                                 boolean = false;
@@ -236,8 +237,19 @@ export class GenitoriListComponent implements OnInit {
         this.sortCustom();
         this.matDataSource.sort = this.sort;
         this.matDataSource.filterPredicate = this.filterPredicate();
+        this.updateEmailAddresses();
+
       }
     );
+  }
+
+  updateEmailAddresses() {
+    //aggiorna this.emailAddresses che serve per poter copiare dalla toolbar gli indirizzi dei genitori
+      const emailArray = this.matDataSource.filteredData
+      .map(genitore => genitore.persona.email).filter(email => !!email)
+      .filter(emails => emails.length > 0); 
+
+    this.emailAddresses = emailArray.join(', ');
   }
 
 //#endregion
@@ -265,6 +277,8 @@ export class GenitoriListComponent implements OnInit {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
+    this.updateEmailAddresses();
+
   }
 
   resetSearch(){

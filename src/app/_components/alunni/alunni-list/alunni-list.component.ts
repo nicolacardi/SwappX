@@ -109,6 +109,7 @@ export class AlunniListComponent implements OnInit {
 
   public passedGenitore!:                       string;
   public page!:                                 string;
+  emailAddresses!:                              string;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   //idAlunniChecked:              number[] = [];
@@ -256,6 +257,7 @@ export class AlunniListComponent implements OnInit {
           this.sortCustom();
           this.matDataSource.sort = this.sort; 
           this.matDataSource.filterPredicate = this.filterPredicate();
+          this.updateEmailAddresses();
         }
       );
     }
@@ -288,6 +290,15 @@ export class AlunniListComponent implements OnInit {
     }
   }
 
+  updateEmailAddresses() {
+    //aggiorna this.emailAddresses che serve per poter copiare dalla toolbar gli indirizzi dei genitori
+      const emailArray = this.matDataSource.filteredData
+        .map(alunno => alunno._Genitori!.map(genitore => genitore.genitore!.persona.email).filter(email => !!email))
+        .filter(emails => emails.length > 0); 
+
+      this.emailAddresses = emailArray.join(', ');
+  }
+
 //#endregion
 
 //#region ----- Filtri & Sort ------------------
@@ -309,11 +320,11 @@ export class AlunniListComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
-
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
     //if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
+    this.updateEmailAddresses(); // Aggiorna gli indirizzi email dopo aver applicato il filtro
   }
 
   filterPredicate(): (data: any, filter: string) => boolean {

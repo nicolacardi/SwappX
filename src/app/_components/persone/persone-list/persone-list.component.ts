@@ -103,22 +103,24 @@ export class PersoneListComponent implements OnInit {
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
 
-  toggleChecks:                 boolean = false;
-  showPageTitle:                boolean = true;
-  showTableRibbon:              boolean = true;
-  public ckSoloAttivi :         boolean = true;
+  toggleChecks:                                 boolean = false;
+  showPageTitle:                                boolean = true;
+  showTableRibbon:                              boolean = true;
+  public ckSoloAttivi :                         boolean = true;
+  emailAddresses!:                              string;
+
 
 //#endregion
 
 //#region ----- ViewChild Input Output -------
 
-  @ViewChild(MatPaginator) paginator!:                        MatPaginator;
-  @ViewChild(MatSort) sort!:                                  MatSort;
-  @ViewChild("filterInput") filterInput!:                     ElementRef;
+  @ViewChild(MatPaginator) paginator!:          MatPaginator;
+  @ViewChild(MatSort) sort!:                    MatSort;
+  @ViewChild("filterInput") filterInput!:       ElementRef;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
-  @Input() personeFilterComponent!:                           PersoneFilterComponent;
-  @Input('dove') dove! :                                      string;
+  @Input() personeFilterComponent!:             PersoneFilterComponent;
+  @Input('dove') dove! :                        string;
 
 //#endregion
 
@@ -172,9 +174,20 @@ export class PersoneListComponent implements OnInit {
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort; 
         this.matDataSource.filterPredicate = this.filterPredicate();
+        this.updateEmailAddresses();
       }
     );
   }
+
+  updateEmailAddresses() {
+    //aggiorna this.emailAddresses che serve per poter copiare dalla toolbar gli indirizzi dei genitori
+      const emailArray = this.matDataSource.filteredData
+      .map(persona => persona.email).filter(email => !!email)
+      .filter(emails => emails.length > 0); 
+  
+    this.emailAddresses = emailArray.join(', ');
+  }
+
 //#endregion
 
 //#region ----- Filtri & Sort ------------------
@@ -184,6 +197,8 @@ export class PersoneListComponent implements OnInit {
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
     //if (this.dove == "persone-page") this.personeFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
+    this.updateEmailAddresses();
+
   }
 
   filterPredicate(): (data: any, filter: string) => boolean {

@@ -7,9 +7,9 @@
         <button mat-mini-fab class="button-transparent _btn-XLS" matTooltip="Scarica Excel" (click)="XLS()">
         </button>
     </div>
-    <div class="mt10">
-        <button mat-mini-fab class="button-transparent" matTooltip="Invia mail" (click)="email()">
-            <mat-icon class="material-icons color_white">email</mat-icon>
+    <div class="mt10" *ngIf="emailsYN">
+        <button mat-mini-fab class="button-transparent" matTooltip="Invia mail" [cdkCopyToClipboard]="emailAddresses" (click)="email()">
+            <mat-icon class="material-icons color_white" >email</mat-icon>
         </button>
     </div> 
     <div class="mt10">

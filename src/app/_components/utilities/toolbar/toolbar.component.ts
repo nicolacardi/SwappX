@@ -2,10 +2,12 @@
 
 import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { combineLatest, tap }                   from 'rxjs';
 
 //components
-import { DialogOkComponent }                    from '../dialog-ok/dialog-ok.component';
 import { SceltaColonneComponent }               from './scelta-colonne/scelta-colonne.component';
+import { SnackbarComponent }                    from '../snackbar/snackbar.component';
 
 //services
 import { ExcelService }                         from '../exceljs/exceljs.service';
@@ -18,12 +20,13 @@ import { TableColsService }                     from './tablecols.service';
 import { User }                                 from 'src/app/_user/Users';
 import { _UT_TableColVisible }                  from 'src/app/_models/_UT_TableColVisible';
 import { _UT_TableCol }                         from 'src/app/_models/_UT_TableCol';
-import { combineLatest, tap } from 'rxjs';
 
 //#endregion
 @Component({
   selector: 'app-toolbar',
-  templateUrl: './toolbar.component.html'
+  templateUrl: './toolbar.component.html',
+
+
 })
 
 export class ToolbarComponent implements OnInit{
@@ -32,7 +35,6 @@ export class ToolbarComponent implements OnInit{
   rptColumnsNameArr !:                          [string[]]; //uno strano array di array di stringhe richiesto da jspdf
   currUser!:                             User;
   tableCols!:                                   _UT_TableCol[];
-
   tableColsVisible!:                            _UT_TableColVisible[];
 //#endregion
 //#region ----- ViewChild Input Output ---------
@@ -43,6 +45,8 @@ export class ToolbarComponent implements OnInit{
   @Input('rptFieldsToKeep') rptFieldsToKeep! :  string[];
   @Input('rptColumnsNames') rptColumnsNames! :  string[];
   @Input('rptData') rptData! :                  any;
+  @Input('emailsYN') emailsYN! :                boolean;
+  @Input('emailAddresses') emailAddresses! :    string;
 
   @Output('refreshColumns') refreshColumns = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
 
@@ -60,6 +64,7 @@ export class ToolbarComponent implements OnInit{
     private svcTableCols:                       TableColsService,
 
     private svcUser:                            UserService,
+    private _snackBar:                          MatSnackBar,
 
     ) { }
 
@@ -86,10 +91,8 @@ export class ToolbarComponent implements OnInit{
   }
 
   email() {
-    this._dialog.open(DialogOkComponent, {
-      width: '320px',
-      data: {titolo: "MOEGHEA!", sottoTitolo: "insomma!"}
-    });
+    console.log (this.emailAddresses);
+    this._snackBar.openFromComponent(SnackbarComponent, {data: 'indirizzi email copiati - incollarli in una nuova mail', panelClass: ['green-snackbar']});
   }
 
   scegliColonne() {

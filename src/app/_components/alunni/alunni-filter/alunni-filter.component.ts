@@ -25,6 +25,8 @@ export class AlunniFilterComponent implements OnInit {
   emailFilter = new UntypedFormControl('');
   telefonoFilter = new UntypedFormControl('');
   nomeCognomeGenitoreFilter = new UntypedFormControl('');
+
+  
 //#endregion
   
 //#region ----- ViewChild Input Output ---------  
@@ -37,79 +39,33 @@ export class AlunniFilterComponent implements OnInit {
 
   ngOnInit() {
 
-    this.nomeFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.alunniListComponent.filterValues.nome = val.toLowerCase();
-        this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
-      }
-    )
+    this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
 
-    this.cognomeFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.alunniListComponent.filterValues.cognome = val.toLowerCase();
-        this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
-      }
-    )
+    this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
 
-    this.dtNascitaFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.alunniListComponent.filterValues.dtNascita = val.toLowerCase();
-        this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
-      }
-    )
+    this.dtNascitaFilter.valueChanges.subscribe(val => {this.applyFilterDx('dtNascita', val);})
 
-    this.indirizzoFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.alunniListComponent.filterValues.indirizzo = val.toLowerCase();
-        this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
-      }
-    )
+    this.indirizzoFilter.valueChanges.subscribe(val => {this.applyFilterDx('indirizzo', val);})
 
-    this.comuneFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.alunniListComponent.filterValues.comune = val.toLowerCase();
-        this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
-      }
-    )
+    this.comuneFilter.valueChanges.subscribe(val => {this.applyFilterDx('comune', val);})
 
-    this.provFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.alunniListComponent.filterValues.prov = val.toLowerCase();
-        this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
-      }
-    )
+    this.provFilter.valueChanges.subscribe(val => {this.applyFilterDx('prov', val);})
 
-    this.emailFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.alunniListComponent.filterValues.email = val.toLowerCase();
-        this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
-      }
-    )
+    this.emailFilter.valueChanges.subscribe(val => {this.applyFilterDx('email', val);})
 
-    this.telefonoFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.alunniListComponent.filterValues.telefono = val.toLowerCase();
-        this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
-      }
-    )
+    this.telefonoFilter.valueChanges.subscribe(val => {this.applyFilterDx('telefono', val);})
 
-    this.nomeCognomeGenitoreFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.alunniListComponent.filterValues.nomeCognomeGenitore = val.toLowerCase();
-        this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
-      }
-    )
+    this.nomeCognomeGenitoreFilter.valueChanges.subscribe(val => {this.applyFilterDx('nomeCognomeGenitore', val);})
 
   }
+
+  applyFilterDx(field: keyof typeof this.alunniListComponent.filterValues, val: string) {
+    //this.resetFilterSx();
+    this.alunniListComponent.filterValues[field] = val.toLowerCase();
+    this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
+    this.alunniListComponent.updateEmailAddresses();
+  }
+  
 
 //#endregion
 

@@ -140,6 +140,7 @@ import { ProfiloComponent }                     from './_user/profilo/profilo.co
 import { ChangePswComponent }                   from './_user/change-psw/change-psw.component';
 import { ResetPasswordComponent }               from './_user/reset-password/reset-password.component';
 import { SendMailComponent }                    from './_user/send-mail/send-mail.component';
+import { ClipboardModule }                      from '@angular/cdk/clipboard';
 
 //Messaggi
 import { MessaggiComponent }                    from './_components/messaggi/messaggi.component';
@@ -389,7 +390,9 @@ import { PagelleClasseEditComponent } from './_components/pagelle/pagelle-classe
     FormsModule,
     FullCalendarModule,
     ColorPickerModule,
-    QuillModule.forRoot()
+    QuillModule.forRoot(),
+    ClipboardModule,
+
 
   ],
 

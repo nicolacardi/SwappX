@@ -111,6 +111,7 @@ export class IscrizioniListComponent implements OnInit {
   toggleChecks:                                 boolean = false;
   showPageTitle:                                boolean = true;
   showTableRibbon:                              boolean = true;
+  emailAddresses!:                              string;
 
 
   filterValue = '';       //Filtro semplice
@@ -200,10 +201,22 @@ export class IscrizioniListComponent implements OnInit {
           this.sortCustom();
           this.matDataSource.sort = this.sort; 
           this.matDataSource.filterPredicate = this.filterPredicate();
+          this.updateEmailAddresses();
         }
       );
     } 
   }
+
+  updateEmailAddresses() {
+    //aggiorna this.emailAddresses che serve per poter copiare dalla toolbar gli indirizzi dei genitori
+    const emailArray = this.matDataSource.filteredData
+      .map(iscrizione => iscrizione.alunno._Genitori!.map(genitore => genitore.genitore!.persona.email).filter(email => !!email))
+      .filter(emails => emails.length > 0); 
+      
+    this.emailAddresses = emailArray.join(', ');
+  }
+
+
 //#endregion
 
 //#region ----- Filtri & Sort ------------------
@@ -248,6 +261,8 @@ export class IscrizioniListComponent implements OnInit {
     }
     //applicazione del filtro
     this.matDataSource.filter = JSON.stringify(this.filterValues)
+    this.updateEmailAddresses();
+
   }
 
   filterPredicate(): (data: any, filter: string) => boolean {
