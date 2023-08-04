@@ -63,7 +63,7 @@ export class PersoneFilterComponent implements OnInit {
 
   applyFilterDx(field: keyof typeof this.personeListComponent.filterValues, val: string) {
 
-    bella merda
+//    bella merda
     if(isNaN(+val))
       this.personeListComponent.filterValues[field] = val.toLowerCase();
     else
