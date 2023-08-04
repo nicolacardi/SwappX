@@ -1,25 +1,28 @@
+//#region ----- IMPORTS ------------------------
+
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { Observable } from 'rxjs';
-import { MatTableDataSource} from '@angular/material/table';
-import { CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { Router } from '@angular/router';
-import { MatMenuTrigger } from '@angular/material/menu';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { SelectionModel } from '@angular/cdk/collections';
+import { MatPaginator }                         from '@angular/material/paginator';
+import { MatSort }                              from '@angular/material/sort';
+import { Observable }                           from 'rxjs';
+import { MatTableDataSource}                    from '@angular/material/table';
+import { CdkDragDrop, moveItemInArray}          from '@angular/cdk/drag-drop';
+import { MatMenuTrigger }                       from '@angular/material/menu';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { SelectionModel }                       from '@angular/cdk/collections';
 
 //components
-import { UserEditComponent } from '../user-edit/user-edit.component';
-import { UsersFilterComponent } from '../users-filter/users-filter.component';
+import { UserEditComponent }                    from '../user-edit/user-edit.component';
+import { UsersFilterComponent }                 from '../users-filter/users-filter.component';
 
 //services
-import { UserService } from '../../../_user/user.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { NavigationService } from '../../utilities/navigation/navigation.service';
+import { UserService }                          from '../../../_user/user.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { NavigationService }                    from '../../utilities/navigation/navigation.service';
 
 //classes
-import { User } from 'src/app/_user/Users';
+import { User }                                 from 'src/app/_user/Users';
+
+//#endregion
 
 
 @Component({
@@ -78,17 +81,19 @@ export class UsersListComponent implements OnInit {
 
   selection = new SelectionModel<User>(true, []);   //rappresenta la selezione delle checkbox
 
-  matSortActive!:               string;
-  matSortDirection!:            string;
+  matSortActive!:                               string;
+  matSortDirection!:                            string;
 
-  public page!:                 string;
+  public page!:                                 string;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
-  idUsersChecked:              number[] = [];
-  toggleChecks:                 boolean = false;
-  showPageTitle:                boolean = true;
-  showTableRibbon:              boolean = true;
-  public ckSoloAttivi :         boolean = true;
+  idUsersChecked:                               number[] = [];
+  toggleChecks:                                 boolean = false;
+  showPageTitle:                                boolean = true;
+  showTableRibbon:                              boolean = true;
+  public ckSoloAttivi :                         boolean = true;
+  emailAddresses!:                              string;
+
 
 
 //#endregion
@@ -161,10 +166,21 @@ export class UsersListComponent implements OnInit {
           this.matDataSource.paginator = this.paginator;
           this.matDataSource.sort = this.sort; 
           this.matDataSource.filterPredicate = this.filterPredicate();
+          this.updateEmailAddresses();
         }
       );
     //}
   }
+
+  updateEmailAddresses() {
+    //aggiorna this.emailAddresses che serve per poter copiare dalla toolbar gli indirizzi dei genitori
+      const emailArray = this.matDataSource.filteredData
+      .map(user => user.persona!.email).filter(email => !!email)
+      .filter(emails => emails.length > 0); 
+  
+    this.emailAddresses = emailArray.join(', ');
+  }
+
 //#endregion
 
 //#region ----- Filtri & Sort -------
@@ -172,7 +188,8 @@ export class UsersListComponent implements OnInit {
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
-    this.matDataSource.filter = JSON.stringify(this.filterValues)
+    this.matDataSource.filter = JSON.stringify(this.filterValues);
+    this.updateEmailAddresses();
   }
 
   filterPredicate(): (data: any, filter: string) => boolean {

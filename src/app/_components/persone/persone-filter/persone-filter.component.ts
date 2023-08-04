@@ -71,6 +71,7 @@ export class PersoneFilterComponent implements OnInit {
   }
 
   applyFilterDx(field: keyof typeof this.personeListComponent.filterValues, val: string) {
+    console.log ("X", field, val);
     //this.resetFilterSx();
     this.personeListComponent.filterValues[field] = val.toLowerCase();
     this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);

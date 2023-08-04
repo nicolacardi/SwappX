@@ -57,29 +57,20 @@ export class ObiettiviFilterComponent implements OnInit {
     this.obsAnni$= this.svcAnni.list();
     this.obsMaterie$ = this.svcMaterie.list();
 
-    this.classeFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.obiettiviListComponent.filterValues.classeID = val;
-        this.obiettiviListComponent.matDataSource.filter = JSON.stringify(this.obiettiviListComponent.filterValues);
-      }
-    )
+    this.classeFilter.valueChanges.subscribe(val => {this.applyFilterDx('classeID', val);})
 
-    this.materiaFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.obiettiviListComponent.filterValues.materiaID = val;
-        this.obiettiviListComponent.matDataSource.filter = JSON.stringify(this.obiettiviListComponent.filterValues);
-      }
-    )
+    this.materiaFilter.valueChanges.subscribe(val => {this.applyFilterDx('materiaID', val);})
 
-    this.annoFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.obiettiviListComponent.filterValues.annoID = val;
-        this.obiettiviListComponent.matDataSource.filter = JSON.stringify(this.obiettiviListComponent.filterValues);
-      }
-    )
+    this.annoFilter.valueChanges.subscribe(val => {this.applyFilterDx('annoID', val);})
+
+  }
+
+  
+  applyFilterDx(field: keyof typeof this.obiettiviListComponent.filterValues, val: string) {
+    //this.resetFilterSx();
+    this.obiettiviListComponent.filterValues[field] = val.toLowerCase();
+    this.obiettiviListComponent.matDataSource.filter = JSON.stringify(this.obiettiviListComponent.filterValues);
+    // this.obiettiviListComponent.updateEmailAddresses();
   }
 //#endregion
 

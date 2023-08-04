@@ -34,52 +34,26 @@ export class VerbaliFilterComponent implements OnInit {
 
   ngOnInit() {
 
-    this.nomeFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.verbaliListComponent.filterValues.nome = val.toLowerCase();
-        this.verbaliListComponent.matDataSource.filter = JSON.stringify(this.verbaliListComponent.filterValues);
-      }
-    )
+    this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
 
-    this.cognomeFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.verbaliListComponent.filterValues.cognome = val.toLowerCase();
-        this.verbaliListComponent.matDataSource.filter = JSON.stringify(this.verbaliListComponent.filterValues);
-      }
-    )
-    this.tipoFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.verbaliListComponent.filterValues.tipo = val.toLowerCase();
-        this.verbaliListComponent.matDataSource.filter = JSON.stringify(this.verbaliListComponent.filterValues);
-      }
-    )
+    this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
 
-    this.dtVerbaleFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.verbaliListComponent.filterValues.dtVerbale = val.toLowerCase();
-        this.verbaliListComponent.matDataSource.filter = JSON.stringify(this.verbaliListComponent.filterValues);
-      }
-    )
+    this.tipoFilter.valueChanges.subscribe(val => {this.applyFilterDx('tipo', val);})
 
-    this.classeFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.verbaliListComponent.filterValues.classe = val.toLowerCase();
-        this.verbaliListComponent.matDataSource.filter = JSON.stringify(this.verbaliListComponent.filterValues);
-      }
-    )
-    this.titoloFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.verbaliListComponent.filterValues.titolo = val.toLowerCase();
-        this.verbaliListComponent.matDataSource.filter = JSON.stringify(this.verbaliListComponent.filterValues);
-      }
-    )
+    this.dtVerbaleFilter.valueChanges.subscribe(val => {this.applyFilterDx('dtVerbale', val);})
 
+    this.classeFilter.valueChanges.subscribe(val => {this.applyFilterDx('classe', val);})
+
+    this.titoloFilter.valueChanges.subscribe(val => {this.applyFilterDx('titolo', val);})
+
+
+  }
+
+  applyFilterDx(field: keyof typeof this.verbaliListComponent.filterValues, val: string) {
+    //this.resetFilterSx();
+    this.verbaliListComponent.filterValues[field] = val.toLowerCase();
+    this.verbaliListComponent.matDataSource.filter = JSON.stringify(this.verbaliListComponent.filterValues);
+    //this.verbaliListComponent.updateEmailAddresses();
   }
   //#endregion
 

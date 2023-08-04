@@ -33,51 +33,25 @@ constructor() {}
 
   ngOnInit() {
 
-    this.dtNotaFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.noteListComponent.filterValues.dtNota = val.toLowerCase();
-        this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
-      }
-    )
+    this.dtNotaFilter.valueChanges.subscribe(val => {this.applyFilterDx('dtNota', val);})
 
-    this.notaFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.noteListComponent.filterValues.nota = val.toLowerCase();
-        this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
-      }
-    )
+    this.notaFilter.valueChanges.subscribe(val => {this.applyFilterDx('nota', val);})
 
-    this.quadrimestreFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.noteListComponent.filterValues.periodo = val.toLowerCase();
-        this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
-      }
-    )
-    this.dtFirmaFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.noteListComponent.filterValues.dtFirma = val.toLowerCase();
-        this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
-      }
-    )
-    this.docenteFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.noteListComponent.filterValues.docente = val.toLowerCase();
-        this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
-      }
-    )
-    this.alunnoFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();  
-        this.noteListComponent.filterValues.alunno = val.toLowerCase();
-        this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
-      }
-    )
+    this.quadrimestreFilter.valueChanges.subscribe(val => {this.applyFilterDx('periodo', val);})
 
+    this.dtFirmaFilter.valueChanges.subscribe(val => {this.applyFilterDx('dtFirma', val);})
+
+    this.docenteFilter.valueChanges.subscribe(val => {this.applyFilterDx('docente', val);})
+
+    this.alunnoFilter.valueChanges.subscribe(val => {this.applyFilterDx('alunno', val);})
+
+  }
+
+  applyFilterDx(field: keyof typeof this.noteListComponent.filterValues, val: string) {
+    //this.resetFilterSx();
+    this.noteListComponent.filterValues[field] = val.toLowerCase();
+    this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
+    // this.noteListComponent.updateEmailAddresses();
   }
 //#endregion
 

@@ -57,81 +57,41 @@ export class PagamentiFilterComponent implements OnInit {
     this.causaliPagamento$ = this.svcCausaliPagamento.list();
     this.tipiPagamento$ = this.svcTipiPagamento.list();
 
-    this.tipoPagamentoFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.pagamentiListComponent.filterValues.tipoPagamento = val;
-        this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
-      }
-    )
+    this.tipoPagamentoFilter.valueChanges.subscribe(val => {this.applyFilterDx('tipoPagamento', val);})
 
-    this.causaleFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.pagamentiListComponent.filterValues.causale = val;
-        this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
-      }
-    )
+    this.causaleFilter.valueChanges.subscribe(val => {this.applyFilterDx('causale', val);})
 
-    this.nomeFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.pagamentiListComponent.filterValues.nome = val;
-        this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
-      }
-    )
+    this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
 
-    this.cognomeFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.pagamentiListComponent.filterValues.cognome = val;
-        this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
-      }
-    )
+    this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
 
+    this.importoPiuDiFilter.valueChanges.subscribe(val => {this.applyFilterDx('importoPiuDi', val);})
 
-    this.importoPiuDiFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.pagamentiListComponent.filterValues.importoPiuDi = val;
-        this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
-      }
-    )
+    this.importoMenoDiFilter.valueChanges.subscribe(val => {this.applyFilterDx('importoMenoDi', val);})
+    
+    this.dataDal.valueChanges.subscribe(val => {this.applyFilterDx('dataDal', val);})
 
-    this.importoMenoDiFilter.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.pagamentiListComponent.filterValues.importoMenoDi = val;
-        this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
-      }
-    )
+    this.dataAl.valueChanges.subscribe(val => {this.applyFilterDx('dataAl', val);})
+
 
     this.importoFilter.valueChanges.subscribe(
       val => {
         if (this.importoFilter.value != '') {this.importoMenoDiFilter.disable();this.importoPiuDiFilter.disable()} 
         else {this.importoMenoDiFilter.enable(); this.importoPiuDiFilter.enable()}
-        //this.resetFilterSx();
         this.pagamentiListComponent.filterValues.importo = val;
         this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
       }
     )
 
-    this.dataDal.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.pagamentiListComponent.filterValues.dataDal = val;
-        this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
-      }
-    )
 
-    this.dataAl.valueChanges.subscribe(
-      val => {
-        //this.resetFilterSx();
-        this.pagamentiListComponent.filterValues.dataAl = val;
-        this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
-      }
-    )
 
+  }
+
+  applyFilterDx(field: keyof typeof this.pagamentiListComponent.filterValues, val: string) {
+    //this.resetFilterSx();
+    this.pagamentiListComponent.filterValues[field] = val.toLowerCase();
+    this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
+    // this.pagamentiListComponent.updateEmailAddresses();
   }
 //#endregion
 

@@ -42,30 +42,21 @@ export class UsersFilterComponent implements OnInit {
 
     this.obsTipiPersona$ = this.svcTipiPersona.list();
 
-    this.nomeFilter.valueChanges.subscribe( val => {
-        this.usersListComponent.filterValues.nome = val.toLowerCase();
-        this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
-      }
-    )
+    this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
 
-    this.cognomeFilter.valueChanges.subscribe( val => {
-        this.usersListComponent.filterValues.cognome = val.toLowerCase();
-        this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
-      }
-    )
+    this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
 
-    this.emailFilter.valueChanges.subscribe( val => {
-        this.usersListComponent.filterValues.email = val.toLowerCase();
-        this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
-      }
-    )
+    this.emailFilter.valueChanges.subscribe(val => {this.applyFilterDx('email', val);})
 
-    this.tipoPersonaFilter.valueChanges.subscribe( val => {
-        this.usersListComponent.filterValues.tipoPersona = val;
-        this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
-      }
-    )
+    this.tipoPersonaFilter.valueChanges.subscribe(val => {this.applyFilterDx('tipoPersona', val);})
 
+  }
+
+  applyFilterDx(field: keyof typeof this.usersListComponent.filterValues, val: string) {
+    //this.resetFilterSx();
+    this.usersListComponent.filterValues[field] = val.toLowerCase();
+    this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
+    this.usersListComponent.updateEmailAddresses();
   }
 //#endregion
 
