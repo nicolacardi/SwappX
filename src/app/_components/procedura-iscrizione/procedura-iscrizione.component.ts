@@ -47,36 +47,16 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(
-    private fb:                                 UntypedFormBuilder,
-    private svcIscrizioni:                      IscrizioniService,
-    private svcPersone:                         PersoneService,
-    private actRoute:                           ActivatedRoute,
-    private _snackBar:                          MatSnackBar
-  ) { 
+  constructor(private fb:                                 UntypedFormBuilder,
+              private svcIscrizioni:                      IscrizioniService,
+              private svcPersone:                         PersoneService,
+              private actRoute:                           ActivatedRoute,
+              private _snackBar:                          MatSnackBar ) { 
+
     this.form = this.fb.group({
       id:                         [null],
-      
-      tipoPersonaID:              [''],
+      //tipoPersonaID:              [''],
       ckAttivo:                   [true],
-
-      nome:                       [''],
-      cognome:                    [''],
-      dtNascita:                  [''],
-      comuneNascita:              [''],
-      provNascita:                [''],
-      nazioneNascita:             [''],
-      indirizzo:                  [''],
-      comune:                     [''],
-      prov:                       [''],
-      cap:                        [''],
-      nazione:                    [''],
-      genere:                     [''],
-      cf:                         [''],
-      telefono:                   [''],
-      email:                      [''],
-
-      //ckAttivo:                   [true]
     });
   }
 //#endregion
@@ -102,7 +82,6 @@ export class ProceduraIscrizioneComponent implements OnInit {
     //   concatMap(genitore => this.svcAlunni.listByGenitore(genitore.id))
     // );
 
-    console.log("QUI")
     this.actRoute.queryParams.subscribe(
       params => {
         this.iscrizioneID = params['iscrizioneID'];     

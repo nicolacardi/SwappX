@@ -1,10 +1,10 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, EventEmitter, Input, OnInit, Output }             from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output }     from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
-import { MatDialog }                            from '@angular/material/dialog';
-import { Observable, iif, of }                       from 'rxjs';
-import { concatMap, debounceTime, switchMap, tap }         from 'rxjs/operators';
+import { MatDialog }                                          from '@angular/material/dialog';
+import { Observable, of }                                     from 'rxjs';
+import { tap }                                                from 'rxjs/operators';
 
 //components
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
@@ -20,7 +20,6 @@ import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Person
 import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni';
 import { TipiPersonaService }                   from '../tipi-persona.service';
 import { User }                                 from 'src/app/_user/Users';
-import { PER_Docente } from 'src/app/_models/PER_Docente';
 
 //#endregion
 @Component({
@@ -60,17 +59,14 @@ export class PersonaFormComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(
-    public _dialog:                             MatDialog,
-    private fb:                                 UntypedFormBuilder, 
-    private svcPersone:                         PersoneService,
-    private svcTipiPersona:                     TipiPersonaService,
-    private svcComuni:                          ComuniService,
-    private svcDocenti:                         DocentiService,
+  constructor(public _dialog:                             MatDialog,
+              private fb:                                 UntypedFormBuilder, 
+              private svcPersone:                         PersoneService,
+              private svcTipiPersona:                     TipiPersonaService,
+              private svcComuni:                          ComuniService,
+              private _loadingService :                   LoadingService  ) { 
 
-    private _loadingService :                   LoadingService  ) { 
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
-
 
     this.form = this.fb.group({
       id:                         [null],
@@ -103,8 +99,7 @@ export class PersonaFormComponent implements OnInit {
   ngOnInit(){
     this.loadData();
     this.svcComuni.list().subscribe( res => this.comuniArr = res); //altra strada
-    this.form.valueChanges
-    .subscribe(
+    this.form.valueChanges.subscribe(
       res=> this.formValid.emit(this.form.valid)
     )
   }
@@ -132,30 +127,26 @@ export class PersonaFormComponent implements OnInit {
 
       //********************* FILTRO COMUNE *******************
 
-      this.form.controls.comune.valueChanges
-      .subscribe( res=> {
+      this.form.controls.comune.valueChanges.subscribe( res=> {
         this.comuniIsLoading = true
-          if (res.length >=3) {
-            this.filteredComuniArr = this.comuniArr.filter
-            (val => val.comune.toLowerCase().includes(res.toLowerCase())
-            );
+          if (res.length >=3 && this.comuniArr != undefined ) {
+            this.filteredComuniArr = this.comuniArr.filter (val => val.comune.toLowerCase().includes(res.toLowerCase()) );
             this.comuniIsLoading = false
-          } else {
+          } 
+          else {
             this.filteredComuniArr = [];
             this.comuniIsLoading = false
           }
         }
       )
 
-      this.form.controls.comuneNascita.valueChanges
-      .subscribe( res=> {
+      this.form.controls.comuneNascita.valueChanges.subscribe( res=> {
         this.comuniNascitaIsLoading = true
-          if (res.length >=3) {
-            this.filteredComuniNascitaArr = this.comuniArr.filter
-            (val => val.comune.toLowerCase().includes(res.toLowerCase())
-            );
+          if (res.length >=3  && this.comuniArr != undefined) {
+            this.filteredComuniNascitaArr = this.comuniArr.filter(val => val.comune.toLowerCase().includes(res.toLowerCase()));
             this.comuniNascitaIsLoading = false
-          } else {
+          } 
+          else {
             this.filteredComuniNascitaArr = [];
             this.comuniNascitaIsLoading = false
           }
@@ -181,9 +172,6 @@ export class PersonaFormComponent implements OnInit {
 
       //   )
         // concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(genitore.id, this.alunnoID), of() ))
-
-
-
   }
 
   save() :Observable<any>{
@@ -206,17 +194,16 @@ export class PersonaFormComponent implements OnInit {
     }
     else {
       this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
-      console.log ("PersonaFormComponent - save() - this.form.value", this.form.value);
+      //console.log ("PersonaFormComponent - save() - this.form.value", this.form.value);
       return this.svcPersone.put(this.form.value)
     }
   }
 
   delete() :Observable<any>{
 
-    if (this.personaID != null) {
-      return this.svcPersone.delete(this.personaID)
-      
-    } else return of();
+    if (this.personaID != null) 
+      return this.svcPersone.delete(this.personaID) 
+    else return of();
   }
 
 //#endregion

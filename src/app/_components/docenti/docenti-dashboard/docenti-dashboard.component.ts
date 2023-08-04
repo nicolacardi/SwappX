@@ -135,14 +135,15 @@ export class DocentiDashboardComponent implements OnInit {
     this.materiaID = 0;
     this.classeSezioneAnnoID = classeSezioneAnnoID;
     // Estraggo le materie di questo docente in questa classe e le metto nella combo
-    this.svcDocenze.listByClasseSezioneAnnoDocente(classeSezioneAnnoID, this.docenteID)
-    .subscribe(materie=> {
-      this.arrMaterie = materie;
-      //console.log("docenti-dashboard - classeSezioneAnnoIDEmitted - vado a impostare la materia con ID:", materie[0].materiaID);
-      this.form.controls.selectMaterieDocenteClasse.setValue(materie[0].materiaID);
-    })
-
-
+    this.svcDocenze.listByClasseSezioneAnnoDocente(classeSezioneAnnoID, this.docenteID).subscribe(
+      materie=> {
+        //console.log("AS-materie: ", materie);
+        if(materie != null && materie.length>0){
+          this.arrMaterie = materie;
+          this.form.controls.selectMaterieDocenteClasse.setValue(materie[0].materiaID);
+        }
+      }
+    )
   }
 
   docenteIdEmitted(docenteId: number) {

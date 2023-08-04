@@ -23,8 +23,6 @@ import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_Classe
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 import { PagelleService } from '../pagelle.service';
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
-import { FormatoData, Utility } from '../../utilities/utility.component';
-
 
 //#endregion
 
@@ -135,8 +133,7 @@ export class PagelleClasseEditComponent{
     loadPagelleVoti$.subscribe(
         val =>   {
           this.matDataSource.data = val;
-          console.log ("pagelle-classe-edit - lodData - classeSezioneAnnoID: ", this.classeSezioneAnnoID, " - materiaID: ", this.materiaID);
-          console.log ("pagelle-classe-edit - loadData - val: ", val);
+          //console.log ("pagelle-classe-edit - lodData - classeSezioneAnnoID: ", this.classeSezioneAnnoID, " - materiaID: ", this.materiaID);
           this.matDataSource.filterPredicate = this.filterPredicate();
 
         }
@@ -149,19 +146,14 @@ export class PagelleClasseEditComponent{
       concatMap(() => this.svcObiettivi.countByMateriaAndClasseAndAnno(this.materiaID, classeSezioneAnno.classeSezione.classeID, classeSezioneAnno.annoID))
     ).subscribe(val => {
       this.countObiettivi = val;
-      // console.log("****************************************");
     });
 
   }
   openObiettiviTest(iscrizioneID: number, pagellaID: number, periodo: number, pagellaVotoID: number ) {
-    console.log (iscrizioneID, pagellaID, periodo, pagellaVotoID);
+    //console.log (iscrizioneID, pagellaID, periodo, pagellaVotoID);
   }
 
   openObiettivi(iscrizioneID: number, pagellaID: number, periodo: number, pagellaVotoID: number ) {
-
-    //console.log ( "pagelle-classe-edit - openObiettivi - valori per aprire dialog", iscrizioneID, pagellaID, periodo, pagellaVotoID, this.materiaID, this.classeSezioneAnnoID);
-
-    //return;
 
     const dialogConfig : MatDialogConfig = {
     panelClass: 'add-DetailDialog',
@@ -178,11 +170,9 @@ export class PagelleClasseEditComponent{
     }
     
     const dialogRef = this._dialog.open(VotiObiettiviEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe( 
-      () => { 
-        //this.reloadParent.emit();
-        this.loadData(); 
-      });
+    dialogRef.afterClosed().subscribe( () => { 
+      this.loadData(); 
+    });
   }
 
   changeSelectGiudizio(iscrizioneID: number, pagella: DOC_Pagella, pagellaVoto: DOC_PagellaVoto, tipoGiudizioID: number, periodo: number) {
@@ -240,7 +230,6 @@ export class PagelleClasseEditComponent{
     let pagellaVoto2 = Object.assign({}, objPagellaVoto);
     this.save(iscrizioneID, pagellaVoto2, pagella, periodo);
     
-
     //if (this.objPagella.ckStampato) this.resetStampato();
   }
 
@@ -261,11 +250,9 @@ export class PagelleClasseEditComponent{
       periodo : periodo
     }
 
-    console.log ("pagelle-classe-edit - changeNote - objPagellaVoto", objPagellaVoto);
+    //console.log ("pagelle-classe-edit - changeNote - objPagellaVoto", objPagellaVoto);
     let pagellaVoto2 = Object.assign({}, objPagellaVoto);
     this.save(iscrizioneID, pagellaVoto2, pagella, periodo);
-
-
   }
   
   save (iscrizioneID: number, pagellaVoto: DOC_PagellaVoto, pagella: DOC_Pagella, periodo: number) {
@@ -281,9 +268,6 @@ export class PagelleClasseEditComponent{
       iscrizioneID: iscrizioneID,
       periodo: periodo
     }
-
-    console.log ("pagelle-classe-edit - save objPagella: ", objPagella);
-    console.log ("pagelle-classe-edit - save pagellaVoto: ", pagellaVoto);
 
     //nel caso la pagella ancora non sia stata creata, va inserita
     if (objPagella.id == -1) {
@@ -305,51 +289,36 @@ export class PagelleClasseEditComponent{
         )
     }
     else {    //caso pagella già presente
-      //console.log("pagelle-classe-edit - save - Pagella.id <> -1: C'è una Pagella --->post o put del PagellaVoto");
-      //console.log("pagelle-classe-edit - save - PagellaVoto: ", pagellaVoto);
 
       if (pagellaVoto.id == 0) {
-        console.log("pagelle-classe-edit - save - post pagellaVoto");
-        console.log("********************************");
-
         this.svcPagellaVoti.post(pagellaVoto).subscribe({
           next: res => {this._snackBar.openFromComponent(SnackbarComponent, {data: 'post pagellaVoto eseguita', panelClass: ['green-snackbar']}); this.loadData();},
           error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
         })
       } else {
-        console.log("pagelle-classe-edit - save - put pagellaVoto");
-        console.log("********************************");
-
         this.svcPagellaVoti.put(pagellaVoto).subscribe({
-          next: res => {this.loadData(); this._snackBar.openFromComponent(SnackbarComponent, {data: 'put PagellaVoto eseguita', panelClass: ['red-snackbar']}); this.loadData();},
-          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})
+          next: () => {this.loadData(); this._snackBar.openFromComponent(SnackbarComponent, {data: 'put PagellaVoto eseguita', panelClass: ['red-snackbar']}); this.loadData();},
+          error: () => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})
         })
       }
     }
   }
-
 
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
-
   
   filterPredicate(): (data: any, filter: string) => boolean {
 
     let filterFunction = function(data: any, filter: any): boolean {
-
-      console.log ("xxx", data, filter);
-
       let searchTerms = JSON.parse(filter);
-
       let boolSx = String(data.alunno.persona.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.alunno.persona.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
       
-      return boolSx;
+        return boolSx;
     }
     return filterFunction;
   }
-
 }

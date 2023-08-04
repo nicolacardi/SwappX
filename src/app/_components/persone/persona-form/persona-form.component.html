@@ -1,9 +1,9 @@
-                <!-- [disabled] ="currPersona.personaID == personaID" impedire di cambiae tipo a se stessi -->
+<!-- TODO -->
+<!-- [disabled] ="currPersona.personaID == personaID" impedire di cambiare tipo a se stessi -->
 
 
                
 <form *ngIf="(persona$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
-    <!-- *ngIf="dove!= 'genitore-edit' && dove!='alunno-edit'" -->
     <mat-grid-list  *ngIf="dove!= 'genitore-edit' && dove!='alunno-edit' && dove!='procedura-iscrizione'" class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>

@@ -25,7 +25,6 @@ export class AlunniFilterComponent implements OnInit {
   emailFilter = new UntypedFormControl('');
   telefonoFilter = new UntypedFormControl('');
   nomeCognomeGenitoreFilter = new UntypedFormControl('');
-
   
 //#endregion
   

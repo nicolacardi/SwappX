@@ -46,7 +46,7 @@ export class PersoneFilterComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili--------
 
-  ngOnInit(): void {
+  ngOnInit() {
 
     this.obsTipiPersona$ = this.svcTipiPersona.list();
 

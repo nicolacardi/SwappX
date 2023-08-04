@@ -351,7 +351,6 @@ export class AlunniListComponent implements OnInit {
         foundGenitore = true;
       }
 
-
       let dArr = data.persona.dtNascita.split("-");
       const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 
@@ -532,8 +531,6 @@ export class AlunniListComponent implements OnInit {
       "ckAttivo"];
   }
 //#endregion
-
-
 
 
 // ******************************** LE PROMISES: TENERE ***************************

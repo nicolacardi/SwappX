@@ -23,8 +23,7 @@ export class ChangePswComponent implements OnInit {
                private svcUser:              UserService,
                private _snackBar:            MatSnackBar ) { 
 
-    this.form = this.fb.group(
-      {
+    this.form = this.fb.group({
         password:        ['', [Validators.required, Validators.minLength(4)]],
         newPassword:     ['', [Validators.required, Validators.minLength(4), Validators.maxLength(19)]],
         confirmPassword: ['', Validators.required]

@@ -295,7 +295,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
         this.showPageTitle = false;
         this.showTableRibbon = false;
 
-        if(this.currUser.personaID != undefined && this.currUser.personaID != 0) {
+        if(this.currUser != undefined &&this.currUser.personaID != undefined && this.currUser.personaID != 0) {
 
           //AS: ATTENZIONE: se la persona non è un docente, la chiamata al WS restituisce un errore 404, che viene fuori nel console.log
           //bisogna modificare il WS in modo che ritorni null e non errore 
@@ -307,6 +307,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
         "traceId": "00-e2acc9e55ba9934bb0cf93e56cb1a04b-09371454471a6e45-00"
         }
                   */
+
+          //this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe ( 
           this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe ( 
             res => {   
               if(res)

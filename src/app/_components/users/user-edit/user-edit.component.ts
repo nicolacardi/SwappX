@@ -100,7 +100,6 @@ export class UserEditComponent implements OnInit {
 
   ngOnInit() {
 
-    //console.log ("ngOnInit");
     this.svcPersone.list().subscribe(persone => {
       this.form.controls['nomeCognomePersona'].setValidators(
         [FormCustomValidatorsArray.valueSelected(persone)]
@@ -131,7 +130,6 @@ export class UserEditComponent implements OnInit {
       
       this.user$ = loadUser$.pipe(
         tap(utente => {
-          console.log(utente);
 
           this.form.patchValue(utente);
           this.form.controls['nomeCognomePersona'].setValue(utente.persona!.nome + " " + utente.persona!.cognome);

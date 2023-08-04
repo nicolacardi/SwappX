@@ -126,14 +126,12 @@ export class PersoneListComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor( 
-    private svcPersone:                         PersoneService,
-    private _loadingService:                    LoadingService,
-    public _dialog:                             MatDialog,
-    private svcTableCols:                       TableColsService,
-    private svcTableColsVisible:                TableColsVisibleService
-  ) 
-  { 
+  constructor(private svcPersone:                         PersoneService,
+              private _loadingService:                    LoadingService,
+              public _dialog:                             MatDialog,
+              private svcTableCols:                       TableColsService,
+              private svcTableColsVisible:                TableColsVisibleService)   { 
+
     this.currUser = Utility.getCurrentUser();
   }
 //#endregion
@@ -147,8 +145,7 @@ export class PersoneListComponent implements OnInit {
   }
 
   loadLayout(){
-    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName)
-    .subscribe( colonne => {
+    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName).subscribe( colonne => {
         if (colonne.length != 0) this.displayedColumns = colonne.map(a => a.tableCol!.colName)
         else this.svcTableCols.listByTable(this.tableName).subscribe( colonne => this.displayedColumns = colonne.map(a => a.colName))      
     });
@@ -195,10 +192,8 @@ export class PersoneListComponent implements OnInit {
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
-    //if (this.dove == "persone-page") this.personeFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
-    this.getEmailAddresses();
-
+    this.getEmailAddresses()
   }
 
   filterPredicate(): (data: any, filter: string) => boolean {

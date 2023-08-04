@@ -89,24 +89,18 @@ export class DocentiService {
 */
     return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersonaID/'+personaID)
     .pipe(
-      tap(
-        (res) => {}//console.log('DEBUG-docenti.service OK: ', res)
-        ),
-        //(error) =>console.log('DEBUG-docenti.service OK: ', res)),
+      tap(() => {}   ),
         
         catchError((error) => {
           if (error.status === 404 || error == "Not Found") {
             return of(error);
-            //return of(undefined);
           }
           else {
-            console.log("quando non trova (ad esempio con ID 17) la svcDocenti.getByPersonaID(ID) dovrebbe rispondere con 0 e non con un NotFound");
-
+            //console.log("quando non trova (ad esempio con ID 17) la svcDocenti.getByPersonaID(ID) dovrebbe rispondere con 0 e non con un NotFound");
             throw error;
           }
       })
     );
-
 
     //return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersonaID/'+personaID);
     //http://213.215.231.4/swappX/api/PER_Docenti/GetByPersonaID/6

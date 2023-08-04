@@ -131,7 +131,7 @@ export class AlunnoEditComponent implements OnInit {
               this.personaID = alunno.personaID;
               this.alunnoNomeCognome = alunno.persona.nome + " " + alunno.persona.cognome;
               this.formAlunno.patchValue(alunno);
-              console.log (alunno);
+              //console.log (alunno);
             }       
           ),
           // tap(

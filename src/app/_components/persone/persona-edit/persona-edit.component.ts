@@ -1,7 +1,7 @@
 //#region ----- IMPORTS ------------------------
 
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
@@ -15,7 +15,6 @@ import { PersonaFormComponent }                 from '../persona-form/persona-fo
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { PersoneService }                       from '../persone.service';
-import { TipiPersonaService }                   from '../tipi-persona.service';
 
 //models
 import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
@@ -36,6 +35,7 @@ export class PersonaEditComponent implements OnInit {
   currPersona!:                                 User;
 
   form! :                                       UntypedFormGroup;
+
   isValid!:                                     boolean;
   emptyForm :                                   boolean = false;
   comuniIsLoading:                              boolean = false;
@@ -52,43 +52,23 @@ export class PersonaEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(
-    
-    public _dialogRef: MatDialogRef<PersonaEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public personaID: number,
-    private fb:                           UntypedFormBuilder, 
-    private svcPersone:                   PersoneService,
-    private svcTipiPersona:               TipiPersonaService,
-    //private svcComuni:                    ComuniService,
-    public _dialog:                       MatDialog,
-    private _snackBar:                    MatSnackBar,
-    private _loadingService :             LoadingService  ) {
+  constructor(public _dialogRef: MatDialogRef<PersonaEditComponent>,
+              @Inject(MAT_DIALOG_DATA) public personaID: number,
+              private fb:                           UntypedFormBuilder, 
+              private svcPersone:                   PersoneService,
+              public _dialog:                       MatDialog,
+              private _snackBar:                    MatSnackBar,
+              private _loadingService :             LoadingService  ) {
 
     _dialogRef.disableClose = true;
+    
     //let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 
-    // this.form = this.fb.group({
-    //   id:                         [null],
-    //   tipoPersonaID:              ['', Validators.required],
-
-    //   nome:                       [''],
-    //   cognome:                    [''],
-    //   dtNascita:                  [''],
-    //   comuneNascita:              [''],
-    //   provNascita:                [''],
-    //   nazioneNascita:             [''],
-    //   indirizzo:                  [''],
-    //   comune:                     [''],
-    //   prov:                       [''],
-    //   cap:                        [''],
-    //   nazione:                    [''],
-    //   genere:                     [''],
-    //   cf:                         [''],
-    //   telefono:                   [''],
-    //   email:                      [''],
-
-    //   ckAttivo:                   [true]
-    // });
+    this.form = this.fb.group({
+      id:                         [null],
+      tipoPersonaID:              ['', Validators.required],
+      ckAttivo:                   [true]
+    });  
   }
 
 //#endregion
@@ -96,8 +76,6 @@ export class PersonaEditComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit() {
-    //this.currPersona = Utility.getCurrentUser();
-    //this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.TipoPersona!.livello);
     this.loadData();
   }
 
@@ -131,14 +109,12 @@ export class PersonaEditComponent implements OnInit {
   {
     this.personaFormComponent.save()
     .subscribe({
-      next: res=> {
+      next: ()=> {
         this._dialogRef.close();
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
       },
       error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    
     })
-  
   }
 
   delete()

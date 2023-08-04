@@ -16,15 +16,14 @@
                 Selezionare un docente
             </div>
 
-
             <mat-tab-group (selectedTabChange)="selectedTabValue($event)">
                 <mat-tab  *ngIf="classeSezioneAnnoID"  label="Alunni">
-                        <div class="_table-container">
-                            <app-iscrizioni-classe-list  
-                                [dove]="'lista-alunni'" 
-                                [classeSezioneAnnoID]="classeSezioneAnnoID">
-                            </app-iscrizioni-classe-list>
-                        </div>
+                    <div class="_table-container">
+                        <app-iscrizioni-classe-list  
+                            [dove]="'lista-alunni'" 
+                            [classeSezioneAnnoID]="classeSezioneAnnoID">
+                        </app-iscrizioni-classe-list>
+                    </div>
                 </mat-tab>
 
                 <mat-tab  *ngIf="classeSezioneAnnoID" label="Note Disciplinari"  >
@@ -78,17 +77,15 @@
                         <mat-form-field  class="_pos-relative ml20 mt10 topZIndex noBottomPadding"  #materia>
                             <mat-label>Materie</mat-label>
                             <mat-select formControlName="selectMaterieDocenteClasse">
-                                <!-- <mat-option *ngFor="let element of (obsMaterie$ | async)" [value]="element.materiaID"> -->
-
                                 <mat-option *ngFor="let element of arrMaterie" [value]="element.materiaID">
                                     {{element.materia.descrizione}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                         <app-pagelle-classe-edit  
-                        [classeSezioneAnnoID]="classeSezioneAnnoID"  
-                        [materiaID]="materiaID"
-                        [tipoVoto]="tipoVoto">
+                            [classeSezioneAnnoID]="classeSezioneAnnoID"  
+                            [materiaID]="materiaID"
+                            [tipoVoto]="tipoVoto">
                         </app-pagelle-classe-edit>
                     </form>
                 </mat-tab>

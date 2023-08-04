@@ -131,14 +131,12 @@ import { NoteFilterComponent }                  from './_components/note/note-fi
 import { UserService }                          from './_user/user.service';
 import { UserComponent }                        from './_user/user.component';
 import { LoginComponent }                       from './_user/login/login.component';
-import { RegisterComponent }                    from './_user/register/register.component';
 import { UsersPageComponent }                   from './_components/users/users-page/users-page.component';
 import { UsersListComponent }                   from './_components/users/users-list/users-list.component';
 import { UsersFilterComponent }                 from './_components/users/users-filter/users-filter.component';
 import { UserEditComponent }                    from './_components/users/user-edit/user-edit.component';
 import { ProfiloComponent }                     from './_user/profilo/profilo.component';
 import { ChangePswComponent }                   from './_user/change-psw/change-psw.component';
-import { ResetPasswordComponent }               from './_user/reset-password/reset-password.component';
 import { SendMailComponent }                    from './_user/send-mail/send-mail.component';
 import { ClipboardModule }                      from '@angular/cdk/clipboard';
 
@@ -312,7 +310,6 @@ import { PagelleClasseEditComponent } from './_components/pagelle/pagelle-classe
     SceltaColonneComponent,
 
     LoginComponent,
-    RegisterComponent,
     UserComponent,
     UsersPageComponent,
     UsersListComponent,
@@ -328,7 +325,6 @@ import { PagelleClasseEditComponent } from './_components/pagelle/pagelle-classe
     ResizeColumnDirective,
     ClickDoubleDirective,
 
-    ResetPasswordComponent,
     DocenzeAddComponent,
 
 
