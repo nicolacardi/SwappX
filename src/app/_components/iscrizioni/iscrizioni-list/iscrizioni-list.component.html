@@ -76,13 +76,20 @@
         <ng-container matColumnDef="actionsColumn2">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header></th>
             <td mat-cell class="_grey-background" *matCellDef="let element" >
-                <mat-icon 
+                <mat-icon *ngIf="element.stato.codice == '30'" 
                     class="pointer" 
                     matTooltip="invia richiesta di iscrizione ai genitori di {{element.alunno.persona.nome}} {{element.alunno.persona.cognome}}" 
-                    [ngClass]="{'invisible': !element.stato.ckInvioIscrizione}" 
+                    [ngClass]="{'invisible': !element.stato.ckInvioIscrizione  }" 
                     (click)="makeScadenzaAndSendEmail(element)">
                     outgoing_mail
                 </mat-icon>
+                <mat-icon *ngIf="element.stato.codice == '40'" 
+                    class="pointer" 
+                    matTooltip="Re-invia richiesta di iscrizione ai genitori di {{element.alunno.persona.nome}} {{element.alunno.persona.cognome}}" 
+                    [ngClass]="{'invisible': !element.stato.ckInvioIscrizione  }" 
+                    (click)="sendEmail(element)">
+                outgoing_mail
+            </mat-icon>
             </td>
         </ng-container>
 

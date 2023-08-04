@@ -37,15 +37,13 @@ export class LoginComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(
-    private svcUser:                            UserService,
-    private router:                             Router,
-    private fb:                                 UntypedFormBuilder,
-    private eventEmitterService:                EventEmitterService,
-    public _dialog:                             MatDialog,
-    private _loadingService:                    LoadingService,
-    private _snackBar:                          MatSnackBar
-    ) {
+  constructor(private svcUser:                            UserService,
+              private router:                             Router,
+              private fb:                                 UntypedFormBuilder,
+              private eventEmitterService:                EventEmitterService,
+              public _dialog:                             MatDialog,
+              private _loadingService:                    LoadingService,
+              private _snackBar:                          MatSnackBar   ) {
 
     this.form = this.fb.group({
       UserName:                   ['a', Validators.required],
@@ -81,49 +79,13 @@ export class LoginComponent implements OnInit {
   
   forgotPassword(e: Event){
     e.preventDefault();
-    this.reloadRoutes.emit('send-mail');
-
-    //console.log(this.validateEmail(this.form.controls.UserName.value));
-    //this.router.navigateByUrl('/user/send-mail');
-    // if(!this.validateEmail(this.form.controls.UserName.value)){ 
-    //   this._snackBar.openFromComponent(SnackbarComponent, { data: "Inserire una email valida"  , panelClass: ['red-snackbar']});
-    //   return;
-    // } else {
-    // }
-    //invio mail di reset
-    //TODO 
-    // this._snackBar.openFromComponent(SnackbarComponent, { data: "E' stata inviata una mail con un link di reset a " + this.form.controls.UserName.value , panelClass: ['green-snackbar']});
+    this.reloadRoutes.emit('reset-psw');
   }
 
   validateEmail(email: string) {
     const regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return regularExpression.test(String(email).toLowerCase());
   }
-
-  /*
-    /* WS REST
-    https://code-maze.com/angular-password-reset-functionality-with-aspnet-identity/
-
-    [HttpPost("ForgotPassword")]
-    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest();
-        let user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
-        if (user == null)
-            return BadRequest("Invalid Request");
-        let token = await _userManager.GeneratePasswordResetTokenAsync(user);         
-        let param = new Dictionary<string, string>
-        {
-            {"token", token },
-            {"email", forgotPasswordDto.Email }
-        };
-        let callback = QueryHelpers.AddQueryString(forgotPasswordDto.ClientURI, param);
-        let message = new Message(new string[] { user.Email }, "Reset password token", callback, null);
-        await _emailSender.SendEmailAsync(message);
-        return Ok();
-    }
-    */
    
 }
 

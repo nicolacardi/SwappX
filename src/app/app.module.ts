@@ -137,7 +137,7 @@ import { UsersFilterComponent }                 from './_components/users/users-
 import { UserEditComponent }                    from './_components/users/user-edit/user-edit.component';
 import { ProfiloComponent }                     from './_user/profilo/profilo.component';
 import { ChangePswComponent }                   from './_user/change-psw/change-psw.component';
-import { SendMailComponent }                    from './_user/send-mail/send-mail.component';
+import { ResetPswComponent }                    from './_user/reset-psw/reset-psw.component';
 import { ClipboardModule }                      from '@angular/cdk/clipboard';
 
 //Messaggi
@@ -370,7 +370,7 @@ import { PagelleClasseEditComponent } from './_components/pagelle/pagelle-classe
       TableShowComponent,
       TemplatesManagerComponent,
       PagelleClasseEditComponent,
-      SendMailComponent
+      ResetPswComponent
   
     
 

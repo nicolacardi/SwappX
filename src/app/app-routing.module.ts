@@ -26,7 +26,6 @@ import { VerbaliPageComponent }                 from './_components/verbali/verb
 import { OrarioPageComponent }                  from './_components/lezioni/orario-page/orario-page.component';
 import { ProceduraIscrizioneComponent }         from './_components/procedura-iscrizione/procedura-iscrizione.component';
 import { TemplateComponent }                    from './_components/templates/template/template.component';
-import { SendMailComponent }                    from './_user/send-mail/send-mail.component';
 
 const routes: Routes = [
 
@@ -37,8 +36,6 @@ const routes: Routes = [
     component: UserComponent,
     children: [
       { path: 'login', component:               LoginComponent },
-      //{path:'registration',                   component: RegisterComponent },
-      //{path:'reset-password',                 component: ResetPasswordComponent },
       //{path: 'send-mail',                     component: SendMailComponent } //non serve, viene gestita altrimenti
     ]
   },

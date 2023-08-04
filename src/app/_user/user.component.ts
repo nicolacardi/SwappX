@@ -12,8 +12,6 @@ export class UserComponent implements OnInit {
   constructor()  {
   }
 
-
-
   ngOnInit() {
     this.routerPage = "login";
   }
