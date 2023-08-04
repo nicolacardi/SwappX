@@ -64,7 +64,7 @@ export class IscrizioniFilterComponent implements OnInit {
     //this.resetFilterSx();
     this.iscrizioniListComponent.filterValues[field] = val.toLowerCase();
     this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
-    this.iscrizioniListComponent.updateEmailAddresses();
+    this.iscrizioniListComponent.getEmailAddresses();
   }
 //#endregion
 

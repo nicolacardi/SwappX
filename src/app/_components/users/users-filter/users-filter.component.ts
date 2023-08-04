@@ -56,7 +56,7 @@ export class UsersFilterComponent implements OnInit {
     //this.resetFilterSx();
     this.usersListComponent.filterValues[field] = val.toLowerCase();
     this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
-    this.usersListComponent.updateEmailAddresses();
+    this.usersListComponent.getEmailAddresses();
   }
 //#endregion
 

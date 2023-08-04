@@ -61,7 +61,7 @@ export class GenitoriFilterComponent implements OnInit {
     //this.resetFilterSx();
     this.genitoriListComponent.filterValues[field] = val.toLowerCase();
     this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
-    this.genitoriListComponent.updateEmailAddresses();
+    this.genitoriListComponent.getEmailAddresses();
   }
 //#endregion
 

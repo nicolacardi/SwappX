@@ -58,22 +58,14 @@ export class PagamentiFilterComponent implements OnInit {
     this.tipiPagamento$ = this.svcTipiPagamento.list();
 
     this.tipoPagamentoFilter.valueChanges.subscribe(val => {this.applyFilterDx('tipoPagamento', val);})
-
     this.causaleFilter.valueChanges.subscribe(val => {this.applyFilterDx('causale', val);})
-
     this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
-
     this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
-
     this.importoPiuDiFilter.valueChanges.subscribe(val => {this.applyFilterDx('importoPiuDi', val);})
-
     this.importoMenoDiFilter.valueChanges.subscribe(val => {this.applyFilterDx('importoMenoDi', val);})
-    
     this.dataDal.valueChanges.subscribe(val => {this.applyFilterDx('dataDal', val);})
-
     this.dataAl.valueChanges.subscribe(val => {this.applyFilterDx('dataAl', val);})
-
-
+    
     this.importoFilter.valueChanges.subscribe(
       val => {
         if (this.importoFilter.value != '') {this.importoMenoDiFilter.disable();this.importoPiuDiFilter.disable()} 
@@ -82,9 +74,6 @@ export class PagamentiFilterComponent implements OnInit {
         this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
       }
     )
-
-
-
   }
 
   applyFilterDx(field: keyof typeof this.pagamentiListComponent.filterValues, val: string) {

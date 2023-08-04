@@ -51,31 +51,27 @@ export class PersoneFilterComponent implements OnInit {
     this.obsTipiPersona$ = this.svcTipiPersona.list();
 
     this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
-
     this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
-
     this.tipoPersonaFilter.valueChanges.subscribe(val => {this.applyFilterDx('tipoPersonaID', val);})
-
     this.annoNascitaFilter.valueChanges.subscribe(val => {this.applyFilterDx('annoNascita', val);})
-
     this.indirizzoFilter.valueChanges.subscribe(val => {this.applyFilterDx('indirizzo', val);})
-
     this.comuneFilter.valueChanges.subscribe(val => {this.applyFilterDx('comune', val);})
-
     this.provFilter.valueChanges.subscribe(val => {this.applyFilterDx('prov', val);})
-
     this.emailFilter.valueChanges.subscribe(val => {this.applyFilterDx('email', val);})
-
     this.telefonoFilter.valueChanges.subscribe(val => {this.applyFilterDx('telefono', val);})
-
   }
 
   applyFilterDx(field: keyof typeof this.personeListComponent.filterValues, val: string) {
-    console.log ("X", field, val);
-    //this.resetFilterSx();
-    this.personeListComponent.filterValues[field] = val.toLowerCase();
+
+    bella merda
+    if(isNaN(+val))
+      this.personeListComponent.filterValues[field] = val.toLowerCase();
+    else
+      this.personeListComponent.filterValues[field] = val;
+
+    this.personeListComponent.filterValues[field] = val;
     this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
-    this.personeListComponent.updateEmailAddresses();
+    this.personeListComponent.getEmailAddresses();
   }
 
 //#endregion

@@ -63,7 +63,7 @@ export class AlunniFilterComponent implements OnInit {
     //this.resetFilterSx();
     this.alunniListComponent.filterValues[field] = val.toLowerCase();
     this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
-    this.alunniListComponent.updateEmailAddresses();
+    this.alunniListComponent.getEmailAddresses();
   }
   
 

@@ -174,16 +174,16 @@ export class PersoneListComponent implements OnInit {
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort; 
         this.matDataSource.filterPredicate = this.filterPredicate();
-        this.updateEmailAddresses();
+        this.getEmailAddresses();
       }
     );
   }
 
-  updateEmailAddresses() {
+  getEmailAddresses() {
     //aggiorna this.emailAddresses che serve per poter copiare dalla toolbar gli indirizzi dei genitori
       const emailArray = this.matDataSource.filteredData
-      .map(persona => persona.email).filter(email => !!email)
-      .filter(emails => emails.length > 0); 
+        .map(persona => persona.email).filter(email => !!email)
+        .filter(emails => emails.length > 0); 
   
     this.emailAddresses = emailArray.join(', ');
   }
@@ -197,7 +197,7 @@ export class PersoneListComponent implements OnInit {
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
     //if (this.dove == "persone-page") this.personeFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
-    this.updateEmailAddresses();
+    this.getEmailAddresses();
 
   }
 
