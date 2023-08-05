@@ -5,14 +5,17 @@ import { MatSnackBar }                          from '@angular/material/snack-ba
 import { SnackbarComponent }                    from '../../_components/utilities/snackbar/snackbar.component';
 import { ActivatedRoute }                       from '@angular/router';
 import { Router }                               from '@angular/router';
+import { firstValueFrom, tap }                  from 'rxjs';
+import { MatDialog }                            from '@angular/material/dialog';
 
 //components
 import { Utility }                              from '../../_components/utilities/utility.component';
+import { DialogOkComponent }                    from 'src/app/_components/utilities/dialog-ok/dialog-ok.component';
 
 //services
 import { UserService }                          from 'src/app/_user/user.service';
 import { User }                                 from 'src/app/_user/Users';
-import { firstValueFrom, tap } from 'rxjs';
+
 
 //#endregion
 
@@ -48,7 +51,9 @@ export class ChangePswExtComponent implements OnInit {
                private _snackBar:               MatSnackBar,
                private renderer:                Renderer2,
                private route:                   ActivatedRoute,
-               private router: Router) { 
+               private router:                  Router,
+               public _dialog:                  MatDialog, 
+               ) { 
 
     this.route.queryParams.subscribe(params => {
       this.routedUsername = params['username'];
@@ -101,7 +106,15 @@ export class ChangePswExtComponent implements OnInit {
     
     this.svcUser.ResetPassword(this.user.id, this.form.controls.newPassword.value).subscribe({
       next: res =>  {
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password modificata', panelClass: ['green-snackbar']});
+          //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password modificata', panelClass: ['green-snackbar']});
+
+          const dialogRef = this._dialog.open(DialogOkComponent, {
+            width: '320px',
+            data: {titolo: "CAMBIO PASSWORD", sottoTitolo: "La password è stata modificata con successo"}
+          });
+
+          dialogRef.afterClosed().subscribe(() => {this.router.navigate(['/user/login']);});
+
       },
       error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio della password', panelClass: ['red-snackbar']})
     });
