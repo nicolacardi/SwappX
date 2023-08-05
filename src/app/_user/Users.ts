@@ -13,6 +13,8 @@ export interface User {
     isLoggedIn?:    boolean;        //dinamico: impostato da behaviour subject
     
     tipoPersonaID:  number;
+
+    tmpPassword:    string;
     TipoPersona?:    PER_TipoPersona;
 
     personaID:      number;

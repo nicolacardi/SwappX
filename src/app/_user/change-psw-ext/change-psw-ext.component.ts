@@ -1,9 +1,10 @@
 //#region ----- IMPORTS ------------------------
-import { Component, Renderer2, ElementRef, OnInit, ViewChild }                    from '@angular/core';
+import { Component, Renderer2, ElementRef, OnInit, ViewChild, AfterViewInit }                    from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { SnackbarComponent }                    from '../../_components/utilities/snackbar/snackbar.component';
 import { ActivatedRoute }                       from '@angular/router';
+import { Router }                               from '@angular/router';
 
 //components
 import { Utility }                              from '../../_components/utilities/utility.component';
@@ -11,6 +12,7 @@ import { Utility }                              from '../../_components/utilitie
 //services
 import { UserService }                          from 'src/app/_user/user.service';
 import { User }                                 from 'src/app/_user/Users';
+import { firstValueFrom, tap } from 'rxjs';
 
 //#endregion
 
@@ -25,9 +27,9 @@ export class ChangePswExtComponent implements OnInit {
 //#region ----- Variabili ----------------------
 
   form! :                                       UntypedFormGroup;
-  public currUser!:                             User;
+  public user!:                             User;
   routedUsername!:                              string;
-  routedRndPassword!:                              string;
+  routedRndPassword!:                           string;
 
   ckPsw : boolean[] =[true, true, true];
 //#endregion
@@ -45,12 +47,19 @@ export class ChangePswExtComponent implements OnInit {
                private svcUser:                 UserService,
                private _snackBar:               MatSnackBar,
                private renderer:                Renderer2,
-               private route:                   ActivatedRoute) { 
+               private route:                   ActivatedRoute,
+               private router: Router) { 
+
+    this.route.queryParams.subscribe(params => {
+      this.routedUsername = params['username'];
+      this.routedRndPassword = params['rndpassword'];
+    });
 
     this.form = this.fb.group({
-        password:        ['', [Validators.required, Validators.minLength(4)]],
-        newPassword:     ['', [Validators.required, Validators.minLength(4), Validators.maxLength(19)]],
-        confirmPassword: ['', Validators.required]
+        UserName:                               [this.routedUsername],
+        password:                               [this.routedRndPassword, [Validators.required, Validators.minLength(4)]],
+        newPassword:                            ['', [Validators.required, Validators.minLength(4), Validators.maxLength(19)]],
+        confirmPassword:                        ['', Validators.required]
       },
       {
         validators: [
@@ -65,26 +74,33 @@ export class ChangePswExtComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.route.queryParams.subscribe(params => {
-      this.routedUsername = params['username'];
-      this.routedRndPassword = params['rndpassword'];
-      // Now you can use the 'username' value as needed
-    });
+
   }
 
-  save(){
-    
-    let formData = {
-      userID:       this.currUser.userID,
-      currPassword:  this.form.controls.password.value,
-      newPassword:  this.form.controls.newPassword.value
-    };
+  // ngAfterViewInit() {
+  //   this.form.controls['UserName'].setValue(this.routedUsername);
 
-    this.svcUser.ChangePassword(formData).subscribe({
+  // }
+  async save(){
+    //estraggo l'utente e con la password temporanea per verificare se corrisponde (altrimenti uno potrebbe accedere alla pagina e farlo da sè)
+
+    await firstValueFrom(this.svcUser.getByUsernameAndTmpPassword(this.form.controls.UserName.value, this.form.controls.password.value)
+      .pipe(
+        tap(res => { this.user = res;}
+      )
+    ));
+
+    if (!this.user) {
+      this._snackBar.openFromComponent(SnackbarComponent, { data: "Credenziali errate"  , panelClass: ['green-snackbar']});
+      return;
+    }
+    console.log ("ok le credenziali corrispondono");
+    console.log ("imposto", this.form.controls.UserName.value, this.form.controls.newPassword.value);
+    //se tutto corrisponde imposto quella nuova tramite ResetPassword
+
+    
+    this.svcUser.ResetPassword(this.user.id, this.form.controls.newPassword.value).subscribe({
       next: res =>  {
-        if(res.succeeded == false)
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password attuale non corretta', panelClass: ['red-snackbar']});
-        else
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password modificata', panelClass: ['green-snackbar']});
       },
       error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio della password', panelClass: ['red-snackbar']})
@@ -111,5 +127,9 @@ export class ChangePswExtComponent implements OnInit {
       default:
         throw new Error(`Invalid index: ${index}`);
     }
+  }
+
+  toLogin() {
+    this.router.navigate(['/user/login']); 
   }
 }

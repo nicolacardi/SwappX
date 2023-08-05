@@ -151,6 +151,11 @@ export class UserService {
     //http://213.215.231.4/swappX/api/ApplicationUser/b19efc9f-5502-4396-b076-45e6c3d9ef21
   }
 
+  getByUsernameAndTmpPassword(userName: string, tmpPassword: string): Observable<User>{
+    return this.http.get<User>(environment.apiBaseUrl+'ApplicationUser/GetByUsernameAndTmpPassword/' + userName + '/'+ tmpPassword);
+    //http://213.215.231.4/swappX/api/ApplicationUser/GetByUsernameAndTmpPassword/a/ciccione
+  }
+
   getByUsername(userName: string): Observable<User>{
     return this.http.get<User>(environment.apiBaseUrl+'ApplicationUser/GetByUsername' + userName);
     //http://213.215.231.4/swappX/api/ApplicationUser/GetByUsername/a
