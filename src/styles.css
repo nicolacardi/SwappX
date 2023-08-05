@@ -210,6 +210,13 @@
     }
 
     /* margin-left */
+    .ml-20 {
+        margin-left: -20px;
+    }
+    .ml-10 {
+        margin-left: -10px;
+    }
+
     .ml2 {
         margin-left: 2px;
     }
@@ -1888,6 +1895,16 @@
     ._red{
         color: red;
     }
+
+    ._grey{
+        color: grey;
+    }
+
+    ._lightgrey{
+        color: lightgrey;
+    }
+
+
     
 
 

@@ -3,6 +3,7 @@ import { Component, Renderer2, ElementRef, OnInit, ViewChild }                  
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { SnackbarComponent }                    from '../../_components/utilities/snackbar/snackbar.component';
+import { ActivatedRoute }                       from '@angular/router';
 
 //components
 import { Utility }                              from '../../_components/utilities/utility.component';
@@ -14,17 +15,19 @@ import { User }                                 from 'src/app/_user/Users';
 //#endregion
 
 @Component({
-  selector: 'app-change-psw',
-  templateUrl: './change-psw.component.html',
+  selector: 'app-change-psw-ext',
+  templateUrl: './change-psw-ext.component.html',
   styleUrls: ['../user.css']
 })
 
-export class ChangePswComponent implements OnInit {
+export class ChangePswExtComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
   form! :                                       UntypedFormGroup;
   public currUser!:                             User;
+  routedUsername!:                              string;
+  routedRndPassword!:                              string;
 
   ckPsw : boolean[] =[true, true, true];
 //#endregion
@@ -41,7 +44,8 @@ export class ChangePswComponent implements OnInit {
   constructor( private fb:                      UntypedFormBuilder, 
                private svcUser:                 UserService,
                private _snackBar:               MatSnackBar,
-               private renderer:                Renderer2) { 
+               private renderer:                Renderer2,
+               private route:                   ActivatedRoute) { 
 
     this.form = this.fb.group({
         password:        ['', [Validators.required, Validators.minLength(4)]],
@@ -60,7 +64,12 @@ export class ChangePswComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
-    this.currUser = Utility.getCurrentUser();
+
+    this.route.queryParams.subscribe(params => {
+      this.routedUsername = params['username'];
+      this.routedRndPassword = params['rndpassword'];
+      // Now you can use the 'username' value as needed
+    });
   }
 
   save(){

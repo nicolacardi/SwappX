@@ -137,6 +137,8 @@ import { UsersFilterComponent }                 from './_components/users/users-
 import { UserEditComponent }                    from './_components/users/user-edit/user-edit.component';
 import { ProfiloComponent }                     from './_user/profilo/profilo.component';
 import { ChangePswComponent }                   from './_user/change-psw/change-psw.component';
+import { ChangePswExtComponent }                from './_user/change-psw-ext/change-psw-ext.component';
+
 import { ResetPswComponent }                    from './_user/reset-psw/reset-psw.component';
 import { ClipboardModule }                      from '@angular/cdk/clipboard';
 
@@ -321,6 +323,8 @@ import { PagelleClasseEditComponent } from './_components/pagelle/pagelle-classe
 
     PhotocropComponent,
     ChangePswComponent,
+    ChangePswExtComponent,
+
     ImpostazioniComponent,
     ResizeColumnDirective,
     ClickDoubleDirective,

@@ -1,5 +1,5 @@
 //#region ----- IMPORTS ------------------------
-import { Component, EventEmitter, OnInit, Output }                    from '@angular/core';
+import { Component, Renderer2, ElementRef, EventEmitter, OnInit, Output, ViewChild }                    from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router }                               from '@angular/router';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
@@ -28,22 +28,28 @@ export class LoginComponent implements OnInit {
 //#region ----- Variabili ----------------------
 
   loading = false;
-  form! :                     UntypedFormGroup;
+  form! :                                       UntypedFormGroup;
+  ckPsw = true;
+
 //#endregion
 
 //#region ----- ViewChild Input Output ---------
+  @ViewChild('psw') pswInput!: ElementRef;
+  
   @Output('reloadRoutes') reloadRoutes = new EventEmitter<string>();
 //#endregion
 
 //#region ----- Constructor --------------------
 
-  constructor(private svcUser:                            UserService,
-              private router:                             Router,
-              private fb:                                 UntypedFormBuilder,
-              private eventEmitterService:                EventEmitterService,
-              public _dialog:                             MatDialog,
-              private _loadingService:                    LoadingService,
-              private _snackBar:                          MatSnackBar   ) {
+  constructor(private svcUser:                  UserService,
+              private router:                   Router,
+              private fb:                       UntypedFormBuilder,
+              private eventEmitterService:      EventEmitterService,
+              public _dialog:                   MatDialog,
+              private _loadingService:          LoadingService,
+              private _snackBar:                MatSnackBar,
+              private renderer:                 Renderer2) { 
+                
 
     this.form = this.fb.group({
       UserName:                   ['a', Validators.required],
@@ -87,5 +93,12 @@ export class LoginComponent implements OnInit {
     return regularExpression.test(String(email).toLowerCase());
   }
    
+  toggleShow() {
+    this.ckPsw = !this.ckPsw;
+    const inputElement = this.pswInput.nativeElement;
+
+    const newType = this.ckPsw ? 'password' : 'text';
+    this.renderer.setAttribute(inputElement, 'type', newType);
+  }
 }
 

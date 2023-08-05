@@ -100,8 +100,8 @@
             <th mat-header-cell class="center w50px"  *matHeaderCellDef cdkDrag >
                 attivo<br>
                 <button mat-icon-button (click)="toggleAttivi()" class="topZIndex">
-                    <mat-icon *ngIf="ckSoloAttivi" color="primary">visibility_off</mat-icon>
-                    <mat-icon *ngIf="!ckSoloAttivi" color="primary">visibility</mat-icon>
+                    <mat-icon class="_lightgrey" *ngIf="ckSoloAttivi" >visibility_off</mat-icon>
+                    <mat-icon class="_grey" *ngIf="!ckSoloAttivi" >visibility</mat-icon>
                 </button>
             </th>
             <td mat-cell class="center" *matCellDef="let element">

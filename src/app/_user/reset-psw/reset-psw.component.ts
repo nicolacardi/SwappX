@@ -106,7 +106,11 @@ constructor(
     "<br><br>"+
     "Di seguito le nuove credenziali: <br><br>" +
     "Nome Utente: " + user.userName + "<br>" +
-    "Password temporanea : " + rndPassword;
+    "Password temporanea : " + rndPassword +
+    
+    "<br><a href='localhost:4200/change-psw-ext?username="+user.userName+"&rndpassword=" + rndPassword +"'>link<a>.";  //qui bisogna generare una pagina ESTERNA al portale nella quale poter indicare username e password TEMPORANEA per cambiarla
+    //il problema è che EF contempla ChangePassword con la password vecchia non con quella temporanea
+    //quindi bisogna che proprio QUESTA PAGINA QUI, quando ci si entra faccia il reset password
 
     let objMail: _UT_MailMessage= {
       emailAddress: mailAddress,

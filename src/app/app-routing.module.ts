@@ -26,19 +26,25 @@ import { VerbaliPageComponent }                 from './_components/verbali/verb
 import { OrarioPageComponent }                  from './_components/lezioni/orario-page/orario-page.component';
 import { ProceduraIscrizioneComponent }         from './_components/procedura-iscrizione/procedura-iscrizione.component';
 import { TemplateComponent }                    from './_components/templates/template/template.component';
+import { ChangePswExtComponent }                from './_user/change-psw-ext/change-psw-ext.component';
 
 const routes: Routes = [
 
   { path: '', redirectTo: 'user/login', pathMatch: 'full' }, //questo indica che un route vuoto viene tradotto in user/login
+  
+  { path: 'change-psw-ext',                     component: ChangePswExtComponent },
+
   {
       //  { path:'user' , redirectTo: 'user/login', pathMatch: 'full' },
     path: 'user',                               //user ha due children, login e send-mail
     component: UserComponent,
     children: [
-      { path: 'login', component:               LoginComponent },
-      //{path: 'send-mail',                     component: SendMailComponent } //non serve, viene gestita altrimenti
+      { path: 'login',                          component: LoginComponent },
+
     ]
   },
+
+
 
 
   { path:'home',                                component: HomeComponent, canActivate:[AuthGuard]  },
@@ -87,8 +93,11 @@ const routes: Routes = [
 
 @NgModule({
   //imports: [RouterModule.forRoot(routes)],
-  imports: [RouterModule.forRoot(routes, { useHash: true })], //NC 02/02 https://stackoverflow.com/questions/60527776/uncaught-in-promise-error-cannot-match-any-routes-angular8
+  imports: [RouterModule.forRoot(routes, { useHash: false })], //NC 05/08/23 tolto useHash: true
 
+  //imports: [RouterModule.forRoot(routes, { useHash: true })], 
+  //NC 02/02 https://stackoverflow.com/questions/60527776/uncaught-in-promise-error-cannot-match-any-routes-angular8
+  
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
