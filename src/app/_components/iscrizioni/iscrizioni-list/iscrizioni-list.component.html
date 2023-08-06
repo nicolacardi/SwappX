@@ -81,7 +81,7 @@
                     class="pointer w24px" 
                     matTooltip="invia richiesta di iscrizione ai genitori di {{element.alunno.persona.nome}} {{element.alunno.persona.cognome}}" 
                     [ngClass]="{'invisible': !element.stato.ckInvioIscrizione  }" 
-                    (click)="makeScadenzaAndSendEmail(element)">
+                    (click)="makeScadenzaAndSendEmail(element, true)">
 
 
                 <img *ngIf="element.stato.codice == '40'" 
@@ -89,7 +89,7 @@
                     class="pointer w24px" 
                     matTooltip="invia nuovamente richiesta di iscrizione ai genitori di {{element.alunno.persona.nome}} {{element.alunno.persona.cognome}}" 
                     [ngClass]="{'invisible': !element.stato.ckInvioIscrizione  }" 
-                    (click)="sendEmail(element)">
+                    (click)="makeScadenzaAndSendEmail(element, false)">
             </td>
         </ng-container>
 

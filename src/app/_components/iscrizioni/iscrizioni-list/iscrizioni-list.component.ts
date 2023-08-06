@@ -431,11 +431,9 @@ export class IscrizioniListComponent implements OnInit {
 
 //#region ----- Altri metodi -------------------
 
-  sendEmail (iscrizione: CLS_Iscrizione) {  
-    this.inviaMailGenitori(iscrizione);
-  }
 
-  makeScadenzaAndSendEmail (iscrizione: CLS_Iscrizione) {
+
+  makeScadenzaAndSendEmail (iscrizione: CLS_Iscrizione, setScadenza: boolean) {
 
     //console.log ("iscrizioni-list - makeScadenzaAndSendEmail - iscrizione:", iscrizione);
 
@@ -462,7 +460,7 @@ export class IscrizioniListComponent implements OnInit {
         });
       } 
       else {
-        this.makeScadenza(iscrizione);  //DA RI-ATTIVARE
+        if (setScadenza) this.makeScadenza(iscrizione);  //viene impostata la scadenza SOLO al primo invio, ai successivi il parametro setScadenza è impostato a false
         this.inviaMailGenitori(iscrizione);
       }
     }
