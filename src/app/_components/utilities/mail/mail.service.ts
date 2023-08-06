@@ -15,6 +15,7 @@ export class MailService {
 
   
   public inviaMail (mail: _UT_MailMessage): Observable <any>  {
+
     return this.http.post(environment.apiBaseUrl+'mail/sendEmail', mail);
     //http://213.215.231.4/swappX/api/mail/sendEmail/nicola.cardi@gmail.com
   }

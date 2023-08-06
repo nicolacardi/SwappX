@@ -101,16 +101,7 @@ constructor(private fb:                                   UntypedFormBuilder,
     //const formData = { ...user, tmpPassword: rndPassword }; //così purtroppo non funziona (SAREBBE STATO + ELEGANTE)
 
     this.svcUser.put(formData).subscribe();
-    /*
-      {
-      next: res =>  {
-        //console.log ("tmpPassword impostata")
-      },
-      error: err=>  {
-        //console.log ("errore in impostazione tmpPassword")
-      }
-    });
-    */
+
     let titoloMail = "STOODY: Invio Password Temporanea";
     let testoMail =  "<html><body>"+
     

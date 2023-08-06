@@ -155,11 +155,12 @@ export abstract class Utility {
 
   public static generateRandomString(): string {
 
+    //const characters = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ0123456789_@#!?*+-()[]=^$£%';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ0123456789_';
     let randomString = '';
     const charactersLength = characters.length;
   
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 25; i++) {
       const randomIndex = Math.floor(Math.random() * charactersLength);
       randomString += characters.charAt(randomIndex);
     }
