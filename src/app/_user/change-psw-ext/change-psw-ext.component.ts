@@ -38,7 +38,7 @@ export class ChangePswExtComponent {
 //#endregion
 
 //#region ----- ViewChild Input Output ---------
-  @ViewChild('psw0') pswInput0!: ElementRef;
+  //@ViewChild('psw0') pswInput0!: ElementRef;
   @ViewChild('psw1') pswInput1!: ElementRef;
   @ViewChild('psw2') pswInput2!: ElementRef;
 //#endregion
@@ -57,7 +57,7 @@ export class ChangePswExtComponent {
 
     this.route.queryParams.subscribe(params => {
       this.routedUsername = params['username'];
-      this.routedRndPassword = params['rndpassword'];
+      this.routedRndPassword = params['key'];
     });
 
     this.form = this.fb.group({
@@ -80,7 +80,7 @@ export class ChangePswExtComponent {
   async save(){
     //estraggo in maniera sincrona l'utente tramite UserName e password temporanea per verificare se corrisponde (altrimenti uno potrebbe accedere alla pagina e farlo da sè)
 
-    await firstValueFrom(this.svcUser.getByUsernameAndTmpPassword(this.form.controls.UserName.value, this.form.controls.password.value)
+    await firstValueFrom(this.svcUser.getByUsernameAndTmpPassword(this.routedUsername, this.routedRndPassword)
       .pipe(
         tap(res => { this.user = res;}
       )
@@ -91,21 +91,54 @@ export class ChangePswExtComponent {
       return;
     }
     //console.log ("ok le credenziali corrispondono");
-    //console.log ("imposto", this.form.controls.UserName.value, this.form.controls.newPassword.value);
+    //console.log ("imposto", this.routedUsername, this.form.controls.newPassword.value);
     
     //tutto corrisponde - imposto quella nuova tramite ResetPassword
 
-    this.svcUser.ResetPassword(this.user.id, this.form.controls.newPassword.value).subscribe({
+    let userNoTmpPassword = {
+      userID:       this.user.id,               //necessario x la put
+      userName:     this.routedUsername,         //necessario x la put
+      personaID:    this.user.personaID,        //necessario x la put
+      tmpPassword:  '',                         //psw temporanea azzerata
+      email:        this.user.email,            //se non lo metto viene cancellato
+      normalizedEmail:  this.user.normalizedEmail,   //se non lo metto viene cancellato
+      fullName:     ''                          
+    };
+
+    console.log ("userNoTmpPassword", userNoTmpPassword);
+
+    this.svcUser.ResetPassword(this.user.id, this.form.controls.newPassword.value)
+    .subscribe({
       next: res =>  {
-        //mostro conferma e - su chiusura - passo alla pagina di Login
+          //ora vado a cancellare la password temporanea tmpPassword in modo che non si possa più utilizzare
+          this.svcUser.put(userNoTmpPassword).subscribe({
+            next: res =>  {
+              console.log ("tmpPassword azzerata")
+            },
+            error: err=>  {
+              console.log ("errore in azzeramento tmpPassword")
+            }
+          });
+
+          //mostro conferma e - su chiusura - passo alla pagina di Login
+
           const dialogRef = this._dialog.open(DialogOkComponent, {
             width: '320px',
             data: {titolo: "CAMBIO PASSWORD", sottoTitolo: "La password è stata modificata con successo"}
           });
           dialogRef.afterClosed().subscribe(() => {this.router.navigate(['/user/login']);});
+
+
+
+
       },
       error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio della password', panelClass: ['red-snackbar']})
     });
+
+
+
+
+
   }
 
   toggleShow(index: number) {
@@ -118,8 +151,8 @@ export class ChangePswExtComponent {
 
   getInputByIndex(index: number): HTMLInputElement {
     switch (index) {
-      case 0:
-        return this.pswInput0.nativeElement;
+      //case 0:
+        //return this.pswInput0.nativeElement;
       case 1:
         return this.pswInput1.nativeElement;
       case 2:

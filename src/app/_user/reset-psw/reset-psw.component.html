@@ -1,9 +1,15 @@
 <form [formGroup]="form" autocomplete="off" (submit)="onSubmit()" style="overflow-y: hidden" >
+    <div class="center">
+        <mat-label>Digita l'indirizzo mail</mat-label><br>
+        <mat-label>utilizzato per la registrazione</mat-label>
+    </div>
+
     <div>
         <mat-form-field>
-            <input matInput required type="email" placeholder="Email" formControlName="Email">
+            <input matInput type="email" placeholder="Email" formControlName="Email">
         </mat-form-field>
     </div>
+
     <div>
         <button type="submit" mat-stroked-button [disabled]="form.invalid">
             Reset Password
