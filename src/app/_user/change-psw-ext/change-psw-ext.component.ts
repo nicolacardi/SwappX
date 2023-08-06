@@ -87,7 +87,7 @@ export class ChangePswExtComponent {
     ));
 
     if (!this.user) {
-      this._snackBar.openFromComponent(SnackbarComponent, { data: "Credenziali errate"  , panelClass: ['green-snackbar']});
+      this._snackBar.openFromComponent(SnackbarComponent, { data: "A quanto pare questo link è stato già utilizzato."  , panelClass: ['green-snackbar']});
       return;
     }
     //console.log ("ok le credenziali corrispondono");
@@ -124,7 +124,7 @@ export class ChangePswExtComponent {
 
           const dialogRef = this._dialog.open(DialogOkComponent, {
             width: '320px',
-            data: {titolo: "CAMBIO PASSWORD", sottoTitolo: "La password è stata modificata con successo"}
+            data: {titolo: "CAMBIO PASSWORD", sottoTitolo: "La password è stata modificata<br>con successo.<br>Verrai reindirizzato<br>alla pagina di login."}
           });
           dialogRef.afterClosed().subscribe(() => {this.router.navigate(['/user/login']);});
 

@@ -1224,15 +1224,21 @@
 /*#endregion ***************************/
 
 /*#region ********** SNACKBAR **********/
+    /* https://github.com/angular/components/issues/26928 */
     .green-snackbar {
-        background-color: #2273a3;
-        color: white;
+        /* background-color: #2273a3; */
+        /* color: white; */
+        --mdc-snackbar-container-color: #2273a3;
+        /* --mat-mdc-snack-bar-button-color: white;  NON SO */
     }
 
     .red-snackbar {
-        background-color: #B00020;
-        color: white;
+        /* background-color: #B00020; */
+        /* color: white; */
+        --mdc-snackbar-container-color:  #B00020;
     }
+
+    
 /*#endregion ***************************/
 
 /*#region ********** SPINNER ***********/ 

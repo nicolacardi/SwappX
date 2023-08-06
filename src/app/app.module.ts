@@ -405,7 +405,7 @@ import { PagelleClasseEditComponent } from './_components/pagelle/pagelle-classe
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },      //Roles
     
     { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}},
     { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl },
     { provide: EventEmitterService},
     {provide: STEPPER_GLOBAL_OPTIONS,
