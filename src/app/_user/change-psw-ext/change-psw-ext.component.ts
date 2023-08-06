@@ -25,7 +25,7 @@ import { User }                                 from 'src/app/_user/Users';
   styleUrls: ['../user.css']
 })
 
-export class ChangePswExtComponent implements OnInit {
+export class ChangePswExtComponent {
 
 //#region ----- Variabili ----------------------
 
@@ -75,19 +75,10 @@ export class ChangePswExtComponent implements OnInit {
 
 //#endregion
 
-//#region ----- LifeCycle Hooks e simili--------
+//#region ----- Metodi Vari --------------------
 
-  ngOnInit(): void {
-
-
-  }
-
-  // ngAfterViewInit() {
-  //   this.form.controls['UserName'].setValue(this.routedUsername);
-
-  // }
   async save(){
-    //estraggo l'utente e con la password temporanea per verificare se corrisponde (altrimenti uno potrebbe accedere alla pagina e farlo da sè)
+    //estraggo in maniera sincrona l'utente tramite UserName e password temporanea per verificare se corrisponde (altrimenti uno potrebbe accedere alla pagina e farlo da sè)
 
     await firstValueFrom(this.svcUser.getByUsernameAndTmpPassword(this.form.controls.UserName.value, this.form.controls.password.value)
       .pipe(
@@ -99,32 +90,28 @@ export class ChangePswExtComponent implements OnInit {
       this._snackBar.openFromComponent(SnackbarComponent, { data: "Credenziali errate"  , panelClass: ['green-snackbar']});
       return;
     }
-    console.log ("ok le credenziali corrispondono");
-    console.log ("imposto", this.form.controls.UserName.value, this.form.controls.newPassword.value);
-    //se tutto corrisponde imposto quella nuova tramite ResetPassword
-
+    //console.log ("ok le credenziali corrispondono");
+    //console.log ("imposto", this.form.controls.UserName.value, this.form.controls.newPassword.value);
     
+    //tutto corrisponde - imposto quella nuova tramite ResetPassword
+
     this.svcUser.ResetPassword(this.user.id, this.form.controls.newPassword.value).subscribe({
       next: res =>  {
-          //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Password modificata', panelClass: ['green-snackbar']});
-
+        //mostro conferma e - su chiusura - passo alla pagina di Login
           const dialogRef = this._dialog.open(DialogOkComponent, {
             width: '320px',
             data: {titolo: "CAMBIO PASSWORD", sottoTitolo: "La password è stata modificata con successo"}
           });
-
           dialogRef.afterClosed().subscribe(() => {this.router.navigate(['/user/login']);});
-
       },
       error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio della password', panelClass: ['red-snackbar']})
     });
   }
-//#endregion
 
   toggleShow(index: number) {
+    //mostra/nasconde la password in chiaro nei vari campi
     this.ckPsw[index] = !this.ckPsw[index];
     const inputElement = this.getInputByIndex(index);
-
     const newType = this.ckPsw[index] ? 'password' : 'text';
     this.renderer.setAttribute(inputElement, 'type', newType);
   }
@@ -145,4 +132,6 @@ export class ChangePswExtComponent implements OnInit {
   toLogin() {
     this.router.navigate(['/user/login']); 
   }
+
+//#endregion
 }
