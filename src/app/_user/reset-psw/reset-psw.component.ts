@@ -4,7 +4,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { firstValueFrom, tap }                  from 'rxjs';
 import { MatDialog }                            from '@angular/material/dialog';
-import { logoBase64 }                           from 'src/environments/environment';
+// import { logoBase64 }                           from 'src/environments/environment';
 
 //components
 import { SnackbarComponent }                    from 'src/app/_components/utilities/snackbar/snackbar.component';
@@ -102,14 +102,15 @@ constructor(private fb:                                   UntypedFormBuilder,
 
     this.svcUser.put(formData).subscribe();
 
+    let imageUrl = './assets/logo/logoMailStoody.png';
+    let base64Image = '';
+    try {base64Image = await Utility.convertImageToBase64(imageUrl);} 
+    catch (error) {console.error('Error converting image to base64:', error);}
+
     let titoloMail = "STOODY: Invio Password Temporanea";
     let testoMail =  "<html><body>"+
     
-    //segue il logo STOODY in base64
-
-    //TODO: recuperare la risorsa del logo e convertirlo in base64
-
-    "<img style='width: 100px' src='"+logoBase64+"'/> <br><br>" +
+    "<img style='width: 100px' src='"+base64Image+"'/> <br><br>" +
 
     "E' stata richiesta una nuova password per l'utente riferito a questo indirizzo email. <br>" +
     "<br><br> Puoi accedere tramite questo <a href='localhost:4200/change-psw-ext?username="+user.userName+"&key=" + rndPassword +"'>link<a> e impostare la nuova password."+

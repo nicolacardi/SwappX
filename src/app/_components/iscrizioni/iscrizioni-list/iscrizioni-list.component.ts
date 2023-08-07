@@ -11,7 +11,6 @@ import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 import { SelectionModel }                       from '@angular/cdk/collections';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { logoBase64 }                           from 'src/environments/environment';
 
 //components
 import { IscrizioniFilterComponent }            from '../iscrizioni-filter/iscrizioni-filter.component';
@@ -554,13 +553,18 @@ export class IscrizioniListComponent implements OnInit {
 
       if (iscrizione.alunno._Genitori![i].genitore!.persona.genere == "F") { sigSigRa = "Sig.ra "}
 
+      let imageUrl = './assets/logo/logoMailStoody.png';
+      let base64Image = '';
+      try {base64Image = await Utility.convertImageToBase64(imageUrl);} 
+      catch (error) {console.error('Error converting image to base64:', error);}
+
       let testoMail =  "<html><body><h2>Procedura di iscrizione</h2>"+
         "Gentile " + sigSigRa + " " + iscrizione.alunno._Genitori![i].genitore!.persona.cognome + ", <br><br>" +
         "con questa mail vi invitiamo a iscrivere vostr" + desinenza + " figli" + desinenza + " " + iscrizione.alunno.persona.nome  +
         " alla classe " + iscrizione.classeSezioneAnno.classeSezione.classe!.descrizione + " per l'a.s. " + iscrizione.classeSezioneAnno.anno.annoscolastico + ".<br>" +
         "A questo scopo vi inoltriamo il link per accedere al portale:<br><br>"+ 
         // "<h2 style='color: lightseagreen'>STOODY</h2>"+
-        "<img style='width: 100px' src='"+ logoBase64 +"'/>";
+        "<img style='width: 100px' src='"+ base64Image +"'/>";
        
       //console.log (testoMail);
 

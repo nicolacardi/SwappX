@@ -202,6 +202,18 @@ export abstract class Utility {
     }
   }
 
+
+  public static async convertImageToBase64(imageUrl: string): Promise<string> {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+  
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
 //#endregion
 
 }
