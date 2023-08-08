@@ -28,7 +28,20 @@
         </div>
     </div>
 
+    <div class="w300px ma-lr mt20 center" >
+        <mat-label>Firma del Preside</mat-label>
+    </div>
 
+    <div class="image-container ma-lr mt20 br10 shadowed" >
+        <img #firmaPreside class="img" *ngIf="imgFileFirmaPreside" [src]="imgFileFirmaPreside">
+    </div>
+
+    <div class="flex-container form-group mt20 ">
+        <div class="form-group">
+            <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" (change)="onImageChange($event, 'imgFileFirmaPreside')"hidden #selectFile2>
+            <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile2.click()" >Seleziona Immagine</button>
+        </div>
+    </div>
 <!--
 <div class="progress">
     <mat-progress-bar class="progress-bar" mode="determinate"

@@ -25,10 +25,12 @@ export class FileuploadsComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
   logoScuolaEmail!:                             _UT_Parametro;
-  timbroScuola!:                             _UT_Parametro;
+  timbroScuola!:                                _UT_Parametro;
+  firmaPreside!:                                _UT_Parametro;
 
   imgFileLogoScuolaEmail!:                      string;
   imgFileTimbroScuola!:                         string;
+  imgFileFirmaPreside!:                         string;
 
   foto!:                                        string;
 //#endregion
@@ -36,6 +38,7 @@ export class FileuploadsComponent implements OnInit {
 //#region ----- ViewChild Input Output ---------
   @ViewChild('logoScuolaEmail', {static: false}) logoScuolaEmailDOM!: ElementRef;
   @ViewChild('timbroScuola', {static: false}) timbroScuolaDOM!: ElementRef;
+  @ViewChild('firmaPreside', {static: false}) firmaPresideDOM!: ElementRef;
 
 //#endregion
 
@@ -65,10 +68,40 @@ export class FileuploadsComponent implements OnInit {
       }
     );
 
+    this.svcParametri.getByParName("imgFileFirmaPreside").subscribe(
+      val=> {
+        if(val){
+          this.firmaPreside = val;
+          this.imgFileFirmaPreside = val.parValue; 
+        }
+      }
+    );
+
   }
 
   onImageChange(e: any, ctrl: string) {
 
+    let imgFileVariable : string;
+    let imgDOM: ElementRef;
+    switch (ctrl) {
+      case 'imgFileLogoScuolaEmail':
+        imgFileVariable = this.imgFileLogoScuolaEmail;
+        imgDOM = this.logoScuolaEmailDOM;
+        break;
+
+      case 'imgFileTimbroScuola':
+        imgFileVariable = this.imgFileTimbroScuola;
+        imgDOM = this.timbroScuolaDOM;
+        break;
+
+      case 'imgFileFirmaPreside':
+        imgFileVariable = this.imgFileFirmaPreside;
+        imgDOM = this.firmaPresideDOM;
+        break;
+      default:
+
+        break;
+    }
 
     if (e.target.files && e.target.files.length) {
       const [file] = e.target.files;
@@ -81,31 +114,15 @@ export class FileuploadsComponent implements OnInit {
       };
 
 
-
-
-    
-    const reader = new FileReader();
+      const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = async () => {
-
-        if (ctrl == 'imgFileLogoScuolaEmail') 
-        {this.imgFileLogoScuolaEmail = reader.result as string;
-          await Utility.compressImage( this.imgFileLogoScuolaEmail, 200, 200)
+        imgFileVariable = reader.result as string;
+        await Utility.compressImage(imgFileVariable, 200, 200)
           .then(compressed => {
-            this.logoScuolaEmailDOM.nativeElement.src = compressed;
+            imgDOM.nativeElement.src = compressed;
             this.save(ctrl);
           });
-        }
-
-        if (ctrl == 'imgFileTimbroScuola') 
-        {this.imgFileTimbroScuola = reader.result as string;
-          await Utility.compressImage( this.imgFileTimbroScuola, 200, 200)
-          .then(compressed => {
-            this.timbroScuolaDOM.nativeElement.src = compressed;
-            this.save(ctrl);
-          });
-        }
-
       };
     }
   }
@@ -113,20 +130,46 @@ export class FileuploadsComponent implements OnInit {
 
   save(ctrl: string){
 
+    let formParameter: _UT_Parametro | undefined = undefined;
+    let parName: string;
+    let parDescr: string;
+  
+    switch (ctrl) {
+      case 'imgFileLogoScuolaEmail':
+        formParameter = {
+          id: this.logoScuolaEmail.id,
+          parName: ctrl,
+          parDescr: "Logo della scuola",
+          parValue: this.logoScuolaEmailDOM.nativeElement.src
+        };
+        break;
+  
+      case 'imgFileTimbroScuola':
+        formParameter = {
+          id: this.timbroScuola.id,
+          parName: ctrl,
+          parDescr: "Timbro della scuola",
+          parValue: this.timbroScuolaDOM.nativeElement.src
+        };
+        break;
 
-    let formParameter: _UT_Parametro = {
-      id: ctrl == 'imgFileLogoScuolaEmail'? this.logoScuolaEmail.id : this.timbroScuola.id,
-      parName: ctrl,
-      parDescr: ctrl == 'imgFileLogoScuolaEmail'? "Logo della scuola" : "Timbro della scuola",
-      parValue: this.logoScuolaEmailDOM.nativeElement.src
-    };
-
-    console.log ("QUI1", formParameter);
-    if(this.logoScuolaEmailDOM != undefined){
-      this.svcParametri.put(formParameter).subscribe( () => {
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'parametro salvato', panelClass: ['green-snackbar']});
-        }
-      );
+      case 'imgFileFirmaPreside':
+        formParameter = {
+          id: this.firmaPreside.id,
+          parName: ctrl,
+          parDescr: "Firma del Preside",
+          parValue: this.firmaPresideDOM.nativeElement.src
+        };
+        break;
+      default:
+        // Handle default case if necessary
+        break;
+    }
+  
+    if (formParameter) {
+      this.svcParametri.put(formParameter).subscribe(() => {
+        this._snackBar.openFromComponent(SnackbarComponent, { data: 'parametro salvato', panelClass: ['green-snackbar'] });
+      });
     }
     
   }
