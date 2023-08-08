@@ -28,25 +28,39 @@
                 </mat-grid-tile>
             </mat-grid-list>
 
-            <div class="center mt10">
-                <mat-slide-toggle *ngIf="parQuoteRidotteFratelli" formControlName="quoteRidotteFratelli" class="ma">Quota ridotta per fratelli minori</mat-slide-toggle>
-            </div>
+            <div class="ma w50 _bordered-grey mt10">
 
-            <div class="center">
-                <mat-slide-toggle class="ma">Parametro 2</mat-slide-toggle>
+                <div class="left mt10 ml20">
+                    <mat-slide-toggle *ngIf="parQuoteRidotteFratelli" formControlName="quoteRidotteFratelli">Quota ridotta per fratelli minori</mat-slide-toggle>
+                </div>
+
+                <div class="left ml20 mt5">
+                    <mat-slide-toggle>Parametro 2</mat-slide-toggle>
+                </div>
+                <div class="left ml20 mt5">
+                    <mat-slide-toggle>Parametro 3</mat-slide-toggle>
+                </div>
+                <div class="left ml20 mt5 mb10">
+                    <mat-slide-toggle>Parametro x</mat-slide-toggle>
+                </div>
+
             </div>
-            <div class="center">
-                <mat-slide-toggle class="ma">Parametro 3</mat-slide-toggle>
-            </div>
-            <div class="center">
-                <mat-slide-toggle class="ma">Parametro x</mat-slide-toggle>
-            </div>
+<!-- 
+            <input type="file" (change)="onFileSelected($event)">
+            <button (click)="onUpload()">Upload</button> -->
+
+
         </form>
 
         <div class="center mt10">
             <button type="button" mat-button matSuffix class="w180px ma mt10" mat-stroked-button (click)="save()">Salva</button>
         </div>
  
+    </mat-tab>
+    <mat-tab  label="Caricamento File">
+        <app-fileuploads
+        requiredFileType="image/png"        
+        ></app-fileuploads>
     </mat-tab>
     <mat-tab  label="Materie">
         <app-materie-page></app-materie-page>
@@ -60,7 +74,7 @@
     <mat-tab  label="Obiettivi">
         <app-obiettivi-page></app-obiettivi-page>
     </mat-tab>
-    <mat-tab  label="Templates">
+    <!-- <mat-tab  label="Templates">
         <app-templates-manager></app-templates-manager>
-    </mat-tab>
+    </mat-tab> -->
 </mat-tab-group>

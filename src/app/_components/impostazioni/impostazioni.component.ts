@@ -16,6 +16,7 @@ import { LoadingService }                       from '../utilities/loading/loadi
 //models
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
+import { HttpClient } from '@angular/common/http';
 
 //#endregion
 @Component({
@@ -30,7 +31,8 @@ export class ImpostazioniComponent implements OnInit {
 
   obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
   form! :                                       UntypedFormGroup;
-  
+  selectedFile!:                                File;
+
   public mesiArr =            [ 8,    9,    10,   11,   0,   1,    2,    3,    4,    5,    6,    7];
   public placeholderMeseArr=  ["SET","OTT","NOV","DIC","GEN","FEB","MAR","APR","MAG","GIU","LUG","AGO"];
   
@@ -51,6 +53,7 @@ export class ImpostazioniComponent implements OnInit {
     private svcAnni:                            AnniScolasticiService,
     private svcParametri:                       ParametriService,
     private _snackBar:                          MatSnackBar,
+    private http:                               HttpClient
   )  {
 
     this.form = this.fb.group({
@@ -138,4 +141,20 @@ export class ImpostazioniComponent implements OnInit {
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Parametri salvati', panelClass: ['green-snackbar']});
     }
   }
+
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  
+  onUpload() {
+    const fd = new FormData();
+    fd.append('file', this.selectedFile, this.selectedFile.name);
+    this.http.post('http://example.com/upload', fd)
+      .subscribe(res => {
+        console.log(res);
+      });
+  }
+
 }  
