@@ -25,7 +25,7 @@ import { IscrizioniService }                    from '../iscrizioni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { ScadenzeService }                      from '../../scadenze/scadenze.service';
 import { ScadenzePersoneService }               from '../../scadenze/scadenze-persone.service';
-import { GenitoriService }                      from '../../genitori/genitori.service';
+import { ParametriService }                     from 'src/app/_services/parametri.service';
 import { MailService }                          from '../../utilities/mail/mail.service';
 import { UserService }                          from 'src/app/_user/user.service';
 
@@ -153,7 +153,7 @@ export class IscrizioniListComponent implements OnInit {
     private svcIscrizioni:                      IscrizioniService,
     private svcAnni:                            AnniScolasticiService,
     private svcScadenze:                        ScadenzeService,
-    private svcGenitori:                        GenitoriService,
+    private svcParametri:                       ParametriService,
     private svcMail:                            MailService,
     private svcUser:                            UserService,
 
@@ -553,8 +553,15 @@ export class IscrizioniListComponent implements OnInit {
 
       if (iscrizione.alunno._Genitori![i].genitore!.persona.genere == "F") { sigSigRa = "Sig.ra "}
 
-      let imageUrl = './assets/logo/logoMailStoody.png';
+      //in questo modo rpendo un'immagine che si trova in una cartella specifica e la trasformo in base 64:
       let base64Image = '';
+      // await firstValueFrom(this.svcParametri.getByParName('imgFileLogoScuolaEmail')
+      //   .pipe( 
+      //     tap(res=> {base64Image = res.parValue;}
+      //   ))
+      // );
+
+      let imageUrl = './assets/logo/logoMailStoody.png';
       try {base64Image = await Utility.convertImageToBase64(imageUrl);} 
       catch (error) {console.error('Error converting image to base64:', error);}
 

@@ -1,47 +1,45 @@
-    <div class="w300px ma-lr mt20 center" >
-        <mat-label>LOGO DELLA SCUOLA PER LE EMAIL</mat-label>
-    </div>
+    
+<div class="card-container">
 
-    <div class="image-container ma-lr mt20 br10 shadowed" >
-        <img #logoScuolaEmail class="img" *ngIf="imgFileLogoScuolaEmail" [src]="imgFileLogoScuolaEmail">
-    </div>
-
-    <div class="flex-container form-group mt20 ">
-        <div class="form-group">
-            <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" (change)="onImageChange($event, 'imgFileLogoScuolaEmail')"hidden #selectFile>
-            <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile.click()" >Seleziona Immagine</button>
+    <mat-card class="img-card">
+        <mat-card-header>
+            LOGO SCUOLA PER EMAIL<br>(larghezza ca 200px)
+        </mat-card-header>
+        <div class="img-container" *ngIf="imgFileLogoScuolaEmail">
+            <img mat-card-image #logoScuolaEmail [src]="imgFileLogoScuolaEmail">
         </div>
-    </div>
+        <mat-card-actions>
+            <input type="file" id="file" accept=".gif,.jpg,.jpeg,.png" (change)="onImageChange($event, 'imgFileLogoScuolaEmail')"hidden #selectFile>
+            <button type="button" mat-button matSuffix class="w100px ma" mat-stroked-button (click)="selectFile.click()" >Seleziona</button>
+        </mat-card-actions>
+    </mat-card>
 
-    <div class="w300px ma-lr mt20 center" >
-        <mat-label>TIMBRO DELLA SCUOLA</mat-label>
-    </div>
-
-    <div class="image-container ma-lr mt20 br10 shadowed" >
-        <img #timbroScuola class="img" *ngIf="imgFileTimbroScuola" [src]="imgFileTimbroScuola">
-    </div>
-
-    <div class="flex-container form-group mt20 ">
-        <div class="form-group">
+    <mat-card class="img-card">
+        <mat-card-header>
+            TIMBRO SCUOLA<br>(larghezza ca 500px)
+        </mat-card-header>
+        <div class="img-container" *ngIf="imgFileTimbroScuola">
+            <img  mat-card-image #timbroScuola [src]="imgFileTimbroScuola">
+        </div>
+        <mat-card-actions>
             <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" (change)="onImageChange($event, 'imgFileTimbroScuola')"hidden #selectFile1>
-            <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile1.click()" >Seleziona Immagine</button>
+            <button type="button" mat-button matSuffix class="w100px ma" mat-stroked-button (click)="selectFile1.click()" >Seleziona</button>
+        </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="img-card">
+        <mat-card-header>
+            FIRMA PRESIDE<br>(larghezza ca 600px)
+        </mat-card-header>
+        <div class="img-container" *ngIf="imgFileFirmaPreside">
+            <img  mat-card-image #firmaPreside [src]="imgFileFirmaPreside">
         </div>
-    </div>
-
-    <div class="w300px ma-lr mt20 center" >
-        <mat-label>Firma del Preside</mat-label>
-    </div>
-
-    <div class="image-container ma-lr mt20 br10 shadowed" >
-        <img #firmaPreside class="img" *ngIf="imgFileFirmaPreside" [src]="imgFileFirmaPreside">
-    </div>
-
-    <div class="flex-container form-group mt20 ">
-        <div class="form-group">
+        <mat-card-actions>
             <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" (change)="onImageChange($event, 'imgFileFirmaPreside')"hidden #selectFile2>
-            <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile2.click()" >Seleziona Immagine</button>
-        </div>
-    </div>
+            <button type="button" mat-button matSuffix class="w100px ma" mat-stroked-button (click)="selectFile2.click()" >Seleziona</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
 <!--
 <div class="progress">
     <mat-progress-bar class="progress-bar" mode="determinate"

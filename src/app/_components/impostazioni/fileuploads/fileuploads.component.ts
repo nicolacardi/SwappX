@@ -117,12 +117,16 @@ export class FileuploadsComponent implements OnInit {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = async () => {
-        imgFileVariable = reader.result as string;
-        await Utility.compressImage(imgFileVariable, 200, 200)
-          .then(compressed => {
-            imgDOM.nativeElement.src = compressed;
-            this.save(ctrl);
-          });
+        imgDOM.nativeElement.src = reader.result;
+        this.save(ctrl);
+
+        // così invece la taglierei 200x200
+        // imgFileVariable = reader.result as string;
+        // await Utility.compressImage(imgFileVariable, 200, 200)
+        //   .then(compressed => {
+        //     imgDOM.nativeElement.src = compressed;
+        //     this.save(ctrl);
+        //   });
       };
     }
   }

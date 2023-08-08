@@ -17,6 +17,7 @@ import { MailService }                          from 'src/app/_components/utilit
 
 //models
 import { _UT_MailMessage }                      from 'src/app/_models/_UT_MailMessage';
+import { ParametriService } from 'src/app/_services/parametri.service';
 
 //#endregion
 
@@ -39,11 +40,12 @@ export class ResetPswComponent {
 
 //#region ----- Constructor --------------------
 
-constructor(private fb:                                   UntypedFormBuilder,
-            private _snackBar:                            MatSnackBar,
-            private svcUser:                              UserService,
-            private svcMail:                              MailService,
-            public _dialog:                               MatDialog  ) {
+constructor(private fb:                         UntypedFormBuilder,
+            private _snackBar:                  MatSnackBar,
+            private svcUser:                    UserService,
+            private svcMail:                    MailService,
+            private svcParametri:               ParametriService,
+            public _dialog:                     MatDialog  ) {
 
   this.form = this.fb.group({
     Email:                   ['', Validators.required],
@@ -102,8 +104,15 @@ constructor(private fb:                                   UntypedFormBuilder,
 
     this.svcUser.put(formData).subscribe();
 
+    let base64LogoScuolaEmail = '';
+    await firstValueFrom(this.svcParametri.getByParName('imgFileLogoScuolaEmail')
+      .pipe( 
+        tap(res=> {base64LogoScuolaEmail = res.parValue;}
+      ))
+    );
+
+    let base64Image! : string;
     let imageUrl = './assets/logo/logoMailStoody.png';
-    let base64Image = '';
     try {base64Image = await Utility.convertImageToBase64(imageUrl);} 
     catch (error) {console.error('Error converting image to base64:', error);}
 
@@ -114,7 +123,10 @@ constructor(private fb:                                   UntypedFormBuilder,
 
     "E' stata richiesta una nuova password per l'utente riferito a questo indirizzo email. <br>" +
     "<br><br> Puoi accedere tramite questo <a href='localhost:4200/change-psw-ext?username="+user.userName+"&key=" + rndPassword +"'>link<a> e impostare la nuova password."+
-    "<br><br> Se non sei stato tu a richiedere una nuova password puoi ignorare questo link o segnalarlo a info@stoody.it ";
+    "<br><br> Se non sei stato tu a richiedere una nuova password puoi ignorare questo link o segnalarlo a info@stoody.it " +
+    "<br><img style='width: 100px' src='"+base64LogoScuolaEmail+"'/> <br><br>"
+    ;
+
 
     // "Di seguito le nuove credenziali: <br><br>" +
     // "Nome Utente: " + user.userName + "<br>" +
@@ -135,12 +147,13 @@ constructor(private fb:                                   UntypedFormBuilder,
         });
         this.form.controls.Email.reset();
         this.form.controls.Email.setErrors(null);
+        this.reloadRoutes.emit("login");      
       },
       error: err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: "Errore durante l'invio", panelClass: ['red-snackbar']}))
     });
 
-    this.form.controls.Email.setValue('');
-    this.reloadRoutes.emit("login");      
+
+
 
     //this.form.controls.Email.markAsUntouched();
     //this.form.controls.Email.markAsPristine();
