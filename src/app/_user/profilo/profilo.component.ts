@@ -37,18 +37,15 @@ export class ProfiloComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
   @ViewChild('myImg', {static: false}) immagineDOM!: ElementRef;
-  // @ViewChild('canvasDOM', {static: false}) canvasDOM!: ElementRef;
   @ViewChild(PersonaFormComponent) personaFormComponent!: PersonaFormComponent; 
 //#endregion
 
-  constructor(
-    private fb:                                 UntypedFormBuilder, 
-    private svcUser:                            UserService,
-    private svcPersone:                         PersoneService,
-    public _dialog:                             MatDialog,
-    private eventEmitterService:                EventEmitterService,
-    private _snackBar:                          MatSnackBar
-  ) { 
+  constructor(private fb:                                 UntypedFormBuilder, 
+              private svcUser:                            UserService,
+              private svcPersone:                         PersoneService,
+              public _dialog:                             MatDialog,
+              private eventEmitterService:                EventEmitterService,
+              private _snackBar:                          MatSnackBar) { 
 
     this.form = this.fb.group({
       file:           ['' , [Validators.required]],

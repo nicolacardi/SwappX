@@ -1,4 +1,10 @@
 <mat-tab-group mat-align-tabs="center">
+
+    <!-- ********************************    MAT TAB Risorse grafiche *********************************** -->
+    <mat-tab  label="Caricamento File">
+        <app-fileuploads requiredFileType="image/png"> </app-fileuploads>
+    </mat-tab>
+
     <!-- ********************************    MAT TAB ANAGRAFICA *********************************** -->
     <mat-tab  label="Parametri Base">
         <h1 class="_titolo-pagina">Impostazione Parametri</h1>
@@ -57,11 +63,7 @@
         </div>
  
     </mat-tab>
-    <mat-tab  label="Caricamento File">
-        <app-fileuploads
-        requiredFileType="image/png"        
-        ></app-fileuploads>
-    </mat-tab>
+
     <mat-tab  label="Materie">
         <app-materie-page></app-materie-page>
     </mat-tab>
