@@ -1,42 +1,27 @@
+    <div class="w300px ma-lr mt20 center" >
+        <mat-label>LOGO DELLA SCUOLA PER LE EMAIL</mat-label>
+    </div>
+
+    <div class="image-container ma-lr mt20 br10 shadowed" >
+        <img #logoScuolaEmail class="img" *ngIf="imgFile" [src]="imgFile">
+    </div>
+
+    <div class="flex-container form-group mt20 ">
+        <div class="form-group">
+            <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" formControlName="file" (change)="onImageChange($event)"hidden #selectFile>
+            <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile.click()" >Seleziona Immagine</button>
+        </div>
+    </div>
 
 
-<input type="file" class="_standard-file-input" (change)="onFileSelected($event, 'fileLogoScuola')" #fileLogoScuola>
-<div class="file-upload">
-  <mat-label>Logo Scuola</mat-label>
-   {{logoScuolaHtml || "No file uploaded yet."}}
-    <button mat-mini-fab color="primary" class="upload-btn"
-            (click)="fileLogoScuola.click()">
-        <mat-icon>attach_file</mat-icon>
-    </button>
-</div>
-
-<input type="file" class="_standard-file-input" (change)="onFileSelected($event, 'fileLogoEmail')" #fileLogoEmail>
-<div class="file-upload">
-  Logo Email
-  {{fileLogoEmail || "No file uploaded yet."}}
-   <button mat-mini-fab color="primary" class="upload-btn"
-           (click)="fileLogoEmail.click()">
-       <mat-icon>attach_file</mat-icon>
-   </button>
-</div>
-
-<input type="file" class="_standard-file-input" (change)="onFileSelected($event, 'fileTimbro,')" #fileTimbro>
-<div class="file-upload">
-  Timbro Scuola
-  {{fileTimbro || "No file uploaded yet."}}
-   <button mat-mini-fab color="primary" class="upload-btn"
-           (click)="fileTimbro.click()">
-       <mat-icon>attach_file</mat-icon>
-   </button>
-</div>
-
+<!--
 <div class="progress">
     <mat-progress-bar class="progress-bar" mode="determinate"
                       [value]="uploadProgress" *ngIf="uploadProgress">
     </mat-progress-bar>
   
-    <!-- <mat-icon class="cancel-upload" (click)="cancelUpload()" 
+    <mat-icon class="cancel-upload" (click)="cancelUpload()" 
               *ngIf="uploadProgress">delete_forever
-    </mat-icon> -->
+    </mat-icon>
   
-</div>
+</div> -->

@@ -753,6 +753,10 @@
 /*#endregion ***************************/
 
 /*#region ********** BORDERS ***********/
+    .br10 {
+        border-radius: 10px; 
+    }
+
     .br200 {
         border-radius: 200px; 
     }

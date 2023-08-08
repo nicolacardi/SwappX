@@ -91,9 +91,14 @@ export class ProfiloComponent implements OnInit {
         this.imgFile = reader.result as string;
 
         Utility.compressImage( this.imgFile, 200, 200)
-               .then(compressed => this.immagineDOM.nativeElement.src = compressed);
+               .then(compressed => {
+                this.immagineDOM.nativeElement.src = compressed;
+                console.log ("compressed", compressed);
+              });
+
       };
     }
+
   }
 
   cropImage(e: any) {

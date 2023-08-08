@@ -1,3 +1,13 @@
-._standard-file-input {
-    display:none !important;
+.image-container {
+    width: 100px; /* Set the fixed width of the container */
+    height: 100px; /* Set the fixed height of the container */
+    overflow: hidden; /* Prevent the image from overflowing the container */
+    position: relative; /* Ensure proper positioning of the image */
+}
+
+.image-container img {
+    object-fit: contain;
+    max-height: 100px;
+    max-width: 100px;
+    
 }
