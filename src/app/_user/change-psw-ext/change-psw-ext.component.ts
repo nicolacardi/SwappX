@@ -131,10 +131,6 @@ export class ChangePswExtComponent {
       error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio della password', panelClass: ['red-snackbar']})
     });
 
-
-
-
-
   }
 
   toggleShow(index: number) {
