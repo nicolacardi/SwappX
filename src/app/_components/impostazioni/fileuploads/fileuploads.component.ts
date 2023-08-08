@@ -26,12 +26,18 @@ export class FileuploadsComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
   logoScuolaEmail!:                             _UT_Parametro;
-  imgFile!:                                     string;
+  timbroScuola!:                             _UT_Parametro;
+
+  imgFileLogoScuolaEmail!:                      string;
+  imgFileTimbroScuola!:                         string;
+
   foto!:                                        string;
 //#endregion
 
 //#region ----- ViewChild Input Output ---------
   @ViewChild('logoScuolaEmail', {static: false}) logoScuolaEmailDOM!: ElementRef;
+  @ViewChild('timbroScuola', {static: false}) timbroScuolaDOM!: ElementRef;
+
 //#endregion
 
 //#region ----- Constructor --------------------
@@ -42,47 +48,77 @@ export class FileuploadsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.svcParametri.getByParName("LogoScuolaEmail").subscribe(
+    this.svcParametri.getByParName("imgFileLogoScuolaEmail").subscribe(
       val=> {
         if(val){
           this.logoScuolaEmail = val;
-          this.imgFile = val.parValue; 
+          this.imgFileLogoScuolaEmail = val.parValue; 
+        }
+      }
+    );
+
+    this.svcParametri.getByParName("imgFileTimbroScuola").subscribe(
+      val=> {
+        if(val){
+          this.timbroScuola = val;
+          this.imgFileTimbroScuola = val.parValue; 
         }
       }
     );
 
   }
 
-  onImageChange(e: any) {
-    if(e.target.files && e.target.files.length) {
+  onImageChange(e: any, ctrl: string) {
+
+
+    if (e.target.files && e.target.files.length) {
       const [file] = e.target.files;
-      if(e.target.files[0].size > 200000){
+      if (e.target.files[0].size > 200000) {
         this._dialog.open(DialogOkComponent, {
           width: '320px',
-          data: {titolo: "ATTENZIONE!", sottoTitolo: "Il file eccede la dimensione massima (200kb)"}
+          data: { titolo: "ATTENZIONE!", sottoTitolo: "Il file eccede la dimensione massima (200kb)" }
         });
         return;
       };
 
+
+
+
+    
     const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = async () => {
-        this.imgFile = reader.result as string;
-        await Utility.compressImage( this.imgFile, 200, 200)
+
+        if (ctrl == 'imgFileLogoScuolaEmail') 
+        {this.imgFileLogoScuolaEmail = reader.result as string;
+          await Utility.compressImage( this.imgFileLogoScuolaEmail, 200, 200)
           .then(compressed => {
             this.logoScuolaEmailDOM.nativeElement.src = compressed;
-            this.save();
+            this.save(ctrl);
           });
+        }
+
+        if (ctrl == 'imgFileTimbroScuola') 
+        {this.imgFileTimbroScuola = reader.result as string;
+          await Utility.compressImage( this.imgFileTimbroScuola, 200, 200)
+          .then(compressed => {
+            this.timbroScuolaDOM.nativeElement.src = compressed;
+            this.save(ctrl);
+          });
+        }
+
       };
     }
   }
 
 
-  save(){
+  save(ctrl: string){
+
+
     let formParameter: _UT_Parametro = {
-      id: this.logoScuolaEmail.id,
-      parName: "logoScuolaEmail",
-      parDescr: "Logo della scuola da inserire nelle email",
+      id: ctrl == 'imgFileLogoScuolaEmail'? this.logoScuolaEmail.id : this.timbroScuola.id,
+      parName: ctrl,
+      parDescr: ctrl == 'imgFileLogoScuolaEmail'? "Logo della scuola" : "Timbro della scuola",
       parValue: this.logoScuolaEmailDOM.nativeElement.src
     };
 

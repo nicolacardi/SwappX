@@ -3,13 +3,28 @@
     </div>
 
     <div class="image-container ma-lr mt20 br10 shadowed" >
-        <img #logoScuolaEmail class="img" *ngIf="imgFile" [src]="imgFile">
+        <img #logoScuolaEmail class="img" *ngIf="imgFileLogoScuolaEmail" [src]="imgFileLogoScuolaEmail">
     </div>
 
     <div class="flex-container form-group mt20 ">
         <div class="form-group">
-            <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" formControlName="file" (change)="onImageChange($event)"hidden #selectFile>
+            <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" (change)="onImageChange($event, 'imgFileLogoScuolaEmail')"hidden #selectFile>
             <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile.click()" >Seleziona Immagine</button>
+        </div>
+    </div>
+
+    <div class="w300px ma-lr mt20 center" >
+        <mat-label>TIMBRO DELLA SCUOLA</mat-label>
+    </div>
+
+    <div class="image-container ma-lr mt20 br10 shadowed" >
+        <img #timbroScuola class="img" *ngIf="imgFileTimbroScuola" [src]="imgFileTimbroScuola">
+    </div>
+
+    <div class="flex-container form-group mt20 ">
+        <div class="form-group">
+            <input type="file" class="form-control" id="file" accept=".gif,.jpg,.jpeg,.png" (change)="onImageChange($event, 'imgFileTimbroScuola')"hidden #selectFile1>
+            <button type="button" mat-button matSuffix class="w180px ma" mat-stroked-button (click)="selectFile1.click()" >Seleziona Immagine</button>
         </div>
     </div>
 
