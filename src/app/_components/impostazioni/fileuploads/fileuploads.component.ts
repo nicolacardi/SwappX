@@ -1,6 +1,7 @@
 //#region ----- IMPORTS ------------------------
 import { Component, ElementRef, OnInit, ViewChild }                    from '@angular/core';
-import { Subscription } from 'rxjs';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { MatDialog }                            from '@angular/material/dialog';
 
 //components
 import { DialogOkComponent }                    from '../../../_components/utilities/dialog-ok/dialog-ok.component';
@@ -8,12 +9,10 @@ import { SnackbarComponent }                    from '../../../_components/utili
 import { Utility }                              from '../../../_components/utilities/utility.component';
 
 //services
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
-import { ParametriService } from 'src/app/_services/parametri.service';
+import { ParametriService }                     from 'src/app/_services/parametri.service';
 
-
+//models
+import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
 //#endregion
 
 @Component({
