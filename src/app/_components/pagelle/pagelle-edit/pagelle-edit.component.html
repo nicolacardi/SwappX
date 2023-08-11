@@ -24,13 +24,11 @@
         <mat-label>Data Pagella</mat-label>
         <input matInput placeholder="data Pagella" [value]="dtIns|date:'dd/MM/yyyy'" (change)="aggiornaData()">
     </mat-form-field>
-         
-    
+            
 </h2>
 
-<app-pagella-voto-edit 
-    [classeSezioneAnnoID]="classeSezioneAnnoID" 
-    [objPagella] = "objPagella"
-    (reloadParent)="loadData()" >
+<app-pagella-voto-edit [classeSezioneAnnoID]="classeSezioneAnnoID" 
+                       [objPagella] = "objPagella"
+                       (reloadParent)="loadData()" >
 </app-pagella-voto-edit>
  

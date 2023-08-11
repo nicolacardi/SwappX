@@ -63,8 +63,6 @@ export class IscrizioniClasseListComponent implements OnInit {
       "cognome"
   ];
 
-
-
   selection = new SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
   selectedRowIndex=-1;
 
@@ -118,8 +116,7 @@ export class IscrizioniClasseListComponent implements OnInit {
   constructor(private svcIscrizioni:          IscrizioniService,
               private svcClasseSezioneAnno:   ClassiSezioniAnniService,
               public _dialog:                 MatDialog, 
-              private _loadingService:        LoadingService,
-              private _navigationService:     NavigationService  ) {
+              private _loadingService:        LoadingService  ) {
   }
 //#endregion
 
@@ -191,9 +188,6 @@ export class IscrizioniClasseListComponent implements OnInit {
         }
       );
     } 
-
-
-
   }
 
   rowclicked(Iscrizione: CLS_Iscrizione ){

@@ -68,13 +68,11 @@ export class MaterieListComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(
-    private svcMaterie:                     MaterieService,
+  constructor(private svcMaterie:                     MaterieService,
+              private _loadingService:                LoadingService,
+              public _dialog:                         MatDialog) { 
 
-    private _loadingService:                LoadingService,
-    public _dialog:                         MatDialog,
-
-  ) { }
+  }
 //#endregion
  
 //#region ----- LifeCycle Hooks e simili--------
@@ -98,7 +96,6 @@ export class MaterieListComponent implements OnInit {
         this.maxSeq = val.reduce((max, item) => {
           return item.seq! > max ? item.seq! : max;
         }, 0);
-
       }
     );
   }

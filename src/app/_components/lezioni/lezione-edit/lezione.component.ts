@@ -90,25 +90,24 @@ export class LezioneComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor( 
-    public _dialogRef:                          MatDialogRef<LezioneComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:       DialogDataLezione,
+  constructor(public _dialogRef:                          MatDialogRef<LezioneComponent>,
+              @Inject(MAT_DIALOG_DATA) public data:       DialogDataLezione,
 
-    private fb:                                 UntypedFormBuilder, 
-    private svcLezioni:                         LezioniService,
-    private svcMaterie:                         MaterieService,
-    private svcDocenti:                         DocentiService,
-    private svcDocenze:                         DocenzeService,
-    private svcClasseSezioneAnno:               ClassiSezioniAnniService,
-    private svcIscrizioni:                      IscrizioniService,
-    private svcPresenze:                        PresenzeService,
-    private svcVotiCompiti:                     VotiCompitiService,
+              private fb:                                 UntypedFormBuilder, 
+              private svcLezioni:                         LezioniService,
+              private svcMaterie:                         MaterieService,
+              private svcDocenti:                         DocentiService,
+              private svcDocenze:                         DocenzeService,
+              private svcClasseSezioneAnno:               ClassiSezioniAnniService,
+              private svcIscrizioni:                      IscrizioniService,
+              private svcPresenze:                        PresenzeService,
+              private svcVotiCompiti:                     VotiCompitiService,
 
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar,
-    private _loadingService:                    LoadingService,
-    private cdRef :                             ChangeDetectorRef,
-    private _ngZone:                            NgZone ) {
+              public _dialog:                             MatDialog,
+              private _snackBar:                          MatSnackBar,
+              private _loadingService:                    LoadingService,
+              private cdRef :                             ChangeDetectorRef,
+              private _ngZone:                            NgZone ) {
 
     _dialogRef.disableClose = true;
 
@@ -167,12 +166,8 @@ export class LezioneComponent implements OnInit {
     );
 
     this.form.controls.docenteID.valueChanges.subscribe( 
-      val =>
-        //ora devo estrarre i supplenti: i docenti che per l'ora selezionata NON sono già impegnati
-        this.obsSupplenti$ = this.svcDocenti.listSupplentiDisponibili(this.data.lezioneID? this.data.lezioneID: 0, val, this.data.dtCalendario, this.data.h_Ini, this.data.h_End)
-        //.pipe(
-        //  tap (x=> console.log ("supplenti", x))
-        //);
+      //ora devo estrarre i supplenti: i docenti che per l'ora selezionata NON sono già impegnati
+      val => this.obsSupplenti$ = this.svcDocenti.listSupplentiDisponibili(this.data.lezioneID? this.data.lezioneID: 0, val, this.data.dtCalendario, this.data.h_Ini, this.data.h_End)
     );
 
 
@@ -200,7 +195,6 @@ export class LezioneComponent implements OnInit {
       this.form.controls.argomento.disable();
       this.form.controls.ckCompito.disable();
       this.form.controls.argomentoCompito.disable();
-      
     } 
     else {
       this.form.controls.h_Ini.disable();
@@ -286,11 +280,9 @@ export class LezioneComponent implements OnInit {
         //   this.form.value[prop] = this.form.controls[prop].value;
         // }
 
-
         if (this.form.controls.ckAppello.value == '')   this.form.controls.ckAppello.setValue(false);     
         if (this.form.controls.ckCompito.value == '')   this.form.controls.ckCompito.setValue(false);     
         
-
         const objLezione = <CAL_Lezione>{
           
           classeSezioneAnnoID: this.form.controls.classeSezioneAnnoID.value,
@@ -321,7 +313,6 @@ export class LezioneComponent implements OnInit {
 
         if (this.form.controls['id'].value == null) {   
 
-          
           objLezione.id = 0;
           this.svcLezioni.post(objLezione).subscribe({
             next: res => {

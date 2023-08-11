@@ -149,21 +149,18 @@ export class IscrizioniListComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(
-    private svcIscrizioni:                      IscrizioniService,
-    private svcAnni:                            AnniScolasticiService,
-    private svcScadenze:                        ScadenzeService,
-    private svcParametri:                       ParametriService,
-    private svcMail:                            MailService,
-    private svcUser:                            UserService,
+  constructor(private svcIscrizioni:                      IscrizioniService,
+              private svcAnni:                            AnniScolasticiService,
+              private svcScadenze:                        ScadenzeService,
+              private svcParametri:                       ParametriService,
+              private svcMail:                            MailService,
+              private svcUser:                            UserService,
 
-    private svcScadenzePersone:                 ScadenzePersoneService,
-    private fb:                                 UntypedFormBuilder, 
-    public _dialog:                             MatDialog, 
-    private _loadingService:                    LoadingService, 
-    private _snackBar:                          MatSnackBar,
-
-  ) {
+              private svcScadenzePersone:                 ScadenzePersoneService,
+              private fb:                                 UntypedFormBuilder, 
+              public _dialog:                             MatDialog, 
+              private _loadingService:                    LoadingService, 
+              private _snackBar:                          MatSnackBar  ) {
 
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
@@ -576,8 +573,6 @@ export class IscrizioniListComponent implements OnInit {
         "<br><br>A questo scopo vi inoltriamo il link per accedere al portale:<br><br>"+ 
         "<a href='localhost:4200'><img alt='STOODY' style='width: 100px' src='"+ base64LogoStoody +"'/></a>"+
         "<br><br><span style='font-size:0.8em''>(fare click sul logo)</span><br><br>"; 
-
-      //console.log (testoMail);
 
       mailAddress = iscrizione.alunno._Genitori![i].genitore!.persona.email;
       //console.log ("mailAddress trovato i", mailAddress);

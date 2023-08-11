@@ -37,16 +37,14 @@ export class TipoScadenzaEditComponent implements OnInit {
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(
-    public _dialogRef: MatDialogRef<TipoScadenzaEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public tiposcadenzaID: number,
-    private svcTipiScadenza:                    TipiScadenzaService,
-    private _loadingService :                   LoadingService,
-    private fb:                                 UntypedFormBuilder, 
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar,
-    
-  ) { 
+  constructor(public _dialogRef: MatDialogRef<TipoScadenzaEditComponent>,
+            @Inject(MAT_DIALOG_DATA) public tiposcadenzaID: number,
+            private svcTipiScadenza:                    TipiScadenzaService,
+            private _loadingService :                   LoadingService,
+            private fb:                                 UntypedFormBuilder, 
+            public _dialog:                             MatDialog,
+            private _snackBar:                          MatSnackBar) { 
+
     _dialogRef.disableClose = true;
     
     this.form = this.fb.group({
@@ -81,11 +79,11 @@ export class TipoScadenzaEditComponent implements OnInit {
             }
           )
       );
-    } else {
+    } 
+    else 
       this.emptyForm = true
-    }
-
   }
+
 //#endregion
 
 //#region ----- Operazioni CRUD ----------------
@@ -93,8 +91,7 @@ export class TipoScadenzaEditComponent implements OnInit {
   save(){
 
     if (this.form.controls['id'].value == null) 
-      this.svcTipiScadenza.post(this.form.value)
-        .subscribe({
+      this.svcTipiScadenza.post(this.form.value).subscribe({
           next: res=> {
             this._dialogRef.close();
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
@@ -103,8 +100,7 @@ export class TipoScadenzaEditComponent implements OnInit {
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']}))
         });
     else 
-      this.svcTipiScadenza.put(this.form.value)
-        .subscribe({
+      this.svcTipiScadenza.put(this.form.value).subscribe({
           next: res=> {
             this._dialogRef.close();
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});

@@ -39,19 +39,14 @@ export class ConsensoEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(
-    public _dialogRef: MatDialogRef<ConsensoEditComponent>,
-
-    @Inject(MAT_DIALOG_DATA) public data:       DialogDataConsensoEdit,
-
-  
-    private svcConsensi:                        ConsensiService,
-    private _loadingService :                   LoadingService,
-    private fb:                                 UntypedFormBuilder, 
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar,
+  constructor(public _dialogRef: MatDialogRef<ConsensoEditComponent>,
+              @Inject(MAT_DIALOG_DATA) public data:       DialogDataConsensoEdit,
+              private svcConsensi:                        ConsensiService,
+              private _loadingService :                   LoadingService,
+              private fb:                                 UntypedFormBuilder, 
+              public _dialog:                             MatDialog,
+              private _snackBar:                          MatSnackBar ) { 
     
-  ) { 
     _dialogRef.disableClose = true;
     
     this.form = this.fb.group({
@@ -60,19 +55,17 @@ export class ConsensoEditComponent implements OnInit {
       numOpzioni:                 ['', { validators:[ Validators.required]}],
       seq:                        ['']
     });
-
   }
+
 //#endregion
 
 //#region ----- LifeCycle Hooks e simili--------
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loadData();
   }
 
   loadData(){
-
-
 
     if (this.data.consensoID && this.data.consensoID + '' != "0") {
 
@@ -86,11 +79,11 @@ export class ConsensoEditComponent implements OnInit {
             }
           )
       );
-    } else {
-      this.emptyForm = true
     }
-
+    else 
+      this.emptyForm = true
   }
+
 //#endregion
 
 //#region ----- Operazioni CRUD ----------------
@@ -99,21 +92,18 @@ export class ConsensoEditComponent implements OnInit {
 
     if (this.form.controls['id'].value == null) {
       this.form.controls.seq.setValue(this.data.maxSeq +1);
-      this.svcConsensi.post(this.form.value)
-        .subscribe({
-          next: res=> {
-            this._dialogRef.close();
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-          },
-          error: err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          )
-        });
+      this.svcConsensi.post(this.form.value).subscribe({
+        next: res=> {
+          this._dialogRef.close();
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+        },
+        error: err=> (
+          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+        )
+      });
     }
     else {
-      console.log ("salvo", this.form.value);
-      this.svcConsensi.put(this.form.value)
-        .subscribe({
+      this.svcConsensi.put(this.form.value).subscribe({
           next: res=> {
             this._dialogRef.close();
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});

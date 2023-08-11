@@ -56,14 +56,13 @@ export class PagellaVotoEditComponent implements OnInit  {
 
 //#region ----- Constructor --------------------
 
-  constructor( 
-    private svcPagella:                         PagelleService,
-    private svcPagellaVoti:                     PagellaVotiService,
-    private svcClasseSezioneAnno:               ClassiSezioniAnniService,
-    
-    private _loadingService:                    LoadingService,
-    private _snackBar:                          MatSnackBar,
-    public _dialog:                             MatDialog ) { 
+  constructor(private svcPagella:                         PagelleService,
+              private svcPagellaVoti:                     PagellaVotiService,
+              private svcClasseSezioneAnno:               ClassiSezioniAnniService,
+              
+              private _loadingService:                    LoadingService,
+              private _snackBar:                          MatSnackBar,
+              public _dialog:                             MatDialog ) { 
   }
 
 //#endregion
@@ -121,7 +120,6 @@ export class PagellaVotoEditComponent implements OnInit  {
     delete pagellaVoto.tipoGiudizio;
     delete pagellaVoto._ObiettiviCompleti;
 
-    console.log("pagella voto-edit - save - this.objPagella", this.objPagella);
     //nel caso la pagella ancora non sia stata creata, va inserita
     if (this.objPagella.id == -1) {
       console.log("pagella voto-edit - save - Pagella.id = -1: Non C'è una Pagella --->post pagella e poi postpagellaVoto");
@@ -140,20 +138,14 @@ export class PagellaVotoEditComponent implements OnInit  {
       ).subscribe()
     }
     else {    //caso pagella già presente
-      console.log("pagella voto-edit - save -  Pagella.id <> -1: C'è una Pagella --->post o put del PagellaVoto");
-      console.log("pagella voto-edit - save -  PagellaVoto: ", pagellaVoto);
 
       if (pagellaVoto.id == 0) {
-        console.log("pagella voto-edit - save -  post pagellaVoto");
-        console.log("********************************");
         this.svcPagellaVoti.post(pagellaVoto).subscribe({
           next: res => this.loadData() ,
           error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio post', panelClass: ['red-snackbar']})
         })
-      } else {
-        console.log("pagella voto-edit - save -  put pagellaVoto");
-        console.log("********************************");
-
+      } 
+      else {
         this.svcPagellaVoti.put(pagellaVoto).subscribe({
           next: res => { },
           error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore nel salvataggio put', panelClass: ['red-snackbar']})
@@ -161,7 +153,6 @@ export class PagellaVotoEditComponent implements OnInit  {
       }
     }
   }
-
 
 //#endregion
 
@@ -186,9 +177,8 @@ export class PagellaVotoEditComponent implements OnInit  {
     if (votoN >10 ) votoN = 10
     if (votoN <0 )  votoN = 0
     formData.voto = votoN;
-        //vediamo intanto cosa arriva
-        console.log ("pagella-voto-edit ->", formData);
     formData.pagellaID = this.objPagella.id;
+
     //nel caso di post l'ID del giudizio va messo a 1
     if (formData.tipoGiudizioID == null) 
         formData.tipoGiudizioID = 1;
@@ -207,15 +197,12 @@ export class PagellaVotoEditComponent implements OnInit  {
         formData.tipoGiudizioID = 1;
 
     let formData2 = Object.assign({}, formData);
-
     this.save(formData2)
 
     if (this.objPagella.ckStampato) this.resetStampato();
   }
 
   openObiettivi(element: DOC_PagellaVoto) {
-
-    console.log ( "pagellavoto-edit - openObiettivi - valori per aprire dialog", this.objPagella.iscrizioneID,    this.objPagella.id, this.objPagella.periodo, element.id, element.materiaID, this.classeSezioneAnnoID);
 
     const dialogConfig : MatDialogConfig = {
     panelClass: 'add-DetailDialog',

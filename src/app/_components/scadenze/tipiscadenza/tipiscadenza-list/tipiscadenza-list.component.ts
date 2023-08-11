@@ -35,15 +35,12 @@ export class TipiScadenzaListComponent implements OnInit {
       "descrizione", 
       "ckNota",
       "color"
-
   ];
-
 
   rptTitle = 'Lista Tipi Scadenza';
   rptFileName = 'ListaTipiScadenza';
   rptFieldsToKeep  = [
     "descrizione"
-
   ];
 
   rptColumnsNames  = [
@@ -64,12 +61,12 @@ export class TipiScadenzaListComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(
-    private svcTipiscadenza:                    TipiScadenzaService,
+  constructor(private svcTipiscadenza:                    TipiScadenzaService,
+              private _loadingService:                    LoadingService,
+              public _dialog:                             MatDialog) { 
+          
+  }
 
-    private _loadingService:                    LoadingService,
-    public _dialog:                             MatDialog, 
-  ) { }
 //#endregion
  
 //#region ----- LifeCycle Hooks e simili--------
@@ -79,10 +76,8 @@ export class TipiScadenzaListComponent implements OnInit {
   }
 
   loadData() {
-
     
     this.obsTipiscadenza$ = this.svcTipiscadenza.list();  
-
     const loadTipiscadenza$ =this._loadingService.showLoaderUntilCompleted(this.obsTipiscadenza$);
 
     loadTipiscadenza$.subscribe(

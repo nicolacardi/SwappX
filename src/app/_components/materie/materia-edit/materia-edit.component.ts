@@ -43,20 +43,15 @@ export class MateriaEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(
-    public _dialogRef: MatDialogRef<MateriaEditComponent>,
+  constructor(public _dialogRef: MatDialogRef<MateriaEditComponent>,
+              @Inject(MAT_DIALOG_DATA) public data:       DialogDataMateriaEdit,
+              private svcMaterie:                     MaterieService,
+              private _loadingService :               LoadingService,
+              private fb:                             UntypedFormBuilder, 
+              public _dialog:                         MatDialog,
+              private _snackBar:                      MatSnackBar,
+              private svcMacroMaterie:                MacroMaterieService  ) { 
 
-    @Inject(MAT_DIALOG_DATA) public data:       DialogDataMateriaEdit,
-
-  
-    private svcMaterie:                     MaterieService,
-    private _loadingService :               LoadingService,
-    private fb:                             UntypedFormBuilder, 
-    public _dialog:                         MatDialog,
-    private _snackBar:                      MatSnackBar,
-    private svcMacroMaterie:                MacroMaterieService,
-    
-  ) { 
     _dialogRef.disableClose = true;
     
     this.form = this.fb.group({
@@ -79,7 +74,6 @@ export class MateriaEditComponent implements OnInit {
   loadData(){
 
     this.obsMacroMaterie$ = this.svcMacroMaterie.list()
-
 
     if (this.data.materiaID && this.data.materiaID + '' != "0") {
 
@@ -106,8 +100,7 @@ export class MateriaEditComponent implements OnInit {
 
     if (this.form.controls['id'].value == null) {
       this.form.controls.seq.setValue(this.data.maxSeq +1);
-      this.svcMaterie.post(this.form.value)
-        .subscribe({
+      this.svcMaterie.post(this.form.value).subscribe({
           next: res=> {
             this._dialogRef.close();
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
@@ -118,9 +111,7 @@ export class MateriaEditComponent implements OnInit {
         });
     }
     else {
-      console.log ("salvo", this.form.value);
-      this.svcMaterie.put(this.form.value)
-        .subscribe({
+      this.svcMaterie.put(this.form.value).subscribe({
           next: res=> {
             this._dialogRef.close();
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
@@ -165,7 +156,6 @@ export class MateriaEditComponent implements OnInit {
       result => { 
         //devo valorizzare il campo color
         if (result) this.form.controls.color.setValue(result);
-        //this.loadData(); 
       }
     );
   }

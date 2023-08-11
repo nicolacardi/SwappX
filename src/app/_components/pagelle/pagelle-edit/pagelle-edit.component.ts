@@ -66,16 +66,14 @@ export class PagellaEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor( 
-    private svcPagelle:                         PagelleService,
-    private svcPagellaVoti:                     PagellaVotiService,
-    private svcFiles:                           FilesService,
-    private svcIscrizioni:                      IscrizioniService,
-    private svcOpenXML:                         OpenXMLService,
-    private _loadingService:                    LoadingService,
-    private _snackBar:                          MatSnackBar ,
-    private _jspdf:                             JspdfService) {
-
+  constructor(private svcPagelle:                         PagelleService,
+              private svcPagellaVoti:                     PagellaVotiService,
+              private svcFiles:                           FilesService,
+              private svcIscrizioni:                      IscrizioniService,
+              private svcOpenXML:                         OpenXMLService,
+              private _loadingService:                    LoadingService,
+              private _snackBar:                          MatSnackBar ,
+              private _jspdf:                             JspdfService) {
   }
 
 //#endregion
@@ -120,15 +118,12 @@ export class PagellaEditComponent implements OnInit {
         }
     );
 
-
     this.svcIscrizioni.get(this.iscrizioneID).subscribe(res => {
       this.iscrizione = res;
       let annoID = this.iscrizione.classeSezioneAnno.anno.id;
       let classeID = this.iscrizione.classeSezioneAnno.classeSezione.classeID;
-      //console.log ("annoID, classeID", annoID, classeID);
       setTimeout(() =>  this.svcPagellaVoti.listByAnnoClassePagella(annoID, classeID, this.objPagella.id!).subscribe(res=> this.lstPagellaVoti = res), 1000);
     });
-
   }
 
   //#endregion

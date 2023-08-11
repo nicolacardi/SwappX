@@ -24,7 +24,7 @@ export class ClassiAnniMateriePageComponent implements OnInit {
 
   constructor(public _dialog: MatDialog ) { }
 
-  ngOnInit(): void {
+  ngOnInit(){
   }
 
   addRecord() {

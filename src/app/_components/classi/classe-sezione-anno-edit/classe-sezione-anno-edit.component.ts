@@ -48,18 +48,17 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 //#endregion
 
 //#region ----- Constructor -------------------
-  constructor( 
-    @Inject(MAT_DIALOG_DATA) public classeSezioneAnnoID: number,
-    public _dialogRef:                          MatDialogRef<ClasseSezioneAnnoEditComponent>,
-    private fb:                                 UntypedFormBuilder,
-    private svcClasseSezioneAnno:               ClassiSezioniAnniService,
-    private svcClasseSezione:                   ClassiSezioniService,
-    private svcClassi:                          ClassiService,
-    private svcAnni:                            AnniScolasticiService,
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar,
-    private _loadingService :                   LoadingService
-  ) { 
+  constructor(@Inject(MAT_DIALOG_DATA) public classeSezioneAnnoID: number,
+              public _dialogRef:                          MatDialogRef<ClasseSezioneAnnoEditComponent>,
+              private fb:                                 UntypedFormBuilder,
+              private svcClasseSezioneAnno:               ClassiSezioniAnniService,
+              private svcClasseSezione:                   ClassiSezioniService,
+              private svcClassi:                          ClassiService,
+              private svcAnni:                            AnniScolasticiService,
+              public _dialog:                             MatDialog,
+              private _snackBar:                          MatSnackBar,
+              private _loadingService :                   LoadingService ) { 
+    
     _dialogRef.disableClose = true;
 
     this.form = this.fb.group({
@@ -70,7 +69,6 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
       sezione:                    ['', Validators.required],
       classeID:                   ['', Validators.required]
     });
-
   }
 
 //#endregion 
@@ -125,14 +123,11 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 //#endregion
 
 //#region ----- Operazioni CRUD ---------------
+
   save(){
 
     let classeID = this.form.controls['classeID'].value;
     let sezione = this.form.controls['sezione'].value;
-
-    //console.log ("classe-sezione-anno-edit - save - form.id", this.form.controls['id'].value );
-    //console.log ("classe-sezione-anno-edit - save - classeID", classeID );
-    //console.log ("classe-sezione-anno-edit - save - sezione", sezione );
 
     if (this.form.controls['id'].value == null){
       this.svcClasseSezione.getByClasseSezione (classeID, sezione) 

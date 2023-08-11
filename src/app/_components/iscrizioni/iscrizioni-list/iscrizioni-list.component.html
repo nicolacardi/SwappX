@@ -5,7 +5,7 @@
     <mat-form-field  class="ml20 topZIndex">
         <mat-select formControlName="selectAnnoScolastico" (selectionChange)="updateList()" #annoscolastico>
             <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id" >
-            {{element.annoscolastico}}
+                {{element.annoscolastico}}
             </mat-option>
         </mat-select>
     </mat-form-field>
@@ -18,7 +18,6 @@
     <button mat-icon-button *ngIf="filterValue" (click)="resetSearch();applyFilter($event)"  class="topZIndex">
         <mat-icon  color="primary">clear</mat-icon>
     </button>
-
 </form>
 
     
@@ -83,7 +82,6 @@
                     [ngClass]="{'invisible': !element.stato.ckInvioIscrizione  }" 
                     (click)="makeScadenzaAndSendEmail(element, true)">
 
-
                 <img *ngIf="element.stato.codice == '40'" 
                     src="./assets/send_mail2.svg"    
                     class="pointer w24px" 
@@ -102,7 +100,7 @@
         <ng-container matColumnDef="emailgenitori">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>email genitori</th>
             <td mat-cell *matCellDef="let element" 
-            [innerHTML]="(element.alunno._Genitori[0]? element.alunno._Genitori[0].genitore.persona.email: '') + ' ' + (element.alunno._Genitori[1]? element.alunno._Genitori[1].genitore.persona.email: '')"></td>
+                [innerHTML]="(element.alunno._Genitori[0]? element.alunno._Genitori[0].genitore.persona.email: '') + ' ' + (element.alunno._Genitori[1]? element.alunno._Genitori[1].genitore.persona.email: '')"></td>
         </ng-container>
 
         <ng-container matColumnDef="telefono">
@@ -131,8 +129,6 @@
             class="element-row"
             (contextmenu)="onRightClick($event, element)" >
         </tr>
-
-        <!-- <td mat-footer-cell *matFooterCellDef> ciao </td> -->
 
     </table>
 

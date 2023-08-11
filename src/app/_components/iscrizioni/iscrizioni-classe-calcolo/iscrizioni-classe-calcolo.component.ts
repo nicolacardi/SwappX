@@ -60,8 +60,7 @@ export class IscrizioniClasseCalcoloComponent implements OnInit {
                 private svcAnni:                        AnniScolasticiService,
                 private svcClasseSezioneAnno:           ClassiSezioniAnniService,
                 private svcIscrizioni:                  IscrizioniService,
-                private _snackBar:                      MatSnackBar,
-                private _loadingService :               LoadingService ) { 
+                private _snackBar:                      MatSnackBar ) { 
 
     this.form = this.fb.group({
       selectClasseSezioneAnno:       [null]

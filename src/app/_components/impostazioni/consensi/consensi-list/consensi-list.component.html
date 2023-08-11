@@ -10,16 +10,13 @@
     <!-- <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator> -->
 
     <!-- **************************   MAT-TABLE   ******************* -->
-    <table  mat-table class="_table-row-low transparent w100" 
-        [dataSource]="matDataSource"
-        cdkDropList
-        (cdkDropListDropped)="drop($event)"
-        matSort>
+    <table mat-table class="_table-row-low transparent w100" 
+           [dataSource]="matDataSource"
+           cdkDropList
+           (cdkDropListDropped)="drop($event)"
+           matSort>
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
-
-
-
         <ng-container matColumnDef="actionsColumn">
             <th mat-header-cell *matHeaderCellDef ></th>
             <td mat-cell  *matCellDef="let element;  let j = index;"> 
@@ -62,23 +59,14 @@
             <th mat-header-cell *matHeaderCellDef  mat-sort-header >Opzione5</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.testo5 | highlight:filterValue"></td>
         </ng-container>
-
-
-
-
         
 
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
         <tr mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></tr>
         
         <!-- **************************   MAT-ROW   ******************* -->
-        
 
-        <tr mat-row *matRowDef="let element;columns: displayedColumns"
-        
-            class="element-row" cdkDragLockAxis="y" cdkDrag
-            >
-        </tr>
+        <tr mat-row *matRowDef="let element;columns: displayedColumns" class="element-row" cdkDragLockAxis="y" cdkDrag></tr>
 
     </table>
 

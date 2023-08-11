@@ -23,7 +23,9 @@ export class ClassiSezioniAnniFilterComponent implements OnInit {
   @Input() classiSezioniAnniListComponent!: ClassiSezioniAnniListComponent;
 //#endregion 
 
-  constructor() { }
+  constructor() { 
+    
+  }
 
 //#region ----- LifeCycle Hooks e simili--------
   ngOnInit() {

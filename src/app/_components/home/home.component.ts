@@ -14,13 +14,10 @@ export class HomeComponent implements OnInit {
   userFullName!:          string;
 
   constructor( private svcUser: UserService) {
-
     this.currUser = svcUser.currentUser;
   }
 
   ngOnInit(): void {
       //this.userFullName= this.svcUser.currUser.fullname;
   }
-
-
 }

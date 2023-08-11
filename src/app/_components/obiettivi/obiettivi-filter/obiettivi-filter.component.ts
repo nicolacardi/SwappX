@@ -42,11 +42,11 @@ export class ObiettiviFilterComponent implements OnInit {
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(
-    private svcClassi:                      ClassiService,
-    private svcAnni:                        AnniScolasticiService,
-    private svcMaterie:                     MaterieService,
-  ) { }
+  constructor(private svcClassi:                      ClassiService,
+              private svcAnni:                        AnniScolasticiService,
+              private svcMaterie:                     MaterieService ) { 
+        
+  }
 //#endregion
   
 //#region ----- LifeCycle Hooks e simili--------

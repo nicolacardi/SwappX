@@ -37,9 +37,9 @@ export class OrarioPageComponent implements OnInit {
   //@Input () classeSezioneAnnoId!: number;
 //#endregion
 
-  constructor(
-    public _dialog:                             MatDialog,    
-  ) {}
+  constructor( public _dialog:                             MatDialog ) {
+    
+  }
 
 //#region ----- LifeCycle Hooks e simili--------
 

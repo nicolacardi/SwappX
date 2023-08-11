@@ -13,7 +13,6 @@ import { FormatoData, Utility }                 from '../../utilities/utility.co
 import { ComuniService }                        from 'src/app/_services/comuni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { PersoneService }                       from '../persone.service';
-import { DocentiService }                       from '../../docenti/docenti.service';
 
 //models
 import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
@@ -92,6 +91,7 @@ export class PersonaFormComponent implements OnInit {
     this.currPersona = Utility.getCurrentUser();
     this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.TipoPersona!.livello);
   }
+  
 //#endregion
 
 //#region ----- LifeCycle Hooks e simili-------

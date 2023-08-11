@@ -94,8 +94,6 @@ export class UsersListComponent implements OnInit {
   public ckSoloAttivi :                         boolean = true;
   emailAddresses!:                              string;
 
-
-
 //#endregion
 
 //#region ----- ViewChild Input Output -------

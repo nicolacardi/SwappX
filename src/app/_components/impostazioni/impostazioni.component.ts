@@ -47,13 +47,11 @@ export class ImpostazioniComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(
-    private fb:                                 UntypedFormBuilder, 
-    private svcAnni:                            AnniScolasticiService,
-    private svcParametri:                       ParametriService,
-    private _snackBar:                          MatSnackBar,
-    private http:                               HttpClient
-  )  {
+  constructor(private fb:                                 UntypedFormBuilder, 
+              private svcAnni:                            AnniScolasticiService,
+              private svcParametri:                       ParametriService,
+              private _snackBar:                          MatSnackBar,
+              private http:                               HttpClient  )  {
 
     this.form = this.fb.group({
       // selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
@@ -88,6 +86,7 @@ export class ImpostazioniComponent implements OnInit {
   ngOnInit(): void {
     this.obsAnni$= this.svcAnni.list();
   }
+
 //#endregion
 
 //#region ----- Operazioni CRUD ----------------
@@ -141,11 +140,9 @@ export class ImpostazioniComponent implements OnInit {
     }
   }
 
-
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
-
   
   onUpload() {
     const fd = new FormData();

@@ -56,19 +56,17 @@ export class VotoInterrEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor( 
-    @Inject(MAT_DIALOG_DATA) public data:       DialogDataVotoInterr,
-    public _dialogRef:                          MatDialogRef<VotoInterrEditComponent>,
-    private fb:                                 UntypedFormBuilder,
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar,
-    private _loadingService :                   LoadingService,
-    private svcLezioni:                         LezioniService,
-    private svcMaterie:                         MaterieService,
-    private svcVotiInterr:                      VotiInterrService,
-    private svcIscrizioni:                      IscrizioniService
+  constructor(@Inject(MAT_DIALOG_DATA) public data:       DialogDataVotoInterr,
+              public _dialogRef:                          MatDialogRef<VotoInterrEditComponent>,
+              private fb:                                 UntypedFormBuilder,
+              public _dialog:                             MatDialog,
+              private _snackBar:                          MatSnackBar,
+              private _loadingService :                   LoadingService,
+              private svcLezioni:                         LezioniService,
+              private svcMaterie:                         MaterieService,
+              private svcVotiInterr:                      VotiInterrService,
+              private svcIscrizioni:                      IscrizioniService  ) { 
 
-  ) { 
     _dialogRef.disableClose = true;
     this.form = this.fb.group({
       id:                                       [null],
@@ -107,7 +105,8 @@ export class VotoInterrEditComponent implements OnInit {
           })
           //tap(val =>  val.forEach(x=> this.dateArr.push(x.dtCalendario))) //non serve...la combo è disabled
         )
-      } else {
+      } 
+      else {
         //se invece data.lezioneID == undefined allora devo caricare tutte le lezioni e non selezionarne alcuna
         this.obsLezioni$= this.svcLezioni.listByDocenteClasseSezioneAnno(this.data.docenteID, this.data.classeSezioneAnnoID)
           .pipe(
@@ -115,8 +114,7 @@ export class VotoInterrEditComponent implements OnInit {
               val.forEach(x=> this.dateArr.push(x.dtCalendario))
               this.form.controls.lezioneID.enable();
             })
-          )
-          ;
+          );
       }
     } else {
       //caso click su interrogazione esistente
@@ -127,7 +125,6 @@ export class VotoInterrEditComponent implements OnInit {
         tap(val => {
           this.form.controls.lezioneID.setValue(val[0].id);
           this.form.controls.lezioneID.disable();
-
         })
         //tap(val =>  val.forEach(x=> this.dateArr.push(x.dtCalendario))) //non serve...la combo è disabled
       )
@@ -137,7 +134,6 @@ export class VotoInterrEditComponent implements OnInit {
 
     //popolo la combo delle lezioni disponibili per il docente in questa classeSezioneAnno
     this.obsMaterie$= this.svcMaterie.listByClasseSezioneAnnoANDDocente(this.data.classeSezioneAnnoID, this.data.docenteID);
-  
 
     //********************* POPOLAMENTO COMBO ALUNNI *******************
     this.obsIscrizioni$= this.svcIscrizioni.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
@@ -199,7 +195,8 @@ export class VotoInterrEditComponent implements OnInit {
         error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       });
 
-    } else { 
+    } 
+    else { 
       //Update interrogazione
       //questo ciclo for serve per passare al form ANCHE i valori disabled (nel caso specifico se siamo in edit, lezioneID è disabled)
       for (const prop in this.form.controls) {
@@ -207,15 +204,13 @@ export class VotoInterrEditComponent implements OnInit {
       }
       
       console.log ("voto-interr-edit save PUT this.form.value", this.form.value);
-      this.svcVotiInterr.put(this.form.value)
-      .subscribe({
+      this.svcVotiInterr.put(this.form.value).subscribe({
         next: res => {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
         error: err=>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       });
-
     }
     
   }
@@ -257,10 +252,8 @@ export class VotoInterrEditComponent implements OnInit {
             trovato = true;
           }
         }
-
       }
     );
-
   }
 
   changeSelection() {

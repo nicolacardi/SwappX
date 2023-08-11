@@ -16,7 +16,6 @@ import { PersoneService }                       from '../persone/persone.service
 import { IscrizioniService }                    from '../iscrizioni/iscrizioni.service';
 
 //models
-import { User }                                 from 'src/app/_user/Users';
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
 import { ALU_GenitoreAlunno }                   from 'src/app/_models/ALU_GenitoreAlunno';
@@ -27,6 +26,7 @@ import { ALU_GenitoreAlunno }                   from 'src/app/_models/ALU_Genito
   templateUrl: './procedura-iscrizione.component.html',
   styleUrls: ['./procedura-iscrizione.component.css']
 })
+
 export class ProceduraIscrizioneComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
@@ -88,42 +88,30 @@ export class ProceduraIscrizioneComponent implements OnInit {
     });
 
     this.loadData()
-
   }
 
   loadData() {
     //ottengo dall'iscrizione tutti i dati: dell'alunno e dei genitori
 
-    
-    this.svcIscrizioni.get(this.iscrizioneID)
-    .subscribe(res => {
-      this.iscrizione = res;
-      //console.log(res.alunno._Genitori!.length);
-      res.alunno._Genitori!.forEach(
-        (genitorealunno: ALU_GenitoreAlunno) =>{
-        console.log ("g", genitorealunno);
-        this.genitoriArr.push(genitorealunno.genitore!);
-        console.log ("pushed");
-        }
-        
+    this.svcIscrizioni.get(this.iscrizioneID).subscribe(
+      res => { this.iscrizione = res;
+        res.alunno._Genitori!.forEach(
+          (genitorealunno: ALU_GenitoreAlunno) =>{
+            this.genitoriArr.push(genitorealunno.genitore!);
+          }
       )
-      console.log ("genitoriArr", this.genitoriArr);
-    }
-
-    )
-    ;
+    });
   }
 //#endregion
 
 //#region ----- Altri metodi -------------------
 
   salvaPersona(n: number){
-    //console.log(this.stepper.selectedIndex);
+   
     this.form.controls.tipoPersonaID.setValue(n);
     let PersonaFormComponentArray = this.PersonaFormComponent.toArray();
-    //console.log ("form del child", PersonaFormComponentArray[this.stepper.selectedIndex-1].form.value);
+   
     this.form.patchValue(PersonaFormComponentArray[this.stepper.selectedIndex-1].form.value);
-    //console.log("sto per salvare", this.form.value);
     this.svcPersone.put(this.form.value).subscribe({
       next: res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
       error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
@@ -131,7 +119,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
   }
 
   formValidEmitted(valid: boolean){
-    console.log("ciao", valid);
+   // console.log("ciao", valid);
   }
 //#endregion
 

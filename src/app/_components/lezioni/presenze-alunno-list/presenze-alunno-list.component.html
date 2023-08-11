@@ -14,14 +14,9 @@
             </th>
             <!-- singole checkbox di selezione record -->
             <td mat-cell *matCellDef="let element" class="_no-bottom-border" >
-                <mat-checkbox 
-                            
-                            (change) = "changedCkPresente($event.checked, element)"
-                            [checked] = "element.ckPresente"
-                            
+                <mat-checkbox (change) = "changedCkPresente($event.checked, element)"
+                             [checked] = "element.ckPresente"
                             color="warn">
-                            <!-- [checked]="selection.isSelected(element)" -->
-                            <!-- ho tolto questo (change)="$event ? selection.toggle(row) : null" -->
                 </mat-checkbox>
             </td>
         </ng-container>
@@ -45,10 +40,6 @@
             <th mat-header-cell *matHeaderCellDef cdkDrag>Docente</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.lezione.docente.persona.nome+' '+element.lezione.docente.persona.cognome"></td>
         </ng-container>
-        
-
-
-
         
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
         <tr mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></tr>  

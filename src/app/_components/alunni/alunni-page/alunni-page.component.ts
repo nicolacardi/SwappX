@@ -26,9 +26,9 @@ export class AlunniPageComponent implements OnInit {
   @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
 //#endregion
   
-  constructor(
-    private _navigationService:  NavigationService
-  ) { }
+  constructor( private _navigationService:  NavigationService) { 
+    
+  }
 
 //#region ----- LifeCycle Hooks e simili--------
   ngOnInit(): void {

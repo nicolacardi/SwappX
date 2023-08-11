@@ -48,12 +48,11 @@ export class MieScadenzeComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor( 
-    private svcScadenzePersone:                 ScadenzePersoneService,
-    private _loadingService:                    LoadingService,
-    private _snackBar:                          MatSnackBar, 
-    public _dialog:                             MatDialog,
-  ) {
+  constructor(private svcScadenzePersone:                 ScadenzePersoneService,
+              private _loadingService:                    LoadingService,
+              private _snackBar:                          MatSnackBar, 
+              public _dialog:                             MatDialog  ) {
+
     this.currUser = Utility.getCurrentUser();   
   }
 
@@ -70,8 +69,8 @@ export class MieScadenzeComponent implements OnInit {
     scadenze$ = this.svcScadenzePersone.listByPersonaID(this.currUser.personaID);
 
     this.obsMieScadenze$ =this._loadingService.showLoaderUntilCompleted(scadenze$);
-    
   }
+
 //#endregion
 
 //#region ----- Altri metodi -------------------
@@ -88,7 +87,6 @@ export class MieScadenzeComponent implements OnInit {
   }
 
   setAccettato(element: CAL_ScadenzaPersone) {
-    console.log(element);
     element.ckAccettato = true;
     element.ckRespinto = false;
     this.svcScadenzePersone.put(element).subscribe({
@@ -104,8 +102,8 @@ export class MieScadenzeComponent implements OnInit {
         data: {titolo: "ATTENZIONE!", sottoTitolo: "Non è possibile Respingere un proprio invito"}
       });
       this.loadData();
-    } else {
-      console.log(element);
+    } 
+    else {
       element.ckAccettato = false;
       element.ckRespinto = true;
       this.svcScadenzePersone.put(element).subscribe({

@@ -8,20 +8,20 @@
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
                 <button *ngIf="data.materiaID" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
-                [disabled]= "!form.valid" 
-                (click)="loadData()" >
+                        [disabled]= "!form.valid" 
+                        (click)="loadData()" >
                     <mat-icon>restart_alt</mat-icon>
                 </button>
 
                 <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-                [disabled]= "!form.valid" 
-                (click)="save()" >
+                        [disabled]= "!form.valid" 
+                        (click)="save()" >
                     <mat-icon>save</mat-icon>
                 </button>
 
                 <button *ngIf="data.materiaID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
-                [disabled]= "!form.valid" 
-                (click)="delete()" >
+                        [disabled]= "!form.valid" 
+                        (click)="delete()" >
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
@@ -55,9 +55,6 @@
                     (click)="openColorPicker()"  [ngStyle]="{'background-color': form.controls.color.value}" > </button>
                 </mat-grid-tile>
             </mat-grid-list>
-
-            
-
         </form>
     </mat-card-content>
 </mat-card>

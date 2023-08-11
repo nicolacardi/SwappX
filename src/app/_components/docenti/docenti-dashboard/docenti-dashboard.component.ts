@@ -68,16 +68,12 @@ export class DocentiDashboardComponent implements OnInit {
   
 //#endregion
 
-  constructor( 
-    private svcDocenti:                         DocentiService,
-    public _dialog:                             MatDialog,
-    private actRoute:                           ActivatedRoute,
-    private svcDocenze:                         DocenzeService,
-    private fb:                                 UntypedFormBuilder, 
-    private svcClasseAnnoMateria:               ClasseAnnoMateriaService,
-
-
-  ){
+  constructor(private svcDocenti:                         DocentiService,
+              public _dialog:                             MatDialog,
+              private actRoute:                           ActivatedRoute,
+              private svcDocenze:                         DocenzeService,
+              private fb:                                 UntypedFormBuilder, 
+              private svcClasseAnnoMateria:               ClasseAnnoMateriaService  ) {
 
     this.form = this.fb.group( {
       selectMaterieDocenteClasse: 0

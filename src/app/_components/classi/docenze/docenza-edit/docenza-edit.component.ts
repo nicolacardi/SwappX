@@ -36,13 +36,12 @@ export class DocenzaEditComponent implements OnInit {
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public idDocenza: number,
-    public _dialogRef:                          MatDialogRef<DocenzaEditComponent>,
-    private svcDocenze:                         DocenzeService,
-    private _loadingService :                   LoadingService,
-    private fb:                                 UntypedFormBuilder,
-    private _snackBar:                          MatSnackBar ) {
+  constructor(@Inject(MAT_DIALOG_DATA) public idDocenza: number,
+              public _dialogRef:                          MatDialogRef<DocenzaEditComponent>,
+              private svcDocenze:                         DocenzeService,
+              private _loadingService :                   LoadingService,
+              private fb:                                 UntypedFormBuilder,
+              private _snackBar:                          MatSnackBar ) {
 
     this.form = this.fb.group({
       id:                         [null],

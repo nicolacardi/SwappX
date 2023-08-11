@@ -45,15 +45,13 @@ export class VotiObiettiviEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data:       DialogDataVotiObiettivi,
-    public _dialogRef: MatDialogRef             <VotiObiettiviEditComponent>,
-    private svcPagella:                         PagelleService,
-    private svcPagellaVoti:                     PagellaVotiService,
-    private svcPagellaVotoObiettivi:            PagellaVotoObiettiviService,
-    private _loadingService:                    LoadingService,
-    private _snackBar:                          MatSnackBar
-  ) { 
+  constructor(@Inject(MAT_DIALOG_DATA) public data:       DialogDataVotiObiettivi,
+              public _dialogRef: MatDialogRef             <VotiObiettiviEditComponent>,
+              private svcPagella:                         PagelleService,
+              private svcPagellaVoti:                     PagellaVotiService,
+              private svcPagellaVotoObiettivi:            PagellaVotoObiettiviService,
+              private _loadingService:                    LoadingService,
+              private _snackBar:                          MatSnackBar ) { 
 
   }
 //#endregion

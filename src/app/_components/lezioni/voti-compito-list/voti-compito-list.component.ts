@@ -40,9 +40,8 @@ export class VotiCompitoListComponent implements OnInit {
   @Input() lezioneID!:                          number;
 //#endregion
 
-  constructor( 
-    private svcVotiCompiti:                     VotiCompitiService,
-    private _loadingService:                    LoadingService ) { 
+  constructor(private svcVotiCompiti:                     VotiCompitiService,
+              private _loadingService:                    LoadingService ) { 
   }
   
 //#region ----- LifeCycle Hooks e simili--------
@@ -89,13 +88,11 @@ export class VotiCompitoListComponent implements OnInit {
     element.voto = votoN;
 
     this.svcVotiCompiti.put(element).subscribe();
-
   }
 
   changeGiudizio(element: TST_VotoCompito, giudizio: string) {
     
     element.giudizio = giudizio;
-
     this.svcVotiCompiti.put(element).subscribe();
   }
 

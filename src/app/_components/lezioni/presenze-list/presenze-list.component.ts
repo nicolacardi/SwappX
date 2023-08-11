@@ -40,10 +40,10 @@ matDataSource = new MatTableDataSource<CAL_Presenza>();
   @Input() lezioneID!:                          number;
 //#endregion
 
-  constructor(
-    private svcPresenze:                        PresenzeService,
-    private _loadingService:                    LoadingService,
-  ) { }
+  constructor(private svcPresenze:                        PresenzeService,
+              private _loadingService:                    LoadingService ) { 
+
+  }
   
 //#region ----- LifeCycle Hooks e simili--------
   ngOnInit () {

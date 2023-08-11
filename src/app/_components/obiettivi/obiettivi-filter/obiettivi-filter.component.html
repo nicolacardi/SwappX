@@ -6,7 +6,7 @@
         <mat-label>Classe</mat-label>
         <mat-select [formControl]="classeFilter">
             <mat-option *ngFor="let element of (obsClassi$ | async)" [value]="element.id">
-            {{element.descrizione2}}
+                {{element.descrizione2}}
             </mat-option>
         </mat-select>
     </mat-form-field>
@@ -15,7 +15,7 @@
         <mat-label>a.s.</mat-label>
         <mat-select [formControl]="annoFilter">
             <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
-            {{element.annoscolastico}}
+             {{element.annoscolastico}}
             </mat-option>
         </mat-select>
     </mat-form-field>
@@ -24,7 +24,7 @@
         <mat-label>Materia</mat-label>
         <mat-select [formControl]="materiaFilter">
             <mat-option *ngFor="let element of (obsMaterie$ | async)" [value]="element.id">
-            {{element.descrizione}}
+                {{element.descrizione}}
             </mat-option>
         </mat-select>
     </mat-form-field>

@@ -48,11 +48,11 @@ export class IscrizioniAlunnoListComponent implements OnInit {
   @Output('removeFromAttended') removeFromAttended = new EventEmitter<CLS_ClasseSezioneAnno>(); //EMESSO quando si clicca sul (-) del rimuovi da classi frequentate
 //#endregion
 
-  constructor(
-    private svcIscrizioni:    IscrizioniService,
-    public _dialog:           MatDialog, 
-    private _loadingService:  LoadingService ) { 
-    }
+  constructor(private svcIscrizioni:    IscrizioniService,
+              public _dialog:           MatDialog, 
+              private _loadingService:  LoadingService ) { 
+              
+  }
 
 //#region ----- LifeCycle Hooks e simili--------
 
@@ -82,8 +82,8 @@ export class IscrizioniAlunnoListComponent implements OnInit {
         //this.matDataSource.filterPredicate = this.filterPredicate();
       }
     );
-    
   }
+  
 //#endregion
 
 //#region ----- Add Edit Drop ------------------

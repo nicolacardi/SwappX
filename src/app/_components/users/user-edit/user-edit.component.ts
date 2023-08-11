@@ -56,19 +56,17 @@ export class UserEditComponent implements OnInit {
   @ViewChild(MatAutocompleteTrigger) trigger!: MatAutocompleteTrigger; //non sembra "agganciarsi" al matautocompleteTrigger
   @ViewChild(MatAutocomplete) MatAutoComplete!: MatAutocomplete;
 
-  constructor( 
-    @Inject(MAT_DIALOG_DATA) 
-    public idUser: string,
-    public _dialogRef: MatDialogRef<UserEditComponent>,
-    private svcUser:                            UserService,
-    //private svcRuoli:                         RuoliService,
-    private svcTipiPersona:                     TipiPersonaService,
-    private svcPersone:                         PersoneService,
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar,
-    private _loadingService :                   LoadingService,
-    private fb:                                 UntypedFormBuilder 
-  ) { 
+  constructor(@Inject(MAT_DIALOG_DATA) 
+              public idUser: string,
+              public _dialogRef: MatDialogRef<UserEditComponent>,
+              private svcUser:                            UserService,
+              //private svcRuoli:                         RuoliService,
+              private svcTipiPersona:                     TipiPersonaService,
+              private svcPersone:                         PersoneService,
+              public _dialog:                             MatDialog,
+              private _snackBar:                          MatSnackBar,
+              private _loadingService :                   LoadingService,
+              private fb:                                 UntypedFormBuilder ) { 
 
     _dialogRef.disableClose = true;
     
@@ -91,12 +89,6 @@ export class UserEditComponent implements OnInit {
   }
 
 //#region ----- LifeCycle Hooks e simili-------
-
-/* AS ???
-  private myObjectExists(value: any): boolean {
-    return this.filteredPersoneArray.some(v => v === value);
-  }
-  */
 
   ngOnInit() {
 
@@ -130,10 +122,8 @@ export class UserEditComponent implements OnInit {
       
       this.user$ = loadUser$.pipe(
         tap(utente => {
-
           this.form.patchValue(utente);
           this.form.controls['nomeCognomePersona'].setValue(utente.persona!.nome + " " + utente.persona!.cognome);
-
           this.userID = utente.id;       
         })
       );

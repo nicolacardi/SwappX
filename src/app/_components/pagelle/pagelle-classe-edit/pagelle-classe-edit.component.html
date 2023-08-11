@@ -10,13 +10,9 @@
     <!-- <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator> -->
 
     <!-- **************************   MAT-TABLE   ******************* -->
-    <table *ngIf="materiaID" mat-table class="_table-row-low transparent w100" 
-        [dataSource]="matDataSource">
-
+    <table *ngIf="materiaID" mat-table class="_table-row-low transparent w100"  [dataSource]="matDataSource">
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
-
-
         <ng-container matColumnDef="No">
             <th mat-header-cell *matHeaderCellDef [attr.colspan]="2"></th>
         </ng-container>
@@ -56,7 +52,6 @@
             element._Pagelle1[0] && element._Pagelle1[0]._PagellaVoti[0] ? element._Pagelle1[0]._PagellaVoti[0]: null, 
             voto1.value, 
             1)"  -->
-
 
         <ng-container matColumnDef="VotiNum1">
             <th class="_border-left" mat-header-cell *matHeaderCellDef class="w125px" >Voto</th>

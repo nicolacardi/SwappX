@@ -11,12 +11,12 @@
 
     <!-- **************************   MAT-TABLE   ******************* -->
     <table mat-table class="usersTable transparent w100" [dataSource]="matDataSource"
-        matSort
-        [matSortActive]="matSortActive"
-        [matSortDirection] = "'asc'"
-        cdkDropList
-        cdkDropListOrientation="horizontal"
-        (cdkDropListDropped)="drop($event)">
+            matSort
+            [matSortActive]="matSortActive"
+            [matSortDirection] = "'asc'"
+            cdkDropList
+            cdkDropListOrientation="horizontal"
+            (cdkDropListDropped)="drop($event)">
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
         <ng-container matColumnDef="actionsColumn">
