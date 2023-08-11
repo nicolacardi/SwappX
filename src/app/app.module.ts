@@ -26,7 +26,6 @@ import { FullCalendarModule }                   from '@fullcalendar/angular'; //
 
 //Auth
 import { AuthInterceptor }                      from './_user/auth/auth.interceptor';
-import { ErrorInterceptor }                     from './_user/auth/error.interceptor';
 
 //Home Page
 import { HomeComponent }                        from './_components/home/home.component';
@@ -210,6 +209,7 @@ import { TableComponent }                       from './_components/templates/ta
 import { TableShowComponent }                   from './_components/templates/tableshow/tableshow.component';
 import { PagelleClasseEditComponent }           from './_components/pagelle/pagelle-classe-edit/pagelle-classe-edit.component';
 import { FileuploadsComponent } from './_components/impostazioni/fileuploads/fileuploads.component';
+import { HttpErrorInterceptor } from './_user/auth/httperror.interceptor';
 
 
 
@@ -401,7 +401,7 @@ import { FileuploadsComponent } from './_components/impostazioni/fileuploads/fil
     DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     //{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },      //Roles
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     
     { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}},

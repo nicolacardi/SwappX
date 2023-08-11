@@ -105,26 +105,34 @@ constructor(private fb:                         UntypedFormBuilder,
     this.svcUser.put(formData).subscribe();
 
     let base64LogoScuolaEmail = '';
-    await firstValueFrom(this.svcParametri.getByParName('imgFileLogoScuolaEmail')
-      .pipe( 
-        tap(res=> {base64LogoScuolaEmail = res.parValue;}
-      ))
-    );
+    let base64LogoStoody ='';
 
-    let base64Image! : string;
-    let imageUrl = './assets/logo/logoMailStoody.png';
-    try {base64Image = await Utility.convertImageToBase64(imageUrl);} 
-    catch (error) {console.error('Error converting image to base64:', error);}
+    await firstValueFrom(this.svcParametri.getByParName('imgFileLogoScuolaEmail').pipe(tap(res=> {base64LogoScuolaEmail = res.parValue;})));
+    await firstValueFrom(this.svcParametri.getByParName('imgFileLogoStoody').pipe(tap(res=> {base64LogoStoody = res.parValue;})));
+
+    // let imageUrl = './assets/logo/logoMailStoody.png';
+    // try {base64LogoStoody = await Utility.convertImageToBase64(imageUrl);} 
+    // catch (error) {console.error('Error converting image to base64:', error);}
 
     let titoloMail = "STOODY: Invio Password Temporanea";
     let testoMail =  "<html><body>"+
-    
-    "<img style='width: 100px' src='"+base64Image+"'/> <br><br>" +
+    "<div style='width: 100%; background-color: lightblue; border-radius: 10px; text-align: center; padding: 10px;'>"+
+      "<div style='width: 500px; margin: auto; background-color: white; border-radius: 30px; padding: 20px; line-height: normal'>"+
+        "<img style='width: 100px' src='"+base64LogoStoody+"'/> <br><br>" +
 
-    "E' stata richiesta una nuova password per l'utente riferito a questo indirizzo email. <br>" +
-    "<br><br> Puoi accedere tramite questo <a href='localhost:4200/change-psw-ext?username="+user.userName+"&key=" + rndPassword +"'>link<a> e impostare la nuova password."+
-    "<br><br> Se non sei stato tu a richiedere una nuova password puoi ignorare questo link o segnalarlo a info@stoody.it " +
-    "<br><img style='width: 100px' src='"+base64LogoScuolaEmail+"'/> <br><br>"
+        "<span style='font-size: 1.3em'> E' stata richiesta una nuova password per l'utente<br>riferito a questo indirizzo email. </span><br>" +
+        "<br><br> Puoi accedere tramite questo link<br><br>" +
+
+        "<a class='btn' href='localhost:4200/change-psw-ext?username="+user.userName+"&key=" + rndPassword +"'>localhost:4200/change-psw-ext?username="+user.userName+"&key=" + rndPassword +"</a><br><br>"+
+        "e impostare la nuova password."+
+        "<br><br> Se non sei stato tu a richiedere una nuova password puoi ignorare questo link<br>o segnalarlo a info@stoody.it " +
+        "<br><br><img alt='logo Scuola' style='width: 100px' src='"+base64LogoScuolaEmail+"'/> <br><br>"+
+      "</div>"+
+      "</div>"+  
+    "</body"+
+    "</html>"
+    
+
     ;
 
 

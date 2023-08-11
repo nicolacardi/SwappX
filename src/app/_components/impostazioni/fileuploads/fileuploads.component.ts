@@ -24,10 +24,12 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 export class FileuploadsComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+  logoStoody!:                             _UT_Parametro;
   logoScuolaEmail!:                             _UT_Parametro;
   timbroScuola!:                                _UT_Parametro;
   firmaPreside!:                                _UT_Parametro;
 
+  imgFileLogoStoody!:                           string;
   imgFileLogoScuolaEmail!:                      string;
   imgFileTimbroScuola!:                         string;
   imgFileFirmaPreside!:                         string;
@@ -36,6 +38,7 @@ export class FileuploadsComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output ---------
+  @ViewChild('logoStoody', {static: false}) logoStoodyDOM!: ElementRef;
   @ViewChild('logoScuolaEmail', {static: false}) logoScuolaEmailDOM!: ElementRef;
   @ViewChild('timbroScuola', {static: false}) timbroScuolaDOM!: ElementRef;
   @ViewChild('firmaPreside', {static: false}) firmaPresideDOM!: ElementRef;
@@ -50,6 +53,17 @@ export class FileuploadsComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.svcParametri.getByParName("imgFileLogoStoody").subscribe(
+      val=> {
+        if(val){
+          this.logoStoody = val;
+          this.imgFileLogoStoody = val.parValue; 
+        }
+      }
+    );
+
+
     this.svcParametri.getByParName("imgFileLogoScuolaEmail").subscribe(
       val=> {
         if(val){
@@ -84,6 +98,11 @@ export class FileuploadsComponent implements OnInit {
     let imgFileVariable : string;
     let imgDOM: ElementRef;
     switch (ctrl) {
+      case 'imgFileLogoStoody':
+        imgFileVariable = this.imgFileLogoStoody;
+        imgDOM = this.logoStoodyDOM;
+        break;
+
       case 'imgFileLogoScuolaEmail':
         imgFileVariable = this.imgFileLogoScuolaEmail;
         imgDOM = this.logoScuolaEmailDOM;
@@ -139,6 +158,15 @@ export class FileuploadsComponent implements OnInit {
     let parDescr: string;
   
     switch (ctrl) {
+      case 'imgFileLogoStoody':
+        formParameter = {
+          id: this.logoStoody.id,
+          parName: ctrl,
+          parDescr: "Logo Stoody",
+          parValue: this.logoStoodyDOM.nativeElement.src
+        };
+        break;
+
       case 'imgFileLogoScuolaEmail':
         formParameter = {
           id: this.logoScuolaEmail.id,

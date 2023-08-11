@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, catchError, of, throwError } from 'rxjs';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { environment } from 'src/environments/environment';
 
@@ -60,10 +60,38 @@ export class IscrizioniService {
   //http://213.215.231.4/swappX/api/CLS_Iscrizioni/UpdateStato?id=5&CodiceStato=20
 
   deleteByAlunnoAndClasseSezioneAnno(classeSezioneAnnoID: number, alunnoID: number): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'CLS_Iscrizioni/DeleteByAlunnoAndClasseSezioneAnno/'+alunnoID+'/'+classeSezioneAnnoID);
+    return this.http.delete( environment.apiBaseUrl  + 'CLS_Iscrizioni/DeleteByAlunnoAndClasseSezioneAnno/'+alunnoID+'/'+classeSezioneAnnoID)
+    // .pipe(
+    //   catchError((err: HttpErrorResponse) => {
+    //     console.error("iscrizione.service - deletebyAlunnoandClasseSezioneAnno - ho ricevuto un errore", err.error, err.headers, err.message, err.name, err.ok, err.status);
+    //     return throwError(() => new Error("cucu"));
+    //     return of([]);
+    //   })
+    // )
+  
+    
+    
+    ;
     //http://213.215.231.4/swappX/api/CLS_Iscrizioni/DeleteByAlunnoAndClasseSezioneAnno/3/243
+    //http://213.215.231.4/swappX/api/CLS_Iscrizioni/DeleteByAlunnoAndClasseSezioneAnno/49/16
+
   }
 
+
+  // private handleError(error: HttpErrorResponse) {
+  //   if (error.status === 0) {
+  //     // A client-side or network error occurred. Handle it accordingly.
+  //     console.error('An error occurred:', error.error);
+  //   } else {
+  //     // The backend returned an unsuccessful response code.
+  //     // The response body may contain clues as to what went wrong.
+  //     console.error(
+  //       `Backend returned code ${error.status}, body was: `, error.error);
+  //   }
+  //   // Return an observable with a user-facing error message.
+  //   return throwError(() => new Error('Something bad happened; please try again later.'));
+  // }
+  
   delete(iscrizioneID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'CLS_Iscrizioni/' + iscrizioneID); 
   }

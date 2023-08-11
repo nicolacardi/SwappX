@@ -2,19 +2,19 @@
 
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog }                            from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatPaginator }                         from '@angular/material/paginator';
+import { MatSort }                              from '@angular/material/sort';
+import { MatTableDataSource }                   from '@angular/material/table';
+import { Observable }                           from 'rxjs';
+import { CdkDragDrop, moveItemInArray }         from '@angular/cdk/drag-drop';
 
 //services
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { IscrizioniService } from '../iscrizioni.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { IscrizioniService }                    from '../iscrizioni.service';
 
 //models
-import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
+import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_ClasseSezioneAnno';
 
 //#endregion
 @Component({
@@ -41,10 +41,10 @@ export class IscrizioniAlunnoListComponent implements OnInit {
 
 //#region ----- ViewChild Input Output ---------
 
-  @ViewChild(MatPaginator) paginator!:                        MatPaginator;
-  @ViewChild(MatSort) sort!:                                  MatSort;
+  @ViewChild(MatPaginator) paginator!:          MatPaginator;
+  @ViewChild(MatSort) sort!:                    MatSort;
 
-  @Input('alunnoID') alunnoID! :                              number;
+  @Input('alunnoID') alunnoID! :                number;
   @Output('removeFromAttended') removeFromAttended = new EventEmitter<CLS_ClasseSezioneAnno>(); //EMESSO quando si clicca sul (-) del rimuovi da classi frequentate
 //#endregion
 

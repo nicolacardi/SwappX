@@ -4,8 +4,8 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { iif, Observable, of }                  from 'rxjs';
-import { concatMap, tap }                       from 'rxjs/operators';
+import { iif, Observable, of, throwError }                  from 'rxjs';
+import { catchError, concatMap, tap }                       from 'rxjs/operators';
 
 //components
 import { ClassiSezioniAnniListComponent }       from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
@@ -28,6 +28,8 @@ import { ALU_Genitore }                         from 'src/app/_models/ALU_Genito
 import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni';
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ALU_GenitoreAlunno } from 'src/app/_models/ALU_GenitoreAlunno';
+import { error } from 'console';
+import { HttpErrorResponse } from '@angular/common/http';
 
 //#endregion
 
@@ -299,10 +301,31 @@ save(){
     })
   }
 
+
+      // .pipe(
+    //   catchError((err: HttpErrorResponse) => {
+    //     if (err.status === 400) {
+    //       try {
+    //         const errorResponse = JSON.parse(err.error);
+    //         console.log("Errore lato server:", err.status, errorResponse.errorMessage);
+    //       } catch (jsonError) {
+    //         console.error("Errore JSON:", jsonError);
+    //       }
+    //     } else {
+    //       console.error('Errore sconosciuto:', err);
+    //     }
+    //     return of(null); // Puoi gestire ulteriormente il flusso degli errori qui
+    //   })
+    // )
+
+
+
   removeFromAttended(classeSezioneAnno: CLS_ClasseSezioneAnno) {
-    this.svcIscrizioni.deleteByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id , this.alunnoID).subscribe({
+    let errorMsg: string;
+    this.svcIscrizioni.deleteByAlunnoAndClasseSezioneAnno(classeSezioneAnno.id , this.alunnoID)
+      .subscribe({
       next: res=> { this.classiAttendedComponent.loadData() },
-      error: err=> { }
+      error: err => {this._snackBar.openFromComponent(SnackbarComponent, {data: err.error.errorMessage, panelClass: ['red-snackbar']});}
     })
   }
 

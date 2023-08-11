@@ -554,25 +554,29 @@ export class IscrizioniListComponent implements OnInit {
       if (iscrizione.alunno._Genitori![i].genitore!.persona.genere == "F") { sigSigRa = "Sig.ra "}
 
       //in questo modo rpendo un'immagine che si trova in una cartella specifica e la trasformo in base 64:
-      let base64Image = '';
-      // await firstValueFrom(this.svcParametri.getByParName('imgFileLogoScuolaEmail')
-      //   .pipe( 
-      //     tap(res=> {base64Image = res.parValue;}
-      //   ))
-      // );
+      let base64LogoStoody = '';
 
-      let imageUrl = './assets/logo/logoMailStoody.png';
-      try {base64Image = await Utility.convertImageToBase64(imageUrl);} 
-      catch (error) {console.error('Error converting image to base64:', error);}
+      // let imageUrl = './assets/logo/logoMailStoody.png';
+      // try {base64LogoStoody = await Utility.convertImageToBase64(imageUrl);} 
+      // catch (error) {console.error('Error converting image to base64:', error);}
 
-      let testoMail =  "<html><body><h2>Procedura di iscrizione</h2>"+
-        "Gentile " + sigSigRa + " " + iscrizione.alunno._Genitori![i].genitore!.persona.cognome + ", <br><br>" +
-        "con questa mail vi invitiamo a iscrivere vostr" + desinenza + " figli" + desinenza + " " + iscrizione.alunno.persona.nome  +
-        " alla classe " + iscrizione.classeSezioneAnno.classeSezione.classe!.descrizione + " per l'a.s. " + iscrizione.classeSezioneAnno.anno.annoscolastico + ".<br>" +
-        "A questo scopo vi inoltriamo il link per accedere al portale:<br><br>"+ 
-        // "<h2 style='color: lightseagreen'>STOODY</h2>"+
-        "<img style='width: 100px' src='"+ base64Image +"'/>";
-       
+      await firstValueFrom(this.svcParametri.getByParName('imgFileLogoStoody').pipe(tap(res=> {base64LogoStoody = res.parValue;})));
+
+
+      let testoMail =  "<html><body>"+
+
+      "<div style='width: 100%; background-color: lightblue; border-radius: 10px; text-align: center; padding: 10px;'>"+
+      "<div style='width: 500px; margin: auto; background-color: white; border-radius: 30px; padding: 20px; line-height: normal'>"+
+        "<span style='font-size: 1.3em' >Procedura di iscrizione</span>" +
+        "<br><br>Gentile " + sigSigRa + " " + iscrizione.alunno._Genitori![i].genitore!.persona.cognome + ", <br><br>" +
+        "con questa mail vi invitiamo a iscrivere vostr" + desinenza + " figli" + desinenza + " " +
+        "<br><br><span style='font-weight: bold'>"+iscrizione.alunno.persona.nome  +"</span>"+
+        "<br>alla classe <span style='font-weight: bold'>" + iscrizione.classeSezioneAnno.classeSezione.classe!.descrizione +"</span>"+ 
+        "<br>per l'a.s. <span style='font-weight: bold'>" + iscrizione.classeSezioneAnno.anno.annoscolastico + "</span>"+ "." +
+        "<br><br>A questo scopo vi inoltriamo il link per accedere al portale:<br><br>"+ 
+        "<a href='localhost:4200'><img alt='STOODY' style='width: 100px' src='"+ base64LogoStoody +"'/></a>"+
+        "<br><br><span style='font-size:0.8em''>(fare click sul logo)</span><br><br>"; 
+
       //console.log (testoMail);
 
       mailAddress = iscrizione.alunno._Genitori![i].genitore!.persona.email;
@@ -589,7 +593,7 @@ export class IscrizioniListComponent implements OnInit {
 
         if (userGenitore) {
           testoMail = testoMail + "<br><br>"+
-          "Potete utilizzare lo username : "+ userGenitore.userName;
+          "Potete utilizzare lo username : <span style='font-weight: bold'>"+ userGenitore.userName + "</span>";
         } else {
           //se non ha username vado a crearlo
           let rndPassword = Utility.generateRandomString();
@@ -602,8 +606,16 @@ export class IscrizioniListComponent implements OnInit {
 
           await firstValueFrom(this.svcUser.post(formData));
 
-          testoMail = testoMail + "<br><br>E' stato creato lo username : "+ mailAddress + " con password : " + rndPassword;
+          testoMail = testoMail + "<br><br>E' stato creato lo username : <span style='font-weight: bold'>"+ mailAddress + "</span> con password : <span style='font-weight: bold'>" + rndPassword + "</span>";
         }
+
+        testoMail = testoMail + 
+          "</div>"+
+          "</div>"+  
+        "</body"
+
+
+        ;
 
         mailAddressesNo++;
         mailAddresses = mailAddresses + " "+ mailAddress;
