@@ -1,9 +1,17 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { MAT_Materia } from '../../_models/MAT_Materia';
+//#region ----- IMPORTS ------------------------
 
+import { HttpClient }                           from '@angular/common/http';
+import { Injectable }                           from '@angular/core';
+import { Observable }                           from 'rxjs';
+import { environment }                          from 'src/environments/environment';
+
+//components
+
+//services
+
+//models
+import { MAT_Materia }                          from '../../_models/MAT_Materia';
+//#endregion
 @Injectable({
   providedIn: 'root'
 })
@@ -27,10 +35,10 @@ export class MaterieService {
     //http://213.215.231.4/swappX/api/MAT_Materie/ListByClasseSezioneAnnoAndDocente/48/1005
   }
 
-  aggiornaSeq(seqInitial: number, seqFinal: number): Observable <any>{
+  updateSeq(seqInitial: number, seqFinal: number): Observable <any>{
     console.log(seqInitial, seqFinal);
-    return this.http.put(environment.apiBaseUrl+'MAT_Materie/aggiornaSeq/'+seqInitial+'/'+seqFinal, seqInitial);
-    //http://213.215.231.4/swappX/api/MAT_Materie/aggiornaSeq/1/2
+    return this.http.put(environment.apiBaseUrl+'MAT_Materie/UpdateSeq/'+seqInitial+'/'+seqFinal, seqInitial);
+    //http://213.215.231.4/swappX/api/MAT_Materie/UpdateSeq/1/2
   }
 
   renumberSeq() {

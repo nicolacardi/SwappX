@@ -1,0 +1,85 @@
+<h1 class="_titolo-pagina">Elenco Domande</h1>
+<h3 class="_titolo-pagina">(trascinare le domande per ordinarle a piacimento)</h3>
+    <!-- **************************   FILTER   ******************* -->
+    <mat-form-field class="ml20 topZIndex">
+        <mat-label>Filtro</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="" #filterInput>
+    </mat-form-field>
+    
+    <!-- **************************   PAGINATOR   ******************* -->
+    <!-- <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator> -->
+
+    <!-- **************************   MAT-TABLE   ******************* -->
+    <table  mat-table class="_table-row-low transparent w100" 
+        [dataSource]="matDataSource"
+        cdkDropList
+        (cdkDropListDropped)="drop($event)"
+        matSort>
+
+        <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+
+
+
+        <ng-container matColumnDef="actionsColumn">
+            <th mat-header-cell *matHeaderCellDef ></th>
+            <td mat-cell  *matCellDef="let element;  let j = index;"> 
+                <img (click)="openDetail(element.id)" class="iconaMenu pointer" src="./assets/materia_edit.svg">
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="seq">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Ordine</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.seq | highlight:filterValue"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="domanda">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Domanda</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.domanda | highlight:filterValue"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="numOpzioni">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >N.Opzioni</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.numOpzioni | highlight:filterValue"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="testo1">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Opzione1</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.testo1 | highlight:filterValue"></td>
+        </ng-container>
+        <ng-container matColumnDef="testo2">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Opzione2</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.testo2 | highlight:filterValue"></td>
+        </ng-container>
+        <ng-container matColumnDef="testo3">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Opzione3</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.testo3 | highlight:filterValue"></td>
+        </ng-container>
+        <ng-container matColumnDef="testo4">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Opzione4</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.testo4 | highlight:filterValue"></td>
+        </ng-container>
+        <ng-container matColumnDef="testo5">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Opzione5</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.testo5 | highlight:filterValue"></td>
+        </ng-container>
+
+
+
+
+        
+
+        <!-- **************************   MAT-HEADER-ROW   ******************* -->
+        <tr mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></tr>
+        
+        <!-- **************************   MAT-ROW   ******************* -->
+        
+
+        <tr mat-row *matRowDef="let element;columns: displayedColumns"
+        
+            class="element-row" cdkDragLockAxis="y" cdkDrag
+            >
+        </tr>
+
+    </table>
+
+

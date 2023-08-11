@@ -1,7 +1,7 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MaterieListComponent } from '../materie-list/materie-list.component';
+import { Component, OnInit, ViewChild }         from '@angular/core';
+import { MaterieListComponent }                 from '../materie-list/materie-list.component';
 
 //#endregion
 @Component({

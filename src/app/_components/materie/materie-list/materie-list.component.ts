@@ -13,7 +13,7 @@ import { MateriaEditComponent } from '../materia-edit/materia-edit.component';
 import { MaterieService } from 'src/app/_components/materie/materie.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 
-//classes
+//models
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 
 //#endregion
@@ -27,10 +27,10 @@ export class MaterieListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
-  maxSeq!:                                       number;
+  maxSeq!:                                      number;
   matDataSource = new MatTableDataSource<MAT_Materia>();
 
-  obsMaterie$!:               Observable<MAT_Materia[]>;
+  obsMaterie$!:                                 Observable<MAT_Materia[]>;
 
   displayedColumns: string[] = [
 
@@ -54,7 +54,7 @@ export class MaterieListComponent implements OnInit {
     "Macro Materia"
   ];
 
-  filterValue = '';       //Filtro semplice
+  filterValue = '';
 
   filterValues = {
     descrizione: '',
@@ -63,7 +63,7 @@ export class MaterieListComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output ---------
-  @ViewChild(MatSort) sort!:                MatSort;
+  @ViewChild(MatSort) sort!:                    MatSort;
 //#endregion
 
 //#region ----- Constructor --------------------
@@ -84,8 +84,6 @@ export class MaterieListComponent implements OnInit {
   }
 
   loadData() {
-
-    
     this.obsMaterie$ = this.svcMaterie.list();  
 
     const loadMaterie$ =this._loadingService.showLoaderUntilCompleted(this.obsMaterie$);
@@ -168,7 +166,7 @@ export class MaterieListComponent implements OnInit {
   }
 
   drop(event: any){
-    this.svcMaterie.aggiornaSeq(event.previousIndex+1, event.currentIndex+1 )
+    this.svcMaterie.updateSeq(event.previousIndex+1, event.currentIndex+1 )
     .subscribe(res=> this.loadData());
   }
 //#endregion

@@ -208,8 +208,12 @@ import { QuillModule }                          from 'ngx-quill';
 import { TableComponent }                       from './_components/templates/table/table.component';
 import { TableShowComponent }                   from './_components/templates/tableshow/tableshow.component';
 import { PagelleClasseEditComponent }           from './_components/pagelle/pagelle-classe-edit/pagelle-classe-edit.component';
-import { FileuploadsComponent } from './_components/impostazioni/fileuploads/fileuploads.component';
-import { HttpErrorInterceptor } from './_user/auth/httperror.interceptor';
+import { FileuploadsComponent }                 from './_components/impostazioni/fileuploads/fileuploads.component';
+import { HttpErrorInterceptor }                 from './_user/auth/httperror.interceptor';
+
+import { ConsensiListComponent }                from './_components/impostazioni/consensi/consensi-list/consensi-list.component';
+import { ConsensiPageComponent } from './_components/impostazioni/consensi/consensi-page/consensi-page.component';
+import { ConsensoEditComponent } from './_components/impostazioni/consensi/consenso-edit/consenso-edit.component';
 
 
 
@@ -364,16 +368,19 @@ import { HttpErrorInterceptor } from './_user/auth/httperror.interceptor';
     VerbaliFilterComponent,
 
     DocentiDashboardComponent,
-      ProceduraIscrizioneComponent,
-      TemplateComponent,
-      PaginaComponent,
-      BloccoComponent,
-      BloccoEditComponent,
-      TableComponent,
-      TableShowComponent,
-      PagelleClasseEditComponent,
-      ResetPswComponent,
-      FileuploadsComponent,
+    ProceduraIscrizioneComponent,
+    TemplateComponent,
+    PaginaComponent,
+    BloccoComponent,
+    BloccoEditComponent,
+    TableComponent,
+    TableShowComponent,
+    PagelleClasseEditComponent,
+    ResetPswComponent,
+    FileuploadsComponent,
+    ConsensiListComponent,
+    ConsensiPageComponent,
+    ConsensoEditComponent,
  
     
 
