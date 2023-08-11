@@ -44,10 +44,8 @@ export class ObiettiviListComponent implements OnInit {
       "classe",
       //"anno",
       "materia",
-      "descrizione",
-
+      "descrizione"
   ];
-
 
   rptTitle = 'Lista Obiettivi';
   rptFileName = 'ListaObiettivi';
@@ -56,16 +54,14 @@ export class ObiettiviListComponent implements OnInit {
     "classe.descrizione2",
     "anno.annoscolastico",
     "materia.descrizione",
-    "descrizione",
-
-
+    "descrizione"
   ];
 
   rptColumnsNames  = [
     "classe",
     "anno",
     "materia",
-    "descrizione",
+    "descrizione"
   ];
 
   filterValue = '';       //Filtro semplice
@@ -106,10 +102,10 @@ export class ObiettiviListComponent implements OnInit {
   ngOnInit(): void {
     this.obsAnni$= this.svcAnni.list();
     this.loadData();
-    this.form.controls['selectAnnoScolastico'].valueChanges
-    .subscribe(() => {
+    this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(
+      () => { 
       this.loadData();
-    })
+      })
   }
 
   loadData() {
@@ -171,7 +167,6 @@ export class ObiettiviListComponent implements OnInit {
       }
     };
   }
-
 
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
