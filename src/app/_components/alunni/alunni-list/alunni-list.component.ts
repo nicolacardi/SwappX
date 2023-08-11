@@ -154,15 +154,14 @@ export class AlunniListComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(
-    private svcAlunni:                          AlunniService,
-    private router:                             Router,
-    public _dialog:                             MatDialog, 
-    private _loadingService:                    LoadingService,
-    private _navigationService:                 NavigationService,
-    private svcTableCols:                       TableColsService,
-    private svcTableColsVisible:                TableColsVisibleService
-  ) { 
+  constructor(private svcAlunni:                          AlunniService,
+              private router:                             Router,
+              public _dialog:                             MatDialog, 
+              private _loadingService:                    LoadingService,
+              private _navigationService:                 NavigationService,
+              private svcTableCols:                       TableColsService,
+              private svcTableColsVisible:                TableColsVisibleService ) { 
+
     this.currUser = Utility.getCurrentUser();
   }
   
@@ -229,11 +228,11 @@ export class AlunniListComponent implements OnInit {
   }
 
   loadLayout(){
-    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName)
-    .subscribe( colonne => {
+    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName).subscribe( 
+      colonne => {
         if (colonne.length != 0) this.displayedColumns = colonne.map(a => a.tableCol!.colName)
         else this.svcTableCols.listByTable(this.tableName).subscribe( colonne => this.displayedColumns = colonne.map(a => a.colName))      
-    });
+      });
   }
 
   loadData () {
@@ -347,9 +346,9 @@ export class AlunniListComponent implements OnInit {
               foundGenitore =  foundCognomeNome || foundNomeCognome;  //attenzione!!! _Genitori non sono i genitori ma ALU_AlunnoGenitore! ecco perchè val.genitore
           })
         }
-      } else {
+      } 
+      else 
         foundGenitore = true;
-      }
 
       let dArr = data.persona.dtNascita.split("-");
       const dtNascitaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
@@ -532,8 +531,8 @@ export class AlunniListComponent implements OnInit {
   }
 //#endregion
 
+//#region *********************** LE PROMISES: TENERE ***************************
 
-// ******************************** LE PROMISES: TENERE ***************************
 //******************primo modo di lavorare in maniera asincrona: setTimeOut e setInterval
 // test () {
 //   let timeoutId = setTimeout(this.myfunction, 2000, 'Nicola');
@@ -759,5 +758,5 @@ export class AlunniListComponent implements OnInit {
   // }
 
   
-
+//#endregion
 }

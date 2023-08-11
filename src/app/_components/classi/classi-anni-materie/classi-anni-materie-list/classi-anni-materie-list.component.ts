@@ -79,12 +79,11 @@ filterValues = {
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(
-    private svcClasseAnnoMateria:               ClasseAnnoMateriaService,
-    private svcAnni:                            AnniScolasticiService,
-    private fb:                                 UntypedFormBuilder, 
-    private _loadingService:                    LoadingService,
-    public _dialog:                             MatDialog ) {
+  constructor(private svcClasseAnnoMateria:               ClasseAnnoMateriaService,
+              private svcAnni:                            AnniScolasticiService,
+              private fb:                                 UntypedFormBuilder, 
+              private _loadingService:                    LoadingService,
+              public _dialog:                             MatDialog ) {
               
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
@@ -95,13 +94,13 @@ filterValues = {
 
 //#region ----- LifeCycle Hooks e simili--------
 
-  ngOnInit(): void {
+  ngOnInit() {
+
     this.obsAnni$= this.svcAnni.list();
     this.loadData();
-    this.form.controls['selectAnnoScolastico'].valueChanges
-    .subscribe(() => {
-      this.loadData();
-    })
+    this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(
+       () => this.loadData()
+      );
   }
 
   loadData() {

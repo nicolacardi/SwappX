@@ -18,22 +18,19 @@
         <ng-container matColumnDef="voto">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Voto</th>
             <td mat-cell *matCellDef="let element">
-                <input 
-                matInput type="number" placeholder="voto" 
-                [value]="element.voto" 
-                (change)="changeVoto(element, voto.value)" 
-                maxlength="2" #voto>
+                <input matInput type="number" placeholder="voto" [value]="element.voto" 
+                      (change)="changeVoto(element, voto.value)" 
+                      maxlength="2" #voto>
             </td>
         </ng-container>
 
         <ng-container matColumnDef="giudizio">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Giudizio</th>
             <td mat-cell *matCellDef="let element">
-                <input 
-                matInput type="text" placeholder="giudizio" 
-                [value]="element.giudizio" 
-                (change)="changeGiudizio(element, giudizio.value)" 
-                #giudizio>
+                <input matInput type="text" placeholder="giudizio" 
+                      [value]="element.giudizio" 
+                      (change)="changeGiudizio(element, giudizio.value)" 
+                      #giudizio>
             </td>
         </ng-container>
         

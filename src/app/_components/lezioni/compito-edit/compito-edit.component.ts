@@ -52,18 +52,16 @@ export class CompitoEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor( 
-    @Inject(MAT_DIALOG_DATA) public data:       CAL_Lezione,
-    public _dialogRef:                          MatDialogRef<CompitoEditComponent>,
-    private fb:                                 UntypedFormBuilder,
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar,
-    private _loadingService :                   LoadingService,
-    private svcLezioni:                         LezioniService,
-    private svcIscrizioni:                      IscrizioniService,
-    private svcVotiCompiti:                     VotiCompitiService,
+  constructor(@Inject(MAT_DIALOG_DATA) public data:       CAL_Lezione,
+              public _dialogRef:                          MatDialogRef<CompitoEditComponent>,
+              private fb:                                 UntypedFormBuilder,
+              public _dialog:                             MatDialog,
+              private _snackBar:                          MatSnackBar,
+              private _loadingService :                   LoadingService,
+              private svcLezioni:                         LezioniService,
+              private svcIscrizioni:                      IscrizioniService,
+              private svcVotiCompiti:                     VotiCompitiService ) { 
 
-  ) { 
     _dialogRef.disableClose = true;
     this.form = this.fb.group({
       id:                                       [null],
@@ -99,19 +97,16 @@ export class CompitoEditComponent implements OnInit {
       this.obsLezioni$= this.svcLezioni.listByDocenteClasseSezioneAnnoNoCompito(this.data.docenteID, this.data.classeSezioneAnnoID)
         .pipe(
           tap(val =>  val.forEach(x=> this.dateArr.push(x.dtCalendario)))
-        )
-        ;
-    } else {
+        );
+    } 
+    else {
       //estraggo un array di un valore...
       this.obsLezioni$= this.svcLezioni.list()
       .pipe (
         map(val=>val.filter(val=>(val.id == this.data.id))),  
         //tap(val =>  val.forEach(x=> this.dateArr.push(x.dtCalendario))) //non serve...la combo è disabled
-      )
-      ;
+      );
     }
-
-
     
     //********************* POPOLAMENTO FORM *******************
     if (this.data.id) {
@@ -127,7 +122,6 @@ export class CompitoEditComponent implements OnInit {
     } 
     else {
       this.form.controls.id.enable();
-
       this.emptyForm = true
     }
   }
@@ -140,30 +134,28 @@ export class CompitoEditComponent implements OnInit {
 
     if (this.data.id == 0){ //Inserimento nuovo compito
       //Prima bisogna inserire in VotiCompiti un valore per ogni alunno iscritto alla classe della lezione selezionata
-      this.svcIscrizioni.listByClasseSezioneAnno(this.lezioneSelected.classeSezioneAnnoID)
-      .subscribe(iscrizioni => {
-        
-        for (let iscrizione of iscrizioni) {
-          let objVoto : TST_VotoCompito =
-          { 
-            id : 0,
-            alunnoID : iscrizione.alunnoID,
-            lezioneID : this.lezioneSelected.id,
-            voto : 0,
-            giudizio: ''
-          };
+      this.svcIscrizioni.listByClasseSezioneAnno(this.lezioneSelected.classeSezioneAnnoID).subscribe(
+        iscrizioni => { 
+          for (let iscrizione of iscrizioni) {
+            let objVoto : TST_VotoCompito =
+            { 
+              id : 0,
+              alunnoID : iscrizione.alunnoID,
+              lezioneID : this.lezioneSelected.id,
+              voto : 0,
+              giudizio: ''
+            };
 
-          this.svcVotiCompiti.post(objVoto).subscribe({
-            next: res=> {},
-            error: err=> {console.log ("fallito inserimento objVoto", objVoto)}
-          });
-        }
+            this.svcVotiCompiti.post(objVoto).subscribe({
+              next: res=> {},
+              error: err=> {console.log ("fallito inserimento objVoto", objVoto)}
+            });
+          }
 
         //ora deve salvare il ckCompito e l'argomentoCompito nella lezione: 
 
         this.lezioneSelected.ckCompito = true;
         this.lezioneSelected.argomentoCompito = this.form.controls.argomentoCompito.value;
-
 
         this.svcLezioni.put(this.lezioneSelected).subscribe({
           next: res=> {
@@ -173,24 +165,18 @@ export class CompitoEditComponent implements OnInit {
           error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         });
       });
-
-
-
     }
     else {
       this.data.argomentoCompito = this.form.controls.argomentoCompito.value;
 
-      this.svcLezioni.put(this.data)
-      .subscribe({
+      this.svcLezioni.put(this.data).subscribe({
         next: res => {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
         error: err=>  this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
       });
-
     }
-    
   }
 
   delete(){
@@ -204,12 +190,9 @@ export class CompitoEditComponent implements OnInit {
 
         this.svcVotiCompiti.deleteByLezione(this.data.id).subscribe();
 
-        for (const prop in this.form.controls) {
+        for (const prop in this.form.controls)
           this.form.value[prop] = this.form.controls[prop].value;
-        }
-
-        //this.form.controls.ckCompito.setValue(false);
-
+        
         this.data.ckCompito = false;
 
         this.svcLezioni.put(this.data).subscribe({
@@ -217,14 +200,11 @@ export class CompitoEditComponent implements OnInit {
             this._dialogRef.close();
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record Cancellato', panelClass: ['red-snackbar']});
           },
-          //this.VotiCompitoListComponent.loadData(),  //qui non serve fare la loadData, c'è un ngIf e quindi è nascosto, e poi non funzionerebbe per questo stesso motivo
           error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         });
       } 
-      else {
+      else 
         this.data.ckCompito = true;
-
-      }
     });
   }
 

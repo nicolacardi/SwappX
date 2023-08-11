@@ -11,6 +11,7 @@ import { environment }                          from 'src/environments/environme
 
 //classes
 import { _UT_Consenso }                         from '../../../_models/_UT_Consenso';
+
 //#endregion
 @Injectable({
   providedIn: 'root'

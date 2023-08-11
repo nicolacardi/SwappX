@@ -102,16 +102,14 @@ export class ClassiDashboardComponent implements OnInit {
 
   //#endregion
 
-  constructor(
-    private svcIscrizioni:                      IscrizioniService,
-    private svcDocenze:                         DocenzeService,
-    private _navigationService:                 NavigationService,
-    public _dialog:                             MatDialog,
-    private _jspdf:                             JspdfService,
-    private actRoute:                           ActivatedRoute,
-    private router:                             Router,        
-    private _snackBar:                          MatSnackBar
-  ) {
+  constructor(private svcIscrizioni:                      IscrizioniService,
+              private svcDocenze:                         DocenzeService,
+              private _navigationService:                 NavigationService,
+              public _dialog:                             MatDialog,
+              private _jspdf:                             JspdfService,
+              private actRoute:                           ActivatedRoute,
+              private router:                             Router,        
+              private _snackBar:                          MatSnackBar ) {
     
   }
 
@@ -256,8 +254,6 @@ export class ClassiDashboardComponent implements OnInit {
           else {
             //per ragioni di sincronia (aggiornamento classiSezioniAnniList dopo il loop) usiamo la Promise()
             for (const element of objIdToRemove) {
-              // await this.svcIscrizioni.delete(element.id)
-              // .toPromise();
               this.svcIscrizioni.delete(element.id).subscribe({
                 next : res=>{},
                 error: err=>{
@@ -285,7 +281,7 @@ export class ClassiDashboardComponent implements OnInit {
         data: {titolo: "ATTENZIONE!", sottoTitolo: "Selezionare almeno una docenza da cancellare"}
       });
     }
-    else{
+    else {
 
       const dialogRef = this._dialog.open(DialogYesNoComponent, {
         width: '320px',
@@ -293,15 +289,10 @@ export class ClassiDashboardComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe(
         async result => {
-          if(!result) {
-            return; 
-          } else {
-            // objIdToRemove.forEach(val=>{
-              
-            //   this.svcIscrizioni.delete(val.id)
-            //     .subscribe(()=>{
-            //     })
-            // }); 
+          if(!result) 
+            return;  
+          else {
+
             //per ragioni di sincronia (aggiornamento classiSezioniAnniList dopo il loop) usiamo la Promise()
             for (const element of objIdToRemove) {
               await this.svcDocenze.delete(element.id)

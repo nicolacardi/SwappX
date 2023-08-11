@@ -20,7 +20,6 @@ import { LoadingService }                       from '../../utilities/loading/lo
 import { AlunniService }                        from '../../alunni/alunni.service';
 import { TipiGenitoreService }                  from '../tipi-genitore.service';
 
-
 //models
 import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
 import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni';
@@ -38,7 +37,6 @@ import { ALU_TipoGenitore }                     from 'src/app/_models/ALU_Tipoge
 export class GenitoreEditComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
-
 
   genitore$!:                                   Observable<ALU_Genitore>;
   obsTipiGenitore$!:                            Observable<ALU_TipoGenitore[]>;
@@ -67,17 +65,15 @@ export class GenitoreEditComponent implements OnInit {
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(
-    public _dialogRef: MatDialogRef<GenitoreEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public genitoreID: number,
-    private fb:                                 UntypedFormBuilder, 
-    private svcGenitori:                        GenitoriService,
-    private svcTipiGenitore:                    TipiGenitoreService,
-    private svcAlunni:                          AlunniService, //serve perchè è in questa che si trovano le addToFamily e RemoveFromFamily"
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar,
-    private _loadingService :                   LoadingService
-  ) {
+  constructor(public _dialogRef: MatDialogRef<GenitoreEditComponent>,
+              @Inject(MAT_DIALOG_DATA) public genitoreID: number,
+              private fb:                                 UntypedFormBuilder, 
+              private svcGenitori:                        GenitoriService,
+              private svcTipiGenitore:                    TipiGenitoreService,
+              private svcAlunni:                          AlunniService, //serve perchè è in questa che si trovano le addToFamily e RemoveFromFamily"
+              public _dialog:                             MatDialog,
+              private _snackBar:                          MatSnackBar,
+              private _loadingService :                   LoadingService) {
 
     _dialogRef.disableClose = true;
 
@@ -106,7 +102,6 @@ export class GenitoreEditComponent implements OnInit {
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     
     if (this.genitoreID && this.genitoreID + '' != "0") {
-
       const obsGenitore$: Observable<ALU_Genitore> = this.svcGenitori.get(this.genitoreID);
       const loadGenitore$ = this._loadingService.showLoaderUntilCompleted(obsGenitore$);
       this.genitore$ = loadGenitore$

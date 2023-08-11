@@ -34,14 +34,13 @@ export class ObiettiviDuplicaComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(
-    public _dialogRef:                          MatDialogRef<ObiettiviDuplicaComponent>,
-    private svcAnni:                            AnniScolasticiService,
-    private svcObiettivi:                       ObiettiviService,
-    private fb:                                 UntypedFormBuilder,
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar
-  ) {
+  constructor(public _dialogRef:                          MatDialogRef<ObiettiviDuplicaComponent>,
+              private svcAnni:                            AnniScolasticiService,
+              private svcObiettivi:                       ObiettiviService,
+              private fb:                                 UntypedFormBuilder,
+              public _dialog:                             MatDialog,
+              private _snackBar:                          MatSnackBar  ) {
+    
     _dialogRef.disableClose = true;
 
     this.form = this.fb.group({

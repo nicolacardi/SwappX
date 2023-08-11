@@ -28,9 +28,8 @@
             <form *ngIf="(persona$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
                 <div class="mt20"></div>
 
-                <app-persona-form 
-                    [personaID] = "personaID"
-                    (formValid)="formValidEmitted($event)">   
+                <app-persona-form [personaID] = "personaID"
+                                  (formValid)="formValidEmitted($event)">   
                 </app-persona-form>
 
             </form>

@@ -30,12 +30,8 @@
         <ng-container matColumnDef="color">
             <th mat-header-cell *matHeaderCellDef  mat-sort-header >Colore</th>
             <td mat-cell *matCellDef="let element">
-                <div
-                class="_color-div-mini"
-                [ngStyle]="{'background-color': element.color || 'transparent'}"
-              ></div>
+                <div class="_color-div-mini" [ngStyle]="{'background-color': element.color || 'transparent'}"></div>
             </td>
-
 
         </ng-container>
         
@@ -48,10 +44,7 @@
         <tr mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></tr>
         
         <!-- **************************   MAT-ROW   ******************* -->
-        <tr mat-row *matRowDef="let element;columns: displayedColumns"
-            class="element-row"
-            >
-        </tr>
+        <tr mat-row *matRowDef="let element;columns: displayedColumns" class="element-row" > </tr>
     </table>
 
 

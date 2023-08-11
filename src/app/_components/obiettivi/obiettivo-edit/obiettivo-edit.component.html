@@ -8,27 +8,25 @@
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
                 <button *ngIf="obiettivoID" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
-                [disabled]= "!form.valid" 
-                (click)="loadData()" >
+                        [disabled]= "!form.valid" 
+                        (click)="loadData()" >
                     <mat-icon>restart_alt</mat-icon>
                 </button>
 
                 <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-                [disabled]= "!form.valid" 
-                (click)="save()" >
+                        [disabled]= "!form.valid" 
+                        (click)="save()" >
                     <mat-icon>save</mat-icon>
                 </button>
 
                 <button *ngIf="obiettivoID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
-                [disabled]= "!form.valid" 
-                (click)="delete()" >
+                        [disabled]= "!form.valid" 
+                        (click)="delete()" >
                     <mat-icon>delete</mat-icon>
                 </button>
             </div>
 
             <mat-grid-list class="mt20" [cols]="1" rowHeight="60px" >
-
-
                 <mat-grid-tile>
                     <mat-form-field>
                         <mat-label>Classe</mat-label>
@@ -61,25 +59,17 @@
                         </mat-select>
                     </mat-form-field>
                 </mat-grid-tile>
-
-                
-                
-                <!-- <input matInput type="text" required placeholder="Descrizione" minlength= "3" formControlName="descrizione"> -->
-
             </mat-grid-list>
+
             <mat-grid-list [cols]="3">
 
                 <mat-grid-tile [colspan] = "3">
                     <mat-form-field class="mt20 w100">
                         <mat-label >Descrizione Obiettivo</mat-label>
                         <textarea class="_noresize" matInput formControlName="descrizione"></textarea>
-
-                        
                         <mat-error *ngIf="form.controls.descrizione.errors?.required"> Campo obbligatorio</mat-error>
                     </mat-form-field>
-
                 </mat-grid-tile>
-
 
             </mat-grid-list>
 

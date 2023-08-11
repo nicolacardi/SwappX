@@ -85,24 +85,23 @@ export class ScadenzaEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor( 
-    public _dialogRef:                          MatDialogRef<ScadenzaEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:       DialogDataScadenza,
+  constructor(public _dialogRef:                          MatDialogRef<ScadenzaEditComponent>,
+              @Inject(MAT_DIALOG_DATA) public data:       DialogDataScadenza,
 
-    private fb:                                 UntypedFormBuilder, 
-    private svcScadenze:                        ScadenzeService,
-    private svcPersone:                         PersoneService,
-    private svcGenitori:                        GenitoriService,
+              private fb:                                 UntypedFormBuilder, 
+              private svcScadenze:                        ScadenzeService,
+              private svcPersone:                         PersoneService,
+              private svcGenitori:                        GenitoriService,
 
-    private svcScadenzePersone:                 ScadenzePersoneService,
-    private svcTipiScadenza:                    TipiScadenzaService,
+              private svcScadenzePersone:                 ScadenzePersoneService,
+              private svcTipiScadenza:                    TipiScadenzaService,
 
-    private svcTipiPersone:                     TipiPersonaService,
+              private svcTipiPersone:                     TipiPersonaService,
 
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar,
-    private _loadingService:                    LoadingService,
-    private _ngZone:                            NgZone ) {
+              public _dialog:                             MatDialog,
+              private _snackBar:                          MatSnackBar,
+              private _loadingService:                    LoadingService,
+              private _ngZone:                            NgZone ) {
 
     _dialogRef.disableClose = true;
 
@@ -122,7 +121,6 @@ export class ScadenzaEditComponent implements OnInit {
       h_Ini:                                    [''],     
       h_End:                                    [''],    
       
-  
       start:                                    [''],
       end:                                      [''],
       color:                                    ['']
@@ -136,9 +134,8 @@ export class ScadenzaEditComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit () {
+
     this.loadData();
-
-
 
     this.tipoPersonaIDArr = [];
 
@@ -147,7 +144,6 @@ export class ScadenzaEditComponent implements OnInit {
 
     this.obsTipiPersone$ = this.svcTipiPersone.list();
     this.obsTipiScadenza$ = this.svcTipiScadenza.list();
-
 
   }
 
@@ -158,8 +154,7 @@ export class ScadenzaEditComponent implements OnInit {
 
     this.svcScadenzePersone.listByScadenza(this.data.scadenzaID)
     .pipe(
-      tap( sel=>{
-        
+      tap( sel=>{        
         this.personeListSelArr = sel;
         this.personeListSelArr.sort((a,b) => (a.persona!.cognome > b.persona!.cognome)?1:((b.persona!.cognome > a.persona!.cognome) ? -1 : 0) );
         }
@@ -168,9 +163,7 @@ export class ScadenzaEditComponent implements OnInit {
         this.svcPersone.list()
         .pipe(
           tap( val => {
-          console.log ("scadenza-edit - setArrayBase - elenco persone per personeListArr: ", val);
-          
-
+        
           this.personeListArr = val;
           //il forEach va in avanti e non va bene: scombussola gli index visto che si fa lo splice...bisogna usare un for i--
           for (let i= this.personeListArr.length -1; i >= 0; i--) {
@@ -181,15 +174,11 @@ export class ScadenzaEditComponent implements OnInit {
           }
           //ordino per cognome
           this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
-          }
-          )
-        )
-
+        }))
       )
     )
     .subscribe();
   }
-
 
   addMyself(i: number){
     //devo SEMPRE aggiungere me stesso se c'è in listArr a listSelArr
@@ -210,7 +199,6 @@ export class ScadenzaEditComponent implements OnInit {
   loadData(): void {
 
     this.breakpoint = (window.innerWidth <= 800) ? 2 : 2;
-
     
     if (!this.data.scadenzaID || this.data.scadenzaID + '' == "0") {
       //caso nuova Scadenza
@@ -271,7 +259,6 @@ export class ScadenzaEditComponent implements OnInit {
     this.strH_Ini = this.form.controls.h_Ini.value;
     this.strH_End = this.form.controls.h_End.value;
 
-
     //https://thecodemon.com/angular-get-value-from-disabled-form-control-while-submitting/
     //i campi disabled non vengono più passati al form!
     //va prima lanciato questo loop che "ripopola" il form anche con i valori dei campi disabled
@@ -279,8 +266,6 @@ export class ScadenzaEditComponent implements OnInit {
     // for (const prop in this.form.controls) {
     //   this.form.value[prop] = this.form.controls[prop].value;
     // }
-
-    
 
     const objScadenza = <CAL_Scadenza>{
       dtCalendario: this.form.controls.dtCalendario.value,
@@ -296,14 +281,8 @@ export class ScadenzaEditComponent implements OnInit {
       TipoScadenzaID: this.form.controls.tipoScadenzaID.value
     }
 
-
-
-    console.log("scadenza-edit - save() - objScadenza", objScadenza);
     //qualcosa non funziona nel valorizzare form.controls.end e form.controls.start ma solo su nuova scadenza
-
     if (this.form.controls['id'].value == null) {   
-
-
       
       objScadenza.id = 0;
       //this.svcLezioni.post(this.form.value).subscribe(
@@ -317,16 +296,12 @@ export class ScadenzaEditComponent implements OnInit {
       });
     } 
     else  {
-
-
-
       let cancellaeRipristinaPersone = this.svcScadenzePersone.deleteByScadenza(this.form.controls.id.value)
       .pipe(
         finalize(()=>{
           this.insertPersone(this.form.controls.id.value);
         })
       );
-
 
       //this.svcLezioni.put(this.form.value).subscribe(
         objScadenza.id = this.form.controls.id.value;
@@ -344,7 +319,6 @@ export class ScadenzaEditComponent implements OnInit {
     }
   }
 
-
   delete() {
 
     //vanno cancellate tutte le scadenze persone!
@@ -355,7 +329,6 @@ export class ScadenzaEditComponent implements OnInit {
     dialogYesNo.afterClosed().subscribe(
       result => {
         if(result){
-
           this.svcScadenzePersone.deleteByScadenza(this.form.controls.id.value)
           .pipe(
             concatMap(()=>this.svcScadenze.delete (this.data.scadenzaID)
@@ -460,9 +433,7 @@ export class ScadenzaEditComponent implements OnInit {
               }
               this.personeListSelArr.push(objScadenzaPersona);
               this.personeListArr.splice(i, 1);
-              
             }
-            
           }
         }
       )
@@ -485,20 +456,13 @@ export class ScadenzaEditComponent implements OnInit {
             this.personeListArr.splice(i, 1);
           }
         }
-      }
-
-
-
-      }
-      )
+      }})
     )
     .subscribe();
 
     //ordino per cognome
     this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
-    
   }
-
 
   insertPersone(scadenzaID: number) {
     for (let i = 0; i<this.personeListSelArr.length; i++) {
@@ -528,7 +492,6 @@ export class ScadenzaEditComponent implements OnInit {
     this.personeListArr.splice(index, 1);
     this.personeListSelArr.sort((a,b) => (a.persona!.cognome > b.persona!.cognome)?1:((b.persona!.cognome > a.persona!.cognome) ? -1 : 0) );
   }
-
 
   removeFromSel(element: CAL_ScadenzaPersone) {
     if (element.personaID == this.currUser.personaID) {

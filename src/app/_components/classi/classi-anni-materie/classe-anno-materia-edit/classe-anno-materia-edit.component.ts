@@ -49,20 +49,18 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(
-    public _dialogRef: MatDialogRef<ClasseAnnoMateriaEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public classeAnnoMateriaID: number,
-    private svcClassi:                          ClassiService,
-    private svcAnni:                            AnniScolasticiService,
-    private svcMaterie:                         MaterieService,
-    private svcClassiAnniMaterie:               ClasseAnnoMateriaService,
-    private svcTipiVoto:                        TipiVotoService,
+  constructor(public _dialogRef: MatDialogRef<ClasseAnnoMateriaEditComponent>,
+              @Inject(MAT_DIALOG_DATA) public classeAnnoMateriaID: number,
+              private svcClassi:                          ClassiService,
+              private svcAnni:                            AnniScolasticiService,
+              private svcMaterie:                         MaterieService,
+              private svcClassiAnniMaterie:               ClasseAnnoMateriaService,
+              private svcTipiVoto:                        TipiVotoService,
 
-    private _loadingService :                   LoadingService,
-    private fb:                                 UntypedFormBuilder, 
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar
-  ) { 
+              private _loadingService :                   LoadingService,
+              private fb:                                 UntypedFormBuilder, 
+              public _dialog:                             MatDialog,
+              private _snackBar:                          MatSnackBar) { 
 
     _dialogRef.disableClose = true;
   
@@ -118,16 +116,15 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
         });
     else {
       
-      this.svcClassiAnniMaterie.put(this.form.value)
-        .subscribe({
-          next: res=> {
+      this.svcClassiAnniMaterie.put(this.form.value).subscribe({
+        next: res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-          },
-          error: err=> (
+        },
+        error: err=> (
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          )
-        });
+        )
+      });
     }
   }
 
@@ -139,15 +136,9 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.svcClassiAnniMaterie.delete(Number(this.classeAnnoMateriaID))
-        // .pipe (
-        //   finalize(()=>this.router.navigate(['/alunni']))
-        // )
-        .subscribe({
+        this.svcClassiAnniMaterie.delete(Number(this.classeAnnoMateriaID)).subscribe({
           next: res=>{
-            this._snackBar.openFromComponent(SnackbarComponent,
-              {data: 'Record cancellato', panelClass: ['red-snackbar']}
-            );
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']} );
             this._dialogRef.close();
           },
           error: err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']}))

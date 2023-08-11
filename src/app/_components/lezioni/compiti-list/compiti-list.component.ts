@@ -59,11 +59,10 @@ export class CompitiListComponent implements OnInit {
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor( 
-    private svcLezioni:                         LezioniService,
-    private _loadingService:                    LoadingService,
-    public _dialog:                             MatDialog, 
-    ) {  
+  constructor(private svcLezioni:                         LezioniService,
+              private _loadingService:                    LoadingService,
+              public _dialog:                             MatDialog ) {  
+
   }
 //#endregion
   
@@ -74,7 +73,7 @@ export class CompitiListComponent implements OnInit {
   }
 
   ngOnInit () {
-//    this.loadData();
+
   }
 
   loadData () {
@@ -108,14 +107,12 @@ export class CompitiListComponent implements OnInit {
     };
   }
 
-
   applyFilter(event: Event) {
 
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
-
 
   filterPredicate(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
@@ -194,9 +191,7 @@ export class CompitiListComponent implements OnInit {
     );
   }
 
-
 //#endregion
-
 
 }
 

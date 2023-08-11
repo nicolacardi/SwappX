@@ -50,22 +50,18 @@ export class ObiettivoEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(
-    public _dialogRef: MatDialogRef<ObiettivoEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public obiettivoID:  number,
-    private svcObiettivi:                         ObiettiviService,
-    private svcPagellaVotoObiettivi:              PagellaVotoObiettiviService,
-    private svcClassi:                            ClassiService,
-    private svcAnni:                              AnniScolasticiService,
-    private svcMaterie:                           MaterieService,
+  constructor(public _dialogRef: MatDialogRef<ObiettivoEditComponent>,
+              @Inject(MAT_DIALOG_DATA) public obiettivoID:  number,
+              private svcObiettivi:                         ObiettiviService,
+              private svcPagellaVotoObiettivi:              PagellaVotoObiettiviService,
+              private svcClassi:                            ClassiService,
+              private svcAnni:                              AnniScolasticiService,
+              private svcMaterie:                           MaterieService,
+              private _loadingService :                     LoadingService,
+              private fb:                                   UntypedFormBuilder, 
+              public _dialog:                               MatDialog,
+              private _snackBar:                            MatSnackBar ) { 
 
-
-    private _loadingService :                     LoadingService,
-    private fb:                                   UntypedFormBuilder, 
-    public _dialog:                               MatDialog,
-    private _snackBar:                            MatSnackBar,
-    
-  ) { 
     _dialogRef.disableClose = true;
     
     this.form = this.fb.group({
@@ -75,8 +71,8 @@ export class ObiettivoEditComponent implements OnInit {
       annoID:                     [''],
       materiaID:                  ['']
     });
-
   }
+
 //#endregion
 
 //#region ----- LifeCycle Hooks e simili--------
@@ -86,7 +82,6 @@ export class ObiettivoEditComponent implements OnInit {
   }
 
   loadData(){
-
 
     this.obsClassi$ = this.svcClassi.list();
     this.obsAnni$= this.svcAnni.list();
@@ -105,8 +100,8 @@ export class ObiettivoEditComponent implements OnInit {
     } else {
       this.emptyForm = true
     }
-
   }
+
 //#endregion
 
 //#region ----- Operazioni CRUD ----------------
@@ -134,7 +129,6 @@ export class ObiettivoEditComponent implements OnInit {
   }
 
   delete(){
-
   
     const dialogRef = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
@@ -159,7 +153,7 @@ export class ObiettivoEditComponent implements OnInit {
           )
           .subscribe({
             next: res => {
-              console.log(res);
+              //console.log(res);
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();
             },

@@ -39,7 +39,6 @@ export class PagelleClasseEditComponent{
   @Input('materiaID') materiaID! :              number;
   @Input('tipoVoto') tipoVoto! :                string;
 
-
   displayedColumns!: string[];
   displayedColumnsPerObiettivi: string[] = [
     "nome",
@@ -84,18 +83,15 @@ export class PagelleClasseEditComponent{
 
 //#endregion
 
-  constructor(
-
-    private svcClassiSezioniAnni:               ClassiSezioniAnniService,
-    private svcPagella:                         PagelleService,
-    private svcPagellaVoti:                     PagellaVotiService,
-    private svcObiettivi:                       ObiettiviService,
-    private _loadingService:                    LoadingService,    
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar,
-
-
-  ) { }
+  constructor(private svcClassiSezioniAnni:               ClassiSezioniAnniService,
+              private svcPagella:                         PagelleService,
+              private svcPagellaVoti:                     PagellaVotiService,
+              private svcObiettivi:                       ObiettiviService,
+              private _loadingService:                    LoadingService,    
+              public _dialog:                             MatDialog,
+              private _snackBar:                          MatSnackBar ) { 
+            
+  }
 
 
   ngOnChanges() {
@@ -104,7 +100,6 @@ export class PagelleClasseEditComponent{
   }
 
   loadData() {
-
 
         switch (this.tipoVoto) {
           case 'Per Obiettivi':
@@ -121,11 +116,9 @@ export class PagelleClasseEditComponent{
         }
       //}),
 
-
     this.obsTipiGiudizio$= this.svcPagellaVoti.listTipiGiudizio();
 
     let obsPagelleVoti$: Observable<CLS_Iscrizione[]>;
-
     obsPagelleVoti$= this.svcPagellaVoti.listByCSAMateria(this.classeSezioneAnnoID, this.materiaID);
       
     const loadPagelleVoti$ =this._loadingService.showLoaderUntilCompleted(obsPagelleVoti$);
@@ -133,9 +126,7 @@ export class PagelleClasseEditComponent{
     loadPagelleVoti$.subscribe(
         val =>   {
           this.matDataSource.data = val;
-          //console.log ("pagelle-classe-edit - lodData - classeSezioneAnnoID: ", this.classeSezioneAnnoID, " - materiaID: ", this.materiaID);
           this.matDataSource.filterPredicate = this.filterPredicate();
-
         }
       );
 
@@ -196,7 +187,6 @@ export class PagelleClasseEditComponent{
 
     //if (this.objPagella.ckStampato) this.resetStampato();
   }
-
 
   changeVoto(iscrizioneID: number, pagella: DOC_Pagella, pagellaVoto: DOC_PagellaVoto, voto: any, periodo: number) {
     let votoN = parseInt(voto);

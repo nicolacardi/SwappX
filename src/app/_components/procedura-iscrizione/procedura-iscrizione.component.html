@@ -20,12 +20,9 @@
 
       <ng-template matStepLabel >Dati del Genitore {{i+1}}</ng-template>
       <h3>{{element.tipoGenitore!.descrizione}}: {{element.persona.nome}} {{element.persona.cognome}}</h3>
-      <app-persona-form
-        [personaID]="element.personaID"
-        [dove]="'procedura-iscrizione'"
-
-        
-      #apppersonaformG>
+      <app-persona-form  [personaID]="element.personaID" 
+                         [dove]="'procedura-iscrizione'"
+                         #apppersonaformG>
       </app-persona-form> 
        <div class="center">
         <button *ngIf="i!=0" mat-stroked-button matStepperPrevious>Indietro</button>
@@ -36,9 +33,8 @@
     <mat-step >
       <ng-template matStepLabel>Dati dell'alunno</ng-template>
       <h3>Alunno: {{iscrizione.alunno.persona.nome}} {{iscrizione.alunno.persona.cognome}}</h3>
-      <app-persona-form
-      [personaID]="iscrizione.alunno.personaID"
-      #apppersonaform>
+      <app-persona-form  [personaID]="iscrizione.alunno.personaID"
+                         #apppersonaform>
       </app-persona-form> 
       <div class="center">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
@@ -46,20 +42,15 @@
       </div>    
     </mat-step>
     
-
     <mat-step >
-
       <ng-template matStepLabel>Consensi</ng-template>
       <div class="center">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
         <button mat-stroked-button class="ml10" matStepperNext>Salva e procedi</button>
       </div>
-
     </mat-step>
 
-
     <mat-step >
-
       <ng-template matStepLabel>Dati economici</ng-template>
       <div class="center">
         <button mat-stroked-button matStepperPrevious>Indietro</button>

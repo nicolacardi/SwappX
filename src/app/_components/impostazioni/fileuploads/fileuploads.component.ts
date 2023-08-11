@@ -132,7 +132,6 @@ export class FileuploadsComponent implements OnInit {
         return;
       };
 
-
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = async () => {
@@ -154,8 +153,6 @@ export class FileuploadsComponent implements OnInit {
   save(ctrl: string){
 
     let formParameter: _UT_Parametro | undefined = undefined;
-    let parName: string;
-    let parDescr: string;
   
     switch (ctrl) {
       case 'imgFileLogoStoody':

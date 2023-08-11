@@ -148,16 +148,14 @@ export class GenitoriListComponent implements OnInit {
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(
-    private svcGenitori:                        GenitoriService,
-    private router:                             Router,
-    public _dialog:                             MatDialog, 
-    private _loadingService:                    LoadingService,
-    private _navigationService:                 NavigationService,
-    private svcTableCols:                       TableColsService,
-    private svcTableColsVisible:                TableColsVisibleService
-    ) 
-  {
+  constructor(private svcGenitori:                        GenitoriService,
+              private router:                             Router,
+              public _dialog:                             MatDialog, 
+              private _loadingService:                    LoadingService,
+              private _navigationService:                 NavigationService,
+              private svcTableCols:                       TableColsService,
+              private svcTableColsVisible:                TableColsVisibleService ) {
+     
      this.currUser = Utility.getCurrentUser();
   }
 //#endregion
@@ -180,9 +178,6 @@ export class GenitoriListComponent implements OnInit {
     }
     if (this.context == "alunno-edit-famiglia") 
       this.showFilter = false;
-
-
-
     
     switch(this.context) {
       case 'alunno-edit-list': this.displayedColumns = this.displayedColumnsAlunnoEditList; break;

@@ -78,20 +78,18 @@ export class AlunnoEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor( 
-    public _dialogRef:                          MatDialogRef<AlunnoEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public alunnoID:   number,
-    private fb:                                 UntypedFormBuilder, 
-    private svcIscrizioni:                      IscrizioniService,
-    private svcAlunni:                          AlunniService,
+  constructor(public _dialogRef:                          MatDialogRef<AlunnoEditComponent>,
+              @Inject(MAT_DIALOG_DATA) public alunnoID:   number,
+              private fb:                                 UntypedFormBuilder, 
+              private svcIscrizioni:                      IscrizioniService,
+              private svcAlunni:                          AlunniService,
 
-    public _dialog:                             MatDialog,
-    private _snackBar:                          MatSnackBar,
-    private _loadingService :                   LoadingService ) {
+              public _dialog:                             MatDialog,
+              private _snackBar:                          MatSnackBar,
+              private _loadingService :                   LoadingService ) {
 
     _dialogRef.disableClose = true;
     
-
     this.formAlunno = this.fb.group(
     {
       id:                                     [null],
@@ -103,8 +101,7 @@ export class AlunnoEditComponent implements OnInit {
       ckDisabile:                             [false],
       ckAuthFoto:                             [false],
       ckAuthUsoMateriale:                     [false],
-      ckAuthUscite:                           [false],
-
+      ckAuthUscite:                           [false]
     });
   }
 
@@ -117,7 +114,6 @@ export class AlunnoEditComponent implements OnInit {
   }
 
   loadData(){
-
 
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
@@ -300,25 +296,6 @@ save(){
       error: err=> { }
     })
   }
-
-
-      // .pipe(
-    //   catchError((err: HttpErrorResponse) => {
-    //     if (err.status === 400) {
-    //       try {
-    //         const errorResponse = JSON.parse(err.error);
-    //         console.log("Errore lato server:", err.status, errorResponse.errorMessage);
-    //       } catch (jsonError) {
-    //         console.error("Errore JSON:", jsonError);
-    //       }
-    //     } else {
-    //       console.error('Errore sconosciuto:', err);
-    //     }
-    //     return of(null); // Puoi gestire ulteriormente il flusso degli errori qui
-    //   })
-    // )
-
-
 
   removeFromAttended(classeSezioneAnno: CLS_ClasseSezioneAnno) {
     let errorMsg: string;

@@ -2,11 +2,8 @@
     <mat-card-content>
 
         <div class="center">
-
             <img class="iconaMenuBig" src="./assets/voticompito_edit_T.svg">
-
             <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
-
         </div>
         <div class="center mt20">
             <mat-label class="center fs14" *ngIf="data.id">Compito di:  <span class="fs18">{{data.materia.descrizione}}</span></mat-label>
@@ -19,10 +16,8 @@
         </div>
            
         <div class="mt20">        
-
-        <app-voti-compito-list [lezioneID] = "data.id"> </app-voti-compito-list>
+            <app-voti-compito-list [lezioneID] = "data.id"> </app-voti-compito-list>
         </div>
-
 
     </mat-card-content>
 </mat-card>

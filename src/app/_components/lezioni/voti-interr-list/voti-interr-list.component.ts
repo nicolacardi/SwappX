@@ -82,11 +82,9 @@ export class VotiInterrListComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor( 
-    private svcVotiInterr:                      VotiInterrService,
-    private _loadingService:                    LoadingService,
-    public _dialog:                             MatDialog, 
-    ) { 
+  constructor(private svcVotiInterr:                      VotiInterrService,
+              private _loadingService:                    LoadingService,
+              public _dialog:                             MatDialog ) { 
   }
 
 //#endregion
@@ -129,8 +127,6 @@ export class VotiInterrListComponent implements OnInit {
           this.sortCustom(); 
           this.matDataSource.sort = this.sort; 
           this.matDataSource.filterPredicate = this.filterPredicate();
-
-
         }
       );
     }
@@ -148,8 +144,6 @@ export class VotiInterrListComponent implements OnInit {
               this.sortCustom(); 
               this.matDataSource.sort = this.sort; 
               this.matDataSource.filterPredicate = this.filterPredicate();
-
-
             }
         );
       }
@@ -204,8 +198,6 @@ export class VotiInterrListComponent implements OnInit {
         case 'dtCalendario':                    return item.lezione.dtCalendario;
         case 'dtCalendario':                    return item.lezione.dtCalendario;
         case 'h_Ini':                           return item.lezione.h_Ini;
-
-
         default:                                return item[property]
       }
     };

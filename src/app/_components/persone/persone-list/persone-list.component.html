@@ -11,10 +11,10 @@
 
     <!-- **************************   MAT-TABLE   ******************* -->
     <table mat-table class="_table-row-low transparent w100" [dataSource]="matDataSource"
-        matSort
-        cdkDropList
-        cdkDropListOrientation="horizontal"
-        (cdkDropListDropped)="drop($event)">
+           matSort
+           cdkDropList
+           cdkDropListOrientation="horizontal"
+           (cdkDropListDropped)="drop($event)">
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
         <ng-container matColumnDef="actionsColumn">

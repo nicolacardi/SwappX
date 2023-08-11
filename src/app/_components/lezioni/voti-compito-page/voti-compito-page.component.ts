@@ -32,13 +32,11 @@ export class VotiCompitoPageComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-constructor(
-  public _dialogRef:                            MatDialogRef<VotiCompitoPageComponent>,
-  @Inject(MAT_DIALOG_DATA) public data:         CAL_Lezione,
+constructor(public _dialogRef:                            MatDialogRef<VotiCompitoPageComponent>,
+            @Inject(MAT_DIALOG_DATA) public data:         CAL_Lezione,
+            private svcClasseSezioneAnno:                 ClassiSezioniAnniService ) { 
 
-  private svcClasseSezioneAnno:                 ClassiSezioniAnniService,
-
-) { }
+}
 
 //#endregion
 
@@ -53,8 +51,8 @@ constructor(
     }
     this.dtStart = new Date (this.data.start);
     this.strDtStart = Utility.formatDate(this.dtStart, FormatoData.yyyy_mm_dd);
-
   }
+  
 //#endregion
 
 }

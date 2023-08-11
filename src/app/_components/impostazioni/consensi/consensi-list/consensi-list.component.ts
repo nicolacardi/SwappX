@@ -29,7 +29,6 @@ export class ConsensiListComponent implements OnInit{
   maxSeq!:                                       number;
   matDataSource = new MatTableDataSource<_UT_Consenso>();
   obsConsensi$!:                                Observable<_UT_Consenso[]>;
-
   
   displayedColumns: string[] = [
 
@@ -42,8 +41,6 @@ export class ConsensiListComponent implements OnInit{
     "testo3",
     "testo4",
     "testo5"
-
-
   ];
 
   rptTitle = 'Lista Consensi';
@@ -70,13 +67,12 @@ export class ConsensiListComponent implements OnInit{
 //#endregion
 
 //#region ----- Constructor --------------------
+  
+  constructor(private svcConsensi:                        ConsensiService,
+              private _loadingService:                    LoadingService,
+              public _dialog:                             MatDialog) {
 
-  constructor(
-    private svcConsensi:                        ConsensiService,
-    private _loadingService:                    LoadingService,
-    public _dialog:                             MatDialog,
-
-  ) { }
+  }
 //#endregion
 
 //#region ----- LifeCycle Hooks e simili--------
@@ -88,12 +84,11 @@ export class ConsensiListComponent implements OnInit{
   loadData() {
 
     this.obsConsensi$ = this.svcConsensi.list();  
-
     const loadConsensi$ =this._loadingService.showLoaderUntilCompleted(this.obsConsensi$);
 
     loadConsensi$.subscribe(
       val =>   {
-        console.log ("estraggo consensi list", val);
+        //console.log ("estraggo consensi list", val);
         this.matDataSource.data = val;
         this.sortCustom(); 
         this.matDataSource.sort = this.sort; 
@@ -110,9 +105,7 @@ export class ConsensiListComponent implements OnInit{
       panelClass: 'add-DetailDialog',
       width: '400px',
       height: '370px',
-      data: {
-        consensoID:                              0,
-      }
+      data: { consensoID:  0}
     };
     const dialogRef = this._dialog.open(ConsensoEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() => this.loadData());
@@ -123,10 +116,7 @@ export class ConsensiListComponent implements OnInit{
       panelClass: 'add-DetailDialog',
       width: '400px',
       height: '370px',
-      data: {
-        consensoID:                             consensoID,
-      }
-
+      data: { consensoID: consensoID }
     };
     const dialogRef = this._dialog.open(ConsensoEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() => this.loadData());

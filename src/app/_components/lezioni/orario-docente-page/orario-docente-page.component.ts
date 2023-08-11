@@ -40,7 +40,6 @@ export class OrarioDocentePageComponent implements OnInit {
 
     this.form = this.fb.group( {
       selectDocente: 0
-
     });
   }
 
