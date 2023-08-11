@@ -168,16 +168,16 @@ export class ScadenzaEditComponent implements OnInit {
         this.svcPersone.list()
         .pipe(
           tap( val => {
+          console.log ("scadenza-edit - setArrayBase - elenco persone per personeListArr: ", val);
           
 
           this.personeListArr = val;
           //il forEach va in avanti e non va bene: scombussola gli index visto che si fa lo splice...bisogna usare un for i--
           for (let i= this.personeListArr.length -1; i >= 0; i--) {
               if (this.personeListSelArr.filter(e => e.persona!.id === this.personeListArr[i].id).length > 0) {
-              this.personeListArr.splice(i, 1);
+                this.personeListArr.splice(i, 1);
               }
               this.addMyself(i);
-
           }
           //ordino per cognome
           this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
