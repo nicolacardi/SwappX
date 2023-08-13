@@ -68,9 +68,9 @@ export class ConsensiListComponent implements OnInit{
 
 //#region ----- Constructor --------------------
   
-  constructor(private svcConsensi:                        ConsensiService,
-              private _loadingService:                    LoadingService,
-              public _dialog:                             MatDialog) {
+  constructor(private svcConsensi:              ConsensiService,
+              private _loadingService:          LoadingService,
+              public _dialog:                   MatDialog) {
 
   }
 //#endregion
@@ -103,8 +103,8 @@ export class ConsensiListComponent implements OnInit{
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '400px',
-      height: '370px',
+      width: '600px',
+      height: '570px',
       data: { consensoID:  0}
     };
     const dialogRef = this._dialog.open(ConsensoEditComponent, dialogConfig);
@@ -114,8 +114,8 @@ export class ConsensiListComponent implements OnInit{
   openDetail(consensoID:any){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '400px',
-      height: '370px',
+      width: '600px',
+      height: '570px',
       data: { consensoID: consensoID }
     };
     const dialogRef = this._dialog.open(ConsensoEditComponent, dialogConfig);

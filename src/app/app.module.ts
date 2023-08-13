@@ -214,6 +214,7 @@ import { HttpErrorInterceptor }                 from './_user/auth/httperror.int
 import { ConsensiListComponent }                from './_components/impostazioni/consensi/consensi-list/consensi-list.component';
 import { ConsensiPageComponent } from './_components/impostazioni/consensi/consensi-page/consensi-page.component';
 import { ConsensoEditComponent } from './_components/impostazioni/consensi/consenso-edit/consenso-edit.component';
+import { ConsensiIscrizioneComponent } from './_components/procedura-iscrizione/consensi-iscrizione/consensi-iscrizione.component';
 
 
 
@@ -381,6 +382,7 @@ import { ConsensoEditComponent } from './_components/impostazioni/consensi/conse
     ConsensiListComponent,
     ConsensiPageComponent,
     ConsensoEditComponent,
+    ConsensiIscrizioneComponent,
  
     
 

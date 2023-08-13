@@ -50,10 +50,15 @@ export class ConsensoEditComponent implements OnInit {
     _dialogRef.disableClose = true;
     
     this.form = this.fb.group({
-      id:                         [null],
-      domanda:                ['', { validators:[ Validators.required]}],
-      numOpzioni:                 ['', { validators:[ Validators.required]}],
-      seq:                        ['']
+      id:                                       [null],
+      domanda:                                  ['', { validators:[ Validators.required]}],
+      numOpzioni:                               [{ value: '' }, { validators:[ Validators.required]}],
+      testo1:                                   [''],
+      testo2:                                   [''],
+      testo3:                                   [''],
+      testo4:                                   [''],
+      testo5:                                   [''],
+      seq:                                      ['']
     });
   }
 
@@ -89,6 +94,32 @@ export class ConsensoEditComponent implements OnInit {
 //#region ----- Operazioni CRUD ----------------
 
   save(){
+
+    let testo = [];
+
+    testo[0] = this.form.controls['testo1'];
+    testo[1] = this.form.controls['testo2'];
+    testo[2] = this.form.controls['testo3'];
+    testo[3] = this.form.controls['testo4'];
+    testo[4] = this.form.controls['testo5'];
+
+    let testoreordered = []
+    let n = 0;
+    for (let i = 0; i < 5; i++) { 
+      if (testo[i].value != '' && testo[i].value != null) { 
+        testoreordered[n] = testo[i].value;
+        n++;
+      }
+    }
+
+    for (let j = 0; j < testoreordered.length; j++) testo[j].setValue(testoreordered[j]);
+    
+    for (let j = testoreordered.length; j < 5; j++) testo[j].setValue('');
+    
+    this.form.controls.numOpzioni.setValue(n);
+
+
+    console.log ("this.form.value", this.form.value);
 
     if (this.form.controls['id'].value == null) {
       this.form.controls.seq.setValue(this.data.maxSeq +1);

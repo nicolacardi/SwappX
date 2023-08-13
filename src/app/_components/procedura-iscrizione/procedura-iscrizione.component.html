@@ -44,6 +44,8 @@
     
     <mat-step >
       <ng-template matStepLabel>Consensi</ng-template>
+      <app-consensi-iscrizione  [iscrizioneID]="iscrizioneID">
+      </app-consensi-iscrizione> 
       <div class="center">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
         <button mat-stroked-button class="ml10" matStepperNext>Salva e procedi</button>

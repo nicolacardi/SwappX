@@ -24,7 +24,7 @@ import { ALU_GenitoreAlunno }                   from 'src/app/_models/ALU_Genito
 @Component({
   selector: 'app-procedura-iscrizione',
   templateUrl: './procedura-iscrizione.component.html',
-  styleUrls: ['./procedura-iscrizione.component.css']
+  styleUrls: ['./procedura-iscrizione.css']
 })
 
 export class ProceduraIscrizioneComponent implements OnInit {

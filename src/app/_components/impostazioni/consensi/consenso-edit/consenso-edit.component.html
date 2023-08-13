@@ -3,7 +3,7 @@
         <form *ngIf="(consenso$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
             <div class="center">
 
-                <img class="iconaMenuBig" src="./assets/materia_edit.svg">
+                <img class="iconaMenuBig" src="./assets/consenso_edit_T.svg">
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
@@ -26,20 +26,64 @@
                 </button>
             </div>
 
+            <mat-grid-list class="mt10" [cols]="1" rowHeight="100px" >
+                <mat-grid-tile>
+                    <!-- <mat-form-field>
+                        <input matInput type="text" required placeholder="Domanda" minlength= "3" formControlName="domanda" #nome>
+                    </mat-form-field> -->
+
+                    <mat-form-field class="w100 h100px pl5 pt5" appearance="outline">
+                        <mat-label>Domanda</mat-label>
+                        <textarea required class="w300px  _noresize" placeholder="Domanda" matInput formControlName="domanda"></textarea>
+                    </mat-form-field>
+
+                </mat-grid-tile>
+
+            </mat-grid-list>
             <mat-grid-list class="mt10" [cols]="1" rowHeight="60px" >
+
+                <mat-grid-tile class="center">
+                    Indicare di seguito le Opzioni disponibili (Max 5)<br>
+                    Per un consenso obbligatorio inserire 1 opzione<br>
+                    Per un consenso non obbligatorio inserire 2 opzioni (ad es. Si/No)
+                </mat-grid-tile>
+                <!-- <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput type="number" required placeholder="Numero di Opzioni (1-5)" formControlName="numOpzioni" #nome>
+                    </mat-form-field>
+                </mat-grid-tile> -->
+
+
                 <mat-grid-tile>
                     <mat-form-field>
-                        <input matInput type="text" required placeholder="Domanda" minlength= "3" formControlName="domanda" #nome>
-                        <!-- <mat-error *ngIf="form.controls.domanda.errors?.required"> Campo obbligatorio</mat-error> -->
+                        <input matInput type="text" required placeholder="opzione 1" formControlName="testo1" #nome>
                     </mat-form-field>
                 </mat-grid-tile>
 
                 <mat-grid-tile>
                     <mat-form-field>
-                        <input matInput type="number" required placeholder="Numero di Opzioni (1-5)" minlength= "3" formControlName="numOpzioni" #nome>
-                        <!-- <mat-error *ngIf="form.controls.numOpzioni.errors?.required"> Campo obbligatorio</mat-error> -->
+                        <input matInput type="text" placeholder="opzione 2" formControlName="testo2" #nome>
                     </mat-form-field>
                 </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="opzione 3" formControlName="testo3" #nome>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="opzione 4" formControlName="testo4" #nome>
+                    </mat-form-field>
+                </mat-grid-tile>
+                
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="opzione 5" formControlName="testo5" #nome>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                
             </mat-grid-list>
 
         </form>

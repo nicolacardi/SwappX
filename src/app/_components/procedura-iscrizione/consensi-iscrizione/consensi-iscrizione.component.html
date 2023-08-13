@@ -1,0 +1,29 @@
+<div class="w80 ma">
+<form class="flex-form" [formGroup] = "formConsensi">
+
+        <div *ngFor="let element of (obsConsensi$ | async)">
+        <mat-grid-list cols="3" rowHeight="60px">
+            <mat-grid-tile >
+            <textarea class="w100">{{ element.domanda }}</textarea>
+            </mat-grid-tile>
+            <mat-grid-tile *ngIf="element.numOpzioni == 1">
+                <mat-checkbox></mat-checkbox>
+            </mat-grid-tile>
+            <!-- <mat-grid-tile>
+                {{element.numOpzioni}}
+            </mat-grid-tile> -->
+
+            <mat-grid-tile *ngIf="element.numOpzioni != 1">
+                <mat-radio-group aria-label="Select an option">
+                    <mat-radio-button value="1">{{element.testo1}}</mat-radio-button>
+                    <mat-radio-button value="2">{{element.testo2}}</mat-radio-button>
+                    <mat-radio-button *ngIf="element.numOpzioni > 2" value="2">{{element.testo3}}</mat-radio-button>
+                    <mat-radio-button *ngIf="element.numOpzioni > 3" value="3">{{element.testo4}}</mat-radio-button>
+                    <mat-radio-button *ngIf="element.numOpzioni > 4" value="4">{{element.testo5}}</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+        </mat-grid-list>
+        </div>
+
+  </form>
+</div>
