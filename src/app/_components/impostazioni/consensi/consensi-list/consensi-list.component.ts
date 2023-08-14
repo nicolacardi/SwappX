@@ -108,7 +108,9 @@ export class ConsensiListComponent implements OnInit{
       data: { consensoID:  0}
     };
     const dialogRef = this._dialog.open(ConsensoEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(() => this.loadData());
+    dialogRef.afterClosed().subscribe(() => {
+      this.svcConsensi.renumberSeq().subscribe(() => this.loadData());
+    });
   }
 
   openDetail(consensoID:any){

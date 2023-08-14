@@ -125,8 +125,9 @@ export class ConsensoEditComponent implements OnInit {
       this.form.controls.seq.setValue(this.data.maxSeq +1);
       this.svcConsensi.post(this.form.value).subscribe({
         next: res=> {
-          this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+          this._dialogRef.close();
+
         },
         error: err=> (
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})

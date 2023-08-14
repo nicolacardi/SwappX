@@ -3,15 +3,11 @@
 
         <mat-grid-list *ngFor="let element of (obsConsensi$ | async)" cols="3" rowHeight="60px">
             <mat-grid-tile >
-            <textarea class="w100">{{ element.domanda }}</textarea>
+                <textarea class="w100">{{ element.domanda }}</textarea>
             </mat-grid-tile>
             <mat-grid-tile *ngIf="element.numOpzioni == 1">
                 <mat-checkbox  [formControlName]="element.id">{{element.testo1}}</mat-checkbox>
             </mat-grid-tile>
-            <!-- <mat-grid-tile>
-                {{element.numOpzioni}}
-            </mat-grid-tile> -->
-
             <mat-grid-tile *ngIf="element.numOpzioni != 1" style="width: 300px !important">
                 <mat-radio-group aria-label="Select an option" [formControlName]="element.id">
                     <mat-radio-button value="1">{{element.testo1}}</mat-radio-button>
