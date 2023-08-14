@@ -26,7 +26,7 @@
                 </button>
             </div>
 
-            <mat-grid-list class="mt10" [cols]="1" rowHeight="100px" >
+            <mat-grid-list class="mt10" [cols]="1" rowHeight="120px" >
                 <mat-grid-tile>
 
                     <mat-form-field class="w100 h100px pl5 pt5" appearance="outline">
@@ -35,9 +35,10 @@
                     </mat-form-field>
 
                 </mat-grid-tile>
-                <mat-grid-tile>
-                    <div class="_bordered-grey w100 h100px pl5 pt5" appearance="outline" appFileDrop>
 
+                <mat-grid-tile>
+                    <div class="_bordered-drop-file w100 h100px mt10 center" appearance="outline" appFileDrop>
+                        <img class="ma" src="./assets/drop_file_area.svg">
                     </div>
                 </mat-grid-tile>
             </mat-grid-list>

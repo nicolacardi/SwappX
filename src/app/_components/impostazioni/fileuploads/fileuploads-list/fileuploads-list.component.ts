@@ -93,7 +93,7 @@ constructor(private svcParametri:               ParametriService,
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '600px',
-      height: '570px',
+      height: '370px',
       data: { fileUploadID:  0}
     };
     const dialogRef = this._dialog.open(FileuploadEditComponent, dialogConfig);
@@ -105,7 +105,7 @@ constructor(private svcParametri:               ParametriService,
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '600px',
-      height: '570px',
+      height: '370px',
       data: { parametroID: fileUploadID }
     };
     const dialogRef = this._dialog.open(FileuploadEditComponent, dialogConfig);

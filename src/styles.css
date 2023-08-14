@@ -794,6 +794,10 @@
         border: 1px solid grey;
     }
 
+    ._bordered-drop-file {
+        border: 5px dashed grey;
+    }
+
     ._bordered-lightgrey {
         border: 1px solid lightgrey;
     }
