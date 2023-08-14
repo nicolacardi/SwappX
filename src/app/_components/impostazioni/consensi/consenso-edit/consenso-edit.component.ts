@@ -2,7 +2,7 @@
 
 import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
 import { tap }                                  from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { ConsensiService }                      from '../consensi.service';
 
 //classes
 import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
-import { DialogDataConsensoEdit }                from 'src/app/_models/DialogData';
+import { DialogDataConsensoEdit }               from 'src/app/_models/DialogData';
 
 //#endregion
 
@@ -30,11 +30,11 @@ export class ConsensoEditComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
-  consenso$!:                  Observable<_UT_Consenso>;
+  consenso$!:                                   Observable<_UT_Consenso>;
 
-  form! :                     UntypedFormGroup;
-  emptyForm :                 boolean = false;
-  loading:                    boolean = true;
+  form! :                                       UntypedFormGroup;
+  emptyForm :                                   boolean = false;
+  loading:                                      boolean = true;
 //#endregion
 
 //#region ----- Constructor --------------------
@@ -117,9 +117,6 @@ export class ConsensoEditComponent implements OnInit {
     for (let j = testoreordered.length; j < 5; j++) testo[j].setValue('');
     
     this.form.controls.numOpzioni.setValue(n);
-
-
-    console.log ("this.form.value", this.form.value);
 
     if (this.form.controls['id'].value == null) {
       this.form.controls.seq.setValue(this.data.maxSeq +1);
