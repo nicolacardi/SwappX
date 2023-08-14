@@ -1,6 +1,10 @@
-import { Component, ViewChild }                 from '@angular/core';
-import { ConsensiListComponent }                from '../consensi-list/consensi-list.component';
+//#region ----- IMPORTS ------------------------
 
+import { Component, ViewChild }                 from '@angular/core';
+
+//components
+import { ConsensiListComponent }                from '../consensi-list/consensi-list.component';
+//#endregion
 @Component({
   selector: 'app-consensi-page',
   templateUrl: './consensi-page.component.html',
@@ -8,19 +12,19 @@ import { ConsensiListComponent }                from '../consensi-list/consensi-
 })
 export class ConsensiPageComponent {
 
-//#region ----- ViewChild Input Output ---------
+  //#region ----- ViewChild Input Output ---------
 
-@ViewChild(ConsensiListComponent) consensiList!: ConsensiListComponent; 
+  @ViewChild(ConsensiListComponent) consensiList!: ConsensiListComponent; 
 
-//#endregion
+  //#endregion
 
-constructor() { }
+  constructor() { }
 
-ngOnInit(): void {
-}
+  ngOnInit(): void {
+  }
 
-addRecord() {
-  this.consensiList.addRecord()
-}
+  addRecord() {
+    this.consensiList.addRecord()
+  }
 
 }

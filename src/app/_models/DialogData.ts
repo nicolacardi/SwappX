@@ -83,8 +83,10 @@ export interface DialogDataMateriaEdit {
     }
 
 export interface DialogDataConsensoEdit {
-      consensoID:                                number;
+      consensoID:                               number;
       maxSeq:                                   number;
-
-
     }
+
+export interface DialogDataParametroEdit {
+      parametroID:                              number;
+  }

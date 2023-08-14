@@ -161,6 +161,8 @@ import { CustomMatPaginatorIntl }               from './_components/utilities/pa
 
 import { ResizeColumnDirective }                from './_components/utilities/resize-column/resize-column.directive';
 import { ColorPickerModule }                    from './color-picker/color-picker.module';
+import { FileDropDirective }                    from './_components/utilities/appfiledrop/appfiledrop.directive';
+
 
 //ClassiAnniMaterie
 import { ClassiAnniMaterieListComponent }       from './_components/classi/classi-anni-materie/classi-anni-materie-list/classi-anni-materie-list.component';
@@ -215,6 +217,9 @@ import { ConsensiListComponent }                from './_components/impostazioni
 import { ConsensiPageComponent }                from './_components/impostazioni/consensi/consensi-page/consensi-page.component';
 import { ConsensoEditComponent }                from './_components/impostazioni/consensi/consenso-edit/consenso-edit.component';
 import { ConsensiIscrizioneComponent }          from './_components/procedura-iscrizione/consensi-iscrizione/consensi-iscrizione.component';
+import { FileuploadsPageComponent } from './_components/impostazioni/fileuploads/fileuploads-page/fileuploads-page.component';
+import { FileuploadsListComponent } from './_components/impostazioni/fileuploads/fileuploads-list/fileuploads-list.component';
+import { FileuploadEditComponent } from './_components/impostazioni/fileuploads/fileupload-edit/fileupload-edit.component';
 
 
 
@@ -332,6 +337,7 @@ import { ConsensiIscrizioneComponent }          from './_components/procedura-is
     ImpostazioniComponent,
     ResizeColumnDirective,
     ClickDoubleDirective,
+    FileDropDirective,
 
     DocenzeAddComponent,
 
@@ -383,6 +389,9 @@ import { ConsensiIscrizioneComponent }          from './_components/procedura-is
     ConsensiPageComponent,
     ConsensoEditComponent,
     ConsensiIscrizioneComponent,
+    FileuploadsPageComponent,
+    FileuploadsListComponent,
+    FileuploadEditComponent,
  
     
 

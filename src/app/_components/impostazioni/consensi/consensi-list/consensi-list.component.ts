@@ -67,12 +67,9 @@ export class ConsensiListComponent implements OnInit{
 //#endregion
 
 //#region ----- Constructor --------------------
-  
   constructor(private svcConsensi:              ConsensiService,
               private _loadingService:          LoadingService,
-              public _dialog:                   MatDialog) {
-
-  }
+              public _dialog:                   MatDialog) {}
 //#endregion
 
 //#region ----- LifeCycle Hooks e simili--------

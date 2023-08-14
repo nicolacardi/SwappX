@@ -14,9 +14,19 @@ export class ParametriService {
   constructor(private http: HttpClient) { }
 
   
+  get(parametroID: any): Observable<_UT_Parametro>{
+    return this.http.get<_UT_Parametro>(environment.apiBaseUrl+'_UT_Parametri/'+parametroID);
+    //http://213.215.231.4/swappX/api/_UT_Parametri/2
+  }
+
   list(): Observable<_UT_Parametro[]>{
     return this.http.get<_UT_Parametro[]>(environment.apiBaseUrl+'_UT_Parametri');
     //http://213.215.231.4/swappX/api/_UT_Parametri
+  }
+
+  listFileUploads(): Observable<_UT_Parametro[]>{
+    return this.http.get<_UT_Parametro[]>(environment.apiBaseUrl+'_UT_Parametri/ListFileUploads');
+    //http://213.215.231.4/swappX/api/_UT_Parametri/ListFileUploads
   }
 
   getByParName(parName: string): Observable<_UT_Parametro>{
@@ -65,6 +75,10 @@ export class ParametriService {
   post(formData: any): Observable <any>{
     formData.id = 0;
     return this.http.post( environment.apiBaseUrl  + '_UT_Parametri' , formData);  
+  }
+
+  delete(parametroID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + '_UT_Parametri/' + parametroID);    
   }
 
 }
