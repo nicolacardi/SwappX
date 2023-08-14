@@ -208,7 +208,7 @@ import { QuillModule }                          from 'ngx-quill';
 import { TableComponent }                       from './_components/templates/table/table.component';
 import { TableShowComponent }                   from './_components/templates/tableshow/tableshow.component';
 import { PagelleClasseEditComponent }           from './_components/pagelle/pagelle-classe-edit/pagelle-classe-edit.component';
-import { ImgUploadsComponent }                 from './_components/impostazioni/imguploads/imguploads.component';
+import { ImgUploadsComponent }                  from './_components/impostazioni/imguploads/imguploads.component';
 import { HttpErrorInterceptor }                 from './_user/auth/httperror.interceptor';
 
 import { ConsensiListComponent }                from './_components/impostazioni/consensi/consensi-list/consensi-list.component';
