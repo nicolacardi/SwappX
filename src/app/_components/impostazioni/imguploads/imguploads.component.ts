@@ -4,9 +4,9 @@ import { MatSnackBar }                          from '@angular/material/snack-ba
 import { MatDialog }                            from '@angular/material/dialog';
 
 //components
-import { DialogOkComponent }                    from '../../../_components/utilities/dialog-ok/dialog-ok.component';
-import { SnackbarComponent }                    from '../../../_components/utilities/snackbar/snackbar.component';
-import { Utility }                              from '../../../_components/utilities/utility.component';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { Utility }                              from '../../utilities/utility.component';
 
 //services
 import { ParametriService }                     from 'src/app/_services/parametri.service';
@@ -16,12 +16,12 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 //#endregion
 
 @Component({
-  selector: 'app-fileuploads',
-  templateUrl: './fileuploads.component.html',
+  selector: 'app-imguploads',
+  templateUrl: './imguploads.component.html',
   styleUrls: ['../impostazioni.component.css']
 })
 
-export class FileuploadsComponent implements OnInit {
+export class ImgUploadsComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
   logoStoody!:                             _UT_Parametro;
