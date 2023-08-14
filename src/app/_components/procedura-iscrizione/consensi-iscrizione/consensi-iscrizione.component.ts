@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 
 //models
 import { _UT_Consenso } from 'src/app/_models/_UT_Consenso';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 //#endregion
 @Component({
@@ -20,6 +20,7 @@ export class ConsensiIscrizioneComponent implements OnInit  {
 //#region ----- Variabili ----------------------
   obsConsensi$!:                                Observable<_UT_Consenso[]>;
   formConsensi! :                               UntypedFormGroup;
+  questions: any[] = []; // Assuming questions is an array of question objects
 
 //#endregion
 
@@ -49,7 +50,22 @@ constructor(private svcConsensi:                ConsensiService,
 
   loadData() {
     this.obsConsensi$ = this.svcConsensi.list();  
+
+
+    this.obsConsensi$.subscribe((questions: any[]) => {
+      this.questions = questions;
+      // Iterate through the questions and add form controls
+      this.questions.forEach((element) => {
+        // Initialize a form control for each question with a default value (e.g., '1')
+         if (element.numOpzioni !=1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.required));
+         if (element.numOpzioni ==1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.requiredTrue));
+      });
+    });
+    
   }
+
+
+  
 //#endregion
 
 

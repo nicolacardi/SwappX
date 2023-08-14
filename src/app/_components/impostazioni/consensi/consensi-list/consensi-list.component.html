@@ -31,7 +31,7 @@
 
         <ng-container matColumnDef="domanda">
             <th mat-header-cell *matHeaderCellDef  mat-sort-header >Domanda</th>
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.domanda | highlight:filterValue"></td>
+            <td mat-cell *matCellDef="let element"  [innerHTML]="element.domanda | highlight:filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="numOpzioni">
