@@ -153,7 +153,7 @@ constructor(private svcParametri:               ParametriService,
 
 
     openFileLink(base64Data: string): void {
-      //NON FUNZIONA
+      //NON FUNZIONA AL MOMENTO
       const pdfData = atob(base64Data);
       const blob = new Blob([pdfData], { type: 'application/pdf' });
       const pdfUrl = URL.createObjectURL(blob);
