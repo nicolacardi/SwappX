@@ -15,6 +15,7 @@ import { ParametriService }                     from 'src/app/_services/parametr
 
 //models
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 //#endregion
 
@@ -34,7 +35,8 @@ export class FileuploadsListComponent {
   displayedColumns: string[] = [
 
     "actionsColumn", 
-    "parDescr"
+    "parDescr",
+
   ];
 
   rptTitle = 'Lista File';
@@ -54,6 +56,7 @@ export class FileuploadsListComponent {
     filtrosx: ''
   }
 
+
 //#endregion
 
 //#region ----- ViewChild Input Output ---------
@@ -63,7 +66,11 @@ export class FileuploadsListComponent {
 //#region ----- Constructor --------------------
 constructor(private svcParametri:               ParametriService,
             private _loadingService:            LoadingService,
-            public _dialog:                     MatDialog) {}
+            public _dialog:                     MatDialog,
+            private sanitizer:                  DomSanitizer
+            ) {}
+
+
 //#endregion
 
 //#region ----- LifeCycle Hooks e simili--------
@@ -144,6 +151,17 @@ constructor(private svcParametri:               ParametriService,
 
     }
 
+
+    openFileLink(base64Data: string): void {
+      //NON FUNZIONA
+      const pdfData = atob(base64Data);
+      const blob = new Blob([pdfData], { type: 'application/pdf' });
+      const pdfUrl = URL.createObjectURL(blob);
+  
+      const sanitizedPdfUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
+  
+      window.open(sanitizedPdfUrl.toString(), '_blank');
+  }
 
 //#endregion
 

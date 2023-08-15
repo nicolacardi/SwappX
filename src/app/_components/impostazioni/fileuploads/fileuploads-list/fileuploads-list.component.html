@@ -26,8 +26,10 @@
 
         <ng-container matColumnDef="parDescr">
             <th mat-header-cell *matHeaderCellDef  mat-sort-header >Nome del File</th>
-            <td mat-cell *matCellDef="let element"  [innerHTML]="element.parDescr | highlight:filterValue"></td>
+            <td mat-cell *matCellDef="let element"  [innerHTML]="element.parDescr | highlight:filterValue" (click)="openFileLink(element.parValue)"></td>
         </ng-container>
+
+
 
 
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
