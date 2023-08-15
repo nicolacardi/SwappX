@@ -87,6 +87,6 @@ export interface DialogDataConsensoEdit {
       maxSeq:                                   number;
     }
 
-export interface DialogDataParametroEdit {
-      parametroID:                              number;
+export interface DialogDataFileEdit {
+      fileID:                              number;
   }

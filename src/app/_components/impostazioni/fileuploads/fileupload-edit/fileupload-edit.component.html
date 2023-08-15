@@ -1,13 +1,13 @@
 <mat-card appearance="outlined" class="form-card">
     <mat-card-content>
-        <form *ngIf="(parametro$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
+        <form *ngIf="(file$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
             <div class="center">
 
                 <img class="iconaMenuBig" src="./assets/documento_edit_T.svg">
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
-                <button *ngIf="data.parametroID" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
+                <button *ngIf="data.fileID" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="loadData()" >
                     <mat-icon>restart_alt</mat-icon>
@@ -19,7 +19,7 @@
                     <mat-icon>save</mat-icon>
                 </button>
 
-                <button *ngIf="data.parametroID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
+                <button *ngIf="data.fileID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="delete()" >
                     <mat-icon>delete</mat-icon>
@@ -30,8 +30,8 @@
                 <mat-grid-tile>
 
                     <mat-form-field class="w100 h100px pl5 pt5" appearance="outline">
-                        <mat-label>Descrizione</mat-label>
-                        <textarea required class="w300px  _noresize" placeholder="Descrizione File" matInput formControlName="parDescr"></textarea>
+                        <mat-label>Nome File</mat-label>
+                        <textarea required class="w300px  _noresize" placeholder="Nome File" matInput formControlName="nomeFile"></textarea>
                     </mat-form-field>
 
                 </mat-grid-tile>
@@ -40,7 +40,6 @@
                     <div class="_bordered-drop-file w100 h100px mt10 center" appearance="outline" appFileDrop  (drop)="onImageDrop($event)">
                         <img class="ma" *ngIf="!fileDropped" src="./assets/drop_file_area.svg">
                         <img class="ma" *ngIf="fileDropped" src="./assets/dropped_file_area.svg">
-
                     </div>
                 </mat-grid-tile>
             </mat-grid-list>

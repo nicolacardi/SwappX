@@ -23,13 +23,15 @@
             </td>
         </ng-container>
 
-
-        <ng-container matColumnDef="parDescr">
+        <ng-container matColumnDef="nomeFile">
             <th mat-header-cell *matHeaderCellDef  mat-sort-header >Nome del File</th>
-            <td mat-cell *matCellDef="let element"  [innerHTML]="element.parDescr | highlight:filterValue" (click)="openFileLink(element.parValue)"></td>
+            <td mat-cell *matCellDef="let element"  [innerHTML]="element.nomeFile | highlight:filterValue" ></td>
         </ng-container>
 
-
+        <ng-container matColumnDef="tipoFile">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Tipo File</th>
+            <td mat-cell *matCellDef="let element"  [innerHTML]="element.tipoFile | highlight:filterValue" ></td>
+        </ng-container>
 
 
         <!-- **************************   MAT-HEADER-ROW   ******************* -->

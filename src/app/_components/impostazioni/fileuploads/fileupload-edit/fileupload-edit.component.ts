@@ -1,5 +1,5 @@
 //#region ----- IMPORTS ------------------------
-import { Component, ElementRef, Inject, ViewChild }                    from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
@@ -8,16 +8,18 @@ import { Observable, tap }                      from 'rxjs';
 //components
 import { DialogYesNoComponent }                 from 'src/app/_components/utilities/dialog-yes-no/dialog-yes-no.component';
 import { SnackbarComponent }                    from 'src/app/_components/utilities/snackbar/snackbar.component';
+import { DialogDataFileEdit }                   from 'src/app/_models/DialogData';
+import { DialogOkComponent }                    from 'src/app/_components/utilities/dialog-ok/dialog-ok.component';
 
 //services
+import { FileDropDirective }                    from 'src/app/_components/utilities/appfiledrop/appfiledrop.directive';
 import { LoadingService }                       from 'src/app/_components/utilities/loading/loading.service';
+import { FilesService }                         from '../file.service';
 
 //models
-import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
-import { ParametriService }                     from 'src/app/_services/parametri.service';
-import { DialogDataParametroEdit }              from 'src/app/_models/DialogData';
-import { DialogOkComponent } from 'src/app/_components/utilities/dialog-ok/dialog-ok.component';
-import { FileDropDirective } from 'src/app/_components/utilities/appfiledrop/appfiledrop.directive';
+import { _UT_File }                             from 'src/app/_models/_UT_File';
+import { User }                                 from 'src/app/_user/Users';
+import { Utility } from 'src/app/_components/utilities/utility.component';
 
 //#endregion
 
@@ -29,8 +31,8 @@ import { FileDropDirective } from 'src/app/_components/utilities/appfiledrop/app
 export class FileuploadEditComponent {
 
 //#region ----- Variabili ----------------------
-
-  parametro$!:                                  Observable<_UT_Parametro>;
+  currUser:                                     User;
+  file$!:                                       Observable<_UT_File>;
   nomeFile!:                                    string;
   form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
@@ -45,23 +47,27 @@ export class FileuploadEditComponent {
 //#region ----- Constructor --------------------
 
   constructor(public _dialogRef: MatDialogRef<FileuploadEditComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogDataParametroEdit,
-              private svcParametri:             ParametriService,
+              @Inject(MAT_DIALOG_DATA) public data: DialogDataFileEdit,
+              private svcFiles:                 FilesService,
               private _loadingService :         LoadingService,
               private fb:                       UntypedFormBuilder, 
               public _dialog:                   MatDialog,
               private _snackBar:                MatSnackBar ) { 
 
+  this.currUser = Utility.getCurrentUser();
+
   _dialogRef.disableClose = true;
 
   this.form = this.fb.group({
     id:                                       [null],
-    parName:                                    [''],
-    parValue:                                   [''],
-    parDescr:                                   ['', { validators:[ Validators.required]}],
-    ckFile:                                     ['']
+    nomeFile:                                   [''],
+    tipoFile:                                   [''],
+    base64:                                     [''],
+    dtIns:                                      [''],
+    userIns:                                    ['']
   });
   }
+
 
 //#endregion
 
@@ -74,15 +80,16 @@ export class FileuploadEditComponent {
 
   loadData(){
 
-    if (this.data.parametroID && this.data.parametroID + '' != "0") {
+    if (this.data.fileID && this.data.fileID + '' != "0") {
 
-      const obsParametro$: Observable<_UT_Parametro> = this.svcParametri.get(this.data.parametroID);
-      const loadParametro$ = this._loadingService.showLoaderUntilCompleted(obsParametro$);
-      this.parametro$ = loadParametro$
+      const obsFile$: Observable<_UT_File> = this.svcFiles.getLight(this.data.fileID);
+      const loadFile$ = this._loadingService.showLoaderUntilCompleted(obsFile$);
+      this.file$ = loadFile$
       .pipe(
           tap(
-            parametro => {
-              this.form.patchValue(parametro)
+            file => {
+              console.log ("fileupload-edit - loadData - file ", file);
+              this.form.patchValue(file)
             }
           )
       );
@@ -97,30 +104,30 @@ export class FileuploadEditComponent {
 //#region ----- Operazioni CRUD ----------------
 
   save(){
-
+    this.form.controls.userIns.setValue(this.currUser.personaID);
+    console.log ("fileupload-edit- save - this.form", this.form.value);
     if (this.form.controls['id'].value == null) {
-      this.svcParametri.post(this.form.value).subscribe({
+      this.svcFiles.post(this.form.value).subscribe({
         next: res=> {
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
           this._dialogRef.close();
-
         },
         error: err=> (
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
         )
       });
     }
-    else {
-      this.svcParametri.put(this.form.value).subscribe({
-          next: res=> {
-            this._dialogRef.close();
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-          },
-          error: err=> (
-            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          )
-        });
-    }
+    // else {
+    //   this.svcFiles.put(this.form.value).subscribe({
+    //       next: res=> {
+    //         this._dialogRef.close();
+    //         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+    //       },
+    //       error: err=> (
+    //         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+    //       )
+    //     });
+    // }
   }
 
   delete(){
@@ -132,7 +139,7 @@ export class FileuploadEditComponent {
     dialogRef.afterClosed().subscribe(
       result => {
         if(result){
-          this.svcParametri.delete(Number(this.data.parametroID)).subscribe({
+          this.svcFiles.delete(Number(this.data.fileID)).subscribe({
             next: res=>{
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();
@@ -176,9 +183,7 @@ export class FileuploadEditComponent {
     reader.readAsDataURL(file);
     reader.onload = async () => {
       this.nomeFile = file.name;
-      if (this.form.controls['id'].value == null) this.form.controls.parName.setValue ('Documento');
-      this.form.controls.parValue.setValue(reader.result);
-      this.form.controls.ckFile.setValue(true);
+      this.form.controls.base64.setValue(reader.result);
     };
   }
   
