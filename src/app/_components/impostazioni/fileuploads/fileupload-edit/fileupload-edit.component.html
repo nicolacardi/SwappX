@@ -37,12 +37,17 @@
                 </mat-grid-tile>
 
                 <mat-grid-tile>
-                    <div class="_bordered-drop-file w100 h100px mt10 center" appearance="outline" appFileDrop>
-                        <img class="ma" src="./assets/drop_file_area.svg">
+                    <div class="_bordered-drop-file w100 h100px mt10 center" appearance="outline" appFileDrop  (drop)="onImageDrop($event)">
+                        <img class="ma" *ngIf="!fileDropped" src="./assets/drop_file_area.svg">
+                        <img class="ma" *ngIf="fileDropped" src="./assets/dropped_file_area.svg">
+
                     </div>
                 </mat-grid-tile>
             </mat-grid-list>
-
+            <div class="center">rilascia il file (PDF) nell'area qui sopra oppure...</div>
+            <input type="file" id="file" accept=".pdf" (change)="onImageSelect($event.target)"hidden #selectFile1>
+            <button type="button" mat-button matSuffix class="w150px ma mt10" mat-stroked-button (click)="selectFile1.click()" >Seleziona file</button>
+            <div class="center" *ngIf="nomeFile!=null">file selezionato: {{nomeFile}}</div>
 
 
         </form>

@@ -27,7 +27,7 @@ export class FileDropDirective {
 
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
-        console.log(files.length, files);
+        //console.log(files.length, files);
       this.fileDropped.emit(files);
     }
   }
