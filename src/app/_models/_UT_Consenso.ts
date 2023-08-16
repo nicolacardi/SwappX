@@ -7,7 +7,7 @@ export interface _UT_Consenso {
     testo3:                                     string;
     testo4:                                     string;
     testo5:                                     string;
-    risorsaID:                                  number;
+    fileID:                                     number;
 
   }
 

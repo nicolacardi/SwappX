@@ -1910,12 +1910,20 @@
         color: red;
     }
 
+    ._blue{
+        color: blue;
+    }
+
     ._grey{
         color: grey;
     }
 
     ._lightgrey{
         color: lightgrey;
+    }
+
+    ._underline {
+        text-decoration: underline;
     }
 
 

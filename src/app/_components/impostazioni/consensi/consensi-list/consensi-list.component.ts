@@ -15,6 +15,7 @@ import { ConsensiService }                      from '../consensi.service';
 //models
 import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
 import { ConsensoEditComponent } from '../consenso-edit/consenso-edit.component';
+import { FilesService } from '../../fileuploads/file.service';
 //#endregion
 
 @Component({
@@ -40,7 +41,8 @@ export class ConsensiListComponent implements OnInit{
     "testo2",
     "testo3",
     "testo4",
-    "testo5"
+    "testo5",
+    "file"
   ];
 
   rptTitle = 'Lista Consensi';
@@ -68,6 +70,7 @@ export class ConsensiListComponent implements OnInit{
 
 //#region ----- Constructor --------------------
   constructor(private svcConsensi:              ConsensiService,
+              private svcFiles:                 FilesService,
               private _loadingService:          LoadingService,
               public _dialog:                   MatDialog) {}
 //#endregion
@@ -154,6 +157,30 @@ export class ConsensiListComponent implements OnInit{
   drop(event: any){
     this.svcConsensi.updateSeq(event.previousIndex+1, event.currentIndex+1 )
     .subscribe(res=> this.loadData());
+  }
+
+  download(fileID:number){
+    if (fileID == null) return;
+    this.svcFiles.get(fileID).subscribe(
+      res=> {
+        const pdfData = res.base64.split(',')[1]; // estrae la stringa dalla virgola in avanti
+
+        // const blob = new Blob([pdfData], { type: 'application/pdf' });
+        // console.log("blob", blob);              
+        // const pdfUrl = URL.createObjectURL(blob);
+        // console.log("pdfUrl", pdfUrl);
+        // window.open(pdfUrl, '_blank'); // Open in a new tab or window NON FUNZIONA
+
+        const source = `data:application/pdf;base64,${pdfData}`;
+        const link = document.createElement("a");
+
+        link.href = source;
+        link.download = `${"download"}.pdf`
+        link.click();
+
+      }
+    )
+
   }
 //#endregion
 }

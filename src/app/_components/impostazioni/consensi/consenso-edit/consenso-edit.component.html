@@ -40,9 +40,9 @@
                 </mat-grid-tile>
 
             </mat-grid-list>
-            <mat-grid-list class="mt10" [cols]="1" rowHeight="60px" >
+            <mat-grid-list class="mt10" [cols]="2" rowHeight="60px" >
 
-                <mat-grid-tile class="center">
+                <mat-grid-tile colspan="2" class="center">
                     Indicare di seguito le Opzioni disponibili (Max 5)<br>
                     Per un consenso obbligatorio inserire 1 opzione<br>
                     Per un consenso non obbligatorio inserire 2 opzioni (ad es. Si/No)
@@ -77,9 +77,20 @@
                     </mat-form-field>
                 </mat-grid-tile>
                 
-                <mat-grid-tile>
+                <mat-grid-tile colspan="2" >
                     <mat-form-field>
                         <input matInput type="text" placeholder="opzione 5" formControlName="testo5" #nome>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile colspan="2" >
+                    <mat-form-field  >
+                        <mat-label>File</mat-label>
+                        <mat-select formControlName="fileID" #selectAnno>
+                            <mat-option *ngFor="let element of (obsFiles$ | async)" [value]="element.id">
+                                {{element.nomeFile}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </mat-grid-tile>
 

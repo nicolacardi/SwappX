@@ -14,10 +14,12 @@ import { DialogYesNoComponent }                 from '../../../utilities/dialog-
 //services
 import { LoadingService }                       from '../../../utilities/loading/loading.service';
 import { ConsensiService }                      from '../consensi.service';
+import { FilesService }                         from '../../fileuploads/file.service';
 
 //classes
 import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
 import { DialogDataConsensoEdit }               from 'src/app/_models/DialogData';
+import { _UT_File } from 'src/app/_models/_UT_File';
 
 //#endregion
 
@@ -31,7 +33,7 @@ export class ConsensoEditComponent implements OnInit {
 //#region ----- Variabili ----------------------
 
   consenso$!:                                   Observable<_UT_Consenso>;
-
+  obsFiles$!:                                      Observable<_UT_File[]>;
   form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
@@ -41,11 +43,13 @@ export class ConsensoEditComponent implements OnInit {
 
   constructor(public _dialogRef: MatDialogRef<ConsensoEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data:       DialogDataConsensoEdit,
-              private svcConsensi:                        ConsensiService,
-              private _loadingService :                   LoadingService,
-              private fb:                                 UntypedFormBuilder, 
-              public _dialog:                             MatDialog,
-              private _snackBar:                          MatSnackBar ) { 
+              private svcConsensi:              ConsensiService,
+              private svcFile:                  FilesService,
+
+              private _loadingService :         LoadingService,
+              private fb:                       UntypedFormBuilder, 
+              public _dialog:                   MatDialog,
+              private _snackBar:                MatSnackBar ) { 
     
     _dialogRef.disableClose = true;
     
@@ -58,8 +62,13 @@ export class ConsensoEditComponent implements OnInit {
       testo3:                                   [''],
       testo4:                                   [''],
       testo5:                                   [''],
-      seq:                                      ['']
+      seq:                                      [''],
+      fileID:                                   ['']
     });
+
+    this.obsFiles$ = this.svcFile.list();
+
+    
   }
 
 //#endregion

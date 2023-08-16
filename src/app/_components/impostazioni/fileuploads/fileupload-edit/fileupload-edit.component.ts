@@ -172,10 +172,10 @@ export class FileuploadEditComponent {
 
   onImageChange(file: File) {
 
-    if (file.size > 200000) {
+    if (file.size > 2000000) {
       this._dialog.open(DialogOkComponent, {
           width: '320px',
-          data: { titolo: "ATTENZIONE!", sottoTitolo: "Il file eccede la dimensione massima (200kb)" }
+          data: { titolo: "ATTENZIONE!", sottoTitolo: "Il file eccede la dimensione massima (2Mb)" }
       });
       return;
     } 
