@@ -16,6 +16,9 @@ import { FilesService }                         from '../file.service';
 //models
 import { _UT_File }                             from 'src/app/_models/_UT_File';
 import { DomSanitizer, SafeResourceUrl }        from '@angular/platform-browser';
+import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DialogYesNoComponent } from 'src/app/_components/utilities/dialog-yes-no/dialog-yes-no.component';
 
 //#endregion
 
@@ -33,7 +36,8 @@ export class FileuploadsListComponent {
   obsFileUploads$!:                             Observable<_UT_File[]>;
   
   displayedColumns: string[] = [
-    "actionsColumn", 
+    "actionsColumn",
+    "delete", 
     "nomeFile",
     "tipoFile"
   ];
@@ -60,13 +64,15 @@ export class FileuploadsListComponent {
 
 //#region ----- ViewChild Input Output ---------
   @ViewChild(MatSort) sort!:                    MatSort;
+
 //#endregion
 
 //#region ----- Constructor --------------------
 constructor(private svcFiles:                   FilesService,
             private _loadingService:            LoadingService,
             public _dialog:                     MatDialog,
-            private sanitizer:                  DomSanitizer
+            private _snackBar:                  MatSnackBar,
+
             ) {}
 
 
@@ -104,20 +110,61 @@ constructor(private svcFiles:                   FilesService,
       data: { fileID:  0}
     };
     const dialogRef = this._dialog.open(FileuploadEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(() => {() => this.loadData();
+    dialogRef.afterClosed().subscribe({
+      next: res=>{
+        this.loadData();
+      }
     });
+    
+    (
+      
+      
+      
+      () => {() => this.loadData();});
   }
 
-  openDetail(fileID:any){
-    //TODO DEVE SOLO MOSTRARE IL FILE
-    // const dialogConfig : MatDialogConfig = {
-    //   panelClass: 'add-DetailDialog',
-    //   width: '600px',
-    //   height: '430px',
-    //   data: { fileID: fileID }
-    // };
-    // const dialogRef = this._dialog.open(FileuploadEditComponent, dialogConfig);
-    // dialogRef.afterClosed().subscribe(() => this.loadData());
+  download(fileID:number){
+
+    this.svcFiles.get(fileID).subscribe(
+      res=> {
+        const pdfData = res.base64.split(',')[1]; // estrae la stringa dalla virgola in avanti
+
+        // const blob = new Blob([pdfData], { type: 'application/pdf' });
+        // console.log("blob", blob);              
+        // const pdfUrl = URL.createObjectURL(blob);
+        // console.log("pdfUrl", pdfUrl);
+        // window.open(pdfUrl, '_blank'); // Open in a new tab or window NON FUNZIONA
+
+        const source = `data:application/pdf;base64,${pdfData}`;
+        const link = document.createElement("a");
+
+        link.href = source;
+        link.download = `${"download"}.pdf`
+        link.click();
+
+      }
+    )
+
+  }
+
+  delete (fileID: number) {
+
+    const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+      width: '320px',
+      data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del file ?"}
+    });
+
+    dialogYesNo.afterClosed().subscribe(result => {
+      if(result) {
+        this.svcFiles.delete(fileID).subscribe({
+          next: res=>{
+            this._snackBar.openFromComponent(SnackbarComponent,{data: 'File cancellato', panelClass: ['red-snackbar']});
+            this.loadData();
+          },
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+        });
+      }
+    });
   }
 
   //#region ----- Filtri & Sort ------------------
@@ -153,16 +200,7 @@ constructor(private svcFiles:                   FilesService,
     }
 
 
-  //   openFileLink(base64Data: string): void {
-  //     //NON FUNZIONA AL MOMENTO
-  //     const pdfData = atob(base64Data);
-  //     const blob = new Blob([pdfData], { type: 'application/pdf' });
-  //     const pdfUrl = URL.createObjectURL(blob);
-  
-  //     const sanitizedPdfUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
-  
-  //     window.open(sanitizedPdfUrl.toString(), '_blank');
-  // }
+
 
 //#endregion
 

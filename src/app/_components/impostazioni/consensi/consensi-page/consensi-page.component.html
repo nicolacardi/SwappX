@@ -1,6 +1,6 @@
-<button mat-mini-fab aria-label="Strumenti" matTooltip="Strumenti" class="_btn-toolbar _btn-pos-top-0" (click)="toolSidenav.toggle();" >
+<!-- <button mat-mini-fab aria-label="Strumenti" matTooltip="Strumenti" class="_btn-toolbar _btn-pos-top-0" (click)="toolSidenav.toggle();" >
     <mat-icon>construction</mat-icon>
-</button>
+</button> -->
 
 <button mat-mini-fab aria-label="Nuova Domanda" matTooltip="Nuova domanda" class="_btn-add _btn-pos-right-1 _btn-pos-top-0" (click)="addRecord()">
     <mat-icon>add</mat-icon>
@@ -8,7 +8,7 @@
 
 <mat-drawer-container [hasBackdrop]="false" style="min-height: 91%;">
 
-    <mat-drawer position="start" #toolSidenav class="toolSidenav"  [mode]="'side'">
+    <!-- <mat-drawer position="start" #toolSidenav class="toolSidenav"  [mode]="'side'"> -->
         <!-- <app-toolbar [rptTitle]="appconsensilist.rptTitle" 
                      [rptFieldsToKeep]="appconsensilist.rptFieldsToKeep" 
                      [rptColumnsNames]="appconsensilist.rptColumnsNames" 
@@ -18,7 +18,7 @@
                      [emailsYN] = "false"
                      >
         </app-toolbar> -->
-    </mat-drawer>
+    <!-- </mat-drawer> -->
 
     <mat-drawer-content>
         <app-consensi-list #appconsensilist >

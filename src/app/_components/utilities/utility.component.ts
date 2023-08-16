@@ -214,6 +214,35 @@ export abstract class Utility {
       reader.readAsDataURL(blob);
     });
   }
+
+  public static extractMIMEType (dataUrl: string): string {
+    const mimeTypeStart = "data:"; // The start of the MIME type
+    const mimeTypeEnd = ";"; // The end of the MIME type
+
+    const startIndex = dataUrl.indexOf(mimeTypeStart) + mimeTypeStart.length;
+    const endIndex = dataUrl.indexOf(mimeTypeEnd, startIndex);
+
+    let mimeType = '';
+    if (startIndex !== -1 && endIndex !== -1) {
+      mimeType = dataUrl.substring(startIndex, endIndex);
+    } else {
+      mimeType =''
+    }
+
+    let subType = '';
+
+    const mimeTypeParts = mimeType.split('/');
+    if (mimeTypeParts.length === 2) {
+      subType = mimeTypeParts[1];
+    } else {
+      subType = ''
+    }
+
+    return subType;
+
+
+
+  }
 //#endregion
 
 }

@@ -106,6 +106,7 @@ export class FileuploadEditComponent {
   save(){
     this.form.controls.userIns.setValue(this.currUser.personaID);
     console.log ("fileupload-edit- save - this.form", this.form.value);
+    this.form.controls.tipoFile.setValue(Utility.extractMIMEType(this.form.controls.base64.value));
     if (this.form.controls['id'].value == null) {
       this.svcFiles.post(this.form.value).subscribe({
         next: res=> {
