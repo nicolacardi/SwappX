@@ -15,7 +15,7 @@ import { ConsensiService }                      from '../consensi.service';
 //models
 import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
 import { ConsensoEditComponent } from '../consenso-edit/consenso-edit.component';
-import { FilesService } from '../../fileuploads/file.service';
+import { RisorseService } from '../../fileuploads/risorse.service';
 //#endregion
 
 @Component({
@@ -70,7 +70,7 @@ export class ConsensiListComponent implements OnInit{
 
 //#region ----- Constructor --------------------
   constructor(private svcConsensi:              ConsensiService,
-              private svcFiles:                 FilesService,
+              private svcRisorse:                 RisorseService,
               private _loadingService:          LoadingService,
               public _dialog:                   MatDialog) {}
 //#endregion
@@ -161,7 +161,7 @@ export class ConsensiListComponent implements OnInit{
 
   download(fileID:number){
     if (fileID == null) return;
-    this.svcFiles.get(fileID).subscribe(
+    this.svcRisorse.get(fileID).subscribe(
       res=> {
         const pdfData = res.base64.split(',')[1]; // estrae la stringa dalla virgola in avanti
 

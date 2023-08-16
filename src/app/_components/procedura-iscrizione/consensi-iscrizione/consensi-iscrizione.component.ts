@@ -1,13 +1,16 @@
 //#region ----- IMPORTS ------------------------
 import { Component, Input, OnInit }             from '@angular/core';
 import { ConsensiService }                      from '../../impostazioni/consensi/consensi.service';
-import { MatDialog }          from '@angular/material/dialog';
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { Observable } from 'rxjs';
+import { MatDialog }                            from '@angular/material/dialog';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { Observable }                           from 'rxjs';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+
+//services
+import { RisorseService }                       from '../../impostazioni/fileuploads/risorse.service';
 
 //models
-import { _UT_Consenso } from 'src/app/_models/_UT_Consenso';
-import { FormControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
 
 //#endregion
 @Component({
@@ -32,6 +35,7 @@ export class ConsensiIscrizioneComponent implements OnInit  {
   
 constructor(private svcConsensi:                ConsensiService,
             private fb:                         UntypedFormBuilder, 
+            private svcRisorse:                   RisorseService,
 
             private _loadingService:            LoadingService,
             public _dialog:                     MatDialog
@@ -62,6 +66,30 @@ constructor(private svcConsensi:                ConsensiService,
       });
     });
     
+  }
+
+  download(fileID:number){
+    if (fileID == null) return;
+    this.svcRisorse.get(fileID).subscribe(
+      res=> {
+        const pdfData = res.base64.split(',')[1]; // estrae la stringa dalla virgola in avanti
+
+        // const blob = new Blob([pdfData], { type: 'application/pdf' });
+        // console.log("blob", blob);              
+        // const pdfUrl = URL.createObjectURL(blob);
+        // console.log("pdfUrl", pdfUrl);
+        // window.open(pdfUrl, '_blank'); // Open in a new tab or window NON FUNZIONA
+
+        const source = `data:application/pdf;base64,${pdfData}`;
+        const link = document.createElement("a");
+
+        link.href = source;
+        link.download = `${res.nomeFile}.pdf`
+        link.click();
+
+      }
+    )
+
   }
 
 

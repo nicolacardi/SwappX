@@ -14,7 +14,7 @@ import { DialogYesNoComponent }                 from '../../../utilities/dialog-
 //services
 import { LoadingService }                       from '../../../utilities/loading/loading.service';
 import { ConsensiService }                      from '../consensi.service';
-import { FilesService }                         from '../../fileuploads/file.service';
+import { RisorseService }                       from '../../fileuploads/risorse.service';
 
 //classes
 import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
@@ -44,7 +44,7 @@ export class ConsensoEditComponent implements OnInit {
   constructor(public _dialogRef: MatDialogRef<ConsensoEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data:       DialogDataConsensoEdit,
               private svcConsensi:              ConsensiService,
-              private svcFile:                  FilesService,
+              private svcFile:                  RisorseService,
 
               private _loadingService :         LoadingService,
               private fb:                       UntypedFormBuilder, 

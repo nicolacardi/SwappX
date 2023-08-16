@@ -11,11 +11,10 @@ import { FileuploadEditComponent }              from '../fileupload-edit/fileupl
 
 //services
 import { LoadingService }                       from 'src/app/_components/utilities/loading/loading.service';
-import { FilesService }                         from '../file.service';
+import { RisorseService }                       from '../risorse.service';
 
 //models
 import { _UT_File }                             from 'src/app/_models/_UT_File';
-import { DomSanitizer, SafeResourceUrl }        from '@angular/platform-browser';
 import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogYesNoComponent } from 'src/app/_components/utilities/dialog-yes-no/dialog-yes-no.component';
@@ -68,7 +67,7 @@ export class FileuploadsListComponent {
 //#endregion
 
 //#region ----- Constructor --------------------
-constructor(private svcFiles:                   FilesService,
+constructor(private svcRisorse:                   RisorseService,
             private _loadingService:            LoadingService,
             public _dialog:                     MatDialog,
             private _snackBar:                  MatSnackBar,
@@ -86,7 +85,7 @@ constructor(private svcFiles:                   FilesService,
 
   loadData() {
 
-    this.obsFileUploads$ = this.svcFiles.list();  
+    this.obsFileUploads$ = this.svcRisorse.list();  
     const loadFileUploads$ =this._loadingService.showLoaderUntilCompleted(this.obsFileUploads$);
 
     loadFileUploads$.subscribe(
@@ -124,8 +123,8 @@ constructor(private svcFiles:                   FilesService,
   }
 
   download(fileID:number){
-
-    this.svcFiles.get(fileID).subscribe(
+    if (fileID == null) return;
+    this.svcRisorse.get(fileID).subscribe(
       res=> {
         const pdfData = res.base64.split(',')[1]; // estrae la stringa dalla virgola in avanti
 
@@ -139,7 +138,7 @@ constructor(private svcFiles:                   FilesService,
         const link = document.createElement("a");
 
         link.href = source;
-        link.download = `${"download"}.pdf`
+        link.download = `${res.nomeFile}.pdf`
         link.click();
 
       }
@@ -156,7 +155,7 @@ constructor(private svcFiles:                   FilesService,
 
     dialogYesNo.afterClosed().subscribe(result => {
       if(result) {
-        this.svcFiles.delete(fileID).subscribe({
+        this.svcRisorse.delete(fileID).subscribe({
           next: res=>{
             this._snackBar.openFromComponent(SnackbarComponent,{data: 'File cancellato', panelClass: ['red-snackbar']});
             this.loadData();

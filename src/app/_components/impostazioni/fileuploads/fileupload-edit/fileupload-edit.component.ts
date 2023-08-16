@@ -10,16 +10,16 @@ import { DialogYesNoComponent }                 from 'src/app/_components/utilit
 import { SnackbarComponent }                    from 'src/app/_components/utilities/snackbar/snackbar.component';
 import { DialogDataFileEdit }                   from 'src/app/_models/DialogData';
 import { DialogOkComponent }                    from 'src/app/_components/utilities/dialog-ok/dialog-ok.component';
+import { Utility }                              from 'src/app/_components/utilities/utility.component';
 
 //services
 import { FileDropDirective }                    from 'src/app/_components/utilities/appfiledrop/appfiledrop.directive';
 import { LoadingService }                       from 'src/app/_components/utilities/loading/loading.service';
-import { FilesService }                         from '../file.service';
+import { RisorseService }                         from '../risorse.service';
 
 //models
 import { _UT_File }                             from 'src/app/_models/_UT_File';
 import { User }                                 from 'src/app/_user/Users';
-import { Utility } from 'src/app/_components/utilities/utility.component';
 
 //#endregion
 
@@ -48,7 +48,7 @@ export class FileuploadEditComponent {
 
   constructor(public _dialogRef: MatDialogRef<FileuploadEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogDataFileEdit,
-              private svcFiles:                 FilesService,
+              private svcRisorse:               RisorseService,
               private _loadingService :         LoadingService,
               private fb:                       UntypedFormBuilder, 
               public _dialog:                   MatDialog,
@@ -82,7 +82,7 @@ export class FileuploadEditComponent {
 
     if (this.data.fileID && this.data.fileID + '' != "0") {
 
-      const obsFile$: Observable<_UT_File> = this.svcFiles.getLight(this.data.fileID);
+      const obsFile$: Observable<_UT_File> = this.svcRisorse.getLight(this.data.fileID);
       const loadFile$ = this._loadingService.showLoaderUntilCompleted(obsFile$);
       this.file$ = loadFile$
       .pipe(
@@ -108,7 +108,7 @@ export class FileuploadEditComponent {
     console.log ("fileupload-edit- save - this.form", this.form.value);
     this.form.controls.tipoFile.setValue(Utility.extractMIMEType(this.form.controls.base64.value));
     if (this.form.controls['id'].value == null) {
-      this.svcFiles.post(this.form.value).subscribe({
+      this.svcRisorse.post(this.form.value).subscribe({
         next: res=> {
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
           this._dialogRef.close();
@@ -119,7 +119,7 @@ export class FileuploadEditComponent {
       });
     }
     // else {
-    //   this.svcFiles.put(this.form.value).subscribe({
+    //   this.svcRisorse.put(this.form.value).subscribe({
     //       next: res=> {
     //         this._dialogRef.close();
     //         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
@@ -140,7 +140,7 @@ export class FileuploadEditComponent {
     dialogRef.afterClosed().subscribe(
       result => {
         if(result){
-          this.svcFiles.delete(Number(this.data.fileID)).subscribe({
+          this.svcRisorse.delete(Number(this.data.fileID)).subscribe({
             next: res=>{
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();

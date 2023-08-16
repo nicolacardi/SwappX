@@ -8,7 +8,7 @@ import { _UT_File }                             from 'src/app/_models/_UT_File';
   providedIn: 'root'
 })
 
-export class FilesService {
+export class RisorseService {
 
   constructor(private http: HttpClient) { }
 

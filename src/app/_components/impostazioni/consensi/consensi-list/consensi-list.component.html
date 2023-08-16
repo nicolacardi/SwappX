@@ -62,7 +62,7 @@
 
         <ng-container matColumnDef="file">
             <th mat-header-cell *matHeaderCellDef  mat-sort-header >Allegato</th>
-            <td mat-cell *matCellDef="let element" class="_blue _underline pointer"  [innerHTML]="element.file?.nomeFile | highlight:filterValue"></td>
+            <td mat-cell *matCellDef="let element" class="_blue _underline pointer" (click) = "download(element.file?.id)"  [innerHTML]="element.file?.nomeFile | highlight:filterValue"></td>
         </ng-container>
         
 

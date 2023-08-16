@@ -1,4 +1,4 @@
-<div class="w90 ma">
+<div class="w100 ma">
 <form [formGroup] = "formConsensi">
 
         <mat-grid-list *ngFor="let element of (obsConsensi$ | async)" cols="3" rowHeight="60px">
@@ -17,7 +17,11 @@
                     <mat-radio-button *ngIf="element.numOpzioni > 4" value="4">{{element.testo5}}</mat-radio-button>
                 </mat-radio-group>
             </mat-grid-tile>
+            <mat-grid-tile *ngIf="element.file != null">
+                <span class="_blue _underline pointer" (click) = "download(element.file!.id)">{{element.file!.nomeFile}}</span>
+            </mat-grid-tile>
         </mat-grid-list>
 
   </form>
 </div>
+element.file?.nomeFil
