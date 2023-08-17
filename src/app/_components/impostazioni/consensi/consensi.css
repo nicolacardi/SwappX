@@ -2,3 +2,9 @@
     max-width: 250px !important;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
+
+.mat-column-file {
+    max-width: 200px !important;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+

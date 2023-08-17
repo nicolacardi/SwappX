@@ -7,7 +7,7 @@ import { Observable }                           from 'rxjs';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 //services
-import { RisorseService }                       from '../../impostazioni/fileuploads/risorse.service';
+import { RisorseService }                       from '../../impostazioni/risorse/risorse.service';
 
 //models
 import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
@@ -68,9 +68,9 @@ constructor(private svcConsensi:                ConsensiService,
     
   }
 
-  download(fileID:number){
-    if (fileID == null) return;
-    this.svcRisorse.get(fileID).subscribe(
+  download(risorsaID:number){
+    if (risorsaID == null) return;
+    this.svcRisorse.get(risorsaID).subscribe(
       res=> {
         const pdfData = res.base64.split(',')[1]; // estrae la stringa dalla virgola in avanti
 

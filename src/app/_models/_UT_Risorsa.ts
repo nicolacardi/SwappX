@@ -1,4 +1,4 @@
-export interface _UT_File {
+export interface _UT_Risorsa {
     id:                                         number;
     nomeFile:                                   string;
     tipoFile:                                   string;

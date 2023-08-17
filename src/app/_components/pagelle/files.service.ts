@@ -15,8 +15,8 @@ export class FilesService {
 
   constructor(private http: HttpClient) { }
 
-  get(fileID: number): Observable<DOC_File>{
-    return this.http.get<DOC_File>(environment.apiBaseUrl+'DOC_Files/'+fileID);   
+  get(docID: number): Observable<DOC_File>{
+    return this.http.get<DOC_File>(environment.apiBaseUrl+'DOC_Files/'+docID);   
     //http://213.215.231.4/swappX/api/DOC_File/285
   }
  

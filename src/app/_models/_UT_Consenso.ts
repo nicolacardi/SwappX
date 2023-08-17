@@ -1,4 +1,4 @@
-import { _UT_File } from "./_UT_File";
+import { _UT_Risorsa } from "./_UT_Risorsa";
 
 export interface _UT_Consenso {
     id:                                         number;
@@ -9,8 +9,8 @@ export interface _UT_Consenso {
     testo3:                                     string;
     testo4:                                     string;
     testo5:                                     string;
-    fileID:                                     number;
-    file?:                                      _UT_File;
+    risorsaID:                                  number;
+    risorsa?:                                   _UT_Risorsa;
 
   }
 

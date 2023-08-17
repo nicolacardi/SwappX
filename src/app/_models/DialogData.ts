@@ -88,5 +88,5 @@ export interface DialogDataConsensoEdit {
     }
 
 export interface DialogDataFileEdit {
-      fileID:                              number;
+      risorsaID:                              number;
   }

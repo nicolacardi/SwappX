@@ -15,7 +15,9 @@ import { ConsensiService }                      from '../consensi.service';
 //models
 import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
 import { ConsensoEditComponent } from '../consenso-edit/consenso-edit.component';
-import { RisorseService } from '../../fileuploads/risorse.service';
+import { RisorseService } from '../../risorse/risorse.service';
+import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 //#endregion
 
 @Component({
@@ -34,15 +36,15 @@ export class ConsensiListComponent implements OnInit{
   displayedColumns: string[] = [
 
     "actionsColumn", 
-    "seq",
+    // "seq",
     "domanda", 
-    "numOpzioni",
+    // "numOpzioni",
     "testo1",
     "testo2",
     "testo3",
     "testo4",
     "testo5",
-    "file"
+    "risorsa"
   ];
 
   rptTitle = 'Lista Consensi';
@@ -72,7 +74,9 @@ export class ConsensiListComponent implements OnInit{
   constructor(private svcConsensi:              ConsensiService,
               private svcRisorse:                 RisorseService,
               private _loadingService:          LoadingService,
-              public _dialog:                   MatDialog) {}
+              public _dialog:                   MatDialog,
+              private _snackBar:                MatSnackBar
+              ) {}
 //#endregion
 
 //#region ----- LifeCycle Hooks e simili--------
@@ -159,9 +163,11 @@ export class ConsensiListComponent implements OnInit{
     .subscribe(res=> this.loadData());
   }
 
-  download(fileID:number){
-    if (fileID == null) return;
-    this.svcRisorse.get(fileID).subscribe(
+  download(risorsaID:number){
+    if (risorsaID == null) return;
+
+    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta download inviata...', panelClass: ['green-snackbar']});
+    this.svcRisorse.get(risorsaID).subscribe(
       res=> {
         const pdfData = res.base64.split(',')[1]; // estrae la stringa dalla virgola in avanti
 

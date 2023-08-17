@@ -24,11 +24,6 @@ export class ParametriService {
     //http://213.215.231.4/swappX/api/_UT_Parametri
   }
 
-  listFileUploads(): Observable<_UT_Parametro[]>{
-    return this.http.get<_UT_Parametro[]>(environment.apiBaseUrl+'_UT_Parametri/ListFileUploads');
-    //http://213.215.231.4/swappX/api/_UT_Parametri/ListFileUploads
-  }
-
   getByParName(parName: string): Observable<_UT_Parametro>{
     return this.http.get<_UT_Parametro>(environment.apiBaseUrl+'_UT_Parametri/GetByParName/'+parName);
     //http://213.215.231.4/swappX/api/_UT_Parametri/GetByParName/AnnoCorrente

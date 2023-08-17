@@ -18,21 +18,21 @@ import { LoadingService }                       from 'src/app/_components/utilit
 import { RisorseService }                         from '../risorse.service';
 
 //models
-import { _UT_File }                             from 'src/app/_models/_UT_File';
+import { _UT_Risorsa }                             from 'src/app/_models/_UT_Risorsa';
 import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
 
 @Component({
-  selector: 'app-fileupload-edit',
-  templateUrl: './fileupload-edit.component.html',
-  styleUrls: ['../fileuploads.css']
+  selector: 'app-risorsa-edit',
+  templateUrl: './risorsa-edit.component.html',
+  styleUrls: ['../risorse.css']
 })
-export class FileuploadEditComponent {
+export class RisorsaEditComponent {
 
 //#region ----- Variabili ----------------------
   currUser:                                     User;
-  file$!:                                       Observable<_UT_File>;
+  file$!:                                       Observable<_UT_Risorsa>;
   nomeFile!:                                    string;
   form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
@@ -46,7 +46,7 @@ export class FileuploadEditComponent {
 
 //#region ----- Constructor --------------------
 
-  constructor(public _dialogRef: MatDialogRef<FileuploadEditComponent>,
+  constructor(public _dialogRef: MatDialogRef<RisorsaEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogDataFileEdit,
               private svcRisorse:               RisorseService,
               private _loadingService :         LoadingService,
@@ -80,15 +80,15 @@ export class FileuploadEditComponent {
 
   loadData(){
 
-    if (this.data.fileID && this.data.fileID + '' != "0") {
+    if (this.data.risorsaID && this.data.risorsaID + '' != "0") {
 
-      const obsFile$: Observable<_UT_File> = this.svcRisorse.getLight(this.data.fileID);
+      const obsFile$: Observable<_UT_Risorsa> = this.svcRisorse.getLight(this.data.risorsaID);
       const loadFile$ = this._loadingService.showLoaderUntilCompleted(obsFile$);
       this.file$ = loadFile$
       .pipe(
           tap(
             file => {
-              console.log ("fileupload-edit - loadData - file ", file);
+              console.log ("risorsa-edit - loadData - file ", file);
               this.form.patchValue(file)
             }
           )
@@ -105,7 +105,7 @@ export class FileuploadEditComponent {
 
   save(){
     this.form.controls.userIns.setValue(this.currUser.personaID);
-    console.log ("fileupload-edit- save - this.form", this.form.value);
+    console.log ("risorsa-edit- save - this.form", this.form.value);
     this.form.controls.tipoFile.setValue(Utility.extractMIMEType(this.form.controls.base64.value));
     if (this.form.controls['id'].value == null) {
       this.svcRisorse.post(this.form.value).subscribe({
@@ -140,7 +140,7 @@ export class FileuploadEditComponent {
     dialogRef.afterClosed().subscribe(
       result => {
         if(result){
-          this.svcRisorse.delete(Number(this.data.fileID)).subscribe({
+          this.svcRisorse.delete(Number(this.data.risorsaID)).subscribe({
             next: res=>{
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
               this._dialogRef.close();

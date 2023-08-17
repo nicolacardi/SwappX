@@ -7,14 +7,14 @@ import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable }                           from 'rxjs';
 
 //components
-import { FileuploadEditComponent }              from '../fileupload-edit/fileupload-edit.component';
+import { RisorsaEditComponent }              from '../risorsa-edit/risorsa-edit.component';
 
 //services
 import { LoadingService }                       from 'src/app/_components/utilities/loading/loading.service';
 import { RisorseService }                       from '../risorse.service';
 
 //models
-import { _UT_File }                             from 'src/app/_models/_UT_File';
+import { _UT_Risorsa }                             from 'src/app/_models/_UT_Risorsa';
 import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DialogYesNoComponent } from 'src/app/_components/utilities/dialog-yes-no/dialog-yes-no.component';
@@ -22,17 +22,17 @@ import { DialogYesNoComponent } from 'src/app/_components/utilities/dialog-yes-n
 //#endregion
 
 @Component({
-  selector: 'app-fileuploads-list',
-  templateUrl: './fileuploads-list.component.html',
-  styleUrls: ['../fileuploads.css']
+  selector: 'app-risorse-list',
+  templateUrl: './risorse-list.component.html',
+  styleUrls: ['../risorse.css']
 })
-export class FileuploadsListComponent {
+export class RisorseListComponent {
 
 //#region ----- Variabili ----------------------
 
 
-  matDataSource = new MatTableDataSource<_UT_File>();
-  obsFileUploads$!:                             Observable<_UT_File[]>;
+  matDataSource = new MatTableDataSource<_UT_Risorsa>();
+  obsRisorse$!:                             Observable<_UT_Risorsa[]>;
   
   displayedColumns: string[] = [
     "actionsColumn",
@@ -85,12 +85,12 @@ constructor(private svcRisorse:                   RisorseService,
 
   loadData() {
 
-    this.obsFileUploads$ = this.svcRisorse.list();  
-    const loadFileUploads$ =this._loadingService.showLoaderUntilCompleted(this.obsFileUploads$);
+    this.obsRisorse$ = this.svcRisorse.list();  
+    const loadRisorse$ =this._loadingService.showLoaderUntilCompleted(this.obsRisorse$);
 
-    loadFileUploads$.subscribe(
+    loadRisorse$.subscribe(
       val =>   {
-        console.log ("fileuploads - loadData - val", val);
+        console.log ("risorse - loadData - val", val);
         this.matDataSource.data = val;
         // this.sortCustom(); 
         this.matDataSource.sort = this.sort; 
@@ -106,9 +106,9 @@ constructor(private svcRisorse:                   RisorseService,
       panelClass: 'add-DetailDialog',
       width: '600px',
       height: '430px',
-      data: { fileID:  0}
+      data: { risorsaID:  0}
     };
-    const dialogRef = this._dialog.open(FileuploadEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(RisorsaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe({
       next: res=>{
         this.loadData();
@@ -122,9 +122,12 @@ constructor(private svcRisorse:                   RisorseService,
       () => {() => this.loadData();});
   }
 
-  download(fileID:number){
-    if (fileID == null) return;
-    this.svcRisorse.get(fileID).subscribe(
+  download(risorsaID:number){
+    if (risorsaID == null) return;
+
+    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta download inviata...', panelClass: ['green-snackbar']});
+
+    this.svcRisorse.get(risorsaID).subscribe(
       res=> {
         const pdfData = res.base64.split(',')[1]; // estrae la stringa dalla virgola in avanti
 
@@ -146,7 +149,7 @@ constructor(private svcRisorse:                   RisorseService,
 
   }
 
-  delete (fileID: number) {
+  delete (risorsaID: number) {
 
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
@@ -155,7 +158,7 @@ constructor(private svcRisorse:                   RisorseService,
 
     dialogYesNo.afterClosed().subscribe(result => {
       if(result) {
-        this.svcRisorse.delete(fileID).subscribe({
+        this.svcRisorse.delete(risorsaID).subscribe({
           next: res=>{
             this._snackBar.openFromComponent(SnackbarComponent,{data: 'File cancellato', panelClass: ['red-snackbar']});
             this.loadData();

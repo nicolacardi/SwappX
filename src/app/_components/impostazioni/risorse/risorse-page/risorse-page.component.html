@@ -9,19 +9,19 @@
 <mat-drawer-container [hasBackdrop]="false" style="min-height: 91%;">
 
     <!-- <mat-drawer position="start" #toolSidenav class="toolSidenav"  [mode]="'side'"> -->
-        <!-- <app-toolbar [rptTitle]="appfileuploadslist.rptTitle" 
-                     [rptFieldsToKeep]="appfileuploadslist.rptFieldsToKeep" 
-                     [rptColumnsNames]="appfileuploadslist.rptColumnsNames" 
-                     [rptData]="appfileuploadslist.matDataSource.data"
-                     [rptFileName]="appfileuploadslist.rptFileName"
-                     [columnsComponent] = "appfileuploadslist"
+        <!-- <app-toolbar [rptTitle]="apprisorselist.rptTitle" 
+                     [rptFieldsToKeep]="apprisorselist.rptFieldsToKeep" 
+                     [rptColumnsNames]="apprisorselist.rptColumnsNames" 
+                     [rptData]="apprisorselist.matDataSource.data"
+                     [rptFileName]="apprisorselist.rptFileName"
+                     [columnsComponent] = "apprisorselist"
                      [emailsYN] = "false"
                      >
         </app-toolbar> -->
     <!-- </mat-drawer> -->
 
     <mat-drawer-content>
-        <app-fileuploads-list #appfileuploadslist >
-        </app-fileuploads-list>
+        <app-risorse-list #apprisorselist >
+        </app-risorse-list>
     </mat-drawer-content>
 </mat-drawer-container>

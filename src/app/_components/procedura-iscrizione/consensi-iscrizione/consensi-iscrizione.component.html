@@ -17,8 +17,8 @@
                     <mat-radio-button *ngIf="element.numOpzioni > 4" value="4">{{element.testo5}}</mat-radio-button>
                 </mat-radio-group>
             </mat-grid-tile>
-            <mat-grid-tile *ngIf="element.file != null">
-                <span class="_blue _underline pointer" (click) = "download(element.file!.id)">{{element.file!.nomeFile}}</span>
+            <mat-grid-tile *ngIf="element.risorsa != null">
+                <span class="_blue _underline pointer" (click) = "download(element.risorsa!.id)">{{element.risorsa!.nomeFile}}</span>
             </mat-grid-tile>
         </mat-grid-list>
 

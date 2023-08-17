@@ -14,12 +14,12 @@ import { DialogYesNoComponent }                 from '../../../utilities/dialog-
 //services
 import { LoadingService }                       from '../../../utilities/loading/loading.service';
 import { ConsensiService }                      from '../consensi.service';
-import { RisorseService }                       from '../../fileuploads/risorse.service';
+import { RisorseService }                       from '../../risorse/risorse.service';
 
 //classes
 import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
 import { DialogDataConsensoEdit }               from 'src/app/_models/DialogData';
-import { _UT_File } from 'src/app/_models/_UT_File';
+import { _UT_Risorsa }                          from 'src/app/_models/_UT_Risorsa';
 
 //#endregion
 
@@ -33,7 +33,7 @@ export class ConsensoEditComponent implements OnInit {
 //#region ----- Variabili ----------------------
 
   consenso$!:                                   Observable<_UT_Consenso>;
-  obsFiles$!:                                      Observable<_UT_File[]>;
+  obsFiles$!:                                      Observable<_UT_Risorsa[]>;
   form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
@@ -63,7 +63,7 @@ export class ConsensoEditComponent implements OnInit {
       testo4:                                   [''],
       testo5:                                   [''],
       seq:                                      [''],
-      fileID:                                   ['']
+      risorsaID:                                   ['']
     });
 
     this.obsFiles$ = this.svcFile.list();

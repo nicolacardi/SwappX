@@ -217,9 +217,9 @@ import { ConsensiListComponent }                from './_components/impostazioni
 import { ConsensiPageComponent }                from './_components/impostazioni/consensi/consensi-page/consensi-page.component';
 import { ConsensoEditComponent }                from './_components/impostazioni/consensi/consenso-edit/consenso-edit.component';
 import { ConsensiIscrizioneComponent }          from './_components/procedura-iscrizione/consensi-iscrizione/consensi-iscrizione.component';
-import { FileuploadsPageComponent } from './_components/impostazioni/fileuploads/fileuploads-page/fileuploads-page.component';
-import { FileuploadsListComponent } from './_components/impostazioni/fileuploads/fileuploads-list/fileuploads-list.component';
-import { FileuploadEditComponent } from './_components/impostazioni/fileuploads/fileupload-edit/fileupload-edit.component';
+import { RisorsePageComponent }                 from './_components/impostazioni/risorse/risorse-page/risorse-page.component';
+import { RisorseListComponent }                 from './_components/impostazioni/risorse/risorse-list/risorse-list.component';
+import { RisorsaEditComponent }                 from './_components/impostazioni/risorse/risorsa-edit/risorsa-edit.component';
 
 
 
@@ -389,9 +389,9 @@ import { FileuploadEditComponent } from './_components/impostazioni/fileuploads/
     ConsensiPageComponent,
     ConsensoEditComponent,
     ConsensiIscrizioneComponent,
-    FileuploadsPageComponent,
-    FileuploadsListComponent,
-    FileuploadEditComponent,
+    RisorsePageComponent,
+    RisorseListComponent,
+    RisorsaEditComponent,
  
     
 
