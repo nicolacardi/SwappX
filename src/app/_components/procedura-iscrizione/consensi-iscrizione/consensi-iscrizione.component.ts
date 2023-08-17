@@ -5,6 +5,12 @@ import { MatDialog }                            from '@angular/material/dialog';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { Observable }                           from 'rxjs';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { MatTableDataSource }                   from '@angular/material/table';
+
+//components
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+
 
 //services
 import { RisorseService }                       from '../../impostazioni/risorse/risorse.service';
@@ -25,6 +31,16 @@ export class ConsensiIscrizioneComponent implements OnInit  {
   formConsensi! :                               UntypedFormGroup;
   questions: any[] = []; // Assuming questions is an array of question objects
 
+
+  matDataSource = new MatTableDataSource<_UT_Consenso>();
+  
+  displayedColumns: string[] = [
+    "domanda",
+    "opzioni",
+    "allegato"
+  ];
+
+  
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -38,7 +54,8 @@ constructor(private svcConsensi:                ConsensiService,
             private svcRisorse:                   RisorseService,
 
             private _loadingService:            LoadingService,
-            public _dialog:                     MatDialog
+            public _dialog:                     MatDialog,
+            private _snackBar:                  MatSnackBar,
             ) {
 
                   
@@ -55,21 +72,30 @@ constructor(private svcConsensi:                ConsensiService,
   loadData() {
     this.obsConsensi$ = this.svcConsensi.list();  
 
+    const loadConsensi$ =this._loadingService.showLoaderUntilCompleted(this.obsConsensi$);
 
-    this.obsConsensi$.subscribe((questions: any[]) => {
-      this.questions = questions;
-      // Iterate through the questions and add form controls
-      this.questions.forEach((element) => {
-        // Initialize a form control for each question with a default value (e.g., '1')
-         if (element.numOpzioni !=1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.required));
-         if (element.numOpzioni ==1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.requiredTrue));
+    loadConsensi$.subscribe(
+      questions =>   {
+
+        this.matDataSource.data = questions;
+        //devo aggiungere al form un controllo x ogni domanda (di due tipi diversi)
+        //in modo che il pulsante di "Salva e continua" si disabiliti se uno non risponde a tutto
+        this.questions = questions;
+          this.questions.forEach((element) => {
+            if (element.numOpzioni !=1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.required));
+            if (element.numOpzioni ==1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.requiredTrue));
+          })
       });
-    });
+
     
   }
 
   download(risorsaID:number){
     if (risorsaID == null) return;
+
+    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta download inviata...', panelClass: ['green-snackbar']});
+
+
     this.svcRisorse.get(risorsaID).subscribe(
       res=> {
         const pdfData = res.base64.split(',')[1]; // estrae la stringa dalla virgola in avanti

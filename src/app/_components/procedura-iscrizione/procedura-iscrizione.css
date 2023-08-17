@@ -5,3 +5,32 @@
 
 
 
+
+.mat-mdc-radio-button {
+    display: flex;
+    flex-direction: column; 
+    gap: 5px; 
+  }
+/*
+
+  .mat-grid-list {
+    display: grid;
+    grid-template-rows: repeat(auto-fit, minmax(60px, auto)); 
+    gap: 10px; 
+    padding-bottom: 50px !important;
+  }
+
+  .mat-grid-tile {
+    padding-top: 100px !important;
+    border-bottom: solid 1px grey;
+  }
+   */
+
+   .mat-column-domanda {
+    max-width: 300px;
+    white-space: normal;
+}
+  
+  
+  
+
