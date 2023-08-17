@@ -177,11 +177,11 @@ export class ConsensiListComponent implements OnInit{
         // console.log("pdfUrl", pdfUrl);
         // window.open(pdfUrl, '_blank'); // Open in a new tab or window NON FUNZIONA
 
-        const source = `data:application/pdf;base64,${pdfData}`;
+        const source = `data:application/${res.tipoFile};base64,${pdfData}`;
         const link = document.createElement("a");
 
         link.href = source;
-        link.download = `${"download"}.pdf`
+        link.download = `${res.nomeFile}.${res.tipoFile}`
         link.click();
 
       }

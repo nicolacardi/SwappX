@@ -54,7 +54,6 @@ export class RisorseListComponent {
   filterValue = '';       //Filtro semplice
 
   filterValues = {
-    nomeFile: '',
     filtrosx: ''
   }
 
@@ -94,7 +93,7 @@ constructor(private svcRisorse:                   RisorseService,
         this.matDataSource.data = val;
         // this.sortCustom(); 
         this.matDataSource.sort = this.sort; 
-        // this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
+        this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
       }
     );
   }
@@ -137,11 +136,11 @@ constructor(private svcRisorse:                   RisorseService,
         // console.log("pdfUrl", pdfUrl);
         // window.open(pdfUrl, '_blank'); // Open in a new tab or window NON FUNZIONA
 
-        const source = `data:application/pdf;base64,${pdfData}`;
+        const source = `data:application/${res.tipoFile};base64,${pdfData}`;
         const link = document.createElement("a");
 
         link.href = source;
-        link.download = `${res.nomeFile}.pdf`
+        link.download = `${res.nomeFile}.${res.tipoFile}`
         link.click();
 
       }
@@ -183,19 +182,20 @@ constructor(private svcRisorse:                   RisorseService,
     applyFilter(event: Event) {
       this.filterValue = (event.target as HTMLInputElement).value;
       this.filterValues.filtrosx = this.filterValue.toLowerCase();
+      console.log ("this.filtervalues", this.filterValues);
       this.matDataSource.filter = JSON.stringify(this.filterValues)
     }
 
-    // filterPredicate(): (data: any, filter: string) => boolean {
-    //   let filterFunction = function(data: any, filter: any): boolean {
+    filterPredicate(): (data: any, filter: string) => boolean {
+      let filterFunction = function(data: any, filter: any): boolean {
         
-    //     let searchTerms = JSON.parse(filter);
-    //     let boolSx = String(data.domanda).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-    //               || String(data.domanda).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-    //     return boolSx;
-    //   }
-    //   return filterFunction;
-    // }
+        let searchTerms = JSON.parse(filter);
+        let boolSx = String(data.nomeFile).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                  || String(data.tipoFile).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+        return boolSx;
+      }
+      return filterFunction;
+    }
 
     drop(event: any){
 
