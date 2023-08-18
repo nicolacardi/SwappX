@@ -38,7 +38,11 @@
       </app-persona-form> 
       <div class="center">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
-        <button mat-stroked-button class="ml10" matStepperNext (click)="salvaPersona(1)">Salva e procedi</button>
+        <button mat-stroked-button 
+                class="ml10" 
+                matStepperNext 
+                (click)="salvaPersona(1)">
+                Salva e procedi</button>
       </div>    
     </mat-step>
     
@@ -48,12 +52,12 @@
       </app-consensi-iscrizione> 
       <div class="center">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
-        <button   mat-stroked-button 
-                  class="ml10" 
-                  matStepperNext
-                  [disabled]="!formConsensiIscrizione.formConsensi.valid"
-                  
-                  >Salva e procedi</button>
+        <button mat-stroked-button 
+                class="ml10" 
+                matStepperNext
+                [disabled]="!formConsensiIscrizione.formConsensi.valid"
+                (click)="salvaConsensi()">
+                Salva e procedi</button>
       </div>
     </mat-step>
 
