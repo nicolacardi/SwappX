@@ -80,6 +80,7 @@ constructor(private svcConsensi:                ConsensiService,
         this.matDataSource.data = questions;
         //devo aggiungere al form un controllo x ogni domanda (di due tipi diversi)
         //in modo che il pulsante di "Salva e continua" si disabiliti se uno non risponde a tutto
+        //element.id è l'id della domanda cioè di _UT_Consensi
         this.questions = questions;
           this.questions.forEach((element) => {
             if (element.numOpzioni !=1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.required));
