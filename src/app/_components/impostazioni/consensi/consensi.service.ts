@@ -26,7 +26,7 @@ export class ConsensiService {
   }
 
   updateSeq(seqInitial: number, seqFinal: number): Observable <any>{
-    console.log(seqInitial, seqFinal);
+    //console.log(seqInitial, seqFinal);
     return this.http.put(environment.apiBaseUrl+'_UT_Consensi/UpdateSeq/'+seqInitial+'/'+seqFinal, seqInitial);
     //http://213.215.231.4/swappX/api/_UT_Consensi/UpdateSeq/1/2
   }

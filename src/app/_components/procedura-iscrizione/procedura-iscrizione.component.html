@@ -1,6 +1,5 @@
 
   
-  
   <!-- <mat-form-field >
   <mat-label>Figli</mat-label>
   <mat-select formControlName="figlio" #selectFiglio>
@@ -28,12 +27,11 @@
                 class="ml10" 
                 matStepperNext 
                 [disabled]="!appGenitoreForm.form.valid"
-
-                (click)="salvaPersona(3)"
-                >Salva e procedi</button>
+                (click)="salvaPersona(3)">
+            Salva e procedi
+        </button>
       </div>
     </mat-step>
-
 
     <!-- NON SI CAPISCE PERCHE' QUI NON FUNZIONA [stepControl]="appAlunnoForm.form" e [disabled]="!appAlunnoForm.form.valid" -->
     <mat-step *ngIf="iscrizione" [stepControl]="appAlunnoForm.form">
@@ -50,7 +48,6 @@
                 class="ml10" 
                 matStepperNext 
                 [disabled]="!appAlunnoForm.form.valid"
-
                 (click)="salvaPersona(1)">
           Salva e procedi
         </button>
@@ -91,8 +88,9 @@
                 class="ml10"
                 matStepperNext
                 [disabled]="!formIscrizioneDatiEconomici.formConsensi.valid"
-                (click)="salvaConsensi('Dati Economici')"
-                >Salva e procedi</button>
+                (click)="salvaConsensi('Dati Economici')">
+          Salva e procedi
+        </button>
       </div>
     </mat-step>
     <mat-step>
@@ -101,8 +99,9 @@
       <div class="center mt10">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
         <button mat-stroked-button
-                class="ml10"
-                >Stampa Modulo di iscrizione</button>
+                class="ml10">
+          Stampa Modulo di iscrizione
+        </button>
       </div>
     </mat-step>
 
