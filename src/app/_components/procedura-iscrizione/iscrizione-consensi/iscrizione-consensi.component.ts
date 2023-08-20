@@ -71,7 +71,6 @@ constructor(private svcConsensi:                ConsensiService,
 
   loadData() {
     this.obsConsensi$ = this.svcConsensi.list();  
-
     const loadConsensi$ =this._loadingService.showLoaderUntilCompleted(this.obsConsensi$);
 
     loadConsensi$.subscribe(

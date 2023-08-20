@@ -32,9 +32,10 @@
 
     <mat-step >
       <ng-template matStepLabel>Dati dell'alunno</ng-template>
-      <h3>Alunno: {{iscrizione.alunno.persona.nome}} {{iscrizione.alunno.persona.cognome}}</h3>
-      <app-persona-form  [personaID]="iscrizione.alunno.personaID"
-                         #apppersonaform>
+      <h3 *ngIf="iscrizione">Alunno: {{iscrizione.alunno.persona.nome}} {{iscrizione.alunno.persona.cognome}}</h3>
+      <app-persona-form *ngIf="iscrizione"  
+                        [personaID]="iscrizione.alunno.personaID" 
+                        #apppersonaform>
       </app-persona-form> 
       <div class="center">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
@@ -42,7 +43,8 @@
                 class="ml10" 
                 matStepperNext 
                 (click)="salvaPersona(1)">
-                Salva e procedi</button>
+          Salva e procedi
+        </button>
       </div>    
     </mat-step>
     
@@ -57,7 +59,8 @@
                 matStepperNext
                 [disabled]="!formIscrizioneConsensi.formConsensi.valid"
                 (click)="salvaConsensi()">
-                Salva e procedi</button>
+          Salva e procedi
+        </button>
       </div>
     </mat-step>
 

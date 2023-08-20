@@ -99,15 +99,17 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   loadData() {
     //ottengo dall'iscrizione tutti i dati: dell'alunno e dei genitori
-
     this.svcIscrizioni.get(this.iscrizioneID).subscribe(
-      res => { this.iscrizione = res;
+      res => {
+        this.iscrizione = res;
         res.alunno._Genitori!.forEach(
-          (genitorealunno: ALU_GenitoreAlunno) =>{
-            this.genitoriArr.push(genitorealunno.genitore!);
-          }
-      )
-    });
+           (genitorealunno: ALU_GenitoreAlunno) =>{
+             this.genitoriArr.push(genitorealunno.genitore!);   //AS: ATTENZIONE: questa riga carica o genitori ma manda in errore:
+                                                                //ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value for 'tabIndex': '0'. Current value: '-1'.
+           }
+        )
+      }
+    );
   }
 //#endregion
 
