@@ -216,7 +216,7 @@ import { HttpErrorInterceptor }                 from './_user/auth/httperror.int
 import { ConsensiListComponent }                from './_components/impostazioni/consensi/consensi-list/consensi-list.component';
 import { ConsensiPageComponent }                from './_components/impostazioni/consensi/consensi-page/consensi-page.component';
 import { ConsensoEditComponent }                from './_components/impostazioni/consensi/consenso-edit/consenso-edit.component';
-import { ConsensiIscrizioneComponent }          from './_components/procedura-iscrizione/consensi-iscrizione/consensi-iscrizione.component';
+import { IscrizioneConsensiComponent }          from './_components/procedura-iscrizione/iscrizione-consensi/iscrizione-consensi.component';
 import { RisorsePageComponent }                 from './_components/impostazioni/risorse/risorse-page/risorse-page.component';
 import { RisorseListComponent }                 from './_components/impostazioni/risorse/risorse-list/risorse-list.component';
 import { RisorsaEditComponent }                 from './_components/impostazioni/risorse/risorsa-edit/risorsa-edit.component';
@@ -388,7 +388,7 @@ import { RisorsaEditComponent }                 from './_components/impostazioni
     ConsensiListComponent,
     ConsensiPageComponent,
     ConsensoEditComponent,
-    ConsensiIscrizioneComponent,
+    IscrizioneConsensiComponent,
     RisorsePageComponent,
     RisorseListComponent,
     RisorsaEditComponent,

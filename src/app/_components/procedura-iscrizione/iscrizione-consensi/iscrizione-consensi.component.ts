@@ -20,11 +20,11 @@ import { _UT_Consenso }                         from 'src/app/_models/_UT_Consen
 
 //#endregion
 @Component({
-  selector: 'app-consensi-iscrizione',
-  templateUrl: './consensi-iscrizione.component.html',
+  selector: 'app-iscrizione-consensi',
+  templateUrl: './iscrizione-consensi.component.html',
   styleUrls: ['../procedura-iscrizione.css']
 })
-export class ConsensiIscrizioneComponent implements OnInit  {
+export class IscrizioneConsensiComponent implements OnInit  {
 
 //#region ----- Variabili ----------------------
   obsConsensi$!:                                Observable<_UT_Consenso[]>;

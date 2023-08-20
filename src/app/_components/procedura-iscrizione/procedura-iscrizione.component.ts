@@ -2,7 +2,7 @@
 
 import { Component, ContentChildren, Input, OnInit, QueryList, ViewChild, ViewChildren }                    from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
-import { Observable }                           from 'rxjs';
+import { Observable, firstValueFrom }                           from 'rxjs';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { MatStepper }                           from '@angular/material/stepper';
 import { ActivatedRoute }                       from '@angular/router';
@@ -14,13 +14,14 @@ import { PersonaFormComponent }                 from '../persone/persona-form/pe
 //services
 import { PersoneService }                       from '../persone/persone.service';
 import { IscrizioniService }                    from '../iscrizioni/iscrizioni.service';
+import { IscrizioneConsensiService }            from './iscrizione-consensi/iscrizione-consensi.service';
 
 //models
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
 import { ALU_GenitoreAlunno }                   from 'src/app/_models/ALU_GenitoreAlunno';
-import { ConsensiIscrizioneComponent } from './consensi-iscrizione/consensi-iscrizione.component';
-import { dA } from '@fullcalendar/core/internal-common';
+import { IscrizioneConsensiComponent }          from './iscrizione-consensi/iscrizione-consensi.component';
+import { CLS_IscrizioneConsenso } from 'src/app/_models/CLS_IscrizioneConsenso';
 
 //#endregion
 @Component({
@@ -44,18 +45,20 @@ export class ProceduraIscrizioneComponent implements OnInit {
 //#region ----- ViewChild Input Output ---------
 
   @ViewChildren(PersonaFormComponent) PersonaFormComponent!: QueryList<PersonaFormComponent>;
-  @ViewChild('formConsensiIscrizione') ConsensiFormComponent!: ConsensiIscrizioneComponent;
+  @ViewChild('formIscrizioneConsensi') ConsensiFormComponent!: IscrizioneConsensiComponent;
 
   @ViewChild('stepper') stepper!:               MatStepper;
 //#endregion
 
 //#region ----- Constructor --------------------
 
-  constructor(private fb:                                 UntypedFormBuilder,
-              private svcIscrizioni:                      IscrizioniService,
-              private svcPersone:                         PersoneService,
-              private actRoute:                           ActivatedRoute,
-              private _snackBar:                          MatSnackBar ) { 
+  constructor(private fb:                       UntypedFormBuilder,
+              private svcIscrizioni:            IscrizioniService,
+              private svcIscrizioneConsensi:    IscrizioneConsensiService,
+
+              private svcPersone:               PersoneService,
+              private actRoute:                 ActivatedRoute,
+              private _snackBar:                MatSnackBar ) { 
 
     this.form = this.fb.group({
       id:                         [null],
@@ -123,9 +126,11 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   }
 
-  salvaConsensi() {
+  async salvaConsensi() {
+
+    await firstValueFrom(this.svcIscrizioneConsensi.deleteByIscrizione(this.iscrizioneID));
     let formValues = this.ConsensiFormComponent.formConsensi.value;
-    console.log (formValues);
+
     //devo trasformare questo ogetto in un altro
     //ad esempio da
     // const formValues = {
@@ -150,7 +155,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
     // 15 true false false false false
     // 16 false false true false false
 
-    const transformedData = [];
+    let iscrizioneConsensiForm : CLS_IscrizioneConsenso;
 
     for (const key in formValues) {
       if (formValues.hasOwnProperty(key)) {
@@ -162,30 +167,25 @@ export class ProceduraIscrizioneComponent implements OnInit {
         const risposta4 = parseInt(value) === 4 ? true : false;
         const risposta5 = parseInt(value) === 5 ? true : false;
     
-        const transformedEntry = {
-          ConsensoID: consensoId,
-          Risposta1: risposta1,
-          Risposta2: risposta2,
-          Risposta3: risposta3,
-          Risposta4: risposta4,
-          Risposta5: risposta5,
+        iscrizioneConsensiForm = {
+          iscrizioneID: this.iscrizioneID,
+          consensoID: consensoId,
+          risposta1: risposta1,
+          risposta2: risposta2,
+          risposta3: risposta3,
+          risposta4: risposta4,
+          risposta5: risposta5,
         };
     
-        transformedData.push(transformedEntry);
+        this.svcIscrizioneConsensi.post(iscrizioneConsensiForm).subscribe(
+          {
+            next: res=> {console.log ("inserita domanda", consensoId)},
+            error: err=> {console.log ("errore nell'nserimento", consensoId)}
+          }
+        )
+
       }
     }
-    console.log (transformedData);
-
-    //vanno aggiunti gli altri campi di CLS_ConsensoIscrizione, tra cui iscrizioneID
-
-    
-    //ora devo salvarlo, va fatto un service consensiiscrizione
-    //cancello quel che c'è prima
-    //await firstValueFrom(this.svcConsensiIscrizione.deleteByIscrizione(this.iscrizioneID));
-    // this.svcConsensiIscrizione.post(transformedData).subscribe({
-    //   next: res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Consensi salvati', panelClass: ['green-snackbar']}),
-    //   error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio consensi', panelClass: ['red-snackbar']})
-    // });
 
   }
 

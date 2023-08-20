@@ -48,14 +48,14 @@
     
     <mat-step >
       <ng-template matStepLabel>Consensi</ng-template>
-      <app-consensi-iscrizione  [iscrizioneID]="iscrizioneID" #formConsensiIscrizione>
-      </app-consensi-iscrizione> 
+      <app-iscrizione-consensi  [iscrizioneID]="iscrizioneID" #formIscrizioneConsensi>
+      </app-iscrizione-consensi> 
       <div class="center">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
         <button mat-stroked-button 
                 class="ml10" 
                 matStepperNext
-                [disabled]="!formConsensiIscrizione.formConsensi.valid"
+                [disabled]="!formIscrizioneConsensi.formConsensi.valid"
                 (click)="salvaConsensi()">
                 Salva e procedi</button>
       </div>
