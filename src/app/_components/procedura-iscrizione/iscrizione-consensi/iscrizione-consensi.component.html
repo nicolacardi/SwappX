@@ -1,0 +1,43 @@
+<div class="w90 ma">
+<form [formGroup] = "formConsensi">
+
+    <table mat-table class="_table-row-low transparent w100" 
+           [dataSource]="matDataSource">
+
+        <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
+        <ng-container matColumnDef="domanda">
+            <th mat-header-cell *matHeaderCellDef ></th>
+            <td mat-cell  *matCellDef="let element;  let j = index;">{{element.domanda}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="opzioni">
+            <th mat-header-cell *matHeaderCellDef ></th>
+            <td mat-cell  *matCellDef="let element;  let j = index;">
+                <mat-radio-group *ngIf="element.numOpzioni != 1" aria-label="Select an option" [formControlName]="element.id">
+                    <mat-radio-button value="1">{{element.testo1}}</mat-radio-button>
+                    <mat-radio-button value="2">{{element.testo2}}</mat-radio-button>
+                    <mat-radio-button *ngIf="element.numOpzioni > 2" value="2">{{element.testo3}}</mat-radio-button>
+                    <mat-radio-button *ngIf="element.numOpzioni > 3" value="3">{{element.testo4}}</mat-radio-button>
+                    <mat-radio-button *ngIf="element.numOpzioni > 4" value="4">{{element.testo5}}</mat-radio-button>
+                </mat-radio-group>
+
+                <mat-checkbox  *ngIf="element.numOpzioni == 1" [formControlName]="element.id">{{element.testo1}}</mat-checkbox>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="allegato">
+            <th mat-header-cell *matHeaderCellDef ></th>
+            <td mat-cell  class="_blue _underline pointer" *matCellDef="let element;  let j = index;" (click) = "download(element.risorsa!.id)">{{element.risorsa? element.risorsa.nomeFile: ''}}</td>
+        </ng-container>
+
+        <!-- **************************   MAT-HEADER-ROW   ******************* -->
+        <tr mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></tr>
+        
+        <!-- **************************   MAT-ROW   ******************* -->
+
+        <tr mat-row *matRowDef="let element;columns: displayedColumns" class="element-row"></tr>
+
+    </table>
+
+  </form>
+</div>
