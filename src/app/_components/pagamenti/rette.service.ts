@@ -29,6 +29,11 @@ export class RetteService {
     //http://213.215.231.4/swappX/api/PAG_Rette/ListByAlunnoAnno/3/1
   }
 
+  sumConcordateByIscrizione(iscrizioneID: number): Observable <any> {
+    return this.http.get( environment.apiBaseUrl  + 'PAG_Rette/sumConcordateByIscrizione/'+iscrizioneID); 
+    //http://213.215.231.4/swappX/api/PAG_Rette/sumConcordateByIscrizione/328
+  }
+
   get(rettaID: any): Observable<PAG_Retta>{
     return this.http.get<PAG_Retta>(environment.apiBaseUrl+'PAG_Rette/'+rettaID);
     //http://213.215.231.4/swappX/api/PAG_Rette/5

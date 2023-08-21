@@ -153,7 +153,7 @@ export class ConsensiListComponent implements OnInit{
       
       let searchTerms = JSON.parse(filter);
       let boolSx = String(data.domanda).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.domanda).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.tipo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
       return boolSx;
     }
     return filterFunction;

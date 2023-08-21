@@ -76,7 +76,11 @@
       </app-iscrizione-consensi>
       <div class="center">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
-        <button mat-stroked-button class="ml10" matStepperNext>Salva e procedi</button>
+        <button mat-stroked-button
+                class="ml10"
+                matStepperNext
+                [disabled]="!formIscrizioneDatiEconomici.formConsensi.valid"
+                >Salva e procedi</button>
       </div>
     </mat-step>
     <mat-step>

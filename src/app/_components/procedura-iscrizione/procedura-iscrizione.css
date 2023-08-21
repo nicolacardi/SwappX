@@ -20,13 +20,15 @@
   
 ._tabellaquote td {
     border: 1px solid #dddddd;
-    text-align: left;
+    text-align: center;
     padding: 8px;
       }
 
 ._tabellaquote th {
     border: 1px solid #dddddd;
-    text-align: left;
+    background-color: lightgrey;
+    text-align: center;
     padding: 8px;
+
     }
 

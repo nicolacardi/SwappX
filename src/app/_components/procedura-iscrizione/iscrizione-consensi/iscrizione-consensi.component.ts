@@ -15,6 +15,7 @@ import { SnackbarComponent }                    from '../../utilities/snackbar/s
 //services
 import { RisorseService }                       from '../../impostazioni/risorse/risorse.service';
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
+import { RetteService }                         from '../../pagamenti/rette.service';
 
 //models
 import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
@@ -30,6 +31,7 @@ export class IscrizioneConsensiComponent implements OnInit  {
 
 //#region ----- Variabili ----------------------
   iscrizione!:                                  CLS_Iscrizione;
+  rettaConcordata!:                             number;
   obsConsensi$!:                                Observable<_UT_Consenso[]>;
   formConsensi! :                               UntypedFormGroup;
   questions: any[] = []; // Assuming questions is an array of question objects
@@ -57,6 +59,8 @@ constructor(private svcConsensi:                ConsensiService,
             private fb:                         UntypedFormBuilder, 
             private svcRisorse:                 RisorseService,
             private svcIscrizioni:              IscrizioniService,
+            private svcRette:                   RetteService,
+
             private _loadingService:            LoadingService,
             public _dialog:                     MatDialog,
             private _snackBar:                  MatSnackBar,
@@ -70,7 +74,8 @@ constructor(private svcConsensi:                ConsensiService,
 
   
   ngOnInit(): void {
-    this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione; console.log(iscrizione)})
+    this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione;})
+    this.svcRette.sumConcordateByIscrizione(this.iscrizioneID).subscribe(rettaConcordata=> {this.rettaConcordata = rettaConcordata;})
 
     this.loadData();
   }
@@ -94,7 +99,7 @@ constructor(private svcConsensi:                ConsensiService,
         //element.id è l'id della domanda cioè di _UT_Consensi
         this.questions = questions;
           this.questions.forEach((element) => {
-            if (element.numOpzioni !=1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.required));
+            if (element.numOpzioni >1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.required));
             if (element.numOpzioni ==1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.requiredTrue));
           })
       });
