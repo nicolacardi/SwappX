@@ -46,6 +46,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   @ViewChildren(PersonaFormComponent) PersonaFormComponent!: QueryList<PersonaFormComponent>;
   @ViewChild('formIscrizioneConsensi') ConsensiFormComponent!: IscrizioneConsensiComponent;
+  // @ViewChild('appAlunnoForm') appAlunnoForm!:   PersonaFormComponent;
 
   @ViewChild('stepper') stepper!:               MatStepper;
 //#endregion
