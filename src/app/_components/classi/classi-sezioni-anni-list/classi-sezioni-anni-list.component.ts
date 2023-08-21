@@ -168,18 +168,18 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 //#region ----- ViewChild Input Output ---------
   
-  @ViewChild(MatPaginator) paginator!:                            MatPaginator;
-  @ViewChild(MatSort) sort!:                                      MatSort;
-  @ViewChild("filterInput") filterInput!:                         ElementRef;  
+  @ViewChild(MatPaginator) paginator!:          MatPaginator;
+  @ViewChild(MatSort) sort!:                    MatSort;
+  @ViewChild("filterInput") filterInput!:       ElementRef;  
   @ViewChild('selectAnnoScolastico') selectAnnoScolastico!:       MatSelect; 
 
   @ViewChildren("endedIcons", { read: ElementRef }) endedIcons!:  QueryList<ElementRef>   //elenco delle icone di fine procedura
   //@ViewChildren("ckSelected", { read: ElementRef }) ckSelected!:  QueryList<ElementRef>   //elenco delle icone di fine procedura)
   //@ViewChildren ('ckSelected' ) ckSelected!:QueryList<any>;
   
-  @Input('dove') dove! :                                          string;
-  @Input('alunnoID') alunnoID! :                                  number;
-  @Input() classiSezioniAnniFilterComponent!:                     ClassiSezioniAnniFilterComponent;
+  @Input('dove') dove! :                        string;
+  @Input('alunnoID') alunnoID! :                number;
+  @Input() classiSezioniAnniFilterComponent!:   ClassiSezioniAnniFilterComponent;
 
   @Output('annoID') annoIdEmitter = new EventEmitter<number>(); //annoId viene EMESSO quando si seleziona un anno dalla select
   @Output('classeSezioneAnnoID') classeSezioneAnnoIDEmitter = new EventEmitter<number>(); //classeId viene EMESSO quando si clicca su una classe
@@ -190,14 +190,14 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(private svcClassiSezioniAnni:               ClassiSezioniAnniService,
-              private svcAnni:                            AnniScolasticiService,
-              private svcDocenti:                         DocentiService,
-              private _loadingService:                    LoadingService,
-              private fb:                                 UntypedFormBuilder, 
-              public _dialog:                             MatDialog, 
-              private actRoute:                           ActivatedRoute,
-              private _snackBar:                          MatSnackBar ) {
+  constructor(private svcClassiSezioniAnni:     ClassiSezioniAnniService,
+              private svcAnni:                  AnniScolasticiService,
+              private svcDocenti:               DocentiService,
+              private _loadingService:          LoadingService,
+              private fb:                       UntypedFormBuilder, 
+              public _dialog:                   MatDialog, 
+              private actRoute:                 ActivatedRoute,
+              private _snackBar:                MatSnackBar ) {
 
     //let objAnno = localStorage.getItem('AnnoCorrente');
     

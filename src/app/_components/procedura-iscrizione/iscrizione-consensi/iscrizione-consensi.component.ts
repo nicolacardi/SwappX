@@ -3,7 +3,7 @@ import { Component, Input, OnInit }             from '@angular/core';
 import { ConsensiService }                      from '../../impostazioni/consensi/consensi.service';
 import { MatDialog }                            from '@angular/material/dialog';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
-import { Observable }                           from 'rxjs';
+import { Observable, map, tap }                           from 'rxjs';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { MatTableDataSource }                   from '@angular/material/table';
@@ -14,9 +14,11 @@ import { SnackbarComponent }                    from '../../utilities/snackbar/s
 
 //services
 import { RisorseService }                       from '../../impostazioni/risorse/risorse.service';
+import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
 
 //models
 import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
+import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 
 //#endregion
 @Component({
@@ -27,6 +29,7 @@ import { _UT_Consenso }                         from 'src/app/_models/_UT_Consen
 export class IscrizioneConsensiComponent implements OnInit  {
 
 //#region ----- Variabili ----------------------
+  iscrizione!:                                  CLS_Iscrizione;
   obsConsensi$!:                                Observable<_UT_Consenso[]>;
   formConsensi! :                               UntypedFormGroup;
   questions: any[] = []; // Assuming questions is an array of question objects
@@ -45,36 +48,45 @@ export class IscrizioneConsensiComponent implements OnInit  {
 
 //#region ----- ViewChild Input Output -------
   @Input() iscrizioneID!:                       number;
+  @Input() tipo!:                               string;
 //#endregion
 
 //#region ----- Constructor --------------------
   
 constructor(private svcConsensi:                ConsensiService,
             private fb:                         UntypedFormBuilder, 
-            private svcRisorse:                   RisorseService,
-
+            private svcRisorse:                 RisorseService,
+            private svcIscrizioni:              IscrizioniService,
             private _loadingService:            LoadingService,
             public _dialog:                     MatDialog,
             private _snackBar:                  MatSnackBar,
             ) {
 
-                  
     this.formConsensi = this.fb.group({})
             }
 //#endregion
 
 //#region ----- LifeCycle Hooks e simili-------
 
+  
   ngOnInit(): void {
+    this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione; console.log(iscrizione)})
+
     this.loadData();
   }
 
   loadData() {
-    this.obsConsensi$ = this.svcConsensi.list();  
+    this.obsConsensi$ = this.svcConsensi.list()
+    .pipe( 
+      tap(()=> console.log ("this.tipo", this.tipo)),
+      map(res=> res.filter((x) => x.tipo == this.tipo)), //carico domande x consensi o dati economici a seconda del valore in input
+    )
+    ;  
     const loadConsensi$ =this._loadingService.showLoaderUntilCompleted(this.obsConsensi$);
 
     loadConsensi$.subscribe(
       questions =>   {
+        console.log("questions", questions);
 
         this.matDataSource.data = questions;
         //devo aggiungere al form un controllo x ogni domanda (di due tipi diversi)

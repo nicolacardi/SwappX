@@ -50,7 +50,10 @@
     
     <mat-step >
       <ng-template matStepLabel>Consensi</ng-template>
-      <app-iscrizione-consensi  [iscrizioneID]="iscrizioneID" #formIscrizioneConsensi>
+      <app-iscrizione-consensi  
+        [iscrizioneID]="iscrizioneID"
+        [tipo]="'Consensi'"
+        #formIscrizioneConsensi>
       </app-iscrizione-consensi> 
       <div class="center">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
@@ -66,6 +69,11 @@
 
     <mat-step >
       <ng-template matStepLabel>Dati economici</ng-template>
+      <app-iscrizione-consensi  
+        [iscrizioneID]="iscrizioneID"
+        [tipo]="'Dati Economici'"
+        #formIscrizioneDatiEconomici>
+      </app-iscrizione-consensi>
       <div class="center">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
         <button mat-stroked-button class="ml10" matStepperNext>Salva e procedi</button>

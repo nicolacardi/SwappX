@@ -38,6 +38,7 @@ export class ConsensiListComponent implements OnInit{
     "actionsColumn", 
     // "seq",
     "domanda", 
+    "tipo",
     // "numOpzioni",
     "testo1",
     "testo2",
@@ -92,7 +93,7 @@ export class ConsensiListComponent implements OnInit{
 
     loadConsensi$.subscribe(
       val =>   {
-        //console.log ("estraggo consensi list", val);
+        console.log ("estraggo consensi list", val);
         this.matDataSource.data = val;
         this.sortCustom(); 
         this.matDataSource.sort = this.sort; 

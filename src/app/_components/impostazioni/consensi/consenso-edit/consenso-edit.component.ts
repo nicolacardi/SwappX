@@ -33,7 +33,7 @@ export class ConsensoEditComponent implements OnInit {
 //#region ----- Variabili ----------------------
 
   consenso$!:                                   Observable<_UT_Consenso>;
-  obsFiles$!:                                      Observable<_UT_Risorsa[]>;
+  obsRisorse$!:                                      Observable<_UT_Risorsa[]>;
   form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
@@ -56,6 +56,7 @@ export class ConsensoEditComponent implements OnInit {
     this.form = this.fb.group({
       id:                                       [null],
       domanda:                                  ['', { validators:[ Validators.required]}],
+      tipo:                                     ['', { validators:[ Validators.required]}],
       numOpzioni:                               [{ value: '' }, { validators:[ Validators.required]}],
       testo1:                                   [''],
       testo2:                                   [''],
@@ -66,7 +67,7 @@ export class ConsensoEditComponent implements OnInit {
       risorsaID:                                   ['']
     });
 
-    this.obsFiles$ = this.svcFile.list();
+    this.obsRisorse$ = this.svcFile.list();
 
     
   }
