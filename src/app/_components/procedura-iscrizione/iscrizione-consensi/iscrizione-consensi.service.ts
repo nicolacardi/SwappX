@@ -40,9 +40,9 @@ export class IscrizioneConsensiService {
     return this.http.post( environment.apiBaseUrl  + 'CLS_IscrizioneConsensi' , formData);  
   }
 
-  deleteByIscrizione (iscrizioneID: number) {
-    return this.http.delete( environment.apiBaseUrl  + 'CLS_IscrizioneConsensi/DeleteByIscrizione/'+iscrizioneID);
-    //http://213.215.231.4/swappX/api/CLS_IscrizioneConsensi/DeleteByIscrizione/4
+  deleteByIscrizioneAndTipo (iscrizioneID: number, tipo: string) {
+    return this.http.delete( environment.apiBaseUrl  + 'CLS_IscrizioneConsensi/DeleteByIscrizioneAndTipo/'+iscrizioneID+'/'+tipo);
+    //http://213.215.231.4/swappX/api/CLS_IscrizioneConsensi/DeleteByIscrizioneAndTipo/4/Consensi
   }
 
   delete(materiaID: number): Observable <any>{

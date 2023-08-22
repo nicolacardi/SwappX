@@ -16,6 +16,9 @@
 
 ._unacolonna {
     text-align: center;
+    /* border: 1px solid lightgray;
+    border-radius: 5px; */
+    background-color: rgb(245, 245, 245);
 }
   
 ._tabellaquote td {
@@ -26,9 +29,12 @@
 
 ._tabellaquote th {
     border: 1px solid #dddddd;
-    background-color: lightgrey;
+    background-color: rgb(245, 245, 245);
     text-align: center;
     padding: 8px;
 
     }
 
+._tabellaquote {
+    position: sticky;
+}

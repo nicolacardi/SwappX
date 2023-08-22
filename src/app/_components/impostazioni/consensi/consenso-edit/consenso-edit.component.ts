@@ -1,11 +1,13 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, Inject, OnInit }            from '@angular/core';
+import { Component, Inject, OnInit, ViewChild }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
 import { tap }                                  from 'rxjs/operators';
+// import { CustomOption, QuillEditorComponent }   from 'ngx-quill'
+// import 'quill-mention'
 
 //components
 import { SnackbarComponent }                    from '../../../utilities/snackbar/snackbar.component';
@@ -37,6 +39,17 @@ export class ConsensoEditComponent implements OnInit {
   form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
+  modules:                                      any = {}
+
+  // public customOptions = [
+  //   {
+  //     import: 'attributors/style/size',
+  //     whitelist: ['10px', '12px', '14px', '16px', '18px', '20px', '22px', '24px']
+  //   }
+  // ];
+
+  // @ViewChild('QuillEditor', { static: false }) editor!: QuillEditorComponent
+
 //#endregion
 
 //#region ----- Constructor --------------------
@@ -63,6 +76,7 @@ export class ConsensoEditComponent implements OnInit {
       testo3:                                   [''],
       testo4:                                   [''],
       testo5:                                   [''],
+      testo6:                                   [''],
       seq:                                      [''],
       risorsaID:                                   ['']
     });
@@ -112,10 +126,11 @@ export class ConsensoEditComponent implements OnInit {
     testo[2] = this.form.controls['testo3'];
     testo[3] = this.form.controls['testo4'];
     testo[4] = this.form.controls['testo5'];
+    testo[5] = this.form.controls['testo6'];
 
     let testoreordered = []
     let n = 0;
-    for (let i = 0; i < 5; i++) { 
+    for (let i = 0; i < 6; i++) { 
       if (testo[i].value != '' && testo[i].value != null) { 
         testoreordered[n] = testo[i].value;
         n++;
@@ -175,8 +190,23 @@ export class ConsensoEditComponent implements OnInit {
     });
   }
 
-  
+
+
 //#endregion
 
 
+
+
+//per QUILL
+// changeFontSize() {
+//   this.editor.quillEditor.setSelection(0, this.editor.quillEditor.getLength()) 
+//   this.editor.quillEditor.format('size', this.form.controls.fontSize.value);
+//   this.form.controls.testo.setValue(this.editor.quillEditor.root.innerHTML);
+// }
+
+// changeAlignment() {
+//   this.editor.quillEditor.setSelection(0, this.editor.quillEditor.getLength()) 
+//   this.editor.quillEditor.format('align', this.form.controls.alignment.value);
+//   this.form.controls.testo.setValue(this.editor.quillEditor.root.innerHTML);
+// }
 }

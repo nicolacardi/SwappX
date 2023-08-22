@@ -83,7 +83,6 @@ constructor(private svcConsensi:                ConsensiService,
   loadData() {
     this.obsConsensi$ = this.svcConsensi.list()
     .pipe( 
-      tap(()=> console.log ("this.tipo", this.tipo)),
       map(res=> res.filter((x) => x.tipo == this.tipo)), //carico domande x consensi o dati economici a seconda del valore in input
     )
     ;  
@@ -91,7 +90,6 @@ constructor(private svcConsensi:                ConsensiService,
 
     loadConsensi$.subscribe(
       questions =>   {
-        console.log("questions", questions);
 
         this.matDataSource.data = questions;
         //devo aggiungere al form un controllo x ogni domanda (di due tipi diversi)

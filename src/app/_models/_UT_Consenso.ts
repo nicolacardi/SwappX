@@ -10,6 +10,8 @@ export interface _UT_Consenso {
     testo3:                                     string;
     testo4:                                     string;
     testo5:                                     string;
+    testo6:                                     string;
+
     risorsaID:                                  number;
     risorsa?:                                   _UT_Risorsa;
 

@@ -46,7 +46,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   @ViewChildren(PersonaFormComponent) PersonaFormComponent!: QueryList<PersonaFormComponent>;
   @ViewChild('formIscrizioneConsensi') ConsensiFormComponent!: IscrizioneConsensiComponent;
-  // @ViewChild('appAlunnoForm') appAlunnoForm!:   PersonaFormComponent;
+  @ViewChild('formIscrizioneDatiEconomici') DatiEconomiciFormComponent!: IscrizioneConsensiComponent;
 
   @ViewChild('stepper') stepper!:               MatStepper;
 //#endregion
@@ -129,10 +129,14 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   }
 
-  async salvaConsensi() {
+  async salvaConsensi(tipo: string) {
 
-    await firstValueFrom(this.svcIscrizioneConsensi.deleteByIscrizione(this.iscrizioneID));
-    let formValues = this.ConsensiFormComponent.formConsensi.value;
+    await firstValueFrom(this.svcIscrizioneConsensi.deleteByIscrizioneAndTipo(this.iscrizioneID, tipo));
+
+    let formValues! : any;
+
+    if (tipo == 'Consensi')    formValues = this.ConsensiFormComponent.formConsensi.value;
+    if (tipo == 'Dati Economici')    formValues = this.DatiEconomiciFormComponent.formConsensi.value;
 
     //devo trasformare questo ogetto in un altro
     //ad esempio da
@@ -158,7 +162,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
     // 15 true false false false false
     // 16 false false true false false
 
-    let iscrizioneConsensiForm : CLS_IscrizioneConsenso;
+    let form : CLS_IscrizioneConsenso;
 
     for (const key in formValues) {
       if (formValues.hasOwnProperty(key)) {
@@ -169,21 +173,27 @@ export class ProceduraIscrizioneComponent implements OnInit {
         const risposta3 = parseInt(value) === 3 ? true : false;
         const risposta4 = parseInt(value) === 4 ? true : false;
         const risposta5 = parseInt(value) === 5 ? true : false;
+        const risposta6 = parseInt(value) === 6 ? true : false;
     
-        iscrizioneConsensiForm = {
+        form = {
           iscrizioneID: this.iscrizioneID,
           consensoID: consensoId,
+          tipo: tipo,
           risposta1: risposta1,
           risposta2: risposta2,
           risposta3: risposta3,
           risposta4: risposta4,
           risposta5: risposta5,
+          risposta6: risposta6,
         };
-    
-        this.svcIscrizioneConsensi.post(iscrizioneConsensiForm).subscribe(
+        this.svcIscrizioneConsensi.post(form).subscribe(
           {
-            next: res=> {console.log ("inserita domanda", consensoId)},
-            error: err=> {console.log ("errore nell'nserimento", consensoId)}
+            next: res=> {
+              // console.log ("inserita domanda", consensoId)
+            },
+            error: err=> {
+              // console.log ("errore nell'nserimento", consensoId)
+            }
           }
         )
 
@@ -192,9 +202,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   }
 
-  formValidEmitted(valid: boolean){
-   // console.log("ciao", valid);
-  }
+
 //#endregion
 
 }

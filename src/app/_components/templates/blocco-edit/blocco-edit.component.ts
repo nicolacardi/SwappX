@@ -28,7 +28,7 @@ import { BlocchiCelleService }                  from '../blocchicelle.service';
 import { TableColsService }                     from '../../utilities/toolbar/tablecols.service';
 
 //models
-import { A4V }                                   from 'src/environments/environment';
+import { A4V }                                  from 'src/environments/environment';
 import { TEM_Blocco }                           from 'src/app/_models/TEM_Blocco';
 import { TEM_BloccoFoto }                       from 'src/app/_models/TEM_BloccoFoto';
 import { TEM_BloccoTesto }                      from 'src/app/_models/TEM_BloccoTesto';

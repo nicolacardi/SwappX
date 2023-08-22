@@ -64,6 +64,10 @@
             <th mat-header-cell *matHeaderCellDef  mat-sort-header >Opzione5</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.testo5 | highlight:filterValue"></td>
         </ng-container>
+        <ng-container matColumnDef="testo6">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Opzione6</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.testo6 | highlight:filterValue"></td>
+        </ng-container>
 
         <ng-container matColumnDef="risorsa">
             <th mat-header-cell *matHeaderCellDef  mat-sort-header >Allegato</th>

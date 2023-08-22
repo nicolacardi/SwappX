@@ -22,7 +22,7 @@
                          [dove]="'procedura-iscrizione'"
                          #appGenitoreForm>
       </app-persona-form> 
-       <div class="center">
+       <div class="center mt20">
         <button *ngIf="i!=0" mat-stroked-button matStepperPrevious>Indietro</button>
         <button mat-stroked-button 
                 class="ml10" 
@@ -36,20 +36,20 @@
 
 
     <!-- NON SI CAPISCE PERCHE' QUI NON FUNZIONA [stepControl]="appAlunnoForm.form" e [disabled]="!appAlunnoForm.form.valid" -->
-    <mat-step>
+    <mat-step [stepControl]="appAlunnoForm.form">
       <ng-template matStepLabel>Dati dell'alunno</ng-template>
       <h3 *ngIf="iscrizione">Alunno: {{iscrizione.alunno.persona.nome}} {{iscrizione.alunno.persona.cognome}}</h3>
-      <app-persona-form *ngIf="iscrizione"  
-                        [personaID]="iscrizione.alunno.personaID" 
-                        [dove]="'procedura-iscrizione'"
-                        #appAlunnoForm>
+      <app-persona-form  [personaID]="iscrizione.alunno.personaID" 
+                         [dove]="'procedura-iscrizione'"
+                         #appAlunnoForm>
       </app-persona-form> 
-      <div class="center">
+
+      <div class="center mt20">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
         <button mat-stroked-button 
                 class="ml10" 
                 matStepperNext 
-                
+                [disabled]="!appAlunnoForm.form.valid"
 
                 (click)="salvaPersona(1)">
           Salva e procedi
@@ -64,13 +64,14 @@
         [tipo]="'Consensi'"
         #formIscrizioneConsensi>
       </app-iscrizione-consensi> 
-      <div class="center">
+
+      <div class="center mt20">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
         <button mat-stroked-button 
                 class="ml10" 
                 matStepperNext
                 [disabled]="!formIscrizioneConsensi.formConsensi.valid"
-                (click)="salvaConsensi()">
+                (click)="salvaConsensi('Consensi')">
           Salva e procedi
         </button>
       </div>
@@ -83,20 +84,25 @@
         [tipo]="'Dati Economici'"
         #formIscrizioneDatiEconomici>
       </app-iscrizione-consensi>
-      <div class="center">
+
+      <div class="center mt20">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
         <button mat-stroked-button
                 class="ml10"
                 matStepperNext
                 [disabled]="!formIscrizioneDatiEconomici.formConsensi.valid"
+                (click)="salvaConsensi('Dati Economici')"
                 >Salva e procedi</button>
       </div>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Fine</ng-template>
-      Hai completato l'iscrizione
-      <div class="center">
+      <div class="center">Grazie, hai completato l'iscrizione!</div>
+      <div class="center mt10">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
+        <button mat-stroked-button
+                class="ml10"
+                >Stampa Modulo di iscrizione</button>
       </div>
     </mat-step>
 

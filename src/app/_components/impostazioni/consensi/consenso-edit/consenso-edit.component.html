@@ -27,6 +27,70 @@
             </div>
 
             <mat-grid-list class="mt10" [cols]="1" rowHeight="100px" >
+                <!-- <mat-grid-tile>
+                    <quill-editor
+
+                        placeholder="Inserire il proprio testo..."
+                        formControlName="testo"
+                        [customOptions]="customOptions"
+                        [modules] = "modules"
+                        #QuillEditor>
+                        
+                        <div quill-editor-toolbar>
+                            <span class="ql-formats">
+                                <select class="ql-font" [title]="'Carattere'">
+                                </select>
+                            </span>
+
+                            <span class="ql-formats">
+                            <button class="ql-bold" [title]="'Grassetto'"></button>
+                            <button class="ql-italic" [title]="'Corsivo'"></button>
+                            <button class="ql-underline" [title]="'Sottolineato'"></button>
+                            <button class="ql-strike" [title]="'Barrato'"></button>
+                            </span>
+                        
+                            <span class="ql-formats">
+                                <button class="ql-list ordered" value="ordered" [title]="'Elenco Numerato'"></button>
+                                <button class="ql-list bullet" value="bullet" [title]="'Elenco Puntato'"></button>
+
+                            </span>
+                            <span class="ql-formats">
+                            <select class="ql-size" [title]="'Dimensione Font'" formControlName="fontSize" (change)="changeFontSize()">
+                                <option value="10px"></option>
+                                <option value="12px"></option>
+                                <option value="14px"></option>
+                                <option value="16px"></option>
+                                <option value="18px"></option>
+                                <option value="20px"></option>
+                                <option value="22px"></option>
+                                <option value="24px"></option>
+                            </select>
+                            </span>
+                        
+                            <span class="ql-formats">                      
+                                <select class="ql-align" [title]="'Allineamento'" formControlName="alignment" (change)="changeAlignment()">
+                                </select>
+                            </span>
+
+                            <span class="ql-formats">
+                                <button class="ql-clean" [title]="'Pulizia Formato'"></button>
+                            </span>
+
+                        </div>
+
+                    </quill-editor>
+                </mat-grid-tile> -->
+                <mat-grid-tile>
+                    <mat-form-field  >
+                        <mat-label>Pagina</mat-label>
+                        <mat-select formControlName="tipo">
+                            <mat-option value="Consensi">Consensi</mat-option>
+                            <mat-option value="Dati Economici">Dati Economici</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+
                 <mat-grid-tile>
                     <!-- <mat-form-field>
                         <input matInput type="text" required placeholder="Domanda" minlength= "3" formControlName="domanda" #nome>
@@ -40,10 +104,10 @@
                 </mat-grid-tile>
 
             </mat-grid-list>
-            <mat-grid-list class="mt10" [cols]="2" rowHeight="60px" >
+            <mat-grid-list class="mt10" [cols]="3" rowHeight="60px" >
 
-                <mat-grid-tile colspan="2" class="center">
-                    Indicare di seguito le Opzioni disponibili (Max 5)<br>
+                <mat-grid-tile colspan="3" class="center">
+                    Indicare di seguito le Opzioni disponibili (da 0 a 6)<br>
                     Per un consenso obbligatorio inserire 1 opzione<br>
                     Per un consenso non obbligatorio inserire 2 opzioni (ad es. Si/No)
                 </mat-grid-tile>
@@ -54,38 +118,45 @@
                 </mat-grid-tile> -->
 
 
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <input matInput type="text" placeholder="opzione 1" formControlName="testo1" #nome>
-                    </mat-form-field>
-                </mat-grid-tile>
 
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <input matInput type="text" placeholder="opzione 2" formControlName="testo2" #nome>
-                    </mat-form-field>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <input matInput type="text" placeholder="opzione 3" formControlName="testo3" #nome>
-                    </mat-form-field>
-                </mat-grid-tile>
+                    <mat-grid-tile >
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="opzione 1" formControlName="testo1" #nome>
+                        </mat-form-field>
+                    </mat-grid-tile>
 
-                <mat-grid-tile>
-                    <mat-form-field>
-                        <input matInput type="text" placeholder="opzione 4" formControlName="testo4" #nome>
-                    </mat-form-field>
-                </mat-grid-tile>
-                
-                <mat-grid-tile colspan="2" >
-                    <mat-form-field>
-                        <input matInput type="text" placeholder="opzione 5" formControlName="testo5" #nome>
-                    </mat-form-field>
-                </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="opzione 2" formControlName="testo2" #nome>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="opzione 3" formControlName="testo3" #nome>
+                        </mat-form-field>
+                    </mat-grid-tile>
 
-                <mat-grid-tile colspan="2" >
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="opzione 4" formControlName="testo4" #nome>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="opzione 5" formControlName="testo5" #nome>
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile>
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="opzione 6" formControlName="testo6" #nome>
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                <mat-grid-tile colspan="3" >
                     <mat-form-field  >
-                        <mat-label>File</mat-label>
+                        <mat-label>File Allegato</mat-label>
                         <mat-select formControlName="risorsaID">
                             <mat-option>-</mat-option>
                             <mat-option *ngFor="let element of (obsRisorse$ | async)" [value]="element.id">
@@ -95,15 +166,7 @@
                     </mat-form-field>
                 </mat-grid-tile>
 
-                <mat-grid-tile colspan="2" >
-                    <mat-form-field  >
-                        <mat-label>Pagina</mat-label>
-                        <mat-select formControlName="tipo">
-                            <mat-option value="Consensi">Consensi</mat-option>
-                            <mat-option value="Dati Economici">Dati Economici</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
+
             </mat-grid-list>
 
         </form>

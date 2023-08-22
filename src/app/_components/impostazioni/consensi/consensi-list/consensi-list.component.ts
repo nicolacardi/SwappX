@@ -45,6 +45,7 @@ export class ConsensiListComponent implements OnInit{
     "testo3",
     "testo4",
     "testo5",
+    "testo6",
     "risorsa"
   ];
 
@@ -108,7 +109,7 @@ export class ConsensiListComponent implements OnInit{
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '600px',
+      width: '800px',
       height: '570px',
       data: { consensoID:  0}
     };
@@ -121,7 +122,7 @@ export class ConsensiListComponent implements OnInit{
   openDetail(consensoID:any){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '600px',
+      width: '800px',
       height: '570px',
       data: { consensoID: consensoID }
     };
