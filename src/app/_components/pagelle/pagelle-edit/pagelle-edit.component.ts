@@ -66,14 +66,14 @@ export class PagellaEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(private svcPagelle:                         PagelleService,
-              private svcPagellaVoti:                     PagellaVotiService,
-              private svcFiles:                           FilesService,
-              private svcIscrizioni:                      IscrizioniService,
-              private svcOpenXML:                         OpenXMLService,
-              private _loadingService:                    LoadingService,
-              private _snackBar:                          MatSnackBar ,
-              private _jspdf:                             JspdfService) {
+  constructor(private svcPagelle:               PagelleService,
+              private svcPagellaVoti:           PagellaVotiService,
+              private svcFiles:                 FilesService,
+              private svcIscrizioni:            IscrizioniService,
+              private svcOpenXML:               OpenXMLService,
+              private _loadingService:          LoadingService,
+              private _snackBar:                MatSnackBar ,
+              private _jspdf:                   JspdfService) {
   }
 
 //#endregion
@@ -148,8 +148,8 @@ export class PagellaEditComponent implements OnInit {
 
     let nomeFile: string;
     nomeFile = "PagellaElementari"  + '_' + this.iscrizione.classeSezioneAnno.anno.annoscolastico + "(" + this.quadrimestre +"quad)_" + this.alunno.persona.cognome + ' ' + this.alunno.persona.nome + '.docx'
-
     this.svcOpenXML.downloadFile(this.openXMLPreparaOggetto(this.alunno, this.iscrizione, this.lstPagellaVoti, this.objPagella, nomeFile), nomeFile );
+
   }
   
   openXMLPreparaOggetto (alunno: ALU_Alunno, iscrizione: CLS_Iscrizione, lstPagellaVoti: DOC_PagellaVoto[], objPagella: DOC_Pagella, nomeFile:string) {
@@ -169,6 +169,7 @@ export class PagellaEditComponent implements OnInit {
       }
       return null;
     }
+    
 
     let tagDocument : RPT_TagDocument = {
       templateName: "PagellaElementari",
