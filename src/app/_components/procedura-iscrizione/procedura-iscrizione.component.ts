@@ -37,7 +37,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
   public obsIscrizione$!:                       Observable<CLS_Iscrizione>;
   public genitoriArr:                           ALU_Genitore[] = [];
   public iscrizione!:                           CLS_Iscrizione;
-  private form! :                               UntypedFormGroup;
+  //private form! :                               UntypedFormGroup;
   public iscrizioneID!:                         number;
 
 //#endregion
@@ -61,11 +61,11 @@ export class ProceduraIscrizioneComponent implements OnInit {
               private actRoute:                 ActivatedRoute,
               private _snackBar:                MatSnackBar ) { 
 
-    this.form = this.fb.group({
-      id:                         [null],
-      //tipoPersonaID:              [''],
-      ckAttivo:                   [true],
-    });
+    // this.form = this.fb.group({
+    //   id:                         [null],
+    //   tipoPersonaID:              [''],
+    //   ckAttivo:                   [true],
+    // });
   }
 //#endregion
 
@@ -117,16 +117,13 @@ export class ProceduraIscrizioneComponent implements OnInit {
 //#region ----- Altri metodi -------------------
 
   salvaPersona(n: number){
-   
-    this.form.controls.tipoPersonaID.setValue(n);
-    let PersonaFormComponentArray = this.PersonaFormComponent.toArray();
-   
-    this.form.patchValue(PersonaFormComponentArray[this.stepper.selectedIndex-1].form.value);
-    this.svcPersone.put(this.form.value).subscribe({
-      next: res=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']}),
+    //this.form.controls.tipoPersonaID.setValue(n);
+    //this.form.patchValue(PersonaFormComponentArray[this.stepper.selectedIndex-1].form.value);  //una volta ci portavamo qui il form......
+    this.PersonaFormComponent.toArray()[this.stepper.selectedIndex-1].save()
+    .subscribe({
+      next: ()=> {},
       error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    });
-
+    })
   }
 
   async salvaConsensi(tipo: string) {

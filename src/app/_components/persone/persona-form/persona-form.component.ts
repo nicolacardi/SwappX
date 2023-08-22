@@ -129,7 +129,7 @@ export class PersonaFormComponent implements OnInit {
 
       this.form.controls.comune.valueChanges.subscribe( res=> {
         this.comuniIsLoading = true
-          if (res.length >=3 && this.comuniArr != undefined ) {
+          if (res && res.length >=3 && this.comuniArr != undefined ) {
             this.filteredComuniArr = this.comuniArr.filter (val => val.comune.toLowerCase().includes(res.toLowerCase()) );
             this.comuniIsLoading = false
           } 
@@ -142,7 +142,7 @@ export class PersonaFormComponent implements OnInit {
 
       this.form.controls.comuneNascita.valueChanges.subscribe( res=> {
         this.comuniNascitaIsLoading = true
-          if (res.length >=3  && this.comuniArr != undefined) {
+          if (res && res.length >=3  && this.comuniArr != undefined) {
             this.filteredComuniNascitaArr = this.comuniArr.filter(val => val.comune.toLowerCase().includes(res.toLowerCase()));
             this.comuniNascitaIsLoading = false
           } 

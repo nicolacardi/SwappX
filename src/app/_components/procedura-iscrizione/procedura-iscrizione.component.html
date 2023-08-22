@@ -36,7 +36,7 @@
 
 
     <!-- NON SI CAPISCE PERCHE' QUI NON FUNZIONA [stepControl]="appAlunnoForm.form" e [disabled]="!appAlunnoForm.form.valid" -->
-    <mat-step [stepControl]="appAlunnoForm.form">
+    <mat-step *ngIf="iscrizione" [stepControl]="appAlunnoForm.form">
       <ng-template matStepLabel>Dati dell'alunno</ng-template>
       <h3 *ngIf="iscrizione">Alunno: {{iscrizione.alunno.persona.nome}} {{iscrizione.alunno.persona.cognome}}</h3>
       <app-persona-form  [personaID]="iscrizione.alunno.personaID" 
