@@ -15,13 +15,16 @@ import { PersonaFormComponent }                 from '../persone/persona-form/pe
 import { PersoneService }                       from '../persone/persone.service';
 import { IscrizioniService }                    from '../iscrizioni/iscrizioni.service';
 import { IscrizioneConsensiService }            from './iscrizione-consensi/iscrizione-consensi.service';
+import { OpenXMLService }                       from '../utilities/openXML/open-xml.service';
 
 //models
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
 import { ALU_GenitoreAlunno }                   from 'src/app/_models/ALU_GenitoreAlunno';
 import { IscrizioneConsensiComponent }          from './iscrizione-consensi/iscrizione-consensi.component';
-import { CLS_IscrizioneConsenso } from 'src/app/_models/CLS_IscrizioneConsenso';
+import { CLS_IscrizioneConsenso }               from 'src/app/_models/CLS_IscrizioneConsenso';
+import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDocument';
+import { FormatoData, Utility } from '../utilities/utility.component';
 
 //#endregion
 @Component({
@@ -56,6 +59,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
   constructor(private fb:                       UntypedFormBuilder,
               private svcIscrizioni:            IscrizioniService,
               private svcIscrizioneConsensi:    IscrizioneConsensiService,
+              private svcOpenXML:               OpenXMLService,
 
               private svcPersone:               PersoneService,
               private actRoute:                 ActivatedRoute,
@@ -102,6 +106,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
     //ottengo dall'iscrizione tutti i dati: dell'alunno e dei genitori
     this.svcIscrizioni.get(this.iscrizioneID).subscribe(
       res => {
+        console.log ("res",res);
         this.iscrizione = res;
         res.alunno._Genitori!.forEach(
            (genitorealunno: ALU_GenitoreAlunno) =>{
@@ -196,6 +201,28 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
       }
     }
+
+  }
+
+  downloadModuloIscrizione() {
+
+    let nomeFile = "ModuloIscrizione"  + '_' + this.iscrizione.classeSezioneAnno.anno.annoscolastico + "_" + this.iscrizione.alunno.persona.cognome + ' ' + this.iscrizione.alunno.persona.nome + '.docx'
+
+    let tagDocument : RPT_TagDocument = {
+      templateName: "ModuloIscrizioni",
+      tagFields:
+      [
+        { tagName: "AnnoScolastico",            tagValue: this.iscrizione.classeSezioneAnno.anno.annoscolastico},
+        { tagName: "NomeGenitore1",             tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.nome},
+        { tagName: "CognomeGenitore1",          tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.cognome},
+        { tagName: "ComuneNascitaGenitore1",    tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.comuneNascita},
+        { tagName: "DataNascitaGenitore1",      tagValue: Utility.formatDate(this.iscrizione.alunno._Genitori![0].genitore?.persona.dtNascita, FormatoData.dd_mm_yyyy)},
+
+      ]
+    }
+
+    console.log (tagDocument);
+    this.svcOpenXML.downloadFile(tagDocument, nomeFile );
 
   }
 
