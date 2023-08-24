@@ -13,6 +13,7 @@ import { environment }                          from 'src/environments/environme
 import { _UT_Consenso }                         from '../../../_models/_UT_Consenso';
 
 //#endregion
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,17 +24,6 @@ export class ConsensiService {
   list(): Observable<_UT_Consenso[]>{
     return this.http.get<_UT_Consenso[]>(environment.apiBaseUrl+'_UT_Consensi');
     //http://213.215.231.4/swappX/api/_UT_Consensi
-  }
-
-  updateSeq(seqInitial: number, seqFinal: number): Observable <any>{
-    //console.log(seqInitial, seqFinal);
-    return this.http.put(environment.apiBaseUrl+'_UT_Consensi/UpdateSeq/'+seqInitial+'/'+seqFinal, seqInitial);
-    //http://213.215.231.4/swappX/api/_UT_Consensi/UpdateSeq/1/2
-  }
-
-  renumberSeq() {
-    const url = `${environment.apiBaseUrl}_UT_Consensi/RenumberSeq`;
-    return this.http.put(url, null);
   }
 
   get(consensoID: any): Observable<_UT_Consenso>{
@@ -54,6 +44,15 @@ export class ConsensiService {
     return this.http.delete( environment.apiBaseUrl  + '_UT_Consensi/' + materiaID);    
   }
 
+  updateSeq(seqInitial: number, seqFinal: number): Observable <any>{
+    //console.log(seqInitial, seqFinal);
+    return this.http.put(environment.apiBaseUrl+'_UT_Consensi/UpdateSeq/'+seqInitial+'/'+seqFinal, seqInitial);
+    //http://213.215.231.4/swappX/api/_UT_Consensi/UpdateSeq/1/2
+  }
 
+  renumberSeq() {
+    const url = `${environment.apiBaseUrl}_UT_Consensi/RenumberSeq`;
+    return this.http.put(url, null);
+  }
 
 }

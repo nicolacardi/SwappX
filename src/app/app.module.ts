@@ -428,10 +428,6 @@ import { RisorsaEditComponent }                 from './_components/impostazioni
     {provide: STEPPER_GLOBAL_OPTIONS,
     useValue: { showError: true }}
 
-    
-
-
-
   ],
   bootstrap: [AppComponent]
 })
