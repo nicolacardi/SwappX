@@ -216,7 +216,20 @@ export class ProceduraIscrizioneComponent implements OnInit {
         { tagName: "NomeGenitore1",             tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.nome},
         { tagName: "CognomeGenitore1",          tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.cognome},
         { tagName: "ComuneNascitaGenitore1",    tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.comuneNascita},
-        { tagName: "DataNascitaGenitore1",      tagValue: Utility.formatDate(this.iscrizione.alunno._Genitori![0].genitore?.persona.dtNascita, FormatoData.dd_mm_yyyy)},
+        { tagName: "ProvNascitaGenitore1",      tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.provNascita},
+
+        { tagName: "dtNascitaGenitore1",        tagValue: Utility.formatDate(this.iscrizione.alunno._Genitori![0].genitore?.persona.dtNascita, FormatoData.dd_mm_yyyy)},
+        { tagName: "PaeseNascitaGenitore1",     tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.nazioneNascita},
+        { tagName: "CFGenitore1",               tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.cf},
+        { tagName: "IndirizzoGenitore1",        tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.indirizzo},
+        { tagName: "CAPGenitore1",              tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.cap},
+        { tagName: "ComuneGenitore1",           tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.comune},
+        { tagName: "ProvGenitore1",             tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.prov},
+        { tagName: "Tel1Genitore1",             tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.telefono},
+        { tagName: "Tel2Genitore1",             tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.telefono1},
+        { tagName: "EmailGenitore1",            tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.email},
+
+        
 
       ]
     }
