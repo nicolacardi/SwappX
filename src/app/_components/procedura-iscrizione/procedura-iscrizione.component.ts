@@ -10,6 +10,7 @@ import { ActivatedRoute }                       from '@angular/router';
 //components
 import { SnackbarComponent }                    from '../utilities/snackbar/snackbar.component';
 import { PersonaFormComponent }                 from '../persone/persona-form/persona-form.component';
+import { IscrizioneConsensiComponent }          from './iscrizione-consensi/iscrizione-consensi.component';
 
 //services
 import { PersoneService }                       from '../persone/persone.service';
@@ -21,7 +22,6 @@ import { OpenXMLService }                       from '../utilities/openXML/open-
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
 import { ALU_GenitoreAlunno }                   from 'src/app/_models/ALU_GenitoreAlunno';
-import { IscrizioneConsensiComponent }          from './iscrizione-consensi/iscrizione-consensi.component';
 import { CLS_IscrizioneConsenso }               from 'src/app/_models/CLS_IscrizioneConsenso';
 import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDocument';
 import { FormatoData, Utility } from '../utilities/utility.component';

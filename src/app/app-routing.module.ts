@@ -27,6 +27,7 @@ import { OrarioPageComponent }                  from './_components/lezioni/orar
 import { ProceduraIscrizioneComponent }         from './_components/procedura-iscrizione/procedura-iscrizione.component';
 import { TemplateComponent }                    from './_components/templates/template/template.component';
 import { ChangePswExtComponent }                from './_user/change-psw-ext/change-psw-ext.component';
+import { ConsensoEditComponent } from './_components/impostazioni/consensi/consenso-edit/consenso-edit.component';
 
 const routes: Routes = [
 
@@ -43,8 +44,6 @@ const routes: Routes = [
 
     ]
   },
-
-
 
 
   { path:'home',                                component: HomeComponent, canActivate:[AuthGuard]  },
@@ -81,6 +80,7 @@ const routes: Routes = [
   { path: "template",                           component: TemplateComponent,canActivate:[AuthGuard] },
 
   { path: "impostazioni",                       component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: ['SysAdmin', 'Segreteria', 'Amministratore' ] }  },
+  //{ path: "consenso-edit",                      component: ConsensoEditComponent, canActivate:[AuthGuard],data: { roles: ['SysAdmin', 'Segreteria', 'Amministratore' ] }  },
 
   { path: "procedura-iscrizione",               component: ProceduraIscrizioneComponent, canActivate:[AuthGuard] },
 

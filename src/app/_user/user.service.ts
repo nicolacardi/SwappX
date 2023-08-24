@@ -27,12 +27,12 @@ export class UserService {
 
   private BehaviourSubjectcurrentUser :         BehaviorSubject<User>;      //holds the value that needs to be shared with other components
   public obscurrentUser:                        Observable<User>;
-  constructor( 
-    private fb:                                 UntypedFormBuilder,
-    private http:                               HttpClient,
-    private svcPersona:                         PersoneService,
-    private svcParametri:                       ParametriService ) 
-  { 
+
+  constructor(private fb:                                 UntypedFormBuilder,
+              private http:                               HttpClient,
+              private svcPersona:                         PersoneService,
+              private svcParametri:                       ParametriService )   { 
+                
     this.BehaviourSubjectcurrentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
     this.obscurrentUser = this.BehaviourSubjectcurrentUser.asObservable();
   }
@@ -85,31 +85,10 @@ export class UserService {
               }
             }
           )
-        )))
-      );
-
-        /*
-        map( user => {
-          if (user && user.token) {
-            this.svcPersona.get(user.personaID).subscribe(val=>{
-                user.isLoggedIn = true;
-                user.personaID = val.id;
-                user.fullname = val.nome + " " + val.cognome;
-                user.tipoPersonaID = val.tipoPersonaID;
-                user.TipoPersona = val.tipoPersona;
-                localStorage.setItem('token', user.token!);
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                this.BehaviourSubjectcurrentUser.next(user);
-            })
-          }
-          else {
-            this.Logout();
-          }
-          return user;
-        })
-      );
-*/
-    //let httpParam$ = this.svcParametri.getByParName('AnnoCorrente')    
+        ))
+      )
+    );
+    /*
     this.svcParametri.getByParName('AnnoCorrente')
       .pipe(map( par => {
         //sessionStorage.setItem();
@@ -117,7 +96,7 @@ export class UserService {
         return par;
       })
     ).subscribe();
-
+    */
     return httpPost$;
 
     //return forkJoin([ httpPost$ ,httpParam$  ]);      //Concatenazione di due observable, in qs modo se ne fa la subscribe in un colpo solo

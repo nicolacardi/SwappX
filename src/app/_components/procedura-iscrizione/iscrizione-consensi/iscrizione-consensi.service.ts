@@ -49,6 +49,4 @@ export class IscrizioneConsensiService {
     return this.http.delete( environment.apiBaseUrl  + 'CLS_IscrizioneConsensi/' + materiaID);    
   }
 
-
-
 }
