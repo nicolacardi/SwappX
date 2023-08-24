@@ -16,13 +16,15 @@ import { IscrizioneConsensiComponent }          from './iscrizione-consensi/iscr
 import { PersoneService }                       from '../persone/persone.service';
 import { IscrizioniService }                    from '../iscrizioni/iscrizioni.service';
 import { IscrizioneConsensiService }            from './iscrizione-consensi/iscrizione-consensi.service';
+import { OpenXMLService }                       from '../utilities/openXML/open-xml.service';
 
 //models
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
 import { ALU_GenitoreAlunno }                   from 'src/app/_models/ALU_GenitoreAlunno';
-
 import { CLS_IscrizioneConsenso }               from 'src/app/_models/CLS_IscrizioneConsenso';
+import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDocument';
+import { FormatoData, Utility } from '../utilities/utility.component';
 
 //#endregion
 @Component({
@@ -57,6 +59,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
   constructor(private fb:                       UntypedFormBuilder,
               private svcIscrizioni:            IscrizioniService,
               private svcIscrizioneConsensi:    IscrizioneConsensiService,
+              private svcOpenXML:               OpenXMLService,
 
               private svcPersone:               PersoneService,
               private actRoute:                 ActivatedRoute,
@@ -103,6 +106,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
     //ottengo dall'iscrizione tutti i dati: dell'alunno e dei genitori
     this.svcIscrizioni.get(this.iscrizioneID).subscribe(
       res => {
+        console.log ("res",res);
         this.iscrizione = res;
         res.alunno._Genitori!.forEach(
            (genitorealunno: ALU_GenitoreAlunno) =>{
@@ -197,6 +201,41 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
       }
     }
+
+  }
+
+  downloadModuloIscrizione() {
+
+    let nomeFile = "ModuloIscrizione"  + '_' + this.iscrizione.classeSezioneAnno.anno.annoscolastico + "_" + this.iscrizione.alunno.persona.cognome + ' ' + this.iscrizione.alunno.persona.nome + '.docx'
+
+    let tagDocument : RPT_TagDocument = {
+      templateName: "ModuloIscrizioni",
+      tagFields:
+      [
+        { tagName: "AnnoScolastico",            tagValue: this.iscrizione.classeSezioneAnno.anno.annoscolastico},
+        { tagName: "NomeGenitore1",             tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.nome},
+        { tagName: "CognomeGenitore1",          tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.cognome},
+        { tagName: "ComuneNascitaGenitore1",    tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.comuneNascita},
+        { tagName: "ProvNascitaGenitore1",      tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.provNascita},
+
+        { tagName: "dtNascitaGenitore1",        tagValue: Utility.formatDate(this.iscrizione.alunno._Genitori![0].genitore?.persona.dtNascita, FormatoData.dd_mm_yyyy)},
+        { tagName: "PaeseNascitaGenitore1",     tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.nazioneNascita},
+        { tagName: "CFGenitore1",               tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.cf},
+        { tagName: "IndirizzoGenitore1",        tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.indirizzo},
+        { tagName: "CAPGenitore1",              tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.cap},
+        { tagName: "ComuneGenitore1",           tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.comune},
+        { tagName: "ProvGenitore1",             tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.prov},
+        { tagName: "Tel1Genitore1",             tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.telefono},
+        { tagName: "Tel2Genitore1",             tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.telefono1},
+        { tagName: "EmailGenitore1",            tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.email},
+
+        
+
+      ]
+    }
+
+    console.log (tagDocument);
+    this.svcOpenXML.downloadFile(tagDocument, nomeFile );
 
   }
 
