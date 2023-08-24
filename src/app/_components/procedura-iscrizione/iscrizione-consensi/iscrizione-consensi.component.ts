@@ -36,7 +36,6 @@ export class IscrizioneConsensiComponent implements OnInit  {
   formConsensi! :                               UntypedFormGroup;
   questions: any[] = []; // Assuming questions is an array of question objects
 
-
   matDataSource = new MatTableDataSource<_UT_Consenso>();
   
   displayedColumns: string[] = [
@@ -71,8 +70,6 @@ constructor(private svcConsensi:                ConsensiService,
 //#endregion
 
 //#region ----- LifeCycle Hooks e simili-------
-
-  
   ngOnInit(): void {
     this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione;})
     this.svcRette.sumConcordateByIscrizione(this.iscrizioneID).subscribe(rettaConcordata=> {this.rettaConcordata = rettaConcordata;})
@@ -104,33 +101,22 @@ constructor(private svcConsensi:                ConsensiService,
 
     
   }
+//#endregion
+//#region ----- Altri metodi -------------------
 
   download(risorsaID:number){
     if (risorsaID == null) return;
-
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta download inviata...', panelClass: ['green-snackbar']});
-
-
     this.svcRisorse.get(risorsaID).subscribe(
       res=> {
-        const pdfData = res.base64.split(',')[1]; // estrae la stringa dalla virgola in avanti
-
-        // const blob = new Blob([pdfData], { type: 'application/pdf' });
-        // console.log("blob", blob);              
-        // const pdfUrl = URL.createObjectURL(blob);
-        // console.log("pdfUrl", pdfUrl);
-        // window.open(pdfUrl, '_blank'); // Open in a new tab or window NON FUNZIONA
-
+        const pdfData = res.base64.split(',')[1]; // estrae la stringa base64 dalla virgola in avanti
         const source = `data:application/pdf;base64,${pdfData}`;
         const link = document.createElement("a");
-
         link.href = source;
         link.download = `${res.nomeFile}.pdf`
         link.click();
-
       }
     )
-
   }
 
 

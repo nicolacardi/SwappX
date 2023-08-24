@@ -8,9 +8,9 @@ export interface ALU_Alunno {
 
         ckDisabile:                             boolean;
         ckDSA:                                  boolean;
-        ckAuthFoto:                             boolean;
-        ckAuthUsoMateriale:                     boolean;
-        ckAuthUscite:                           boolean;
+        // ckAuthFoto:                             boolean;
+        // ckAuthUsoMateriale:                     boolean;
+        // ckAuthUscite:                           boolean;
         scuolaProvenienza:                      string;
         indirizzoScuolaProvenienza:             string;
 

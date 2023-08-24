@@ -99,9 +99,9 @@ export class AlunnoEditComponent implements OnInit {
       personaID:                              [null],
       ckDSA:                                  [false],
       ckDisabile:                             [false],
-      ckAuthFoto:                             [false],
-      ckAuthUsoMateriale:                     [false],
-      ckAuthUscite:                           [false]
+      // ckAuthFoto:                             [false],
+      // ckAuthUsoMateriale:                     [false],
+      // ckAuthUscite:                           [false]
     });
   }
 

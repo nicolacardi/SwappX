@@ -148,11 +148,11 @@ export class PagellaEditComponent implements OnInit {
 
     let nomeFile: string;
     nomeFile = "PagellaElementari"  + '_' + this.iscrizione.classeSezioneAnno.anno.annoscolastico + "(" + this.quadrimestre +"quad)_" + this.alunno.persona.cognome + ' ' + this.alunno.persona.nome + '.docx'
-    this.svcOpenXML.downloadFile(this.openXMLPreparaOggetto(this.alunno, this.iscrizione, this.lstPagellaVoti, this.objPagella, nomeFile), nomeFile );
+    this.svcOpenXML.downloadFile(this.openXMLPreparaOggetto(this.alunno, this.iscrizione, this.lstPagellaVoti, this.objPagella), nomeFile );
 
   }
   
-  openXMLPreparaOggetto (alunno: ALU_Alunno, iscrizione: CLS_Iscrizione, lstPagellaVoti: DOC_PagellaVoto[], objPagella: DOC_Pagella, nomeFile:string) {
+  openXMLPreparaOggetto (alunno: ALU_Alunno, iscrizione: CLS_Iscrizione, lstPagellaVoti: DOC_PagellaVoto[], objPagella: DOC_Pagella) {
 
     function estraiVoto(obj: DOC_PagellaVoto[], materia: string, index: number) {
 
