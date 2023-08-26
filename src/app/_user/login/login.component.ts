@@ -74,7 +74,6 @@ export class LoginComponent implements OnInit {
       next: res => {
         this.eventEmitterService.onAccountSaveProfile();
         //nel caso di forkJoin res[0] è relativo al primo Observable 
-        //this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + res[0].fullname , panelClass: ['green-snackbar']}); 
         this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + res.nome + ' ' + res.cognome , panelClass: ['green-snackbar']});  
         
         this.svcParametri.getByParName('AnnoCorrente')
@@ -106,8 +105,8 @@ export class LoginComponent implements OnInit {
   toggleShow() {
     this.ckPsw = !this.ckPsw;
     const inputElement = this.pswInput.nativeElement;
-
     const newType = this.ckPsw ? 'password' : 'text';
+    
     this.renderer.setAttribute(inputElement, 'type', newType);
   }
 }
