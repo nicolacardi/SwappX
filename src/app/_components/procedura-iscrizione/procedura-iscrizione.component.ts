@@ -1,7 +1,7 @@
 //#region ----- IMPORTS ------------------------
 
 import { Component, OnInit, QueryList, ViewChild, ViewChildren }                    from '@angular/core';
-import { Observable, firstValueFrom, map }           from 'rxjs';
+import { Observable, concatMap, firstValueFrom, last, map, tap }           from 'rxjs';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { MatStepper }                           from '@angular/material/stepper';
 import { ActivatedRoute }                       from '@angular/router';
@@ -210,6 +210,8 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   downloadModuloIscrizione() {
 
+    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta download inviata...', panelClass: ['green-snackbar']});
+
     let nomeFile = "ModuloIscrizione"  + '_' + this.iscrizione.classeSezioneAnno.anno.annoscolastico + "_" + this.iscrizione.alunno.persona.cognome + ' ' + this.iscrizione.alunno.persona.nome + '.docx'
 
     let tagDocument : RPT_TagDocument = {
@@ -217,6 +219,8 @@ export class ProceduraIscrizioneComponent implements OnInit {
       tagFields:
       [
         { tagName: "AnnoScolastico",            tagValue: this.iscrizione.classeSezioneAnno.anno.annoscolastico},
+        { tagName: "Anno1",                     tagValue: this.iscrizione.classeSezioneAnno.anno.anno1.toString()},
+        { tagName: "Anno2",                     tagValue: this.iscrizione.classeSezioneAnno.anno.anno2.toString()},
 
         { tagName: "TipoGenitore1",             tagValue: this.iscrizione.alunno._Genitori![0].genitore?.tipoGenitore?.descrizione},
         { tagName: "NomeGenitore1",             tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.nome},
@@ -270,23 +274,90 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
         { tagName: "DescrizioneClasse",         tagValue: this.iscrizione.classeSezioneAnno.classeSezione.classe?.descrizione2},
         { tagName: "RettaConcordata",           tagValue: this.rettaConcordata.toString()},
+      ],
+       tagTables: [
+      //   {
+      //     tagTableTitle: "Consensi",
+      //     tagTableRows:
+      //     [
+      //       {
+      //         tagFields:
+      //         [
+      //           { tagName: "RigaConsenso", tagValue: "Silvan"},
+      //           { tagName: "Cognome", tagValue: " Cangurotto "},
+      //         ]
+      //       },
+      //       {
+      //         tagFields: 
+      //         [
+      //           { tagName: "RigaConsenso", tagValue: "Nicola"},
+      //         ]
+      //       }
+      //     ]
+      //   }
+       ]
 
-
-      ]
+      
     }
 
     //aggiungo a tagDocument i tag delle domande "DatiEconomici" su CLS_IscrizioneConsensi
     //estraggo le domande e le risposte
 
-    this.svcIscrizioneConsensi.list()
+    this.svcIscrizioneConsensi.listByIscrizione(this.iscrizioneID)
     // .subscribe(val=>console.log("val", val));
     .pipe( 
-      map(res=> res.filter((x) => x.tipo == "Dati Economici")), //carico domande xdati economici a seconda del valore in input
-    ).subscribe()
+      map(res=> res.filter((x) => x.tipo == "Dati Economici")), 
+      tap (questions => { 
+        console.log ("consensifiltrati", questions);
+
+        let tagFields;
+        const tagTableRows = [];
+
+        for (let i = 0; i < questions.length; i++) {
+          let domanda = questions[i].consenso?.domanda.toUpperCase();
+          let numOpzioni = questions[i].consenso?.numOpzioni || 0;
+  
+                              tagFields= [{ tagName: "SINO", tagValue: " " },{ tagName: "RigaConsenso", tagValue: " " }];
+                              tagTableRows.push(tagFields); //riga vuota
+                              tagFields = [{ tagName: "SINO", tagValue: " " },{ tagName: "RigaConsenso", tagValue: domanda }];
+                              tagTableRows.push(tagFields);
+          if (numOpzioni > 0) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta1? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].consenso!.testo1 }];
+                              tagTableRows.push(tagFields);}
+          if (numOpzioni > 1) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta2? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].consenso!.testo2 }];
+                              tagTableRows.push(tagFields);}
+          if (numOpzioni > 2) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta3? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].consenso!.testo3 }];
+                              tagTableRows.push(tagFields);}
+          if (numOpzioni > 3) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta4? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].consenso!.testo4 }];
+                              tagTableRows.push(tagFields);}
+          if (numOpzioni > 4) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta5? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].consenso!.testo5 }];
+                              tagTableRows.push(tagFields);}
+          if (numOpzioni > 5) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta6? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].consenso!.testo6 }];
+                              tagTableRows.push(tagFields);}
+
+        }
+        console.log ("tableRows", tagTableRows);
+        const tagTable = {
+          tagTableTitle: "Consensi",
+          tagTableRows: tagTableRows.map(tagFields => ({ tagFields })),
+        };
+        console.log ("tagTable", tagTable);
+
+        tagDocument.tagTables!.push(tagTable);
+
+
+        }
+      ),
+    )
+    .subscribe(
+        
+        () => {
+          console.log ("tagDocument", tagDocument);
+          this.svcOpenXML.downloadFile(tagDocument, nomeFile )
+        }
+    )
     ;  
 
-    console.log (tagDocument);
-    this.svcOpenXML.downloadFile(tagDocument, nomeFile );
+    
 
   }
 

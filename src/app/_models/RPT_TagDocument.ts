@@ -16,7 +16,7 @@ export interface RPT_TagTable {
 }
 
 export interface RPT_TagTableRow {
-	tagTableFields?:             			  	RPT_TagField[];
+	tagFields?:             			  		RPT_TagField[];
 }
 
  

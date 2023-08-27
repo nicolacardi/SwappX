@@ -13,7 +13,6 @@
     <ng-template matStepperIcon="edit">
       <mat-icon>done</mat-icon>
     </ng-template>
-    <!-- [stepControl]="apppersonaformG.form" -->
     <mat-step *ngFor="let element of genitoriArr; let i= index"  [stepControl]="appGenitoreForm.form" >
       <ng-template matStepLabel >Dati del Genitore {{i+1}}</ng-template>
       <h3 *ngIf="iscrizione">{{element.tipoGenitore!.descrizione}}: {{element.persona.nome}} {{element.persona.cognome}}</h3>
@@ -33,10 +32,9 @@
       </div>
     </mat-step>
 
-    <!-- NON SI CAPISCE PERCHE' QUI NON FUNZIONA [stepControl]="appAlunnoForm.form" e [disabled]="!appAlunnoForm.form.valid" -->
     <mat-step *ngIf="iscrizione" [stepControl]="appAlunnoForm.form">
       <ng-template matStepLabel>Dati dell'alunno</ng-template>
-      <h3 *ngIf="iscrizione">Alunno: {{iscrizione.alunno.persona.nome}} {{iscrizione.alunno.persona.cognome}}</h3>
+      <h3>Alunno: {{iscrizione.alunno.persona.nome}} {{iscrizione.alunno.persona.cognome}}</h3>
       <app-persona-form  [personaID]="iscrizione.alunno.personaID" 
                          [dove]="'procedura-iscrizione'"
                          #appAlunnoForm>

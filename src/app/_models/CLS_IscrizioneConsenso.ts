@@ -1,3 +1,5 @@
+import { _UT_Consenso } from "./_UT_Consenso";
+
 export interface CLS_IscrizioneConsenso {
         id?:                                     number;
         tipo:                                   string;
@@ -11,4 +13,5 @@ export interface CLS_IscrizioneConsenso {
         risposta6:                              boolean;
         dtIns?:                                 string;
         userIns?:                               number;
+        consenso?:                              _UT_Consenso
 }

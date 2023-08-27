@@ -26,6 +26,12 @@ export class IscrizioneConsensiService {
     //http://213.215.231.4/swappX/api/CLS_IscrizioneConsensi
   }
 
+
+    listByIscrizione(iscrizioneID: number): Observable<CLS_IscrizioneConsenso[]>{
+    return this.http.get<CLS_IscrizioneConsenso[]>(environment.apiBaseUrl+'CLS_IscrizioneConsensi/ListByIscrizione/'+iscrizioneID);   
+    //http://213.215.231.4/swappX/api/CLS_IscrizioneConsensi/ListByIscrizione/328
+  }
+
   get(iscrizioneConsensoID: any): Observable<CLS_IscrizioneConsenso>{
     return this.http.get<CLS_IscrizioneConsenso>(environment.apiBaseUrl+'CLS_IscrizioneConsensi/'+iscrizioneConsensoID);
     //http://213.215.231.4/swappX/api/CLS_IscrizioneConsensi/3
