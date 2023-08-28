@@ -1,4 +1,22 @@
 <!--
+/-alunno-edit 1^tab--------------------------------------------------------\
+|   /-persona-form-----------------------------------------------------\   |
+|   |                                                                  |   |
+|   |            persona-form                                          |   |
+|   |                                                                  |   |
+|   |                                                                  |   |
+|   |                                                                  |   |
+|   |                                                                  |   |
+|   |                                                                  |   |
+|   \------------------------------------------------------------------/   |   
+|   /-alunno-form------------------------------------------------------\   |
+|   |                                                                  |   |
+|   |             alunno-form                                          |   |
+|   |                                                                  |   |
+|   \------------------------------------------------------------------/   |
+|                                                                          |
+\--------------------------------------------------------------------------/
+
 /-alunno-edit 2^tab--------------------------------------------------------\
 |   /-genitori-list----------------------------------------------------\   |
 |   |                                                                  |   |
@@ -51,7 +69,7 @@
                     </button>
 
                     <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-                            [disabled] ="!isValid"
+                            [disabled] ="!alunnoFormisValid || !personaFormisValid"
                             (click)="save()" >
                         <mat-icon>save</mat-icon>
                     </button>
@@ -68,77 +86,25 @@
 
 <!-- ********************************    MAT TAB ANAGRAFICA *********************************** -->
                 <mat-tab  label="Dati Anagrafici">
-                    
-                    <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "formAlunno">
-                        <app-persona-form class="mt10" *ngIf="(alunno$ | async) || emptyForm" 
+                    <!-- L'*ngIf sia ripara dal caso in cui non ci sia ancora alunno$ sia CREA il form in quanto fa la | async -->
+                    <div *ngIf="(alunno$ | async) || emptyForm" class="mt10 ">
+                        <app-persona-form class="mt10" 
                             [personaID] = "personaID" 
                             [tipoPersonaID]="1"
                             [dove]="'alunno-edit'"
-                            (formValid)="formValidEmitted($event)" >   
+                            (formValid)="formPersonaValidEmitted($event)" 
+                            #apppersonaForm
+                            >   
                         </app-persona-form>
                         
+                        <app-alunno-form 
+                            [personaID] = "personaID"
+                            [alunnoID] = "alunnoID"
+                            (formValid)="formAlunnoValidEmitted($event)" 
 
-                        <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
-                            <mat-grid-tile>
-                                <mat-form-field>
-                                    <mat-label>Scuola di provenienza</mat-label>
-                                    <input matInput type="text" formControlName="scuolaProvenienza">
-                                </mat-form-field>
-                            </mat-grid-tile>
-
-                            <mat-grid-tile>
-                                <mat-form-field>
-                                    <mat-label>Indirizzo Sc. provenienza</mat-label>
-                                    <input matInput type="text" formControlName="indirizzoScuolaProvenienza">
-                                </mat-form-field>
-                            </mat-grid-tile>
-
-                            <mat-grid-tile class="tileCk">
-
-                            </mat-grid-tile>
-                        </mat-grid-list>
-
-                        <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
-
-                            <mat-grid-tile class="tileCk ml15">
-                                <mat-checkbox color="primary" formControlName="ckDSA">
-                                    Alunno con DSA
-                                </mat-checkbox>
-                            </mat-grid-tile>
-
-                            <mat-grid-tile class="tileCk ml15" >
-                                <mat-checkbox color="primary" formControlName="ckDisabile">
-                                    Alunno Disabile
-                                </mat-checkbox>
-                            </mat-grid-tile>
-
-                            <!-- <mat-grid-tile class="tileCk ml15">
-                                <mat-checkbox color="primary" formControlName="ckAuthFoto">
-                                    Autorizz. Uso Foto
-                                </mat-checkbox>
-                            </mat-grid-tile>
-
-                            <mat-grid-tile class="tileCk ml15">
-                                <mat-checkbox color="primary" formControlName="ckAuthUscite">
-                                    Autorizz. Uscite
-                                </mat-checkbox>
-                            </mat-grid-tile>
-
-                            <mat-grid-tile class="tileCk ml15">
-                                <mat-checkbox color="primary" formControlName="ckAuthUsoMateriale">
-                                    Autorizz. Uso Mat.
-                                </mat-checkbox>
-                            </mat-grid-tile> -->
-
-                            <mat-grid-tile class="_pos-absolute" style="position: absolute; top: 0px">
-                                <div >
-                                    <button mat-button *ngFor="let genitore of (alunno$ | async)?._Genitori; let i = index">
-                                        copia residenza da genitore {{genitore.id}}  <!-- qui mettere "padre" "madre"-->
-                                    </button>
-                                </div>
-                            </mat-grid-tile>
-                        </mat-grid-list>
-                    </form> 
+                            >
+                        </app-alunno-form>
+                    </div> 
                 </mat-tab>
 <!-- ********************************    MAT TAB GENITORI ************************************ -->
                 <mat-tab label="Famiglia" class="_pos-relative">    
@@ -234,8 +200,7 @@
                 <mat-tab label="Assenze">
 
                     <app-presenze-alunno-list
-                    [alunnoID]="alunnoID">
-
+                        [alunnoID]="alunnoID">
                     </app-presenze-alunno-list>
 
                 </mat-tab>
@@ -243,9 +208,8 @@
                 <mat-tab label="Note">
 
                     <app-note-list
-                    [alunnoID] = "alunnoID"
-                    [dove] = "'alunno-edit'"
-                    >
+                        [alunnoID] = "alunnoID"
+                        [dove] = "'alunno-edit'">
                     </app-note-list>
 
                 </mat-tab>

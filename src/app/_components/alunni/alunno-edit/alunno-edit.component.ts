@@ -1,11 +1,10 @@
 //#region ----- IMPORTS ------------------------
 
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { iif, Observable, of, throwError }                  from 'rxjs';
-import { catchError, concatMap, tap }                       from 'rxjs/operators';
+import { iif, Observable, of }                  from 'rxjs';
+import { concatMap, tap }                       from 'rxjs/operators';
 
 //components
 import { ClassiSezioniAnniListComponent }       from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
@@ -27,9 +26,9 @@ import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno
 import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
 import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni';
 import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { ALU_GenitoreAlunno } from 'src/app/_models/ALU_GenitoreAlunno';
-import { error } from 'console';
-import { HttpErrorResponse } from '@angular/common/http';
+import { ALU_GenitoreAlunno }                   from 'src/app/_models/ALU_GenitoreAlunno';
+import { AlunnoFormComponent } from '../alunno-form/alunno-form.component';
+
 
 //#endregion
 
@@ -50,14 +49,14 @@ export class AlunnoEditComponent implements OnInit {
   public personaID!:                            number;
 
   alunnoNomeCognome:                            string = "";
-  formPersona! :                                UntypedFormGroup;
-  formAlunno! :                                 UntypedFormGroup;
+  //formAlunno! :                               UntypedFormGroup;
 
-  isValid!:                                     boolean;
+  personaFormisValid!:                          boolean;
+  alunnoFormisValid!:                           boolean;
+
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
   breakpoint!:                                  number;
-  breakpoint2!:                                 number;
 
   comuniIsLoading:                              boolean = false;
   comuniNascitaIsLoading:                       boolean = false;
@@ -73,36 +72,24 @@ export class AlunnoEditComponent implements OnInit {
   @ViewChild('iscrizioniAlunno') classiAttendedComponent!:              ClassiSezioniAnniListComponent; 
   @ViewChild('classiSezioniAnniList') classiSezioniAnniListComponent!:  ClassiSezioniAnniListComponent; 
   @ViewChild(PersonaFormComponent) personaFormComponent!:               PersonaFormComponent; 
+  @ViewChild(AlunnoFormComponent) alunnoFormComponent!:                 AlunnoFormComponent; 
+
 
 //#endregion
 
 //#region ----- Constructor --------------------
 
-  constructor(public _dialogRef:                          MatDialogRef<AlunnoEditComponent>,
+  constructor(public _dialogRef:                MatDialogRef<AlunnoEditComponent>,
               @Inject(MAT_DIALOG_DATA) public alunnoID:   number,
-              private fb:                                 UntypedFormBuilder, 
-              private svcIscrizioni:                      IscrizioniService,
-              private svcAlunni:                          AlunniService,
+              private svcIscrizioni:            IscrizioniService,
+              private svcAlunni:                AlunniService,
 
-              public _dialog:                             MatDialog,
-              private _snackBar:                          MatSnackBar,
-              private _loadingService :                   LoadingService ) {
+              public _dialog:                   MatDialog,
+              private _snackBar:                MatSnackBar,
+              private _loadingService :         LoadingService ) {
 
     _dialogRef.disableClose = true;
     
-    this.formAlunno = this.fb.group(
-    {
-      id:                                     [null],
-      scuolaProvenienza:                      ['', Validators.maxLength(255)],
-      indirizzoScuolaProvenienza:             ['', Validators.maxLength(255)],
-
-      personaID:                              [null],
-      ckDSA:                                  [false],
-      ckDisabile:                             [false],
-      // ckAuthFoto:                             [false],
-      // ckAuthUsoMateriale:                     [false],
-      // ckAuthUscite:                           [false]
-    });
   }
 
 //#endregion
@@ -116,7 +103,6 @@ export class AlunnoEditComponent implements OnInit {
   loadData(){
 
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
-    this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
  
     if (this.alunnoID && this.alunnoID + '' != "0") {
 
@@ -128,20 +114,8 @@ export class AlunnoEditComponent implements OnInit {
             alunno => {
               this.personaID = alunno.personaID;
               this.alunnoNomeCognome = alunno.persona.nome + " " + alunno.persona.cognome;
-              this.formAlunno.patchValue(alunno);
-              //console.log (alunno);
             }       
-          ),
-          // tap(
-          //   alunno => {
-              
-          //     this.genitoriArr = [
-          //       ...(this.genitoriArr || []), // Ensure genitoriArr is initialized as an array
-          //       ...(alunno._Genitori || []).filter(genitore => genitore !== undefined)
-          //     ];
-
-          //   }
-          // )
+          )
       );
     }
     else this.emptyForm = true
@@ -154,36 +128,21 @@ export class AlunnoEditComponent implements OnInit {
   
 save(){
 
-    if (this.alunnoID == null || this.alunnoID == 0)    {
-
-      this.personaFormComponent.save()
-      .pipe(
-        tap(persona => {
-          this.formAlunno.controls.personaID.setValue(persona.id)
-        }),
-        concatMap( () => this.svcAlunni.post(this.formAlunno.value))
-      )
-      .subscribe({
+    this.personaFormComponent.save()
+    .pipe(
+      tap(persona => {
+        this.alunnoFormComponent.form.controls.personaID.setValue(persona.id);
+        //this.personaID = persona.id;//questa non fa a tempo ad arrivare a alunnoFormComponent per fare anche la post di formAlunno con il giusto personaID
+      }),
+    concatMap( () => this.alunnoFormComponent.save())
+    )
+    .subscribe({
         next: res=> {
           this._dialogRef.close();
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
         error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      })
-    }
-    else {
-      this.personaFormComponent.save()
-      .pipe(
-        concatMap( () => this.svcAlunni.put(this.formAlunno.value))
-      )
-      .subscribe({
-        next: res=> {
-          this._dialogRef.close();
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-        },
-        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      })
-    }
+    });
   }
 
   delete()
@@ -312,15 +271,18 @@ save(){
 
   onResize(event: any) {
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
-    this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
   }
 
   selectedTabValue(event: any){
     this.selectedTab = event.index;
   }
 
-  formValidEmitted(isValid: boolean) {
-    this.isValid = isValid;
+  formPersonaValidEmitted(isValid: boolean) {
+    this.personaFormisValid = isValid;
+  }
+
+  formAlunnoValidEmitted(isValid: boolean) {
+    this.alunnoFormisValid = isValid;
   }
 
 //#endregion

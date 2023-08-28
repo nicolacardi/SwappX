@@ -41,7 +41,6 @@ export class PersoneService {
   }
 
   put(formData: any): Observable <any>{
-    console.log("persone.service - put formData", formData);
     return this.http.put( environment.apiBaseUrl  + 'PER_Persone/' + formData.id , formData);    
   }
 

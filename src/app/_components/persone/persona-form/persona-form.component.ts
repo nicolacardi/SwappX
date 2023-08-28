@@ -2,9 +2,9 @@
 
 import { Component, EventEmitter, Input, OnInit, Output }     from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
-import { MatDialog }                                          from '@angular/material/dialog';
-import { Observable, of }                                     from 'rxjs';
-import { tap }                                                from 'rxjs/operators';
+import { MatDialog }                            from '@angular/material/dialog';
+import { Observable, of }                       from 'rxjs';
+import { tap }                                  from 'rxjs/operators';
 
 //components
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
@@ -38,7 +38,7 @@ export class PersonaFormComponent implements OnInit {
   emptyForm :                                   boolean = false;
   comuniArr!:                                   _UT_Comuni[];
   filteredComuniArr!:                           _UT_Comuni[];
-  filteredComuniNascitaArr!:                           _UT_Comuni[];
+  filteredComuniNascitaArr!:                    _UT_Comuni[];
 
   filteredComuni$!:                             Observable<_UT_Comuni[]>;
   filteredComuniNascita$!:                      Observable<_UT_Comuni[]>;
@@ -58,34 +58,34 @@ export class PersonaFormComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(public _dialog:                             MatDialog,
-              private fb:                                 UntypedFormBuilder, 
-              private svcPersone:                         PersoneService,
-              private svcTipiPersona:                     TipiPersonaService,
-              private svcComuni:                          ComuniService,
-              private _loadingService :                   LoadingService  ) { 
+  constructor(public _dialog:                   MatDialog,
+              private fb:                       UntypedFormBuilder, 
+              private svcPersone:               PersoneService,
+              private svcTipiPersona:           TipiPersonaService,
+              private svcComuni:                ComuniService,
+              private _loadingService :         LoadingService  ) { 
 
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 
     this.form = this.fb.group({
-      id:                         [null],
-      tipoPersonaID:              ['', Validators.required],
-      nome:                       ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-      cognome:                    ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-      dtNascita:                  ['', Validators.required],
-      comuneNascita:              ['', Validators.maxLength(50)],
-      provNascita:                ['', Validators.maxLength(2)] ,
-      nazioneNascita:             ['', Validators.maxLength(3)],
-      indirizzo:                  ['', Validators.maxLength(255)],
-      comune:                     ['', Validators.maxLength(50)],
-      prov:                       ['', Validators.maxLength(2)],
-      cap:                        ['', Validators.maxLength(5)],
-      nazione:                    ['', Validators.maxLength(3)],
-      genere:                     ['',{ validators:[Validators.maxLength(1), Validators.required, Validators.pattern("M|F")]}],
-      cf:                         ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
-      telefono:                   ['', Validators.maxLength(13)],
-      email:                      ['',Validators.email],
-      ckAttivo:                   [true]
+      id:                                       [null],
+      tipoPersonaID:                            ['', Validators.required],
+      nome:                                     ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+      cognome:                                  ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+      dtNascita:                                ['', Validators.required],
+      comuneNascita:                            ['', Validators.maxLength(50)],
+      provNascita:                              ['', Validators.maxLength(2)] ,
+      nazioneNascita:                           ['', Validators.maxLength(3)],
+      indirizzo:                                ['', Validators.maxLength(255)],
+      comune:                                   ['', Validators.maxLength(50)],
+      prov:                                     ['', Validators.maxLength(2)],
+      cap:                                      ['', Validators.maxLength(5)],
+      nazione:                                  ['', Validators.maxLength(3)],
+      genere:                                   ['',{ validators:[Validators.maxLength(1), Validators.required, Validators.pattern("M|F")]}],
+      cf:                                       ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
+      telefono:                                 ['', Validators.maxLength(13)],
+      email:                                    ['',Validators.email],
+      ckAttivo:                                 [true]
     });
 
     this.currPersona = Utility.getCurrentUser();
@@ -98,14 +98,13 @@ export class PersonaFormComponent implements OnInit {
 
   ngOnInit(){
     this.loadData();
-    this.svcComuni.list().subscribe( res => this.comuniArr = res); //altra strada
+    this.svcComuni.list().subscribe( res => this.comuniArr = res);
     this.form.valueChanges.subscribe(
-      res=> this.formValid.emit(this.form.valid)
+      res=> this.formValid.emit(this.form.valid) //ma serve??? Su procedura-iscrizioni ho fatto diversamente
     )
   }
 
   loadData(){
-
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
@@ -175,7 +174,7 @@ export class PersonaFormComponent implements OnInit {
   }
 
   save() :Observable<any>{
-
+      //console.log ("PersonaFormComponent - save() - this.form.value", this.form.value);
     if (this.personaID == null || this.personaID == 0) {
       return this.svcPersone.post(this.form.value).pipe(
         tap( res=>{
@@ -194,13 +193,11 @@ export class PersonaFormComponent implements OnInit {
     }
     else {
       this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
-      //console.log ("PersonaFormComponent - save() - this.form.value", this.form.value);
       return this.svcPersone.put(this.form.value)
     }
   }
 
   delete() :Observable<any>{
-
     if (this.personaID != null) 
       return this.svcPersone.delete(this.personaID) 
     else return of();
