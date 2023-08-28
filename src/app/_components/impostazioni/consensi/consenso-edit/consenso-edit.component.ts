@@ -68,6 +68,7 @@ export class ConsensoEditComponent implements OnInit {
     
     this.form = this.fb.group({
       id:                                       [null],
+      titolo:                                   [''],
       domanda:                                  ['', { validators:[ Validators.required]}],
       tipo:                                     ['', { validators:[ Validators.required]}],
       numOpzioni:                               [{ value: '' }, { validators:[ Validators.required]}],

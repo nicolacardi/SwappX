@@ -26,7 +26,7 @@
                 </button>
             </div>
 
-            <mat-grid-list class="mt10" [cols]="1" rowHeight="100px" >
+            <mat-grid-list class="mt10" [cols]="2" rowHeight="100px" >
                 <!-- <mat-grid-tile>
                     <quill-editor
 
@@ -90,8 +90,14 @@
                     </mat-form-field>
                 </mat-grid-tile>
 
+                <mat-grid-tile >
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Titolo" matTooltip="Codice da utilizzare nel report" formControlName="titolo">
+                    </mat-form-field>
+                </mat-grid-tile>
 
-                <mat-grid-tile>
+
+                <mat-grid-tile colspan = "2">
                     <!-- <mat-form-field>
                         <input matInput type="text" required placeholder="Domanda" minlength= "3" formControlName="domanda" #nome>
                     </mat-form-field> -->
@@ -121,36 +127,36 @@
 
                     <mat-grid-tile >
                         <mat-form-field>
-                            <input matInput type="text" placeholder="opzione 1" formControlName="testo1" #nome>
+                            <input matInput type="text" placeholder="opzione 1" formControlName="testo1">
                         </mat-form-field>
                     </mat-grid-tile>
 
                     <mat-grid-tile>
                         <mat-form-field>
-                            <input matInput type="text" placeholder="opzione 2" formControlName="testo2" #nome>
+                            <input matInput type="text" placeholder="opzione 2" formControlName="testo2">
                         </mat-form-field>
                     </mat-grid-tile>
                     <mat-grid-tile>
                         <mat-form-field>
-                            <input matInput type="text" placeholder="opzione 3" formControlName="testo3" #nome>
+                            <input matInput type="text" placeholder="opzione 3" formControlName="testo3">
                         </mat-form-field>
                     </mat-grid-tile>
 
                     <mat-grid-tile>
                         <mat-form-field>
-                            <input matInput type="text" placeholder="opzione 4" formControlName="testo4" #nome>
+                            <input matInput type="text" placeholder="opzione 4" formControlName="testo4">
                         </mat-form-field>
                     </mat-grid-tile>
                     
                     <mat-grid-tile>
                         <mat-form-field>
-                            <input matInput type="text" placeholder="opzione 5" formControlName="testo5" #nome>
+                            <input matInput type="text" placeholder="opzione 5" formControlName="testo5">
                         </mat-form-field>
                     </mat-grid-tile>
 
                     <mat-grid-tile>
                         <mat-form-field>
-                            <input matInput type="text" placeholder="opzione 6" formControlName="testo6" #nome>
+                            <input matInput type="text" placeholder="opzione 6" formControlName="testo6">
                         </mat-form-field>
                     </mat-grid-tile>
 

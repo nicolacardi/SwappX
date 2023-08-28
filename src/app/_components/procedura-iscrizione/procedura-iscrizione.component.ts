@@ -208,7 +208,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   }
 
-  downloadModuloIscrizione() {
+  async downloadModuloIscrizione() {
 
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta download inviata...', panelClass: ['green-snackbar']});
 
@@ -274,6 +274,8 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
         { tagName: "DescrizioneClasse",         tagValue: this.iscrizione.classeSezioneAnno.classeSezione.classe?.descrizione2},
         { tagName: "RettaConcordata",           tagValue: this.rettaConcordata.toString()},
+
+
       ],
        tagTables: [
       //   {
@@ -300,15 +302,45 @@ export class ProceduraIscrizioneComponent implements OnInit {
       
     }
 
+    //nel modo che segue inserisco tanti tag quante le risposte a ciascuna domanda con il titolo autUscite1, autUscite2, oppure autFoto1, autFoto2 ecc.
+    //aspetto che avvenga prima di procedere
+    await firstValueFrom(this.svcIscrizioneConsensi.listByIscrizione(this.iscrizioneID)
+    .pipe(
+      tap(
+
+      questions=>
+        {
+
+
+          for (let i = 0; i < questions.length; i++) {
+            console.log ("processo la domanda:", questions[i].consenso!.domanda);
+            console.log ("processo la domanda con titolo", questions[i].consenso!.titolo);
+            let numOpzioni = questions[i].consenso?.numOpzioni || 0;
+            if (questions[i].consenso!.titolo != null && questions[i].consenso!.titolo != '') {
+              if (numOpzioni > 0) tagDocument.tagFields?.push({ tagName: questions[i].consenso!.titolo+"1", tagValue: questions[i].risposta1? "[X]": "[ ]"})
+              if (numOpzioni > 1) tagDocument.tagFields?.push({ tagName: questions[i].consenso!.titolo+"2", tagValue: questions[i].risposta2? "[X]": "[ ]"})
+              if (numOpzioni > 2) tagDocument.tagFields?.push({ tagName: questions[i].consenso!.titolo+"3", tagValue: questions[i].risposta3? "[X]": "[ ]"})
+              if (numOpzioni > 3) tagDocument.tagFields?.push({ tagName: questions[i].consenso!.titolo+"4", tagValue: questions[i].risposta4? "[X]": "[ ]"})
+              if (numOpzioni > 4) tagDocument.tagFields?.push({ tagName: questions[i].consenso!.titolo+"5", tagValue: questions[i].risposta5? "[X]": "[ ]"})
+              if (numOpzioni > 5) tagDocument.tagFields?.push({ tagName: questions[i].consenso!.titolo+"6", tagValue: questions[i].risposta6? "[X]": "[ ]"})
+                
+            }
+          }
+          console.log ("tagDocument dopo inserimenti varii", tagDocument)
+        }
+      )
+    ));
+
     //aggiungo a tagDocument i tag delle domande "DatiEconomici" su CLS_IscrizioneConsensi
     //estraggo le domande e le risposte
 
+    //La seguente modalità crea in automatico una TABELLA con le scelte operate nei consensi sui dati economici
+    //in questo caso, quindi, non si fa uso dei tag assegnati a ciascun consenso nel campo "titolo"
     this.svcIscrizioneConsensi.listByIscrizione(this.iscrizioneID)
     // .subscribe(val=>console.log("val", val));
     .pipe( 
       map(res=> res.filter((x) => x.tipo == "Dati Economici")), 
       tap (questions => { 
-        console.log ("consensifiltrati", questions);
 
         let tagFields;
         const tagTableRows = [];
@@ -335,23 +367,21 @@ export class ProceduraIscrizioneComponent implements OnInit {
                               tagTableRows.push(tagFields);}
 
         }
-        console.log ("tableRows", tagTableRows);
+        //console.log ("tableRows", tagTableRows);
         const tagTable = {
-          tagTableTitle: "Consensi",
+          tagTableTitle: "ConsensiDatiEconomici",
           tagTableRows: tagTableRows.map(tagFields => ({ tagFields })),
         };
         console.log ("tagTable", tagTable);
 
         tagDocument.tagTables!.push(tagTable);
-
-
         }
       ),
     )
     .subscribe(
         
         () => {
-          console.log ("tagDocument", tagDocument);
+          //console.log ("tagDocument", tagDocument);
           this.svcOpenXML.downloadFile(tagDocument, nomeFile )
         }
     )
