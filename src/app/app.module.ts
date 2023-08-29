@@ -221,6 +221,8 @@ import { RisorsePageComponent }                 from './_components/impostazioni
 import { RisorseListComponent }                 from './_components/impostazioni/risorse/risorse-list/risorse-list.component';
 import { RisorsaEditComponent }                 from './_components/impostazioni/risorse/risorsa-edit/risorsa-edit.component';
 import { AlunnoFormComponent } from './_components/alunni/alunno-form/alunno-form.component';
+import { GenitoreFormComponent } from './_components/genitori/genitore-form/genitore-form.component';
+import { AssociazioneComponent } from './_components/procedura-iscrizione/associazione/associazione.component';
 
 
 
@@ -394,6 +396,8 @@ import { AlunnoFormComponent } from './_components/alunni/alunno-form/alunno-for
     RisorseListComponent,
     RisorsaEditComponent,
     AlunnoFormComponent,
+    GenitoreFormComponent,
+    AssociazioneComponent,
  
     
 

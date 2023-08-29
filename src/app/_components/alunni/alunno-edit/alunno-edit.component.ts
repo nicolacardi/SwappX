@@ -131,8 +131,9 @@ save(){
     this.personaFormComponent.save()
     .pipe(
       tap(persona => {
-        this.alunnoFormComponent.form.controls.personaID.setValue(persona.id);
-        //this.personaID = persona.id;//questa non fa a tempo ad arrivare a alunnoFormComponent per fare anche la post di formAlunno con il giusto personaID
+        if (this.alunnoFormComponent.form.controls.personaID.value == null)
+            this.alunnoFormComponent.form.controls.personaID.setValue(persona.id);
+        //this.personaID = persona.id; //questa non fa a tempo ad arrivare a alunnoFormComponent per fare anche la post di formAlunno con il giusto personaID
       }),
     concatMap( () => this.alunnoFormComponent.save())
     )
@@ -156,7 +157,8 @@ save(){
       if(result) {
         this.svcAlunni.delete(Number(this.alunnoID))
         .pipe(
-          concatMap(()=> this.personaFormComponent.delete())
+          tap( () => this.personaFormComponent.form.controls.tipoPersonaID.setValue(12)),
+          concatMap(()=> this.personaFormComponent.save()) //non cancelliamo la persona ma impostiamo a non assegnato il tipo
         ).subscribe({
           next: res=>{
             this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});

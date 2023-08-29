@@ -1,5 +1,4 @@
 //#region ----- IMPORTS ------------------------
-
 import { Component, EventEmitter, Input, Output }                     from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog }                            from '@angular/material/dialog';
@@ -13,7 +12,6 @@ import { LoadingService }                       from '../../utilities/loading/lo
 
 //models
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
-
 
 //#endregion
 
@@ -33,16 +31,13 @@ export class AlunnoFormComponent {
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
   breakpoint!:                                  number;
-  breakpoint2!:                                 number;
-
 //#endregion
 
 //#region ----- ViewChild Input Output -------
   @Input() alunnoID!:                           number;
-  @Input() personaID!:                          number;
+  //@Input() personaID!:                          number;
 
   @Output('formValid') formValid = new EventEmitter<boolean>();
-
 //#endregion
   
 //#region ----- Constructor --------------------
@@ -52,17 +47,16 @@ export class AlunnoFormComponent {
               private svcAlunni:                AlunniService,
               private _loadingService :         LoadingService ) {
 
-  this.form = this.fb.group(
-  {
-  id:                                           [null],
-  scuolaProvenienza:                            ['', Validators.maxLength(255)],
-  indirizzoScuolaProvenienza:                   ['', Validators.maxLength(255)],
-  personaID:                                    [this.personaID],
-  ckDSA:                                        [false],
-  ckDisabile:                                   [false],
-  });
-
-}
+    this.form = this.fb.group(
+    {
+      id:                                       [null],
+      scuolaProvenienza:                        ['', Validators.maxLength(255)],
+      indirizzoScuolaProvenienza:               ['', Validators.maxLength(255)],
+      personaID:                                [],
+      ckDSA:                                    [false],
+      ckDisabile:                               [false],
+    });
+  }
 
 //#endregion
 
@@ -80,7 +74,6 @@ export class AlunnoFormComponent {
   loadData(){
 
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
-    this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
     if (this.alunnoID && this.alunnoID + '' != "0") {
       const obsAlunno$: Observable<ALU_Alunno> = this.svcAlunni.get(this.alunnoID);
@@ -98,7 +91,7 @@ export class AlunnoFormComponent {
   }
 
   save() :Observable<any>{
-    //console.log("save di alunno form -form:", this.form.value);
+    console.log("save di alunno form -form:", this.form.value);
     if (this.alunnoID == null || this.alunnoID == 0) {
       return this.svcAlunni.post(this.form.value)
     }

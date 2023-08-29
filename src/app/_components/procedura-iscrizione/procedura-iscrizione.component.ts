@@ -1,7 +1,7 @@
 //#region ----- IMPORTS ------------------------
 
 import { Component, OnInit, QueryList, ViewChild, ViewChildren }                    from '@angular/core';
-import { Observable, concatMap, firstValueFrom, last, map, tap }           from 'rxjs';
+import { Observable, concatMap, firstValueFrom, iif, last, map, of, tap }           from 'rxjs';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { MatStepper }                           from '@angular/material/stepper';
 import { ActivatedRoute }                       from '@angular/router';
@@ -25,6 +25,8 @@ import { ALU_Genitore }                         from 'src/app/_models/ALU_Genito
 import { ALU_GenitoreAlunno }                   from 'src/app/_models/ALU_GenitoreAlunno';
 import { CLS_IscrizioneConsenso }               from 'src/app/_models/CLS_IscrizioneConsenso';
 import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDocument';
+import { GenitoreFormComponent } from '../genitori/genitore-form/genitore-form.component';
+import { AlunnoFormComponent } from '../alunni/alunno-form/alunno-form.component';
 
 //#endregion
 @Component({
@@ -49,6 +51,9 @@ export class ProceduraIscrizioneComponent implements OnInit {
 //#region ----- ViewChild Input Output ---------
 
   @ViewChildren(PersonaFormComponent) PersonaFormComponent!: QueryList<PersonaFormComponent>;
+  @ViewChildren(GenitoreFormComponent) GenitoreFormComponent!: QueryList<GenitoreFormComponent>;
+  @ViewChild(AlunnoFormComponent) AlunnoFormComponent!: AlunnoFormComponent;
+
   @ViewChild('formIscrizioneConsensi') ConsensiFormComponent!: IscrizioneConsensiComponent;
   @ViewChild('formIscrizioneDatiEconomici') DatiEconomiciFormComponent!: IscrizioneConsensiComponent;
 
@@ -125,14 +130,28 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
 //#region ----- Altri metodi -------------------
 
-  salvaPersona(n: number){
-    //this.form.controls.tipoPersonaID.setValue(n);
-    //this.form.patchValue(PersonaFormComponentArray[this.stepper.selectedIndex-1].form.value);  //una volta ci portavamo qui il form......
-    this.PersonaFormComponent.toArray()[this.stepper.selectedIndex-1].save()
-    .subscribe({
-      next: ()=> {},
-      error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    })
+  salvaPersona(tipo: string){
+
+    if (tipo == 'genitore') {
+      this.PersonaFormComponent.toArray()[this.stepper.selectedIndex-1].save()
+      .pipe(
+        concatMap (()=> this.GenitoreFormComponent.toArray()[this.stepper.selectedIndex-1].save()) //salva il genitoreForm n-esimo                    
+      )
+      .subscribe({
+        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      })
+    }
+
+    if (tipo == 'alunno') {
+      this.PersonaFormComponent.toArray()[this.stepper.selectedIndex-1].save()
+      .pipe(
+        concatMap (()=> this.AlunnoFormComponent.save())                  
+      )
+      .subscribe({
+        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      })
+    }
+
   }
 
   async salvaConsensi(tipo: string) {

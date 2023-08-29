@@ -1,0 +1,18 @@
+<!-- genitore form + persona form = genitore edit -->
+<form *ngIf="(genitore$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
+    <mat-grid-list class="mt10" [cols]="3" rowHeight="60px">
+        <mat-grid-tile>
+            <mat-form-field>
+                <mat-label>Titolo di Studio</mat-label>
+                <input matInput type="text" formControlName="titoloStudio" #titoloStudio>
+            </mat-form-field>
+        </mat-grid-tile>
+        
+        <mat-grid-tile>
+            <mat-form-field>
+                <mat-label>Professione</mat-label>
+                <input matInput type="text" formControlName="professione" #professione>
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>

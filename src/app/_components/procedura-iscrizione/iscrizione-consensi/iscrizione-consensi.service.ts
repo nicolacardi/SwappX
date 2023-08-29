@@ -51,8 +51,8 @@ export class IscrizioneConsensiService {
     //http://213.215.231.4/swappX/api/CLS_IscrizioneConsensi/DeleteByIscrizioneAndTipo/4/Consensi
   }
 
-  delete(materiaID: number): Observable <any>{
-    return this.http.delete( environment.apiBaseUrl  + 'CLS_IscrizioneConsensi/' + materiaID);    
+  delete(iscrizioneConsensoID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'CLS_IscrizioneConsensi/' + iscrizioneConsensoID);    
   }
 
 }

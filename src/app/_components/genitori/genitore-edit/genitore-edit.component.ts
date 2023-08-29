@@ -25,6 +25,7 @@ import { ALU_Genitore }                         from 'src/app/_models/ALU_Genito
 import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni';
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 import { ALU_TipoGenitore }                     from 'src/app/_models/ALU_Tipogenitore';
+import { GenitoreFormComponent } from '../genitore-form/genitore-form.component';
 
 //#endregion
 
@@ -45,9 +46,11 @@ export class GenitoreEditComponent implements OnInit {
 
   public personaID!:                            number;
   genitoreNomeCognome :                         string = "";
-  formGenitore! :                               UntypedFormGroup;
+  form! :                                       UntypedFormGroup;
 
-  isValid!:                                     boolean;
+  personaFormisValid!:                          boolean;
+  genitoreFormisValid!:                         boolean;
+
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
 
@@ -61,6 +64,7 @@ export class GenitoreEditComponent implements OnInit {
 //#region ----- ViewChild Input Output ---------
   @ViewChild('alunniFamiglia') alunniFamigliaComponent!: AlunniListComponent; 
   @ViewChild(PersonaFormComponent) personaFormComponent!: PersonaFormComponent; 
+  @ViewChild(GenitoreFormComponent) genitoreFormComponent!: GenitoreFormComponent; 
 
 //#endregion
 
@@ -77,13 +81,9 @@ export class GenitoreEditComponent implements OnInit {
 
     _dialogRef.disableClose = true;
 
-    this.formGenitore = this.fb.group(
+    this.form = this.fb.group(
     {
-      id:                         [null],
-      personaID:                  [null],
       tipoGenitoreID:             [''],
-      titoloStudio:               [''],
-      professione:                ['']
     });
 
     this.obsTipiGenitore$ = this.svcTipiGenitore.list();
@@ -110,7 +110,7 @@ export class GenitoreEditComponent implements OnInit {
             genitore => {
               this.personaID = genitore.personaID;
               this.genitoreNomeCognome = genitore.persona.nome + " "+ genitore.persona.cognome;
-              this.formGenitore.patchValue(genitore);
+              this.form.patchValue(genitore);
             }
           )
       );
@@ -124,14 +124,15 @@ export class GenitoreEditComponent implements OnInit {
 
   save() {
 
-    if (this.genitoreID == null || this.genitoreID == 0) {
 
       this.personaFormComponent.save()
       .pipe(
         tap(persona => {
-          this.formGenitore.controls.personaID.setValue(persona.id)
+          this.genitoreFormComponent.form.controls.tipoGenitoreID.setValue(this.form.controls.tipoGenitoreID.value);
+          if (this.genitoreFormComponent.form.controls.personaID.value == null)
+              this.genitoreFormComponent.form.controls.personaID.setValue(persona.id);
         }),
-        concatMap( () => this.svcGenitori.post(this.formGenitore.value))
+        concatMap( () => this.genitoreFormComponent.save())
       )
       .subscribe({
         next: res=> {
@@ -139,21 +140,8 @@ export class GenitoreEditComponent implements OnInit {
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
         },
         error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      })
-    } else
-    {
-      this.personaFormComponent.save()
-      .pipe(
-        concatMap( () => this.svcGenitori.put(this.formGenitore.value))
-      )
-      .subscribe({
-        next: res=> {
-          this._dialogRef.close();
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-        },
-        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-      })
-    }
+      });
+    
   }
 
   delete()
@@ -167,7 +155,8 @@ export class GenitoreEditComponent implements OnInit {
       if(result) {
         this.svcGenitori.delete(Number(this.genitoreID))
         .pipe(
-          concatMap(()=> this.personaFormComponent.delete())
+          tap( () => this.personaFormComponent.form.controls.tipoPersonaID.setValue(12)),
+          concatMap(()=> this.personaFormComponent.save()) //non cancelliamo la persona ma impostiamo a non assegnato il tipo
         ).subscribe({
           next: res=>{
             this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
@@ -233,8 +222,12 @@ export class GenitoreEditComponent implements OnInit {
     this.selectedTab = event.index;
   }
 
-  formValidEmitted(isValid: boolean) {
-    this.isValid = isValid;
+  formPersonaValidEmitted(isValid: boolean) {
+    this.personaFormisValid = isValid;
+  }
+
+  formGenitoreValidEmitted(isValid: boolean) {
+    this.genitoreFormisValid = isValid;
   }
 //#endregion
 }

@@ -1,7 +1,7 @@
 export interface PER_Persona {
         id:                                     number;
 
-        tipoPersonaID:                          number;
+        tipoPersonaID:                         number;
 
         nome:                                   string;
         cognome:                                string;
