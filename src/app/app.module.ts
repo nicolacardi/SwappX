@@ -220,9 +220,10 @@ import { IscrizioneConsensiComponent }          from './_components/procedura-is
 import { RisorsePageComponent }                 from './_components/impostazioni/risorse/risorse-page/risorse-page.component';
 import { RisorseListComponent }                 from './_components/impostazioni/risorse/risorse-list/risorse-list.component';
 import { RisorsaEditComponent }                 from './_components/impostazioni/risorse/risorsa-edit/risorsa-edit.component';
-import { AlunnoFormComponent } from './_components/alunni/alunno-form/alunno-form.component';
-import { GenitoreFormComponent } from './_components/genitori/genitore-form/genitore-form.component';
-import { AssociazioneComponent } from './_components/procedura-iscrizione/associazione/associazione.component';
+
+import { AlunnoFormComponent }                  from './_components/alunni/alunno-form/alunno-form.component';
+import { GenitoreFormComponent }                from './_components/genitori/genitore-form/genitore-form.component';
+import { AssociazioneComponent }                from './_components/procedura-iscrizione/associazione/associazione.component';
 
 
 

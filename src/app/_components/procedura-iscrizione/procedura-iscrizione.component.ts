@@ -27,6 +27,8 @@ import { CLS_IscrizioneConsenso }               from 'src/app/_models/CLS_Iscriz
 import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDocument';
 import { GenitoreFormComponent } from '../genitori/genitore-form/genitore-form.component';
 import { AlunnoFormComponent } from '../alunni/alunno-form/alunno-form.component';
+import { AssociazioneComponent } from './associazione/associazione.component';
+import { FormControl } from '@angular/forms';
 
 //#endregion
 @Component({
@@ -45,7 +47,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
   //private form! :                               UntypedFormGroup;
   public iscrizioneID!:                         number;
   rettaConcordata!:                             number;
-
+  associazioneSaved = new FormControl(false);
 //#endregion
 
 //#region ----- ViewChild Input Output ---------
@@ -56,6 +58,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   @ViewChild('formIscrizioneConsensi') ConsensiFormComponent!: IscrizioneConsensiComponent;
   @ViewChild('formIscrizioneDatiEconomici') DatiEconomiciFormComponent!: IscrizioneConsensiComponent;
+  @ViewChild('appAssociazione') AssociazioneComponent!: AssociazioneComponent;
 
   @ViewChild('stepper') stepper!:               MatStepper;
 //#endregion
@@ -119,8 +122,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
         this.iscrizione = res;
         res.alunno._Genitori!.forEach(
            (genitorealunno: ALU_GenitoreAlunno) =>{
-             this.genitoriArr.push(genitorealunno.genitore!);   //AS: ATTENZIONE: questa riga carica o genitori ma manda in errore:
-                                                                //ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value for 'tabIndex': '0'. Current value: '-1'.
+             this.genitoriArr.push(genitorealunno.genitore!);                                    
            }
         )
       }
@@ -225,6 +227,11 @@ export class ProceduraIscrizioneComponent implements OnInit {
       }
     }
 
+  }
+
+  salvaAssociazione() {
+    this.AssociazioneComponent.save();
+    this.associazioneSaved.setValue(true);
   }
 
   async downloadModuloIscrizione() {

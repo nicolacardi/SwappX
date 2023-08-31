@@ -15,19 +15,6 @@
     </ng-template>
 
 
-    <mat-step>
-      <ng-template matStepLabel>Adesione all'Ente</ng-template>
-      <app-associazione></app-associazione>
-
-      <div class="center mt20">
-        <button mat-stroked-button matStepperPrevious>Indietro</button>
-        <button mat-stroked-button 
-                class="ml10" 
-                matStepperNext >
-          Salva e procedi
-        </button>
-      </div>    
-    </mat-step>
 
     
     <mat-step *ngFor="let element of genitoriArr; let i= index"  [stepControl]="appGenitoreForm.form" >
@@ -53,6 +40,26 @@
         </button>
       </div>
     </mat-step>
+
+    <mat-step [stepControl]="associazioneSaved">
+      <ng-template matStepLabel>Adesione all'Ente</ng-template>
+      <app-associazione
+        [iscrizione] = "iscrizione"
+        #appAssociazione
+        ></app-associazione>
+
+      <div class="center mt20">
+        <button mat-stroked-button matStepperPrevious>Indietro</button>
+        <button mat-stroked-button 
+                class="ml10" 
+                [disabled]="appAssociazione.nsoci == 0"
+                matStepperNext 
+                (click)="salvaAssociazione()">
+          Salva e procedi
+        </button>
+      </div>    
+    </mat-step>
+
 
     <mat-step [stepControl]="appAlunnoForm.form">
       <ng-template matStepLabel>Dati dell'alunno</ng-template>

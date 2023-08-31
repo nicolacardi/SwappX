@@ -17,7 +17,7 @@ import { PER_Socio } from 'src/app/_models/PER_Soci';
 @Injectable({
   providedIn: 'root'
 })
-export class IscrizioneConsensiService {
+export class SociService {
 
   constructor(private http: HttpClient) { }
 
@@ -29,6 +29,11 @@ export class IscrizioneConsensiService {
   get(socioID: any): Observable<PER_Socio>{
     return this.http.get<PER_Socio>(environment.apiBaseUrl+'PER_Soci/'+socioID);
     //http://213.215.231.4/swappX/api/PER_Soci/3
+  }
+
+  getByPersona(personaID: any): Observable<PER_Socio>{
+    return this.http.get<PER_Socio>(environment.apiBaseUrl+'PER_Soci/GetByPersona/'+personaID);
+    //http://213.215.231.4/swappX/api/PER_Soci/GetByPersona/44
   }
 
   put(formData: any): Observable <any>{
