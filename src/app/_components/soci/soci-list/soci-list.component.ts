@@ -41,18 +41,15 @@ export class SociListComponent implements OnInit {
 
   tableName = "SociList";
   displayedColumns: string[] =  [];
-  displayedColumnsSociList: string[] = [
-    "actionsColumn", 
-    "personaID", 
-    "tipoSocio",
-    "dtRichiesta"
-  ];
+  //La lista delle colonne viene estratta dalla loadLayout: se viene trovato un layout per l'utente si usa quello altrimenti si usa quello di default
 
   filterValue = '';       //Filtro semplice
 
   filterValues = {
     personaID: '',
     tipoSocioID: '',
+    nome: '',
+    cognome: '',
     filtrosx: ''
   };
   
@@ -60,11 +57,28 @@ export class SociListComponent implements OnInit {
   rptFileName = 'ListaSoci';
 
   rptFieldsToKeep  = [
+    "persona.nome",
+    "persona.cognome",
     "tipoSocio.descrizione",
+    "dtRichiesta",
+    "dtAccettazione",
+    "quota",
+    "dtDisiscrizione",
+    "dtRestQuota",
+    "ckRinunciaQuota"
 ];
 
   rptColumnsNames  = [
+    "nome",
+    "cognome",
     "tipo",
+    "Data Richiesta",
+    "Data Accettazione",
+    "quota",
+    "Data Disiscrizione",
+    "Data Rest.Quota",
+    "Rinuncia Quota"
+    
 ];
 
   selection = new SelectionModel<PER_Socio>(true, []);   //rappresenta la selezione delle checkbox
@@ -144,12 +158,12 @@ export class SociListComponent implements OnInit {
   }
 
   getEmailAddresses() {
-    //aggiorna this.emailAddresses che serve per poter copiare dalla toolbar gli indirizzi dei genitori
-    //   const emailArray = this.matDataSource.filteredData
-    //     .map(socio => socio.email).filter(email => !!email)//TODO da sistemare
-    //     .filter(emails => emails.length > 0); 
+    //aggiorna this.emailAddresses che serve per poter copiare dalla toolbar gli indirizzi
+      const emailArray = this.matDataSource.filteredData
+        .map(socio => socio.persona!.email).filter(email => !!email)
+        .filter(emails => emails.length > 0); 
   
-    // this.emailAddresses = emailArray.join(', ');
+    this.emailAddresses = emailArray.join(', ');
   }
 
 //#endregion
@@ -171,16 +185,16 @@ export class SociListComponent implements OnInit {
       let foundTipoSocio = data.tipoSocioID==searchTerms.tipoSocioID;
 
       if (searchTerms.tipoSocioID == null || searchTerms.tipoSocioID == '') foundTipoSocio = true;
-
-      let boolSx = String(data.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+      console.log (searchTerms);
+      let boolSx = String(data.persona.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.persona.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.tipoSocio.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
 
 
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
-      let boolDx = String(data.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
-                && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
-                && foundTipoSocio
+      let boolDx = String(data.persona.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+                    && String(data.persona.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+                     && foundTipoSocio
 
 
       return boolSx && boolDx;
@@ -194,8 +208,8 @@ export class SociListComponent implements OnInit {
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '850px',
-      height: '600px',
+      width: '700px',
+      height: '500px',
       data: 0
     };
 
@@ -206,8 +220,8 @@ export class SociListComponent implements OnInit {
   openDetail(id:any){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '850px',
-      height: '600px',
+      width: '700px',
+      height: '500px',
       data: id
     };
 
@@ -218,55 +232,6 @@ export class SociListComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.displayedColumns, event.previousIndex, event.currentIndex);
   }
-//#endregion
-
-//#region ----- Gestione Campo Checkbox --------
-
-selectedRow(element: PER_Socio) {
-  this.selection.toggle(element);
-}
-
-masterToggle() {
-  this.toggleChecks = !this.toggleChecks;
-
-  if (this.toggleChecks) 
-    this.selection.select(...this.matDataSource.data);
-  else 
-    this.resetSelections();
-}
-
-resetSelections() {
-  this.selection.clear();
-  this.matDataSource.data.forEach(row => this.selection.deselect(row));
-}
-
-toggleAttivi(){
-  this.ckSoloAttivi = !this.ckSoloAttivi;
-  this.loadData();
-}
-
-getChecked() {
-  //funzione usata da classi-dahsboard
-  return this.selection.selected;
-}
-
-//non so se serva questo metodo: genera un valore per l'aria-label...
-//forse serve per poi pescare i valori selezionati?
-checkboxLabel(row?: PER_Socio): string {
-  if (!row) 
-    return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-  else
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
-}
-
-//questo metodo ritorna un booleano che dice se sono selezionati tutti i record o no
-//per ora non lo utilizzo
-isAllSelected() {
-  const numSelected = this.selection.selected.length;   //conta il numero di elementi selezionati
-  const numRows = this.matDataSource.data.length;       //conta il numero di elementi del matDataSource
-  return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
-}
-
 //#endregion
 
 //#region ----- Right Click --------------------

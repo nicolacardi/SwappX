@@ -44,6 +44,8 @@ export class SociFilterComponent implements OnInit {
   ngOnInit() {
 
     this.obsTipiSocio$ = this.svcTipiSocio.list();
+    this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
+    this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
     this.tipoSocioFilter.valueChanges.subscribe(val => {this.applyFilterDx('tipoSocioID', val);})
 
   }

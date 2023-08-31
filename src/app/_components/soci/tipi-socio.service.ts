@@ -18,16 +18,6 @@ export class TipiSocioService {
     //http://213.215.231.4/swappX/api/PER_TipiSocio
   }
 
-  
-  listByLivello(livelloMax: number): Observable<PER_TipoSocio[]>{
-
-    return this.http.get<PER_TipoSocio[]>(environment.apiBaseUrl+'PER_TipiSocio')
-      .pipe (
-        map(val=>val.filter(val=>(val.livello<=livelloMax)))
-      );
-    //http://213.215.231.4/swappX/api/PER_TipiSocio
-  }
-
   get(tipoSocioID: any): Observable<PER_TipoSocio>{
     return this.http.get<PER_TipoSocio>(environment.apiBaseUrl+'PER_TipiSocio/'+tipoSocioID);
     //http://213.215.231.4/swappX/api/PER_TipiSocio/3

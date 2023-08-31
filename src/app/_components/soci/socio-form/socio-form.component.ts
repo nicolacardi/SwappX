@@ -24,15 +24,15 @@ import { User }                                 from 'src/app/_user/Users';
 @Component({
   selector: 'app-socio-form',
   templateUrl: './socio-form.component.html',
-  styleUrls: ['../soci.component.css']
+  styleUrls: ['../soci.css']
 })
 export class SocioFormComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
-  socio$!:                                    Observable<PER_Socio>;
-  obsTipiSocio$!:                             Observable<PER_TipoSocio[]>;
-  currSocio!:                                 User;
+  socio$!:                                      Observable<PER_Socio>;
+  obsTipiSocio$!:                               Observable<PER_TipoSocio[]>;
+  currSocio!:                                   User;
 
   public form! :                                UntypedFormGroup;
   emptyForm :                                   boolean = false;
@@ -44,8 +44,7 @@ export class SocioFormComponent implements OnInit {
   filteredComuniNascita$!:                      Observable<_UT_Comuni[]>;
   comuniIsLoading:                              boolean = false;
   comuniNascitaIsLoading:                       boolean = false;
-  breakpoint!:                                  number;
-  breakpoint2!:                                 number;
+
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -62,20 +61,28 @@ export class SocioFormComponent implements OnInit {
               private fb:                       UntypedFormBuilder, 
               private svcSoci:                  SociService,
               private svcTipiSocio:             TipiSocioService,
-              private svcComuni:                ComuniService,
               private _loadingService :         LoadingService  ) { 
 
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 
     this.form = this.fb.group({
       id:                                       [null],
-      tipoSocioID:                            ['', Validators.required],
-      nome:                                     ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-      cognome:                                  ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+      tipoSocioID:                              ['', Validators.required],
+      personaID:                                [''],
+      nome:                                     [{value: '', disabled: true}],
+      cognome:                                  [{value: '', disabled: true}],
+      dtNascita:                                [{value: '', disabled: true}],
+      cf:                                       [{value: '', disabled: true}],
+      dtRichiesta:                              [''],
+      dtAccettazione:                           [''],
+      quota:                                    [''],
+      dtDisiscrizione:                          [''],
+      dtRestQuota:                              [''],
+      ckRinunciaQuota:                          ['']
+
     });
 
-    //this.currSocio = Utility.getCurrentUser();
-    //this.obsTipiSocio$ = this.svcTipiSocio.listByLivello(this.currSocio.TipoSocio!.livello);
+    this.obsTipiSocio$ = this.svcTipiSocio.list();
   }
   
 //#endregion
@@ -84,15 +91,13 @@ export class SocioFormComponent implements OnInit {
 
   ngOnInit(){
     this.loadData();
-    this.svcComuni.list().subscribe( res => this.comuniArr = res);
     this.form.valueChanges.subscribe(
       res=> this.formValid.emit(this.form.valid) //ma serve??? Su procedura-iscrizioni ho fatto diversamente
     )
   }
 
   loadData(){
-    this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
-    this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
+
 
     if (this.tipoSocioID) this.form.controls.tipoSocioID.setValue(this.tipoSocioID);
 
@@ -103,7 +108,15 @@ export class SocioFormComponent implements OnInit {
       this.socio$ = loadSocio$
       .pipe( 
           tap(
-            socio => this.form.patchValue(socio)
+            socio => {
+              console.log (socio);
+              this.form.patchValue(socio)
+              this.form.controls.nome.setValue(socio.persona!.nome);
+              this.form.controls.cognome.setValue(socio.persona!.cognome);
+              this.form.controls.dtNascita.setValue(Utility.formatDate(socio.persona!.dtNascita, FormatoData.dd_mm_yyyy));
+              this.form.controls.cf.setValue(socio.persona!.cf);
+            
+            }
           )
       );
     }
@@ -113,25 +126,12 @@ export class SocioFormComponent implements OnInit {
   }
 
   save() :Observable<any>{
-      //console.log ("SocioFormComponent - save() - this.form.value", this.form.value);
+    console.log ("SocioFormComponent - save() - this.form.value", this.form.value);
     if (this.socioID == null || this.socioID == 0) {
-      return this.svcSoci.post(this.form.value).pipe(
-        tap( res=>{
-          if (this.form.controls.tipoSocioID.value == 6 || this.form.controls.tipoSocioID.value == 7) //TODO fa schifo lo so
-            {
-              // let docente :PER_Docente = {  //TODO
-              //   socioID : res.id,
-              //   ckAttivo : true
-              //   socio: {}
-              // }
-              // this.svcDocenti.post(docente).subscribe()
-            }
-          }
-        )
-      )
+      return this.svcSoci.post(this.form.value)
     }
     else {
-      this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
+      this.form.controls.dtRichiesta.setValue(Utility.formatDate(this.form.controls.dtRichiesta.value, FormatoData.yyyy_mm_dd));
       return this.svcSoci.put(this.form.value)
     }
   }
@@ -145,7 +145,26 @@ export class SocioFormComponent implements OnInit {
 //#endregion
 
 //#region ----- Altri metodi -------
+  updateDt(dt: string, control: string){
 
+    //prendo la stringa e ne estraggo i pezzi
+    const parts = dt.split('/'); // Split the input string by '/'
+    const day = parts[0];
+    const month = parts[1];
+    const year = parts[2];
+
+    // creo la nuova data con i valori estratti (assumendo l'ordine day/month/year)
+    const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+
+    // formatto la data al tipo richiesto dal controllo data ('yyyy-MM-dd')
+    let formattedDate = date.toISOString().slice(0, 10);
+
+    //piccolo step per evitare che 1/1/2008 diventi 31/12/2007
+    formattedDate = Utility.formatDate(date, FormatoData.yyyy_mm_dd);
+
+    //impostazione della data finale
+    this.form.controls['dtRichiesta'].setValue(formattedDate);
+  }
   
 //#endregion
 

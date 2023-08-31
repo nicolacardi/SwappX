@@ -1,3 +1,5 @@
+import { PER_Persona } from "./PER_Persone";
+
 export interface PER_Socio {
         id:                                     number;
         personaID:                              number;
@@ -19,6 +21,7 @@ export interface PER_Socio {
         userUpd?:                               number;
 
         tipoSocio?:                             PER_TipoSocio;
+        persona?:                               PER_Persona;
 
 }
 
