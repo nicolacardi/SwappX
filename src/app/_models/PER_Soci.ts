@@ -1,6 +1,10 @@
 export interface PER_Socio {
         id:                                     number;
         personaID:                              number;
+
+        tipoSocioID:                            number;
+
+
         dtRichiesta:                            string;
         dtAccettazione:                         string;
         quota:                                  number;
@@ -14,4 +18,13 @@ export interface PER_Socio {
         userIns?:                               number;
         userUpd?:                               number;
 
+        tipoSocio?:                             PER_TipoSocio;
+
+}
+
+export interface PER_TipoSocio {
+        id:                                     number;
+        descrizione:                            string;
+        descrizioneP:                           string;
+        livello:                                number;
 }

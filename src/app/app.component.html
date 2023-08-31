@@ -85,6 +85,11 @@
                 <span *ngIf="isExpanded">Personale</span>
             </a>
 
+            <a mat-list-item class="h35px" routerLink="soci" (click)="clickMenuItem()">
+                <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/socio.svg">
+                <span *ngIf="isExpanded">Soci</span>
+            </a>
+
             <mat-divider></mat-divider>
 
             <a mat-list-item class="h35px" routerLink="iscrizioni" (click)="clickMenuItem()" >

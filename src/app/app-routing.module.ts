@@ -27,7 +27,7 @@ import { OrarioPageComponent }                  from './_components/lezioni/orar
 import { ProceduraIscrizioneComponent }         from './_components/procedura-iscrizione/procedura-iscrizione.component';
 import { TemplateComponent }                    from './_components/templates/template/template.component';
 import { ChangePswExtComponent }                from './_user/change-psw-ext/change-psw-ext.component';
-import { ConsensoEditComponent } from './_components/impostazioni/consensi/consenso-edit/consenso-edit.component';
+import { SociPageComponent }                    from './_components/soci/soci-page/soci-page.component';
 
 const routes: Routes = [
 
@@ -59,6 +59,8 @@ const routes: Routes = [
   { path: "genitori",                           component: GenitoriPageComponent, canActivate:[AuthGuard]},
 
   { path: "persone",                            component: PersonePageComponent,canActivate:[AuthGuard] },
+
+  { path: "soci",                               component: SociPageComponent,canActivate:[AuthGuard] },
 
   { path: "classi",                             component: ClassiPageComponent,canActivate:[AuthGuard] },
 

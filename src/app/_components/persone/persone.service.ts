@@ -14,8 +14,6 @@ export class PersoneService {
 
   list(): Observable<PER_Persona[]>{
     return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone')
-    //Aggiungere metodo filtrato ???
-    //return this.http.get<ALU_Alunno[]>(environment.apiBaseUrl+'ALU_Alunni/ListByGenitore/'+genitoreID);
     //http://213.215.231.4/swappX/api/PER_Persone
   }
 
@@ -27,12 +25,6 @@ export class PersoneService {
   listGenitoriByClasseSezioneAnno(classeSezioneAnnoID: number): Observable<PER_Persona[]>{
     return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone/listGenitoriByClasseSezioneAnno/'+classeSezioneAnnoID)
     //http://213.215.231.4/swappX/api/PER_Persone/listGenitoriByClasseSezioneAnno/16
-  }
-
-
-  listCompleta(): Observable<PER_Persona[]>{
-    return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone');
-    //http://213.215.231.4/swappX/api/PER_Persone
   }
 
   get(personaID: any): Observable<PER_Persona>{
@@ -66,11 +58,4 @@ export class PersoneService {
     }
   }
 
-    //Recupera l'id da nome cognome  
-  findPersonaID(searchstring: string) : Observable<any>{
-    return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone')
-      .pipe (
-          map(val => val.find(val => (val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase())== searchstring.toLowerCase())),
-      )
-  }
 }

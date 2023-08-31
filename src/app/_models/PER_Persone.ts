@@ -3,7 +3,7 @@ import { PER_Socio } from "./PER_Soci";
 export interface PER_Persona {
         id:                                     number;
 
-        tipoPersonaID:                         number;
+        tipoPersonaID:                          number;
 
         nome:                                   string;
         cognome:                                string;
