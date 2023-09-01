@@ -45,19 +45,19 @@ export class AlunniListComponent implements OnInit {
 
   tableName = "AlunniList";
   displayedColumns: string[] =  [];
-  displayedColumnsAlunniList: string[] = [
-      "actionsColumn", 
-      "nome", 
-      "cognome", 
-      "dtNascita", 
-      "indirizzo", 
-      "comune", 
-      "cap", 
-      "prov", 
-      "telefono", 
-      "email", 
-      "ckAttivo"
-  ];
+  // displayedColumnsAlunniList: string[] = [
+  //     "actionsColumn", 
+  //     "nome", 
+  //     "cognome", 
+  //     "dtNascita", 
+  //     "indirizzo", 
+  //     "comune", 
+  //     "cap", 
+  //     "prov", 
+  //     "telefono", 
+  //     "email", 
+  //     "ckAttivo"
+  // ];
 
   displayedColumnsGenitoreEditFamiglia: string[] = [
     "actionsColumn", 
@@ -222,8 +222,8 @@ export class AlunniListComponent implements OnInit {
         this.showTableRibbon = false;
 
       break;
-      default: 
-        this.displayedColumns =  this.displayedColumnsAlunniList;
+      // default: 
+      //   this.displayedColumns =  this.displayedColumnsAlunniList;
     }
   }
 

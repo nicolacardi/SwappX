@@ -78,7 +78,7 @@ export class SocioFormComponent implements OnInit {
       quota:                                    [''],
       dtDisiscrizione:                          [''],
       dtRestQuota:                              [''],
-      ckRinunciaQuota:                          [''],
+      ckRinunciaQuota:                          [false],
       nomeCognomePersona: [null],
 
     });
@@ -142,11 +142,20 @@ export class SocioFormComponent implements OnInit {
 
   save() :Observable<any>{
     console.log ("SocioFormComponent - save() - this.form.value", this.form.value);
+    let ctrdtRichiesta = this.form.controls.dtRichiesta;
+    let ctrdtAccettazione = this.form.controls.dtAccettazione;
+    let ctrdtDisiscrizione = this.form.controls.dtDisiscrizione;
+    let ctrdtRestQuota = this.form.controls.dtRestQuota;
+
+    ctrdtRichiesta.setValue(Utility.formatDate(ctrdtRichiesta.value, FormatoData.yyyy_mm_dd));
+    ctrdtAccettazione.setValue(Utility.formatDate(ctrdtAccettazione.value, FormatoData.yyyy_mm_dd));
+    ctrdtDisiscrizione.setValue(Utility.formatDate(ctrdtDisiscrizione.value, FormatoData.yyyy_mm_dd));
+    ctrdtRestQuota.setValue(Utility.formatDate(ctrdtRestQuota.value, FormatoData.yyyy_mm_dd));
+
     if (this.socioID == null || this.socioID == 0) {
       return this.svcSoci.post(this.form.value)
     }
     else {
-      this.form.controls.dtRichiesta.setValue(Utility.formatDate(this.form.controls.dtRichiesta.value, FormatoData.yyyy_mm_dd));
       return this.svcSoci.put(this.form.value)
     }
   }
@@ -188,13 +197,13 @@ export class SocioFormComponent implements OnInit {
 
   selected(event: MatAutocompleteSelectedEvent): void {
 
+    //questo metodo arriva da personaForm paro paro
     //come approccio alternativo all'uso di un customformvalidator vorrei fare come in 
     //https://stackblitz.com/edit/mat-autocomplete-force-selection-of-option?file=src%2Fapp%2Fautocomplete-auto-active-first-option-example.ts 
     //sembra infatti molto più "diretto" e "semplice" MA....come lo propone lui su ngAfterViewInit ...NON FUNZIONA CASSO! quindi lo metto qui che non è il massimo
 
     //***NC 25.12.22 ***/
     this.form.controls.personaID.setValue(event.option.id);
-    //vado a pescare la mail della persona selezionata
     const obsPersona$: Observable<PER_Persona> = this.svcPersone.get(event.option.id);
       const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
       this.persona$ = loadPersona$
@@ -206,8 +215,7 @@ export class SocioFormComponent implements OnInit {
               this.form.controls.nome.setValue(persona.cognome);
               this.form.controls.cf.setValue(persona.cf);
               this.form.controls.dtNascita.setValue(Utility.formatDate(persona.dtNascita, FormatoData.dd_mm_yyyy));
-
-            }  //a questo punto vanno caricati i vari campi
+            }
           )
       );
       this.persona$.subscribe();
