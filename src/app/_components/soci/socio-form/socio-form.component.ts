@@ -4,7 +4,7 @@ import { Component, EventEmitter, Input, OnInit, Output }     from '@angular/cor
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { MatDialog }                            from '@angular/material/dialog';
 import { Observable, of }                       from 'rxjs';
-import { tap }                                  from 'rxjs/operators';
+import { debounceTime, switchMap, tap }                                  from 'rxjs/operators';
 
 //components
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
@@ -19,6 +19,10 @@ import { PER_Socio, PER_TipoSocio }             from 'src/app/_models/PER_Soci';
 import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni';
 import { TipiSocioService }                     from '../tipi-socio.service';
 import { User }                                 from 'src/app/_user/Users';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { PER_Persona } from 'src/app/_models/PER_Persone';
+import { PersoneService } from '../../persone/persone.service';
+import { FormCustomValidatorsArray } from '../../utilities/requireMatch/requireMatch';
 
 //#endregion
 @Component({
@@ -33,23 +37,18 @@ export class SocioFormComponent implements OnInit {
   socio$!:                                      Observable<PER_Socio>;
   obsTipiSocio$!:                               Observable<PER_TipoSocio[]>;
   currSocio!:                                   User;
+  persona$!:                                    Observable<PER_Persona>;
 
   public form! :                                UntypedFormGroup;
   emptyForm :                                   boolean = false;
-  comuniArr!:                                   _UT_Comuni[];
-  filteredComuniArr!:                           _UT_Comuni[];
-  filteredComuniNascitaArr!:                    _UT_Comuni[];
 
-  filteredComuni$!:                             Observable<_UT_Comuni[]>;
-  filteredComuniNascita$!:                      Observable<_UT_Comuni[]>;
-  comuniIsLoading:                              boolean = false;
-  comuniNascitaIsLoading:                       boolean = false;
+  filteredPersone$!:                            Observable<PER_Persona[]>;
 
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-  @Input() socioID!:                          number;
-  @Input() tipoSocioID!:                      number;
+  @Input() socioID!:                            number;
+  @Input() tipoSocioID!:                        number;
   @Input() dove!:                               string;
 
   @Output('formValid') formValid = new EventEmitter<boolean>();
@@ -61,6 +60,7 @@ export class SocioFormComponent implements OnInit {
               private fb:                       UntypedFormBuilder, 
               private svcSoci:                  SociService,
               private svcTipiSocio:             TipiSocioService,
+              private svcPersone:               PersoneService,
               private _loadingService :         LoadingService  ) { 
 
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
@@ -78,7 +78,8 @@ export class SocioFormComponent implements OnInit {
       quota:                                    [''],
       dtDisiscrizione:                          [''],
       dtRestQuota:                              [''],
-      ckRinunciaQuota:                          ['']
+      ckRinunciaQuota:                          [''],
+      nomeCognomePersona: [null],
 
     });
 
@@ -94,6 +95,20 @@ export class SocioFormComponent implements OnInit {
     this.form.valueChanges.subscribe(
       res=> this.formValid.emit(this.form.valid) //ma serve??? Su procedura-iscrizioni ho fatto diversamente
     )
+
+
+    this.svcPersone.list().subscribe(persone => {
+      this.form.controls['nomeCognomePersona'].setValidators(
+        [FormCustomValidatorsArray.valueSelected(persone)]
+      );
+    })
+
+    this.filteredPersone$ = this.form.controls['nomeCognomePersona'].valueChanges
+      .pipe(
+        debounceTime(300),
+        switchMap(() => this.svcPersone.filterPersone(this.form.value.nomeCognomePersona)),
+      );
+      
   }
 
   loadData(){
@@ -168,5 +183,36 @@ export class SocioFormComponent implements OnInit {
   
 //#endregion
 
+//#region ----- Metodi per ricerca Persona -------
+
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+
+    //come approccio alternativo all'uso di un customformvalidator vorrei fare come in 
+    //https://stackblitz.com/edit/mat-autocomplete-force-selection-of-option?file=src%2Fapp%2Fautocomplete-auto-active-first-option-example.ts 
+    //sembra infatti molto più "diretto" e "semplice" MA....come lo propone lui su ngAfterViewInit ...NON FUNZIONA CASSO! quindi lo metto qui che non è il massimo
+
+    //***NC 25.12.22 ***/
+    this.form.controls.personaID.setValue(event.option.id);
+    //vado a pescare la mail della persona selezionata
+    const obsPersona$: Observable<PER_Persona> = this.svcPersone.get(event.option.id);
+      const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
+      this.persona$ = loadPersona$
+      .pipe( 
+          tap(
+            persona => {
+              this.form.controls.personaID.setValue(persona.id);
+              this.form.controls.nome.setValue(persona.nome);
+              this.form.controls.nome.setValue(persona.cognome);
+              this.form.controls.cf.setValue(persona.cf);
+              this.form.controls.dtNascita.setValue(Utility.formatDate(persona.dtNascita, FormatoData.dd_mm_yyyy));
+
+            }  //a questo punto vanno caricati i vari campi
+          )
+      );
+      this.persona$.subscribe();
+  }
+
+//#endregion
 
 }

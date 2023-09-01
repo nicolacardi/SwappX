@@ -7,12 +7,12 @@ import { MatMenuTrigger }                       from '@angular/material/menu';
 import { MatPaginator }                         from '@angular/material/paginator';
 import { MatSort }                              from '@angular/material/sort';
 import { MatTableDataSource }                   from '@angular/material/table';
-import { Observable, firstValueFrom, iif }                           from 'rxjs';
+import { Observable, firstValueFrom, iif }      from 'rxjs';
 import { SelectionModel }                       from '@angular/cdk/collections';
-import { concatMap, map, tap }                                  from 'rxjs/operators';
+import { tap }                                  from 'rxjs/operators';
 
 //components
-import { SocioEditComponent }                 from '../socio-edit/socio-edit.component';
+import { SocioEditComponent }                   from '../socio-edit/socio-edit.component';
 import { SociFilterComponent }                  from '../soci-filter/soci-filter.component';
 import { Utility }                              from '../../utilities/utility.component';
 
@@ -23,7 +23,7 @@ import { TableColsService }                     from '../../utilities/toolbar/ta
 import { TableColsVisibleService }              from '../../utilities/toolbar/tablecolsvisible.service';
 
 //models
-import { PER_Socio }                          from 'src/app/_models/PER_Soci';
+import { PER_Socio }                            from 'src/app/_models/PER_Soci';
 import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
@@ -50,6 +50,10 @@ export class SociListComponent implements OnInit {
     tipoSocioID: '',
     nome: '',
     cognome: '',
+    dataRichiestaDal: '',
+    dataRichiestaAl: '',
+    dataAccettazioneDal: '',
+    dataAccettazioneAl: '',
     filtrosx: ''
   };
   
@@ -185,8 +189,17 @@ export class SociListComponent implements OnInit {
       let foundTipoSocio = data.tipoSocioID==searchTerms.tipoSocioID;
 
       if (searchTerms.tipoSocioID == null || searchTerms.tipoSocioID == '') foundTipoSocio = true;
-      console.log (searchTerms);
+
+
+      let cfrDateRichieste = cfrDate(searchTerms.dataRichiestaDal, searchTerms.dataRichiestaAl, data.dtRichiesta);
+      let cfrDateAccettazione = cfrDate(searchTerms.dataAccettazioneDal, searchTerms.dataAccettazioneAl, data.dtAccettazione);
+      console.log("cfrDateAccettazione", cfrDateAccettazione);
+
+      let dArr = data.dtRichiesta.split("-");
+      const dtRichiestaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
+
       let boolSx = String(data.persona.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(dtRichiestaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
                 || String(data.persona.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.tipoSocio.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
 
@@ -194,13 +207,17 @@ export class SociListComponent implements OnInit {
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
       let boolDx = String(data.persona.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
                     && String(data.persona.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
-                     && foundTipoSocio
+                    && foundTipoSocio
+                    && cfrDateRichieste
+                    && cfrDateAccettazione;
+
 
 
       return boolSx && boolDx;
     }
     return filterFunction;
   }
+
 
 //#endregion
 
@@ -246,3 +263,16 @@ export class SociListComponent implements OnInit {
 //#endregion
   
 }
+
+//la seguente funzione riceve in input una data (dt) una data Dal (dtDal) e una data Al (dtAl) e restituisce un booleano che dice
+//se la data è compresa tra le due. Si usa per i contesti in cui abbiamo due campi (appunto data dal /data al)...
+function   cfrDate(dtDal: string, dtAl: string, dt: string): boolean {
+  let cfrDataDal = true;
+  let cfrDataAl = true;
+  let cfrDate = true;
+  if (dtDal != '') {cfrDataDal = (dt > dtDal)}
+  if (dtAl != '') {cfrDataAl = (dt < dtAl)}
+  cfrDate = cfrDataDal && cfrDataAl;
+  return cfrDate;
+}
+

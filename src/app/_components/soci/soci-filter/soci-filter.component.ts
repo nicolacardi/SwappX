@@ -27,6 +27,11 @@ export class SociFilterComponent implements OnInit {
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');
   tipoSocioFilter= new UntypedFormControl('');
+  dataRichiestaDal = new UntypedFormControl('');
+  dataRichiestaAl = new UntypedFormControl('');
+  dataAccettazioneDal = new UntypedFormControl('');
+  dataAccettazioneAl = new UntypedFormControl('');
+
 
   
   obsTipiSocio$!:            Observable<PER_TipoSocio[]>;
@@ -47,7 +52,10 @@ export class SociFilterComponent implements OnInit {
     this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
     this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
     this.tipoSocioFilter.valueChanges.subscribe(val => {this.applyFilterDx('tipoSocioID', val);})
-
+    this.dataRichiestaDal.valueChanges.subscribe(val => {this.applyFilterDx('dataRichiestaDal', val);})
+    this.dataRichiestaAl.valueChanges.subscribe(val => {this.applyFilterDx('dataRichiestaAl', val);})
+    this.dataAccettazioneDal.valueChanges.subscribe(val => {this.applyFilterDx('dataAccettazioneDal', val);})
+    this.dataAccettazioneAl.valueChanges.subscribe(val => {this.applyFilterDx('dataAccettazioneAl', val);})
   }
 
   applyFilterDx(field: keyof typeof this.sociListComponent.filterValues, val: string) {
@@ -71,6 +79,10 @@ export class SociFilterComponent implements OnInit {
     this.nomeFilter.setValue('', {emitEvent:false});
     this.cognomeFilter.setValue('', {emitEvent:false});
     this.tipoSocioFilter.setValue('', {emitEvent:false});
+    this.dataRichiestaDal.setValue('', {emitEvent:false});
+    this.dataRichiestaAl.setValue('', {emitEvent:false});
+    this.dataAccettazioneDal.setValue('', {emitEvent:false});
+    this.dataAccettazioneAl.setValue('', {emitEvent:false});
 
   }
 
@@ -78,6 +90,10 @@ export class SociFilterComponent implements OnInit {
     this.nomeFilter.setValue('');
     this.cognomeFilter.setValue('')
     this.tipoSocioFilter.setValue('')
+    this.dataRichiestaDal.setValue('');
+    this.dataRichiestaAl.setValue('');
+    this.dataAccettazioneDal.setValue('');
+    this.dataAccettazioneAl.setValue('');
 
   }
 //#endregion
