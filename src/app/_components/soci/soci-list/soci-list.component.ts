@@ -127,10 +127,10 @@ export class SociListComponent implements OnInit {
   async ngOnInit() {
     //this.displayedColumns =  this.displayedColumnsSociList;
     await firstValueFrom(this.loadLayout()); //va eseguita in maniera SINCRONA altrimenti le colonne arrivano troppo tardi e intanto la loadData ha proceduto
-     this.loadData(); 
+    this.loadData(); 
   }
 
-   loadLayout():   Observable<any> {
+  loadLayout():   Observable<any> {
     return this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName)
     .pipe(
       tap(colonne=> {
