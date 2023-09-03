@@ -33,7 +33,7 @@
                 <!-- <mat-error *ngIf="form.controls.cognome.errors?.required"> Campo obbligatorio</mat-error> -->
             </mat-form-field>
         </mat-grid-tile>
-        <mat-grid-tile>
+        <mat-grid-tile *ngIf="dove!= 'procedura-iscrizione'">
             <mat-checkbox color="primary" formControlName="ckAttivo">
                 Anagrafica Attiva
             </mat-checkbox>

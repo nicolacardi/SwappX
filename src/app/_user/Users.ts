@@ -19,6 +19,8 @@ export interface User {
 
     personaID:                                  number;
     persona?:                                   PER_Persona;
+
+    _LstRuoli?:                                 string[];
 }
 
 

@@ -31,6 +31,7 @@ export class SociFilterComponent implements OnInit {
   dataRichiestaAl = new UntypedFormControl('');
   dataAccettazioneDal = new UntypedFormControl('');
   dataAccettazioneAl = new UntypedFormControl('');
+  ckAttivo = new UntypedFormControl('');
 
 
   
@@ -56,6 +57,8 @@ export class SociFilterComponent implements OnInit {
     this.dataRichiestaAl.valueChanges.subscribe(val => {this.applyFilterDx('dataRichiestaAl', val);})
     this.dataAccettazioneDal.valueChanges.subscribe(val => {this.applyFilterDx('dataAccettazioneDal', val);})
     this.dataAccettazioneAl.valueChanges.subscribe(val => {this.applyFilterDx('dataAccettazioneAl', val);})
+    this.ckAttivo.valueChanges.subscribe(val => {this.applyFilterDx('ckAttivo', val);})
+
   }
 
   applyFilterDx(field: keyof typeof this.sociListComponent.filterValues, val: string) {

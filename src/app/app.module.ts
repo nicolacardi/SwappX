@@ -128,7 +128,7 @@ import { NoteFilterComponent }                  from './_components/note/note-fi
 
 //User e Profilo
 import { UserService }                          from './_user/user.service';
-import { UserComponent }                        from './_user/user.component';
+import { LoginPageComponent }                   from './_user/login-page.component';
 import { LoginComponent }                       from './_user/login/login.component';
 import { UsersPageComponent }                   from './_components/users/users-page/users-page.component';
 import { UsersListComponent }                   from './_components/users/users-list/users-list.component';
@@ -330,7 +330,7 @@ import { SocioFormComponent } from './_components/soci/socio-form/socio-form.com
     SceltaColonneComponent,
 
     LoginComponent,
-    UserComponent,
+    LoginPageComponent,
     UsersPageComponent,
     UsersListComponent,
     UsersFilterComponent,

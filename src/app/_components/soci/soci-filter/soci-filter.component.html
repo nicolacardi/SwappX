@@ -34,7 +34,14 @@
             </mat-form-field>
         </mat-grid-tile>
     </mat-grid-list>
-    <mat-grid-list class="_low-list-row no-overflowx" [cols]="1" rowHeight="30px">
+    <mat-grid-list class=" no-overflowx" [cols]="1" rowHeight="30px">
+        <mat-grid-tile>
+            <mat-checkbox color="primary" [formControl]="ckAttivo">
+                Soci Attivi
+            </mat-checkbox>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list class=" no-overflowx" [cols]="1" rowHeight="30px">
         <mat-grid-tile>
             Data Richiesta
         </mat-grid-tile>
@@ -59,7 +66,7 @@
             </mat-form-field>
         </mat-grid-tile>
     </mat-grid-list>
-    <mat-grid-list class="_low-list-row no-overflowx" [cols]="1" rowHeight="30px">
+    <mat-grid-list class=" no-overflowx" [cols]="1" rowHeight="30px">
         <mat-grid-tile>
             Data Accettazione
         </mat-grid-tile>

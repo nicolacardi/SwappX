@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, Inject, ViewChild }         from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable, tap }                      from 'rxjs';
@@ -15,10 +15,10 @@ import { Utility }                              from 'src/app/_components/utilit
 //services
 import { FileDropDirective }                    from 'src/app/_components/utilities/appfiledrop/appfiledrop.directive';
 import { LoadingService }                       from 'src/app/_components/utilities/loading/loading.service';
-import { RisorseService }                         from '../risorse.service';
+import { RisorseService }                       from '../risorse.service';
 
 //models
-import { _UT_Risorsa }                             from 'src/app/_models/_UT_Risorsa';
+import { _UT_Risorsa }                          from 'src/app/_models/_UT_Risorsa';
 import { User }                                 from 'src/app/_user/Users';
 
 //#endregion

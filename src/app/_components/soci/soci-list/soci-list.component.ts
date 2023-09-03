@@ -54,6 +54,7 @@ export class SociListComponent implements OnInit {
     dataRichiestaAl: '',
     dataAccettazioneDal: '',
     dataAccettazioneAl: '',
+    ckAttivo: '', //non è tanto un campo del db: è attivo quando non c'è una disiscrizione
     filtrosx: ''
   };
   
@@ -190,7 +191,7 @@ export class SociListComponent implements OnInit {
 
       if (searchTerms.tipoSocioID == null || searchTerms.tipoSocioID == '') foundTipoSocio = true;
 
-
+      let ckAttivo = (searchTerms.ckAttivo && data.dtDisiscrizione == null) || !searchTerms.ckAttivo ;
       let cfrDateRichieste = cfrDate(searchTerms.dataRichiestaDal, searchTerms.dataRichiestaAl, data.dtRichiesta);
       let cfrDateAccettazione = cfrDate(searchTerms.dataAccettazioneDal, searchTerms.dataAccettazioneAl, data.dtAccettazione);
       console.log("cfrDateAccettazione", cfrDateAccettazione);
@@ -209,7 +210,8 @@ export class SociListComponent implements OnInit {
                     && String(data.persona.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
                     && foundTipoSocio
                     && cfrDateRichieste
-                    && cfrDateAccettazione;
+                    && cfrDateAccettazione
+                    && ckAttivo;
 
 
 

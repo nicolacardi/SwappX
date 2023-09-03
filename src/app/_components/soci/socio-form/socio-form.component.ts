@@ -63,8 +63,6 @@ export class SocioFormComponent implements OnInit {
               private svcPersone:               PersoneService,
               private _loadingService :         LoadingService  ) { 
 
-    let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
-
     this.form = this.fb.group({
       id:                                       [null],
       tipoSocioID:                              ['', Validators.required],
@@ -106,7 +104,7 @@ export class SocioFormComponent implements OnInit {
     this.filteredPersone$ = this.form.controls['nomeCognomePersona'].valueChanges
       .pipe(
         debounceTime(300),
-        switchMap(() => this.svcPersone.filterPersone(this.form.value.nomeCognomePersona)),
+        switchMap(() => this.svcPersone.filterPersoneNoSoci(this.form.value.nomeCognomePersona)),
       );
       
   }

@@ -2,7 +2,7 @@ import { NgModule }                             from '@angular/core';
 import { RouterModule, Routes }                 from '@angular/router';
 
 import { AuthGuard }                            from './_user/auth/auth.guard';
-import { UserComponent }                        from './_user/user.component';
+import { LoginPageComponent }                   from './_user/login-page.component';
 import { LoginComponent }                       from './_user/login/login.component';
 
 import { ProfiloComponent }                     from './_user/profilo/profilo.component';
@@ -38,7 +38,7 @@ const routes: Routes = [
   {
       //  { path:'user' , redirectTo: 'user/login', pathMatch: 'full' },
     path: 'user',                               //user ha due children, login e send-mail
-    component: UserComponent,
+    component: LoginPageComponent,
     children: [
       { path: 'login',                          component: LoginComponent },
 

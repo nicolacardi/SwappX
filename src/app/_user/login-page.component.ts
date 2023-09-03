@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
+  selector: 'app-login-page',
+  templateUrl: './login-page.component.html',
   styleUrls: ['./user.css']
 })
 
-export class UserComponent implements OnInit {
+export class LoginPageComponent implements OnInit {
 
   routerPage!: string;
   

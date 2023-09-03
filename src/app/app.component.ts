@@ -50,6 +50,7 @@ export class AppComponent implements OnInit {
   constructor(private svcUser:                            UserService,
               private router:                             Router,
               private eventEmitterService:                EventEmitterService) {
+   
   }
 
   ngOnInit () {
@@ -57,6 +58,7 @@ export class AppComponent implements OnInit {
     //TODO non andrebbe preso da Utility?
     this.svcUser.obscurrentUser.subscribe(val => {
       this.currUser = val;
+
 
       if(this.currUser){
         this.userFullName = this.currUser.fullname;

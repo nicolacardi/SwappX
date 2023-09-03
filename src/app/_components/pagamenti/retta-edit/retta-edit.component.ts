@@ -67,7 +67,7 @@ export class RettaEditComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output ---------
-  @ViewChildren(RettameseEditComponent) ChildrenRettaMese!:QueryList<RettameseEditComponent>;
+  //@ViewChildren(RettameseEditComponent) ChildrenRettaMese!:QueryList<RettameseEditComponent>;
   @ViewChild(RettaannoEditComponent) ChildRettaAnno!: RettaannoEditComponent;
   @ViewChild(PagamentiListComponent) ChildPagamenti!: PagamentiListComponent;
   @ViewChild(RettapagamentoEditComponent) ChildRettapagamentoEdit!: RettapagamentoEditComponent;
@@ -254,36 +254,36 @@ export class RettaEditComponent implements OnInit {
 
 
 
-  blur() {
-    //evento che dovrebbe essere triggered su click fuori dall'elenco proposto. Va però in conflitto con selected:
-    //nel senso che spesso parte anche quando uno seleziona una voce dall'elenco.
-    console.log ("blur");
-    return;
-    console.log (this.matAutocomplete.options.first);
-     //l'unico caso che al momento non possiamo gestire è se non c'è alcun elemento nella dropdown (se p.e. utente scrive "hh")
-     //e anzi per non incorrere in errori in quel caso bisogna uscire dalla routine
-    if (!this.matAutocomplete.options.first) return; 
+  // blur() {
+  //   //evento che dovrebbe essere triggered su click fuori dall'elenco proposto. Va però in conflitto con selected:
+  //   //nel senso che spesso parte anche quando uno seleziona una voce dall'elenco.
+  //   console.log ("blur");
+  //   return;
+  //   console.log (this.matAutocomplete.options.first);
+  //    //l'unico caso che al momento non possiamo gestire è se non c'è alcun elemento nella dropdown (se p.e. utente scrive "hh")
+  //    //e anzi per non incorrere in errori in quel caso bisogna uscire dalla routine
+  //   if (!this.matAutocomplete.options.first) return; 
 
-    const stored = this.matAutocomplete.options.first.viewValue;
-    console.log ("stored", stored);
-    const idstored = this.matAutocomplete.options.first.id;
-    console.log("idstored", idstored);
-    //se uno cancella tutto si ritrova selezionato il primo della lista
-    if (this.formRetta.controls['nomeCognomeAlunno'].value == "") {
-      this.matAutocomplete.options.first.select();
-    }
+  //   const stored = this.matAutocomplete.options.first.viewValue;
+  //   console.log ("stored", stored);
+  //   const idstored = this.matAutocomplete.options.first.id;
+  //   console.log("idstored", idstored);
+  //   //se uno cancella tutto si ritrova selezionato il primo della lista
+  //   if (this.formRetta.controls['nomeCognomeAlunno'].value == "") {
+  //     this.matAutocomplete.options.first.select();
+  //   }
 
-    //se non trova in base a quello che uno ha scritto seleziona il primo dell'elenco
-    this.svcAlunni.filterAlunniExact(this.formRetta.value.nomeCognomeAlunno).subscribe(val=>
-      {
-        if (!val) {
-          this.data.alunnoID = parseInt(idstored);
-          this.formRetta.controls['nomeCognomeAlunno'].setValue(stored)
-          this.formRetta.controls['alunnoID'].setValue(parseInt(idstored));
-          this.loadData();
-        }
-    })
-  }
+  //   //se non trova in base a quello che uno ha scritto seleziona il primo dell'elenco
+  //   this.svcAlunni.filterAlunniExact(this.formRetta.value.nomeCognomeAlunno).subscribe(val=>
+  //     {
+  //       if (!val) {
+  //         this.data.alunnoID = parseInt(idstored);
+  //         this.formRetta.controls['nomeCognomeAlunno'].setValue(stored)
+  //         this.formRetta.controls['alunnoID'].setValue(parseInt(idstored));
+  //         this.loadData();
+  //       }
+  //   })
+  // }
 
   mesePagamentoClicked (meseRettaClicked: number ){
     //ora devo passare queste informazioni a rettapagamento-edit
@@ -294,27 +294,27 @@ export class RettaEditComponent implements OnInit {
 
 //#region FUNZIONI NON PIU' UTILIZZATE ?
 
-  savePivot() {
-    //NON DOVREBBE PIU' SERVIRE
-    //questo metodo chiama uno ad uno il metodo save di ciascun child
-    //salvando quindi ogni form, cioè ogni record Retta
-    let response : boolean;
-    let hasError: boolean = false;
+  // savePivot() {
+    
+  //   //questo metodo chiama uno ad uno il metodo save di ciascun child
+  //   //salvando quindi ogni form, cioè ogni record Retta
+  //   let response : boolean;
+  //   let hasError: boolean = false;
 
-    for (let i = 0; i < 12; i++) {
-      let childRettaMese = this.ChildrenRettaMese.find(childRettaMese => childRettaMese.indice == i);
-      response = childRettaMese!.save();
-      if (!response) 
-        hasError = true;
-    }
+  //   for (let i = 0; i < 12; i++) {
+  //     let childRettaMese = this.ChildrenRettaMese.find(childRettaMese => childRettaMese.indice == i);
+  //     response = childRettaMese!.save();
+  //     if (!response) 
+  //       hasError = true;
+  //   }
 
-    if (hasError) 
-      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di Salvataggio', panelClass: ['red-snackbar']})
-    else 
-      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record Salvato', panelClass: ['green-snackbar']})
+  //   if (hasError) 
+  //     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di Salvataggio', panelClass: ['red-snackbar']})
+  //   else 
+  //     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record Salvato', panelClass: ['green-snackbar']})
 
-    this._dialogRef.close();
-  }
+  //   this._dialogRef.close();
+  // }
 //#endregion
 
 }

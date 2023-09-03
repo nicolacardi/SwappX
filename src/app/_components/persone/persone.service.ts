@@ -58,4 +58,21 @@ export class PersoneService {
     }
   }
 
+  filterPersoneNoSoci(searchstring: string): Observable<PER_Persona[]> {
+
+    if (searchstring != null && (typeof searchstring === 'string')) {
+      return this.http.get<PER_Persona[]>(environment.apiBaseUrl+'PER_Persone/ListNoSoci')
+        .pipe (
+            map(val=>val.filter(val=>(val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(searchstring.toLowerCase()))),
+        );
+    } 
+    else {
+      return of()
+    }
+  }
+
+  listRuoli(personaID: number): Observable<string[]> {
+    return this.http.get<string[]>(environment.apiBaseUrl+'PER_Persone/listRuoli/' + personaID)
+        //http://213.215.231.4/swappX/api/PER_Persone/listRuoli/3
+  }
 }
