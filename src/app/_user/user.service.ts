@@ -25,15 +25,18 @@ export class UserService {
 
   readonly BaseURI = environment.apiBaseUrl;
 
-  private BehaviourSubjectcurrentUser :         BehaviorSubject<User>;      //holds the value that needs to be shared with other components
+  private BehaviourSubjectcurrentUser :         BehaviorSubject<User>;      
+  public BehaviourSubjectlistaRuoli :           BehaviorSubject<string[]>;      
+
   public obscurrentUser:                        Observable<User>;
 
   constructor(private fb:                                 UntypedFormBuilder,
               private http:                               HttpClient,
-              private svcPersona:                         PersoneService,
-              private svcParametri:                       ParametriService )   { 
+              private svcPersona:                         PersoneService)   { 
                 
     this.BehaviourSubjectcurrentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
+    this.BehaviourSubjectlistaRuoli = new BehaviorSubject<string[]>([]);
+
     this.obscurrentUser = this.BehaviourSubjectcurrentUser.asObservable();
   }
 
@@ -56,98 +59,60 @@ export class UserService {
   });
 
 
+  getUserRoles(personaID: number){
+    this.svcPersona.listRuoli(personaID)
+    .subscribe(
+      lstruoli=> {
+        this.BehaviourSubjectlistaRuoli.next(lstruoli);
+      }
+    )
+  }
+
+
   //Login(userName: string, userPwd: string) {
   Login(formData: any) {
 
-
-
-
-        
-    // let httpPost$ = this.http.post<User>(this.BaseURI + 'ApplicationUser/Login', formData)
-    // .pipe(
-    //   timeout(8000),
-    //   concatMap(user => 
-    //     this.svcPersona.get(user.personaID).pipe(
-    //       tap(val => {
-    //         if (user && user.token) {
-    //           user.isLoggedIn = true;
-    //           user.personaID = val.id;
-    //           user.fullname = val.nome + " " + val.cognome;
-    //           user.tipoPersonaID = val.tipoPersonaID;
-    //           user.TipoPersona = val.tipoPersona;
-    //           localStorage.setItem('token', user.token!);
-    //         } else {
-    //           this.Logout();
-    //         }
-    //       }),
-    //       // catchError(error => {
-    //       //   // Gestisci l'errore qui, se necessario
-    //       //   console.error("Errore durante la chiamata a get:", error);
-    //       //   return of(null); // Restituisci un observable vuoto o un valore predefinito
-    //       // }),
-    //       concatMap(() => 
-    //         this.svcPersona.listRuoli(user.personaID).pipe(
-    //           tap(lstRuoli => {
-    //             console.log("lstRuoli?", lstRuoli);
-    //             user._LstRuoli = lstRuoli;
-    //             localStorage.setItem('currentUser', JSON.stringify(user));
-    //             this.BehaviourSubjectcurrentUser.next(user);
-    //           }),
-    //           // catchError(error => {
-    //           //   // Gestisci l'errore qui, se necessario
-    //           //   console.error("Errore durante la chiamata a listRuoli:", error);
-    //           //   return of(null); // Restituisci un observable vuoto o un valore predefinito
-    //           // })
-    //         )
-    //       )
-    //     )
-    //   )
-    // );
-
-
-
     
     let httpPost$ = this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
-      .pipe(timeout(8000))  //è il timeout oltre il quale viene dato l'errore
+      .pipe(timeout(6000))  //è il timeout oltre il quale viene dato l'errore
       .pipe(
-         concatMap( user =>   ( 
-          this.svcPersona.get(user.personaID).pipe(
-            
-            tap(val => {
-              if (user && user.token) {
-                user.isLoggedIn = true;
-                    
-                //Dati di PER_Persona
-                user.personaID = val.id;
-                user.fullname = val.nome + " " + val.cognome;
-                user.tipoPersonaID = val.tipoPersonaID;
-                user.TipoPersona = val.tipoPersona;
-                //**************************************************************
+        concatMap( user =>   ( 
+          this.svcPersona.get(user.personaID)
+            .pipe(
+              tap(val => {
+                if (user && user.token) {
+                  user.isLoggedIn = true;
+                      
+                  //Dati di PER_Persona
+                  user.personaID = val.id;
+                  user.fullname = val.nome + " " + val.cognome;
+                  user.tipoPersonaID = val.tipoPersonaID;
+                  user.TipoPersona = val.tipoPersona;
+                  //**************************************************************
 
-                
-                
-                //user.ruoli= ["SysAdmin", "genitore"];
-                
-                
-                
-                //************************************ */
-                localStorage.setItem('token', user.token!);
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                
-                this.BehaviourSubjectcurrentUser.next(user);
-              }
-              else{
-                //Passerà mai di qua ?
-                this.Logout();
-              }
-            }),
+                  
+                  
+                  //user.ruoli= ["SysAdmin", "genitore"];
+                  
+                  
+                  
+                  //************************************ */
+                  localStorage.setItem('token', user.token!);
+                  localStorage.setItem('currentUser', JSON.stringify(user));
+                  
+                  this.BehaviourSubjectcurrentUser.next(user);
+                }
+                else{
+                  //Passerà mai di qua ?
+                  this.Logout();
+                }
+              }),
+            )
+        )),
+
+      );
 
 
-        ))
-      )
-
-
-    );
     /*
     this.svcParametri.getByParName('AnnoCorrente')
       .pipe(map( par => {

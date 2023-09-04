@@ -14,6 +14,7 @@ import { UserService } from '../user.service';
 import { LoadingService } from 'src/app/_components/utilities/loading/loading.service';
 import { ParametriService } from 'src/app/_services/parametri.service';
 import { map } from 'rxjs';
+import { PersoneService } from 'src/app/_components/persone/persone.service';
 
 //models
 
@@ -45,6 +46,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private svcUser:                  UserService,
               private svcParametri:             ParametriService,
+              private svcPersona:               PersoneService,
               private router:                   Router,
               private fb:                       UntypedFormBuilder,
               private eventEmitterService:      EventEmitterService,
@@ -76,14 +78,15 @@ export class LoginComponent implements OnInit {
         //nel caso di forkJoin res[0] è relativo al primo Observable 
         this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + res.nome + ' ' + res.cognome , panelClass: ['green-snackbar']});  
         
-        this.svcParametri.getByParName('AnnoCorrente')
-          .pipe(map( par => {
-            localStorage.setItem(par.parName, JSON.stringify(par));
-            //return par;
-          })
-        ).subscribe(
-          ()=> this.router.navigateByUrl('/home')
-        );
+          this.svcParametri.getByParName('AnnoCorrente')
+            .pipe(map( par => {
+              localStorage.setItem(par.parName, JSON.stringify(par));
+              //return par;
+            })
+          ).subscribe(
+            ()=> this.router.navigateByUrl('/home')
+          );
+
       },
       error: err=> {
         this.loading = false;

@@ -212,9 +212,11 @@
             <a mat-list-item class="_pos-absolute_i _border-top _grey-background b0 topZindex" 
                 routerLink="impostazioni"
                 (click)="clickMenuItem()"  
-                *ngIf="currUser && currUser.TipoPersona!.descrizione == 'SysAdmin'"
+                *ngIf="currUser && lstRoles.includes('ITmanager')"
                 
                 >
+                <!-- *ngIf="currUser && currUser.TipoPersona!.descrizione == 'SysAdmin'" -->
+
                 <!-- *ngIf="currUser && se nella lista dei ruoli c'è SysAdmin" -->
                 <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/settings.svg">
                 <span *ngIf="isExpanded">Impostazioni</span>

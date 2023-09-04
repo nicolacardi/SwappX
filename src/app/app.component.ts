@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   public isLoggedIn?:                           boolean = false;
   public currUser!:                             User;
   public currPersona!:                          PER_Persona;
+  public lstRoles!:                             string[];
 
   public userFullName:                          string = "";
   public imgAccount =                           "";
@@ -55,14 +56,29 @@ export class AppComponent implements OnInit {
 
   ngOnInit () {
 
+
+    console.log("appcomponent ngOnInit");
+
     //TODO non andrebbe preso da Utility?
     this.svcUser.obscurrentUser.subscribe(val => {
       this.currUser = val;
 
-
       if(this.currUser){
         this.userFullName = this.currUser.fullname;
         this.isLoggedIn = this.currUser.isLoggedIn;
+
+        //NC 04/09/23 Aggiunto per ricaricare ruoli roles lstroles quando non ci sono (p.e. REFRESH F5)
+        this.svcUser.BehaviourSubjectlistaRuoli.subscribe((lstroles) => {
+          if (lstroles && lstroles.length ==0) {
+            //console.log("non c'è lstroles rilancio la getUserRoles");
+            this.svcUser.getUserRoles(this.currUser.personaID);
+          }
+          this.lstRoles = lstroles;
+          console.log(lstroles);
+        });
+        //*********************
+
+
       }
     })
 
@@ -75,6 +91,7 @@ export class AppComponent implements OnInit {
         () => this.refreshUserData()
       );    
     } 
+
   }
 
   refreshUserData () {
@@ -86,6 +103,9 @@ export class AppComponent implements OnInit {
     
     let currUser = Utility.getCurrentUser();
     this.userFullName = currUser.fullname;
+
+
+
   }
   
   logOut() {
