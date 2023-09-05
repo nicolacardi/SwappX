@@ -71,8 +71,8 @@ export class PersoneService {
     }
   }
 
-  listRuoli(personaID: number): Observable<string[]> {
-    return this.http.get<string[]>(environment.apiBaseUrl+'PER_Persone/listRuoli/' + personaID)
-        //http://213.215.231.4/swappX/api/PER_Persone/listRuoli/3
+  listRoles(personaID: number): Observable<string[]> {
+    return this.http.get<string[]>(environment.apiBaseUrl+'PER_Persone/listRoles/' + personaID)
+        //http://213.215.231.4/swappX/api/PER_Persone/listRoles/3
   }
 }

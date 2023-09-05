@@ -68,7 +68,7 @@ export class AppComponent implements OnInit {
         this.isLoggedIn = this.currUser.isLoggedIn;
 
         //NC 04/09/23 Aggiunto per ricaricare ruoli roles lstroles quando non ci sono (p.e. REFRESH F5)
-        this.svcUser.BehaviourSubjectlistaRuoli.subscribe((lstroles) => {
+        this.svcUser.BehaviourSubjectlistRoles.subscribe((lstroles) => {
           if (lstroles && lstroles.length ==0) {
             //console.log("non c'è lstroles rilancio la getUserRoles");
             this.svcUser.getUserRoles(this.currUser.personaID);

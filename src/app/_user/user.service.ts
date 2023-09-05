@@ -26,7 +26,7 @@ export class UserService {
   readonly BaseURI = environment.apiBaseUrl;
 
   private BehaviourSubjectcurrentUser :         BehaviorSubject<User>;      
-  public BehaviourSubjectlistaRuoli :           BehaviorSubject<string[]>;      
+  public BehaviourSubjectlistRoles :           BehaviorSubject<string[]>;      
 
   public obscurrentUser:                        Observable<User>;
 
@@ -35,7 +35,7 @@ export class UserService {
               private svcPersona:                         PersoneService)   { 
                 
     this.BehaviourSubjectcurrentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
-    this.BehaviourSubjectlistaRuoli = new BehaviorSubject<string[]>([]);
+    this.BehaviourSubjectlistRoles = new BehaviorSubject<string[]>([]);
 
     this.obscurrentUser = this.BehaviourSubjectcurrentUser.asObservable();
   }
@@ -60,10 +60,10 @@ export class UserService {
 
 
   getUserRoles(personaID: number){
-    this.svcPersona.listRuoli(personaID)
+    this.svcPersona.listRoles(personaID)
     .subscribe(
       lstruoli=> {
-        this.BehaviourSubjectlistaRuoli.next(lstruoli);
+        this.BehaviourSubjectlistRoles.next(lstruoli);
       }
     )
   }
@@ -88,15 +88,6 @@ export class UserService {
                   user.fullname = val.nome + " " + val.cognome;
                   user.tipoPersonaID = val.tipoPersonaID;
                   user.TipoPersona = val.tipoPersona;
-                  //**************************************************************
-
-                  
-                  
-                  //user.ruoli= ["SysAdmin", "genitore"];
-                  
-                  
-                  
-                  //************************************ */
                   localStorage.setItem('token', user.token!);
                   localStorage.setItem('currentUser', JSON.stringify(user));
                   
