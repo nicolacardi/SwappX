@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild }         from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild }         from '@angular/core';
 import { UntypedFormControl }                          from '@angular/forms';
 import { MatSidenav }                           from '@angular/material/sidenav';
 import { Router }                               from '@angular/router';
@@ -12,6 +12,7 @@ import { Utility }                              from  './_components/utilities/u
 import { User }                                 from './_user/Users';
 import { MatExpansionPanel }                    from '@angular/material/expansion';
 import { PER_Persona }                          from './_models/PER_Persone';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -38,6 +39,11 @@ export class AppComponent implements OnInit {
 
   public mode = new UntypedFormControl('over');
   title = 'Stoody';
+
+
+  private currentUserSubscription!: Subscription;
+  private listRolesSubscription!: Subscription;
+
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -54,33 +60,49 @@ export class AppComponent implements OnInit {
    
   }
 
+
+  // ngOnDestroy() {
+  //   console.log("on destroy NON CI PASSA MAI");
+  //   this.currentUserSubscription.unsubscribe();  //non sembra bastare
+  //   this.listRolesSubscription.unsubscribe();   //non sembra bastare a impeire che passi di nuovo per ngOnInit su Logout
+  // }
+
+
   ngOnInit () {
+
 
 
     console.log("appcomponent ngOnInit");
 
-    //TODO non andrebbe preso da Utility?
-    this.svcUser.obscurrentUser.subscribe(val => {
+    //QUESTA NON FUNZIONA PERCHE' app.component fa ngOnInit PRIMA di login
+    // this.currUser = Utility.getCurrentUser();
+    // this.userFullName = this.currUser.fullname;
+    // this.isLoggedIn = this.currUser.isLoggedIn;
+    // console.log(this.currUser);
+
+    this.currentUserSubscription = this.svcUser.obscurrentUser.subscribe(val => {
       this.currUser = val;
 
       if(this.currUser){
         this.userFullName = this.currUser.fullname;
         this.isLoggedIn = this.currUser.isLoggedIn;
-
+        console.log("app.component - ngOnInit - val...FLUSSO", val);
         //NC 04/09/23 Aggiunto per ricaricare ruoli roles lstroles quando non ci sono (p.e. REFRESH F5)
-        this.svcUser.BehaviourSubjectlistRoles.subscribe((lstroles) => {
+        this.listRolesSubscription = this.svcUser.BehaviourSubjectlistRoles.subscribe((lstroles) => {
           if (lstroles && lstroles.length ==0) {
             //console.log("non c'è lstroles rilancio la getUserRoles");
             this.svcUser.getUserRoles(this.currUser.personaID);
           }
           this.lstRoles = lstroles;
-          console.log(lstroles);
+          console.log("app.component - ngOnInit - lstroles...FLUSSO", lstroles);
         });
         //*********************
 
 
       }
     })
+
+
 
     this.refreshUserData();
 
@@ -101,8 +123,8 @@ export class AppComponent implements OnInit {
       res => this.imgAccount = res.foto
     );
     
-    let currUser = Utility.getCurrentUser();
-    this.userFullName = currUser.fullname;
+    // let currUser = Utility.getCurrentUser();
+    // this.userFullName = currUser.fullname;
 
 
 

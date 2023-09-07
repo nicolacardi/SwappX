@@ -26,7 +26,7 @@ export class UserService {
   readonly BaseURI = environment.apiBaseUrl;
 
   private BehaviourSubjectcurrentUser :         BehaviorSubject<User>;      
-  public BehaviourSubjectlistRoles :           BehaviorSubject<string[]>;      
+  public BehaviourSubjectlistRoles :            BehaviorSubject<string[]>;      
 
   public obscurrentUser:                        Observable<User>;
 
@@ -128,6 +128,11 @@ export class UserService {
     const logOutUser = <User>{};
     logOutUser.isLoggedIn = false;
     this.BehaviourSubjectcurrentUser.next(logOutUser);
+    //this.BehaviourSubjectlistRoles.next([]);
+
+    
+
+
   }
 
   Register() { //non viene mai usata

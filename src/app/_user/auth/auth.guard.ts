@@ -4,46 +4,81 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
 
 import { UserService } from '../user.service';
+import { firstValueFrom, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class AuthGuard implements CanActivate {
+export class AuthGuard {
 
+   private lstroles!: string[];
   constructor( private router:        Router, 
                private uService:      UserService,
                private _snackBar:     MatSnackBar ) {
   }
 
-  // check if route is restricted by role
-  canActivate( route:  ActivatedRouteSnapshot, state: RouterStateSnapshot):  boolean  {
+  //AUTHGUARD SERVE AD AUTORIZZARE O MENO L'ACCESSO ALLE PAGINE IN BASE A QUALCHE CONDIZIONE, AD ESEMPIO NEL NS CASO AL RUOLO
+
+  async canActivate( route:  ActivatedRouteSnapshot, state: RouterStateSnapshot):  Promise<boolean>  {
 
     const currentUser = this.uService.currentUser;
+
+    console.log("Auth.guard - canActivate - route.data [da app-routing]- ", route.data);
+
+
+    //PESCANDO IL TIPOPERSONA (OLD)
+    // if (currentUser) {
+    //   console.log("Auth.guard - canActivate - currentUser ", currentUser);
+    //   if (route.data.roles && route.data.roles.indexOf(currentUser.TipoPersona?.descrizione) === -1) {
+    //     // if (route.data.roles && !route.data.roles.some((role: string) => this.lstroles.includes(role))) {
+    //       this._snackBar.openFromComponent(SnackbarComponent, {
+    //         data: 'Utente non autorizzato', panelClass: ['red-snackbar']
+    //       });
+    //       this.router.navigate(['/home']);
+    //       return false;
+    //   }
+    //   return true;
+    // }
+
+    //PRIMO TENTATIVO DI CONFRONTARE LSTROLES CON ROUTE.DATA: INTERROGO IL BEHAVIOURSUBJECT E LO ASPETTO
+    await firstValueFrom( this.uService.BehaviourSubjectlistRoles.pipe(tap(lstroles => {this.lstroles = lstroles})));
+
     if (currentUser) {
-      
- /*      
-      console.log("Auth Guard | TipoPersona", currentUser.TipoPersona);
-      console.log("DEBUG: route.data.roles - ");
-      console.log(route.data);
-      console.log("DEBUG: - currentUser ");
-      console.log(currentUser);
- */
-      
-//BELLA MERDA N°2: adesso il controllo lo faccio con la descrizione del TipoPersona ... no beissimo...
-      //if (route.data.roles && route.data.roles.indexOf(currentUser.ruoloID) === -1) {
-      if (route.data.roles && route.data.roles.indexOf(currentUser.TipoPersona?.descrizione) === -1) {
+      console.log("Auth.guard - canActivate - this.lstroles ", this.lstroles);
+      if (route.data && route.data.roles && !route.data.roles.some((role: string) => this.lstroles.includes(role))) {
           this._snackBar.openFromComponent(SnackbarComponent, {
             data: 'Utente non autorizzato', panelClass: ['red-snackbar']
           });
-
           this.router.navigate(['/home']);
+          console.log("return false");
           return false;
       }
-      return true;       // authorised so return true
+      console.log("return true");
+      return true;
+      
     }
 
-    //Not logged: redirect to Login 
+    //SECONDO TENTATIVO DI CONFRONTARE LSTROLES CON ROUTE.DATA: INTERROGO IL BEHAVIOURSUBJECT IN DIRETTA
+    //NON FUNZIONA PERCHE' "INTANTO" VA AVANTI E QUINDI VA A NOTLOGGED IN
+    // if (currentUser) {
+    //   this.uService.BehaviourSubjectlistRoles.subscribe(lstroles => {
+    //     console.log ("Auth.guard - canActivate - lstroles [da BS]", lstroles);
+    //     if (route.data && route.data.roles && !route.data.roles.some((role: string) => lstroles.includes(role))) {
+    //         this._snackBar.openFromComponent(SnackbarComponent, {
+    //           data: 'Utente non autorizzato', panelClass: ['red-snackbar']
+    //         });
+    //         this.router.navigate(['/home']);
+    //         console.log("return false");
+    //         return false;
+    //     }
+    //     console.log("return true");
+    //     return true;
+    //   });
+    // }
+
+
+    console.log("Not logged: redirect to Login ");
     this.router.navigate(['user/login']);  
     return false;
 

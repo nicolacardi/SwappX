@@ -3,12 +3,16 @@ import { Injectable }                           from '@angular/core';
 import { Observable }                           from 'rxjs';
 import { tap }                                  from 'rxjs/operators'; 
 import { Router }                               from '@angular/router';
-import { User } from '../Users';
 import { UserService } from '../user.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
+    //QUESTO COMPONENT SERVE PERCHE' TUTTE LE CHIAMATE AI WEBSERVICE VENGANO "CORREDATE" DEL TOKEN
+    //INFATTI COME SI PUO' VEDERE  headers: req.headers.set('Authorization', 'Bearer ' + localStorage.getItem('token'))
+    //VIENE POI USATA DIRETTAMENTE IN APP.MODULE IN QUESTO MODO:
+    //    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    //E QUESTO E' SUFFICIENTE 
     constructor(private router: Router,
                 private svcUser: UserService) {}
 
@@ -16,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
     {
         //console.log("test auth", req);
         if(localStorage.getItem('token') != null ){
-            //console.log("c'è il token");
+            //console.log("C'E' il token");
 
             const clonedReq = req.clone({
                 headers: req.headers.set('Authorization', 'Bearer ' + localStorage.getItem('token'))
@@ -30,10 +34,8 @@ export class AuthInterceptor implements HttpInterceptor {
                         error: err=> {
                             if(err.status == 401){
                                 localStorage.removeItem('token');
-                                       this.svcUser.Logout(); //01/09/23 TEST NICK             
+                                       this.svcUser.Logout(); //se c'è il token ma per esempio è quello vecchio bisogna essere cacciati fuori         
                                 this.router.navigateByUrl('/user/login');
-
-
                             }
                         }
                     }
@@ -41,7 +43,6 @@ export class AuthInterceptor implements HttpInterceptor {
             )
         } else {
             //console.log("MANCA il token");
-
             return next.handle(req.clone());
         }
     }
