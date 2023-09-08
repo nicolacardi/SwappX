@@ -62,13 +62,15 @@ export class LoginComponent implements OnInit {
 //#endregion
 
   ngOnInit() {
-    this.svcUser.BehaviourSubjectlistRoles.next([]); //è necessario su login cancellare il BS
+    this.svcUser
+    .BehaviourSubjectlistRoles.next([]); //è necessario su login cancellare il BS
 
     if(localStorage.getItem('token') != null)
       this.router.navigateByUrl('/home');
   }
 
   onSubmit(){
+
     let obsUser$= this.svcUser.Login(this.form.value);
     const loadUser$ =this._loadingService.showLoaderUntilCompleted(obsUser$);
     
@@ -81,23 +83,24 @@ export class LoginComponent implements OnInit {
 
           this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + user.persona!.nome + ' ' + user.persona!.cognome , panelClass: ['green-snackbar']});  
           
-            this.svcParametri.getByParName('AnnoCorrente')
-              .pipe(map( par => {
+          this.svcParametri.getByParName('AnnoCorrente')
+            .pipe(map( par => {
                 localStorage.setItem(par.parName, JSON.stringify(par));
-              })
-            ).subscribe(
-              ()=> this.router.navigateByUrl('/home')
-            );
-          }
-          else {
-            this.loading = false;
-            this._snackBar.openFromComponent(SnackbarComponent, { data: "Utente  o password errati", panelClass: ['red-snackbar'] });
-          }
+                })
+              ).subscribe( 
+                ()=> this.router.navigateByUrl('/home')
+              );
+        }
+        else {
+          //Il WS risponde con un NoContent --> autenticazione fallita
+          this.loading = false;
+          this._snackBar.openFromComponent(SnackbarComponent, { data: "Utente o password errati", panelClass: ['red-snackbar'] });
+        }
       },
       error: err=> {
+        //il ws risponde con un errore oppure non risponde 
         this.loading = false;
         //this._snackBar.openFromComponent(SnackbarComponent, { data: err.error.message, panelClass: ['red-snackbar'] });
-        //this._snackBar.openFromComponent(SnackbarComponent, { data: "Utente  o password errati", panelClass: ['red-snackbar'] });
         this._snackBar.openFromComponent(SnackbarComponent, { data: "Problemi di connessione, il server non risponde", panelClass: ['red-snackbar'] });
       }
     });
