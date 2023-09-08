@@ -74,25 +74,31 @@ export class LoginComponent implements OnInit {
     
     loadUser$.subscribe({
       next: user => {
-        this.eventEmitterService.onAccountSaveProfile();  //Verificare se serve TODO
-        this.eventEmitterService.onLogin(user);
+        if(user!= null){
 
-        this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + user.persona!.nome + ' ' + user.persona!.cognome , panelClass: ['green-snackbar']});  
-        
-          this.svcParametri.getByParName('AnnoCorrente')
-            .pipe(map( par => {
-              localStorage.setItem(par.parName, JSON.stringify(par));
-              //return par;
-            })
-          ).subscribe(
-            ()=> this.router.navigateByUrl('/home')
-          );
+          this.eventEmitterService.onAccountSaveProfile();  //Verificare se serve TODO
+          this.eventEmitterService.onLogin(user);
 
+          this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + user.persona!.nome + ' ' + user.persona!.cognome , panelClass: ['green-snackbar']});  
+          
+            this.svcParametri.getByParName('AnnoCorrente')
+              .pipe(map( par => {
+                localStorage.setItem(par.parName, JSON.stringify(par));
+              })
+            ).subscribe(
+              ()=> this.router.navigateByUrl('/home')
+            );
+          }
+          else {
+            this.loading = false;
+            this._snackBar.openFromComponent(SnackbarComponent, { data: "Utente  o password errati", panelClass: ['red-snackbar'] });
+          }
       },
       error: err=> {
         this.loading = false;
-        console.log(err);
-        this._snackBar.openFromComponent(SnackbarComponent, { data: err.error.message, panelClass: ['red-snackbar'] });
+        //this._snackBar.openFromComponent(SnackbarComponent, { data: err.error.message, panelClass: ['red-snackbar'] });
+        //this._snackBar.openFromComponent(SnackbarComponent, { data: "Utente  o password errati", panelClass: ['red-snackbar'] });
+        this._snackBar.openFromComponent(SnackbarComponent, { data: "Problemi di connessione, il server non risponde", panelClass: ['red-snackbar'] });
       }
     });
   }
