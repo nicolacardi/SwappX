@@ -67,6 +67,8 @@ export class AppComponent implements OnInit {
           this.currUser = user;
           //questo è un "captatore" dell'Emit, quindi può funzionare sia in fase di Login che di Logout
           if (user) {
+            console.log("app.component - ngOnInit user", user)
+
             this.userFullName = this.currUser.fullname;
             this.isLoggedIn = true;
             // console.log ("LOGIN app.component - ngOnInit - ricevo da emit utente", user)

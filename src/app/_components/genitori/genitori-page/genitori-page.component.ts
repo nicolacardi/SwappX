@@ -23,7 +23,7 @@ export class GenitoriPageComponent implements OnInit {
 //#region ----- ViewChild Input Output -------
   @ViewChild(GenitoriListComponent) genitoriList!: GenitoriListComponent; 
   @ViewChild(GenitoriFilterComponent) genitoriFilterComponent!: GenitoriFilterComponent; 
-  @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
+  @ViewChild('filterSidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
 //#endregion
 
   constructor(private _navigationService:  NavigationService) { }
@@ -50,6 +50,7 @@ export class GenitoriPageComponent implements OnInit {
 
 //#region ----- Altri metodi -------
   openDrawer() {
+    console.log("genitori-page - openDrawer");
     this.drawerFiltriAvanzati.open();
   }
 
