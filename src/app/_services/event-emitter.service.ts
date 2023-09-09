@@ -8,10 +8,10 @@ import { PER_Persona } from '../_models/PER_Persone';
 })
 export class EventEmitterService {
   invokeAppComponentRefreshFoto = new EventEmitter();    
-  subsVarForRefreshFoto!: Subscription;    
+  refreshFotoSubscribeAttiva!: Subscription;    
     
   invokeUserEmit = new EventEmitter();    
-  subsVarForUserEmit!: Subscription;    
+  userSubscribeAttiva!: Subscription;    
 
   constructor() { }    
     
@@ -19,7 +19,8 @@ export class EventEmitterService {
     this.invokeAppComponentRefreshFoto.emit();    
   }  
 
-  onLogin(user: PER_Persona) {
+  onLogin(user:any) {
+    console.log("event-emitter - onLogin - passa di qua", user)
     this.invokeUserEmit.emit(user);
   }
 }

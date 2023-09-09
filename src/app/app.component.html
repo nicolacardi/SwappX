@@ -194,7 +194,9 @@
             
 
 
-            <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.TipoPersona!.ckPersonale == true">
+            <!-- <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser && currUser.TipoPersona!.ckPersonale == true"> -->
+            <a mat-list-item class="h35px" routerLink="users" (click)="clickMenuItem()" *ngIf="currUser">
+
                 <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/utente.svg">
                 <span *ngIf="isExpanded">Gestione Utenti</span>
             </a> 
@@ -212,7 +214,7 @@
             <a mat-list-item class="_pos-absolute_i _border-top _grey-background b0 topZindex" 
                 routerLink="impostazioni"
                 (click)="clickMenuItem()"  
-                *ngIf="currUser && lstRoles.includes('ITManager')"
+                *ngIf="currUser && currUser.persona!._LstRoles!.includes('ITManager')"
                 
                 >
                 <!-- *ngIf="currUser && currUser.TipoPersona!.descrizione == 'SysAdmin'" -->

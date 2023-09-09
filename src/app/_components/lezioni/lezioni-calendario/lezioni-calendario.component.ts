@@ -303,7 +303,7 @@ export class LezioniCalendarioComponent implements OnInit {
       }  
 
       
-      if (this.currUser.TipoPersona!.ckEditor) {
+      if (this.currUser.persona!.tipoPersona!.ckEditor) {
         this.calendarOptions.editable =             true;             //consente modifiche agli eventi presenti   :  da gestire sulla base del ruolo
         this.calendarOptions.selectable =           true;             //consente di creare eventi                 :  da gestire sulla base del ruolo
         this.calendarOptions.eventStartEditable =   true;             //consente di draggare eventi               :  da gestire sulla base del ruolo
@@ -541,7 +541,7 @@ export class LezioniCalendarioComponent implements OnInit {
 
       //if (this.svcUser.currentUser.ruoloID>=7) {
 
-      if (this.svcUser.currentUser.TipoPersona?.ckEditor || (this.dove == "orarioDocente")) {
+      if (this.svcUser.currentUser.persona!.tipoPersona?.ckEditor || (this.dove == "orarioDocente")) {
         const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(  () => this.loadData() );
       }

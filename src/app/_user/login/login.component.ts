@@ -75,13 +75,11 @@ export class LoginComponent implements OnInit {
     const loadUser$ =this._loadingService.showLoaderUntilCompleted(obsUser$);
     
     loadUser$.subscribe({
-      next: res => {
-        this.eventEmitterService.onAccountSaveProfile();
+      next: user => {
+        this.eventEmitterService.onAccountSaveProfile();  //Verificare se serve TODO
+        this.eventEmitterService.onLogin(user);
 
-        
-        this.eventEmitterService.onLogin(res);
-
-        this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + res.nome + ' ' + res.cognome , panelClass: ['green-snackbar']});  
+        this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + user.persona!.nome + ' ' + user.persona!.cognome , panelClass: ['green-snackbar']});  
         
           this.svcParametri.getByParName('AnnoCorrente')
             .pipe(map( par => {

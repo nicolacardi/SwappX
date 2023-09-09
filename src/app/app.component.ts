@@ -94,11 +94,17 @@ export class AppComponent implements OnInit {
     //   }
     // })
     
-    //Carico i dati e l'immagine dell'utente tramite un eventEmitter
-    if (this.eventEmitterService.subsVarForUserEmit==undefined) {    
+    // //Carico i dati e l'immagine dell'utente tramite un eventEmitter
+    if (this.eventEmitterService.userSubscribeAttiva==undefined) {    
       //in questo modo non solo faccio la subscribe al RefreshFoto ma imposto la subscription a un valore diverso da undefined
-      this.eventEmitterService.subsVarForUserEmit = this.eventEmitterService.invokeUserEmit.subscribe(
-        () => this.refreshUserData()
+      this.eventEmitterService.userSubscribeAttiva = this.eventEmitterService.invokeUserEmit.subscribe(
+        user => {
+          
+          this.currUser = user;
+          this.userFullName = this.currUser.fullname;
+          this.isLoggedIn = this.currUser.isLoggedIn;
+          console.log ("app.component - ngOnInit - ricevo da emit utente", user)
+        }
       );    
     } 
 
@@ -106,9 +112,9 @@ export class AppComponent implements OnInit {
     this.refreshUserData();
 
     //Carico i dati e l'immagine dell'utente tramite un eventEmitter
-    if (this.eventEmitterService.subsVarForRefreshFoto==undefined) {    
+    if (this.eventEmitterService.refreshFotoSubscribeAttiva==undefined) {    
       //in questo modo non solo faccio la subscribe al RefreshFoto ma imposto la subscription a un valore diverso da undefined
-      this.eventEmitterService.subsVarForRefreshFoto = this.eventEmitterService.invokeAppComponentRefreshFoto.subscribe(
+      this.eventEmitterService.refreshFotoSubscribeAttiva = this.eventEmitterService.invokeAppComponentRefreshFoto.subscribe(
         () => this.refreshUserData()
       );    
     } 

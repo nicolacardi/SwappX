@@ -12,15 +12,14 @@ export interface User {
     token?:                                     string;         //token restituito da EF
     isLoggedIn?:                                boolean;        //dinamico: impostato da behaviour subject
     
-    tipoPersonaID:                              number;
+    //tipoPersonaID:                              number;
 
     tmpPassword:                                string;
-    TipoPersona?:                               PER_TipoPersona;
+    // TipoPersona?:                               PER_TipoPersona;
 
     personaID:                                  number;
     persona?:                                   PER_Persona;
 
-    _LstRuoli?:                                 string[];
 }
 
 

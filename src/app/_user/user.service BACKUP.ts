@@ -77,51 +77,30 @@ export class UserService {
     let obsLoginPersona$ = this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
       .pipe(timeout(6000))  //è il timeout oltre il quale viene dato l'errore
       .pipe(
-        tap(
-          user => {
-            
-            if (user && user.token) {
-              user.isLoggedIn = true;
-              user.personaID = user.persona!.id;
-              user.fullname = user.persona!.nome + " " + user.persona!.cognome;
-              //user.tipoPersonaID = user.persona!.tipoPersonaID;
-              //user.TipoPersona = user.persona!.tipoPersona;
-              localStorage.setItem('token', user.token!);
-              localStorage.setItem('currentUser', JSON.stringify(user));
-              this.BehaviourSubjectcurrentUser.next(user);
-            }
-            else{
-              //Passerà mai di qua ?
-              this.Logout();
-            }
-
-          }
-        ),
-        // concatMap( user =>   ( 
-        //   this.svcPersona.get(user.personaID)
-        //     .pipe(
-        //       tap(val => {
-        //         if (user && user.token) {
-        //           user.isLoggedIn = true;
+        concatMap( user =>   ( 
+          this.svcPersona.get(user.personaID)
+            .pipe(
+              tap(val => {
+                if (user && user.token) {
+                  user.isLoggedIn = true;
                       
-        //           //Dati di PER_Persona
-        //           user.personaID = val.id;
-        //           user.fullname = val.nome + " " + val.cognome;
-        //           user.tipoPersonaID = val.tipoPersonaID;
-        //           user.TipoPersona = val.tipoPersona;
-        //           localStorage.setItem('token', user.token!);
-        //           localStorage.setItem('currentUser', JSON.stringify(user));
+                  //Dati di PER_Persona
+                  user.personaID = val.id;
+                  user.fullname = val.nome + " " + val.cognome;
+                  user.tipoPersonaID = val.tipoPersonaID;
+                  user.TipoPersona = val.tipoPersona;
+                  localStorage.setItem('token', user.token!);
+                  localStorage.setItem('currentUser', JSON.stringify(user));
                   
-        //           this.BehaviourSubjectcurrentUser.next(user);
-        //         }
-        //         else{
-        //           //Passerà mai di qua ?
-        //           this.Logout();
-        //         }
-        //       }),
-        //     )
-        // )
-      //),
+                  this.BehaviourSubjectcurrentUser.next(user);
+                }
+                else{
+                  //Passerà mai di qua ?
+                  this.Logout();
+                }
+              }),
+            )
+        )),
 
       );
 

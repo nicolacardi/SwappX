@@ -36,6 +36,8 @@ export interface PER_Persona {
         tipoPersona?:                           PER_TipoPersona;
      
         socio?:                                 PER_Socio;
+
+        _LstRoles?:                              string[];
 }
 
 export interface PER_TipoPersona {

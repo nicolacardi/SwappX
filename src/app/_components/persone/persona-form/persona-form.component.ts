@@ -89,7 +89,7 @@ export class PersonaFormComponent implements OnInit {
     });
 
     this.currPersona = Utility.getCurrentUser();
-    this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.TipoPersona!.livello);
+    this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.persona!.tipoPersona!.livello);
   }
   
 //#endregion
