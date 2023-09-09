@@ -74,41 +74,34 @@ export class AppComponent implements OnInit {
     // this.isLoggedIn = this.currUser.isLoggedIn;
     // console.log(this.currUser);
 
-    // this.currentUserSubscription = this.svcUser.obscurrentUser.subscribe(val => {
-    //   this.currUser = val;
-    //   if(this.currUser){
-    //     this.userFullName = this.currUser.fullname;
-    //     this.isLoggedIn = this.currUser.isLoggedIn;
-    //     console.log("app.component - ngOnInit - val...svcUser.obscurrentUser.FLUSSO", val);
-    //     //Per ricaricare ruoli roles lstroles quando non ci sono (p.e. REFRESH F5)
-    //     //verifico se il behavioursubect è carico
-    //     this.listRolesSubscription = this.svcUser.BehaviourSubjectlistRoles.subscribe((lstroles) => {
-    //       //se è vuoto (all'inizio o dopo F5) ne forzo la ricarica con getUserRoles
-    //       if (this.currUser.personaID && lstroles && lstroles.length ==0) {
-    //         console.log("non c'è lstroles rilancio la getUserRoles");
-    //         this.svcUser.getUserRoles(this.currUser.personaID);
-    //       }
-    //       this.lstRoles = lstroles;
-    //       console.log("app.component - ngOnInit - lstroles...svcUser.BehaviourSubjectlistRoles.FLUSSO", lstroles);
-    //     });
-    //   }
-    // })
+    this.currentUserSubscription = this.svcUser.obscurrentUser.subscribe(val => {
+      this.currUser = val;
+      if(this.currUser){
+        this.userFullName = this.currUser.fullname;
+        this.isLoggedIn = this.currUser.isLoggedIn;
+        console.log("app.component - ngOnInit - val...svcUser.obscurrentUser.FLUSSO", val);
+        //Per ricaricare ruoli roles lstroles quando non ci sono (p.e. REFRESH F5)
+        //verifico se il behavioursubect è carico
+        this.listRolesSubscription = this.svcUser.BehaviourSubjectlistRoles.subscribe((lstroles) => {
+          //se è vuoto (all'inizio o dopo F5) ne forzo la ricarica con getUserRoles
+          if (this.currUser.personaID && lstroles && lstroles.length ==0) {
+            console.log("non c'è lstroles rilancio la getUserRoles");
+            this.svcUser.getUserRoles(this.currUser.personaID);
+          }
+          this.lstRoles = lstroles;
+          console.log("app.component - ngOnInit - lstroles...svcUser.BehaviourSubjectlistRoles.FLUSSO", lstroles);
+        });
+      }
+    })
     
-    //Carico i dati e l'immagine dell'utente tramite un eventEmitter
-    if (this.eventEmitterService.subsVarForUserEmit==undefined) {    
-      //in questo modo non solo faccio la subscribe al RefreshFoto ma imposto la subscription a un valore diverso da undefined
-      this.eventEmitterService.subsVarForUserEmit = this.eventEmitterService.invokeUserEmit.subscribe(
-        () => this.refreshUserData()
-      );    
-    } 
+
 
 
     this.refreshUserData();
 
     //Carico i dati e l'immagine dell'utente tramite un eventEmitter
-    if (this.eventEmitterService.subsVarForRefreshFoto==undefined) {    
-      //in questo modo non solo faccio la subscribe al RefreshFoto ma imposto la subscription a un valore diverso da undefined
-      this.eventEmitterService.subsVarForRefreshFoto = this.eventEmitterService.invokeAppComponentRefreshFoto.subscribe(
+    if (this.eventEmitterService.subsVar==undefined) {    
+      this.eventEmitterService.subsVar = this.eventEmitterService.invokeAppComponentRefreshFoto.subscribe(
         () => this.refreshUserData()
       );    
     } 

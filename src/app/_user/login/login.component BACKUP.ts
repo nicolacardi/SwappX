@@ -77,10 +77,7 @@ export class LoginComponent implements OnInit {
     loadUser$.subscribe({
       next: res => {
         this.eventEmitterService.onAccountSaveProfile();
-
-        
-        this.eventEmitterService.onLogin(res);
-
+        //nel caso di forkJoin res[0] è relativo al primo Observable 
         this._snackBar.openFromComponent(SnackbarComponent, {  data: 'Benvenuto ' + res.nome + ' ' + res.cognome , panelClass: ['green-snackbar']});  
         
           this.svcParametri.getByParName('AnnoCorrente')

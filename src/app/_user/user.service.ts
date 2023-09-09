@@ -28,6 +28,7 @@ export class UserService {
   private BehaviourSubjectcurrentUser :         BehaviorSubject<User>;      
   public BehaviourSubjectlistRoles :            BehaviorSubject<string[]>;      
 
+
   public obscurrentUser:                        Observable<User>;
 
   constructor(private fb:                                 UntypedFormBuilder,
@@ -60,6 +61,7 @@ export class UserService {
 
 
   getUserRoles(personaID: number){
+    //estrae lstruoli e la inserisce nel BehaviourSubjectlistRoles
     this.svcPersona.listRoles(personaID)
     .subscribe(
       lstruoli=> {
@@ -128,12 +130,13 @@ export class UserService {
     const logOutUser = <User>{};
     logOutUser.isLoggedIn = false;
     this.BehaviourSubjectcurrentUser.next(logOutUser);
-    //this.BehaviourSubjectlistRoles.next([]);
-
-    
-
 
   }
+
+
+
+
+
 
   Register() { //non viene mai usata
 
