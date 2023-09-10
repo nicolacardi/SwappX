@@ -46,6 +46,11 @@ export class PersonaFormComponent implements OnInit {
   comuniNascitaIsLoading:                       boolean = false;
   breakpoint!:                                  number;
   breakpoint2!:                                 number;
+
+  _lstRoles!:                                   string[];
+  lstTipiPersona!:                              PER_TipoPersona[];
+  selectedTipi:                                 number[] = []
+
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -70,6 +75,8 @@ export class PersonaFormComponent implements OnInit {
     this.form = this.fb.group({
       id:                                       [null],
       tipoPersonaID:                            ['', Validators.required],
+      _lstRoles:                                [''],
+
       nome:                                     ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       cognome:                                  ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
       dtNascita:                                ['', Validators.required],
@@ -90,6 +97,7 @@ export class PersonaFormComponent implements OnInit {
 
     this.currPersona = Utility.getCurrentUser();
     this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.persona!.tipoPersona!.livello);
+
   }
   
 //#endregion
@@ -97,6 +105,11 @@ export class PersonaFormComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit(){
+
+    this.obsTipiPersona$.subscribe(lstTipiPersona=> this.lstTipiPersona = lstTipiPersona);
+
+
+
     this.loadData();
     this.svcComuni.list().subscribe( res => this.comuniArr = res);
     this.form.valueChanges.subscribe(
@@ -110,6 +123,7 @@ export class PersonaFormComponent implements OnInit {
 
     if (this.tipoPersonaID) this.form.controls.tipoPersonaID.setValue(this.tipoPersonaID);
 
+
     if (this.personaID && this.personaID + '' != "0") {
       const obsPersona$: Observable<PER_Persona> = this.svcPersone.get(this.personaID);
       const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
@@ -117,7 +131,34 @@ export class PersonaFormComponent implements OnInit {
       this.persona$ = loadPersona$
       .pipe( 
           tap(
-            persona => this.form.patchValue(persona)
+            persona => {
+              this.form.patchValue(persona);
+              for (let i= 0; i < persona._LstRoles!.length; i++)
+              {
+                const tipoPersona = this.lstTipiPersona.find(tp => tp.descrizione === persona._LstRoles![i]);  //A VOLTE NON FUNZIA
+                if (tipoPersona) this.selectedTipi.push(tipoPersona.id)
+              }
+              // persona._LstRoles!.forEach((role,index) =>{
+              //   const tipoPersona = this.lstTipiPersona.find(tp => tp.descrizione === role);
+              //   if (tipoPersona) selectedTipi.push(tipoPersona.id)
+              // })
+              this.form.controls._lstRoles.setValue(this.selectedTipi);
+            // this.form.controls._lstRoles.setValue([1,3]); //così si flaggano ad esempio alunni e genitori
+            //   verbale._VerbalePresenti.forEach((x, index) =>
+            //   { //devo inserire SOLO quelli che sono del personale
+            //     if (x.persona!.tipoPersona?.ckPersonale == true) 
+            //       arrPersonaleIDPresenti.push(verbale._VerbalePresenti[index].personaID)
+            //     else 
+            //       arrGenitoriIDPresenti.push(verbale._VerbalePresenti[index].personaID)
+            //   }
+            // )
+            // this.form.controls.personale.setValue(arrPersonaleIDPresenti);
+            // this.form.controls.genitori.setValue(arrGenitoriIDPresenti);
+
+
+
+            }
+
           )
       );
     }

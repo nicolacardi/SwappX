@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   public isLoggedIn?:                           boolean = false;
   public currUser!:                             User;
   public currPersona!:                          PER_Persona;
-  public lstRoles!:                             string[];
+  //public lstRoles!:                             string[];
 
   public userFullName:                          string = "";
   public imgAccount =                           "";
@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit () {
 
-    console.log("appcomponent ngOnInit");
+    // console.log("appcomponent ngOnInit");
      
     //Carico i dati e l'immagine dell'utente tramite un eventEmitter
     if (this.eventEmitterService.userSubscribeAttiva==undefined) {    
@@ -69,7 +69,7 @@ export class AppComponent implements OnInit {
           if (user) {
             this.userFullName = this.currUser.fullname;
             this.isLoggedIn = true;
-            console.log ("LOGIN app.component - ngOnInit - ricevo da emit utente", user)
+            // console.log ("LOGIN app.component - ngOnInit - ricevo da emit utente", user)
           } 
           // else {
           //   this.isLoggedIn = false; //Ma serve? se emetto (vedi funzione logout sì) altrimenti no

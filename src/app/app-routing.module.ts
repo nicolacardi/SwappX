@@ -62,25 +62,25 @@ const routes: Routes = [
 
   { path: "classi",                             component: ClassiPageComponent,canActivate:[AuthGuard] },
 
-  { path: "classi-dashboard",                   component: ClassiDashboardComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'docenteCoord', 'docente' ] } },
+  { path: "classi-dashboard",                   component: ClassiDashboardComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'DocenteCoord', 'Docente' ] } },
 
-  { path: "calendario-docente",                 component: OrarioDocentePageComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'docenteCoord', 'docente' ] } },
+  { path: "calendario-docente",                 component: OrarioDocentePageComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'DocenteCoord', 'Docente' ] } },
 
-  { path: "docenti-dashboard",                  component: DocentiDashboardComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'docenteCoord', 'docente' ] }  },
+  { path: "docenti-dashboard",                  component: DocentiDashboardComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'DocenteCoord', 'Docente' ] }  },
 
-  { path: "pagamenti",                          component: PagamentiPageComponent,canActivate:[AuthGuard] , data: { roles: ['ITManager', 'nondocente' ] }},
+  { path: "pagamenti",                          component: PagamentiPageComponent,canActivate:[AuthGuard] , data: { roles: ['ITManager', 'NonDocente' ] }},
 
-  { path: "rette",                              component: RettePageComponent,canActivate:[AuthGuard], data: { roles: ['ITManager', 'nondocente' ] } },
+  { path: "rette",                              component: RettePageComponent,canActivate:[AuthGuard], data: { roles: ['ITManager', 'NonDocente' ] } },
 
   { path: "verbali",                            component: VerbaliPageComponent,canActivate:[AuthGuard] },
 
   // { path: "template",                           component: TemplateComponent,canActivate:[AuthGuard] },
 
-  { path: "users",                               component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: ['ITManager', 'nondocente' ] } }, 
+  { path: "users",                               component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: ['ITManager', 'NonDocente' ] } }, 
 
   { path: "procedura-iscrizione",               component: ProceduraIscrizioneComponent, canActivate:[AuthGuard] },
 
-  { path: "impostazioni",                       component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: ['ITManager', 'nondocente' ] }  },
+  { path: "impostazioni",                       component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: ['ITManager', 'NonDocente' ] }  },
 
   { path: "profilo",                            component: ProfiloComponent, canActivate:[AuthGuard] },
 

@@ -4,11 +4,22 @@
 
                
 <form *ngIf="(persona$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
-    <mat-grid-list  *ngIf="dove!= 'genitore-edit' && dove!='alunno-edit' && dove!='procedura-iscrizione'" class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list [cols]="2" *ngIf="dove!= 'genitore-edit' && dove!='alunno-edit' && dove!='procedura-iscrizione'" class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>Tipo Personale</mat-label>
                 <mat-select matNativeControl formControlName="tipoPersonaID" >
+                    <mat-option *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id">
+                        {{element.descrizione}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-form-field>
+                <mat-label>Ruoli</mat-label>
+                <mat-select matNativeControl formControlName="_lstRoles" multiple>
                     <mat-option *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id">
                         {{element.descrizione}}
                     </mat-option>
