@@ -10,7 +10,7 @@ export interface User {
     fullname:                                   string;         //Da PER_Persona
 
     token?:                                     string;         //token restituito da EF
-    isLoggedIn?:                                boolean;        //dinamico: impostato da behaviour subject
+    // isLoggedIn?:                                boolean;        //dinamico: impostato da behaviour subject
     
     //tipoPersonaID:                              number;
 

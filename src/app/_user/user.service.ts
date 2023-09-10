@@ -80,7 +80,7 @@ export class UserService {
         tap(
           user => {
             if (user && user.token) {
-              user.isLoggedIn = true;
+              //user.isLoggedIn = true;
               user.personaID = user.persona!.id;
               user.fullname = user.persona!.nome + " " + user.persona!.cognome;
               //user.tipoPersonaID = user.persona!.tipoPersonaID;
@@ -145,10 +145,10 @@ export class UserService {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('AnnoCorrente');
 
-    const logOutUser = <User>{};
-    logOutUser.isLoggedIn = false;
-    console.log ("logOutUser", logOutUser);
-    this.BehaviourSubjectcurrentUser.next(logOutUser);
+    // const logOutUser = <User>{};
+    // logOutUser.isLoggedIn = false;
+    // console.log ("logOutUser", logOutUser);
+    // this.BehaviourSubjectcurrentUser.next(logOutUser);
 
   }
 

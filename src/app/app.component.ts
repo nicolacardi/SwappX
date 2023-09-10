@@ -100,6 +100,7 @@ export class AppComponent implements OnInit {
 
       this.userFullName = this.currUser.fullname;
     } else {
+      //se in Utility c'è lo user significa che è stato premuto F5
       this.currUser = Utility.getCurrentUser();
       //console.log("app.component - refreshUserData - ricarico currUser", this.currUser);
       //se lo trovo devo rimettere a true isLoggedIn

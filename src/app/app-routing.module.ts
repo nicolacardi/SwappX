@@ -33,14 +33,13 @@ const routes: Routes = [
 
   { path: '', redirectTo: 'user/login', pathMatch: 'full' }, //questo indica che un route vuoto viene tradotto in user/login
   
-  { path: 'change-psw-ext',                     component: ChangePswExtComponent },
+  { path: 'change-psw-ext',                     component: ChangePswExtComponent }, //per il cambio password a partire da email
 
   {
       //  { path:'user' , redirectTo: 'user/login', pathMatch: 'full' },
     path: 'user',                               component: LoginPageComponent,
     children: [
       { path: 'login',                          component: LoginComponent },
-
     ]
   },
 
