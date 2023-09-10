@@ -3,7 +3,7 @@
 import { Component, EventEmitter, Input, OnInit, Output }     from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { MatDialog }                            from '@angular/material/dialog';
-import { Observable, of }                       from 'rxjs';
+import { Observable, firstValueFrom, of }                       from 'rxjs';
 import { tap }                                  from 'rxjs/operators';
 
 //components
@@ -106,7 +106,6 @@ export class PersonaFormComponent implements OnInit {
 
   ngOnInit(){
 
-    this.obsTipiPersona$.subscribe(lstTipiPersona=> this.lstTipiPersona = lstTipiPersona);
 
 
 
@@ -117,7 +116,7 @@ export class PersonaFormComponent implements OnInit {
     )
   }
 
-  loadData(){
+  async loadData(){
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
@@ -128,35 +127,25 @@ export class PersonaFormComponent implements OnInit {
       const obsPersona$: Observable<PER_Persona> = this.svcPersone.get(this.personaID);
       const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
 
+      //interrogo ed aspetto per avere la lista dei tipi persona che mi serve nella loadPersona successiva
+      await firstValueFrom(this.obsTipiPersona$.pipe(tap(lstTipiPersona=> this.lstTipiPersona = lstTipiPersona)));
+
       this.persona$ = loadPersona$
       .pipe( 
+
           tap(
             persona => {
               this.form.patchValue(persona);
+              //console.log("persona-form - loadData - persona", persona);
+              //console.log("persona-form - loadData - lstTipiPersona", this.lstTipiPersona)
+              this._lstRoles = persona._LstRoles!;
+
               for (let i= 0; i < persona._LstRoles!.length; i++)
               {
                 const tipoPersona = this.lstTipiPersona.find(tp => tp.descrizione === persona._LstRoles![i]);  //A VOLTE NON FUNZIA
                 if (tipoPersona) this.selectedTipi.push(tipoPersona.id)
               }
-              // persona._LstRoles!.forEach((role,index) =>{
-              //   const tipoPersona = this.lstTipiPersona.find(tp => tp.descrizione === role);
-              //   if (tipoPersona) selectedTipi.push(tipoPersona.id)
-              // })
               this.form.controls._lstRoles.setValue(this.selectedTipi);
-            // this.form.controls._lstRoles.setValue([1,3]); //così si flaggano ad esempio alunni e genitori
-            //   verbale._VerbalePresenti.forEach((x, index) =>
-            //   { //devo inserire SOLO quelli che sono del personale
-            //     if (x.persona!.tipoPersona?.ckPersonale == true) 
-            //       arrPersonaleIDPresenti.push(verbale._VerbalePresenti[index].personaID)
-            //     else 
-            //       arrGenitoriIDPresenti.push(verbale._VerbalePresenti[index].personaID)
-            //   }
-            // )
-            // this.form.controls.personale.setValue(arrPersonaleIDPresenti);
-            // this.form.controls.genitori.setValue(arrGenitoriIDPresenti);
-
-
-
             }
 
           )
@@ -215,6 +204,10 @@ export class PersonaFormComponent implements OnInit {
   }
 
   save() :Observable<any>{
+
+
+    this.saveRoles(); 
+
       //console.log ("PersonaFormComponent - save() - this.form.value", this.form.value);
     if (this.personaID == null || this.personaID == 0) {
       return this.svcPersone.post(this.form.value).pipe(
@@ -236,8 +229,96 @@ export class PersonaFormComponent implements OnInit {
       this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
       return this.svcPersone.put(this.form.value)
     }
+
+
+
+
   }
 
+
+  saveRoles() {
+    //parallelamente alla save (put o post che sia) della persona bisogna occuparsi di inserire i diversi ruoli
+    //ALU_Alunno
+    //ALU_Genitore
+    //PER_Docente
+    //PER_DocenteCoord - per questo una modalità diversa
+    //PER_NonDocente
+    //PER_Dirigente
+    //PER_ITManager
+
+    console.log("elenco dei valori arrivati inizialmente", this._lstRoles); //è l'elenco dei ruoli "precedenti". E' un array di stringhe del tipo ["Alunno", "ITManager"...]
+
+    const selectedTipoPersonaIds = this.form.controls._lstRoles.value;
+    const selectedTipoPersonaDescrizioni = selectedTipoPersonaIds.map((tipo:any) => {const tipoPersona = this.lstTipiPersona.find(tp => tp.id === tipo);
+      return tipoPersona ? tipoPersona.descrizione : ''; // Restituisce la descrizione se trovata, altrimenti una stringa vuota
+    });
+
+    console.log("elenco dei valori selezionati dall'utente",selectedTipoPersonaDescrizioni);
+
+
+    this._lstRoles.forEach(roleinput=> {
+      {if (!selectedTipoPersonaDescrizioni.includes(roleinput))
+        {
+          //questo roleinput è stato CANCELLATO, va dunque rimosso (ammesso che si possa)
+          switch (roleinput) {
+            case "Alunno":
+
+            break;
+            case "Docente":
+            
+            break;
+            case "DocenteCoord":
+            
+            break;
+            case "NonDocente":
+            
+            break;
+            case "Dirigente":
+            
+            break;
+            case "ITManager":
+            
+            break;
+          }
+        }
+      }
+    })
+
+    selectedTipoPersonaDescrizioni.forEach((roleselected:string)=> {
+      {if (!this._lstRoles.includes(roleselected))
+        {
+          //questo roleselected è stato AGGIUNTO, va dunque fatta la post
+          let formData =  {
+            personaID: this.personaID
+          }
+          switch (roleselected) {
+            case "Alunno":
+
+            break;
+            case "Docente":
+
+            break;
+            case "DocenteCoord":
+            
+            break;
+            case "NonDocente":
+            
+            break;
+            case "Dirigente":
+            
+            break;
+            case "ITManager":
+            
+            break;
+          }
+        }
+      }
+    })
+
+
+
+
+  }
   delete() :Observable<any>{
     if (this.personaID != null) 
       return this.svcPersone.delete(this.personaID) 
