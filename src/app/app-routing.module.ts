@@ -37,8 +37,7 @@ const routes: Routes = [
 
   {
       //  { path:'user' , redirectTo: 'user/login', pathMatch: 'full' },
-    path: 'user',                               //user ha due children, login e send-mail
-    component: LoginPageComponent,
+    path: 'user',                               component: LoginPageComponent,
     children: [
       { path: 'login',                          component: LoginComponent },
 
@@ -54,37 +53,35 @@ const routes: Routes = [
 
   { path: "alunni",                             component: AlunniPageComponent, canActivate:[AuthGuard]},
 
-  { path: "iscrizioni",                         component: IscrizioniPageComponent, canActivate:[AuthGuard]},
-
   { path: "genitori",                           component: GenitoriPageComponent, canActivate:[AuthGuard]},
 
   { path: "persone",                            component: PersonePageComponent,canActivate:[AuthGuard] },
 
   { path: "soci",                               component: SociPageComponent,canActivate:[AuthGuard] },
 
+  { path: "iscrizioni",                         component: IscrizioniPageComponent, canActivate:[AuthGuard]},
+
   { path: "classi",                             component: ClassiPageComponent,canActivate:[AuthGuard] },
 
-  { path: "classi-dashboard",                   component: ClassiDashboardComponent,canActivate:[AuthGuard] },
+  { path: "classi-dashboard",                   component: ClassiDashboardComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'docenteCoord', 'docente' ] } },
 
-  { path: "docenti-dashboard",                  component: DocentiDashboardComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'DocenteCoord', 'Amministratore', 'Maestro' ] }  },
+  { path: "calendario-docente",                 component: OrarioDocentePageComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'docenteCoord', 'docente' ] } },
 
-  { path: "calendario-docente",                 component: OrarioDocentePageComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'DocenteCoord', 'Amministratore', 'Maestro' ] } },
+  { path: "docenti-dashboard",                  component: DocentiDashboardComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'docenteCoord', 'docente' ] }  },
 
-  { path: "pagamenti",                          component: PagamentiPageComponent,canActivate:[AuthGuard] },
+  { path: "pagamenti",                          component: PagamentiPageComponent,canActivate:[AuthGuard] , data: { roles: ['ITManager', 'nondocente' ] }},
 
-  { path: "rette",                              component: RettePageComponent,canActivate:[AuthGuard] },
-
-  //{ path:'users',                             component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: [UserRole.ITManager, UserRole.IT_Manager,UserRole.Segreteria ] } },
-  { path:'users',                               component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: ['ITManager', 'nondocente', 'Amministratore' ] } },
+  { path: "rette",                              component: RettePageComponent,canActivate:[AuthGuard], data: { roles: ['ITManager', 'nondocente' ] } },
 
   { path: "verbali",                            component: VerbaliPageComponent,canActivate:[AuthGuard] },
- 
-  { path: "template",                           component: TemplateComponent,canActivate:[AuthGuard] },
 
-  { path: "impostazioni",                       component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: ['ITManager', 'nondocente', 'Amministratore' ] }  },
-  //{ path: "consenso-edit",                      component: ConsensoEditComponent, canActivate:[AuthGuard],data: { roles: ['ITManager', 'Segreteria', 'Amministratore' ] }  },
+  // { path: "template",                           component: TemplateComponent,canActivate:[AuthGuard] },
+
+  { path: "users",                               component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: ['ITManager', 'nondocente' ] } }, 
 
   { path: "procedura-iscrizione",               component: ProceduraIscrizioneComponent, canActivate:[AuthGuard] },
+
+  { path: "impostazioni",                       component: ImpostazioniComponent, canActivate:[AuthGuard],data: { roles: ['ITManager', 'nondocente' ] }  },
 
   { path: "profilo",                            component: ProfiloComponent, canActivate:[AuthGuard] },
 
