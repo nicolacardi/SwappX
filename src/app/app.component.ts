@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit, ViewChild }         from '@angular/core';
+//#region ----- IMPORTS ------------------------
+
+import { Component, OnInit, ViewChild }         from '@angular/core';
 import { UntypedFormControl }                          from '@angular/forms';
-import { MatSidenav }                           from '@angular/material/sidenav';
 import { Router }                               from '@angular/router';
 
 //services
@@ -12,8 +13,8 @@ import { Utility }                              from  './_components/utilities/u
 import { User }                                 from './_user/Users';
 import { MatExpansionPanel }                    from '@angular/material/expansion';
 import { PER_Persona }                          from './_models/PER_Persone';
-import { Subscription } from 'rxjs';
 
+//#endregion
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

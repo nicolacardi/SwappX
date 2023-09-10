@@ -5,16 +5,15 @@ import { Router }                               from '@angular/router';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { EventEmitterService }                  from 'src/app/_services/event-emitter.service';
 import { MatDialog }                            from '@angular/material/dialog';
+import { map } from 'rxjs';
 
 //components
 import { SnackbarComponent }                    from 'src/app/_components/utilities/snackbar/snackbar.component';
 
 //services
-import { UserService } from '../user.service';
-import { LoadingService } from 'src/app/_components/utilities/loading/loading.service';
-import { ParametriService } from 'src/app/_services/parametri.service';
-import { map } from 'rxjs';
-import { PersoneService } from 'src/app/_components/persone/persone.service';
+import { UserService }                          from '../user.service';
+import { LoadingService }                       from 'src/app/_components/utilities/loading/loading.service';
+import { ParametriService }                     from 'src/app/_services/parametri.service';
 
 //models
 

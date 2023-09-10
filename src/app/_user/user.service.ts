@@ -1,21 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable }                           from '@angular/core';
 import { UntypedFormBuilder, Validators, UntypedFormGroup} from '@angular/forms';
-import { HttpClient } from "@angular/common/http";
-import { concatMap, map, tap, timeout } from 'rxjs/operators';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient }                           from "@angular/common/http";
+import { tap, timeout }                         from 'rxjs/operators';
+import { BehaviorSubject, Observable }          from 'rxjs';
 
 //components
-import { environment } from 'src/environments/environment';
-import { User } from './Users';
-//import { User, UserRole } from './Users';
+import { environment }                          from 'src/environments/environment';
+import { User }                                 from './Users';
 
 //services
-import { ParametriService } from '../_services/parametri.service';
-import { PersoneService } from '../_components/persone/persone.service';
+import { PersoneService }                       from '../_components/persone/persone.service';
 
 //classes
-import { _UT_Parametro } from '../_models/_UT_Parametro';
-import { _UT_UserFoto } from '../_models/_UT_UserFoto';
+import { _UT_Parametro }                        from '../_models/_UT_Parametro';
+import { _UT_UserFoto }                         from '../_models/_UT_UserFoto';
 
 @Injectable({
   providedIn: 'root'
