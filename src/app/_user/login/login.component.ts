@@ -46,7 +46,6 @@ export class LoginComponent implements OnInit {
 
   constructor(private svcUser:                  UserService,
               private svcParametri:             ParametriService,
-              private svcPersona:               PersoneService,
               private router:                   Router,
               private fb:                       UntypedFormBuilder,
               private eventEmitterService:      EventEmitterService,

@@ -23,7 +23,6 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
-  //isLoggedIn?: boolean;
   public isLoggedIn?:                           boolean = false;
   public currUser!:                             User;
   public currPersona!:                          PER_Persona;
@@ -40,15 +39,9 @@ export class AppComponent implements OnInit {
   public mode = new UntypedFormControl('over');
   title = 'Stoody';
 
-
-  private currentUserSubscription!: Subscription;
-  private listRolesSubscription!: Subscription;
-  private hasSubscribed =  false;
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-  // @ViewChild('start') public leftSidenav!: MatSidenav;
-  // @ViewChild('end') public rightSidenav!: MatSidenav;
   @ViewChild('expansionClassi') public expansionClassi!: MatExpansionPanel;
   @ViewChild('expansionPagamenti') public expansionPagamenti!: MatExpansionPanel;
   @ViewChild('expansionDocenti') public expansionDocenti!: MatExpansionPanel;
@@ -63,47 +56,24 @@ export class AppComponent implements OnInit {
 
   ngOnInit () {
 
-
-
-    //console.log("appcomponent ngOnInit");
-
-    //ATTENZIONE app.component fa ngOnInit PRIMA di login
-    //Lo stream delle subscription porta valori più tardi, quando ne vengono emessi
-    // this.currUser = Utility.getCurrentUser();
-    // this.userFullName = this.currUser.fullname;
-    // this.isLoggedIn = this.currUser.isLoggedIn;
-    // console.log(this.currUser);
-
-    // this.currentUserSubscription = this.svcUser.obscurrentUser.subscribe(val => {
-    //   this.currUser = val;
-    //   if(this.currUser){
-    //     this.userFullName = this.currUser.fullname;
-    //     this.isLoggedIn = this.currUser.isLoggedIn;
-    //     console.log("app.component - ngOnInit - val...svcUser.obscurrentUser.FLUSSO", val);
-    //     //Per ricaricare ruoli roles lstroles quando non ci sono (p.e. REFRESH F5)
-    //     //verifico se il behavioursubect è carico
-    //     this.listRolesSubscription = this.svcUser.BehaviourSubjectlistRoles.subscribe((lstroles) => {
-    //       //se è vuoto (all'inizio o dopo F5) ne forzo la ricarica con getUserRoles
-    //       if (this.currUser.personaID && lstroles && lstroles.length ==0) {
-    //         console.log("non c'è lstroles rilancio la getUserRoles");
-    //         this.svcUser.getUserRoles(this.currUser.personaID);
-    //       }
-    //       this.lstRoles = lstroles;
-    //       console.log("app.component - ngOnInit - lstroles...svcUser.BehaviourSubjectlistRoles.FLUSSO", lstroles);
-    //     });
-    //   }
-    // })
-    
-    // //Carico i dati e l'immagine dell'utente tramite un eventEmitter
+    console.log("appcomponent ngOnInit");
+     
+    //Carico i dati e l'immagine dell'utente tramite un eventEmitter
     if (this.eventEmitterService.userSubscribeAttiva==undefined) {    
       //in questo modo non solo faccio la subscribe al RefreshFoto ma imposto la subscription a un valore diverso da undefined
       this.eventEmitterService.userSubscribeAttiva = this.eventEmitterService.invokeUserEmit.subscribe(
         user => {
-          
           this.currUser = user;
-          this.userFullName = this.currUser.fullname;
-          this.isLoggedIn = this.currUser.isLoggedIn;
-          console.log ("app.component - ngOnInit - ricevo da emit utente", user)
+          //questo è un "captatore" dell'Emit, quindi può funzionare sia in fase di Login che di Logout
+          if (user) {
+            this.userFullName = this.currUser.fullname;
+            this.isLoggedIn = true;
+            console.log ("LOGIN app.component - ngOnInit - ricevo da emit utente", user)
+          } 
+          // else {
+          //   this.isLoggedIn = false; //Ma serve? se emetto (vedi funzione logout sì) altrimenti no
+          //   console.log ("LOGOUT app.component - ngOnInit - ricevo da emit utente", user)
+          // }
         }
       );    
     } 
@@ -114,29 +84,41 @@ export class AppComponent implements OnInit {
     //Carico i dati e l'immagine dell'utente tramite un eventEmitter
     if (this.eventEmitterService.refreshFotoSubscribeAttiva==undefined) {    
       //in questo modo non solo faccio la subscribe al RefreshFoto ma imposto la subscription a un valore diverso da undefined
+      //inoltre predispongo per il refresh
       this.eventEmitterService.refreshFotoSubscribeAttiva = this.eventEmitterService.invokeAppComponentRefreshFoto.subscribe(
-        () => this.refreshUserData()
+        () => this.refreshUserData()  //così facendo in caso di F5 viene lanciato refreshUserData
       );    
     } 
 
   }
 
   refreshUserData () {
-    if(!this.currUser) return;
+
+    //console.log("app.component - refreshUserData");
+    if(this.currUser) {
+      //console.log("app.component - refreshUserData - currUser", this.currUser);
+
+      this.userFullName = this.currUser.fullname;
+    } else {
+      this.currUser = Utility.getCurrentUser();
+      //console.log("app.component - refreshUserData - ricarico currUser", this.currUser);
+      //se lo trovo devo rimettere a true isLoggedIn
+      if (this.currUser) this.isLoggedIn = true;
+      this.userFullName = this.currUser.fullname;
+    }
 
     this.svcUser.getFotoByUserID(this.currUser.userID).subscribe(
       res => this.imgAccount = res.foto
     );
-    
-    // let currUser = Utility.getCurrentUser();
-    // this.userFullName = currUser.fullname;
-
-
 
   }
   
   logOut() {
-    this.svcUser.Logout();
+    console.log("app.component - prima di Logout");
+    this.svcUser.Logout(); //azzero tutto, compreso il BS dello User
+    this.isLoggedIn = false;
+    //this.eventEmitterService.onLogout(); //emetto l'utente nullo che va ad azzerare un po' di cose posso farlo qui oppure da userservice
+
     this.router.navigate(['/user/login']);
   }
 

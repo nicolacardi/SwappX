@@ -23,4 +23,9 @@ export class EventEmitterService {
     console.log("event-emitter - onLogin - passa di qua", user)
     this.invokeUserEmit.emit(user);
   }
+
+  onLogout() {
+    console.log("event-emitter - onLogout - passa di qua")
+    this.invokeUserEmit.emit(null);
+  }
 }

@@ -79,7 +79,6 @@ export class UserService {
       .pipe(
         tap(
           user => {
-            
             if (user && user.token) {
               user.isLoggedIn = true;
               user.personaID = user.persona!.id;
@@ -141,22 +140,17 @@ export class UserService {
   }
 
   Logout() {
-    
-    //Pulizia localStorage
+
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('AnnoCorrente');
 
     const logOutUser = <User>{};
     logOutUser.isLoggedIn = false;
+    console.log ("logOutUser", logOutUser);
     this.BehaviourSubjectcurrentUser.next(logOutUser);
 
   }
-
-
-
-
-
 
   Register() { //non viene mai usata
 
