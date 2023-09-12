@@ -307,8 +307,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
         }
                   */
 
-          //this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe ( 
-          this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe ( 
+          this.svcDocenti.getByPersona(this.currUser.personaID).subscribe ( 
             res => {   
               if(res)
                 this.docenteID = res.id;

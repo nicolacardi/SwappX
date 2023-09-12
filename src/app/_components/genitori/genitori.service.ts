@@ -2,11 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { map, catchError } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { ALU_Genitore } from 'src/app/_models/ALU_Genitore';
-import { FocusMonitor } from '@angular/cdk/a11y';
-import { formatDate } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -65,6 +63,11 @@ export class GenitoriService {
 
   delete(genitoreID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'ALU_Genitori/' + genitoreID);    
+  }
+
+  deleteByPersona (personaID: number) {
+    return this.http.delete( environment.apiBaseUrl  + 'ALU_Genitori/DeleteByPersona/'+personaID);
+    //http://213.215.231.4/swappX/api/ALU_Genitori/DeletByPersona/3
   }
 
   filterGenitori(searchstring: string): Observable<ALU_Genitore[]>{

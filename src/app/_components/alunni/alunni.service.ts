@@ -36,8 +36,8 @@ export class AlunniService {
       //http://213.215.231.4/swappX/api/ALU_Alunni/ListWithParents
   }
 
-  get(classeSezioneAnnoID: any): Observable<ALU_Alunno>{
-    return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/'+classeSezioneAnnoID);
+  get(id: any): Observable<ALU_Alunno>{
+    return this.http.get<ALU_Alunno>(environment.apiBaseUrl+'ALU_Alunni/'+id);
     //http://213.215.231.4/swappX/api/ALU_Alunni/3
   }
 
@@ -57,11 +57,13 @@ export class AlunniService {
     return this.http.post( environment.apiBaseUrl  + 'ALU_Alunni' , formData);  
   }
 
-  delete(classeSezioneAnnoID: number): Observable <any>{
-    //this.http.patch()
-    
-    
-    return this.http.delete( environment.apiBaseUrl  + 'ALU_Alunni/' + classeSezioneAnnoID);    
+  delete(alunnoID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'ALU_Alunni/' + alunnoID);    
+  }
+
+  deleteByPersona (personaID: number) {
+    return this.http.delete( environment.apiBaseUrl  + 'ALU_Alunni/DeleteByPersona/'+personaID);
+    //http://213.215.231.4/swappX/api/ALU_Alunni/DeletByPersona/3
   }
 
   filterAlunni(searchstring: string): Observable<ALU_Alunno[]>{

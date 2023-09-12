@@ -57,7 +57,7 @@ export class OrarioDocentePageComponent implements OnInit {
     this.obsDocenti$ = this.svcDocenti.list()
 
     this.currUser = Utility.getCurrentUser();
-    this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe( {
+    this.svcDocenti.getByPersona(this.currUser.personaID).subscribe( {
       next: res => {   
         if(res)
           this.docenteID = res.id;

@@ -3,7 +3,7 @@ import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
 //import * as logoFile from './carlogo.js';
 import { DatePipe } from '@angular/common';
-import { Cell } from 'jspdf-autotable';
+import { FormatoData, Utility } from '../utility.component';
 
 @Injectable({
   providedIn: 'root'
@@ -82,6 +82,16 @@ export class ExcelService {
     )
 
     data.forEach((d: any, index: number) => {
+
+      //se l'ultima parte è T00:00:00 allora si tratta di una data, va riformattata
+      for (let colIndex = 0; colIndex < d.length; colIndex++) {
+        const element = d[colIndex];
+        if (typeof element === 'string' && element.endsWith('T00:00:00')) {
+          d[colIndex] = Utility.formatDate(element, FormatoData.dd_mm_yyyy);
+        }
+      }
+
+
       //aggiorno la larghezza (servirà per fare l'autowidth) se trovo elementi più lunghi
       d.forEach((element: any, index: number) =>{
         let lenText = element ? element.length : 0;

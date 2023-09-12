@@ -95,7 +95,7 @@ export class DocentiDashboardComponent implements OnInit {
     this.currUser = Utility.getCurrentUser();
 
     if(this.currUser.personaID != null && this.currUser.personaID != 0){
-      this.svcDocenti.getByPersonaID(this.currUser.personaID).subscribe(
+      this.svcDocenti.getByPersona(this.currUser.personaID).subscribe(
         res => {   
           if(res)
             this.docenteID = res.id;

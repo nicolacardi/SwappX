@@ -91,7 +91,8 @@ export class LoginComponent implements OnInit {
       },
       error: err=> {
         this.loading = false;
-        this._snackBar.openFromComponent(SnackbarComponent, { data: err, panelClass: ['red-snackbar'] });
+        console.log(err);
+        this._snackBar.openFromComponent(SnackbarComponent, { data: err.error.message, panelClass: ['red-snackbar'] });
       }
     });
   }

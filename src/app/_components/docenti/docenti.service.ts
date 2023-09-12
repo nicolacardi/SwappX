@@ -67,27 +67,9 @@ export class DocentiService {
     //http://213.215.231.4/swappX/api/PER_Docenti/3
   }
 
-  getByPersonaID(personaID: any): Observable<PER_Docente>{
+  getByPersona(personaID: any): Observable<PER_Docente>{
 
-    //console.log("DEBUG-getByPersonaID START");
-
-    /*
-    return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersonaID/'+personaID)
-     .pipe(
-       catchError(this.handleError )  
-       );
-      */
-    /*
-    return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersonaID/'+personaID)
-    .pipe(
-      tap(  
-      {
-        next: (data) => console.log("DEBUG-docenti.service OK:", data),
-        error: (error) => console.log("DEBUG-docenti.service KO:", error)
-      }
-    ));
-*/
-    return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersonaID/'+personaID)
+    return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersona/'+personaID)
     .pipe(
       tap(() => {}   ),
         
@@ -96,14 +78,14 @@ export class DocentiService {
             return of(error);
           }
           else {
-            //console.log("quando non trova (ad esempio con ID 17) la svcDocenti.getByPersonaID(ID) dovrebbe rispondere con 0 e non con un NotFound");
+            //console.log("quando non trova (ad esempio con ID 17) la svcDocenti.getByPersona(ID) dovrebbe rispondere con 0 e non con un NotFound");
             throw error;
           }
       })
     );
 
-    //return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersonaID/'+personaID);
-    //http://213.215.231.4/swappX/api/PER_Docenti/GetByPersonaID/6
+    //return this.http.get<PER_Docente>(environment.apiBaseUrl+'PER_Docenti/GetByPersona/'+personaID);
+    //http://213.215.231.4/swappX/api/PER_Docenti/GetByPersona/6
   }
 
   /// AS: handler degli errori
@@ -136,4 +118,10 @@ export class DocentiService {
   delete(docenteID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'PER_Docenti/' + docenteID);    
   }
+
+  deleteByPersona (personaID: number) {
+    return this.http.delete( environment.apiBaseUrl  + 'PER_Docenti/DeletByPersona/'+personaID);
+    //http://213.215.231.4/swappX/api/PER_Docenti/DeletByPersona/3
+  }
+
 }

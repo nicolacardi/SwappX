@@ -4,7 +4,7 @@ import { Component, EventEmitter, Input, OnInit, Output }     from '@angular/cor
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { MatDialog }                            from '@angular/material/dialog';
 import { Observable, firstValueFrom, of }                       from 'rxjs';
-import { tap }                                  from 'rxjs/operators';
+import { concatMap, tap }                                  from 'rxjs/operators';
 
 //components
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
@@ -19,6 +19,14 @@ import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Person
 import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni';
 import { TipiPersonaService }                   from '../tipi-persona.service';
 import { User }                                 from 'src/app/_user/Users';
+import { AlunniService } from '../../alunni/alunni.service';
+import { GenitoriService } from '../../genitori/genitori.service';
+import { DocentiService } from '../../docenti/docenti.service';
+import { NonDocentiService } from '../nondocenti.service';
+import { ITManagersService } from '../ITmanagers.service';
+import { DirigentiService } from '../dirigenti.service';
+import { PER_Docente } from 'src/app/_models/PER_Docente';
+import { DocentiCoordService } from '../docenticoord.service';
 
 //#endregion
 @Component({
@@ -66,6 +74,17 @@ export class PersonaFormComponent implements OnInit {
   constructor(public _dialog:                   MatDialog,
               private fb:                       UntypedFormBuilder, 
               private svcPersone:               PersoneService,
+
+              //vari service per le post o delete dei vari tipi di persona
+              private svcAlunni:                AlunniService,
+              private svcGenitori:              GenitoriService,
+              private svcDocenti:               DocentiService,
+              private svcDocentiCoord:          DocentiCoordService,
+
+              private svcNonDocenti:            NonDocentiService,
+              private svcITManagers:            ITManagersService,
+              private svcDirigenti:             DirigentiService,
+
               private svcTipiPersona:           TipiPersonaService,
               private svcComuni:                ComuniService,
               private _loadingService :         LoadingService  ) { 
@@ -256,35 +275,41 @@ export class PersonaFormComponent implements OnInit {
     console.log("elenco dei valori selezionati dall'utente",selectedTipoPersonaDescrizioni);
 
 
-    this._lstRoles.forEach(roleinput=> {
+    this._lstRoles.forEach(async roleinput=> {
       {if (!selectedTipoPersonaDescrizioni.includes(roleinput))
         {
           //questo roleinput è stato CANCELLATO, va dunque rimosso (ammesso che si possa)
           switch (roleinput) {
             case "Alunno":
-
+              this.svcAlunni.deleteByPersona(this.personaID).subscribe();
+            break;
+            case "Genitore":
+              this.svcGenitori.deleteByPersona(this.personaID).subscribe();
             break;
             case "Docente":
-            
+              this.svcDocenti.deleteByPersona(this.personaID).subscribe();
             break;
             case "DocenteCoord":
-            
-            break;
+              let docente!: PER_Docente;
+              await firstValueFrom(this.svcDocenti.getByPersona(this.personaID).pipe(tap(docenteEstratto => 
+                {docente = docenteEstratto})));
+              this.svcDocentiCoord.deleteByDocente(docente.id);
+              break;
             case "NonDocente":
-            
+              this.svcNonDocenti.deleteByPersona(this.personaID).subscribe();
             break;
             case "Dirigente":
-            
+              this.svcDirigenti.deleteByPersona(this.personaID).subscribe();
             break;
             case "ITManager":
-            
+              this.svcITManagers.deleteByPersona(this.personaID).subscribe();
             break;
           }
         }
       }
     })
 
-    selectedTipoPersonaDescrizioni.forEach((roleselected:string)=> {
+    selectedTipoPersonaDescrizioni.forEach(async (roleselected:string)=> {
       {if (!this._lstRoles.includes(roleselected))
         {
           //questo roleselected è stato AGGIUNTO, va dunque fatta la post
@@ -293,22 +318,34 @@ export class PersonaFormComponent implements OnInit {
           }
           switch (roleselected) {
             case "Alunno":
-
+              this.svcAlunni.post(formData).subscribe();
+            break;
+            case "Genitore":
+              this.svcGenitori.post(formData).subscribe();
             break;
             case "Docente":
-
+              this.svcDocenti.post(formData).subscribe();
             break;
             case "DocenteCoord":
-            
+              let formDataDocenteCoord = {};
+              await firstValueFrom(this.svcDocenti.getByPersona(this.personaID).pipe(tap(docenteEstratto => 
+                {
+                  formDataDocenteCoord = {
+                    docenteID: docenteEstratto.id
+                  }
+                })));
+              console.log("verificare se è arrivato...", formDataDocenteCoord );
+              this.svcDocentiCoord.post(formDataDocenteCoord).subscribe();
+
             break;
             case "NonDocente":
-            
+              this.svcNonDocenti.post(formData).subscribe();
             break;
             case "Dirigente":
-            
+              this.svcDirigenti.post(formData).subscribe();
             break;
             case "ITManager":
-            
+              this.svcITManagers.post(formData).subscribe();
             break;
           }
         }

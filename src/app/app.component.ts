@@ -97,21 +97,21 @@ export class AppComponent implements OnInit {
 
     //console.log("app.component - refreshUserData");
     if(this.currUser) {
+      //QUI L'UTENTE E' ENTRATO REGOLARMENTE
       //console.log("app.component - refreshUserData - currUser", this.currUser);
-
-      this.userFullName = this.currUser.fullname;
     } else {
       //se in Utility c'è lo user significa che è stato premuto F5
       this.currUser = Utility.getCurrentUser();
       //console.log("app.component - refreshUserData - ricarico currUser", this.currUser);
-      //se lo trovo devo rimettere a true isLoggedIn
-      if (this.currUser) this.isLoggedIn = true;
-      this.userFullName = this.currUser.fullname;
     }
 
-    this.svcUser.getFotoByUserID(this.currUser.userID).subscribe(
-      res => this.imgAccount = res.foto
-    );
+    if (this.currUser) {
+      this.isLoggedIn = true;
+      this.userFullName = this.currUser.fullname;
+      this.svcUser.getFotoByUserID(this.currUser.userID).subscribe(
+        res => this.imgAccount = res.foto
+      );
+    }
 
   }
   

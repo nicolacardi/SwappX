@@ -189,8 +189,9 @@ export class GenitoriListComponent implements OnInit {
     this._navigationService.getAlunno().subscribe( val=>{
       if (val!= '') {
         this.passedAlunno = val;
+        console.log(this.passedAlunno);
         this.toggleDrawer.emit();
-        this.genitoriFilterComponent.nomeCognomeAlunnoFilter.setValue(val);
+        this.genitoriFilterComponent.nomeCognomeAlunnoFilter.setValue(val);//ma questo non si vede!!!
         this.loadData(); 
       }
     });    

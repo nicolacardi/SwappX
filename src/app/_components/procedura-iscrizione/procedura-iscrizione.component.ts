@@ -145,7 +145,8 @@ export class ProceduraIscrizioneComponent implements OnInit {
     }
 
     if (tipo == 'alunno') {
-      this.PersonaFormComponent.toArray()[this.stepper.selectedIndex-1].save()
+      //this.PersonaFormComponent.toArray()[this.stepper.selectedIndex-1].save()
+      this.AlunnoFormComponent.save()
       .pipe(
         concatMap (()=> this.AlunnoFormComponent.save())                  
       )
@@ -264,21 +265,25 @@ export class ProceduraIscrizioneComponent implements OnInit {
         { tagName: "Tel2Genitore1",             tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.telefono1},
         { tagName: "EmailGenitore1",            tagValue: this.iscrizione.alunno._Genitori![0].genitore?.persona.email},
 
-        { tagName: "TipoGenitore2",             tagValue: this.iscrizione.alunno._Genitori![1].genitore?.tipoGenitore?.descrizione},
-        { tagName: "NomeGenitore2",             tagValue: this.iscrizione.alunno._Genitori![1].genitore?.persona.nome},
-        { tagName: "CognomeGenitore2",          tagValue: this.iscrizione.alunno._Genitori![1].genitore?.persona.cognome},
-        { tagName: "ComuneNascitaGenitore2",    tagValue: this.iscrizione.alunno._Genitori![1].genitore?.persona.comuneNascita},
-        { tagName: "ProvNascitaGenitore2",      tagValue: this.iscrizione.alunno._Genitori![1].genitore?.persona.provNascita},
-        { tagName: "dtNascitaGenitore2",        tagValue: Utility.formatDate(this.iscrizione.alunno._Genitori![1].genitore?.persona.dtNascita, FormatoData.dd_mm_yyyy)},
-        { tagName: "PaeseNascitaGenitore2",     tagValue: this.iscrizione.alunno._Genitori![1].genitore?.persona.nazioneNascita},
-        { tagName: "CFGenitore2",               tagValue: this.iscrizione.alunno._Genitori![1].genitore?.persona.cf},
-        { tagName: "IndirizzoGenitore2",        tagValue: this.iscrizione.alunno._Genitori![1].genitore?.persona.indirizzo},
-        { tagName: "CAPGenitore2",              tagValue: this.iscrizione.alunno._Genitori![1].genitore?.persona.cap},
-        { tagName: "ComuneGenitore2",           tagValue: this.iscrizione.alunno._Genitori![1].genitore?.persona.comune},
-        { tagName: "ProvGenitore2",             tagValue: this.iscrizione.alunno._Genitori![1].genitore?.persona.prov},
-        { tagName: "Tel1Genitore2",             tagValue: this.iscrizione.alunno._Genitori![1].genitore?.persona.telefono},
-        { tagName: "Tel2Genitore2",             tagValue: this.iscrizione.alunno._Genitori![1].genitore?.persona.telefono1},
-        { tagName: "EmailGenitore2",            tagValue: this.iscrizione.alunno._Genitori![1].genitore?.persona.email},
+
+        { tagName: "TipoGenitore2",             tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.tipoGenitore?.descrizione : ""},
+        { tagName: "NomeGenitore2",             tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.nome : ""},
+        { tagName: "CognomeGenitore2",          tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.cognome : ""},
+        { tagName: "ComuneNascitaGenitore2",    tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.comuneNascita : ""},
+        { tagName: "ProvNascitaGenitore2",      tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.provNascita : ""},
+        { tagName: "dtNascitaGenitore2",        tagValue: this.iscrizione.alunno._Genitori![1]? Utility.formatDate(this.iscrizione.alunno._Genitori![1].genitore?.persona.dtNascita, FormatoData.dd_mm_yyyy) : ""},
+        { tagName: "PaeseNascitaGenitore2",     tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.nazioneNascita : ""},
+        { tagName: "CFGenitore2",               tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.cf : ""},
+        { tagName: "IndirizzoGenitore2",        tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.indirizzo : ""},
+        { tagName: "CAPGenitore2",              tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.cap : ""},
+        { tagName: "ComuneGenitore2",           tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.comune : ""},
+        { tagName: "ProvGenitore2",             tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.prov : ""},
+        { tagName: "Tel1Genitore2",             tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.telefono : ""},
+        { tagName: "Tel2Genitore2",             tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.telefono1 : ""},
+        { tagName: "EmailGenitore2",            tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.email : ""},
+
+
+
 
         { tagName: "ilFigliolaFiglia",          tagValue: this.iscrizione.alunno.persona.genere == "M"? "il figlio": "la figlia"},
 
