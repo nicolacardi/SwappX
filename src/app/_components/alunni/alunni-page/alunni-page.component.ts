@@ -43,7 +43,7 @@ export class AlunniPageComponent implements OnInit {
 //#endregion
   
 //#region ----- Reset vari ---------------------
-  resetFiltri() {
+  resetFiltri() { //questa era inserita come SECONDA CHIAMATA nell'html cioeè: (click)="filterSidenav.toggle(); resetFiltri();" POI TOLTA
     this.alunniFilterComponent.resetAllInputs();
   }
 //#endregion
