@@ -88,12 +88,11 @@ export class SocioFormComponent implements OnInit {
 
 //#region ----- LifeCycle Hooks e simili-------
 
-  ngOnInit(){
+  ngOnInit() {
     this.loadData();
     this.form.valueChanges.subscribe(
       res=> this.formValid.emit(this.form.valid) //ma serve??? Su procedura-iscrizioni ho fatto diversamente
     )
-
 
     this.svcPersone.list().subscribe(persone => {
       this.form.controls['nomeCognomePersona'].setValidators(
@@ -106,11 +105,9 @@ export class SocioFormComponent implements OnInit {
         debounceTime(300),
         switchMap(() => this.svcPersone.filterPersoneNoSoci(this.form.value.nomeCognomePersona)),
       );
-      
   }
 
   loadData(){
-
 
     if (this.tipoSocioID) this.form.controls.tipoSocioID.setValue(this.tipoSocioID);
 
@@ -122,13 +119,11 @@ export class SocioFormComponent implements OnInit {
       .pipe( 
           tap(
             socio => {
-              console.log (socio);
               this.form.patchValue(socio)
               this.form.controls.nome.setValue(socio.persona!.nome);
               this.form.controls.cognome.setValue(socio.persona!.cognome);
               this.form.controls.dtNascita.setValue(Utility.formatDate(socio.persona!.dtNascita, FormatoData.dd_mm_yyyy));
               this.form.controls.cf.setValue(socio.persona!.cf);
-            
             }
           )
       );
@@ -139,7 +134,6 @@ export class SocioFormComponent implements OnInit {
   }
 
   save() :Observable<any>{
-    console.log ("SocioFormComponent - save() - this.form.value", this.form.value);
     let ctrdtRichiesta = this.form.controls.dtRichiesta;
     let ctrdtAccettazione = this.form.controls.dtAccettazione;
     let ctrdtDisiscrizione = this.form.controls.dtDisiscrizione;
@@ -150,12 +144,11 @@ export class SocioFormComponent implements OnInit {
     ctrdtDisiscrizione.setValue(Utility.formatDate(ctrdtDisiscrizione.value, FormatoData.yyyy_mm_dd));
     ctrdtRestQuota.setValue(Utility.formatDate(ctrdtRestQuota.value, FormatoData.yyyy_mm_dd));
 
-    if (this.socioID == null || this.socioID == 0) {
+    if (this.socioID == null || this.socioID == 0) 
       return this.svcSoci.post(this.form.value)
-    }
-    else {
+    else 
       return this.svcSoci.put(this.form.value)
-    }
+    
   }
 
   delete() :Observable<any>{

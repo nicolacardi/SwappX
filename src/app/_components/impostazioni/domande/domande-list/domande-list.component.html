@@ -1,5 +1,5 @@
 <h1 class="_titolo-pagina">Elenco Domande</h1>
-<h3 class="_titolo-pagina">(trascinare le domande per ordinarle a piacimento)</h3>
+<h3 class="_titolo-pagina">(trascinare le domande per ordinarle)</h3>
     <!-- **************************   FILTER   ******************* -->
     <mat-form-field class="ml20 topZIndex">
         <mat-label>Filtro</mat-label>
@@ -95,7 +95,6 @@
         <tr mat-header-row class="_table-title-low" *matHeaderRowDef="displayedColumns;"></tr>
         
         <!-- **************************   MAT-ROW   ******************* -->
-
         <tr mat-row *matRowDef="let element;columns: displayedColumns" class="element-row" cdkDragLockAxis="y" cdkDrag></tr>
     </table>
 

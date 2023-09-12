@@ -48,7 +48,10 @@ export class ImgUploadsComponent implements OnInit {
 //#region ----- Constructor --------------------
   constructor(public _dialog:                   MatDialog,
               private _snackBar:                MatSnackBar,
-              private svcParametri:             ParametriService ) { }
+              private svcParametri:             ParametriService ) { 
+
+}
+
 //#endregion
 
 
@@ -57,13 +60,11 @@ export class ImgUploadsComponent implements OnInit {
     this.svcParametri.getByParName("imgFileLogoStoody").subscribe(
       val=> {
         if(val){
-          console.log("imguploads ngOnInit val", val);
           this.logoStoody = val;
           this.imgFileLogoStoody = val.parValue; 
         }
       }
     );
-
 
     this.svcParametri.getByParName("imgFileLogoScuolaEmail").subscribe(
       val=> {
@@ -149,7 +150,6 @@ export class ImgUploadsComponent implements OnInit {
       };
     }
   }
-
 
   save(ctrl: string){
 

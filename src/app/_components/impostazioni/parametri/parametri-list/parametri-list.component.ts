@@ -108,11 +108,9 @@ export class ParametriListComponent implements OnInit {
       this.loadData();
       this.toggleChecks = false;
       this.resetSelections();
-
   }
 
   ngOnInit () {
-
 
       this.showFilter = false;
       this.loadLayout();
@@ -120,10 +118,15 @@ export class ParametriListComponent implements OnInit {
   }
 
   loadLayout(){
-    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName)
-    .subscribe( colonne => {
-        if (colonne.length != 0) this.displayedColumns = colonne.map(a => a.tableCol!.colName)
-        else this.svcTableCols.listByTable(this.tableName).subscribe( colonne => {console.log ("colonne parametri", colonne);this.displayedColumns = colonne.map(a => a.colName)})      
+    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName).subscribe( colonne => {
+        if (colonne.length != 0) 
+          this.displayedColumns = colonne.map(a => a.tableCol!.colName)
+        else 
+          this.svcTableCols.listByTable(this.tableName).subscribe( 
+            colonne => {
+              this.displayedColumns = colonne.map(a => a.colName)            
+            }
+          )      
     });
   }
 
@@ -135,7 +138,6 @@ export class ParametriListComponent implements OnInit {
 
     loadParametri$.subscribe(
       val =>   {
-        console.log("parametri-list - loadData - val", val);
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.sortCustom();
@@ -163,7 +165,6 @@ export class ParametriListComponent implements OnInit {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
-
   }
 
   resetSearch(){
@@ -176,7 +177,6 @@ export class ParametriListComponent implements OnInit {
     
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
-
 
       let boolSx =  String(data.parName).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                   ||  String(data.parValue).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
@@ -229,12 +229,10 @@ export class ParametriListComponent implements OnInit {
     .subscribe(res=> this.loadData());
   }
 
-
 //#endregion
 
-
-
 //#region ----- Gestione Campo Checkbox --------
+
 selectedRow(element: _UT_Parametro) {
   this.selection.toggle(element);
 }
@@ -252,7 +250,6 @@ resetSelections() {
   this.selection.clear();
   this.matDataSource.data.forEach(row => this.selection.deselect(row));
 }
-
 
 getChecked() {
   //funzione usata da classi-dahsboard

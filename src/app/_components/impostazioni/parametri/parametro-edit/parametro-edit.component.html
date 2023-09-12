@@ -18,14 +18,14 @@
                         (click)="save()" >
                     <mat-icon>save</mat-icon>
                 </button>
-
+            <!--
                 <button *ngIf="data.parametroID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="delete()" >
                     <mat-icon>delete</mat-icon>
                 </button>
+            -->
             </div>
-
 
             <mat-grid-list class="mt10" [cols]="1" rowHeight="80px">
 
@@ -59,7 +59,6 @@
 
                 <br>
             </mat-grid-list>
-            
 
         </form>
     </mat-card-content>

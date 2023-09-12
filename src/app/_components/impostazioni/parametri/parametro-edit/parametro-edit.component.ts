@@ -75,7 +75,7 @@ export class ParametroEditComponent {
     this.loadData();
   }
 
-  loadData(){
+  loadData() {
 
     if (this.data.parametroID && this.data.parametroID + '' != "0") {
 
@@ -85,7 +85,6 @@ export class ParametroEditComponent {
       .pipe(
           tap(
             parametro => {
-              console.log ("parametro-edit - loadData parametro: ",parametro);
               this.form.patchValue(parametro)
 
               //se si tratta di checkbox inserisco un controllo che si chiama 'ck_n' per ciascun valore
@@ -121,7 +120,6 @@ export class ParametroEditComponent {
         const isChecked = this.form.controls[controlName].value;
         sequenza01 += isChecked ? '1' : '0';
       }
-      console.log("concatenando ho ottenuto", sequenza01)
       this.form.controls.parValue.setValue(sequenza01);
     }
     if (this.form.controls['id'].value == null) {
@@ -160,24 +158,17 @@ export class ParametroEditComponent {
       result => {
         if(result){
           this.svcParametri.delete(Number(this.data.parametroID)).subscribe({
-            next: res=>{
+            next: () =>{
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
               this.svcParametri.renumberSeq().subscribe();
               this._dialogRef.close();
             },
-            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+            error: err => this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
           });
         }
     });
   }
 
-
-
 //#endregion
-
-
-
-
-
 
 }

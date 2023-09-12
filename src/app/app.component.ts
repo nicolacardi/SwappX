@@ -50,17 +50,12 @@ export class AppComponent implements OnInit {
 //#endregion
   constructor(private svcUser:                  UserService,
               private router:                   Router,
-              private eventEmitterService:      EventEmitterService,
-           
-              ) {
+              private eventEmitterService:      EventEmitterService  ) {
    
   }
 
-
   ngOnInit () {
 
-    // console.log("appcomponent ngOnInit");
-     
     //Carico i dati e l'immagine dell'utente tramite un eventEmitter
     if (this.eventEmitterService.userSubscribeAttiva==undefined) {    
       //in questo modo non solo faccio la subscribe al RefreshFoto ma imposto la subscription a un valore diverso da undefined
@@ -69,19 +64,15 @@ export class AppComponent implements OnInit {
           this.currUser = user;
           //questo è un "captatore" dell'Emit, quindi può funzionare sia in fase di Login che di Logout
           if (user) {
-            //console.log("app.component - ngOnInit user", user)
             this.userFullName = this.currUser.fullname;
             this.isLoggedIn = true;
-            // console.log ("LOGIN app.component - ngOnInit - ricevo da emit utente", user)
           } 
           else {
             this.isLoggedIn = false; //Ma serve? se emetto (vedi funzione logout sì) altrimenti no
-            console.log ("LOGOUT app.component - ngOnInit - ricevo da emit utente", user)
           }
         }
       );    
     } 
-
 
     this.refreshUserData();
 
@@ -93,11 +84,11 @@ export class AppComponent implements OnInit {
         () => this.refreshUserData()  //così facendo in caso di F5 viene lanciato refreshUserData
       );    
     } 
-
   }
 
   refreshUserData () {
 
+    /*
     //console.log("app.component - refreshUserData");
     if(this.currUser) {
       //QUI L'UTENTE E' ENTRATO REGOLARMENTE
@@ -107,6 +98,9 @@ export class AppComponent implements OnInit {
       this.currUser = Utility.getCurrentUser();
       //console.log("app.component - refreshUserData - ricarico currUser", this.currUser);
     }
+    */
+    if(!this.currUser) 
+      this.currUser = Utility.getCurrentUser();
 
     if (this.currUser) {
       this.isLoggedIn = true;
@@ -120,7 +114,7 @@ export class AppComponent implements OnInit {
   }
   
   logOut() {
-    console.log("app.component - prima di Logout");
+    //console.log("app.component - prima di Logout");
     this.svcUser.Logout(); //azzero tutto, compreso il BS dello User
     this.isLoggedIn = false;
     this.router.navigate(['/user/login']);
