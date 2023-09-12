@@ -23,7 +23,7 @@ export class AlunniPageComponent implements OnInit {
 //#region ----- ViewChild Input Output ---------
   @ViewChild(AlunniListComponent) alunniList!: AlunniListComponent; 
   @ViewChild(AlunniFilterComponent) alunniFilterComponent!: AlunniFilterComponent; 
-  @ViewChild('sidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
+  @ViewChild('filterSidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
 //#endregion
   
   constructor( private _navigationService:  NavigationService) { 
