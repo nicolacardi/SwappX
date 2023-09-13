@@ -21,6 +21,7 @@ import { DocentiService }                       from '../../docenti/docenti.serv
 //models
 import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
+import { DOC_NotaIscrizione } from 'src/app/_models/DOC_NotaIscrizione';
 
 //#endregion
 
@@ -176,9 +177,8 @@ export class NoteListComponent implements OnInit {
               //     nota.nomiAlunni = strNomiAlunni.slice(3);
               //   }
               // );
-
               
-              // console.log("DEBUG: notelist - loadData: " ,val)
+              console.log("DEBUG: notelist - loadData: " ,val)
 
               this.matDataSource.data = val;
               this.matDataSource.paginator = this.paginator;
@@ -261,14 +261,16 @@ export class NoteListComponent implements OnInit {
          dtFirmaddmmyyyy = '';
 
       //console.log ("st", searchTerms);
-      //console.log ("data", data);
+      console.log ("data", data);
 
       let boolSx = String(dtNotaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
                   || String(data.nota).indexOf(searchTerms.filtrosx) !== -1
                   || (data.periodo == searchTerms.periodo)
                   || String(data.persona.nome.toLowerCase() + ' ' + data.persona.cognome.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1
-                  || String(dtFirmaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
-                  || String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1 ;
+                  || String(dtFirmaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1;
+
+                  //PENSARE a come cercare tra gli alunni destinatari della nota, il modo che segue è sbagliato, data semmai ha _NotaIscrizioni che è un array
+                  //|| String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1 ;
       
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
       let boolDx = String(dtNotaddmmyyyy).indexOf(searchTerms.dtNota) !== -1
@@ -276,7 +278,7 @@ export class NoteListComponent implements OnInit {
                     && ((data.periodo == searchTerms.periodo) || searchTerms.periodo == '' || searchTerms.periodo == null)
                     && String(data.persona.nome.toLowerCase() + ' ' + data.persona.cognome.toLowerCase()).indexOf(searchTerms.docente) !== -1
                     && String(dtFirmaddmmyyyy).indexOf(searchTerms.dtFirma) !== -1
-                    && String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.alunno) !== -1 ;
+                    //&& String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.alunno) !== -1 ;
 
       return boolSx && boolDx;
     }

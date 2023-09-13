@@ -15,6 +15,9 @@ import { NoteListComponent } from '../note-list/note-list.component';
 export class NoteFilterComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+
+  formClean= true;
+  
   dtNotaFilter = new UntypedFormControl('');
   notaFilter = new UntypedFormControl('');
   quadrimestreFilter = new UntypedFormControl('');
@@ -42,9 +45,24 @@ constructor() {}
 
   applyFilterDx(field: keyof typeof this.noteListComponent.filterValues, val: string) {
     //this.resetFilterSx();
+    console.log(val);
+    console.log(field);
+    console.log(this.noteListComponent.filterValues);
     this.noteListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
     // this.noteListComponent.updateEmailAddresses();
+    this.formClean = this.isFormClean();
+  }
+
+  isFormClean(): boolean {
+    return (
+      this.dtNotaFilter.value === '' &&
+      this.notaFilter.value === '' &&
+      this.quadrimestreFilter.value === '' &&
+      this.dtFirmaFilter.value === '' &&
+      this.docenteFilter.value === '' &&
+      this.alunnoFilter.value === ''
+    );
   }
 //#endregion
 
