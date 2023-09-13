@@ -15,6 +15,8 @@ import { IscrizioniListComponent } from '../iscrizioni-list/iscrizioni-list.comp
 export class IscrizioniFilterComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+  formClean= true;
+
   nomeFilter =      new UntypedFormControl('');
   cognomeFilter =   new UntypedFormControl('');
   classeFilter =    new UntypedFormControl('');
@@ -53,7 +55,25 @@ export class IscrizioniFilterComponent implements OnInit {
     this.iscrizioniListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.iscrizioniListComponent.matDataSource.filter = JSON.stringify(this.iscrizioniListComponent.filterValues);
     this.iscrizioniListComponent.getEmailAddresses();
+    this.formClean = this.isFormClean();
   }
+
+  isFormClean(): boolean {
+    return (
+      this.nomeFilter.value === '' &&
+      this.cognomeFilter.value === '' &&
+      this.classeFilter.value === '' &&
+      this.sezioneFilter.value === '' &&
+      this.cfFilter.value === '' &&
+      this.emailFilter.value === '' &&
+      this.telefonoFilter.value === '' &&
+      this.dtNascitaFilter.value === '' &&
+      this.indirizzoFilter.value === '' &&
+      this.comuneFilter.value === '' &&
+      this.provFilter.value === ''
+    );
+  }
+
 //#endregion
 
 //#region ----- Reset vari -------

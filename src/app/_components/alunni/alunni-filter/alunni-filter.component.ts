@@ -1,7 +1,7 @@
 //#region ----- IMPORTS ------------------------
 
 import { Component, Input, OnInit}              from '@angular/core';
-import { UntypedFormControl }                   from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup }                   from '@angular/forms';
 
 //components
 import { AlunniListComponent }                  from '../alunni-list/alunni-list.component';
@@ -16,6 +16,9 @@ import { AlunniListComponent }                  from '../alunni-list/alunni-list
 export class AlunniFilterComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+
+  formClean= true;
+
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');
   dtNascitaFilter = new UntypedFormControl('');
@@ -53,9 +56,23 @@ export class AlunniFilterComponent implements OnInit {
     this.alunniListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.alunniListComponent.matDataSource.filter = JSON.stringify(this.alunniListComponent.filterValues);
     this.alunniListComponent.getEmailAddresses();
+    this.formClean = this.isFormClean();
   }
   
-
+  isFormClean(): boolean {
+    return (
+      this.nomeFilter.value === '' &&
+      this.cognomeFilter.value === '' &&
+      this.dtNascitaFilter.value === '' &&
+      this.indirizzoFilter.value === '' &&
+      this.comuneFilter.value === '' &&
+      this.provFilter.value === '' &&
+      this.emailFilter.value === '' &&
+      this.telefonoFilter.value === '' &&
+      this.nomeCognomeGenitoreFilter.value === ''
+    );
+  }
+  
 //#endregion
 
 //#region ----- Reset vari ---------------------

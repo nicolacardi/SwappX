@@ -33,6 +33,7 @@ export class AlunniPageComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili--------
   ngOnInit(): void {
     this._navigationService.passPage("alunniPage");
+
   }
 //#endregion
   

@@ -912,6 +912,12 @@
         background-color: #044D7E !important;
     }
 
+    ._btn-add-red {
+        z-index: 1000;
+        position: absolute !important;
+        background-color: #ff0000 !important;
+    }
+
     ._btn-add-fixed {
         z-index: 1000;
         position: fixed !important;

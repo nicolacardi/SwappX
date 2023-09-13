@@ -2,7 +2,7 @@
     <mat-icon>construction</mat-icon>
 </button>
 
-<button mat-mini-fab aria-label="Filtri Avanzati" matTooltip="Filtri Avanzati" class="_btn-add _btn-pos-right-1 _btn-pos-top-1" (click)="filterSidenav.toggle(); resetFiltri()" >
+<button mat-mini-fab aria-label="Filtri Avanzati" matTooltip="Filtri Avanzati" class="_btn-add _btn-pos-right-1 _btn-pos-top-1" [ngClass]="{'_btn-add-red': !appiscrizionifilter.formClean}" (click)="filterSidenav.toggle();" >
     <mat-icon>filter_alt</mat-icon>
 </button>
 

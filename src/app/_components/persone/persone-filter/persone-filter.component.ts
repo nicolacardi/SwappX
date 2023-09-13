@@ -23,6 +23,7 @@ import { PER_TipoPersona }                      from 'src/app/_models/PER_Person
 export class PersoneFilterComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+  formClean= true;
 
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');
@@ -52,7 +53,7 @@ export class PersoneFilterComponent implements OnInit {
 
     this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
     this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
-    this.tipoPersonaFilter.valueChanges.subscribe(val => {this.applyFilterDx('tipoPersonaID', val);})
+    // this.tipoPersonaFilter.valueChanges.subscribe(val => {this.applyFilterDx('tipoPersonaID', val);})
     this.annoNascitaFilter.valueChanges.subscribe(val => {this.applyFilterDx('annoNascita', val);})
     this.indirizzoFilter.valueChanges.subscribe(val => {this.applyFilterDx('indirizzo', val);})
     this.comuneFilter.valueChanges.subscribe(val => {this.applyFilterDx('comune', val);})
@@ -66,8 +67,21 @@ export class PersoneFilterComponent implements OnInit {
     this.personeListComponent.filterValues[field] = val;
     this.personeListComponent.matDataSource.filter = JSON.stringify(this.personeListComponent.filterValues);
     this.personeListComponent.getEmailAddresses();
+    this.formClean = this.isFormClean();
   }
 
+  isFormClean(): boolean {
+    return (
+      this.nomeFilter.value === '' &&
+      this.cognomeFilter.value === '' &&
+      this.annoNascitaFilter.value === '' &&
+      this.indirizzoFilter.value === '' &&
+      this.comuneFilter.value === '' &&
+      this.provFilter.value === '' &&
+      this.emailFilter.value === '' &&
+      this.telefonoFilter.value === ''
+    );
+  }
 //#endregion
 
 //#region ----- Reset vari ---------------------

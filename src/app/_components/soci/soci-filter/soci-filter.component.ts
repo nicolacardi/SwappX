@@ -24,6 +24,9 @@ export class SociFilterComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
+  formClean= true;
+
+
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');
   tipoSocioFilter= new UntypedFormControl('');
@@ -66,8 +69,23 @@ export class SociFilterComponent implements OnInit {
     this.sociListComponent.filterValues[field] = val;
     this.sociListComponent.matDataSource.filter = JSON.stringify(this.sociListComponent.filterValues);
     this.sociListComponent.getEmailAddresses();
+    this.formClean = this.isFormClean();
+
   }
 
+  isFormClean(): boolean {
+
+    return (
+      this.nomeFilter.value === '' &&
+      this.cognomeFilter.value === '' &&
+      this.tipoSocioFilter.value === null &&
+      this.dataRichiestaDal.value === '' &&
+      this.dataRichiestaAl.value === '' &&
+      this.dataAccettazioneDal.value === '' &&
+      this.dataAccettazioneAl.value === '' &&
+      this.ckAttivo.value === false //QUEST'ULTIMO NON FUNZIONA BENE
+    );
+  }
 //#endregion
 
 //#region ----- Reset vari ---------------------

@@ -16,6 +16,9 @@ import { GenitoriListComponent } from '../genitori-list/genitori-list.component'
 export class GenitoriFilterComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+
+  formClean= true;
+
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');
   dtNascitaFilter = new UntypedFormControl('');
@@ -53,6 +56,22 @@ export class GenitoriFilterComponent implements OnInit {
     this.genitoriListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.genitoriListComponent.matDataSource.filter = JSON.stringify(this.genitoriListComponent.filterValues);
     this.genitoriListComponent.getEmailAddresses();
+    this.formClean = this.isFormClean();
+
+  }
+
+  isFormClean(): boolean {
+    return (
+      this.nomeFilter.value === '' &&
+      this.cognomeFilter.value === '' &&
+      this.dtNascitaFilter.value === '' &&
+      this.indirizzoFilter.value === '' &&
+      this.comuneFilter.value === '' &&
+      this.provFilter.value === '' &&
+      this.emailFilter.value === '' &&
+      this.telefonoFilter.value === '' &&
+      this.nomeCognomeAlunnoFilter.value === ''
+    );
   }
 //#endregion
 
