@@ -17,7 +17,7 @@ import { LoadingService }                       from '../../utilities/loading/lo
 import { PersoneService }                       from '../persone.service';
 
 //models
-import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
+import { PER_Persona }                          from 'src/app/_models/PER_Persone';
 import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
@@ -31,7 +31,6 @@ export class PersonaEditComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
   persona$!:                                    Observable<PER_Persona>;
-  obsTipiPersona$!:                             Observable<PER_TipoPersona[]>;
   currPersona!:                                 User;
 
   form! :                                       UntypedFormGroup;
@@ -66,7 +65,6 @@ export class PersonaEditComponent implements OnInit {
 
     this.form = this.fb.group({
       id:                         [null],
-      tipoPersonaID:              ['', Validators.required],
       ckAttivo:                   [true]
     });  
   }

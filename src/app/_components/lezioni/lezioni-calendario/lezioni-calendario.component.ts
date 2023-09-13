@@ -33,6 +33,7 @@ import { UserService }                          from 'src/app/_user/user.service
 //models
 import { CAL_Lezione }                          from 'src/app/_models/CAL_Lezione';
 import { User }                                 from 'src/app/_user/Users';
+import { TipiPersonaService } from '../../persone/tipi-persona.service';
 
 //#endregion
 @Component({
@@ -44,6 +45,7 @@ export class LezioniCalendarioComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
   private currUser!:                            User;
+  almenoUnRuoloEditor = false;
   toggleDocentiMaterie =                        "materie";
   Events: any[] = [];
   
@@ -235,13 +237,13 @@ export class LezioniCalendarioComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor( 
-    private svcLezioni:       LezioniService,
-    private svcUser:          UserService,
-    private _loadingService:  LoadingService,
-    private _snackBar:        MatSnackBar,
-    public _dialog:           MatDialog, 
-    public appRef:            ApplicationRef ) {
+  constructor( private svcLezioni:              LezioniService,
+                private svcUser:                UserService,
+                private svcTipiPersona:         TipiPersonaService,
+                private _loadingService:        LoadingService,
+                private _snackBar:              MatSnackBar,
+                public _dialog:                 MatDialog, 
+                public appRef:                  ApplicationRef ) {
 
     this.currUser = Utility.getCurrentUser();
 
@@ -302,18 +304,25 @@ export class LezioniCalendarioComponent implements OnInit {
         }
       }  
 
-      
-      if (this.currUser.persona!.tipoPersona!.ckEditor) {
-        this.calendarOptions.editable =             true;             //consente modifiche agli eventi presenti   :  da gestire sulla base del ruolo
-        this.calendarOptions.selectable =           true;             //consente di creare eventi                 :  da gestire sulla base del ruolo
-        this.calendarOptions.eventStartEditable =   true;             //consente di draggare eventi               :  da gestire sulla base del ruolo
-        this.calendarOptions.eventDurationEditable =true;             //consente di modificare la lunghezza eventi:  da gestire sulla base del ruolo
-      } else {
-        this.calendarOptions.editable =             false;             //consente modifiche agli eventi presenti   :  da gestire sulla base del ruolo
-        this.calendarOptions.selectable =           false;             //consente di creare eventi                 :  da gestire sulla base del ruolo
-        this.calendarOptions.eventStartEditable =   false;             //consente di draggare eventi               :  da gestire sulla base del ruolo
-        this.calendarOptions.eventDurationEditable =false;             //consente di modificare la lunghezza eventi:  da gestire sulla base del ruolo
-      }
+      this.calendarOptions.editable =             false;             //consente modifiche agli eventi presenti
+      this.calendarOptions.selectable =           false;             //consente di creare eventi
+      this.calendarOptions.eventStartEditable =   false;             //consente di draggare eventi
+      this.calendarOptions.eventDurationEditable =false;             //consente di modificare la lunghezza eventi
+
+      this.currUser.persona?._LstRoles!.forEach(
+        role=> {this.svcTipiPersona.getByDescrizione(role).subscribe(
+          res=> {
+            this.almenoUnRuoloEditor = true;
+            //se uno solo dei ruoli ha diritto di editor gli viene concesso
+            if (res.ckEditor) {
+            this.calendarOptions.editable =             true;             //consente modifiche agli eventi presenti
+            this.calendarOptions.selectable =           true;             //consente di creare eventi
+            this.calendarOptions.eventStartEditable =   true;             //consente di draggare eventi
+            this.calendarOptions.eventDurationEditable =true;             //consente di modificare la lunghezza eventi
+          }}
+        )}
+      );
+
 
       if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni') 
         this.setEventiDocenti();
@@ -541,7 +550,7 @@ export class LezioniCalendarioComponent implements OnInit {
 
       //if (this.svcUser.currentUser.ruoloID>=7) {
 
-      if (this.svcUser.currentUser.persona!.tipoPersona?.ckEditor || (this.dove == "orarioDocente")) {
+      if (this.almenoUnRuoloEditor || (this.dove == "orarioDocente")) {
         const dialogRef = this._dialog.open(LezioneComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(  () => this.loadData() );
       }

@@ -155,8 +155,8 @@ export class GenitoreEditComponent implements OnInit {
       if(result) {
         this.svcGenitori.delete(Number(this.genitoreID))
         .pipe(
-          tap( () => this.personaFormComponent.form.controls.tipoPersonaID.setValue(12)),
-          concatMap(()=> this.personaFormComponent.save()) //non cancelliamo la persona ma impostiamo a non assegnato il tipo
+          //tap( () => this.personaFormComponent.form.controls.tipoPersonaID.setValue(12)),
+          //concatMap(()=> this.personaFormComponent.save()) //non cancelliamo la persona ma impostiamo a non assegnato il tipo
         ).subscribe({
           next: res=>{
             this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});

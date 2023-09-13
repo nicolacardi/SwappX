@@ -87,10 +87,11 @@
 <!-- ********************************    MAT TAB ANAGRAFICA *********************************** -->
                 <mat-tab  label="Dati Anagrafici">
                     <!-- L'*ngIf sia ripara dal caso in cui non ci sia ancora alunno$ sia CREA il form in quanto fa la | async -->
+                    <!-- [tipoPersonaID]="1" -->
                     <div *ngIf="(alunno$ | async) || emptyForm" class="mt10 ">
                         <app-persona-form class="mt10" 
                             [personaID] = "personaID" 
-                            [tipoPersonaID]="1"
+
                             [dove]="'alunno-edit'"
                             (formValid)="formPersonaValidEmitted($event)" 
                             #apppersonaForm

@@ -2,7 +2,7 @@ import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { iif, Observable, of }                           from 'rxjs';
+import { firstValueFrom, iif, Observable, of }                           from 'rxjs';
 import { concatMap, finalize, tap }                                  from 'rxjs/operators';
 
 //components
@@ -25,6 +25,7 @@ import { DOC_TipoVerbale, DOC_Verbale, DOC_VerbalePresente }         from 'src/a
 import { PER_Persona }                          from 'src/app/_models/PER_Persone';
 import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { DialogDataVerbale }                    from 'src/app/_models/DialogData';
+import { TipiPersonaService } from '../../persone/tipi-persona.service';
 
 
 @Component({
@@ -50,17 +51,18 @@ export class VerbaleEditComponent implements OnInit {
   breakpoint!:                                  number;
 //#endregion
 
-  constructor(public _dialogRef:                          MatDialogRef<VerbaleEditComponent>,
+  constructor(public _dialogRef:                MatDialogRef<VerbaleEditComponent>,
               
-              private fb:                                 UntypedFormBuilder, 
-              private svcVerbali:                         VerbaliService,
-              private svcVerbaliPresenti:                 VerbaliPresentiService,
-              private svcPersone:                         PersoneService,
-              private svcClassiSezioniAnni:               ClassiSezioniAnniService,
+              private fb:                       UntypedFormBuilder, 
+              private svcVerbali:               VerbaliService,
+              private svcVerbaliPresenti:       VerbaliPresentiService,
+              private svcPersone:               PersoneService,
+              private svcTipiPersona:           TipiPersonaService,
+              private svcClassiSezioniAnni:     ClassiSezioniAnniService,
               @Inject(MAT_DIALOG_DATA) public data:       DialogDataVerbale,
-              private _loadingService:                    LoadingService,
-              public _dialog:                             MatDialog,
-              private _snackBar:                          MatSnackBar ) {
+              private _loadingService:          LoadingService,
+              public _dialog:                   MatDialog,
+              private _snackBar:                MatSnackBar ) {
 
     _dialogRef.disableClose = true;
 
@@ -130,9 +132,19 @@ export class VerbaleEditComponent implements OnInit {
       .pipe( tap(
         verbale => {
           //impostare i flag estraendo l'array da verbale.personale
-          verbale._VerbalePresenti.forEach((x, index) =>
+          verbale._VerbalePresenti.forEach(async (x, index) =>
             { //devo inserire SOLO quelli che sono del personale
-              if (x.persona!.tipoPersona?.ckPersonale == true) 
+              let personale = false;
+
+              //il seguente ciclo dovrebbe determinare se personale = true o personale = false
+              for (let i=0; i <  x.persona!._LstRoles!.length; i++){
+                await firstValueFrom(this.svcTipiPersona.getByDescrizione(x.persona!._LstRoles![i])
+                .pipe(
+                  tap (role=> {if (role.ckPersonale) personale = true }
+                )))
+              }
+
+              if (personale) 
                 arrPersonaleIDPresenti.push(verbale._VerbalePresenti[index].personaID)
               else 
                 arrGenitoriIDPresenti.push(verbale._VerbalePresenti[index].personaID)

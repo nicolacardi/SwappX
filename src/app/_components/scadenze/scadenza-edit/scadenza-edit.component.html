@@ -196,7 +196,7 @@
                         <mat-option class="fs12 left" *ngFor="let element of personeListArr" [value]="element.id">
                             <mat-icon (click)="addToSel(element)" class="pointer tx-right">add_circle_outline</mat-icon>
                             <span class="ml10">{{element.nome}} {{element.cognome}}</span>
-                            <span class="ml10 cgrey _pos-absolute l200">{{element.tipoPersona!.descrizione}}</span>
+                            <!-- <span class="ml10 cgrey _pos-absolute l200">{{element.tipoPersona!.descrizione}}</span> -->
                         </mat-option>
                     </mat-list>
                 </mat-grid-tile>
@@ -208,7 +208,7 @@
                         <mat-option class="fs12 left" style="height: 23px; width: 500px" *ngFor="let element of personeListSelArr" [value]="element.id">
                             <mat-icon (click)="removeFromSel(element)" class="pointer tx-right">remove_circle_outline</mat-icon> 
                             <span class="ml10">{{element.persona!.nome}} {{element.persona!.cognome}}</span>
-                            <span class="ml10 cgrey _pos-absolute l200">{{element.persona!.tipoPersona!.descrizione}}</span>
+                            <!-- <span class="ml10 cgrey _pos-absolute l200">{{element.persona!.tipoPersona!.descrizione}}</span> -->
 
                             <!-- [ngClass]="{'invisible': element.ckLetto}" serve prima passare qui lo scadenzapersona-->
                             <mat-icon matTooltip="letto" *ngIf="element.ckLetto" style="position:absolute; right: 10px; top: 0px">done</mat-icon> 

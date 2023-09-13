@@ -32,6 +32,11 @@ export class TipiPersonaService {
     //http://213.215.231.4/swappX/api/PER_TipiPersona/3
   }
 
+  getByDescrizione(descrizione: string): Observable<PER_TipoPersona>{
+    return this.http.get<PER_TipoPersona>(environment.apiBaseUrl+'PER_TipiPersona/GetByDescrizione/'+descrizione);
+    //http://213.215.231.4/swappX/api/PER_TipiPersona/GetByDescrizione/Alunno
+  }
+
   put(formData: any): Observable <any>{
     return this.http.put( environment.apiBaseUrl  + 'PER_TipiPersona/' + formData.id , formData);    
   }

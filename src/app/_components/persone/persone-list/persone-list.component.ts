@@ -45,8 +45,8 @@ export class PersoneListComponent implements OnInit {
     "actionsColumn", 
     "nome", 
     "cognome", 
-    "tipoPersona",
-    "tipoPersonaID",
+    // "tipoPersona",
+    // "tipoPersonaID",
     "dtNascita", 
     "indirizzo", 
     "comune", 
@@ -163,9 +163,11 @@ export class PersoneListComponent implements OnInit {
     else  obsPersone$= this.svcPersone.list();
  
     const loadPersone$ =this._loadingService.showLoaderUntilCompleted(obsPersone$);
-    loadPersone$.pipe(
-        map(val=> val.filter( val => (val.tipoPersonaID != 1 && val.tipoPersonaID != 3 ))
-      )
+    loadPersone$
+    .pipe(
+        //map(val=> val.filter( val => (val.tipoPersonaID != 1 && val.tipoPersonaID != 3 ))) //vogliamo vedere tutti meno genitori e alunni...
+        map(val=> val.filter( val => (!val._LstRoles!.includes('Alunno') && !val._LstRoles!.includes('Genitore')))) //vogliamo vedere tutti meno genitori e alunni...
+
     ).subscribe( val => {
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;

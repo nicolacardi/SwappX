@@ -4,7 +4,7 @@ import { Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { Observable }                           from 'rxjs';
+import { Observable, firstValueFrom }                           from 'rxjs';
 import { concatMap, finalize, take, tap }                            from 'rxjs/operators';
 
 import { registerLocaleData }                   from '@angular/common';
@@ -91,7 +91,7 @@ export class ScadenzaEditComponent implements OnInit {
               private fb:                                 UntypedFormBuilder, 
               private svcScadenze:                        ScadenzeService,
               private svcPersone:                         PersoneService,
-              private svcGenitori:                        GenitoriService,
+              private svcTipiPersona:                     TipiPersonaService,
 
               private svcScadenzePersone:                 ScadenzePersoneService,
               private svcTipiScadenza:                    TipiScadenzaService,
@@ -417,11 +417,33 @@ export class ScadenzaEditComponent implements OnInit {
 
       //aggiungo alle selezioni quelli dei gruppi e tolgo dalle persone contemporaneamente
       this.form.controls.gruppi.value.forEach(
-        (val:number) => {
+        async (val:number) => {
           for (let i = this.personeListArr.length - 1; i>0; i--) {
             
-            //se il tipo è uguale a quello che sto guardando OPPURE se trovo me stesso lo aggiungo
-            if (this.personeListArr[i].tipoPersona!.id == val  || this.personeListArr[i].id === this.currUser.personaID) { 
+
+            // this.currUser.persona?._LstRoles!.forEach(
+            //   role=> {this.svcTipiPersona.getByDescrizione(role).subscribe(
+            //     res=> {
+            //       this.almenoUnRuoloEditor = true;
+            //       //se uno solo dei ruoli ha diritto di editor gli viene concesso
+            //       if (res.ckEditor) {
+            //       this.calendarOptions.editable =             true;             //consente modifiche agli eventi presenti
+            //       this.calendarOptions.selectable =           true;             //consente di creare eventi
+            //       this.calendarOptions.eventStartEditable =   true;             //consente di draggare eventi
+            //       this.calendarOptions.eventDurationEditable =true;             //consente di modificare la lunghezza eventi
+            //     }}
+            //   )}
+            // );
+
+            //cerco val  e ne estraggo al descrizione poi guardo se c'è tra quelle di lstRoles della persona
+            let descrTipo!: string;
+            
+            await firstValueFrom(this.svcTipiPersona.get(val).pipe(tap(tipoPersona => descrTipo = tipoPersona.descrizione)));
+
+            //se il tipo è uguale a quello che sto caricando (val) OPPURE se trovo me stesso lo aggiungo
+            //if (this.personeListArr[i].tipoPersona!.id == val  || this.personeListArr[i].id === this.currUser.personaID) { 
+            if (this.personeListArr[i]._LstRoles!.includes(descrTipo)  || this.personeListArr[i].id === this.currUser.personaID) { 
+
               count++; 
               let objScadenzaPersona: CAL_ScadenzaPersone = {
                 personaID: this.personeListArr[i].id,

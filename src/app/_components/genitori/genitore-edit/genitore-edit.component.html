@@ -49,9 +49,9 @@
                             </mat-grid-tile>
                         </mat-grid-list>
                 
+                        <!-- [tipoPersonaID]="3"  -->
                         <app-persona-form
                             [personaID] = "personaID"
-                            [tipoPersonaID]="3" 
                             [dove]="'genitore-edit'"
                             (formValid)="formPersonaValidEmitted($event)">   
                         </app-persona-form>

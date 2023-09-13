@@ -57,7 +57,7 @@ export class PersonaFormComponent implements OnInit {
 
   _lstRoles!:                                   string[];
   lstTipiPersona!:                              PER_TipoPersona[];
-  selectedTipi:                                 number[] = []
+  selectedRoles:                                 number[] = []
 
 //#endregion
 
@@ -115,7 +115,8 @@ export class PersonaFormComponent implements OnInit {
     });
 
     this.currPersona = Utility.getCurrentUser();
-    this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.persona!.tipoPersona!.livello);
+    //this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.persona!.tipoPersona!.livello);
+    this.obsTipiPersona$ = this.svcTipiPersona.list();
 
   }
   
@@ -139,7 +140,7 @@ export class PersonaFormComponent implements OnInit {
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
-    if (this.tipoPersonaID) this.form.controls.tipoPersonaID.setValue(this.tipoPersonaID);
+    //if (this.tipoPersonaID) this.form.controls.tipoPersonaID.setValue(this.tipoPersonaID);
 
 
     if (this.personaID && this.personaID + '' != "0") {
@@ -161,10 +162,10 @@ export class PersonaFormComponent implements OnInit {
 
               for (let i= 0; i < persona._LstRoles!.length; i++)
               {
-                const tipoPersona = this.lstTipiPersona.find(tp => tp.descrizione === persona._LstRoles![i]);  //A VOLTE NON FUNZIA
-                if (tipoPersona) this.selectedTipi.push(tipoPersona.id)
+                const ruoloPersona = this.lstTipiPersona.find(tp => tp.descrizione === persona._LstRoles![i]);
+                if (ruoloPersona) this.selectedRoles.push(ruoloPersona.id)
               }
-              this.form.controls._lstRoles.setValue(this.selectedTipi);
+              this.form.controls._lstRoles.setValue(this.selectedRoles);
             }
 
           )
@@ -231,15 +232,15 @@ export class PersonaFormComponent implements OnInit {
     if (this.personaID == null || this.personaID == 0) {
       return this.svcPersone.post(this.form.value).pipe(
         tap( res=>{
-          if (this.form.controls.tipoPersonaID.value == 6 || this.form.controls.tipoPersonaID.value == 7) //TODO fa schifo lo so
-            {
-              // let docente :PER_Docente = {  //TODO
-              //   personaID : res.id,
-              //   ckAttivo : true
-              //   persona: {}
-              // }
-              // this.svcDocenti.post(docente).subscribe()
-            }
+          // if (this.form.controls.tipoPersonaID.value == 6 || this.form.controls.tipoPersonaID.value == 7) //TODO fa schifo lo so
+          //   {
+          //     // let docente :PER_Docente = {  //TODO
+          //     //   personaID : res.id,
+          //     //   ckAttivo : true
+          //     //   persona: {}
+          //     // }
+          //     // this.svcDocenti.post(docente).subscribe()
+          //   }
           }
         )
       )
@@ -267,16 +268,16 @@ export class PersonaFormComponent implements OnInit {
 
     console.log("elenco dei valori arrivati inizialmente", this._lstRoles); //è l'elenco dei ruoli "precedenti". E' un array di stringhe del tipo ["Alunno", "ITManager"...]
 
-    const selectedTipoPersonaIds = this.form.controls._lstRoles.value;
-    const selectedTipoPersonaDescrizioni = selectedTipoPersonaIds.map((tipo:any) => {const tipoPersona = this.lstTipiPersona.find(tp => tp.id === tipo);
+    const selectedRolesIds = this.form.controls._lstRoles.value;
+    const selectedRolesDescrizioni = selectedRolesIds.map((tipo:any) => {const tipoPersona = this.lstTipiPersona.find(tp => tp.id === tipo);
       return tipoPersona ? tipoPersona.descrizione : ''; // Restituisce la descrizione se trovata, altrimenti una stringa vuota
     });
 
-    console.log("elenco dei valori selezionati dall'utente",selectedTipoPersonaDescrizioni);
+    console.log("elenco dei valori selezionati dall'utente",selectedRolesDescrizioni);
 
 
     this._lstRoles.forEach(async roleinput=> {
-      {if (!selectedTipoPersonaDescrizioni.includes(roleinput))
+      {if (!selectedRolesDescrizioni.includes(roleinput))
         {
           //questo roleinput è stato CANCELLATO, va dunque rimosso (ammesso che si possa)
           switch (roleinput) {
@@ -309,7 +310,7 @@ export class PersonaFormComponent implements OnInit {
       }
     })
 
-    selectedTipoPersonaDescrizioni.forEach(async (roleselected:string)=> {
+    selectedRolesDescrizioni.forEach(async (roleselected:string)=> {
       {if (!this._lstRoles.includes(roleselected))
         {
           //questo roleselected è stato AGGIUNTO, va dunque fatta la post
