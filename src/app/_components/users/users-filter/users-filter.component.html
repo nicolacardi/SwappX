@@ -1,9 +1,15 @@
 <div class="pt60">
 
-    <div style="text-align: center; margin-bottom: 10px;">
+    <!-- <div style="text-align: center; margin-bottom: 10px;">
         Filtri Avanzati
-    </div>
+    </div> -->
     
+    <div class="ml12 mt10">
+        <button mat-button matSuffix class="w180px ml15" mat-stroked-button aria-label="Clear" (click)="resetAllInputsAndClearFilters()" >
+            Pulisci Filtri
+        </button>
+    </div>
+
     <mat-form-field class="ml12">
         <mat-label>Nome</mat-label>
         <input matInput [formControl]="nomeFilter">
@@ -19,7 +25,7 @@
         <input matInput [formControl]="emailFilter">
     </mat-form-field>
 
-    <mat-form-field  class="ml12">
+    <!-- <mat-form-field  class="ml12">
         <mat-label>Tipo persona</mat-label>
         <mat-select [formControl]="tipoPersonaFilter" #tipoPersona>
             <mat-option [value]="null">
@@ -29,13 +35,9 @@
                 {{element.descrizione}}
             </mat-option>
         </mat-select>
-    </mat-form-field>
+    </mat-form-field> -->
 
-    <div class="ml12 mt10">
-        <button mat-button matSuffix class="w180px ml15" mat-stroked-button aria-label="Clear" (click)="resetAllInputsAndClearFilters()" >
-            Pulisci Filtri
-        </button>
-    </div>
+
 
 </div>
 

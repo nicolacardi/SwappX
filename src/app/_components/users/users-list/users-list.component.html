@@ -75,21 +75,20 @@
             <td mat-cell *matCellDef="let element" [innerHTML]="element.email | highlight:filterValue"></td>
         </ng-container>
 
-        <ng-container matColumnDef="persona.tipoPersona.descrizione">
+        <!-- <ng-container matColumnDef="persona.tipoPersona.descrizione">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>tipo</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.persona.tipoPersona.descrizione | highlight:filterValue"></td>
-        </ng-container>
+        </ng-container> -->
 
         <ng-container matColumnDef="personaID">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>personaID</th>
-            <!-- <td mat-cell *matCellDef="let element">{{element.badge}}</td> -->
             <td mat-cell *matCellDef="let element" [innerHTML]="element.personaID | highlight:filterValue"></td>
         </ng-container>
 
-        <ng-container matColumnDef="tipoPersonaID">
+        <!-- <ng-container matColumnDef="tipoPersonaID">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>tipoPersonaID</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.persona.tipoPersonaID | highlight:filterValue"></td>
-        </ng-container>
+        </ng-container> -->
 
         <!--
         <ng-container matColumnDef="ckAttivo">

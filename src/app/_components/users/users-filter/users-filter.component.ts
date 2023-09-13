@@ -20,6 +20,8 @@ import { PER_TipoPersona } from 'src/app/_models/PER_Persone';
 export class UsersFilterComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+  formClean= true;
+
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');
   emailFilter = new UntypedFormControl('');
@@ -45,7 +47,7 @@ export class UsersFilterComponent implements OnInit {
     this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
     this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
     this.emailFilter.valueChanges.subscribe(val => {this.applyFilterDx('email', val);})
-    this.tipoPersonaFilter.valueChanges.subscribe(val => {this.applyFilterDx('tipoPersona', val);})
+    //this.tipoPersonaFilter.valueChanges.subscribe(val => {this.applyFilterDx('tipoPersona', val);})
 
   }
 
@@ -54,6 +56,15 @@ export class UsersFilterComponent implements OnInit {
     this.usersListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.usersListComponent.matDataSource.filter = JSON.stringify(this.usersListComponent.filterValues);
     this.usersListComponent.getEmailAddresses();
+    this.formClean = this.isFormClean();
+  }
+
+  isFormClean(): boolean {
+    return (
+      this.nomeFilter.value === '' &&
+      this.cognomeFilter.value === '' &&
+      this.emailFilter.value === ''
+    );
   }
 //#endregion
 

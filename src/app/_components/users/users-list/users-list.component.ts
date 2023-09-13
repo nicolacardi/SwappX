@@ -44,10 +44,10 @@ export class UsersListComponent implements OnInit {
       "persona.nome",
       "persona.cognome",
       "email", 
-      "persona.tipoPersona.descrizione",
+      // "persona.tipoPersona.descrizione",
   
       "personaID",
-      "tipoPersonaID"
+      // "tipoPersonaID"
       // "badge"
   ];
 

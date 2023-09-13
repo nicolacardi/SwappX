@@ -24,6 +24,9 @@ import { PAG_TipoPagamento }                    from 'src/app/_models/PAG_TipoPa
 export class PagamentiFilterComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+
+  formClean= true;
+
   causaliPagamento$!:                           Observable<PAG_CausalePagamento[]>;
   tipiPagamento$!:                              Observable<PAG_TipoPagamento[]>;
   
@@ -81,6 +84,23 @@ export class PagamentiFilterComponent implements OnInit {
     this.pagamentiListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.pagamentiListComponent.matDataSource.filter = JSON.stringify(this.pagamentiListComponent.filterValues);
     // this.pagamentiListComponent.updateEmailAddresses();
+    this.formClean = this.isFormClean();
+  }
+
+  isFormClean(): boolean {
+    console.log(this.dataDal.value, this.dataAl.value);
+    return (
+
+      (this.tipoPagamentoFilter.value === null || this.tipoPagamentoFilter.value === '') &&
+      (this.causaleFilter.value === null || this.causaleFilter.value === '') &&
+      this.nomeFilter.value === '' &&
+      this.cognomeFilter.value === '' &&
+      this.importoPiuDiFilter.value === '' &&
+      this.importoMenoDiFilter.value === '' &&
+      this.importoFilter.value === '' &&
+      (this.dataDal.value === null || this.dataDal.value === '') &&
+      (this.dataAl.value === null || this.dataAl.value === '')
+    );
   }
 //#endregion
 

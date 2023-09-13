@@ -27,6 +27,8 @@ import { Observable }                           from 'rxjs';
 export class ObiettiviFilterComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+  formClean= true;
+
   obsClassi$!:                Observable<CLS_Classe[]>;
   obsAnni$!:                  Observable<ASC_AnnoScolastico[]>;
   obsMaterie$!:               Observable<MAT_Materia[]>;
@@ -62,12 +64,20 @@ export class ObiettiviFilterComponent implements OnInit {
     this.annoFilter.valueChanges.subscribe(val => {this.applyFilterDx('annoID', val);})
   }
 
-  
   applyFilterDx(field: keyof typeof this.obiettiviListComponent.filterValues, val: string) {
     //this.resetFilterSx();
     this.obiettiviListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.obiettiviListComponent.matDataSource.filter = JSON.stringify(this.obiettiviListComponent.filterValues);
     // this.obiettiviListComponent.updateEmailAddresses();
+    this.formClean = this.isFormClean();
+  }
+
+  isFormClean(): boolean {
+    return (
+      this.classeFilter.value === '' &&
+      this.materiaFilter.value === '' &&
+      this.annoFilter.value === ''
+    );
   }
 //#endregion
 
