@@ -49,7 +49,7 @@ export class IscrizioneConsensiComponent implements OnInit  {
 
 //#region ----- ViewChild Input Output -------
   @Input() iscrizioneID!:                       number;
-  @Input() tipo!:                               string;
+  @Input() contesto!:                           string;
 //#endregion
 
 //#region ----- Constructor --------------------
@@ -80,7 +80,7 @@ constructor(private svcConsensi:                ConsensiService,
   loadData() {
     this.obsConsensi$ = this.svcConsensi.list()
     .pipe( 
-      map(res=> res.filter((x) => x.tipo == this.tipo)), //carico domande x consensi o dati economici a seconda del valore in input
+      map(res=> res.filter((x) => x.contesto == this.contesto)), //carico domande x consensi o dati economici a seconda del valore in input
     )
     ;  
     const loadConsensi$ =this._loadingService.showLoaderUntilCompleted(this.obsConsensi$);
@@ -94,8 +94,12 @@ constructor(private svcConsensi:                ConsensiService,
         //element.id è l'id della domanda cioè di _UT_Consensi
         this.questions = questions;
           this.questions.forEach((element) => {
-            if (element.numOpzioni >1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.required));
-            if (element.numOpzioni ==1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.requiredTrue));
+            if (element.tipo == 'Scelta Singola') {
+              if (element.numOpzioni >1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.required));
+              if (element.numOpzioni ==1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.requiredTrue));
+            }
+            if (element.tipo == 'Scelta Multipla') { //qui devo aggiungere N Controls......e non uno solo! Ma devo proprio? forse non devo proprio
+            }
           })
       });
 

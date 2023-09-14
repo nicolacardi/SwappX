@@ -38,7 +38,7 @@ export class ConsensiListComponent implements OnInit{
     "actionsColumn", 
     // "seq",
     "domanda", 
-    "tipo",
+    "contesto",
     // "numOpzioni",
     "testo1",
     "testo2",
@@ -154,7 +154,7 @@ export class ConsensiListComponent implements OnInit{
       
       let searchTerms = JSON.parse(filter);
       let boolSx = String(data.domanda).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.tipo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.contesto).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
       return boolSx;
     }
     return filterFunction;

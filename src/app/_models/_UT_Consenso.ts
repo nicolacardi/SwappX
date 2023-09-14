@@ -2,7 +2,8 @@ import { _UT_Risorsa } from "./_UT_Risorsa";
 
 export interface _UT_Consenso {
     id:                                         number;
-    tipo:                                       string; //"Consensi"/"Dati Economici"
+    contesto:                                   string; //"Consensi"/"Dati Economici"/"Cert.Compoetenze"/"Cons. Orientativo"
+    tipo:                                       string; //"Scelta Singola"/"Scelta Multipla"/"Risposta Libera"
     titolo:                                     string;
     domanda:                                    string;
     numOpzioni:                                 number;

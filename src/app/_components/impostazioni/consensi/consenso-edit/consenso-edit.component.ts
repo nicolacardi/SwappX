@@ -35,7 +35,7 @@ export class ConsensoEditComponent implements OnInit {
 //#region ----- Variabili ----------------------
 
   consenso$!:                                   Observable<_UT_Consenso>;
-  obsRisorse$!:                                      Observable<_UT_Risorsa[]>;
+  obsRisorse$!:                                 Observable<_UT_Risorsa[]>;
   form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
@@ -69,8 +69,9 @@ export class ConsensoEditComponent implements OnInit {
     this.form = this.fb.group({
       id:                                       [null],
       titolo:                                   [''],
+      tipo:                                     [''],
       domanda:                                  ['', { validators:[ Validators.required]}],
-      tipo:                                     ['', { validators:[ Validators.required]}],
+      contesto:                                 ['', { validators:[ Validators.required]}],
       numOpzioni:                               [{ value: '' }, { validators:[ Validators.required]}],
       testo1:                                   [''],
       testo2:                                   [''],
@@ -105,6 +106,7 @@ export class ConsensoEditComponent implements OnInit {
       .pipe(
           tap(
             consenso => {
+              console.log ("consenso-edit - loadData consenso: ",consenso);
               this.form.patchValue(consenso)
             }
           )
@@ -194,6 +196,8 @@ export class ConsensoEditComponent implements OnInit {
 
 
 //#endregion
+
+
 
 
 

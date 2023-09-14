@@ -93,7 +93,7 @@ export class PersonaFormComponent implements OnInit {
 
     this.form = this.fb.group({
       id:                                       [null],
-      tipoPersonaID:                            ['', Validators.required],
+      //tipoPersonaID:                            ['', Validators.required],
       _lstRoles:                                [''],
 
       nome:                                     ['', { validators:[ Validators.required, Validators.maxLength(50)]}],

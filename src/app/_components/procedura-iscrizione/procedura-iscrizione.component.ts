@@ -163,7 +163,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
     let formValues! : any;
 
-    if (tipo == 'Consensi')    formValues = this.ConsensiFormComponent.formConsensi.value;
+    if (tipo == 'Consensi')          formValues = this.ConsensiFormComponent.formConsensi.value;
     if (tipo == 'Dati Economici')    formValues = this.DatiEconomiciFormComponent.formConsensi.value;
 
     //devo trasformare questo ogetto in un altro
