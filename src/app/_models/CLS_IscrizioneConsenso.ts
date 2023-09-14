@@ -5,6 +5,7 @@ export interface CLS_IscrizioneConsenso {
         tipo:                                   string;
         iscrizioneID:                           number;
         consensoID:                             number;
+        rispostaLibera:                         string;
         risposta1:                              boolean;
         risposta2:                              boolean;
         risposta3:                              boolean;

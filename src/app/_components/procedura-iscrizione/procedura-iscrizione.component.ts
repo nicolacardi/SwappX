@@ -166,6 +166,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
     if (tipo == 'Consensi')          formValues = this.ConsensiFormComponent.formConsensi.value;
     if (tipo == 'Dati Economici')    formValues = this.DatiEconomiciFormComponent.formConsensi.value;
 
+    console.log("formValues", formValues);
     //devo trasformare questo ogetto in un altro
     //ad esempio da
     // const formValues = {
@@ -178,6 +179,11 @@ export class ProceduraIscrizioneComponent implements OnInit {
     //   16: 3,
     //   17: 4,
     //   18: 5
+    //   28_1: '',
+    //   28_2: true,
+    //   28_3: true,
+    //   28_4: ''
+    //...
     // }; 
     //deve diventare
 
@@ -189,42 +195,92 @@ export class ProceduraIscrizioneComponent implements OnInit {
     // 14 false true false false false
     // 15 true false false false false
     // 16 false false true false false
+    // 28 false true true false false
 
     let form : CLS_IscrizioneConsenso;
 
-    for (const key in formValues) {
-      if (formValues.hasOwnProperty(key)) {
-        const value = formValues[key];
-        const consensoId = parseInt(key);
-        const risposta1 = value === true || parseInt(value) === 1 ? true : false;
-        const risposta2 = parseInt(value) === 2 ? true : false;
-        const risposta3 = parseInt(value) === 3 ? true : false;
-        const risposta4 = parseInt(value) === 4 ? true : false;
-        const risposta5 = parseInt(value) === 5 ? true : false;
-        const risposta6 = parseInt(value) === 6 ? true : false;
-    
-        form = {
-          iscrizioneID: this.iscrizioneID,
-          consensoID: consensoId,
-          tipo: tipo,
-          risposta1: risposta1,
-          risposta2: risposta2,
-          risposta3: risposta3,
-          risposta4: risposta4,
-          risposta5: risposta5,
-          risposta6: risposta6,
-        };
-        this.svcIscrizioneConsensi.post(form).subscribe(
-          {
-            next: res=> {
-              // console.log ("inserita domanda", consensoId)
-            },
-            error: err=> {
-              // console.log ("errore nell'nserimento", consensoId)
-            }
-          }
-        )
+    //seve un ciclo diverso per i casi in cui la key contiene _ 
 
+    let proceedToSave;
+    for (const key in formValues) {
+      console.log("***************************");
+
+      // console.log("key",key);
+      if (formValues.hasOwnProperty(key)) {
+        const value = formValues[key]
+        // console.log("value",value);
+        const consensoId = parseInt(key);
+        // console.log("consensoId",consensoId);
+        const parts = key.split('_');
+
+        let rispostaLibera= '';
+        let risposta1: any;
+        let risposta2: any;
+        let risposta3: any;
+        let risposta4: any;
+        let risposta5: any;
+        let risposta6: any;
+
+        let proceedToSave = false;
+        //Ci sono tre casi
+        //1 la key è singola del tipo xx_RL (domanda a Risposta Libera)
+        //2 la key è multipla del tipo xx_1 xx_2 xx_3....xx_6 (domanda a risposta multipla)
+        //3 la key è singola del tipo xx (domanda a Risposta Unica/optiongroup)
+
+        if (key.indexOf('_RL')!== -1) {         //Risposta Libera
+          proceedToSave = true;
+          rispostaLibera = formValues[key];
+          risposta1 = false
+          risposta2 = false;
+          risposta3 = false;
+          risposta4 = false;
+          risposta5 = false;
+          risposta6 = false;
+        } else if (key.indexOf('_1')!== -1) {   //Risposta Multipla (ci sono 6 keys)
+          proceedToSave = true;
+          risposta1 = formValues[key] === true ? true : false;
+          risposta2 = formValues[parts[0]+"_2"] === true ? true : false;
+          risposta3 = formValues[parts[0]+"_3"] === true ? true : false;
+          risposta4 = formValues[parts[0]+"_4"] === true ? true : false;
+          risposta5 = formValues[parts[0]+"_5"] === true ? true : false;
+          risposta6 = formValues[parts[0]+"_6"] === true ? true : false;
+        } else if (parts.length <2) {           //Risposta Singola (c'è una sola risposta true, le altre vanno poste a false)
+          proceedToSave = true;
+          //Se non c'è _ nella chiave allora significa che la risposta data è UNA SOLA, le altre vanno impostate a false a prescindere
+          risposta1 = value === true || parseInt(value) === 1 ? true : false;
+          risposta2 = parseInt(value) === 2 ? true : false;
+          risposta3 = parseInt(value) === 3 ? true : false;
+          risposta4 = parseInt(value) === 4 ? true : false;
+          risposta5 = parseInt(value) === 5 ? true : false;
+          risposta6 = parseInt(value) === 6 ? true : false;
+        }
+        console.log("proceedtoSave", proceedToSave);
+        if (proceedToSave) {
+          let form: CLS_IscrizioneConsenso;
+          form  = {
+            iscrizioneID: this.iscrizioneID,
+            consensoID: consensoId,
+            tipo: tipo,
+            rispostaLibera: rispostaLibera,
+            risposta1: risposta1,
+            risposta2: risposta2,
+            risposta3: risposta3,
+            risposta4: risposta4,
+            risposta5: risposta5,
+            risposta6: risposta6,
+          };
+          console.log (form);
+          this.svcIscrizioneConsensi.post(form).subscribe(
+            {
+              next: res=> {
+                // console.log ("inserita domanda", consensoId)
+              },
+              error: err=> {
+                // console.log ("errore nell'inserimento", consensoId)
+              }
+            }
+          )
+        }
       }
     }
 

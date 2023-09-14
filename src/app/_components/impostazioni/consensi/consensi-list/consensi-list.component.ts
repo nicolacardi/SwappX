@@ -39,6 +39,7 @@ export class ConsensiListComponent implements OnInit{
     // "seq",
     "domanda", 
     "contesto",
+    "tipo",
     // "numOpzioni",
     "testo1",
     "testo2",

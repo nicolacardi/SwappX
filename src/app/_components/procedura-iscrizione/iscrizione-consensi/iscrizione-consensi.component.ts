@@ -98,9 +98,19 @@ constructor(private svcConsensi:                ConsensiService,
               if (element.numOpzioni >1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.required));
               if (element.numOpzioni ==1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.requiredTrue));
             }
-            if (element.tipo == 'Scelta Multipla') { //qui devo aggiungere N Controls......e non uno solo! Ma devo proprio? forse non devo proprio
+            if (element.tipo == 'Scelta Multipla') { //qui devo aggiungere N Controls......e non uno solo!
+              this.formConsensi.addControl(element.id+"_1", this.fb.control(''));
+              this.formConsensi.addControl(element.id+"_2", this.fb.control(''));
+              this.formConsensi.addControl(element.id+"_3", this.fb.control(''));
+              this.formConsensi.addControl(element.id+"_4", this.fb.control(''));
+              this.formConsensi.addControl(element.id+"_5", this.fb.control(''));
+              this.formConsensi.addControl(element.id+"_6", this.fb.control(''));
+            }
+            if (element.tipo == 'Risposta Libera') {
+              this.formConsensi.addControl(element.id+"_RL", this.fb.control('', Validators.required));
             }
           })
+          console.log("this.formConsensi", this.formConsensi);
       });
 
     

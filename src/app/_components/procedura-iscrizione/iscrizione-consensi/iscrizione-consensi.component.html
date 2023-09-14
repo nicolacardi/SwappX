@@ -27,10 +27,8 @@
                 <th mat-header-cell *matHeaderCellDef ></th>
                 <td mat-cell 
                     *matCellDef="let element;  let j = index;"
-                    [attr.colspan] = "element.numOpzioni == 0? 3: 1"
-                    [ngClass]="{'_unacolonna': element.numOpzioni == 0}"
-
-
+                    [attr.colspan] = "element.numOpzioni == 0 && element.tipo != 'Risposta Libera'? 3: 1"
+                    [ngClass]="{'_unacolonna': element.numOpzioni == 0 && element.tipo != 'Risposta Libera'}"
                     >{{element.domanda}}</td>
             </ng-container>
 
@@ -41,7 +39,7 @@
                 
                 <td mat-cell 
                     *matCellDef="let element;  let j = index;" 
-                    [ngClass]="{'invisible': element.numOpzioni == 0}"
+                    [ngClass]="{'invisible': element.numOpzioni == 0 && element.tipo != 'Risposta Libera'}"
                     >
 
                     <mat-radio-group [formControlName]="element.id" 
@@ -55,9 +53,20 @@
                         <mat-radio-button *ngIf="element.numOpzioni > 5" value="6">{{element.testo6}}</mat-radio-button>
                     </mat-radio-group>
 
-                    <mat-checkbox  [formControlName]="element.id" *ngIf="element.numOpzioni == 1 || element.tipo == 'Scelta Multipla'">{{element.testo1}}</mat-checkbox>
+                    <mat-checkbox  [formControlName]="element.id" *ngIf="element.numOpzioni == 1 && element.tipo == 'Scelta Singola'">{{element.testo1}}</mat-checkbox>
 
+                    <div
+                    *ngIf="element.tipo == 'Scelta Multipla'" 
+                    aria-label="Select an option">
+                        <mat-checkbox [formControlName]="element.id+'_1'" *ngIf="element.numOpzioni > 0" value="1">{{element.testo1}}</mat-checkbox><br *ngIf="element.numOpzioni > 0">
+                        <mat-checkbox [formControlName]="element.id+'_2'" *ngIf="element.numOpzioni > 1" value="2">{{element.testo2}}</mat-checkbox><br *ngIf="element.numOpzioni > 1">
+                        <mat-checkbox [formControlName]="element.id+'_3'" *ngIf="element.numOpzioni > 2" value="3">{{element.testo3}}</mat-checkbox><br *ngIf="element.numOpzioni > 2">
+                        <mat-checkbox [formControlName]="element.id+'_4'" *ngIf="element.numOpzioni > 3" value="4">{{element.testo4}}</mat-checkbox><br *ngIf="element.numOpzioni > 3">
+                        <mat-checkbox [formControlName]="element.id+'_5'" *ngIf="element.numOpzioni > 4" value="5">{{element.testo5}}</mat-checkbox><br *ngIf="element.numOpzioni > 4">
+                        <mat-checkbox [formControlName]="element.id+'_6'" *ngIf="element.numOpzioni > 5" value="6">{{element.testo6}}</mat-checkbox>
+                    </div>
 
+                    <textarea *ngIf="element.tipo == 'Risposta Libera'" class="w300px  _noresize" placeholder="Risposta libera" matInput [formControlName]="element.id+'_RL'"></textarea>
                 </td>
             </ng-container>
 
@@ -67,7 +76,7 @@
                     class="_blue _underline pointer" 
                     *matCellDef="let element;  let j = index;" 
                     (click) = "download(element.risorsa!.id)"
-                    [ngClass]="{'invisible': element.numOpzioni == 0}"
+                    [ngClass]="{'invisible': element.numOpzioni == 0 && element.tipo != 'Risposta Libera'}"
                     >{{element.risorsa? element.risorsa.nomeFile: ''}}</td>
             </ng-container>
 
