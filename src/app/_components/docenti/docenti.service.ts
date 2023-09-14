@@ -1,11 +1,11 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { HttpClient }                           from '@angular/common/http';
+import { Injectable }                           from '@angular/core';
+import { Observable, of }                       from 'rxjs';
+import { catchError, map, tap }                 from 'rxjs/operators';
 
-import { environment } from 'src/environments/environment';
-import { FormatoData, Utility } from '../utilities/utility.component';
-import { PER_Docente } from 'src/app/_models/PER_Docente';
+import { environment }                          from 'src/environments/environment';
+import { FormatoData, Utility }                 from '../utilities/utility.component';
+import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 
 @Injectable({
   providedIn: 'root'

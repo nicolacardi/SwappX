@@ -10,6 +10,7 @@ import { DOC_Pagella }                          from 'src/app/_models/DOC_Pagell
 import { DOC_PagellaVoto }                      from 'src/app/_models/DOC_PagellaVoto.js';
 
 import { rptPagella }                           from 'src/app/_reports/rptPagella';
+import { FormatoData, Utility }                 from '../utility.component.js';
 
 
 @Injectable({
@@ -1156,8 +1157,15 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
         let cellContent = HookData.cell.raw+"";
         let last9 = cellContent.slice(-9);
         if (last9 == 'T00:00:00') { //in questo modo OSCENO identifico se si tratta di una data
-          //console.log ("Hookdata.cell", HookData.cell);
-          HookData.cell.text[0] = cellContent.slice(0,10); //non so perchè ma HookData.cell.text è un array!
+          //console.log ("Hookdata.cell.text[0]", );
+          //HookData.cell.text[0] = cellContent.slice(0,10); //non so perchè ma HookData.cell.text è un array!
+
+          var year = cellContent.substring(0,4);
+          var month = cellContent.substring(5,7);
+          let day = cellContent.substring(8,10);
+          HookData.cell.text[0] = day + '/' + month + '/' + year;
+          //HookData.cell.text[0] = Utility.formatDate(cellContent, FormatoData.dd_mm_yyyy); //NON FUNZIONANO LE UTILITY QUI, PERCHE' MAI???? TODO
+
         }
 
         // if (HookData.cell.raw === null) {

@@ -53,7 +53,7 @@ export class PersoneFilterComponent implements OnInit {
 
     this.nomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('nome', val);})
     this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
-    // this.tipoPersonaFilter.valueChanges.subscribe(val => {this.applyFilterDx('tipoPersonaID', val);})
+    this.tipoPersonaFilter.valueChanges.subscribe(val => {this.applyFilterDx('role', val);})
     this.annoNascitaFilter.valueChanges.subscribe(val => {this.applyFilterDx('annoNascita', val);})
     this.indirizzoFilter.valueChanges.subscribe(val => {this.applyFilterDx('indirizzo', val);})
     this.comuneFilter.valueChanges.subscribe(val => {this.applyFilterDx('comune', val);})
@@ -74,6 +74,7 @@ export class PersoneFilterComponent implements OnInit {
     return (
       this.nomeFilter.value === '' &&
       this.cognomeFilter.value === '' &&
+      (this.tipoPersonaFilter.value === '' || this.tipoPersonaFilter.value === null) &&
       this.annoNascitaFilter.value === '' &&
       this.indirizzoFilter.value === '' &&
       this.comuneFilter.value === '' &&

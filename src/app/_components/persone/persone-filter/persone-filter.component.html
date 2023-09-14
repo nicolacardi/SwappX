@@ -26,7 +26,7 @@
             </mat-form-field>
         </mat-grid-tile>
     </mat-grid-list>
-    <!-- <mat-grid-list class="_low-list-row no-overflowx" [cols]="1" rowHeight="60px">
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="1" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field  class="ml12">
                 <mat-label>Tipo persona</mat-label>
@@ -34,13 +34,13 @@
                     <mat-option [value]="null">
                         
                     </mat-option>
-                    <mat-option *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id">
+                    <mat-option *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.descrizione">
                         {{element.descrizione}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </mat-grid-tile>
-    </mat-grid-list> -->
+    </mat-grid-list>
     <mat-grid-list class="_low-list-row no-overflowx" [cols]="1" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field class="ml12">

@@ -17,7 +17,6 @@ import { MatSnackBar }                          from '@angular/material/snack-ba
 import { ClasseSezioneAnnoEditComponent }       from '../classe-sezione-anno-edit/classe-sezione-anno-edit.component';
 import { ClassiSezioniAnniFilterComponent }     from '../classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
-import { Utility }                              from '../../utilities/utility.component';
 
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';

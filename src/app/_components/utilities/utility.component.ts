@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors } from "@angular/forms";
+import { AbstractControl } from "@angular/forms";
 import { User } from "src/app/_user/Users";
 
 export enum FormatoData {
@@ -35,6 +35,7 @@ export abstract class Utility {
         retDate = dtISOLocaleStart.substring(0,10);
         break;
       case "dd/mm/yyyy":
+        console.log(data, formato);
         var year = data.substring(0,4);
         var month = data.substring(5,7);
         let day = data.substring(8,10);
@@ -43,6 +44,10 @@ export abstract class Utility {
     }
     return retDate;
   }
+
+
+
+
   
   //Utility per comprimere le dimensioni dell'immagine del profilo (o dell'alunno)
   public static compressImage(src: any, newX: number, newY: number) {

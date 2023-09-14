@@ -89,7 +89,7 @@ export class GenitoreFormComponent {
   }
 
   save() :Observable<any>{
-    console.log("save di genitore form -form:", this.form.value);
+    
     if (this.genitoreID == null || this.genitoreID == 0) {
       return this.svcGenitori.post(this.form.value)
     }

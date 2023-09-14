@@ -62,7 +62,7 @@ export class PersoneListComponent implements OnInit {
   filterValues = {
     nome: '',
     cognome: '',
-    tipoPersonaID: '',
+    role: '',
     annoNascita: '',
     indirizzo: '',
     comune: '',
@@ -202,14 +202,17 @@ export class PersoneListComponent implements OnInit {
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
 
-      //let foundTipoPersona = (String(data.tipoPersonaID).indexOf(searchTerms.tipoPersonaID) !== -1); //per ricerca non numerica...
-      let foundTipoPersona = data.tipoPersonaID==searchTerms.tipoPersonaID;
+      
+      let foundTipoPersona = data._LstRoles.includes(searchTerms.role);
+      if (searchTerms.role == null || searchTerms.role == '') foundTipoPersona = true;
+      //console.log (data._LstRoles, searchTerms.filtrosx, data._LstRoles.includes(searchTerms.filtrosx));
+      //console.log ("persone-list - filterPredicate - searchTerms, cosa cerco", searchTerms);
+      const lstRolesLowerCase = data._LstRoles.map((role: string) => role.toLowerCase());
 
-      if (searchTerms.tipoPersonaID == null || searchTerms.tipoPersonaID == '') foundTipoPersona = true;
 
       let boolSx = String(data.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.tipoPersona.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || lstRolesLowerCase.includes(searchTerms.filtrosx)
                 || String(data.dtNascita).indexOf(searchTerms.filtrosx) !== -1
                 || String(data.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1

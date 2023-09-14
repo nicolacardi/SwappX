@@ -110,7 +110,6 @@ constructor(private svcConsensi:                ConsensiService,
               this.formConsensi.addControl(element.id+"_RL", this.fb.control('', Validators.required));
             }
           })
-          console.log("this.formConsensi", this.formConsensi);
       });
 
     

@@ -74,16 +74,15 @@ export class SociFilterComponent implements OnInit {
   }
 
   isFormClean(): boolean {
-
     return (
       this.nomeFilter.value === '' &&
       this.cognomeFilter.value === '' &&
-      this.tipoSocioFilter.value === null &&
+      (this.tipoSocioFilter.value === null || this.tipoSocioFilter.value === '') &&
       this.dataRichiestaDal.value === '' &&
       this.dataRichiestaAl.value === '' &&
       this.dataAccettazioneDal.value === '' &&
       this.dataAccettazioneAl.value === '' &&
-      this.ckAttivo.value === false //QUEST'ULTIMO NON FUNZIONA BENE
+      !this.ckAttivo.value
     );
   }
 //#endregion

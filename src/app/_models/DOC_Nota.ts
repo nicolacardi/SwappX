@@ -1,3 +1,4 @@
+import { CLS_Iscrizione } from "./CLS_Iscrizione";
 import { DOC_NotaIscrizione }                   from "./DOC_NotaIscrizione";
 import { PER_Persona }                          from "./PER_Persone";
 
@@ -23,6 +24,8 @@ export interface DOC_Nota {
     nomiAlunni?:                                string;
     _NotaIscrizioni:                            DOC_NotaIscrizione[];
     persona?:                                   PER_Persona;
+
+    personaAlunno?:                             PER_Persona;
 }
 
  

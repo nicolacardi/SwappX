@@ -266,14 +266,14 @@ export class PersonaFormComponent implements OnInit {
     //PER_Dirigente
     //PER_ITManager
 
-    console.log("elenco dei valori arrivati inizialmente", this._lstRoles); //è l'elenco dei ruoli "precedenti". E' un array di stringhe del tipo ["Alunno", "ITManager"...]
+    //console.log("elenco dei valori arrivati inizialmente", this._lstRoles); //è l'elenco dei ruoli "precedenti". E' un array di stringhe del tipo ["Alunno", "ITManager"...]
 
     const selectedRolesIds = this.form.controls._lstRoles.value;
     const selectedRolesDescrizioni = selectedRolesIds.map((tipo:any) => {const tipoPersona = this.lstTipiPersona.find(tp => tp.id === tipo);
       return tipoPersona ? tipoPersona.descrizione : ''; // Restituisce la descrizione se trovata, altrimenti una stringa vuota
     });
 
-    console.log("elenco dei valori selezionati dall'utente",selectedRolesDescrizioni);
+    //console.log("elenco dei valori selezionati dall'utente",selectedRolesDescrizioni);
 
 
     this._lstRoles.forEach(async roleinput=> {

@@ -18,6 +18,11 @@ export class NoteIscrizioniService {
     //http://213.215.231.4/swappX/api/DOC_NotaIscrizioni
   }
 
+  listByClasseSezioneAnno(classeSezioneAnnoID: number): Observable<DOC_NotaIscrizione[]>{
+    return this.http.get<DOC_NotaIscrizione[]>(environment.apiBaseUrl+'DOC_NotaIscrizioni/listByClasseSezioneAnno/'+classeSezioneAnnoID);   
+    //http://213.215.231.4/swappX/api/DOC_Note/ListByClasseSezioneAnno/listByClasseSezioneAnno/16 
+  }
+
   get(notaID: any): Observable<DOC_NotaIscrizione>{
     return this.http.get<DOC_NotaIscrizione>(environment.apiBaseUrl+'DOC_NotaIscrizioni/'+notaID);
     //http://213.215.231.4/swappX/api/DOC_NoteIscrizioni/1

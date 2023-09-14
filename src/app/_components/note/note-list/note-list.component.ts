@@ -20,8 +20,9 @@ import { DocentiService }                       from '../../docenti/docenti.serv
 
 //models
 import { DOC_Nota }                             from 'src/app/_models/DOC_Nota';
+
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
-import { DOC_NotaIscrizione } from 'src/app/_models/DOC_NotaIscrizione';
+import { NoteIscrizioniService } from '../noteiscrizioni.service';
 
 //#endregion
 
@@ -41,8 +42,7 @@ export class NoteListComponent implements OnInit {
   displayedColumnsNotePage:                     string[] =  [
     "actionsColumn", 
     "docente",
-    //"alunni",
-    "nomiAlunni",
+    "personaAlunno",
     "dtNota",
     "periodo",
     "nota"
@@ -101,6 +101,8 @@ export class NoteListComponent implements OnInit {
 
   constructor(
     private svcNote:                            NoteService,
+    private svcNoteIscrizioni:                  NoteIscrizioniService,
+
     private svcDocenti:                         DocentiService,
     private _loadingService:                    LoadingService,
     public _dialog:                             MatDialog ) {
@@ -138,7 +140,7 @@ export class NoteListComponent implements OnInit {
     
           loadNote$.subscribe( 
             val =>   {
-              // console.log("DEBUG: notelist - loadData: " ,val)
+              console.log("DEBUG: notelist - loadData: " ,val)
 
               this.matDataSource.data = val;
               this.matDataSource.paginator = this.paginator;
