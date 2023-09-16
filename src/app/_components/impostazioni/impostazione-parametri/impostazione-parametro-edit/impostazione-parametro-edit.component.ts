@@ -36,7 +36,8 @@ export class ImpostazioneParametroEditComponent {
   form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
-  modules:                                      any = {}
+  modules:                                      any = {};
+  ckCheckBoxes=                                 false;
 
   //#endregion
 
@@ -59,7 +60,7 @@ export class ImpostazioneParametroEditComponent {
       parValue:                                 ['', { validators:[ Validators.required]}],
       parDescr:                                 ['', { validators:[ Validators.required]}],
       ckSetupPage:                              [''],
-      ckTipo:                                   [''],
+      ckCheckBox:                               [''],
       seq:                                      ['']
     });
 
@@ -86,6 +87,17 @@ export class ImpostazioneParametroEditComponent {
             parametro => {
               console.log ("parametro-edit - loadData parametro: ",parametro);
               this.form.patchValue(parametro)
+
+              //se si tratta di checkbox inserisco un controllo che si chiama 'ck_n' per ciascun valore
+              if (this.form.controls.ckCheckBox) {
+                let pv = this.form.controls.parValue.value
+                for (let i = 0; i < pv.length; i++) {
+                   const controlName = "ck_"+i; // Generate a unique control name
+                   //const digit = pv[i];
+                   const digit = pv[i] === '1';
+                   this.form.addControl(controlName, this.fb.control(digit));
+                }
+              }
             }
           )
       );
@@ -100,6 +112,18 @@ export class ImpostazioneParametroEditComponent {
 
   save(){
 
+    if (this.form.controls.ckCheckBox) {
+      let pv = this.form.controls.parValue.value
+      let sequenza01 = '';
+
+      for (let i = 0; i < pv.length; i++) {
+        const controlName = "ck_" + i;
+        const isChecked = this.form.controls[controlName].value;
+        sequenza01 += isChecked ? '1' : '0';
+      }
+      console.log("concatenando ho ottenuto", sequenza01)
+      this.form.controls.parValue.setValue(sequenza01);
+    }
     if (this.form.controls['id'].value == null) {
       this.form.controls.seq.setValue(this.data.maxSeq +1);
       this.svcParametri.post(this.form.value).subscribe({

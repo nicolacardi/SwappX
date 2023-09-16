@@ -43,12 +43,18 @@
                     </mat-form-field>
                 </mat-grid-tile>
 
-                <mat-grid-tile>
-                    <mat-form-field>
+                <mat-grid-tile *ngIf="!form.controls.ckCheckBox.value">
+                    <mat-form-field >
                         <mat-label>Valore</mat-label>
-
                         <input matInput type="text" placeholder="Valore" formControlName="parValue">
                     </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile *ngIf="form.controls.ckCheckBox.value">
+                    <ng-container *ngFor="let digit of form.controls.parValue.value.split(''); let i = index">
+                        <mat-checkbox color="primary"  [formControlName]="'ck_'+i"></mat-checkbox>
+                        <!-- il checked è impostato dal file ts in alternativa posso impostare il valore così [checked]="digit === '1'" -->
+                    </ng-container>
                 </mat-grid-tile>
 
                 <br>
