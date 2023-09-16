@@ -3,7 +3,9 @@ export interface _UT_Parametro {
     parName:                                    string;
     parDescr:                                   string;
     parValue:                                   string;
-    ckFile?:                                     boolean;
+    ckSetupPage?:                                boolean;
+    ckTipo?:                                     boolean;
+    ckFile?:                                    boolean;
   }
 
  

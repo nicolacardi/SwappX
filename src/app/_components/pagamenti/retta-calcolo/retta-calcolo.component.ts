@@ -81,7 +81,7 @@ export class RettaCalcoloComponent implements OnInit {
 
     this.svcParametri.getByParName('QuoteRidotteFratelli').subscribe(
       x=> {
-        if(x.parValue == "true") this.QuoteRidotteFratelli = true;
+        if(x.parValue == "1") this.QuoteRidotteFratelli = true;
       });
   }
 

@@ -245,19 +245,13 @@ export class IscrizioniListComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
-
+    
     this.filterValue = (event.target as HTMLInputElement).value;
-
-    //Reset dei filtri di destra
-    //this.iscrizioniFilterComponent.resetAllInputs();
-   
-    //Inserimento del Main Filter in uno specifico (filtrosx) dei campi di filterValues
-    if( this.filterValue != undefined && this.filterValue != ""){
-      this.filterValues.filtrosx = this.filterValue.toLowerCase();
-    }
-    //applicazione del filtro
+    this.filterValues.filtrosx = this.filterValue.toLowerCase();
+    //if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
-    this.getEmailAddresses();
+    this.getEmailAddresses(); // Aggiorna gli indirizzi email dopo aver applicato il filtro
+
   }
 
   filterPredicate(): (data: any, filter: string) => boolean {

@@ -224,11 +224,15 @@ import { RisorsaEditComponent }                 from './_components/impostazioni
 import { AlunnoFormComponent }                  from './_components/alunni/alunno-form/alunno-form.component';
 import { GenitoreFormComponent }                from './_components/genitori/genitore-form/genitore-form.component';
 import { AssociazioneComponent }                from './_components/procedura-iscrizione/associazione/associazione.component';
-import { SociListComponent } from './_components/soci/soci-list/soci-list.component';
-import { SocioEditComponent } from './_components/soci/socio-edit/socio-edit.component';
-import { SociPageComponent } from './_components/soci/soci-page/soci-page.component';
-import { SociFilterComponent } from './_components/soci/soci-filter/soci-filter.component';
-import { SocioFormComponent } from './_components/soci/socio-form/socio-form.component';
+import { SociListComponent }                    from './_components/soci/soci-list/soci-list.component';
+import { SocioEditComponent }                   from './_components/soci/socio-edit/socio-edit.component';
+import { SociPageComponent }                    from './_components/soci/soci-page/soci-page.component';
+import { SociFilterComponent }                  from './_components/soci/soci-filter/soci-filter.component';
+import { SocioFormComponent }                   from './_components/soci/socio-form/socio-form.component';
+import { ImpostazioneParametriPageComponent }   from './_components/impostazioni/impostazione-parametri/impostazione-parametri-page/impostazione-parametri-page.component';
+import { ImpostazioneParametriListComponent }   from './_components/impostazioni/impostazione-parametri/impostazione-parametri-list/impostazione-parametri-list.component';
+import { ImpostazioneParametriFilterComponent } from './_components/impostazioni/impostazione-parametri/impostazione-parametri-filter/impostazione-parametri-filter.component';
+import { ImpostazioneParametroEditComponent }   from './_components/impostazioni/impostazione-parametri/impostazione-parametro-edit/impostazione-parametro-edit.component';
 
 
 
@@ -409,6 +413,11 @@ import { SocioFormComponent } from './_components/soci/socio-form/socio-form.com
     SociPageComponent,
     SociFilterComponent,
     SocioFormComponent,
+    ImpostazioneParametriPageComponent,
+    ImpostazioneParametriListComponent,
+    ImpostazioneParametriFilterComponent,
+    ImpostazioneParametroEditComponent,
+    
  
     
 

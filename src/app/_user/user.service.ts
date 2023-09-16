@@ -10,6 +10,7 @@ import { User }                                 from './Users';
 
 //services
 import { PersoneService }                       from '../_components/persone/persone.service';
+import { EventEmitterService }                  from '../_services/event-emitter.service';
 
 //classes
 import { _UT_Parametro }                        from '../_models/_UT_Parametro';
@@ -24,18 +25,16 @@ export class UserService {
   readonly BaseURI = environment.apiBaseUrl;
 
   private BehaviourSubjectcurrentUser :         BehaviorSubject<User>;      
-  public BehaviourSubjectlistRoles :            BehaviorSubject<string[]>;      
 
 
   public obscurrentUser:                        Observable<User>;
 
-  constructor(private fb:                                 UntypedFormBuilder,
-              private http:                               HttpClient,
-              private svcPersona:                         PersoneService)   { 
+  constructor(private fb:                       UntypedFormBuilder,
+              private http:                     HttpClient,
+              private svcEmitter:               EventEmitterService
+              )   { 
                 
     this.BehaviourSubjectcurrentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
-    this.BehaviourSubjectlistRoles = new BehaviorSubject<string[]>([]);
-
     this.obscurrentUser = this.BehaviourSubjectcurrentUser.asObservable();
   }
 
@@ -45,31 +44,19 @@ export class UserService {
 
   formModel = this.fb.group(
   {
-      UserName:   ['', Validators.required],
-      Email:      ['', Validators.email],
-      FullName:   [''],
-      Passwords: this.fb.group({
-        Password:         ['', [Validators.required, Validators.minLength(4)]],
-        ConfirmPassword:  ['', Validators.required]
-      },
+      UserName:                                 ['', Validators.required],
+      Email:                                    ['', Validators.email],
+      FullName:                                 [''],
+      Passwords:  this.fb.group({
+                          Password:             ['', [Validators.required, Validators.minLength(4)]],
+                          ConfirmPassword:      ['', Validators.required]
+                  },
       {
         validator: this.comparePasswords
       }) 
   });
 
 
-  getUserRoles(personaID: number){
-    //estrae lstruoli e la inserisce nel BehaviourSubjectlistRoles
-    this.svcPersona.listRoles(personaID)
-    .subscribe(
-      lstruoli=> {
-        this.BehaviourSubjectlistRoles.next(lstruoli);
-      }
-    )
-  }
-
-
-  //Login(userName: string, userPwd: string) {
   Login(formData: any) {
 
     let obsLoginPersona$ = this.http.post<User>(this.BaseURI  +'ApplicationUser/Login', formData )
@@ -78,76 +65,26 @@ export class UserService {
         tap(
           user => {
             if (user && user.token) {
-              //user.isLoggedIn = true;
               user.personaID = user.persona!.id;
               user.fullname = user.persona!.nome + " " + user.persona!.cognome;
-              //user.tipoPersonaID = user.persona!.tipoPersonaID;
-              //user.TipoPersona = user.persona!.tipoPersona;
               localStorage.setItem('token', user.token!);
               localStorage.setItem('currentUser', JSON.stringify(user));
               this.BehaviourSubjectcurrentUser.next(user);
             }
             else{
-              //Passerà mai di qua ?
               this.Logout();
             }
-
           }
-        ),
-        // concatMap( user =>   ( 
-        //   this.svcPersona.get(user.personaID)
-        //     .pipe(
-        //       tap(val => {
-        //         if (user && user.token) {
-        //           user.isLoggedIn = true;
-                      
-        //           //Dati di PER_Persona
-        //           user.personaID = val.id;
-        //           user.fullname = val.nome + " " + val.cognome;
-        //           user.tipoPersonaID = val.tipoPersonaID;
-        //           user.TipoPersona = val.tipoPersona;
-        //           localStorage.setItem('token', user.token!);
-        //           localStorage.setItem('currentUser', JSON.stringify(user));
-                  
-        //           this.BehaviourSubjectcurrentUser.next(user);
-        //         }
-        //         else{
-        //           //Passerà mai di qua ?
-        //           this.Logout();
-        //         }
-        //       }),
-        //     )
-        // )
-      //),
-
+        )
       );
-
-
-    /*
-    this.svcParametri.getByParName('AnnoCorrente')
-      .pipe(map( par => {
-        //sessionStorage.setItem();
-        localStorage.setItem(par.parName, JSON.stringify(par));
-        return par;
-      })
-    ).subscribe();
-    */
     return obsLoginPersona$;
-
-    //return forkJoin([ httpPost$ ,httpParam$  ]);      //Concatenazione di due observable, in qs modo se ne fa la subscribe in un colpo solo
   }
 
   Logout() {
-
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('AnnoCorrente');
-
-    // const logOutUser = <User>{};
-    // logOutUser.isLoggedIn = false;
-    // console.log ("logOutUser", logOutUser);
-    // this.BehaviourSubjectcurrentUser.next(logOutUser);
-
+    this.svcEmitter.onLogout();
   }
 
   Register() { //non viene mai usata

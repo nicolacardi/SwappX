@@ -1,7 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { User } from '../_user/Users';
-import { PER_Persona } from '../_models/PER_Persone';
+
 
 @Injectable({
   providedIn: 'root'

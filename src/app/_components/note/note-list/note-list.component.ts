@@ -232,20 +232,11 @@ export class NoteListComponent implements OnInit {
     let filterFunction = function(data: any, filter: any): boolean {
 
       let searchTerms = JSON.parse(filter);
-      let foundAlunno : boolean = false;
-      //console.log (filter);
-      /*
-      if (data.iscrizione.iscrizione.alunno.length == 0) 
-        foundAlunno = true;
-      else {
-        data.iscrizione.iscrizione.alunno?.forEach(
-          (val: { alunno: { nome: any; cognome: any}; })=>  {   
-             const foundCognomeNome = foundAlunno || String(val.alunno.cognome+" "+val.alunno.nome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1;
-             const foundNomeCognome = foundAlunno || String(val.alunno.nome+" "+val.alunno.cognome).toLowerCase().indexOf(searchTerms.nomeCognomeAlunno) !== -1; 
-             foundAlunno = foundCognomeNome || foundNomeCognome;
-         })
-      }
-      */
+
+      let foundCognomeNome = false;
+      foundCognomeNome = String(data.personaAlunno.nome+ " "+ data.personaAlunno.cognome).toLowerCase().indexOf(searchTerms.alunno)!== -1;
+      
+      {}
      let dtNotaddmmyyyy!: string;
       if (data.dtNota){
         let dArrN = data.dtNota.split("-");
@@ -262,25 +253,23 @@ export class NoteListComponent implements OnInit {
       else 
          dtFirmaddmmyyyy = '';
 
-      //console.log ("st", searchTerms);
-      console.log ("data", data);
+      console.log ("st", searchTerms);
+      console.log ("concatenazione", String(data.personaAlunno.nome.toLowerCase() + ' ' + data.personaAlunno.cognome.toLowerCase()));
 
       let boolSx = String(dtNotaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
                   || String(data.nota).indexOf(searchTerms.filtrosx) !== -1
                   || (data.periodo == searchTerms.periodo)
                   || String(data.persona.nome.toLowerCase() + ' ' + data.persona.cognome.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1
+                  || String(data.personaAlunno.nome.toLowerCase() + ' ' + data.personaAlunno.cognome.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1
                   || String(dtFirmaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1;
 
-                  //PENSARE a come cercare tra gli alunni destinatari della nota, il modo che segue è sbagliato, data semmai ha _NotaIscrizioni che è un array
-                  //|| String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.filtrosx) !== -1 ;
-      
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
       let boolDx = String(dtNotaddmmyyyy).indexOf(searchTerms.dtNota) !== -1
                     && String(data.nota.toLowerCase()).indexOf(searchTerms.nota) !== -1
                     && ((data.periodo == searchTerms.periodo) || searchTerms.periodo == '' || searchTerms.periodo == null)
                     && String(data.persona.nome.toLowerCase() + ' ' + data.persona.cognome.toLowerCase()).indexOf(searchTerms.docente) !== -1
                     && String(dtFirmaddmmyyyy).indexOf(searchTerms.dtFirma) !== -1
-                    //&& String(data.iscrizione.alunno.persona.nome.toLowerCase() + ' ' + data.iscrizione.alunno.persona.cognome.toLowerCase()).indexOf(searchTerms.alunno) !== -1 ;
+                    && foundCognomeNome ;
 
       return boolSx && boolDx;
     }

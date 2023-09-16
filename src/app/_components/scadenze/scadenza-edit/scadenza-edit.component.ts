@@ -32,8 +32,8 @@ import { CAL_Scadenza, CAL_ScadenzaPersone }                          from 'src/
 import { DialogDataScadenza }                   from 'src/app/_models/DialogData';
 import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
 import { User }                                 from 'src/app/_user/Users';
-import { CAL_TipoScadenza } from 'src/app/_models/CAL_TipoScadenza';
-import { GenitoriService } from '../../genitori/genitori.service';
+import { CAL_TipoScadenza }                     from 'src/app/_models/CAL_TipoScadenza';
+import { ParametriService } from 'src/app/_services/parametri.service';
 
 //#endregion
 @Component({
@@ -77,7 +77,14 @@ export class ScadenzaEditComponent implements OnInit {
   breakpoint!:                                  number;
   selectedTab:                                  number = 0;
 
+  hMinStartScadenza!:                           string;
+  hMaxStartScadenza!:                           string;
+  hMinEndScadenza!:                             string;
+  hMaxEndScadenza!:                             string;
+
   @ViewChild('autosize') autosize!:             CdkTextareaAutosize;
+
+
 
 
 
@@ -85,23 +92,24 @@ export class ScadenzaEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(public _dialogRef:                          MatDialogRef<ScadenzaEditComponent>,
+  constructor(public _dialogRef:                MatDialogRef<ScadenzaEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data:       DialogDataScadenza,
 
-              private fb:                                 UntypedFormBuilder, 
-              private svcScadenze:                        ScadenzeService,
-              private svcPersone:                         PersoneService,
-              private svcTipiPersona:                     TipiPersonaService,
+              private fb:                       UntypedFormBuilder, 
+              private svcScadenze:              ScadenzeService,
+              private svcPersone:               PersoneService,
+              private svcTipiPersona:           TipiPersonaService,
 
-              private svcScadenzePersone:                 ScadenzePersoneService,
-              private svcTipiScadenza:                    TipiScadenzaService,
+              private svcScadenzePersone:       ScadenzePersoneService,
+              private svcTipiScadenza:          TipiScadenzaService,
+              private svcParametri:             ParametriService,
 
-              private svcTipiPersone:                     TipiPersonaService,
+              private svcTipiPersone:           TipiPersonaService,
 
-              public _dialog:                             MatDialog,
-              private _snackBar:                          MatSnackBar,
-              private _loadingService:                    LoadingService,
-              private _ngZone:                            NgZone ) {
+              public _dialog:                   MatDialog,
+              private _snackBar:                MatSnackBar,
+              private _loadingService:          LoadingService,
+              private _ngZone:                  NgZone ) {
 
     _dialogRef.disableClose = true;
 
@@ -113,8 +121,8 @@ export class ScadenzaEditComponent implements OnInit {
       ckRisposta:                               [false],
       tipoScadenzaID:                           [''],
       personaID:                                [''],
-      personeList:                              [''],
-      personeListSel:                           [''],
+       personeList:                              [[]],
+       personeListSel:                           [[]],
 
       //campi di FullCalendar
       title:                                    [''],
@@ -139,33 +147,40 @@ export class ScadenzaEditComponent implements OnInit {
 
     this.tipoPersonaIDArr = [];
 
-    //estraggo la lista delle persone che NON sono associate a questa scadenza
-    this.setArrayBase();
+    this.setArrayBase(); //imposta la lista delle persone di destra (da listbyScadenza(this.data.scadenzaID)) e quella di destra togliendone le persone che sono già a destra
 
     this.obsTipiPersone$ = this.svcTipiPersone.list();
     this.obsTipiScadenza$ = this.svcTipiScadenza.list();
 
+
+    this.svcParametri.getByParName('hMinStartScadenza').subscribe(par=>{this.hMinStartScadenza = par.parValue;});
+    this.svcParametri.getByParName('hMaxStartScadenza').subscribe(par=>{this.hMaxStartScadenza = par.parValue;});
+    this.svcParametri.getByParName('hMinEndScadenza').subscribe(par=>{this.hMinEndScadenza = par.parValue;});
+    this.svcParametri.getByParName('hMaxEndScadenza').subscribe(par=>{this.hMaxEndScadenza = par.parValue;});
+
+
+
   }
 
   setArrayBase () {
-
-    //estraggo le persone da selezionare, le metto in personeListSelArr
-    //poi inserisco le persone nella personeListArr e per ciascuna vado a veder se già c'è l'id in personeListArr, per toglierlo
-
+    //estraggo le persone da selezionare, le metto in personeListArr che poi popoleranno la lista di sinsitra
+    //poi inserisco le persone nella personeListArr e per ciascuna vado a vedere se già c'è l'id in personeListArr, per toglierlo
     this.svcScadenzePersone.listByScadenza(this.data.scadenzaID)
     .pipe(
-      tap( sel=>{        
+      tap( sel=>{     
+        //sel è l'elenco delle persone selezionate (viene da listByScadenza(this.data.scadenzaID))   
         this.personeListSelArr = sel;
         this.personeListSelArr.sort((a,b) => (a.persona!.cognome > b.persona!.cognome)?1:((b.persona!.cognome > a.persona!.cognome) ? -1 : 0) );
         }
       ),
-      concatMap(sel => //sel è l'array delle selezionate
+      concatMap(() =>
         this.svcPersone.list()
         .pipe(
           tap( val => {
-        
+          //ora estraggo l'elenco di TUTTE le persone
           this.personeListArr = val;
           //il forEach va in avanti e non va bene: scombussola gli index visto che si fa lo splice...bisogna usare un for i--
+          //splice SOTTRAE da personeListArr ciascun elemento che è stato trovato in personeListSelArr
           for (let i= this.personeListArr.length -1; i >= 0; i--) {
               if (this.personeListSelArr.filter(e => e.persona!.id === this.personeListArr[i].id).length > 0) {
                 this.personeListArr.splice(i, 1);
@@ -181,7 +196,7 @@ export class ScadenzaEditComponent implements OnInit {
   }
 
   addMyself(i: number){
-    //devo SEMPRE aggiungere me stesso se c'è in listArr a listSelArr
+    //devo SEMPRE aggiungere me stesso se l'i-esimo sono io allora lo/mi aggiungo e mi tolgo da personeListArr
     if (this.personeListArr[i].id === this.currUser.personaID) {
       let objScadenzaPersona: CAL_ScadenzaPersone = {
         personaID: this.personeListArr[i].id,
@@ -201,27 +216,25 @@ export class ScadenzaEditComponent implements OnInit {
     this.breakpoint = (window.innerWidth <= 800) ? 2 : 2;
     
     if (!this.data.scadenzaID || this.data.scadenzaID + '' == "0") {
-      //caso nuova Scadenza
+      // //caso nuova Scadenza
+
       this.emptyForm = true;
-      //LA RIGA QUI SOPRA DETERMINAVA UN ExpressionChangedAfterItHasBeenCheckedError...con il DetectChanges si risolve!  
-      //this.cdRef.detectChanges();     ///DEVO TOGLIERLO! BLocca tutto!
 
       this.dtStart = new Date (this.data.start);
-      //this.strDtStart = Utility.UT_FormatDate(this.dtStart, "yyyy-mm-dd");
       this.strDtStart = Utility.formatDate(this.dtStart,  FormatoData.yyyy_mm_dd);
       this.strH_Ini = Utility.formatHour(this.dtStart);
 
-      this.dtEnd = new Date (this.dtStart.setHours(this.dtStart.getHours() + 1));  //in caso di nuova lezione per default impostiamo la durata a un'ora
-      //this.strDtEnd = Utility.UT_FormatDate(this.dtEnd, "yyyy-mm-dd");
+       //in caso di nuova scadenza per default impostiamo la durata a un'ora
+      this.dtEnd = new Date (this.dtStart.setHours(this.dtStart.getHours() + 1)); 
       this.strDtEnd = Utility.formatDate(this.dtEnd, FormatoData.yyyy_mm_dd);
       this.strH_End = Utility.formatHour(this.dtEnd);
 
-      
       this.form.controls.dtCalendario.setValue(this.dtStart);
       this.form.controls.h_Ini.setValue(this.strH_Ini);
       this.form.controls.h_End.setValue(this.strH_End);
     } 
     else {
+      //caso Scadenza esistente
       const obsScadenza$: Observable<CAL_Scadenza> = this.svcScadenze.get(this.data.scadenzaID);
       const loadScadenza$ = this._loadingService.showLoaderUntilCompleted(obsScadenza$);
       this.scadenza$ = loadScadenza$
@@ -234,11 +247,10 @@ export class ScadenzaEditComponent implements OnInit {
             this.form.controls.tipoScadenzaID.disable();
             this.form.controls.h_Ini.disable();
             this.form.controls.h_End.disable();
-
           }
           this.colorSample = scadenza.tipoScadenza!.color;
-          //this.form.controls.tipoScadenza.setValue(scadenza.tipoScadenza);
-          //oltre ai valori del form vanno impostate alcune variabili: una data e alcune stringhe
+          
+          //oltre ai valori del form (patchValue) vanno impostate alcune variabili: una data e alcune stringhe
           this.dtStart = new Date (this.data.start);
           this.strDtStart = Utility.formatDate(this.dtStart, FormatoData.yyyy_mm_dd);
           this.strH_Ini = Utility.formatHour(this.dtStart);
@@ -353,8 +365,8 @@ export class ScadenzaEditComponent implements OnInit {
   dp1Change() {
 
     // //verifico anzitutto se l'ora che sto scrivendo è entro i limiti 8-15.30 altrimenti sistemo
-    // if (this.form.controls.h_Ini.value < "08:00") {this.form.controls.h_Ini.setValue ("08:00") }   //ora min di inizio 08:00:  sarà parametrica
-    // if (this.form.controls.h_Ini.value > "15:30") {this.form.controls.h_Ini.setValue ("15:30") }   //ora max di inizio 15:30: sarà parametrica
+    if (this.form.controls.h_Ini.value < this.hMinStartScadenza) {this.form.controls.h_Ini.setValue (this.hMinStartScadenza) }   //ora min di inizio 08:00:  parametrica
+    if (this.form.controls.h_Ini.value > this.hMaxStartScadenza) {this.form.controls.h_Ini.setValue (this.hMaxStartScadenza) }   //ora max di inizio 15:30:  parametrica
     this.checkDurata();
 
   }
@@ -362,8 +374,8 @@ export class ScadenzaEditComponent implements OnInit {
   dp2Change() {
 
     // //verifico anzitutto se l'ora che sto scrivendo è entro i limiti 8-15.30 altrimenti sistemo
-    // if (this.form.controls.h_End.value < "08:30") {this.form.controls.h_End.setValue ("08:30") } //ora min di fine 08:30:  sarà parametrica
-    // if (this.form.controls.h_End.value > "16:00") {this.form.controls.h_End.setValue ("16:00") } //ora max di fine 16:00:  sarà parametrica
+    if (this.form.controls.h_End.value < this.hMinEndScadenza) {this.form.controls.h_End.setValue (this.hMinEndScadenza) } //ora min di fine 08:30:   parametrica
+    if (this.form.controls.h_End.value > this.hMaxEndScadenza) {this.form.controls.h_End.setValue (this.hMaxEndScadenza) } //ora max di fine 16:00:   parametrica
     this.checkDurata();
 
   }
@@ -372,8 +384,8 @@ export class ScadenzaEditComponent implements OnInit {
 
   //se la durata è > 30min imposto l'ora di fine a 30 min dopo 
 
-  if (this.form.controls.h_End.value) {
-    //prendo la data
+    if (this.form.controls.h_End.value) {
+      //prendo la data
       let dtTMPEnd = new Date (this.data.start);
       //ci metto l'H_End
       dtTMPEnd.setHours(this.form.controls.h_End.value.substring(0,2));
@@ -540,7 +552,6 @@ export class ScadenzaEditComponent implements OnInit {
 //#endregion
 
   
-
 
 
 }

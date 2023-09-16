@@ -1,5 +1,9 @@
 <mat-tab-group mat-align-tabs="center">
 
+
+    <mat-tab  label="Parametri Base">
+        <app-impostazione-parametri-page></app-impostazione-parametri-page>
+    </mat-tab>
     <!-- ********************************    MAT TAB Domande per procedura iscrizione  ****************** -->
     <mat-tab  label="Domande Iscrizione">
         <app-consensi-page> </app-consensi-page>
@@ -20,7 +24,7 @@
     <mat-tab  label="Parametri Base">
         <h1 class="_titolo-pagina">Impostazione Parametri</h1>
 
-        <form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
+        <!-- <form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
 
             <div class="w180px ma">
                 <mat-form-field>
@@ -32,6 +36,8 @@
                     </mat-select>
                 </mat-form-field>   
             </div>
+
+
 
             <h1 class="_titolo-pagina fs14">Ripartizione standard quote</h1>
 
@@ -47,27 +53,15 @@
 
             <div class="ma w50 _bordered-grey mt10">
 
-                <div class="left mt10 ml20">
-                    <mat-slide-toggle *ngIf="parQuoteRidotteFratelli" formControlName="quoteRidotteFratelli">Quota ridotta per fratelli minori</mat-slide-toggle>
-                </div>
-
-                <div class="left ml20 mt5">
-                    <mat-slide-toggle>Parametro 2</mat-slide-toggle>
-                </div>
-                <div class="left ml20 mt5">
-                    <mat-slide-toggle>Parametro 3</mat-slide-toggle>
-                </div>
-                <div class="left ml20 mt5 mb10">
-                    <mat-slide-toggle>Parametro x</mat-slide-toggle>
-                </div>
+                <mat-list class="left mt10 ml20">
+                    <mat-list-item> <mat-checkbox *ngIf="parQuoteRidotteFratelli" formControlName="quoteRidotteFratelli">Quota ridotta per fratelli minori</mat-checkbox>   </mat-list-item>
+                </mat-list>
 
             </div>
-<!-- 
-            <input type="file" (change)="onFileSelected($event)">
-            <button (click)="onUpload()">Upload</button> -->
 
 
-        </form>
+
+        </form> -->
 
         <div class="center mt10">
             <button type="button" mat-button matSuffix class="w180px ma mt10" mat-stroked-button (click)="save()">Salva</button>

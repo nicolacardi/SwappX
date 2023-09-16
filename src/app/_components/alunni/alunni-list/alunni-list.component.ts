@@ -320,6 +320,7 @@ export class AlunniListComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
+
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
     //if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();

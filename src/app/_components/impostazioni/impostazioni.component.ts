@@ -40,7 +40,10 @@ export class ImpostazioniComponent implements OnInit {
   public parQuoteRidotteFratelli!:              _UT_Parametro;
 
   private arrElab = [true, false, false];
-
+  hMinStartScadenza!:                           _UT_Parametro;
+  hMaxStartScadenza!:                           _UT_Parametro;
+  hMinEndScadenza!:                             _UT_Parametro;
+  hMaxEndScadenza!:                             _UT_Parametro;
 //#endregion
 
   @ViewChildren('QuoteListElement') QuoteList!: QueryList<any>;
@@ -59,25 +62,30 @@ export class ImpostazioniComponent implements OnInit {
       quoteRidotteFratelli : false
     });
 
-    this.svcParametri.getByParName('AnnoCorrente').subscribe(
-      par=>{
-        this.parAnnoCorrente = par;
-        this.form.controls['selectAnnoScolastico'].setValue(parseInt(par.parValue));
-      }
-    );
+    // this.svcParametri.getByParName('AnnoCorrente').subscribe(
+    //   par=>{
+    //     this.parAnnoCorrente = par;
+    //     this.form.controls['selectAnnoScolastico'].setValue(parseInt(par.parValue));
+    //   }
+    // );
 
-    this.svcParametri.getByParName('QuoteDefault').subscribe(
-      par=>{
-        this.parQuoteDefault = par;
-      }
-    );
+    // this.svcParametri.getByParName('QuoteDefault').subscribe(
+    //   par=>{
+    //     this.parQuoteDefault = par;
+    //   }
+    // );
 
-    this.svcParametri.getByParName('QuoteRidotteFratelli').subscribe(
-      par=>{
-        this.parQuoteRidotteFratelli = par;
-        this.form.controls['quoteRidotteFratelli'].setValue(JSON.parse(par.parValue));
-      }
-    );
+    // this.svcParametri.getByParName('QuoteRidotteFratelli').subscribe(
+    //   par=>{
+    //     this.parQuoteRidotteFratelli = par;
+    //     this.form.controls['quoteRidotteFratelli'].setValue(JSON.parse(par.parValue));
+    //   }
+    // );
+
+    // this.svcParametri.getByParName('hMinStartScadenza') .subscribe(par=>{   this.hMinStartScadenza = par;  this.form.controls['hMinStartScadenza'].setValue(JSON.parse(par.parValue));});
+    // this.svcParametri.getByParName('hMaxStartScadenza') .subscribe(par=>{   this.hMaxStartScadenza = par;  this.form.controls['hMaxStartScadenza'].setValue(JSON.parse(par.parValue));});
+    // this.svcParametri.getByParName('hMinEndScadenza')   .subscribe(par=>{   this.hMinEndScadenza = par;    this.form.controls['hMinEndScadenza'].setValue(JSON.parse(par.parValue));});
+    // this.svcParametri.getByParName('hMaxEndScadenza')   .subscribe(par=>{   this.hMaxEndScadenza = par;    this.form.controls['hMaxEndScadenza'].setValue(JSON.parse(par.parValue));});
   }
 //#endregion
 

@@ -6,18 +6,19 @@ import { LoadingService }                       from '../../../utilities/loading
 import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable }                           from 'rxjs';
 import { MatSort }                              from '@angular/material/sort';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //components
+import { ConsensoEditComponent }                from '../consenso-edit/consenso-edit.component';
+import { SnackbarComponent }                    from 'src/app/_components/utilities/snackbar/snackbar.component';
+
 
 //services
 import { ConsensiService }                      from '../consensi.service';
+import { RisorseService }                       from '../../risorse/risorse.service';
 
 //models
 import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
-import { ConsensoEditComponent } from '../consenso-edit/consenso-edit.component';
-import { RisorseService } from '../../risorse/risorse.service';
-import { SnackbarComponent } from 'src/app/_components/utilities/snackbar/snackbar.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 //#endregion
 
 @Component({
@@ -95,7 +96,7 @@ export class ConsensiListComponent implements OnInit{
 
     loadConsensi$.subscribe(
       val =>   {
-        console.log ("estraggo consensi list", val);
+        // console.log ("consensi-list - loadData - estraggo consensi list", val);
         this.matDataSource.data = val;
         this.sortCustom(); 
         this.matDataSource.sort = this.sort; 
@@ -162,6 +163,7 @@ export class ConsensiListComponent implements OnInit{
   }
 
   drop(event: any){
+    console.log (event.previousIndex, event.currentIndex);
     this.svcConsensi.updateSeq(event.previousIndex+1, event.currentIndex+1 )
     .subscribe(res=> this.loadData());
   }

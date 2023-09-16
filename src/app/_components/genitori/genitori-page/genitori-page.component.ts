@@ -1,14 +1,14 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDrawer } from '@angular/material/sidenav';
+import { Component, OnInit, ViewChild }         from '@angular/core';
+import { MatDrawer }                            from '@angular/material/sidenav';
 
 //components
-import { GenitoriFilterComponent } from '../genitori-filter/genitori-filter.component';
-import { GenitoriListComponent } from '../genitori-list/genitori-list.component';
+import { GenitoriFilterComponent }              from '../genitori-filter/genitori-filter.component';
+import { GenitoriListComponent }                from '../genitori-list/genitori-list.component';
 
 //services
-import { NavigationService } from '../../utilities/navigation/navigation.service';
+import { NavigationService }                    from '../../utilities/navigation/navigation.service';
 
 //#endregion
 

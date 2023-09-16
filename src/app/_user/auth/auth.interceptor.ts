@@ -8,6 +8,9 @@ import { UserService } from '../user.service';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
+
+      public isLoggedInAuth = false;
+
     //QUESTO COMPONENT SERVE PERCHE' TUTTE LE CHIAMATE AI WEBSERVICE VENGANO "CORREDATE" DEL TOKEN
     //INFATTI COME SI PUO' VEDERE  headers: req.headers.set('Authorization', 'Bearer ' + localStorage.getItem('token'))
     //VIENE POI USATA DIRETTAMENTE IN APP.MODULE IN QUESTO MODO:
@@ -34,6 +37,7 @@ export class AuthInterceptor implements HttpInterceptor {
                         error: err=> {
                             if(err.status == 401){
                                 localStorage.removeItem('token');
+                                console.log("auth.interceptor -manca il token: redirect to Login "); //di qui non dovrebbe mai passare
                                        this.svcUser.Logout(); //se c'è il token ma per esempio è quello vecchio bisogna essere cacciati fuori         
                                 this.router.navigateByUrl('/user/login');
                             }
@@ -45,5 +49,13 @@ export class AuthInterceptor implements HttpInterceptor {
             //console.log("MANCA il token");
             return next.handle(req.clone());
         }
+    }
+
+      setLoggedInAuth(status: boolean) {
+    this.isLoggedInAuth = status;
+    }
+
+    getIsLoggedInAuth() {
+        return this.isLoggedInAuth;
     }
 }

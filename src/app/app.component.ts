@@ -1,13 +1,14 @@
 //#region ----- IMPORTS ------------------------
 
 import { Component, OnInit, ViewChild }         from '@angular/core';
-import { UntypedFormControl }                          from '@angular/forms';
+import { UntypedFormControl }                   from '@angular/forms';
 import { Router }                               from '@angular/router';
 
 //services
 import { UserService }                          from './_user/user.service';
 import { EventEmitterService }                  from './_services/event-emitter.service';
 import { Utility }                              from  './_components/utilities/utility.component';
+// import { AuthInterceptor }                            from './_user/auth/auth.interceptor';
 
 //models
 import { User }                                 from './_user/Users';
@@ -27,7 +28,6 @@ export class AppComponent implements OnInit {
   public isLoggedIn?:                           boolean = false;
   public currUser!:                             User;
   public currPersona!:                          PER_Persona;
-  //public lstRoles!:                             string[];
 
   public userFullName:                          string = "";
   public imgAccount =                           "";
@@ -48,9 +48,11 @@ export class AppComponent implements OnInit {
   @ViewChild('expansionDocenti') public expansionDocenti!: MatExpansionPanel;
 
 //#endregion
-  constructor(private svcUser:                            UserService,
-              private router:                             Router,
-              private eventEmitterService:                EventEmitterService) {
+  constructor(private svcUser:                  UserService,
+              private router:                   Router,
+              private eventEmitterService:      EventEmitterService,
+           
+              ) {
    
   }
 
@@ -67,16 +69,15 @@ export class AppComponent implements OnInit {
           this.currUser = user;
           //questo è un "captatore" dell'Emit, quindi può funzionare sia in fase di Login che di Logout
           if (user) {
-            console.log("app.component - ngOnInit user", user)
-
+            //console.log("app.component - ngOnInit user", user)
             this.userFullName = this.currUser.fullname;
             this.isLoggedIn = true;
             // console.log ("LOGIN app.component - ngOnInit - ricevo da emit utente", user)
           } 
-          // else {
-          //   this.isLoggedIn = false; //Ma serve? se emetto (vedi funzione logout sì) altrimenti no
-          //   console.log ("LOGOUT app.component - ngOnInit - ricevo da emit utente", user)
-          // }
+          else {
+            this.isLoggedIn = false; //Ma serve? se emetto (vedi funzione logout sì) altrimenti no
+            console.log ("LOGOUT app.component - ngOnInit - ricevo da emit utente", user)
+          }
         }
       );    
     } 
@@ -109,6 +110,7 @@ export class AppComponent implements OnInit {
 
     if (this.currUser) {
       this.isLoggedIn = true;
+
       this.userFullName = this.currUser.fullname;
       this.svcUser.getFotoByUserID(this.currUser.userID).subscribe(
         res => this.imgAccount = res.foto
@@ -121,8 +123,6 @@ export class AppComponent implements OnInit {
     console.log("app.component - prima di Logout");
     this.svcUser.Logout(); //azzero tutto, compreso il BS dello User
     this.isLoggedIn = false;
-    //this.eventEmitterService.onLogout(); //emetto l'utente nullo che va ad azzerare un po' di cose posso farlo qui oppure da userservice
-
     this.router.navigate(['/user/login']);
   }
 

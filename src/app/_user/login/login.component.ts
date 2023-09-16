@@ -62,9 +62,6 @@ export class LoginComponent implements OnInit {
 //#endregion
 
   ngOnInit() {
-    this.svcUser
-    .BehaviourSubjectlistRoles.next([]); //è necessario su login cancellare il BS
-
     if(localStorage.getItem('token') != null)
       this.router.navigateByUrl('/home');
   }

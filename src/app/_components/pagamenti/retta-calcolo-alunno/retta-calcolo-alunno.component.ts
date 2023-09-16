@@ -69,7 +69,7 @@ form! :                             UntypedFormGroup;
       
     this.svcParametri.getByParName('QuoteRidotteFratelli').subscribe(
       x=> {
-        if(x.parValue == "true") this.QuoteRidotteFratelli = true;
+        if(x.parValue == "1") this.QuoteRidotteFratelli = true;
       });
 
       this.form = this.fb.group({

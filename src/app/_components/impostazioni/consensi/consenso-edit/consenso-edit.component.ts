@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, Inject, OnInit, ViewChild }            from '@angular/core';
+import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
@@ -106,7 +106,7 @@ export class ConsensoEditComponent implements OnInit {
       .pipe(
           tap(
             consenso => {
-              console.log ("consenso-edit - loadData consenso: ",consenso);
+              // console.log ("consenso-edit - loadData consenso: ",consenso);
               this.form.patchValue(consenso)
             }
           )

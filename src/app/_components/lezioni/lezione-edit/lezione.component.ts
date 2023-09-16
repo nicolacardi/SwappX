@@ -1,11 +1,11 @@
 //#region ----- IMPORTS ------------------------
 
-import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
-import { take, tap }                 from 'rxjs/operators';
+import { take, tap }                            from 'rxjs/operators';
 
 import { registerLocaleData }                   from '@angular/common';
 import localeIt                                 from '@angular/common/locales/it';
@@ -106,7 +106,6 @@ export class LezioneComponent implements OnInit {
               public _dialog:                             MatDialog,
               private _snackBar:                          MatSnackBar,
               private _loadingService:                    LoadingService,
-              private cdRef :                             ChangeDetectorRef,
               private _ngZone:                            NgZone ) {
 
     _dialogRef.disableClose = true;
@@ -183,6 +182,7 @@ export class LezioneComponent implements OnInit {
   loadData(): void {
 
     this.breakpoint = (window.innerWidth <= 800) ? 2 : 2;
+    
     this.obsClassiDocentiMaterie$ = this.svcDocenze.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
 
     this.obsMaterie$ = this.svcMaterie.listByClasseSezioneAnno(this.data.classeSezioneAnnoID); 
@@ -228,17 +228,13 @@ export class LezioneComponent implements OnInit {
     else {
       //caso nuova Lezione
 
-      this.emptyForm = true;
-      //LA RIGA QUI SOPRA DETERMINAVA UN ExpressionChangedAfterItHasBeenCheckedError...con il DetectChanges si risolve!  
-      this.cdRef.detectChanges();     
+      this.emptyForm = true;  //questo determinava un expressionChangedAfterItHasBeenCheckedError. Sistemato aggiungendo un || emptyForm in [disabled] nell'html.
 
       this.dtStart = new Date (this.data.start);
-      //this.strDtStart = Utility.UT_FormatDate(this.dtStart, "yyyy-mm-dd");
       this.strDtStart = Utility.formatDate(this.dtStart,  FormatoData.yyyy_mm_dd);
       this.strH_Ini = Utility.formatHour(this.dtStart);
 
       this.dtEnd = new Date (this.dtStart.setHours(this.dtStart.getHours() + 1));  //in caso di nuova lezione per default impostiamo la durata a un'ora
-      //this.strDtEnd = Utility.UT_FormatDate(this.dtEnd, "yyyy-mm-dd");
       this.strDtEnd = Utility.formatDate(this.dtEnd, FormatoData.yyyy_mm_dd);
       this.strH_End = Utility.formatHour(this.dtEnd);
 

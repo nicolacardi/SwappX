@@ -104,21 +104,17 @@
 
                 <mat-grid-tile >
                     <mat-form-field>
-                        <input matInput type="text" placeholder="Titolo" matTooltip="Codice da utilizzare nel report" formControlName="titolo">
+                        <mat-label>Codice Report</mat-label>
+                        <input matInput type="text" placeholder="Codice Report" matTooltip="Codice da utilizzare nel report" formControlName="titolo">
                     </mat-form-field>
                 </mat-grid-tile>
 
 
                 <mat-grid-tile colspan = "3">
-                    <!-- <mat-form-field>
-                        <input matInput type="text" required placeholder="Domanda" minlength= "3" formControlName="domanda" #nome>
-                    </mat-form-field> -->
-
                     <mat-form-field class="w100 h100px pl5 pt5" appearance="outline">
                         <mat-label>Domanda</mat-label>
                         <textarea required class="w300px  _noresize" placeholder="Domanda" matInput formControlName="domanda"></textarea>
                     </mat-form-field>
-
                 </mat-grid-tile>
 
             </mat-grid-list>

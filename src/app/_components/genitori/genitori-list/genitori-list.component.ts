@@ -25,8 +25,8 @@ import { NavigationService }                    from '../../utilities/navigation
 //models
 import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
 import { User }                                 from 'src/app/_user/Users';
-import { TableColsService } from '../../utilities/toolbar/tablecols.service';
-import { TableColsVisibleService } from '../../utilities/toolbar/tablecolsvisible.service';
+import { TableColsService }                     from '../../utilities/toolbar/tablecols.service';
+import { TableColsVisibleService }              from '../../utilities/toolbar/tablecolsvisible.service';
 
 //#endregion
 @Component({
@@ -103,7 +103,7 @@ export class GenitoriListComponent implements OnInit {
   selection = new SelectionModel<ALU_Genitore>(true, []);   //rappresenta la selezione delle checkbox
 
   public passedAlunno!:                         string;
-  public page!:                                 string;
+  // public page!:                                 string;
   emailAddresses!:                              string;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
@@ -132,14 +132,14 @@ export class GenitoriListComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output ---------
-  @ViewChild(MatPaginator) paginator!:                        MatPaginator;
-  @ViewChild(MatSort) sort!:                                  MatSort;
-  @ViewChild("filterInput") filterInput!:                     ElementRef;
+  @ViewChild(MatPaginator) paginator!:          MatPaginator;
+  @ViewChild(MatSort) sort!:                    MatSort;
+  @ViewChild("filterInput") filterInput!:       ElementRef;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger;
 
   @Input() genitoriFilterComponent!: GenitoriFilterComponent;
-  @Input('context') context! :                                string;
-  @Input('alunnoID') alunnoID! :                              number;
+  @Input('context') context! :                  string;
+  @Input('alunnoID') alunnoID! :                number;
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('addToFamily') addToFamily = new EventEmitter<ALU_Genitore>();
@@ -148,13 +148,13 @@ export class GenitoriListComponent implements OnInit {
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(private svcGenitori:                        GenitoriService,
-              private router:                             Router,
-              public _dialog:                             MatDialog, 
-              private _loadingService:                    LoadingService,
-              private _navigationService:                 NavigationService,
-              private svcTableCols:                       TableColsService,
-              private svcTableColsVisible:                TableColsVisibleService ) {
+  constructor(private svcGenitori:              GenitoriService,
+              private router:                   Router,
+              public _dialog:                   MatDialog, 
+              private _loadingService:          LoadingService,
+              private _navigationService:       NavigationService,
+              private svcTableCols:             TableColsService,
+              private svcTableColsVisible:      TableColsVisibleService ) {
      
      this.currUser = Utility.getCurrentUser();
   }
@@ -191,7 +191,7 @@ export class GenitoriListComponent implements OnInit {
         this.passedAlunno = val;
         console.log("genitori-list - ngOnInit - this.passedAlunno", this.passedAlunno);
         this.toggleDrawer.emit();
-        this.genitoriFilterComponent.nomeCognomeAlunnoFilter.setValue(val);//ma questo non si vede!!!
+        this.genitoriFilterComponent.nomeCognomeAlunnoFilter.setValue(val);
         this.loadData(); 
       }
     });    

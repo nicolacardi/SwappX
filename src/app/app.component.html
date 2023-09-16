@@ -1,6 +1,7 @@
 <loading></loading>
 
 <mat-toolbar [ngClass]="{'hidden-header': !isLoggedIn}">
+    <!-- <mat-toolbar [ngClass]="{'hidden-header': !svcAuthGuard.isLoggedInAuth}"> -->
     <button mat-icon-button [ngClass]="{'invisible': isPinned}" (click)="clickHamburger();" >
         <mat-icon>menu</mat-icon>
     </button>
@@ -38,6 +39,7 @@
 
 <mat-sidenav-container fullscreen autosize>
     <mat-sidenav *ngIf="isLoggedIn" class="leftSidenav" mode="side" opened="true" disableClose>
+        <!-- <mat-sidenav *ngIf="svcAuthGuard.isLoggedInAuth" class="leftSidenav" mode="side" opened="true" disableClose> -->
 
         <mat-nav-list class="mynavlist">
             <!-- <div mat-list-item>
@@ -224,6 +226,8 @@
     </mat-sidenav>
     <mat-sidenav-content>
         <hr style="height: 48px"  [ngClass]="{'hidden-header': !isLoggedIn}"> 
+        <!-- <hr style="height: 48px"  [ngClass]="{'hidden-header': !svcAuthGuard.isLoggedInAuth}">  -->
+
         <router-outlet class="mt80"></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>

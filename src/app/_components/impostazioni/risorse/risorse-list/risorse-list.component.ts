@@ -89,7 +89,7 @@ constructor(private svcRisorse:                   RisorseService,
 
     loadRisorse$.subscribe(
       val =>   {
-        console.log ("risorse - loadData - val", val);
+        // console.log ("risorse-list - loadData - val", val);
         this.matDataSource.data = val;
         // this.sortCustom(); 
         this.matDataSource.sort = this.sort; 

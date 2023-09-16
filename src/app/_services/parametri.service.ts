@@ -31,6 +31,12 @@ export class ParametriService {
     //http://213.215.231.4/swappX/api/_UT_Parametri
   }
 
+  listSetupPage(): Observable<_UT_Parametro[]>{
+    return this.http.get<_UT_Parametro[]>(environment.apiBaseUrl+'_UT_Parametri/ListSetupPage');
+    //http://213.215.231.4/swappX/api/_UT_Parametri/ListSetupPage
+  }
+
+
   getByParName(parName: string): Observable<_UT_Parametro>{
     return this.http.get<_UT_Parametro>(environment.apiBaseUrl+'_UT_Parametri/GetByParName/'+parName);
     //http://213.215.231.4/swappX/api/_UT_Parametri/GetByParName/AnnoCorrente
@@ -48,5 +54,16 @@ export class ParametriService {
   delete(parametroID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + '_UT_Parametri/' + parametroID);    
   }
+
+  updateSeq(seqInitial: number, seqFinal: number): Observable <any>{
+    return this.http.put(environment.apiBaseUrl+'_UT_Parametri/UpdateSeq/'+seqInitial+'/'+seqFinal, seqInitial);
+    //http://213.215.231.4/swappX/api/_UT_Parametri/UpdateSeq/1/2
+  }
+
+  renumberSeq() {
+    const url = `${environment.apiBaseUrl}_UT_Parametri/RenumberSeq`;
+    return this.http.put(url, null);
+  }
+
 
 }

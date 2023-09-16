@@ -1,10 +1,10 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, Input, OnInit} from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { Component, Input, OnInit}              from '@angular/core';
+import { UntypedFormControl }                   from '@angular/forms';
 
 //components
-import { GenitoriListComponent } from '../genitori-list/genitori-list.component';
+import { GenitoriListComponent }                from '../genitori-list/genitori-list.component';
 
 //#endregion
 @Component({

@@ -11,6 +11,8 @@ import { UserService } from '../user.service';
 
 export class AuthGuard {
 
+
+
    private lstroles: string[] = [];
   constructor( private router:        Router, 
                private svcUser:      UserService,
@@ -45,12 +47,14 @@ export class AuthGuard {
     }
 
 
-    //console.log("Not logged: redirect to Login "); //di qui non dovrebbe mai passare
+    console.log("auth.guard - Not logged: redirect to Login "); //di qui non dovrebbe mai passare
     this.router.navigate(['user/login']);  
     return false;
 
 
   }
+
+
 
   
 }

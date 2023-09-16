@@ -57,6 +57,7 @@ export class ImgUploadsComponent implements OnInit {
     this.svcParametri.getByParName("imgFileLogoStoody").subscribe(
       val=> {
         if(val){
+          console.log("imguploads ngOnInit val", val);
           this.logoStoody = val;
           this.imgFileLogoStoody = val.parValue; 
         }
@@ -160,7 +161,9 @@ export class ImgUploadsComponent implements OnInit {
           id: this.logoStoody.id,
           parName: ctrl,
           parDescr: "Logo Stoody",
-          parValue: this.logoStoodyDOM.nativeElement.src
+          parValue: this.logoStoodyDOM.nativeElement.src,
+          ckSetupPage: false,
+          ckTipo: false
         };
         break;
 
@@ -169,7 +172,9 @@ export class ImgUploadsComponent implements OnInit {
           id: this.logoScuolaEmail.id,
           parName: ctrl,
           parDescr: "Logo della scuola",
-          parValue: this.logoScuolaEmailDOM.nativeElement.src
+          parValue: this.logoScuolaEmailDOM.nativeElement.src,
+          ckSetupPage: false,
+          ckTipo: false
         };
         break;
   
@@ -178,7 +183,9 @@ export class ImgUploadsComponent implements OnInit {
           id: this.timbroScuola.id,
           parName: ctrl,
           parDescr: "Timbro della scuola",
-          parValue: this.timbroScuolaDOM.nativeElement.src
+          parValue: this.timbroScuolaDOM.nativeElement.src,
+          ckSetupPage: false,
+          ckTipo: false
         };
         break;
 
@@ -187,7 +194,9 @@ export class ImgUploadsComponent implements OnInit {
           id: this.firmaPreside.id,
           parName: ctrl,
           parDescr: "Firma del Preside",
-          parValue: this.firmaPresideDOM.nativeElement.src
+          parValue: this.firmaPresideDOM.nativeElement.src,
+          ckSetupPage: false,
+          ckTipo: false
         };
         break;
       default:
