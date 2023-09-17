@@ -25,7 +25,7 @@ import { IscrizioniService }                    from '../iscrizioni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { ScadenzeService }                      from '../../scadenze/scadenze.service';
 import { ScadenzePersoneService }               from '../../scadenze/scadenze-persone.service';
-import { ParametriService }                     from 'src/app/_services/parametri.service';
+import { ParametriService }                     from 'src/app/_components/impostazioni/parametri/parametri.service';
 import { MailService }                          from '../../utilities/mail/mail.service';
 import { UserService }                          from 'src/app/_user/user.service';
 

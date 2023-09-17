@@ -4,16 +4,16 @@ import { Component, Input, OnInit}              from '@angular/core';
 import { UntypedFormControl }                   from '@angular/forms';
 
 //components
-import { ImpostazioneParametriListComponent }   from '../impostazione-parametri-list/impostazione-parametri-list.component';
+import { ParametriListComponent }   from '../parametri-list/parametri-list.component';
 
 //#endregion
 @Component({
-  selector: 'app-impostazione-parametri-filter',
-  templateUrl: './impostazione-parametri-filter.component.html',
-  styleUrls: ['../impostazione-parametri.css']
+  selector: 'app-parametri-filter',
+  templateUrl: './parametri-filter.component.html',
+  styleUrls: ['../parametri.css']
 })
 
-export class ImpostazioneParametriFilterComponent implements OnInit {
+export class ParametriFilterComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
@@ -26,7 +26,7 @@ export class ImpostazioneParametriFilterComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output -------  
-  @Input() impostazioneparametriListComponent!: ImpostazioneParametriListComponent;
+  @Input() ParametriListComponent!: ParametriListComponent;
 //#endregion
 
   constructor() {}
@@ -41,10 +41,10 @@ export class ImpostazioneParametriFilterComponent implements OnInit {
 
   }
 
-  applyFilterDx(field: keyof typeof this.impostazioneparametriListComponent.filterValues, val: string) {
+  applyFilterDx(field: keyof typeof this.ParametriListComponent.filterValues, val: string) {
     //this.resetFilterSx();
-    this.impostazioneparametriListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
-    this.impostazioneparametriListComponent.matDataSource.filter = JSON.stringify(this.impostazioneparametriListComponent.filterValues);
+    this.ParametriListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
+    this.ParametriListComponent.matDataSource.filter = JSON.stringify(this.ParametriListComponent.filterValues);
     this.formClean = this.isFormClean();
   }
 
@@ -61,10 +61,10 @@ export class ImpostazioneParametriFilterComponent implements OnInit {
 
 //#region ----- Reset vari -------
   resetFilterSx() {
-    //this.impostazioneParametriListComponent.matDataSource.filter = ''; 
-    //this.impostazioneParametriListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
-    //this.impostazioneParametriListComponent.filterValues.filtrosx = ''; 
-    //this.impostazioneParametriListComponent.filterInput.nativeElement.value = '';
+    //this.ParametriListComponent.matDataSource.filter = ''; 
+    //this.ParametriListComponent.filterValue = ''; DA AGGIUNGERE PER EVITARE CHE LA CUSTOMPIPE highlight funzioni male ma prima va creata this.filtervalue nel component come negli altri
+    //this.ParametriListComponent.filterValues.filtrosx = ''; 
+    //this.ParametriListComponent.filterInput.nativeElement.value = '';
   }
 
   resetAllInputs() {

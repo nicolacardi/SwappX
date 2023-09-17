@@ -11,7 +11,7 @@ import { AlunniService }                        from '../../alunni/alunni.servic
 import { RetteService }                         from '../rette.service';
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
 import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
-import { ParametriService }                     from 'src/app/_services/parametri.service';
+import { ParametriService }                     from 'src/app/_components/impostazioni/parametri/parametri.service';
 
 //mdoels
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';

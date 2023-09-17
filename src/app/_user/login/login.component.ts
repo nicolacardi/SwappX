@@ -13,7 +13,7 @@ import { SnackbarComponent }                    from 'src/app/_components/utilit
 //services
 import { UserService }                          from '../user.service';
 import { LoadingService }                       from 'src/app/_components/utilities/loading/loading.service';
-import { ParametriService }                     from 'src/app/_services/parametri.service';
+import { ParametriService }                     from 'src/app/_components/impostazioni/parametri/parametri.service';
 
 //models
 

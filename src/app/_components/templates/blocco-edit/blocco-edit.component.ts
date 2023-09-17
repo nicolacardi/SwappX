@@ -10,7 +10,7 @@ import { concatMap, map, tap }                       from 'rxjs/operators';
 //components
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { tooWideValidator, tooHighValidator}    from '../../utilities/crossfieldvalidators/tooBig';
-import { ColorPickerComponent }                 from '../../color-picker/color-picker.component';
+import { ColorPickerComponent }                 from '../../utilities/color-picker/color-picker.component';
 import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 import { Utility }                              from '../../utilities/utility.component';
 import { CustomOption, QuillEditorComponent }   from 'ngx-quill'

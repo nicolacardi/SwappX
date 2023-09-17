@@ -14,7 +14,7 @@ import { SnackbarComponent }                    from '../../utilities/snackbar/s
 //services
 import { AlunniService }                        from '../../alunni/alunni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
-import { ParametriService }                     from 'src/app/_services/parametri.service';
+import { ParametriService }                     from 'src/app/_components/impostazioni/parametri/parametri.service';
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
 import { RetteService }                         from '../rette.service';
 

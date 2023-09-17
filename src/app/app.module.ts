@@ -160,7 +160,7 @@ import { ImpostazioniComponent }                from './_components/impostazioni
 import { CustomMatPaginatorIntl }               from './_components/utilities/paginator-custom/custom-mat-paginator-int';
 
 import { ResizeColumnDirective }                from './_components/utilities/resize-column/resize-column.directive';
-import { ColorPickerModule }                    from './color-picker/color-picker.module';
+import { ColorPickerModule }                    from './_components/utilities/color-picker/color-picker.module';
 import { FileDropDirective }                    from './_components/utilities/appfiledrop/appfiledrop.directive';
 
 
@@ -213,9 +213,9 @@ import { PagelleClasseEditComponent }           from './_components/pagelle/page
 import { ImgUploadsComponent }                  from './_components/impostazioni/imguploads/imguploads.component';
 import { HttpErrorInterceptor }                 from './_user/auth/httperror.interceptor';
 
-import { DomandeListComponent }                from './_components/impostazioni/domande/domande-list/domande-list.component';
-import { DomandePageComponent }                from './_components/impostazioni/domande/domande-page/domande-page.component';
-import { DomandaEditComponent }                from './_components/impostazioni/domande/domanda-edit/domanda-edit.component';
+import { DomandeListComponent }                 from './_components/impostazioni/domande/domande-list/domande-list.component';
+import { DomandePageComponent }                 from './_components/impostazioni/domande/domande-page/domande-page.component';
+import { DomandaEditComponent }                 from './_components/impostazioni/domande/domanda-edit/domanda-edit.component';
 import { IscrizioneRisposteComponent }          from './_components/procedura-iscrizione/iscrizione-risposte/iscrizione-risposte.component';
 import { RisorsePageComponent }                 from './_components/impostazioni/risorse/risorse-page/risorse-page.component';
 import { RisorseListComponent }                 from './_components/impostazioni/risorse/risorse-list/risorse-list.component';
@@ -229,10 +229,10 @@ import { SocioEditComponent }                   from './_components/soci/socio-e
 import { SociPageComponent }                    from './_components/soci/soci-page/soci-page.component';
 import { SociFilterComponent }                  from './_components/soci/soci-filter/soci-filter.component';
 import { SocioFormComponent }                   from './_components/soci/socio-form/socio-form.component';
-import { ImpostazioneParametriPageComponent }   from './_components/impostazioni/impostazione-parametri/impostazione-parametri-page/impostazione-parametri-page.component';
-import { ImpostazioneParametriListComponent }   from './_components/impostazioni/impostazione-parametri/impostazione-parametri-list/impostazione-parametri-list.component';
-import { ImpostazioneParametriFilterComponent } from './_components/impostazioni/impostazione-parametri/impostazione-parametri-filter/impostazione-parametri-filter.component';
-import { ImpostazioneParametroEditComponent }   from './_components/impostazioni/impostazione-parametri/impostazione-parametro-edit/impostazione-parametro-edit.component';
+import { ParametriPageComponent }               from './_components/impostazioni/parametri/parametri-page/parametri-page.component';
+import { ParametriListComponent }               from './_components/impostazioni/parametri/parametri-list/parametri-list.component';
+import { ParametriFilterComponent }             from './_components/impostazioni/parametri/parametri-filter/parametri-filter.component';
+import { ParametroEditComponent }               from './_components/impostazioni/parametri/parametro-edit/parametro-edit.component';
 
 
 
@@ -413,10 +413,10 @@ import { ImpostazioneParametroEditComponent }   from './_components/impostazioni
     SociPageComponent,
     SociFilterComponent,
     SocioFormComponent,
-    ImpostazioneParametriPageComponent,
-    ImpostazioneParametriListComponent,
-    ImpostazioneParametriFilterComponent,
-    ImpostazioneParametroEditComponent,
+    ParametriPageComponent,
+    ParametriListComponent,
+    ParametriFilterComponent,
+    ParametroEditComponent,
     
  
     

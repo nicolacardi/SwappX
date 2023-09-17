@@ -15,7 +15,7 @@ import { DialogYesNoComponent }                 from '../../../utilities/dialog-
 
 //services
 import { LoadingService }                       from '../../../utilities/loading/loading.service';
-import { ParametriService }                     from 'src/app/_services/parametri.service';
+import { ParametriService }                     from 'src/app/_components/impostazioni/parametri/parametri.service';
 
 //models
 import { DialogDataParametroEdit }              from 'src/app/_models/DialogData';
@@ -23,11 +23,11 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 
 
 @Component({
-  selector: 'app-impostazione-parametro-edit',
-  templateUrl: './impostazione-parametro-edit.component.html',
-  styleUrls: ['../impostazione-parametri.css']
+  selector: 'app-parametro-edit',
+  templateUrl: './parametro-edit.component.html',
+  styleUrls: ['../parametri.css']
 })
-export class ImpostazioneParametroEditComponent {
+export class ParametroEditComponent {
 
 //#region ----- Variabili ----------------------
 
@@ -43,7 +43,7 @@ export class ImpostazioneParametroEditComponent {
 
   //#region ----- Constructor --------------------
 
-  constructor(public _dialogRef: MatDialogRef<ImpostazioneParametroEditComponent>,
+  constructor(public _dialogRef: MatDialogRef<ParametroEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data:       DialogDataParametroEdit,
               private svcParametri:             ParametriService,
 

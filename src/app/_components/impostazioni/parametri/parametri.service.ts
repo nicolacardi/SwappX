@@ -10,7 +10,7 @@ import { environment }                  from 'src/environments/environment';
 //services
 
 //classes
-import { _UT_Parametro }                from '../_models/_UT_Parametro';
+import { _UT_Parametro }                from '../../../_models/_UT_Parametro';
 
 //#endregion
 

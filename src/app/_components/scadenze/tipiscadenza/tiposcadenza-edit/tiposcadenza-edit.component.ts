@@ -10,7 +10,7 @@ import { tap }                                  from 'rxjs/operators';
 //components
 import { SnackbarComponent }                    from '../../../utilities/snackbar/snackbar.component';
 import { DialogYesNoComponent }                 from '../../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { ColorPickerComponent }                 from '../../../color-picker/color-picker.component';
+import { ColorPickerComponent }                 from '../../../utilities/color-picker/color-picker.component';
 
 //services
 import { LoadingService }                       from '../../../utilities/loading/loading.service';

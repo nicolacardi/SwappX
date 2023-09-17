@@ -10,7 +10,7 @@ import { SnackbarComponent }                    from '../utilities/snackbar/snac
 
 //services 
 import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
-import { ParametriService }                     from 'src/app/_services/parametri.service';
+import { ParametriService }                     from 'src/app/_components/impostazioni/parametri/parametri.service';
 
 //models
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';

@@ -33,7 +33,7 @@ import { DialogDataScadenza }                   from 'src/app/_models/DialogData
 import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
 import { User }                                 from 'src/app/_user/Users';
 import { CAL_TipoScadenza }                     from 'src/app/_models/CAL_TipoScadenza';
-import { ParametriService } from 'src/app/_services/parametri.service';
+import { ParametriService } from 'src/app/_components/impostazioni/parametri/parametri.service';
 
 //#endregion
 @Component({

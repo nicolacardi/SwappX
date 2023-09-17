@@ -12,12 +12,12 @@ import { MatMenuTrigger }                       from '@angular/material/menu';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 
 //components
-import { ImpostazioneParametroEditComponent }   from '../impostazione-parametro-edit/impostazione-parametro-edit.component';
-import { ImpostazioneParametriFilterComponent } from '../impostazione-parametri-filter/impostazione-parametri-filter.component';
+import { ParametroEditComponent }   from '../parametro-edit/parametro-edit.component';
+import { ParametriFilterComponent } from '../parametri-filter/parametri-filter.component';
 import { Utility }                              from '../../../utilities/utility.component';
 
 //services
-import { ParametriService }                      from '../../../../_services/parametri.service';
+import { ParametriService }                      from '../parametri.service';
 import { LoadingService }                       from '../../../utilities/loading/loading.service';
 import { TableColsService }                     from '../../../utilities/toolbar/tablecols.service';
 import { TableColsVisibleService }              from '../../../utilities/toolbar/tablecolsvisible.service';
@@ -29,12 +29,12 @@ import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
 @Component({
-  selector: 'app-impostazione-parametri-list',
-  templateUrl: './impostazione-parametri-list.component.html',
-  styleUrls: ['../impostazione-parametri.css']
+  selector: 'app-parametri-list',
+  templateUrl: './parametri-list.component.html',
+  styleUrls: ['../parametri.css']
 })
 
-export class ImpostazioneParametriListComponent implements OnInit {
+export class ParametriListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
   currUser!:                                    User;
@@ -86,7 +86,7 @@ export class ImpostazioneParametriListComponent implements OnInit {
   @ViewChild("filterInput") filterInput!:       ElementRef;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger;
 
-  @Input() impostazioneparametriFilterComponent!: ImpostazioneParametriFilterComponent;
+  @Input() ParametriFilterComponent!: ParametriFilterComponent;
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
 //#endregion
 
@@ -135,7 +135,7 @@ export class ImpostazioneParametriListComponent implements OnInit {
 
     loadParametri$.subscribe(
       val =>   {
-        console.log("impostazione-parametri-list - loadData - val", val);
+        console.log("parametri-list - loadData - val", val);
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.sortCustom();
@@ -203,7 +203,7 @@ export class ImpostazioneParametriListComponent implements OnInit {
       data: 0
     };
 
-    const dialogRef = this._dialog.open(ImpostazioneParametroEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(ParametroEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       res => this.loadData()
     );
@@ -217,7 +217,7 @@ export class ImpostazioneParametriListComponent implements OnInit {
       data:  { parametroID: id }
     };
 
-    const dialogRef = this._dialog.open(ImpostazioneParametroEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(ParametroEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
         () => this.loadData()
     );

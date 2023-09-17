@@ -19,7 +19,7 @@ import { MaterieService } from '../materie.service';
 //classes
 import { MAT_MacroMateria } from 'src/app/_models/MAT_MacroMateria';
 import { MAT_Materia } from 'src/app/_models/MAT_Materia';
-import { ColorPickerComponent } from '../../color-picker/color-picker.component';
+import { ColorPickerComponent } from '../../utilities/color-picker/color-picker.component';
 import { DialogDataMateriaEdit } from 'src/app/_models/DialogData';
 
 //#endregion

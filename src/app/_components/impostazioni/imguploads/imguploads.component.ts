@@ -9,7 +9,7 @@ import { SnackbarComponent }                    from '../../utilities/snackbar/s
 import { Utility }                              from '../../utilities/utility.component';
 
 //services
-import { ParametriService }                     from 'src/app/_services/parametri.service';
+import { ParametriService }                     from 'src/app/_components/impostazioni/parametri/parametri.service';
 
 //models
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';

@@ -17,7 +17,7 @@ import { MailService }                          from 'src/app/_components/utilit
 
 //models
 import { _UT_MailMessage }                      from 'src/app/_models/_UT_MailMessage';
-import { ParametriService } from 'src/app/_services/parametri.service';
+import { ParametriService } from 'src/app/_components/impostazioni/parametri/parametri.service';
 
 //#endregion
 
