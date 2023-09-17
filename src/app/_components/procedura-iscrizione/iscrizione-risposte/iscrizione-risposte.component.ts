@@ -69,15 +69,25 @@ constructor(private svcDomande:                DomandeService,
             }
 //#endregion
 
+
+  ngOnChanges() {
+    if (this.iscrizioneID != undefined) 
+      this.loadData();
+  }
+
+
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
-    this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione;})
-    this.svcRette.sumConcordateByIscrizione(this.iscrizioneID).subscribe(rettaConcordata=> {this.rettaConcordata = rettaConcordata;})
+    // this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione;})
+    // this.svcRette.sumConcordateByIscrizione(this.iscrizioneID).subscribe(rettaConcordata=> {this.rettaConcordata = rettaConcordata;})
 
     this.loadData();
   }
 
   loadData() {
+    this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione;})
+    this.svcRette.sumConcordateByIscrizione(this.iscrizioneID).subscribe(rettaConcordata=> {this.rettaConcordata = rettaConcordata;})
+
     this.obsDomande$ = this.svcDomande.list()
     .pipe( 
       map(res=> res.filter((x) => x.contesto == this.contesto)), //carico domande x consensi o dati economici a seconda del valore in input

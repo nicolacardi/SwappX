@@ -48,28 +48,6 @@
                     </app-voti-interr-list>
                 </mat-tab>
 
-                <!-- <mat-tab  *ngIf="classeSezioneAnnoID" label="Pagelle">
-                    <table>
-                        <tr>
-                            <td class="_cell-align-top w300px ">
-                                <app-iscrizioni-classe-list [dove]="'pagella'"  
-                                    [classeSezioneAnnoID]="classeSezioneAnnoID"  
-                                    (iscrizioneID)="iscrizioneIDEmitted($event)"
-                                    (alunno)="alunnoEmitted($event)" >
-                                </app-iscrizioni-classe-list>
-                            </td>
-                            <td class="_cell-align-top pl10 _border-left w750px">
-                                <app-pagelle-edit
-                                    [iscrizioneID]="iscrizioneID"
-                                    [docenteID]="docenteID"
-                                    [classeSezioneAnnoID]="classeSezioneAnnoID" 
-                                    [alunno]="alunno">
-                                </app-pagelle-edit>
-                            </td>
-                        </tr>
-                    </table>
-                </mat-tab> -->
-
                 <mat-tab  *ngIf="classeSezioneAnnoID" label="Pagelle per Materia">
                     <h1 class="_titolo-pagina">Pagelle per materia</h1>
                         <!-- combo materie del docente -->
@@ -88,6 +66,32 @@
                             [tipoVoto]="tipoVoto">
                         </app-pagelle-classe-edit>
                     </form>
+                </mat-tab>
+
+                <mat-tab  *ngIf="classeSezioneAnnoID" label="Cert. Competenze">
+                    <h1 class="_titolo-pagina">Cert. Competenze</h1>
+
+                    <table>
+                        <tr>
+                            <td class="_cell-align-top w300px">
+                                <app-iscrizioni-classe-list [dove]="'pagella'"  
+                                    [classeSezioneAnnoID]="classeSezioneAnnoID"  
+                                    (iscrizioneID)="iscrizioneIDEmitted($event)">
+                                    <!-- (alunno)="alunnoEmitted($event)" > -->
+                                </app-iscrizioni-classe-list>
+                            </td>
+                            <td class="_cell-align-top pl10 _border-left w750px">
+                                <app-iscrizione-risposte  
+                                    [iscrizioneID]="iscrizioneID"
+                                    [contesto]="'Cert. Competenze'"
+                                    >
+                              </app-iscrizione-risposte>
+                            </td>
+                        </tr>
+                    </table>
+
+
+            
                 </mat-tab>
             </mat-tab-group>
    
