@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
 import { Component, Input, OnInit }             from '@angular/core';
-import { ConsensiService }                      from '../../impostazioni/consensi/consensi.service';
+import { DomandeService }                      from '../../impostazioni/domande/domande.service';
 import { MatDialog }                            from '@angular/material/dialog';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { Observable, map, tap }                           from 'rxjs';
@@ -18,25 +18,25 @@ import { IscrizioniService }                    from '../../iscrizioni/iscrizion
 import { RetteService }                         from '../../pagamenti/rette.service';
 
 //models
-import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
+import { _UT_Domanda }                          from 'src/app/_models/_UT_Domanda';
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 
 //#endregion
 @Component({
-  selector: 'app-iscrizione-consensi',
-  templateUrl: './iscrizione-consensi.component.html',
+  selector: 'app-iscrizione-risposte',
+  templateUrl: './iscrizione-risposte.component.html',
   styleUrls: ['../procedura-iscrizione.css']
 })
-export class IscrizioneConsensiComponent implements OnInit  {
+export class IscrizioneRisposteComponent implements OnInit  {
 
 //#region ----- Variabili ----------------------
   iscrizione!:                                  CLS_Iscrizione;
   rettaConcordata!:                             number;
-  obsConsensi$!:                                Observable<_UT_Consenso[]>;
-  formConsensi! :                               UntypedFormGroup;
+  obsDomande$!:                                Observable<_UT_Domanda[]>;
+  formRisposte! :                               UntypedFormGroup;
   questions: any[] = []; // Assuming questions is an array of question objects
 
-  matDataSource = new MatTableDataSource<_UT_Consenso>();
+  matDataSource = new MatTableDataSource<_UT_Domanda>();
   
   displayedColumns: string[] = [
     "domanda",
@@ -54,7 +54,7 @@ export class IscrizioneConsensiComponent implements OnInit  {
 
 //#region ----- Constructor --------------------
   
-constructor(private svcConsensi:                ConsensiService,
+constructor(private svcDomande:                DomandeService,
             private fb:                         UntypedFormBuilder, 
             private svcRisorse:                 RisorseService,
             private svcIscrizioni:              IscrizioniService,
@@ -65,7 +65,7 @@ constructor(private svcConsensi:                ConsensiService,
             private _snackBar:                  MatSnackBar,
             ) {
 
-    this.formConsensi = this.fb.group({})
+    this.formRisposte = this.fb.group({})
             }
 //#endregion
 
@@ -78,36 +78,36 @@ constructor(private svcConsensi:                ConsensiService,
   }
 
   loadData() {
-    this.obsConsensi$ = this.svcConsensi.list()
+    this.obsDomande$ = this.svcDomande.list()
     .pipe( 
       map(res=> res.filter((x) => x.contesto == this.contesto)), //carico domande x consensi o dati economici a seconda del valore in input
     )
     ;  
-    const loadConsensi$ =this._loadingService.showLoaderUntilCompleted(this.obsConsensi$);
+    const loadDomande$ =this._loadingService.showLoaderUntilCompleted(this.obsDomande$);
 
-    loadConsensi$.subscribe(
+    loadDomande$.subscribe(
       questions =>   {
 
         this.matDataSource.data = questions;
         //devo aggiungere al form un controllo x ogni domanda (di due tipi diversi)
         //in modo che il pulsante di "Salva e continua" si disabiliti se uno non risponde a tutto
-        //element.id è l'id della domanda cioè di _UT_Consensi
+        //element.id è l'id della domanda cioè di _UT_Domande
         this.questions = questions;
           this.questions.forEach((element) => {
             if (element.tipo == 'Scelta Singola') {
-              if (element.numOpzioni >1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.required));
-              if (element.numOpzioni ==1) this.formConsensi.addControl(element.id, this.fb.control('', Validators.requiredTrue));
+              if (element.numOpzioni >1) this.formRisposte.addControl(element.id, this.fb.control('', Validators.required));
+              if (element.numOpzioni ==1) this.formRisposte.addControl(element.id, this.fb.control('', Validators.requiredTrue));
             }
             if (element.tipo == 'Scelta Multipla') { //qui devo aggiungere N Controls......e non uno solo!
-              this.formConsensi.addControl(element.id+"_1", this.fb.control(''));
-              this.formConsensi.addControl(element.id+"_2", this.fb.control(''));
-              this.formConsensi.addControl(element.id+"_3", this.fb.control(''));
-              this.formConsensi.addControl(element.id+"_4", this.fb.control(''));
-              this.formConsensi.addControl(element.id+"_5", this.fb.control(''));
-              this.formConsensi.addControl(element.id+"_6", this.fb.control(''));
+              this.formRisposte.addControl(element.id+"_1", this.fb.control(''));
+              this.formRisposte.addControl(element.id+"_2", this.fb.control(''));
+              this.formRisposte.addControl(element.id+"_3", this.fb.control(''));
+              this.formRisposte.addControl(element.id+"_4", this.fb.control(''));
+              this.formRisposte.addControl(element.id+"_5", this.fb.control(''));
+              this.formRisposte.addControl(element.id+"_6", this.fb.control(''));
             }
             if (element.tipo == 'Risposta Libera') {
-              this.formConsensi.addControl(element.id+"_RL", this.fb.control('', Validators.required));
+              this.formRisposte.addControl(element.id+"_RL", this.fb.control('', Validators.required));
             }
           })
       });

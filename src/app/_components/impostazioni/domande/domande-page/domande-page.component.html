@@ -9,19 +9,19 @@
 <mat-drawer-container [hasBackdrop]="false" style="min-height: 91%;">
 
     <!-- <mat-drawer position="start" #toolSidenav class="toolSidenav"  [mode]="'side'"> -->
-        <!-- <app-toolbar [rptTitle]="appconsensilist.rptTitle" 
-                     [rptFieldsToKeep]="appconsensilist.rptFieldsToKeep" 
-                     [rptColumnsNames]="appconsensilist.rptColumnsNames" 
-                     [rptData]="appconsensilist.matDataSource.data"
-                     [rptFileName]="appconsensilist.rptFileName"
-                     [columnsComponent] = "appconsensilist"
+        <!-- <app-toolbar [rptTitle]="appdomandelist.rptTitle" 
+                     [rptFieldsToKeep]="appdomandelist.rptFieldsToKeep" 
+                     [rptColumnsNames]="appdomandelist.rptColumnsNames" 
+                     [rptData]="appdomandelist.matDataSource.data"
+                     [rptFileName]="appdomandelist.rptFileName"
+                     [columnsComponent] = "appdomandelist"
                      [emailsYN] = "false"
                      >
         </app-toolbar> -->
     <!-- </mat-drawer> -->
 
     <mat-drawer-content>
-        <app-consensi-list #appconsensilist >
-        </app-consensi-list>
+        <app-domande-list #appdomandelist >
+        </app-domande-list>
     </mat-drawer-content>
 </mat-drawer-container>

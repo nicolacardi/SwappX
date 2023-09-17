@@ -9,30 +9,30 @@ import { MatSort }                              from '@angular/material/sort';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 
 //components
-import { ConsensoEditComponent }                from '../consenso-edit/consenso-edit.component';
+import { DomandaEditComponent }                from '../domanda-edit/domanda-edit.component';
 import { SnackbarComponent }                    from 'src/app/_components/utilities/snackbar/snackbar.component';
 
 
 //services
-import { ConsensiService }                      from '../consensi.service';
+import { DomandeService }                      from '../domande.service';
 import { RisorseService }                       from '../../risorse/risorse.service';
 
 //models
-import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
+import { _UT_Domanda }                         from 'src/app/_models/_UT_Domanda';
 //#endregion
 
 @Component({
-  selector: 'app-consensi-list',
-  templateUrl: './consensi-list.component.html',
-  styleUrls: ['../consensi.css']
+  selector: 'app-domande-list',
+  templateUrl: './domande-list.component.html',
+  styleUrls: ['../domande.css']
 })
-export class ConsensiListComponent implements OnInit{
+export class DomandeListComponent implements OnInit{
 
 //#region ----- Variabili ----------------------
 
   maxSeq!:                                       number;
-  matDataSource = new MatTableDataSource<_UT_Consenso>();
-  obsConsensi$!:                                Observable<_UT_Consenso[]>;
+  matDataSource = new MatTableDataSource<_UT_Domanda>();
+  obsDomande$!:                                Observable<_UT_Domanda[]>;
   
   displayedColumns: string[] = [
 
@@ -48,11 +48,14 @@ export class ConsensiListComponent implements OnInit{
     "testo4",
     "testo5",
     "testo6",
+    "testo7",
+    "testo8",
+    "testo9",
     "risorsa"
   ];
 
-  rptTitle = 'Lista Consensi';
-  rptFileName = 'ListaConsensi';
+  rptTitle = 'Lista Domande';
+  rptFileName = 'ListaDomande';
   rptFieldsToKeep  = [
     "domanda",
   ];
@@ -61,6 +64,7 @@ export class ConsensiListComponent implements OnInit{
     "domanda",
   ];
 
+  
   filterValue = '';       //Filtro semplice
 
   filterValues = {
@@ -75,7 +79,7 @@ export class ConsensiListComponent implements OnInit{
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(private svcConsensi:              ConsensiService,
+  constructor(private svcDomande:              DomandeService,
               private svcRisorse:                 RisorseService,
               private _loadingService:          LoadingService,
               public _dialog:                   MatDialog,
@@ -91,12 +95,12 @@ export class ConsensiListComponent implements OnInit{
 
   loadData() {
 
-    this.obsConsensi$ = this.svcConsensi.list();  
-    const loadConsensi$ =this._loadingService.showLoaderUntilCompleted(this.obsConsensi$);
+    this.obsDomande$ = this.svcDomande.list();  
+    const loadDomande$ =this._loadingService.showLoaderUntilCompleted(this.obsDomande$);
 
-    loadConsensi$.subscribe(
+    loadDomande$.subscribe(
       val =>   {
-        // console.log ("consensi-list - loadData - estraggo consensi list", val);
+        // console.log ("domande-list - loadData - estraggo domande list", val);
         this.matDataSource.data = val;
         this.sortCustom(); 
         this.matDataSource.sort = this.sort; 
@@ -112,23 +116,23 @@ export class ConsensiListComponent implements OnInit{
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '800px',
-      height: '570px',
-      data: { consensoID:  0}
+      height: '650px',
+      data: { domandaID:  0}
     };
-    const dialogRef = this._dialog.open(ConsensoEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(DomandaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() => {
-      this.svcConsensi.renumberSeq().subscribe(() => this.loadData());
+      this.svcDomande.renumberSeq().subscribe(() => this.loadData());
     });
   }
 
-  openDetail(consensoID:any){
+  openDetail(domandaID:any){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '800px',
-      height: '570px',
-      data: { consensoID: consensoID }
+      height: '650px',
+      data: { domandaID: domandaID }
     };
-    const dialogRef = this._dialog.open(ConsensoEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(DomandaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() => this.loadData());
   }
 
@@ -164,7 +168,7 @@ export class ConsensiListComponent implements OnInit{
 
   drop(event: any){
     console.log (event.previousIndex, event.currentIndex);
-    this.svcConsensi.updateSeq(event.previousIndex+1, event.currentIndex+1 )
+    this.svcDomande.updateSeq(event.previousIndex+1, event.currentIndex+1 )
     .subscribe(res=> this.loadData());
   }
 

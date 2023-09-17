@@ -1,10 +1,10 @@
-import { _UT_Consenso } from "./_UT_Consenso";
+import { _UT_Domanda } from "./_UT_Domanda";
 
-export interface CLS_IscrizioneConsenso {
+export interface CLS_IscrizioneRisposta {
         id?:                                     number;
         tipo:                                   string;
         iscrizioneID:                           number;
-        consensoID:                             number;
+        domandaID:                              number;
         rispostaLibera:                         string;
         risposta1:                              boolean;
         risposta2:                              boolean;
@@ -12,7 +12,10 @@ export interface CLS_IscrizioneConsenso {
         risposta4:                              boolean;
         risposta5:                              boolean;
         risposta6:                              boolean;
+        risposta7:                              boolean;
+        risposta8:                              boolean;
+        risposta9:                              boolean;
         dtIns?:                                 string;
         userIns?:                               number;
-        consenso?:                              _UT_Consenso
+        domanda?:                              _UT_Domanda
 }

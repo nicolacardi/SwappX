@@ -20,7 +20,7 @@
         <ng-container matColumnDef="actionsColumn">
             <th mat-header-cell *matHeaderCellDef ></th>
             <td mat-cell  *matCellDef="let element;  let j = index;"> 
-                <img (click)="openDetail(element.id)" class="iconaMenu pointer" src="./assets/consenso_edit.svg">
+                <img (click)="openDetail(element.id)" class="iconaMenu pointer" src="./assets/domanda_edit.svg">
             </td>
         </ng-container>
 
@@ -73,7 +73,18 @@
             <th mat-header-cell *matHeaderCellDef  mat-sort-header >Opzione6</th>
             <td mat-cell *matCellDef="let element" [innerHTML]="element.testo6 | highlight:filterValue"></td>
         </ng-container>
-
+        <ng-container matColumnDef="testo7">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Opzione7</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.testo7 | highlight:filterValue"></td>
+        </ng-container>
+        <ng-container matColumnDef="testo8">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Opzione8</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.testo8 | highlight:filterValue"></td>
+        </ng-container>
+        <ng-container matColumnDef="testo9">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Opzione9</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.testo9 | highlight:filterValue"></td>
+        </ng-container>
         <ng-container matColumnDef="risorsa">
             <th mat-header-cell *matHeaderCellDef  mat-sort-header >Allegato</th>
             <td mat-cell *matCellDef="let element" class="_blue _underline pointer" matTooltip="Download:{{element.risorsa?.nomeFile}}" (click) = "download(element.risorsa?.id)"  [innerHTML]="element.risorsa?.nomeFile | highlight:filterValue"></td>

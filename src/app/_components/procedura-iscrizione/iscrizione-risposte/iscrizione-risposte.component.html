@@ -17,7 +17,7 @@
         </table>
 
     </div>
-    <form [formGroup] = "formConsensi">
+    <form [formGroup] = "formRisposte">
 
         <table mat-table class="_table-row-low transparent w100" 
             [dataSource]="matDataSource">
@@ -51,6 +51,9 @@
                         <mat-radio-button *ngIf="element.numOpzioni > 3" value="4">{{element.testo4}}</mat-radio-button>
                         <mat-radio-button *ngIf="element.numOpzioni > 4" value="5">{{element.testo5}}</mat-radio-button>
                         <mat-radio-button *ngIf="element.numOpzioni > 5" value="6">{{element.testo6}}</mat-radio-button>
+                        <mat-radio-button *ngIf="element.numOpzioni > 6" value="7">{{element.testo7}}</mat-radio-button>
+                        <mat-radio-button *ngIf="element.numOpzioni > 7" value="8">{{element.testo8}}</mat-radio-button>
+                        <mat-radio-button *ngIf="element.numOpzioni > 8" value="9">{{element.testo9}}</mat-radio-button>
                     </mat-radio-group>
 
                     <mat-checkbox  [formControlName]="element.id" *ngIf="element.numOpzioni == 1 && element.tipo == 'Scelta Singola'">{{element.testo1}}</mat-checkbox>
@@ -63,7 +66,10 @@
                         <mat-checkbox [formControlName]="element.id+'_3'" *ngIf="element.numOpzioni > 2" value="3">{{element.testo3}}</mat-checkbox><br *ngIf="element.numOpzioni > 2">
                         <mat-checkbox [formControlName]="element.id+'_4'" *ngIf="element.numOpzioni > 3" value="4">{{element.testo4}}</mat-checkbox><br *ngIf="element.numOpzioni > 3">
                         <mat-checkbox [formControlName]="element.id+'_5'" *ngIf="element.numOpzioni > 4" value="5">{{element.testo5}}</mat-checkbox><br *ngIf="element.numOpzioni > 4">
-                        <mat-checkbox [formControlName]="element.id+'_6'" *ngIf="element.numOpzioni > 5" value="6">{{element.testo6}}</mat-checkbox>
+                        <mat-checkbox [formControlName]="element.id+'_6'" *ngIf="element.numOpzioni > 5" value="6">{{element.testo6}}</mat-checkbox><br *ngIf="element.numOpzioni > 5">
+                        <mat-checkbox [formControlName]="element.id+'_7'" *ngIf="element.numOpzioni > 6" value="7">{{element.testo7}}</mat-checkbox><br *ngIf="element.numOpzioni > 6">
+                        <mat-checkbox [formControlName]="element.id+'_8'" *ngIf="element.numOpzioni > 7" value="8">{{element.testo8}}</mat-checkbox><br *ngIf="element.numOpzioni > 7">
+                        <mat-checkbox [formControlName]="element.id+'_9'" *ngIf="element.numOpzioni > 8" value="9">{{element.testo9}}</mat-checkbox>
                     </div>
 
                     <textarea *ngIf="element.tipo == 'Risposta Libera'" class="w300px  _noresize" placeholder="Risposta libera" matInput [formControlName]="element.id+'_RL'"></textarea>

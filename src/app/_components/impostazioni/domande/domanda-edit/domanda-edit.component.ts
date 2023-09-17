@@ -15,26 +15,26 @@ import { DialogYesNoComponent }                 from '../../../utilities/dialog-
 
 //services
 import { LoadingService }                       from '../../../utilities/loading/loading.service';
-import { ConsensiService }                      from '../consensi.service';
+import { DomandeService }                      from '../domande.service';
 import { RisorseService }                       from '../../risorse/risorse.service';
 
 //classes
-import { _UT_Consenso }                         from 'src/app/_models/_UT_Consenso';
-import { DialogDataConsensoEdit }               from 'src/app/_models/DialogData';
+import { _UT_Domanda }                         from 'src/app/_models/_UT_Domanda';
+import { DialogDataDomandaEdit }               from 'src/app/_models/DialogData';
 import { _UT_Risorsa }                          from 'src/app/_models/_UT_Risorsa';
 
 //#endregion
 
 @Component({
-  selector: 'app-consenso-edit',
-  templateUrl: './consenso-edit.component.html',
-  styleUrls: ['../consensi.css']
+  selector: 'app-domanda-edit',
+  templateUrl: './domanda-edit.component.html',
+  styleUrls: ['../domande.css']
 })
-export class ConsensoEditComponent implements OnInit {
+export class DomandaEditComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
-  consenso$!:                                   Observable<_UT_Consenso>;
+  domanda$!:                                    Observable<_UT_Domanda>;
   obsRisorse$!:                                 Observable<_UT_Risorsa[]>;
   form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
@@ -54,9 +54,9 @@ export class ConsensoEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(public _dialogRef: MatDialogRef<ConsensoEditComponent>,
-              @Inject(MAT_DIALOG_DATA) public data:       DialogDataConsensoEdit,
-              private svcConsensi:              ConsensiService,
+  constructor(public _dialogRef: MatDialogRef<DomandaEditComponent>,
+              @Inject(MAT_DIALOG_DATA) public data:       DialogDataDomandaEdit,
+              private svcDomande:              DomandeService,
               private svcFile:                  RisorseService,
 
               private _loadingService :         LoadingService,
@@ -79,6 +79,9 @@ export class ConsensoEditComponent implements OnInit {
       testo4:                                   [''],
       testo5:                                   [''],
       testo6:                                   [''],
+      testo7:                                   [''],
+      testo8:                                   [''],
+      testo9:                                   [''],
       seq:                                      [''],
       risorsaID:                                   ['']
     });
@@ -98,16 +101,16 @@ export class ConsensoEditComponent implements OnInit {
 
   loadData(){
 
-    if (this.data.consensoID && this.data.consensoID + '' != "0") {
+    if (this.data.domandaID && this.data.domandaID + '' != "0") {
 
-      const obsConsenso$: Observable<_UT_Consenso> = this.svcConsensi.get(this.data.consensoID);
-      const loadConsenso$ = this._loadingService.showLoaderUntilCompleted(obsConsenso$);
-      this.consenso$ = loadConsenso$
+      const obsdomanda$: Observable<_UT_Domanda> = this.svcDomande.get(this.data.domandaID);
+      const loaddomanda$ = this._loadingService.showLoaderUntilCompleted(obsdomanda$);
+      this.domanda$ = loaddomanda$
       .pipe(
           tap(
-            consenso => {
-              // console.log ("consenso-edit - loadData consenso: ",consenso);
-              this.form.patchValue(consenso)
+            domanda => {
+              // console.log ("domanda-edit - loadData domanda: ",domanda);
+              this.form.patchValue(domanda)
             }
           )
       );
@@ -130,10 +133,13 @@ export class ConsensoEditComponent implements OnInit {
     testo[3] = this.form.controls['testo4'];
     testo[4] = this.form.controls['testo5'];
     testo[5] = this.form.controls['testo6'];
+    testo[6] = this.form.controls['testo7'];
+    testo[7] = this.form.controls['testo8'];
+    testo[8] = this.form.controls['testo9'];
 
     let testoreordered = []
     let n = 0;
-    for (let i = 0; i < 6; i++) { 
+    for (let i = 0; i < 9; i++) { 
       if (testo[i].value != '' && testo[i].value != null) { 
         testoreordered[n] = testo[i].value;
         n++;
@@ -148,7 +154,7 @@ export class ConsensoEditComponent implements OnInit {
 
     if (this.form.controls['id'].value == null) {
       this.form.controls.seq.setValue(this.data.maxSeq +1);
-      this.svcConsensi.post(this.form.value).subscribe({
+      this.svcDomande.post(this.form.value).subscribe({
         next: res=> {
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
           this._dialogRef.close();
@@ -160,7 +166,7 @@ export class ConsensoEditComponent implements OnInit {
       });
     }
     else {
-      this.svcConsensi.put(this.form.value).subscribe({
+      this.svcDomande.put(this.form.value).subscribe({
           next: res=> {
             this._dialogRef.close();
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
@@ -181,10 +187,10 @@ export class ConsensoEditComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       result => {
         if(result){
-          this.svcConsensi.delete(Number(this.data.consensoID)).subscribe({
+          this.svcDomande.delete(Number(this.data.domandaID)).subscribe({
             next: res=>{
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
-              this.svcConsensi.renumberSeq().subscribe();
+              this.svcDomande.renumberSeq().subscribe();
               this._dialogRef.close();
             },
             error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})

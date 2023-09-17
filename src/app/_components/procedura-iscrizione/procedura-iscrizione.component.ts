@@ -10,12 +10,12 @@ import { FormatoData, Utility } from '../utilities/utility.component';
 //components
 import { SnackbarComponent }                    from '../utilities/snackbar/snackbar.component';
 import { PersonaFormComponent }                 from '../persone/persona-form/persona-form.component';
-import { IscrizioneConsensiComponent }          from './iscrizione-consensi/iscrizione-consensi.component';
+import { IscrizioneRisposteComponent }          from './iscrizione-risposte/iscrizione-risposte.component';
 
 //services
 import { PersoneService }                       from '../persone/persone.service';
 import { IscrizioniService }                    from '../iscrizioni/iscrizioni.service';
-import { IscrizioneConsensiService }            from './iscrizione-consensi/iscrizione-consensi.service';
+import { IscrizioneRisposteService }            from './iscrizione-risposte/iscrizione-risposte.service';
 import { OpenXMLService }                       from '../utilities/openXML/open-xml.service';
 import { RetteService }                         from '../pagamenti/rette.service';
 
@@ -23,7 +23,7 @@ import { RetteService }                         from '../pagamenti/rette.service
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
 import { ALU_GenitoreAlunno }                   from 'src/app/_models/ALU_GenitoreAlunno';
-import { CLS_IscrizioneConsenso }               from 'src/app/_models/CLS_IscrizioneConsenso';
+import { CLS_IscrizioneRisposta }               from 'src/app/_models/CLS_IscrizioneRisposta';
 import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDocument';
 import { GenitoreFormComponent } from '../genitori/genitore-form/genitore-form.component';
 import { AlunnoFormComponent } from '../alunni/alunno-form/alunno-form.component';
@@ -56,8 +56,8 @@ export class ProceduraIscrizioneComponent implements OnInit {
   @ViewChildren(GenitoreFormComponent) GenitoreFormComponent!: QueryList<GenitoreFormComponent>;
   @ViewChild(AlunnoFormComponent) AlunnoFormComponent!: AlunnoFormComponent;
 
-  @ViewChild('formIscrizioneConsensi') ConsensiFormComponent!: IscrizioneConsensiComponent;
-  @ViewChild('formIscrizioneDatiEconomici') DatiEconomiciFormComponent!: IscrizioneConsensiComponent;
+  @ViewChild('formIscrizioneConsensi') ConsensiFormComponent!: IscrizioneRisposteComponent;
+  @ViewChild('formIscrizioneDatiEconomici') DatiEconomiciFormComponent!: IscrizioneRisposteComponent;
   @ViewChild('appAssociazione') AssociazioneComponent!: AssociazioneComponent;
 
   @ViewChild('stepper') stepper!:               MatStepper;
@@ -67,7 +67,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   constructor(
               private svcIscrizioni:            IscrizioniService,
-              private svcIscrizioneConsensi:    IscrizioneConsensiService,
+              private svcIscrizioneRisposte:    IscrizioneRisposteService,
               private svcOpenXML:               OpenXMLService,
               private svcRette:                 RetteService,
 
@@ -157,14 +157,14 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   }
 
-  async salvaConsensi(tipo: string) {
+  async salvaRisposte(tipo: string) {
 
-    await firstValueFrom(this.svcIscrizioneConsensi.deleteByIscrizioneAndTipo(this.iscrizioneID, tipo));
+    await firstValueFrom(this.svcIscrizioneRisposte.deleteByIscrizioneAndTipo(this.iscrizioneID, tipo));
 
     let formValues! : any;
 
-    if (tipo == 'Consensi')          formValues = this.ConsensiFormComponent.formConsensi.value;
-    if (tipo == 'Dati Economici')    formValues = this.DatiEconomiciFormComponent.formConsensi.value;
+    if (tipo == 'Consensi')          formValues = this.ConsensiFormComponent.formRisposte.value;
+    if (tipo == 'Dati Economici')    formValues = this.DatiEconomiciFormComponent.formRisposte.value;
 
     console.log("formValues", formValues);
     //devo trasformare questo ogetto in un altro
@@ -187,17 +187,17 @@ export class ProceduraIscrizioneComponent implements OnInit {
     // }; 
     //deve diventare
 
-    // consensoID risposta1 risposta2 risposta3 risposta4 risposta5
-    // 3 true false false false false
-    // 8 false false true false false
-    // 11 true false false false false
-    // 13 true false false false false
-    // 14 false true false false false
-    // 15 true false false false false
-    // 16 false false true false false
-    // 28 false true true false false
+    // domandaID risposta1 risposta2 risposta3 risposta4 risposta5 risposta6 risposta7 risposta8 risposta9
+    // 3 true false false false false false false false
+    // 8 false false true false false false false false
+    // 11 true false false false false false false false
+    // 13 true false false false false false false false
+    // 14 false true false false false false false false
+    // 15 true false false false false false false false
+    // 16 false false true false false false false false
+    // 28 false true true false false false false false
 
-    let form : CLS_IscrizioneConsenso;
+    let form : CLS_IscrizioneRisposta;
 
     //seve un ciclo diverso per i casi in cui la key contiene _ 
 
@@ -209,8 +209,8 @@ export class ProceduraIscrizioneComponent implements OnInit {
       if (formValues.hasOwnProperty(key)) {
         const value = formValues[key]
         // console.log("value",value);
-        const consensoId = parseInt(key);
-        // console.log("consensoId",consensoId);
+        const domandaID = parseInt(key);
+        // console.log("domandaID",domandaID);
         const parts = key.split('_');
 
         let rispostaLibera= '';
@@ -220,6 +220,9 @@ export class ProceduraIscrizioneComponent implements OnInit {
         let risposta4: any;
         let risposta5: any;
         let risposta6: any;
+        let risposta7: any;
+        let risposta8: any;
+        let risposta9: any;
 
         let proceedToSave = false;
         //Ci sono tre casi
@@ -236,6 +239,9 @@ export class ProceduraIscrizioneComponent implements OnInit {
           risposta4 = false;
           risposta5 = false;
           risposta6 = false;
+          risposta7 = false;
+          risposta8 = false;
+          risposta9 = false;
         } else if (key.indexOf('_1')!== -1) {   //Risposta Multipla (ci sono 6 keys)
           proceedToSave = true;
           risposta1 = formValues[key] === true ? true : false;
@@ -244,6 +250,9 @@ export class ProceduraIscrizioneComponent implements OnInit {
           risposta4 = formValues[parts[0]+"_4"] === true ? true : false;
           risposta5 = formValues[parts[0]+"_5"] === true ? true : false;
           risposta6 = formValues[parts[0]+"_6"] === true ? true : false;
+          risposta7 = formValues[parts[0]+"_7"] === true ? true : false;
+          risposta8 = formValues[parts[0]+"_8"] === true ? true : false;
+          risposta9 = formValues[parts[0]+"_9"] === true ? true : false;
         } else if (parts.length <2) {           //Risposta Singola (c'è una sola risposta true, le altre vanno poste a false)
           proceedToSave = true;
           //Se non c'è _ nella chiave allora significa che la risposta data è UNA SOLA, le altre vanno impostate a false a prescindere
@@ -253,13 +262,16 @@ export class ProceduraIscrizioneComponent implements OnInit {
           risposta4 = parseInt(value) === 4 ? true : false;
           risposta5 = parseInt(value) === 5 ? true : false;
           risposta6 = parseInt(value) === 6 ? true : false;
+          risposta7 = parseInt(value) === 7 ? true : false;
+          risposta8 = parseInt(value) === 8 ? true : false;
+          risposta9 = parseInt(value) === 9 ? true : false;
         }
         console.log("proceedtoSave", proceedToSave);
         if (proceedToSave) {
-          let form: CLS_IscrizioneConsenso;
+          let form: CLS_IscrizioneRisposta;
           form  = {
             iscrizioneID: this.iscrizioneID,
-            consensoID: consensoId,
+            domandaID: domandaID,
             tipo: tipo,
             rispostaLibera: rispostaLibera,
             risposta1: risposta1,
@@ -268,15 +280,18 @@ export class ProceduraIscrizioneComponent implements OnInit {
             risposta4: risposta4,
             risposta5: risposta5,
             risposta6: risposta6,
+            risposta7: risposta7,
+            risposta8: risposta8,
+            risposta9: risposta9,
           };
           console.log (form);
-          this.svcIscrizioneConsensi.post(form).subscribe(
+          this.svcIscrizioneRisposte.post(form).subscribe(
             {
               next: res=> {
-                // console.log ("inserita domanda", consensoId)
+                // console.log ("inserita domanda", domandaID)
               },
               error: err=> {
-                // console.log ("errore nell'inserimento", consensoId)
+                // console.log ("errore nell'inserimento", domandaID)
               }
             }
           )
@@ -391,7 +406,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
     //nel modo che segue inserisco tanti tag quante le risposte a ciascuna domanda con il titolo autUscite1, autUscite2, oppure autFoto1, autFoto2 ecc.
     //aspetto che avvenga prima di procedere
-    await firstValueFrom(this.svcIscrizioneConsensi.listByIscrizione(this.iscrizioneID)
+    await firstValueFrom(this.svcIscrizioneRisposte.listByIscrizione(this.iscrizioneID)
     .pipe(
       tap(
 
@@ -400,17 +415,19 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
 
           for (let i = 0; i < questions.length; i++) {
-            console.log ("processo la domanda:", questions[i].consenso!.domanda);
-            console.log ("processo la domanda con titolo", questions[i].consenso!.titolo);
-            let numOpzioni = questions[i].consenso?.numOpzioni || 0;
-            if (questions[i].consenso!.titolo != null && questions[i].consenso!.titolo != '') {
-              if (numOpzioni > 0) tagDocument.tagFields?.push({ tagName: questions[i].consenso!.titolo+"1", tagValue: questions[i].risposta1? "[X]": "[ ]"})
-              if (numOpzioni > 1) tagDocument.tagFields?.push({ tagName: questions[i].consenso!.titolo+"2", tagValue: questions[i].risposta2? "[X]": "[ ]"})
-              if (numOpzioni > 2) tagDocument.tagFields?.push({ tagName: questions[i].consenso!.titolo+"3", tagValue: questions[i].risposta3? "[X]": "[ ]"})
-              if (numOpzioni > 3) tagDocument.tagFields?.push({ tagName: questions[i].consenso!.titolo+"4", tagValue: questions[i].risposta4? "[X]": "[ ]"})
-              if (numOpzioni > 4) tagDocument.tagFields?.push({ tagName: questions[i].consenso!.titolo+"5", tagValue: questions[i].risposta5? "[X]": "[ ]"})
-              if (numOpzioni > 5) tagDocument.tagFields?.push({ tagName: questions[i].consenso!.titolo+"6", tagValue: questions[i].risposta6? "[X]": "[ ]"})
-                
+            console.log ("processo la domanda:", questions[i].domanda!.domanda);
+            console.log ("processo la domanda con titolo", questions[i].domanda!.titolo);
+            let numOpzioni = questions[i].domanda?.numOpzioni || 0;
+            if (questions[i].domanda!.titolo != null && questions[i].domanda!.titolo != '') {
+              if (numOpzioni > 0) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"1", tagValue: questions[i].risposta1? "[X]": "[ ]"})
+              if (numOpzioni > 1) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"2", tagValue: questions[i].risposta2? "[X]": "[ ]"})
+              if (numOpzioni > 2) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"3", tagValue: questions[i].risposta3? "[X]": "[ ]"})
+              if (numOpzioni > 3) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"4", tagValue: questions[i].risposta4? "[X]": "[ ]"})
+              if (numOpzioni > 4) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"5", tagValue: questions[i].risposta5? "[X]": "[ ]"})
+              if (numOpzioni > 5) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"6", tagValue: questions[i].risposta6? "[X]": "[ ]"})
+              if (numOpzioni > 6) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"7", tagValue: questions[i].risposta7? "[X]": "[ ]"})
+              if (numOpzioni > 7) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"8", tagValue: questions[i].risposta8? "[X]": "[ ]"})
+              if (numOpzioni > 8) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"9", tagValue: questions[i].risposta9? "[X]": "[ ]"})  
             }
           }
           console.log ("tagDocument dopo inserimenti varii", tagDocument)
@@ -418,12 +435,12 @@ export class ProceduraIscrizioneComponent implements OnInit {
       )
     ));
 
-    //aggiungo a tagDocument i tag delle domande "DatiEconomici" su CLS_IscrizioneConsensi
+    //aggiungo a tagDocument i tag delle domande "DatiEconomici" su CLS_IscrizioneRisposte
     //estraggo le domande e le risposte
 
     //La seguente modalità crea in automatico una TABELLA con le scelte operate nei consensi sui dati economici
     //in questo caso, quindi, non si fa uso dei tag assegnati a ciascun consenso nel campo "titolo"
-    this.svcIscrizioneConsensi.listByIscrizione(this.iscrizioneID)
+    this.svcIscrizioneRisposte.listByIscrizione(this.iscrizioneID)
     // .subscribe(val=>console.log("val", val));
     .pipe( 
       map(res=> res.filter((x) => x.tipo == "Dati Economici")), 
@@ -433,24 +450,30 @@ export class ProceduraIscrizioneComponent implements OnInit {
         const tagTableRows = [];
 
         for (let i = 0; i < questions.length; i++) {
-          let domanda = questions[i].consenso?.domanda.toUpperCase();
-          let numOpzioni = questions[i].consenso?.numOpzioni || 0;
+          let domanda = questions[i].domanda?.domanda.toUpperCase();
+          let numOpzioni = questions[i].domanda?.numOpzioni || 0;
   
                               tagFields= [{ tagName: "SINO", tagValue: " " },{ tagName: "RigaConsenso", tagValue: " " }];
                               tagTableRows.push(tagFields); //riga vuota
                               tagFields = [{ tagName: "SINO", tagValue: " " },{ tagName: "RigaConsenso", tagValue: domanda }];
                               tagTableRows.push(tagFields);
-          if (numOpzioni > 0) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta1? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].consenso!.testo1 }];
+          if (numOpzioni > 0) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta1? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].domanda!.testo1 }];
                               tagTableRows.push(tagFields);}
-          if (numOpzioni > 1) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta2? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].consenso!.testo2 }];
+          if (numOpzioni > 1) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta2? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].domanda!.testo2 }];
                               tagTableRows.push(tagFields);}
-          if (numOpzioni > 2) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta3? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].consenso!.testo3 }];
+          if (numOpzioni > 2) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta3? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].domanda!.testo3 }];
                               tagTableRows.push(tagFields);}
-          if (numOpzioni > 3) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta4? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].consenso!.testo4 }];
+          if (numOpzioni > 3) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta4? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].domanda!.testo4 }];
                               tagTableRows.push(tagFields);}
-          if (numOpzioni > 4) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta5? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].consenso!.testo5 }];
+          if (numOpzioni > 4) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta5? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].domanda!.testo5 }];
                               tagTableRows.push(tagFields);}
-          if (numOpzioni > 5) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta6? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].consenso!.testo6 }];
+          if (numOpzioni > 5) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta6? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].domanda!.testo6 }];
+                              tagTableRows.push(tagFields);}
+          if (numOpzioni > 6) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta7? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].domanda!.testo7 }];
+                              tagTableRows.push(tagFields);}
+          if (numOpzioni > 7) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta8? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].domanda!.testo8 }];
+                              tagTableRows.push(tagFields);}
+          if (numOpzioni > 8) {tagFields = [{ tagName: "SINO", tagValue: questions[i].risposta9? "X": "" }, { tagName: "RigaConsenso", tagValue: questions[i].domanda!.testo9 }];
                               tagTableRows.push(tagFields);}
 
         }

@@ -213,10 +213,10 @@ import { PagelleClasseEditComponent }           from './_components/pagelle/page
 import { ImgUploadsComponent }                  from './_components/impostazioni/imguploads/imguploads.component';
 import { HttpErrorInterceptor }                 from './_user/auth/httperror.interceptor';
 
-import { ConsensiListComponent }                from './_components/impostazioni/consensi/consensi-list/consensi-list.component';
-import { ConsensiPageComponent }                from './_components/impostazioni/consensi/consensi-page/consensi-page.component';
-import { ConsensoEditComponent }                from './_components/impostazioni/consensi/consenso-edit/consenso-edit.component';
-import { IscrizioneConsensiComponent }          from './_components/procedura-iscrizione/iscrizione-consensi/iscrizione-consensi.component';
+import { DomandeListComponent }                from './_components/impostazioni/domande/domande-list/domande-list.component';
+import { DomandePageComponent }                from './_components/impostazioni/domande/domande-page/domande-page.component';
+import { DomandaEditComponent }                from './_components/impostazioni/domande/domanda-edit/domanda-edit.component';
+import { IscrizioneRisposteComponent }          from './_components/procedura-iscrizione/iscrizione-risposte/iscrizione-risposte.component';
 import { RisorsePageComponent }                 from './_components/impostazioni/risorse/risorse-page/risorse-page.component';
 import { RisorseListComponent }                 from './_components/impostazioni/risorse/risorse-list/risorse-list.component';
 import { RisorsaEditComponent }                 from './_components/impostazioni/risorse/risorsa-edit/risorsa-edit.component';
@@ -398,10 +398,10 @@ import { ImpostazioneParametroEditComponent }   from './_components/impostazioni
     PagelleClasseEditComponent,
     ResetPswComponent,
     ImgUploadsComponent,
-    ConsensiListComponent,
-    ConsensiPageComponent,
-    ConsensoEditComponent,
-    IscrizioneConsensiComponent,
+    DomandeListComponent,
+    DomandePageComponent,
+    DomandaEditComponent,
+    IscrizioneRisposteComponent,
     RisorsePageComponent,
     RisorseListComponent,
     RisorsaEditComponent,

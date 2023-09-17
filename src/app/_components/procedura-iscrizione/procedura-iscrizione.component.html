@@ -85,41 +85,41 @@
       </div>    
     </mat-step>
 
-    <mat-step [stepControl]="formIscrizioneConsensi.formConsensi">
+    <mat-step [stepControl]="formIscrizioneConsensi.formRisposte">
       <ng-template matStepLabel>Consensi</ng-template>
-      <app-iscrizione-consensi  
+      <app-iscrizione-risposte  
         [iscrizioneID]="iscrizioneID"
         [contesto]="'Consensi'"
         #formIscrizioneConsensi>
-      </app-iscrizione-consensi> 
+      </app-iscrizione-risposte> 
 
       <div class="center mt20">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
         <button mat-stroked-button 
                 class="ml10" 
                 matStepperNext
-                [disabled]="!formIscrizioneConsensi.formConsensi.valid"
-                (click)="salvaConsensi('Consensi')">
+                [disabled]="!formIscrizioneConsensi.formRisposte.valid"
+                (click)="salvaRisposte('Consensi')">
           Salva e procedi
         </button>
       </div>
     </mat-step>
 
-    <mat-step [stepControl]="formIscrizioneDatiEconomici.formConsensi">
+    <mat-step [stepControl]="formIscrizioneDatiEconomici.formRisposte">
       <ng-template matStepLabel>Dati economici</ng-template>
-      <app-iscrizione-consensi  
+      <app-iscrizione-risposte  
         [iscrizioneID]="iscrizioneID"
         [contesto]="'Dati Economici'"
         #formIscrizioneDatiEconomici>
-      </app-iscrizione-consensi>
+      </app-iscrizione-risposte>
 
       <div class="center mt20">
         <button mat-stroked-button matStepperPrevious>Indietro</button>
         <button mat-stroked-button
                 class="ml10"
                 matStepperNext
-                [disabled]="!formIscrizioneDatiEconomici.formConsensi.valid"
-                (click)="salvaConsensi('Dati Economici')">
+                [disabled]="!formIscrizioneDatiEconomici.formRisposte.valid"
+                (click)="salvaRisposte('Dati Economici')">
           Salva e procedi
         </button>
       </div>

@@ -1,6 +1,6 @@
 import { _UT_Risorsa } from "./_UT_Risorsa";
 
-export interface _UT_Consenso {
+export interface _UT_Domanda {
     id:                                         number;
     contesto:                                   string; //"Consensi"/"Dati Economici"/"Cert.Compoetenze"/"Cons. Orientativo"
     tipo:                                       string; //"Scelta Singola"/"Scelta Multipla"/"Risposta Libera"
@@ -13,7 +13,9 @@ export interface _UT_Consenso {
     testo4:                                     string;
     testo5:                                     string;
     testo6:                                     string;
-
+    testo7:                                     string;
+    testo8:                                     string;
+    testo9:                                     string;
     risorsaID:                                  number;
     risorsa?:                                   _UT_Risorsa;
 

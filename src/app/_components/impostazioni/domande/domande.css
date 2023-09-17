@@ -33,6 +33,21 @@
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 
+.mat-column-testo7 {
+    max-width: 100px !important;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.mat-column-testo8 {
+    max-width: 100px !important;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.mat-column-testo9 {
+    max-width: 100px !important;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
 
 .mat-column-file {
     max-width: 200px !important;
