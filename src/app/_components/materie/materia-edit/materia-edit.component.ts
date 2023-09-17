@@ -39,6 +39,7 @@ export class MateriaEditComponent implements OnInit {
   form! :                     UntypedFormGroup;
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
+
 //#endregion
 
 //#region ----- Constructor --------------------
@@ -73,25 +74,23 @@ export class MateriaEditComponent implements OnInit {
 
   loadData(){
 
-    this.obsMacroMaterie$ = this.svcMacroMaterie.list()
+    this.obsMacroMaterie$ = this.svcMacroMaterie.list();
 
     if (this.data.materiaID && this.data.materiaID + '' != "0") {
 
       const obsMateria$: Observable<MAT_Materia> = this.svcMaterie.get(this.data.materiaID);
       const loadMateria$ = this._loadingService.showLoaderUntilCompleted(obsMateria$);
       this.materia$ = loadMateria$
-      .pipe(
+        .pipe(
           tap(
-            materia => {
-              this.form.patchValue(materia)
-            }
+            materia => this.form.patchValue(materia)
           )
       );
-    } else {
+    } 
+    else 
       this.emptyForm = true
-    }
-
   }
+
 //#endregion
 
 //#region ----- Operazioni CRUD ----------------

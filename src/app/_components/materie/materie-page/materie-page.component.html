@@ -15,13 +15,11 @@
                      [rptData]="appmaterielist.matDataSource.data"
                      [rptFileName]="appmaterielist.rptFileName"
                      [columnsComponent] = "appmaterielist"
-                     [emailsYN] = "false"
-                     >
+                     [emailsYN] = "false"    >
         </app-toolbar>
     </mat-drawer>
 
     <mat-drawer-content>
-        <app-materie-list #appmaterielist >
-        </app-materie-list>
+        <app-materie-list #appmaterielist ></app-materie-list>
     </mat-drawer-content>
 </mat-drawer-container>

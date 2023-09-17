@@ -77,8 +77,7 @@ export class SocioFormComponent implements OnInit {
       dtDisiscrizione:                          [''],
       dtRestQuota:                              [''],
       ckRinunciaQuota:                          [false],
-      nomeCognomePersona: [null],
-
+      nomeCognomePersona:                       [null]
     });
 
     this.obsTipiSocio$ = this.svcTipiSocio.list();
@@ -148,7 +147,6 @@ export class SocioFormComponent implements OnInit {
       return this.svcSoci.post(this.form.value)
     else 
       return this.svcSoci.put(this.form.value)
-    
   }
 
   delete() :Observable<any>{

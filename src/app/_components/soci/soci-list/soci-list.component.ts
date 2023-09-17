@@ -83,7 +83,6 @@ export class SociListComponent implements OnInit {
     "Data Disiscrizione",
     "Data Rest.Quota",
     "Rinuncia Quota"
-    
 ];
 
   selection = new SelectionModel<PER_Socio>(true, []);   //rappresenta la selezione delle checkbox
@@ -194,8 +193,6 @@ export class SociListComponent implements OnInit {
       let ckAttivo = (searchTerms.ckAttivo && data.dtDisiscrizione == null) || !searchTerms.ckAttivo ;
       let cfrDateRichieste = cfrDate(searchTerms.dataRichiestaDal, searchTerms.dataRichiestaAl, data.dtRichiesta);
       let cfrDateAccettazione = cfrDate(searchTerms.dataAccettazioneDal, searchTerms.dataAccettazioneAl, data.dtAccettazione);
-      
-
       let dArr = data.dtRichiesta.split("-");
       const dtRichiestaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 
@@ -212,8 +209,6 @@ export class SociListComponent implements OnInit {
                     && cfrDateRichieste
                     && cfrDateAccettazione
                     && ckAttivo;
-
-
 
       return boolSx && boolDx;
     }

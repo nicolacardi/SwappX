@@ -10,7 +10,7 @@ import { DialogOkComponent }                    from '../../utilities/dialog-ok/
 import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
 
 //services
-import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anniScolastici/anni-scolastici.service';
 import { ObiettiviService }                     from '../obiettivi.service';
 
 //classes

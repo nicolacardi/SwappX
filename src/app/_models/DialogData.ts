@@ -78,8 +78,6 @@ export interface DialogDataVotoInterr {
 export interface DialogDataMateriaEdit {
       materiaID:                                number;
       maxSeq:                                   number;
-
-
       }
 
 export interface DialogDataDomandaEdit {
@@ -94,4 +92,8 @@ export interface DialogDataFileEdit {
 export interface DialogDataParametroEdit {
       parametroID:                              number;
       maxSeq:                                   number;
+      }
+
+export interface DialogDataAnnoEdit {
+      annoID:                              number;
       }

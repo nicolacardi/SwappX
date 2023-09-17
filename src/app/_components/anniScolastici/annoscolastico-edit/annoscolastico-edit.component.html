@@ -1,0 +1,68 @@
+<mat-card appearance="outlined" class="form-card">
+    <mat-card-content>
+        <form *ngIf="(anno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
+            <div class="center">
+
+                <img class="iconaMenuBig" src="./assets/materia_edit.svg">
+
+                <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
+
+                <button *ngIf="data.annoID" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
+                        [disabled]= "!form.valid" 
+                        (click)="loadData()" >
+                    <mat-icon>restart_alt</mat-icon>
+                </button>
+
+                <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
+                        [disabled]= "!form.valid" 
+                        (click)="save()" >
+                    <mat-icon>save</mat-icon>
+                </button>
+
+                <!-- 
+                <button *ngIf="data.annoID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10"
+                        [disabled]= "!form.valid" 
+                        (click)="delete()" >
+                    <mat-icon>delete</mat-icon>
+                </button> 
+                -->
+            </div>
+
+            
+            <mat-grid-list class="mt10" [cols]="1" rowHeight="60px" >
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput type="text" required placeholder="Anno1" minlength= "4" formControlName="anno1" #anno1>
+                        <mat-error *ngIf="form.controls.anno1.errors?.required"> Campo obbligatorio</mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput type="text" required placeholder="Anno2" minlength= "4" formControlName="anno2" #anno2>
+                        <mat-error *ngIf="form.controls.anno2.errors?.required"> Campo obbligatorio</mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <input matInput type="text" required placeholder="AnnoScolastico"   formControlName="annoscolastico" #annoscolastico>
+                        <mat-error *ngIf="form.controls.annoscolastico.errors?.required"> Campo obbligatorio</mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <!-- <mat-grid-tile>
+                    <mat-form-field>
+                        <mat-label>MacroMateria</mat-label>
+                        <mat-select required formControlName="macroMateriaID">
+                            <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
+                            {{element.}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile> -->
+            </mat-grid-list>
+            
+        </form>
+    </mat-card-content>
+</mat-card>

@@ -31,7 +31,7 @@ import { UserService }                          from 'src/app/_user/user.service
 
 //models
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
-import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anniScolastici/anni-scolastici.service';
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
 import { CAL_Scadenza, CAL_ScadenzaPersone }    from 'src/app/_models/CAL_Scadenza';

@@ -83,7 +83,6 @@ export class MaterieListComponent implements OnInit {
 
   loadData() {
     this.obsMaterie$ = this.svcMaterie.list();  
-
     const loadMaterie$ =this._loadingService.showLoaderUntilCompleted(this.obsMaterie$);
 
     loadMaterie$.subscribe(
@@ -125,7 +124,6 @@ export class MaterieListComponent implements OnInit {
         materiaID:                              materiaID,
         maxSeq:                                 this.maxSeq
       }
-
     };
     const dialogRef = this._dialog.open(MateriaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() => this.loadData());

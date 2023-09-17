@@ -6,7 +6,7 @@ import { Observable }                           from 'rxjs';
 
 //components
 import { SociListComponent }                    from '../soci-list/soci-list.component';
-import { TipiSocioService }                   from '../tipi-socio.service';
+import { TipiSocioService }                     from '../tipi-socio.service';
 
 //services
 
@@ -26,7 +26,6 @@ export class SociFilterComponent implements OnInit {
 
   formClean= true;
 
-
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');
   tipoSocioFilter= new UntypedFormControl('');
@@ -36,8 +35,6 @@ export class SociFilterComponent implements OnInit {
   dataAccettazioneAl = new UntypedFormControl('');
   ckAttivo = new UntypedFormControl('');
 
-
-  
   obsTipiSocio$!:            Observable<PER_TipoSocio[]>;
 
 //#endregion
@@ -70,7 +67,6 @@ export class SociFilterComponent implements OnInit {
     this.sociListComponent.matDataSource.filter = JSON.stringify(this.sociListComponent.filterValues);
     this.sociListComponent.getEmailAddresses();
     this.formClean = this.isFormClean();
-
   }
 
   isFormClean(): boolean {
@@ -103,7 +99,6 @@ export class SociFilterComponent implements OnInit {
     this.dataRichiestaAl.setValue('', {emitEvent:false});
     this.dataAccettazioneDal.setValue('', {emitEvent:false});
     this.dataAccettazioneAl.setValue('', {emitEvent:false});
-
   }
 
   resetAllInputsAndClearFilters() {

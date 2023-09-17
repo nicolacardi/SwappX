@@ -23,7 +23,7 @@ import { AlunniService } from '../../alunni/alunni.service';
 import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { PAG_Retta } from 'src/app/_models/PAG_Retta';
-import { AnniScolasticiService } from 'src/app/_services/anni-scolastici.service';
+import { AnniScolasticiService } from 'src/app/_components/anniScolastici/anni-scolastici.service';
 import { RettaCalcoloAlunnoComponent } from '../retta-calcolo-alunno/retta-calcolo-alunno.component';
 import { RettaannoEditComponent } from '../rettaanno-edit/rettaanno-edit.component';
 import { DialogData } from 'src/app/_models/DialogData';

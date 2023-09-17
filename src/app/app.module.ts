@@ -233,9 +233,9 @@ import { ParametriPageComponent }               from './_components/impostazioni
 import { ParametriListComponent }               from './_components/impostazioni/parametri/parametri-list/parametri-list.component';
 import { ParametriFilterComponent }             from './_components/impostazioni/parametri/parametri-filter/parametri-filter.component';
 import { ParametroEditComponent }               from './_components/impostazioni/parametri/parametro-edit/parametro-edit.component';
-
-
-
+import { AnnoScolasticoPageComponent }          from './_components/anniScolastici/annoscolastico-page/annoscolastico-page.component';
+import { AnniScolasticiListComponent }          from './_components/anniScolastici/anniscolastici-list/anniscolastici-list.component';
+import { AnnoscolasticoEditComponent }          from './_components/anniScolastici/annoscolastico-edit/annoscolastico-edit.component';
 
 // FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   //dayGridPlugin, NC 16/02/23
@@ -417,10 +417,9 @@ import { ParametroEditComponent }               from './_components/impostazioni
     ParametriListComponent,
     ParametriFilterComponent,
     ParametroEditComponent,
-    
- 
-    
-
+    AnnoScolasticoPageComponent,
+    AnniScolasticiListComponent,
+    AnnoscolasticoEditComponent
   ],
   imports: [
     BrowserModule,
@@ -435,7 +434,6 @@ import { ParametroEditComponent }               from './_components/impostazioni
     ColorPickerModule,
     QuillModule.forRoot(),
     ClipboardModule,
-
 
   ],
 

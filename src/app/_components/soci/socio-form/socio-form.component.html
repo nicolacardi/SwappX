@@ -32,7 +32,6 @@
         </mat-grid-tile>
     </mat-grid-list>
 
-
     <mat-grid-list [cols]="1" rowHeight="60px" *ngIf="!socioID">
                 
         <mat-grid-tile>
@@ -59,8 +58,6 @@
         </mat-grid-tile>
     </mat-grid-list>
 
-
-
     <mat-grid-list  class="_low-list-row no-overflowx" [cols]="1" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
@@ -75,8 +72,6 @@
     </mat-grid-list>
     
     <mat-grid-list class="_low-list-row no-overflowx mt10" [cols]="3" rowHeight="100px">
-
-
         <mat-grid-tile>
             <mat-form-field class="w80">
                 <mat-label>Data di Richiesta</mat-label>
@@ -90,15 +85,13 @@
             </mat-form-field>
         </mat-grid-tile>
 
-
         <mat-grid-tile>
             <mat-form-field class="w80">
                 <mat-label>Data di Accettazione</mat-label>
                 <input matInput #dtAccettazione
                       formControlName = "dtAccettazione"
                       [matDatepicker]= "dpDtAccettazione"
-                      (change) = "updateDt(dtAccettazione.value, 'dtAccettazione')"
-                      >
+                      (change) = "updateDt(dtAccettazione.value, 'dtAccettazione')"    >
                 <mat-datepicker-toggle matSuffix [for]="dpDtAccettazione" ></mat-datepicker-toggle>
                 <mat-datepicker #dpDtAccettazione  ></mat-datepicker>
             </mat-form-field>
@@ -120,13 +113,11 @@
                 <input matInput #dtDisiscrizione
                       formControlName = "dtDisiscrizione"
                       [matDatepicker]= "dpDtDisiscrizione"
-                      (change) = "updateDt(dtDisiscrizione.value, 'dtDisiscrizione')"
-                      >
+                      (change) = "updateDt(dtDisiscrizione.value, 'dtDisiscrizione')">
                 <mat-datepicker-toggle matSuffix [for]="dpDtDisiscrizione" ></mat-datepicker-toggle>
                 <mat-datepicker #dpDtDisiscrizione  ></mat-datepicker>
             </mat-form-field>
         </mat-grid-tile>
-
 
         <mat-grid-tile>
             <mat-form-field class="w80">
@@ -134,8 +125,7 @@
                 <input matInput #dtRestQuota
                       formControlName = "dtRestQuota"
                       [matDatepicker]= "dpDtRestQuota"
-                      (change) = "updateDt(dtRestQuota.value, 'dtRestQuota')"
-                      >
+                      (change) = "updateDt(dtRestQuota.value, 'dtRestQuota')">
                 <mat-datepicker-toggle matSuffix [for]="dpDtRestQuota" ></mat-datepicker-toggle>
                 <mat-datepicker #dpDtRestQuota  ></mat-datepicker>
             </mat-form-field>

@@ -21,7 +21,7 @@ import { SnackbarComponent }                    from '../../utilities/snackbar/s
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { ClassiSezioniAnniService }             from '../classi-sezioni-anni.service';
-import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anniScolastici/anni-scolastici.service';
 import { DocentiService }                       from '../../docenti/docenti.service';
 
 //classes

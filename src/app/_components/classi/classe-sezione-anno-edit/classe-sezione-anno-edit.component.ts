@@ -15,7 +15,7 @@ import { DialogYesNoComponent }                 from '../../utilities/dialog-yes
 import { ClassiSezioniAnniService }             from '../classi-sezioni-anni.service';
 import { ClassiSezioniService }                 from '../classi-sezioni.service';
 import { ClassiService }                        from '../classi.service';
-import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anniScolastici/anni-scolastici.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 
 //models

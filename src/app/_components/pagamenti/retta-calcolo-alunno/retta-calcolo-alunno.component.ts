@@ -10,7 +10,7 @@ import { SnackbarComponent }                    from '../../utilities/snackbar/s
 import { AlunniService }                        from '../../alunni/alunni.service';
 import { RetteService }                         from '../rette.service';
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
-import { AnniScolasticiService }                from 'src/app/_services/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anniScolastici/anni-scolastici.service';
 import { ParametriService }                     from 'src/app/_components/impostazioni/parametri/parametri.service';
 
 //mdoels

@@ -27,12 +27,14 @@ export class SociPageComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili--------
   ngOnInit(): void {
   }
+
 //#endregion
 
 //#region ----- Add Edit Drop ------------------
   addRecord() {
     this.sociList.addRecord()
   }
+  
 //#endregion
 
 //#region ----- Reset vari ---------------------

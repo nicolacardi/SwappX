@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
-import { ASC_AnnoScolastico } from '../_models/ASC_AnnoScolastico';
+import { ASC_AnnoScolastico } from '../../_models/ASC_AnnoScolastico';
 
 @Injectable({
   providedIn: 'root'
