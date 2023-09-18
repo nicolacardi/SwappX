@@ -71,7 +71,7 @@ constructor(private svcDomande:                DomandeService,
 
 
   ngOnChanges() {
-    if (this.iscrizioneID != undefined) 
+    if (this.iscrizioneID && this.contesto) 
       this.loadData();
   }
 
@@ -85,44 +85,52 @@ constructor(private svcDomande:                DomandeService,
   }
 
   loadData() {
-    this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione;})
-    this.svcRette.sumConcordateByIscrizione(this.iscrizioneID).subscribe(rettaConcordata=> {this.rettaConcordata = rettaConcordata;})
+    if (this.iscrizioneID && this.contesto) {
+      // console.log("iscrizione-risposte - loadData");
+      this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione;})
+      this.svcRette.sumConcordateByIscrizione(this.iscrizioneID).subscribe(rettaConcordata=> {this.rettaConcordata = rettaConcordata;})
+      // console.log("iscrizione-risposte - contesto", this.contesto);
 
-    this.obsDomande$ = this.svcDomande.list()
-    .pipe( 
-      map(res=> res.filter((x) => x.contesto == this.contesto)), //carico domande x consensi o dati economici a seconda del valore in input
-    )
-    ;  
-    const loadDomande$ =this._loadingService.showLoaderUntilCompleted(this.obsDomande$);
+      this.obsDomande$ = this.svcDomande.list()
+      .pipe( 
+        map(res=> res.filter((x) => x.contesto == this.contesto)), //carico domande x consensi o dati economici a seconda del valore in input
+      )
+      ;  
+      const loadDomande$ =this._loadingService.showLoaderUntilCompleted(this.obsDomande$);
 
-    loadDomande$.subscribe(
-      questions =>   {
+      loadDomande$.subscribe(
+        questions =>   {
 
-        this.matDataSource.data = questions;
-        //devo aggiungere al form un controllo x ogni domanda (di due tipi diversi)
-        //in modo che il pulsante di "Salva e continua" si disabiliti se uno non risponde a tutto
-        //element.id è l'id della domanda cioè di _UT_Domande
-        this.questions = questions;
-          this.questions.forEach((element) => {
-            if (element.tipo == 'Scelta Singola') {
-              if (element.numOpzioni >1) this.formRisposte.addControl(element.id, this.fb.control('', Validators.required));
-              if (element.numOpzioni ==1) this.formRisposte.addControl(element.id, this.fb.control('', Validators.requiredTrue));
-            }
-            if (element.tipo == 'Scelta Multipla') { //qui devo aggiungere N Controls......e non uno solo!
-              this.formRisposte.addControl(element.id+"_1", this.fb.control(''));
-              this.formRisposte.addControl(element.id+"_2", this.fb.control(''));
-              this.formRisposte.addControl(element.id+"_3", this.fb.control(''));
-              this.formRisposte.addControl(element.id+"_4", this.fb.control(''));
-              this.formRisposte.addControl(element.id+"_5", this.fb.control(''));
-              this.formRisposte.addControl(element.id+"_6", this.fb.control(''));
-            }
-            if (element.tipo == 'Risposta Libera') {
-              this.formRisposte.addControl(element.id+"_RL", this.fb.control('', Validators.required));
-            }
-          })
-      });
+          this.matDataSource.data = questions;
+          //devo aggiungere al form un controllo x ogni domanda (di due tipi diversi)
+          //in modo che il pulsante di "Salva e continua" si disabiliti se uno non risponde a tutto
+          //element.id è l'id della domanda cioè di _UT_Domande
+          this.questions = questions;
+            this.questions.forEach((element) => {
+              if (element.tipo == 'Scelta Singola') {
+                if (element.numOpzioni >1) this.formRisposte.addControl(element.id, this.fb.control('', Validators.required));
+                if (element.numOpzioni ==1) this.formRisposte.addControl(element.id, this.fb.control('', Validators.requiredTrue));
+              }
+              if (element.tipo == 'Scelta Multipla') { //qui devo aggiungere N Controls......e non uno solo!
+                this.formRisposte.addControl(element.id+"_1", this.fb.control(''));
+                this.formRisposte.addControl(element.id+"_2", this.fb.control(''));
+                this.formRisposte.addControl(element.id+"_3", this.fb.control(''));
+                this.formRisposte.addControl(element.id+"_4", this.fb.control(''));
+                this.formRisposte.addControl(element.id+"_5", this.fb.control(''));
+                this.formRisposte.addControl(element.id+"_6", this.fb.control(''));
+                this.formRisposte.addControl(element.id+"_7", this.fb.control(''));
+                this.formRisposte.addControl(element.id+"_8", this.fb.control(''));
+                this.formRisposte.addControl(element.id+"_9", this.fb.control(''));
 
-    
+
+              }
+              if (element.tipo == 'Risposta Libera') {
+                this.formRisposte.addControl(element.id+"_RL", this.fb.control('', Validators.required));
+              }
+            })
+        });
+
+    }
   }
 //#endregion
 //#region ----- Altri metodi -------------------

@@ -72,7 +72,7 @@
                         <mat-checkbox [formControlName]="element.id+'_9'" *ngIf="element.numOpzioni > 8" value="9">{{element.testo9}}</mat-checkbox>
                     </div>
 
-                    <textarea *ngIf="element.tipo == 'Risposta Libera'" class="w300px  _noresize" placeholder="Risposta libera" matInput [formControlName]="element.id+'_RL'"></textarea>
+                    <textarea *ngIf="element.tipo == 'Risposta Libera'" class="w100  _noresize" placeholder="Risposta libera" matInput [formControlName]="element.id+'_RL'"></textarea>
                 </td>
             </ng-container>
 

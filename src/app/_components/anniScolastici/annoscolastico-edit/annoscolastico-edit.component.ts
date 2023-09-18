@@ -18,6 +18,7 @@ import { AnniScolasticiService } from '../anni-scolastici.service';
 //classes
 import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
 import { DialogDataAnnoEdit } from 'src/app/_models/DialogData';
+import { FormatoData, Utility } from '../../utilities/utility.component';
 
 //#endregion
 
@@ -53,10 +54,13 @@ export class AnnoscolasticoEditComponent implements OnInit {
     _dialogRef.disableClose = true;
 
     this.form = this.fb.group({
-        id:                         [null],
-        anno1:                      ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-        anno2:                      [''],
-        annoscolastico:             ['']
+        id:                                     [null],
+        anno1:                                  ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+        anno2:                                  [''],
+        annoscolastico:                         [''],
+        dtInizio:                               [''],
+        dtFineQ1:                               [''],
+        dtFine:                                 ['']
       });
   }
 
@@ -79,7 +83,10 @@ export class AnnoscolasticoEditComponent implements OnInit {
       this.anno$ = loadAnno$
         .pipe(
           tap(
-            anno => this.form.patchValue(anno)
+            anno => {
+              this.form.patchValue(anno);
+              console.log ("annoscolastico-edit - loadData - anno", anno)
+            }
           )
       );
     } 
@@ -145,6 +152,27 @@ export class AnnoscolasticoEditComponent implements OnInit {
     */
   }
 
+
+  updateDt(dt: string, control: string){
+
+    //prendo la stringa e ne estraggo i pezzi
+    const parts = dt.split('/'); // Split the input string by '/'
+    const day = parts[0];
+    const month = parts[1];
+    const year = parts[2];
+
+    // creo la nuova data con i valori estratti (assumendo l'ordine day/month/year)
+    const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+
+    // formatto la data al tipo richiesto dal controllo data ('yyyy-MM-dd')
+    let formattedDate = date.toISOString().slice(0, 10);
+
+    //piccolo step per evitare che 1/1/2008 diventi 31/12/2007
+    formattedDate = Utility.formatDate(date, FormatoData.yyyy_mm_dd);
+
+    //impostazione della data finale
+    this.form.controls[control].setValue(formattedDate);
+  }
 
 //#endregion
 

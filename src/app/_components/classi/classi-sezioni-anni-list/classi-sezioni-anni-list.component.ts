@@ -30,6 +30,7 @@ import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_mode
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
+import { Utility } from '../../utilities/utility.component';
 
 //#endregion
 @Component({
@@ -292,8 +293,10 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
         this.displayedColumns = this.displayedColumnsClassiDashboard;
         this.showPageTitle = false;
         this.showTableRibbon = false;
+        console.log("son qui", this.currUser);
 
-        if(this.currUser != undefined &&this.currUser.personaID != undefined && this.currUser.personaID != 0) {
+        if(this.currUser != undefined && this.currUser.personaID != undefined && this.currUser.personaID != 0) {
+          console.log("e poi  qui");
 
           //AS: ATTENZIONE: se la persona non è un docente, la chiamata al WS restituisce un errore 404, che viene fuori nel console.log
           //bisogna modificare il WS in modo che ritorni null e non errore 
@@ -308,12 +311,24 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
           this.svcDocenti.getByPersona(this.currUser.personaID).subscribe ( 
             res => {   
-              if(res)
+              if(res){
                 this.docenteID = res.id;
-              else
-                this.docenteID = 0;
+                this.form.controls.selectDocente.setValue(this.docenteID);
+              }
+              else {
+
+                this.obsDocenti$.subscribe((docenti) => {
+                  if (docenti.length > 0) {
+                    console.log("classi-sezioni-anni-list - ngOnInit - id del primo docente della lista", docenti[0].id);
+                    // Imposta il primo elemento come valore predefinito
+                    this.docenteID = docenti[0].id;
+                    this.form.controls.selectDocente.setValue(docenti[0].id);
+                  }
+                });
+              }
+              //this.docenteID = 0; //prima facevo così
               
-              this.form.controls.selectDocente.setValue(this.docenteID);
+              
             },
             err=> {
               //console.log("getDocenteBypersonaID- KO:", err);

@@ -29,7 +29,7 @@ export class VotiInterrListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
-  showPageTitle:                                boolean = true;
+  showPageTitle:                                boolean = false;
   showTableRibbon:                              boolean = true;
 
   matDataSource = new MatTableDataSource<TST_VotoInterr>();

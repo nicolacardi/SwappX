@@ -1,21 +1,22 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
-import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Component, OnInit, ViewChild }         from '@angular/core';
+import { MatTableDataSource }                   from '@angular/material/table';
+import { Observable }                           from 'rxjs';
+import { MatSort }                              from '@angular/material/sort';
+import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 
 //components
-import { AnnoscolasticoEditComponent } from '../annoscolastico-edit/annoscolastico-edit.component';
+import { AnnoscolasticoEditComponent }          from '../annoscolastico-edit/annoscolastico-edit.component';
 
 //services
-import { AnniScolasticiService } from '../anni-scolastici.service';
-import { LoadingService } from '../../utilities/loading/loading.service';
+import { AnniScolasticiService }                from '../anni-scolastici.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
 
 //models
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 
+//#endregion
 @Component({
   selector: 'app-anniscolastici-list',
   templateUrl: './anniscolastici-list.component.html',
@@ -28,28 +29,20 @@ export class AnniScolasticiListComponent implements OnInit {
 //maxSeq!:                                      number;
 matDataSource = new MatTableDataSource<ASC_AnnoScolastico>();
 
-obsAnni$!:                                 Observable<ASC_AnnoScolastico[]>;
+obsAnni$!:                                      Observable<ASC_AnnoScolastico[]>;
 
 displayedColumns: string[] = [
 
     "actionsColumn", 
+
+    "annoscolastico",
     "anno1",
     "anno2",
-    "annoscolastico"
-];
-/*
-rptTitle = 'Lista Materie';
-rptFileName = 'ListaMaterie';
-rptFieldsToKeep  = [
-  "descrizione",
-  "macroMateria.descrizione"
+    "dtInizio",
+    "dtFineQ1",
+    "dtFine"
 ];
 
-rptColumnsNames  = [
-  "descrizione",
-  "Macro Materia"
-];
-*/
 filterValue = '';
 
 filterValues = {
@@ -100,8 +93,8 @@ constructor(private svcAnni:                        AnniScolasticiService,
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '400px',
-      height: '370px',
+      width: '420px',
+      height: '500px',
       data: {
         id:                              0
         //maSeq:                                 this.maxSeq
@@ -115,8 +108,8 @@ constructor(private svcAnni:                        AnniScolasticiService,
   openDetail(annoID:any){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '400px',
-      height: '370px',
+      width: '420px',
+      height: '500px',
       data: {
       annoID:                              annoID,
       //maxSeq:                                 this.maxSeq
@@ -143,15 +136,15 @@ constructor(private svcAnni:                        AnniScolasticiService,
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
-    //if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
 
   filterPredicate(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
-      let boolSx = String(data.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-          || String(data.macroMateria.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+      let boolSx = String(data.anno1).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+          || String(data.anno2).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+          || String(data.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
       return boolSx;
     }
     return filterFunction;

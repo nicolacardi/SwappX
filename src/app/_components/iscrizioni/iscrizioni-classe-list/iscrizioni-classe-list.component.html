@@ -102,8 +102,8 @@
             (click)="rowclicked(element)"
 
             [ngClass]="{
-                '_table-row-selected-highlight': selectedRowIndex == element.id && dove == 'pagella',
-                '_row-pointercursor': dove == 'pagella'
+                '_table-row-selected-highlight': selectedRowIndex == element.id && (dove == 'pagella'|| dove== 'certcompetenze'),
+                '_row-pointercursor': dove == 'pagella' || dove == 'certcompetenze'
                 }">
         </tr>
 

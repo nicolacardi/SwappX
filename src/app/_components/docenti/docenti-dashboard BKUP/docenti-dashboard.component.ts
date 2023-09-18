@@ -24,9 +24,6 @@ import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno
 import { User }                                 from 'src/app/_user/Users';
 import { ClasseAnnoMateriaService } from '../../classi/classi-anni-materie/classe-anno-materia.service';
 import { PagelleClasseEditComponent } from '../../pagelle/pagelle-classe-edit/pagelle-classe-edit.component';
-import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { PER_Docente } from 'src/app/_models/PER_Docente';
 
 //#endregion
 @Component({
@@ -40,10 +37,8 @@ export class DocentiDashboardComponent implements OnInit {
 //#region ----- Variabili ----------------------
 
   public classeSezioneAnnoID!:                  number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
-  public classeSezioneAnno!:                    CLS_ClasseSezioneAnno;
   public annoID!:                               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public docenteID!:                            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
-  public docente!:                              PER_Docente;
   public tipoVoto!:                             string;
   public iscrizioneID!:                         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
   public alunno!:                               ALU_Alunno;   //valore ricevuto (emitted) dal child IscrizioniClasseList
@@ -74,7 +69,6 @@ export class DocentiDashboardComponent implements OnInit {
 //#endregion
 
   constructor(private svcDocenti:                         DocentiService,
-              private svcClassiSezioniAnni:               ClassiSezioniAnniService,
               public _dialog:                             MatDialog,
               private actRoute:                           ActivatedRoute,
               private svcDocenze:                         DocenzeService,
@@ -136,12 +130,6 @@ export class DocentiDashboardComponent implements OnInit {
     this.tipoVoto = "";
     this.materiaID = 0;
     this.classeSezioneAnnoID = classeSezioneAnnoID;
-
-    //per poter mostrare il docente e la classe...
-    this.svcClassiSezioniAnni.get(this.classeSezioneAnnoID).subscribe(csa => {console.log("docenti-dashboard - classeSezioneAnnoIDEmitted - csa", csa); this.classeSezioneAnno = csa});
-    this.svcDocenti.get(this.docenteID).subscribe(doc => {console.log("docenti-dashboard - classeSezioneAnnoIDEmitted - doc", doc); this.docente = doc});
-
-
     // Estraggo le materie di questo docente in questa classe e le metto nella combo
     this.svcDocenze.listByClasseSezioneAnnoDocente(classeSezioneAnnoID, this.docenteID).subscribe(
       materie=> {

@@ -111,7 +111,7 @@ export class ParametroEditComponent {
 
   save(){
 
-    if (this.form.controls.ckCheckBox) {
+    if (this.form.controls.ckCheckBox.value == true ){
       let pv = this.form.controls.parValue.value
       let sequenza01 = '';
 
@@ -122,6 +122,7 @@ export class ParametroEditComponent {
       }
       this.form.controls.parValue.setValue(sequenza01);
     }
+
     if (this.form.controls['id'].value == null) {
       this.form.controls.seq.setValue(this.data.maxSeq +1);
       this.svcParametri.post(this.form.value).subscribe({

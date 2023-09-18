@@ -20,7 +20,7 @@
         <ng-container matColumnDef="actionsColumn">
             <th mat-header-cell *matHeaderCellDef ></th>
             <td mat-cell  *matCellDef="let element;  let j = index;"> 
-                <img (click)="openDetail(element.id)" class="iconaMenu pointer" src="./assets/materia_edit.svg">
+                <img (click)="openDetail(element.id)" class="iconaMenu pointer" src="./assets/anno_edit.svg">
             </td>
         </ng-container>
 
@@ -44,6 +44,21 @@
             <td mat-cell *matCellDef="let element" [innerHTML]="element.annoscolastico| highlight:filterValue"></td>
         </ng-container>
    
+        <ng-container matColumnDef="dtInizio">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Data Inizio a.s.</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.dtInizio| highlightDate:filterValue"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="dtFineQ1">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Data Fine 1° Quad.</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.dtFineQ1| highlightDate:filterValue"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="dtFine">
+            <th mat-header-cell *matHeaderCellDef  mat-sort-header >Data Fine a.s.</th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.dtFine| highlightDate:filterValue"></td>
+        </ng-container>
+
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
         <tr mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></tr>
         

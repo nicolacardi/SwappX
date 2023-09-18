@@ -38,7 +38,7 @@ export class CompitiListComponent implements OnInit {
     "argomento"
   ];
 
-  showPageTitle:                                boolean = true;
+  showPageTitle:                                boolean = false;
   showTableRibbon:                              boolean = true;
 
   filterValue = '';       //Filtro semplice

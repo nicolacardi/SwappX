@@ -176,7 +176,7 @@ export class SocioFormComponent implements OnInit {
     formattedDate = Utility.formatDate(date, FormatoData.yyyy_mm_dd);
 
     //impostazione della data finale
-    this.form.controls['dtRichiesta'].setValue(formattedDate);
+    this.form.controls[control].setValue(formattedDate);
   }
   
 //#endregion
