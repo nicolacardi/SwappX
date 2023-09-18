@@ -19,7 +19,6 @@ import { RettaEditComponent }                   from '../../pagamenti/retta-edit
 //services
 import { IscrizioniService }                    from '../iscrizioni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
-import { NavigationService }                    from '../../utilities/navigation/navigation.service';
 import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
 
 //models
