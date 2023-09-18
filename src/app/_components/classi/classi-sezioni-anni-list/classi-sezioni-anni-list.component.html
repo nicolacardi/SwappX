@@ -24,8 +24,9 @@
         <div *ngIf="showSelect && showSelectDocente">
             <mat-form-field class="ml20 topZIndex"  >
                 <mat-label>Seleziona il Docente</mat-label>
-                <mat-select formControlName="selectDocente" 
-                        [disabled] = "docenteID != 0 && docenteID != null">
+                <mat-select formControlName="selectDocente" >
+                <!-- [disabled] = "docenteID != 0 && docenteID != null" -->
+                
                 <!-- [compareWith]="compareObjects"  compareWith sembra la soluzione per impostare il valore correttamente -->
                 
                 <mat-option value="0" *ngIf="dove=='classi-dashboard'">Tutti i docenti-</mat-option>

@@ -906,6 +906,13 @@
         background-color: rgba(100, 100, 100, 0.2) !important;
     }
     /* button di add*/
+
+    ._btn-blu {
+        z-index: 1000;
+        background-color: #044D7E !important;
+        color: white;
+    }
+
     ._btn-add {
         z-index: 1000;
         position: absolute !important;
@@ -1673,6 +1680,8 @@
     .oflowyscroll {
         overflow-y: scroll !important;
     }
+
+    
 
 /*#endregion ***************************/
 

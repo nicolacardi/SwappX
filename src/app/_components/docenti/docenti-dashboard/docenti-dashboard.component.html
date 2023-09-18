@@ -1,13 +1,13 @@
 <h1 class="_titolo-pagina">Cruscotto Docente per Classe</h1>
 <div class="center">
-    <button type="button" mat-stroked-button (click)="drawer.toggle()">
+    <button mat-button class="_btn-text" (click)="drawer.toggle()">
         Docente: <span *ngIf="docente">{{docente.persona!.nome}} {{docente.persona!.cognome}}</span> - 
         Classe: <span *ngIf="classeSezioneAnno">{{classeSezioneAnno.classeSezione!.classe!.descrizione2}} {{classeSezioneAnno.classeSezione!.sezione}}</span>
     </button>
 </div>
 
-<mat-drawer-container class="h100" autosize>
-    <mat-drawer class="transparent" #drawer mode="side">
+<mat-drawer-container class="h100"  autosize>
+    <mat-drawer class="transparent"  #drawer mode="side">
         <app-classi-sezioni-anni-list 
         [dove] = "'docenti-dashboard'"
         (annoID)="annoIdEmitted($event)"
@@ -15,15 +15,15 @@
         (docenteId)="docenteIdEmitted($event)" >
     </app-classi-sezioni-anni-list>
     </mat-drawer>
-    <div class="h100">
+    <div >
 
         <div *ngIf="!classeSezioneAnnoID" class="_warnCentroSchermo">
-            Selezionare un docente
+            Il docente selezionato <br>potrebbe non avere classi assegnate
         </div>
 
-        <mat-tab-group (selectedTabChange)="selectedTabValue($event)">
+        <mat-tab-group (selectedTabChange)="selectedTabValue($event)" >
             <mat-tab  *ngIf="classeSezioneAnnoID"  label="Alunni">
-                <div class="_table-container">
+                <div class="_table-container" >
                     <app-iscrizioni-classe-list  
                         [dove]="'lista-alunni'" 
                         [classeSezioneAnnoID]="classeSezioneAnnoID">
@@ -94,9 +94,9 @@
                     </tr>
                 </table>
             </mat-tab>
-            <mat-tab  *ngIf="classeSezioneAnnoID" label="Consiglio Orientativo">
+            <mat-tab  *ngIf="classeSezioneAnnoID" label="Consiglio Orientativo" >
                 <!-- <h1 class="_titolo-pagina">Certificazione delle Competenze</h1> -->
-                <table>
+                <table >
                     <tr>
                         <td class="_cell-align-top w300px">
                             <app-iscrizioni-classe-list [dove]="'certcompetenze'"  
@@ -105,7 +105,7 @@
                                 <!-- (alunno)="alunnoEmitted($event)" > -->
                             </app-iscrizioni-classe-list>
                         </td>
-                        <td class="_cell-align-top pl10 _border-left w100">
+                        <td class="_cell-align-top pl10 _border-left w100" >
                             <app-iscrizione-risposte  
                                 [iscrizioneID]="iscrizioneID"
                                 [contesto]="'Consiglio Orientativo'"

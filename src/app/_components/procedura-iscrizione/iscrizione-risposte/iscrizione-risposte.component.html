@@ -1,4 +1,4 @@
-<div class="w90 ma">
+<div class="w90 ma no-overflow" >
     <div *ngIf="contesto=='Dati Economici'">
         <table class="ma _tabellaquote" *ngIf="iscrizione">
             <tr>
@@ -17,6 +17,9 @@
         </table>
 
     </div>
+    
+
+    
     <form [formGroup] = "formRisposte">
 
         <table mat-table class="_table-row-low transparent w100" 
@@ -44,7 +47,8 @@
 
                     <mat-radio-group [formControlName]="element.id" 
                         *ngIf="element.numOpzioni > 1 && element.tipo == 'Scelta Singola'" 
-                        aria-label="Select an option">
+                        (change)="debugShowForm()"
+                        aria-label="Selezioen una opzione">
                         <mat-radio-button *ngIf="element.numOpzioni > 0" value="1">{{element.testo1}}</mat-radio-button>
                         <mat-radio-button *ngIf="element.numOpzioni > 1" value="2">{{element.testo2}}</mat-radio-button>
                         <mat-radio-button *ngIf="element.numOpzioni > 2" value="3">{{element.testo3}}</mat-radio-button>
@@ -60,7 +64,7 @@
 
                     <div
                     *ngIf="element.tipo == 'Scelta Multipla'" 
-                    aria-label="Select an option">
+                    aria-label="Selezione una o più opzioni">
                         <mat-checkbox [formControlName]="element.id+'_1'" *ngIf="element.numOpzioni > 0" value="1">{{element.testo1}}</mat-checkbox><br *ngIf="element.numOpzioni > 0">
                         <mat-checkbox [formControlName]="element.id+'_2'" *ngIf="element.numOpzioni > 1" value="2">{{element.testo2}}</mat-checkbox><br *ngIf="element.numOpzioni > 1">
                         <mat-checkbox [formControlName]="element.id+'_3'" *ngIf="element.numOpzioni > 2" value="3">{{element.testo3}}</mat-checkbox><br *ngIf="element.numOpzioni > 2">
@@ -96,4 +100,12 @@
         </table>
 
     </form>
+
+    <button *ngIf="contesto == 'Cert.Competenze'||'Consiglio orientativo'" mat-mini-fab aria-label="Salva" matTooltip="Salva" class="_btn-add ml10 _btn-pos-right-1"
+            [disabled] ="!formRisposte.valid"
+            (click)="save(contesto)" >
+            <mat-icon>save</mat-icon>
+    </button>
+
+
 </div>

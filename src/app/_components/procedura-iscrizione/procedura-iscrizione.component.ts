@@ -159,6 +159,12 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   async salvaRisposte(tipo: string) {
 
+    //ho spostato in iscrizione-risposte la save...da testare
+    if (tipo == 'Consensi')          this.ConsensiFormComponent.save(tipo);
+    if (tipo == 'Dati Economici')    this.DatiEconomiciFormComponent.save(tipo);
+    
+
+    return;
     await firstValueFrom(this.svcIscrizioneRisposte.deleteByIscrizioneAndTipo(this.iscrizioneID, tipo));
 
     let formValues! : any;
@@ -197,11 +203,11 @@ export class ProceduraIscrizioneComponent implements OnInit {
     // 16 false false true false false false false false
     // 28 false true true false false false false false
 
-    let form : CLS_IscrizioneRisposta;
+
 
     //seve un ciclo diverso per i casi in cui la key contiene _ 
 
-    let proceedToSave;
+
     for (const key in formValues) {
       console.log("***************************");
 

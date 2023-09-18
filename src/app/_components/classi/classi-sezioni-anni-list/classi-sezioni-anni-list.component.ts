@@ -201,7 +201,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
     //let objAnno = localStorage.getItem('AnnoCorrente');
     
-    //this.currUser = Utility.getCurrentUser();
+    this.currUser = Utility.getCurrentUser();
     let objAnno = localStorage.getItem('AnnoCorrente');
 
     this.form = this.fb.group( {
@@ -302,21 +302,24 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
           //bisogna modificare il WS in modo che ritorni null e non errore 
           /*
                   {
-        "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-        "title": "Not Found",
-        "status": 404,
-        "traceId": "00-e2acc9e55ba9934bb0cf93e56cb1a04b-09371454471a6e45-00"
-        }
-                  */
+          "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+          "title": "Not Found",
+          "status": 404,
+          "traceId": "00-e2acc9e55ba9934bb0cf93e56cb1a04b-09371454471a6e45-00"
+          }
+                    */
 
-          this.svcDocenti.getByPersona(this.currUser.personaID).subscribe ( 
-            res => {   
+
+          this.svcDocenti.getByPersona(this.currUser.personaID).subscribe ( {
+            next: res => {   
               if(res){
+                // L'utente è un docente: imposto il docente uguale a se stesso e disabilito la combo docenti
+                //in verità però il Coordinatore didattico non deve avere
                 this.docenteID = res.id;
                 this.form.controls.selectDocente.setValue(this.docenteID);
+                if (!this.currUser.persona?._LstRoles!.includes('CoordDidattico')) this.form.controls.selectDocente.disable(); 
               }
               else {
-
                 this.obsDocenti$.subscribe((docenti) => {
                   if (docenti.length > 0) {
                     console.log("classi-sezioni-anni-list - ngOnInit - id del primo docente della lista", docenti[0].id);
@@ -327,14 +330,12 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
                 });
               }
               //this.docenteID = 0; //prima facevo così
-              
-              
             },
-            err=> {
+            error: err=> {
               //console.log("getDocenteBypersonaID- KO:", err);
               this.docenteID = 0;
             }
-          );
+          });
         } 
         else 
           this.form.controls.selectDocente.setValue(0);
