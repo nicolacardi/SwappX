@@ -43,7 +43,7 @@ export class IscrizioniClasseListComponent implements OnInit {
   classeSezioneAnno!:           CLS_ClasseSezioneAnno;
   
   displayedColumns: string[] = [
-      // "select",
+      "select",
       "actionsColumn", 
       "nome", 
       "cognome", 
@@ -127,7 +127,7 @@ export class IscrizioniClasseListComponent implements OnInit {
 
         case 'pagella':
           this.displayedColumns = this.displayedColumnsPagella;
-          this.showPageTitle = true;
+          this.showPageTitle = false;
           this.loadData();         
           break;
         case 'certcompetenze':

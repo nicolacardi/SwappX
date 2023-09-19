@@ -22,6 +22,21 @@
     
     <form [formGroup] = "formRisposte">
 
+        <ng-container *ngIf="contesto == 'Cert. Competenze'|| contesto == 'Consiglio Orientativo'">
+            <button  mat-mini-fab aria-label="Salva" matTooltip="Stampa" class="_btn-add _btn-pos-right-2 mb10"
+                    (click)="print(contesto)" >
+                    <mat-icon>print</mat-icon>
+            </button>
+
+            <button  mat-mini-fab aria-label="Salva" matTooltip="Salva" class="_btn-add _btn-pos-right-1 mb10"
+                    [disabled] ="!formRisposte.valid"
+                    (click)="save(contesto)" >
+                    <mat-icon>save</mat-icon>
+            </button>
+        </ng-container>
+        <div>
+            <br>
+        </div>
         <table mat-table class="_table-row-low transparent w100" 
             [dataSource]="matDataSource">
 
@@ -98,14 +113,5 @@
             <tr mat-row *matRowDef="let element;columns: displayedColumns" class="element-row"></tr>
 
         </table>
-
     </form>
-
-    <button *ngIf="contesto == 'Cert.Competenze'||'Consiglio orientativo'" mat-mini-fab aria-label="Salva" matTooltip="Salva" class="_btn-add ml10 _btn-pos-right-1"
-            [disabled] ="!formRisposte.valid"
-            (click)="save(contesto)" >
-            <mat-icon>save</mat-icon>
-    </button>
-
-
 </div>

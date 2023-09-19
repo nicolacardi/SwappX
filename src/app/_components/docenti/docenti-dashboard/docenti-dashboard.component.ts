@@ -15,18 +15,15 @@ import { Utility }                              from '../../utilities/utility.co
 //services
 import { DocentiService }                       from '../docenti.service';
 import { DocenzeService }                       from '../../classi/docenze/docenze.service';
-
-import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_ClasseDocenteMateria';
-
+import { ClasseAnnoMateriaService }             from '../../classi/classi-anni-materie/classe-anno-materia.service';
+import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
 
 //models
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 import { User }                                 from 'src/app/_user/Users';
-import { ClasseAnnoMateriaService } from '../../classi/classi-anni-materie/classe-anno-materia.service';
-import { PagelleClasseEditComponent } from '../../pagelle/pagelle-classe-edit/pagelle-classe-edit.component';
-import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { PER_Docente } from 'src/app/_models/PER_Docente';
+import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_ClasseDocenteMateria';
+import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 
 //#endregion
 @Component({
@@ -62,24 +59,17 @@ export class DocentiDashboardComponent implements OnInit {
 //#endregion
   
 //#region ----- ViewChild Input Output -------
-  //@ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
   @ViewChild(ClassiSezioniAnniListComponent) viewClassiSezioniAnni!: ClassiSezioniAnniListComponent; 
-  // @ViewChild(IscrizioniClasseListComponent) viewListIscrizioni!: IscrizioniClasseListComponent; 
-  // @ViewChild(DocenzeListComponent) viewDocenzeList!: DocenzeListComponent; 
-  // @ViewChild('orarioLezioniDOM') viewOrarioLezioni!: LezioniCalendarioComponent; 
-  // @ViewChild('orarioDocenteDOM') viewOrarioDocente!: LezioniCalendarioComponent; 
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
-
-  
 //#endregion
 
-  constructor(private svcDocenti:                         DocentiService,
-              private svcClassiSezioniAnni:               ClassiSezioniAnniService,
-              public _dialog:                             MatDialog,
-              private actRoute:                           ActivatedRoute,
-              private svcDocenze:                         DocenzeService,
-              private fb:                                 UntypedFormBuilder, 
-              private svcClasseAnnoMateria:               ClasseAnnoMateriaService  ) {
+  constructor(private svcDocenti:               DocentiService,
+              private svcClassiSezioniAnni:     ClassiSezioniAnniService,
+              public _dialog:                   MatDialog,
+              private actRoute:                 ActivatedRoute,
+              private svcDocenze:               DocenzeService,
+              private fb:                       UntypedFormBuilder, 
+              private svcClasseAnnoMateria:     ClasseAnnoMateriaService  ) {
 
     this.form = this.fb.group( {
       selectMaterieDocenteClasse: 0

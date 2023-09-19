@@ -302,6 +302,12 @@ constructor(private svcDomande:                DomandeService,
 
 
   }
+
+  print(contesto: string) {
+
+  }
+
+
   
 //#endregion
 

@@ -59,7 +59,7 @@ matDataSource = new                             MatTableDataSource<CLS_ClasseDoc
   menuTopLeftPosition =  {x: '0', y: '0'} 
   
   toggleChecks:                                 boolean = false;
-  showPageTitle:                                boolean = true;
+  showPageTitle:                                boolean = false;
   showTableRibbon:                              boolean = true;
   public ckSoloAttivi :                         boolean = true;
 //#endregion

@@ -1,13 +1,15 @@
-<h1 class="_titolo-pagina">Cruscotto Docente per Classe</h1>
-<div class="center">
-    <button mat-button class="_btn-text" (click)="drawer.toggle()">
+<div class="center _fixed-header">
+    <h1 class="_titolo-pagina">Cruscotto Docente per Classe</h1>
+
+    <button mat-button class="_pos-absolute_i t10 l10 _btn-text" (click)="drawer.toggle()">
         Docente: <span *ngIf="docente">{{docente.persona!.nome}} {{docente.persona!.cognome}}</span> - 
         Classe: <span *ngIf="classeSezioneAnno">{{classeSezioneAnno.classeSezione!.classe!.descrizione2}} {{classeSezioneAnno.classeSezione!.sezione}}</span>
     </button>
 </div>
 
-<mat-drawer-container class="h100"  autosize>
-    <mat-drawer class="transparent"  #drawer mode="side">
+<!-- opened="true" -->
+<mat-drawer-container style="display:inline">
+    <mat-drawer class="w330px transparent"  #drawer mode="side" >
         <app-classi-sezioni-anni-list 
         [dove] = "'docenti-dashboard'"
         (annoID)="annoIdEmitted($event)"
@@ -15,13 +17,13 @@
         (docenteId)="docenteIdEmitted($event)" >
     </app-classi-sezioni-anni-list>
     </mat-drawer>
-    <div >
+    <mat-drawer-content class="mat-drawer-docenti">
 
-        <div *ngIf="!classeSezioneAnnoID" class="_warnCentroSchermo">
+        <div *ngIf="!classeSezioneAnnoID || classeSezioneAnnoID == 0" class="_warnCentroSchermo">
             Il docente selezionato <br>potrebbe non avere classi assegnate
         </div>
 
-        <mat-tab-group (selectedTabChange)="selectedTabValue($event)" >
+        <mat-tab-group (selectedTabChange)="selectedTabValue($event)">
             <mat-tab  *ngIf="classeSezioneAnnoID"  label="Alunni">
                 <div class="_table-container" >
                     <app-iscrizioni-classe-list  
@@ -40,17 +42,17 @@
             </mat-tab>
 
             <mat-tab  *ngIf="classeSezioneAnnoID" label="Compiti in Classe"  >
-                <app-compiti-list 
+                <app-compiti-page 
                     [classeSezioneAnnoID]="classeSezioneAnnoID"
                     [docenteID] = "docenteID" >
-                </app-compiti-list>
+                </app-compiti-page>
             </mat-tab>
 
             <mat-tab  *ngIf="classeSezioneAnnoID" label="Voti Interrogazioni">
-                <app-voti-interr-list
+                <app-voti-interr-page
                     [classeSezioneAnnoID]="classeSezioneAnnoID"
                     [docenteID] = "docenteID">
-                </app-voti-interr-list>
+                </app-voti-interr-page>
             </mat-tab>
 
             <mat-tab  *ngIf="classeSezioneAnnoID" label="Pagelle per Materia">
@@ -73,15 +75,13 @@
                 </form>
             </mat-tab>
 
-            <mat-tab  *ngIf="classeSezioneAnnoID" label="Certificazione delle Competenze">
-                <!-- <h1 class="_titolo-pagina">Certificazione delle Competenze</h1> -->
+            <mat-tab  *ngIf="classeSezioneAnnoID" label="Cert. Competenze">
                 <table>
                     <tr>
                         <td class="_cell-align-top w300px">
                             <app-iscrizioni-classe-list [dove]="'certcompetenze'"  
                                 [classeSezioneAnnoID]="classeSezioneAnnoID"  
                                 (iscrizioneID)="iscrizioneIDEmitted($event)">
-                                <!-- (alunno)="alunnoEmitted($event)" > -->
                             </app-iscrizioni-classe-list>
                         </td>
                         <td class="_cell-align-top pl10 _border-left w100">
@@ -94,15 +94,13 @@
                     </tr>
                 </table>
             </mat-tab>
-            <mat-tab  *ngIf="classeSezioneAnnoID" label="Consiglio Orientativo" >
-                <!-- <h1 class="_titolo-pagina">Certificazione delle Competenze</h1> -->
+            <mat-tab  *ngIf="classeSezioneAnnoID" label="Cons. Orientativo" >
                 <table >
                     <tr>
                         <td class="_cell-align-top w300px">
                             <app-iscrizioni-classe-list [dove]="'certcompetenze'"  
                                 [classeSezioneAnnoID]="classeSezioneAnnoID"  
                                 (iscrizioneID)="iscrizioneIDEmitted($event)">
-                                <!-- (alunno)="alunnoEmitted($event)" > -->
                             </app-iscrizioni-classe-list>
                         </td>
                         <td class="_cell-align-top pl10 _border-left w100" >
@@ -116,7 +114,7 @@
                 </table>
             </mat-tab>
         </mat-tab-group>
-      </div>
+    </mat-drawer-content>
     
 </mat-drawer-container>
 

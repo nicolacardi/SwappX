@@ -9,8 +9,9 @@
 <button mat-mini-fab aria-label="Filtri Avanzati" matTooltip="Filtri Avanzati" class="_btn-add _btn-pos-right-2 _btn-pos-top-1" [ngClass]="{'_btn-add-red': !appalunnifilter.formClean}"   (click)="filterSidenav.toggle();" >
     <mat-icon >filter_alt</mat-icon>
 </button>
+<!-- era mat-drawer-container style="min-height: 90%"   -->
 
-<mat-drawer-container [hasBackdrop]="false" style="min-height: 91%">
+<mat-drawer-container [hasBackdrop]="false" style="display: inline;">
     
     <mat-drawer position="end" #filterSidenav class="filterSidenav"  [mode]="'side'">
         <!-- app alunni filter deve dialogare con il suo "sibling" app alunni list, allora metto un riferimento (#appalunnilist) e passo una variabile in input a app-alunni-filter -->
@@ -32,7 +33,7 @@
         </app-toolbar>
     </mat-drawer>
 
-    <mat-drawer-content>
+    <mat-drawer-content class="no-overflow">
         <app-alunni-list [alunniFilterComponent] = "appalunnifilter"
                          [context] = "'alunni-page'"
                          (openDrawer) = "openDrawer()"

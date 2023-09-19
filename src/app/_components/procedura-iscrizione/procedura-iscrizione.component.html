@@ -1,22 +1,9 @@
 
-  
-  <!-- <mat-form-field >
-  <mat-label>Figli</mat-label>
-  <mat-select formControlName="figlio" #selectFiglio>
-      <mat-option *ngFor="let element of (obsFigli$ | async)" [value]="element.id">
-          {{element.persona.nome}} {{element.persona.cognome}}
-      </mat-option>
-  </mat-select>
-</mat-form-field> -->
-
   <mat-stepper *ngIf="iscrizione" linear="true" #stepper animationDuration="200" labelPosition="bottom" >
     <ng-template matStepperIcon="edit">
       <mat-icon>done</mat-icon>
     </ng-template>
 
-
-
-    
     <mat-step *ngFor="let element of genitoriArr; let i= index"  [stepControl]="appGenitoreForm.form" >
       <ng-template matStepLabel >Dati del Genitore {{i+1}}</ng-template>
       <h3>{{element.tipoGenitore!.descrizione}}: {{element.persona.nome}} {{element.persona.cognome}}</h3>

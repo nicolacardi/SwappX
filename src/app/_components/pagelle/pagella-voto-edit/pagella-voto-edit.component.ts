@@ -46,11 +46,9 @@ export class PagellaVotoEditComponent implements OnInit  {
 
 //#region ----- ViewChild Input Output ---------
   @ViewChild(MatSort) sort!:                MatSort;
-
   @Input('objPagella') objPagella!:                     DOC_Pagella;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:   number;
-
-  @Output('reloadParent') reloadParent = new EventEmitter(); //EMESSO quando si clicca sul (+) di aggiunta alle classi frequentate
+  @Output('reloadParent') reloadParent = new EventEmitter(); //EMESSO quando si chiude la dialog obiettivo
 
 //#endregion
 

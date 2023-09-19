@@ -1,8 +1,8 @@
 
     <h1 *ngIf="showPageTitle" class="_titolo-pagina">Compiti in classe</h1>
-    <button mat-mini-fab aria-label="Nuova anagrafica" matTooltip="Nuova anagrafica" class="_btn-add _btn-pos-right-1 _btn-pos-top-0" (click)="addRecord()">
+    <!-- <button mat-mini-fab aria-label="Nuova anagrafica" matTooltip="Nuova anagrafica" class="_btn-add _btn-pos-right-1 _btn-pos-top-0" (click)="addRecord()">
         <mat-icon>add</mat-icon>
-    </button>
+    </button> -->
     <!-- **************************   FILTER   ******************* -->
     <mat-form-field *ngIf="showTableRibbon" class="ml20 topZIndex">
         <mat-label>Filtro</mat-label>
@@ -19,14 +19,14 @@
         <ng-container matColumnDef="actionsColumn">
             <th mat-header-cell *matHeaderCellDef cdkDrag></th>
             <td mat-cell  *matCellDef="let element;  let j = index;"> 
-                <img (click)="openDetailVoti(element)" class="iconaMenu pointer" src="./assets/voticompito_edit.svg">
+                <img (click)="openDetailVoti(element)" matTooltip="Modifica Voti Compito" class="iconaMenu pointer" src="./assets/voticompito_edit.svg">
             </td>
         </ng-container>
 
         <ng-container matColumnDef="actionsColumn2">
             <th mat-header-cell *matHeaderCellDef cdkDrag></th>
             <td mat-cell  *matCellDef="let element;  let j = index;"> 
-                <img (click)="openDetailCompito(element)" class="iconaMenu pointer" src="./assets/compito_edit.svg">
+                <img (click)="openDetailCompito(element)" matTooltip="Modifica Dati Compito" class="iconaMenu pointer" src="./assets/compito_edit.svg">
             </td>
         </ng-container>
 

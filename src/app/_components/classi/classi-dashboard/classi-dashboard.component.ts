@@ -27,6 +27,8 @@ import { JspdfService }                         from '../../utilities/jspdf/jspd
 import { NavigationService }                    from '../../utilities/navigation/navigation.service';
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
 import { DocenzeService }                       from '../docenze/docenze.service';
+import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
 
 //#endregion
 
@@ -80,11 +82,13 @@ export class ClassiDashboardComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
-  public classeSezioneAnnoID!:  number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
-  public annoID!:               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
-  public docenteID!:            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
-  public iscrizioneID!:         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
-  public alunno!:               ALU_Alunno;   //valore ricevuto (emitted) dal child IscrizioniClasseList
+  public classeSezioneAnnoID!:                  number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
+  public classeSezioneAnno!:                    CLS_ClasseSezioneAnno;
+
+  public annoID!:                               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
+  public docenteID!:                            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
+  public iscrizioneID!:                         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
+  public alunno!:                               ALU_Alunno;   //valore ricevuto (emitted) dal child IscrizioniClasseList
 
   public classeSezioneAnnoIDrouted!:        string;   //valore ricevuto (routed) dal ruoting
   public annoIDrouted!:         string;   //valore ricevuto (routed) dal ruoting
@@ -102,14 +106,15 @@ export class ClassiDashboardComponent implements OnInit {
 
   //#endregion
 
-  constructor(private svcIscrizioni:                      IscrizioniService,
-              private svcDocenze:                         DocenzeService,
-              private _navigationService:                 NavigationService,
-              public _dialog:                             MatDialog,
-              private _jspdf:                             JspdfService,
-              private actRoute:                           ActivatedRoute,
-              private router:                             Router,        
-              private _snackBar:                          MatSnackBar ) {
+  constructor(private svcIscrizioni:            IscrizioniService,
+              private svcDocenze:               DocenzeService,
+              private svcClassiSezioniAnni:     ClassiSezioniAnniService,
+              private _navigationService:       NavigationService,
+              public _dialog:                   MatDialog,
+              private _jspdf:                   JspdfService,
+              private actRoute:                 ActivatedRoute,
+              private router:                   Router,        
+              private _snackBar:                MatSnackBar ) {
     
   }
 
@@ -318,7 +323,14 @@ export class ClassiDashboardComponent implements OnInit {
   }
 
   classeSezioneAnnoIDEmitted(classeSezioneAnnoID: number) {
+
+    console.log("classeSezioneAnnoIDEmitted");
     this.classeSezioneAnnoID = classeSezioneAnnoID;
+
+    
+    //per poter mostrare il docente e la classe...
+    this.svcClassiSezioniAnni.get(this.classeSezioneAnnoID).subscribe(csa => {this.classeSezioneAnno = csa; console.log("classi-dashboard - classeSezioneAnnoIDEmitted - csa", this.classeSezioneAnno)});
+
   }
 
   docenteIdEmitted(docenteId: number) {

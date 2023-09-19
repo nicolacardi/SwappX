@@ -49,3 +49,18 @@
 :host ::ng-deep .headerColored .mat-mdc-header-row {
   background-color: #f9f9f9;
 }
+
+
+._fixed-header {
+  position: sticky;
+  top: 64px;
+  width: 100%;
+  background-color: #f9f9f9; /* Imposta il colore di sfondo desiderato */
+  z-index: 1000; /* Assicura che l'intestazione rimanga sopra il resto del contenuto */
+  padding: 10px; /* Aggiungi spazio per separare il contenuto sottostante */
+  border-bottom: lightgrey solid 1px;
+}
+
+.mat-drawer-classi {
+  height: calc(100vh - 143px) !important;
+}

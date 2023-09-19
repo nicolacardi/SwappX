@@ -265,6 +265,9 @@
         margin-left: 60px;
     }
 
+    .ml70 {
+        margin-left: 70px;
+    }
 
     .ml100 {
         margin-left: 100px;
@@ -616,6 +619,10 @@
         width: 300px;
     }
 
+    .w330px {
+        width: 330px;
+    }
+
     .w350px {
         width: 300px;
     }
@@ -862,6 +869,11 @@
 
     ._titolo-pagina {
         text-align: center;
+        margin-top: 10px !important;
+    }
+
+    ._titolo-pagina-left {
+        text-align: left;
         margin-top: 10px !important;
     }
 
@@ -1670,7 +1682,7 @@
 /*#region ********** OVERFLOW *********/
 
     .no-overflow {
-        overflow:hidden;
+        overflow:hidden !important;
     }
 
     .no-overflowx {

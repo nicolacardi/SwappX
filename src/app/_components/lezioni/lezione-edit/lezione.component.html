@@ -167,11 +167,11 @@
                 </mat-tab>
 
                 <mat-tab  *ngIf="data.dove!='orario'" label="Voti Interrogazioni">
-                    <app-voti-interr-list 
+                    <app-voti-interr-page 
                         [lezioneID] = "data.lezioneID"
                         [docenteID] = "docenteID"
                         [classeSezioneAnnoID] = "data.classeSezioneAnnoID"
-                    > </app-voti-interr-list>
+                    > </app-voti-interr-page>
                 </mat-tab>
             </mat-tab-group>
         </form>

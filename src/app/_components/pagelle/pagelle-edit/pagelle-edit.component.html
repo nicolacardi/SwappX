@@ -1,31 +1,29 @@
 <!-- {{iscrizioneID}} -->
-<h2 class="_titolo-pagina">Pagella 
+<button  mat-mini-fab aria-label="Stampa Pagella" matTooltip="Pubblica Pagella" class="_btn-add _btn-pos-right-1" (click)="savePdfPagella()">
+    <!-- <img class="iconaMenu" src="./assets/pubblica.svg"> -->
+    <mat-icon>save</mat-icon>
+</button>
+<button  mat-mini-fab aria-label="Stampa Pagella" matTooltip="Scarica Pagella" class="_btn-add _btn-pos-right-2" (click)="openXML()">
+    <mat-icon>file_download</mat-icon>
+</button>
 
-    <button  mat-mini-fab aria-label="Stampa Pagella" matTooltip="Pubblica Pagella" class="_btn-add _btn-pos-left-30" (click)="savePdfPagella()">
-        <img class="iconaMenu" src="./assets/pubblica.svg">
-    </button>
-       
-    <!-- <button  mat-mini-fab aria-label="Stampa Pagella" matTooltip="Scarica Pagella" class="_btn-add _btn-pos-left-40" (click)="openPdfPagella()">
-        <mat-icon>file_download</mat-icon>
-    </button> -->
-    <button  mat-mini-fab aria-label="Stampa Pagella" matTooltip="Scarica Pagella" class="_btn-add _btn-pos-left-40" (click)="openXML()">
-        <mat-icon>file_download</mat-icon>
-    </button>
+<mat-form-field *ngIf="dtIns" class="fs14 center w125px _pos-absolute _btn-pos-right-4" appearance="outline">
+    <mat-label>Data Pagella</mat-label>
+    <input matInput placeholder="data Pagella" [value]="dtIns|date:'dd/MM/yyyy'" (change)="aggiornaData()">
+</mat-form-field>
 
+<h2 class="_titolo-pagina-left">
     <span class="fs16">
         <mat-button-toggle-group name="quadrimestre" value="1" (change)="quadClick($event)" #toggleQuad>
             <mat-button-toggle class="toggleQ" value="1" selected>1°</mat-button-toggle>
             <mat-button-toggle class="toggleQ" value="2">2°</mat-button-toggle>
         </mat-button-toggle-group>
     </span>
-    quadr. di 
-    <span *ngIf="alunno">{{alunno.persona.nome}}  {{alunno.persona.cognome}}</span>
-    <mat-form-field *ngIf="dtIns" class="ml50 fs14 center w100px" appearance="outline">
-        <mat-label>Data Pagella</mat-label>
-        <input matInput placeholder="data Pagella" [value]="dtIns|date:'dd/MM/yyyy'" (change)="aggiornaData()">
-    </mat-form-field>
-            
+    quadrimestre 
+    <!-- <span *ngIf="alunno">{{alunno.persona.nome}}  {{alunno.persona.cognome}}</span> -->
+
 </h2>
+
 
 <app-pagella-voto-edit [classeSezioneAnnoID]="classeSezioneAnnoID" 
                        [objPagella] = "objPagella"

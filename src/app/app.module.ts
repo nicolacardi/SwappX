@@ -236,6 +236,8 @@ import { ParametroEditComponent }               from './_components/impostazioni
 import { AnnoScolasticoPageComponent }          from './_components/anniScolastici/annoscolastico-page/annoscolastico-page.component';
 import { AnniScolasticiListComponent }          from './_components/anniScolastici/anniscolastici-list/anniscolastici-list.component';
 import { AnnoscolasticoEditComponent }          from './_components/anniScolastici/annoscolastico-edit/annoscolastico-edit.component';
+import { CompitiPageComponent } from './_components/lezioni/compiti-page/compiti-page.component';
+import { VotiInterrPageComponent } from './_components/lezioni/voti-interr-page/voti-interr-page.component';
 
 // FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   //dayGridPlugin, NC 16/02/23
@@ -419,7 +421,9 @@ import { AnnoscolasticoEditComponent }          from './_components/anniScolasti
     ParametroEditComponent,
     AnnoScolasticoPageComponent,
     AnniScolasticiListComponent,
-    AnnoscolasticoEditComponent
+    AnnoscolasticoEditComponent,
+    CompitiPageComponent,
+    VotiInterrPageComponent
   ],
   imports: [
     BrowserModule,

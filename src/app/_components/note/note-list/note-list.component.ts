@@ -130,7 +130,7 @@ export class NoteListComponent implements OnInit {
 
       case 'classi-dashboard':
         this.displayedColumns = this.displayedColumnsNotePage;
-        this.showPageTitle = true;
+        this.showPageTitle = false;
         this.showTableRibbon = true;
 
         if (this.classeSezioneAnnoID) {
