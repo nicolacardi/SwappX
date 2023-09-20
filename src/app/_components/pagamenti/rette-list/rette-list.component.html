@@ -28,7 +28,7 @@
     <!-- **************************   FILTER   ******************* -->
     <mat-form-field class="ml20 mt10 topZIndex">
         <mat-label>Filtro Alunno/Classe</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="nome, cognome o classe" #input>
+        <input matInput (keyup)="applyFilter(filterInput.value)" placeholder="nome, cognome o classe" formControlName="filterControl" #filterInput>
     </mat-form-field>
 </form>
 
@@ -66,7 +66,7 @@
 
     <ng-container matColumnDef="tipoRec_C">
         <mat-header-cell *matHeaderCellDef >Tipo</mat-header-cell>
-            <mat-cell *matCellDef="let element">Concordate</mat-cell>
+            <mat-cell *matCellDef="let element" class="fs10">Concordate</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="c_SET">
@@ -162,7 +162,7 @@
 
     <ng-container matColumnDef="tipoRec_D">
         <mat-header-cell *matHeaderCellDef >Tipo</mat-header-cell>
-            <mat-cell *matCellDef="let element">Default</mat-cell>
+            <mat-cell *matCellDef="let element" class="fs10">Default</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="d_SET">
@@ -235,7 +235,7 @@
 
     <ng-container matColumnDef="tipoRec_P">
         <mat-header-cell *matHeaderCellDef >Tipo</mat-header-cell>
-            <mat-cell *matCellDef="let element">Pagamenti</mat-cell>
+            <mat-cell *matCellDef="let element" class="fs10">Pagamenti</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="p_SET">

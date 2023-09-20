@@ -154,13 +154,13 @@ export class AlunniListComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(private svcAlunni:                          AlunniService,
-              private router:                             Router,
-              public _dialog:                             MatDialog, 
-              private _loadingService:                    LoadingService,
-              private _navigationService:                 NavigationService,
-              private svcTableCols:                       TableColsService,
-              private svcTableColsVisible:                TableColsVisibleService ) { 
+  constructor(private svcAlunni:                AlunniService,
+              private router:                   Router,
+              public _dialog:                   MatDialog, 
+              private _loadingService:          LoadingService,
+              private _navigationService:       NavigationService,
+              private svcTableCols:             TableColsService,
+              private svcTableColsVisible:      TableColsVisibleService ) { 
 
     this.currUser = Utility.getCurrentUser();
   }

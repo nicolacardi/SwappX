@@ -1,13 +1,13 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, OnInit, ViewChild }         from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild }         from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 import { MatPaginator }                         from '@angular/material/paginator';
 import { MatSlideToggle }                       from '@angular/material/slide-toggle';
 import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable, zip }                      from 'rxjs';
 import { groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormControl, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatMenuTrigger }                       from '@angular/material/menu';
 
 //components
@@ -21,11 +21,11 @@ import { LoadingService }                       from '../../utilities/loading/lo
 import { AnniScolasticiService }                from 'src/app/_components/anniScolastici/anni-scolastici.service';
 
 //classes
-import { PAG_Retta } from 'src/app/_models/PAG_Retta';
-import { PAG_RettaPivot } from 'src/app/_models/PAG_RettaPivot';
-import { PAG_RettaGroupObj } from 'src/app/_models/PAG_RetteGroupObj';
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
+import { PAG_Retta }                            from 'src/app/_models/PAG_Retta';
+import { PAG_RettaPivot }                       from 'src/app/_models/PAG_RettaPivot';
+import { PAG_RettaGroupObj }                    from 'src/app/_models/PAG_RetteGroupObj';
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
 
 //#endregion
 @Component({
@@ -130,34 +130,47 @@ matDataSource = new MatTableDataSource<PAG_RettaPivot>();
 
   public months=[0,1,2,3,4,5,6,7,8,9,10,11,12].map(x=>new Date(2000,x-1,2).toLocaleString('it-IT', {month: 'short'}).toUpperCase());
 
+
+  filterValue = '';       //Filtro semplice
+  //filterValues contiene l'elenco dei filtri avanzati da applicare 
+ filterValues = {
+   filtrosx: ''
+ };
+
 //#endregion
 
 //#region ----- ViewChild Input Output -------
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('toggleD') toggleD!: MatSlideToggle; 
   @ViewChild('toggleC') toggleC!: MatSlideToggle; 
   @ViewChild('toggleP') toggleP!: MatSlideToggle; 
 
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
+
+
 //#endregion
 
 //#region ----- Constructor --------------------
 
   constructor(
-    private svcRette:         RetteService,
-    private svcAnni:          AnniScolasticiService,
-    private _loadingService:  LoadingService,
-    private fb:               UntypedFormBuilder, 
-    public _dialog:           MatDialog) 
+              private svcRette:                 RetteService,
+              private svcAnni:                  AnniScolasticiService,
+              private _loadingService:          LoadingService,
+              private fb:                       UntypedFormBuilder, 
+              public _dialog:                   MatDialog) 
   {
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
-      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue
+      selectAnnoScolastico:  +(JSON.parse(obj!) as _UT_Parametro).parValue,
+      filterControl: ['']
     })
   }
 //#endregion
 
 //#region ----- LifeCycle Hooks e simili-------
+
+
   ngOnInit() {
     this.loadData();
   }
@@ -258,7 +271,7 @@ matDataSource = new MatTableDataSource<PAG_RettaPivot>();
     )         //fine mergeMap
     .subscribe(val => {
       this.matDataSource.data = val;
-      this.filterPredicateCustom();
+      this.matDataSource.filterPredicate = this.filterPredicate();
       this.matDataSource.paginator = this.paginator;
       }
     );
@@ -337,37 +350,58 @@ matDataSource = new MatTableDataSource<PAG_RettaPivot>();
 //#endregion
 
 //#region ----- Filtri & Sort -------
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.matDataSource.filter = filterValue.trim().toLowerCase();
+
+
+  applyFilter(filterValue: string) {
+    //differisce da quelle degli altri component perchè questa riceve un filterValue e non un event: serve così perchè viene usata anche da rette-page
+    this.filterValue = filterValue;
+    this.filterValues.filtrosx = this.filterValue.toLowerCase();
+    console.log("afwc", JSON.stringify(this.filterValues), this.filterValue.trim().toLowerCase());
+    this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
 
-  filterPredicateCustom(){
-  //questa funzione consente il filtro ANCHE sugli oggetti della classe
-  //è diversa (quindi + semplice) dal filterPredicate delle altre pagine in quanto non contempla i filtri di destra (qui assenti)
-  //e svolge, quindi, solo la funzione per il filtro di sinistra
-  //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
-  this.matDataSource.filterPredicate = (data, filter: string)  => {
-    const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
-      
-      switch(key) { 
-        case "iscrizione": { 
-          return currentTerm + data.iscrizione?.classeSezioneAnno.classeSezione.classe!.descrizioneBreve+" "+data.iscrizione?.classeSezioneAnno.classeSezione.sezione ; 
-           break; 
-        } 
+  // filterPredicateCustom(){
+    //altro modo più complesso di creare filterpredicate Custom, per noi non standard
+  // //questa funzione consente il filtro ANCHE sugli oggetti della classe
+  // //è diversa (quindi + semplice) dal filterPredicate delle altre pagine in quanto non contempla i filtri di destra (qui assenti)
+  // //e svolge, quindi, solo la funzione per il filtro di sinistra
+  // //https://stackoverflow.com/questions/49833315/angular-material-2-datasource-filter-with-nested-object/49833467
+  // this.matDataSource.filterPredicate = (data, filter: string)  => {
+  //   const accumulator = (currentTerm: any, key: any) => { //Key è il campo in cui cerco
+  //     //data è dove sto cercando
+  //     console.log(data, key, currentTerm);
+  //     switch(key) { 
+  //       case "iscrizione": { 
+  //         return currentTerm + data.iscrizione?.classeSezioneAnno.classeSezione.classe!.descrizioneBreve+" "+data.iscrizione?.classeSezioneAnno.classeSezione.sezione ; 
+  //          break; 
+  //       } 
 
-        default: { 
-        return currentTerm + data.nome + data.cognome;
-           break; 
-        } 
-     } 
-    };
+  //       default: { 
+  //       return currentTerm + data.nome + data.cognome;
+  //          break; 
+  //       } 
+  //    } 
+  //   };
+  //   const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+  //   const transformedFilter = filter.trim().toLowerCase();
+  //   return dataStr.indexOf(transformedFilter) !== -1;
+  // };
+  // }
 
-    const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
-    const transformedFilter = filter.trim().toLowerCase();
-    return dataStr.indexOf(transformedFilter) !== -1;
-  };
-}
+  filterPredicate(): (data: any, filter: string) => boolean {
+    let filterFunction = function(data: any, filter: any): boolean {
+      let searchTerms = JSON.parse(filter);
+      // console.log (data.iscrizione.classeSezioneAnno.classeSezione.classe.descrizioneBreve+ " "+ data.iscrizione.classeSezioneAnno.sezione, searchTerms.filtrosx);
+
+      let boolSx = String(data.alunno.persona.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || String(data.alunno.persona.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                || (String(data.iscrizione.classeSezioneAnno.classeSezione.classe.descrizioneBreve+ " "+ data.iscrizione.classeSezioneAnno.classeSezione.sezione).toLowerCase() == (searchTerms.filtrosx));
+    
+
+      return boolSx;
+    }
+    return filterFunction;
+  }
 
 //#endregion
 

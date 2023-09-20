@@ -74,7 +74,7 @@
     </mat-table>
 
     <!-- ***********************  MENU RIGHT CLICK ****************** -->
-    <div style="visibility: hidden; position: fixed;" 
+    <!-- <div style="visibility: hidden; position: fixed;" 
         [style.left]="menuTopLeftPosition.x" 
         [style.top]="menuTopLeftPosition.y" 
         [matMenuTriggerFor]="rightMenu">
@@ -83,12 +83,11 @@
     <mat-menu #rightMenu="matMenu"> 
         <ng-template matMenuContent let-item="item"> 
             <mat-label class="_titolo-filtri-avanzati">{{item.meseRetta}} - {{item.annoRetta}}</mat-label>
-            <!-- <button mat-menu-item routerLink="/genitori" [queryParams]="{ alunnoID: item.id }">Genitori/Tutori</button>  -->
             <button mat-menu-item>Test 1</button> 
             <button mat-menu-item>Test 2</button>
             <button mat-menu-item>Test 3</button>
         </ng-template> 
-    </mat-menu> 
+    </mat-menu>  -->
 </mat-card>
 
 

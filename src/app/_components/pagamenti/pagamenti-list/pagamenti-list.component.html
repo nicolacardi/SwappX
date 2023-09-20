@@ -52,14 +52,14 @@
     <ng-container matColumnDef="tipoPagamento.descrizione">
         <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Tipo Pag</th>
         <!-- <td mat-cell *matCellDef="let element">{{element.tipoPagamento.descrizione}}</td> -->
-        <td mat-cell *matCellDef="let element" [innerHTML]="element.tipoPagamento.descrizione | highlight: filterValue"></td>
+        <td mat-cell *matCellDef="let element" [innerHTML]="element.tipoPagamento.descrizione"></td>
 
     </ng-container>
 
     <ng-container matColumnDef="causale.descrizione">
         <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header >Causale</th>
             <!-- <td mat-cell *matCellDef="let element">{{element.causale.descrizione}}</td> -->
-            <td mat-cell *matCellDef="let element" [innerHTML]="element.causale.descrizione | highlight: filterValue"></td>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.causale.descrizione"></td>
 
     </ng-container>
 

@@ -81,8 +81,8 @@
             <mat-label class="_titolo-filtri-avanzati">{{item.descrizioneBreve | uppercase}} {{item.sezione | uppercase}}</mat-label>
             <!-- <button mat-menu-item routerLink="/classi-dashboard" [queryParams]="{ annoID: item.anno }">Gestione Classe</button> -->
             <button mat-menu-item (click)="openGestioneClasse(item)">Gestione Classe</button> 
-            <button mat-menu-item>Pagelle</button>
-            <button mat-menu-item>Quote e Pagamenti</button>
+            <!-- <button mat-menu-item>Pagelle</button> -->
+            <button mat-menu-item (click)="openPagamentiClasse(item)">Quote e Pagamenti</button>
         </ng-template> 
     </mat-menu> 
 

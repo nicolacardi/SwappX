@@ -34,6 +34,7 @@
         font-family: 'Titillium Web', sans-serif;
     }
 
+
     .mat-mdc-form-field{
         letter-spacing: 0em ;                    /* fix font dopo migrazione a ng v15 */
     }
@@ -1139,7 +1140,6 @@
     }
 
     ._btn-calcolo-rette{
-        background-image: url("./assets/calcolo-rette.svg"); 
         background-color: #044D7E !important ;
         position: absolute !important;
         top: 80px;
