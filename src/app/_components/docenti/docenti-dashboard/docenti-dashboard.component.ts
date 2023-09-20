@@ -105,11 +105,9 @@ export class DocentiDashboardComponent implements OnInit {
     this.form.controls.selectMaterieDocenteClasse.valueChanges.pipe(
       tap(res => this.materiaID = res),
       concatMap(res=> this.svcClasseAnnoMateria.getByMateriaAndClasseSezioneAnno(this.materiaID, this.classeSezioneAnnoID))
-    )
-    .subscribe(res => this.tipoVoto = res.tipoVoto!.descrizione);
-
-
+    ).subscribe(res => this.tipoVoto = res.tipoVoto!.descrizione);
   }
+
 //#endregion
 
 //#region ----- ricezione emit -------
@@ -127,21 +125,26 @@ export class DocentiDashboardComponent implements OnInit {
     this.materiaID = 0;
     this.classeSezioneAnnoID = classeSezioneAnnoID;
 
-    //per poter mostrare il docente e la classe...
-    this.svcClassiSezioniAnni.get(this.classeSezioneAnnoID).subscribe(csa => {console.log("docenti-dashboard - classeSezioneAnnoIDEmitted - csa", csa); this.classeSezioneAnno = csa});
-    this.svcDocenti.get(this.docenteID).subscribe(doc => {console.log("docenti-dashboard - classeSezioneAnnoIDEmitted - doc", doc); this.docente = doc});
+    if(this.classeSezioneAnnoID >0){
+      //per poter mostrare il docente e la classe...
+      this.svcClassiSezioniAnni.get(this.classeSezioneAnnoID).subscribe(
+        csa => this.classeSezioneAnno = csa
+      );
 
+      this.svcDocenti.get(this.docenteID).subscribe(
+        doc =>  this.docente = doc
+      );
 
-    // Estraggo le materie di questo docente in questa classe e le metto nella combo
-    this.svcDocenze.listByClasseSezioneAnnoDocente(classeSezioneAnnoID, this.docenteID).subscribe(
-      materie=> {
-        //console.log("AS-materie: ", materie);
-        if(materie != null && materie.length>0){
-          this.arrMaterie = materie;
-          this.form.controls.selectMaterieDocenteClasse.setValue(materie[0].materiaID);
+      // Estraggo le materie di questo docente in questa classe e le metto nella combo
+      this.svcDocenze.listByClasseSezioneAnnoDocente(classeSezioneAnnoID, this.docenteID).subscribe(
+        materie=> {
+          if(materie != null && materie.length>0){
+            this.arrMaterie = materie;
+            this.form.controls.selectMaterieDocenteClasse.setValue(materie[0].materiaID);
+          }
         }
-      }
-    )
+      )
+    };
   }
 
   docenteIdEmitted(docenteId: number) {
@@ -166,7 +169,6 @@ export class DocentiDashboardComponent implements OnInit {
     // if (this.tabGroup.selectedIndex == 1) {
     //   this.viewOrarioDocente.calendarDOM.getApi().render();
     //   this.viewOrarioDocente.loadData()
-
     // }
     
   }

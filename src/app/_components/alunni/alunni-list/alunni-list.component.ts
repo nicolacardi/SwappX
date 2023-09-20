@@ -251,7 +251,6 @@ export class AlunniListComponent implements OnInit {
 
       loadAlunni$.subscribe(
         res =>   {
-          console.log("res", res);
           this.matDataSource.data = res;
           this.matDataSource.paginator = this.paginator;
           this.sortCustom();
@@ -392,9 +391,7 @@ export class AlunniListComponent implements OnInit {
       data: 0
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-        () => this.loadData()
-    );
+    dialogRef.afterClosed().subscribe(() => this.loadData());
   }
 
   openDetail(id:any){
@@ -406,8 +403,7 @@ export class AlunniListComponent implements OnInit {
       data: id
     };
     const dialogRef = this._dialog.open(AlunnoEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-      () => this.loadData()
+    dialogRef.afterClosed().subscribe(() => this.loadData()
     );
   }
 
@@ -444,10 +440,9 @@ export class AlunniListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(RettaEditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(
-        () => this.loadData()
-    );
+    dialogRef.afterClosed().subscribe(() => this.loadData());
   }
+
 //#endregion
 
 //#region ----- Emit per alunno-edit -----------
@@ -575,8 +570,7 @@ export class AlunniListComponent implements OnInit {
 //   })
 // });
 
-
-//**********************nascono le promise
+//#region   ### vecchie  promise
 
 // promises () {
 //   const promise = new Promise<void>((resolve, reject) => {
@@ -703,32 +697,8 @@ export class AlunniListComponent implements OnInit {
 //   const helloA = this.resolveHelloN()
 //   console.log (await helloN)
 //   console.log (await helloA)
-
-
 // }
-
-
-
-
-
-
-
-
-
-
-
-  //NON DOVREBBE SERVIRE, ELIMINARE
-  // concatenaFindGenitori(data: any, searchTerms: any): boolean{
-  //   let found : boolean;
-  //   //per ogni genitore trovato vado a concatenare la || di true. Quelli non trovati fanno la || di false quindi non aggiungono niente
-  //   data._Genitori?.forEach((val: { genitore: { nome: any; }; })=>    (   
-  //       found = found || String(val.genitore.nome).toLowerCase().indexOf(searchTerms.nomeCognomeGenitore)  !== -1   ))
-    
-  //   //alla fine found conterrà true se almeno un genitore viene trovato e false altrimenti
-  //   return found!;
-  // }
-
-
+//#endregion
 
 
 

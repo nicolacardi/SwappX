@@ -89,6 +89,7 @@ export class PagellaEditComponent implements OnInit {
   }
 
   loadData() {
+
     //this.periodo = this.toggleQuad;
     let obsPagelle$: Observable<DOC_Pagella[]>;
     obsPagelle$= this.svcPagelle.listByIscrizione(this.iscrizioneID);
@@ -118,12 +119,14 @@ export class PagellaEditComponent implements OnInit {
         }
     );
 
-    this.svcIscrizioni.get(this.iscrizioneID).subscribe(res => {
-      this.iscrizione = res;
-      let annoID = this.iscrizione.classeSezioneAnno.anno.id;
-      let classeID = this.iscrizione.classeSezioneAnno.classeSezione.classeID;
-      setTimeout(() =>  this.svcPagellaVoti.listByAnnoClassePagella(annoID, classeID, this.objPagella.id!).subscribe(res=> this.lstPagellaVoti = res), 1000);
-    });
+    if(this.iscrizioneID>0){   
+      this.svcIscrizioni.get(this.iscrizioneID).subscribe(res => {
+        this.iscrizione = res;
+        let annoID = this.iscrizione.classeSezioneAnno.anno.id;
+        let classeID = this.iscrizione.classeSezioneAnno.classeSezione.classeID;
+        setTimeout(() =>  this.svcPagellaVoti.listByAnnoClassePagella(annoID, classeID, this.objPagella.id!).subscribe(res=> this.lstPagellaVoti = res), 1000);
+      });
+    }
   }
 
   //#endregion
@@ -142,7 +145,6 @@ export class PagellaEditComponent implements OnInit {
       iscrizioneID: this.iscrizioneID
     }
   }
-
 
   openXML() {
 
@@ -169,7 +171,6 @@ export class PagellaEditComponent implements OnInit {
       }
       return null;
     }
-    
 
     let tagDocument : RPT_TagDocument = {
       templateName: "PagellaElementari",

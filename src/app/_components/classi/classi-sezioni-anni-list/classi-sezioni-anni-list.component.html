@@ -26,10 +26,10 @@
                 <mat-label>Seleziona il Docente</mat-label>
                 <mat-select formControlName="selectDocente" >
                 <!-- [disabled] = "docenteID != 0 && docenteID != null" -->
-                
                 <!-- [compareWith]="compareObjects"  compareWith sembra la soluzione per impostare il valore correttamente -->
                 
                 <mat-option value="0" *ngIf="dove=='classi-dashboard'">Tutti i docenti-</mat-option>
+                
                 <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
                     {{element.persona.cognome + ' '+ element.persona.nome }}
                 </mat-option>

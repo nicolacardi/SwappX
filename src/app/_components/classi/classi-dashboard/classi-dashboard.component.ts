@@ -12,7 +12,7 @@ import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno
 //components
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
-import { DialogYesNoComponent }                   from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 import { IscrizioniClasseListComponent }        from '../../iscrizioni/iscrizioni-classe-list/iscrizioni-classe-list.component';
 import { IscrizioniAddComponent }               from '../../iscrizioni/iscrizioni-add/iscrizioni-add.component';
@@ -90,8 +90,9 @@ export class ClassiDashboardComponent implements OnInit {
   public iscrizioneID!:                         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
   public alunno!:                               ALU_Alunno;   //valore ricevuto (emitted) dal child IscrizioniClasseList
 
-  public classeSezioneAnnoIDrouted!:        string;   //valore ricevuto (routed) dal ruoting
-  public annoIDrouted!:         string;   //valore ricevuto (routed) dal ruoting
+  public classeSezioneAnnoIDrouted!:            string;   //valore ricevuto (routed) dal routing
+  public annoIDrouted!:                         string;   //valore ricevuto (routed) dal routing
+
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -232,9 +233,7 @@ export class ClassiDashboardComponent implements OnInit {
 
     const dialogRef = this._dialog.open(DocenzeAddComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
-        res => {
-          if(res == undefined) this.viewDocenzeList.loadData()
-    });
+        res => {if(res == undefined) this.viewDocenzeList.loadData()} );
   }
 
   removeAlunnoFromClasse() {
@@ -248,7 +247,6 @@ export class ClassiDashboardComponent implements OnInit {
       });
     }
     else{
-
       const dialogRef = this._dialog.open(DialogYesNoComponent, {
         width: '320px',
         data: {titolo: "ATTENZIONE", sottoTitolo: "Si stanno cancellando le iscrizioni di "+selections+" alunni alla classe. Continuare?"}
@@ -312,6 +310,7 @@ export class ClassiDashboardComponent implements OnInit {
       })
     }
   }
+
 //#endregion
 
 //#region ----- ricezione emit -------
@@ -324,13 +323,14 @@ export class ClassiDashboardComponent implements OnInit {
 
   classeSezioneAnnoIDEmitted(classeSezioneAnnoID: number) {
 
-    console.log("classeSezioneAnnoIDEmitted");
     this.classeSezioneAnnoID = classeSezioneAnnoID;
-
     
-    //per poter mostrare il docente e la classe...
-    this.svcClassiSezioniAnni.get(this.classeSezioneAnnoID).subscribe(csa => {this.classeSezioneAnno = csa; console.log("classi-dashboard - classeSezioneAnnoIDEmitted - csa", this.classeSezioneAnno)});
-
+    if(this.classeSezioneAnnoID >0){
+      //per poter mostrare il docente e la classe...
+      this.svcClassiSezioniAnni.get(this.classeSezioneAnnoID).subscribe(
+        csa => this.classeSezioneAnno = csa 
+      );
+    }
   }
 
   docenteIdEmitted(docenteId: number) {
@@ -346,18 +346,4 @@ export class ClassiDashboardComponent implements OnInit {
   }
 
   //#endregion
-
-  /*
-  selectedTabValue(event: any){
-    //senza questo espediente non fa il primo render correttamente
-    if (this.tabGroup.selectedIndex == 2) {
-       this.viewOrarioLezioni.calendarDOM.getApi().render();
-      this.viewOrarioLezioni.loadData();
-    }
-    if (this.tabGroup.selectedIndex == 3) {
-      this.viewOrarioDocente.calendarDOM.getApi().render();
-      this.viewOrarioDocente.loadData()
-    }
-  }
-  */
 }

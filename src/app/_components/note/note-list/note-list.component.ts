@@ -124,8 +124,6 @@ export class NoteListComponent implements OnInit {
 
   loadData() {
 
-
-    //console.log("[DEBUG] note-list.loadData: dove=", this.dove)
     switch(this.dove) {
 
       case 'classi-dashboard':
@@ -140,8 +138,6 @@ export class NoteListComponent implements OnInit {
     
           loadNote$.subscribe( 
             val =>   {
-              console.log("DEBUG: notelist - loadData: " ,val)
-
               this.matDataSource.data = val;
               this.matDataSource.paginator = this.paginator;
               this.matDataSource.sort = this.sort; 
@@ -180,8 +176,6 @@ export class NoteListComponent implements OnInit {
               //   }
               // );
               
-              console.log("DEBUG: notelist - loadData: " ,val)
-
               this.matDataSource.data = val;
               this.matDataSource.paginator = this.paginator;
               this.matDataSource.sort = this.sort; 
@@ -237,7 +231,7 @@ export class NoteListComponent implements OnInit {
       foundCognomeNome = String(data.personaAlunno.nome+ " "+ data.personaAlunno.cognome).toLowerCase().indexOf(searchTerms.alunno)!== -1;
       
       {}
-     let dtNotaddmmyyyy!: string;
+      let dtNotaddmmyyyy!: string;
       if (data.dtNota){
         let dArrN = data.dtNota.split("-");
          dtNotaddmmyyyy = dArrN[2].substring(0,2)+ "/" +dArrN[1]+"/"+dArrN[0];
@@ -252,9 +246,6 @@ export class NoteListComponent implements OnInit {
       }
       else 
          dtFirmaddmmyyyy = '';
-
-      console.log ("st", searchTerms);
-      console.log ("concatenazione", String(data.personaAlunno.nome.toLowerCase() + ' ' + data.personaAlunno.cognome.toLowerCase()));
 
       let boolSx = String(dtNotaddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
                   || String(data.nota).indexOf(searchTerms.filtrosx) !== -1

@@ -7,22 +7,18 @@ import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/clas
   templateUrl: './classi-sezioni-anni-page.component.html',
   styleUrls: ['./../classi.css']
 })
-export class ClassiPageComponent implements OnInit {
+export class ClassiPageComponent {
 
   @ViewChild(ClassiSezioniAnniListComponent) ClassiSezioniAnniListComponent!: ClassiSezioniAnniListComponent; 
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit() { }
 
-  }
+  resetFiltri() { }
 
   addRecord() {
       this.ClassiSezioniAnniListComponent.addRecord()
   }
   
-  resetFiltri() {
-
-  }
-
 }

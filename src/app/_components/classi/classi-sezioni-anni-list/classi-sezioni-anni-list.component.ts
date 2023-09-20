@@ -275,7 +275,6 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
         this.showTableRibbon = false;
         this.showSelectDocente = false;
 
-
         this.docenteID = 0;
         this.form.controls.selectDocente.setValue(this.docenteID);
 
@@ -293,22 +292,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
         this.displayedColumns = this.displayedColumnsClassiDashboard;
         this.showPageTitle = false;
         this.showTableRibbon = false;
-        console.log("son qui", this.currUser);
 
         if(this.currUser != undefined && this.currUser.personaID != undefined && this.currUser.personaID != 0) {
-          console.log("e poi  qui");
-
-          //AS: ATTENZIONE: se la persona non è un docente, la chiamata al WS restituisce un errore 404, che viene fuori nel console.log
-          //bisogna modificare il WS in modo che ritorni null e non errore 
-          /*
-                  {
-          "type": "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-          "title": "Not Found",
-          "status": 404,
-          "traceId": "00-e2acc9e55ba9934bb0cf93e56cb1a04b-09371454471a6e45-00"
-          }
-                    */
-
 
           this.svcDocenti.getByPersona(this.currUser.personaID).subscribe ( {
             next: res => {   
@@ -322,14 +307,15 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
               else {
                 this.obsDocenti$.subscribe((docenti) => {
                   if (docenti.length > 0) {
-                    console.log("classi-sezioni-anni-list - ngOnInit - id del primo docente della lista", docenti[0].id);
                     // Imposta il primo elemento come valore predefinito
-                    this.docenteID = docenti[0].id;
-                    this.form.controls.selectDocente.setValue(docenti[0].id);
+                    //this.docenteID = docenti[0].id;
+                    //this.form.controls.selectDocente.setValue(docenti[0].id);
+
+                    this.docenteID = 0;
+                    this.form.controls.selectDocente.setValue(this.docenteID);
                   }
                 });
               }
-              //this.docenteID = 0; //prima facevo così
             },
             error: err=> {
               //console.log("getDocenteBypersonaID- KO:", err);
@@ -367,32 +353,33 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     let docenteID: number;
     docenteID = this.form.controls["selectDocente"].value;
 
-
-    let obsClassi$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
-    obsClassi$= this.svcClassiSezioniAnni.listByAnnoDocenteGroupByClasse(annoID, docenteID);
-    
-    const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
-
-    loadClassi$.subscribe( val =>   {
-      this.matDataSource.data = val;
-      this.matDataSource.paginator = this.paginator;
-
-      if (this.dove == "classi-page") {
-        this.sortCustom(); 
-        this.matDataSource.sort = this.sort; 
-      }
-
-      this.matDataSource.filterPredicate = this.filterPredicate();
+    if(this.dove.startsWith("class") || docenteID>0){
+      let obsClassi$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
+      obsClassi$= this.svcClassiSezioniAnni.listByAnnoDocenteGroupByClasse(annoID, docenteID);
       
-      if(this.matDataSource.data.length >0){
-        if (this.classeSezioneAnnoIDrouted) 
-          this.rowclicked(this.classeSezioneAnnoIDrouted);  
+      const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
+
+      loadClassi$.subscribe( val =>   {
+        this.matDataSource.data = val;
+        this.matDataSource.paginator = this.paginator;
+
+        if (this.dove == "classi-page") {
+          this.sortCustom(); 
+          this.matDataSource.sort = this.sort; 
+        }
+
+        this.matDataSource.filterPredicate = this.filterPredicate();
+        
+        if(this.matDataSource.data.length >0){
+          if (this.classeSezioneAnnoIDrouted) 
+            this.rowclicked(this.classeSezioneAnnoIDrouted);  
+          else
+            this.rowclicked(this.matDataSource.data[0].id); //seleziona per default la prima riga DA TESTARE
+        }
         else
-          this.rowclicked(this.matDataSource.data[0].id); //seleziona per default la prima riga DA TESTARE
-      }
-      else
-        this.rowclicked(undefined);
-    });
+          this.rowclicked(undefined);
+      });
+    }
   }
 
   rowclicked(classeSezioneAnnoID?: number ){
@@ -590,9 +577,4 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
 }
 
-/* AS: Cos'è ?
-function tap(arg0: (val: any) => any): import("rxjs").OperatorFunction<PER_Docente, unknown> {
-  throw new Error('Function not implemented.');
-}
-*/
 
