@@ -187,12 +187,14 @@ export class SociListComponent implements OnInit {
 
       //let foundTipoSocio = (String(data.tipoSocioID).indexOf(searchTerms.tipoSocioID) !== -1); //per ricerca non numerica...
       let foundTipoSocio = data.tipoSocioID==searchTerms.tipoSocioID;
-
       if (searchTerms.tipoSocioID == null || searchTerms.tipoSocioID == '') foundTipoSocio = true;
 
       let ckAttivo = (searchTerms.ckAttivo && data.dtDisiscrizione == null) || !searchTerms.ckAttivo ;
       let cfrDateRichieste = cfrDate(searchTerms.dataRichiestaDal, searchTerms.dataRichiestaAl, data.dtRichiesta);
+      if ((searchTerms.dataRichiestaDal == null || searchTerms.dataRichiestaDal == '')&& (searchTerms.dataRichiestaAl == null || searchTerms.dataRichiestaAl == ''))cfrDateRichieste = true;
       let cfrDateAccettazione = cfrDate(searchTerms.dataAccettazioneDal, searchTerms.dataAccettazioneAl, data.dtAccettazione);
+      if ((searchTerms.dataAccettazioneDal == null || searchTerms.dataAccettazioneDal == '')&& (searchTerms.dataAccettazioneAl == null || searchTerms.dataAccettazioneAl == ''))cfrDateAccettazione = true;
+
       let dArr = data.dtRichiesta.split("-");
       const dtRichiestaddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 

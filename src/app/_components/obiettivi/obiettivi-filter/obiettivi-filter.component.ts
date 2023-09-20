@@ -34,9 +34,10 @@ export class ObiettiviFilterComponent implements OnInit {
   obsMaterie$!:               Observable<MAT_Materia[]>;
 
   classeFilter = new UntypedFormControl('');
-  annoFilter = new UntypedFormControl('');
+  // annoFilter = new UntypedFormControl('');
   materiaFilter = new UntypedFormControl('');
   tipoVotoFilter = new UntypedFormControl('');
+  descrizione = new UntypedFormControl('');
 //#endregion
 
 //#region ----- ViewChild Input Output -------  
@@ -61,14 +62,15 @@ export class ObiettiviFilterComponent implements OnInit {
 
     this.classeFilter.valueChanges.subscribe(val => {this.applyFilterDx('classeID', val);})
     this.materiaFilter.valueChanges.subscribe(val => {this.applyFilterDx('materiaID', val);})
-    this.annoFilter.valueChanges.subscribe(val => {this.applyFilterDx('annoID', val);})
+    this.descrizione.valueChanges.subscribe(val => {this.applyFilterDx('descrizione', val);})
+
+    // this.annoFilter.valueChanges.subscribe(val => {this.applyFilterDx('annoID', val);})
   }
 
   applyFilterDx(field: keyof typeof this.obiettiviListComponent.filterValues, val: string) {
     //this.resetFilterSx();
     this.obiettiviListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.obiettiviListComponent.matDataSource.filter = JSON.stringify(this.obiettiviListComponent.filterValues);
-    // this.obiettiviListComponent.updateEmailAddresses();
     this.formClean = this.isFormClean();
   }
 
@@ -76,7 +78,8 @@ export class ObiettiviFilterComponent implements OnInit {
     return (
       this.classeFilter.value === '' &&
       this.materiaFilter.value === '' &&
-      this.annoFilter.value === ''
+      this.descrizione.value === ''
+      // this.annoFilter.value === ''
     );
   }
 //#endregion
@@ -84,15 +87,17 @@ export class ObiettiviFilterComponent implements OnInit {
 //#region ----- Reset vari ---------------------
   resetAllInputs() {
     this.classeFilter.setValue('', {emitEvent:false});
-    this.annoFilter.setValue('', {emitEvent:false});
+    // this.annoFilter.setValue('', {emitEvent:false});
     this.materiaFilter.setValue('', {emitEvent:false});
+    this.descrizione.setValue('', {emitEvent:false});
     this.tipoVotoFilter.setValue('', {emitEvent:false});
   }
 
   resetAllInputsAndClearFilters() {
     this.classeFilter.setValue('');
-    this.annoFilter.setValue('')
+    // this.annoFilter.setValue('')
     this.materiaFilter.setValue('');
+    this.descrizione.setValue('');
     this.tipoVotoFilter.setValue('');
   }
 //#endregion

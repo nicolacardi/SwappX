@@ -69,7 +69,7 @@ export class ObiettiviListComponent implements OnInit {
   filterValues = {
     descrizione: '',
     classeID: '',
-    annoID: '',
+    // annoID: '',
     materiaID: '',
     filtrosx: ''
   }
@@ -177,8 +177,8 @@ export class ObiettiviListComponent implements OnInit {
 
   filterPredicate(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
-      
       let searchTerms = JSON.parse(filter);
+      console.log(data, searchTerms);
 
       let boolSx = String(data.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                     || String(data.materia.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
@@ -186,7 +186,7 @@ export class ObiettiviListComponent implements OnInit {
 
       let boolDx = String(data.classeID).toLowerCase().indexOf(searchTerms.classeID) !== -1
                     && String(data.materiaID).toLowerCase().indexOf(searchTerms.materiaID) !== -1
-                    && String(data.annoID).toLowerCase().indexOf(searchTerms.annoID) !== -1;
+                    && String(data.descrizione).toLowerCase().indexOf(searchTerms.descrizione) !== -1;
 
                     
       return boolSx  && boolDx;

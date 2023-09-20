@@ -20,7 +20,6 @@ import { AnniScolasticiService }                from 'src/app/_components/anniSc
 import { DOC_Verbale }                          from 'src/app/_models/DOC_Verbale';
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-verbali-list',

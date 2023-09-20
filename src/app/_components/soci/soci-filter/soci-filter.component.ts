@@ -74,10 +74,10 @@ export class SociFilterComponent implements OnInit {
       this.nomeFilter.value === '' &&
       this.cognomeFilter.value === '' &&
       (this.tipoSocioFilter.value === null || this.tipoSocioFilter.value === '') &&
-      this.dataRichiestaDal.value === '' &&
-      this.dataRichiestaAl.value === '' &&
-      this.dataAccettazioneDal.value === '' &&
-      this.dataAccettazioneAl.value === '' &&
+      (this.dataRichiestaDal.value === null  || this.dataRichiestaDal.value === '') &&
+      (this.dataRichiestaAl.value === null || this.dataRichiestaAl.value === '') &&
+      (this.dataAccettazioneDal.value === null || this.dataAccettazioneDal.value === '') &&
+      (this.dataAccettazioneAl.value === null || this.dataAccettazioneAl.value === '') &&
       !this.ckAttivo.value
     );
   }

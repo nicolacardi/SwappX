@@ -264,6 +264,8 @@ export class PagamentiListComponent implements OnInit {
       if (searchTerms.dataAl != '') {cfrDataAl = (data.dtPagamento < searchTerms.dataAl)}
       cfrDate = cfrDataDal && cfrDataAl;
 
+      if ((searchTerms.dataDal == null || searchTerms.dataDal == '')&& (searchTerms.dataAl == null || searchTerms.dataAl == ''))cfrDate = true;
+
       let dArr = data.dtPagamento.split("-");
       const dtPagamentoddmmyyyy = dArr[2].substring(0,2)+ "/" +dArr[1]+"/"+dArr[0];
 

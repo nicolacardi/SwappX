@@ -19,7 +19,7 @@
         </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="ml12">
+    <!-- <mat-form-field class="ml12">
         <mat-label>a.s.</mat-label>
         <mat-select [formControl]="annoFilter">
             <mat-option [value]="''"></mat-option>
@@ -27,7 +27,7 @@
              {{element.annoscolastico}}
             </mat-option>
         </mat-select>
-    </mat-form-field>
+    </mat-form-field> -->
 
     <mat-form-field class="ml12">
         <mat-label>Materia</mat-label>
@@ -39,6 +39,14 @@
         </mat-select>
     </mat-form-field>
 
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="1" rowHeight="60px">
+        <mat-grid-tile>
+            <mat-form-field>
+                <mat-label>Descrizione</mat-label>
+                <input matInput [formControl]="descrizione">
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
 
 
 </div>
