@@ -770,6 +770,10 @@
     .h250px {
         height: 250px;
     }
+
+    .h100-64 {
+        height: calc(100vh - 64px) !important;
+      }
 /*#endregion ***************************/
 
 /*#region ********** BORDERS ***********/

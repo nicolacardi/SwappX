@@ -41,6 +41,7 @@ export class DomandeListComponent implements OnInit{
     "domanda", 
     "contesto",
     "tipo",
+    "titolo",
     // "numOpzioni",
     "testo1",
     "testo2",
@@ -68,7 +69,10 @@ export class DomandeListComponent implements OnInit{
   filterValue = '';       //Filtro semplice
 
   filterValues = {
-    descrizione: '',
+    domanda: '',
+    tipo: '',
+    contesto: '',
+    titolo: '',
     filtrosx: ''
   }
 
@@ -100,7 +104,7 @@ export class DomandeListComponent implements OnInit{
 
     loadDomande$.subscribe(
       val =>   {
-        // console.log ("domande-list - loadData - estraggo domande list", val);
+        console.log ("domande-list - loadData - estraggo domande list", val);
         this.matDataSource.data = val;
         this.sortCustom(); 
         this.matDataSource.sort = this.sort; 
@@ -163,8 +167,15 @@ export class DomandeListComponent implements OnInit{
       
       let searchTerms = JSON.parse(filter);
       let boolSx = String(data.domanda).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                || String(data.contesto).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-      return boolSx;
+                || String(data.contesto).toLowerCase().indexOf(searchTerms.filtrosx) !== -1;
+
+            // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
+      let boolDx = String(data.domanda).toLowerCase().indexOf(searchTerms.domanda) !== -1
+            && String(data.tipo).toLowerCase().indexOf(searchTerms.tipo) !== -1
+            && String(data.titolo).toLowerCase().indexOf(searchTerms.titolo) !== -1
+            && String(data.contesto).toLowerCase().indexOf(searchTerms.contesto) !== -1;
+
+      return boolSx && boolDx;
     }
     return filterFunction;
   }

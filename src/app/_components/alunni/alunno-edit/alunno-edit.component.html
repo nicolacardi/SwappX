@@ -25,7 +25,7 @@
 |   \------------------------------------------------------------------/   |   
 |   /-genitori-list----------------------------------------------------\   |
 |   |                                                                  |   |
-|   |             alunno-edit-list                                     |   |
+|   |             alunno-edit                                     |   |
 |   |                                                                  |   |
 |   |                                                                  |   |
 |   |                                                                  |   |
@@ -122,7 +122,7 @@
                             </mat-expansion-panel-header>
                             <!-- <mat-label class="frameLabel">Elenco dei genitori/tutori </mat-label> -->
                             <div class="_genitori-list-container _cell-bordered mt10">
-                                <app-genitori-list [context]="'alunno-edit-list'" (addToFamily) = "addToFamily($event)" #genitoriDisponibili></app-genitori-list>
+                                <app-genitori-list [context]="'alunno-edit'" (addToFamily) = "addToFamily($event)" #genitoriDisponibili></app-genitori-list>
                             </div>
                         </mat-expansion-panel>
                     </mat-accordion>
@@ -143,7 +143,7 @@
                                 <mat-panel-description>(fare click per aprire)</mat-panel-description>
                             </mat-expansion-panel-header>
                             <div class="_classi-list-container _cell-bordered mt10">
-                                <app-classi-sezioni-anni-list [dove] = "'alunno-edit-list'"
+                                <app-classi-sezioni-anni-list [dove] = "'alunno-edit'"
                                 (addToAttended) = "addToAttended($event)"
                                 #classiSezioniAnniList>
                                 </app-classi-sezioni-anni-list>

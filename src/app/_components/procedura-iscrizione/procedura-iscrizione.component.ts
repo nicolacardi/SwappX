@@ -423,16 +423,34 @@ export class ProceduraIscrizioneComponent implements OnInit {
             console.log ("processo la domanda:", questions[i].domanda!.domanda);
             console.log ("processo la domanda con titolo", questions[i].domanda!.titolo);
             let numOpzioni = questions[i].domanda?.numOpzioni || 0;
+
+            if (questions[i].domanda!.tipo=="Scelta Singola") {
+              console.log ("passo di qua");
+              let scelta = ""
+              if (questions[i].risposta1) scelta = questions[i].domanda?.testo1!
+              if (questions[i].risposta2) scelta = questions[i].domanda?.testo2!
+              if (questions[i].risposta3) scelta = questions[i].domanda?.testo3!
+              if (questions[i].risposta4) scelta = questions[i].domanda?.testo4!
+              if (questions[i].risposta5) scelta = questions[i].domanda?.testo5!
+              if (questions[i].risposta6) scelta = questions[i].domanda?.testo6!
+              if (questions[i].risposta7) scelta = questions[i].domanda?.testo7!
+              if (questions[i].risposta8) scelta = questions[i].domanda?.testo8!
+              if (questions[i].risposta9) scelta = questions[i].domanda?.testo9!
+
+              tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo, tagValue: scelta})
+            }
+
+            
             if (questions[i].domanda!.titolo != null && questions[i].domanda!.titolo != '') {
-              if (numOpzioni > 0) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"1", tagValue: questions[i].risposta1? "[X]": "[ ]"})
-              if (numOpzioni > 1) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"2", tagValue: questions[i].risposta2? "[X]": "[ ]"})
-              if (numOpzioni > 2) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"3", tagValue: questions[i].risposta3? "[X]": "[ ]"})
-              if (numOpzioni > 3) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"4", tagValue: questions[i].risposta4? "[X]": "[ ]"})
-              if (numOpzioni > 4) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"5", tagValue: questions[i].risposta5? "[X]": "[ ]"})
-              if (numOpzioni > 5) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"6", tagValue: questions[i].risposta6? "[X]": "[ ]"})
-              if (numOpzioni > 6) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"7", tagValue: questions[i].risposta7? "[X]": "[ ]"})
-              if (numOpzioni > 7) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"8", tagValue: questions[i].risposta8? "[X]": "[ ]"})
-              if (numOpzioni > 8) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"9", tagValue: questions[i].risposta9? "[X]": "[ ]"})  
+              if (numOpzioni > 0) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"_1", tagValue: questions[i].risposta1? "[X]": "[ ]"})
+              if (numOpzioni > 1) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"_2", tagValue: questions[i].risposta2? "[X]": "[ ]"})
+              if (numOpzioni > 2) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"_3", tagValue: questions[i].risposta3? "[X]": "[ ]"})
+              if (numOpzioni > 3) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"_4", tagValue: questions[i].risposta4? "[X]": "[ ]"})
+              if (numOpzioni > 4) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"_5", tagValue: questions[i].risposta5? "[X]": "[ ]"})
+              if (numOpzioni > 5) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"_6", tagValue: questions[i].risposta6? "[X]": "[ ]"})
+              if (numOpzioni > 6) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"_7", tagValue: questions[i].risposta7? "[X]": "[ ]"})
+              if (numOpzioni > 7) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"_8", tagValue: questions[i].risposta8? "[X]": "[ ]"})
+              if (numOpzioni > 8) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"_9", tagValue: questions[i].risposta9? "[X]": "[ ]"})  
             }
           }
           console.log ("tagDocument dopo inserimenti varii", tagDocument)

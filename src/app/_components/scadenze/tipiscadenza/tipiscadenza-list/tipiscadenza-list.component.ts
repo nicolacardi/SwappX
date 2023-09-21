@@ -91,7 +91,7 @@ export class TipiScadenzaListComponent implements OnInit {
         this.maxSeq = val.reduce((max, item) => {
           return item.seq! > max ? item.seq! : max;
         }, 0);
-        console.log ("tipiscadenza-list - loadData - maxseq", this.maxSeq);
+        // console.log ("tipiscadenza-list - loadData - maxseq", this.maxSeq);
       }
     );
   }

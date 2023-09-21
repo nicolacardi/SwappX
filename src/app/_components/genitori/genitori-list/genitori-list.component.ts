@@ -172,7 +172,7 @@ export class GenitoriListComponent implements OnInit {
 
   ngOnInit () {
 
-    if (this.context == "alunno-edit-list" || this.context == "alunno-edit-famiglia") {
+    if (this.context == "alunno-edit" || this.context == "alunno-edit-famiglia") {
       this.showPageTitle = false;
       this.showTableRibbon = false;
     }
@@ -180,7 +180,7 @@ export class GenitoriListComponent implements OnInit {
       this.showFilter = false;
     
     switch(this.context) {
-      case 'alunno-edit-list': this.displayedColumns = this.displayedColumnsAlunnoEditList; break;
+      case 'alunno-edit': this.displayedColumns = this.displayedColumnsAlunnoEditList; break;
       case 'alunno-edit-famiglia': this.displayedColumns = this.displayedColumnsAlunnoEditFamiglia; break;
       //default: this.displayedColumns = this.displayedColumnsGenitoriPage;
       default: this.loadLayout();

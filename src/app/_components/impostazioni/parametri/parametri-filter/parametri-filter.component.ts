@@ -4,7 +4,7 @@ import { Component, Input, OnInit}              from '@angular/core';
 import { UntypedFormControl }                   from '@angular/forms';
 
 //components
-import { ParametriListComponent }   from '../parametri-list/parametri-list.component';
+import { ParametriListComponent }               from '../parametri-list/parametri-list.component';
 
 //#endregion
 @Component({

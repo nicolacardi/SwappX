@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, DebugElement, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
 import { MatSelect }                            from '@angular/material/select';
 import { MatTableDataSource }                   from '@angular/material/table';
@@ -17,6 +17,7 @@ import { MatSnackBar }                          from '@angular/material/snack-ba
 import { ClasseSezioneAnnoEditComponent }       from '../classe-sezione-anno-edit/classe-sezione-anno-edit.component';
 import { ClassiSezioniAnniFilterComponent }     from '../classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { Utility }                              from '../../utilities/utility.component';
 
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
@@ -30,7 +31,6 @@ import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_mode
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
-import { Utility } from '../../utilities/utility.component';
 
 //#endregion
 @Component({
@@ -39,7 +39,7 @@ import { Utility } from '../../utilities/utility.component';
   styleUrls: ['./../classi.css']
 })
 
-export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
+export class ClassiSezioniAnniListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
   currUser!:                                    User;
@@ -55,10 +55,8 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     "numAlunni"
   ];
 
-  displayedColumnsClassiPage:                   string[] =  [
+  displayedColumnsClassiSezioniAnniPage:                   string[] =  [
     "actionsColumn",
-    //"annoscolastico",
-    //"seq",
     "descrizione",
     "sezione",
     "numAlunni",
@@ -76,16 +74,11 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
     "sezioneAnnoSuccessivo"
   ];
 
-  displayedColumnsAlunnoEditList:               string[] =  [
+  displayedColumnsAlunnoEdit:               string[] =  [
     "descrizione",
     "sezione",
     "addToAttended"
   ];
-
-  // displayedColumnsAlunnoEditAttended: string[] =  [
-  //   "descrizione",
-  //   "sezione"
-  // ];
 
 
   displayedColumnsRettaCalcolo:                 string[] =  [
@@ -142,7 +135,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
   
   classeSezioneAnnoID!:                         number;
   classeSezioneAnno!:                           CLS_ClasseSezioneAnno;
-  showSelect:                                   boolean = true;
+
   showSelectDocente:                            boolean = true;
 
   showPageTitle:                                boolean = true;
@@ -216,6 +209,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
  
   ngOnInit() {
 
+    //vede se arriva qualcosa dal actRouter
     this.actRoute.queryParams.subscribe(
       params => {
           this.annoIDrouted = params['annoID'];     
@@ -223,75 +217,79 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
           this.classeSezioneAnnoIDrouted = params['classeSezioneAnnoID'];  
     });
     
+    //prepara anni
     this.obsAnni$ = this.svcAnni.list()
       .pipe(
         finalize( () => {
-            //se arrivo da home
             if (this.annoIDrouted) this.form.controls.selectAnnoScolastico.setValue(parseInt(this.annoIDrouted));
           }
         )
       );
-      
-    this.obsDocenti$ = this.svcDocenti.list();
-    
+
+    //se cambia anno
     this.form.controls.selectAnnoScolastico.valueChanges.subscribe(
       res => {
         this.loadData();
         this.annoIdEmitter.emit(res);
-        this.resetSelections();         //vanno resettate le selezioni delle checkbox e masterToggle
+        this.resetSelections();                 //vanno resettate le selezioni delle checkbox e masterToggle
         this.toggleChecks = false;
       }
     );
+    //emette anno all'inizio (FORSE NON SERVE) NC 21/09/24
+    //this.annoIdEmitter.emit(this.form.controls.selectAnnoScolastico.value);
 
-    this.form.controls.selectDocente.valueChanges.subscribe(
-      res => {
-        this.loadData();
-        this.docenteIdEmitter.emit(res);
-        this.resetSelections();           //vanno resettate le selezioni delle checkbox e masterToggle
-        this.toggleChecks = false;
-      }
-    );
 
-    this.annoIdEmitter.emit(this.form.controls.selectAnnoScolastico.value);
-    this.docenteIdEmitter.emit(this.form.controls.selectDocente.value);
+    this.showPageTitle = false;
+    this.showTableRibbon = false;
+    this.showSelectDocente = false;
 
+    //in tutti i casi meno che nell'utlimo devo anche procedere alla loadData
     switch(this.dove) {
-      case 'alunno-edit-list':
-        this.displayedColumns = this.displayedColumnsAlunnoEditList;
-        this.showPageTitle = false;
-        this.showTableRibbon = false;
-        this.showSelectDocente = false;
+      case 'alunno-edit':
+        this.displayedColumns = this.displayedColumnsAlunnoEdit;
+        this.loadData();
         break;
-      // case 'alunno-edit-attended': 
-      //   this.displayedColumns = this.displayedColumnsAlunnoEditAttended;
-      //   this.showSelect = false;
-      //   this.showPageTitle = false;
-      //   this.showTableRibbon = false;
-      //   break;
       case 'classi-dashboard':
       case 'orario-page':
         this.displayedColumns = this.displayedColumnsClassiDashboard;
-        this.showPageTitle = false;
-        this.showTableRibbon = false;
-        this.showSelectDocente = false;
-
-        this.docenteID = 0;
-        this.form.controls.selectDocente.setValue(this.docenteID);
-
-        // this.matDataSource.sort = this.sort; TODO
+        this.loadData();
         break;
-      case 'classi-page':
-          this.displayedColumns = this.displayedColumnsClassiPage;
-          this.matDataSource.sort = this.sort;
-          this.showSelectDocente = false;
-
+      case 'classi-sezioni-anni-page':
+          this.displayedColumns = this.displayedColumnsClassiSezioniAnniPage;
+          this.showPageTitle = true;
+          this.showTableRibbon = true;
           this.loadData();
-
+          break;
+      case 'retta-calcolo':
+          this.displayedColumns = this.displayedColumnsRettaCalcolo;
+          this.loadData();
           break;
       case 'docenti-dashboard':
+
+      
+        //docenti-dashboard è l'unico caso in cui c'è anche la combo Docente che rende questo caso più articolato
+        //Si noti che NON termina con loadData
+
+          //prepara docenti
+          this.obsDocenti$ = this.svcDocenti.list();
+
+          //se cambia docente
+          this.form.controls.selectDocente.valueChanges.subscribe(
+            res => {
+              this.loadData();
+              this.docenteIdEmitter.emit(res);
+              this.resetSelections();                 //vanno resettate le selezioni delle checkbox e masterToggle
+              this.toggleChecks = false;
+            }
+          );
+        //emette docente all'inizio (FORSE NON SERVE) NC 21/09/24
+        //this.docenteIdEmitter.emit(this.form.controls.selectDocente.value);
+
+
+
         this.displayedColumns = this.displayedColumnsClassiDashboard;
-        this.showPageTitle = false;
-        this.showTableRibbon = false;
+        this.showSelectDocente = true;
+
 
         if(this.currUser != undefined && this.currUser.personaID != undefined && this.currUser.personaID != 0) {
 
@@ -299,7 +297,7 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
             next: res => {   
               if(res){
                 // L'utente è un docente: imposto il docente uguale a se stesso e disabilito la combo docenti
-                //in verità però il Coordinatore didattico non deve avere
+                // a meno che non sia anche Coordinatore didattico
                 this.docenteID = res.id;
                 this.form.controls.selectDocente.setValue(this.docenteID);
                 if (!this.currUser.persona?._LstRoles!.includes('CoordDidattico')) this.form.controls.selectDocente.disable(); 
@@ -307,10 +305,11 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
               else {
                 this.obsDocenti$.subscribe((docenti) => {
                   if (docenti.length > 0) {
-                    // Imposta il primo elemento come valore predefinito
+                    //Se volessi impostare il primo elemento come valore predefinito
                     //this.docenteID = docenti[0].id;
                     //this.form.controls.selectDocente.setValue(docenti[0].id);
 
+                    //Così invece NON imposto alcun docente
                     this.docenteID = 0;
                     this.form.controls.selectDocente.setValue(this.docenteID);
                   }
@@ -318,42 +317,29 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
               }
             },
             error: err=> {
-              //console.log("getDocenteBypersonaID- KO:", err);
               this.docenteID = 0;
             }
           });
         } 
         else 
           this.form.controls.selectDocente.setValue(0);
-
-        // this.matDataSource.sort = this.sort; TODO
         break;          
-      case 'retta-calcolo':
-          this.displayedColumns = this.displayedColumnsRettaCalcolo;
-          this.showPageTitle = false;
-          this.showTableRibbon = false;
-          this.showSelectDocente = false;
 
-          //this.matDataSource.sort = this.sort; TODO
-          break;
 
       default: this.displayedColumns = this.displayedColumnsClassiDashboard;
     }
   }
 
-  ngOnChanges() { 
-    
-  }
 
   loadData () {
-
+    console.log("classi-sezioni-anni-list - loadData - ", this.dove);
     let annoID: number;
     annoID = this.form.controls["selectAnnoScolastico"].value;
 
     let docenteID: number;
     docenteID = this.form.controls["selectDocente"].value;
 
-    if(this.dove.startsWith("class") || docenteID>0){
+    if(this.dove !="docenti-dashboard" || docenteID>0){  //qualora ci sia la selectDocente (docenti-dashboard) deve essere valorizzata
       let obsClassi$: Observable<CLS_ClasseSezioneAnnoGroup[]>;
       obsClassi$= this.svcClassiSezioniAnni.listByAnnoDocenteGroupByClasse(annoID, docenteID);
       
@@ -361,20 +347,23 @@ export class ClassiSezioniAnniListComponent implements OnInit, OnChanges {
 
       loadClassi$.subscribe( val =>   {
         this.matDataSource.data = val;
-        this.matDataSource.paginator = this.paginator;
 
-        if (this.dove == "classi-page") {
+
+        if (this.dove == "classi-sezioni-anni-page") {
+          this.matDataSource.paginator = this.paginator;
           this.sortCustom(); 
           this.matDataSource.sort = this.sort; 
+          this.matDataSource.filterPredicate = this.filterPredicate();
         }
 
-        this.matDataSource.filterPredicate = this.filterPredicate();
-        
+        //ora se ci sono record e se è arrivato un valore di classe seleziono quello
+        //se ci sono record e non è arrivato un valore seleziono il primo
+        //se non ci sono record non ne seleziono alcuno
         if(this.matDataSource.data.length >0){
           if (this.classeSezioneAnnoIDrouted) 
             this.rowclicked(this.classeSezioneAnnoIDrouted);  
           else
-            this.rowclicked(this.matDataSource.data[0].id); //seleziona per default la prima riga DA TESTARE
+            this.rowclicked(this.matDataSource.data[0].id); //così seleziona la prima riga
         }
         else
           this.rowclicked(undefined);
