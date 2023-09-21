@@ -52,7 +52,7 @@ import { PersoneFilterComponent }               from './_components/persone/pers
 import { PersonaFormComponent }                 from './_components/persone/persona-form/persona-form.component';
 
 //Classi-ClassiSezioniAnni
-import { ClassiDashboardComponent }             from './_components/classi/classi-dashboard/classi-dashboard.component';
+import { CoordinatoreDashboardComponent }             from './_components/coordinatore/coordinatore-dashboard/coordinatore-dashboard.component';
 import { ClassiPageComponent }                  from './_components/classi/classi-sezioni-anni-page/classi-sezioni-anni-page.component';
 import { ClasseSezioneAnnoEditComponent }       from './_components/classi/classe-sezione-anno-edit/classe-sezione-anno-edit.component';
 import { ClassiSezioniAnniFilterComponent }     from './_components/classi/classi-sezioni-anni-filter/classi-sezioni-anni-filter.component';
@@ -71,9 +71,9 @@ import { IscrizioniAlunnoListComponent }        from './_components/iscrizioni/i
 import { DocentiDashboardComponent }            from './_components/docenti/docenti-dashboard/docenti-dashboard.component';
 
 //Docenze
-import { DocenzeListComponent }                 from './_components/classi/docenze/docenze-list/docenze-list.component';
-import { DocenzeAddComponent }                  from './_components/classi/docenze/docenze-add/docenze-add.component';
-import { DocenzaEditComponent }                 from './_components/classi/docenze/docenza-edit/docenza-edit.component';
+import { DocenzeListComponent }                 from './_components/docenze/docenze-list/docenze-list.component';
+import { DocenzeAddComponent }                  from './_components/docenze/docenze-add/docenze-add.component';
+import { DocenzaEditComponent }                 from './_components/docenze/docenza-edit/docenza-edit.component';
 
 //Pagamenti
 import { PagamentiPageComponent }               from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
@@ -233,9 +233,9 @@ import { ParametriPageComponent }               from './_components/impostazioni
 import { ParametriListComponent }               from './_components/impostazioni/parametri/parametri-list/parametri-list.component';
 import { ParametriFilterComponent }             from './_components/impostazioni/parametri/parametri-filter/parametri-filter.component';
 import { ParametroEditComponent }               from './_components/impostazioni/parametri/parametro-edit/parametro-edit.component';
-import { AnnoScolasticoPageComponent }          from './_components/anniScolastici/annoscolastico-page/annoscolastico-page.component';
-import { AnniScolasticiListComponent }          from './_components/anniScolastici/anniscolastici-list/anniscolastici-list.component';
-import { AnnoscolasticoEditComponent }          from './_components/anniScolastici/annoscolastico-edit/annoscolastico-edit.component';
+import { AnnoScolasticoPageComponent }          from './_components/anniscolastici/annoscolastico-page/annoscolastico-page.component';
+import { AnniScolasticiListComponent }          from './_components/anniscolastici/anniscolastici-list/anniscolastici-list.component';
+import { AnnoscolasticoEditComponent }          from './_components/anniscolastici/annoscolastico-edit/annoscolastico-edit.component';
 import { CompitiPageComponent } from './_components/lezioni/compiti-page/compiti-page.component';
 import { VotiInterrPageComponent } from './_components/lezioni/voti-interr-page/voti-interr-page.component';
 import { DomandeFilterComponent } from './_components/impostazioni/domande/domande-filter/domande-filter.component';
@@ -286,7 +286,7 @@ import { PagelleAlunnoListComponent } from './_components/pagelle/pagelle-alunno
     ClasseSezioneAnnoEditComponent,
     ClassiSezioniAnniFilterComponent,
     ClassiSezioniAnniListComponent,
-    ClassiDashboardComponent,
+    CoordinatoreDashboardComponent,
     
     DocenzeListComponent,
 

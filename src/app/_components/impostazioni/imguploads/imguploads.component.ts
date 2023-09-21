@@ -18,7 +18,7 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 @Component({
   selector: 'app-imguploads',
   templateUrl: './imguploads.component.html',
-  styleUrls: ['../impostazioni.component.css']
+  styleUrls: ['./imguploads.css']
 })
 
 export class ImgUploadsComponent implements OnInit {

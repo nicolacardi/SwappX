@@ -5,9 +5,8 @@ import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 import { ActivatedRoute, Router }               from '@angular/router';
 import { MatTabGroup }                          from '@angular/material/tabs';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { MatDrawer }                            from '@angular/material/sidenav';
 
-//models
-import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 
 //components
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
@@ -17,24 +16,26 @@ import { DialogYesNoComponent }                 from '../../utilities/dialog-yes
 import { IscrizioniClasseListComponent }        from '../../iscrizioni/iscrizioni-classe-list/iscrizioni-classe-list.component';
 import { IscrizioniAddComponent }               from '../../iscrizioni/iscrizioni-add/iscrizioni-add.component';
 import { LezioniCalendarioComponent }           from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
-import { DocenzeAddComponent }                  from '../docenze/docenze-add/docenze-add.component';
-import { DocenzeListComponent }                 from '../docenze/docenze-list/docenze-list.component';
-import { ClassiSezioniAnniListComponent }       from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
+import { DocenzeAddComponent }                  from '../../docenze/docenze-add/docenze-add.component';
+import { DocenzeListComponent }                 from '../../docenze/docenze-list/docenze-list.component';
+import { ClassiSezioniAnniListComponent }       from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 import { IscrizioniClasseCalcoloComponent }     from '../../iscrizioni/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 
 //services
 import { JspdfService }                         from '../../utilities/jspdf/jspdf.service';
 import { NavigationService }                    from '../../utilities/navigation/navigation.service';
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
-import { DocenzeService }                       from '../docenze/docenze.service';
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
-import { MatDrawer } from '@angular/material/sidenav';
+import { DocenzeService }                       from '../../docenze/docenze.service';
+import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
+
+//models
+import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
+import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_ClasseSezioneAnno';
 
 //#endregion
 
 @Component({
-  selector: 'app-classi-dashboard',
+  selector: 'app-coordinatore-dashboard',
 //#region ----- animations -------
   // animations: [
   //   trigger('openCloseAlu', [
@@ -75,11 +76,11 @@ import { MatDrawer } from '@angular/material/sidenav';
   //   ]),
   // ],
 //#endregion
-  templateUrl: './classi-dashboard.component.html',
-  styleUrls: ['./../classi.css']
+  templateUrl: './coordinatore-dashboard.component.html',
+  styleUrls: ['../coordinatore.css']
 })
 
-export class ClassiDashboardComponent implements OnInit {
+export class CoordinatoreDashboardComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
@@ -124,7 +125,7 @@ export class ClassiDashboardComponent implements OnInit {
 
   ngOnInit() {
 
-    //annoID e classeSezioneAnnoID sono due queryParams che arrivano a classi-dashboard ad es. quando si naviga da ClassiSezioniAnniSummary con right click
+    //annoID e classeSezioneAnnoID sono due queryParams che arrivano a coordinatore-dashboard ad es. quando si naviga da ClassiSezioniAnniSummary con right click
     //ora vanno passati al Child ClassiSezioniAnniList perchè quello deve settarsi su questo anno e su questa classe
     //l'annoID ClassiSezioniAnniList lo prende dalla select che a sua volta lo prende dal local storage (anno di default)
     //bisogna fare in modo che annoID in arrivo da home component "vinca" rispetto all'annoID impostato per default
@@ -134,7 +135,7 @@ export class ClassiDashboardComponent implements OnInit {
         this.classeSezioneAnnoIDrouted = params['classeSezioneAnnoID'];  
     });
 
-    this._navigationService.passPage("classiDashboard");
+    this._navigationService.passPage("coordinatoreDashboard");  //A cosa serve??
   }
 //#endregion
 
@@ -267,7 +268,7 @@ export class ClassiDashboardComponent implements OnInit {
             }
 
             this.viewClassiSezioniAnni.loadData()            
-            this.router.navigate(['/classi-dashboard'], { queryParams: { annoID: this.annoID, classeSezioneAnnoID: this.classeSezioneAnnoID } });
+            this.router.navigate(['/coordinatore-dashboard'], { queryParams: { annoID: this.annoID, classeSezioneAnnoID: this.classeSezioneAnnoID } });
             this.viewListIscrizioni.resetSelections();
             this.viewListIscrizioni.loadData();
           }
@@ -304,7 +305,7 @@ export class ClassiDashboardComponent implements OnInit {
             }
 
             this.viewDocenzeList.loadData()
-            this.router.navigate(['/classi-dashboard'], { queryParams: { annoID: this.annoID, classeSezioneAnnoID: this.classeSezioneAnnoID } });
+            this.router.navigate(['/coordinatore-dashboard'], { queryParams: { annoID: this.annoID, classeSezioneAnnoID: this.classeSezioneAnnoID } });
             this.viewDocenzeList.resetSelections();
             this.viewDocenzeList.loadData();
           }

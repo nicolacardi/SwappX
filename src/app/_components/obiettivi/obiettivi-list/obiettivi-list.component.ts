@@ -15,7 +15,7 @@ import { ObiettiviFilterComponent }             from '../obiettivi-filter/obiett
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { ObiettiviService }                     from '../obiettivi.service';
-import { AnniScolasticiService }                from 'src/app/_components/anniScolastici/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
 
 //classes
 import { MAT_Obiettivo }                        from 'src/app/_models/MAT_Obiettivo';

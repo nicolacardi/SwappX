@@ -105,7 +105,7 @@ export class VotiInterrListComponent implements OnInit {
     //      --->In questo caso è disponibile this.lezioneID che infatti  arriva nella forma [lezione.ID] come Input
     //- come child di Lezione, sempre dentro a docenti (ma nell'orario docenti)
     //      --->In questo caso this.lezioneID è undefined
-    //[VotiInterrListComponent e' inibito dentro L'orario generale e non compare nella classi-dashboard]
+    //[VotiInterrListComponent e' inibito dentro L'orario generale e non compare nella coordinatore-dashboard]
 
 
     let obsVoti$: Observable<TST_VotoInterr[]>;

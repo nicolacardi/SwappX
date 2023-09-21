@@ -170,17 +170,17 @@ export class AlunniListComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
-    //mentre classiDashboard ripassa per ngOnChanges quando classeSezioneAnnoID gli arriva (è una @Input)
+    //mentre CoordinatoreDashBoard ripassa per ngOnChanges quando classeSezioneAnnoID gli arriva (è una @Input)
     //alunniList non ci ripassa.
     //il problema è che this.page potrebbe essere ancora undefined 
     //(perchè poi? visto che viene settato sia da alunniPage che da classiDahsboard su ngOnInit come prima cosa?)
 
-    //ngOnChanges serve perchè quando listAlunni è child di classiDashboard gli viene passato il valore di classeSezioneAnnoID
+    //ngOnChanges serve perchè quando listAlunni è child di CoordinatoreDashBoard gli viene passato il valore di classeSezioneAnnoID
     // e devo "sentire" in questo modo che deve refreshare
 
 
       //lanciamo loadData SOLO una volta che sia arrivata la this.page.
-      //this.page non arriva, nel caso in cui page = ClassiDashboard
+      //this.page non arriva, nel caso in cui page = CoordinatoreDashBoard
       //fintanto che la @Input classeSezioneAnnoID non è stata settata
       //se non mettessimo questa if la loadData partirebbe una volta con this.page = undefined
       //e POI una seconda volta quando classeSezioneAnnoID è stato settato e quindi anche this.page: non andrebbe bene

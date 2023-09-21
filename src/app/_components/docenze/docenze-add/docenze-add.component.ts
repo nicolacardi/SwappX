@@ -9,14 +9,14 @@ import { MatSnackBar }                          from '@angular/material/snack-ba
 import { MatAutocompleteSelectedEvent }         from '@angular/material/autocomplete';
 
 //components
-import { SnackbarComponent }                    from '../../../utilities/snackbar/snackbar.component';
-import { DialogOkComponent }                    from '../../../utilities/dialog-ok/dialog-ok.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 import { DialogData }                           from 'src/app/_models/DialogData';
 
 //services
 import { DocenzeService }                       from '../docenze.service';
-import { DocentiService }                       from '../../../docenti/docenti.service';
-import { ClassiSezioniAnniService }             from '../../classi-sezioni-anni.service';
+import { DocentiService }                       from '../../docenti/docenti.service';
+import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
 import { MaterieService }                       from 'src/app/_components/materie/materie.service';
 
 //models
@@ -28,7 +28,7 @@ import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_Classe
 @Component({
   selector: 'app-docenze-add',
   templateUrl: './docenze-add.component.html',
-  styleUrls: ['./../../classi.css']
+  styleUrls: ['./../docenze.css']
 })
 
 export class DocenzeAddComponent implements OnInit {

@@ -22,7 +22,7 @@ import { Utility }                              from '../../utilities/utility.co
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { ClassiSezioniAnniService }             from '../classi-sezioni-anni.service';
-import { AnniScolasticiService }                from 'src/app/_components/anniScolastici/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
 import { DocentiService }                       from '../../docenti/docenti.service';
 
 //classes
@@ -49,7 +49,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
 
   displayedColumns:                             string[] =  [];
 
-  displayedColumnsClassiDashboard:              string[] =  [
+  displayedColumnsCoordinatoreDashBoard:              string[] =  [
     "descrizione",
     "sezione",
     "numAlunni"
@@ -249,9 +249,9 @@ export class ClassiSezioniAnniListComponent implements OnInit {
         this.displayedColumns = this.displayedColumnsAlunnoEdit;
         this.loadData();
         break;
-      case 'classi-dashboard':
+      case 'coordinatore-dashboard':
       case 'orario-page':
-        this.displayedColumns = this.displayedColumnsClassiDashboard;
+        this.displayedColumns = this.displayedColumnsCoordinatoreDashBoard;
         this.loadData();
         break;
       case 'classi-sezioni-anni-page':
@@ -287,7 +287,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
 
 
 
-        this.displayedColumns = this.displayedColumnsClassiDashboard;
+        this.displayedColumns = this.displayedColumnsCoordinatoreDashBoard;
         this.showSelectDocente = true;
 
 
@@ -326,7 +326,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
         break;          
 
 
-      default: this.displayedColumns = this.displayedColumnsClassiDashboard;
+      default: this.displayedColumns = this.displayedColumnsCoordinatoreDashBoard;
     }
   }
 

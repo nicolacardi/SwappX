@@ -12,12 +12,12 @@ import { Observable }                           from 'rxjs';
 
 //components
 import { DocenzaEditComponent }                 from '../docenza-edit/docenza-edit.component';
-import { PersonaEditComponent }                 from '../../../persone/persona-edit/persona-edit.component';
+import { PersonaEditComponent }                 from '../../persone/persona-edit/persona-edit.component';
 
 //services
-import { LoadingService }                       from '../../../utilities/loading/loading.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { DocenzeService }                       from '../docenze.service';
-import { ClassiSezioniAnniService }             from '../../classi-sezioni-anni.service';
+import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
 
 //models
 import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_ClasseDocenteMateria';
@@ -28,7 +28,7 @@ import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_Classe
 @Component({
   selector: 'app-docenze-list',
   templateUrl: './docenze-list.component.html',
-  styleUrls: ['../../classi.css']
+  styleUrls: ['../docenze.css']
 })
 
 export class DocenzeListComponent implements OnInit {
@@ -88,7 +88,7 @@ matDataSource = new                             MatTableDataSource<CLS_ClasseDoc
     if (this.classeSezioneAnnoID != undefined) {
       this.loadData();
       //this.toggleChecks = false;
-      //parcheggio in classeSezioneAnno i dati della classe che servono a classi-dashboard (per il nome dell'export)
+      //parcheggio in classeSezioneAnno i dati della classe che servono a coordinatore-dashboard (per il nome dell'export)
       this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID).subscribe(
         res => this.classeSezioneAnno = res
       )

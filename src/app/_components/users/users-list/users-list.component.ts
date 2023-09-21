@@ -285,7 +285,7 @@ export class UsersListComponent implements OnInit {
   }
 
   getChecked() {
-    //funzione usata da classi-dashboard
+    //funzione usata da coordinatore-dashboard
     return this.selection.selected;
   }
 

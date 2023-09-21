@@ -13,7 +13,7 @@ import { HomeComponent }                        from './_components/home/home.co
 import { AlunniPageComponent }                  from './_components/alunni/alunni-page/alunni-page.component';
 import { GenitoriPageComponent }                from './_components/genitori/genitori-page/genitori-page.component';
 import { PersonePageComponent }                 from './_components/persone/persone-page/persone-page.component';
-import { ClassiDashboardComponent }             from './_components/classi/classi-dashboard/classi-dashboard.component';
+import { CoordinatoreDashboardComponent }             from './_components/coordinatore/coordinatore-dashboard/coordinatore-dashboard.component';
 import { RettePageComponent }                   from './_components/pagamenti/rette-page/rette-page.component';
 import { PagamentiPageComponent }               from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
 import { ClassiPageComponent }                  from './_components/classi/classi-sezioni-anni-page/classi-sezioni-anni-page.component';
@@ -62,7 +62,7 @@ const routes: Routes = [
 
   { path: "classi",                             component: ClassiPageComponent,canActivate:[AuthGuard] },
 
-  { path: "classi-dashboard",                   component: ClassiDashboardComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'DocenteCoord', 'Docente' ] } },
+  { path: "coordinatore-dashboard",                   component: CoordinatoreDashboardComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'DocenteCoord', 'Docente' ] } },
 
   { path: "calendario-docente",                 component: OrarioDocentePageComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'DocenteCoord', 'Docente' ] } },
 

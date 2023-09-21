@@ -1,6 +1,6 @@
 <!-- Component di selezione Anno/Docente(opz)/Classe 
     USATO IN: 
-        ClassiDashBoard
+        CoordinatoreDashBoard
         DocentiDashBoard
         .... 
 -->
@@ -26,7 +26,7 @@
                 <!-- [disabled] = "docenteID != 0 && docenteID != null" -->
                 <!-- [compareWith]="compareObjects"  compareWith sembra la soluzione per impostare il valore correttamente -->
                 
-                <mat-option value="0" *ngIf="dove=='classi-dashboard'">Tutti i docenti-</mat-option>
+                <mat-option value="0" *ngIf="dove=='coordinatore-dashboard'">Tutti i docenti-</mat-option>
                 
                 <mat-option *ngFor="let element of (obsDocenti$ | async)" [value]="element.id">
                     {{element.persona.cognome + ' '+ element.persona.nome }}
@@ -197,8 +197,8 @@
         class="element-row"
         
         [ngClass]="{
-            '_table-row-selected-highlight': selectedRowIndex == element.id && (dove == 'classi-dashboard'|| dove =='docenti-dashboard' || dove == 'orario-page'),
-            '_row-pointercursor': (dove == 'classi-dashboard' || dove =='docenti-dashboard' || dove == 'orario-page')
+            '_table-row-selected-highlight': selectedRowIndex == element.id && (dove == 'coordinatore-dashboard'|| dove =='docenti-dashboard' || dove == 'orario-page'),
+            '_row-pointercursor': (dove == 'coordinatore-dashboard' || dove =='docenti-dashboard' || dove == 'orario-page')
             }"
         (click)="rowclicked(element.id)" >
     </tr>

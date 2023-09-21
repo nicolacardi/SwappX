@@ -8,7 +8,7 @@ import { MatTableDataSource }                   from '@angular/material/table';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 //services
-import { AnniScolasticiService }                from 'src/app/_components/anniScolastici/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
 import { ClassiSezioniAnniService }             from '../classi-sezioni-anni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 
@@ -108,7 +108,7 @@ export class ClassiSezioniAnniSummaryComponent implements OnInit {
   }
 
   openGestioneClasse(item: CLS_ClasseSezioneAnno) {
-    this.router.navigate(['/classi-dashboard'], { queryParams: { annoID: this.form.controls['selectAnnoScolastico'].value, classeSezioneAnnoID: item.id } });
+    this.router.navigate(['/coordinatore-dashboard'], { queryParams: { annoID: this.form.controls['selectAnnoScolastico'].value, classeSezioneAnnoID: item.id } });
   }
 
   openPagamentiClasse(item: CLS_ClasseSezioneAnno) {

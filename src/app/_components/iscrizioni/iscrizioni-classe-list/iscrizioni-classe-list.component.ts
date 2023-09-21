@@ -169,9 +169,9 @@ export class IscrizioniClasseListComponent implements OnInit {
   loadData () {
     let obsIscrizioni$: Observable<CLS_Iscrizione[]>;
 
-    //if (this.context == "classi-dashboard" && this.classeSezioneAnnoID != undefined) {
+    //if (this.context == "coordinatore-dashboard" && this.classeSezioneAnnoID != undefined) {
     if (this.classeSezioneAnnoID != undefined) {
-      //parcheggio in classeSezioneAnno i dati della classe che servono a classi-dashboard (per il nome dell'export)
+      //parcheggio in classeSezioneAnno i dati della classe che servono a coordinatore-dashboard (per il nome dell'export)
       this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID).subscribe(
         res => this.classeSezioneAnno = res
       );

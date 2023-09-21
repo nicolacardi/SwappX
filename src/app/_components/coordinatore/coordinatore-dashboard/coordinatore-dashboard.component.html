@@ -9,7 +9,7 @@
 <mat-drawer-container style="display: inline">
     <mat-drawer class=" w330px transparent"  #drawer mode="side" opened="true">
         <app-classi-sezioni-anni-list 
-            [dove] = "'classi-dashboard'"
+            [dove] = "'coordinatore-dashboard'"
             (annoID)="annoIdEmitted($event)"
             (classeSezioneAnnoID)="classeSezioneAnnoIDEmitted($event)"
             (docenteId)="docenteIdEmitted($event)" >
@@ -83,7 +83,7 @@
             <mat-tab  label="Note Disciplinari" style="">
                 <app-note-page 
                     [classeSezioneAnnoID]="classeSezioneAnnoID"
-                    [dove] = "'classi-dashboard'"
+                    [dove] = "'coordinatore-dashboard'"
                 >
                 </app-note-page>
             </mat-tab>

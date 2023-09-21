@@ -31,10 +31,6 @@ th.mat-mdc-header-cell._no-bottom-border, td.mat-mdc-cell._no-bottom-border {
 }
 
 
-.prgBar {
-  margin-top: 10px;
-}
-
 ._highlightStato{
   color: red;
   font-weight: bold;

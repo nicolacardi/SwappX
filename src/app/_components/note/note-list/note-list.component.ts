@@ -126,7 +126,7 @@ export class NoteListComponent implements OnInit {
 
     switch(this.dove) {
 
-      case 'classi-dashboard':
+      case 'coordinatore-dashboard':
         this.displayedColumns = this.displayedColumnsNotePage;
         this.showPageTitle = false;
         this.showTableRibbon = true;

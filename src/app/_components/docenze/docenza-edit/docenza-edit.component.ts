@@ -11,17 +11,17 @@ import { tap }                                  from 'rxjs/operators';
 import { CLS_ClasseDocenteMateria }             from 'src/app/_models/CLS_ClasseDocenteMateria';
 
 //components
-import { SnackbarComponent }                    from '../../../utilities/snackbar/snackbar.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 
 //services
-import { LoadingService }                       from '../../../utilities/loading/loading.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { DocenzeService }                       from '../docenze.service';
 
 //#endregion
 @Component({
   selector: 'app-docenza-edit',
   templateUrl: './docenza-edit.component.html',
-  styleUrls: ['../../classi.css']
+  styleUrls: ['../docenze.css']
 })
 export class DocenzaEditComponent implements OnInit {
 

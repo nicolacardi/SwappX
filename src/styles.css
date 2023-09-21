@@ -1442,12 +1442,12 @@
         height: 30px!important;         /*FUNZIONA SOLO PER LE <table mat-table>*/
     }
 
-    /* row pointer cursor usata da classi-sezioni-anni in classi-dashboard come ngClass*/
+    /* row pointer cursor usata da classi-sezioni-anni in coordinatore-dashboard come ngClass*/
     ._row-pointercursor {
         cursor: pointer;
     }
 
-    /*evidenziazione della riga che rimane selezionata - usata da classi-sezioni-anni in classi-dashboard come ngClass*/
+    /*evidenziazione della riga che rimane selezionata - usata da classi-sezioni-anni in coordinatore-dashboard come ngClass*/
     ._table-row-selected-highlight{
         background: rgba(100, 100, 100, 0.2) !important;
         cursor: pointer;

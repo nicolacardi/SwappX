@@ -23,7 +23,7 @@ import { PresenzeListComponent }                from '../presenze-list/presenze-
 
 //services
 import { MaterieService }                       from 'src/app/_components/materie/materie.service';
-import { DocenzeService }                       from '../../classi/docenze/docenze.service';
+import { DocenzeService }                       from '../../docenze/docenze.service';
 import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
 import { DocentiService }                       from '../../docenti/docenti.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';

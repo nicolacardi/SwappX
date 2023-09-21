@@ -9,7 +9,7 @@ import { Observable }                           from 'rxjs';
 import { SnackbarComponent }                    from '../utilities/snackbar/snackbar.component';
 
 //services 
-import { AnniScolasticiService }                from 'src/app/_components/anniScolastici/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
 import { ParametriService }                     from 'src/app/_components/impostazioni/parametri/parametri.service';
 
 //models
@@ -21,7 +21,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-impostazioni',
   templateUrl: './impostazioni.component.html',
-  styleUrls: ['./impostazioni.component.css']
+  styleUrls: ['./impostazioni.css']
 })
 
 export class ImpostazioniComponent implements OnInit {

@@ -7,7 +7,7 @@ import { MatDialog, MatDialogRef }              from '@angular/material/dialog';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 //services
-import { AnniScolasticiService }                from 'src/app/_components/anniScolastici/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
 import { ClasseAnnoMateriaService }             from '../classe-anno-materia.service';
 
 //components

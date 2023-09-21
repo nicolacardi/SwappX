@@ -9,7 +9,7 @@ import { LezioniCalendarioComponent }           from '../lezioni-calendario/lezi
 import { ClassiSezioniAnniListComponent }       from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 
 //services
-import { DocenzeService }                       from '../../classi/docenze/docenze.service';
+import { DocenzeService }                       from '../../docenze/docenze.service';
 
 //#endregion
 

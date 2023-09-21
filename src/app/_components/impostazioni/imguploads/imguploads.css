@@ -35,8 +35,3 @@ mat-card-header {
       grid-template-columns: 1fr;
     }
   }
-
-  .h100-64 {
-    height: calc(100vh - 64px) !important;
-  }
-
