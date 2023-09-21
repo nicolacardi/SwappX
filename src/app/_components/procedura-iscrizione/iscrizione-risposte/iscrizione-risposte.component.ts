@@ -130,8 +130,6 @@ constructor(private svcDomande:                 DomandeService,
                 this.formRisposte.addControl(element.id+"_7", this.fb.control(''));
                 this.formRisposte.addControl(element.id+"_8", this.fb.control(''));
                 this.formRisposte.addControl(element.id+"_9", this.fb.control(''));
-
-
               }
               if (element.tipo == 'Risposta Libera') {
                 this.formRisposte.addControl(element.id+"_RL", this.fb.control('', Validators.required));

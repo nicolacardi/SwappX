@@ -187,8 +187,15 @@
                     </table>
                 </mat-tab> -->
 <!-- ********************************    MAT TAB PAGELLE ************************************** -->
-                <mat-tab label="Pagelle">
-
+                <mat-tab label="Documenti">
+                    <br>  
+                    <mat-label class="frameLabel t10">Pagelle di {{alunnoNomeCognome}} </mat-label>
+                    <div class="_classi-attended-container _cell-bordered mt10">
+                        <app-pagelle-alunno-list
+                            [alunnoID]="alunnoID">
+                        </app-pagelle-alunno-list>
+                    </div>
+                   
                 </mat-tab>
 <!-- ********************************    MAT TAB VOTI    ************************************** -->
                 <!-- <mat-tab label="Voti">

@@ -45,22 +45,21 @@ export class PagellaVotoEditComponent implements OnInit  {
 //#endregion  
 
 //#region ----- ViewChild Input Output ---------
-  @ViewChild(MatSort) sort!:                MatSort;
-  @Input('objPagella') objPagella!:                     DOC_Pagella;
+  @ViewChild(MatSort) sort!:                    MatSort;
+  @Input('objPagella') objPagella!:             DOC_Pagella;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:   number;
   @Output('reloadParent') reloadParent = new EventEmitter(); //EMESSO quando si chiude la dialog obiettivo
-
 //#endregion
 
 //#region ----- Constructor --------------------
 
-  constructor(private svcPagella:                         PagelleService,
-              private svcPagellaVoti:                     PagellaVotiService,
-              private svcClasseSezioneAnno:               ClassiSezioniAnniService,
+  constructor(private svcPagella:               PagelleService,
+              private svcPagellaVoti:           PagellaVotiService,
+              private svcClasseSezioneAnno:     ClassiSezioniAnniService,
               
-              private _loadingService:                    LoadingService,
-              private _snackBar:                          MatSnackBar,
-              public _dialog:                             MatDialog ) { 
+              private _loadingService:          LoadingService,
+              private _snackBar:                MatSnackBar,
+              public _dialog:                   MatDialog ) { 
   }
 
 //#endregion

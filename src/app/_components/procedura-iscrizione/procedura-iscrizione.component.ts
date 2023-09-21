@@ -358,9 +358,6 @@ export class ProceduraIscrizioneComponent implements OnInit {
         { tagName: "Tel2Genitore2",             tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.telefono1 : ""},
         { tagName: "EmailGenitore2",            tagValue: this.iscrizione.alunno._Genitori![1]? this.iscrizione.alunno._Genitori![1].genitore?.persona.email : ""},
 
-
-
-
         { tagName: "ilFigliolaFiglia",          tagValue: this.iscrizione.alunno.persona.genere == "M"? "il figlio": "la figlia"},
 
         { tagName: "NomeAlunno",                tagValue: this.iscrizione.alunno.persona.nome},
@@ -425,7 +422,6 @@ export class ProceduraIscrizioneComponent implements OnInit {
             let numOpzioni = questions[i].domanda?.numOpzioni || 0;
 
             if (questions[i].domanda!.tipo=="Scelta Singola") {
-              console.log ("passo di qua");
               let scelta = ""
               if (questions[i].risposta1) scelta = questions[i].domanda?.testo1!
               if (questions[i].risposta2) scelta = questions[i].domanda?.testo2!
@@ -438,6 +434,10 @@ export class ProceduraIscrizioneComponent implements OnInit {
               if (questions[i].risposta9) scelta = questions[i].domanda?.testo9!
 
               tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo, tagValue: scelta})
+            }
+
+            if (questions[i].domanda!.tipo=="Risposta Libera") {
+              tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo, tagValue: questions[i].rispostaLibera})
             }
 
             
