@@ -2,7 +2,7 @@ import { _UT_Risorsa } from "./_UT_Risorsa";
 
 export interface _UT_Domanda {
     id:                                         number;
-    contesto:                                   string; //"Consensi"/"Dati Economici"/"Cert.Compoetenze"/"Cons. Orientativo"
+    contesto:                                   string; //"Consensi"/"DatiEconomici"/"CertificazioneCompetenze"/"ConsiglioOrientativo"
     tipo:                                       string; //"Scelta Singola"/"Scelta Multipla"/"Risposta Libera"
     titolo:                                     string;
     domanda:                                    string;

@@ -93,10 +93,10 @@
     </mat-step>
 
     <mat-step [stepControl]="formIscrizioneDatiEconomici.formRisposte">
-      <ng-template matStepLabel>Dati economici</ng-template>
+      <ng-template matStepLabel>Dati Economici</ng-template>
       <app-iscrizione-risposte  
         [iscrizioneID]="iscrizioneID"
-        [contesto]="'Dati Economici'"
+        [contesto]="'DatiEconomici'"
         #formIscrizioneDatiEconomici>
       </app-iscrizione-risposte>
 
@@ -106,7 +106,7 @@
                 class="ml10"
                 matStepperNext
                 [disabled]="!formIscrizioneDatiEconomici.formRisposte.valid"
-                (click)="salvaRisposte('Dati Economici')">
+                (click)="salvaRisposte('DatiEconomici')">
           Salva e procedi
         </button>
       </div>

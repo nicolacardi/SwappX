@@ -14,7 +14,7 @@ import { IscrizioneRisposteComponent }          from './iscrizione-risposte/iscr
 
 //services
 import { IscrizioniService }                    from '../iscrizioni/iscrizioni.service';
-import { IscrizioneRisposteService }            from './iscrizione-risposte/iscrizione-risposte.service';
+import { IscrizioneRisposteService }            from './iscrizione-risposte//iscrizione-risposte.service';
 import { OpenXMLService }                       from '../utilities/openXML/open-xml.service';
 import { RetteService }                         from '../pagamenti/rette.service';
 
@@ -160,7 +160,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
     //ho spostato in iscrizione-risposte la save...da testare
     if (tipo == 'Consensi')          this.ConsensiFormComponent.save(tipo);
-    if (tipo == 'Dati Economici')    this.DatiEconomiciFormComponent.save(tipo);
+    if (tipo == 'DatiEconomici')    this.DatiEconomiciFormComponent.save(tipo);
     
 
     return;
@@ -169,7 +169,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
     let formValues! : any;
 
     if (tipo == 'Consensi')          formValues = this.ConsensiFormComponent.formRisposte.value;
-    if (tipo == 'Dati Economici')    formValues = this.DatiEconomiciFormComponent.formRisposte.value;
+    if (tipo == 'DatiEconomici')    formValues = this.DatiEconomiciFormComponent.formRisposte.value;
 
     console.log("formValues", formValues);
     //devo trasformare questo ogetto in un altro
@@ -466,7 +466,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
     this.svcIscrizioneRisposte.listByIscrizione(this.iscrizioneID)
     // .subscribe(val=>console.log("val", val));
     .pipe( 
-      map(res=> res.filter((x) => x.tipo == "Dati Economici")), 
+      map(res=> res.filter((x) => x.tipo == "DatiEconomici")), 
       tap (questions => { 
 
         let tagFields;
