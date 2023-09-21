@@ -94,16 +94,20 @@ constructor(private svcDomande:                 DomandeService,
   }
 
   loadData() {
+
     if (this.iscrizioneID && this.contesto) {
       // console.log("iscrizione-risposte - loadData");
       this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione;})
       this.svcRette.sumConcordateByIscrizione(this.iscrizioneID).subscribe(rettaConcordata=> {this.rettaConcordata = rettaConcordata;})
       // console.log("iscrizione-risposte - contesto", this.contesto);
 
-      this.obsDomande$ = this.svcDomande.list()
-      .pipe( 
-        map(res=> res.filter((x) => x.contesto == this.contesto)), //carico domande x consensi o dati economici a seconda del valore in input
-      )
+      //this.obsDomande$ = this.svcDomande.list()
+
+      this.obsDomande$ = this.svcDomande.listByContestoEIscrizioneConRisposta(this.contesto, this.iscrizioneID)
+      //.pipe( 
+        //map(res=> res.filter((x) => x.contesto == this.contesto)), //carico domande x consensi o dati economici a seconda del valore in input-spostato nel WS
+        //tap(val=> console.log(val))
+      //)
       ;  
       const loadDomande$ =this._loadingService.showLoaderUntilCompleted(this.obsDomande$);
 
@@ -115,11 +119,33 @@ constructor(private svcDomande:                 DomandeService,
           //in modo che il pulsante di "Salva e continua" si disabiliti se uno non risponde a tutto
           //element.id è l'id della domanda cioè di _UT_Domande
           this.questions = questions;
+          this.formRisposte.reset();
             this.questions.forEach((element) => {
+              console.log ("element", element);
               if (element.tipo == 'Scelta Singola') {
-                if (element.numOpzioni >1) this.formRisposte.addControl(element.id, this.fb.control('', Validators.required));
-                if (element.numOpzioni ==1) this.formRisposte.addControl(element.id, this.fb.control('', Validators.requiredTrue));
+                if (element.numOpzioni >1) {
+                  this.formRisposte.addControl(element.id, this.fb.control('', Validators.required));
+
+                  if (element.risposta != null) {
+                    if (element.risposta.risposta1) this.formRisposte.controls[element.id].setValue('1') 
+                    if (element.risposta.risposta2) this.formRisposte.controls[element.id].setValue('2') 
+                    if (element.risposta.risposta3) this.formRisposte.controls[element.id].setValue('3') 
+                    if (element.risposta.risposta4) this.formRisposte.controls[element.id].setValue('4') 
+                    if (element.risposta.risposta5) this.formRisposte.controls[element.id].setValue('5') 
+                    if (element.risposta.risposta6) this.formRisposte.controls[element.id].setValue('6') 
+                    if (element.risposta.risposta7) this.formRisposte.controls[element.id].setValue('7') 
+                    if (element.risposta.risposta8) this.formRisposte.controls[element.id].setValue('8') 
+                    if (element.risposta.risposta9) this.formRisposte.controls[element.id].setValue('9') 
+                  } 
+                }
+                if (element.numOpzioni ==1) {
+                  this.formRisposte.addControl(element.id, this.fb.control('', Validators.requiredTrue));
+                  if (element.risposta != null) {this.formRisposte.controls[element.id].setValue(element.risposta.risposta1) }
+                  
+                }
+
               }
+
               if (element.tipo == 'Scelta Multipla') { //qui devo aggiungere N Controls......e non uno solo!
                 this.formRisposte.addControl(element.id+"_1", this.fb.control(''));
                 this.formRisposte.addControl(element.id+"_2", this.fb.control(''));
@@ -130,9 +156,24 @@ constructor(private svcDomande:                 DomandeService,
                 this.formRisposte.addControl(element.id+"_7", this.fb.control(''));
                 this.formRisposte.addControl(element.id+"_8", this.fb.control(''));
                 this.formRisposte.addControl(element.id+"_9", this.fb.control(''));
+
+                if (element.risposta!= null) {
+                  this.formRisposte.controls[element.id+"_1"].setValue(element.risposta.risposta1);
+                  this.formRisposte.controls[element.id+"_2"].setValue(element.risposta.risposta2)
+                  this.formRisposte.controls[element.id+"_3"].setValue(element.risposta.risposta3)
+                  this.formRisposte.controls[element.id+"_4"].setValue(element.risposta.risposta4)
+                  this.formRisposte.controls[element.id+"_5"].setValue(element.risposta.risposta5)
+                  this.formRisposte.controls[element.id+"_6"].setValue(element.risposta.risposta6)
+                  this.formRisposte.controls[element.id+"_7"].setValue(element.risposta.risposta7)
+                  this.formRisposte.controls[element.id+"_8"].setValue(element.risposta.risposta8)
+                  this.formRisposte.controls[element.id+"_9"].setValue(element.risposta.risposta9)
+                }         
               }
               if (element.tipo == 'Risposta Libera') {
                 this.formRisposte.addControl(element.id+"_RL", this.fb.control('', Validators.required));
+                if (element.risposta!= null) {
+                  this.formRisposte.controls[element.id+"_RL"].setValue(element.risposta.rispostaLibera);
+                }    
               }
             })
         });
@@ -288,7 +329,7 @@ constructor(private svcDomande:                 DomandeService,
             risposta9: risposta9,
           };
           console.log ("iscrizione-risposte - save - form to post", form);
-          this.svcIscrizioneRisposte.post(form).subscribe(
+          this.svcIscrizioneRisposte.post(form).subscribe( //SEMBRA FUNZIONARE MA questa è una POST...E QUANDO DEVE FARE UNA PUT??????**************************
             {
               next: res=> {
                 // console.log ("inserita domanda", domandaID)

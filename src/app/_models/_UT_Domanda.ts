@@ -1,4 +1,5 @@
-import { _UT_Risorsa } from "./_UT_Risorsa";
+import { CLS_IscrizioneRisposta }               from "./CLS_IscrizioneRisposta";
+import { _UT_Risorsa }                          from "./_UT_Risorsa";
 
 export interface _UT_Domanda {
     id:                                         number;
@@ -20,6 +21,7 @@ export interface _UT_Domanda {
     risorsa?:                                   _UT_Risorsa;
     seq:                                        number;
 
+    risposta?:                                  CLS_IscrizioneRisposta;
   }
 
  

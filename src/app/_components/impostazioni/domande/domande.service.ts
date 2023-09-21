@@ -26,7 +26,12 @@ export class DomandeService {
     //http://213.215.231.4/swappX/api/_UT_Domande
   }
 
-  get(domandaID: any): Observable<_UT_Domanda>{
+  listByContestoEIscrizioneConRisposta(contesto: string, iscrizioneID: number): Observable<_UT_Domanda[]>{
+    return this.http.get<_UT_Domanda[]>(environment.apiBaseUrl+'_UT_Domande/ListByContestoEIscrizioneConRisposta/'+contesto+'/'+iscrizioneID);
+    //http://213.215.231.4/swappX/api/_UT_Domande/ListByContestoEIscrizioneConRisposta/DatiEconomici/328
+  }
+
+  get(domandaID: number): Observable<_UT_Domanda>{
     return this.http.get<_UT_Domanda>(environment.apiBaseUrl+'_UT_Domande/'+domandaID);
     //http://213.215.231.4/swappX/api/_UT_Domande/3
   }
