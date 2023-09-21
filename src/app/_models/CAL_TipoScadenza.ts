@@ -3,4 +3,5 @@ export interface CAL_TipoScadenza {
         descrizione:                            string;
         color:                                  string;
         ckNota:                                 boolean;
+        seq:                                    number;
 }

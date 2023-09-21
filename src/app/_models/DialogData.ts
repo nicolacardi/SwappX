@@ -95,5 +95,11 @@ export interface DialogDataParametroEdit {
       }
 
 export interface DialogDataAnnoEdit {
-      annoID:                              number;
+      annoID:                                   number;
+      }
+
+export interface DialogDataTipoScadenzaEdit {
+      tipoScadenzaID:                           number;
+      maxSeq:                                   number;
+
       }

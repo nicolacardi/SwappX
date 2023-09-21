@@ -26,6 +26,8 @@ export class TipiScadenzaListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
+  maxSeq!:                                       number;
+
   matDataSource = new MatTableDataSource<CAL_TipoScadenza>();
 
   obsTipiscadenza$!:                                 Observable<CAL_TipoScadenza[]>;
@@ -47,7 +49,7 @@ export class TipiScadenzaListComponent implements OnInit {
     "descrizione"
   ];
 
-  filterValue = '';       //Filtro semplice
+  filterValue = '';
 
   filterValues = {
     descrizione: '',
@@ -61,9 +63,9 @@ export class TipiScadenzaListComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(private svcTipiscadenza:                    TipiScadenzaService,
-              private _loadingService:                    LoadingService,
-              public _dialog:                             MatDialog) { 
+  constructor(private svcTipiscadenza:          TipiScadenzaService,
+              private _loadingService:          LoadingService,
+              public _dialog:                   MatDialog) { 
           
   }
 
@@ -86,6 +88,10 @@ export class TipiScadenzaListComponent implements OnInit {
         this.sortCustom(); 
         this.matDataSource.sort = this.sort; 
         this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
+        this.maxSeq = val.reduce((max, item) => {
+          return item.seq! > max ? item.seq! : max;
+        }, 0);
+        console.log ("tipiscadenza-list - loadData - maxseq", this.maxSeq);
       }
     );
   }
@@ -98,21 +104,27 @@ export class TipiScadenzaListComponent implements OnInit {
       panelClass: 'add-DetailDialog',
       width: '400px',
       height: '400px',
-      data: 0
+      data: { tipoScadenzaID:  0, maxSeq: this.maxSeq}
     };
     const dialogRef = this._dialog.open(TipoScadenzaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() => this.loadData());
   }
 
-  openDetail(materiaID:any){
+  openDetail(tipoScadenzaID:any){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '400px',
       height: '400px',
-      data: materiaID
+      data: { tipoScadenzaID: tipoScadenzaID, maxSeq: this.maxSeq }
     };
     const dialogRef = this._dialog.open(TipoScadenzaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() => this.loadData());
+  }
+
+  drop(event: any){
+    console.log (event.previousIndex, event.currentIndex);
+    this.svcTipiscadenza.updateSeq(event.previousIndex+1, event.currentIndex+1 )
+    .subscribe(res=> this.loadData());
   }
 //#endregion
 

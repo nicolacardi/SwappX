@@ -1,5 +1,5 @@
-<h1 class="_titolo-pagina">Tipi Scadenze</h1>
-
+<h1 class="_titolo-pagina mb0">Tipi Scadenze</h1>
+<h3 class="center mt0">(trascinare le scadenze per ordinarle)</h3>
     <!-- **************************   FILTER   ******************* -->
     <mat-form-field class="ml20 topZIndex">
         <mat-label>Filtro</mat-label>
@@ -12,6 +12,8 @@
     <!-- **************************   MAT-TABLE   ******************* -->
     <table mat-table class="_table-row-low transparent w100" 
         [dataSource]="matDataSource"
+        cdkDropList
+        (cdkDropListDropped)="drop($event)"
         matSort>
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
@@ -44,7 +46,7 @@
         <tr mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></tr>
         
         <!-- **************************   MAT-ROW   ******************* -->
-        <tr mat-row *matRowDef="let element;columns: displayedColumns" class="element-row" > </tr>
+        <tr mat-row *matRowDef="let element;columns: displayedColumns" class="element-row" cdkDragLockAxis="y" cdkDrag> </tr>
     </table>
 
 

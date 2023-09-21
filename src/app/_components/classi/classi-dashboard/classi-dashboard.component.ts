@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, Input, OnInit, ViewChild }  from '@angular/core';
+import { Component, OnInit, ViewChild }         from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 import { ActivatedRoute, Router }               from '@angular/router';
 import { MatTabGroup }                          from '@angular/material/tabs';
@@ -29,6 +29,7 @@ import { IscrizioniService }                    from '../../iscrizioni/iscrizion
 import { DocenzeService }                       from '../docenze/docenze.service';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ClassiSezioniAnniService } from '../classi-sezioni-anni.service';
+import { MatDrawer } from '@angular/material/sidenav';
 
 //#endregion
 
@@ -104,7 +105,7 @@ export class ClassiDashboardComponent implements OnInit {
   //@ViewChild('orarioLezioniDOM') viewOrarioLezioni!: LezioniCalendarioComponent; 
   @ViewChild('orarioDocenteDOM') viewOrarioDocente!: LezioniCalendarioComponent; 
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
-
+  @ViewChild('drawer') drawerClassi!: MatDrawer;
   //#endregion
 
   constructor(private svcIscrizioni:            IscrizioniService,
@@ -330,7 +331,10 @@ export class ClassiDashboardComponent implements OnInit {
       this.svcClassiSezioniAnni.get(this.classeSezioneAnnoID).subscribe(
         csa => this.classeSezioneAnno = csa 
       );
+      
     }
+
+    
   }
 
   docenteIdEmitted(docenteId: number) {

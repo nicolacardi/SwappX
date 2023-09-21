@@ -18,6 +18,7 @@ export interface _UT_Domanda {
     testo9:                                     string;
     risorsaID:                                  number;
     risorsa?:                                   _UT_Risorsa;
+    seq:                                        number;
 
   }
 

@@ -163,7 +163,8 @@ export class ImgUploadsComponent implements OnInit {
           parDescr: "Logo Stoody",
           parValue: this.logoStoodyDOM.nativeElement.src,
           ckSetupPage: false,
-          ckTipo: false
+          ckTipo: false,
+          seq: 0
         };
         break;
 
@@ -174,7 +175,8 @@ export class ImgUploadsComponent implements OnInit {
           parDescr: "Logo della scuola",
           parValue: this.logoScuolaEmailDOM.nativeElement.src,
           ckSetupPage: false,
-          ckTipo: false
+          ckTipo: false,
+          seq: 0
         };
         break;
   
@@ -185,7 +187,8 @@ export class ImgUploadsComponent implements OnInit {
           parDescr: "Timbro della scuola",
           parValue: this.timbroScuolaDOM.nativeElement.src,
           ckSetupPage: false,
-          ckTipo: false
+          ckTipo: false,
+          seq: 0
         };
         break;
 
@@ -196,7 +199,8 @@ export class ImgUploadsComponent implements OnInit {
           parDescr: "Firma del Preside",
           parValue: this.firmaPresideDOM.nativeElement.src,
           ckSetupPage: false,
-          ckTipo: false
+          ckTipo: false,
+          seq: 0
         };
         break;
       default:

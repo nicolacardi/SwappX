@@ -22,6 +22,9 @@ import { _UT_Domanda }                          from 'src/app/_models/_UT_Domand
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 import { IscrizioneRisposteService } from './iscrizione-risposte.service';
 import { CLS_IscrizioneRisposta } from 'src/app/_models/CLS_IscrizioneRisposta';
+import { RPT_TagDocument } from 'src/app/_models/RPT_TagDocument';
+import { FormatoData, Utility } from '../../utilities/utility.component';
+import { OpenXMLService } from '../../utilities/openXML/open-xml.service';
 
 //#endregion
 @Component({
@@ -56,10 +59,11 @@ export class IscrizioneRisposteComponent implements OnInit  {
 
 //#region ----- Constructor --------------------
   
-constructor(private svcDomande:                DomandeService,
+constructor(private svcDomande:                 DomandeService,
             private fb:                         UntypedFormBuilder, 
             private svcRisorse:                 RisorseService,
             private svcIscrizioni:              IscrizioniService,
+            private svcOpenXML:                 OpenXMLService,
 
             private svcIscrizioneRisposte:      IscrizioneRisposteService,
 
@@ -302,11 +306,88 @@ constructor(private svcDomande:                DomandeService,
 
 
   }
+ 
+  async downloadDocumento(contesto: string) {
 
-  print(contesto: string) {
+    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta download inviata...', panelClass: ['green-snackbar']});
+
+    let nomeFile = contesto  + '_' + this.iscrizione.classeSezioneAnno.anno.annoscolastico + "_" + this.iscrizione.alunno.persona.cognome + ' ' + this.iscrizione.alunno.persona.nome + '.docx'
+
+    console.log (nomeFile);
+    return;
+
+    let tagDocument : RPT_TagDocument = {
+      templateName: contesto,
+      tagFields:
+      [
+        { tagName: "AnnoScolastico",            tagValue: this.iscrizione.classeSezioneAnno.anno.annoscolastico},
+        { tagName: "Anno1",                     tagValue: this.iscrizione.classeSezioneAnno.anno.anno1.toString()},
+        { tagName: "Anno2",                     tagValue: this.iscrizione.classeSezioneAnno.anno.anno2.toString()},
+
+        { tagName: "ilFigliolaFiglia",          tagValue: this.iscrizione.alunno.persona.genere == "M"? "il figlio": "la figlia"},
+
+        { tagName: "NomeAlunno",                tagValue: this.iscrizione.alunno.persona.nome},
+        { tagName: "CognomeAlunno",             tagValue: this.iscrizione.alunno.persona.cognome},
+        { tagName: "ComuneNascitaAlunno",       tagValue: this.iscrizione.alunno.persona.comuneNascita},
+        { tagName: "ProvNascitaAlunno",         tagValue: this.iscrizione.alunno.persona.provNascita},
+        { tagName: "dtNascitaAlunno",           tagValue: Utility.formatDate(this.iscrizione.alunno.persona.dtNascita, FormatoData.dd_mm_yyyy)},
+        { tagName: "PaeseNascitaAlunno",        tagValue: this.iscrizione.alunno.persona.nazioneNascita},
+        { tagName: "CFAlunno",                  tagValue: this.iscrizione.alunno.persona.cf},
+        { tagName: "IndirizzoAlunno",           tagValue: this.iscrizione.alunno.persona.indirizzo},
+        { tagName: "CAPAlunno",                 tagValue: this.iscrizione.alunno.persona.cap},
+        { tagName: "ComuneAlunno",              tagValue: this.iscrizione.alunno.persona.comune},
+        { tagName: "ProvAlunno",                tagValue: this.iscrizione.alunno.persona.prov},
+        { tagName: "TelAlunno",                 tagValue: this.iscrizione.alunno.persona.telefono},
+        { tagName: "EmailAlunno",               tagValue: this.iscrizione.alunno.persona.email},
+        { tagName: "ckDisabile",                tagValue: this.iscrizione.alunno.ckDisabile? "[SI]": "[NO]"},
+        { tagName: "ckDSA",                     tagValue: this.iscrizione.alunno.ckDSA? "[SI]": "[NO]"},
+
+        { tagName: "DescrizioneClasse",         tagValue: this.iscrizione.classeSezioneAnno.classeSezione.classe?.descrizione2},
+
+
+      ],
+       tagTables: []
+
+      
+    }
+
+    //nel modo che segue inserisco tanti tag quante le risposte a ciascuna domanda con il titolo autUscite1, autUscite2, oppure autFoto1, autFoto2 ecc.
+    //aspetto che avvenga prima di procedere
+    await firstValueFrom(this.svcIscrizioneRisposte.listByIscrizione(this.iscrizioneID)
+    .pipe(
+      tap(
+
+      questions=>
+        {
+
+
+          for (let i = 0; i < questions.length; i++) {
+            console.log ("processo la domanda:", questions[i].domanda!.domanda);
+            console.log ("processo la domanda con titolo", questions[i].domanda!.titolo);
+            let numOpzioni = questions[i].domanda?.numOpzioni || 0;
+            if (questions[i].domanda!.titolo != null && questions[i].domanda!.titolo != '') {
+              if (numOpzioni > 0) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"1", tagValue: questions[i].risposta1? "[X]": "[ ]"})
+              if (numOpzioni > 1) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"2", tagValue: questions[i].risposta2? "[X]": "[ ]"})
+              if (numOpzioni > 2) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"3", tagValue: questions[i].risposta3? "[X]": "[ ]"})
+              if (numOpzioni > 3) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"4", tagValue: questions[i].risposta4? "[X]": "[ ]"})
+              if (numOpzioni > 4) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"5", tagValue: questions[i].risposta5? "[X]": "[ ]"})
+              if (numOpzioni > 5) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"6", tagValue: questions[i].risposta6? "[X]": "[ ]"})
+              if (numOpzioni > 6) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"7", tagValue: questions[i].risposta7? "[X]": "[ ]"})
+              if (numOpzioni > 7) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"8", tagValue: questions[i].risposta8? "[X]": "[ ]"})
+              if (numOpzioni > 8) tagDocument.tagFields?.push({ tagName: questions[i].domanda!.titolo+"9", tagValue: questions[i].risposta9? "[X]": "[ ]"})  
+            }
+          }
+          console.log ("tagDocument dopo inserimenti varii", tagDocument)
+        }
+      )
+    ));
+
+    this.svcOpenXML.downloadFile(tagDocument, nomeFile )
+    
+
+    
 
   }
-
 
   
 //#endregion

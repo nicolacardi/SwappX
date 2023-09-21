@@ -2,7 +2,7 @@
 
 import { Component, OnInit }                    from '@angular/core';
 import { MatTableDataSource }                   from '@angular/material/table';
-import { Observable }                           from 'rxjs';
+import { Observable, map }                           from 'rxjs';
 import { MatDialog }                            from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 
@@ -33,9 +33,11 @@ export class MieScadenzeComponent implements OnInit {
 //#region ----- Variabili ----------------------
 
   //public userID: string;
-  public currUser!:                               User;
-  public obsMieScadenze$!:                        Observable<CAL_ScadenzaPersone[]>
-  public iscrizioneID:                            number = 43;
+  public currUser!:                             User;
+  public obsMieScadenze$!:                      Observable<CAL_ScadenzaPersone[]>
+  public iscrizioneID:                          number = 43;
+  public ckMostraScadenzeLette :                   boolean = false;
+
 
   matDataSource = new MatTableDataSource<CAL_ScadenzaPersone>();
   displayedColumns: string[] = [
@@ -66,8 +68,18 @@ export class MieScadenzeComponent implements OnInit {
 
   loadData(){
     let scadenze$: Observable<CAL_ScadenzaPersone[]>;
-    scadenze$ = this.svcScadenzePersone.listByPersonaID(this.currUser.personaID);
 
+    if(this.ckMostraScadenzeLette){
+      scadenze$ = this.svcScadenzePersone.listByPersona(this.currUser.personaID)
+    }
+    else  
+    scadenze$ = this.svcScadenzePersone.listByPersona(this.currUser.personaID)
+    .pipe(map(
+      res=> res.filter((x) => x.ckLetto == false))
+    );;
+    
+
+    scadenze$.subscribe(val=> console.log(this.ckMostraScadenzeLette, val));
     this.obsMieScadenze$ =this._loadingService.showLoaderUntilCompleted(scadenze$);
   }
 
@@ -88,6 +100,7 @@ export class MieScadenzeComponent implements OnInit {
 
   setAccettato(element: CAL_ScadenzaPersone) {
     element.ckAccettato = true;
+    element.ckLetto = true; //una scadenza accettata si dà anche per letta (il flag ckLetto non compare quando si tratta di accettare o respingere)
     element.ckRespinto = false;
     this.svcScadenzePersone.put(element).subscribe({
       next: res=> {},
@@ -122,5 +135,10 @@ export class MieScadenzeComponent implements OnInit {
     //   res=> this.loadData(),
     //   err=> this._snackBar.openFromComponent(SnackbarComponent, { data: 'Errore nella cancellazione  del messaggio ', panelClass: ['red-snackbar']})
     // );
+  }
+
+  toggleAttivi(){
+    this.ckMostraScadenzeLette = !this.ckMostraScadenzeLette;
+    this.loadData();
   }
 }

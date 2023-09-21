@@ -1,13 +1,13 @@
 <div class="center _fixed-header">
     <h1 class="_titolo-pagina">Cruscotto Coordinatore Didattico per Classe</h1>
 
-    <button mat-button class="_pos-absolute_i t10 l10  _btn-text" (click)="drawer.toggle()">
-        Classe: <span *ngIf="classeSezioneAnno">{{classeSezioneAnno.classeSezione!.classe!.descrizione2}} {{classeSezioneAnno.classeSezione!.sezione}}</span>
+    <button *ngIf="classeSezioneAnno" mat-button class="_pos-absolute_i t10 l10  _btn-text" (click)="drawer.toggle()">
+        Classe: <span >{{classeSezioneAnno.classeSezione!.classe!.descrizione2}} {{classeSezioneAnno.classeSezione!.sezione}}</span>
     </button>
 </div>
 
 <mat-drawer-container style="display: inline">
-    <mat-drawer class="transparent"  #drawer mode="side" opened="true">
+    <mat-drawer class=" w330px transparent"  #drawer mode="side" opened="true">
         <app-classi-sezioni-anni-list 
             [dove] = "'classi-dashboard'"
             (annoID)="annoIdEmitted($event)"

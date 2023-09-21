@@ -1,9 +1,15 @@
 
 
 <mat-card appearance="outlined" style="height: 100%;" class="card mat-elevation-z8 pb10">
-    <mat-card-header>
-        <h2 class="_titolo-pagina-home">Scadenze</h2>
-    </mat-card-header>
+
+
+        <mat-card-header class="h30px">
+          <h2>Notifiche</h2>
+        </mat-card-header>
+        <mat-checkbox color="primary" (click)="toggleAttivi()">
+          mostra notifiche già lette
+        </mat-checkbox>
+
 
     <mat-card appearance="outlined" *ngFor="let element of (obsMieScadenze$ | async)" class="mt10 ml10 mr10">
  

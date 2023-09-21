@@ -13,7 +13,6 @@ import { PersonaFormComponent }                 from '../persone/persona-form/pe
 import { IscrizioneRisposteComponent }          from './iscrizione-risposte/iscrizione-risposte.component';
 
 //services
-import { PersoneService }                       from '../persone/persone.service';
 import { IscrizioniService }                    from '../iscrizioni/iscrizioni.service';
 import { IscrizioneRisposteService }            from './iscrizione-risposte/iscrizione-risposte.service';
 import { OpenXMLService }                       from '../utilities/openXML/open-xml.service';

@@ -105,6 +105,9 @@ export class DomandeListComponent implements OnInit{
         this.sortCustom(); 
         this.matDataSource.sort = this.sort; 
         this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
+        this.maxSeq = val.reduce((max, item) => {
+          return item.seq! > max ? item.seq! : max;
+        }, 0);
       }
     );
   }
@@ -117,7 +120,7 @@ export class DomandeListComponent implements OnInit{
       panelClass: 'add-DetailDialog',
       width: '800px',
       height: '650px',
-      data: { domandaID:  0}
+      data: { domandaID:  0, maxSeq: this.maxSeq}
     };
     const dialogRef = this._dialog.open(DomandaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() => {
@@ -130,7 +133,7 @@ export class DomandeListComponent implements OnInit{
       panelClass: 'add-DetailDialog',
       width: '800px',
       height: '650px',
-      data: { domandaID: domandaID }
+      data: { domandaID: domandaID, maxSeq: this.maxSeq }
     };
     const dialogRef = this._dialog.open(DomandaEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() => this.loadData());

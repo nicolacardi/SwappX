@@ -18,6 +18,7 @@ import { TipiScadenzaService }                  from '../../tipiscadenza.service
 
 //classes
 import { CAL_TipoScadenza }                     from 'src/app/_models/CAL_TipoScadenza';
+import { DialogDataTipoScadenzaEdit }               from 'src/app/_models/DialogData';
 
 //#endregion
 @Component({
@@ -29,7 +30,7 @@ export class TipoScadenzaEditComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
-  tiposcadenza$!:                                    Observable<CAL_TipoScadenza>;
+  tiposcadenza$!:                               Observable<CAL_TipoScadenza>;
 
   form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
@@ -38,20 +39,21 @@ export class TipoScadenzaEditComponent implements OnInit {
 
 //#region ----- Constructor --------------------
   constructor(public _dialogRef: MatDialogRef<TipoScadenzaEditComponent>,
-            @Inject(MAT_DIALOG_DATA) public tiposcadenzaID: number,
-            private svcTipiScadenza:                    TipiScadenzaService,
-            private _loadingService :                   LoadingService,
-            private fb:                                 UntypedFormBuilder, 
-            public _dialog:                             MatDialog,
-            private _snackBar:                          MatSnackBar) { 
+            @Inject(MAT_DIALOG_DATA) public data: DialogDataTipoScadenzaEdit,
+            private svcTipiScadenza:            TipiScadenzaService,
+            private _loadingService :           LoadingService,
+            private fb:                         UntypedFormBuilder, 
+            public _dialog:                     MatDialog,
+            private _snackBar:                  MatSnackBar) { 
 
     _dialogRef.disableClose = true;
     
     this.form = this.fb.group({
-      id:                         [null],
-      descrizione:                ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
-      color:                      [''],
-      ckNota:                     ['']
+      id:                                       [null],
+      descrizione:                              ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
+      color:                                    [''],
+      ckNota:                                   [''],
+      seq:                                      [''],
     });
 
   }
@@ -65,9 +67,9 @@ export class TipoScadenzaEditComponent implements OnInit {
 
   loadData(){
 
-    if (this.tiposcadenzaID && this.tiposcadenzaID + '' != "0") {
+    if (this.data.tipoScadenzaID && this.data.tipoScadenzaID + '' != "0") {
 
-      const obsTiposcadenza$: Observable<CAL_TipoScadenza> = this.svcTipiScadenza.get(this.tiposcadenzaID);
+      const obsTiposcadenza$: Observable<CAL_TipoScadenza> = this.svcTipiScadenza.get(this.data.tipoScadenzaID);
       const loadTiposcadenza$ = this._loadingService.showLoaderUntilCompleted(obsTiposcadenza$);
       //TODO: capire perchè serve sia alunno | async e sia il popolamento di form
       this.tiposcadenza$ = loadTiposcadenza$
@@ -90,7 +92,9 @@ export class TipoScadenzaEditComponent implements OnInit {
 
   save(){
 
-    if (this.form.controls['id'].value == null) 
+    if (this.form.controls['id'].value == null) {
+      this.form.controls.seq.setValue(this.data.maxSeq +1);
+      console.log("tiposcadenza-edit - save - ",this.data.maxSeq, this.form.value);
       this.svcTipiScadenza.post(this.form.value).subscribe({
           next: res=> {
             this._dialogRef.close();
@@ -99,6 +103,7 @@ export class TipoScadenzaEditComponent implements OnInit {
           error: err=> (
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']}))
         });
+    }
     else 
       this.svcTipiScadenza.put(this.form.value).subscribe({
           next: res=> {
@@ -118,9 +123,10 @@ export class TipoScadenzaEditComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       result => {
         if(result){
-          this.svcTipiScadenza.delete(Number(this.tiposcadenzaID)).subscribe({
+          this.svcTipiScadenza.delete(Number(this.data.tipoScadenzaID)).subscribe({
             next: res=>{
               this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
+              this.svcTipiScadenza.renumberSeq().subscribe();
               this._dialogRef.close();
             },
             error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})

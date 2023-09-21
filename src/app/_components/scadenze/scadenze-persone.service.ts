@@ -37,7 +37,7 @@ export class ScadenzePersoneService {
     //http://213.215.231.4/swappX/api/CAL_ScadenzePersone/listByScadenza/4
   }
   
-  listByPersonaID(personaID: number): Observable<CAL_ScadenzaPersone[]>{
+  listByPersona(personaID: number): Observable<CAL_ScadenzaPersone[]>{
     return this.http.get<CAL_ScadenzaPersone[]>(environment.apiBaseUrl+'CAL_ScadenzePersone/ListByPersona/'+personaID); 
     //http://213.215.231.4/swappX/api/CAL_ScadenzePersone/ListByPersona/3
   }

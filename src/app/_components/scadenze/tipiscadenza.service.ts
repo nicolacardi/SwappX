@@ -36,6 +36,16 @@ export class TipiScadenzaService {
     return this.http.delete( environment.apiBaseUrl  + 'CAL_TipiScadenza/' + tiposcadenzaID);    
   }
 
+  updateSeq(seqInitial: number, seqFinal: number): Observable <any>{
+    //console.log(seqInitial, seqFinal);
+    return this.http.put(environment.apiBaseUrl+'CAL_TipiScadenza/UpdateSeq/'+seqInitial+'/'+seqFinal, seqInitial);
+    //http://213.215.231.4/swappX/api/CAL_TipiScadenza/UpdateSeq/1/2
+  }
+
+  renumberSeq() {
+    const url = `${environment.apiBaseUrl}CAL_TipiScadenza/RenumberSeq`;
+    return this.http.put(url, null);
+  }
 
 
 }

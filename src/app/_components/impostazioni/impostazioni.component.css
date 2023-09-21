@@ -37,4 +37,6 @@ mat-card-header {
   }
 
 
-  
+  .impostazioni-height {
+    height: calc(100vh - 64px) !important;
+  }
