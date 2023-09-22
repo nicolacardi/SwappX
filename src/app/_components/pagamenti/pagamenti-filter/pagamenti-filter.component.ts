@@ -88,7 +88,6 @@ export class PagamentiFilterComponent implements OnInit {
   }
 
   isFormClean(): boolean {
-    console.log(this.dataDal.value, this.dataAl.value);
     return (
 
       (this.tipoPagamentoFilter.value === null || this.tipoPagamentoFilter.value === '') &&

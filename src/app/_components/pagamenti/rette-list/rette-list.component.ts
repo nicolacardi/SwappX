@@ -356,7 +356,6 @@ matDataSource = new MatTableDataSource<PAG_RettaPivot>();
     //differisce da quelle degli altri component perchè questa riceve un filterValue e non un event: serve così perchè viene usata anche da rette-page
     this.filterValue = filterValue;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
-    console.log("afwc", JSON.stringify(this.filterValues), this.filterValue.trim().toLowerCase());
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
 
@@ -407,7 +406,6 @@ matDataSource = new MatTableDataSource<PAG_RettaPivot>();
 
 //#region ----- Right Click -------
   onRightClick(event: MouseEvent, element: PAG_Retta) { 
-    console.log ("right click");
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
     this.menuTopLeftPosition.y = event.clientY + 'px'; 

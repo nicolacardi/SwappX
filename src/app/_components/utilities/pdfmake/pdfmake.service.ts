@@ -85,7 +85,7 @@ export class PdfmakeService {
       if (rptFile[i].tipo == "ImageBase64"){
         //estraggo le dimensioni del blocco e le dimensioni dell'immagine interna
 
-        console.log ("rptFile[i]", rptFile[i]);
+        // console.log ("rptFile[i]", rptFile[i]);
         const X = rptFile[i].X*f;
         const Y = rptFile[i].Y*f;
         const W = rptFile[i].W*f;

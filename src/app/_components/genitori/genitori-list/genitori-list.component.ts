@@ -189,7 +189,7 @@ export class GenitoriListComponent implements OnInit {
     this._navigationService.getAlunno().subscribe( val=>{
       if (val!= '') {
         this.passedAlunno = val;
-        console.log("genitori-list - ngOnInit - this.passedAlunno", this.passedAlunno);
+        // console.log("genitori-list - ngOnInit - this.passedAlunno", this.passedAlunno);
         this.toggleDrawer.emit();
         this.genitoriFilterComponent.nomeCognomeAlunnoFilter.setValue(val);
         this.loadData(); 

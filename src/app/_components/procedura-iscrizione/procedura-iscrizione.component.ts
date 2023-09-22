@@ -156,22 +156,21 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   }
 
-  async salvaRisposte(tipo: string) {
+  async salvaRisposte(contesto: string) {
 
     //ho spostato in iscrizione-risposte la save...da testare
-    if (tipo == 'Consensi')          this.ConsensiFormComponent.save(tipo);
-    if (tipo == 'DatiEconomici')    this.DatiEconomiciFormComponent.save(tipo);
+    if (contesto == 'Consensi')          this.ConsensiFormComponent.save(contesto);
+    if (contesto == 'DatiEconomici')    this.DatiEconomiciFormComponent.save(contesto);
     
 
     return;
-    await firstValueFrom(this.svcIscrizioneRisposte.deleteByIscrizioneAndTipo(this.iscrizioneID, tipo));
+    await firstValueFrom(this.svcIscrizioneRisposte.deleteByIscrizioneAndTipo(this.iscrizioneID, contesto));
 
     let formValues! : any;
 
-    if (tipo == 'Consensi')          formValues = this.ConsensiFormComponent.formRisposte.value;
-    if (tipo == 'DatiEconomici')    formValues = this.DatiEconomiciFormComponent.formRisposte.value;
+    if (contesto == 'Consensi')          formValues = this.ConsensiFormComponent.formRisposte.value;
+    if (contesto == 'DatiEconomici')    formValues = this.DatiEconomiciFormComponent.formRisposte.value;
 
-    console.log("formValues", formValues);
     //devo trasformare questo ogetto in un altro
     //ad esempio da
     // const formValues = {
@@ -208,7 +207,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
 
     for (const key in formValues) {
-      console.log("***************************");
+      // console.log("***************************");
 
       // console.log("key",key);
       if (formValues.hasOwnProperty(key)) {
@@ -271,13 +270,13 @@ export class ProceduraIscrizioneComponent implements OnInit {
           risposta8 = parseInt(value) === 8 ? true : false;
           risposta9 = parseInt(value) === 9 ? true : false;
         }
-        console.log("proceedtoSave", proceedToSave);
+        // console.log("proceedtoSave", proceedToSave);
         if (proceedToSave) {
           let form: CLS_IscrizioneRisposta;
           form  = {
             iscrizioneID: this.iscrizioneID,
             domandaID: domandaID,
-            tipo: tipo,
+            // tipo: contesto,
             rispostaLibera: rispostaLibera,
             risposta1: risposta1,
             risposta2: risposta2,
@@ -289,7 +288,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
             risposta8: risposta8,
             risposta9: risposta9,
           };
-          console.log (form);
+          // console.log (form);
           this.svcIscrizioneRisposte.post(form).subscribe(
             {
               next: res=> {
@@ -462,11 +461,11 @@ export class ProceduraIscrizioneComponent implements OnInit {
     //estraggo le domande e le risposte
 
     //La seguente modalità crea in automatico una TABELLA con le scelte operate nei consensi sui dati economici
-    //in questo caso, quindi, non si fa uso dei tag assegnati a ciascun consenso nel campo "titolo"
-    this.svcIscrizioneRisposte.listByIscrizione(this.iscrizioneID)
+    //in questo caso, quindi, non si fa uso dei tag assegnati a ciascun consenso nel campo "titolo" [strada che mi piace meno]
+    this.svcIscrizioneRisposte.listByIscrizioneAndContesto(this.iscrizioneID, "DatiEconomici")
     // .subscribe(val=>console.log("val", val));
     .pipe( 
-      map(res=> res.filter((x) => x.tipo == "DatiEconomici")), 
+
       tap (questions => { 
 
         let tagFields;
@@ -505,7 +504,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
           tagTableTitle: "ConsensiDatiEconomici",
           tagTableRows: tagTableRows.map(tagFields => ({ tagFields })),
         };
-        console.log ("tagTable", tagTable);
+        // console.log ("tagTable", tagTable);
 
         tagDocument.tagTables!.push(tagTable);
         }

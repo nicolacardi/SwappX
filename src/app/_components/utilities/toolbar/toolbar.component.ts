@@ -91,7 +91,7 @@ export class ToolbarComponent implements OnInit{
   }
 
   email() {
-    console.log (this.emailAddresses);
+    // console.log (this.emailAddresses);
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'indirizzi email copiati - incollarli in una nuova mail', panelClass: ['green-snackbar']});
   }
 

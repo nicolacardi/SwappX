@@ -63,7 +63,6 @@ export class PagelleAlunnoListComponent {
     
           loadPagelle$.subscribe( 
             pagelle =>   {
-              console.log("pagelle",pagelle)
               this.matDataSource.data = pagelle;
             }
           );

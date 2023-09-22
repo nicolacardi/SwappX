@@ -267,7 +267,7 @@ export class TemplateComponent implements OnInit {
         rptFile = this._paginator.paginatorBuild(rptFile, blocchi[i], this.objFields);
         currPaginaID = blocchi[i].paginaID;
       }
-      console.log ("rptFile", rptFile);
+      // console.log ("rptFile", rptFile);
       this.savePdf(rptFile);
     })
   }
@@ -310,7 +310,7 @@ export class TemplateComponent implements OnInit {
 
     this.selectedRowIndex = templateID;
 
-    console.log (templateID);
+    // console.log (templateID);
     this.templateID = templateID;
     this.loadData();  //Serve?
   }

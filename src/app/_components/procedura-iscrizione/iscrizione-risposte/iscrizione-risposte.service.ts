@@ -32,6 +32,11 @@ export class IscrizioneRisposteService {
     //http://213.215.231.4/swappX/api/CLS_IscrizioneRisposte/ListByIscrizione/328
   }
 
+  listByIscrizioneAndContesto(iscrizioneID: number, contesto: string): Observable<CLS_IscrizioneRisposta[]>{
+    return this.http.get<CLS_IscrizioneRisposta[]>(environment.apiBaseUrl+'CLS_IscrizioneRisposte/ListByIscrizioneAndContesto/'+iscrizioneID+'/'+contesto);   
+    //http://213.215.231.4/swappX/api/CLS_IscrizioneRisposte/ListByIscrizioneAndContesto/306/DatiEconomici
+  }
+
   get(iscrizioneRispostaID: any): Observable<CLS_IscrizioneRisposta>{
     return this.http.get<CLS_IscrizioneRisposta>(environment.apiBaseUrl+'CLS_IscrizioneRisposte/'+iscrizioneRispostaID);
     //http://213.215.231.4/swappX/api/CLS_IscrizioneRisposte/3
@@ -49,6 +54,11 @@ export class IscrizioneRisposteService {
   deleteByIscrizioneAndTipo (iscrizioneID: number, tipo: string) {
     return this.http.delete( environment.apiBaseUrl  + 'CLS_IscrizioneRisposte/DeleteByIscrizioneAndTipo/'+iscrizioneID+'/'+tipo);
     //http://213.215.231.4/swappX/api/CLS_IscrizioneRisposte/DeleteByIscrizioneAndTipo/4/Consensi
+  }
+
+  deleteByIscrizioneAndContesto (iscrizioneID: number, contesto: string) {
+    return this.http.delete( environment.apiBaseUrl  + 'CLS_IscrizioneRisposte/DeleteByIscrizioneAndContesto/'+iscrizioneID+'/'+contesto);
+    //http://213.215.231.4/swappX/api/CLS_IscrizioneRisposte/DeleteByIscrizioneAndContesto/4/Consensi
   }
 
   delete(iscrizioneRispostaID: number): Observable <any>{

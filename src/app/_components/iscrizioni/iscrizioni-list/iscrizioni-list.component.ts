@@ -627,7 +627,7 @@ export class IscrizioniListComponent implements OnInit {
           error: err=> (this._snackBar.openFromComponent(SnackbarComponent, {data: "Errore durante l'invio", panelClass: ['red-snackbar']}))
         });
       } else {
-        console.log ("indirizzo mail mancante per il genitore", iscrizione.alunno._Genitori![i].genitore!.persona.nome+ " "+ iscrizione.alunno._Genitori![i].genitore!.persona.cognome);
+        // console.log ("indirizzo mail mancante per il genitore", iscrizione.alunno._Genitori![i].genitore!.persona.nome+ " "+ iscrizione.alunno._Genitori![i].genitore!.persona.cognome);
       }
       //console.log (mailAddressesNo, "mailAddressesNo");
       //console.log (mailAddresses, "mailAddresses");

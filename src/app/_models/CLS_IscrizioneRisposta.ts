@@ -2,7 +2,7 @@ import { _UT_Domanda } from "./_UT_Domanda";
 
 export interface CLS_IscrizioneRisposta {
         id?:                                     number;
-        tipo:                                   string;
+        // tipo:                                   string;
         iscrizioneID:                           number;
         domandaID:                              number;
         rispostaLibera:                         string;

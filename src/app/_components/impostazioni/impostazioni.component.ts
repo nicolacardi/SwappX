@@ -156,9 +156,9 @@ export class ImpostazioniComponent implements OnInit {
     const fd = new FormData();
     fd.append('file', this.selectedFile, this.selectedFile.name);
     this.http.post('http://example.com/upload', fd)
-      .subscribe(res => {
-        console.log(res);
-      });
+      .subscribe(
+        // res => {console.log(res);}
+      );
   }
 
 }  

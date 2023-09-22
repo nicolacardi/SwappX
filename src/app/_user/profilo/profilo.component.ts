@@ -93,7 +93,6 @@ export class ProfiloComponent implements OnInit {
         Utility.compressImage( this.imgFile, 200, 200)
                .then(compressed => {
                 this.immagineDOM.nativeElement.src = compressed;
-                console.log ("compressed", compressed);
               });
 
       };

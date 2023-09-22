@@ -88,7 +88,7 @@ export class RisorsaEditComponent {
       .pipe(
           tap(
             file => {
-              console.log ("risorsa-edit - loadData - file ", file);
+              // console.log ("risorsa-edit - loadData - file ", file);
               this.form.patchValue(file)
             }
           )
@@ -105,7 +105,7 @@ export class RisorsaEditComponent {
 
   save(){
     this.form.controls.userIns.setValue(this.currUser.personaID);
-    console.log ("risorsa-edit- save - this.form", this.form.value);
+    // console.log ("risorsa-edit- save - this.form", this.form.value);
     this.form.controls.tipoFile.setValue(Utility.extractMIMEType(this.form.controls.base64.value));
     if (this.form.controls['id'].value == null) {
       this.svcRisorse.post(this.form.value).subscribe({

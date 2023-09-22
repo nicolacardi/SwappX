@@ -115,7 +115,7 @@ export class VerbaliListComponent implements OnInit, OnChanges {
 
     this.form.controls['selectAnnoScolastico'].valueChanges.subscribe(
       res => {
-        console.log("NON PASSA MAI DI QUA!", res);
+        // console.log("NON PASSA MAI DI QUA!", res);
 
         this.loadData();
       }
@@ -131,7 +131,6 @@ export class VerbaliListComponent implements OnInit, OnChanges {
 
     
     this.annoID = this.form.controls.selectAnnoScolastico.value;
-    console.log (this.annoID);
     this.showPageTitle = true;
     this.showTableRibbon = true;
     

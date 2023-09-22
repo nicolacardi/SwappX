@@ -171,18 +171,18 @@ export class PaginatorService {
 
         let nomeProprieta = campo.replace(tabella_, "");
 
-        console.log("nomeProprieta", nomeProprieta);
-        console.log("datiAlunni", datiAlunni);
+        // console.log("nomeProprieta", nomeProprieta);
+        // console.log("datiAlunni", datiAlunni);
         //ora entro nella singola cella che è da ripetere tante volte quanti i valori che vengono trovati per quel campo dentro objFields
         for (let j = 0; j < datiAlunni.length; j++) {
 
-          console.log ("cella.testo", cella.testo);
+          // console.log ("cella.testo", cella.testo);
           //console.log("datiAlunni[j]", datiAlunni[j]);
           let cellaTestoNoTabella =  cella.testo.replace(tabella_, "");
-          console.log ("cella.testo dopo replace", cellaTestoNoTabella);
+          // console.log ("cella.testo dopo replace", cellaTestoNoTabella);
 
           cleanText = this.replacer(cellaTestoNoTabella, datiAlunni[j]);
-          console.log("cleanText", cleanText);
+          // console.log("cleanText", cleanText);
           
           //let cleanText = this.replacer(cella.testo, objFields);
           let topush = {

@@ -77,8 +77,7 @@ export class VotiObiettiviEditComponent implements OnInit {
 //#region ----- Altri metodi -------------------
 
   changeSelectObiettivo(element: DOC_PagellaVotoObiettivo, valLivello: number) {
-    //console.log ("element", element);
-    console.log ("valLivello", valLivello);
+    //console.log ("voti-obiettivi-edit - changeSelectObiettivo - element", element, "valLivello", valLivello);
     if (element.id !=0) {
 
       let formDataPagella: DOC_PagellaVotoObiettivo = {

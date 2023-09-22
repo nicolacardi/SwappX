@@ -122,7 +122,6 @@ export class TipiScadenzaListComponent implements OnInit {
   }
 
   drop(event: any){
-    console.log (event.previousIndex, event.currentIndex);
     this.svcTipiscadenza.updateSeq(event.previousIndex+1, event.currentIndex+1 )
     .subscribe(res=> this.loadData());
   }

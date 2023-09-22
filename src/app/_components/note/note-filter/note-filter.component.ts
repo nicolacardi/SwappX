@@ -45,9 +45,6 @@ constructor() {}
 
   applyFilterDx(field: keyof typeof this.noteListComponent.filterValues, val: string) {
     //this.resetFilterSx();
-    console.log(val);
-    console.log(field);
-    console.log(this.noteListComponent.filterValues);
     this.noteListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.noteListComponent.matDataSource.filter = JSON.stringify(this.noteListComponent.filterValues);
     // this.noteListComponent.updateEmailAddresses();

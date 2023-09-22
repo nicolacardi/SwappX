@@ -91,7 +91,7 @@ export class AlunnoFormComponent {
   }
 
   save() :Observable<any>{
-    console.log("save di alunno form -form:", this.form.value);
+    // console.log("save di alunno form -form:", this.form.value);
     if (this.alunnoID == null || this.alunnoID == 0) {
       return this.svcAlunni.post(this.form.value)
     }

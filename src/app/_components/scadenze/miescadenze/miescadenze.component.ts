@@ -79,7 +79,7 @@ export class MieScadenzeComponent implements OnInit {
     );;
     
 
-    scadenze$.subscribe(val=> console.log(this.ckMostraScadenzeLette, val));
+    scadenze$.subscribe();
     this.obsMieScadenze$ =this._loadingService.showLoaderUntilCompleted(scadenze$);
   }
 

@@ -119,7 +119,7 @@ export class PagellaVotoEditComponent implements OnInit  {
 
     //nel caso la pagella ancora non sia stata creata, va inserita
     if (this.objPagella.id == -1) {
-      console.log("pagella voto-edit - save - Pagella.id = -1: Non C'è una Pagella --->post pagella e poi postpagellaVoto");
+      // console.log("pagella voto-edit - save - Pagella.id = -1: Non C'è una Pagella --->post pagella e poi postpagellaVoto");
 
       this.svcPagella.post(this.objPagella)
         .pipe (

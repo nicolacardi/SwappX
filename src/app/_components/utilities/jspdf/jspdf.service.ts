@@ -229,7 +229,7 @@ export class JspdfService { defaultColor!:          string;
     })
 
     await promise();
-    console.log ("jspdf -  addTextHtml - aggiunto blocco in stampa in X Y W H", X, Y, W, H)
+    // console.log ("jspdf -  addTextHtml - aggiunto blocco in stampa in X Y W H", X, Y, W, H)
     docPDF.setFillColor(backgroundColor);
     docPDF.setDrawColor("222222");
     docPDF.setLineWidth (0.3);
@@ -346,14 +346,14 @@ export class JspdfService { defaultColor!:          string;
 
 
     for (let i = 1; i < rptPagella.length; i++) {
-      console.log ("i", i);
+
 
       let element = rptPagella[i];
       switch(element.tipo){
         case "SheetDefault":
           break;
         case "Image":{
-          console.log ("element.tipo Image");
+          // console.log ("element.tipo Image");
 
           const ImageUrl = "./assets/photos/" + element.value;
           await this.addImage(doc,ImageUrl, element.X ,element.Y, element.W);
@@ -491,7 +491,7 @@ export class JspdfService { defaultColor!:          string;
           bodyObj[i].push({ content: body[i][j], colSpan: 1, rowSpan: rowSpan, styles:{font: fontName, lineWidth: cellLineWidth, fillColor: cellFill, lineColor: cellLineColor} })
       }
     }
-    console.log ("headObj", headObj);
+    // console.log ("headObj", headObj);
 
     autoTable(docPDF, {
       //startY: Y,
@@ -1009,7 +1009,7 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
   
 
   private async addImage(docPDF: jsPDF, ImageUrl: string, x: string, y: string,w: string ) {
-    console.log ("addImage");
+    // console.log ("addImage");
     let imgWidth = 0;
     let imgHeight = 0;
 
@@ -1035,7 +1035,7 @@ private stampaRigaGiudizio (bodyObj: any, rptPagella: any, PagellaVoto: any , i:
     });
 
     await loadImage(ImageUrl);
-    console.log ("img", img);
+    // console.log ("img", img);
     docPDF.addImage(img, 'png', parseFloat(x), parseFloat(y), parseFloat(w), parseFloat(w)*(imgHeight/imgWidth), undefined,'FAST');
   }
 

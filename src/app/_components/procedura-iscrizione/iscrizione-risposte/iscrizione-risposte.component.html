@@ -62,7 +62,7 @@
 
                     <mat-radio-group [formControlName]="element.id" 
                         *ngIf="element.numOpzioni > 1 && element.tipo == 'Scelta Singola'" 
-                        (change)="debugShowForm()">
+                        >
                         <mat-radio-button *ngIf="element.numOpzioni > 0" [value]="'1'">{{element.testo1}}</mat-radio-button>
                         <mat-radio-button *ngIf="element.numOpzioni > 1" [value]="'2'">{{element.testo2}}</mat-radio-button>
                         <mat-radio-button *ngIf="element.numOpzioni > 2" [value]="'3'">{{element.testo3}}</mat-radio-button>

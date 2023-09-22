@@ -104,7 +104,7 @@ export class ChangePswExtComponent {
       fullName:     ''                          
     };
 
-    console.log ("userNoTmpPassword", userNoTmpPassword);
+    // console.log ("userNoTmpPassword", userNoTmpPassword);
 
     this.svcUser.ResetPassword(this.user.id, this.form.controls.newPassword.value).subscribe({
       next: res =>  {

@@ -90,16 +90,15 @@ constructor(private svcDomande:                 DomandeService,
     // this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione;})
     // this.svcRette.sumConcordateByIscrizione(this.iscrizioneID).subscribe(rettaConcordata=> {this.rettaConcordata = rettaConcordata;})
 
-    this.loadData();
+    //this.loadData();
   }
 
   loadData() {
-
     if (this.iscrizioneID && this.contesto) {
       // console.log("iscrizione-risposte - loadData");
       this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione;})
       this.svcRette.sumConcordateByIscrizione(this.iscrizioneID).subscribe(rettaConcordata=> {this.rettaConcordata = rettaConcordata;})
-      // console.log("iscrizione-risposte - contesto", this.contesto);
+      // console.log("iscrizione-risposte - contesto", this.contesto, this.iscrizioneID);
 
       //this.obsDomande$ = this.svcDomande.list()
 
@@ -121,7 +120,7 @@ constructor(private svcDomande:                 DomandeService,
           this.questions = questions;
           this.formRisposte.reset();
             this.questions.forEach((element) => {
-              console.log ("element", element);
+              // console.log ("iscrizione-risposte - loadData - element", element);
               if (element.tipo == 'Scelta Singola') {
                 if (element.numOpzioni >1) {
                   this.formRisposte.addControl(element.id, this.fb.control('', Validators.required));
@@ -198,19 +197,14 @@ constructor(private svcDomande:                 DomandeService,
     )
   }
 
-
-  debugShowForm() {
-    console.log(this.formRisposte);
-
-  }
+  async save(contesto: string) {
+    //cancello prima il record di iscrizione risposte che ha iscrizione e 
+    await firstValueFrom(this.svcIscrizioneRisposte.deleteByIscrizioneAndContesto(this.iscrizioneID, contesto));
 
 
-
-  async save(tipo: string) {
-    await firstValueFrom(this.svcIscrizioneRisposte.deleteByIscrizioneAndTipo(this.iscrizioneID, tipo));
     let formValues! : any;
     formValues = this.formRisposte.value;
-    console.log("formValues", formValues);
+    // console.log("iscrizione-risposte - save - formValues", formValues);
     //devo trasformare questo oggetto in un altro
     //ad esempio da
     // const formValues = {
@@ -247,7 +241,7 @@ constructor(private svcDomande:                 DomandeService,
 
 
     for (const key in formValues) {
-      console.log("***************************");
+      // console.log("***************************");
 
       // console.log("key",key);
       if (formValues.hasOwnProperty(key)) {
@@ -310,13 +304,13 @@ constructor(private svcDomande:                 DomandeService,
           risposta8 = parseInt(value) === 8 ? true : false;
           risposta9 = parseInt(value) === 9 ? true : false;
         }
-        console.log("proceedtoSave", proceedToSave);
+        // console.log("proceedtoSave", proceedToSave);
         if (proceedToSave) {
           let form: CLS_IscrizioneRisposta;
           form  = {
             iscrizioneID: this.iscrizioneID,
             domandaID: domandaID,
-            tipo: tipo,
+            // tipo: contesto,
             rispostaLibera: rispostaLibera,
             risposta1: risposta1,
             risposta2: risposta2,
@@ -328,7 +322,7 @@ constructor(private svcDomande:                 DomandeService,
             risposta8: risposta8,
             risposta9: risposta9,
           };
-          console.log ("iscrizione-risposte - save - form to post", form);
+          // console.log ("iscrizione-risposte - save - form to post", form);
           this.svcIscrizioneRisposte.post(form).subscribe( //SEMBRA FUNZIONARE MA questa è una POST...E QUANDO DEVE FARE UNA PUT??????**************************
             {
               next: res=> {

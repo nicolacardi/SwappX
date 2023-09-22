@@ -246,7 +246,6 @@ export class RettaEditComponent implements OnInit {
 
   selected(event: MatAutocompleteSelectedEvent): void {
     //evento triggered su selezione di una voce tra quelle proposte
-    console.log ("selected", event.option.id);
     this.data.alunnoID = parseInt(event.option.id);
     this.formRetta.controls['alunnoID'].setValue(parseInt(event.option.id));
     this.loadData();

@@ -32,7 +32,7 @@ export class PhotocropComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log (this.data.file);
+    // console.log (this.data.file);
     const [file] = this.data.file;
     this.w = 100;
     const reader = new FileReader();

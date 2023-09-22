@@ -151,7 +151,7 @@ export class DomandaEditComponent implements OnInit {
     for (let j = testoreordered.length; j < 5; j++) testo[j].setValue('');
     
     this.form.controls.numOpzioni.setValue(n);
-    console.log("domanda-edit - save - sto per salvare form.value", this.form.value);
+    // console.log("domanda-edit - save - sto per salvare form.value", this.form.value);
     if (this.form.controls['id'].value == null) {
       this.form.controls.seq.setValue(this.data.maxSeq +1);
       this.svcDomande.post(this.form.value).subscribe({

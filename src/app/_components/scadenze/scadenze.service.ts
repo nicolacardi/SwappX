@@ -30,23 +30,14 @@ export class ScadenzeService {
     //http://213.215.231.4/swappX/api/CAL_Scadenze/ListByNota/80
   }
 
-
-
   get(scadenzaID: any): Observable<CAL_Scadenza>{
     return this.http.get<CAL_Scadenza>(environment.apiBaseUrl+'CAL_Scadenze/'+scadenzaID);
     //http://213.215.231.4/swappX/api/CAL_Scadenze/1
   }
 
-
-
-
-
   put(formData: any): Observable <any>{
-    console.log ("lezioni.service - put - formData", formData);
     return this.http.put( environment.apiBaseUrl  + 'CAL_Scadenze/' + formData.id , formData);    
   }
-
-
 
   post(formData: any): Observable <any>{
     formData.id = 0;

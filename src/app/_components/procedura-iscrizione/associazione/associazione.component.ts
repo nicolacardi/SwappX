@@ -89,9 +89,9 @@ export class AssociazioneComponent implements OnInit{
       .subscribe(
         () => {
 
-          console.log ("personaID", this.genitori[i].persona.id);
-          console.log ("in db c'è:", this.genitori[i].persona.socio);
-          console.log ("in html c'è:", this.genitori[i].isChecked);
+          // console.log ("associazione - save personaID", this.genitori[i].persona.id);
+          // console.log ("in db c'è:", this.genitori[i].persona.socio);
+          // console.log ("in html c'è:", this.genitori[i].isChecked);
 
           //solo nel caso seguente devo inserire un nuovo record con una richiesta di associazione
           if (!this.genitori[i].persona.socio && this.genitori[i].isChecked) {
@@ -102,7 +102,6 @@ export class AssociazioneComponent implements OnInit{
               tipoSocioID: 1,
               dtRichiesta: dtRichiesta.toISOString()
             }
-            console.log ("formSocio", formSocio);
             this.svcSoci.post(formSocio)
             .subscribe(
               ()=>this.loadData() //se una volta salvato si vuole che il check box sia bloccato...

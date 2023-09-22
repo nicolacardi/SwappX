@@ -37,7 +37,7 @@ export class AuthInterceptor implements HttpInterceptor {
                         error: err=> {
                             if(err.status == 401){
                                 localStorage.removeItem('token');
-                                console.log("auth.interceptor -manca il token: redirect to Login "); //di qui non dovrebbe mai passare
+                                // console.log("auth.interceptor -manca il token: redirect to Login "); //di qui non dovrebbe mai passare
                                        this.svcUser.Logout(); //se c'è il token ma per esempio è quello vecchio bisogna essere cacciati fuori         
                                 this.router.navigateByUrl('/user/login');
                             }

@@ -76,7 +76,7 @@ export class TipoScadenzaEditComponent implements OnInit {
       .pipe(
           tap(
             tiposcadenza => {
-              console.log(tiposcadenza);
+              // console.log(tiposcadenza);
               this.form.patchValue(tiposcadenza)
             }
           )
@@ -94,7 +94,7 @@ export class TipoScadenzaEditComponent implements OnInit {
 
     if (this.form.controls['id'].value == null) {
       this.form.controls.seq.setValue(this.data.maxSeq +1);
-      console.log("tiposcadenza-edit - save - ",this.data.maxSeq, this.form.value);
+      // console.log("tiposcadenza-edit - save - ",this.data.maxSeq, this.form.value);
       this.svcTipiScadenza.post(this.form.value).subscribe({
           next: res=> {
             this._dialogRef.close();
@@ -136,7 +136,7 @@ export class TipoScadenzaEditComponent implements OnInit {
   }
 
   openColorPicker() {
-    console.log( "passo", this.form.controls.color.value);
+    // console.log( "passo", this.form.controls.color.value);
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '350px',

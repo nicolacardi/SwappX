@@ -140,7 +140,7 @@ export class SceltaColonneComponent implements OnInit {
           tableColID:                           this.lstVisible[j].tableColID,
           ordCol:                               j + disabledItems +1,
         }
-        console.log ("scelta-colonne - salvataggio colonna visibile", tableColVisible);
+        // console.log ("scelta-colonne - salvataggio colonna visibile", tableColVisible);
 
         this.svcTableColsVisible.post(tableColVisible).subscribe();
       }

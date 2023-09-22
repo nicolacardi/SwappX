@@ -228,7 +228,7 @@ export class ParametriListComponent implements OnInit {
   }
 
   drop(event: any){
-    console.log (event.previousIndex, event.currentIndex);
+    // console.log ("parametri-list - drop - event.previousIndex, event.currentIndex",event.previousIndex, event.currentIndex);
     this.svcParametri.updateSeq(event.previousIndex+1, event.currentIndex+1 )
     .subscribe(res=> this.loadData());
   }

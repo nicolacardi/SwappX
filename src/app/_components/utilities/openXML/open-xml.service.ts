@@ -16,7 +16,7 @@ export class OpenXMLService {
 
   downloadFile(tagDocument: RPT_TagDocument, nomeFile: string): void {
 
-    console.log ("open-xml.service - downloadFile - tagDocument", tagDocument);
+    // console.log ("open-xml.service - downloadFile - tagDocument", tagDocument);
       //questo service richiede 
       //- un tagDocument, ossia un oggetto complesso di tipo RPT_TagDocument che a sua volta contiene
           //  -il templateName 

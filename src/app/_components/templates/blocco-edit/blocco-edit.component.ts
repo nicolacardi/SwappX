@@ -199,7 +199,7 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
       .pipe(
           tap(
             blocco => {
-              console.log ("blocco-edit loadData, blocco", blocco);
+              // console.log ("blocco-edit loadData, blocco", blocco);
 
               this.tipoBloccoDesc = blocco.tipoBlocco!.descrizione;
               this.form.patchValue(blocco);
@@ -232,7 +232,7 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
     //console.log("blocco-edit - save - form blocco da salvare", this.form.value);
     if (this.tipoBloccoDesc == "Text") {     //********* caso blocco di Testo *******************
       let testoObj! : TEM_BloccoTesto;
-      console.log("this.form.value", this.form.value);
+      // console.log("this.form.value", this.form.value);
       testoObj = {
         bloccoID: this.bloccoID,
         testo: this.form.controls.testo.value? this.form.controls.testo.value: '',
@@ -256,7 +256,7 @@ export class BloccoEditComponent implements OnInit, AfterViewInit {
         })
       } else {            
         // POST forse di qui non si passa MAI??
-        console.log ("post testo");
+        // console.log ("post testo");
         this.svcBlocchiTesti.post(testoObj)
         .pipe (
           tap(bloccoTesto=> {this.form.controls.bloccoTestoID.setValue(bloccoTesto.id)}),

@@ -60,7 +60,7 @@ export class TableShowComponent implements OnChanges{
     this.svcBloccoCella.listByBlocco(this.bloccoID)
     .subscribe(
       cells => {
-        console.log ("cells", cells);
+        // console.log ("cells", cells);
         if (cells.length != 0) {
           
           this.colsArr = [];

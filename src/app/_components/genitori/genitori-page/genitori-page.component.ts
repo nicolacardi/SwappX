@@ -50,7 +50,6 @@ export class GenitoriPageComponent implements OnInit {
 
 //#region ----- Altri metodi -------
   openDrawer() {
-    console.log("genitori-page - openDrawer");
     this.drawerFiltriAvanzati.open();
   }
 

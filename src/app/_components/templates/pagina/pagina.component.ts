@@ -131,7 +131,7 @@ export class PaginaComponent implements OnInit, OnChanges {
 
     this.obsBlocchi$.subscribe(
       res=> {
-        console.log ("pagina-component - loadData - Blocchi di pagina ", this.paginaID, " -> ", res);
+        // console.log ("pagina-component - loadData - Blocchi di pagina ", this.paginaID, " -> ", res);
         this.blocchiArr = res
       }
     )
@@ -158,7 +158,7 @@ export class PaginaComponent implements OnInit, OnChanges {
 
 //#region ----- AddBlock -----------------------
   addBlock(tipoBloccoID: number) {
-    console.log ("pagina.component - addBlock this.paginaID:", this.paginaID);
+    // console.log ("pagina.component - addBlock this.paginaID:", this.paginaID);
     this.svcBlocchi.getMaxPageOrd(this.paginaID)
     .pipe(
       switchMap(pageOrd => {
@@ -180,7 +180,7 @@ export class PaginaComponent implements OnInit, OnChanges {
           borderLeft:                           false
         }
 
-        console.log("addBlock:", objBlocco);
+        // console.log("addBlock:", objBlocco);
         return this.svcBlocchi.post(objBlocco);
       })
     ).subscribe(res => {
@@ -198,7 +198,7 @@ export class PaginaComponent implements OnInit, OnChanges {
         this.svcBlocchiCelle.post(this.defaultBloccoCella).subscribe();
         this.defaultBloccoCella.row = 2;
         this.svcBlocchiCelle.post(this.defaultBloccoCella).subscribe();
-        console.log("pagina.component - addBlock - subscribe");
+        // console.log("pagina.component - addBlock - subscribe");
         this.loadData();
       }
     })

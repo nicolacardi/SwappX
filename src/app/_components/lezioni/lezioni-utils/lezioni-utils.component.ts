@@ -223,7 +223,7 @@ export class LezioniUtilsComponent implements OnInit {
     let dtFromYYYY_MM_DD = dtFrom.toLocaleString('sv').replace(' ', 'T').substring(0,10);  //la data del lunedi della settimana corrente
     let dtToEnd:Date = this._dateAdapter.addCalendarDays(dtFrom, 5);                     //la data del venerdi della settimana corrente
     let dtToEndYYYY_MM_DD = dtToEnd.toLocaleString('sv').replace(' ', 'T').substring(0,10);  //la data del venerdì della settimana corrente
-    console.log(dtFromYYYY_MM_DD, dtToEndYYYY_MM_DD );
+    // console.log(dtFromYYYY_MM_DD, dtToEndYYYY_MM_DD );
 
       this.svcLezioni.propagaEpocaByClasseSezioneAnnoUntilDate(this.data.classeSezioneAnnoID, dtFromYYYY_MM_DD, dtToEndYYYY_MM_DD)
         .subscribe({

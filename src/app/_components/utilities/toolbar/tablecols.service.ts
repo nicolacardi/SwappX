@@ -38,14 +38,11 @@ export class TableColsService {
   }
 
   put(formData: any): Observable <any>{
-    console.log ("put", formData);
     return this.http.put( environment.apiBaseUrl  + '_UT_TablesCols/' + formData.id , formData);    
   }
 
   post(formData: any): Observable <any>{
     formData.id = 0;
-    console.log ("post", formData);
-
     return this.http.post( environment.apiBaseUrl  + '_UT_TablesCols' , formData);  
   }
 

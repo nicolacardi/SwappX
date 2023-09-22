@@ -110,7 +110,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
   ngOnChanges () {
     this.maxWidth = parseInt(this.wBlocco) *3;
     this.maxHeight = parseInt (this.hBlocco) * 3;
-    console.log ("this.maxHeight", this.maxHeight);
+    // console.log ("this.maxHeight", this.maxHeight);
   }
 
   ngOnInit() {
@@ -183,7 +183,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
     this.svcBloccoCella.listByBlocco(this.bloccoID)
     .subscribe(
       cells => {
-        console.log ("cells", cells);
+        // console.log ("cells", cells);
         this.colsArr = [];
         this.colsWArr = [];
         this.rowsArr = [];
@@ -240,7 +240,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
   setupTableRowHeights() {
     //ridimensiona le righe in base a this.colsWArr[i]
     const rows = document.querySelectorAll('.blocco-edit tr');
-    console.log ("setupTableRowHeights", this.rowsHArr);
+    // console.log ("setupTableRowHeights", this.rowsHArr);
     for (let j = 0; j < rows.length; j++){
         (rows[j] as HTMLElement).style.height = `${this.rowsHArr[j]}px`; 
     }
@@ -278,7 +278,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
             if (totHeight <this.maxHeight  || dy <0) {
               (rows[j] as HTMLElement).style.height = `${h + dy}px`;
               this.rowsHArr[j] = h + dy;
-              console.log(this.rowsHArr);
+              // console.log(this.rowsHArr);
             }
           }
         };
@@ -352,7 +352,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
     if (this.colsArr.length <10) {
       //aggiungo una colonna
       this.colsArr.push((this.colsArr[this.colsArr.length-1] + 1));
-      console.log ("this.colsArr", this.colsArr);
+      // console.log ("this.colsArr", this.colsArr);
       //ricalcolo le larghezze di tutte le colonne
       let wtot = this.maxWidth - (this.colsArr.length);
       this.colsWArr = [];
@@ -378,7 +378,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
 
     if (this.colsArr.length >1) {
       this.colsArr.pop();
-      console.log ("this.colsArr", this.colsArr);
+      // console.log ("this.colsArr", this.colsArr);
 
       let wtot = this.maxWidth - (this.colsArr.length);
       this.colsWArr = [];
@@ -435,7 +435,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit{
 
   fontSizeChange(event: Event, j: number, i: number) {
     const select = event.target as HTMLSelectElement
-    console.log(select.value, j, i)
+    // console.log(select.value, j, i)
     this.fontSizeCella[j][i] = select.value;
   }
 

@@ -50,7 +50,6 @@ export class ParametriPageComponent implements OnInit {
 
 //#region ----- Altri metodi -------
   openDrawer() {
-    console.log("parametri-page - openDrawer");
     this.drawerFiltriAvanzati.open();
   }
 

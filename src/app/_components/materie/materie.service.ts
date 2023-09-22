@@ -36,7 +36,6 @@ export class MaterieService {
   }
 
   updateSeq(seqInitial: number, seqFinal: number): Observable <any>{
-    console.log(seqInitial, seqFinal);
     return this.http.put(environment.apiBaseUrl+'MAT_Materie/UpdateSeq/'+seqInitial+'/'+seqFinal, seqInitial);
     //http://213.215.231.4/swappX/api/MAT_Materie/UpdateSeq/1/2
   }

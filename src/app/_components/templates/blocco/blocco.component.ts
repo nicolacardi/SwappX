@@ -564,19 +564,19 @@ export class BloccoComponent implements OnInit {
     event.preventDefault(); 
     this.menuTopLeftPosition.x = event.clientX + 'px'; 
     this.menuTopLeftPosition.y = event.clientY + 'px'; 
-    console.log (this.menuTopLeftPosition);
+    // console.log (this.menuTopLeftPosition);
     this.matMenuTrigger.menuData = {item: blocco}   
     this.matMenuTrigger.openMenu(); 
   }
 
   portaInPrimoPiano(blocco: TEM_Blocco) {
-    console.log("porto in primo piano", blocco.id);
+    // console.log("porto in primo piano", blocco.id);
     this.svcBlocchi.setPageOrdToMax(blocco.id, this.blocco.paginaID).subscribe(()=>this.recordEdited.emit(this.blocco.id!)
     )
   }
   
   portaInSecondoPiano(blocco: TEM_Blocco) {
-    console.log("porto in secondo piano", blocco.id);
+    // console.log("porto in secondo piano", blocco.id);
     this.svcBlocchi.setPageOrdToOne(blocco.id, this.blocco.paginaID).subscribe(()=>this.recordEdited.emit(this.blocco.id!)
     )
   }

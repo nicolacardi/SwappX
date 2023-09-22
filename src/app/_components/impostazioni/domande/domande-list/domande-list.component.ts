@@ -104,7 +104,7 @@ export class DomandeListComponent implements OnInit{
 
     loadDomande$.subscribe(
       val =>   {
-        console.log ("domande-list - loadData - estraggo domande list", val);
+        // console.log ("domande-list - loadData - estraggo domande list", val);
         this.matDataSource.data = val;
         this.sortCustom(); 
         this.matDataSource.sort = this.sort; 
@@ -181,7 +181,7 @@ export class DomandeListComponent implements OnInit{
   }
 
   drop(event: any){
-    console.log (event.previousIndex, event.currentIndex);
+    // console.log ("domande-list - drop - event.previousIndex, event.currentIndex",event.previousIndex, event.currentIndex);
     this.svcDomande.updateSeq(event.previousIndex+1, event.currentIndex+1 )
     .subscribe(res=> this.loadData());
   }

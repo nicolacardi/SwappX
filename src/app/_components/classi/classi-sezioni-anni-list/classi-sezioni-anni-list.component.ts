@@ -332,7 +332,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
 
 
   loadData () {
-    console.log("classi-sezioni-anni-list - loadData - ", this.dove);
+    // console.log("classi-sezioni-anni-list - loadData - ", this.dove);
     let annoID: number;
     annoID = this.form.controls["selectAnnoScolastico"].value;
 
