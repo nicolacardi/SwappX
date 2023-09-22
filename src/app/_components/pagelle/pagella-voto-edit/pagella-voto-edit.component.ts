@@ -85,6 +85,7 @@ export class PagellaVotoEditComponent implements OnInit  {
 
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
     loadPagella$.subscribe(val => { 
+      console.log("pagella-voto-edit - loadData - val", val)
       this.matDataSource.data = val ;
       this.sortCustom();
       this.matDataSource.sort = this.sort; 

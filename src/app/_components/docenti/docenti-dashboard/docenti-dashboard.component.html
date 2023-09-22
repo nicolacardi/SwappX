@@ -29,8 +29,7 @@
         <mat-tab-group (selectedTabChange)="selectedTabValue($event)">
             <mat-tab  *ngIf="classeSezioneAnnoID"  label="Alunni">
                 <div class="_table-container" >
-                    <app-iscrizioni-classe-list  
-                        [dove]="'lista-alunni'" 
+                    <app-iscrizioni-classe-list [dove]="'lista-alunni'" 
                         [classeSezioneAnnoID]="classeSezioneAnnoID">
                     </app-iscrizioni-classe-list>
                 </div>

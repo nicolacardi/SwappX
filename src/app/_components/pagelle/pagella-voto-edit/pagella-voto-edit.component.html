@@ -1,11 +1,10 @@
  <!-- **************************   MAT-TABLE   ******************* -->
-    <table mat-table class="_table-row-low transparent w100"   [dataSource]="matDataSource" matSort >
+    <table mat-table class="_table-row-low transparent"   [dataSource]="matDataSource" matSort >
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
         <ng-container matColumnDef="materia">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="w125px">Materia</th>
             <td  mat-cell *matCellDef="let element">{{element.materia.descrizione}}</td>
-            <!-- <td mat-cell *matCellDef="let element" [innerHTML]="element.alunno.nome|highlight:filterValue"></td> -->
         </ng-container>
 
 <!--A seconda del tipo di voto (1,2,3) compare la input, la mat select oppure l'icona del (+) che apre la finestra di dialogo degli obiettivi-->

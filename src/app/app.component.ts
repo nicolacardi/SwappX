@@ -62,6 +62,7 @@ export class AppComponent implements OnInit {
       this.eventEmitterService.userSubscribeAttiva = this.eventEmitterService.invokeUserEmit.subscribe(
         user => {
           this.currUser = user;
+          console.log ("app.component - ngOnInit currUser", this.currUser);
           //questo è un "captatore" dell'Emit, quindi può funzionare sia in fase di Login che di Logout
           if (user) {
             this.userFullName = this.currUser.fullname;

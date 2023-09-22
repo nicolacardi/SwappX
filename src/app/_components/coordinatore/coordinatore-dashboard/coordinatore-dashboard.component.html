@@ -18,7 +18,7 @@
     
     <mat-drawer-content class="mat-drawer-classi">
         <mat-tab-group >
-            <mat-tab  label="Alunni della classe">
+            <mat-tab  label="Alunni">
                 <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" matTooltip="Iscrivi alunno alla Classe" class="_btn-add _btn-pos-right-1 "  (click)="addAlunnoToClasse()" >
                     <img class="iconaMenu" src="./assets/alunnoPlus.svg">
                 </button>
@@ -33,8 +33,7 @@
                 </button>
                 <!-- <mat-card class=" card mat-elevation-z8" style="height: 100%"> -->
                     <div class="_table-container mt50">
-                        <app-iscrizioni-classe-list  
-                            [dove]="'lista-alunni'" 
+                        <app-iscrizioni-classe-list [dove]="'lista-alunni'" 
                             [classeSezioneAnnoID]="classeSezioneAnnoID">
                         </app-iscrizioni-classe-list>
                     </div>
@@ -63,14 +62,14 @@
             <mat-tab  label="Pagelle">
                 <table>
                     <tr>
-                        <td class="_cell-align-top w30">
+                        <td class="_cell-align-top w30 w330px">
                             <app-iscrizioni-classe-list [dove]="'pagella'"  
                                 [classeSezioneAnnoID]="classeSezioneAnnoID"  
                                 (iscrizioneID)="iscrizioneIDEmitted($event)"
                                 (alunno)="alunnoEmitted($event)" >
                             </app-iscrizioni-classe-list>
                         </td>
-                        <td class="_cell-align-top pl10 _border-left w750px">
+                        <td class="_cell-align-top pl10 _border-left">
                             <app-pagelle-edit
                                 [iscrizioneID]="iscrizioneID"
                                 [classeSezioneAnnoID]="classeSezioneAnnoID" 

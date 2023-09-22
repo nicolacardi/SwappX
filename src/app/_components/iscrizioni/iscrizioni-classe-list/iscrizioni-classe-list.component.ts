@@ -123,37 +123,27 @@ export class IscrizioniClasseListComponent implements OnInit {
 
   ngOnChanges() {
 
-      switch(this.dove) {
+    this.showPageTitle = false;
+    this.showTableRibbon = false;
+    switch(this.dove) {
+      case 'pagella':
+        this.displayedColumns = this.displayedColumnsPagella;
+        this.loadData();         
+        break;
+      case 'certcompetenze':
+        this.displayedColumns = this.displayedColumnsPagella;
+        this.loadData();         
+        break;
+      case 'lista-alunni':
+        this.loadData();
+        break;  
+      default:
+        break;
+    }
 
-        case 'pagella':
-          this.displayedColumns = this.displayedColumnsPagella;
-          this.showPageTitle = false;
-          this.loadData();         
-          break;
-        case 'certcompetenze':
-          this.displayedColumns = this.displayedColumnsPagella;
-          this.showPageTitle = false;
-          this.loadData();         
-          break;
-        case 'lista-alunni':
-          this.displayedColumns = this.displayedColumns;
-          this.showPageTitle = false;
+    this.toggleChecks = false;
 
-          this.loadData();
-        // default:
-        //   this.displayedColumns = this.displayedColumns;
-        //   this.showPageTitle = true;
-
-        //   this.loadData();
-          break;  
-        default:
-
-          break;
-      }
-
-      this.toggleChecks = false;
-      this.showTableRibbon = false;
-      this.resetSelections();
+    this.resetSelections();
   }
   
   ngOnInit () {

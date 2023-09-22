@@ -1,15 +1,17 @@
 <!-- TODO -->
-<!-- [disabled] ="currPersona.personaID == personaID" impedire di cambiare tipo a se stessi -->
+<!-- [disabled] ="currUser.personaID == personaID" impedire di cambiare tipo a se stessi -->
 
 
                
 <form *ngIf="(persona$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
     <mat-grid-list [cols]="2" *ngIf="dove!= 'genitore-edit' && dove!='alunno-edit' && dove!='procedura-iscrizione'" class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
         <mat-grid-tile>
-            <mat-form-field>
+            <mat-form-field >
                 <mat-label>Ruoli</mat-label>
-                <mat-select matNativeControl formControlName="_lstRoles" multiple>
-                    <mat-option *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id">
+                <mat-select matNativeControl formControlName="_lstRoles" multiple >
+                    <mat-option *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id" 
+                                [disabled] ="currUser.personaID == personaID  || !currUser.persona!._LstRoles!.includes('ITManager')" >
+                                <!-- Solo gli IT Manager possono mettere mano ai ruoli e non possono comunque modificare il proprio ruolo -->
                         {{element.descrizione}}
                     </mat-option>
                 </mat-select>

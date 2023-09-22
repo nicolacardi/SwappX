@@ -40,7 +40,7 @@ export class PersonaFormComponent implements OnInit {
 
   persona$!:                                    Observable<PER_Persona>;
   obsTipiPersona$!:                             Observable<PER_TipoPersona[]>;
-  currPersona!:                                 User;
+  currUser!:                                    User;
 
   public form! :                                UntypedFormGroup;
   emptyForm :                                   boolean = false;
@@ -114,7 +114,7 @@ export class PersonaFormComponent implements OnInit {
       ckAttivo:                                 [true]
     });
 
-    this.currPersona = Utility.getCurrentUser();
+    this.currUser = Utility.getCurrentUser();
     //this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.persona!.tipoPersona!.livello);
     this.obsTipiPersona$ = this.svcTipiPersona.list();
 

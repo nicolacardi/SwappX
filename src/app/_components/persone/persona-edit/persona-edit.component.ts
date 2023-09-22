@@ -19,6 +19,7 @@ import { PersoneService }                       from '../persone.service';
 //models
 import { PER_Persona }                          from 'src/app/_models/PER_Persone';
 import { User }                                 from 'src/app/_user/Users';
+import { Utility } from '../../utilities/utility.component';
 
 //#endregion
 
@@ -30,8 +31,8 @@ import { User }                                 from 'src/app/_user/Users';
 export class PersonaEditComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+  currUser!:                                    User;
   persona$!:                                    Observable<PER_Persona>;
-  currPersona!:                                 User;
 
   form! :                                       UntypedFormGroup;
 
@@ -67,6 +68,7 @@ export class PersonaEditComponent implements OnInit {
       id:                         [null],
       ckAttivo:                   [true]
     });  
+
   }
 
 //#endregion
