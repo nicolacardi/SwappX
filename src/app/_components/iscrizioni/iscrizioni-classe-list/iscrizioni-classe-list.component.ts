@@ -64,6 +64,8 @@ export class IscrizioniClasseListComponent implements OnInit {
 
   selection = new SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
   selectedRowIndex=-1;
+  idAlunniChecked:              number[] = [];
+  toggleChecks:                 boolean = false;
 
   matSortActive!:               string;
   matSortDirection!:            string;
@@ -72,8 +74,6 @@ export class IscrizioniClasseListComponent implements OnInit {
   public page!:                 string;
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
-  idAlunniChecked:              number[] = [];
-  toggleChecks:                 boolean = false;
   showPageTitle:                boolean = true;
   showTableRibbon:              boolean = true;
   public ckSoloAttivi :         boolean = true;
@@ -332,9 +332,10 @@ export class IscrizioniClasseListComponent implements OnInit {
   masterToggle() {
     this.toggleChecks = !this.toggleChecks;
 
-    if (this.toggleChecks) 
-      this.selection.select(...this.matDataSource.data);
-    else 
+    if (this.toggleChecks) {
+      const visibleData = this.matDataSource.filteredData || this.matDataSource.data;
+      this.selection.select(...visibleData);
+    } else 
       this.resetSelections();
   }
 

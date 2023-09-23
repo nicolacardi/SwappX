@@ -464,10 +464,11 @@ export class AlunniListComponent implements OnInit {
   masterToggle() {
     this.toggleChecks = !this.toggleChecks;
 
-    if (this.toggleChecks) 
-      this.selection.select(...this.matDataSource.data);
-    else 
-      this.resetSelections();
+    if (this.toggleChecks) {
+      const visibleData = this.matDataSource.filteredData || this.matDataSource.data;
+      this.selection.select(...visibleData);
+    } else {
+      this.resetSelections();}
   }
 
   resetSelections() {

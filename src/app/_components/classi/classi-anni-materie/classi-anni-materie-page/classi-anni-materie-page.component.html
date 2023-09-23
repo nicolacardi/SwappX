@@ -6,11 +6,22 @@
     <mat-icon>add</mat-icon>
 </button>
 
-<button mat-mini-fab aria-label="Settings" matTooltip="Settings" class="_btn-add _btn-pos-right-2 _btn-pos-top-0" (click)="openDuplica()" >
+<button mat-mini-fab aria-label="Settings" matTooltip="Settings" class="_btn-add _btn-pos-right-3 _btn-pos-top-0" (click)="openDuplica()" >
     <mat-icon>settings</mat-icon>
 </button>
 
+<button mat-mini-fab aria-label="Filtri Avanzati" matTooltip="Filtri Avanzati" class="_btn-add _btn-pos-right-2 _btn-pos-top-0" [ngClass]="{'_btn-add-red': !appclassiannimateriefilter.formClean}" (click)="filterSidenav.toggle();" >
+    <mat-icon>filter_alt</mat-icon>
+</button>
+
+<button mat-mini-fab aria-label="Delet" matTooltip="Cancella selezionati" class="_btn-add _btn-pos-right-4 _btn-pos-top-0" (click)="deleteSelection()" >
+    <mat-icon>delete</mat-icon>
+</button>
+
 <mat-drawer-container [hasBackdrop]="false" style="min-height: 91%">
+    <mat-drawer position="end" #filterSidenav class="filterSidenav"  [mode]="'side'" >
+        <app-classi-anni-materie-filter [classiannimaterieListComponent] = "appclassiannimaterielist" #appclassiannimateriefilter></app-classi-anni-materie-filter>    
+    </mat-drawer>
 
     <mat-drawer position="start" #toolSidenav class="toolSidenav"  [mode]="'side'">
         <app-toolbar [rptTitle]="appclassiannimaterielist.rptTitle" 
@@ -23,7 +34,8 @@
     </mat-drawer>
 
     <mat-drawer-content>
-        <app-classi-anni-materie-list #appclassiannimaterielist>
+        <app-classi-anni-materie-list 
+                                        #appclassiannimaterielist>
         </app-classi-anni-materie-list>
     </mat-drawer-content>
     

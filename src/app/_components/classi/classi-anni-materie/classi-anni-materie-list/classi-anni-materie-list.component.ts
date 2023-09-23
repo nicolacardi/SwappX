@@ -20,6 +20,7 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 
 //components
 import { ClasseAnnoMateriaEditComponent }       from '../classe-anno-materia-edit/classe-anno-materia-edit.component';
+import { SelectionModel } from '@angular/cdk/collections';
 
 //#endregion
 @Component({
@@ -32,58 +33,63 @@ export class ClassiAnniMaterieListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
 
-matDataSource = new MatTableDataSource<CLS_ClasseAnnoMateria>();
+  matDataSource = new MatTableDataSource<CLS_ClasseAnnoMateria>();
 
-obsClassiAnniMaterie$!:                         Observable<CLS_ClasseAnnoMateria[]>;
+  obsClassiAnniMaterie$!:                         Observable<CLS_ClasseAnnoMateria[]>;
 
-obsAnni$!:                                      Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-form! :                                         UntypedFormGroup;
+  obsAnni$!:                                      Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  form! :                                         UntypedFormGroup;
 
-displayedColumns: string[] = [
+  selection = new SelectionModel<CLS_ClasseAnnoMateria>(true, []);
+  selectedRowIndex=-1;
+  toggleChecks:                                 boolean = false;
+
+  displayedColumns: string[] = [
+    "select", 
     "actionsColumn", 
     "classe",
     "materia",
     "tipoVoto"
-];
+  ];
 
-rptTitle = 'Lista Tipi Voto';
-rptFileName = 'ListaTipiVoto';
-rptFieldsToKeep  = [
-  "classe.descrizione",
-  "anno.annoscolastico",
-  "materia.descrizione",
-  "tipoVoto.descrizione"
-];
+  rptTitle = 'Lista Tipi Voto';
+  rptFileName = 'ListaTipiVoto';
+  rptFieldsToKeep  = [
+    "classe.descrizione",
+    "anno.annoscolastico",
+    "materia.descrizione",
+    "tipoVoto.descrizione"
+  ];
 
-rptColumnsNames  = [
-  "classe",
-  "anno",
-  "materia",
-  "tipoVoto"
-];
+  rptColumnsNames  = [
+    "classe",
+    "anno",
+    "materia",
+    "tipoVoto"
+  ];
 
-filterValue = '';       //Filtro semplice
+  filterValue = '';       //Filtro semplice
 
-filterValues = {
-  anno: '',
-  classe: '',
-  materia: '',
-  tipoVoto: '',
-  filtrosx: ''
-}
+  filterValues = {
+    anno: '',
+    classe: '',
+    materia: '',
+    tipoVoto: '',
+    filtrosx: ''
+  }
 
 //#endregion
 
 //#region ----- ViewChild Input Output ---------
-@ViewChild(MatSort) sort!:                      MatSort;
+  @ViewChild(MatSort) sort!:                    MatSort;
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(private svcClasseAnnoMateria:               ClasseAnnoMateriaService,
-              private svcAnni:                            AnniScolasticiService,
-              private fb:                                 UntypedFormBuilder, 
-              private _loadingService:                    LoadingService,
-              public _dialog:                             MatDialog ) {
+  constructor(private svcClasseAnnoMateria:     ClasseAnnoMateriaService,
+              private svcAnni:                  AnniScolasticiService,
+              private fb:                       UntypedFormBuilder, 
+              private _loadingService:          LoadingService,
+              public _dialog:                   MatDialog ) {
               
     let obj = localStorage.getItem('AnnoCorrente');
     this.form = this.fb.group({
@@ -178,15 +184,69 @@ filterValues = {
       
       let searchTerms = JSON.parse(filter);
 
-      let boolSx = String(data.anno.annoscolastico).toLowerCase().indexOf(searchTerms.filtrosx) !== -1  
-                    || String(data.classe.descrizione2).toLowerCase().indexOf(searchTerms.filtrosx) !== -1               
+      let boolSx = 
+                    String(data.classe.descrizione2).toLowerCase().indexOf(searchTerms.filtrosx) !== -1               
                     || String(data.materia.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                     || String(data.tipoVoto.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
-                    
-      return boolSx;
+
+      let boolDx = 
+                    String(data.classe.descrizione2).toLowerCase().indexOf(searchTerms.classe) !== -1
+                    && String(data.materia.descrizione).toLowerCase().indexOf(searchTerms.materia) !== -1
+                    && String(data.tipoVoto.descrizione).toLowerCase().indexOf(searchTerms.tipoVoto) !== -1
+
+      return boolSx && boolDx;
 
     }
     return filterFunction;
   }
 //#endregion
+
+//#region ----- Gestione Campo Checkbox --------
+  selectedRow(element: CLS_ClasseAnnoMateria) {
+    this.selection.toggle(element);
+  }
+
+  masterToggle() {
+
+    this.toggleChecks = !this.toggleChecks;
+
+    if (this.toggleChecks) {
+      // Filtra solo i record visibili
+      const visibleData = this.matDataSource.filteredData || this.matDataSource.data;
+      this.selection.select(...visibleData);
+    } else {
+      this.resetSelections();
+    }
+
+  }
+
+  resetSelections() {
+    this.selection.clear();
+    this.matDataSource.data.forEach(row => this.selection.deselect(row));
+  }
+
+  getChecked() {
+    //funzione usata da classi-dahsboard
+    return this.selection.selected;
+  }
+
+  //non so se serva questo metodo: genera un valore per l'aria-label...
+  //forse serve per poi pescare i valori selezionati?
+  checkboxLabel(row?: CLS_ClasseAnnoMateria): string {
+    if (!row) 
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    else
+      return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+  }
+
+  //questo metodo ritorna un booleano che dice se sono selezionati tutti i record o no
+  //per ora non lo utilizzo
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;   //conta il numero di elementi selezionati
+    const numRows = this.matDataSource.data.length;       //conta il numero di elementi del matDataSource
+    return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
+  }
+//#endregion
+
+
 }

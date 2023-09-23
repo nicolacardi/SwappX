@@ -1,3 +1,5 @@
+//#region ----- IMPORTS ------------------------
+
 import { CdkDragDrop, moveItemInArray }         from '@angular/cdk/drag-drop';
 import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild }  from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
@@ -21,6 +23,7 @@ import { DOC_Verbale }                          from 'src/app/_models/DOC_Verbal
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 
+//#endregion
 @Component({
   selector: 'app-verbali-list',
   templateUrl: './verbali-list.component.html',
@@ -38,9 +41,9 @@ export class VerbaliListComponent implements OnInit, OnChanges {
   displayedColumns:                             string[] =  [
     "actionsColumn", 
     "nome",
-    "tipoVerbaleID",
+    "tipoVerbale",
     "dtVerbale",
-    "classeSezioneAnnoID",
+    "classe",
     "titolo",
   ];
 
@@ -140,6 +143,7 @@ export class VerbaliListComponent implements OnInit, OnChanges {
 
     loadVerbali$.subscribe( 
       val =>   {
+        console.log("verbali-list - loadData - val", val)
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         this.matDataSource.sort = this.sort; 
@@ -178,21 +182,21 @@ resetSearch(){
       else 
         dtVerbaleddmmyyyy = '';
 
-      let boolSx =  String(data.nome).indexOf(searchTerms.filtrosx) !== -1
-                  || String(data.cognome).indexOf(searchTerms.filtrosx) !== -1
-                  || String(data.tipo).indexOf(searchTerms.filtrosx) !== -1
+      let boolSx =  String(data.persona.nome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                  || String(data.persona.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                  || String(data.tipoVerbale.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                   || String(dtVerbaleddmmyyyy).indexOf(searchTerms.filtrosx) !== -1
-                  || String(data.titolo).indexOf(searchTerms.filtrosx) !== -1
-                  || String(data.classe).indexOf(searchTerms.filtrosx) !== -1 ;
+                  || String(data.titolo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
+                  || String(data.classeSezioneAnno.classeSezione.classe.descrizione2 + ' ' + data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1 ;
       
       // i singoli argomenti dell'&& che segue sono ciascuno del tipo: "trovato valore oppure vuoto"
       let boolDx = 
-                    String(data.nome).indexOf(searchTerms.nome) !== -1
-                    && String(data.cognome).indexOf(searchTerms.cognome) !== -1
-                    && String(data.tipo).toLowerCase().indexOf(searchTerms.tipo) !== -1
+                    String(data.persona.nome).toLowerCase().indexOf(searchTerms.nome) !== -1
+                    && String(data.persona.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
+                    && String(data.tipoVerbale.descrizione).indexOf(searchTerms.tipo) !== -1
                     && String(dtVerbaleddmmyyyy).indexOf(searchTerms.dtVerbale) !== -1
-                    && String(data.tipo).toLowerCase().indexOf(searchTerms.tipo) !== -1
-                    && String(data.classe).toLowerCase().indexOf(searchTerms.classe) !== -1;
+                    && String(data.titolo).toLowerCase().indexOf(searchTerms.titolo) !== -1
+                    && String(data.classeSezioneAnno.classeSezione.classe.descrizione2 + ' ' + data.classeSezioneAnno.classeSezione.sezione).toLowerCase().indexOf(searchTerms.classe) !== -1;
 
       return boolSx && boolDx;
     }

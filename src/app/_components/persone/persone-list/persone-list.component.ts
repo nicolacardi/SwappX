@@ -277,9 +277,11 @@ selectedRow(element: PER_Persona) {
 masterToggle() {
   this.toggleChecks = !this.toggleChecks;
 
-  if (this.toggleChecks) 
-    this.selection.select(...this.matDataSource.data);
-  else 
+  if (this.toggleChecks) {
+    const visibleData = this.matDataSource.filteredData || this.matDataSource.data;
+    this.selection.select(...visibleData);
+    //this.selection.select(...this.matDataSource.data); così seleziono tutti i record ma se ce ne sono di non visibili perchè filtrati seleziono anche quelli
+  } else 
     this.resetSelections();
 }
 

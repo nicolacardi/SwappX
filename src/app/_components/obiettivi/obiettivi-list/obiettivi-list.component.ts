@@ -21,6 +21,7 @@ import { AnniScolasticiService }                from 'src/app/_components/annisc
 import { MAT_Obiettivo }                        from 'src/app/_models/MAT_Obiettivo';
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
+import { SelectionModel } from '@angular/cdk/collections';
 
 //#endregion
 @Component({
@@ -34,17 +35,21 @@ export class ObiettiviListComponent implements OnInit {
 
   matDataSource = new MatTableDataSource<MAT_Obiettivo>();
 
-  obsObiettivi$!:               Observable<MAT_Obiettivo[]>;
+  obsObiettivi$!:                               Observable<MAT_Obiettivo[]>;
 
-  obsAnni$!:                    Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
-  form! :                       UntypedFormGroup;
+  obsAnni$!:                                    Observable<ASC_AnnoScolastico[]>;    //Serve per la combo anno scolastico
+  form! :                                       UntypedFormGroup;
 
+  selection = new SelectionModel<MAT_Obiettivo>(true, []);
+  selectedRowIndex=-1;
+  toggleChecks:                                 boolean = false;
+  
   displayedColumns: string[] = [
-      "actionsColumn", 
-      "classe",
-      //"anno",
-      "materia",
-      "descrizione"
+    "select", 
+    "actionsColumn",
+    "classe",
+    "materia",
+    "descrizione"
   ];
 
   rptTitle = 'Lista Obiettivi';
@@ -69,7 +74,6 @@ export class ObiettiviListComponent implements OnInit {
   filterValues = {
     descrizione: '',
     classeID: '',
-    // annoID: '',
     materiaID: '',
     filtrosx: ''
   }
@@ -118,10 +122,11 @@ export class ObiettiviListComponent implements OnInit {
       map(val=>val.filter(val=>(val.annoID == this.form.controls['selectAnnoScolastico'].value)))
     )
     .subscribe(val =>   {
+      console.log("obiettivi-list - loadData - val", val);
       this.matDataSource.data = val;
       this.sortCustom(); 
       this.matDataSource.sort = this.sort; 
-      this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente
+      this.matDataSource.filterPredicate = this.filterPredicate();
     }
   );
 
@@ -171,14 +176,12 @@ export class ObiettiviListComponent implements OnInit {
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;
     this.filterValues.filtrosx = this.filterValue.toLowerCase();
-    //if (this.context == "alunni-page") this.alunniFilterComponent.resetAllInputs();
     this.matDataSource.filter = JSON.stringify(this.filterValues)
   }
 
   filterPredicate(): (data: any, filter: string) => boolean {
     let filterFunction = function(data: any, filter: any): boolean {
       let searchTerms = JSON.parse(filter);
-      console.log(data, searchTerms);
 
       let boolSx = String(data.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                     || String(data.materia.descrizione).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
@@ -195,5 +198,53 @@ export class ObiettiviListComponent implements OnInit {
     return filterFunction;
   }
 //#endregion
+
+//#region ----- Gestione Campo Checkbox --------
+  selectedRow(element: MAT_Obiettivo) {
+    this.selection.toggle(element);
+  }
+
+  masterToggle() {
+
+    this.toggleChecks = !this.toggleChecks;
+  
+    if (this.toggleChecks) {
+      // Filtra solo i record visibili
+      const visibleData = this.matDataSource.filteredData || this.matDataSource.data;
+      this.selection.select(...visibleData);
+    } else {
+      this.resetSelections();
+    }
+
+  }
+
+  resetSelections() {
+    this.selection.clear();
+    this.matDataSource.data.forEach(row => this.selection.deselect(row));
+  }
+
+  getChecked() {
+    //funzione usata da classi-dahsboard
+    return this.selection.selected;
+  }
+
+    //non so se serva questo metodo: genera un valore per l'aria-label...
+  //forse serve per poi pescare i valori selezionati?
+  checkboxLabel(row?: MAT_Obiettivo): string {
+    if (!row) 
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    else
+      return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+  }
+
+  //questo metodo ritorna un booleano che dice se sono selezionati tutti i record o no
+  //per ora non lo utilizzo
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;   //conta il numero di elementi selezionati
+    const numRows = this.matDataSource.data.length;       //conta il numero di elementi del matDataSource
+    return numSelected === numRows;                       //ritorna un booleano che dice se sono selezionati tutti i record o no
+  }
+//#endregion
+
 
 }

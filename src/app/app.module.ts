@@ -240,6 +240,7 @@ import { CompitiPageComponent } from './_components/lezioni/compiti-page/compiti
 import { VotiInterrPageComponent } from './_components/lezioni/voti-interr-page/voti-interr-page.component';
 import { DomandeFilterComponent } from './_components/impostazioni/domande/domande-filter/domande-filter.component';
 import { PagelleAlunnoListComponent } from './_components/pagelle/pagelle-alunno-list/pagelle-alunno-list.component';
+import { ClassiAnniMaterieFilterComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-filter/classi-anni-materie-filter.component';
 
 // FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   //dayGridPlugin, NC 16/02/23
@@ -427,7 +428,8 @@ import { PagelleAlunnoListComponent } from './_components/pagelle/pagelle-alunno
     CompitiPageComponent,
     VotiInterrPageComponent,
     DomandeFilterComponent,
-    PagelleAlunnoListComponent
+    PagelleAlunnoListComponent,
+    ClassiAnniMaterieFilterComponent
   ],
   imports: [
     BrowserModule,

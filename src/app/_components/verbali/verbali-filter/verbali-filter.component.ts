@@ -1,5 +1,5 @@
-import { Component, Input, OnInit} from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { Component, Input, OnInit}              from '@angular/core';
+import { UntypedFormControl }                   from '@angular/forms';
 
 //components
 import { VerbaliListComponent } from '../verbali-list/verbali-list.component';
@@ -13,6 +13,8 @@ import { VerbaliListComponent } from '../verbali-list/verbali-list.component';
 export class VerbaliFilterComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+  formClean= true;
+
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');
   tipoFilter = new UntypedFormControl('');
@@ -45,7 +47,18 @@ export class VerbaliFilterComponent implements OnInit {
     //this.resetFilterSx();
     this.verbaliListComponent.filterValues[field] = isNaN(+val)? val.toLowerCase(): val;
     this.verbaliListComponent.matDataSource.filter = JSON.stringify(this.verbaliListComponent.filterValues);
-    //this.verbaliListComponent.updateEmailAddresses();
+    this.formClean = this.isFormClean();
+  }
+  
+  isFormClean(): boolean {
+    return (
+      this.nomeFilter.value === '' &&
+      this.cognomeFilter.value === '' &&
+      this.tipoFilter.value === '' &&
+      this.dtVerbaleFilter.value === '' &&
+      this.classeFilter.value === '' &&
+      this.titoloFilter.value === '' 
+    );
   }
   //#endregion
 

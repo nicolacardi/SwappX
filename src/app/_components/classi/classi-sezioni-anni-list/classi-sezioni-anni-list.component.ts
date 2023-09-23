@@ -514,9 +514,10 @@ export class ClassiSezioniAnniListComponent implements OnInit {
   masterToggle() {
     this.toggleChecks = !this.toggleChecks;
 
-    if (this.toggleChecks) 
-      this.selection.select(...this.matDataSource.data.filter(x=> (x.numAlunni != 0 && x.numAlunni != x.numStato20))); //YUHUUU!
-    else 
+    if (this.toggleChecks) {
+      const visibleData = this.matDataSource.filteredData || this.matDataSource.data;
+      this.selection.select(...visibleData.filter(x=> (x.numAlunni != 0 && x.numAlunni != x.numStato20))); //YUHUUU!
+    } else 
       this.resetSelections();
   }
 
