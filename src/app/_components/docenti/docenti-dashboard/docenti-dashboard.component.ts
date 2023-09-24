@@ -15,7 +15,7 @@ import { Utility }                              from '../../utilities/utility.co
 //services
 import { DocentiService }                       from '../docenti.service';
 import { DocenzeService }                       from '../../docenze/docenze.service';
-import { ClasseAnnoMateriaService }             from '../../classi/classi-anni-materie/classe-anno-materia.service';
+import { ClasseAnnoMateriaService }             from '../../classi-anni-materie/classe-anno-materia.service';
 import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
 
 //models

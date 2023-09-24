@@ -165,10 +165,10 @@ import { FileDropDirective }                    from './_components/utilities/ap
 
 
 //ClassiAnniMaterie
-import { ClassiAnniMaterieListComponent }       from './_components/classi/classi-anni-materie/classi-anni-materie-list/classi-anni-materie-list.component';
-import { ClassiAnniMateriePageComponent }       from './_components/classi/classi-anni-materie/classi-anni-materie-page/classi-anni-materie-page.component';
-import { ClasseAnnoMateriaEditComponent }       from './_components/classi/classi-anni-materie/classe-anno-materia-edit/classe-anno-materia-edit.component';
-import { ClassiAnniMaterieDuplicaComponent }    from './_components/classi/classi-anni-materie/classi-anni-materie-duplica/classi-anni-materie-duplica.component';
+import { ClassiAnniMaterieListComponent }       from './_components/classi-anni-materie/classi-anni-materie-list/classi-anni-materie-list.component';
+import { ClassiAnniMateriePageComponent }       from './_components/classi-anni-materie/classi-anni-materie-page/classi-anni-materie-page.component';
+import { ClasseAnnoMateriaEditComponent }       from './_components/classi-anni-materie/classe-anno-materia-edit/classe-anno-materia-edit.component';
+import { ClassiAnniMaterieDuplicaComponent }    from './_components/classi-anni-materie/classi-anni-materie-duplica/classi-anni-materie-duplica.component';
 
 //Compiti e Voti
 import { CompitiListComponent }                 from './_components/lezioni/compiti-list/compiti-list.component';
@@ -240,7 +240,7 @@ import { CompitiPageComponent } from './_components/lezioni/compiti-page/compiti
 import { VotiInterrPageComponent } from './_components/lezioni/voti-interr-page/voti-interr-page.component';
 import { DomandeFilterComponent } from './_components/impostazioni/domande/domande-filter/domande-filter.component';
 import { PagelleAlunnoListComponent } from './_components/pagelle/pagelle-alunno-list/pagelle-alunno-list.component';
-import { ClassiAnniMaterieFilterComponent } from './_components/classi/classi-anni-materie/classi-anni-materie-filter/classi-anni-materie-filter.component';
+import { ClassiAnniMaterieFilterComponent } from './_components/classi-anni-materie/classi-anni-materie-filter/classi-anni-materie-filter.component';
 
 // FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   //dayGridPlugin, NC 16/02/23

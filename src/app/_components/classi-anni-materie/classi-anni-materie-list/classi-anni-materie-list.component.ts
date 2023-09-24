@@ -10,7 +10,7 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 //services
 import { ClasseAnnoMateriaService }             from '../classe-anno-materia.service';
-import { LoadingService }                       from '../../../utilities/loading/loading.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
 

@@ -8,16 +8,16 @@ import { Observable }                           from 'rxjs';
 import { tap }                                  from 'rxjs/operators';
 
 //components
-import { SnackbarComponent }                    from '../../../utilities/snackbar/snackbar.component';
-import { DialogYesNoComponent }                 from '../../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 //services
 import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
-import { MaterieService }                       from '../../../materie/materie.service';
-import { ClassiService }                        from '../../classi.service';
+import { MaterieService }                       from '../../materie/materie.service';
+import { ClassiService }                        from '../../classi/classi.service';
 import { TipiVotoService }                      from '../tipi-voto.service';
 import { ClasseAnnoMateriaService }             from '../classe-anno-materia.service';
-import { LoadingService }                       from '../../../utilities/loading/loading.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
 
 //models
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
