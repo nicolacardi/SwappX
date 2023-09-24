@@ -260,62 +260,59 @@ export class PersonaFormComponent implements OnInit {
 
   save() :Observable<any>{
 
-
       if (this.personaID == null || this.personaID == 0) {
-      
+        //caso nuova persona
+        //fa prima il check
         return from(this.checkExists()).pipe(
           mergeMap((msg) => {
-          if (msg && msg.length > 0) { 
-            
-            const blockMessages = msg
-                .filter(item => item.grav === "Block")
-                .map(item => item.msg); 
+            if (msg && msg.length > 0) { 
+              const blockMessages = msg
+                  .filter(item => item.grav === "Block")
+                  .map(item => item.msg); 
 
-            if (blockMessages && blockMessages.length > 0){
-              this._dialog.open(DialogOkComponent, {
-                width: '320px',
-                data: { titolo: "ATTENZIONE!", sottoTitolo: blockMessages.join(', ') + 'Impossibile Salvare' }
-              });
-              
-              return of()
-            }
-            else {
-              const UnblockMessages = msg
-              .filter(item => item.grav === "nonBlock")
-              .map(item => item.msg);
+              if (blockMessages && blockMessages.length > 0){
+                this._dialog.open(DialogOkComponent, {
+                  width: '320px',
+                  data: { titolo: "ATTENZIONE!", sottoTitolo: blockMessages.join(', ') + 'Impossibile Salvare' }
+                });
+                
+                return of()
+              }
+              else {
+                const UnblockMessages = msg
+                .filter(item => item.grav === "nonBlock")
+                .map(item => item.msg);
 
-              const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
-                width: '320px',
-                data: { titolo: "ATTENZIONE!", sottoTitolo: UnblockMessages.join(', ') + 'Vuoi salvare?' }
-              });
+                const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+                  width: '320px',
+                  data: { titolo: "ATTENZIONE!", sottoTitolo: UnblockMessages.join(', ') + 'Vuoi salvare?' }
+                });
 
-              dialogYesNo.afterClosed().subscribe(result => {
-                if(result) {
-                  return of();
-                } else {
-                  return of();
-                }
-              });
-
-              
-            }
-
-          }  /////(ELSE???)
-        return this.svcPersone.post(this.form.value)
-        .pipe (
-          tap(persona=> this.saveRoles() ),
-          concatMap(persona => {
-            let formData = { 
-              UserName:   this.form.controls.email.value,
-              Email:      this.form.controls.email.value,
-              PersonaID:  persona.id,
-              Password:   "1234"
-            };
-            console.log ("sto creando l'utente", formData);
-            return this.svcUser.post(formData)
-          }),
-        )}))
-        
+                dialogYesNo.afterClosed().subscribe(result => {
+                  if(result) {
+                    return of();
+                  } else {
+                    return of();
+                  }
+                });
+              }
+            }  /////(ELSE???)
+            return this.svcPersone.post(this.form.value)
+            .pipe (
+              tap(persona=> this.saveRoles() ),
+              concatMap(persona => {
+                let formData = { 
+                  UserName:   this.form.controls.email.value,
+                  Email:      this.form.controls.email.value,
+                  PersonaID:  persona.id,
+                  Password:   "1234"
+                };
+                console.log ("sto creando l'utente", formData);
+                return this.svcUser.post(formData)
+              }),
+            )
+          })
+        )
       }
       else {
         this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
