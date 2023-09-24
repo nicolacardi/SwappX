@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PER_Persona } from 'src/app/_models/PER_Persone';
+import { User } from 'src/app/_user/Users';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -36,10 +37,16 @@ export class PersoneService {
     return this.http.put( environment.apiBaseUrl  + 'PER_Persone/' + formData.id , formData);    
   }
 
-  post(formData: any): Observable <any>{
+  post(formData: any): Observable <PER_Persona>{
     formData.id = 0;
-    return this.http.post( environment.apiBaseUrl  + 'PER_Persone' , formData);  
+    return this.http.post<PER_Persona>( environment.apiBaseUrl  + 'PER_Persone' , formData);  
   }
+
+  //era così
+  // post(formData: any): Observable <any>{
+  //   formData.id = 0;
+  //   return this.http.post( environment.apiBaseUrl  + 'PER_Persone' , formData);  
+  // }
 
   delete(personaID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + 'PER_Persone/' + personaID);    

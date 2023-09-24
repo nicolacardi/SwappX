@@ -155,8 +155,6 @@ export class UserEditComponent implements OnInit {
   }
 
    save() {
-    //NC: ho aggiunto il campo personaID e non salva...bisogna aggiustare anche il service per accettarlo
-    //AS: e il tipo Persona ?
 
     let formData = {
       userID:     this.idUser,   
@@ -197,45 +195,6 @@ export class UserEditComponent implements OnInit {
     }
   }
 
-  //questa routine non dovrebbe più servire
-  ruoloChange() {
-    
-    //AS: ATTENZIONE: verificare se serve
-    /*
-    if (this.currUserRuolo != 11 && this.previousMatSelect == 11) {
-      //impedisco  ai non SysAdmin di modificare il ruolo di quelli che sono SySAdmin
-      //un SySAdmin invece può cambiare tutti gli altri (non il suo, v. oltre)
-      //può cambiare anche il ruolo di un altro SysAdmin
-      this._dialog.open(DialogOkComponent, {
-        width: '320px',
-        data: {titolo: "ATTENZIONE!", sottoTitolo: "Non puoi impostare il ruolo per questo utente"}
-      });
-      this.form.controls['ruoloID'].setValue(this.previousMatSelect);
-      return;
-    }
-
-    if (this.currUserRuolo != 11 && this.form.controls.ruoloID.value == 11) {
-      //impedisco ai non SysAdmin di impostare alcuno come SySAdmin 
-      //altrimenti potrei portare un profilo di alunno a essere SysAdmin e poi con quel profilo modificare il profilo degli altri SysAdmin
-      this._dialog.open(DialogOkComponent, {
-        width: '320px',
-        data: {titolo: "ATTENZIONE!", sottoTitolo: "Non puoi impostare questo ruolo"}
-      });
-      this.form.controls['ruoloID'].setValue(this.previousMatSelect);
-      return;
-    }
-    */
-    if (this.currUserID == this.userID) {
-      //impedisco di modificare il proprio ruolo a chiunque, compresi i SysAdmin
-      this._dialog.open(DialogOkComponent, {
-        width: '320px',
-        data: {titolo: "ATTENZIONE!", sottoTitolo: "Non puoi modificare il tuo ruolo"}
-      });
-      this.form.controls['ruoloID'].setValue(this.previousMatSelect);
-      return;
-    }
-  }
-
   selected(event: MatAutocompleteSelectedEvent): void {
 
     //come approccio alternativo all'uso di un customformvalidator vorrei fare come in 
@@ -254,28 +213,6 @@ export class UserEditComponent implements OnInit {
           )
       );
       this.persona$.subscribe();
-
-    //***NC 25.12.22 ***/
-
-    //in alternativa apro il form persona....
-
-    //this.data.alunnoID = parseInt(event.option.id);
-    //this.formRetta.controls['alunnoID'].setValue(parseInt(event.option.id));
-    //this.loadData();
-
-    // const dialogConfig : MatDialogConfig = {
-    //   panelClass: 'add-DetailDialog',
-    //   width: '850px',
-    //   height: '600px',
-    //   data: event.option.id
-    // };
-
-    // const dialogRef = this._dialog.open(PersonaEditComponent, dialogConfig);
-    // dialogRef.afterClosed().subscribe( result => {
-    //   this.form.controls['email'].setValue(result.email);
-    //   console.log (result);
-    //   //this.loadData()
-    // });
     
   }
 

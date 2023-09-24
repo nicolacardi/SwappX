@@ -14,19 +14,23 @@ import { ComuniService }                        from 'src/app/_services/comuni.s
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { PersoneService }                       from '../persone.service';
 
+import { TipiPersonaService }                   from '../tipi-persona.service';
+import { AlunniService }                        from '../../alunni/alunni.service';
+import { GenitoriService }                      from '../../genitori/genitori.service';
+import { DocentiService }                       from '../../docenti/docenti.service';
+import { NonDocentiService }                    from '../nondocenti.service';
+import { ITManagersService }                    from '../ITmanagers.service';
+import { DirigentiService }                     from '../dirigenti.service';
+import { DocentiCoordService }                  from '../docenticoord.service';
+
 //models
 import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
 import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni';
-import { TipiPersonaService }                   from '../tipi-persona.service';
+import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 import { User }                                 from 'src/app/_user/Users';
-import { AlunniService } from '../../alunni/alunni.service';
-import { GenitoriService } from '../../genitori/genitori.service';
-import { DocentiService } from '../../docenti/docenti.service';
-import { NonDocentiService } from '../nondocenti.service';
-import { ITManagersService } from '../ITmanagers.service';
-import { DirigentiService } from '../dirigenti.service';
-import { PER_Docente } from 'src/app/_models/PER_Docente';
-import { DocentiCoordService } from '../docenticoord.service';
+import { UserService } from 'src/app/_user/user.service';
+
+
 
 //#endregion
 @Component({
@@ -74,13 +78,13 @@ export class PersonaFormComponent implements OnInit {
   constructor(public _dialog:                   MatDialog,
               private fb:                       UntypedFormBuilder, 
               private svcPersone:               PersoneService,
+              private svcUser:                  UserService,
 
               //vari service per le post o delete dei vari tipi di persona
               private svcAlunni:                AlunniService,
               private svcGenitori:              GenitoriService,
               private svcDocenti:               DocentiService,
               private svcDocentiCoord:          DocentiCoordService,
-
               private svcNonDocenti:            NonDocentiService,
               private svcITManagers:            ITManagersService,
               private svcDirigenti:             DirigentiService,
@@ -110,7 +114,7 @@ export class PersonaFormComponent implements OnInit {
       genere:                                   ['',{ validators:[Validators.maxLength(1), Validators.required, Validators.pattern("M|F")]}],
       cf:                                       ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
       telefono:                                 ['', Validators.maxLength(13)],
-      email:                                    ['',Validators.email],
+      email:                                    ['',{ validators:[Validators.email, Validators.required]}],
       ckAttivo:                                 [true]
     });
 
@@ -226,28 +230,33 @@ export class PersonaFormComponent implements OnInit {
   save() :Observable<any>{
 
 
-    this.saveRoles(); 
+
 
       //console.log ("PersonaFormComponent - save() - this.form.value", this.form.value);
     if (this.personaID == null || this.personaID == 0) {
-      return this.svcPersone.post(this.form.value).pipe(
-        tap( res=>{
-          // if (this.form.controls.tipoPersonaID.value == 6 || this.form.controls.tipoPersonaID.value == 7) //TODO fa schifo lo so
-          //   {
-          //     // let docente :PER_Docente = {  //TODO
-          //     //   personaID : res.id,
-          //     //   ckAttivo : true
-          //     //   persona: {}
-          //     // }
-          //     // this.svcDocenti.post(docente).subscribe()
-          //   }
-          }
-        )
+      //return this.svcPersone.post(this.form.value)
+
+      return this.svcPersone.post(this.form.value)
+      .pipe (
+        tap(persona=> this.saveRoles() ),
+        concatMap(persona => {
+          let formData = { 
+            UserName:   this.form.controls.email.value,
+            Email:      this.form.controls.email.value,
+            PersonaID:  persona.id,
+            Password:   "1234"
+          };
+          console.log ("sto creando l'utente", formData);
+          return this.svcUser.post(formData)
+        }),
       )
+      
     }
     else {
       this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
+      this.saveRoles(); 
       return this.svcPersone.put(this.form.value)
+      
     }
 
 
@@ -265,98 +274,98 @@ export class PersonaFormComponent implements OnInit {
     //PER_NonDocente
     //PER_Dirigente
     //PER_ITManager
-
+    let selectedRolesIds = []
     //console.log("elenco dei valori arrivati inizialmente", this._lstRoles); //è l'elenco dei ruoli "precedenti". E' un array di stringhe del tipo ["Alunno", "ITManager"...]
-
-    const selectedRolesIds = this.form.controls._lstRoles.value;
+    console.log (this.personaID);
+    if (this.form.controls._lstRoles.value.length != 0) selectedRolesIds = this.form.controls._lstRoles.value;
+    console.log (selectedRolesIds);
     const selectedRolesDescrizioni = selectedRolesIds.map((tipo:any) => {const tipoPersona = this.lstTipiPersona.find(tp => tp.id === tipo);
       return tipoPersona ? tipoPersona.descrizione : ''; // Restituisce la descrizione se trovata, altrimenti una stringa vuota
     });
+    console.log("this._lstRoles",this._lstRoles);
 
-    //console.log("elenco dei valori selezionati dall'utente",selectedRolesDescrizioni);
+    console.log("elenco dei valori selezionati dall'utente",selectedRolesDescrizioni);
 
-
-    this._lstRoles.forEach(async roleinput=> {
-      {if (!selectedRolesDescrizioni.includes(roleinput))
-        {
-          //questo roleinput è stato CANCELLATO, va dunque rimosso (ammesso che si possa)
-          switch (roleinput) {
-            case "Alunno":
-              this.svcAlunni.deleteByPersona(this.personaID).subscribe();
-            break;
-            case "Genitore":
-              this.svcGenitori.deleteByPersona(this.personaID).subscribe();
-            break;
-            case "Docente":
-              this.svcDocenti.deleteByPersona(this.personaID).subscribe();
-            break;
-            case "DocenteCoord":
-              let docente!: PER_Docente;
-              await firstValueFrom(this.svcDocenti.getByPersona(this.personaID).pipe(tap(docenteEstratto => 
-                {docente = docenteEstratto})));
-              this.svcDocentiCoord.deleteByDocente(docente.id);
+    if (this._lstRoles) { //se è un record nuovo e non seleziono nessuno è undefined
+      this._lstRoles.forEach(async roleinput=> {
+        {if (!selectedRolesDescrizioni.includes(roleinput))
+          {
+            //questo roleinput è stato CANCELLATO, va dunque rimosso (ammesso che si possa)
+            switch (roleinput) {
+              case "Alunno":
+                this.svcAlunni.deleteByPersona(this.personaID).subscribe();
               break;
-            case "NonDocente":
-              this.svcNonDocenti.deleteByPersona(this.personaID).subscribe();
-            break;
-            case "Dirigente":
-              this.svcDirigenti.deleteByPersona(this.personaID).subscribe();
-            break;
-            case "ITManager":
-              this.svcITManagers.deleteByPersona(this.personaID).subscribe();
-            break;
+              case "Genitore":
+                this.svcGenitori.deleteByPersona(this.personaID).subscribe();
+              break;
+              case "Docente":
+                this.svcDocenti.deleteByPersona(this.personaID).subscribe();
+              break;
+              case "DocenteCoord":
+                let docente!: PER_Docente;
+                await firstValueFrom(this.svcDocenti.getByPersona(this.personaID).pipe(tap(docenteEstratto => 
+                  {docente = docenteEstratto})));
+                this.svcDocentiCoord.deleteByDocente(docente.id);
+                break;
+              case "NonDocente":
+                this.svcNonDocenti.deleteByPersona(this.personaID).subscribe();
+              break;
+              case "Dirigente":
+                this.svcDirigenti.deleteByPersona(this.personaID).subscribe();
+              break;
+              case "ITManager":
+                this.svcITManagers.deleteByPersona(this.personaID).subscribe();
+              break;
+            }
           }
         }
-      }
-    })
+      })
 
-    selectedRolesDescrizioni.forEach(async (roleselected:string)=> {
-      {if (!this._lstRoles.includes(roleselected))
-        {
-          //questo roleselected è stato AGGIUNTO, va dunque fatta la post
-          let formData =  {
-            personaID: this.personaID
-          }
-          switch (roleselected) {
-            case "Alunno":
-              this.svcAlunni.post(formData).subscribe();
-            break;
-            case "Genitore":
-              this.svcGenitori.post(formData).subscribe();
-            break;
-            case "Docente":
-              this.svcDocenti.post(formData).subscribe();
-            break;
-            case "DocenteCoord":
-              let formDataDocenteCoord = {};
-              await firstValueFrom(this.svcDocenti.getByPersona(this.personaID).pipe(tap(docenteEstratto => 
-                {
-                  formDataDocenteCoord = {
-                    docenteID: docenteEstratto.id
-                  }
-                })));
-              console.log("verificare se è arrivato...", formDataDocenteCoord );
-              this.svcDocentiCoord.post(formDataDocenteCoord).subscribe();
+      selectedRolesDescrizioni.forEach(async (roleselected:string)=> {
+        {if (!this._lstRoles.includes(roleselected))
+          {
+            //questo roleselected è stato AGGIUNTO, va dunque fatta la post
+            let formData =  {
+              personaID: this.personaID
+            }
+            switch (roleselected) {
+              case "Alunno":
+                this.svcAlunni.post(formData).subscribe();
+              break;
+              case "Genitore":
+                this.svcGenitori.post(formData).subscribe();
+              break;
+              case "Docente":
+                this.svcDocenti.post(formData).subscribe();
+              break;
+              case "DocenteCoord":
+                let formDataDocenteCoord = {};
+                await firstValueFrom(this.svcDocenti.getByPersona(this.personaID).pipe(tap(docenteEstratto => 
+                  {
+                    formDataDocenteCoord = {
+                      docenteID: docenteEstratto.id
+                    }
+                  })));
+                console.log("verificare se è arrivato...", formDataDocenteCoord );
+                this.svcDocentiCoord.post(formDataDocenteCoord).subscribe();
 
-            break;
-            case "NonDocente":
-              this.svcNonDocenti.post(formData).subscribe();
-            break;
-            case "Dirigente":
-              this.svcDirigenti.post(formData).subscribe();
-            break;
-            case "ITManager":
-              this.svcITManagers.post(formData).subscribe();
-            break;
+              break;
+              case "NonDocente":
+                this.svcNonDocenti.post(formData).subscribe();
+              break;
+              case "Dirigente":
+                this.svcDirigenti.post(formData).subscribe();
+              break;
+              case "ITManager":
+                this.svcITManagers.post(formData).subscribe();
+              break;
+            }
           }
         }
-      }
-    })
-
-
-
-
+      })
+    }
   }
+
   delete() :Observable<any>{
     if (this.personaID != null) 
       return this.svcPersone.delete(this.personaID) 

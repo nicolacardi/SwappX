@@ -7,7 +7,7 @@ import { ClassiAnniMaterieListComponent }       from '../classi-anni-materie-lis
 @Component({
   selector: 'app-classi-anni-materie-filter',
   templateUrl: './classi-anni-materie-filter.component.html',
-  styleUrls: ['../classi-anni-materie-filter.css']
+  styleUrls: ['../classi-anni-materie.css']
 })
 export class ClassiAnniMaterieFilterComponent {
 

@@ -4,7 +4,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { MatPaginator }                         from '@angular/material/paginator';
 import { MatSort }                              from '@angular/material/sort';
 import { Observable }                           from 'rxjs';
-import { map }                                  from 'rxjs/operators';
+import { map, tap }                                  from 'rxjs/operators';
 import { SelectionModel }                       from '@angular/cdk/collections';
 import { MatTableDataSource}                    from '@angular/material/table';
 import { CdkDragDrop, moveItemInArray}          from '@angular/cdk/drag-drop';
@@ -64,20 +64,20 @@ export class GenitoriListComponent implements OnInit {
       "dtNascita",
       "addToFam" 
   ];
-  displayedColumnsGenitoriPage = [
-    "actionsColumn", 
-    "nome", 
-    "cognome", 
-    "dtNascita",
-    "tipoGenitoreID", 
-    "indirizzo", 
-    "comune", 
-    "cap", 
-    "prov", 
-    "telefono", 
-    "email", 
-    "ckAttivo"
-   ];
+  // displayedColumnsGenitoriPage = [
+  //   "actionsColumn", 
+  //   "nome", 
+  //   "cognome", 
+  //   "dtNascita",
+  //   "tipoGenitoreID", 
+  //   "indirizzo", 
+  //   "comune", 
+  //   "cap", 
+  //   "prov", 
+  //   "telefono", 
+  //   "email", 
+  //   "ckAttivo"
+  //  ];
 
   rptTitle = 'List Genitori';
   rptFileName = 'ListaGenitori';
@@ -113,7 +113,7 @@ export class GenitoriListComponent implements OnInit {
   showFilter:                                   boolean = true;
 
   showTableRibbon:                              boolean = true;
-  public ckSoloAttivi :                         boolean = true;
+  // public ckSoloAttivi :                         boolean = true;
 
   filterValue = '';       //Filtro semplice
    //filterValues contiene l'elenco dei filtri avanzati da applicare 
@@ -214,14 +214,21 @@ export class GenitoriListComponent implements OnInit {
       //.pipe(map(res=> res.filter(gen => gen._Figli.some(y => (y.id == this.alunnoID)))));  //BELLISSIMA Sembra giusta ma non funziona
     }
     else {
-      if(this.ckSoloAttivi){
+      // if(this.ckSoloAttivi){
+      //   obsGenitori$= this.svcGenitori.listWithChildren()
+      //     .pipe( 
+      //       map(res=> res.filter((x) => x.persona.ckAttivo == true)),
+      //       tap(res=>console.log("genitori-list", res))
+      //     );
+      // }
+      // else
         obsGenitori$= this.svcGenitori.listWithChildren()
-          .pipe( map(
-            res=> res.filter((x) => x.persona.ckAttivo == true))
-          );
-      }
-      else
-        obsGenitori$= this.svcGenitori.listWithChildren();
+          .pipe( 
+            tap(res=>
+              res.forEach(item => {
+                console.log(item.persona.nome + ' ' + item.persona.cognome);
+              })
+            ));
     }
 
     const loadGenitori$ =this._loadingService.showLoaderUntilCompleted(obsGenitori$);
@@ -407,10 +414,10 @@ resetSelections() {
   this.matDataSource.data.forEach(row => this.selection.deselect(row));
 }
 
-toggleAttivi(){
-  this.ckSoloAttivi = !this.ckSoloAttivi;
-  this.loadData();
-}
+// toggleAttivi(){
+//   this.ckSoloAttivi = !this.ckSoloAttivi;
+//   this.loadData();
+// }
 
 getChecked() {
   //funzione usata da classi-dahsboard

@@ -19,7 +19,7 @@ import { PersoneService }                       from '../persone.service';
 //models
 import { PER_Persona }                          from 'src/app/_models/PER_Persone';
 import { User }                                 from 'src/app/_user/Users';
-import { Utility } from '../../utilities/utility.component';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 //#endregion
 
@@ -33,6 +33,7 @@ export class PersonaEditComponent implements OnInit {
 //#region ----- Variabili ----------------------
   currUser!:                                    User;
   persona$!:                                    Observable<PER_Persona>;
+  persona!:                                     PER_Persona;
 
   form! :                                       UntypedFormGroup;
 
@@ -54,19 +55,19 @@ export class PersonaEditComponent implements OnInit {
 
   constructor(public _dialogRef: MatDialogRef<PersonaEditComponent>,
               @Inject(MAT_DIALOG_DATA) public personaID: number,
-              private fb:                           UntypedFormBuilder, 
-              private svcPersone:                   PersoneService,
-              public _dialog:                       MatDialog,
-              private _snackBar:                    MatSnackBar,
-              private _loadingService :             LoadingService  ) {
+              private fb:                       UntypedFormBuilder, 
+              private svcPersone:               PersoneService,
+              public _dialog:                   MatDialog,
+              private _snackBar:                MatSnackBar,
+              private _loadingService :         LoadingService  ) {
 
     _dialogRef.disableClose = true;
     
     //let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 
     this.form = this.fb.group({
-      id:                         [null],
-      ckAttivo:                   [true]
+      id:                                       [null],
+      ckAttivo:                                 [true]
     });  
 
   }
@@ -92,7 +93,11 @@ export class PersonaEditComponent implements OnInit {
       this.persona$ = loadPersona$
       .pipe( 
           tap(
-            persona => this.personaID = persona.id
+            persona => {
+              this.personaID = persona.id
+              this.persona = persona
+            }
+
             //this.form.patchValue(persona)
           )
       );
@@ -113,7 +118,7 @@ export class PersonaEditComponent implements OnInit {
         this._dialogRef.close();
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
       },
-      error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+      error: ()=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
     })
   }
 
@@ -123,9 +128,16 @@ export class PersonaEditComponent implements OnInit {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-              dialogYesNo.afterClosed().subscribe( result => {
+        dialogYesNo.afterClosed().subscribe( result => {
         if(result){
-
+          if( this.persona._LstRoles!.length != 0) {
+            let lstRolesstr = this.persona._LstRoles!.join(', ');
+            this._dialog.open(DialogOkComponent, {
+              width: '320px',
+              data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa persona non si può cancellare: <br>è "+ lstRolesstr}
+            });
+            return;
+          }
           this.personaFormComponent.delete()
           .subscribe( {
             next: res=> { 
