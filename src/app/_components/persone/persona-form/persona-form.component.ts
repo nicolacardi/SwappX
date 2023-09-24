@@ -3,8 +3,8 @@
 import { Component, EventEmitter, Input, OnInit, Output }     from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { MatDialog }                            from '@angular/material/dialog';
-import { Observable, firstValueFrom, of }                       from 'rxjs';
-import { concatMap, tap }                                  from 'rxjs/operators';
+import { Observable, firstValueFrom, from, of }                       from 'rxjs';
+import { concatMap, mergeMap, tap }                                  from 'rxjs/operators';
 
 //components
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
@@ -226,63 +226,61 @@ export class PersonaFormComponent implements OnInit {
         // concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(genitore.id, this.alunnoID), of() ))
   }
 
-  async checkExistsNC() : Promise<any>{
-    let nome = this.form.controls.nome.value;
-    let cognome = this.form.controls.cognome.value;
-    let objTrovato : PER_Persona;
-    // await firstValueFrom(this.svcPersone.getByNomeCognome(nome, cognome, this.personaID)
-    //     .pipe(
-    //       tap( persona => )
-    //     )
-    await firstValueFrom(this.svcPersone.getByNomeCognome(nome, cognome, this.personaID).pipe(tap(persona=> {return persona})));
-  }
-
-  // async checkExistsCF(): PER_Persona{
-  //   let cf = this.form.controls.cf.value;
-  //   let personaTrovataCF : PER_Persona;
-  //   await firstValueFrom(this.svcPersone.getByCF(cf, this.personaID)
-  //     .pipe(
-  //       tap(persona=> {personaTrovataCF = persona; console.log ("personaTrovata Da CF", personaTrovataCF)})     
-  //     ));
-    
+  // async checkExistsNC() : Promise<any>{
+  //   let nome = this.form.controls.nome.value;
+  //   let cognome = this.form.controls.cognome.value;
+  //   let objTrovato : PER_Persona;
+  //   await firstValueFrom(this.svcPersone.getByNomeCognome(nome, cognome, this.personaID));
   // }
 
-  save() :Observable<any>{
-    this.checkExistsNC()
-            .then(persona => {console.log("then", persona)});
-
-    return of();
-
-    if (this.personaID == null || this.personaID == 0) {
-      //return this.svcPersone.post(this.form.value)
-
-      return this.svcPersone.post(this.form.value)
-      .pipe (
-        tap(persona=> this.saveRoles() ),
-        concatMap(persona => {
-          let formData = { 
-            UserName:   this.form.controls.email.value,
-            Email:      this.form.controls.email.value,
-            PersonaID:  persona.id,
-            Password:   "1234"
-          };
-          console.log ("sto creando l'utente", formData);
-          return this.svcUser.post(formData)
-        }),
-      )
-      
-    }
-    else {
-      this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
-      this.saveRoles(); 
-      return this.svcPersone.put(this.form.value)
-      
-    }
-
-
-
-
+  async checkExistsNC(): Promise<PER_Persona | null> {
+    let nome = this.form.controls.nome.value;
+    let cognome = this.form.controls.cognome.value;
+    let objTrovato: PER_Persona | null = null;
+    objTrovato = await firstValueFrom(this.svcPersone.getByNomeCognome(nome, cognome, this.personaID));
+    console.log ("objTrovato", objTrovato);
+    return objTrovato;
   }
+
+  save() :Observable<any>{
+    return from(this.checkExistsNC()).pipe(
+      mergeMap((persona) => {
+      if (persona != null) { 
+        console.log ("mi fermo");
+        return of()
+      }
+
+      if (this.personaID == null || this.personaID == 0) {
+      
+        return this.svcPersone.post(this.form.value)
+        .pipe (
+          tap(persona=> this.saveRoles() ),
+          concatMap(persona => {
+            let formData = { 
+              UserName:   this.form.controls.email.value,
+              Email:      this.form.controls.email.value,
+              PersonaID:  persona.id,
+              Password:   "1234"
+            };
+            console.log ("sto creando l'utente", formData);
+            return this.svcUser.post(formData)
+          }),
+        )
+        
+      }
+      else {
+        this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
+        this.saveRoles(); 
+        return this.svcPersone.put(this.form.value)
+        
+      }
+    }))
+  };
+
+
+
+
+  
 
 
   saveRoles() {
