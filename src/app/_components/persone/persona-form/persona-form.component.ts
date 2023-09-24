@@ -233,25 +233,35 @@ export class PersonaFormComponent implements OnInit {
   //   await firstValueFrom(this.svcPersone.getByNomeCognome(nome, cognome, this.personaID));
   // }
 
-  async checkExistsNC(): Promise<PER_Persona | null> {
-    let nome = this.form.controls.nome.value;
-    let cognome = this.form.controls.cognome.value;
-    let objTrovato: PER_Persona | null = null;
-    objTrovato = await firstValueFrom(this.svcPersone.getByNomeCognome(nome, cognome, this.personaID));
-    console.log ("objTrovato", objTrovato);
-    return objTrovato;
+  async checkExists(): Promise<string | null> {
+
+    let result = '';
+    let objTrovatoNC: PER_Persona | null = null;
+    let objTrovatoCF: PER_Persona | null = null;
+
+    objTrovatoNC = await firstValueFrom(this.svcPersone.getByNomeCognome(this.form.controls.nome.value, this.form.controls.cognome.value, this.personaID));
+    objTrovatoCF = await firstValueFrom(this.svcPersone.getByCF(this.form.controls.cf.value, this.personaID));
+
+    console.log ("objTrovato", objTrovatoNC);
+    console.log ("objTrovato", objTrovatoCF);    
+
+    if (objTrovatoNC) result ="Nome-Cognome già esistente";
+    if (objTrovatoCF) result +="CF già esistente";
+    
+    return result;
   }
 
   save() :Observable<any>{
-    return from(this.checkExistsNC()).pipe(
-      mergeMap((persona) => {
-      if (persona != null) { 
-        console.log ("mi fermo");
-        return of()
-      }
+
 
       if (this.personaID == null || this.personaID == 0) {
       
+        return from(this.checkExists()).pipe(
+          mergeMap((msg) => {
+          if (msg != '') { 
+            console.log (msg);
+            return of()
+          }
         return this.svcPersone.post(this.form.value)
         .pipe (
           tap(persona=> this.saveRoles() ),
@@ -265,7 +275,7 @@ export class PersonaFormComponent implements OnInit {
             console.log ("sto creando l'utente", formData);
             return this.svcUser.post(formData)
           }),
-        )
+        )}))
         
       }
       else {
@@ -274,7 +284,7 @@ export class PersonaFormComponent implements OnInit {
         return this.svcPersone.put(this.form.value)
         
       }
-    }))
+    
   };
 
 
