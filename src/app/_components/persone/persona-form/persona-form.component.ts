@@ -246,11 +246,6 @@ export class PersonaFormComponent implements OnInit {
     if (this.form.controls.cf.value && this.form.controls.cf.value!= '') objTrovatoCF = await firstValueFrom(this.svcPersone.getByCF(this.form.controls.cf.value, this.personaID));
     objTrovatoEM = await firstValueFrom(this.svcPersone.getByEmail(this.form.controls.email.value, this.personaID));
 
-    console.log ("objTrovatoNC", objTrovatoNC);
-    console.log ("objTrovatoCF", objTrovatoCF);    
-    console.log ("objTrovatoEM", objTrovatoEM);    
-
-
     if (objTrovatoNC) result.push({msg: "Nome-Cognome già esistente", grav: "nonBlock"} );
     if (objTrovatoCF) result.push({msg: "CF già esistente", grav: "Block"} );
     if (objTrovatoEM) result.push({msg: "Email già esistente", grav: "Block"} );
@@ -260,7 +255,44 @@ export class PersonaFormComponent implements OnInit {
 
   save() :Observable<any>{
 
+    //---------- AS --------------------
+    let result = [];
+    //let objTrovatoNC: PER_Persona | null = null;
+    
+    //const obsPersona$: Observable<PER_Persona> = this.svcPersone.getByNomeCognome(this.form.controls.nome.value, this.form.controls.cognome.value, this.personaID);
+    //await firstValueFrom(this.obsTipiPersona$.pipe(tap(lstTipiPersona=> this.lstTipiPersona = lstTipiPersona)));
+/*
+    let objTrovatoNC =  this.svcPersone.getByNomeCognome(this.form.controls.nome.value, this.form.controls.cognome.value, this.personaID)
+      .subscribe(
+        res => this.comuniArr = res
+      );
+    console.log("AS: ",objTrovatoNC )
+        */
+    //--------------------------------------
 
+    if (this.personaID == null || this.personaID == 0) {
+      
+      return this.svcPersone.post(this.form.value).pipe (
+        tap(persona=> this.saveRoles() ),
+        concatMap(persona => {
+          let formData = { 
+            UserName:   this.form.controls.email.value,
+            Email:      this.form.controls.email.value,
+            PersonaID:  persona.id,
+            Password:   "1234"
+          };
+          console.log ("sto creando l'utente", formData);
+          return this.svcUser.post(formData)
+        }),
+      )
+    }
+    else {
+      this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
+      this.saveRoles(); 
+      return this.svcPersone.put(this.form.value)
+    }
+
+    /*
       if (this.personaID == null || this.personaID == 0) {
       
         return from(this.checkExists()).pipe(
@@ -296,10 +328,7 @@ export class PersonaFormComponent implements OnInit {
                   return of();
                 }
               });
-
-              
             }
-
           }  /////(ELSE???)
         return this.svcPersone.post(this.form.value)
         .pipe (
@@ -315,7 +344,6 @@ export class PersonaFormComponent implements OnInit {
             return this.svcUser.post(formData)
           }),
         )}))
-        
       }
       else {
         this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
@@ -323,13 +351,8 @@ export class PersonaFormComponent implements OnInit {
         return this.svcPersone.put(this.form.value)
         
       }
-    
+    */
   };
-
-
-
-
-  
 
 
   saveRoles() {
