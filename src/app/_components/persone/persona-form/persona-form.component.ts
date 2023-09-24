@@ -29,6 +29,8 @@ import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 import { User }                                 from 'src/app/_user/Users';
 import { UserService } from 'src/app/_user/user.service';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 
 
@@ -233,20 +235,25 @@ export class PersonaFormComponent implements OnInit {
   //   await firstValueFrom(this.svcPersone.getByNomeCognome(nome, cognome, this.personaID));
   // }
 
-  async checkExists(): Promise<string | null> {
+  async checkExists(): Promise<any[] | null> {
 
-    let result = '';
+    let result = [];
     let objTrovatoNC: PER_Persona | null = null;
     let objTrovatoCF: PER_Persona | null = null;
+    let objTrovatoEM: PER_Persona | null = null;
 
     objTrovatoNC = await firstValueFrom(this.svcPersone.getByNomeCognome(this.form.controls.nome.value, this.form.controls.cognome.value, this.personaID));
-    objTrovatoCF = await firstValueFrom(this.svcPersone.getByCF(this.form.controls.cf.value, this.personaID));
+    if (this.form.controls.cf.value && this.form.controls.cf.value!= '') objTrovatoCF = await firstValueFrom(this.svcPersone.getByCF(this.form.controls.cf.value, this.personaID));
+    objTrovatoEM = await firstValueFrom(this.svcPersone.getByEmail(this.form.controls.email.value, this.personaID));
 
-    console.log ("objTrovato", objTrovatoNC);
-    console.log ("objTrovato", objTrovatoCF);    
+    console.log ("objTrovatoNC", objTrovatoNC);
+    console.log ("objTrovatoCF", objTrovatoCF);    
+    console.log ("objTrovatoEM", objTrovatoEM);    
 
-    if (objTrovatoNC) result ="Nome-Cognome già esistente";
-    if (objTrovatoCF) result +="CF già esistente";
+
+    if (objTrovatoNC) result.push({msg: "Nome-Cognome già esistente", grav: "nonBlock"} );
+    if (objTrovatoCF) result.push({msg: "CF già esistente", grav: "Block"} );
+    if (objTrovatoEM) result.push({msg: "Email già esistente", grav: "Block"} );
     
     return result;
   }
@@ -258,10 +265,42 @@ export class PersonaFormComponent implements OnInit {
       
         return from(this.checkExists()).pipe(
           mergeMap((msg) => {
-          if (msg != '') { 
-            console.log (msg);
-            return of()
-          }
+          if (msg && msg.length > 0) { 
+            
+            const blockMessages = msg
+                .filter(item => item.grav === "Block")
+                .map(item => item.msg); 
+
+            if (blockMessages && blockMessages.length > 0){
+              this._dialog.open(DialogOkComponent, {
+                width: '320px',
+                data: { titolo: "ATTENZIONE!", sottoTitolo: blockMessages.join(', ') + 'Impossibile Salvare' }
+              });
+              
+              return of()
+            }
+            else {
+              const UnblockMessages = msg
+              .filter(item => item.grav === "nonBlock")
+              .map(item => item.msg);
+
+              const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+                width: '320px',
+                data: { titolo: "ATTENZIONE!", sottoTitolo: UnblockMessages.join(', ') + 'Vuoi salvare?' }
+              });
+
+              dialogYesNo.afterClosed().subscribe(result => {
+                if(result) {
+                  return of();
+                } else {
+                  return of();
+                }
+              });
+
+              
+            }
+
+          }  /////(ELSE???)
         return this.svcPersone.post(this.form.value)
         .pipe (
           tap(persona=> this.saveRoles() ),

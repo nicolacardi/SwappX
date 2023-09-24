@@ -91,4 +91,9 @@ export class PersoneService {
   getByCF(cf: string, personaID: number): Observable<PER_Persona> {
     return this.http.get<PER_Persona>(environment.apiBaseUrl+'PER_Persone/GetByCF/' + cf+ '/' +personaID)
   }
+
+  
+  getByEmail(email: string, personaID: number): Observable<PER_Persona> {
+    return this.http.get<PER_Persona>(environment.apiBaseUrl+'PER_Persone/GetByEMail/' + email+ '/' +personaID)
+  }
 }
