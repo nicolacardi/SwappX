@@ -82,4 +82,13 @@ export class PersoneService {
     return this.http.get<string[]>(environment.apiBaseUrl+'PER_Persone/listRoles/' + personaID)
         //http://213.215.231.4/swappX/api/PER_Persone/listRoles/3
   }
+
+  getByNomeCognome(nome: string, cognome: string, personaID: number): Observable<PER_Persona> {
+    //restituisce PER_Persona in base a nome e cognome ma con PersonaID != dal parametro passato
+    return this.http.get<PER_Persona>(environment.apiBaseUrl+'PER_Persone/GetByNomeCognome/' + nome+ '/'+cognome+ '/' +personaID)
+  }
+
+  getByCF(cf: string, personaID: number): Observable<PER_Persona> {
+    return this.http.get<PER_Persona>(environment.apiBaseUrl+'PER_Persone/GetByCF/' + cf+ '/' +personaID)
+  }
 }

@@ -132,7 +132,6 @@ export class PersonaFormComponent implements OnInit {
 
 
 
-
     this.loadData();
     this.svcComuni.list().subscribe( res => this.comuniArr = res);
     this.form.valueChanges.subscribe(
@@ -227,12 +226,33 @@ export class PersonaFormComponent implements OnInit {
         // concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(genitore.id, this.alunnoID), of() ))
   }
 
+  async checkExistsNC() : Promise<any>{
+    let nome = this.form.controls.nome.value;
+    let cognome = this.form.controls.cognome.value;
+    let objTrovato : PER_Persona;
+    // await firstValueFrom(this.svcPersone.getByNomeCognome(nome, cognome, this.personaID)
+    //     .pipe(
+    //       tap( persona => )
+    //     )
+    await firstValueFrom(this.svcPersone.getByNomeCognome(nome, cognome, this.personaID).pipe(tap(persona=> {return persona})));
+  }
+
+  // async checkExistsCF(): PER_Persona{
+  //   let cf = this.form.controls.cf.value;
+  //   let personaTrovataCF : PER_Persona;
+  //   await firstValueFrom(this.svcPersone.getByCF(cf, this.personaID)
+  //     .pipe(
+  //       tap(persona=> {personaTrovataCF = persona; console.log ("personaTrovata Da CF", personaTrovataCF)})     
+  //     ));
+    
+  // }
+
   save() :Observable<any>{
+    this.checkExistsNC()
+            .then(persona => {console.log("then", persona)});
 
+    return of();
 
-
-
-      //console.log ("PersonaFormComponent - save() - this.form.value", this.form.value);
     if (this.personaID == null || this.personaID == 0) {
       //return this.svcPersone.post(this.form.value)
 
