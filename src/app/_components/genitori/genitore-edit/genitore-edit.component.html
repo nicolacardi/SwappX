@@ -34,9 +34,10 @@
 <!-- ********************************    MAT TAB ANAGRAFICA *********************************** -->
                 <mat-tab  label="Dati Anagrafici">
 
-                    <form *ngIf="(genitore$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
+                    <!-- <form *ngIf="(genitore$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form"> -->
+                    <div *ngIf="(genitore$ | async) || emptyForm" class="mt10">
 
-                        <mat-grid-list class="no-overflowx mt10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
+                        <!-- <mat-grid-list class="no-overflowx mt10" [cols]="breakpoint" rowHeight="60px" (window:resize)="onResize($event)">
                             <mat-grid-tile>
                                 <mat-form-field>
                                     <mat-label>Tipo</mat-label>
@@ -47,10 +48,10 @@
                                     </mat-select>
                                 </mat-form-field>
                             </mat-grid-tile>
-                        </mat-grid-list>
+                        </mat-grid-list> -->
                 
                         <!-- [tipoPersonaID]="3"  -->
-                        <app-persona-form
+                        <app-persona-form class="mt10"
                             [personaID] = "personaID"
                             [dove]="'genitore-edit'"
                             (formValid)="formPersonaValidEmitted($event)">   
@@ -75,7 +76,8 @@
                                 </mat-form-field>
                             </mat-grid-tile>
                         </mat-grid-list> -->
-                    </form> 
+                    <!-- </form>  -->
+                    </div>
                 </mat-tab>
 <!-- ********************************    MAT TAB FIGLI ************************************ -->
                 <mat-tab  *ngIf="genitoreID" label="Famiglia">

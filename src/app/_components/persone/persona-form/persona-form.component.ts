@@ -31,6 +31,7 @@ import { User }                                 from 'src/app/_user/Users';
 import { UserService } from 'src/app/_user/user.service';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { MatOptionSelectionChange } from '@angular/material/core';
 
 
 
@@ -64,6 +65,12 @@ export class PersonaFormComponent implements OnInit {
   _lstRoles!:                                   string[];
   lstTipiPersona!:                              PER_TipoPersona[];
   selectedRoles:                                 number[] = []
+
+    //per mostrare i form di ruoli specifici
+    genitoreID = 0;
+    alunnoID = 0;
+    showGenitoreForm = false;
+    showAlunnoForm = false;
 
 //#endregion
 
@@ -242,80 +249,177 @@ export class PersonaFormComponent implements OnInit {
     let objTrovatoCF: PER_Persona | null = null;
     let objTrovatoEM: PER_Persona | null = null;
 
-    objTrovatoNC = await firstValueFrom(this.svcPersone.getByNomeCognome(this.form.controls.nome.value, this.form.controls.cognome.value, this.personaID));
-    if (this.form.controls.cf.value && this.form.controls.cf.value!= '') objTrovatoCF = await firstValueFrom(this.svcPersone.getByCF(this.form.controls.cf.value, this.personaID));
-    objTrovatoEM = await firstValueFrom(this.svcPersone.getByEmail(this.form.controls.email.value, this.personaID));
+    objTrovatoNC = await firstValueFrom(this.svcPersone.getByNomeCognome(this.form.controls.nome.value, this.form.controls.cognome.value, this.personaID? this.personaID : 0));
+    if (this.form.controls.cf.value && this.form.controls.cf.value!= '') objTrovatoCF = await firstValueFrom(this.svcPersone.getByCF(this.form.controls.cf.value, this.personaID? this.personaID : 0));
+    objTrovatoEM = await firstValueFrom(this.svcPersone.getByEmail(this.form.controls.email.value, this.personaID? this.personaID : 0));
 
     console.log ("objTrovatoNC", objTrovatoNC);
     console.log ("objTrovatoCF", objTrovatoCF);    
     console.log ("objTrovatoEM", objTrovatoEM);    
 
 
-    if (objTrovatoNC) result.push({msg: "Nome-Cognome già esistente", grav: "nonBlock"} );
-    if (objTrovatoCF) result.push({msg: "CF già esistente", grav: "Block"} );
-    if (objTrovatoEM) result.push({msg: "Email già esistente", grav: "Block"} );
+    if (objTrovatoNC) result.push({msg: "Combinazione Nome e Cognome <br>già presente", grav: "nonBlock"} );
+    if (objTrovatoCF) result.push({msg: "CF già presente", grav: "Block"} );
+    if (objTrovatoEM) result.push({msg: "Email già presente", grav: "Block"} );
     
     return result;
   }
 
+
   save() :Observable<any>{
 
+    //verifica (e attende l'esito) se ci sono già persone con lo stesso nome-cognome, cf, email. 
+    return from(this.checkExists()).pipe(
+      mergeMap((msg) => {
+        if (msg && msg.length > 0) {
 
+          const blockMessages = msg
+            .filter(item => item.grav === "Block")
+            .map(item => item.msg);
+  
+          if (blockMessages && blockMessages.length > 0) {
+            this._dialog.open(DialogOkComponent, {
+              width: '320px',
+              data: { titolo: "ATTENZIONE!", sottoTitolo: blockMessages.join(', ') + '<br>Impossibile Salvare' }
+            });
+            // la presenza di persone con stessa email o cf genera uno stop (gravità Block)
+            return of();
+          } else {
+            const UnblockMessages = msg
+              .filter(item => item.grav === "nonBlock")
+              .map(item => item.msg);
+              // la presenza di persone con stesso nome e cognome genera una richiesta all'utente (gravità nonBlock)
+              //se procedere o meno
+
+            const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+              width: '320px',
+              data: { titolo: "ATTENZIONE!", sottoTitolo: UnblockMessages.join(', ') + '<br>Vuoi salvare un omonimo?' }
+            });
+  
+            return dialogYesNo.afterClosed().pipe(
+              mergeMap(result => {
+                if (result) {
+                  //se l'utente dice di procedere allora si valuta se post o put
+                  //***********************QUESTO BLOCCO SI RIPETE ANCHE IN CASO NON VENGA TROVATO ALCUN MSG ************/
+                  if (this.personaID == null || this.personaID == 0) {
+                    //POST
+                    return this.svcPersone.post(this.form.value).pipe(
+                      tap(persona => this.saveRoles()),
+                      tap(persona => {
+                        let formData = { 
+                          UserName: this.form.controls.email.value,
+                          Email: this.form.controls.email.value,
+                          PersonaID: persona.id,
+                          Password: "1234"
+                        };
+                        console.log("sto creando l'utente", formData);
+                        this.svcUser.post(formData).subscribe();
+                      })
+                    );
+                  } else {
+                    //PUT
+                    this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
+                    this.saveRoles(); 
+                    return this.svcPersone.put(this.form.value);
+                  }
+                  //*****************************FINO A QUI ***********************************************************/
+                } else {
+                  //se l'utente dice di non procedere tutto si ferma
+                  return of();
+                }
+              })
+            );
+          }
+        } else {
+          // In caso di nessun messaggio, si procede con POST o PUT
+          //***********************QUESTO BLOCCO E' PURTROPPO UGUALE A QUELLO SOPRA ************/
+          if (this.personaID == null || this.personaID == 0) {
+            //POST
+            return this.svcPersone.post(this.form.value).pipe(
+              tap(persona => this.saveRoles()),
+              tap(persona => {
+                let formData = { 
+                  UserName: this.form.controls.email.value,
+                  Email: this.form.controls.email.value,
+                  PersonaID: persona.id,
+                  Password: "1234"
+                };
+                console.log("sto creando l'utente", formData);
+                this.svcUser.post(formData).subscribe();
+              })
+            );
+          } else {
+            //PUT
+            this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
+            this.saveRoles(); 
+            return this.svcPersone.put(this.form.value);
+          }
+          //*****************************FINO A QUI ***********************************************************/
+
+        }
+      })
+    );
+
+
+    
+  
+};
+
+
+  saveold() :Observable<any>{
       if (this.personaID == null || this.personaID == 0) {
       
         return from(this.checkExists()).pipe(
           mergeMap((msg) => {
-          if (msg && msg.length > 0) { 
-            
-            const blockMessages = msg
-                .filter(item => item.grav === "Block")
-                .map(item => item.msg); 
-
-            if (blockMessages && blockMessages.length > 0){
-              this._dialog.open(DialogOkComponent, {
-                width: '320px',
-                data: { titolo: "ATTENZIONE!", sottoTitolo: blockMessages.join(', ') + 'Impossibile Salvare' }
-              });
+            if (msg && msg.length > 0) { 
               
-              return of()
+              const blockMessages = msg
+                  .filter(item => item.grav === "Block")
+                  .map(item => item.msg); 
+
+              if (blockMessages && blockMessages.length > 0){
+                this._dialog.open(DialogOkComponent, {
+                  width: '320px',
+                  data: { titolo: "ATTENZIONE!", sottoTitolo: blockMessages.join(', ') + 'Impossibile Salvare' }
+                });
+                
+                return of()
+              }
+              else {
+                const UnblockMessages = msg
+                .filter(item => item.grav === "nonBlock")
+                .map(item => item.msg);
+
+                const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+                  width: '320px',
+                  data: { titolo: "ATTENZIONE!", sottoTitolo: UnblockMessages.join(', ') + 'Vuoi salvare?' }
+                });
+
+                dialogYesNo.afterClosed().subscribe(result => {
+                  if(result) {
+                    return of();
+                  } else {
+                    return of();
+                  }
+                });
+              }
             }
-            else {
-              const UnblockMessages = msg
-              .filter(item => item.grav === "nonBlock")
-              .map(item => item.msg);
-
-              const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
-                width: '320px',
-                data: { titolo: "ATTENZIONE!", sottoTitolo: UnblockMessages.join(', ') + 'Vuoi salvare?' }
-              });
-
-              dialogYesNo.afterClosed().subscribe(result => {
-                if(result) {
-                  return of();
-                } else {
-                  return of();
-                }
-              });
-
-              
-            }
-
-          }  /////(ELSE???)
-        return this.svcPersone.post(this.form.value)
-        .pipe (
-          tap(persona=> this.saveRoles() ),
-          concatMap(persona => {
-            let formData = { 
-              UserName:   this.form.controls.email.value,
-              Email:      this.form.controls.email.value,
-              PersonaID:  persona.id,
-              Password:   "1234"
-            };
-            console.log ("sto creando l'utente", formData);
-            return this.svcUser.post(formData)
-          }),
-        )}))
-        
+            return this.svcPersone.post(this.form.value)
+            .pipe (
+              tap(persona=> this.saveRoles() ),
+              concatMap(persona => {
+                let formData = { 
+                  UserName:   this.form.controls.email.value,
+                  Email:      this.form.controls.email.value,
+                  PersonaID:  persona.id,
+                  Password:   "1234"
+                };
+                console.log ("sto creando l'utente", formData);
+                return this.svcUser.post(formData)
+              }),
+            )
+          })
+        )
       }
       else {
         this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
@@ -476,5 +580,18 @@ export class PersonaFormComponent implements OnInit {
   }
 //#endregion
 
+  changeSelectRoles (event: MatOptionSelectionChange){
+
+    if (event.source.viewValue == 'Alunno')
+      if (event.source.selected)
+        {this.showAlunnoForm = true}
+      else    
+        {this.showAlunnoForm = false}
+    if (event.source.viewValue == 'Genitore')
+      if (event.source.selected)
+        {this.showGenitoreForm = true}
+      else    
+        {this.showGenitoreForm = false}
+  }
 
 }

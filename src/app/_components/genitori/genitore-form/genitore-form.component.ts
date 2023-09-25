@@ -12,6 +12,8 @@ import { LoadingService }                       from '../../utilities/loading/lo
 
 //models
 import { ALU_Genitore }                         from 'src/app/_models/ALU_Genitore';
+import { ALU_TipoGenitore } from 'src/app/_models/ALU_Tipogenitore';
+import { TipiGenitoreService } from '../tipi-genitore.service';
 
 //#endregion
 
@@ -24,6 +26,7 @@ export class GenitoreFormComponent {
 
   //#region ----- Variabili ----------------------
   genitore$!:                                     Observable<ALU_Genitore>;
+  obsTipiGenitore$!:                            Observable<ALU_TipoGenitore[]>;
   form! :                                       UntypedFormGroup;
   
   emptyForm :                                   boolean = false;
@@ -44,6 +47,7 @@ export class GenitoreFormComponent {
   constructor(public _dialog:                   MatDialog,
               private fb:                       UntypedFormBuilder, 
               private svcGenitori:              GenitoriService,
+              private svcTipiGenitore:          TipiGenitoreService,
               private _loadingService :         LoadingService ) {
 
     this.form = this.fb.group(
@@ -54,6 +58,8 @@ export class GenitoreFormComponent {
       titoloStudio:                             [''],
       professione:                              ['']
     });
+
+    this.obsTipiGenitore$ = this.svcTipiGenitore.list();
   }
 
 //#endregion

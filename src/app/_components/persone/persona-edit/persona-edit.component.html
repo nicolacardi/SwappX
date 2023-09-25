@@ -29,8 +29,25 @@
                 <div class="mt20"></div>
 
                 <app-persona-form [personaID] = "personaID"
-                                  (formValid)="formValidEmitted($event)">   
+                                  (formValid)="formValidEmitted($event)"
+                                  #apppersonaform
+                                  >   
                 </app-persona-form>
+
+                <!-- form di ruoli specifici -->
+                <app-genitore-form  *ngIf="apppersonaform.showGenitoreForm"                      
+                                    [genitoreID] = "apppersonaform.genitoreID"
+
+                                    >
+                </app-genitore-form>
+
+
+                <app-alunno-form    *ngIf="apppersonaform.showAlunnoForm"
+                                    [alunnoID] = "apppersonaform.alunnoID"
+
+                                    >
+                </app-alunno-form>
+
 
             </form>
         </mat-card-content>

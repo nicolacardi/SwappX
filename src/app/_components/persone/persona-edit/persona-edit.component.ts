@@ -35,6 +35,8 @@ export class PersonaEditComponent implements OnInit {
   persona$!:                                    Observable<PER_Persona>;
   persona!:                                     PER_Persona;
 
+
+  
   form! :                                       UntypedFormGroup;
 
   isValid!:                                     boolean;
@@ -43,6 +45,9 @@ export class PersonaEditComponent implements OnInit {
   comuniNascitaIsLoading:                       boolean = false;
   breakpoint!:                                  number;
   breakpoint2!:                                 number;
+
+
+
 //#endregion
 
 //#region ----- ViewChild Input Output ---------

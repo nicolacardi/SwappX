@@ -4,7 +4,8 @@
 <h3 class="center" mat-dialog-title>{{data.titolo}}</h3>
 <div class="center" mat-dialog-content>
 
-    <p>{{data.sottoTitolo}}</p>
+    <!-- <p>{{data.sottoTitolo}}</p> -->
+    <p style="white-space: normal" innerHTML="{{data.sottoTitolo}}"></p>
     <!--
     <mat-form-field>
         <mat-label>Favorite Animal</mat-label>

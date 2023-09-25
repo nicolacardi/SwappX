@@ -46,7 +46,7 @@ export class GenitoreEditComponent implements OnInit {
 
   public personaID!:                            number;
   genitoreNomeCognome :                         string = "";
-  form! :                                       UntypedFormGroup;
+  // form! :                                       UntypedFormGroup;
 
   personaFormisValid!:                          boolean;
   genitoreFormisValid!:                         boolean;
@@ -73,7 +73,7 @@ export class GenitoreEditComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public genitoreID: number,
               private fb:                                 UntypedFormBuilder, 
               private svcGenitori:                        GenitoriService,
-              private svcTipiGenitore:                    TipiGenitoreService,
+              //private svcTipiGenitore:                    TipiGenitoreService,
               private svcAlunni:                          AlunniService, //serve perchè è in questa che si trovano le addToFamily e RemoveFromFamily"
               public _dialog:                             MatDialog,
               private _snackBar:                          MatSnackBar,
@@ -81,12 +81,12 @@ export class GenitoreEditComponent implements OnInit {
 
     _dialogRef.disableClose = true;
 
-    this.form = this.fb.group(
-    {
-      tipoGenitoreID:             [''],
-    });
+    // this.form = this.fb.group(
+    // {
+    //   tipoGenitoreID:             [''],
+    // });
 
-    this.obsTipiGenitore$ = this.svcTipiGenitore.list();
+    //this.obsTipiGenitore$ = this.svcTipiGenitore.list();
   }
 
 //#endregion 
@@ -110,7 +110,7 @@ export class GenitoreEditComponent implements OnInit {
             genitore => {
               this.personaID = genitore.personaID;
               this.genitoreNomeCognome = genitore.persona.nome + " "+ genitore.persona.cognome;
-              this.form.patchValue(genitore);
+              // this.form.patchValue(genitore);
             }
           )
       );
@@ -128,7 +128,8 @@ export class GenitoreEditComponent implements OnInit {
       this.personaFormComponent.save()
       .pipe(
         tap(persona => {
-          this.genitoreFormComponent.form.controls.tipoGenitoreID.setValue(this.form.controls.tipoGenitoreID.value);
+          //this.genitoreFormComponent.form.controls.tipoGenitoreID.setValue(this.form.controls.tipoGenitoreID.value);
+          console.log ("ho salvato la persona, questo è il persona che arriva a genitore-edit", persona)
           if (this.genitoreFormComponent.form.controls.personaID.value == null)
               this.genitoreFormComponent.form.controls.personaID.setValue(persona.id);
         }),

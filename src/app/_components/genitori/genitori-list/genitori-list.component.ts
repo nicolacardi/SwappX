@@ -222,13 +222,7 @@ export class GenitoriListComponent implements OnInit {
       //     );
       // }
       // else
-        obsGenitori$= this.svcGenitori.listWithChildren()
-          .pipe( 
-            tap(res=>
-              res.forEach(item => {
-                console.log(item.persona.nome + ' ' + item.persona.cognome);
-              })
-            ));
+        obsGenitori$= this.svcGenitori.listWithChildren();
     }
 
     const loadGenitori$ =this._loadingService.showLoaderUntilCompleted(obsGenitori$);
