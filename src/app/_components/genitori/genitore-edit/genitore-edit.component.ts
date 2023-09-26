@@ -123,8 +123,6 @@ export class GenitoreEditComponent implements OnInit {
 //#region ----- Operazioni CRUD ----------------
 
   save() {
-
-
       this.personaFormComponent.save()
       .pipe(
         tap(persona => {

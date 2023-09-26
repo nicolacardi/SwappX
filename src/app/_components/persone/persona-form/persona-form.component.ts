@@ -304,7 +304,7 @@ export class PersonaFormComponent implements OnInit {
                   if (this.personaID == null || this.personaID == 0) {
                     //POST
                     return this.svcPersone.post(this.form.value).pipe(
-                      tap(persona => this.saveRoles()),
+                      tap(() => this.saveRoles()),
                       tap(persona => {
                         let formData = { 
                           UserName: this.form.controls.email.value,
@@ -406,7 +406,7 @@ export class PersonaFormComponent implements OnInit {
             }
             return this.svcPersone.post(this.form.value)
             .pipe (
-              tap(persona=> this.saveRoles() ),
+              tap(()=> this.saveRoles() ),
               concatMap(persona => {
                 let formData = { 
                   UserName:   this.form.controls.email.value,
@@ -447,7 +447,7 @@ export class PersonaFormComponent implements OnInit {
     //PER_ITManager
     let selectedRolesIds = []
     //console.log("elenco dei valori arrivati inizialmente", this._lstRoles); //è l'elenco dei ruoli "precedenti". E' un array di stringhe del tipo ["Alunno", "ITManager"...]
-    console.log (this.personaID);
+    console.log ("persona-form - saveRoles - this.personaID", this.personaID);
     if (this.form.controls._lstRoles.value.length != 0) selectedRolesIds = this.form.controls._lstRoles.value;
     console.log (selectedRolesIds);
     const selectedRolesDescrizioni = selectedRolesIds.map((tipo:any) => {const tipoPersona = this.lstTipiPersona.find(tp => tp.id === tipo);
