@@ -1,5 +1,5 @@
 //#region ----- IMPORTS ------------------------
-import { Component, EventEmitter, Input, Output }                     from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output }                     from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog }                            from '@angular/material/dialog';
 import { Observable, of, tap }                  from 'rxjs';
@@ -21,8 +21,7 @@ import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno
   styleUrls:    ['./../alunni.css']
 })
 
-
-export class AlunnoFormComponent {
+export class AlunnoFormComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
   alunno$!:                                     Observable<ALU_Alunno>;
@@ -30,7 +29,6 @@ export class AlunnoFormComponent {
   
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
-  breakpoint!:                                  number;
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -50,9 +48,9 @@ export class AlunnoFormComponent {
     this.form = this.fb.group(
     {
       id:                                       [null],
+      personaID:                                [null],
       scuolaProvenienza:                        ['', Validators.maxLength(255)],
       indirizzoScuolaProvenienza:               ['', Validators.maxLength(255)],
-      personaID:                                [],
       ckDSA:                                    [false],
       ckDisabile:                               [false],
     });
@@ -64,6 +62,7 @@ export class AlunnoFormComponent {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit(){
+    console.log("alunno-form - ngOnInit");
     this.loadData();
 
     this.form.valueChanges.subscribe(
@@ -73,7 +72,6 @@ export class AlunnoFormComponent {
 
   loadData(){
 
-    this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
 
     if (this.alunnoID && this.alunnoID + '' != "0") {
       const obsAlunno$: Observable<ALU_Alunno> = this.svcAlunni.get(this.alunnoID);
@@ -91,7 +89,7 @@ export class AlunnoFormComponent {
   }
 
   save() :Observable<any>{
-    // console.log("save di alunno form -form:", this.form.value);
+
     if (this.alunnoID == null || this.alunnoID == 0) {
       return this.svcAlunni.post(this.form.value)
     }

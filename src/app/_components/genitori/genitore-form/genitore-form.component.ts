@@ -1,5 +1,5 @@
 //#region ----- IMPORTS ------------------------
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog }                            from '@angular/material/dialog';
 import { Observable, of, tap }                  from 'rxjs';
@@ -22,16 +22,17 @@ import { TipiGenitoreService } from '../tipi-genitore.service';
   templateUrl: './genitore-form.component.html',
   styleUrls: ['./../genitori.css']
 })
-export class GenitoreFormComponent {
+
+export class GenitoreFormComponent implements OnInit {
 
   //#region ----- Variabili ----------------------
   genitore$!:                                     Observable<ALU_Genitore>;
   obsTipiGenitore$!:                            Observable<ALU_TipoGenitore[]>;
+
   form! :                                       UntypedFormGroup;
   
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
-  breakpoint!:                                  number;
 //#endregion
 
 //#region ----- ViewChild Input Output -------
@@ -68,6 +69,7 @@ export class GenitoreFormComponent {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit(){
+    console.log("genitore-form - ngOnInit");
     this.loadData();
 
     this.form.valueChanges.subscribe(
@@ -75,9 +77,9 @@ export class GenitoreFormComponent {
     )
   }
 
-  loadData(){
 
-    this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
+
+  loadData(){
 
     if (this.genitoreID && this.genitoreID + '' != "0") {
       const obsGenitore$: Observable<ALU_Genitore> = this.svcGenitori.get(this.genitoreID);

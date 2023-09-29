@@ -1,8 +1,8 @@
     <mat-card appearance="outlined" class="form-card">
-        <mat-card-content>
+        <mat-card-content *ngIf="(persona$ | async) || emptyForm">
 
 <!-- ********************************    BOTTONI     ************************************* -->
-            <div class="center">
+            <div  class="center">
                 <!-- <button mat-mini-fab aria-label="Back" matTooltip="Back" class="btn" mat-dialog-close>
                     <mat-icon>arrow_back</mat-icon>
                 </button> -->
@@ -14,8 +14,21 @@
                     <mat-icon>restart_alt</mat-icon>
                 </button>
 
-                <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"  [disabled] ="!isValid" (click)="save()" >
+                <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"  
+
+                [disabled]="!apppersonaform.form.valid || 
+                    apppersonaform.showAlunnoForm?      !appalunnoform?.form?.valid : false || 
+                    apppersonaform.showGenitoreForm?    !appgenitoreform?.form?.valid: false"
+
+
+                    (click)="save()" >
                     <mat-icon>save</mat-icon>
+<!-- 
+                    [disabled]="!apppersonaform.form.valid || 
+                    apppersonaform.showAlunnoForm?      !appalunnoform?.form?.valid : false || 
+                    apppersonaform.showGenitoreForm?    !appgenitoreform?.form?.valid: false" -->
+                    <!-- [disabled] ="!personaFormIsValid || (apppersonaform.showGenitoreForm && appgenitoreform && !appgenitoreform.form.valid) || (apppersonaform.showAlunnoForm && appalunnoform && !appalunnoform.form.valid)" (click)="save()" > -->
+
                 </button>
 
                 <button *ngIf="personaID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10" (click)="delete()" >
@@ -25,29 +38,33 @@
             
             <!-- ********************************       ANAGRAFICA      *********************************** -->
 
-            <form *ngIf="(persona$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
+            <form class="data-form flex-form" [formGroup] = "form">
                 <div class="mt20"></div>
 
-                <app-persona-form [personaID] = "personaID"
-                                  (formValid)="formValidEmitted($event)"
-                                  #apppersonaform
+                <app-persona-form 
+                                [personaID] = "personaID"
+                                #apppersonaform
                                   >   
                 </app-persona-form>
-
-                <!-- form di ruoli specifici -->
-                <app-genitore-form  *ngIf="apppersonaform.showGenitoreForm"                      
-                                    [genitoreID] = "apppersonaform.genitoreID"
-
-                                    >
-                </app-genitore-form>
+                <!-- (formValid)="formPersonaValidEmitted($event)" -->
 
 
-                <app-alunno-form    *ngIf="apppersonaform.showAlunnoForm"
-                                    [alunnoID] = "apppersonaform.alunnoID"
+                
+                <div class="_bordered-grey mt5" *ngIf="apppersonaform.showGenitoreForm" >
+                    <app-genitore-form                       
 
-                                    >
-                </app-alunno-form>
-
+                                #appgenitoreform
+                                >
+                    </app-genitore-form>
+                    <!-- (formValid)="formGenitoreValidEmitted($event)" -->
+                </div>
+                <div class="_bordered-grey mt5" *ngIf="apppersonaform.showAlunnoForm" >
+                    <app-alunno-form    
+                                
+                                #appalunnoform        >
+                    </app-alunno-form>
+                    <!-- (formValid)="formAlunnoValidEmitted($event)" -->
+                </div>
 
             </form>
         </mat-card-content>

@@ -80,6 +80,8 @@ export class PersonaFormComponent implements OnInit {
   @Input() dove!:                               string;
 
   @Output('formValid') formValid = new EventEmitter<boolean>();
+  // @Output('changedRoles') changedRoles = new EventEmitter();
+
 //#endregion
 
 //#region ----- Constructor --------------------
@@ -170,7 +172,7 @@ export class PersonaFormComponent implements OnInit {
               this.form.patchValue(persona);
               //console.log("persona-form - loadData - persona", persona);
               //console.log("persona-form - loadData - lstTipiPersona", this.lstTipiPersona)
-              this._lstRoles = persona._LstRoles!;
+              this._lstRoles = persona._LstRoles!; //questi i ruoli arrivati
 
               for (let i= 0; i < persona._LstRoles!.length; i++)
               {
@@ -178,6 +180,12 @@ export class PersonaFormComponent implements OnInit {
                 if (ruoloPersona) this.selectedRoles.push(ruoloPersona.id)
               }
               this.form.controls._lstRoles.setValue(this.selectedRoles);
+              
+              //se tra i ruoli ci sono alunno /genitore mostro il form relativo
+              if (persona._LstRoles!.includes('Alunno')) { this.showAlunnoForm = true; }//devo anche valorizzare alunnoID e passarlo a alunno form
+              if (persona._LstRoles!.includes('Genitore')) {this.showGenitoreForm = true} //devo anche valorizzare genitoreID e passarlo a genitore form
+
+
             }
 
           )
@@ -336,7 +344,7 @@ export class PersonaFormComponent implements OnInit {
           if (this.personaID == null || this.personaID == 0) {
             //POST
             return this.svcPersone.post(this.form.value).pipe(
-              tap(persona => this.saveRoles()),
+              tap(() => this.saveRoles()),
               tap(persona => {
                 let formData = { 
                   UserName: this.form.controls.email.value,
@@ -538,6 +546,8 @@ export class PersonaFormComponent implements OnInit {
   }
 
   delete() :Observable<any>{
+
+    //BISOGNA CHE PRIMA CANCELLI TUTTI I VARI GENITORE, ALUNNO, DOCENTE, NON DOCENTE E USER ECC. TODO
     if (this.personaID != null) 
       return this.svcPersone.delete(this.personaID) 
     else return of();
@@ -583,15 +593,20 @@ export class PersonaFormComponent implements OnInit {
   changeSelectRoles (event: MatOptionSelectionChange){
 
     if (event.source.viewValue == 'Alunno')
+    
       if (event.source.selected)
         {this.showAlunnoForm = true}
       else    
         {this.showAlunnoForm = false}
+    
     if (event.source.viewValue == 'Genitore')
+
       if (event.source.selected)
         {this.showGenitoreForm = true}
       else    
         {this.showGenitoreForm = false}
+  
+    // this.changedRoles.emit();
   }
 
 }

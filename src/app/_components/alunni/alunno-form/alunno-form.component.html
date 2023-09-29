@@ -1,6 +1,7 @@
 <!-- alunno form + persona form = alunno edit -->
 <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
-    <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    
+    <mat-grid-list class="no-overflowx" [cols]="3" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>Scuola di provenienza</mat-label>
@@ -20,7 +21,7 @@
         </mat-grid-tile>
     </mat-grid-list>
 
-    <mat-grid-list class="no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list class="no-overflowx" [cols]="3" rowHeight="60px">
 
         <mat-grid-tile class="tileCk ml15">
             <mat-checkbox color="primary" formControlName="ckDSA">

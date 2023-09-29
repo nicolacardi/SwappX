@@ -1,7 +1,7 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
@@ -20,6 +20,8 @@ import { PersoneService }                       from '../persone.service';
 import { PER_Persona }                          from 'src/app/_models/PER_Persone';
 import { User }                                 from 'src/app/_user/Users';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
+import { GenitoreFormComponent } from '../../genitori/genitore-form/genitore-form.component';
+import { AlunnoFormComponent } from '../../alunni/alunno-form/alunno-form.component';
 
 //#endregion
 
@@ -28,9 +30,10 @@ import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component
   templateUrl: './persona-edit.component.html',
   styleUrls: ['../persone.css']
 })
-export class PersonaEditComponent implements OnInit {
+export class PersonaEditComponent implements OnInit, AfterViewInit {
 
 //#region ----- Variabili ----------------------
+  tmpN:                                        number =0;
   currUser!:                                    User;
   persona$!:                                    Observable<PER_Persona>;
   persona!:                                     PER_Persona;
@@ -39,12 +42,15 @@ export class PersonaEditComponent implements OnInit {
   
   form! :                                       UntypedFormGroup;
 
-  isValid!:                                     boolean;
+  // personaFormIsValid!:                          boolean;
+  // genitoreFormIsValid!:                         boolean;
+  // alunnoFormIsValid!:                           boolean;
+
   emptyForm :                                   boolean = false;
   comuniIsLoading:                              boolean = false;
   comuniNascitaIsLoading:                       boolean = false;
-  breakpoint!:                                  number;
-  breakpoint2!:                                 number;
+  // breakpoint!:                                  number;
+  // breakpoint2!:                                 number;
 
 
 
@@ -52,7 +58,14 @@ export class PersonaEditComponent implements OnInit {
 
 //#region ----- ViewChild Input Output ---------
 
-  @ViewChild(PersonaFormComponent) personaFormComponent!: PersonaFormComponent; 
+@ViewChild(PersonaFormComponent) personaFormComponent!: PersonaFormComponent; 
+// @ViewChild(GenitoreFormComponent) genitoreFormComponent!: GenitoreFormComponent; 
+// @ViewChild(AlunnoFormComponent) alunnoFormComponent!: AlunnoFormComponent; 
+//static false serve a consentire un riferimento a appalunnoform anche se non è stato caricato ancora
+@ViewChild('appalunnoform', {static: false}) appalunnoform!: AlunnoFormComponent; 
+@ViewChild('appgenitoreform', {static: false}) appgenitoreform!: AlunnoFormComponent; 
+
+
 
 //#endregion
 
@@ -85,10 +98,14 @@ export class PersonaEditComponent implements OnInit {
     this.loadData();
   }
 
+  ngAfterViewInit (){
+    console.log ("persona-edit - afterviewinit");
+  }
+
   loadData(){
 
-    this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
-    this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
+    // this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
+    // this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
     if (this.personaID && this.personaID + '' != "0") {
 
@@ -158,14 +175,36 @@ export class PersonaEditComponent implements OnInit {
 
 //#region ----- Altri metodi -------------------
 
-  onResize(event: any) {
-    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
-    this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
-  }
+  // onResize(event: any) {
+  //   this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
+  //   this.breakpoint2 = (event.target.innerWidth <= 800) ? 2 : 4;
+  // }
 
-  formValidEmitted(isValid: boolean) {
-    this.isValid = isValid;
-  }
+  // formPersonaValidEmitted(isValid: boolean) {
+  //   console.log("formPersonaValidEmitted")
+  //   this.personaFormIsValid = isValid;
+  // }
+
+  // formGenitoreValidEmitted(isValid: boolean) {
+  //   this.genitoreFormIsValid = isValid;
+  // }
+
+  // formAlunnoValidEmitted(isValid: boolean) {
+  //   this.alunnoFormIsValid = isValid;
+  // }
+
+  // formPersonaChangedRolesEmitted () {
+  //   console.log("passo di qua");
+  //   //in questo modo quando si cambia il ruolo viene emesso un emit e si impostano i valori a true o false
+  //   //ma se sono in edit di una persona??????questo va bene se faccio un nuovo alunno o nuovo genitore!
+  //   if (this.genitoreFormComponent) this.genitoreFormIsValid = this.genitoreFormComponent.form.valid;
+  //   if (this.alunnoFormComponent) this.alunnoFormIsValid = this.alunnoFormComponent.form.valid;
+  // }
+
+  // updateDisableSave () {
+  //   this.tmpN++;
+  //   console.log (this.tmpN, "updateDisableSave");
+  // }
 
 //#endregion
 }
