@@ -8,9 +8,10 @@
         <mat-grid-tile>
             <mat-form-field >
                 <mat-label>Ruoli</mat-label>
-                <mat-select matNativeControl formControlName="_lstRoles" multiple >
-                    <mat-option (onSelectionChange)="changeSelectRoles($event)" *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id" 
-                                [disabled] ="currUser.personaID == personaID  || !currUser.persona!._LstRoles!.includes('ITManager')" >
+                <mat-select matNativeControl formControlName="_lstRoles" multiple #selectroles>
+                    <mat-option (onSelectionChange)="changeOptionRoles($event)" *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id" 
+
+                    [disabled] ="currUser.personaID == personaID  || !currUser.persona!._LstRoles!.includes('ITManager')" >
                                 <!-- Solo gli IT Manager possono mettere mano ai ruoli e non possono comunque modificare il proprio ruolo -->
                         {{element.descrizione}}
                     </mat-option>

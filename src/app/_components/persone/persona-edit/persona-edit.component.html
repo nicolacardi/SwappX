@@ -3,9 +3,7 @@
 
 <!-- ********************************    BOTTONI     ************************************* -->
             <div  class="center">
-                <!-- <button mat-mini-fab aria-label="Back" matTooltip="Back" class="btn" mat-dialog-close>
-                    <mat-icon>arrow_back</mat-icon>
-                </button> -->
+
                 <img class="iconaMenuBig" src="./assets/persona_edit_T.svg">
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" [mat-dialog-close]="persona$|async"></button>
@@ -16,30 +14,36 @@
 
                 <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"  
 
-                [disabled]="!apppersonaform.form.valid || 
-                    apppersonaform.showAlunnoForm?      !appalunnoform?.form?.valid : false || 
-                    apppersonaform.showGenitoreForm?    !appgenitoreform?.form?.valid: false"
-
-
+                    [disabled]="!apppersonaform.form.valid || 
+                    ((apppersonaform.showAlunnoForm && appalunnoform)  ?     !appalunnoform?.form?.valid : false) || 
+                    ((apppersonaform.showGenitoreForm) ?  !appgenitoreform?.form?.valid: false) "
                     (click)="save()" >
                     <mat-icon>save</mat-icon>
-<!-- 
-                    [disabled]="!apppersonaform.form.valid || 
-                    apppersonaform.showAlunnoForm?      !appalunnoform?.form?.valid : false || 
-                    apppersonaform.showGenitoreForm?    !appgenitoreform?.form?.valid: false" -->
-                    <!-- [disabled] ="!personaFormIsValid || (apppersonaform.showGenitoreForm && appgenitoreform && !appgenitoreform.form.valid) || (apppersonaform.showAlunnoForm && appalunnoform && !appalunnoform.form.valid)" (click)="save()" > -->
-
                 </button>
+<!-- 
+                [disabled]="!apppersonaform.form.valid || 
+                (apppersonaform.showAlunnoForm && appalunnoform)  ?   !appalunnoform?.form?.valid : false || 
+                (apppersonaform.showGenitoreForm && appgenitoreform) ?    !appgenitoreform?.form?.valid: false" -->
+<!-- 
+                [disabled]="!apppersonaform.form.valid || 
+                (apppersonaform.showAlunnoForm && appalunnoform && !appalunnoform?.form?.valid) ||
+                (apppersonaform.showGenitoreForm && appgenitoreform && !appgenitoreform?.form?.valid)" -->
 
                 <button *ngIf="personaID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10" (click)="delete()" >
                     <mat-icon>delete</mat-icon>
                 </button>
+                <!-- <div *ngIf="apppersonaform.showGenitoreForm && appgenitoreform && apppersonaform.showAlunnoForm && appalunnoform" >
+
+                    {{!appgenitoreform?.form?.valid ||
+                        ((apppersonaform.showAlunnoForm && appalunnoform)  ?   !appalunnoform?.form?.valid : false) || 
+                        ((apppersonaform.showGenitoreForm && appgenitoreform) ?    !appgenitoreform?.form?.valid: false)}}
+                </div> -->
+                
             </div>
             
             <!-- ********************************       ANAGRAFICA      *********************************** -->
 
-            <form class="data-form flex-form" [formGroup] = "form">
-                <div class="mt20"></div>
+            <div class="mt20">
 
                 <app-persona-form 
                                 [personaID] = "personaID"
@@ -48,11 +52,8 @@
                 </app-persona-form>
                 <!-- (formValid)="formPersonaValidEmitted($event)" -->
 
-
-                
                 <div class="_bordered-grey mt5" *ngIf="apppersonaform.showGenitoreForm" >
                     <app-genitore-form                       
-
                                 #appgenitoreform
                                 >
                     </app-genitore-form>
@@ -60,12 +61,12 @@
                 </div>
                 <div class="_bordered-grey mt5" *ngIf="apppersonaform.showAlunnoForm" >
                     <app-alunno-form    
-                                
-                                #appalunnoform        >
+                                #appalunnoform        
+                                >
                     </app-alunno-form>
                     <!-- (formValid)="formAlunnoValidEmitted($event)" -->
                 </div>
+            </div>
 
-            </form>
         </mat-card-content>
     </mat-card>

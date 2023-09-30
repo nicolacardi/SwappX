@@ -47,12 +47,6 @@ export class PersonaEditComponent implements OnInit, AfterViewInit {
   // alunnoFormIsValid!:                           boolean;
 
   emptyForm :                                   boolean = false;
-  comuniIsLoading:                              boolean = false;
-  comuniNascitaIsLoading:                       boolean = false;
-  // breakpoint!:                                  number;
-  // breakpoint2!:                                 number;
-
-
 
 //#endregion
 
@@ -63,7 +57,7 @@ export class PersonaEditComponent implements OnInit, AfterViewInit {
 // @ViewChild(AlunnoFormComponent) alunnoFormComponent!: AlunnoFormComponent; 
 //static false serve a consentire un riferimento a appalunnoform anche se non è stato caricato ancora
 @ViewChild('appalunnoform', {static: false}) appalunnoform!: AlunnoFormComponent; 
-@ViewChild('appgenitoreform', {static: false}) appgenitoreform!: AlunnoFormComponent; 
+@ViewChild('appgenitoreform', {static: false}) appgenitoreform!: GenitoreFormComponent; 
 
 
 
@@ -80,13 +74,6 @@ export class PersonaEditComponent implements OnInit, AfterViewInit {
               private _loadingService :         LoadingService  ) {
 
     _dialogRef.disableClose = true;
-    
-    //let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
-
-    this.form = this.fb.group({
-      id:                                       [null],
-      ckAttivo:                                 [true]
-    });  
 
   }
 
@@ -102,13 +89,8 @@ export class PersonaEditComponent implements OnInit, AfterViewInit {
     console.log ("persona-edit - afterviewinit");
   }
 
-  loadData(){
-
-    // this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
-    // this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
-
+  loadData(){ 
     if (this.personaID && this.personaID + '' != "0") {
-
       const obsPersona$: Observable<PER_Persona> = this.svcPersone.get(this.personaID);
       const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
 
@@ -119,7 +101,6 @@ export class PersonaEditComponent implements OnInit, AfterViewInit {
               this.personaID = persona.id
               this.persona = persona
             }
-
             //this.form.patchValue(persona)
           )
       );

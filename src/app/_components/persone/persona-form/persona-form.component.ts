@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, EventEmitter, Input, OnInit, Output }     from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild }     from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { MatDialog }                            from '@angular/material/dialog';
 import { Observable, firstValueFrom, from, of }                       from 'rxjs';
@@ -32,6 +32,7 @@ import { UserService } from 'src/app/_user/user.service';
 import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 import { MatOptionSelectionChange } from '@angular/material/core';
+import { MatSelectChange, MatSelectTrigger } from '@angular/material/select';
 
 
 
@@ -69,12 +70,17 @@ export class PersonaFormComponent implements OnInit {
     //per mostrare i form di ruoli specifici
     genitoreID = 0;
     alunnoID = 0;
-    showGenitoreForm = false;
-    showAlunnoForm = false;
+    showGenitoreForm:boolean  = false;
+    showAlunnoForm:boolean = false;
 
 //#endregion
 
 //#region ----- ViewChild Input Output -------
+
+@ViewChild('selectroles') selectroles!: MatSelectTrigger;
+
+
+
   @Input() personaID!:                          number;
   @Input() tipoPersonaID!:                      number;
   @Input() dove!:                               string;
@@ -590,8 +596,10 @@ export class PersonaFormComponent implements OnInit {
   }
 //#endregion
 
-  changeSelectRoles (event: MatOptionSelectionChange){
 
+
+  changeOptionRoles (event: MatOptionSelectionChange){
+    console.log (event.source.viewValue);
     if (event.source.viewValue == 'Alunno')
     
       if (event.source.selected)
