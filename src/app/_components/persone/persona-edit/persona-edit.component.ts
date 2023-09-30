@@ -59,8 +59,6 @@ export class PersonaEditComponent implements OnInit, AfterViewInit {
 @ViewChild('appalunnoform', {static: false}) appalunnoform!: AlunnoFormComponent; 
 @ViewChild('appgenitoreform', {static: false}) appgenitoreform!: GenitoreFormComponent; 
 
-
-
 //#endregion
 
 //#region ----- Constructor --------------------
@@ -115,8 +113,7 @@ export class PersonaEditComponent implements OnInit, AfterViewInit {
 
   save()
   {
-    this.personaFormComponent.save()
-    .subscribe({
+    this.personaFormComponent.save().subscribe({
       next: ()=> {
         this._dialogRef.close();
         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});

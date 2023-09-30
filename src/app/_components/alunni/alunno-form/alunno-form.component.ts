@@ -90,18 +90,17 @@ export class AlunnoFormComponent implements OnInit {
 
   save() :Observable<any>{
 
-    if (this.alunnoID == null || this.alunnoID == 0) {
+    if (this.alunnoID == null || this.alunnoID == 0) 
       return this.svcAlunni.post(this.form.value)
-    }
-    else {
+    else 
       return this.svcAlunni.put(this.form.value)
-    }
   }
 
   delete() :Observable<any>{
     if (this.alunnoID != null) 
       return this.svcAlunni.delete(this.alunnoID) 
-    else return of();
+    else 
+      return of();
   }
 //#endregion
 }

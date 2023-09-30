@@ -298,7 +298,8 @@ export class PersonaFormComponent implements OnInit {
             });
             // la presenza di persone con stessa email o cf genera uno stop (gravità Block)
             return of();
-          } else {
+          } 
+          else {
             const UnblockMessages = msg
               .filter(item => item.grav === "nonBlock")
               .map(item => item.msg);
@@ -444,12 +445,6 @@ export class PersonaFormComponent implements OnInit {
     
   };
 
-
-
-
-  
-
-
   saveRoles() {
     //parallelamente alla save (put o post che sia) della persona bisogna occuparsi di inserire i diversi ruoli
     //ALU_Alunno
@@ -463,12 +458,12 @@ export class PersonaFormComponent implements OnInit {
     //console.log("elenco dei valori arrivati inizialmente", this._lstRoles); //è l'elenco dei ruoli "precedenti". E' un array di stringhe del tipo ["Alunno", "ITManager"...]
     console.log ("persona-form - saveRoles - this.personaID", this.personaID);
     if (this.form.controls._lstRoles.value.length != 0) selectedRolesIds = this.form.controls._lstRoles.value;
-    console.log (selectedRolesIds);
-    const selectedRolesDescrizioni = selectedRolesIds.map((tipo:any) => {const tipoPersona = this.lstTipiPersona.find(tp => tp.id === tipo);
+      console.log (selectedRolesIds);
+      const selectedRolesDescrizioni = selectedRolesIds.map((tipo:any) => {const tipoPersona = this.lstTipiPersona.find(tp => tp.id === tipo);
       return tipoPersona ? tipoPersona.descrizione : ''; // Restituisce la descrizione se trovata, altrimenti una stringa vuota
     });
-    console.log("this._lstRoles",this._lstRoles);
 
+    console.log("this._lstRoles",this._lstRoles);
     console.log("elenco dei valori selezionati dall'utente",selectedRolesDescrizioni);
 
     if (this._lstRoles) { //se è un record nuovo e non seleziono nessuno è undefined
@@ -516,6 +511,7 @@ export class PersonaFormComponent implements OnInit {
             switch (roleselected) {
               case "Alunno":
                 this.svcAlunni.post(formData).subscribe();
+                
               break;
               case "Genitore":
                 this.svcGenitori.post(formData).subscribe();

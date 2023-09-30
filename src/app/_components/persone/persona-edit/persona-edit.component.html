@@ -14,9 +14,10 @@
 
                 <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"  
 
-                    [disabled]="!apppersonaform.form.valid || 
-                    ((apppersonaform.showAlunnoForm && appalunnoform)  ?     !appalunnoform?.form?.valid : false) || 
-                    ((apppersonaform.showGenitoreForm) ?  !appgenitoreform?.form?.valid: false) "
+                    [disabled]="!apppersonaform.form.valid
+                        || ((apppersonaform.showAlunnoForm && appalunnoform) ? !appalunnoform?.form?.valid : false)
+                        || ((apppersonaform.showGenitoreForm ) ?  !appgenitoreform?.form?.valid: false) "
+
                     (click)="save()" >
                     <mat-icon>save</mat-icon>
                 </button>
@@ -48,22 +49,16 @@
                 <app-persona-form 
                                 [personaID] = "personaID"
                                 #apppersonaform
-                                  >   
+                                >   
                 </app-persona-form>
                 <!-- (formValid)="formPersonaValidEmitted($event)" -->
 
                 <div class="_bordered-grey mt5" *ngIf="apppersonaform.showGenitoreForm" >
-                    <app-genitore-form                       
-                                #appgenitoreform
-                                >
-                    </app-genitore-form>
+                    <app-genitore-form #appgenitoreform></app-genitore-form>
                     <!-- (formValid)="formGenitoreValidEmitted($event)" -->
                 </div>
                 <div class="_bordered-grey mt5" *ngIf="apppersonaform.showAlunnoForm" >
-                    <app-alunno-form    
-                                #appalunnoform        
-                                >
-                    </app-alunno-form>
+                    <app-alunno-form #appalunnoform></app-alunno-form>
                     <!-- (formValid)="formAlunnoValidEmitted($event)" -->
                 </div>
             </div>
