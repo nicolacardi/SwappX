@@ -117,9 +117,8 @@ export class AlunnoEditComponent implements OnInit {
           )
       );
     }
-    else this.emptyForm = true
-        
-
+    else 
+      this.emptyForm = true
   }
 
 //#endregion
@@ -136,13 +135,12 @@ save(){
         //this.personaID = persona.id; //questa non fa a tempo ad arrivare a alunnoFormComponent per fare anche la post di formAlunno con il giusto personaID
       }),
     concatMap( () => this.alunnoFormComponent.save())
-    )
-    .subscribe({
-        next: res=> {
-          this._dialogRef.close();
-          this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-        },
-        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+    ).subscribe({
+      next: res=> {
+        this._dialogRef.close();
+        this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+      },
+      error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
     });
   }
 
@@ -243,9 +241,7 @@ save(){
             width: '320px',
             data: {titolo: "ATTENZIONE!", sottoTitolo: "E' già stata inserita una classe in quest'anno!"}
           });
-        } else {
-          //console.log("l'alunno non frequenta alcuna classe nell'anno a cui sto cercando di iscriverlo, posso procedere
-        }
+        } 
       })
 
     )

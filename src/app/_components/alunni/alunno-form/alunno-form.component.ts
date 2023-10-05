@@ -72,7 +72,6 @@ export class AlunnoFormComponent implements OnInit {
 
   loadData(){
 
-
     if (this.alunnoID && this.alunnoID + '' != "0") {
       const obsAlunno$: Observable<ALU_Alunno> = this.svcAlunni.get(this.alunnoID);
       const loadAlunno$ = this._loadingService.showLoaderUntilCompleted(obsAlunno$);

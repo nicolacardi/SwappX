@@ -34,8 +34,6 @@ import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-n
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { MatSelectChange, MatSelectTrigger } from '@angular/material/select';
 
-
-
 //#endregion
 @Component({
   selector: 'app-persona-form',
@@ -77,9 +75,7 @@ export class PersonaFormComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
 
-@ViewChild('selectroles') selectroles!: MatSelectTrigger;
-
-
+  @ViewChild('selectroles') selectroles!: MatSelectTrigger;
 
   @Input() personaID!:                          number;
   @Input() tipoPersonaID!:                      number;
@@ -138,7 +134,6 @@ export class PersonaFormComponent implements OnInit {
     this.currUser = Utility.getCurrentUser();
     //this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.persona!.tipoPersona!.livello);
     this.obsTipiPersona$ = this.svcTipiPersona.list();
-
   }
   
 //#endregion
@@ -146,22 +141,19 @@ export class PersonaFormComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit(){
-
-
-
     this.loadData();
     this.svcComuni.list().subscribe( res => this.comuniArr = res);
     this.form.valueChanges.subscribe(
-      res=> this.formValid.emit(this.form.valid) //ma serve??? Su procedura-iscrizioni ho fatto diversamente
+      () => this.formValid.emit(this.form.valid) //ma serve??? Su procedura-iscrizioni ho fatto diversamente
     )
   }
 
   async loadData(){
+
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
     //if (this.tipoPersonaID) this.form.controls.tipoPersonaID.setValue(this.tipoPersonaID);
-
 
     if (this.personaID && this.personaID + '' != "0") {
       const obsPersona$: Observable<PER_Persona> = this.svcPersone.get(this.personaID);
@@ -172,16 +164,12 @@ export class PersonaFormComponent implements OnInit {
 
       this.persona$ = loadPersona$
       .pipe( 
-
           tap(
             persona => {
               this.form.patchValue(persona);
-              //console.log("persona-form - loadData - persona", persona);
-              //console.log("persona-form - loadData - lstTipiPersona", this.lstTipiPersona)
               this._lstRoles = persona._LstRoles!; //questi i ruoli arrivati
 
-              for (let i= 0; i < persona._LstRoles!.length; i++)
-              {
+              for (let i= 0; i < persona._LstRoles!.length; i++) {
                 const ruoloPersona = this.lstTipiPersona.find(tp => tp.descrizione === persona._LstRoles![i]);
                 if (ruoloPersona) this.selectedRoles.push(ruoloPersona.id)
               }
@@ -190,10 +178,7 @@ export class PersonaFormComponent implements OnInit {
               //se tra i ruoli ci sono alunno /genitore mostro il form relativo
               if (persona._LstRoles!.includes('Alunno')) { this.showAlunnoForm = true; }//devo anche valorizzare alunnoID e passarlo a alunno form
               if (persona._LstRoles!.includes('Genitore')) {this.showGenitoreForm = true} //devo anche valorizzare genitoreID e passarlo a genitore form
-
-
             }
-
           )
       );
     }
@@ -227,26 +212,6 @@ export class PersonaFormComponent implements OnInit {
           }
         }
       )
-      //MODALITA' PRECEDENTE TUTTA RXJS MA FUNZIONA MALE E OGNI VOLTA DEVE FARE UNA CHIAMATA
-      // this.filteredComuni$ = this.form.controls.comune.valueChanges
-      //   .pipe( 
-      //     debounceTime(300),
-      //     tap(() => this.comuniIsLoading = true),
-      //     tap(() => console.log("cerco" + this.form.value.comune)),
-      //     switchMap(() =>  
-      //     { //voglio cercare SOLO se l'utente digita + di tre caratteri
-      //       if (this.form.controls.comune.value.length >= 3) {
-      //         return this.svcComuni.filterList(this.form.value.comune);
-      //       } else {
-      //         this.comuniIsLoading = false;
-      //         return of([]);
-      //       }
-      //     }
-      //     ),
-      //     tap(() => this.comuniIsLoading = false),
-
-      //   )
-        // concatMap( res => iif (()=> res.length == 0, this.svcAlunni.postGenitoreAlunno(genitore.id, this.alunnoID), of() ))
   }
 
   // async checkExistsNC() : Promise<any>{
@@ -267,10 +232,9 @@ export class PersonaFormComponent implements OnInit {
     if (this.form.controls.cf.value && this.form.controls.cf.value!= '') objTrovatoCF = await firstValueFrom(this.svcPersone.getByCF(this.form.controls.cf.value, this.personaID? this.personaID : 0));
     objTrovatoEM = await firstValueFrom(this.svcPersone.getByEmail(this.form.controls.email.value, this.personaID? this.personaID : 0));
 
-    console.log ("objTrovatoNC", objTrovatoNC);
-    console.log ("objTrovatoCF", objTrovatoCF);    
-    console.log ("objTrovatoEM", objTrovatoEM);    
-
+    //console.log ("objTrovatoNC", objTrovatoNC);
+    //console.log ("objTrovatoCF", objTrovatoCF);    
+    //console.log ("objTrovatoEM", objTrovatoEM);    
 
     if (objTrovatoNC) result.push({msg: "Combinazione Nome e Cognome <br>già presente", grav: "nonBlock"} );
     if (objTrovatoCF) result.push({msg: "CF già presente", grav: "Block"} );
@@ -374,10 +338,6 @@ export class PersonaFormComponent implements OnInit {
         }
       })
     );
-
-
-    
-  
 };
 
 
@@ -440,9 +400,7 @@ export class PersonaFormComponent implements OnInit {
         this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
         this.saveRoles(); 
         return this.svcPersone.put(this.form.value)
-        
       }
-    
   };
 
   saveRoles() {
@@ -456,20 +414,19 @@ export class PersonaFormComponent implements OnInit {
     //PER_ITManager
     let selectedRolesIds = []
     //console.log("elenco dei valori arrivati inizialmente", this._lstRoles); //è l'elenco dei ruoli "precedenti". E' un array di stringhe del tipo ["Alunno", "ITManager"...]
-    console.log ("persona-form - saveRoles - this.personaID", this.personaID);
+    //console.log ("persona-form - saveRoles - this.personaID", this.personaID);
     if (this.form.controls._lstRoles.value.length != 0) selectedRolesIds = this.form.controls._lstRoles.value;
-      console.log (selectedRolesIds);
       const selectedRolesDescrizioni = selectedRolesIds.map((tipo:any) => {const tipoPersona = this.lstTipiPersona.find(tp => tp.id === tipo);
       return tipoPersona ? tipoPersona.descrizione : ''; // Restituisce la descrizione se trovata, altrimenti una stringa vuota
     });
 
-    console.log("this._lstRoles",this._lstRoles);
-    console.log("elenco dei valori selezionati dall'utente",selectedRolesDescrizioni);
+    //console.log("this._lstRoles",this._lstRoles);
+    //console.log("elenco dei valori selezionati dall'utente",selectedRolesDescrizioni);
 
     if (this._lstRoles) { //se è un record nuovo e non seleziono nessuno è undefined
       this._lstRoles.forEach(async roleinput=> {
-        {if (!selectedRolesDescrizioni.includes(roleinput))
-          {
+        {
+          if (!selectedRolesDescrizioni.includes(roleinput)) {
             //questo roleinput è stato CANCELLATO, va dunque rimosso (ammesso che si possa)
             switch (roleinput) {
               case "Alunno":
@@ -502,8 +459,8 @@ export class PersonaFormComponent implements OnInit {
       })
 
       selectedRolesDescrizioni.forEach(async (roleselected:string)=> {
-        {if (!this._lstRoles.includes(roleselected))
-          {
+        {
+          if (!this._lstRoles.includes(roleselected))   {
             //questo roleselected è stato AGGIUNTO, va dunque fatta la post
             let formData =  {
               personaID: this.personaID
@@ -527,7 +484,6 @@ export class PersonaFormComponent implements OnInit {
                       docenteID: docenteEstratto.id
                     }
                   })));
-                console.log("verificare se è arrivato...", formDataDocenteCoord );
                 this.svcDocentiCoord.post(formDataDocenteCoord).subscribe();
 
               break;
@@ -592,10 +548,8 @@ export class PersonaFormComponent implements OnInit {
   }
 //#endregion
 
-
-
   changeOptionRoles (event: MatOptionSelectionChange){
-    console.log (event.source.viewValue);
+    //console.log (event.source.viewValue);
     if (event.source.viewValue == 'Alunno')
     
       if (event.source.selected)
