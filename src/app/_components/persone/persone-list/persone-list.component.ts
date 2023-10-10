@@ -243,7 +243,7 @@ export class PersoneListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
-      height: '610px',
+      height: '640px',
       data: 0
     };
 
@@ -255,7 +255,7 @@ export class PersoneListComponent implements OnInit {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '850px',
-      height: '610px',
+      height: '640px',
       data: id
     };
 

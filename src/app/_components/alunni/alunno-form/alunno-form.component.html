@@ -1,5 +1,5 @@
 <form *ngIf="(alunno$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
-    <p>Dati dell'alunno</p>
+    <mat-label class="frameLabelRel t10">Dati dell'alunno</mat-label>
     <mat-icon class="_pos-absolute r20">delete</mat-icon>
     <mat-grid-list class="no-overflowx" [cols]="3" rowHeight="60px">
         <mat-grid-tile>
