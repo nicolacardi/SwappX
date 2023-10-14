@@ -584,18 +584,24 @@ export class IscrizioniListComponent implements OnInit {
           testoMail = testoMail + "<br><br>"+
           "Potete utilizzare lo username : <span style='font-weight: bold'>"+ userGenitore.userName + "</span>";
         } else {
-          //se non ha username vado a crearlo
-          let rndPassword = Utility.generateRandomString();
-          let formData = {
-            UserName:   mailAddress,
-            Email:      mailAddress,
-            PersonaID:  iscrizione.alunno._Genitori![i].genitore!.personaID,
-            Password:   rndPassword
-          };
+          //NON DEVE PASSARE MAI DI QUA IN QUANTO GLI UTENTI DEI GENITORI DEVONO ESSERE SEMPRE GIA' DISPONIBILI
+          this._dialog.open(DialogOkComponent, {
+            width: '320px',
+            data: {titolo: "ATTENZIONE!", sottoTitolo: "Utente non presente in database<br>Pregasi avvertire il dipartimento IT"}
+          });
+          return;
+          // //se non ha username vado a crearlo
+          // let rndPassword = Utility.generateRandomString();
+          // let formData = {
+          //   UserName:   mailAddress,
+          //   Email:      mailAddress,
+          //   PersonaID:  iscrizione.alunno._Genitori![i].genitore!.personaID,
+          //   Password:   rndPassword
+          // };
 
-          await firstValueFrom(this.svcUser.post(formData));
+          // await firstValueFrom(this.svcUser.post(formData));
 
-          testoMail = testoMail + "<br><br>E' stato creato lo username : <span style='font-weight: bold'>"+ mailAddress + "</span> con password : <span style='font-weight: bold'>" + rndPassword + "</span>";
+          // testoMail = testoMail + "<br><br>E' stato creato lo username : <span style='font-weight: bold'>"+ mailAddress + "</span> con password : <span style='font-weight: bold'>" + rndPassword + "</span>";
         }
 
         testoMail = testoMail + 

@@ -137,6 +137,7 @@ import { UserEditComponent }                    from './_components/users/user-e
 import { ProfiloComponent }                     from './_user/profilo/profilo.component';
 import { ChangePswComponent }                   from './_user/change-psw/change-psw.component';
 import { ChangePswExtComponent }                from './_user/change-psw-ext/change-psw-ext.component';
+import { RegisterComponent }                    from './_user/register/register.component';
 
 import { ResetPswComponent }                    from './_user/reset-psw/reset-psw.component';
 import { ClipboardModule }                      from '@angular/cdk/clipboard';
@@ -351,6 +352,7 @@ import { ClassiAnniMaterieFilterComponent } from './_components/classi-anni-mate
     PhotocropComponent,
     ChangePswComponent,
     ChangePswExtComponent,
+    RegisterComponent,
 
     ImpostazioniComponent,
     ResizeColumnDirective,

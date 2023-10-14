@@ -14,21 +14,23 @@ import { DialogOkComponent }                    from 'src/app/_components/utilit
 //services
 import { UserService }                          from '../user.service';
 import { MailService }                          from 'src/app/_components/utilities/mail/mail.service';
+import { ParametriService }                     from 'src/app/_components/impostazioni/parametri/parametri.service';
+import { PersoneService }                       from 'src/app/_components/persone/persone.service';
 
 //models
 import { _UT_MailMessage }                      from 'src/app/_models/_UT_MailMessage';
-import { ParametriService } from 'src/app/_components/impostazioni/parametri/parametri.service';
+import { PER_Persona }                          from 'src/app/_models/PER_Persone';
 
 //#endregion
 
 @Component({
-  selector: 'app-reset-psw',
-  templateUrl: './reset-psw.component.html',
+  selector: 'app-register',
+  templateUrl: './register.component.html',
   styleUrls: ['../user.css']
 })
 
 
-export class ResetPswComponent {
+export class RegisterComponent {
 
 //#region ----- ViewChild Input Output ---------
   form! :                                       UntypedFormGroup;
@@ -43,6 +45,8 @@ export class ResetPswComponent {
 constructor(private fb:                         UntypedFormBuilder,
             private _snackBar:                  MatSnackBar,
             private svcUser:                    UserService,
+            private svcPersone:                 PersoneService,
+
             private svcMail:                    MailService,
             private svcParametri:               ParametriService,
             public _dialog:                     MatDialog  ) {
@@ -67,7 +71,7 @@ constructor(private fb:                         UntypedFormBuilder,
     }
 
     let mailAddress = this.form.controls.Email.value;
-    mailAddress = "nicola.cardi@gmail.com"; //per evitare di spammare il mondo in questa fase      
+      
     let user : any;
     //interrogo e aspetto il DB per ottenere lo user che ha questa mail 
     //(TODO: bloccare possibilità di inserimento più utenti con una stessa mail!)
@@ -76,33 +80,48 @@ constructor(private fb:                         UntypedFormBuilder,
         tap(res => { user = res;}
       )
     ));
-    
-    if (!user) {
-      this._snackBar.openFromComponent(SnackbarComponent, { data: "Email non registrata"  , panelClass: ['red-snackbar']});
+
+    //se l'utente c'è blocco tutto: non si tratta di una prima registrazione
+    console.log ("user trovato", user);
+    if (user) {
+      this._snackBar.openFromComponent(SnackbarComponent, { data: "Utente già registrato in precedenza"  , panelClass: ['red-snackbar']});
       return;
     }
 
-    let rndPassword = Utility.generateRandomString();
+    let persona! : PER_Persona;
+    //vado a verificare che esista in PER_persone un record con la mail inserita
+    await firstValueFrom(this.svcPersone.getByMailAddress(mailAddress)
+      .pipe(
+        tap(res => { persona = res;}
+      )
+    ));
 
-    //Reset Password con utente e pagina random generata AVVENIVA COSI' PRIMA DI RIFARE IL GIRO CON INVIO E SALVATAGGIO PSW TEMPORANEA
-    //await firstValueFrom(this.svcUser.ResetPassword(user.id, rndPassword));                //sincrono
-    //this.svcUser.ResetPassword(user.id, rndPassword).subscribe();                         //asincrono
+    console.log ("persona trovata", persona);
+
+    if (!persona) {
+      this._snackBar.openFromComponent(SnackbarComponent, { data: "Non esiste un utente con questa mail"  , panelClass: ['red-snackbar']});
+      return;
+    }
+
+
+    let rndPassword = Utility.generateRandomString();
 
     //ora devo salvare la password temporanea
 
     let formData = {
-      userID:       user.id,                    //necessario x la put
-      userName:     user.userName,              //necessario x la put
-      personaID:    user.personaID,             //necessario x la put
-      tmpPassword:  rndPassword,                //nuova psw
-      email:        user.email,                 //se non lo metto viene cancellato
-      normalizedEmail:  user.normalizedEmail,   //se non lo metto viene cancellato
-      fullName:  user.fullName                  //se non lo metto viene cancellato
+
+      userName:     mailAddress,
+      personaID:    persona.id,
+      password:     rndPassword,
+      tmpPassword:  rndPassword,                
+      email:        mailAddress,
+      normalizedEmail:  mailAddress,
+      fullName:  'da cancellare'
     };
 
-    //const formData = { ...user, tmpPassword: rndPassword }; //così purtroppo non funziona (SAREBBE STATO + ELEGANTE)
+    console.log ("formData to post", formData);
+    await firstValueFrom(this.svcUser.post(formData));
 
-    this.svcUser.put(formData).subscribe();
 
     let base64LogoScuolaEmail = '';
     let base64LogoStoody ='';
@@ -110,9 +129,7 @@ constructor(private fb:                         UntypedFormBuilder,
     await firstValueFrom(this.svcParametri.getByParName('imgFileLogoScuolaEmail').pipe(tap(res=> {base64LogoScuolaEmail = res.parValue;})));
     await firstValueFrom(this.svcParametri.getByParName('imgFileLogoStoody').pipe(tap(res=> {base64LogoStoody = res.parValue;})));
 
-    // let imageUrl = './assets/logo/logoMailStoody.png';
-    // try {base64LogoStoody = await Utility.convertImageToBase64(imageUrl);} 
-    // catch (error) {console.error('Error converting image to base64:', error);}
+
 
     let titoloMail = "STOODY: Invio Password Temporanea";
     let testoMail =  "<html><body>"+
@@ -120,12 +137,12 @@ constructor(private fb:                         UntypedFormBuilder,
       "<div style='width: 500px; margin: auto; background-color: white; border-radius: 30px; padding: 20px; line-height: normal'>"+
         "<img style='width: 100px' src='"+base64LogoStoody+"'/> <br><br>" +
 
-        "<span style='font-size: 1.3em'> E' stata richiesta una nuova password per l'utente<br>riferito a questo indirizzo email. </span><br>" +
+        "<span style='font-size: 1.3em'> Questa è la conferma della registrazione dell'utente<br>riferito a questo indirizzo email. </span><br>" +
         "<br><br> Puoi accedere tramite questo link<br><br>" +
 
-        "<a class='btn' href='localhost:4200/change-psw-ext?username="+user.userName+"&key=" + rndPassword +"'>localhost:4200/change-psw-ext?username="+user.userName+"&key=" + rndPassword +"</a><br><br>"+
+        "<a class='btn' href='localhost:4200/change-psw-ext?username="+mailAddress+"&key=" + rndPassword +"'>localhost:4200/change-psw-ext?username="+mailAddress+"&key=" + rndPassword +"</a><br><br>"+
         "e impostare la nuova password."+
-        "<br><br> Se non sei stato tu a richiedere una nuova password puoi ignorare questo link<br>o segnalarlo a info@stoody.it " +
+        "<br><br> Se non sei stato tu a richiedere questa registrazione segnalalo a info@stoody.it " +
         "<br><br><img alt='logo Scuola' style='width: 100px' src='"+base64LogoScuolaEmail+"'/> <br><br>"+
       "</div>"+
       "</div>"+  
@@ -134,8 +151,9 @@ constructor(private fb:                         UntypedFormBuilder,
     
 
     ;
+    mailAddress = "nicola.cardi@gmail.com"; //per evitare di spammare il mondo in questa fase    
 
-
+    console.log ("testomail", testoMail);
     // "Di seguito le nuove credenziali: <br><br>" +
     // "Nome Utente: " + user.userName + "<br>" +
     // "Password temporanea : " + rndPassword +
@@ -151,7 +169,7 @@ constructor(private fb:                         UntypedFormBuilder,
       next: res=> {
         this._dialog.open(DialogOkComponent, {
           width: '320px',
-          data: {titolo: "RICHIESTA DI CAMBIO PASSWORD", sottoTitolo: "E' stata inviata una email di reset password a " + mailAddress}
+          data: {titolo: "RICHIESTA DI CAMBIO PASSWORD", sottoTitolo: "E' stata inviata una email di conferma a " + mailAddress}
         });
         this.form.controls.Email.reset();
         this.form.controls.Email.setErrors(null);

@@ -92,6 +92,10 @@ export class PersoneService {
     return this.http.get<PER_Persona>(environment.apiBaseUrl+'PER_Persone/GetByCF/' + cf+ '/' +personaID)
   }
 
+  getByMailAddress(mailAddress: string): Observable<PER_Persona>{
+    return this.http.get<PER_Persona>(environment.apiBaseUrl+'PER_Persone/GetByMailAddress/' + mailAddress);
+    //http://213.215.231.4/swappX/api/PER_Persone/GetByMailAddress/nicola.cardi@gmail.com
+  }
   
   getByEmail(email: string, personaID: number): Observable<PER_Persona> {
     return this.http.get<PER_Persona>(environment.apiBaseUrl+'PER_Persone/GetByEMail/' + email+ '/' +personaID)

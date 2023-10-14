@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
               private renderer:                 Renderer2) { 
 
     this.form = this.fb.group({
-      UserName:                   ['a', Validators.required],
+      UserName:                   ['andrea.svegliado@gmail.com', Validators.required],
       Password:                   ['1234', { validators:[ Validators.required, Validators.maxLength(50)]}]
     })
   }
@@ -106,6 +106,11 @@ export class LoginComponent implements OnInit {
   forgotPassword(e: Event){
     e.preventDefault();
     this.reloadRoutes.emit('reset-psw');
+  }
+
+  register(e: Event){
+    e.preventDefault();
+    this.reloadRoutes.emit('register');
   }
 
   validateEmail(email: string) {

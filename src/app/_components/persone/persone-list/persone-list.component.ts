@@ -64,6 +64,7 @@ export class PersoneListComponent implements OnInit {
     cognome: '',
     role: '',
     annoNascita: '',
+    cf: '',
     indirizzo: '',
     comune: '',
     prov: '',
@@ -148,6 +149,7 @@ export class PersoneListComponent implements OnInit {
     this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName).subscribe( colonne => {
         if (colonne.length != 0) this.displayedColumns = colonne.map(a => a.tableCol!.colName)
         else this.svcTableCols.listByTable(this.tableName).subscribe( colonne => {
+            console.log ("colonne", colonne);
             this.displayedColumns = colonne.filter(colonna=> colonna.defaultShown == true).map(a => a.colName)
         })      
     });
@@ -217,6 +219,7 @@ export class PersoneListComponent implements OnInit {
                 || String(data.cognome).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || lstRolesLowerCase.includes(searchTerms.filtrosx)
                 || String(data.dtNascita).indexOf(searchTerms.filtrosx) !== -1
+                || String(data.cf).indexOf(searchTerms.filtrosx) !== -1
                 || String(data.indirizzo).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.comune).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
                 || String(data.prov).toLowerCase().indexOf(searchTerms.filtrosx) !== -1
@@ -228,6 +231,7 @@ export class PersoneListComponent implements OnInit {
                 && String(data.cognome).toLowerCase().indexOf(searchTerms.cognome) !== -1
                 && foundTipoPersona
                 && String(data.dtNascita).indexOf(searchTerms.annoNascita) !== -1
+                && String(data.cf).indexOf(searchTerms.cf) !== -1
                 && String(data.indirizzo).toLowerCase().indexOf(searchTerms.indirizzo) !== -1
                 && String(data.comune).toLowerCase().indexOf(searchTerms.comune) !== -1
                 && String(data.prov).toLowerCase().indexOf(searchTerms.prov) !== -1

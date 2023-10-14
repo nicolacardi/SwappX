@@ -28,6 +28,7 @@ export class PersoneFilterComponent implements OnInit {
   nomeFilter = new UntypedFormControl('');
   cognomeFilter = new UntypedFormControl('');
   tipoPersonaFilter= new UntypedFormControl('');
+  cfFilter = new UntypedFormControl('');
   annoNascitaFilter = new UntypedFormControl('');
   indirizzoFilter = new UntypedFormControl('');
   comuneFilter = new UntypedFormControl('');
@@ -55,6 +56,7 @@ export class PersoneFilterComponent implements OnInit {
     this.cognomeFilter.valueChanges.subscribe(val => {this.applyFilterDx('cognome', val);})
     this.tipoPersonaFilter.valueChanges.subscribe(val => {this.applyFilterDx('role', val);})
     this.annoNascitaFilter.valueChanges.subscribe(val => {this.applyFilterDx('annoNascita', val);})
+    this.cfFilter.valueChanges.subscribe(val => {this.applyFilterDx('cf', val);})
     this.indirizzoFilter.valueChanges.subscribe(val => {this.applyFilterDx('indirizzo', val);})
     this.comuneFilter.valueChanges.subscribe(val => {this.applyFilterDx('comune', val);})
     this.provFilter.valueChanges.subscribe(val => {this.applyFilterDx('prov', val);})
@@ -76,6 +78,7 @@ export class PersoneFilterComponent implements OnInit {
       this.cognomeFilter.value === '' &&
       (this.tipoPersonaFilter.value === '' || this.tipoPersonaFilter.value === null) &&
       this.annoNascitaFilter.value === '' &&
+      this.cfFilter.value === '' &&
       this.indirizzoFilter.value === '' &&
       this.comuneFilter.value === '' &&
       this.provFilter.value === '' &&
@@ -99,6 +102,7 @@ export class PersoneFilterComponent implements OnInit {
     this.tipoPersonaFilter.setValue('', {emitEvent:false});
     this.indirizzoFilter.setValue('', {emitEvent:false});
     this.annoNascitaFilter.setValue('', {emitEvent:false});
+    this.cfFilter.setValue('', {emitEvent:false});
     this.comuneFilter.setValue('', {emitEvent:false});
     this.provFilter.setValue('', {emitEvent:false});
     this.emailFilter.setValue('', {emitEvent:false});
@@ -111,6 +115,7 @@ export class PersoneFilterComponent implements OnInit {
     this.tipoPersonaFilter.setValue('')
     this.indirizzoFilter.setValue('');
     this.annoNascitaFilter.setValue('');
+    this.cfFilter.setValue('');
     this.comuneFilter.setValue('');
     this.provFilter.setValue('');
     this.emailFilter.setValue('');

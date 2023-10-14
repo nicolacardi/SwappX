@@ -44,6 +44,14 @@
     <mat-grid-list class="_low-list-row no-overflowx" [cols]="1" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field class="ml12">
+                <mat-label>Codice Fiscale</mat-label>
+                <input matInput [formControl]="cfFilter">
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="1" rowHeight="60px">
+        <mat-grid-tile>
+            <mat-form-field class="ml12">
                 <mat-label>Anno di Nascita</mat-label>
                 <input matInput [formControl]="annoNascitaFilter">
             </mat-form-field>
