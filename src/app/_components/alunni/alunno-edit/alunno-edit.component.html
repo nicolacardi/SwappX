@@ -97,11 +97,12 @@
                             #apppersonaForm
                             >   
                         </app-persona-form>
-                        
-                        <app-alunno-form 
-                            [alunnoID] = "alunnoID"
-                            (formValid)="formAlunnoValidEmitted($event)">
-                        </app-alunno-form>
+                        <div class="_bordered-grey mt5">
+                            <app-alunno-form 
+                                [alunnoID] = "alunnoID"
+                                (formValid)="formAlunnoValidEmitted($event)">
+                            </app-alunno-form>
+                        </div>
                     </div> 
                 </mat-tab>
 <!-- ********************************    MAT TAB GENITORI ************************************ -->

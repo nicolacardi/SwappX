@@ -95,9 +95,11 @@ export class GenitoreEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
+
   }
 
   loadData(){
+
 
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
     

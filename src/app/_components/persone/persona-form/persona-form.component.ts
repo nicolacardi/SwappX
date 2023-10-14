@@ -14,14 +14,14 @@ import { ComuniService }                        from 'src/app/_services/comuni.s
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { PersoneService }                       from '../persone.service';
 
-import { TipiPersonaService }                   from '../tipi-persona.service';
-import { AlunniService }                        from '../../alunni/alunni.service';
-import { GenitoriService }                      from '../../genitori/genitori.service';
-import { DocentiService }                       from '../../docenti/docenti.service';
-import { NonDocentiService }                    from '../nondocenti.service';
-import { ITManagersService }                    from '../ITmanagers.service';
-import { DirigentiService }                     from '../dirigenti.service';
-import { DocentiCoordService }                  from '../docenticoord.service';
+// import { TipiPersonaService }                   from '../tipi-persona.service';
+// import { AlunniService }                        from '../../alunni/alunni.service';
+// import { GenitoriService }                      from '../../genitori/genitori.service';
+// import { DocentiService }                       from '../../docenti/docenti.service';
+// import { NonDocentiService }                    from '../nondocenti.service';
+// import { ITManagersService }                    from '../ITmanagers.service';
+// import { DirigentiService }                     from '../dirigenti.service';
+// import { DocentiCoordService }                  from '../docenticoord.service';
 
 //models
 import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
@@ -81,6 +81,8 @@ export class PersonaFormComponent implements OnInit {
   @Input() tipoPersonaID!:                      number;
   @Input() dove!:                               string;
 
+  @Output('formChanged') formChanged = new EventEmitter();
+
   @Output('formValid') formValid = new EventEmitter<boolean>();
   // @Output('changedRoles') changedRoles = new EventEmitter();
 
@@ -94,15 +96,15 @@ export class PersonaFormComponent implements OnInit {
               private svcUser:                  UserService,
 
               //vari service per le post o delete dei vari tipi di persona
-              private svcAlunni:                AlunniService,
-              private svcGenitori:              GenitoriService,
-              private svcDocenti:               DocentiService,
-              private svcDocentiCoord:          DocentiCoordService,
-              private svcNonDocenti:            NonDocentiService,
-              private svcITManagers:            ITManagersService,
-              private svcDirigenti:             DirigentiService,
+              // private svcAlunni:                AlunniService,
+              // private svcGenitori:              GenitoriService,
+              // private svcDocenti:               DocentiService,
+              // private svcDocentiCoord:          DocentiCoordService,
+              // private svcNonDocenti:            NonDocentiService,
+              // private svcITManagers:            ITManagersService,
+              // private svcDirigenti:             DirigentiService,
 
-              private svcTipiPersona:           TipiPersonaService,
+              // private svcTipiPersona:           TipiPersonaService,
               private svcComuni:                ComuniService,
               private _loadingService :         LoadingService  ) { 
 
@@ -131,9 +133,9 @@ export class PersonaFormComponent implements OnInit {
       ckAttivo:                                 [true]
     });
 
-    this.currUser = Utility.getCurrentUser();
+    // this.currUser = Utility.getCurrentUser();
     //this.obsTipiPersona$ = this.svcTipiPersona.listByLivello(this.currPersona.persona!.tipoPersona!.livello);
-    this.obsTipiPersona$ = this.svcTipiPersona.list();
+    // this.obsTipiPersona$ = this.svcTipiPersona.list();
   }
   
 //#endregion
@@ -144,40 +146,46 @@ export class PersonaFormComponent implements OnInit {
     this.loadData();
     this.svcComuni.list().subscribe( res => this.comuniArr = res);
     this.form.valueChanges.subscribe(
-      () => this.formValid.emit(this.form.valid) //ma serve??? Su procedura-iscrizioni ho fatto diversamente
+      () => {
+        console.log("form changed");
+        this.formChanged.emit();
+        this.formValid.emit(this.form.valid)
+      }
     )
   }
 
-  async loadData(){
+  loadData(){
 
-    this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
-    this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
-
-    //if (this.tipoPersonaID) this.form.controls.tipoPersonaID.setValue(this.tipoPersonaID);
+    // this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
+    // this.breakpoint2 = (window.innerWidth <= 800) ? 2 : 3;
 
     if (this.personaID && this.personaID + '' != "0") {
       const obsPersona$: Observable<PER_Persona> = this.svcPersone.get(this.personaID);
       const loadPersona$ = this._loadingService.showLoaderUntilCompleted(obsPersona$);
 
       //interrogo ed aspetto per avere la lista dei tipi persona che mi serve nella loadPersona successiva
-      await firstValueFrom(this.obsTipiPersona$.pipe(tap(lstTipiPersona=> this.lstTipiPersona = lstTipiPersona)));
+      // await firstValueFrom(this.obsTipiPersona$.pipe(tap(lstTipiPersona=> this.lstTipiPersona = lstTipiPersona)));
 
       this.persona$ = loadPersona$
       .pipe( 
           tap(
             persona => {
               this.form.patchValue(persona);
-              this._lstRoles = persona._LstRoles!; //questi i ruoli arrivati
-
-              for (let i= 0; i < persona._LstRoles!.length; i++) {
-                const ruoloPersona = this.lstTipiPersona.find(tp => tp.descrizione === persona._LstRoles![i]);
-                if (ruoloPersona) this.selectedRoles.push(ruoloPersona.id)
-              }
-              this.form.controls._lstRoles.setValue(this.selectedRoles);
               
-              //se tra i ruoli ci sono alunno /genitore mostro il form relativo
-              if (persona._LstRoles!.includes('Alunno')) { this.showAlunnoForm = true; }//devo anche valorizzare alunnoID e passarlo a alunno form
-              if (persona._LstRoles!.includes('Genitore')) {this.showGenitoreForm = true} //devo anche valorizzare genitoreID e passarlo a genitore form
+              // this._lstRoles = persona._LstRoles!; //questi i ruoli arrivati
+              // console.log("persona-form arrivati:", persona._LstRoles)
+
+              // for (let i= 0; i < persona._LstRoles!.length; i++) {
+              //   const ruoloPersona = this.lstTipiPersona.find(tp => tp.descrizione === persona._LstRoles![i]);
+              //   if (ruoloPersona) this.selectedRoles.push(ruoloPersona.id)
+              // }
+              // console.log("persona-form this.selectedRoles:", this.selectedRoles);
+
+              // this.form.controls._lstRoles.setValue(this.selectedRoles);
+              
+              // //se tra i ruoli ci sono alunno /genitore mostro il form relativo
+              // if (persona._LstRoles!.includes('Alunno')) { this.showAlunnoForm = true; }//devo anche valorizzare alunnoID e passarlo a alunno form
+              // if (persona._LstRoles!.includes('Genitore')) {this.showGenitoreForm = true} //devo anche valorizzare genitoreID e passarlo a genitore form
             }
           )
       );
@@ -283,7 +291,7 @@ export class PersonaFormComponent implements OnInit {
                   if (this.personaID == null || this.personaID == 0) {
                     //POST
                     return this.svcPersone.post(this.form.value).pipe(
-                      tap(() => this.saveRoles()),
+                      // tap(() => this.saveRoles()),
                       tap(persona => {
                         let formData = { 
                           UserName: this.form.controls.email.value,
@@ -298,7 +306,7 @@ export class PersonaFormComponent implements OnInit {
                   } else {
                     //PUT
                     this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
-                    this.saveRoles(); 
+                    // this.saveRoles(); 
                     return this.svcPersone.put(this.form.value);
                   }
                   //*****************************FINO A QUI ***********************************************************/
@@ -315,7 +323,7 @@ export class PersonaFormComponent implements OnInit {
           if (this.personaID == null || this.personaID == 0) {
             //POST
             return this.svcPersone.post(this.form.value).pipe(
-              tap(() => this.saveRoles()),
+              // tap(() => this.saveRoles()),
               tap(persona => {
                 let formData = { 
                   UserName: this.form.controls.email.value,
@@ -330,7 +338,7 @@ export class PersonaFormComponent implements OnInit {
           } else {
             //PUT
             this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
-            this.saveRoles(); 
+            // this.saveRoles(); 
             return this.svcPersone.put(this.form.value);
           }
           //*****************************FINO A QUI ***********************************************************/
@@ -341,167 +349,167 @@ export class PersonaFormComponent implements OnInit {
 };
 
 
-  saveold() :Observable<any>{
-      if (this.personaID == null || this.personaID == 0) {
+  // saveold() :Observable<any>{
+  //     if (this.personaID == null || this.personaID == 0) {
       
-        return from(this.checkExists()).pipe(
-          mergeMap((msg) => {
-            if (msg && msg.length > 0) { 
+  //       return from(this.checkExists()).pipe(
+  //         mergeMap((msg) => {
+  //           if (msg && msg.length > 0) { 
               
-              const blockMessages = msg
-                  .filter(item => item.grav === "Block")
-                  .map(item => item.msg); 
+  //             const blockMessages = msg
+  //                 .filter(item => item.grav === "Block")
+  //                 .map(item => item.msg); 
 
-              if (blockMessages && blockMessages.length > 0){
-                this._dialog.open(DialogOkComponent, {
-                  width: '320px',
-                  data: { titolo: "ATTENZIONE!", sottoTitolo: blockMessages.join(', ') + 'Impossibile Salvare' }
-                });
+  //             if (blockMessages && blockMessages.length > 0){
+  //               this._dialog.open(DialogOkComponent, {
+  //                 width: '320px',
+  //                 data: { titolo: "ATTENZIONE!", sottoTitolo: blockMessages.join(', ') + 'Impossibile Salvare' }
+  //               });
                 
-                return of()
-              }
-              else {
-                const UnblockMessages = msg
-                .filter(item => item.grav === "nonBlock")
-                .map(item => item.msg);
+  //               return of()
+  //             }
+  //             else {
+  //               const UnblockMessages = msg
+  //               .filter(item => item.grav === "nonBlock")
+  //               .map(item => item.msg);
 
-                const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
-                  width: '320px',
-                  data: { titolo: "ATTENZIONE!", sottoTitolo: UnblockMessages.join(', ') + 'Vuoi salvare?' }
-                });
+  //               const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+  //                 width: '320px',
+  //                 data: { titolo: "ATTENZIONE!", sottoTitolo: UnblockMessages.join(', ') + 'Vuoi salvare?' }
+  //               });
 
-                dialogYesNo.afterClosed().subscribe(result => {
-                  if(result) {
-                    return of();
-                  } else {
-                    return of();
-                  }
-                });
-              }
-            }
-            return this.svcPersone.post(this.form.value)
-            .pipe (
-              tap(()=> this.saveRoles() ),
-              concatMap(persona => {
-                let formData = { 
-                  UserName:   this.form.controls.email.value,
-                  Email:      this.form.controls.email.value,
-                  PersonaID:  persona.id,
-                  Password:   "1234"
-                };
-                console.log ("sto creando l'utente", formData);
-                return this.svcUser.post(formData)
-              }),
-            )
-          })
-        )
-      }
-      else {
-        this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
-        this.saveRoles(); 
-        return this.svcPersone.put(this.form.value)
-      }
-  };
+  //               dialogYesNo.afterClosed().subscribe(result => {
+  //                 if(result) {
+  //                   return of();
+  //                 } else {
+  //                   return of();
+  //                 }
+  //               });
+  //             }
+  //           }
+  //           return this.svcPersone.post(this.form.value)
+  //           .pipe (
+  //             tap(()=> this.saveRoles() ),
+  //             concatMap(persona => {
+  //               let formData = { 
+  //                 UserName:   this.form.controls.email.value,
+  //                 Email:      this.form.controls.email.value,
+  //                 PersonaID:  persona.id,
+  //                 Password:   "1234"
+  //               };
+  //               console.log ("sto creando l'utente", formData);
+  //               return this.svcUser.post(formData)
+  //             }),
+  //           )
+  //         })
+  //       )
+  //     }
+  //     else {
+  //       this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
+  //       this.saveRoles(); 
+  //       return this.svcPersone.put(this.form.value)
+  //     }
+  // };
 
-  saveRoles() {
-    //parallelamente alla save (put o post che sia) della persona bisogna occuparsi di inserire i diversi ruoli
-    //ALU_Alunno
-    //ALU_Genitore
-    //PER_Docente
-    //PER_DocenteCoord - per questo una modalità diversa
-    //PER_NonDocente
-    //PER_Dirigente
-    //PER_ITManager
-    let selectedRolesIds = []
-    //console.log("elenco dei valori arrivati inizialmente", this._lstRoles); //è l'elenco dei ruoli "precedenti". E' un array di stringhe del tipo ["Alunno", "ITManager"...]
-    //console.log ("persona-form - saveRoles - this.personaID", this.personaID);
-    if (this.form.controls._lstRoles.value.length != 0) selectedRolesIds = this.form.controls._lstRoles.value;
-      const selectedRolesDescrizioni = selectedRolesIds.map((tipo:any) => {const tipoPersona = this.lstTipiPersona.find(tp => tp.id === tipo);
-      return tipoPersona ? tipoPersona.descrizione : ''; // Restituisce la descrizione se trovata, altrimenti una stringa vuota
-    });
+  // saveRoles() {
+  //   //parallelamente alla save (put o post che sia) della persona bisogna occuparsi di inserire i diversi ruoli
+  //   //ALU_Alunno
+  //   //ALU_Genitore
+  //   //PER_Docente
+  //   //PER_DocenteCoord - per questo una modalità diversa
+  //   //PER_NonDocente
+  //   //PER_Dirigente
+  //   //PER_ITManager
+  //   let selectedRolesIds = []
+  //   //console.log("elenco dei valori arrivati inizialmente", this._lstRoles); //è l'elenco dei ruoli "precedenti". E' un array di stringhe del tipo ["Alunno", "ITManager"...]
+  //   //console.log ("persona-form - saveRoles - this.personaID", this.personaID);
+  //   if (this.form.controls._lstRoles.value.length != 0) selectedRolesIds = this.form.controls._lstRoles.value;
+  //     const selectedRolesDescrizioni = selectedRolesIds.map((tipo:any) => {const tipoPersona = this.lstTipiPersona.find(tp => tp.id === tipo);
+  //     return tipoPersona ? tipoPersona.descrizione : ''; // Restituisce la descrizione se trovata, altrimenti una stringa vuota
+  //   });
 
-    //console.log("this._lstRoles",this._lstRoles);
-    //console.log("elenco dei valori selezionati dall'utente",selectedRolesDescrizioni);
+  //   //console.log("this._lstRoles",this._lstRoles);
+  //   //console.log("elenco dei valori selezionati dall'utente",selectedRolesDescrizioni);
 
-    if (this._lstRoles) { //se è un record nuovo e non seleziono nessuno è undefined
-      this._lstRoles.forEach(async roleinput=> {
-        {
-          if (!selectedRolesDescrizioni.includes(roleinput)) {
-            //questo roleinput è stato CANCELLATO, va dunque rimosso (ammesso che si possa)
-            switch (roleinput) {
-              case "Alunno":
-                this.svcAlunni.deleteByPersona(this.personaID).subscribe();
-              break;
-              case "Genitore":
-                this.svcGenitori.deleteByPersona(this.personaID).subscribe();
-              break;
-              case "Docente":
-                this.svcDocenti.deleteByPersona(this.personaID).subscribe();
-              break;
-              case "DocenteCoord":
-                let docente!: PER_Docente;
-                await firstValueFrom(this.svcDocenti.getByPersona(this.personaID).pipe(tap(docenteEstratto => 
-                  {docente = docenteEstratto})));
-                this.svcDocentiCoord.deleteByDocente(docente.id);
-                break;
-              case "NonDocente":
-                this.svcNonDocenti.deleteByPersona(this.personaID).subscribe();
-              break;
-              case "Dirigente":
-                this.svcDirigenti.deleteByPersona(this.personaID).subscribe();
-              break;
-              case "ITManager":
-                this.svcITManagers.deleteByPersona(this.personaID).subscribe();
-              break;
-            }
-          }
-        }
-      })
+  //   if (this._lstRoles) { //se è un record nuovo e non seleziono nessuno è undefined
+  //     this._lstRoles.forEach(async roleinput=> {
+  //       {
+  //         if (!selectedRolesDescrizioni.includes(roleinput)) {
+  //           //questo roleinput è stato CANCELLATO, va dunque rimosso (ammesso che si possa)
+  //           switch (roleinput) {
+  //             case "Alunno":
+  //               this.svcAlunni.deleteByPersona(this.personaID).subscribe();
+  //             break;
+  //             case "Genitore":
+  //               this.svcGenitori.deleteByPersona(this.personaID).subscribe();
+  //             break;
+  //             case "Docente":
+  //               this.svcDocenti.deleteByPersona(this.personaID).subscribe();
+  //             break;
+  //             case "DocenteCoord":
+  //               let docente!: PER_Docente;
+  //               await firstValueFrom(this.svcDocenti.getByPersona(this.personaID).pipe(tap(docenteEstratto => 
+  //                 {docente = docenteEstratto})));
+  //               this.svcDocentiCoord.deleteByDocente(docente.id);
+  //               break;
+  //             case "NonDocente":
+  //               this.svcNonDocenti.deleteByPersona(this.personaID).subscribe();
+  //             break;
+  //             case "Dirigente":
+  //               this.svcDirigenti.deleteByPersona(this.personaID).subscribe();
+  //             break;
+  //             case "ITManager":
+  //               this.svcITManagers.deleteByPersona(this.personaID).subscribe();
+  //             break;
+  //           }
+  //         }
+  //       }
+  //     })
 
-      selectedRolesDescrizioni.forEach(async (roleselected:string)=> {
-        {
-          if (!this._lstRoles.includes(roleselected))   {
-            //questo roleselected è stato AGGIUNTO, va dunque fatta la post
-            let formData =  {
-              personaID: this.personaID
-            }
-            switch (roleselected) {
-              case "Alunno":
-                this.svcAlunni.post(formData).subscribe();
+  //     selectedRolesDescrizioni.forEach(async (roleselected:string)=> {
+  //       {
+  //         if (!this._lstRoles.includes(roleselected))   {
+  //           //questo roleselected è stato AGGIUNTO, va dunque fatta la post
+  //           let formData =  {
+  //             personaID: this.personaID
+  //           }
+  //           switch (roleselected) {
+  //             case "Alunno":
+  //               this.svcAlunni.post(formData).subscribe();
                 
-              break;
-              case "Genitore":
-                this.svcGenitori.post(formData).subscribe();
-              break;
-              case "Docente":
-                this.svcDocenti.post(formData).subscribe();
-              break;
-              case "DocenteCoord":
-                let formDataDocenteCoord = {};
-                await firstValueFrom(this.svcDocenti.getByPersona(this.personaID).pipe(tap(docenteEstratto => 
-                  {
-                    formDataDocenteCoord = {
-                      docenteID: docenteEstratto.id
-                    }
-                  })));
-                this.svcDocentiCoord.post(formDataDocenteCoord).subscribe();
+  //             break;
+  //             case "Genitore":
+  //               this.svcGenitori.post(formData).subscribe();
+  //             break;
+  //             case "Docente":
+  //               this.svcDocenti.post(formData).subscribe();
+  //             break;
+  //             case "DocenteCoord":
+  //               let formDataDocenteCoord = {};
+  //               await firstValueFrom(this.svcDocenti.getByPersona(this.personaID).pipe(tap(docenteEstratto => 
+  //                 {
+  //                   formDataDocenteCoord = {
+  //                     docenteID: docenteEstratto.id
+  //                   }
+  //                 })));
+  //               this.svcDocentiCoord.post(formDataDocenteCoord).subscribe();
 
-              break;
-              case "NonDocente":
-                this.svcNonDocenti.post(formData).subscribe();
-              break;
-              case "Dirigente":
-                this.svcDirigenti.post(formData).subscribe();
-              break;
-              case "ITManager":
-                this.svcITManagers.post(formData).subscribe();
-              break;
-            }
-          }
-        }
-      })
-    }
-  }
+  //             break;
+  //             case "NonDocente":
+  //               this.svcNonDocenti.post(formData).subscribe();
+  //             break;
+  //             case "Dirigente":
+  //               this.svcDirigenti.post(formData).subscribe();
+  //             break;
+  //             case "ITManager":
+  //               this.svcITManagers.post(formData).subscribe();
+  //             break;
+  //           }
+  //         }
+  //       }
+  //     })
+  //   }
+  // }
 
   delete() :Observable<any>{
 
@@ -548,23 +556,23 @@ export class PersonaFormComponent implements OnInit {
   }
 //#endregion
 
-  changeOptionRoles (event: MatOptionSelectionChange){
-    //console.log (event.source.viewValue);
-    if (event.source.viewValue == 'Alunno')
+  // changeOptionRoles (event: MatOptionSelectionChange){
+  //   //console.log (event.source.viewValue);
+  //   if (event.source.viewValue == 'Alunno')
     
-      if (event.source.selected)
-        {this.showAlunnoForm = true}
-      else    
-        {this.showAlunnoForm = false}
+  //     if (event.source.selected)
+  //       {this.showAlunnoForm = true}
+  //     else    
+  //       {this.showAlunnoForm = false}
     
-    if (event.source.viewValue == 'Genitore')
+  //   if (event.source.viewValue == 'Genitore')
 
-      if (event.source.selected)
-        {this.showGenitoreForm = true}
-      else    
-        {this.showGenitoreForm = false}
+  //     if (event.source.selected)
+  //       {this.showGenitoreForm = true}
+  //     else    
+  //       {this.showGenitoreForm = false}
   
-    // this.changedRoles.emit();
-  }
+  //   // this.changedRoles.emit();
+  // }
 
 }

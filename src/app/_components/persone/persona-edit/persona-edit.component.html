@@ -14,17 +14,22 @@
 
                 <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"  
 
-                    [disabled]="!apppersonaform.form.valid
-                        || ((apppersonaform.showAlunnoForm && appalunnoform) ? !appalunnoform?.form?.valid : false)
-                        || ((apppersonaform.showGenitoreForm ) ?  !appgenitoreform?.form?.valid: false) "
+                    [disabled] = "disabledSave"
+                    
 
                     (click)="save()" >
                     <mat-icon>save</mat-icon>
                 </button>
 <!-- 
+
+                        [disabled]="!apppersonaform.form.valid
+                        || ((showAlunnoForm && appalunnoform) ? !appalunnoform.form.valid : false)
+                        || ((showGenitoreForm) ?  !appgenitoreform?.form?.valid: false) "
+
+
                 [disabled]="!apppersonaform.form.valid || 
-                (apppersonaform.showAlunnoForm && appalunnoform)  ?   !appalunnoform?.form?.valid : false || 
-                (apppersonaform.showGenitoreForm && appgenitoreform) ?    !appgenitoreform?.form?.valid: false" -->
+                (showAlunnoForm && appalunnoform)  ?   !appalunnoform?.form?.valid : false || 
+                (showGenitoreForm && appgenitoreform) ?    !appgenitoreform?.form?.valid: false" -->
 <!-- 
                 [disabled]="!apppersonaform.form.valid || 
                 (apppersonaform.showAlunnoForm && appalunnoform && !appalunnoform?.form?.valid) ||
@@ -33,35 +38,59 @@
                 <button *ngIf="personaID" mat-mini-fab aria-label="Cancella" matTooltip="Cancella" class="btn ml10" (click)="delete()" >
                     <mat-icon>delete</mat-icon>
                 </button>
-                <!-- <div *ngIf="apppersonaform.showGenitoreForm && appgenitoreform && apppersonaform.showAlunnoForm && appalunnoform" >
 
-                    {{!appgenitoreform?.form?.valid ||
-                        ((apppersonaform.showAlunnoForm && appalunnoform)  ?   !appalunnoform?.form?.valid : false) || 
-                        ((apppersonaform.showGenitoreForm && appgenitoreform) ?    !appgenitoreform?.form?.valid: false)}}
-                </div> -->
                 
             </div>
             
             <!-- ********************************       ANAGRAFICA      *********************************** -->
 
-            <div class="mt20">
-
-                <app-persona-form 
-                                [personaID] = "personaID"
-                                #apppersonaform
-                                >   
-                </app-persona-form>
-                <!-- (formValid)="formPersonaValidEmitted($event)" -->
-
-                <div class="_bordered-grey mt5" *ngIf="apppersonaform.showGenitoreForm" >
-                    <app-genitore-form #appgenitoreform></app-genitore-form>
-                    <!-- (formValid)="formGenitoreValidEmitted($event)" -->
+            <!-- <div class="mt20"> -->
+            <form [formGroup] = "form">
+                <div>
+                    <mat-grid-list [cols]="1" class="_low-list-row no-overflowx mt20" rowHeight="60px">
+                        <mat-grid-tile>
+                            <mat-form-field >
+                                <mat-label>Ruoli</mat-label>
+                                <mat-select matNativeControl formControlName="_lstRoles" multiple #selectroles >
+                                    <mat-option (onSelectionChange)="changeOptionRoles($event)" *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id" 
+                                    [disabled] ="currUser.personaID == personaID  || !currUser.persona!._LstRoles!.includes('ITManager') "
+                                    >
+                                        {{element.descrizione}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </mat-grid-tile>
+                    </mat-grid-list>
                 </div>
-                <div class="_bordered-grey mt5" *ngIf="apppersonaform.showAlunnoForm" >
-                    <app-alunno-form #appalunnoform></app-alunno-form>
-                    <!-- (formValid)="formAlunnoValidEmitted($event)" -->
-                </div>
+            </form>
+
+            <app-persona-form 
+                            [personaID] = "personaID"
+                            (formChanged) = "refreshSaveDisable()"
+                            #apppersonaform
+                            >   
+            </app-persona-form>
+            <!-- (formValid)="formPersonaValidEmitted($event)" -->
+
+            <div class="_bordered-grey mt5" *ngIf="showGenitoreForm" >
+                <app-genitore-form 
+                    (deletedRole) ="deletedRole($event)"
+                    (formChanged) = "refreshSaveDisable()"
+                    #appgenitoreform>
+
+
+                </app-genitore-form>
+                <!-- (formValid)="formGenitoreValidEmitted($event)" -->
             </div>
+            <div class="_bordered-grey mt5" *ngIf="showAlunnoForm" >
+                <app-alunno-form 
+                    (deletedRole) ="deletedRole($event)"
+                    (formChanged) = "refreshSaveDisable()"
+                    #appalunnoform></app-alunno-form>
+                <!-- (formValid)="formAlunnoValidEmitted($event)" -->
+            </div>
+        
+            <!-- </div> -->
 
         </mat-card-content>
     </mat-card>

@@ -2,14 +2,14 @@
 <form *ngIf="(genitore$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
     <mat-label class="frameLabelRel t10">Dati del Genitore</mat-label>
 
-    <mat-icon class="_pos-absolute r20">delete</mat-icon>
+    <mat-icon class="_pos-absolute r20 mt5 pointer topZIndex" (click)="deleteRole()">delete</mat-icon>
     
     <mat-grid-list class="mt10" [cols]="3" rowHeight="60px">
 
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>Tipo</mat-label>
-                <mat-select required formControlName="tipoGenitoreID">
+                <mat-select formControlName="tipoGenitoreID">
                     <mat-option *ngFor="let element of (obsTipiGenitore$ | async)" [value]="element.id">
                     {{element.descrizione}}
                     </mat-option>

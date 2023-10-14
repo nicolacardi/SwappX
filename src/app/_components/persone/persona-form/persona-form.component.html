@@ -4,7 +4,7 @@
 
                
 <form *ngIf="(persona$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
-    <mat-grid-list [cols]="2" *ngIf="dove!= 'genitore-edit' && dove!='alunno-edit' && dove!='procedura-iscrizione'" class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <!-- <mat-grid-list [cols]="2" *ngIf="dove!= 'genitore-edit' && dove!='alunno-edit' && dove!='procedura-iscrizione'" class="_low-list-row no-overflowx" [cols]="3" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field >
                 <mat-label>Ruoli</mat-label>
@@ -12,15 +12,14 @@
                     <mat-option (onSelectionChange)="changeOptionRoles($event)" *ngFor="let element of (obsTipiPersona$ | async)" [value]="element.id" 
 
                     [disabled] ="currUser.personaID == personaID  || !currUser.persona!._LstRoles!.includes('ITManager')" >
-                                <!-- Solo gli IT Manager possono mettere mano ai ruoli e non possono comunque modificare il proprio ruolo -->
                         {{element.descrizione}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </mat-grid-tile>
-    </mat-grid-list>
+    </mat-grid-list> -->
 
-    <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="3" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>Nome</mat-label>
@@ -41,7 +40,7 @@
         </mat-grid-tile>
     </mat-grid-list>
 
-    <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="3" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>Genere (M/F)</mat-label>
@@ -71,7 +70,7 @@
         </mat-grid-tile>
     </mat-grid-list>
 
-    <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="3" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>Comune di Nascita</mat-label>
@@ -103,7 +102,7 @@
         </mat-grid-tile>
 
     </mat-grid-list>
-    <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="3" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>Comune di Residenza</mat-label>
@@ -138,7 +137,7 @@
         </mat-grid-tile>
 
     </mat-grid-list>
-    <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="3" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>Indirizzo e N.</mat-label>
@@ -155,7 +154,7 @@
 
     </mat-grid-list>
 
-    <mat-grid-list class="_low-list-row no-overflowx" [cols]="breakpoint" rowHeight="60px">
+    <mat-grid-list class="_low-list-row no-overflowx" [cols]="3" rowHeight="60px">
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>Telefono</mat-label>

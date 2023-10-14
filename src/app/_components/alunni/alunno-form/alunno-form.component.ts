@@ -33,9 +33,10 @@ export class AlunnoFormComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
   @Input() alunnoID!:                           number;
-  //@Input() personaID!:                          number;
-
   @Output('formValid') formValid = new EventEmitter<boolean>();
+  @Output('formChanged') formChanged = new EventEmitter();
+  @Output('deletedRole') deletedRole = new EventEmitter<string>();
+
 //#endregion
   
 //#region ----- Constructor --------------------
@@ -62,11 +63,13 @@ export class AlunnoFormComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit(){
-    console.log("alunno-form - ngOnInit");
     this.loadData();
 
     this.form.valueChanges.subscribe(
-      res=> this.formValid.emit(this.form.valid)
+      res=> {
+        this.formValid.emit(this.form.valid);
+        this.formChanged.emit()
+      }
     )
   }
 
@@ -100,6 +103,12 @@ export class AlunnoFormComponent implements OnInit {
       return this.svcAlunni.delete(this.alunnoID) 
     else 
       return of();
+  }
+
+
+  deleteRole() {
+    this.delete();
+    this.deletedRole.emit('Alunno')
   }
 //#endregion
 }

@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog }                            from '@angular/material/dialog';
 import { Observable, of, tap }                  from 'rxjs';
 
@@ -37,9 +37,10 @@ export class GenitoreFormComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
   @Input() genitoreID!:                         number;
-  // @Input() personaID!:                          number;
-
   @Output('formValid') formValid = new EventEmitter<boolean>();
+  @Output('formChanged') formChanged = new EventEmitter();
+  @Output('deletedRole') deletedRole = new EventEmitter<string>();
+
 //#endregion
 
 
@@ -55,7 +56,7 @@ export class GenitoreFormComponent implements OnInit {
     {
       id:                                       [null],
       personaID:                                [null],
-      tipoGenitoreID:                           [''],
+      tipoGenitoreID:                           ['', Validators.required],
       titoloStudio:                             [''],
       professione:                              ['']
     });
@@ -69,15 +70,15 @@ export class GenitoreFormComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit(){
-    console.log("genitore-form - ngOnInit");
     this.loadData();
 
     this.form.valueChanges.subscribe(
-      res=> this.formValid.emit(this.form.valid)
+      res=> {
+        this.formValid.emit(this.form.valid);
+        this.formChanged.emit();
+      }
     )
   }
-
-
 
   loadData(){
 
@@ -110,5 +111,10 @@ export class GenitoreFormComponent implements OnInit {
     if (this.genitoreID != null) 
       return this.svcGenitori.delete(this.genitoreID) 
     else return of();
+  }
+
+  deleteRole() {
+    this.delete();
+    this.deletedRole.emit('Genitore')
   }
 }
