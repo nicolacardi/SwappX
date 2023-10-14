@@ -41,12 +41,15 @@ export class SceltaColonneComponent implements OnInit {
     public data:                                any, 
     private svcUser:                            UserService,
     ) 
-    { }
+    { 
+      this.svcUser.obscurrentUser.subscribe(val => {
+        this.currUser = val;
+      })
+
+    }
 
   ngOnInit(): void {
-    this.svcUser.obscurrentUser.subscribe(val => {
-      this.currUser = val;
-    })
+
 
     //vado a MAPPARE le colonne visibili e quelle disponibili in lstHidden e lstVisible che sono di tipo_UT_tableColTMP
 
@@ -58,13 +61,14 @@ export class SceltaColonneComponent implements OnInit {
     this.lstHidden = [];
     this.lstVisible = [];
 
-    this.tableCols.forEach (
+    this.tableCols.forEach (  //per ogni colonna di TUTTE le colonne (tableCols) queste vengono messe se disabiitate in lstDisabled e sennò in lstHidden
       colonna=> {
           let tableColTMP : _UT_TableColTMP = {
             colName:  colonna.colName,
             disabled: colonna.disabled,
             tableColID: colonna.id,
-            ordCol: colonna.ordColDefault
+            ordCol: colonna.ordColDefault,
+            defaultShown: colonna.defaultShown
           }
         if (colonna.disabled) {
           this.lstDisabled.push(tableColTMP);
@@ -73,18 +77,24 @@ export class SceltaColonneComponent implements OnInit {
         }
       }
     )
-
+    
+    //a questo punto le colonne sono divise tra lstDisabled e lstHidden
+    //ora se non ci sono colonne visibili le metto tutte in lstVisible????
     if (this.data[2].length == 0){  
-      this.lstVisible = this.lstHidden; //ecco il default: se non ci sono proprio record visibili allora ci metto quelle hidden
-      this.lstHidden = []; //e resetto quelle hidden
+      //in lstVisible devo metterci tutte MENO quelle che hanno defaultShown = true
+      this.lstVisible = this.lstHidden.filter(colonna=> colonna.defaultShown == true); //ecco il default: se non ci sono proprio record visibili allora ci metto quelle hidden
+      //in lstHidden devo metterci tutte quelle che hanno defaultShown = false
+      this.lstHidden = this.lstHidden.filter(colonna=> colonna.defaultShown == false);  //e resetto quelle hidden
     } else {
+      //Se ce ne sono di visibili allora ci metto quelle
       this.tableColsVisible.forEach (
         colonna=> {
           let tableColTMP : _UT_TableColTMP = {
             colName:  colonna.tableCol!.colName,
             disabled: colonna.tableCol!.disabled,
             tableColID: colonna.tableCol!.id,
-            ordCol: colonna.ordCol
+            ordCol: colonna.ordCol,
+            defaultShown: colonna.tableCol!.defaultShown
           }
           if (!colonna.tableCol!.disabled) {
             this.lstVisible.push(tableColTMP);
@@ -164,7 +174,8 @@ export class SceltaColonneComponent implements OnInit {
             colName:  colonna.colName,
             disabled: colonna.disabled,
             tableColID: colonna.id,
-            ordCol: colonna.ordColDefault
+            ordCol: colonna.ordColDefault,
+            defaultShown: colonna.defaultShown
           }
         if (colonna.disabled) {
           this.lstDisabled.push(tableColTMP);

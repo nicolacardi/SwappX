@@ -4,7 +4,7 @@ export interface _UT_TableCol {
     colName:                                    string;
     disabled:                                   boolean;
     ordColDefault:                              number;
-
+    defaultShown:                               boolean;
   }
 
  

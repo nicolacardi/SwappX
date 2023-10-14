@@ -23,7 +23,7 @@ export class TableColsService {
 
   listByTable(TableName: string): Observable<_UT_TableCol[]>{
     return this.http.get<_UT_TableCol[]>(environment.apiBaseUrl+'_UT_TablesCols/listByTable/'+TableName);
-    //http://213.215.231.4/swappX/api/_UT_TablesCols/listByTable/SociList
+    //http://213.215.231.4/swappX/api/_UT_TablesCols/listByTable/PersoneList
   }
 
   listTableNames(): Observable<_UT_TableCol[]>{
