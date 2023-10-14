@@ -122,12 +122,9 @@ export class ParametriListComponent implements OnInit {
     this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName).subscribe( colonne => {
         if (colonne.length != 0) 
           this.displayedColumns = colonne.map(a => a.tableCol!.colName)
-        else 
-          this.svcTableCols.listByTable(this.tableName).subscribe( 
-            colonne => {
-              this.displayedColumns = colonne.map(a => a.colName)            
-            }
-          )      
+          else this.svcTableCols.listByTable(this.tableName).subscribe( colonne => {
+            this.displayedColumns = colonne.filter(colonna=> colonna.defaultShown == true).map(a => a.colName)
+        })      
     });
   }
 
