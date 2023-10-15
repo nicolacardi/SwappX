@@ -16,7 +16,7 @@ import { VerbaliFilterComponent }               from '../verbali-filter/verbali-
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { VerbaliService }                       from '../verbali.service';
-import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anni-scolastici/anni-scolastici.service';
 
 //models
 import { DOC_Verbale }                          from 'src/app/_models/DOC_Verbale';

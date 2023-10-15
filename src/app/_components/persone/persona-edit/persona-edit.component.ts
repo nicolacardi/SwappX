@@ -9,13 +9,14 @@ import { take, tap }                            from 'rxjs/operators';
 import { MatOptionSelectionChange }             from '@angular/material/core';
 
 //components
-import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
+import { PersonaFormComponent }                 from '../persona-form/persona-form.component';
 import { GenitoreFormComponent }                from '../../genitori/genitore-form/genitore-form.component';
 import { AlunnoFormComponent }                  from '../../alunni/alunno-form/alunno-form.component';
+import { DocenteFormComponent }                 from '../../docenti/docente-form/docente-form.component';
 
+import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
-import { PersonaFormComponent }                 from '../persona-form/persona-form.component';
 import { Utility }                              from '../../utilities/utility.component';
 
 
@@ -36,6 +37,7 @@ import { UserService }                          from 'src/app/_user/user.service
 import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
 import { User }                                 from 'src/app/_user/Users';
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
+
 
 //#endregion
 
@@ -60,6 +62,7 @@ export class PersonaEditComponent implements OnInit {
 
   showGenitoreForm:boolean  = false;
   showAlunnoForm:boolean = false;
+  showDocenteForm:boolean = false;
 
   emptyForm :                                   boolean = false;
   disabledSave = false;
@@ -70,7 +73,10 @@ export class PersonaEditComponent implements OnInit {
   @ViewChild(PersonaFormComponent) personaFormComponent!: PersonaFormComponent; 
   //[static false servirebbe a consentire un riferimento a appalunnoform anche se non è stato caricato ancora]
   @ViewChild('appalunnoform', {static: false}) appalunnoform!: AlunnoFormComponent; 
-  @ViewChild('appgenitoreform', {static: false}) appgenitoreform!: GenitoreFormComponent; 
+  @ViewChild('appgenitoreform', {static: false}) appgenitoreform!: GenitoreFormComponent;
+  @ViewChild('appdocenteform', {static: false}) appdocenteform!: DocenteFormComponent; 
+  //TODO....
+  
 //#endregion
 
 //#region ----- Constructor --------------------
@@ -86,14 +92,11 @@ export class PersonaEditComponent implements OnInit {
               private svcNonDocenti:            NonDocentiService,
               private svcITManagers:            ITManagersService,
               private svcDirigenti:             DirigentiService,
-
-              
               private svcTipiPersona:           TipiPersonaService,
 
               public _dialog:                   MatDialog,
               private _snackBar:                MatSnackBar,
-              private _loadingService :         LoadingService  
-              ) {
+              private _loadingService :         LoadingService      ) {
 
     _dialogRef.disableClose = true;
     
@@ -115,9 +118,8 @@ export class PersonaEditComponent implements OnInit {
   }
 
   async loadData(){ 
-    console.log ("persona-edit loadData");
+    //console.log ("persona-edit loadData");
     if (this.personaID && this.personaID + '' != "0") {
-
 
       //interrogo ed aspetto per avere la lista dei tipi persona che mi serve nella loadPersona successiva
       await firstValueFrom(this.obsTipiPersona$.pipe(tap(lstTipiPersona=> this.lstTipiPersona = lstTipiPersona)));
@@ -134,18 +136,18 @@ export class PersonaEditComponent implements OnInit {
               this.persona = persona
               this._lstRoles = persona._LstRoles!;
               //console.log("persona-edit arrivati:", persona._LstRoles)
+
               for (let i= 0; i < persona._LstRoles!.length; i++) {
                 const ruoloPersona = this.lstTipiPersona.find(tp => tp.descrizione === persona._LstRoles![i]);
                 if (ruoloPersona) this.selectedRoles.push(ruoloPersona.id)
               }
-              //imposto i ruoli arrivati
-              //console.log("persona-edit this.selectedRoles:", this.selectedRoles);
+              //imposto i ruoli arrivati e mostro il form specifico
               this.form.controls._lstRoles.setValue(this.selectedRoles);
-              //se tra i ruoli ci sono alunno /genitore mostro il form relativo
               if (persona._LstRoles!.includes('Alunno')) { this.showAlunnoForm = true; }//devo anche valorizzare alunnoID e passarlo a alunno form
               if (persona._LstRoles!.includes('Genitore')) {this.showGenitoreForm = true} //devo anche valorizzare genitoreID e passarlo a genitore form
+              if (persona._LstRoles!.includes('Docente')) {this.showDocenteForm = true}  
+              //TODO...
 
-              
             }
             //this.form.patchValue(persona)
           )
@@ -180,9 +182,8 @@ export class PersonaEditComponent implements OnInit {
     //PER_NonDocente
     //PER_Dirigente
     //PER_ITManager
+
     let selectedRolesIds = []
-    //console.log("elenco dei valori arrivati inizialmente", this._lstRoles); //è l'elenco dei ruoli "precedenti". E' un array di stringhe del tipo ["Alunno", "ITManager"...]
-    //console.log ("persona-form - saveRoles - this.personaID", this.personaID);
     if (this.form.controls._lstRoles.value.length != 0) selectedRolesIds = this.form.controls._lstRoles.value;
       const selectedRolesDescrizioni = selectedRolesIds.map((tipo:any) => {const tipoPersona = this.lstTipiPersona.find(tp => tp.id === tipo);
       return tipoPersona ? tipoPersona.descrizione : ''; // Restituisce la descrizione se trovata, altrimenti una stringa vuota
@@ -224,7 +225,7 @@ export class PersonaEditComponent implements OnInit {
             }
           }
         }
-      })
+      });
 
       selectedRolesDescrizioni.forEach(async (roleselected:string)=> {
         {
@@ -271,38 +272,113 @@ export class PersonaEditComponent implements OnInit {
     }
   }
 
-
-
   delete()
   {
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-        dialogYesNo.afterClosed().subscribe( result => {
-        if(result){
-          if( this.persona._LstRoles!.length != 0) {
-            let lstRolesstr = this.persona._LstRoles!.join(', ');
-            this._dialog.open(DialogOkComponent, {
-              width: '320px',
-              data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa persona non si può cancellare: <br>è "+ lstRolesstr}
-            });
-            return;
-          }
-          this.personaFormComponent.delete()
-          .subscribe( {
-            next: res=> { 
-              this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
-              this._dialogRef.close();
-            },
-            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+
+    dialogYesNo.afterClosed().subscribe( result => {
+      if(result){
+        if( this.persona._LstRoles!.length != 0) {
+          let lstRolesstr = this.persona._LstRoles!.join(', ');
+          this._dialog.open(DialogOkComponent, {
+            width: '320px',
+            data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa persona non si può cancellare: <br>è "+ lstRolesstr}
           });
+          return;
         }
+        this.personaFormComponent.delete()
+        .subscribe( {
+          next: res=> { 
+            this._snackBar.openFromComponent(SnackbarComponent,{data: 'Record cancellato', panelClass: ['red-snackbar']});
+            this._dialogRef.close();
+          },
+          error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+        });
+      }
     });
   }
 //#endregion
 
-//#region ----- Altri metodi -------------------
+  changeOptionRoles (event: MatOptionSelectionChange){
+
+    //se si vuole impedire il deflaggamento
+    // if (!event.source.selected) {
+    //   event.source.select();
+    //   return;
+    // }
+    
+    if (event.source.viewValue == 'Alunno') 
+      this.showAlunnoForm = event.source.selected; 
+
+    if (event.source.viewValue == 'Genitore')
+      this.showGenitoreForm = event.source.selected; 
+
+    if (event.source.viewValue == 'Docente')
+      this.showDocenteForm = event.source.selected; 
+
+    //TODO ...-
+
+    setTimeout(() => {
+      this.refreshSaveDisable();
+    }, 10); //devo ritardare altrimenti non fa a tempo a essere attivo il form caricato
+  }
+
+  // ngDoCheck() {
+  //   this.refreshSaveDisable(); //questo fa schifo perchè viene chiamato ad ogni piè sospinto!
+  // }
+
+  refreshSaveDisable(){
+    //è stato emesso il refreshSaveDisable in seguito a modifica di uno dei form
+    //questa routine aggiorna la disable del pulsante save
+    let personaFormValid = true;
+    let alunnoFormValid = true;
+    let genitoreFormValid = true;
+    let docenteFormValid = true;
+
+    if (this.personaFormComponent) 
+      personaFormValid = this.personaFormComponent.form.valid;
+
+    if (this.showAlunnoForm && this.appalunnoform && this.appalunnoform.form) 
+      alunnoFormValid = this.appalunnoform.form.valid;
+
+    if (this.showGenitoreForm && this.appgenitoreform && this.appgenitoreform.form) 
+      genitoreFormValid = this.appgenitoreform.form.valid;
+    
+    if (this.showDocenteForm && this.appdocenteform && this.appdocenteform.form) 
+      docenteFormValid = this.appdocenteform.form.valid;
+    
+
+    this.disabledSave = !personaFormValid || !alunnoFormValid || !genitoreFormValid || !docenteFormValid;
+  }
+
+  deletedRole(who: string) {
+    //è stato emesso il deletedRole in seguito a pressione del cestino
+    //questa routine va anche aggiornare la combo così che ci sia coerenza
+    
+    const lstRolesCombo = this.form.get('_lstRoles');                                                     //lstRolesCombo è la combo
+    if (lstRolesCombo) {
+      this.obsTipiPersona$.pipe(take(1)).subscribe(options => {
+        const roleToDeflag = options.find(option => option.descrizione === who);                          //estraggo l'oggetto del ruolo da deflaggare
+        if (roleToDeflag) {
+          let selectedRolesArray = lstRolesCombo.value as number[];                                       //carico l'array delle selezioni corrente
+          const indexToRemove = selectedRolesArray.findIndex(roleId => roleId == roleToDeflag.id);        //Trovo nell'array della selezione corrente l'indice di quello da deflaggare
+          if (indexToRemove !== -1) {
+            selectedRolesArray.splice(indexToRemove, 1);                                                  //rimuovo dall'array delle selezioni correnti quello da deflaggare
+            lstRolesCombo.setValue(selectedRolesArray);                                                   //e ripasso l'array alla combo
+          }
+        }
+      });
+    }
+    this.refreshSaveDisable();                  //va infine aggiornata l'abilitazione della save
+  }
+}
+
+
+
+//#region ----- NON USATI -------------------
 
   // onResize(event: any) {
   //   this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 4;
@@ -336,82 +412,3 @@ export class PersonaEditComponent implements OnInit {
   // }
 
 //#endregion
-
-
-  changeOptionRoles (event: MatOptionSelectionChange){
-
-    //se si vuole impedire il deflaggamento
-    // if (!event.source.selected) {
-    //   event.source.select();
-    //   return;
-    // }
-    
-    if (event.source.viewValue == 'Alunno')
-    
-      if (event.source.selected)
-        {this.showAlunnoForm = true}
-      else
-        {this.showAlunnoForm = false}
-    
-    if (event.source.viewValue == 'Genitore')
-
-      if (event.source.selected)
-        {this.showGenitoreForm = true}
-      else    
-        {this.showGenitoreForm = false}
-    
-    setTimeout(() => {
-      this.refreshSaveDisable();
-    }, 10); //devo ritardare altrimenti non fa a tempo a essere attivo il form caricato
-  }
-
-  // ngDoCheck() {
-  //   this.refreshSaveDisable(); //questo fa schifo perchè viene chiamato ad ogni piè sospinto!
-  // }
-
-  refreshSaveDisable(){
-    //è stato emesso il refreshSaveDisable in seguito a modifica di uno dei form
-    //questa routine aggiorna la disable del pulsante save
-    let personaFormValid = true;
-    let alunnoFormValid = true;
-    let genitoreFormValid = true;
-
-    if (this.personaFormComponent) personaFormValid = this.personaFormComponent.form.valid;
-
-    if (this.showAlunnoForm && this.appalunnoform && this.appalunnoform.form) {
-      alunnoFormValid = this.appalunnoform.form.valid;
-    }
-
-    if (this.showGenitoreForm && this.appgenitoreform && this.appgenitoreform.form) {
-      genitoreFormValid = this.appgenitoreform.form.valid;
-    }
-
-    this.disabledSave = !personaFormValid || !alunnoFormValid || !genitoreFormValid;
-  }
-
-  deletedRole(who: string) {
-    //è stato emesso il deletedRole in seguito a pressione del cestino
-    //questa routine va anche aggiornare la combo così che ci sia coerenza
-    
-    const lstRolesCombo = this.form.get('_lstRoles');                                                     //lstRolesCombo è la combo
-    if (lstRolesCombo) {
-      this.obsTipiPersona$.pipe(take(1)).subscribe(options => {
-        const roleToDeflag = options.find(option => option.descrizione === who);                          //estraggo l'oggetto del ruolo da deflaggare
-        if (roleToDeflag) {
-          let selectedRolesArray = lstRolesCombo.value as number[];                                       //carico l'array delle selezioni corrente
-          const indexToRemove = selectedRolesArray.findIndex(roleId => roleId == roleToDeflag.id);        //Trovo nell'array della selezione corrente l'indice di quello da deflaggare
-          if (indexToRemove !== -1) {
-            selectedRolesArray.splice(indexToRemove, 1);                                                  //rimuovo dall'array delle selezioni correnti quello da deflaggare
-            lstRolesCombo.setValue(selectedRolesArray);                                                   //e ripasso l'array alla combo
-          }
-        }
-      });
-    }
-
-    this.refreshSaveDisable();                  //va infine aggiornata l'abilitazione della save
-  }
-
-}
-
-
-

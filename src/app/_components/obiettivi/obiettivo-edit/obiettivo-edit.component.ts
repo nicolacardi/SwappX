@@ -12,7 +12,7 @@ import { DialogYesNoComponent }                 from '../../utilities/dialog-yes
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 
 //services
-import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anni-scolastici/anni-scolastici.service';
 import { ClassiService }                        from '../../classi/classi.service';
 import { MaterieService }                       from '../../materie/materie.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';

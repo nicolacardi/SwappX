@@ -1,7 +1,5 @@
 <!-- TODO -->
 <!-- [disabled] ="currUser.personaID == personaID" impedire di cambiare tipo a se stessi -->
-
-
                
 <form *ngIf="(persona$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
     <!-- <mat-grid-list [cols]="2" *ngIf="dove!= 'genitore-edit' && dove!='alunno-edit' && dove!='procedura-iscrizione'" class="_low-list-row no-overflowx" [cols]="3" rowHeight="60px">
@@ -62,8 +60,7 @@
                 <input matInput #dtNascita required
                       formControlName = "dtNascita"
                       [matDatepicker]= "dpDtNascita"
-                      (change) = updateDtNascita(dtNascita.value)
-                      >
+                      (change) = formatDtNascita(dtNascita.value) >
                 <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
                 <mat-datepicker #dpDtNascita  ></mat-datepicker>
             </mat-form-field>
@@ -75,7 +72,6 @@
             <mat-form-field>
                 <mat-label>Comune di Nascita</mat-label>
                 <input matInput type="text"
-                        
                         formControlName="comuneNascita"
                         [matAutocomplete]="auto1">
                 <mat-autocomplete #auto1="matAutocomplete" >
@@ -107,7 +103,6 @@
             <mat-form-field>
                 <mat-label>Comune di Residenza</mat-label>
                 <input matInput type="text"
-                       
                        formControlName="comune"
                        [matAutocomplete]="auto2">
                 <mat-autocomplete #auto2="matAutocomplete" >

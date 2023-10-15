@@ -11,7 +11,7 @@
                 <mat-label>Tipo</mat-label>
                 <mat-select formControlName="tipoGenitoreID">
                     <mat-option *ngFor="let element of (obsTipiGenitore$ | async)" [value]="element.id">
-                    {{element.descrizione}}
+                        {{element.descrizione}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>

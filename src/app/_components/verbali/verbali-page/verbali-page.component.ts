@@ -10,7 +10,7 @@ import { VerbaliListComponent }                    from '../verbali-list/verbali
 
 //services
 import { NavigationService }                    from '../../utilities/navigation/navigation.service';
-import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anni-scolastici/anni-scolastici.service';
 
 //models
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';

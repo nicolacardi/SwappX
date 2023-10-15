@@ -4,7 +4,7 @@ import { Component, Input, OnInit }             from '@angular/core';
 import { UntypedFormControl }                   from '@angular/forms';
 
 //components
-import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anni-scolastici/anni-scolastici.service';
 import { ObiettiviListComponent }               from 'src/app/_components/obiettivi/obiettivi-list/obiettivi-list.component';
 
 //services

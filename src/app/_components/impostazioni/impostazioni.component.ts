@@ -9,7 +9,7 @@ import { Observable }                           from 'rxjs';
 import { SnackbarComponent }                    from '../utilities/snackbar/snackbar.component';
 
 //services 
-import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anni-scolastici/anni-scolastici.service';
 import { ParametriService }                     from 'src/app/_components/impostazioni/parametri/parametri.service';
 
 //models

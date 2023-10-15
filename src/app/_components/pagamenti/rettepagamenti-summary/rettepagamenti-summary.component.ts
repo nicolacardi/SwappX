@@ -7,7 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 
 //services
-import { AnniScolasticiService } from 'src/app/_components/anniscolastici/anni-scolastici.service';
+import { AnniScolasticiService } from 'src/app/_components/anni-scolastici/anni-scolastici.service';
 import { LoadingService } from '../../utilities/loading/loading.service';
 import { RetteService } from '../rette.service';
 

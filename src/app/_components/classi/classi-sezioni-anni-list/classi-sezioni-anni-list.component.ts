@@ -22,7 +22,7 @@ import { Utility }                              from '../../utilities/utility.co
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { ClassiSezioniAnniService }             from '../classi-sezioni-anni.service';
-import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anni-scolastici/anni-scolastici.service';
 import { DocentiService }                       from '../../docenti/docenti.service';
 
 //classes

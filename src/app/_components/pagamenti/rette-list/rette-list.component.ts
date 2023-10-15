@@ -18,7 +18,7 @@ import { RettaCalcoloComponent }                from '../retta-calcolo/retta-cal
 //services
 import { RetteService }                         from '../rette.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
-import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anni-scolastici/anni-scolastici.service';
 
 //classes
 import { PAG_Retta }                            from 'src/app/_models/PAG_Retta';

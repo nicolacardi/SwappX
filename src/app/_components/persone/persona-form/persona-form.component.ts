@@ -1,18 +1,23 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild }     from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
-import { MatDialog }                            from '@angular/material/dialog';
-import { Observable, firstValueFrom, from, of }                       from 'rxjs';
-import { concatMap, mergeMap, tap }                                  from 'rxjs/operators';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild }            from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators }                     from '@angular/forms';
+import { MatDialog }                                                            from '@angular/material/dialog';
+import { Observable, firstValueFrom, from, of }                                 from 'rxjs';
+import { concatMap, mergeMap, tap }                                             from 'rxjs/operators';
+import { MatSelectChange, MatSelectTrigger }                                    from '@angular/material/select';
 
 //components
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
+import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
+import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+
 
 //services
 import { ComuniService }                        from 'src/app/_services/comuni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { PersoneService }                       from '../persone.service';
+import { UserService }                          from 'src/app/_user/user.service';
 
 // import { TipiPersonaService }                   from '../tipi-persona.service';
 // import { AlunniService }                        from '../../alunni/alunni.service';
@@ -26,15 +31,11 @@ import { PersoneService }                       from '../persone.service';
 //models
 import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
 import { _UT_Comuni }                           from 'src/app/_models/_UT_Comuni';
-import { PER_Docente }                          from 'src/app/_models/PER_Docente';
+//import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 import { User }                                 from 'src/app/_user/Users';
-import { UserService } from 'src/app/_user/user.service';
-import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { MatOptionSelectionChange } from '@angular/material/core';
-import { MatSelectChange, MatSelectTrigger } from '@angular/material/select';
 
 //#endregion
+
 @Component({
   selector: 'app-persona-form',
   templateUrl: './persona-form.component.html',
@@ -65,11 +66,14 @@ export class PersonaFormComponent implements OnInit {
   lstTipiPersona!:                              PER_TipoPersona[];
   selectedRoles:                                 number[] = []
 
-    //per mostrare i form di ruoli specifici
-    genitoreID = 0;
-    alunnoID = 0;
-    showGenitoreForm:boolean  = false;
-    showAlunnoForm:boolean = false;
+  //per mostrare i form di ruoli specifici
+  genitoreID = 0;
+  alunnoID = 0;
+  
+  showGenitoreForm:boolean  = false;
+  showAlunnoForm:boolean = false;
+
+  //TODO.....
 
 //#endregion
 
@@ -82,7 +86,6 @@ export class PersonaFormComponent implements OnInit {
   @Input() dove!:                               string;
 
   @Output('formChanged') formChanged = new EventEmitter();
-
   @Output('formValid') formValid = new EventEmitter<boolean>();
   // @Output('changedRoles') changedRoles = new EventEmitter();
 
@@ -90,12 +93,11 @@ export class PersonaFormComponent implements OnInit {
 
 //#region ----- Constructor --------------------
 
-  constructor(public _dialog:                   MatDialog,
-              private fb:                       UntypedFormBuilder, 
+  constructor(private fb:                       UntypedFormBuilder, 
               private svcPersone:               PersoneService,
               private svcUser:                  UserService,
+              private svcComuni:                ComuniService,
 
-              //vari service per le post o delete dei vari tipi di persona
               // private svcAlunni:                AlunniService,
               // private svcGenitori:              GenitoriService,
               // private svcDocenti:               DocentiService,
@@ -103,16 +105,16 @@ export class PersonaFormComponent implements OnInit {
               // private svcNonDocenti:            NonDocentiService,
               // private svcITManagers:            ITManagersService,
               // private svcDirigenti:             DirigentiService,
-
               // private svcTipiPersona:           TipiPersonaService,
-              private svcComuni:                ComuniService,
+              
+              public _dialog:                   MatDialog,
               private _loadingService :         LoadingService  ) { 
 
     let regCF = "^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
 
     this.form = this.fb.group({
       id:                                       [null],
-      //tipoPersonaID:                            ['', Validators.required],
+      //tipoPersonaID:                          ['', Validators.required],
       _lstRoles:                                [''],
 
       nome:                                     ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
@@ -144,11 +146,11 @@ export class PersonaFormComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili-------
 
   ngOnInit(){
+
     this.loadData();
     this.svcComuni.list().subscribe( res => this.comuniArr = res);
-    this.form.valueChanges.subscribe(
-      () => {
-        console.log("form changed");
+    this.form.valueChanges.subscribe(  () => {
+        //console.log("form changed");
         this.formChanged.emit();
         this.formValid.emit(this.form.valid)
       }
@@ -168,7 +170,7 @@ export class PersonaFormComponent implements OnInit {
       // await firstValueFrom(this.obsTipiPersona$.pipe(tap(lstTipiPersona=> this.lstTipiPersona = lstTipiPersona)));
 
       this.persona$ = loadPersona$
-      .pipe( 
+        .pipe( 
           tap(
             persona => {
               this.form.patchValue(persona);
@@ -193,43 +195,36 @@ export class PersonaFormComponent implements OnInit {
       );
     }
     else 
-      this.emptyForm = true
+      this.emptyForm = true;
 
-      //********************* FILTRO COMUNE *******************
+    //********************* FILTRO COMUNE E COMUNE DI NASCITA *******************
 
-      this.form.controls.comune.valueChanges.subscribe( res=> {
-        this.comuniIsLoading = true
-          if (res && res.length >=3 && this.comuniArr != undefined ) {
-            this.filteredComuniArr = this.comuniArr.filter (val => val.comune.toLowerCase().includes(res.toLowerCase()) );
-            this.comuniIsLoading = false
-          } 
-          else {
-            this.filteredComuniArr = [];
-            this.comuniIsLoading = false
-          }
+    this.form.controls.comune.valueChanges.subscribe( res=> {
+      this.comuniIsLoading = true
+        if (res && res.length >=3 && this.comuniArr != undefined ) {
+          this.filteredComuniArr = this.comuniArr.filter (val => val.comune.toLowerCase().includes(res.toLowerCase()) );
+          this.comuniIsLoading = false
+        } 
+        else {
+          this.filteredComuniArr = [];
+          this.comuniIsLoading = false
         }
-      )
+      }
+    )
 
-      this.form.controls.comuneNascita.valueChanges.subscribe( res=> {
-        this.comuniNascitaIsLoading = true
-          if (res && res.length >=3  && this.comuniArr != undefined) {
-            this.filteredComuniNascitaArr = this.comuniArr.filter(val => val.comune.toLowerCase().includes(res.toLowerCase()));
-            this.comuniNascitaIsLoading = false
-          } 
-          else {
-            this.filteredComuniNascitaArr = [];
-            this.comuniNascitaIsLoading = false
-          }
+    this.form.controls.comuneNascita.valueChanges.subscribe( res=> {
+      this.comuniNascitaIsLoading = true
+        if (res && res.length >=3  && this.comuniArr != undefined) {
+          this.filteredComuniNascitaArr = this.comuniArr.filter(val => val.comune.toLowerCase().includes(res.toLowerCase()));
+          this.comuniNascitaIsLoading = false
+        } 
+        else {
+          this.filteredComuniNascitaArr = [];
+          this.comuniNascitaIsLoading = false
         }
-      )
+      }
+    )
   }
-
-  // async checkExistsNC() : Promise<any>{
-  //   let nome = this.form.controls.nome.value;
-  //   let cognome = this.form.controls.cognome.value;
-  //   let objTrovato : PER_Persona;
-  //   await firstValueFrom(this.svcPersone.getByNomeCognome(nome, cognome, this.personaID));
-  // }
 
   async checkExists(): Promise<any[] | null> {
 
@@ -301,7 +296,7 @@ export class PersonaFormComponent implements OnInit {
                           PersonaID: persona.id,
                           Password: "1234"
                         };
-                        console.log("sto creando l'utente", formData);
+                        //console.log("sto creando l'utente", formData);
                         this.svcUser.post(formData).subscribe();
                       })
                     );
@@ -337,7 +332,8 @@ export class PersonaFormComponent implements OnInit {
                 this.svcUser.post(formData).subscribe();
               })
             );
-          } else {
+          } 
+          else {
             //PUT
             this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
             // this.saveRoles(); 
@@ -348,10 +344,87 @@ export class PersonaFormComponent implements OnInit {
         }
       })
     );
-};
+  };
 
 
-  // saveold() :Observable<any>{
+  delete() :Observable<any>{
+
+    //BISOGNA CHE PRIMA CANCELLI TUTTI I VARI GENITORE, ALUNNO, DOCENTE, NON DOCENTE E USER ECC. TODO
+    if (this.personaID != null) 
+      return this.svcPersone.delete(this.personaID) ;
+    else 
+      return of();
+  }
+
+//#endregion
+
+//#region ----- Altri metodi -------
+
+  popolaProv(prov: string, cap: string) {
+    this.form.controls['prov'].setValue(prov);
+    this.form.controls['cap'].setValue(cap);
+    this.form.controls['nazione'].setValue('ITA');
+  }
+
+  popolaProvNascita(prov: string) {
+    this.form.controls['provNascita'].setValue(prov);
+    this.form.controls['nazioneNascita'].setValue('ITA');
+  }
+
+  formatDtNascita(dtNascita: string){
+
+    //prendo la stringa e ne estraggo i pezzi
+    const parts = dtNascita.split('/'); // Split the input string by '/'
+    const day = parts[0];
+    const month = parts[1];
+    const year = parts[2];
+  
+    // creo la nuova data con i valori estratti (assumendo l'ordine day/month/year)
+    const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  
+    // formatto la data al tipo richiesto dal controllo data ('yyyy-MM-dd')
+    let formattedDate = date.toISOString().slice(0, 10);
+  
+    //piccolo step per evitare che 1/1/2008 diventi 31/12/2007
+    formattedDate = Utility.formatDate(date, FormatoData.yyyy_mm_dd);
+
+    //impostazione della data finale
+    this.form.controls['dtNascita'].setValue(formattedDate);
+  }
+//#endregion
+
+}
+
+
+/* ##### OLD ######
+
+  // async checkExistsNC() : Promise<any>{
+  //   let nome = this.form.controls.nome.value;
+  //   let cognome = this.form.controls.cognome.value;
+  //   let objTrovato : PER_Persona;
+  //   await firstValueFrom(this.svcPersone.getByNomeCognome(nome, cognome, this.personaID));
+  // }
+
+  // changeOptionRoles (event: MatOptionSelectionChange){
+  //   //console.log (event.source.viewValue);
+  //   if (event.source.viewValue == 'Alunno')
+    
+  //     if (event.source.selected)
+  //       {this.showAlunnoForm = true}
+  //     else    
+  //       {this.showAlunnoForm = false}
+    
+  //   if (event.source.viewValue == 'Genitore')
+
+  //     if (event.source.selected)
+  //       {this.showGenitoreForm = true}
+  //     else    
+  //       {this.showGenitoreForm = false}
+  
+  //   // this.changedRoles.emit();
+  // }
+
+ // saveold() :Observable<any>{
   //     if (this.personaID == null || this.personaID == 0) {
       
   //       return from(this.checkExists()).pipe(
@@ -512,69 +585,4 @@ export class PersonaFormComponent implements OnInit {
   //     })
   //   }
   // }
-
-  delete() :Observable<any>{
-
-    //BISOGNA CHE PRIMA CANCELLI TUTTI I VARI GENITORE, ALUNNO, DOCENTE, NON DOCENTE E USER ECC. TODO
-    if (this.personaID != null) 
-      return this.svcPersone.delete(this.personaID) 
-    else return of();
-  }
-
-//#endregion
-
-//#region ----- Altri metodi -------
-
-  popolaProv(prov: string, cap: string) {
-    this.form.controls['prov'].setValue(prov);
-    this.form.controls['cap'].setValue(cap);
-    this.form.controls['nazione'].setValue('ITA');
-  }
-
-  popolaProvNascita(prov: string) {
-    this.form.controls['provNascita'].setValue(prov);
-    this.form.controls['nazioneNascita'].setValue('ITA');
-  }
-
-  updateDtNascita(dtNascita: string){
-
-    //prendo la stringa e ne estraggo i pezzi
-    const parts = dtNascita.split('/'); // Split the input string by '/'
-    const day = parts[0];
-    const month = parts[1];
-    const year = parts[2];
-  
-    // creo la nuova data con i valori estratti (assumendo l'ordine day/month/year)
-    const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-  
-    // formatto la data al tipo richiesto dal controllo data ('yyyy-MM-dd')
-    let formattedDate = date.toISOString().slice(0, 10);
-  
-    //piccolo step per evitare che 1/1/2008 diventi 31/12/2007
-    formattedDate = Utility.formatDate(date, FormatoData.yyyy_mm_dd);
-
-    //impostazione della data finale
-    this.form.controls['dtNascita'].setValue(formattedDate);
-  }
-//#endregion
-
-  // changeOptionRoles (event: MatOptionSelectionChange){
-  //   //console.log (event.source.viewValue);
-  //   if (event.source.viewValue == 'Alunno')
-    
-  //     if (event.source.selected)
-  //       {this.showAlunnoForm = true}
-  //     else    
-  //       {this.showAlunnoForm = false}
-    
-  //   if (event.source.viewValue == 'Genitore')
-
-  //     if (event.source.selected)
-  //       {this.showGenitoreForm = true}
-  //     else    
-  //       {this.showGenitoreForm = false}
-  
-  //   // this.changedRoles.emit();
-  // }
-
-}
+*/

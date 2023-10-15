@@ -19,7 +19,7 @@ import { Utility }                              from '../../utilities/utility.co
 
 //services
 import { LoadingService }                       from '../../utilities/loading/loading.service';
-import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anni-scolastici/anni-scolastici.service';
 import { PagamentiService }                     from '../pagamenti.service';
 import { TableColsService }                     from '../../utilities/toolbar/tablecols.service';
 import { TableColsVisibleService }              from '../../utilities/toolbar/tablecolsvisible.service';

@@ -10,10 +10,15 @@ import { ChangePswComponent }                   from './_user/change-psw/change-
 import { ImpostazioniComponent }                from './_components/impostazioni/impostazioni.component';
 
 import { HomeComponent }                        from './_components/home/home.component';
+
+import { PersonePageComponent }                 from './_components/persone/persone-page/persone-page.component';
+
 import { AlunniPageComponent }                  from './_components/alunni/alunni-page/alunni-page.component';
 import { GenitoriPageComponent }                from './_components/genitori/genitori-page/genitori-page.component';
-import { PersonePageComponent }                 from './_components/persone/persone-page/persone-page.component';
-import { CoordinatoreDashboardComponent }             from './_components/coordinatore/coordinatore-dashboard/coordinatore-dashboard.component';
+import { CoordinatoreDashboardComponent }       from './_components/coordinatore/coordinatore-dashboard/coordinatore-dashboard.component';
+import { SociPageComponent }                    from './_components/soci/soci-page/soci-page.component';
+
+
 import { RettePageComponent }                   from './_components/pagamenti/rette-page/rette-page.component';
 import { PagamentiPageComponent }               from './_components/pagamenti/pagamenti-page/pagamenti-page.component';
 import { ClassiPageComponent }                  from './_components/classi/classi-sezioni-anni-page/classi-sezioni-anni-page.component';
@@ -27,7 +32,6 @@ import { OrarioPageComponent }                  from './_components/lezioni/orar
 import { ProceduraIscrizioneComponent }         from './_components/procedura-iscrizione/procedura-iscrizione.component';
 import { TemplateComponent }                    from './_components/templates/template/template.component';
 import { ChangePswExtComponent }                from './_user/change-psw-ext/change-psw-ext.component';
-import { SociPageComponent }                    from './_components/soci/soci-page/soci-page.component';
 
 const routes: Routes = [
 
@@ -50,13 +54,17 @@ const routes: Routes = [
 
   { path: "orario-page",                        component: OrarioPageComponent, canActivate:[AuthGuard]},
 
+  
+  { path: "persone",                            component: PersonePageComponent,canActivate:[AuthGuard] },
+
   { path: "alunni",                             component: AlunniPageComponent, canActivate:[AuthGuard]},
 
   { path: "genitori",                           component: GenitoriPageComponent, canActivate:[AuthGuard]},
 
-  { path: "persone",                            component: PersonePageComponent,canActivate:[AuthGuard] },
+  //{ path: "docenti",                           component: DocentiPageComponent, canActivate:[AuthGuard]},
 
   { path: "soci",                               component: SociPageComponent,canActivate:[AuthGuard] },
+
 
   { path: "iscrizioni",                         component: IscrizioniPageComponent, canActivate:[AuthGuard]},
 

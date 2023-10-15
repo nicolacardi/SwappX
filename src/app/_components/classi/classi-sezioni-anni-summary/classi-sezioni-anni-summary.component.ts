@@ -8,7 +8,7 @@ import { MatTableDataSource }                   from '@angular/material/table';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 //services
-import { AnniScolasticiService }                from 'src/app/_components/anniscolastici/anni-scolastici.service';
+import { AnniScolasticiService }                from 'src/app/_components/anni-scolastici/anni-scolastici.service';
 import { ClassiSezioniAnniService }             from '../classi-sezioni-anni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 
