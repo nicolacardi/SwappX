@@ -28,6 +28,7 @@ import { ScadenzePersoneService }               from '../../scadenze/scadenze-pe
 import { ParametriService }                     from 'src/app/_components/impostazioni/parametri/parametri.service';
 import { MailService }                          from '../../utilities/mail/mail.service';
 import { UserService }                          from 'src/app/_user/user.service';
+import { PersoneService }                       from '../../persone/persone.service';
 
 //models
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
@@ -37,6 +38,8 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 import { CAL_Scadenza, CAL_ScadenzaPersone }    from 'src/app/_models/CAL_Scadenza';
 import { User }                                 from 'src/app/_user/Users';
 import { _UT_MailMessage }                      from 'src/app/_models/_UT_MailMessage';
+import { PER_Persona } from 'src/app/_models/PER_Persone';
+
 
 
 //#endregion
@@ -155,6 +158,7 @@ export class IscrizioniListComponent implements OnInit {
               private svcParametri:                       ParametriService,
               private svcMail:                            MailService,
               private svcUser:                            UserService,
+              private svcPersone:                         PersoneService,
 
               private svcScadenzePersone:                 ScadenzePersoneService,
               private fb:                                 UntypedFormBuilder, 
@@ -538,6 +542,7 @@ export class IscrizioniListComponent implements OnInit {
 
     let titoloMail = "STOODY: Procedura di Iscrizione";
     let userGenitore: any;
+    let personaGenitore!: PER_Persona;
     let sigSigRa = "Sig.";
 
     for (let i =0; i < iscrizione.alunno._Genitori!.length; i++) {
@@ -574,15 +579,22 @@ export class IscrizioniListComponent implements OnInit {
       if (mailAddress != null && mailAddress != '') {
 
         //interrogo e aspetto il DB per sapere se il genitore ha già uno username
-        await firstValueFrom(this.svcUser.getByPersonaID(iscrizione.alunno._Genitori![i].genitore!.personaID)
+        await firstValueFrom(this.svcPersone.get(iscrizione.alunno._Genitori![i].genitore!.personaID)
           .pipe(
-            tap(res => { userGenitore = res;}
+            tap(persona => { personaGenitore = persona;}
           )
         ));
 
-        if (userGenitore) {
+        // await firstValueFrom(this.svcUser.getByPersonaID(iscrizione.alunno._Genitori![i].genitore!.personaID)
+        //   .pipe(
+        //     tap(res => { userGenitore = res;}
+        //   )
+        // ));
+
+        if (personaGenitore.email) {
           testoMail = testoMail + "<br><br>"+
-          "Potete utilizzare lo username : <span style='font-weight: bold'>"+ userGenitore.userName + "</span>";
+          "Potete utilizzare lo username : <span style='font-weight: bold'>"+ personaGenitore.email + "</span><br>"+
+          "<span style='font-weight: bold'>ATTENZIONE: se questo utente non è stato utilizzato in precedenza sarà necessario al primo accesso premere il pulsante 'Registrazione</span>";
         } else {
           //NON DEVE PASSARE MAI DI QUA IN QUANTO GLI UTENTI DEI GENITORI DEVONO ESSERE SEMPRE GIA' DISPONIBILI
           this._dialog.open(DialogOkComponent, {
