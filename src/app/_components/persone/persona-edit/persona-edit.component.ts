@@ -30,6 +30,7 @@ import { DocentiCoordService }                  from '../docenticoord.service';
 import { NonDocentiService }                    from '../nondocenti.service';
 import { ITManagersService }                    from '../ITmanagers.service';
 import { DirigentiService }                     from '../dirigenti.service';
+import { UserService }                          from 'src/app/_user/user.service';
 
 //models
 import { PER_Persona, PER_TipoPersona }         from 'src/app/_models/PER_Persone';
@@ -78,7 +79,6 @@ export class PersonaEditComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public personaID: number,
               private fb:                       UntypedFormBuilder, 
               private svcPersone:               PersoneService,
-
               private svcAlunni:                AlunniService,
               private svcGenitori:              GenitoriService,
               private svcDocenti:               DocentiService,
@@ -145,6 +145,7 @@ export class PersonaEditComponent implements OnInit {
               if (persona._LstRoles!.includes('Alunno')) { this.showAlunnoForm = true; }//devo anche valorizzare alunnoID e passarlo a alunno form
               if (persona._LstRoles!.includes('Genitore')) {this.showGenitoreForm = true} //devo anche valorizzare genitoreID e passarlo a genitore form
 
+              
             }
             //this.form.patchValue(persona)
           )

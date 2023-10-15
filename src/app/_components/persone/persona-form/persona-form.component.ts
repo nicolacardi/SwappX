@@ -130,7 +130,8 @@ export class PersonaFormComponent implements OnInit {
       cf:                                       ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
       telefono:                                 ['', Validators.maxLength(13)],
       email:                                    ['',{ validators:[Validators.email, Validators.required]}],
-      ckAttivo:                                 [true]
+      ckAttivo:                                 [true],
+      ckRegistrato:                             [false]
     });
 
     // this.currUser = Utility.getCurrentUser();
@@ -187,7 +188,8 @@ export class PersonaFormComponent implements OnInit {
               // if (persona._LstRoles!.includes('Alunno')) { this.showAlunnoForm = true; }//devo anche valorizzare alunnoID e passarlo a alunno form
               // if (persona._LstRoles!.includes('Genitore')) {this.showGenitoreForm = true} //devo anche valorizzare genitoreID e passarlo a genitore form
             }
-          )
+          ),
+          tap( persona => this.svcUser.getByPersonaID(persona.id).subscribe(user=> {if (user.id) this.form.controls.ckRegistrato.setValue(true         )}))
       );
     }
     else 

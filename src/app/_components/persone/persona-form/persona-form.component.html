@@ -165,9 +165,15 @@
         <mat-grid-tile>
             <mat-form-field>
                 <mat-label>e-mail</mat-label>
-                <input matInput type="text" formControlName="email">
+                <input matInput [required]="dove== 'procedura-iscrizione'"  type="text" formControlName="email">
                 <mat-error>Campo errato</mat-error>
             </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile *ngIf="dove!= 'procedura-iscrizione'">
+            <mat-checkbox color="primary" formControlName="ckRegistrato">
+                Utente Registrato
+            </mat-checkbox>
         </mat-grid-tile>
 
     </mat-grid-list>
