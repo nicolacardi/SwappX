@@ -131,7 +131,7 @@ export class PersonaFormComponent implements OnInit {
       genere:                                   ['',{ validators:[Validators.maxLength(1), Validators.required, Validators.pattern("M|F")]}],
       cf:                                       ['',{ validators:[Validators.maxLength(16), Validators.pattern(regCF)]}],
       telefono:                                 ['', Validators.maxLength(13)],
-      email:                                    ['',{ validators:[Validators.email, Validators.required]}],
+      email:                                    ['',{ validators:[Validators.email]}],
       ckAttivo:                                 [true],
       ckRegistrato:                             [false]
     });
