@@ -30,6 +30,11 @@ export class ClasseAnnoMateriaService {
     //http://213.215.231.4/swappX/api/CLS_ClassiAnniMaterie
   }
 
+  listByClasseSezioneAnno(classeSezioneAnnoID: number): Observable<CLS_ClasseAnnoMateria[]>{
+    return this.http.get<CLS_ClasseAnnoMateria[]>(environment.apiBaseUrl+'CLS_ClassiAnniMaterie/ListByClasseSezioneAnno/'+ classeSezioneAnnoID);
+    //http://213.215.231.4/swappX/api/CLS_ClassiAnniMaterie/ListByClasseSezioneAnno/16
+  }
+
   getByMateriaAndClasseSezioneAnno (materiaID: number, classeSezioneAnnoID: number): Observable<CLS_ClasseAnnoMateria> {
     return this.http.get<CLS_ClasseAnnoMateria>( environment.apiBaseUrl  + 'CLS_ClassiAnniMaterie/GetByMateriaAndClasseSezioneAnno/' + materiaID + '/' + classeSezioneAnnoID);
   //http://213.215.231.4/SwappX/api/CLS_ClassiAnniMaterie/GetByMateriaAndClasseSezioneAnno/1002/21

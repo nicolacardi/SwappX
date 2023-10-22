@@ -23,6 +23,8 @@ import { MaterieService }                       from 'src/app/_components/materi
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 import { MAT_Materia }                          from 'src/app/_models/MAT_Materia';
 import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { ClasseAnnoMateriaService } from '../../classi-anni-materie/classe-anno-materia.service';
+import { CLS_ClasseAnnoMateria } from 'src/app/_models/CLS_ClasseAnnoMateria';
 
 //#endregion
 @Component({
@@ -35,7 +37,8 @@ export class DocenzeAddComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
   obsFilteredDocenti$!:                         Observable<PER_Docente[]>;
-  obsMaterie$!:                                 Observable<MAT_Materia[]>;
+  //obsMaterie$!:                                 Observable<MAT_Materia[]>;
+  obsClassiAnniMaterie$!:                                 Observable<CLS_ClasseAnnoMateria[]>;
   form! :                                       UntypedFormGroup;
 
   docentiIsLoading:                             boolean = false;
@@ -53,6 +56,7 @@ export class DocenzeAddComponent implements OnInit {
               private svcMaterie:                     MaterieService,
               private svcDocenti:                     DocentiService,
               private svcClasseSezioneAnno:           ClassiSezioniAnniService,
+              private svcClasseAnnoMateria:           ClasseAnnoMateriaService,
               private svcDocenze:                     DocenzeService,
               public dialogRef:                       MatDialogRef<DocenzeAddComponent>,
               private _snackBar:                      MatSnackBar,
@@ -96,9 +100,16 @@ export class DocenzeAddComponent implements OnInit {
        val=> this.materiaSelectedID = val 
     );
 
-    this.obsMaterie$ = this.svcMaterie.list();
-  }
+    //In precedenza estraevamo tutte le materie con svcMateria.list
+    //in verità vanno mostrate solo le materie che hanno un tipo di voto già espresso per questa classe...
+    ///MA SIAMO SICURI? COSA SUCCEDE DI GRAVE SE LA MATERIA NON HA IL TIPO DI VOTO E NOI LA ASSOCIAMO A UNA DOCENZA COMUNQUE?
+    //quindi si è scelto di usare svcClasseAnnoMateria.listByClasseSezioneAnno
+    //Attenzione però: se una materia viene cancellata da CLS_ClasseAnnoMateria bisogna impedirlo qualora sia utilizzata in svcClasseDocenzaMateria...e non è molto facile
+    //verificarlo. Attualmente è possibile fare questa operazione e quindi lasciare delle materie in una classe pur senza avere la materia tra quelle con tipo di voto disponibile
 
+    //this.obsMaterie$ = this.svcMaterie.list(); //bisogna estrarre in verità le materie disponibili per la classe e con tipodivoto definito
+    this.obsClassiAnniMaterie$ = this.svcClasseAnnoMateria.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
+  }
 //#endregion
 
 //#region ----- Operazioni CRUD ----------------
@@ -114,9 +125,11 @@ export class DocenzeAddComponent implements OnInit {
       ckPagella: true
     };
 
+    console.log ("objDocenza", objDocenza);
     //Bisogna verificare che già in questa classe non ci sia il maestro di questa materia
     //e anche che questo stesso maestro non sia già maestro di questa materia in questa classe
 
+    //1. verifica che nella classe questo maestro non insegni già questa materia (si poteva verificare anche nel webservice)
     const checks$ = 
     this.svcDocenze.getByClasseSezioneAnnoAndMateriaAndDocente(this.data.classeSezioneAnnoID, this.materiaSelectedID, this.docenteSelectedID)
     .pipe(
@@ -135,6 +148,7 @@ export class DocenzeAddComponent implements OnInit {
           // }
         }
       ),
+      // 2. passato il primo controllo verifica che la materia non sia già insegnata...anche da qualcun altro
       concatMap( res => iif (()=> res == null,
         this.svcDocenze.getByClasseSezioneAnnoAndMateria(this.data.classeSezioneAnnoID, this.materiaSelectedID) , of() )
       ),
@@ -159,9 +173,7 @@ export class DocenzeAddComponent implements OnInit {
       error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']}) 
     })
 
-    //ATTENZIONE!!! MANCA UNA COSA IMPORTANTE!!! POTREBBE NON ESSERCI GIA' IL RECORD IN CLASSE ANNO MATERIA E BISOGNA INSERIRLO!!!! ERRORONE!!!
-    //O LASCIAMO ALL'UTENTE L'ONERE DI ACCORGERSENE???
-    //TODO TODO TODO!!!!
+
   }
 
 

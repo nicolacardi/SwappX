@@ -14,14 +14,16 @@
             <br>
             <mat-label class="center">AGGIUNTA DOCENZA PER LA CLASSE:</mat-label>
             <mat-label class="center" *ngIf="classeSezioneAnno">{{classeSezioneAnno.classeSezione.classe!.descrizione2}} {{classeSezioneAnno.classeSezione.sezione}}</mat-label>
+            <mat-label class="center fs12">(sono disponibili solo le materie per le quali <br>è stato definito il tipo di voto nelle impostazioni)</mat-label>
             <mat-form-field  class="ml20 mt20 topZIndex">
                 <mat-label>Materia</mat-label>
                 <mat-select formControlName="selectMateria">
-                    <mat-option *ngFor="let element of (obsMaterie$ | async)" [value]="element.id">
-                    {{element.descrizione}}
+                    <mat-option *ngFor="let element of (obsClassiAnniMaterie$ | async)" [value]="element.materiaID">
+                    {{element.materia!.descrizione}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            
 
             <mat-form-field >
                 <mat-label >Nome e Cognome Docente</mat-label>
