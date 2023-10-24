@@ -4,7 +4,7 @@ import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }   from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { Observable }                           from 'rxjs';
+import { Observable, firstValueFrom }                           from 'rxjs';
 import { tap }                                  from 'rxjs/operators';
 
 //components
@@ -25,6 +25,9 @@ import { CLS_Classe }                           from 'src/app/_models/CLS_Classe
 import { CLS_ClasseAnnoMateria }                from 'src/app/_models/CLS_ClasseAnnoMateria';
 import { CLS_TipoVoto }                         from 'src/app/_models/CLS_TipoVoto';
 import { MAT_Materia }                          from 'src/app/_models/MAT_Materia';
+import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
+import { DocenzeService } from '../../docenze/docenze.service';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 //#endregion
 @Component({
@@ -134,8 +137,30 @@ export class ClasseAnnoMateriaEditComponent implements OnInit {
       width: '320px',
       data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(async result => {
       if(result){
+
+                    //VOLENDO INIBIRE LA CANCELLAZIONE NEL CASO IN CUI CI SIANO DOCENZE DI QUESTA MATERIA IN QUESTA CLASSE QUEST'ANNO....
+                    //verifico se la materia è stata utilizzata in qualche docenza, per questa classe, quindi vado a vedere classedocentemateria
+                    //dove classe però è classesezioneanno, quindi devo 
+                    //1. estrarre tutte le classisezionianni con lo stesso classe e anno.
+                    //2. per ciascuna di queste classesezionianni devo verificare se esiste un record in classedocentemateria (che dovrebbe infatti chiamarsi classesezioneannodocentemateria)
+                    //3. se esiste devo bloccare la cancellazione altrimenti devo far procedere la cancellazione
+                    //   let classeID = this.form.controls.classeID.value;
+                    //   let annoID = this.form.controls.annoID.value;
+                    //   let materiaID = this.form.controls.materiaID.value;
+                    //   let docenze = 0;
+                    //   await firstValueFrom(this.svcDocenze.countDocenzeByClasseAnnoMateria(classeID, annoID, materiaID).pipe(tap(ndocenze => docenze = ndocenze)));
+                    //   if (docenze != 0)
+                    // { 
+                    //     this._dialog.open(DialogOkComponent, {
+                    //       width: '320px',
+                    //       data: {titolo: "ATTENZIONE!", sottoTitolo: "Questa materia viene insegnata <br> da qualche docente in questa classe!<br>Pertanto non è cancellabile"}
+                    //     });
+                    //     return;
+                    //   }
+
+
         this.svcClassiAnniMaterie.delete(Number(this.classeAnnoMateriaID)).subscribe({
           next: res=>{
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']} );

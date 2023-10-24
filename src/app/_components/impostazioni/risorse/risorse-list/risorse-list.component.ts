@@ -160,6 +160,7 @@ constructor(private svcRisorse:                   RisorseService,
         this.svcRisorse.delete(risorsaID).subscribe({
           next: res=>{
             this._snackBar.openFromComponent(SnackbarComponent,{data: 'File cancellato', panelClass: ['red-snackbar']});
+            this.svcRisorse.renumberSeq().subscribe();
             this.loadData();
           },
           error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
@@ -198,7 +199,9 @@ constructor(private svcRisorse:                   RisorseService,
     }
 
     drop(event: any){
-
+      // console.log ("risorse-list - drop - event.previousIndex, event.currentIndex",event.previousIndex, event.currentIndex);
+      this.svcRisorse.updateSeq(event.previousIndex+1, event.currentIndex+1 )
+      .subscribe(res=> this.loadData());
     }
 
 

@@ -103,14 +103,45 @@ export class RisorsaEditComponent {
 
 //#region ----- Operazioni CRUD ----------------
 
-  save(){
+  async save(){
+
+    // let risorsaTrovata! :_UT_Risorsa;
+    // await firstValueForm(this.svcRisorse.getByNomeFile(this.form.controls.nomeFile.value)
+    // .pipe(
+    //   tap(risorsa => { risorsaTrovata = risorsa;})
+    // ));
+
+    // console.log ("risorsa trovata", risorsaTrovata);
+    // if (risorsaTrovata) {
+    //   this._snackBar.openFromComponent(SnackbarComponent, { data: "Esiste già un file con questo nome"  , panelClass: ['red-snackbar']});
+    //   return;
+    // }
+
+
+
+
     this.form.controls.userIns.setValue(this.currUser.personaID);
     // console.log ("risorsa-edit- save - this.form", this.form.value);
-    this.form.controls.tipoFile.setValue(Utility.extractMIMEType(this.form.controls.base64.value));
+    let tipoFile = Utility.extractMIMEType(this.form.controls.base64.value);
+    if (tipoFile == "vnd.openxmlformats-officedocument.wordprocessingml.document") {
+      tipoFile = "docX"
+    }
+    this.form.controls.tipoFile.setValue(tipoFile);
+    
+
+    let currentValue: string = this.form.controls.base64.value;
+    let newValue: string = currentValue.replace('vnd.openxmlformats-officedocument.wordprocessingml.document', 'docx');
+
+    this.form.controls.base64.setValue(newValue);
+
+
+    //console.log ("Utility.extractMIMEType(this.form.controls.base64.value)",Utility.extractMIMEType(this.form.controls.base64.value));
     if (this.form.controls['id'].value == null) {
+      //console.log (this.form.value);
       this.svcRisorse.post(this.form.value).subscribe({
         next: res=> {
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+          this.svcRisorse.renumberSeq().subscribe();
           this._dialogRef.close();
         },
         error: err=> (
@@ -131,25 +162,26 @@ export class RisorsaEditComponent {
     // }
   }
 
-  delete(){
-
-    const dialogRef = this._dialog.open(DialogYesNoComponent, {
-      width: '320px',
-      data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
-    });
-    dialogRef.afterClosed().subscribe(
-      result => {
-        if(result){
-          this.svcRisorse.delete(Number(this.data.risorsaID)).subscribe({
-            next: res=>{
-              this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
-              this._dialogRef.close();
-            },
-            error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
-          });
-        }
-    });
-  }
+  // delete(){
+    //QUESTA NON FUNZIONA MAI, NON C'E' PULSANTE DELETE IN RISORSA EDIT...
+    // const dialogRef = this._dialog.open(DialogYesNoComponent, {
+    //   width: '320px',
+    //   data: {titolo: "ATTENZIONE", sottoTitolo: "Si conferma la cancellazione del record ?"}
+    // });
+    // dialogRef.afterClosed().subscribe(
+    //   result => {
+    //     if(result){
+    //       this.svcRisorse.delete(Number(this.data.risorsaID)).subscribe({
+    //         next: res=>{
+    //           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record cancellato', panelClass: ['red-snackbar']});
+    //           this.svcRisorse.renumberSeq().subscribe();
+    //           this._dialogRef.close();
+    //         },
+    //         error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in cancellazione', panelClass: ['red-snackbar']})
+    //       });
+    //     }
+    // });
+  // }
 
 
 //#endregion
@@ -192,3 +224,7 @@ export class RisorsaEditComponent {
 
 
 }
+function firstValueForm(arg0: Observable<_UT_Risorsa>) {
+  throw new Error('Function not implemented.');
+}
+

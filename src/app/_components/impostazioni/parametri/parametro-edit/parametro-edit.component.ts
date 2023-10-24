@@ -129,7 +129,6 @@ export class ParametroEditComponent {
         next: res=> {
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
           this._dialogRef.close();
-
         },
         error: err=> (
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})

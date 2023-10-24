@@ -50,8 +50,12 @@ export class ScadenzaEditComponent implements OnInit {
   personaIDArr!:                                number[];
   colorSample:                                  string = '#FFFFFF'
   personeListArr!:                              PER_Persona[];
+  personeListArrFiltered!:                      PER_Persona[];
+
+
   personeListSelArr!:                           CAL_ScadenzaPersone[];
 
+  filterValue!:                                  string;
   tipoPersonaIDArr!:                            number[];
 
   scadenza$!:                                   Observable<CAL_Scadenza>;
@@ -121,9 +125,9 @@ export class ScadenzaEditComponent implements OnInit {
       ckRisposta:                               [false],
       tipoScadenzaID:                           [''],
       personaID:                                [''],
-       personeList:                              [[]],
-       personeListSel:                           [[]],
-
+      personeList:                              [[]],
+      personeListSel:                           [[]],
+      filtro:                                   [''],
       //campi di FullCalendar
       title:                                    [''],
       h_Ini:                                    [''],     
@@ -179,20 +183,28 @@ export class ScadenzaEditComponent implements OnInit {
           tap( val => {
           //ora estraggo l'elenco di TUTTE le persone
           this.personeListArr = val;
-          //il forEach va in avanti e non va bene: scombussola gli index visto che si fa lo splice...bisogna usare un for i--
-          //splice SOTTRAE da personeListArr ciascun elemento che è stato trovato in personeListSelArr
-          for (let i= this.personeListArr.length -1; i >= 0; i--) {
-              if (this.personeListSelArr.filter(e => e.persona!.id === this.personeListArr[i].id).length > 0) {
-                this.personeListArr.splice(i, 1);
-              }
-              this.addMyself(i);
-          }
-          //ordino per cognome
-          this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
+
+          this.fixPersoneListArr();
+
+          this.filtraPersoneListArr();
+
         }))
       )
     )
     .subscribe();
+  }
+
+  fixPersoneListArr() {
+    //il forEach va in avanti e non va bene: scombussola gli index visto che si fa lo splice...bisogna usare un for i--
+    //splice SOTTRAE da personeListArr ciascun elemento che è stato trovato in personeListSelArr
+    for (let i= this.personeListArr.length -1; i >= 0; i--) {
+      if (this.personeListSelArr.filter(e => e.persona!.id === this.personeListArr[i].id).length > 0) {
+        this.personeListArr.splice(i, 1);
+      }
+      this.addMyself(i);
+    }
+    //ordino per cognome
+    this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
   }
 
   addMyself(i: number){
@@ -297,7 +309,7 @@ export class ScadenzaEditComponent implements OnInit {
     if (this.form.controls['id'].value == null) {   
       
       objScadenza.id = 0;
-      //this.svcLezioni.post(this.form.value).subscribe(
+
       this.svcScadenze.post(objScadenza).subscribe({
         next: res => {
           this.insertPersone(res.id);
@@ -308,6 +320,10 @@ export class ScadenzaEditComponent implements OnInit {
       });
     } 
     else  {
+      //se viene MODIFICATA una scadenza si cancellano e si ripristinano le scadenze persone
+      //in questo modo se p.e. fosse stata inserita una nuova persona anche questa riceverebbe la scadenza.
+      //tuttavia in questo modo uno che l'ha già ricevuta, se gli cambiano qualcosa (il testo, la data ecc) non se ne accorge!
+
       let cancellaeRipristinaPersone = this.svcScadenzePersone.deleteByScadenza(this.form.controls.id.value)
       .pipe(
         finalize(()=>{
@@ -467,6 +483,8 @@ export class ScadenzaEditComponent implements OnInit {
               }
               this.personeListSelArr.push(objScadenzaPersona);
               this.personeListArr.splice(i, 1);
+
+              this.filtraPersoneListArr();
             }
           }
         }
@@ -488,6 +506,7 @@ export class ScadenzaEditComponent implements OnInit {
             }
             this.personeListSelArr.push(objScadenzaPersona);
             this.personeListArr.splice(i, 1);
+            this.filtraPersoneListArr();
           }
         }
       }})
@@ -525,6 +544,7 @@ export class ScadenzaEditComponent implements OnInit {
     const index = this.personeListArr.indexOf(element);
     this.personeListArr.splice(index, 1);
     this.personeListSelArr.sort((a,b) => (a.persona!.cognome > b.persona!.cognome)?1:((b.persona!.cognome > a.persona!.cognome) ? -1 : 0) );
+    this.filtraPersoneListArr();
   }
 
   removeFromSel(element: CAL_ScadenzaPersone) {
@@ -539,6 +559,7 @@ export class ScadenzaEditComponent implements OnInit {
       const index = this.personeListSelArr.indexOf(element);
       this.personeListSelArr.splice(index, 1);
       this.personeListArr.sort((a,b) => (a.cognome > b.cognome)?1:((b.cognome > a.cognome) ? -1 : 0) );
+      this.filtraPersoneListArr();
     }
 
   }
@@ -548,6 +569,16 @@ export class ScadenzaEditComponent implements OnInit {
     .subscribe(
       val=> this.colorSample = val.color
     );
+  }
+
+
+  filtraPersoneListArr() {
+    this.filterValue = this.form.controls.filtro.value.toLowerCase(); //potevo anche estrarlo dal form.control.value
+
+    this.personeListArrFiltered = this.personeListArr.filter(val => 
+        (val.nome.toLowerCase() + ' ' + val.cognome.toLowerCase()).includes(this.filterValue)
+    );
+    
   }
 //#endregion
 

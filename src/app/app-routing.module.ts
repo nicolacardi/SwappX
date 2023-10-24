@@ -82,9 +82,7 @@ const routes: Routes = [
 
   { path: "verbali",                            component: VerbaliPageComponent,canActivate:[AuthGuard] },
 
-  // { path: "template",                           component: TemplateComponent,canActivate:[AuthGuard] },
-
-  { path: "users",                               component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: ['ITManager', 'NonDocente' ] } }, 
+  { path: "users",                              component: UsersPageComponent, canActivate:[AuthGuard], data: { roles: ['ITManager', 'NonDocente' ] } }, 
 
   { path: "procedura-iscrizione",               component: ProceduraIscrizioneComponent, canActivate:[AuthGuard] },
 
@@ -99,11 +97,10 @@ const routes: Routes = [
 
 @NgModule({
   //imports: [RouterModule.forRoot(routes)],
-  imports: [RouterModule.forRoot(routes, { useHash: false })], //NC 05/08/23 tolto useHash: true
-
   //imports: [RouterModule.forRoot(routes, { useHash: true })], 
   //NC 02/02 https://stackoverflow.com/questions/60527776/uncaught-in-promise-error-cannot-match-any-routes-angular8
-  
+  imports: [RouterModule.forRoot(routes, { useHash: false })], //NC 05/08/23 tolto useHash: true
+ 
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

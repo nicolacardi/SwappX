@@ -10,7 +10,7 @@ import timegridPlugin                           from '@fullcalendar/timegrid'
 import interactionPlugin                        from '@fullcalendar/interaction'
 
 import { EventResizeDoneArg }                   from '@fullcalendar/interaction';
-import { concatMap, tap }                       from 'rxjs/operators';
+import { concatMap, map, tap }                       from 'rxjs/operators';
 
 
 import itLocale                                 from '@fullcalendar/core/locales/it';
@@ -31,6 +31,7 @@ import { ScadenzeService }                      from '../scadenze.service';
 
 //models
 import { CAL_Scadenza }                         from 'src/app/_models/CAL_Scadenza';
+import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
 @Component({
@@ -41,6 +42,8 @@ import { CAL_Scadenza }                         from 'src/app/_models/CAL_Scaden
 export class ScadenzeCalendarioComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+  currUser!:                                    User;
+
   Events: any[] = [];
 
   calendarOptions: CalendarOptions = {
@@ -72,7 +75,28 @@ export class ScadenzeCalendarioComponent implements OnInit {
     },  
 
     views: {
-      dayGridMonth: {  //questo modifica TUTTI gli eventi in questa vista
+      timeGridWeek: { //questo modifica TUTTI gli eventi in questa vista: la vista MESE: 
+        //***************** NB SI PUO'TOGLIERE TUTTO QUESTO 'capitolo' TimeGridWeek e funziona lo stesso, ma SENZA Tooltip ****************
+        eventContent: (event: any, element: any) => {
+          { 
+            //mostra l'ora
+            let timeText = document.createElement('div');
+            timeText.className = "fc-event-time";
+            timeText.innerHTML = event.timeText;
+            //include Info aggiuntive
+            let titleText = document.createElement('div');
+            titleText.className = "fc-event-title";
+            titleText.innerHTML = 
+              event.event._def.title;
+            timeText.setAttribute('title', event.event._def.title);
+            let arrayOfDomNodes = [ timeText, titleText];     //prepara il set di Nodes
+
+            return { domNodes: arrayOfDomNodes }
+          }
+        },
+      },
+
+      dayGridMonth: {  //questo modifica TUTTI gli eventi in questa vista: la vista MESE
         eventContent: (event: any, element: any) => {
           { 
             //mostra l'ora
@@ -84,14 +108,19 @@ export class ScadenzeCalendarioComponent implements OnInit {
             titleText.className = "fc-event-title";
             titleText.innerHTML = 
             '<span class="fs30" style="color:'+event.event._def.ui.backgroundColor+'">•</span><b>'
-              +event.event._def.title
-            //+'</b>'
+              +event.event._def.title+'</b>';
+
+            
+
+
             let arrayOfDomNodes = [ timeText, titleText];     //prepara il set di Nodes
+
             return { domNodes: arrayOfDomNodes }
           }
-        }
+        },
+
       },
-      timeGridDay: {  //questo modifica TUTTI gli eventi in questa vista
+      timeGridDay: {  //questo modifica TUTTI gli eventi in questa vista, la vista GIORNO
         eventContent: (event: any, element: any) => {
           { 
             //mostra l'ora
@@ -113,7 +142,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
         }
         }
       },
-      listWeek: {  //questo modifica TUTTI gli eventi in questa vista
+      listWeek: {  //questo modifica TUTTI gli eventi in questa vista, la vista AGENDA
         eventContent: (event: any, element: any) => {
           { 
             //mostra l'ora
@@ -125,7 +154,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
             titleText.className = "fc-event-title";
             titleText.innerHTML = 
             //'[<span class="fs10">Titolo Evento: </span>]<b>'+
-                event.event._def.title
+                event.event._def.title;
             //+'</b>'
             
 
@@ -162,7 +191,11 @@ export class ScadenzeCalendarioComponent implements OnInit {
     private _snackBar:                          MatSnackBar,
     public _dialog:                             MatDialog, 
     public appRef:                              ApplicationRef
-  ) {}
+  ) {
+
+
+    this.currUser = Utility.getCurrentUser();
+  }
 //#endregion
 
 //#region ----- LifeCycle Hooks e simili-------
@@ -174,12 +207,21 @@ export class ScadenzeCalendarioComponent implements OnInit {
 
   loadData () {
     let obsScadenze$: Observable<CAL_Scadenza[]>;
-    obsScadenze$= this.svcScadenze.list(); //così le mostro tutte TODO listbyPersona
-    
+    obsScadenze$= this.svcScadenze.list()
+
+    .pipe(
+      map(scadenze => 
+        scadenze.filter(scadenza => 
+          scadenza._ScadenzaPersone?.some(sp => sp.personaID === this.currUser.personaID)
+        )
+      )
+    );
+
+
     const loadScadenze$ =this._loadingService.showLoaderUntilCompleted(obsScadenze$);
     loadScadenze$.subscribe(
       val =>   {
-        //console.log ("scadenze-calendario - loadData - val", val);
+        console.log ("scadenze-calendario - loadData - val", val);
         for (let i = 0; i< val.length; i++) {
           //console.log ("scadenze-calendario - loadData - val[i].tipoScadenza!.color", val[i].tipoScadenza!.color);
           val[i].color = val[i].tipoScadenza!.color;
@@ -187,8 +229,7 @@ export class ScadenzeCalendarioComponent implements OnInit {
 
 
         this.Events = val;
-        
-        this.calendarOptions.events = this.Events;
+        this.calendarOptions.events = this.Events; //curioso doppio passaggio, ma this.calendarOptions.events = val non funziona
       }
     );
 

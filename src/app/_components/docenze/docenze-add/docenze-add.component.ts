@@ -37,8 +37,8 @@ export class DocenzeAddComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
   obsFilteredDocenti$!:                         Observable<PER_Docente[]>;
-  //obsMaterie$!:                                 Observable<MAT_Materia[]>;
-  obsClassiAnniMaterie$!:                                 Observable<CLS_ClasseAnnoMateria[]>;
+  obsMaterie$!:                                 Observable<MAT_Materia[]>;
+  //obsClassiAnniMaterie$!:                                 Observable<CLS_ClasseAnnoMateria[]>;
   form! :                                       UntypedFormGroup;
 
   docentiIsLoading:                             boolean = false;
@@ -100,15 +100,13 @@ export class DocenzeAddComponent implements OnInit {
        val=> this.materiaSelectedID = val 
     );
 
-    //In precedenza estraevamo tutte le materie con svcMateria.list
-    //in verità vanno mostrate solo le materie che hanno un tipo di voto già espresso per questa classe...
-    ///MA SIAMO SICURI? COSA SUCCEDE DI GRAVE SE LA MATERIA NON HA IL TIPO DI VOTO E NOI LA ASSOCIAMO A UNA DOCENZA COMUNQUE?
-    //quindi si è scelto di usare svcClasseAnnoMateria.listByClasseSezioneAnno
+    this.obsMaterie$ = this.svcMaterie.list();
+
+    //Vanno mostrate solo le materie che hanno un tipo di voto già espresso per questa classe...?
+    //In quel caso va usato invece del precedente svcMaterie.list : svcClasseAnnoMateria.listByClasseSezioneAnno
     //Attenzione però: se una materia viene cancellata da CLS_ClasseAnnoMateria bisogna impedirlo qualora sia utilizzata in svcClasseDocenzaMateria...e non è molto facile
     //verificarlo. Attualmente è possibile fare questa operazione e quindi lasciare delle materie in una classe pur senza avere la materia tra quelle con tipo di voto disponibile
-
-    //this.obsMaterie$ = this.svcMaterie.list(); //bisogna estrarre in verità le materie disponibili per la classe e con tipodivoto definito
-    this.obsClassiAnniMaterie$ = this.svcClasseAnnoMateria.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
+    //this.obsClassiAnniMaterie$ = this.svcClasseAnnoMateria.listByClasseSezioneAnno(this.data.classeSezioneAnnoID);
   }
 //#endregion
 

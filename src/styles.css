@@ -2066,7 +2066,8 @@ div.inner img {
 
 /* taglia il testo negli eventi del fullcalendar che altrimenti deborda */
 .fc-v-event .fc-event-title {
-    max-height: calc(100% - 25px) !important;
+    max-height: calc(100% - 20px) !important;
+
   }
 
 

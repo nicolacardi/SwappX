@@ -44,12 +44,17 @@ export class DocenzeService {
   
   getByClasseSezioneAnnoAndMateria(classeSezioneAnnoID: number, materiaID: number): Observable <CLS_ClasseDocenteMateria> {
     return this.http.get <CLS_ClasseDocenteMateria>( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateria/'+classeSezioneAnnoID+'/'+materiaID);  
-      //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateria/16/4
+      //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateria/16/1010
   }
 
   getByClasseSezioneAnnoAndMateriaAndDocente(classeSezioneAnnoID: number, materiaID: number, docenteID: number): Observable <CLS_ClasseDocenteMateria> {
     return this.http.get <CLS_ClasseDocenteMateria>( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateriaAndDocente/'+classeSezioneAnnoID+'/'+materiaID+'/'+docenteID);  
       //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/GetByClasseSezioneAnnoAndMateriaAndDocente/16/4/3
+  }
+
+  countDocenzeByClasseAnnoMateria (classeID: number, annoID: number, materiaID: number): Observable <number>{
+    return this.http.get <number>( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/CountDocenzeByClasseAnnoMateria/'+classeID+'/'+annoID+'/'+materiaID);  
+      //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/CountDocenzeByClasseAnnoMateria/1/2/7
   }
 
   put(formData: any): Observable <any>{

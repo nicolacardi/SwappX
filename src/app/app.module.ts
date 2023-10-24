@@ -452,10 +452,7 @@ import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-
     ColorPickerModule,
     QuillModule.forRoot(),
     ClipboardModule,
-
   ],
-
-
   providers: [
     UserService,
     DatePipe,

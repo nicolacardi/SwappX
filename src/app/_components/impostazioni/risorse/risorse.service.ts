@@ -23,6 +23,11 @@ export class RisorseService {
     //http://213.215.231.4/swappX/api/_UT_Risorse/GetLight/1
   }
 
+  getByNomeFile(nomeFile: string): Observable<_UT_Risorsa>{
+    return this.http.get<_UT_Risorsa>(environment.apiBaseUrl+'_UT_Risorse/GetByNomeFile/'+nomeFile);
+    //http://213.215.231.4/swappX/api/_UT_Risorse/GetByNomeFile/CertificazioneCompetenze
+  }
+
   list(): Observable<_UT_Risorsa[]>{
     return this.http.get<_UT_Risorsa[]>(environment.apiBaseUrl+'_UT_Risorse');
     //http://213.215.231.4/swappX/api/_UT_Risorse
@@ -39,6 +44,17 @@ export class RisorseService {
 
   delete(risorsaID: number): Observable <any>{
     return this.http.delete( environment.apiBaseUrl  + '_UT_Risorse/' + risorsaID);    
+  }
+
+  updateSeq(seqInitial: number, seqFinal: number): Observable <any>{
+    console.log("updateSeq", seqInitial, seqFinal);
+    return this.http.put(environment.apiBaseUrl+'_UT_Risorse/UpdateSeq/'+seqInitial+'/'+seqFinal, seqInitial);
+    //http://213.215.231.4/swappX/api/_UT_Risorse/UpdateSeq/1/2
+  }
+
+  renumberSeq() {
+    const url = `${environment.apiBaseUrl}_UT_Risorse/RenumberSeq`;
+    return this.http.put(url, null);
   }
 
 }
