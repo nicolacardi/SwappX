@@ -276,7 +276,7 @@ export class TemplateComponent implements OnInit {
 
     //Chiamata al motore di stampa e salvataggio
     let rpt :jsPDF  = await this._jspdf.rptFromtemplate(rptFile);
-    let retcode = this.svcFiles.saveFilePagella(rpt,222);  //Codice temporaneo 222 che viene scaricato con OpenPdf
+    let retcode = this.svcFiles.saveFileJspdfPagella(rpt,222);  //Codice temporaneo 222 che viene scaricato con OpenPdf
 
     if(retcode == true)
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Documento salvato in Database', panelClass: ['green-snackbar']});

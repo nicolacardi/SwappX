@@ -27,7 +27,7 @@ export class FilesService {
   
   put(formData: any): Observable <any>{
     //console.log ("sto per spedire in put:", formData);
-    formData.estensione = "cic";
+    formData.estensione = "pdf";
     return this.http.put( environment.apiBaseUrl  + 'DOC_Files/' + formData.id , formData);    
   }
 
@@ -36,9 +36,46 @@ export class FilesService {
     return this.http.post<DOC_File>( environment.apiBaseUrl  + 'DOC_Files' , formData);  
   }
 
+  saveBlobPagella(blobPDF :Blob, objPagellaID: number):boolean{
+    //routine IDENTICA alla savejspdfPagella solo che qui arriva direttamente il Blob
+    const result = new ReplaySubject<string>(1);
+    const reader = new FileReader();
+    reader.readAsBinaryString(blobPDF);
+    reader.onload = (x) => result.next(btoa(x.target!.result!.toString()));
+    
+    let formDataFile!:                                DOC_File;
+    formDataFile = {
+      tipoDoc:         "Pagella",
+      docID:           objPagellaID,
+      estensione:       "pdf"
+    };
+    
+    result.pipe (
+      tap(val=> formDataFile.fileBase64 = val),
+      
+      //ora cerca se esiste già un record nei file...
+      concatMap(() => this.getByDocAndTipo(objPagellaID, "pagella")),
+
+      //a seconda del risultato fa una post o una put
+      switchMap(res => {
+        if (res == null) {
+          //console.log ("non ha trovato=> esegue una post")
+          return this.post(formDataFile)
+        } else {
+          //console.log ("ha trovato=> valorizza l'id e esegue una put")
+          formDataFile.id = res.id
+          return this.put(formDataFile)
+        }
+      }),
+    ).subscribe({
+      next: res => { return true} ,
+      error: err=> { return false}
+    });
+    return true;
+  }
 
 
-  saveFilePagella(rpt :jsPDF, objPagellaID: number):boolean{
+  saveFileJspdfPagella(rpt :jsPDF, objPagellaID: number):boolean{
    
     //Preparazione Blob con il contenuto base64 del pdf e salvataggio su DB
     let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});
@@ -76,9 +113,7 @@ export class FilesService {
       next: res => { return true} ,
       error: err=> { return false}
     });
-  return true;
-
-    //return result;
+    return true;
   }
 }
  

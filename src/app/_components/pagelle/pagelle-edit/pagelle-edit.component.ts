@@ -2,8 +2,8 @@
 
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatButtonToggle, MatButtonToggleChange } from '@angular/material/button-toggle';
-import { Observable }                           from 'rxjs';
-import { map}                                   from 'rxjs/operators';
+import { Observable, firstValueFrom }                           from 'rxjs';
+import { map, tap}                                   from 'rxjs/operators';
 import { jsPDF }                                from 'jspdf';
 
 //components
@@ -54,7 +54,7 @@ export class PagellaEditComponent implements OnInit {
 
 //#region ----- ViewChild Input Output ---------
   @Input('iscrizioneID') iscrizioneID!:          number;
-  @Input('docenteID') docenteID!:                number;
+  //@Input('docenteID') docenteID!:                number;
   
   @Input('alunno') alunno!:                      ALU_Alunno;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:          number;
@@ -146,11 +146,58 @@ export class PagellaEditComponent implements OnInit {
     }
   }
 
-  openXML() {
+  
+  async savePdfPagellaBase64() {
+
+    if (this.objPagella.id == -1 ){
+      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella inesistente - inserire almeno un voto', panelClass: ['red-snackbar']});
+      return;
+    }
+
+    // costruiamo una promise per attendere il caricamento della lista voti
+    const reloadLstPagellaVoti = () => new Promise((resolve, reject) => {
+      if(this.objPagella.iscrizione != undefined){
+        this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnno.classeSezione.classeID,this.objPagella.id! )
+          .subscribe(
+            (res: DOC_PagellaVoto[]) => {
+              this.lstPagellaVoti = res;
+              resolve ("Lista voti caricata");
+            }
+          );
+      }
+    });
+    await reloadLstPagellaVoti();
+
+    //funziona anche così? se sì adottiamola che è + standard
+    // if(this.objPagella.iscrizione != undefined){
+    //   await firstValueFrom(this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnno.classeSezione.classeID,this.objPagella.id! )
+    //   .pipe(
+    //       tap((res: DOC_PagellaVoto[]) => {
+    //         this.lstPagellaVoti = res;
+    //       }
+    //     )
+    //   ));
+    // }
+
+  
+    //Chiamata al motore di stampa e salvataggio
+    let rpt :jsPDF  = await this._jspdf.dynamicRptPagella(this.objPagella, this.lstPagellaVoti);
+    let retcode = this.svcFiles.saveFileJspdfPagella(rpt,this.objPagella.id!);
+
+    if(retcode == true)
+      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella salvata in Database', panelClass: ['green-snackbar']});
+    else
+      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']});
+      
+    this.svcPagelle.setStampato(this.objPagella.id!, true).subscribe();
+
+  }
+  
+  downloadPdfPagella() {
 
     let nomeFile: string;
     nomeFile = "PagellaElementari"  + '_' + this.iscrizione.classeSezioneAnno.anno.annoscolastico + "(" + this.quadrimestre +"quad)_" + this.alunno.persona.cognome + ' ' + this.alunno.persona.nome + '.docx'
-    this.svcOpenXML.downloadFile(this.openXMLPreparaOggetto(this.alunno, this.iscrizione, this.lstPagellaVoti, this.objPagella), nomeFile );
+    this.svcOpenXML.createAndDownloadFile(this.openXMLPreparaOggetto(this.alunno, this.iscrizione, this.lstPagellaVoti, this.objPagella), nomeFile );
 
   }
   
@@ -285,98 +332,27 @@ export class PagellaEditComponent implements OnInit {
     return tagDocument;
   }
   
-  openPdfPagella(){
-    //questa andrà in pensione
+  // openPdfPagella(){
+  //   //questa andrà in pensione
 
-    if(this.objPagella == null || this.objPagella.id! <0) {
-      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella non ancora generata', panelClass: ['red-snackbar']})
-      return;
-    }
+  //   if(this.objPagella == null || this.objPagella.id! <0) {
+  //     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella non ancora generata', panelClass: ['red-snackbar']})
+  //     return;
+  //   }
 
-    this.svcFiles.getByDocAndTipo(this.objPagella.id,"Pagella").subscribe({
-        next: res => {
-          //si crea un elemento fittizio che scarica il file di tipo base64 che gli viene assegnato
-          const source = `data:application/pdf;base64,${res.fileBase64}`;
-          const link = document.createElement("a");
+  //   this.svcFiles.getByDocAndTipo(this.objPagella.id,"Pagella").subscribe({
+  //       next: res => {
+  //         //si crea un elemento fittizio che scarica il file di tipo base64 che gli viene assegnato
+  //         const source = `data:application/pdf;base64,${res.fileBase64}`;
+  //         const link = document.createElement("a");
 
-          link.href = source;
-          link.download = `${"test"}.pdf`
-          link.click();
-        },
-        error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di caricamento', panelClass: ['red-snackbar']})
-    });
-  }
+  //         link.href = source;
+  //         link.download = `${"test"}.pdf`
+  //         link.click();
+  //       },
+  //       error: err=> this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore di caricamento', panelClass: ['red-snackbar']})
+  //   });
+  // }
 
-  async savePdfPagella() {
-
-    if (this.objPagella.id == -1 ){
-      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella inesistente - inserire almeno un voto', panelClass: ['red-snackbar']});
-      return;
-    }
-
-    //costruiamo una promise per attendere il caricamento della lista voti
-    const reloadLstPagellaVoti = () => new Promise((resolve, reject) => {
-      if(this.objPagella.iscrizione != undefined){
-        this.svcPagellaVoti.listByAnnoClassePagella(this.objPagella.iscrizione?.classeSezioneAnno.annoID!,  this.objPagella.iscrizione?.classeSezioneAnno.classeSezione.classeID,this.objPagella.id! )
-          .subscribe(
-            (res: DOC_PagellaVoto[]) => {
-              this.lstPagellaVoti = res;
-              resolve ("Lista voti caricata");
-            }
-          );
-      }
-    });
-    await reloadLstPagellaVoti();
-
-    //Chiamata al motore di stampa e salvataggio
-    let rpt :jsPDF  = await this._jspdf.dynamicRptPagella(this.objPagella, this.lstPagellaVoti);
-    let retcode = this.svcFiles.saveFilePagella(rpt,this.objPagella.id!);
-
-    if(retcode == true)
-      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella salvata in Database', panelClass: ['green-snackbar']});
-    else
-      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']});
-      
-    this.svcPagelle.setStampato(this.objPagella.id!, true).subscribe();
-
- /* 29/10/2022 - sostituito da svcFiles.saveFilePagella
-    //Preparazione Blob con il contenuto base64 del pdf e salvataggio su DB
-    let blobPDF = new Blob([rpt.output('blob')],{type: 'application/pdf'});
-    
-    const result = new ReplaySubject<string>(1);
-    const reader = new FileReader();
-    reader.readAsBinaryString(blobPDF);
-    reader.onload = (x) => result.next(btoa(x.target!.result!.toString()));
-    
-    this.formDataFile = {
-      tipoDoc:         "Pagella",
-      docID:           this.objPagella.id!,
-      estensione:       "pdf"
-    };
-
-    result.pipe (
-      tap(val=> this.formDataFile.fileBase64 = val),
-      
-      //ora cerca se esiste già un record nei file...
-      concatMap(() => this.svcFiles.getByDocAndTipo(this.objPagella.id, "pagella")),
-
-      //a seconda del risultato fa una post o una put
-      switchMap(res => {
-        if (res == null) {
-          //console.log ("non ha trovato=> esegue una post")
-          return this.svcFiles.post(this.formDataFile)
-        } else {
-          //console.log ("ha trovato=> valorizza l'id e esegue una put")
-          this.formDataFile.id = res.id
-          return this.svcFiles.put(this.formDataFile)
-        }
-      }),
-    ).subscribe(
-      res => ( this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella salvata in Database', panelClass: ['green-snackbar']})),
-      err=>  {}
-    );
-    this.svcPagelle.setStampato(this.objPagella.id!, true).subscribe();
-    */
-  }
 //#endregion
 }

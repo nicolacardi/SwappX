@@ -16,13 +16,13 @@ import { LoadingService }                       from '../../utilities/loading/lo
 import { PagellaVotiService }                   from '../pagella-voti.service';
 import { ObiettiviService }                     from '../../obiettivi/obiettivi.service';
 import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
+import { PagelleService }                       from '../pagelle.service';
 
 //models
 import { DOC_PagellaVoto, DOC_TipoGiudizio }    from 'src/app/_models/DOC_PagellaVoto';
 import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
-import { PagelleService } from '../pagelle.service';
-import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
+import { DOC_Pagella }                          from 'src/app/_models/DOC_Pagella';
 
 //#endregion
 

@@ -514,7 +514,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
         
         () => {
           //console.log ("tagDocument", tagDocument);
-          this.svcOpenXML.downloadFile(tagDocument, nomeFile )
+          this.svcOpenXML.createAndDownloadFile(tagDocument, nomeFile )
         }
     )
     ;  

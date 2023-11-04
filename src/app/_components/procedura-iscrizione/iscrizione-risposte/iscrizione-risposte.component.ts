@@ -434,7 +434,7 @@ constructor(private svcDomande:                 DomandeService,
     ));
 
 
-    this.svcOpenXML.downloadFile(tagDocument, nomeFile )
+    this.svcOpenXML.createAndDownloadFile(tagDocument, nomeFile )
     
 
     
