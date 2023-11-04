@@ -189,7 +189,7 @@ export class PagellaEditComponent implements OnInit {
     else
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']});
       
-    this.svcPagelle.setStampato(this.objPagella.id!, true).subscribe();
+    this.svcPagelle.pubblica(this.objPagella.id!).subscribe();
 
   }
   

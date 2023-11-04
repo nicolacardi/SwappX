@@ -29,6 +29,12 @@ export class PagelleService {
     //http://213.215.231.4/swappX/api/DOC_Pagelle/SetStampato?id=5&ckStampato=0
   }
   
+  pubblica(pagellaID: number): Observable <any>{
+    const formData = <DOC_Pagella>{};
+    return this.http.post( environment.apiBaseUrl  + 'DOC_Pagelle/Pubblica?id='+pagellaID, formData);
+    //http://213.215.231.4/swappX/api/DOC_Pagelle/Pubblica?id=5
+  }
+
   put(formData: any): Observable <any>{
     return this.http.put( environment.apiBaseUrl  + 'DOC_Pagelle/' + formData.id , formData);    
   }
