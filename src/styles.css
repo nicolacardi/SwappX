@@ -1,8 +1,8 @@
 
 
-@import '~quill/dist/quill.snow.css';
+/* @import '~quill/dist/quill.snow.css';
 @import '~quill/dist/quill.core.css';
-@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.bubble.css'; */
 
 /*#region ********** GENERALI **********/
     html, body { 
@@ -2078,7 +2078,7 @@ div.inner img {
 
 
 
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
+/* .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
 .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="10px"]::before,
 .ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
 .ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="10px"]::before {
@@ -2132,7 +2132,7 @@ div.inner img {
 .ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="24px"]::before,
 .ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="24px"]::before {
   content: "24px";
-}
+} */
 
 /* non so se servano quelle che seguono*/
 /* .ql-picker.ql-placeholder {width: 118px;}
@@ -2143,7 +2143,7 @@ div.inner img {
 
 /* ****quill mention */
 
-  .ql-mention-list-container {
+  /* .ql-mention-list-container {
     width: 270px;
     border: 1px solid #f0f0f0;
     border-radius: 4px;
@@ -2151,7 +2151,6 @@ div.inner img {
     box-shadow: 0 2px 12px 0 rgba(30, 30, 30, 0.08);
     z-index: 9001;
     overflow: auto;
-    /* overflow: visible !important; */
     position: absolute;
   }
   
@@ -2199,5 +2198,5 @@ div.inner img {
   
   .mention > span {
     margin: 0 3px;
-  }
+  } */
   
