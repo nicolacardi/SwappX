@@ -147,7 +147,7 @@ export class PagellaEditComponent implements OnInit {
   }
 
   
-  async savePdfPagellaBase64() {
+  async savePdfPagellaBase64OLD() {
 
     if (this.objPagella.id == -1 ){
       this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella inesistente - inserire almeno un voto', panelClass: ['red-snackbar']});
@@ -193,10 +193,15 @@ export class PagellaEditComponent implements OnInit {
 
   }
   
-  downloadPdfPagella() {
+  savePdfPagellaBase64(){
+    //Crea il file docx e lo salva in base64
 
+  }
+  
+  downloadPdfPagella() {
+    //scarica la pagella salvata in precedenza in modalità base64
     let nomeFile: string;
-    nomeFile = "PagellaElementari"  + '_' + this.iscrizione.classeSezioneAnno.anno.annoscolastico + "(" + this.quadrimestre +"quad)_" + this.alunno.persona.cognome + ' ' + this.alunno.persona.nome + '.docx'
+    nomeFile = "PagellaElementari"  + '_' + this.iscrizione.classeSezioneAnno.anno.annoscolastico + "(" + this.quadrimestre +"quad)_" + this.alunno.persona.cognome + ' ' + this.alunno.persona.nome + '.docx';
     this.svcOpenXML.createAndDownloadFile(this.openXMLPreparaOggetto(this.alunno, this.iscrizione, this.lstPagellaVoti, this.objPagella), nomeFile );
 
   }

@@ -166,7 +166,7 @@ export class PagellaVotoEditComponent implements OnInit  {
     let formData2 = Object.assign({}, formData);
     this.save(formData2)
 
-    if (this.objPagella.ckStampato) this.resetStampato();
+    //if (this.objPagella.ckStampato) this.resetStampato();
   }
 
   changeVoto(formData: DOC_PagellaVoto, voto: any) {
@@ -184,7 +184,7 @@ export class PagellaVotoEditComponent implements OnInit  {
     let formData2 = Object.assign({}, formData);
     this.save(formData2)
 
-    if (this.objPagella.ckStampato) this.resetStampato();
+    //if (this.objPagella.ckStampato) this.resetStampato();
   }
 
   changeNote(formData: DOC_PagellaVoto, note: string) {
@@ -197,7 +197,7 @@ export class PagellaVotoEditComponent implements OnInit  {
     let formData2 = Object.assign({}, formData);
     this.save(formData2)
 
-    if (this.objPagella.ckStampato) this.resetStampato();
+    //if (this.objPagella.ckStampato) this.resetStampato();
   }
 
   openObiettivi(element: DOC_PagellaVoto) {
