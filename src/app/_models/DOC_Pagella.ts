@@ -6,7 +6,7 @@ export interface DOC_Pagella {
         iscrizioneID:                           number;
         periodo:                                number;
         //ckStampato?:                            boolean; //indica se i dati in database e la pagella salvata sono allineati con quelli dell'ultima stampa
-
+        statoID?:                                number;  //è il caso di renderlo non ? ma obbligatorio?
         note?:                                  string;
         dtIns?:                                 string;
         dtUpd?:                                 string;

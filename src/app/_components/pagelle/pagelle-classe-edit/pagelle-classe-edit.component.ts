@@ -256,7 +256,7 @@ export class PagelleClasseEditComponent{
     let objPagella : DOC_Pagella = {
       id: pagella? pagella.id : -1,
       iscrizioneID: iscrizioneID,
-      periodo: periodo
+      periodo: periodo,
     }
 
     //nel caso la pagella ancora non sia stata creata, va inserita

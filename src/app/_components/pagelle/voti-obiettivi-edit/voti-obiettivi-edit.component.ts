@@ -105,7 +105,8 @@ export class VotiObiettiviEditComponent implements OnInit {
       let formDataPagella: DOC_Pagella = {
         iscrizioneID:           this.data.iscrizioneID,
         periodo:                this.data.periodo,
-        dtIns:                  dateNow
+        dtIns:                  dateNow,
+        
         //....
       };
               

@@ -85,7 +85,8 @@ export class PagellaVotoEditComponent implements OnInit  {
 
     let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
     loadPagella$.subscribe(val => { 
-      console.log("pagella-voto-edit - loadData - val", val)
+      console.log("pagella-voto-edit - loadData - val");
+      console.log(val);
       this.matDataSource.data = val ;
       this.sortCustom();
       this.matDataSource.sort = this.sort; 
@@ -111,7 +112,7 @@ export class PagellaVotoEditComponent implements OnInit  {
 
 
   save (pagellaVoto: DOC_PagellaVoto) {
-
+    //la save viene scatenata ogni volta che cambia un voto o commento/nota (vedi sotto, cerca this.save...)
     //pulizia forminput da oggetti composti
     delete pagellaVoto.iscrizione;
     delete pagellaVoto.materia;
@@ -120,8 +121,8 @@ export class PagellaVotoEditComponent implements OnInit  {
 
     //nel caso la pagella ancora non sia stata creata, va inserita
     if (this.objPagella.id == -1) {
-      // console.log("pagella voto-edit - save - Pagella.id = -1: Non C'è una Pagella --->post pagella e poi postpagellaVoto");
-
+      console.log("pagella voto-edit - save - Pagella.id = -1: Non C'è una Pagella --->post pagella e poi postpagellaVoto");
+      console.log("pagella voto-edit - save - this.objPagella:", this.objPagella);
       this.svcPagella.post(this.objPagella)
         .pipe (
           tap( x =>  {
@@ -133,10 +134,9 @@ export class PagellaVotoEditComponent implements OnInit  {
               this.svcPagellaVoti.put(pagellaVoto)
           )
         )
-      ).subscribe()
+      ).subscribe() 
     }
     else {    //caso pagella già presente
-
       if (pagellaVoto.id == 0) {
         this.svcPagellaVoti.post(pagellaVoto).subscribe({
           next: res => this.loadData() ,

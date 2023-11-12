@@ -54,14 +54,9 @@ export class PagellaEditComponent implements OnInit {
 
 //#region ----- ViewChild Input Output ---------
   @Input('iscrizioneID') iscrizioneID!:          number;
-  //@Input('docenteID') docenteID!:                number;
-  
   @Input('alunno') alunno!:                      ALU_Alunno;
   @Input('classeSezioneAnnoID') classeSezioneAnnoID!:          number;
-
   @ViewChild('toggleQuad') toggleQuad!:           MatButtonToggle;
-  //@ViewChild(PagellaVotoEditComponent) viewPagellaVotoEdit!: PagellaVotoEditComponent; 
-
 //#endregion  
 
 //#region ----- Constructor --------------------
@@ -98,6 +93,7 @@ export class PagellaEditComponent implements OnInit {
     loadPagella$.pipe (
       map(val=>val.filter(val=>(val.periodo == this.quadrimestre)))).subscribe(
         val =>  {
+          //console.log ("pagelle.edit - loadData - objPagella:", this.objPagella);
           if (val.length != 0)  {
             this.objPagella = val[0];
             this.dtIns = val[0].dtIns!;
@@ -112,6 +108,7 @@ export class PagellaEditComponent implements OnInit {
             this.objPagella.iscrizioneID = this.iscrizioneID;
             //this.objPagella.periodo = this.periodo;
             this.objPagella.periodo = this.quadrimestre;
+            this.objPagella.statoID = 1;
             this.objPagella.dtIns = dateNow;
             this.ckStampato = false;
             this.dtIns = '';
@@ -194,10 +191,30 @@ export class PagellaEditComponent implements OnInit {
   }
   
   savePdfPagellaBase64(){
-    //Crea il file docx e lo salva in base64
-
+    //c'è un piccolo problema: se la pagella è nuova l'id non c'è ancora
+    //il salvataggio crea la pagella, ma servirebbe un reload per averlo ....perchè lo crea... ma angular non ce l'ha
+    console.log("pagella-voto-edit - savePdfPagellaBase64 - this.objPagella:", this.objPagella);
+    if (this.objPagella.id! <= 0 ){
+      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Pagella inesistente - inserire almeno un voto', panelClass: ['red-snackbar']});
+      return;
+    }
+    if (this.objPagella.id == undefined ){
+      //accade che se stiamo inserendo un valore in un voto per la prima volta e non c'è la pagella, alla pressione del button
+      //si scatenerà l'evento save e creazione pagella...ma angular non ha l'id
+      //va fatto un reload o va chiesto ll'utente di ripremere....perchè se stiamo editando il campo per la prima volta...
+      // return;
+    }
+    
+    let file : DOC_File = {
+      tipoDoc : "Pagella",
+      docID : this.objPagella.id!,
+      TagDocument : this.openXMLPreparaOggetto(this.alunno, this.iscrizione, this.lstPagellaVoti, this.objPagella),
+      estensione: "docX"
+    };
+    console.log("pagella-voto-edit - savePdfPagellaBase64 - file:", file);
+    this.svcFiles.post(file).subscribe();
   }
-  
+
   downloadPdfPagella() {
     //scarica la pagella salvata in precedenza in modalità base64
     let nomeFile: string;
