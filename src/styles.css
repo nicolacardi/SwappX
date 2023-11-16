@@ -300,6 +300,10 @@
     }
 
     /* margin-top */
+    .mt-10 {
+        margin-top: -10px;
+    }
+
     .mt0 {
         margin-top: 0px;
     }

@@ -1,0 +1,50 @@
+<div class="center _fixed-header">
+    <h1 class="_titolo-pagina">Cruscotto Segreteria</h1>
+
+    <button *ngIf="classeSezioneAnno" mat-button class="_pos-absolute_i t10 l10  _btn-text" (click)="drawer.toggle()">
+        Classe: <span >{{classeSezioneAnno.classeSezione!.classe!.descrizione2}} {{classeSezioneAnno.classeSezione!.sezione}}</span>
+    </button>
+</div>
+
+<mat-drawer-container style="display: inline">
+    <mat-drawer class=" w330px transparent"  #drawer mode="side" opened="true">
+        <app-classi-sezioni-anni-list 
+            [dove] = "'coordinatore-dashboard'"
+            (annoID)="annoIdEmitted($event)"
+            (classeSezioneAnnoID)="classeSezioneAnnoIDEmitted($event)"
+             >
+             <!-- (docenteId)="docenteIdEmitted($event)" -->
+        </app-classi-sezioni-anni-list>
+    </mat-drawer>
+    
+    <mat-drawer-content class="mat-drawer-classi">
+        <mat-tab-group >
+            <mat-tab  label="Pagelle">
+                <table>
+                    <tr>
+                        <td class="_cell-align-top w30 w330px">
+                            <button  mat-mini-fab aria-label="Stampa Pagella" matTooltip="Pubblica Pagelle" class="_btn-add _btn-pos-right-1" (click) ="PubblicaPagelle()">
+                                <mat-icon>save</mat-icon>
+                            </button>
+                            <app-iscrizioni-classe-list [dove]="'segr-dashboard-pagelle'"  
+                                [classeSezioneAnnoID]="classeSezioneAnnoID" 
+                                 >
+                            </app-iscrizioni-classe-list>
+                        </td>
+                    </tr>
+                </table>
+            </mat-tab>
+            
+            <mat-tab label="Cert.Competenze">
+
+            </mat-tab>
+
+            <mat-tab label="Cons.Orientativo">
+
+            </mat-tab>
+            
+        </mat-tab-group>
+            
+    </mat-drawer-content>
+</mat-drawer-container>
+

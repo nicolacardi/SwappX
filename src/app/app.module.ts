@@ -57,6 +57,9 @@ import { GenitoreFormComponent }                from './_components/genitori/gen
 import { DocentiDashboardComponent }            from './_components/docenti/docenti-dashboard/docenti-dashboard.component';
 import { DocenteFormComponent }                 from './_components/docenti/docente-form/docente-form.component';
 
+//Segreteria
+import { SegreteriaDashboardComponent }             from './_components/segreteria/segreteria-dashboard/segreteria-dashboard.component';
+
 //Classi-ClassiSezioniAnni
 import { CoordinatoreDashboardComponent }             from './_components/coordinatore/coordinatore-dashboard/coordinatore-dashboard.component';
 import { ClassiPageComponent }                  from './_components/classi/classi-sezioni-anni-page/classi-sezioni-anni-page.component';
@@ -295,6 +298,7 @@ import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-
     ClassiSezioniAnniListComponent,
     CoordinatoreDashboardComponent,
     
+    SegreteriaDashboardComponent,
     DocenzeListComponent,
 
     IscrizioniClasseListComponent,

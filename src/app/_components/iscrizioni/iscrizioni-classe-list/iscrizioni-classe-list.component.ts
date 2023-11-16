@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatPaginator }                         from '@angular/material/paginator';
 import { MatSort }                              from '@angular/material/sort';
 import { Observable }                           from 'rxjs';
@@ -56,11 +56,17 @@ export class IscrizioniClasseListComponent implements OnInit {
       // "cap", 
       // "prov"
   ];
-  displayedColumnsPagella: string[] = [
+  displayedColumnsNomeCognome: string[] = [
       // "select",
       "nome", 
       "cognome"
   ];
+  displayedColumnsSegrDocs: string[] = [
+    "select",
+    "nome", 
+    "cognome",
+    "ended"
+];
 
   selection = new SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
   selectedRowIndex=-1;
@@ -104,6 +110,7 @@ export class IscrizioniClasseListComponent implements OnInit {
   @Input() classeSezioneAnnoID!:                              number;
   //@Input() alunniFilterComponent!:                          IscrizioniFilterComponent;    //TODO!!!
   @Input('dove') dove! :                                      string;
+  @ViewChildren("endedIcons", { read: ElementRef }) endedIcons!:  QueryList<ElementRef>   //elenco delle icone di fine procedura serve per farci riferimento da fuori
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('iscrizioneID') iscrizioneIdEmitter = new EventEmitter<number>();  
@@ -126,15 +133,23 @@ export class IscrizioniClasseListComponent implements OnInit {
     this.showPageTitle = false;
     this.showTableRibbon = false;
     switch(this.dove) {
-      case 'pagella':
-        this.displayedColumns = this.displayedColumnsPagella;
+      case 'segr-dashboard-pagelle':
+        this.displayedColumns = this.displayedColumnsSegrDocs;
         this.loadData();         
         break;
-      case 'certcompetenze':
-        this.displayedColumns = this.displayedColumnsPagella;
+      case 'coord-dashboard-pagelle':
+        this.displayedColumns = this.displayedColumnsNomeCognome;
         this.loadData();         
         break;
-      case 'lista-alunni':
+      case 'docenti-dashboard-certcompetenze':
+        this.displayedColumns = this.displayedColumnsNomeCognome;
+        this.loadData();         
+        break;
+      case 'docenti-dashboard-consorientativi':
+        this.displayedColumns = this.displayedColumnsNomeCognome;
+        this.loadData();         
+        break;
+      case 'docenti-dashboard-alunni':
         this.loadData();
         break;  
       default:
