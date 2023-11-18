@@ -65,7 +65,8 @@ export class IscrizioniClasseListComponent implements OnInit {
     "select",
     "nome", 
     "cognome",
-    "ended"
+    //"ended",
+    "PagellaQ1"
 ];
 
   selection = new SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
@@ -186,6 +187,7 @@ export class IscrizioniClasseListComponent implements OnInit {
 
       loadIscrizioni$.subscribe(
         res =>  {
+          console.log("iscrizioni-classe-list - loadData - res:", res);
           this.matDataSource.data = res;
           this.matDataSource.paginator = this.paginator;
           this.sortCustom(); 
