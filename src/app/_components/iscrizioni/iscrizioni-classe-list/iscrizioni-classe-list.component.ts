@@ -66,7 +66,8 @@ export class IscrizioniClasseListComponent implements OnInit {
     "nome", 
     "cognome",
     //"ended",
-    "PagellaQ1"
+    "PagellaQ1Compilata",
+    "PagellaQ1Pubblicata"
 ];
 
   selection = new SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
