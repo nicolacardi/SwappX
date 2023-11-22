@@ -144,54 +144,77 @@ export class SegreteriaDashboardComponent implements OnInit {
     this.alunno = alunno;
   }
 
-  PubblicaPagelle() {
+  pubblicaEmitted(periodo: number) {
+    let finalMsg = "";
     console.log(this.viewListIscrizioni.getChecked());
     //ottiene dalla lista delle iscrizioni l'elenco delle iscrizioni che sono state selezionate
-    //per ciascuna opera.
     let annoID!: number;
     let classeID!: number;
     let lstPagellaVoti!: DOC_PagellaVoto[];
     let alunno!: ALU_Alunno;
 
     this.viewListIscrizioni.getChecked().forEach(async iscrizione => {     
-      //estrae ora la lista delle pagelle per questa singola iscrizione (ce n'è una per periodo)
+      //estrae ora la lista delle pagelle per questa singola iscrizione (NB: ce ne può essere una per periodo, quindi possono essercene 0,1,2)
       let pagella!: DOC_Pagella;
-      //devo ottenere la pagella dell'alunno per poter creare il base 64
       await firstValueFrom(this.svcPagelle.listByIscrizione(iscrizione.id)
         .pipe(
-          map(pag=>pag.filter(pag=>(pag.periodo == 1))),//PER ORA PRENDO CON QUELLA DEL PERIODO 1
+          map(pag=>pag.filter(pag=>(pag.periodo == periodo))),
           tap(pag=> pagella = pag[0])
         ));
-      console.log ("pagella", pagella);
-      
-      alunno = pagella.iscrizione!.alunno;
-      annoID = pagella.iscrizione!.classeSezioneAnno.annoID;
-      classeID = pagella.iscrizione!.classeSezioneAnno.classeSezione.classeID;
-      //estraggo i voti, utili a comporre la pagella
-      console.log("prima di listbyAnnoClassePagella", annoID, classeID, pagella.id!)
+      //se non viene trovata alcuna pagella significa che non è mai stata nemmeno creata, quindi che non ha nemmeno un voto, stoppo tutto
+      if (pagella == undefined) 
+      {
+        finalMsg += "Pagella dell'alunno: "+iscrizione.alunno.persona.nome+" "+ iscrizione.alunno.persona.cognome+ " : LA PAGELLA NON ESISTE, NON E' MAI STATO INSERITO ALCUN VOTO"
+        console.log("Report: ", finalMsg);
+
+        return;
+      }
+      //una pagella è stata trovata. Ne estraggo i voti. Poichè si tratta di una pagella COMPLETA (con anche le materie prive di voti)
+      //la GET avviene passando oltre al pagella.ID anche l'annoID e la classeID, che recupero dall'oggetto Iscrizione
+      annoID = iscrizione!.classeSezioneAnno.annoID;
+      classeID = iscrizione!.classeSezioneAnno.classeSezione.classeID;
+      console.log("pagella-voto-edit - savePdfPagellaBase64 - parametri per listbyAnnoClassePagella:", annoID, classeID, pagella.id!)
       await firstValueFrom(this.svcPagellaVoti.listByAnnoClassePagella(annoID, classeID, pagella.id!).pipe(tap(res=> lstPagellaVoti = res)));
+      console.log("pagella-voto-edit - savePdfPagellaBase64 - this.svcPagellaVoti.listByAnnoClassePagella conclusa");
+      console.log ("RISULTATO: lstPagellaVoti", lstPagellaVoti);
 
-      console.log ("lstPagellaVoti", lstPagellaVoti);
-      console.log ("iscrizione", iscrizione);
-
-
+      //ora ho i voti in lstPagellaVoti, servono per preparare il TagDocument insieme ad altre info: alunno, iscrizione e oggetto pagella
+      alunno = iscrizione!.alunno;
       let file : DOC_File = {
         tipoDoc : "Pagella",
         docID : pagella.id!,
         TagDocument : this.openXMLPreparaOggetto(alunno, iscrizione, lstPagellaVoti, pagella),
         estensione: "docX"
       };
-      console.log("pagella-voto-edit - savePdfPagellaBase64 - file:", file);
+      //Verifico se per caso non c'è già in DOC_files... in teoria non dovrebbe servire, in quanto se c'è già dovrebbe essere in statoID = 3
+      let filePagellaEsistente = false;
+      await firstValueFrom(this.svcFiles.getByDocAndTipo(pagella.id!, "Pagella").pipe(tap(res => {if (res) filePagellaEsistente= true})));
+      if (filePagellaEsistente) 
+      {
+        finalMsg += "Pagella dell'alunno: "+alunno.persona.nome+" "+ alunno.persona.cognome+ " : IL FILE DELLA PAGELLA ESISTE GIA' in DOC_FILES"
+        console.log("Report: ", finalMsg);
 
-      //creo finalmente la pagella
-      //await firstValueFrom(this.svcFiles.post(file));
+        return;
+      }
 
+
+      console.log("pagella-voto-edit - savePdfPagellaBase64 - oggetto di tipo DOC_File per svcFiles.post:", file);
+      await firstValueFrom(this.svcFiles.post(file));
+      console.log("pagella-voto-edit - savePdfPagellaBase64 - this.svcFiles.post conclusa");
+
+      //una volta salvato il file vado a cambiare lo stato della pagella
+      console.log("pagella-voto-edit - savePdfPagellaBase64 - parte this.svcPagelle.pubblica");
+      await firstValueFrom(this.svcPagelle.pubblica(pagella.id!));
+      console.log("pagella-voto-edit - savePdfPagellaBase64 - this.svcPagelle.pubblica conclusa");
+
+      //a questo punto tolgo la selezione
       this.viewListIscrizioni.selection.toggle(iscrizione);
-      //crea l'array di icone di fine procedura
-      let arrEndedIcons = this.viewListIscrizioni.endedIcons.toArray();
-      //imposta l'icona che ha id = "endedIcon_idDellaClasse" a visibility= visible
-      (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+iscrizione.id)?.nativeElement as HTMLElement).style.visibility = "visible";
-      (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+iscrizione.id)?.nativeElement as HTMLElement).style.opacity = "1";
+          // //crea l'array di icone di fine procedura - SERVIREBBE PER MOSTRARE I FLAG COLORATI DI VERDE, ma FACCIAMO un semplice loadData
+          // let arrEndedIcons = this.viewListIscrizioni.endedIcons.toArray();
+          // //imposta l'icona che ha id = "endedIcon_idDellaClasse" a visibility= visible
+          // (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+iscrizione.id)?.nativeElement as HTMLElement).style.visibility = "visible";
+          // (arrEndedIcons.find(x=>x.nativeElement.id=="endedIcon_"+iscrizione.id)?.nativeElement as HTMLElement).style.opacity = "1";
+      this.viewListIscrizioni.loadData();
     }); 
   }
 
@@ -326,6 +349,9 @@ export class SegreteriaDashboardComponent implements OnInit {
     //console.log ("tagDocument", tagDocument);
     return tagDocument;
   }
+
+
+
 
   //#endregion
 }

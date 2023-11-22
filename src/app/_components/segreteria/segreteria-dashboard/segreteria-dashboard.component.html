@@ -23,34 +23,22 @@
                 <table>
                     <tr>
                         <td class="_cell-align-top w30 w330px">
-                            <button  mat-mini-fab aria-label="Stampa Pagella" matTooltip="Pubblica Pagelle" class="_btn-add _btn-pos-right-1" (click) ="PubblicaPagelle()">
-                                <mat-icon>save</mat-icon>
+                            <!-- <button mat-mini-fab aria-label="Pubblica Pagella 1° Quad." matTooltip="Pubblica Pagelle 1° Quad." class="_btn-add _btn-pos-right-2" (click) = "PubblicaPagelle(1)">
+                                <img class="iconaMenu" src="./assets/publish.svg">
                             </button>
+                            <button mat-mini-fab aria-label="Pubblica Pagella 2° Quad." matTooltip="Pubblica Pagelle 2° Quad." class="_btn-add _btn-pos-right-1 " (click)= "PubblicaPagelle(2)">
+                                <img class="iconaMenu" src="./assets/publish.svg">
+                            </button> -->
                             <app-iscrizioni-classe-list [dove]="'segr-dashboard-pagelle'"  
                                 [classeSezioneAnnoID]="classeSezioneAnnoID" 
-                                 >
+                                (pubblica) = pubblicaEmitted($event) >
                             </app-iscrizioni-classe-list>
                         </td>
                     </tr>
                 </table>
             </mat-tab>
 
-            <mat-tab  label="Pagelle 2°Quadr.">
-                <table>
-                    <tr>
-                        <td class="_cell-align-top w30 w330px">
-                            <button  mat-mini-fab aria-label="Stampa Pagella" matTooltip="Pubblica Pagelle" class="_btn-add _btn-pos-right-1" (click) ="PubblicaPagelle()">
-                                <mat-icon>save</mat-icon>
-                            </button>
-                            <app-iscrizioni-classe-list [dove]="'segr-dashboard-pagelle'"  
-                                [classeSezioneAnnoID]="classeSezioneAnnoID" 
-                                 >
-                            </app-iscrizioni-classe-list>
-                        </td>
-                    </tr>
-                </table>
-            </mat-tab>
-            
+           
             <mat-tab label="Cert.Competenze">
 
             </mat-tab>

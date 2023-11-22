@@ -257,6 +257,7 @@ export class PagelleClasseEditComponent{
       id: pagella? pagella.id : -1,
       iscrizioneID: iscrizioneID,
       periodo: periodo,
+      
     }
 
     //nel caso la pagella ancora non sia stata creata, va inserita

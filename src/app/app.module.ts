@@ -111,7 +111,6 @@ import { VotiObiettiviEditComponent }           from './_components/pagelle/voti
 
 //Pagella
 import { PagellaVotoEditComponent }             from './_components/pagelle/pagella-voto-edit/pagella-voto-edit.component';
-import { PagellaEditComponent }                 from './_components/pagelle/pagelle-edit/pagelle-edit.component';
 
 //Lezioni
 import { OrarioPageComponent }                  from './_components/lezioni/orario-page/orario-page.component';
@@ -246,6 +245,7 @@ import { VotiInterrPageComponent }              from './_components/lezioni/voti
 import { DomandeFilterComponent }               from './_components/impostazioni/domande/domande-filter/domande-filter.component';
 import { PagelleAlunnoListComponent }           from './_components/pagelle/pagelle-alunno-list/pagelle-alunno-list.component';
 import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-materie/classi-anni-materie-filter/classi-anni-materie-filter.component';
+
 
 // FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   //dayGridPlugin, NC 16/02/23
@@ -391,7 +391,7 @@ import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-
     ObiettiviFilterComponent,
     ObiettiviDuplicaComponent,
 
-    PagellaEditComponent,
+
 
     NoteListComponent,
     NotaEditComponent,

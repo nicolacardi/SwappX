@@ -101,11 +101,11 @@
 
 
 <!-- Segreteria -->
-            <a mat-list-item class="h35px" *ngIf="!isExpanded" (click)="isExpanded = true; expandClassi()">
+            <a mat-list-item class="h35px" *ngIf="!isExpanded" (click)="isExpanded = true; expandSegreteria()">
                 <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/segreteria_expand.svg">
             </a>
 
-            <mat-expansion-panel *ngIf="isExpanded" class="transparent expansionMainMenu mat-elevation-z0" #expansionClassi>
+            <mat-expansion-panel *ngIf="isExpanded" class="transparent expansionMainMenu mat-elevation-z0" #expansionSegreteria>
                 <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
                   <mat-panel-title>
                     <img class="iconaMenuSidenav mr10"  src="./assets/mainMenuWhite/segreteria.svg">
@@ -130,11 +130,11 @@
 
 
 <!-- Classi -->
-            <a mat-list-item class="h35px" *ngIf="!isExpanded" (click)="isExpanded = true; expandClassi()">
+            <a mat-list-item class="h35px" *ngIf="!isExpanded" (click)="isExpanded = true; expandCoordinatore()">
                 <img class="iconaMenuSidenav" src="./assets/mainMenuWhite/coordinatore_expand.svg">
             </a>
 
-            <mat-expansion-panel *ngIf="isExpanded" class="transparent expansionMainMenu mat-elevation-z0" #expansionClassi>
+            <mat-expansion-panel *ngIf="isExpanded" class="transparent expansionMainMenu mat-elevation-z0" #expansionCoordinatore>
                 <mat-expansion-panel-header class="h35px sidenav-expansion-panel-header">
                   <mat-panel-title>
                     <img class="iconaMenuSidenav mr10"  src="./assets/mainMenuWhite/coordinatore.svg">

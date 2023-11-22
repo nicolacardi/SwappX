@@ -31,9 +31,22 @@ export class PagelleService {
   
   pubblica(pagellaID: number): Observable <any>{
     const formData = <DOC_Pagella>{};
-    return this.http.post( environment.apiBaseUrl  + 'DOC_Pagelle/Pubblica?id='+pagellaID, formData);
-    //http://213.215.231.4/swappX/api/DOC_Pagelle/Pubblica?id=5
+    return this.http.put( environment.apiBaseUrl  + 'DOC_Pagelle/Pubblica/'+pagellaID, formData);
+    //http://213.215.231.4/swappX/api/DOC_Pagelle/Pubblica/5
   }
+
+  completa(pagellaID: number): Observable <any>{
+    const formData = <DOC_Pagella>{};
+    return this.http.put( environment.apiBaseUrl  + 'DOC_Pagelle/Completa/'+pagellaID, formData);
+    //http://213.215.231.4/swappX/api/DOC_Pagelle/Completa/5
+  }
+
+  riapri(pagellaID: number): Observable <any>{
+    const formData = <DOC_Pagella>{};
+    return this.http.put( environment.apiBaseUrl  + 'DOC_Pagelle/Riapri/'+pagellaID, formData);
+    //http://213.215.231.4/swappX/api/DOC_Pagelle/Riapri/5
+  }
+
 
   put(formData: any): Observable <any>{
     return this.http.put( environment.apiBaseUrl  + 'DOC_Pagelle/' + formData.id , formData);    

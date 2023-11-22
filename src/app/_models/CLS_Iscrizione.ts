@@ -22,6 +22,6 @@ export interface CLS_Iscrizione {
         alunno:                                 ALU_Alunno;
         classeSezioneAnno:                      CLS_ClasseSezioneAnno;
 
-        _Pagelle1:                              DOC_Pagella[];
-        _Pagelle2:                              DOC_Pagella[];
+        pagella1:                               DOC_Pagella;
+        pagella2:                               DOC_Pagella;
 }

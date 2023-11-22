@@ -66,8 +66,12 @@ export class IscrizioniClasseListComponent implements OnInit {
     "nome", 
     "cognome",
     //"ended",
-    "PagellaQ1Compilata",
-    "PagellaQ1Pubblicata"
+    "PagellaQ1Esistente",
+    "PagellaQ1Completata",
+    "PagellaQ1Pubblicata",
+    "PagellaQ2Esistente",
+    "PagellaQ2Completata",
+    "PagellaQ2Pubblicata"
 ];
 
   selection = new SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
@@ -117,6 +121,9 @@ export class IscrizioniClasseListComponent implements OnInit {
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('iscrizioneID') iscrizioneIdEmitter = new EventEmitter<number>();  
   @Output('alunno') alunnoEmitter = new EventEmitter<ALU_Alunno>();  
+
+  @Output('pubblica') pubblica = new EventEmitter<number>();
+
 //#endregion
 
 //#region ----- Constructor --------------------
@@ -149,6 +156,9 @@ export class IscrizioniClasseListComponent implements OnInit {
         break;
       case 'docenti-dashboard-consorientativi':
         this.displayedColumns = this.displayedColumnsNomeCognome;
+        this.loadData();         
+        break;
+      case 'coord-dashboard-alunni':
         this.loadData();         
         break;
       case 'docenti-dashboard-alunni':
@@ -188,7 +198,7 @@ export class IscrizioniClasseListComponent implements OnInit {
 
       loadIscrizioni$.subscribe(
         res =>  {
-          console.log("iscrizioni-classe-list - loadData - res:", res);
+          // console.log("iscrizioni-classe-list - loadData - res:", res);
           this.matDataSource.data = res;
           this.matDataSource.paginator = this.paginator;
           this.sortCustom(); 
@@ -415,6 +425,9 @@ export class IscrizioniClasseListComponent implements OnInit {
   }
 //#endregion
 
+  emitPubblica(periodo: number) {
+    this.pubblica.emit(periodo);
+  }
 }
 
 

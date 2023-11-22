@@ -6,6 +6,8 @@ import jsPDF from 'jspdf';
 
 import { DOC_File } from 'src/app/_models/DOC_File';
 import { environment } from 'src/environments/environment';
+import { RPT_TagDocument } from 'src/app/_models/RPT_TagDocument';
+import * as saveAs from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +36,33 @@ export class FilesService {
   post(formData: any): Observable <DOC_File>{
     delete formData.id;
     return this.http.post<DOC_File>( environment.apiBaseUrl  + 'DOC_Files' , formData);  
+  }
+
+  getBase64(tagDocument: RPT_TagDocument, nomeFile: string): void {
+
+    console.log ("files.service - getBase64", tagDocument, nomeFile);
+    this.http.post(environment.apiBaseUrl+'DOC_Files/getBase64',tagDocument, { responseType: 'text' })
+    .subscribe((response:any) => {
+      // //il service restituisce un Blob che qui di seguito viene scaricato
+      // const blob = new Blob([response], { type: 'application/octet-stream' });
+      // saveAs(blob, nomeFile);
+
+
+
+      // Decodifica la stringa base64 in un array di byte
+      const byteCharacters = atob(response);                  // Decodifica la stringa base64 in un array di byte
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {       // Crea un array di valori numerici, un elemento dell'array per ogni carattere
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);          //a sua volta byteNumbers viene trascodificato in byteArray
+
+      const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+
+      saveAs(blob, nomeFile);
+
+
+    });
   }
 
   saveBlobPagella(blobPDF :Blob, objPagellaID: number):boolean{

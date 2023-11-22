@@ -29,6 +29,8 @@ export class OpenXMLService {
       //- un nomeFile con cui salvare il risultato
       //scarica il file risultante
 
+      //QUESTA PARTE VA RIFATTA ANZITUTTO SI E' SPOSTATO DTUTTO SU SVCFILES e poi atualmente salviamo il file base64 invece qui vogliamo fare la preview/download
+
       this.http.post(environment.apiBaseUrl+'RPT_openXML/CreateDocument',tagDocument, { responseType: 'blob' })
       .subscribe((response:any) => {
         //il service restituisce un Blob che qui di seguito viene scaricato

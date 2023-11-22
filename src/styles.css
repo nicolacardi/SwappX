@@ -793,6 +793,10 @@
         border-left: 1px solid grey;
     }
 
+    ._border-left-lightgrey {
+        border-left: 1px solid lightgrey;
+    }
+
     ._border-left-dot {
         border-left: 1px dotted grey;
     }
@@ -928,6 +932,11 @@
         color: white !important;              
     } */
     
+
+    ._toggle-std {
+        z-index: 1000;
+        position: absolute !important;
+    }
 
     /*TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
     /*TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
@@ -1101,8 +1110,16 @@
         top: 125px;
     }
 
+    ._btn-pos-top-25 {
+        top: 100px;
+    }
+
     ._btn-pos-top-3 {
         top: 170px;
+    }
+
+    ._btn-pos-top-35 {
+        top: 190px;
     }
 
     ._btn-pos-top-4 {
@@ -1196,6 +1213,12 @@
 
     ._btn-addDocente:hover{
         transform: scale(1.05);
+    }
+
+    ._btn-red {
+        z-index: 1000;
+        background-color: #ba1414 !important;
+        color: white;
     }
 
     ._btn-Red {
@@ -1667,6 +1690,9 @@
         width: 35px;
     }
 
+    .iconaMini{
+        width: 30px;
+    }
 
     ._icona-check-green {
         color: green;
@@ -1930,6 +1956,9 @@
     }
 
 
+    ._floatright {
+        float: right;
+    }
 
     ._floatleft {
         float: left;

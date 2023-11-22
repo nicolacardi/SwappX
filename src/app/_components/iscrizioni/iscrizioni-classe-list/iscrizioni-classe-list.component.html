@@ -50,20 +50,25 @@
             </td>
         </ng-container>
 
-        <ng-container matColumnDef="PagellaQ1Compilata">
+        <ng-container matColumnDef="PagellaQ1Esistente">
             <th mat-header-cell *matHeaderCellDef>
-                Compilata
+                Esistente
+            </th>
+            <td mat-cell *matCellDef="let element" >
+                <mat-icon #endedIcons *ngIf="element.pagella1">
+                    check_circle_outline
+                </mat-icon>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="PagellaQ1Completata">
+            <th mat-header-cell *matHeaderCellDef>
+                Completata
             </th>
             <td mat-cell *matCellDef="let element">
-                <mat-checkbox disabled 
-                    [checked] = "element._Pagelle1.length === 1">
-              </mat-checkbox>
-
-                <!-- <mat-icon #endedIcons *ngIf="element._Pagelle1.length === 1"
-                    [attr.id]="'endedIcon_'+element.id" 
-                    >
+                <mat-icon #endedIcons *ngIf="element.pagella1 && element.pagella1.statoID >= 2">
                     check_circle_outline
-                </mat-icon> -->
+                </mat-icon>
             </td>
         </ng-container>
 
@@ -72,29 +77,40 @@
                 Pubblicata
             </th>
             <td mat-cell *matCellDef="let element">
-                <mat-checkbox disabled 
-                    [checked] = "element._Pagelle1.length === 1">
-              </mat-checkbox>
-
-                <!-- <mat-icon #endedIcons *ngIf="element._Pagelle1.length === 1"
-                    [attr.id]="'endedIcon_'+element.id" 
-                    >
+                <mat-icon #endedIcons *ngIf="element.pagella1 && element.pagella1.statoID == 3">
                     check_circle_outline
-                </mat-icon> -->
+                </mat-icon>
             </td>
         </ng-container>
 
-
-        <ng-container matColumnDef="ended">
-            <th mat-header-cell *matHeaderCellDef>
-                <mat-icon class="_pos-absolute mt-10"> 
+        <ng-container matColumnDef="PagellaQ2Esistente">
+            <th mat-header-cell *matHeaderCellDef class="_border-left-lightgrey">
+                Esistente
+            </th>
+            <td mat-cell *matCellDef="let element" class="_border-left-lightgrey">
+                <mat-icon #endedIcons *ngIf="element.pagella2">
                     check_circle_outline
                 </mat-icon>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="PagellaQ2Completata">
+            <th mat-header-cell *matHeaderCellDef>
+                Completata
             </th>
             <td mat-cell *matCellDef="let element">
-                <mat-icon #endedIcons 
-                    [attr.id]="'endedIcon_'+element.id" 
-                    class="_icona-check-green">
+                <mat-icon #endedIcons *ngIf="element.pagella2 && element.pagella2.statoID >= 2">
+                    check_circle_outline
+                </mat-icon>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="PagellaQ2Pubblicata">
+            <th mat-header-cell *matHeaderCellDef>
+                Pubblicata
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-icon #endedIcons *ngIf="element.pagella2 && element.pagella2.statoID == 3">
                     check_circle_outline
                 </mat-icon>
             </td>
@@ -151,20 +167,30 @@
 
         <ng-container matColumnDef="header-row-Pag1Q">
             <th mat-header-cell *matHeaderCellDef 
-                [attr.colspan]="2"> 
-            Pagelle 1° Quadrimestre
+                [attr.colspan]="3"
+                style="text-align: center;"
+                > 
+                Pagelle 1° Quadrimestre
+                <button mat-mini-fab aria-label="Pubblica Pagella 1° Quad." matTooltip="Pubblica Pagelle 1° Quad." class="ml10 _btn-blu" (click)="emitPubblica(1)">
+                    <img class="iconaMenu" src="./assets/publish.svg">
+                </button>
             </th>
         </ng-container>
 
         <ng-container matColumnDef="header-row-Pag2Q">
             <th mat-header-cell *matHeaderCellDef 
-                [attr.colspan]="2"> 
-            Pagelle 2° Quadrimestre
+                [attr.colspan]="3"
+                style="text-align: center;"
+                class="_border-left-lightgrey">  
+                Pagelle 2° Quadrimestre
+                <button mat-mini-fab aria-label="Pubblica Pagella 2° Quad." matTooltip="Pubblica Pagelle 1° Quad." class="ml10 _btn-blu" (click)="emitPubblica(2)">
+                    <img class="iconaMenu" src="./assets/publish.svg">
+                </button>
             </th>
         </ng-container>
         <!-- **************************   MAT-HEADER-ROW   ******************* -->
         <ng-container *ngIf="dove == 'segr-dashboard-pagelle'">
-        <tr  mat-header-row *matHeaderRowDef="['header-row-blank','header-row-Pag1Q','header-row-Pag2Q']"></tr>
+            <tr  mat-header-row *matHeaderRowDef="['header-row-blank','header-row-Pag1Q','header-row-Pag2Q']"></tr>
         </ng-container>
         <tr mat-header-row  class="_table-title-low" *matHeaderRowDef="displayedColumns;"></tr>  
 

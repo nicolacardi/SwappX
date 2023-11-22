@@ -44,8 +44,10 @@ export interface DialogDataVotiObiettivi {
         pagellaID:                              number;
         pagellaVotoID:                          number;
         periodo:                                number;
+        //dtPagella?:                              string;
         classeSezioneAnnoID:                    number;
         materiaID:                              number;
+        chiusa:                                 boolean;
       }
 
 export interface DialogDataColoreMateria {
