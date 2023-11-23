@@ -204,16 +204,12 @@ import { VerbaliFilterComponent }               from './_components/verbali/verb
 import { ProceduraIscrizioneComponent }         from './_components/procedura-iscrizione/procedura-iscrizione.component';
 
 //Templates
-import { TemplateComponent }                    from './_components/templates/template/template.component';
-import { PaginaComponent }                      from './_components/templates/pagina/pagina.component';
-import { BloccoComponent }                      from './_components/templates/blocco/blocco.component';
-import { BloccoEditComponent }                  from './_components/templates/blocco-edit/blocco-edit.component';
+
 
 import { ClickDoubleDirective }                 from './_components/utilities/clickdouble/clickdouble.directive';
 
 import { QuillModule }                          from 'ngx-quill';
-import { TableComponent }                       from './_components/templates/table/table.component';
-import { TableShowComponent }                   from './_components/templates/tableshow/tableshow.component';
+
 import { PagelleClasseEditComponent }           from './_components/pagelle/pagelle-classe-edit/pagelle-classe-edit.component';
 import { ImgUploadsComponent }                  from './_components/impostazioni/imguploads/imguploads.component';
 import { HttpErrorInterceptor }                 from './_user/auth/httperror.interceptor';
@@ -391,8 +387,6 @@ import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-
     ObiettiviFilterComponent,
     ObiettiviDuplicaComponent,
 
-
-
     NoteListComponent,
     NotaEditComponent,
     NotePageComponent,
@@ -403,15 +397,8 @@ import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-
     VerbaliPageComponent,
     VerbaliFilterComponent,
 
-
-
     ProceduraIscrizioneComponent,
-    TemplateComponent,
-    PaginaComponent,
-    BloccoComponent,
-    BloccoEditComponent,
-    TableComponent,
-    TableShowComponent,
+
     PagelleClasseEditComponent,
     ResetPswComponent,
     ImgUploadsComponent,

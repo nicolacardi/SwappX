@@ -23,11 +23,6 @@ export class PagelleService {
     //http://213.215.231.4/swappX/api/DOC_Pagelle/ListByAlunno/27
   }
 
-  setStampato(pagellaID: number, ckStampato: boolean): Observable <any>{
-    const formData = <DOC_Pagella>{};
-    return this.http.post( environment.apiBaseUrl  + 'DOC_Pagelle/SetStampato?id='+pagellaID+'&ckStampato='+ckStampato, formData);
-    //http://213.215.231.4/swappX/api/DOC_Pagelle/SetStampato?id=5&ckStampato=0
-  }
   
   pubblica(pagellaID: number): Observable <any>{
     const formData = <DOC_Pagella>{};

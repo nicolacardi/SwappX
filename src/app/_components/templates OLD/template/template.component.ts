@@ -243,34 +243,34 @@ export class TemplateComponent implements OnInit {
 
 //#region ----- Stampa -------------------------
 
-  createRptDoc() {
-    //faccio una "deep copy" (object assign farebbe una shallow copy) di rptBase in rptFile e qui lavoro
-    let rptFile = JSON.parse(JSON.stringify(rptBasePdfMake)); 
+  // createRptDoc() {
+  //   //faccio una "deep copy" (object assign farebbe una shallow copy) di rptBase in rptFile e qui lavoro
+  //   let rptFile = JSON.parse(JSON.stringify(rptBasePdfMake)); 
     
-    this.svcBlocchi.listByTemplate(1)
-    .subscribe( blocchi => {
-      let currPaginaID = 0;
-      for (let i = 0; i<blocchi.length; i++) {
-        //verifico se devo saltare pagina. Salvo il caso in cui questo sia il primo blocco della serie
-        if (i == 0) currPaginaID = blocchi[i].paginaID;
-        else {
-          if (blocchi[i].paginaID != currPaginaID ) {
-            //aggiungo un blocco di salto pagina
-            let saltoPagina = {
-             tipoBlocco : {
-              descrizione :  "Page"
-             }
-            }
-            rptFile = this._paginator.paginatorBuild(rptFile, saltoPagina, null);
-          }
-        }
-        rptFile = this._paginator.paginatorBuild(rptFile, blocchi[i], this.objFields);
-        currPaginaID = blocchi[i].paginaID;
-      }
-      // console.log ("rptFile", rptFile);
-      this.savePdf(rptFile);
-    })
-  }
+  //   this.svcBlocchi.listByTemplate(1)
+  //   .subscribe( blocchi => {
+  //     let currPaginaID = 0;
+  //     for (let i = 0; i<blocchi.length; i++) {
+  //       //verifico se devo saltare pagina. Salvo il caso in cui questo sia il primo blocco della serie
+  //       if (i == 0) currPaginaID = blocchi[i].paginaID;
+  //       else {
+  //         if (blocchi[i].paginaID != currPaginaID ) {
+  //           //aggiungo un blocco di salto pagina
+  //           let saltoPagina = {
+  //            tipoBlocco : {
+  //             descrizione :  "Page"
+  //            }
+  //           }
+  //           rptFile = this._paginator.paginatorBuild(rptFile, saltoPagina, null);
+  //         }
+  //       }
+  //       rptFile = this._paginator.paginatorBuild(rptFile, blocchi[i], this.objFields);
+  //       currPaginaID = blocchi[i].paginaID;
+  //     }
+  //     // console.log ("rptFile", rptFile);
+  //     this.savePdf(rptFile);
+  //   })
+  // }
 
   async savePdf(rptFile: any) {
 

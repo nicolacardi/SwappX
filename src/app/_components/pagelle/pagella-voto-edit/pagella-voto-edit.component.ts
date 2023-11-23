@@ -19,16 +19,14 @@ import { PagellaVotiService }                   from '../pagella-voti.service';
 import { PagelleService }                       from '../pagelle.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
+import { FilesService }                         from '../files.service';
 
 //classes
 import { DOC_Pagella }                          from 'src/app/_models/DOC_Pagella';
 import { DOC_PagellaVoto, DOC_TipoGiudizio }    from 'src/app/_models/DOC_PagellaVoto';
-import { DOC_File } from 'src/app/_models/DOC_File';
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
-import { RPT_TagDocument } from 'src/app/_models/RPT_TagDocument';
-import { FilesService } from '../files.service';
-import { OpenXMLService } from '../../utilities/openXML/open-xml.service';
-import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
+import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
+import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDocument';
+import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 
 //#endregion
 @Component({
@@ -76,7 +74,6 @@ export class PagellaVotoEditComponent implements OnInit  {
 
   constructor(private svcPagelle:               PagelleService,
               private svcFiles:                 FilesService,
-              private svcOpenXML:               OpenXMLService,
               private svcPagellaVoti:           PagellaVotiService,
               private svcIscrizioni:            IscrizioniService,
               private _loadingService:          LoadingService,
@@ -169,7 +166,6 @@ export class PagellaVotoEditComponent implements OnInit  {
 
 
   savePagella() {
-
     //nel caso la pagella ancora non sia stata creata, va inserita
     if (this.pagella.id == -1) {
       // console.log("pagella voto-edit - savePagella - Pagella.id = -1: Non C'è una Pagella --->post pagella e poi postpagellaVoto");
@@ -326,16 +322,12 @@ export class PagellaVotoEditComponent implements OnInit  {
   }
 
 
-
-
 //***********  DA QUI E' TUTTO PER IL DOWNLOAD PREVIEW VA MESSA IN UNA UTILITY **********************/
-  
-
 
   downloadPreviewPagella() {
     let nomeFile: string;
     nomeFile = "PREVIEW_Pagella"  + '_' + this.iscrizione.classeSezioneAnno.anno.annoscolastico + "(" + this.periodo +"quad)_" + this.iscrizione.alunno.persona.cognome + ' ' + this.iscrizione.alunno.persona.nome + '.docx';    
-    this.svcFiles.getBase64(this.openXMLPreparaOggetto(this.iscrizione.alunno, this.iscrizione, this.lstPagellaVoti, this.pagella), nomeFile );
+    this.svcFiles.buildAndGetBase64(this.openXMLPreparaOggetto(this.iscrizione.alunno, this.iscrizione, this.lstPagellaVoti, this.pagella), nomeFile );
   }
   
   openXMLPreparaOggetto (alunno: ALU_Alunno, iscrizione: CLS_Iscrizione, lstPagellaVoti: DOC_PagellaVoto[], objPagella: DOC_Pagella) {

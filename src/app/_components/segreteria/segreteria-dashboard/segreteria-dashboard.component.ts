@@ -1,46 +1,36 @@
 //#region ----- IMPORTS ------------------------
 
 import { Component, OnInit, ViewChild }         from '@angular/core';
-import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
-import { ActivatedRoute, Router }               from '@angular/router';
-import { MatTabGroup }                          from '@angular/material/tabs';
+import { MatDialog }                            from '@angular/material/dialog';
+import { ActivatedRoute }                       from '@angular/router';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { MatDrawer }                            from '@angular/material/sidenav';
-
+import { firstValueFrom, map, tap }             from 'rxjs';
 
 //components
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
 import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-
+import { FormatoData, Utility }                 from '../../utilities/utility.component';
 import { IscrizioniClasseListComponent }        from '../../iscrizioni/iscrizioni-classe-list/iscrizioni-classe-list.component';
-import { IscrizioniAddComponent }               from '../../iscrizioni/iscrizioni-add/iscrizioni-add.component';
-import { LezioniCalendarioComponent }           from '../../lezioni/lezioni-calendario/lezioni-calendario.component';
-import { DocenzeAddComponent }                  from '../../docenze/docenze-add/docenze-add.component';
-import { DocenzeListComponent }                 from '../../docenze/docenze-list/docenze-list.component';
-import { ClassiSezioniAnniListComponent }       from '../../classi/classi-sezioni-anni-list/classi-sezioni-anni-list.component';
-import { IscrizioniClasseCalcoloComponent }     from '../../iscrizioni/iscrizioni-classe-calcolo/iscrizioni-classe-calcolo.component';
 
 //services
-import { JspdfService }                         from '../../utilities/jspdf/jspdf.service';
 import { NavigationService }                    from '../../utilities/navigation/navigation.service';
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
-import { DocenzeService }                       from '../../docenze/docenze.service';
 import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
+import { FilesService }                         from '../../pagelle/files.service';
+import { PagellaVotiService }                   from '../../pagelle/pagella-voti.service';
+import { PagelleService }                       from '../../pagelle/pagelle.service';
 
 //models
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { PagelleService } from '../../pagelle/pagelle.service';
-import { firstValueFrom, map, tap } from 'rxjs';
-import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
-import { DOC_File } from 'src/app/_models/DOC_File';
-import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
-import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto';
-import { RPT_TagDocument } from 'src/app/_models/RPT_TagDocument';
-import { FormatoData, Utility } from '../../utilities/utility.component';
-import { FilesService } from '../../pagelle/files.service';
-import { PagellaVotiService } from '../../pagelle/pagella-voti.service';
+import { DOC_Pagella }                          from 'src/app/_models/DOC_Pagella';
+import { DOC_File }                             from 'src/app/_models/DOC_File';
+import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
+import { DOC_PagellaVoto }                      from 'src/app/_models/DOC_PagellaVoto';
+import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDocument';
+
+
 
 //#endregion
 
@@ -59,7 +49,6 @@ export class SegreteriaDashboardComponent implements OnInit {
 
   public annoID!:                               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public docenteID!:                            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
-  // public iscrizioneID!:                         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
   public alunno!:                               ALU_Alunno;   //valore ricevuto (emitted) dal child IscrizioniClasseList
 
   public classeSezioneAnnoIDrouted!:            string;   //valore ricevuto (routed) dal routing
@@ -71,16 +60,10 @@ export class SegreteriaDashboardComponent implements OnInit {
 //#region ----- ViewChild Input Output -------
 
 //@ViewChild(AlunniListComponent) alunniListComponent!: AlunniListComponent; 
-  //@ViewChild(ClassiSezioniAnniListComponent) viewClassiSezioniAnni!: ClassiSezioniAnniListComponent; 
   @ViewChild(IscrizioniClasseListComponent) viewListIscrizioni!: IscrizioniClasseListComponent; 
-  //@ViewChild(DocenzeListComponent) viewDocenzeList!: DocenzeListComponent; 
-  //@ViewChild('orarioLezioniDOM') viewOrarioLezioni!: LezioniCalendarioComponent; 
-  //@ViewChild('orarioDocenteDOM') viewOrarioDocente!: LezioniCalendarioComponent; 
-  //@ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
-  //@ViewChild('drawer') drawerClassi!: MatDrawer;
-  //#endregion
+//#endregion
 
-  constructor(private svcIscrizioni:            IscrizioniService,
+  constructor(
               private svcPagelle:               PagelleService,
               private svcPagellaVoti:           PagellaVotiService,
               private svcFiles:                 FilesService,
@@ -110,8 +93,6 @@ export class SegreteriaDashboardComponent implements OnInit {
   }
 //#endregion
 
-
-
 //#region ----- ricezione emit -------
   annoIdEmitted(annoID: number) {
     //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
@@ -121,24 +102,14 @@ export class SegreteriaDashboardComponent implements OnInit {
   }
 
   classeSezioneAnnoIDEmitted(classeSezioneAnnoID: number) {
-
     this.classeSezioneAnnoID = classeSezioneAnnoID;
-    
     if(this.classeSezioneAnnoID >0){
       //per poter mostrare il docente e la classe...
       this.svcClassiSezioniAnni.get(this.classeSezioneAnnoID).subscribe(
         csa => this.classeSezioneAnno = csa 
       );
-      
-    }
-
-    
+    } 
   }
-
-
-  // iscrizioneIDEmitted(iscrizioneID: number) {
-  //   this.iscrizioneID = iscrizioneID;
-  // }
 
   alunnoEmitted(alunno: ALU_Alunno) {
     this.alunno = alunno;
@@ -193,11 +164,8 @@ export class SegreteriaDashboardComponent implements OnInit {
       {
         finalMsg += "Pagella dell'alunno: "+alunno.persona.nome+" "+ alunno.persona.cognome+ " : IL FILE DELLA PAGELLA ESISTE GIA' in DOC_FILES"
         console.log("Report: ", finalMsg);
-
         return;
       }
-
-
       console.log("pagella-voto-edit - savePdfPagellaBase64 - oggetto di tipo DOC_File per svcFiles.post:", file);
       await firstValueFrom(this.svcFiles.post(file));
       console.log("pagella-voto-edit - savePdfPagellaBase64 - this.svcFiles.post conclusa");
@@ -217,8 +185,9 @@ export class SegreteriaDashboardComponent implements OnInit {
       this.viewListIscrizioni.loadData();
     }); 
   }
+//#endregion
 
-
+//#region ----- costruzione file -----
   openXMLPreparaOggetto (alunno: ALU_Alunno, iscrizione: CLS_Iscrizione, lstPagellaVoti: DOC_PagellaVoto[], objPagella: DOC_Pagella) {
 
     function estraiVoto(obj: DOC_PagellaVoto[], materia: string, index: number) {
@@ -349,9 +318,5 @@ export class SegreteriaDashboardComponent implements OnInit {
     //console.log ("tagDocument", tagDocument);
     return tagDocument;
   }
-
-
-
-
-  //#endregion
+//#endregion
 }

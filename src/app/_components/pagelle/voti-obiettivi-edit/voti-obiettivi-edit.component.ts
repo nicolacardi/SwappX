@@ -173,11 +173,9 @@ export class VotiObiettiviEditComponent implements OnInit {
         }
       }
     }
-    this.resetStampato();
+
   }
 
-  resetStampato() {
-    this.svcPagella.setStampato(this.data.pagellaID, false).subscribe();
-  }
+
 //#endregion
 }
