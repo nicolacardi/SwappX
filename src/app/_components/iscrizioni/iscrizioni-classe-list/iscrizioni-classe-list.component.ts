@@ -150,6 +150,14 @@ export class IscrizioniClasseListComponent implements OnInit {
         this.displayedColumns = this.displayedColumnsNomeCognome;
         this.loadData();         
         break;
+      case 'coord-dashboard-certcompetenze':
+        this.displayedColumns = this.displayedColumnsNomeCognome;
+        this.loadData();         
+        break;
+      case 'coord-dashboard-consorientativi':
+        this.displayedColumns = this.displayedColumnsNomeCognome;
+        this.loadData();         
+        break;
       case 'docenti-dashboard-certcompetenze':
         this.displayedColumns = this.displayedColumnsNomeCognome;
         this.loadData();         

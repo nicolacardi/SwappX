@@ -24,7 +24,7 @@
 
         <ng-container *ngIf="contesto == 'CertificazioneCompetenze'|| contesto == 'ConsiglioOrientativo'">
             <button  mat-mini-fab aria-label="Salva" matTooltip="Stampa" class="_btn-add _btn-pos-right-2 mb10"
-                    (click)="downloadDocumento(contesto)" >
+                    (click)="downloadPreviewDocumento(contesto)" >
                     <mat-icon>file_download</mat-icon>
             </button>
 
@@ -99,7 +99,7 @@
                 <td mat-cell  
                     class="_blue _underline pointer" 
                     *matCellDef="let element;  let j = index;" 
-                    (click) = "download(element.risorsa!.id)"
+                    (click) = "downloadAllegato(element.risorsa!.id)"
                     [ngClass]="{'invisible': element.numOpzioni == 0 && element.tipo != 'Risposta Libera'}"
                     >{{element.risorsa? element.risorsa.nomeFile: ''}}</td>
             </ng-container>

@@ -87,10 +87,6 @@ constructor(private svcDomande:                 DomandeService,
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
-    // this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione;})
-    // this.svcRette.sumConcordateByIscrizione(this.iscrizioneID).subscribe(rettaConcordata=> {this.rettaConcordata = rettaConcordata;})
-
-    //this.loadData();
   }
 
   loadData() {
@@ -180,9 +176,11 @@ constructor(private svcDomande:                 DomandeService,
     }
   }
 //#endregion
+
+
 //#region ----- Altri metodi -------------------
 
-  download(risorsaID:number){
+  downloadAllegato(risorsaID:number){
     if (risorsaID == null) return;
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta download inviata...', panelClass: ['green-snackbar']});
     this.svcRisorse.get(risorsaID).subscribe(
@@ -336,11 +334,9 @@ constructor(private svcDomande:                 DomandeService,
         }
       }
     }
-
-
   }
  
-  async downloadDocumento(contesto: string) {
+  async downloadPreviewDocumento(contesto: string) {
 
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta download inviata...', panelClass: ['green-snackbar']});
 
@@ -348,7 +344,6 @@ constructor(private svcDomande:                 DomandeService,
 
     console.log (nomeFile);
   
-
     let tagDocument : RPT_TagDocument = {
       templateName: contesto,
       tagFields:
@@ -432,13 +427,7 @@ constructor(private svcDomande:                 DomandeService,
         }
       )
     ));
-
-
     this.svcOpenXML.createAndDownloadFile(tagDocument, nomeFile )
-    
-
-    
-
   }
 
   

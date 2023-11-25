@@ -19,44 +19,7 @@
     <mat-drawer-content class="mat-drawer-classi">
         <mat-tab-group >
             
-            <mat-tab  label="Pagelle">
-                <table>
-                    <tr>
-                        <td class="_cell-align-top w30 w330px">
-                            <app-iscrizioni-classe-list [dove]="'coord-dashboard-pagelle'"  
-                                [classeSezioneAnnoID]="classeSezioneAnnoID"  
-                                (iscrizioneID)="iscrizioneIDEmitted($event)"
-                                 >
-                            </app-iscrizioni-classe-list>
-                        </td>
-                        <td class="_cell-align-top pl10 _border-left">
-                            <!-- <app-pagelle-edit
-                                [iscrizioneID]="iscrizioneID"
-                                [classeSezioneAnnoID]="classeSezioneAnnoID" 
-                                [alunno]="alunno">
-                            </app-pagelle-edit> -->
-
-                            <div style="display: flex">
-
-                                <app-pagella-voto-edit 
-                                    [iscrizioneID]="iscrizioneID"
-                                    [periodo] = "1">
-                                </app-pagella-voto-edit>
-                            
-                                <app-pagella-voto-edit 
-                                    [iscrizioneID]="iscrizioneID"
-                                    [periodo] = "2">
-                                </app-pagella-voto-edit>
-                            
-                            </div>
-
-
-                        </td>
-                    </tr>
-                </table>
-            </mat-tab>
-
-
+            
             <mat-tab  label="Alunni">
                 <button mat-mini-fab aria-label="Iscrivi alunno alla Classe" matTooltip="Iscrivi alunno alla Classe" class="_btn-add _btn-pos-right-1 "  (click)="addAlunnoToClasse()" >
                     <img class="iconaMenu" src="./assets/alunnoPlus.svg">
@@ -84,9 +47,6 @@
                 <button mat-mini-fab aria-label="Aggiungi Docente alla Classe" matTooltip="Aggiungi docente alla Classe" class="_btn-add _btn-pos-right-1 "  (click)="addDocenteToClasse()" >
                     <img class="iconaMenu" src="./assets/docentePlus.svg">
                 </button>
-                <!-- <button mat-mini-fab aria-label="Stampa Lista Docenti della Classe" matTooltip="esporta Pdf" class="_btn-Blu" (click)="creaPdfDocenze()">
-                    <img class="iconaMenu" src="./assets/PDFiconGreys.svg">
-                </button> -->
                 <button mat-mini-fab aria-label="Rimuovi docente dalla Classe" matTooltip="Rimuovi docente dalla Classe" class="_btn-add _btn-pos-right-2 "  (click)="removeDocenteFromClasse()">
                     <img class="iconaMenu" src="./assets/docenteMinus.svg">
                 </button>
@@ -100,9 +60,71 @@
                 <!-- </mat-card> -->
             </mat-tab>
 
+            <mat-tab  label="Pagelle">
+                <table>
+                    <tr>
+                        <td class="_cell-align-top w30 w330px">
+                            <app-iscrizioni-classe-list [dove]="'coord-dashboard-pagelle'"  
+                                [classeSezioneAnnoID]="classeSezioneAnnoID"  
+                                (iscrizioneID)="iscrizioneIDEmitted($event)"
+                                 >
+                            </app-iscrizioni-classe-list>
+                        </td>
+                        <td class="_cell-align-top pl10 _border-left">
+                            <div style="display: flex">
+                                <app-pagella-voto-edit 
+                                    [iscrizioneID]="iscrizioneID"
+                                    [periodo] = "1">
+                                </app-pagella-voto-edit>
+                                <app-pagella-voto-edit 
+                                    [iscrizioneID]="iscrizioneID"
+                                    [periodo] = "2">
+                                </app-pagella-voto-edit>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </mat-tab>
 
-        
-
+            <mat-tab  *ngIf="classeSezioneAnnoID" label="Cert. Competenze">
+                <table>
+                    <tr>
+                        <td class="_cell-align-top w300px">
+                            <app-iscrizioni-classe-list [dove]="'coord-dashboard-certcompetenze'"  
+                                [classeSezioneAnnoID]="classeSezioneAnnoID"  
+                                (iscrizioneID)="iscrizioneIDEmitted($event)">
+                            </app-iscrizioni-classe-list>
+                        </td>
+                        <td class="_cell-align-top pl10 _border-left w100">
+                            <app-iscrizione-risposte  
+                                [iscrizioneID]="iscrizioneID"
+                                [contesto]="'CertificazioneCompetenze'"
+                                >
+                          </app-iscrizione-risposte>
+                        </td>
+                    </tr>
+                </table>
+            </mat-tab>
+            <mat-tab  *ngIf="classeSezioneAnnoID" label="Cons. Orientativo" >
+                <table >
+                    <tr>
+                        <td class="_cell-align-top w300px">
+                            <app-iscrizioni-classe-list [dove]="'coord-dashboard-consorientativi'"  
+                                [classeSezioneAnnoID]="classeSezioneAnnoID"  
+                                (iscrizioneID)="iscrizioneIDEmitted($event)">
+                            </app-iscrizioni-classe-list>
+                        </td>
+                        <td class="_cell-align-top pl10 _border-left w100" >
+                            <app-iscrizione-risposte  
+                                [iscrizioneID]="iscrizioneID"
+                                [contesto]="'ConsiglioOrientativo'"
+                                >
+                          </app-iscrizione-risposte>
+                        </td>
+                    </tr>
+                </table>
+            </mat-tab>
+            
             <mat-tab  label="Note Disciplinari" style="">
                 <app-note-page 
                     [classeSezioneAnnoID]="classeSezioneAnnoID"

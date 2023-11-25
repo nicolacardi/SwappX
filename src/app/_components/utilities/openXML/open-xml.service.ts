@@ -18,6 +18,10 @@ export class OpenXMLService {
     //il WS deve cerare il file e salvarlo nella tabella 
   }
 
+
+  //SOSTITUIRE CON BuildAndGetBase64 che si trova in files.service!!!!!
+  //QUESTO SERVICE VA A MORIRE
+
   createAndDownloadFile(tagDocument: RPT_TagDocument, nomeFile: string): void {
     //questa routine consente di RICEVERE il file...forse andrebbe fatta una routine che lo crea (e se ne occupa il WS di salvarlo) E uno che lo scarica
     // console.log ("open-xml.service - downloadFile - tagDocument", tagDocument);

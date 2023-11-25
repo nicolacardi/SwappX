@@ -38,9 +38,7 @@ export class PagelleAlunnoListComponent {
 //#region ----- Constructor --------------------
 
   constructor(private svcPagelle:               PagelleService,
-              private svcPagellaVoti:           PagellaVotiService,
-              private svcClasseSezioneAnno:     ClassiSezioniAnniService,
-              private svcIscrizioni:            IscrizioniService,
+
 
               private _loadingService:          LoadingService,
               private _snackBar:                MatSnackBar) { 

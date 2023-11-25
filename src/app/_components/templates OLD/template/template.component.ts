@@ -275,13 +275,14 @@ export class TemplateComponent implements OnInit {
   async savePdf(rptFile: any) {
 
     //Chiamata al motore di stampa e salvataggio
-    let rpt :jsPDF  = await this._jspdf.rptFromtemplate(rptFile);
-    let retcode = this.svcFiles.saveFileJspdfPagella(rpt,222);  //Codice temporaneo 222 che viene scaricato con OpenPdf
+    // TUTTO COMMENTATO PERCHE' NON USIAMO PIU' TUTTO CIO'
+    // let rpt :jsPDF  = await this._jspdf.rptFromtemplate(rptFile);
+    // let retcode = this.svcFiles.saveFileJspdfPagella(rpt,222);  //Codice temporaneo 222 che viene scaricato con OpenPdf
 
-    if(retcode == true)
-      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Documento salvato in Database', panelClass: ['green-snackbar']});
-    else
-      this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']});
+    // if(retcode == true)
+    //   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Documento salvato in Database', panelClass: ['green-snackbar']});
+    // else
+    //   this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']});
       
   }
 
