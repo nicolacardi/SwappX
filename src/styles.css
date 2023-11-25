@@ -960,7 +960,7 @@
     ._btn-add-red {
         z-index: 1000;
         position: absolute !important;
-        background-color: #ff0000 !important;
+        background-color: #ba1414 !important;
     }
 
     ._btn-add-fixed {
@@ -1226,7 +1226,7 @@
         position: absolute !important;
         left: 60px;
         top: 5px;
-        background-color: #e00d0d !important;
+        background-color: #ba1414 !important;
     }
 
     ._btn-Red:hover{

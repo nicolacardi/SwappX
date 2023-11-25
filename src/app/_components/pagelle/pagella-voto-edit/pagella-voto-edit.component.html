@@ -97,18 +97,14 @@
 
                         <div class="ml5">
                             <ng-container *ngIf="!chiusa">
-                                <button mat-mini-fab aria-label="Scarica Anteprima" matTooltip="Chiudi Pagella" class="_btn-blu" (click)="chiudiPagella()">
+                                <button mat-mini-fab aria-label="Chiudi Pagella" matTooltip="Chiudi Pagella" class="_btn-blu" (click)="chiudiDocumento()">
                                     <img class="iconaMini pointer" src="./assets/unlocked.svg">
                                 </button>
-                                <!-- <img class="iconaMini pointer" src="./assets/unlocked.svg" (click)="chiudiPagella()">
-                                <br><label class="fs12">Chiudi pagella</label> -->
                             </ng-container>
                             <ng-container *ngIf="chiusa">
-                                <button mat-mini-fab aria-label="Apri Pagella" matTooltip="Apri Pagella" class="_btn-red" (click)="apriPagella()">
+                                <button mat-mini-fab aria-label="Apri Pagella" matTooltip="Apri Pagella" class="_btn-red" (click)="apriDocumento()">
                                     <img class="iconaMini pointer" src="./assets/lock.svg">
                                 </button>
-                                <!-- <img class="iconaMini pointer" src="./assets/lock.svg" (click)="apriPagella()">
-                                <span >Pagella chiusa</span> -->
                             </ng-container>
                         </div>
 

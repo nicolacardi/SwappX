@@ -293,7 +293,7 @@ export class PagellaVotoEditComponent implements OnInit  {
       });
   }
   
-  chiudiPagella() {
+  chiudiDocumento() {
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
       data: {titolo: "CHIUSURA DELLA PAGELLA", sottoTitolo: "Questa operazione è IRREVERSIBILE.<br>Non sarà più possibile modificare i voti.<br>Si conferma?"}
@@ -308,7 +308,7 @@ export class PagellaVotoEditComponent implements OnInit  {
     });
   }
 
-  apriPagella() {
+  apriDocumento() {
     const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
       width: '320px',
       data: {titolo: "APERTURA DELLA PAGELLA", sottoTitolo: "Operazione consentita solo agli IT Administrator...Qui serve una password."}

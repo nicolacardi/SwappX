@@ -12,12 +12,11 @@ import { MatTableDataSource }                   from '@angular/material/table';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
 
-
 //services
 import { RisorseService }                       from '../../impostazioni/risorse/risorse.service';
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
 import { RetteService }                         from '../../pagamenti/rette.service';
-import { OpenXMLService }                       from '../../utilities/openXML/open-xml.service';
+import { FilesService }                         from '../../pagelle/files.service';
 
 //models
 import { _UT_Domanda }                          from 'src/app/_models/_UT_Domanda';
@@ -25,6 +24,7 @@ import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscriz
 import { IscrizioneRisposteService }            from './iscrizione-risposte.service';
 import { CLS_IscrizioneRisposta }               from 'src/app/_models/CLS_IscrizioneRisposta';
 import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDocument';
+
 
 //#endregion
 @Component({
@@ -35,6 +35,7 @@ import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDoc
 export class IscrizioneRisposteComponent implements OnInit  {
 
 //#region ----- Variabili ----------------------
+  chiuso= false;
   iscrizione!:                                  CLS_Iscrizione;
   rettaConcordata!:                             number;
   obsDomande$!:                                Observable<_UT_Domanda[]>;
@@ -63,7 +64,7 @@ constructor(private svcDomande:                 DomandeService,
             private fb:                         UntypedFormBuilder, 
             private svcRisorse:                 RisorseService,
             private svcIscrizioni:              IscrizioniService,
-            private svcOpenXML:                 OpenXMLService,
+            private svcFile:                    FilesService,
 
             private svcIscrizioneRisposte:      IscrizioneRisposteService,
 
@@ -180,6 +181,14 @@ constructor(private svcDomande:                 DomandeService,
 
 //#region ----- Altri metodi -------------------
 
+  chiudiDocumento() {
+    this.chiuso = true;
+  }
+
+  apriDocumento() {
+    this.chiuso = false;
+  }
+  
   downloadAllegato(risorsaID:number){
     if (risorsaID == null) return;
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta download inviata...', panelClass: ['green-snackbar']});
@@ -427,7 +436,7 @@ constructor(private svcDomande:                 DomandeService,
         }
       )
     ));
-    this.svcOpenXML.createAndDownloadFile(tagDocument, nomeFile )
+    this.svcFile.buildAndGetBase64(tagDocument, nomeFile )
   }
 
   
