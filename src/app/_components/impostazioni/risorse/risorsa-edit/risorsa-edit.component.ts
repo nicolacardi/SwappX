@@ -62,7 +62,7 @@ export class RisorsaEditComponent {
     id:                                       [null],
     nomeFile:                                   [''],
     tipoFile:                                   [''],
-    base64:                                     [''],
+    fileBase64:                                 [''],
     dtIns:                                      [''],
     userIns:                                    ['']
   });
@@ -122,20 +122,20 @@ export class RisorsaEditComponent {
 
     this.form.controls.userIns.setValue(this.currUser.personaID);
     // console.log ("risorsa-edit- save - this.form", this.form.value);
-    let tipoFile = Utility.extractMIMEType(this.form.controls.base64.value);
+    let tipoFile = Utility.extractMIMEType(this.form.controls.fileBase64.value);
     if (tipoFile == "vnd.openxmlformats-officedocument.wordprocessingml.document") {
       tipoFile = "docX"
     }
     this.form.controls.tipoFile.setValue(tipoFile);
     
 
-    let currentValue: string = this.form.controls.base64.value;
+    let currentValue: string = this.form.controls.fileBase64.value;
     let newValue: string = currentValue.replace('vnd.openxmlformats-officedocument.wordprocessingml.document', 'docx');
 
-    this.form.controls.base64.setValue(newValue);
+    this.form.controls.fileBase64.setValue(newValue);
 
 
-    //console.log ("Utility.extractMIMEType(this.form.controls.base64.value)",Utility.extractMIMEType(this.form.controls.base64.value));
+    //console.log ("Utility.extractMIMEType(this.form.controls.fileBase64.value)",Utility.extractMIMEType(this.form.controls.fileBase64.value));
     if (this.form.controls['id'].value == null) {
       //console.log (this.form.value);
       this.svcRisorse.post(this.form.value).subscribe({
@@ -216,7 +216,7 @@ export class RisorsaEditComponent {
     reader.readAsDataURL(file);
     reader.onload = async () => {
       this.nomeFile = file.name;
-      this.form.controls.base64.setValue(reader.result);
+      this.form.controls.fileBase64.setValue(reader.result);
     };
   }
   

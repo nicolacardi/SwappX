@@ -27,7 +27,7 @@ export class FilesService {
   
   put(formData: any): Observable <any>{
     //console.log ("sto per spedire in put:", formData);
-    formData.estensione = "pdf";
+    formData.tipoFile = "pdf";
     return this.http.put( environment.apiBaseUrl  + 'DOC_Files/' + formData.id , formData);    
   }
 
@@ -69,7 +69,7 @@ export class FilesService {
   //   formDataFile = {
   //     tipoDoc:         "Pagella",
   //     docID:           objPagellaID,
-  //     estensione:       "pdf"
+  //     tipoFile:       "pdf"
   //   };
     
   //   result.pipe (
@@ -111,7 +111,7 @@ export class FilesService {
   //   formDataFile = {
   //     tipoDoc:         "Pagella",
   //     docID:           objPagellaID,
-  //     estensione:       "pdf"
+  //     tipoFile:       "pdf"
   //   };
     
   //   result.pipe (

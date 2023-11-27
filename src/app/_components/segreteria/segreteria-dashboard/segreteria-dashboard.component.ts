@@ -155,7 +155,7 @@ export class SegreteriaDashboardComponent implements OnInit {
         tipoDoc : "Pagella",
         docID : pagella.id!,
         TagDocument : this.openXMLPreparaOggetto(alunno, iscrizione, lstPagellaVoti, pagella),
-        estensione: "docX"
+        tipoFile: "docX"
       };
       //Verifico se per caso non c'è già in DOC_files... in teoria non dovrebbe servire, in quanto se c'è già dovrebbe essere in statoID = 3
       let filePagellaEsistente = false;

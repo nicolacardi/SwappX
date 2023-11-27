@@ -194,7 +194,7 @@ constructor(private svcDomande:                 DomandeService,
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta download inviata...', panelClass: ['green-snackbar']});
     this.svcRisorse.get(risorsaID).subscribe(
       res=> {
-        const pdfData = res.base64.split(',')[1]; // estrae la stringa base64 dalla virgola in avanti
+        const pdfData = res.fileBase64.split(',')[1]; // estrae la stringa base64 dalla virgola in avanti
         const source = `data:application/pdf;base64,${pdfData}`;
         const link = document.createElement("a");
         link.href = source;
