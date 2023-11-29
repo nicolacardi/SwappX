@@ -34,11 +34,11 @@
                     <mat-icon>save</mat-icon>
             </button>
 
-            <button *ngIf="!chiuso" mat-mini-fab aria-label="Chiudi Documento" matTooltip="Chiudi Documento" class="_btn-add _btn-pos-right-3" (click)="chiudiDocumento()">
+            <button *ngIf="!chiuso" [disabled]="!docEsistente" mat-mini-fab aria-label="Chiudi Documento" matTooltip="Chiudi Documento" class="_btn-add _btn-pos-right-3" (click)="chiudiDocumento()">
                 <img class="iconaMini pointer" src="./assets/unlocked.svg">
             </button>
 
-            <button *ngIf="chiuso" mat-mini-fab aria-label="Apri Documento" matTooltip="Apri Documento" class="_btn-add-red _btn-pos-right-3" (click)="apriDocumento()">
+            <button *ngIf="chiuso" [disabled]="!docEsistente" mat-mini-fab aria-label="Apri Documento" matTooltip="Apri Documento" class="_btn-add-red _btn-pos-right-3" (click)="apriDocumento()">
                 <img class="iconaMini pointer" src="./assets/lock.svg">
             </button>
 

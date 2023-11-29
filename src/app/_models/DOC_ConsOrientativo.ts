@@ -1,11 +1,9 @@
 import { CLS_Iscrizione } from "./CLS_Iscrizione";
-import { DOC_PagellaVoto } from "./DOC_PagellaVoto";
 
-export interface DOC_Pagella {
+export interface DOC_ConsOrientativo {
         id?:                                    number;
         iscrizioneID:                           number;
-        periodo:                                number;
-        statoID?:                               number;  //è il caso di renderlo non ? ma obbligatorio?
+        statoID?:                               number;
         dtDocumento?:                           string;
         note?:                                  string;
         dtIns?:                                 string;
@@ -14,7 +12,6 @@ export interface DOC_Pagella {
         userUpd?:                               number;
 
         iscrizione?:                            CLS_Iscrizione;
-        _PagellaVoti?:                          DOC_PagellaVoto[];
 }
 
 

@@ -66,12 +66,16 @@ export class IscrizioniClasseListComponent implements OnInit {
     "nome", 
     "cognome",
     //"ended",
-    "PagellaQ1Esistente",
+    // "PagellaQ1Esistente",
     "PagellaQ1Completata",
     "PagellaQ1Pubblicata",
-    "PagellaQ2Esistente",
+    // "PagellaQ2Esistente",
     "PagellaQ2Completata",
-    "PagellaQ2Pubblicata"
+    "PagellaQ2Pubblicata",
+    "CertCompCompletata",
+    "CertCompPubblicata",
+    "ConsOriCompletato",
+    "ConsOriPubblicato"
 ];
 
   selection = new SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
@@ -122,7 +126,7 @@ export class IscrizioniClasseListComponent implements OnInit {
   @Output('iscrizioneID') iscrizioneIdEmitter = new EventEmitter<number>();  
   @Output('alunno') alunnoEmitter = new EventEmitter<ALU_Alunno>();  
 
-  @Output('pubblica') pubblica = new EventEmitter<number>();
+  @Output('pubblica') pubblica = new EventEmitter<any>();
 
 //#endregion
 
@@ -433,8 +437,12 @@ export class IscrizioniClasseListComponent implements OnInit {
   }
 //#endregion
 
-  emitPubblica(periodo: number) {
-    this.pubblica.emit(periodo);
+  emitPubblica(documento: string, periodo: number) {
+    let obj = {
+      documento: documento,
+      periodo: periodo
+    }
+    this.pubblica.emit(obj);
   }
 }
 

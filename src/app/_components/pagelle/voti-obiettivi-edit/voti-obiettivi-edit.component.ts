@@ -106,7 +106,7 @@ export class VotiObiettiviEditComponent implements OnInit {
         iscrizioneID:           this.data.iscrizioneID,
         periodo:                this.data.periodo,
         dtIns:                  dateNow,
-        //dtPagella:              this.data.dtPagella
+        //dtDocumento:              this.data.dtDocumento
         
         //....
       };

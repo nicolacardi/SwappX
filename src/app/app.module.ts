@@ -239,7 +239,7 @@ import { AnnoscolasticoEditComponent }          from './_components/anni-scolast
 import { CompitiPageComponent }                 from './_components/lezioni/compiti-page/compiti-page.component';
 import { VotiInterrPageComponent }              from './_components/lezioni/voti-interr-page/voti-interr-page.component';
 import { DomandeFilterComponent }               from './_components/impostazioni/domande/domande-filter/domande-filter.component';
-import { PagelleAlunnoListComponent }           from './_components/pagelle/pagelle-alunno-list/pagelle-alunno-list.component';
+import { DocumentiAlunnoListComponent }         from './_components/pagelle/documenti-alunno-list/documenti-alunno-list.component';
 import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-materie/classi-anni-materie-filter/classi-anni-materie-filter.component';
 
 
@@ -427,7 +427,7 @@ import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-
     CompitiPageComponent,
     VotiInterrPageComponent,
     DomandeFilterComponent,
-    PagelleAlunnoListComponent,
+    DocumentiAlunnoListComponent,
     ClassiAnniMaterieFilterComponent
   ],
   imports: [
