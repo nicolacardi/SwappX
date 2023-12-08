@@ -122,7 +122,7 @@ export class ObiettiviListComponent implements OnInit {
       map(val=>val.filter(val=>(val.annoID == this.form.controls['selectAnnoScolastico'].value)))
     )
     .subscribe(val =>   {
-      console.log("obiettivi-list - loadData - val", val);
+      // console.log("obiettivi-list - loadData - val", val);
       this.matDataSource.data = val;
       this.sortCustom(); 
       this.matDataSource.sort = this.sort; 

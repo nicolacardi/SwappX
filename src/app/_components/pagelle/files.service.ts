@@ -187,7 +187,6 @@ export class FilesService {
       ],
       //tagTables: [] //non ci sono tables dinamiche
     }
-    //console.log ("tagDocument", tagDocument);
 
     return tagDocument;
   }

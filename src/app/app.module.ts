@@ -233,6 +233,12 @@ import { ParametriPageComponent }               from './_components/impostazioni
 import { ParametriListComponent }               from './_components/impostazioni/parametri/parametri-list/parametri-list.component';
 import { ParametriFilterComponent }             from './_components/impostazioni/parametri/parametri-filter/parametri-filter.component';
 import { ParametroEditComponent }               from './_components/impostazioni/parametri/parametro-edit/parametro-edit.component';
+
+import { RisorseClassiPageComponent }           from './_components/impostazioni/risorse-classi/risorse-classi-page/risorse-classi-page.component';
+import { RisorseClassiListComponent }           from './_components/impostazioni/risorse-classi/risorse-classi-list/risorse-classi-list.component';
+import { RisorsaClasseEditComponent }           from './_components/impostazioni/risorse-classi/risorsa-classe-edit/risorsa-classe-edit.component';
+
+
 import { AnnoScolasticoPageComponent }          from './_components/anni-scolastici/annoscolastico-page/annoscolastico-page.component';
 import { AnniScolasticiListComponent }          from './_components/anni-scolastici/anniscolastici-list/anniscolastici-list.component';
 import { AnnoscolasticoEditComponent }          from './_components/anni-scolastici/annoscolastico-edit/annoscolastico-edit.component';
@@ -421,6 +427,11 @@ import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-
     ParametriListComponent,
     ParametriFilterComponent,
     ParametroEditComponent,
+
+    RisorseClassiPageComponent,
+    RisorseClassiListComponent,
+    RisorsaClasseEditComponent,
+
     AnnoScolasticoPageComponent,
     AnniScolasticiListComponent,
     AnnoscolasticoEditComponent,

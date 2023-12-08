@@ -105,3 +105,7 @@ export interface DialogDataTipoScadenzaEdit {
       maxSeq:                                   number;
 
       }
+
+export interface DialogDataRisorsaClasseEdit {
+      risorsaClasseID:                          number;
+      }

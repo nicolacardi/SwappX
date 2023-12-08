@@ -16,6 +16,7 @@
                 <input *ngIf="element.tipoVotoID == 1 && iscrizioneID>0" 
                         matInput type="number" placeholder="voto" 
                         [value]="element.voto" 
+                        [disabled]="chiusa"
                         (change)="changeVoto(element, voto.value)" 
                         maxlength="2" #voto>
 
@@ -23,6 +24,7 @@
                     *ngIf="element.tipoVotoID == 2 && iscrizioneID>0"  
                     [value]="element.tipoGiudizioID? element.tipoGiudizioID : 1" 
                     placeholder="giudizio"  
+                    [disabled]="chiusa"
                     (selectionChange)="changeSelectGiudizio(element, selectGiudizio.value)" #selectGiudizio> 
                     <mat-option *ngFor="let giudizio of (obsTipiGiudizio$ | async)"  [value]="giudizio.id">
                         {{giudizio.descrizione}}
@@ -71,19 +73,17 @@
                             </mat-form-field> -->
 
 
-                            <!-- *********************QUI E? DA SISTEMARE! SE NON C'E' ANCORA LA PAGELLA COME SI FA? BASTEREBBE UN NGIF
-                                 SU PAGELLA.ID MA SE SI METTE NGIF ALLORA NON FUNZIONA NEMMENO L'ASSEGNAZIONE SU FORMLOAD 
-                                ALTERNATIVA: ANCHE SU ISNERIMENTO DATA, COME SU INSERIMENTO DI UN VOTO SI CREA LA PAGELLA-->
                             <form  [formGroup] = "form">
                                 <mat-form-field class="w70">
                                     <!-- <mat-label>Data Pagella</mat-label> -->
-                                    <input matInput #dtNascita required
+                                    <input matInput #dtNascita
                                         formControlName="dtDocumento"  
-                                        [matDatepicker]= "dpDtNascita"
+                                        [matDatepicker]= "dpDtDocumento"
                                         (dateChange) = "changeData($event)"
+                                        [disabled]="chiusa"                                        
                                         >
-                                    <mat-datepicker-toggle matSuffix [for]="dpDtNascita" ></mat-datepicker-toggle>
-                                    <mat-datepicker #dpDtNascita  ></mat-datepicker>
+                                    <mat-datepicker-toggle matSuffix [for]="dpDtDocumento" ></mat-datepicker-toggle>
+                                    <mat-datepicker #dpDtDocumento  ></mat-datepicker>
                                 </mat-form-field>
                             </form>
                             

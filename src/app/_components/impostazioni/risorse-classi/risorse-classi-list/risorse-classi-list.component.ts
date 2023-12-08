@@ -1,5 +1,3 @@
-
-
 //#region ----- IMPORTS ------------------------
 
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
@@ -12,55 +10,59 @@ import { MatMenuTrigger }                       from '@angular/material/menu';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 
 //components
-import { ParametroEditComponent }               from '../parametro-edit/parametro-edit.component';
-import { ParametriFilterComponent }             from '../parametri-filter/parametri-filter.component';
+import { RisorsaClasseEditComponent }           from '../risorsa-classe-edit/risorsa-classe-edit.component';
 import { Utility }                              from '../../../utilities/utility.component';
 
 //services
-import { ParametriService }                      from '../parametri.service';
+import { RisorseClassiService }                 from '../risorse-classi.service';
 import { LoadingService }                       from '../../../utilities/loading/loading.service';
 import { TableColsService }                     from '../../../utilities/toolbar/tablecols.service';
 import { TableColsVisibleService }              from '../../../utilities/toolbar/tablecolsvisible.service';
 
 //models
-import { _UT_Parametro }                         from 'src/app/_models/_UT_Parametro';
 import { User }                                 from 'src/app/_user/Users';
+import { CLS_RisorsaClasse }                    from 'src/app/_models/CLS_RisorsaClasse';
 
 
 //#endregion
 @Component({
-  selector: 'app-parametri-list',
-  templateUrl: './parametri-list.component.html',
-  styleUrls: ['../parametri.css']
+  selector: 'app-risorse-classi-list',
+  templateUrl: './risorse-classi-list.component.html',
+  styleUrls: ['../risorse-classi.css']
 })
 
-export class ParametriListComponent implements OnInit {
+export class RisorseClassiListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
   maxSeq!:                                      number;
   currUser!:                                    User;
     
-  matDataSource = new MatTableDataSource<_UT_Parametro>();
+  matDataSource = new MatTableDataSource<CLS_RisorsaClasse>();
 
-  tableName = "ParametriList";
-  displayedColumns: string[] =  [];
+  tableName = "RisorseClassiList";
+  displayedColumns: string[] =  [
+    "actionsColumn",
+    "classe",
+    "fileName",
+    "tipoDoc"
+  ];
 
-  rptTitle = 'List Parametri';
-  rptFileName = 'ListaParametri';
+  rptTitle = 'Lista Template Classi';
+  rptFileName = 'ListaTemplateClassi';
 
   rptFieldsToKeep  = [
-    "parName",
-    "parDescr",
-    "parValue"
+    "fileName",
+    "classe",
+    "tipoDoc"
   ];
 
   rptColumnsNames  = [
-    "Nome",
-    "Descrizione Estesa",
-    "Valore"
+    "Nome File",
+    "Classe",
+    "Tipo Documento"
   ];
 
-  selection = new SelectionModel<_UT_Parametro>(true, []);   //rappresenta la selezione delle checkbox
+  selection = new SelectionModel<CLS_RisorsaClasse>(true, []);   //rappresenta la selezione delle checkbox
 
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
@@ -87,16 +89,13 @@ export class ParametriListComponent implements OnInit {
   @ViewChild("filterInput") filterInput!:       ElementRef;
   @ViewChild(MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger;
 
-  @Input() ParametriFilterComponent!: ParametriFilterComponent;
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(private svcParametri:             ParametriService,
+  constructor(private svcRisorseClassi:         RisorseClassiService,
               public _dialog:                   MatDialog, 
-              private _loadingService:          LoadingService,
-              private svcTableCols:             TableColsService,
-              private svcTableColsVisible:      TableColsVisibleService ) {
+              private _loadingService:          LoadingService) {
      
      this.currUser = Utility.getCurrentUser();
   }
@@ -114,36 +113,27 @@ export class ParametriListComponent implements OnInit {
   ngOnInit () {
 
       this.showFilter = false;
-      this.loadLayout();
       this.loadData(); 
   }
 
-  loadLayout(){
-    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName).subscribe( colonne => {
-        if (colonne.length != 0) 
-          this.displayedColumns = colonne.map(a => a.tableCol!.colName)
-          else this.svcTableCols.listByTable(this.tableName).subscribe( colonne => {
-            this.displayedColumns = colonne.filter(colonna=> colonna.defaultShown == true).map(a => a.colName)
-        })      
-    });
-  }
 
   loadData () {
 
-    let obsParametri$: Observable<_UT_Parametro[]>;
-    obsParametri$= this.svcParametri.listSetupPage();    
-    const loadParametri$ =this._loadingService.showLoaderUntilCompleted(obsParametri$);
+    let obsRisorseClassi$: Observable<CLS_RisorsaClasse[]>;
+    obsRisorseClassi$= this.svcRisorseClassi.list();    
+    const loadParametri$ =this._loadingService.showLoaderUntilCompleted(obsRisorseClassi$);
 
     loadParametri$.subscribe(
       val =>   {
+        console.log("risorse-classi-list - loadData", val);
         this.matDataSource.data = val;
-        this.matDataSource.paginator = this.paginator;
-        this.sortCustom();
-        this.matDataSource.sort = this.sort;
-        this.matDataSource.filterPredicate = this.filterPredicate();
-        this.maxSeq = val.reduce((max, item) => {
-          return item.seq! > max ? item.seq! : max;
-        }, 0);
+        //this.matDataSource.paginator = this.paginator;
+        //this.sortCustom();
+        //this.matDataSource.sort = this.sort;
+        //this.matDataSource.filterPredicate = this.filterPredicate();
+        // this.maxSeq = val.reduce((max, item) => {
+        //   return item.seq! > max ? item.seq! : max;
+        // }, 0);
       }
     );
   }
@@ -204,7 +194,7 @@ export class ParametriListComponent implements OnInit {
       data:  { parametroID: 0, maxSeq: this.maxSeq }
     };
 
-    const dialogRef = this._dialog.open(ParametroEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(RisorsaClasseEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       res => this.loadData()
     );
@@ -218,23 +208,22 @@ export class ParametriListComponent implements OnInit {
       data:  { parametroID: id, maxSeq: this.maxSeq }
     };
 
-    const dialogRef = this._dialog.open(ParametroEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(RisorsaClasseEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
         () => this.loadData()
     );
   }
 
   drop(event: any){
-    // console.log ("parametri-list - drop - event.previousIndex, event.currentIndex",event.previousIndex, event.currentIndex);
-    this.svcParametri.updateSeq(event.previousIndex+1, event.currentIndex+1 )
-    .subscribe(res=> this.loadData());
+    // this.svcRisorseClassi.updateSeq(event.previousIndex+1, event.currentIndex+1 )
+    // .subscribe(res=> this.loadData());
   }
 
 //#endregion
 
 //#region ----- Gestione Campo Checkbox --------
 
-selectedRow(element: _UT_Parametro) {
+selectedRow(element: CLS_RisorsaClasse) {
   this.selection.toggle(element);
 }
 
@@ -260,7 +249,7 @@ getChecked() {
 
 //non so se serva questo metodo: genera un valore per l'aria-label...
 //forse serve per poi pescare i valori selezionati?
-checkboxLabel(row?: _UT_Parametro): string {
+checkboxLabel(row?: CLS_RisorsaClasse): string {
   if (!row) 
     return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
   else
