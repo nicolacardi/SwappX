@@ -31,6 +31,7 @@ import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_mode
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
+import { RisorseCSAEditComponent } from '../../impostazioni/risorse-csa/risorse-csa-edit/risorse-csa-edit.component';
 
 //#endregion
 @Component({
@@ -55,8 +56,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
     "numAlunni"
   ];
 
-  displayedColumnsClassiSezioniAnniPage:                   string[] =  [
-    "actionsColumn",
+  displayedColumnsSegreteriaDashboard:                   string[] =  [
     "descrizione",
     "sezione",
     "numAlunni",
@@ -69,6 +69,15 @@ export class ClassiSezioniAnniListComponent implements OnInit {
     "numStato60",
     "numStato70",
     "numStato80",
+  ];
+
+
+  displayedColumnsImpostazioni:                 string[] =  [
+    "actionsColumn",
+    "documents",
+    "descrizione",
+    "sezione",
+    "numAlunni",
 
     "descrizioneAnnoSuccessivo",
     "sezioneAnnoSuccessivo"
@@ -254,9 +263,15 @@ export class ClassiSezioniAnniListComponent implements OnInit {
         this.displayedColumns = this.displayedColumnsCoordinatoreDashBoard;
         this.loadData();
         break;
-      case 'classi-sezioni-anni-page':
-          this.displayedColumns = this.displayedColumnsClassiSezioniAnniPage;
+      case 'segreteria-dashboard':
+          this.displayedColumns = this.displayedColumnsSegreteriaDashboard;
           this.showPageTitle = true;
+          this.showTableRibbon = true;
+          this.loadData();
+          break;
+      case 'impostazioni':
+          this.displayedColumns = this.displayedColumnsImpostazioni;
+          this.showPageTitle = false;
           this.showTableRibbon = true;
           this.loadData();
           break;
@@ -347,7 +362,6 @@ export class ClassiSezioniAnniListComponent implements OnInit {
 
       loadClassi$.subscribe( val =>   {
         this.matDataSource.data = val;
-
 
         if (this.dove == "classi-sezioni-anni-page") {
           this.matDataSource.paginator = this.paginator;
@@ -492,6 +506,18 @@ export class ClassiSezioniAnniListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(ClasseSezioneAnnoEditComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() =>  this.loadData());
+  }
+
+  openDetailDocs(classeSezioneAnno:CLS_ClasseSezioneAnno) {
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '500px',
+      height: '400px',
+      data: classeSezioneAnno
+    };
+
+    const dialogRef = this._dialog.open(RisorseCSAEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() =>  this.loadData());
   }
 

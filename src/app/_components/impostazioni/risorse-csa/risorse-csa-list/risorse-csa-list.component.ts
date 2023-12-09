@@ -10,41 +10,41 @@ import { MatMenuTrigger }                       from '@angular/material/menu';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 
 //components
-import { RisorsaClasseEditComponent }           from '../risorsa-classe-edit/risorsa-classe-edit.component';
+import { RisorsaCSAEditComponent }              from '../risorsa-csa-edit/risorsa-csa-edit.component';
 import { Utility }                              from '../../../utilities/utility.component';
 
 //services
-import { RisorseClassiService }                 from '../risorse-classi.service';
+import { RisorseCSAService }                    from '../risorse-csa.service';
 import { LoadingService }                       from '../../../utilities/loading/loading.service';
 import { TableColsService }                     from '../../../utilities/toolbar/tablecols.service';
 import { TableColsVisibleService }              from '../../../utilities/toolbar/tablecolsvisible.service';
 
 //models
 import { User }                                 from 'src/app/_user/Users';
-import { CLS_RisorsaClasse }                    from 'src/app/_models/CLS_RisorsaClasse';
+import { CLS_RisorsaCSA }                       from 'src/app/_models/CLS_RisorsaCSA';
 
 
 //#endregion
 @Component({
-  selector: 'app-risorse-classi-list',
-  templateUrl: './risorse-classi-list.component.html',
-  styleUrls: ['../risorse-classi.css']
+  selector: 'app-risorse-csa-list',
+  templateUrl: './risorse-csa-list.component.html',
+  styleUrls: ['../risorse-csa.css']
 })
 
-export class RisorseClassiListComponent implements OnInit {
+export class RisorseCSAListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
   maxSeq!:                                      number;
   currUser!:                                    User;
     
-  matDataSource = new MatTableDataSource<CLS_RisorsaClasse>();
+  matDataSource = new MatTableDataSource<CLS_RisorsaCSA>();
 
   tableName = "RisorseClassiList";
   displayedColumns: string[] =  [
     "actionsColumn",
     "classe",
     "fileName",
-    "tipoDoc"
+    "tipoDocumento"
   ];
 
   rptTitle = 'Lista Template Classi';
@@ -62,7 +62,7 @@ export class RisorseClassiListComponent implements OnInit {
     "Tipo Documento"
   ];
 
-  selection = new SelectionModel<CLS_RisorsaClasse>(true, []);   //rappresenta la selezione delle checkbox
+  selection = new SelectionModel<CLS_RisorsaCSA>(true, []);   //rappresenta la selezione delle checkbox
 
 
   menuTopLeftPosition =  {x: '0', y: '0'} 
@@ -93,7 +93,7 @@ export class RisorseClassiListComponent implements OnInit {
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(private svcRisorseClassi:         RisorseClassiService,
+  constructor(private svcRisorseCSA:            RisorseCSAService,
               public _dialog:                   MatDialog, 
               private _loadingService:          LoadingService) {
      
@@ -119,8 +119,8 @@ export class RisorseClassiListComponent implements OnInit {
 
   loadData () {
 
-    let obsRisorseClassi$: Observable<CLS_RisorsaClasse[]>;
-    obsRisorseClassi$= this.svcRisorseClassi.list();    
+    let obsRisorseClassi$: Observable<CLS_RisorsaCSA[]>;
+    obsRisorseClassi$= this.svcRisorseCSA.list();    
     const loadParametri$ =this._loadingService.showLoaderUntilCompleted(obsRisorseClassi$);
 
     loadParametri$.subscribe(
@@ -191,10 +191,10 @@ export class RisorseClassiListComponent implements OnInit {
       panelClass: 'add-DetailDialog',
       width: '600px',
       height: '350px',
-      data:  { parametroID: 0, maxSeq: this.maxSeq }
+      data:  { risorsaCSAID: 0 }
     };
 
-    const dialogRef = this._dialog.open(RisorsaClasseEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(RisorsaCSAEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       res => this.loadData()
     );
@@ -205,10 +205,10 @@ export class RisorseClassiListComponent implements OnInit {
       panelClass: 'add-DetailDialog',
       width: '600px',
       height: '350px',
-      data:  { parametroID: id, maxSeq: this.maxSeq }
+      data:  { risorsaCSAID: id }
     };
 
-    const dialogRef = this._dialog.open(RisorsaClasseEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(RisorsaCSAEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
         () => this.loadData()
     );
@@ -223,7 +223,7 @@ export class RisorseClassiListComponent implements OnInit {
 
 //#region ----- Gestione Campo Checkbox --------
 
-selectedRow(element: CLS_RisorsaClasse) {
+selectedRow(element: CLS_RisorsaCSA) {
   this.selection.toggle(element);
 }
 
@@ -249,7 +249,7 @@ getChecked() {
 
 //non so se serva questo metodo: genera un valore per l'aria-label...
 //forse serve per poi pescare i valori selezionati?
-checkboxLabel(row?: CLS_RisorsaClasse): string {
+checkboxLabel(row?: CLS_RisorsaCSA): string {
   if (!row) 
     return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
   else

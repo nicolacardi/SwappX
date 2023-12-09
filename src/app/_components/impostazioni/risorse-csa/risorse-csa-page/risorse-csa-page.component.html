@@ -14,22 +14,22 @@
 
 
     <mat-drawer position="start" #toolSidenav class="toolSidenav"  [mode]="'side'">
-        <app-toolbar [rptTitle]="appRisorseClassilist.rptTitle" 
-                     [rptFieldsToKeep]="appRisorseClassilist.rptFieldsToKeep" 
-                     [rptColumnsNames]="appRisorseClassilist.rptColumnsNames" 
-                     [rptData]="appRisorseClassilist.matDataSource.data"
-                     [rptFileName]="appRisorseClassilist.rptFileName"
-                     [columnsComponent] = "appRisorseClassilist"
-                     [tableName] = "'RisorseClassiList'"
+        <app-toolbar [rptTitle]="appRisorseCSAlist.rptTitle" 
+                     [rptFieldsToKeep]="appRisorseCSAlist.rptFieldsToKeep" 
+                     [rptColumnsNames]="appRisorseCSAlist.rptColumnsNames" 
+                     [rptData]="appRisorseCSAlist.matDataSource.data"
+                     [rptFileName]="appRisorseCSAlist.rptFileName"
+                     [columnsComponent] = "appRisorseCSAlist"
+                     [tableName] = "'RisorseCSAlist'"
                      [emailsYN] = "false"
                      >
         </app-toolbar>
     </mat-drawer>
 
     <mat-drawer-content>
-        <app-risorse-classi-list
+        <app-risorse-csa-list
                            (openDrawer) = "openDrawer()"
-                           #appRisorseClassilist >
-        </app-risorse-classi-list>
+                           #appRisorseCSAlist >
+        </app-risorse-csa-list>
     </mat-drawer-content>
 </mat-drawer-container>

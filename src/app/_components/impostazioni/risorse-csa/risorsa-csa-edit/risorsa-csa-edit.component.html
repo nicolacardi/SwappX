@@ -1,13 +1,13 @@
 <mat-card appearance="outlined" class="form-card">
     <mat-card-content>
-        <form *ngIf="(risorsaClasse$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
+        <form *ngIf="(risorsaCSA$ | async) || emptyForm" class="data-form flex-form" [formGroup] = "form">
             <div class="center">
 
-                <img class="iconaMenuBig" src="./assets/parametro_edit_T.svg">
+                <img class="iconaMenuBig" src="./assets/risorsaclasse_edit_T.svg">
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
-                <button *ngIf="data.risorsaClasseID" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
+                <button *ngIf="data.risorsaCSAID" mat-mini-fab aria-label="Back" matTooltip="Back" class="btn ml10"
                         [disabled]= "!form.valid" 
                         (click)="loadData()" >
                     <mat-icon>restart_alt</mat-icon>
@@ -31,13 +31,26 @@
 
                 <mat-grid-tile >
                     <mat-form-field>
-                        <input matInput type="text" placeholder="Nome" formControlName="parName">
+                        <input matInput type="text" placeholder="Nome File" formControlName="fileName">
                     </mat-form-field>
                 </mat-grid-tile>
 
+                <mat-grid-tile >
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Classe" formControlName="classe">
+                    </mat-form-field>
+                </mat-grid-tile>
 
-
-
+                <mat-grid-tile>
+                    <mat-form-field>
+                        <mat-label>Tipo Documento</mat-label>
+                        <mat-select formControlName="tipoDocumento">
+                            <mat-option *ngFor="let element of (obsTipiDocumento$ | async)" [value]="element.id">
+                                {{element.descrizione}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
 
 
 

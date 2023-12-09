@@ -1,8 +1,12 @@
 <mat-tab-group mat-align-tabs="center" class="h100-64">
 
     <!-- ********************************    MAT TAB Risorse Documenti ********************************** -->
+
+    <mat-tab label="Gestione Classi">
+        <app-classi-sezioni-anni-page [dove]="'impostazioni'"></app-classi-sezioni-anni-page>
+    </mat-tab>
     <mat-tab  label="Template Classi">
-        <app-risorse-classi-page> </app-risorse-classi-page>
+        <app-risorse-csa-page> </app-risorse-csa-page>
     </mat-tab>
 
     <mat-tab  label="Cambio Anno Scolastico">

@@ -234,9 +234,9 @@ import { ParametriListComponent }               from './_components/impostazioni
 import { ParametriFilterComponent }             from './_components/impostazioni/parametri/parametri-filter/parametri-filter.component';
 import { ParametroEditComponent }               from './_components/impostazioni/parametri/parametro-edit/parametro-edit.component';
 
-import { RisorseClassiPageComponent }           from './_components/impostazioni/risorse-classi/risorse-classi-page/risorse-classi-page.component';
-import { RisorseClassiListComponent }           from './_components/impostazioni/risorse-classi/risorse-classi-list/risorse-classi-list.component';
-import { RisorsaClasseEditComponent }           from './_components/impostazioni/risorse-classi/risorsa-classe-edit/risorsa-classe-edit.component';
+import { RisorseCSAPageComponent }              from './_components/impostazioni/risorse-csa/risorse-csa-page/risorse-csa-page.component';
+import { RisorseCSAListComponent }              from './_components/impostazioni/risorse-csa/risorse-csa-list/risorse-csa-list.component';
+import { RisorsaCSAEditComponent }              from './_components/impostazioni/risorse-csa/risorsa-csa-edit/risorsa-csa-edit.component';
 
 
 import { AnnoScolasticoPageComponent }          from './_components/anni-scolastici/annoscolastico-page/annoscolastico-page.component';
@@ -247,6 +247,7 @@ import { VotiInterrPageComponent }              from './_components/lezioni/voti
 import { DomandeFilterComponent }               from './_components/impostazioni/domande/domande-filter/domande-filter.component';
 import { DocumentiAlunnoListComponent }         from './_components/pagelle/documenti-alunno-list/documenti-alunno-list.component';
 import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-materie/classi-anni-materie-filter/classi-anni-materie-filter.component';
+import { RisorseCSAEditComponent } from './_components/impostazioni/risorse-csa/risorse-csa-edit/risorse-csa-edit.component';
 
 
 // FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -428,9 +429,10 @@ import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-
     ParametriFilterComponent,
     ParametroEditComponent,
 
-    RisorseClassiPageComponent,
-    RisorseClassiListComponent,
-    RisorsaClasseEditComponent,
+    RisorseCSAPageComponent,
+    RisorseCSAListComponent,
+    RisorsaCSAEditComponent,
+    RisorseCSAEditComponent,
 
     AnnoScolasticoPageComponent,
     AnniScolasticiListComponent,

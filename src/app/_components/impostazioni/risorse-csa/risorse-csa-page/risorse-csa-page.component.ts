@@ -4,7 +4,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 
 //components
-import { RisorseClassiListComponent }               from '../risorse-classi-list/risorse-classi-list.component';
+import { RisorseCSAListComponent }               from '../risorse-csa-list/risorse-csa-list.component';
 
 //services
 // import { NavigationService } from '../../utilities/navigation/navigation.service';
@@ -12,15 +12,15 @@ import { RisorseClassiListComponent }               from '../risorse-classi-list
 //#endregion
 
 @Component({
-  selector: 'app-risorse-classi-page',
-  templateUrl: './risorse-classi-page.component.html',
-  styleUrls: ['../risorse-classi.css']
+  selector: 'app-risorse-csa-page',
+  templateUrl: './risorse-csa-page.component.html',
+  styleUrls: ['../risorse-csa.css']
 })
 
-export class RisorseClassiPageComponent implements OnInit {
+export class RisorseCSAPageComponent implements OnInit {
 
 //#region ----- ViewChild Input Output -------
-  @ViewChild(RisorseClassiListComponent) RisorseClassiList!: RisorseClassiListComponent; 
+  @ViewChild(RisorseCSAListComponent) RisorseClassiList!: RisorseCSAListComponent; 
   @ViewChild('filterSidenav', { static: true }) drawerFiltriAvanzati!: MatDrawer;
 //#endregion
 
