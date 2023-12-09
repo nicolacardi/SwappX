@@ -19,7 +19,10 @@
                     <mat-icon>save</mat-icon>
                 </button>
             </div>
-
+            <br>
+            <div *ngIf="classeSezioneAnno" class="center">
+                {{'Documenti della '+classeSezioneAnno.classeSezione.classe?.descrizione2 + ' sez.' + classeSezioneAnno.classeSezione.sezione}}
+            </div>
             <!-- **************************   MAT-TABLE   ******************* -->
             <table mat-table class="_table-row-low transparent w100"
                 [dataSource]="matDataSource"
@@ -36,11 +39,6 @@
                 <ng-container matColumnDef="fileName">
                     <th mat-header-cell *matHeaderCellDef  mat-sort-header >Nome File</th>
                     <td mat-cell *matCellDef="let element" [innerHTML]="element.risorsa.nomeFile | highlight:filterValue"></td>
-                </ng-container>
-        
-                <ng-container matColumnDef="classe">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Classe</th>
-                    <td mat-cell *matCellDef="let element" [innerHTML]="element.classeSezioneAnno.classeSezione.classe.descrizione2 |highlight:filterValue"></td>
                 </ng-container>
 
                 <ng-container matColumnDef="tipoDocumento">

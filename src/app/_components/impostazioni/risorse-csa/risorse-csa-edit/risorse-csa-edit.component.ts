@@ -22,6 +22,7 @@ import { CLS_RisorsaCSA }                       from 'src/app/_models/CLS_Risors
 import { DOC_TipoDocumento }                    from 'src/app/_models/DOC_TipoDocumento';
 import { MatTableDataSource } from '@angular/material/table';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { ClassiSezioniAnniService } from 'src/app/_components/classi/classi-sezioni-anni.service';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class RisorseCSAEditComponent {
   matDataSource = new MatTableDataSource<CLS_RisorsaCSA>();
   
   obsRisorseCSA$!:                              Observable<CLS_RisorsaCSA[]>;
-
+  classeSezioneAnno!:                           CLS_ClasseSezioneAnno;
 
   loading:                                      boolean = true;
   modules:                                      any = {};
@@ -44,7 +45,6 @@ export class RisorseCSAEditComponent {
   filterValue = '';
   displayedColumns: string[] =  [
     "actionsColumn",
-    "classe",
     "fileName",
     "tipoDocumento"
   ];
@@ -55,13 +55,15 @@ export class RisorseCSAEditComponent {
   constructor(public _dialogRef: MatDialogRef<RisorseCSAEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data:       CLS_ClasseSezioneAnno,
               private svcRisorseCSA:            RisorseCSAService,
-              private svcTipiDocumento:         TipiDocumentoService,
+              private svcClassiSezioniAnni:     ClassiSezioniAnniService,
               private _loadingService :         LoadingService,
               private fb:                       UntypedFormBuilder, 
               public _dialog:                   MatDialog,
               private _snackBar:                MatSnackBar ) { 
     
     _dialogRef.disableClose = true;
+
+    this.svcClassiSezioniAnni.get(this.data.id).subscribe(res=> this.classeSezioneAnno = res);
         
   }
 
