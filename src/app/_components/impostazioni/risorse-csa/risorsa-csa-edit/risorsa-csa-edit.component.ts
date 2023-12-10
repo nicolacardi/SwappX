@@ -4,7 +4,7 @@ import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { Observable }                           from 'rxjs';
+import { Observable, firstValueFrom }                           from 'rxjs';
 import { tap }                                  from 'rxjs/operators';
 
 //components
@@ -20,6 +20,9 @@ import { TipiDocumentoService }                 from '../tipi-documento.service'
 import { DialogDataRisorsaClasseEdit }          from 'src/app/_models/DialogData';
 import { CLS_RisorsaCSA }                       from 'src/app/_models/CLS_RisorsaCSA';
 import { DOC_TipoDocumento }                    from 'src/app/_models/DOC_TipoDocumento';
+import { _UT_Risorsa } from 'src/app/_models/_UT_Risorsa';
+import { RisorseService } from '../../risorse/risorse.service';
+import { DialogOkComponent } from 'src/app/_components/utilities/dialog-ok/dialog-ok.component';
 
 
 @Component({
@@ -31,14 +34,14 @@ export class RisorsaCSAEditComponent {
 
 //#region ----- Variabili ----------------------
 
-  risorsaCSA$!:                              Observable<CLS_RisorsaCSA>;
-  obsRisorseCSA$!:                           Observable<CLS_RisorsaCSA[]>;
+  risorsaCSA$!:                                 Observable<CLS_RisorsaCSA>;
+  obsRisorseCSA$!:                              Observable<CLS_RisorsaCSA[]>;
   obsTipiDocumento$!:                           Observable<DOC_TipoDocumento[]>;
+  obsRisorse$!:                                 Observable<_UT_Risorsa[]>;
+
   form! :                                       UntypedFormGroup;
   emptyForm :                                   boolean = false;
   loading:                                      boolean = true;
-  modules:                                      any = {};
-  ckCheckBoxes=                                 false;
 
   //#endregion
 
@@ -47,6 +50,7 @@ export class RisorsaCSAEditComponent {
   constructor(public _dialogRef: MatDialogRef<RisorsaCSAEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data:       DialogDataRisorsaClasseEdit,
               private svcRisorseCSA:            RisorseCSAService,
+              private svcRisorse:               RisorseService,
               private svcTipiDocumento:         TipiDocumentoService,
               private _loadingService :         LoadingService,
               private fb:                       UntypedFormBuilder, 
@@ -57,13 +61,16 @@ export class RisorsaCSAEditComponent {
     
     this.form = this.fb.group({
       id:                                       [null],
-      classe:                                   ['', { validators:[ Validators.required]}],
-      fileName:                                 ['', { validators:[ Validators.required]}],
-      tipoDocumento:                                 ['', { validators:[ Validators.required]}],
+
+      risorsaID:                                ['', { validators:[ Validators.required]}],
+      tipoDocumentoID:                          ['', { validators:[ Validators.required]}],
+      classeSezioneAnnoID:                      [''],
+      userIns:                                  ['']
 
     });
     this.obsTipiDocumento$ = this.svcTipiDocumento.list();
-    
+    this.obsRisorse$ = this.svcRisorse.list();
+
   }
 
   //#endregion
@@ -83,24 +90,40 @@ export class RisorsaCSAEditComponent {
           tap(
             risorsaCSA => {
               console.log ("risorsa-classe-edit - loadData", risorsaCSA);
-              this.form.controls.classe.setValue(risorsaCSA.classeSezioneAnno!.classeSezione.classe + ' ' + risorsaCSA.classeSezioneAnno!.classeSezione.sezione);
-              this.form.controls.fileName.setValue(risorsaCSA.risorsa!.nomeFile);
-              this.form.controls.tipoDocumento.setValue(risorsaCSA.tipoDocumentoID);
+              this.form.patchValue(risorsaCSA);
             }
           )
       );
     }
-    else 
-      this.emptyForm = true
+    else { 
+      this.form.controls.classeSezioneAnnoID.setValue(this.data.classeSezioneAnnoID);
+      this.emptyForm = true;
+    }
   }
 
   //#endregion
 
   //#region ----- Operazioni CRUD ----------------
 
-  save(){
+  async save(){
+
+    let risorsaCSA!: CLS_RisorsaCSA;
+    await firstValueFrom(this.svcRisorseCSA.getByTipoDocCSA(this.form.controls.tipoDocumentoID.value, this.data.classeSezioneAnnoID).pipe(tap(res=> risorsaCSA= res)));
+
+
+
     if (this.form.controls['id'].value == null) {
-      //this.form.controls.seq.setValue(this.data.maxSeq +1);
+      console.log ("risorsa-csa-edit - save - post - this.form", this.form.value);
+      
+      if (risorsaCSA) {
+        //esiste un ALTRO record con stesso tipoDOC e stessa CSA
+        this._dialog.open(DialogOkComponent, {
+          width: '320px',
+          data: { titolo: "ATTENZIONE!", sottoTitolo: "Esiste già un documento di questo tipo<br>impostato per questa classe" }
+        });
+        return;
+      }
+
       this.svcRisorseCSA.post(this.form.value).subscribe({
         next: res=> {
           this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
@@ -112,6 +135,17 @@ export class RisorsaCSAEditComponent {
       });
     }
     else {
+      console.log ("risorsa-csa-edit - save - put - this.form", this.form.value);
+      if (risorsaCSA && risorsaCSA.id != this.form.controls.id.value) {
+        //esiste un ALTRO record con stesso tipoDOC e stessa CSA
+        this._dialog.open(DialogOkComponent, {
+          width: '320px',
+          data: { titolo: "ATTENZIONE!", sottoTitolo: "Esiste già un documento di questo tipo<br>impostato per questa classe" }
+        });
+        return;
+      }
+
+      console.log ("risorsa-csa-edit - save - this.form.value", this.form.value);
       this.svcRisorseCSA.put(this.form.value).subscribe({
           next: res=> {
             this._dialogRef.close();

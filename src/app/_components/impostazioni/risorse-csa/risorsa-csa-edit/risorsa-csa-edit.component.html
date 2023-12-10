@@ -29,22 +29,21 @@
 
             <mat-grid-list class="mt10" [cols]="1" rowHeight="80px">
 
-                <mat-grid-tile >
+                <mat-grid-tile>
                     <mat-form-field>
-                        <input matInput type="text" placeholder="Nome File" formControlName="fileName">
-                    </mat-form-field>
-                </mat-grid-tile>
-
-                <mat-grid-tile >
-                    <mat-form-field>
-                        <input matInput type="text" placeholder="Classe" formControlName="classe">
+                        <mat-label>Nome File</mat-label>
+                        <mat-select formControlName="risorsaID">
+                            <mat-option *ngFor="let element of (obsRisorse$ | async)" [value]="element.id">
+                                {{element.nomeFile}}.{{element.tipoFile}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </mat-grid-tile>
 
                 <mat-grid-tile>
                     <mat-form-field>
                         <mat-label>Tipo Documento</mat-label>
-                        <mat-select formControlName="tipoDocumento">
+                        <mat-select formControlName="tipoDocumentoID">
                             <mat-option *ngFor="let element of (obsTipiDocumento$ | async)" [value]="element.id">
                                 {{element.descrizione}}
                             </mat-option>

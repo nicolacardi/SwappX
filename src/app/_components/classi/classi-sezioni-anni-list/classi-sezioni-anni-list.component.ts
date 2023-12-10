@@ -31,7 +31,7 @@ import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_mode
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
-import { RisorseCSAEditComponent } from '../../impostazioni/risorse-csa/risorse-csa-edit/risorse-csa-edit.component';
+import { RisorseCSAListEditComponent }          from '../../impostazioni/risorse-csa/risorse-csa-list-edit/risorse-csa-list-edit.component';
 
 //#endregion
 @Component({
@@ -517,7 +517,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
       data: classeSezioneAnno
     };
 
-    const dialogRef = this._dialog.open(RisorseCSAEditComponent, dialogConfig);
+    const dialogRef = this._dialog.open(RisorseCSAListEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() =>  this.loadData());
   }
 

@@ -3,7 +3,7 @@
         <div *ngIf="data">
             <div class="center">
 
-                <img class="iconaMenuBig" src="./assets/risorsaclasse_edit_T.svg">
+                <img class="iconaMenuBig" src="./assets/risorseclasse_edit_T.svg">
 
                 <button mat-icon-button aria-label="Back" matTooltip="Chiudi" class="_btn-toolbar-close" mat-dialog-close></button>
 
@@ -13,18 +13,16 @@
                     <mat-icon>restart_alt</mat-icon>
                 </button>
 
-                <button mat-mini-fab aria-label="Salva" matTooltip="Salva" class="btn ml10"
-
-                        (click)="save()" >
-                    <mat-icon>save</mat-icon>
+                <button mat-mini-fab aria-label="Aggiungi Documento" matTooltip="Aggiungi Documento" class="btn ml10" (click)="addRecord()">
+                    <mat-icon>add</mat-icon>
                 </button>
             </div>
             <br>
-            <div *ngIf="classeSezioneAnno" class="center">
+            <div *ngIf="classeSezioneAnno" class="center fs18">
                 {{'Documenti della '+classeSezioneAnno.classeSezione.classe?.descrizione2 + ' sez.' + classeSezioneAnno.classeSezione.sezione}}
             </div>
             <!-- **************************   MAT-TABLE   ******************* -->
-            <table mat-table class="_table-row-low transparent w100"
+            <table mat-table class="mt10 _table-row-low transparent w100"
                 [dataSource]="matDataSource"
                 matSort>
         
@@ -32,13 +30,13 @@
                 <ng-container matColumnDef="actionsColumn">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell  *matCellDef="let element;"> 
-                        <img class="iconaMenu pointer" src="./assets/risorsaclasse_edit.svg">
+                        <img (click)="openDetail(element.id)" class="iconaMenu pointer" src="./assets/risorsaclasse_edit.svg">
                     </td>
                 </ng-container>
         
                 <ng-container matColumnDef="fileName">
                     <th mat-header-cell *matHeaderCellDef  mat-sort-header >Nome File</th>
-                    <td mat-cell *matCellDef="let element" [innerHTML]="element.risorsa.nomeFile | highlight:filterValue"></td>
+                    <td mat-cell *matCellDef="let element" [innerHTML]="element.risorsa.nomeFile+'.'+element.risorsa.tipoFile | highlight:filterValue"></td>
                 </ng-container>
 
                 <ng-container matColumnDef="tipoDocumento">

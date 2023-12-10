@@ -27,6 +27,11 @@ export class RisorseCSAService {
     //http://213.215.231.4/swappX/api/CLS_RisorseCSA/2
   }
 
+  getByTipoDocCSA(tipoDocumentoID: number, classeSezioneAnnoID: number): Observable<CLS_RisorsaCSA>{
+    return this.http.get<CLS_RisorsaCSA>(environment.apiBaseUrl+'CLS_RisorseCSA/getByTipoDocCSA/'+tipoDocumentoID+'/'+classeSezioneAnnoID);
+    //http://213.215.231.4/swappX/api/CLS_RisorseCSA/getByTipoDocCSA/2/16
+  }
+
   listByCSA(classeSezioneAnnoID: number): Observable<CLS_RisorsaCSA[]>{
     return this.http.get<CLS_RisorsaCSA[]>(environment.apiBaseUrl+'CLS_RisorseCSA/ListByCSA/'+classeSezioneAnnoID);
     //http://213.215.231.4/swappX/api/CLS_RisorseCSA/ListByCSA/16

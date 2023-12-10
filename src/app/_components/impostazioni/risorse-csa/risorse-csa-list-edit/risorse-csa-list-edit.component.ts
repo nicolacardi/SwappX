@@ -2,7 +2,7 @@
 
 import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
 import { tap }                                  from 'rxjs/operators';
@@ -23,14 +23,15 @@ import { DOC_TipoDocumento }                    from 'src/app/_models/DOC_TipoDo
 import { MatTableDataSource } from '@angular/material/table';
 import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
 import { ClassiSezioniAnniService } from 'src/app/_components/classi/classi-sezioni-anni.service';
+import { RisorsaCSAEditComponent } from '../risorsa-csa-edit/risorsa-csa-edit.component';
 
 
 @Component({
-  selector: 'app-risorse-csa-edit',
-  templateUrl: './risorse-csa-edit.component.html',
+  selector: 'app-risorse-csa-list-edit',
+  templateUrl: './risorse-csa-list-edit.component.html',
   styleUrls: ['../risorse-csa.css']
 })
-export class RisorseCSAEditComponent {
+export class RisorseCSAListEditComponent {
 
 //#region ----- Variabili ----------------------
 
@@ -45,14 +46,14 @@ export class RisorseCSAEditComponent {
   filterValue = '';
   displayedColumns: string[] =  [
     "actionsColumn",
-    "fileName",
-    "tipoDocumento"
+    "tipoDocumento",
+    "fileName"
   ];
   //#endregion
 
   //#region ----- Constructor --------------------
 
-  constructor(public _dialogRef: MatDialogRef<RisorseCSAEditComponent>,
+  constructor(public _dialogRef: MatDialogRef<RisorseCSAListEditComponent>,
               @Inject(MAT_DIALOG_DATA) public data:       CLS_ClasseSezioneAnno,
               private svcRisorseCSA:            RisorseCSAService,
               private svcClassiSezioniAnni:     ClassiSezioniAnniService,
@@ -99,7 +100,29 @@ export class RisorseCSAEditComponent {
     }
   }
 
+  openDetail(id:any){
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '450px',
+      height: '250px',
+      data:  { risorsaCSAID: id, classeSezioneAnnoID: this.classeSezioneAnno.id}
+    };
 
+    const dialogRef = this._dialog.open(RisorsaCSAEditComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() => this.loadData());
+
+  }
+
+  addRecord(){
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '450px',
+      height: '250px',
+      data:  {risorsaCSAID: 0, classeSezioneAnnoID: this.classeSezioneAnno.id}
+    };
+    const dialogRef = this._dialog.open(RisorsaCSAEditComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() => this.loadData());
+  }
 
   //#endregion
 

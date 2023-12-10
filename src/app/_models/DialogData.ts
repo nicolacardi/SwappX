@@ -107,5 +107,6 @@ export interface DialogDataTipoScadenzaEdit {
       }
 
 export interface DialogDataRisorsaClasseEdit {
-      risorsaCSAID:                          number;
+      risorsaCSAID:                             number;
+      classeSezioneAnnoID:                      number;
       }
