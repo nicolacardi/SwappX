@@ -55,6 +55,10 @@ export class RisorseCSAService {
     return this.http.delete( environment.apiBaseUrl  + 'CLS_RisorseCSA/' + risorsaCSAID);    
   }
 
+  deleteByTipoDocCSA(tipoDocumentoID: number, classeSezioneAnnoID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'CLS_RisorseCSA/DeleteByTipoDocCSA/'+tipoDocumentoID+'/'+classeSezioneAnnoID);
+  }
+
 
 
 }

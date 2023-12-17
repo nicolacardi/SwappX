@@ -4,7 +4,7 @@ import { DOC_TipoDocumento }                    from "./DOC_TipoDocumento";
 import { _UT_Risorsa }                          from "./_UT_Risorsa";
 
 export interface CLS_RisorsaCSA {
-  id:                                           number;
+  id?:                                           number;
   risorsaID:                                    number;
   classeSezioneAnnoID:                          number;
   tipoDocumentoID:                              number;

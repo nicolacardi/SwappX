@@ -4,7 +4,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { MatTableDataSource }                   from '@angular/material/table';
-import { iif, Observable }                      from 'rxjs';
+import { firstValueFrom, iif, Observable }                      from 'rxjs';
 import { concatMap, map, tap }                  from 'rxjs/operators';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
@@ -27,6 +27,7 @@ import { DOC_PagellaVoto, DOC_TipoGiudizio }    from 'src/app/_models/DOC_Pagell
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDocument';
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
+import { RisorseCSAService } from '../../impostazioni/risorse-csa/risorse-csa.service';
 
 //#endregion
 @Component({
@@ -74,6 +75,7 @@ export class PagellaVotoEditComponent implements OnInit  {
 
   constructor(private svcPagelle:               PagelleService,
               private svcFiles:                 FilesService,
+              private svcRisorseCSA:            RisorseCSAService,
               private svcPagellaVoti:           PagellaVotiService,
               private svcIscrizioni:            IscrizioniService,
               private _loadingService:          LoadingService,
@@ -324,10 +326,13 @@ export class PagellaVotoEditComponent implements OnInit  {
 
 //***********  DA QUI E' TUTTO PER IL DOWNLOAD PREVIEW VA MESSA IN UNA UTILITY **********************/
 
-  downloadPreviewPagella() {
+  async downloadPreviewPagella() {
     let nomeFile: string;
+    let template!: string;
     nomeFile = "PREVIEW_Pagella"  + '_' + this.iscrizione.classeSezioneAnno.anno.annoscolastico + "(" + this.periodo +"quad)_" + this.iscrizione.alunno.persona.cognome + ' ' + this.iscrizione.alunno.persona.nome + '.docx';    
-    this.svcFiles.buildAndGetBase64(this.svcFiles.openXMLPreparaPagella(this.iscrizione, this.lstPagellaVoti, this.pagella), nomeFile );
+    await firstValueFrom(this.svcRisorseCSA.getByTipoDocCSA(1, this.iscrizione.classeSezioneAnnoID).pipe(tap(res=> template= res.risorsa!.nomeFile)));
+
+    this.svcFiles.buildAndGetBase64(this.svcFiles.openXMLPreparaPagella(template, this.iscrizione, this.lstPagellaVoti, this.pagella), nomeFile );
   }
   
 

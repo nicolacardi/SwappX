@@ -61,7 +61,7 @@ export class FilesService {
     });
   }
 
-  openXMLPreparaPagella (iscrizione: CLS_Iscrizione, lstPagellaVoti: DOC_PagellaVoto[], objPagella: DOC_Pagella) {
+  openXMLPreparaPagella (template: string, iscrizione: CLS_Iscrizione, lstPagellaVoti: DOC_PagellaVoto[], objPagella: DOC_Pagella) {
 
     function estraiVoto(objPagellaVoto: DOC_PagellaVoto[], materia: string, index: number) {
       for (const PagellaVoto of objPagellaVoto) {
@@ -79,7 +79,7 @@ export class FilesService {
       return null;
     }
     let tagDocument : RPT_TagDocument = {
-      templateName: "PagellaElementari",
+      templateName: template, //QUESTO VA PESCATO E NON CABLATO DENTRO
       tagFields:
       [
         { tagName: "AnnoScolastico",            tagValue: iscrizione.classeSezioneAnno.anno.annoscolastico},

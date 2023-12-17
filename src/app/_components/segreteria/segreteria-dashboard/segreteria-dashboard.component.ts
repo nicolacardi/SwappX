@@ -34,6 +34,7 @@ import { CertCompetenzeService } from '../../procedura-iscrizione/iscrizione-ris
 import { ConsOrientativiService } from '../../procedura-iscrizione/iscrizione-risposte/consorientativi.service';
 import { IscrizioneRisposteService } from '../../procedura-iscrizione/iscrizione-risposte/iscrizione-risposte.service';
 import { DOC_ConsOrientativo } from 'src/app/_models/DOC_ConsOrientativo';
+import { RisorseCSAService } from '../../impostazioni/risorse-csa/risorse-csa.service';
 
 
 
@@ -73,6 +74,7 @@ export class SegreteriaDashboardComponent implements OnInit {
               private svcCertCompetenze:        CertCompetenzeService,
               private svcConsOrientativi:       ConsOrientativiService,
               private svcIscrizioneRisposte:    IscrizioneRisposteService,
+              private svcRisorseCSA:            RisorseCSAService,
               private svcPagellaVoti:           PagellaVotiService,
               private svcFiles:                 FilesService,
               private svcClassiSezioniAnni:     ClassiSezioniAnniService,
@@ -150,6 +152,7 @@ export class SegreteriaDashboardComponent implements OnInit {
     let alunno!: ALU_Alunno;
     let lstPagellaVoti!: DOC_PagellaVoto[];
     let pagella!: DOC_Pagella;
+    let template!: string;
 
     for (let i=0; i < this.viewListIscrizioni.getChecked().length ; i++){ 
       iscrizione =  this.viewListIscrizioni.getChecked()[i];
@@ -182,11 +185,15 @@ export class SegreteriaDashboardComponent implements OnInit {
       //3. ESTRAZIONE VOTI
       await firstValueFrom(this.svcPagellaVoti.listByAnnoClassePagella(annoID, classeID, pagella.id!).pipe(tap(res=> lstPagellaVoti = res)));
 
+      //serve estrarre il template
+      //3.5. ESTRAZIONE TEMPLATE
+      await firstValueFrom(this.svcRisorseCSA.getByTipoDocCSA(1, iscrizione.classeSezioneAnnoID).pipe(tap(res=> template= res.risorsa!.nomeFile)));
+
       //4. PRODUZIONE PAGELLA
       let file : DOC_File = {
         tipoDoc : "Pagella",
         docID : pagella.id!,
-        TagDocument : this.svcFiles.openXMLPreparaPagella(iscrizione, lstPagellaVoti, pagella),
+        TagDocument : this.svcFiles.openXMLPreparaPagella(template, iscrizione, lstPagellaVoti, pagella),
         tipoFile: "docX"
       };
 

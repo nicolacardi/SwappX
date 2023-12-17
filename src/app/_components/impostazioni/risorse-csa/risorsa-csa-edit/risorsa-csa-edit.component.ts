@@ -23,6 +23,8 @@ import { DOC_TipoDocumento }                    from 'src/app/_models/DOC_TipoDo
 import { _UT_Risorsa } from 'src/app/_models/_UT_Risorsa';
 import { RisorseService } from '../../risorse/risorse.service';
 import { DialogOkComponent } from 'src/app/_components/utilities/dialog-ok/dialog-ok.component';
+import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { ClassiSezioniAnniService } from 'src/app/_components/classi/classi-sezioni-anni.service';
 
 
 @Component({
@@ -35,6 +37,7 @@ export class RisorsaCSAEditComponent {
 //#region ----- Variabili ----------------------
 
   risorsaCSA$!:                                 Observable<CLS_RisorsaCSA>;
+  classeSezioneAnno!:                            CLS_ClasseSezioneAnno;
   obsRisorseCSA$!:                              Observable<CLS_RisorsaCSA[]>;
   obsTipiDocumento$!:                           Observable<DOC_TipoDocumento[]>;
   obsRisorse$!:                                 Observable<_UT_Risorsa[]>;
@@ -51,6 +54,7 @@ export class RisorsaCSAEditComponent {
               @Inject(MAT_DIALOG_DATA) public data:       DialogDataRisorsaClasseEdit,
               private svcRisorseCSA:            RisorseCSAService,
               private svcRisorse:               RisorseService,
+              private svcClassiSezioniAnni:     ClassiSezioniAnniService,
               private svcTipiDocumento:         TipiDocumentoService,
               private _loadingService :         LoadingService,
               private fb:                       UntypedFormBuilder, 
@@ -65,7 +69,9 @@ export class RisorsaCSAEditComponent {
       risorsaID:                                ['', { validators:[ Validators.required]}],
       tipoDocumentoID:                          ['', { validators:[ Validators.required]}],
       classeSezioneAnnoID:                      [''],
-      userIns:                                  ['']
+      userIns:                                  [''],
+      ckImpostaTutteSezioni:                    ['']
+
 
     });
     this.obsTipiDocumento$ = this.svcTipiDocumento.list();
@@ -79,10 +85,16 @@ export class RisorsaCSAEditComponent {
 
   ngOnInit() {
     this.loadData();
+    
   }
 
   loadData() {
+
+    this.svcClassiSezioniAnni.get(this.data.classeSezioneAnnoID).subscribe(res => this.classeSezioneAnno = res)
+
     if (this.data.risorsaCSAID && this.data.risorsaCSAID + '' != "0") {
+      
+
       const obsRisorseCSA$: Observable<CLS_RisorsaCSA> = this.svcRisorseCSA.get(this.data.risorsaCSAID);
       const loadRisorsaCSA$ = this._loadingService.showLoaderUntilCompleted(obsRisorseCSA$);
       this.risorsaCSA$ = loadRisorsaCSA$
@@ -106,10 +118,28 @@ export class RisorsaCSAEditComponent {
   //#region ----- Operazioni CRUD ----------------
 
   async save(){
+    let documentoID = this.form.controls.tipoDocumentoID.value;
+    let classeSezioneAnnoID = this.data.classeSezioneAnnoID;
+    let risorsaID = this.form.controls.risorsaID.value;
 
     let risorsaCSA!: CLS_RisorsaCSA;
-    await firstValueFrom(this.svcRisorseCSA.getByTipoDocCSA(this.form.controls.tipoDocumentoID.value, this.data.classeSezioneAnnoID).pipe(tap(res=> risorsaCSA= res)));
+    await firstValueFrom(this.svcRisorseCSA.getByTipoDocCSA(documentoID, classeSezioneAnnoID).pipe(tap(res=> risorsaCSA= res)));
 
+
+    //se c'è il flag parto a impostare tutte le classi
+    if (this.form.controls.ckImpostaTutteSezioni.value) {
+      //estraggo tutte le CSA dell'Anno con la stessa classe
+      let listaSezioniAnno!: CLS_ClasseSezioneAnno[];
+      await firstValueFrom(this.svcClassiSezioniAnni.listSezioniAnnoByCSA(classeSezioneAnnoID).pipe(tap(res=> listaSezioniAnno = res)));
+      //cancella tutti i documeni dello stesso tipo nelle classiSezioniAnnoID trovate
+      for (let i = 0; i < listaSezioniAnno.length; i++) {
+        await firstValueFrom(this.svcRisorseCSA.deleteByTipoDocCSA(documentoID, listaSezioniAnno[i].id));
+      }
+      //ora imposto per tutti lo stesso documento
+      for (let i = 0; i < listaSezioniAnno.length; i++) {
+        this.postRisorsaClasse(listaSezioniAnno[i].id, documentoID, risorsaID);
+      }
+    }
 
 
     if (this.form.controls['id'].value == null) {
@@ -151,11 +181,29 @@ export class RisorsaCSAEditComponent {
             this._dialogRef.close();
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
           },
-          error: err=> (
+          error: err=> {
             this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-          )
+          }
         });
     }
+  }
+
+  async postRisorsaClasse (classeSezioneAnnoID: number, tipoDocumentoID: number, risorsaID: number) {
+    //routine da chiamare n volte
+    let formRisorsaClasse: CLS_RisorsaCSA = {
+      classeSezioneAnnoID: classeSezioneAnnoID,
+      tipoDocumentoID: tipoDocumentoID,
+      risorsaID: risorsaID
+    }
+
+    this.svcRisorseCSA.post(formRisorsaClasse).subscribe({
+      next: res=> {
+        console.log ("posted:", formRisorsaClasse);
+      },
+      error: err=> {
+        console.log ("error:", formRisorsaClasse);
+      }
+    });
   }
 
   delete(){

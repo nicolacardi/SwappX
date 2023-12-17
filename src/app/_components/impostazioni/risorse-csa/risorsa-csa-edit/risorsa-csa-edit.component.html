@@ -51,6 +51,13 @@
                     </mat-form-field>
                 </mat-grid-tile>
 
+                <mat-grid-tile>
+                    <mat-checkbox color="primary" formControlName="ckImpostaTutteSezioni">
+                        Imposta lo stesso documento per tutte le sezioni della classe <br>
+                         <span *ngIf="classeSezioneAnno" class="fs16 bold">{{classeSezioneAnno.classeSezione.classe?.descrizione2}}</span> dello stesso anno <br>
+                         (sovrascrive impostazioni diverse)
+                    </mat-checkbox>
+                </mat-grid-tile>
 
 
 

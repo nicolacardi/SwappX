@@ -103,8 +103,8 @@ export class RisorseCSAListEditComponent {
   openDetail(id:any){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '450px',
-      height: '250px',
+      width: '460px',
+      height: '350px',
       data:  { risorsaCSAID: id, classeSezioneAnnoID: this.classeSezioneAnno.id}
     };
 
@@ -116,8 +116,8 @@ export class RisorseCSAListEditComponent {
   addRecord(){
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '450px',
-      height: '250px',
+      width: '460px',
+      height: '350px',
       data:  {risorsaCSAID: 0, classeSezioneAnnoID: this.classeSezioneAnno.id}
     };
     const dialogRef = this._dialog.open(RisorsaCSAEditComponent, dialogConfig);

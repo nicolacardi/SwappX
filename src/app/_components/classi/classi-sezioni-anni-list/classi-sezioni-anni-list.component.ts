@@ -362,8 +362,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
 
       loadClassi$.subscribe( val =>   {
         this.matDataSource.data = val;
-
-        if (this.dove == "classi-sezioni-anni-page") {
+        if (this.dove == "impostazioni" || this.dove == "segreteria-dashboard") {
           this.matDataSource.paginator = this.paginator;
           this.sortCustom(); 
           this.matDataSource.sort = this.sort; 
