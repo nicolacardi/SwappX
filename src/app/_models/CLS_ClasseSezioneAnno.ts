@@ -54,6 +54,5 @@ export interface CLS_ClasseSezioneAnnoGroup {
         numStato70:                             number;
         numStato80:                             number;
 
-        ClasseSezioneAnnoSucc:                  CLS_ClasseSezioneAnno;
 
 }

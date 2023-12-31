@@ -50,7 +50,8 @@ export class IscrizioniClasseListComponent implements OnInit {
       "email", 
       "telefono",
       "dtNascita", 
-      "stato",    //Stato Iscrizione
+      "stato",    
+
       // "indirizzo", 
       // "comune", 
       // "cap", 
@@ -210,7 +211,7 @@ export class IscrizioniClasseListComponent implements OnInit {
 
       loadIscrizioni$.subscribe(
         res =>  {
-          // console.log("iscrizioni-classe-list - loadData - res:", res);
+          //console.log("iscrizioni-classe-list - loadData - res:", res);
           this.matDataSource.data = res;
           this.matDataSource.paginator = this.paginator;
           this.sortCustom(); 
@@ -232,25 +233,27 @@ export class IscrizioniClasseListComponent implements OnInit {
 
   }
 
+
+
+//#endregion
+
+//#region ----- Filtri & Sort ------------------
+
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {
       switch(property) {
-        case 'nome':                        return item.alunno.nome;
-        case 'cognome':                     return item.alunno.cognome;
-        case 'email':                       return item.alunno.email;
-        case 'telefono':                    return item.alunno.telefono;
-        case 'dtNascita':                   return item.alunno.dtNascita;
+        case 'nome':                        return item.alunno.persona.nome;
+        case 'cognome':                     return item.alunno.persona.cognome;
+        case 'email':                       return item.alunno.persona.email;
+        case 'telefono':                    return item.alunno.persona.telefono;
+        case 'dtNascita':                   return item.alunno.persona.dtNascita;
         case 'stato':                       return item.stato.descrizione;
         default: return item[property]
       }
     };
   }
 
-//#endregion
-
-//#region ----- Filtri & Sort ------------------
-
-/*
+  /*
   filterRightPanel(): (data: any, filter: string) => boolean {
 
     let filterFunction = function(data: any, filter: any): boolean {

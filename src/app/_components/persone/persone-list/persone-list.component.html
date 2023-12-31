@@ -10,11 +10,12 @@
     <mat-paginator class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>
 
     <!-- **************************   MAT-TABLE   ******************* -->
-    <table mat-table class="_table-row-low transparent w100" [dataSource]="matDataSource"
-           matSort
-           cdkDropList
-           cdkDropListOrientation="horizontal"
-           (cdkDropListDropped)="drop($event)">
+    <table mat-table class="_table-row-low transparent w100" 
+        [dataSource]="matDataSource"
+        matSort
+        cdkDropList
+        cdkDropListOrientation="horizontal"
+        (cdkDropListDropped)="drop($event)">
 
         <!-- **************************   NG-CONTAINERs: COLONNE   ******************* -->
         <ng-container matColumnDef="actionsColumn">
@@ -103,7 +104,7 @@
                 </button>
             </th>
             <td mat-cell class="center" *matCellDef="let element">
-                <mat-checkbox [checked]="element.ckAttivo" color="primary" disabled></mat-checkbox>
+                <mat-checkbox class="h30px"  [checked]="element.ckAttivo" color="primary" disabled></mat-checkbox>
             </td>
         </ng-container>
 

@@ -2,6 +2,7 @@
 
 import { Component, OnInit, ViewChild }         from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatPaginator }                         from '@angular/material/paginator';
 import { MatSort }                              from '@angular/material/sort';
 import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable }                           from 'rxjs';
@@ -82,6 +83,7 @@ export class ClassiAnniMaterieListComponent implements OnInit {
 
 //#region ----- ViewChild Input Output ---------
   @ViewChild(MatSort) sort!:                    MatSort;
+  @ViewChild(MatPaginator) paginator!:          MatPaginator;
 //#endregion
 
 //#region ----- Constructor --------------------
@@ -120,6 +122,7 @@ export class ClassiAnniMaterieListComponent implements OnInit {
     ).subscribe(
       res=>{
         this.matDataSource.data = res;
+        this.matDataSource.paginator = this.paginator;
         this.sortCustom(); 
         this.matDataSource.sort = this.sort; 
         this.matDataSource.filterPredicate = this.filterPredicate(); //usiamo questo per uniformità con gli altri component nei quali c'è anche il filtro di destra, così volendo lo aggiungiamo velocemente

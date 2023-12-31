@@ -7,6 +7,7 @@ export interface DOC_Pagella {
         periodo:                                number;
         statoID?:                               number;  //è il caso di renderlo non ? ma obbligatorio?
         dtDocumento?:                           string;
+        giudizioQuad?:                          string;
         note?:                                  string;
         dtIns?:                                 string;
         dtUpd?:                                 string;

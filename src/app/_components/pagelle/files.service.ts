@@ -71,17 +71,21 @@ export class FilesService {
             return {
               materia,
               Note: PagellaVoto.note? PagellaVoto.note: "-",
-              Ob: PagellaVoto._ObiettiviCompleti![index-1].descrizione,
-              VotoOb: PagellaVoto._ObiettiviCompleti![index-1].livelloObiettivo? PagellaVoto._ObiettiviCompleti![index-1].livelloObiettivo!.descrizione: "-"
+              Ob: PagellaVoto._ObiettiviCompleti? PagellaVoto._ObiettiviCompleti![index-1].descrizione: "-",
+              VotoOb: (PagellaVoto._ObiettiviCompleti && PagellaVoto._ObiettiviCompleti![index-1].livelloObiettivo)? PagellaVoto._ObiettiviCompleti![index-1].livelloObiettivo!.descrizione: "-",
+              voto: PagellaVoto.voto + '',
             };
+
         }
       }
       return null;
     }
     let tagDocument : RPT_TagDocument = {
-      templateName: template, //QUESTO VA PESCATO E NON CABLATO DENTRO
+      templateName: template,
       tagFields:
       [
+        { tagName: "RilevazioneProgressi",      tagValue: objPagella.giudizioQuad},
+
         { tagName: "AnnoScolastico",            tagValue: iscrizione.classeSezioneAnno.anno.annoscolastico},
         { tagName: "ComuneNascita",             tagValue: iscrizione.alunno.persona.comuneNascita},
         { tagName: "ProvNascita",               tagValue: iscrizione.alunno.persona.provNascita},
@@ -92,6 +96,7 @@ export class FilesService {
         { tagName: "Sezione" ,                  tagValue: iscrizione.classeSezioneAnno.classeSezione.sezione},
         { tagName: "DataDoc" ,                  tagValue: Utility.formatDate(objPagella.dtIns, FormatoData.dd_mm_yyyy)},
 
+        //per voti Obiettivo
         { tagName: "ObItaliano1" ,              tagValue: estraiVoto(lstPagellaVoti, "Italiano", 1)?.Ob},
         { tagName: "VotoObItaliano1" ,          tagValue: estraiVoto(lstPagellaVoti, "Italiano", 1)?.VotoOb},
         { tagName: "ObItaliano2" ,              tagValue: estraiVoto(lstPagellaVoti, "Italiano", 2)?.Ob},
@@ -99,6 +104,8 @@ export class FilesService {
         { tagName: "ObItaliano3" ,              tagValue: estraiVoto(lstPagellaVoti, "Italiano", 3)?.Ob},
         { tagName: "VotoObItaliano3" ,          tagValue: estraiVoto(lstPagellaVoti, "Italiano", 3)?.VotoOb},
         { tagName: "CommentoItaliano" ,         tagValue: estraiVoto(lstPagellaVoti, "Italiano", 1)?.Note},
+        //per voti numerici
+        { tagName: "VotoItaliano" ,             tagValue: estraiVoto(lstPagellaVoti, "Italiano", 1)?.voto},
 
         { tagName: "ObEdCivica1" ,              tagValue: estraiVoto(lstPagellaVoti, "Educazione Civica", 1)?.Ob},
         { tagName: "VotoObEdCivica1" ,          tagValue: estraiVoto(lstPagellaVoti, "Educazione Civica", 1)?.VotoOb},
@@ -107,6 +114,8 @@ export class FilesService {
         { tagName: "ObEdCivica3" ,              tagValue: estraiVoto(lstPagellaVoti, "Educazione Civica", 3)?.Ob},
         { tagName: "VotoObEdCivica3" ,          tagValue: estraiVoto(lstPagellaVoti, "Educazione Civica", 3)?.VotoOb},
         { tagName: "CommentoEdCivica" ,         tagValue: estraiVoto(lstPagellaVoti, "Educazione Civica", 1)?.Note},
+        //per voti numerici
+        { tagName: "VotoEdCivica" ,             tagValue: estraiVoto(lstPagellaVoti, "Educazione Civica", 1)?.voto},
 
         { tagName: "ObStoria1" ,                tagValue: estraiVoto(lstPagellaVoti, "Storia", 1)?.Ob},
         { tagName: "VotoObStoria1" ,            tagValue: estraiVoto(lstPagellaVoti, "Storia", 1)?.VotoOb},
@@ -115,7 +124,10 @@ export class FilesService {
         { tagName: "ObStoria3" ,                tagValue: estraiVoto(lstPagellaVoti, "Storia", 3)?.Ob},
         { tagName: "VotoObStoria3" ,            tagValue: estraiVoto(lstPagellaVoti, "Storia", 3)?.VotoOb},
         { tagName: "CommentoStoria" ,           tagValue: estraiVoto(lstPagellaVoti, "Storia", 1)?.Note},
+        //per voti numerici
+        { tagName: "VotoStoria" ,               tagValue: estraiVoto(lstPagellaVoti, "Storia", 1)?.voto},
 
+        
         { tagName: "ObGeografia1" ,             tagValue: estraiVoto(lstPagellaVoti, "Geografia", 1)?.Ob},
         { tagName: "VotoObGeografia1" ,         tagValue: estraiVoto(lstPagellaVoti, "Geografia", 1)?.VotoOb},
         { tagName: "ObGeografia2" ,             tagValue: estraiVoto(lstPagellaVoti, "Geografia", 2)?.Ob},
@@ -123,6 +135,8 @@ export class FilesService {
         { tagName: "ObGeografia3" ,             tagValue: estraiVoto(lstPagellaVoti, "Geografia", 3)?.Ob},
         { tagName: "VotoObGeografia3" ,         tagValue: estraiVoto(lstPagellaVoti, "Geografia", 3)?.VotoOb},
         { tagName: "CommentoGeografia" ,        tagValue: estraiVoto(lstPagellaVoti, "Geografia", 1)?.Note},
+        //per voti numerici
+        { tagName: "VotoGeografia" ,            tagValue: estraiVoto(lstPagellaVoti, "Geografia", 1)?.voto},
 
         { tagName: "ObInglese1" ,               tagValue: estraiVoto(lstPagellaVoti, "Inglese", 1)?.Ob},
         { tagName: "VotoObInglese1" ,           tagValue: estraiVoto(lstPagellaVoti, "Inglese", 1)?.VotoOb},
@@ -131,6 +145,8 @@ export class FilesService {
         { tagName: "ObInglese3" ,               tagValue: estraiVoto(lstPagellaVoti, "Inglese", 3)?.Ob},
         { tagName: "VotoObInglese3" ,           tagValue: estraiVoto(lstPagellaVoti, "Inglese", 3)?.VotoOb},
         { tagName: "CommentoInglese" ,          tagValue: estraiVoto(lstPagellaVoti, "Inglese", 1)?.Note},
+        //per voti numerici
+        { tagName: "VotoInglese" ,              tagValue: estraiVoto(lstPagellaVoti, "Inglese", 1)?.voto},
 
         { tagName: "ObMusica1" ,                tagValue: estraiVoto(lstPagellaVoti, "Musica", 1)?.Ob},
         { tagName: "VotoObMusica1" ,            tagValue: estraiVoto(lstPagellaVoti, "Musica", 1)?.VotoOb},
@@ -139,6 +155,8 @@ export class FilesService {
         { tagName: "ObMusica3" ,                tagValue: estraiVoto(lstPagellaVoti, "Musica", 3)?.Ob},
         { tagName: "VotoObMusica3" ,            tagValue: estraiVoto(lstPagellaVoti, "Musica", 3)?.VotoOb},
         { tagName: "CommentoMusica" ,           tagValue: estraiVoto(lstPagellaVoti, "Musica", 1)?.Note},
+        //per voti numerici
+        { tagName: "VotoMusica" ,               tagValue: estraiVoto(lstPagellaVoti, "Musica", 1)?.voto},
 
         { tagName: "ObMatematica1" ,            tagValue: estraiVoto(lstPagellaVoti, "Matematica", 1)?.Ob},
         { tagName: "VotoObMatematica1" ,        tagValue: estraiVoto(lstPagellaVoti, "Matematica", 1)?.VotoOb},
@@ -147,6 +165,8 @@ export class FilesService {
         { tagName: "ObMatematica3" ,            tagValue: estraiVoto(lstPagellaVoti, "Matematica", 3)?.Ob},
         { tagName: "VotoObMatematica3" ,        tagValue: estraiVoto(lstPagellaVoti, "Matematica", 3)?.VotoOb},
         { tagName: "CommentoMatematica" ,       tagValue: estraiVoto(lstPagellaVoti, "Matematica", 1)?.Note},
+        //per voti numerici
+        { tagName: "VotoMatematica" ,           tagValue: estraiVoto(lstPagellaVoti, "Matematica", 1)?.voto},
 
         { tagName: "ObScNaturali1" ,            tagValue: estraiVoto(lstPagellaVoti, "Scienze Naturali", 1)?.Ob},
         { tagName: "VotoObScNaturali1" ,        tagValue: estraiVoto(lstPagellaVoti, "Scienze Naturali", 1)?.VotoOb},
@@ -155,6 +175,8 @@ export class FilesService {
         { tagName: "ObScNaturali3" ,            tagValue: estraiVoto(lstPagellaVoti, "Scienze Naturali", 3)?.Ob},
         { tagName: "VotoObScNaturali3" ,        tagValue: estraiVoto(lstPagellaVoti, "Scienze Naturali", 3)?.VotoOb},
         { tagName: "CommentoScNaturali" ,       tagValue: estraiVoto(lstPagellaVoti, "Scienze Naturali", 1)?.Note},
+        //per voti numerici
+        { tagName: "VotoScNaturali" ,            tagValue: estraiVoto(lstPagellaVoti, "Scienze Naturali", 1)?.voto},
 
         { tagName: "ObScMotorie1" ,             tagValue: estraiVoto(lstPagellaVoti, "Scienze Motorie", 1)?.Ob},
         { tagName: "VotoObScMotorie1" ,         tagValue: estraiVoto(lstPagellaVoti, "Scienze Motorie", 1)?.VotoOb},
@@ -163,12 +185,16 @@ export class FilesService {
         { tagName: "ObScMotorie3" ,             tagValue: estraiVoto(lstPagellaVoti, "Scienze Motorie", 3)?.Ob},
         { tagName: "VotoObScMotorie3" ,         tagValue: estraiVoto(lstPagellaVoti, "Scienze Motorie", 3)?.VotoOb},
         { tagName: "CommentoScMotorie" ,        tagValue: estraiVoto(lstPagellaVoti, "Scienze Motorie", 1)?.Note},
+        //per voti numerici
+        { tagName: "VotoScMotorie" ,            tagValue: estraiVoto(lstPagellaVoti, "Scienze Motorie", 1)?.voto},
 
         { tagName: "ObLavManuale1" ,            tagValue: estraiVoto(lstPagellaVoti, "Lavoro Manuale", 1)?.Ob},
         { tagName: "VotoObLavManuale1" ,        tagValue: estraiVoto(lstPagellaVoti, "Lavoro Manuale", 1)?.VotoOb},
         { tagName: "ObLavManuale2" ,            tagValue: estraiVoto(lstPagellaVoti, "Lavoro Manuale", 2)?.Ob},
         { tagName: "VotoObLavManuale2" ,        tagValue: estraiVoto(lstPagellaVoti, "Lavoro Manuale", 2)?.VotoOb},
         { tagName: "CommentoLavManuale" ,       tagValue: estraiVoto(lstPagellaVoti, "Lavoro Manuale", 1)?.Note},
+        //per voti numerici
+        { tagName: "VotoLavManuale" ,           tagValue: estraiVoto(lstPagellaVoti, "Lavoro Manuale", 1)?.voto},
 
         { tagName: "ObEuritmia1" ,              tagValue: estraiVoto(lstPagellaVoti, "Euritmia", 1)?.Ob},
         { tagName: "VotoObEuritmia1" ,          tagValue: estraiVoto(lstPagellaVoti, "Euritmia", 1)?.VotoOb},
@@ -177,12 +203,16 @@ export class FilesService {
         { tagName: "ObEuritmia3" ,              tagValue: estraiVoto(lstPagellaVoti, "Euritmia", 3)?.Ob},
         { tagName: "VotoObEuritmia3" ,          tagValue: estraiVoto(lstPagellaVoti, "Euritmia", 3)?.VotoOb},
         { tagName: "CommentoEuritmia" ,         tagValue: estraiVoto(lstPagellaVoti, "Euritmia", 1)?.Note},
+        //per voti numerici
+        { tagName: "VotoEuritmia" ,             tagValue: estraiVoto(lstPagellaVoti, "Euritmia", 1)?.voto},
 
         { tagName: "ObArteImmagine1" ,          tagValue: estraiVoto(lstPagellaVoti, "Arte e Immagine", 1)?.Ob},
         { tagName: "VotoObArteImmagine1" ,      tagValue: estraiVoto(lstPagellaVoti, "Arte e Immagine", 1)?.VotoOb},
         { tagName: "ObArteImmagine2" ,          tagValue: estraiVoto(lstPagellaVoti, "Arte e Immagine", 2)?.Ob},
         { tagName: "VotoObArteImmagine2" ,      tagValue: estraiVoto(lstPagellaVoti, "Arte e Immagine", 2)?.VotoOb},
         { tagName: "CommentoArteImmagine" ,     tagValue: estraiVoto(lstPagellaVoti, "Arte e Immagine", 1)?.Note},
+        //per voti numerici
+        { tagName: "VotoArteImmagine" ,         tagValue: estraiVoto(lstPagellaVoti, "Arte e Immagine", 1)?.voto},
 
       ],
       //tagTables: [] //non ci sono tables dinamiche

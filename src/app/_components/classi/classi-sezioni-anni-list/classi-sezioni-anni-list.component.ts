@@ -244,8 +244,8 @@ export class ClassiSezioniAnniListComponent implements OnInit {
         this.toggleChecks = false;
       }
     );
-    //emette anno all'inizio (FORSE NON SERVE) NC 21/09/24
-    //this.annoIdEmitter.emit(this.form.controls.selectAnnoScolastico.value);
+    //emette anno all'inizio...NON INIBIRE! non funzionerebbe l'aggiunta di un alunno a una classe in quanto non saprebbe l'annoID
+    this.annoIdEmitter.emit(this.form.controls.selectAnnoScolastico.value);
 
 
     this.showPageTitle = false;
@@ -361,6 +361,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
       const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
       loadClassi$.subscribe( val =>   {
+        //console.log("classi-sezioni-anni-list - loadData val", val);
         this.matDataSource.data = val;
         if (this.dove == "impostazioni" || this.dove == "segreteria-dashboard") {
           this.matDataSource.paginator = this.paginator;

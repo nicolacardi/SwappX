@@ -759,6 +759,10 @@
         height: 100px;
     }
 
+    .h120px {
+        height: 120px;
+    }
+
     .h125px {
         height: 125px;
     }
@@ -1462,6 +1466,7 @@
 
     ._table-row-low .mat-mdc-row {
         min-height: 30px;               /*FUNZIONA SOLO PER LE <mat-table>*/
+        /* height: 30px; */
     }
 
     ._table-title-low {

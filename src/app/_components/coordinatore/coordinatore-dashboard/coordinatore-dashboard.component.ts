@@ -300,7 +300,7 @@ export class CoordinatoreDashboardComponent implements OnInit {
 
             //per ragioni di sincronia (aggiornamento classiSezioniAnniList dopo il loop) usiamo la Promise()
             for (const element of objIdToRemove) {
-              await this.svcDocenze.delete(element.id)
+              await this.svcDocenze.delete(element.id!)
               .toPromise();
             }
 
@@ -320,6 +320,7 @@ export class CoordinatoreDashboardComponent implements OnInit {
     //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
     //serve per la successiva assegnazione ad una classe...in quanto il modale che va ad aggiungere
     //le classi ha bisogno di conoscere anche l'annoID per fare le proprie verifiche
+    console.log ("coordinatore-dashboard - annoIDEmitted - annoID", annoID);
     this.annoID = annoID;
   }
 
@@ -343,6 +344,7 @@ export class CoordinatoreDashboardComponent implements OnInit {
   }
 
   iscrizioneIDEmitted(iscrizioneID: number) {
+    console.log("coordinatore-dahsboard - iscrizioneIDEmitted", iscrizioneID);
     this.iscrizioneID = iscrizioneID;
   }
 

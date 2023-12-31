@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
 import { Component, Inject, ViewChild }         from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable, tap }                      from 'rxjs';
@@ -62,7 +62,7 @@ export class RisorsaEditComponent {
     id:                                       [null],
     nomeFile:                                   [''],
     tipoFile:                                   [''],
-    fileBase64:                                 [''],
+    fileBase64:                                 ['', Validators.required],
     dtIns:                                      [''],
     userIns:                                    ['']
   });
@@ -82,13 +82,13 @@ export class RisorsaEditComponent {
 
     if (this.data.risorsaID && this.data.risorsaID + '' != "0") {
 
-      const obsFile$: Observable<_UT_Risorsa> = this.svcRisorse.getLight(this.data.risorsaID);
+      const obsFile$: Observable<_UT_Risorsa> = this.svcRisorse.get(this.data.risorsaID);
       const loadFile$ = this._loadingService.showLoaderUntilCompleted(obsFile$);
       this.file$ = loadFile$
       .pipe(
           tap(
             file => {
-              // console.log ("risorsa-edit - loadData - file ", file);
+              console.log ("risorsa-edit - loadData - file ", file);
               this.form.patchValue(file)
             }
           )
@@ -117,6 +117,7 @@ export class RisorsaEditComponent {
     //   return;
     // }
 
+    console.log ("risorsa-edit - save - this.form.value", this.form.value);
 
 
 
@@ -149,17 +150,22 @@ export class RisorsaEditComponent {
         )
       });
     }
-    // else {
-    //   this.svcRisorse.put(this.form.value).subscribe({
-    //       next: res=> {
-    //         this._dialogRef.close();
-    //         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-    //       },
-    //       error: err=> (
-    //         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    //       )
-    //     });
-    // }
+    else {
+      //qui bisogna distinguere, perchè uno potrebbe aver solo modificato il nome del file o caricato un nuovo file
+      //ed il form di conseguenza potrebbe essere carico solo per metà....
+      
+      this.svcRisorse.put(this.form.value).subscribe({
+          next: ()=> {
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+            this.svcRisorse.renumberSeq().subscribe();
+            this._dialogRef.close();
+
+          },
+          error: ()=> (
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          )
+        });
+    }
   }
 
   // delete(){

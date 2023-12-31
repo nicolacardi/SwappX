@@ -187,8 +187,22 @@ export class SegreteriaDashboardComponent implements OnInit {
 
       //serve estrarre il template
       //3.5. ESTRAZIONE TEMPLATE
-      await firstValueFrom(this.svcRisorseCSA.getByTipoDocCSA(1, iscrizione.classeSezioneAnnoID).pipe(tap(res=> template= res.risorsa!.nomeFile)));
+      await firstValueFrom(this.svcRisorseCSA.getByTipoDocCSA(1, iscrizione.classeSezioneAnnoID)
+      .pipe(
+        tap(res=> {
+          if (res) template= res.risorsa!.nomeFile
+          })
+        )
+      );
 
+      if (template== null || template == undefined || template == '') {
+        this._dialog.open(DialogOkComponent, {
+          width: '320px',
+          data: {titolo: "ATTENZIONE!", sottoTitolo: "Non sembra disponibile un template per questa classe"}
+        });
+        return;
+      }
+      
       //4. PRODUZIONE PAGELLA
       let file : DOC_File = {
         tipoDoc : "Pagella",

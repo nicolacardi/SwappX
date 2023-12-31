@@ -35,8 +35,9 @@ export class RisorseListComponent {
   obsRisorse$!:                             Observable<_UT_Risorsa[]>;
   
   displayedColumns: string[] = [
-    "actionsColumn",
-    "delete", 
+    "download",
+    "delete",
+    "edit", 
     "nomeFile",
     "tipoFile"
   ];
@@ -113,13 +114,23 @@ constructor(private svcRisorse:                   RisorseService,
         this.loadData();
       }
     });
-    
-    (
-      
-      
-      
-      () => {() => this.loadData();});
   }
+
+  openDetail(id: any){
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '600px',
+      height: '430px',
+      data: { risorsaID:  id}
+    };
+    const dialogRef = this._dialog.open(RisorsaEditComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe({
+      next: res=>{
+        this.loadData();
+      }
+    });
+  }
+
 
   download(risorsaID:number){
     if (risorsaID == null) return;

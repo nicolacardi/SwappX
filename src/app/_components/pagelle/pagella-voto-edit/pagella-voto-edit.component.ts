@@ -28,6 +28,7 @@ import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno
 import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDocument';
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
 import { RisorseCSAService } from '../../impostazioni/risorse-csa/risorse-csa.service';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 //#endregion
 @Component({
@@ -85,7 +86,8 @@ export class PagellaVotoEditComponent implements OnInit  {
                 
     this.form = this.fb.group(
       {
-        dtDocumento:                                       [null],
+        dtDocumento:                            [null],
+        giudizioQuad:                           ['']
       });
   }
 
@@ -94,7 +96,7 @@ export class PagellaVotoEditComponent implements OnInit  {
 //#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
-    if (this.iscrizioneID != undefined && this.periodo != undefined) 
+    if (this.iscrizioneID != undefined && this.periodo != undefined  && this.iscrizioneID !=0) 
     {
       this.loadData();
 
@@ -109,11 +111,15 @@ export class PagellaVotoEditComponent implements OnInit  {
       map(val=>val.filter(val=>(val.periodo == this.periodo)))).subscribe(
         val =>  {
           //console.log ("pagella-voto-edit - ngOnChanges - pagella", val);
-          //console.log ("pagelle.edit - loadData - pagella:", this.pagella);
+          //console.log ("pagella-voto-edit - loadData - pagella:", this.pagella);
           if (val.length != 0)  {
             this.pagella = val[0];
             this.chiusa = this.pagella.statoID! >= 2? true : false;
+            this.chiusa? this.form.controls.dtDocumento.disable(): this.form.controls.dtDocumento.enable();
+            this.chiusa? this.form.controls.giudizioQuad.disable(): this.form.controls.giudizioQuad.enable()
+
             this.form.controls.dtDocumento.setValue(val[0].dtDocumento);
+            this.form.controls.giudizioQuad.setValue(val[0].giudizioQuad);
             //this.dtIns = val[0].dtIns!;
           }
           else {
@@ -128,11 +134,16 @@ export class PagellaVotoEditComponent implements OnInit  {
             this.pagella.dtIns = dateNow;
 
             this.form.controls.dtDocumento.setValue("");
+            this.form.controls.giudizioQuad.setValue("");
             //this.dtIns = '';
           }
         }
       );
     }
+    if (this.iscrizioneID ==0)
+    {
+      this.form.reset();
+    } 
   }
 
   ngOnInit(): void {
@@ -270,6 +281,11 @@ export class PagellaVotoEditComponent implements OnInit  {
     this.savePagella();
   }
 
+  changeGiudizioQuad(event: any) {
+    this.pagella.giudizioQuad = event?.target.value;
+    this.savePagella();
+  }
+
   openObiettivi(element: DOC_PagellaVoto) {
 
     const dialogConfig : MatDialogConfig = {
@@ -305,6 +321,8 @@ export class PagellaVotoEditComponent implements OnInit  {
       if(result) {
         this.svcPagelle.completa(this.pagella.id!).subscribe();
         this.chiusa = true;
+        this.form.controls.dtDocumento.disable();
+        this.form.controls.giudizioQuad.disable();
       }
 
     });
@@ -319,19 +337,34 @@ export class PagellaVotoEditComponent implements OnInit  {
       if(result) {
         this.svcPagelle.riapri(this.pagella.id!).subscribe();
         this.chiusa = false;
+        this.form.controls.dtDocumento.enable();
+        this.form.controls.giudizioQuad.enable();
+
       }
     });
   }
 
 
-//***********  DA QUI E' TUTTO PER IL DOWNLOAD PREVIEW VA MESSA IN UNA UTILITY **********************/
 
   async downloadPreviewPagella() {
     let nomeFile: string;
     let template!: string;
     nomeFile = "PREVIEW_Pagella"  + '_' + this.iscrizione.classeSezioneAnno.anno.annoscolastico + "(" + this.periodo +"quad)_" + this.iscrizione.alunno.persona.cognome + ' ' + this.iscrizione.alunno.persona.nome + '.docx';    
-    await firstValueFrom(this.svcRisorseCSA.getByTipoDocCSA(1, this.iscrizione.classeSezioneAnnoID).pipe(tap(res=> template= res.risorsa!.nomeFile)));
+    await firstValueFrom(this.svcRisorseCSA.getByTipoDocCSA(1, this.iscrizione.classeSezioneAnnoID)
+      .pipe(
+        tap(res=> {
+          if (res) template= res.risorsa!.nomeFile
+          })
+      )
+    );
 
+    if (template== null || template == undefined || template == '') {
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "Non sembra disponibile un template per questa classe"}
+      });
+      return;
+    }
     this.svcFiles.buildAndGetBase64(this.svcFiles.openXMLPreparaPagella(template, this.iscrizione, this.lstPagellaVoti, this.pagella), nomeFile );
   }
   

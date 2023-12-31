@@ -13,14 +13,19 @@ import { SelectionModel }                       from '@angular/cdk/collections';
 //components
 import { UserEditComponent }                    from '../user-edit/user-edit.component';
 import { UsersFilterComponent }                 from '../users-filter/users-filter.component';
+import { Utility }                              from '../../utilities/utility.component';
 
 //services
 import { UserService }                          from '../../../_user/user.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
 import { NavigationService }                    from '../../utilities/navigation/navigation.service';
+import { TableColsVisibleService }              from '../../utilities/toolbar/tablecolsvisible.service';
+import { TableColsService }                     from '../../utilities/toolbar/tablecols.service';
+
 
 //classes
 import { User }                                 from 'src/app/_user/Users';
+
 
 //#endregion
 
@@ -34,15 +39,18 @@ import { User }                                 from 'src/app/_user/Users';
 export class UsersListComponent implements OnInit {
 
 //#region ----- Variabili ----------------------
+  currUser!:                                    User;
   matDataSource = new MatTableDataSource<User>();
+
+  tableName = "UsersList";
 
   displayedColumns: string[] =  [];
   displayedColumnsUsersList: string[] = [
       //"userID", 
       "actionsColumn",
       "userName", 
-      "persona.nome",
-      "persona.cognome",
+      "nome",
+      "cognome",
       "email", 
       // "persona.tipoPersona.descrizione",
   
@@ -108,10 +116,14 @@ export class UsersListComponent implements OnInit {
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
 //#endregion
 
-  constructor(private svcUsers:        UserService,
-              public _dialog:           MatDialog, 
-              private _loadingService:  LoadingService,
-              private _navigationService:   NavigationService  ) {
+  constructor(private svcUsers:                 UserService,
+              public _dialog:                   MatDialog, 
+              private _loadingService:          LoadingService,
+              private _navigationService:       NavigationService,
+              private svcTableCols:             TableColsService,
+              private svcTableColsVisible:      TableColsVisibleService  ) {
+    
+    this.currUser = Utility.getCurrentUser();
   }
   
 //#region ----- LifeCycle Hooks e simili-------
@@ -127,7 +139,8 @@ export class UsersListComponent implements OnInit {
   ngOnInit () {
     switch(this.dove) {
       case 'users-page': 
-        this.displayedColumns =  this.displayedColumnsUsersList;
+        this.loadLayout();
+        //this.displayedColumns =  this.displayedColumnsUsersList;
         this._navigationService.getGenitore().subscribe(  val=>{
           if (val!= '') {
             this.toggleDrawer.emit();
@@ -141,6 +154,16 @@ export class UsersListComponent implements OnInit {
       default: 
         this.displayedColumns =  this.displayedColumnsUsersList;
     }
+  }
+
+  loadLayout(){
+    this.svcTableColsVisible.listByUserIDAndTable(this.currUser.userID, this.tableName).subscribe( 
+      colonne => {
+        if (colonne.length != 0) this.displayedColumns = colonne.map(a => a.tableCol!.colName)
+        else this.svcTableCols.listByTable(this.tableName).subscribe( colonne => {
+          this.displayedColumns = colonne.filter(colonna=> colonna.defaultShown == true).map(a => a.colName)
+        })    
+      });
   }
 
   loadData () {
@@ -160,8 +183,10 @@ export class UsersListComponent implements OnInit {
 
       const loadUsers$ =this._loadingService.showLoaderUntilCompleted(obsUsers$);
       loadUsers$.subscribe(  val =>  {
+          console.log("users-list loadData - val ", val);
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
+          this.sortCustom();
           this.matDataSource.sort = this.sort; 
           this.matDataSource.filterPredicate = this.filterPredicate();
           this.getEmailAddresses();
@@ -182,6 +207,17 @@ export class UsersListComponent implements OnInit {
 //#endregion
 
 //#region ----- Filtri & Sort -------
+
+sortCustom() {
+  this.matDataSource.sortingDataAccessor = (item:any, property) => {
+    switch(property) {
+      case 'nome':                            return item.persona.nome;
+      case 'cognome':                         return item.persona.cognome;
+      case 'email':                           return item.persona.email;
+      default: return item[property]
+    }
+  };
+}
 
   applyFilter(event: Event) {
     this.filterValue = (event.target as HTMLInputElement).value;

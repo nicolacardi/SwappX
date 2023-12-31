@@ -10,21 +10,21 @@ import { tap }                                  from 'rxjs/operators';
 //components
 import { SnackbarComponent }                    from '../../../utilities/snackbar/snackbar.component';
 import { DialogYesNoComponent }                 from '../../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogOkComponent }                    from 'src/app/_components/utilities/dialog-ok/dialog-ok.component';
 
 //services
 import { LoadingService }                       from '../../../utilities/loading/loading.service';
 import { RisorseCSAService }                    from 'src/app/_components/impostazioni/risorse-csa/risorse-csa.service';
 import { TipiDocumentoService }                 from '../tipi-documento.service';
-
+import { ClassiSezioniAnniService }             from 'src/app/_components/classi/classi-sezioni-anni.service';
+import { RisorseService }                       from '../../risorse/risorse.service';
 //models
 import { DialogDataRisorsaClasseEdit }          from 'src/app/_models/DialogData';
 import { CLS_RisorsaCSA }                       from 'src/app/_models/CLS_RisorsaCSA';
 import { DOC_TipoDocumento }                    from 'src/app/_models/DOC_TipoDocumento';
-import { _UT_Risorsa } from 'src/app/_models/_UT_Risorsa';
-import { RisorseService } from '../../risorse/risorse.service';
-import { DialogOkComponent } from 'src/app/_components/utilities/dialog-ok/dialog-ok.component';
-import { CLS_ClasseSezioneAnno } from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { ClassiSezioniAnniService } from 'src/app/_components/classi/classi-sezioni-anni.service';
+import { _UT_Risorsa }                          from 'src/app/_models/_UT_Risorsa';
+import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_ClasseSezioneAnno';
+
 
 
 @Component({
@@ -118,26 +118,28 @@ export class RisorsaCSAEditComponent {
   //#region ----- Operazioni CRUD ----------------
 
   async save(){
-    let documentoID = this.form.controls.tipoDocumentoID.value;
+
+    let tipoDocumentoID = this.form.controls.tipoDocumentoID.value;
     let classeSezioneAnnoID = this.data.classeSezioneAnnoID;
     let risorsaID = this.form.controls.risorsaID.value;
 
+    //estraggo risorsaCSA con lo stesso tipoDocumentoID e CSAID, serve per vedere se già c'è una risorsa CSA
     let risorsaCSA!: CLS_RisorsaCSA;
-    await firstValueFrom(this.svcRisorseCSA.getByTipoDocCSA(documentoID, classeSezioneAnnoID).pipe(tap(res=> risorsaCSA= res)));
+    await firstValueFrom(this.svcRisorseCSA.getByTipoDocCSA(tipoDocumentoID, classeSezioneAnnoID).pipe(tap(res=> risorsaCSA= res)));
 
 
-    //se c'è il flag parto a impostare tutte le classi
+    //se c'è il flag vado ad impostare tutte le classi con lo stesso 
     if (this.form.controls.ckImpostaTutteSezioni.value) {
       //estraggo tutte le CSA dell'Anno con la stessa classe
       let listaSezioniAnno!: CLS_ClasseSezioneAnno[];
       await firstValueFrom(this.svcClassiSezioniAnni.listSezioniAnnoByCSA(classeSezioneAnnoID).pipe(tap(res=> listaSezioniAnno = res)));
-      //cancella tutti i documeni dello stesso tipo nelle classiSezioniAnnoID trovate
+      //cancella tutti i documenti dello stesso tipo nelle classiSezioniAnnoID trovate
       for (let i = 0; i < listaSezioniAnno.length; i++) {
-        await firstValueFrom(this.svcRisorseCSA.deleteByTipoDocCSA(documentoID, listaSezioniAnno[i].id));
+        await firstValueFrom(this.svcRisorseCSA.deleteByTipoDocCSA(tipoDocumentoID, listaSezioniAnno[i].id));
       }
-      //ora imposto per tutti lo stesso documento
+      //ora imposto per tutte le CSA lo stesso valore
       for (let i = 0; i < listaSezioniAnno.length; i++) {
-        this.postRisorsaClasse(listaSezioniAnno[i].id, documentoID, risorsaID);
+        this.postRisorsaClasse(listaSezioniAnno[i].id, tipoDocumentoID, risorsaID);
       }
     }
 

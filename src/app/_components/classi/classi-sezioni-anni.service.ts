@@ -27,6 +27,8 @@ export class ClassiSezioniAnniService {
   }
 
   listSezioniAnnoByCSA(classeSezioneAnnoID: any): Observable<CLS_ClasseSezioneAnno[]>{
+    //estrae le ALTRE ClassiSezioniAnno di un certo anno fornendogliene una. 
+    //in pratica serve per avere tutte le sezioni di un certo anno
     return this.http.get<CLS_ClasseSezioneAnno[]>(environment.apiBaseUrl+'CLS_ClassiSezioniAnni/ListSezioniAnnoByCSA/'+classeSezioneAnnoID);
     //http://213.215.231.4/swappX/api/CLS_ClassiSezioniAnni/listSezioniAnnoByCSA/16
   }

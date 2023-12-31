@@ -27,19 +27,14 @@
                 <button mat-mini-fab aria-label="Rimuovi alunno dalla Classe" matTooltip="Rimuovi alunno dalla Classe" class="_btn-add _btn-pos-right-2 " (click)="removeAlunnoFromClasse()">
                     <img class="iconaMenu" src="./assets/alunnoMinus.svg">
                 </button>
-                <!-- <button mat-mini-fab aria-label="Stampa Lista Alunni della Classe" matTooltip="esporta Pdf" class="_btn-Blu" (click)="creaPdfIscrizioni()">
-                    <img class="iconaMenu" src="./assets/PDFiconGreys.svg">
-                </button> -->
                 <button mat-mini-fab aria-label="Promuovi alunni" matTooltip="Promuovi" class="_btn-add _btn-pos-right-3 "  (click)="promuovi()">
                     <img class="iconaMenu" src="./assets/promuovi_white.svg">
                 </button>
-                <!-- <mat-card class=" card mat-elevation-z8" style="height: 100%"> -->
                     <div class="_table-container mt50">
                         <app-iscrizioni-classe-list [dove]="'coord-dashboard-alunni'" 
                             [classeSezioneAnnoID]="classeSezioneAnnoID">
                         </app-iscrizioni-classe-list>
                     </div>
-                <!-- </mat-card> -->
             </mat-tab>
 
 
@@ -51,13 +46,12 @@
                     <img class="iconaMenu" src="./assets/docenteMinus.svg">
                 </button>
 
-                <!-- <mat-card class=" card mat-elevation-z8" style="height: 100%"> -->
-                    <div class="_table-container mt50">
-                        <app-docenze-list   [classeSezioneAnnoID]="classeSezioneAnnoID">
+                <div class="_table-container mt50">
+                    <app-docenze-list   [classeSezioneAnnoID]="classeSezioneAnnoID">
 
-                        </app-docenze-list>
-                    </div>
-                <!-- </mat-card> -->
+                    </app-docenze-list>
+                </div>
+
             </mat-tab>
 
             <mat-tab  label="Pagelle">

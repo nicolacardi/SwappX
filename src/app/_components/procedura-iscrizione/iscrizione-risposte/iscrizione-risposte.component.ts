@@ -91,7 +91,8 @@ constructor(private svcDomande:                 DomandeService,
 
 
   ngOnChanges() {
-    if (this.iscrizioneID && this.contesto) 
+    if (this.iscrizioneID && this.contesto)
+      //console.log ("iscrizione-risposte - ngOnChanges - iscrizioneID", this.iscrizioneID) 
       this.loadData();
   }
 
@@ -101,13 +102,13 @@ constructor(private svcDomande:                 DomandeService,
   }
 
   loadData() {
-    if (this.iscrizioneID && this.contesto) {
-      console.log ("loadData iscrizioneID", this.iscrizioneID);
+    if (this.iscrizioneID && this.contesto && this.iscrizioneID !=0) {
+      //console.log ("loadData iscrizioneID", this.iscrizioneID);
 
       switch (this.contesto) {
         case 'CertificazioneCompetenze':
           this.svcCertCompetenze.listByIscrizione(this.iscrizioneID).subscribe(res => {
-            console.log ("cert Competenze estratta", res, this.iscrizioneID);
+            //console.log ("iscrizione-risposte - loadData - cert Competenze estratta", res, this.iscrizioneID);
             if (res.length !=0) {
               // console.log("metto docesistente a true");
               this.docEsistente = true;
@@ -135,7 +136,10 @@ constructor(private svcDomande:                 DomandeService,
           break;
       }
 
-
+      if (this.iscrizioneID ==0) {
+        //console.log("iscrizione-risposte - loadData - reset formRisposte")
+        this.formRisposte.reset(); //non sembra funzionare
+      }
 
 
       // console.log("iscrizione-risposte - loadData");
@@ -280,14 +284,14 @@ constructor(private svcDomande:                 DomandeService,
     //in base a contesto opero sull'uno o sull'altro
 
 
-    console.log("iscrizione-risposte - save - contesto:", contesto);
-    console.log("iscrizione-risposte - save - iscrizioneID:", this.iscrizioneID);
-    console.log("iscrizione-risposte - save - iscrizioneID:", this.certCompetenze);
+    //console.log("iscrizione-risposte - save - contesto:", contesto);
+    //console.log("iscrizione-risposte - save - iscrizioneID:", this.iscrizioneID);
+    //console.log("iscrizione-risposte - save - iscrizioneID:", this.certCompetenze);
 
     switch (contesto) {
       case 'CertificazioneCompetenze':
         let certCompetenzePOST : DOC_CertCompetenze = {iscrizioneID : this.iscrizioneID, statoID: 1};
-        console.log("iscrizione-risposte - save - contesto: certCompetenze", this.certCompetenze);
+        //console.log("iscrizione-risposte - save - contesto: certCompetenze", this.certCompetenze);
         if (this.certCompetenze.id)   this.svcCertCompetenze.put(this.certCompetenze).subscribe(); //di fatto aggiorna dtUpd e userUpd nel WS
         else                          this.svcCertCompetenze.post(certCompetenzePOST).subscribe();
         break;

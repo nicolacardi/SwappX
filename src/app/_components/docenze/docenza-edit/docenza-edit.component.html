@@ -33,7 +33,7 @@
                 <mat-grid-tile>
                     <mat-form-field>
                         <mat-label>Classe - Sezione</mat-label>
-                        <input matInput type="text" placeholder="Classe" [value]="strClasseSezioneAnno" [disabled] = "true">
+                        <input matInput type="text" placeholder="Classe" [value]="classeSezioneAnno.classeSezione.classe?.descrizione2 + ' ' + classeSezioneAnno.classeSezione.sezione" [disabled] = "true">
                     </mat-form-field>
                 </mat-grid-tile>
 
@@ -62,6 +62,15 @@
                         Materia in Pagella
                     </mat-checkbox>
                 </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-checkbox color="primary" formControlName="ckImpostaTutteSezioni">
+                        Imposta la stessa materia per tutte le sezioni della classe <br>
+                         <span *ngIf="docenzaID" class="fs16 bold">{{classeSezioneAnno.classeSezione.classe?.descrizione2}}</span> dello stesso anno <br>
+                         (sovrascrive impostazioni diverse)
+                    </mat-checkbox>
+                </mat-grid-tile>
+
             </mat-grid-list>
  
         </form>

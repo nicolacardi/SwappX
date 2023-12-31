@@ -65,7 +65,7 @@
                         <mat-label>Materie</mat-label>
                         <mat-select formControlName="selectMaterieDocenteClasse">
                             <mat-option *ngFor="let element of arrMaterie" [value]="element.materiaID">
-                                {{element.materia.descrizione}}
+                                {{element.materia!.descrizione}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>

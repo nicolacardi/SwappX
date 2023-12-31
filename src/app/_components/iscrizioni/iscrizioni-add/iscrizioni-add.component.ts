@@ -9,15 +9,15 @@ import { MatSnackBar }                          from '@angular/material/snack-ba
 import { debounceTime, finalize, map, switchMap, tap } from 'rxjs/operators';
 
 //components
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { DialogData } from 'src/app/_models/DialogData';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { DialogData }                           from 'src/app/_models/DialogData';
 
 //services
 import { AlunniService }                        from 'src/app/_components/alunni/alunni.service';
-import { IscrizioniService } from '../iscrizioni.service';
+import { IscrizioniService }                    from '../iscrizioni.service';
 
 //models
-import { ALU_Alunno } from 'src/app/_models/ALU_Alunno';
+import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 
 //#endregion
 @Component({
@@ -44,11 +44,11 @@ export class IscrizioniAddComponent implements OnInit {
 //#endregion
 
 //#region ----- Constructor --------------------
-  constructor(private fb:                     UntypedFormBuilder,
-              private svcAlunni:              AlunniService,
-              private svcIscrizioni:          IscrizioniService,
-              public dialogRef:               MatDialogRef<IscrizioniAddComponent>,
-              private _snackBar:              MatSnackBar,
+  constructor(private fb:                       UntypedFormBuilder,
+              private svcAlunni:                AlunniService,
+              private svcIscrizioni:            IscrizioniService,
+              public dialogRef:                 MatDialogRef<IscrizioniAddComponent>,
+              private _snackBar:                MatSnackBar,
               @Inject(MAT_DIALOG_DATA) public data: DialogData) { 
 
     this.form = this.fb.group({
@@ -60,6 +60,7 @@ export class IscrizioniAddComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili--------
   ngOnInit(): void {
 
+    console.log ("iscrizioni-add - ngOnInit - this.data", this.data);
     this.classeSezioneAnnoID = this.data.classeSezioneAnnoID;
     this.filteredAlunni$ = this.form.controls['nomeCognomeAlunno'].valueChanges
       .pipe(
