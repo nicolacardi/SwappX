@@ -4,10 +4,10 @@ import { CLS_Iscrizione } from "./CLS_Iscrizione";
 
 export interface PAG_RettaPivot {
         alunnoID:                               number;
-        alunno:                                 ALU_Alunno;
-        nome:                                   string;
-        cognome:                                string;
-        annoID:                                 number;
+        //alunno:                                 ALU_Alunno;
+        //nome:                                   string;
+        //cognome:                                string;
+        //annoID:                                 number;
         
         c_SET:    number;
         c_OTT:    number;
@@ -24,18 +24,18 @@ export interface PAG_RettaPivot {
 
         c_TOT:    number;
 
-        d_SET:    number;
-        d_OTT:    number;
-        d_NOV:    number;
-        d_DIC:    number;
-        d_GEN:    number;
-        d_FEB:    number;
-        d_MAR:    number;
-        d_APR:    number;
-        d_MAG:    number;
-        d_GIU:    number;
-        d_LUG:    number;
-        d_AGO:    number;
+        // d_SET:    number;
+        // d_OTT:    number;
+        // d_NOV:    number;
+        // d_DIC:    number;
+        // d_GEN:    number;
+        // d_FEB:    number;
+        // d_MAR:    number;
+        // d_APR:    number;
+        // d_MAG:    number;
+        // d_GIU:    number;
+        // d_LUG:    number;
+        // d_AGO:    number;
 
         d_TOT:    number;
 
@@ -56,6 +56,6 @@ export interface PAG_RettaPivot {
         p_TOT:    number;
 
         iscrizione?:                            CLS_Iscrizione;
-        classeSezioneAnno?:                     CLS_ClasseSezioneAnno; 
+        //classeSezioneAnno?:                     CLS_ClasseSezioneAnno; 
 
 }

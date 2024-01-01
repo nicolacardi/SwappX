@@ -51,12 +51,12 @@
     
     <ng-container matColumnDef="nome">
         <mat-header-cell *matHeaderCellDef >Nome</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.nome}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.iscrizione.alunno.persona.nome}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="cognome">
         <mat-header-cell *matHeaderCellDef >Cognome</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.cognome}}</mat-cell>
+            <mat-cell *matCellDef="let element">{{element.iscrizione.alunno.persona.cognome}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="classe">
@@ -348,7 +348,7 @@
 
     <ng-container matColumnDef="anno">
         <mat-header-cell *matHeaderCellDef >anno</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.anno}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.iscrizione.anno}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="quotaConcordata">
