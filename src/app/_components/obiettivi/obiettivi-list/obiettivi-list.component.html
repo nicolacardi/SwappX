@@ -17,7 +17,7 @@
     </form>
     
     <!-- **************************   PAGINATOR   ******************* -->
-    <!-- <mat-paginator *ngIf="showTableRibbon" class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator> -->
+    <mat-paginator class="transparent" [pageSize]="15" [pageSizeOptions]="[15, 50]" showFirstLastButtons></mat-paginator>
 
     <!-- **************************   MAT-TABLE   ******************* -->
     <table mat-table class="_table-row-low transparent w100" 
@@ -47,7 +47,8 @@
                               (change) = "$event ? selectedRow(element) : null"
                               [checked]="selection.isSelected(element)"
                               [aria-label]="checkboxLabel(element)"
-                              color="warn">
+                              color="warn"
+                              class="h30px">
                 </mat-checkbox>
             </td>
         </ng-container>
