@@ -111,7 +111,7 @@ export class PagellaVotoEditComponent implements OnInit  {
       map(val=>val.filter(val=>(val.periodo == this.periodo)))).subscribe(
         val =>  {
           //console.log ("pagella-voto-edit - ngOnChanges - pagella", val);
-          //console.log ("pagella-voto-edit - loadData - pagella:", this.pagella);
+          console.log ("pagella-voto-edit - loadData - pagella:", this.pagella);
           if (val.length != 0)  {
             this.pagella = val[0];
             this.chiusa = this.pagella.statoID! >= 2? true : false;

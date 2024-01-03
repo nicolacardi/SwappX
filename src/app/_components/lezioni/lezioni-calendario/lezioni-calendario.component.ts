@@ -34,6 +34,7 @@ import { UserService }                          from 'src/app/_user/user.service
 import { CAL_Lezione }                          from 'src/app/_models/CAL_Lezione';
 import { User }                                 from 'src/app/_user/Users';
 import { TipiPersonaService } from '../../persone/tipi-persona.service';
+import { DownloadRegistroComponent } from '../download-registro/download-registro.component';
 
 //#endregion
 @Component({
@@ -78,7 +79,7 @@ export class LezioniCalendarioComponent implements OnInit {
     headerToolbar: {
       left: 'prev,next,today',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek mostraDocenti,settings'  //TODO bisogna togliere i settings dalla vista docente
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek mostraDocenti,settings,registro'  //TODO bisogna togliere i settings dalla vista docente
     },  
 
     views: {
@@ -295,12 +296,18 @@ export class LezioniCalendarioComponent implements OnInit {
 
       this.calendarOptions.customButtons = {
         mostraDocenti: {
-          text: 'Mostra Docenti',
+          text: 'Docenti',
           click: this.mostraDocenti.bind(this),
         },
         settings: {
           icon: 'settings-icon',
+          hint: 'strumenti',
           click: this.openLezioniUtils.bind(this)
+        },
+        registro: {
+          icon: 'download-registro',
+          hint: 'registro di classe',
+          click: this.openRegistroDownload.bind(this)
         }
       }  
 
@@ -324,17 +331,16 @@ export class LezioniCalendarioComponent implements OnInit {
       );
 
 
-      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni') 
+      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Lezioni') 
         this.setEventiDocenti();
       else 
         this.setEventiLezioni();
 
-    } 
-    else {
+    } else {
 
       this.calendarOptions.customButtons = {
         mostraDocenti: {
-          text: 'Mostra Lezioni',
+          text: 'Classi',
           click: this.mostraDocenti.bind(this),
         },
         settings: {
@@ -348,7 +354,7 @@ export class LezioniCalendarioComponent implements OnInit {
       this.calendarOptions.eventStartEditable =   false;            //consente di draggare eventi               :  da gestire sulla base del ruolo
       this.calendarOptions.eventDurationEditable =false;            //consente di modificare la lunghezza eventi:  da gestire sulla base del ruolo
 
-      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Lezioni')
+      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Lezioni')
         this.setEventiClassi();
       else 
         this.setEventiLezioni();
@@ -696,24 +702,39 @@ export class LezioniCalendarioComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() =>  this.loadData());
   }
 
+  openRegistroDownload () {
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '650px',
+      height: '425px',
+      data:  {
+        start: this.calendarDOM.getApi().getDate(),
+        classeSezioneAnnoID: this.classeSezioneAnnoID
+      }
+    };
+    const dialogRef = this._dialog.open(DownloadRegistroComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() =>  this.loadData());
+  }
+
+
   mostraDocenti () {
 
     if (this.dove == 'orario') {
-      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Docenti') {
-        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Lezioni"
+      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Docenti') {
+        this.calendarOptions!.customButtons!.mostraDocenti.text = 'Lezioni'
         this.setEventiDocenti();
       } 
       else {
-        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Docenti"
+        this.calendarOptions!.customButtons!.mostraDocenti.text = 'Docenti'
         this.setEventiLezioni();
       } 
     } else {
-      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Mostra Classi') {
-        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Lezioni"
+      if (this.calendarOptions!.customButtons!.mostraDocenti.text == 'Classi') {
+        this.calendarOptions!.customButtons!.mostraDocenti.text = 'Lezioni'
         this.setEventiClassi();
       } 
       else {
-        this.calendarOptions!.customButtons!.mostraDocenti.text = "Mostra Classi"
+        this.calendarOptions!.customButtons!.mostraDocenti.text = 'Classi'
         this.setEventiLezioni();
       } 
     }

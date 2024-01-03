@@ -117,6 +117,8 @@ import { OrarioPageComponent }                  from './_components/lezioni/orar
 import { LezioniCalendarioComponent }           from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
 import { LezioneComponent }                     from './_components/lezioni/lezione-edit/lezione.component';
 import { LezioniUtilsComponent }                from './_components/lezioni/lezioni-utils/lezioni-utils.component';
+import { DownloadRegistroComponent }            from './_components/lezioni/download-registro/download-registro.component';
+
 import { OrarioDocentePageComponent }           from './_components/lezioni/orario-docente-page/orario-docente-page.component';
 
 //Presenze
@@ -318,6 +320,7 @@ import { RisorseCSAListEditComponent }          from './_components/impostazioni
     ScadenzaEditComponent,
     MieScadenzeComponent,
     LezioniUtilsComponent,
+    DownloadRegistroComponent,
     OrarioDocentePageComponent,
 
     TipiScadenzaListComponent,

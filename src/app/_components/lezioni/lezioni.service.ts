@@ -27,6 +27,12 @@ export class LezioniService {
     //http://213.215.231.4/swappX/api/CAL_Lezioni/ListByClasseSezioneAnno/16
   }
 
+  listByCSAAndDate(classeSezioneAnnoID: number, start: string, end: string): Observable<CAL_Lezione[]>{
+    return this.http.get<CAL_Lezione[]>(environment.apiBaseUrl+'CAL_Lezioni/ListByCSAAndDate/'+classeSezioneAnnoID+'/'+start+'/'+end);
+    //http://213.215.231.4/swappX/api/CAL_Lezioni/ListByClasseSezioneAnno/16/2024-03-01/2024-10-01
+  }
+
+
   //NON USATA
   listByClasseSezioneAnnoCkCompito(classeSezioneAnnoID: number): Observable<CAL_Lezione[]>{
     return this.http.get<CAL_Lezione[]>(environment.apiBaseUrl+'CAL_Lezioni/ListByClasseSezioneAnno/'+classeSezioneAnnoID)
