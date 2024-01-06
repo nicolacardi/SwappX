@@ -365,6 +365,7 @@ export class PagellaVotoEditComponent implements OnInit  {
       });
       return;
     }
+    
     this.svcFiles.buildAndGetBase64(this.svcFiles.openXMLPreparaPagella(template, this.iscrizione, this.lstPagellaVoti, this.pagella), nomeFile );
   }
   

@@ -230,8 +230,9 @@ export class LezioniCalendarioComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output --------
-  @Input() classeSezioneAnnoID!:                     number;
-  @Input() docenteID!:                            number;
+  @Input() classeSezioneAnnoID!:                number;
+  @Input() annoID!:                             number;
+  @Input() docenteID!:                          number;
   @Input() dove!:                         string;
   @ViewChild('calendarDOM') calendarDOM!: FullCalendarComponent;
 //#endregion
@@ -709,7 +710,9 @@ export class LezioniCalendarioComponent implements OnInit {
       height: '425px',
       data:  {
         start: this.calendarDOM.getApi().getDate(),
-        classeSezioneAnnoID: this.classeSezioneAnnoID
+        classeSezioneAnnoID: this.classeSezioneAnnoID,
+        annoID: this.annoID
+
       }
     };
     const dialogRef = this._dialog.open(DownloadRegistroComponent, dialogConfig);

@@ -48,7 +48,29 @@ export class FilesService {
   }
 
   buildAndGetBase64(tagDocument: RPT_TagDocument, nomeFile: string): void {
+    //console.log (tagDocument, nomeFile);
     this.http.post(environment.apiBaseUrl+'DOC_Files/buildAndGetBase64',tagDocument, { responseType: 'text' })
+    .subscribe((response:any) => {
+      const byteCharacters = atob(response);                  // Decodifica la stringa base64 in un array di byte
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {       // Crea un array di valori numerici, un elemento dell'array per ogni carattere
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);          //a sua volta byteNumbers viene trascodificato in byteArray
+      const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+      saveAs(blob, nomeFile);
+    });
+  }
+
+  //mentre BuildAndGetBase64 costruisce e scarica il file sulla base di un TagDocument, 
+  //BuildAndGetBase64PadreDoc costruisce e scarica un file costruito sulla base di un tagDocument[]
+  //Ogni TagDocument può usare anche un template diverso, oppure lo stesso template
+  //serve per avere ad esempio n tabelle nello stesso file tutte uguali ma con dati diversi
+  //"padre" in quanto crea un documento padre a partire da uns erie di figli
+  buildAndGetBase64PadreDoc(tagDocuments: RPT_TagDocument[], nomeFile: string): void {
+
+    //console.log ("tagDocuments", tagDocuments, " - nomeFile", nomeFile);
+    this.http.post(environment.apiBaseUrl+'DOC_Files/buildAndGetBase64PadreDoc',tagDocuments, { responseType: 'text' })
     .subscribe((response:any) => {
       const byteCharacters = atob(response);                  // Decodifica la stringa base64 in un array di byte
       const byteNumbers = new Array(byteCharacters.length);
@@ -332,6 +354,10 @@ export class FilesService {
   }
   
 
+
+  openXMLPreparaRegistroClasse() {
+    
+  }
 
 
 
