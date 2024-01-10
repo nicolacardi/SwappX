@@ -36,6 +36,14 @@ export class PagelleService {
     //http://213.215.231.4/swappX/api/DOC_Pagelle/Completa/5
   }
 
+  completaByAnno(annoID: number): Observable <any>{
+    //completa tutte le pagelle di un certo annoID
+    const formData = <DOC_Pagella>{};
+    return this.http.put( environment.apiBaseUrl  + 'DOC_Pagelle/CompletaByAnno/'+annoID, formData);
+    //http://213.215.231.4/swappX/api/DOC_Pagelle/CompletaByAnno/1
+  }
+
+
   riapri(pagellaID: number): Observable <any>{
     const formData = <DOC_Pagella>{};
     return this.http.put( environment.apiBaseUrl  + 'DOC_Pagelle/Riapri/'+pagellaID, formData);

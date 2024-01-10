@@ -25,16 +25,19 @@ import { SnackbarComponent }                    from '../../utilities/snackbar/s
 import { LezioniUtilsComponent }                from '../lezioni-utils/lezioni-utils.component';
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
 import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
+import { DownloadRegistroClasseComponent }      from '../download-registro-classe/download-registro-classe.component';
+import { DownloadRegistroDocenteComponent }     from '../download-registro-docente/download-registro-docente.component';
+
 
 //services
 import { LezioniService }                       from '../lezioni.service';
 import { UserService }                          from 'src/app/_user/user.service';
+import { TipiPersonaService }                   from '../../persone/tipi-persona.service';
 
 //models
 import { CAL_Lezione }                          from 'src/app/_models/CAL_Lezione';
 import { User }                                 from 'src/app/_user/Users';
-import { TipiPersonaService } from '../../persone/tipi-persona.service';
-import { DownloadRegistroComponent } from '../download-registro/download-registro.component';
+
 
 //#endregion
 @Component({
@@ -347,6 +350,11 @@ export class LezioniCalendarioComponent implements OnInit {
         settings: {
           icon: 'settings-icon',
           click: this.openLezioniUtils.bind(this)
+        },
+        registro: {
+          icon: 'download-registro',
+          hint: "registro dell'insegnante",
+          click: this.openRegistroDocenteDownload.bind(this)
         }
       }  
 
@@ -715,9 +723,26 @@ export class LezioniCalendarioComponent implements OnInit {
 
       }
     };
-    const dialogRef = this._dialog.open(DownloadRegistroComponent, dialogConfig);
+    const dialogRef = this._dialog.open(DownloadRegistroClasseComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() =>  this.loadData());
   }
+
+  openRegistroDocenteDownload () {
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '650px',
+      height: '425px',
+      data:  {
+        start: this.calendarDOM.getApi().getDate(),
+        classeSezioneAnnoID: this.classeSezioneAnnoID,
+        annoID: this.annoID
+
+      }
+    };
+    const dialogRef = this._dialog.open(DownloadRegistroDocenteComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() =>  this.loadData());
+  }
+
 
 
   mostraDocenti () {

@@ -46,4 +46,15 @@ export class AnniScolasticiService {
         map(val => val.find(val => (val.annoscolastico.toLowerCase())== searchstring.toLowerCase())),
       )
   }
+
+  put(formData: any): Observable <any>{
+    return this.http.put( environment.apiBaseUrl  + 'ASC_Anni/' + formData.id , formData);    
+  }
+
+  post(formData: any): Observable <any>{
+    formData.id = 0;
+    return this.http.post( environment.apiBaseUrl  + 'ASC_Anni' , formData);  
+  }
+
+
 }

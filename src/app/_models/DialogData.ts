@@ -38,9 +38,15 @@ export interface DialogDataLezioniUtils {
         classeSezioneAnnoID:                    number;
       }
 
-export interface DialogDataDownloadRegistro {
+export interface DialogDataDownloadRegistroClasse {
       start:                                    Date;
       classeSezioneAnnoID:                      number;
+      annoID:                                   number;
+      }
+
+export interface DialogDataDownloadRegistroDocente {
+      start:                                    Date;
+      docenteID:                                number;
       annoID:                                   number;
       }
 

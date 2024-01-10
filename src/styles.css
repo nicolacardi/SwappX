@@ -1739,6 +1739,11 @@
     .topZIndex {
         z-index: 1000;
     }
+
+    .lowZIndex {
+        z-index: 1;
+    }
+
 /*#endregion ***************************/
 
 /*#region ********** OVERFLOW *********/

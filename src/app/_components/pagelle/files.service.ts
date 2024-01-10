@@ -15,6 +15,7 @@ import { RPT_TagDocument } from 'src/app/_models/RPT_TagDocument';
 import { CLS_Iscrizione } from 'src/app/_models/CLS_Iscrizione';
 import { DOC_PagellaVoto } from 'src/app/_models/DOC_PagellaVoto';
 import { DOC_Pagella } from 'src/app/_models/DOC_Pagella';
+import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
 
 
 @Injectable({
@@ -62,13 +63,12 @@ export class FilesService {
     });
   }
 
-  //mentre BuildAndGetBase64 costruisce e scarica il file sulla base di un TagDocument, 
-  //BuildAndGetBase64PadreDoc costruisce e scarica un file costruito sulla base di un tagDocument[]
+  //BuildAndGetBase64         costruisce e scarica un file sulla base di un oggetto singolo di tipo TagDocument, 
+  //BuildAndGetBase64PadreDoc costruisce e scarica un file sulla base di un array tagDocument[]
   //Ogni TagDocument può usare anche un template diverso, oppure lo stesso template
-  //serve per avere ad esempio n tabelle nello stesso file tutte uguali ma con dati diversi
-  //"padre" in quanto crea un documento padre a partire da uns erie di figli
+  //serve per avere ad esempio n tabelle nello stesso file tutte uguali ma con dati diversi (p.e. le ore del registro di classe)
+  //"padre" in quanto crea un documento padre a partire da una serie di figli
   buildAndGetBase64PadreDoc(tagDocuments: RPT_TagDocument[], nomeFile: string): void {
-
     //console.log ("tagDocuments", tagDocuments, " - nomeFile", nomeFile);
     this.http.post(environment.apiBaseUrl+'DOC_Files/buildAndGetBase64PadreDoc',tagDocuments, { responseType: 'text' })
     .subscribe((response:any) => {
@@ -83,6 +83,7 @@ export class FilesService {
     });
   }
 
+  //******************FIN QUI LE ROUTINE "NEUTRE" QUELLE CHE SEGUONO SONO SPECIFICHE PER OGNI TIPO DOCUMENTO ************/
   openXMLPreparaPagella (template: string, iscrizione: CLS_Iscrizione, lstPagellaVoti: DOC_PagellaVoto[], objPagella: DOC_Pagella) {
     console.log("files.service - openXMLPreparaPagella - lstPagellaVoti", lstPagellaVoti);
     function estraiVoto(lstPagellaVoti: DOC_PagellaVoto[], materia: string, index: number) {
@@ -268,7 +269,7 @@ export class FilesService {
   }
 
   async openXMLPreparaDocumento (iscrizione: CLS_Iscrizione, contesto: string) {
-  
+  //questa routine viene usata per il certificato delle competenze e per il consiglio orientativo
     let tagDocument : RPT_TagDocument = {
       templateName: contesto,
       tagFields:
@@ -298,8 +299,6 @@ export class FilesService {
         { tagName: "DescrizioneClasse",         tagValue: iscrizione.classeSezioneAnno.classeSezione.classe?.descrizione2},
       ],
        tagTables: []
-
-      
     }
 
 
@@ -354,10 +353,127 @@ export class FilesService {
   }
   
 
+  openXMLPreparaRegistroClasse (listalezioni: CAL_Lezione[]){
+    const coverTagDocument: RPT_TagDocument = {
+      templateName: "CoverRegistroDiClasse",
+      tagFields: [
+        { tagName: "ClasseSezione", tagValue: listalezioni[0].classeSezioneAnno.classeSezione.classe?.descrizione2 + ' ' +  listalezioni[0].classeSezioneAnno.classeSezione.sezione},
+        { tagName: "AnnoScolastico", tagValue: listalezioni[0].classeSezioneAnno.anno.annoscolastico},
+        { tagName: "DataDoc", tagValue: Utility.formatDate(new Date().toISOString(), FormatoData.dd_mm_yyyy)}
+      ]
+    };
 
-  openXMLPreparaRegistroClasse() {
-    
+    let tagDocuments: RPT_TagDocument[]; 
+    tagDocuments= this.openXMLPreparaRegistroGiorni(listalezioni);
+
+    const newTagDocuments = [coverTagDocument, ...tagDocuments];    
+    console.log("newTagDocuments", newTagDocuments);
+    return newTagDocuments;
   }
+
+  openXMLPreparaRegistroDocente (listalezioni: CAL_Lezione[]){
+    const coverTagDocument: RPT_TagDocument = {
+      templateName: "CoverRegistroDocente",
+      tagFields: [
+        { tagName: "DocenteNomeCognome", tagValue: listalezioni[0].docente.persona.nome + ' ' +  listalezioni[0].docente.persona.cognome},
+        { tagName: "AnnoScolastico", tagValue: listalezioni[0].classeSezioneAnno.anno.annoscolastico},
+        { tagName: "DataDoc", tagValue: Utility.formatDate(new Date().toISOString(), FormatoData.dd_mm_yyyy)}
+      ]
+    };
+
+    let tagDocuments: RPT_TagDocument[]; 
+    tagDocuments= this.openXMLPreparaRegistroGiorni(listalezioni);
+
+    const newTagDocuments = [coverTagDocument, ...tagDocuments];    
+    console.log("newTagDocuments", newTagDocuments);
+    return newTagDocuments;
+  }
+
+
+  openXMLPreparaRegistroGiorni(listalezioni: CAL_Lezione[]) {
+    //questa routine viene chiamata per la parte delle lezioni 
+    //sia dalla costruzione del registro di classe che dalla costruzione del registro del docente
+    //I due registri per ora oltre a selezionare le lezioni PER CLASSE o PER DOCENTE sono diversi solo per la cover.
+    const templateName = "RegistroClasseGiorno";  //questo è il nome del template con la tabella, una per giorno
+    type GroupedData = { [dateKey: string]: { date: Date; lezioni: CAL_Lezione[] } }; //la listalezioni viene raggruppata x data in qs oggetto
+    listalezioni.sort( (a, b) => (a.dtCalendario < b.dtCalendario? -1 : 1));
+    // Raggruppo i dati per data: usa l'operatore reduce che fa n iterazioni, una per ogni elemento di listalezioni
+    const groupedData: GroupedData = listalezioni.reduce((acc, lezione) => {
+      const dateKey = lezione.dtCalendario;
+      if (!acc[dateKey]) { //se non c'è già la data nell'accumulatore la aggiunge con un array vuoto di lezioni
+        acc[dateKey] = { date: new Date(dateKey), lezioni: [] };
+      }
+      acc[dateKey].lezioni.push(lezione); //aggiunge la lezione corrente all'array lezioni della data corrente
+      return acc;
+    }, {} as GroupedData); //{} significa che il valore iniziale dell'accumulatore è un oggetto vuoto
+
+    //console.log ("groupedData", groupedData); //a questo punto listalezioni è stato trasformato in un oggetto
+    //nel quale ci sono n elementi, uno per data. Dentro ogni elemento c'è la data e ci sono le lezioni di quella data.
+
+    //creo coverTagDocument per includere in TagDocuments anzitutto la copertina
+
+
+    //GroupedData è un OGGETTO
+    //qui invece viene più comodo avere un ARRAY, per cui si crea orderedData che è l'array che ne deriva
+    const orderedData = Object.entries(groupedData).map(([dateKey, { date, lezioni }]) => ({ dateKey, date, lezioni }));
+
+    //vogliamo che se una data è di una nuova settimana venga aggiunto untagField pageBreak con tagValue = true, altrimenti con tagValue = false
+    let sameWeek = true; //false->aggiunge un pagebreak all'inizio, true->non lo aggiunge
+    let date1: Date;
+    let date2: Date;
+    const tagDocuments: RPT_TagDocument[] = orderedData.map(({ date, lezioni }, index) => {
+      if (index > 0) 
+      {
+        date1= orderedData[index-1].date;
+        date2= orderedData[index].date;
+        sameWeek = this.isSameWeek(date1, date2);
+      }
+
+      return {
+        templateName: templateName,
+        tagFields: [
+          { tagName: "pageBreak", tagValue: sameWeek ? "false" : "true" }, //così se ci troviamo in una nuova settimana il WS inserisce un pageBreak
+        ],
+        tagTables: [
+          {
+            tagTableTitle: "TabellaGiornoOrario",
+            tagTableRows: lezioni.map(lezione => ({
+              tagFields: [
+                { tagName: "Data", tagValue: date.toLocaleDateString() },
+                { tagName: "Dalle", tagValue: lezione.h_Ini.slice(0, -3) },
+                { tagName: "Alle", tagValue: lezione.h_End.slice(0, -3) },
+                { tagName: "Docente", tagValue: `${lezione.docente.persona.nome} ${lezione.docente.persona.cognome}` },
+                { tagName: "Materia", tagValue: lezione.title },
+                { tagName: "ArgomentoECompiti", tagValue: `${lezione.argomento} - ${lezione.compiti}` },
+              ]
+            })),
+          }
+        ]
+      };
+    });
+    return tagDocuments;
+  }
+
+  
+  //le due routine che seguono identificano se due date sono o meno nella stessa settimana dell'anno
+  isSameWeek(date1: Date, date2: Date): boolean {
+    const year1 = date1.getFullYear();
+    const week1 = this.getWeekNumber(date1);
+    const year2 = date2.getFullYear();
+    const week2 = this.getWeekNumber(date2);
+    return year1 === year2 && week1 === week2;
+  }
+  
+  // Funzione per ottenere il numero della settimana per una data
+  getWeekNumber(date: Date): number {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+    const yearStart = new Date(d.getFullYear(), 0, 1);
+    const weekNumber = Math.ceil((((d as any) - (yearStart as any)) / 86400000 + 1) / 7);
+    return weekNumber;
+  }
+      
 
 
 
