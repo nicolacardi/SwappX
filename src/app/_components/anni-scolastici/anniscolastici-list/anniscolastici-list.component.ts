@@ -16,6 +16,8 @@ import { LoadingService }                       from '../../utilities/loading/lo
 
 //models
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { ParametriService } from '../../impostazioni/parametri/parametri.service';
+import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
 //#endregion
 @Component({
@@ -29,7 +31,7 @@ export class AnniScolasticiListComponent implements OnInit {
 
 //maxSeq!:                                      number;
 matDataSource = new MatTableDataSource<ASC_AnnoScolastico>();
-
+annoCorrenteID!:                                number;
 obsAnni$!:                                      Observable<ASC_AnnoScolastico[]>;
 
 displayedColumns: string[] = [
@@ -63,6 +65,7 @@ constructor(private svcAnni:                        AnniScolasticiService,
             private _loadingService:                LoadingService,
             public _dialog:                         MatDialog) { 
 
+
 }
 //#endregion
 
@@ -73,6 +76,10 @@ constructor(private svcAnni:                        AnniScolasticiService,
   }
 
   loadData() {
+
+    let objAnno = localStorage.getItem('AnnoCorrente');
+    this.annoCorrenteID = + (JSON.parse(objAnno!) as _UT_Parametro).parValue
+
     this.obsAnni$ = this.svcAnni.list();  
     const loadAnni$ =this._loadingService.showLoaderUntilCompleted(this.obsAnni$);
 
@@ -97,7 +104,7 @@ constructor(private svcAnni:                        AnniScolasticiService,
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '420px',
-      height: '550px',
+      height: '600px',
       data: {
         id:                              0
         //maSeq:                                 this.maxSeq
@@ -112,7 +119,7 @@ constructor(private svcAnni:                        AnniScolasticiService,
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '420px',
-      height: '550px',
+      height: '600px',
       data: {
       annoID:                              annoID,
       //maxSeq:                                 this.maxSeq

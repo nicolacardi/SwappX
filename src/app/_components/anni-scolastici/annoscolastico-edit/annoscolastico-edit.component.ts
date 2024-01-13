@@ -5,7 +5,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
-import { tap }                                  from 'rxjs/operators';
+import { concatMap, map, tap }                                  from 'rxjs/operators';
 
 //components
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
@@ -21,6 +21,8 @@ import { DialogDataAnnoEdit }                   from 'src/app/_models/DialogData
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
 import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
 import { PagelleService } from '../../pagelle/pagelle.service';
+import { ParametriService } from '../../impostazioni/parametri/parametri.service';
+import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
 //#endregion
 
@@ -39,7 +41,8 @@ export class AnnoscolasticoEditComponent implements OnInit {
   form! :                     UntypedFormGroup;
   emptyForm :                 boolean = false;
   loading:                    boolean = true;
-  
+  annoCorrenteID!:                              number;
+  ckCorrente= false;
 //#endregion
 
 
@@ -48,12 +51,13 @@ export class AnnoscolasticoEditComponent implements OnInit {
   constructor(public _dialogRef: MatDialogRef<AnnoscolasticoEditComponent>,
                     @Inject(MAT_DIALOG_DATA) public data:   DialogDataAnnoEdit,
                     private svcAnni :                       AnniScolasticiService,
-                    private svcIscrizioni:                  IscrizioniService,
+                    private svcParametri:                   ParametriService,
                     private svcPagelle:                     PagelleService,
                     private _loadingService :               LoadingService,
                     private fb:                             UntypedFormBuilder, 
                     public _dialog:                         MatDialog,
                     private _snackBar:                      MatSnackBar ) { 
+
 
     _dialogRef.disableClose = true;
 
@@ -66,7 +70,7 @@ export class AnnoscolasticoEditComponent implements OnInit {
         dtInizio:                               [''],
         dtFineQ1:                               [''],
         dtFine:                                 [''],
-        ckChiuso:                               ['']
+        ckChiuso:                               [''],
       });
   }
 
@@ -75,10 +79,15 @@ export class AnnoscolasticoEditComponent implements OnInit {
 //#region ----- LifeCycle Hooks e simili--------
 
   ngOnInit(): void {
+    let objAnno = localStorage.getItem('AnnoCorrente');
+    this.annoCorrenteID = + (JSON.parse(objAnno!) as _UT_Parametro).parValue
     this.loadData();
+
   }
 
   loadData(){
+
+
 
     this.obsAnni$ = this.svcAnni.list();
 
@@ -90,9 +99,10 @@ export class AnnoscolasticoEditComponent implements OnInit {
         .pipe(
           tap(
             anno => {
-              console.log ("annoscolastico-edit - loadData - anno", anno)
-
+              console.log ("annoscolastico-edit - loadData - anno", anno, this.annoCorrenteID)
+              if (this.annoCorrenteID == anno.id) this.ckCorrente = true;
               this.form.patchValue(anno);
+
             }
           )
       );
@@ -197,7 +207,9 @@ export class AnnoscolasticoEditComponent implements OnInit {
 
           //TODO chiusura di tutte le pagelle
             //trova tutte le iscrizioni dell'anno e chiude ciascuna pagella
-                this.svcPagelle.completaByAnno(this.form.controls.id.value).subscribe();
+                this.svcPagelle.completaByAnno(this.form.controls.id.value).subscribe(
+                  
+                );
           //TODO chiusura di tutti i cert Competenze e i cons orientativi
 
         }
@@ -206,6 +218,41 @@ export class AnnoscolasticoEditComponent implements OnInit {
         }
       })
       }
+  }
+
+  setAnnoCorrente() {
+
+    let parX! : _UT_Parametro;
+    this.svcParametri.getByParName('AnnoCorrente')
+    .pipe (
+      tap( par => {                                 //al valore estratto vado a cambiare il valore
+        par.parValue = this.form.controls.id.value;
+        parX = par;
+        console.log ("par estratto", parX);       //e modifico il valore in localstorage
+      }),
+      concatMap(par => this.svcParametri.put(par)), //salvo il parametro che si chiama AnnoCorrente
+      map( () => {
+            localStorage.setItem(parX.parName, JSON.stringify(parX)); //imposto il valore nel localStorage
+      })
+      ).subscribe(
+
+        {
+          next: res=> {
+            this._dialogRef.close();
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Anno Corrente Impostato', panelClass: ['green-snackbar']});
+          },
+          error: err=> (
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore', panelClass: ['red-snackbar']})
+          )
+        }
+
+
+      )
+
+
+
+
+
   }
 
 //#endregion

@@ -108,6 +108,11 @@
                         Anno Chiuso
                     </mat-checkbox>
                 </mat-grid-tile>
+                <mat-grid-tile>
+                    <button *ngIf="!ckCorrente" class="_btn-text" mat-button cdkFocusInitial (click)="setAnnoCorrente()">Imposta come anno corrente</button>
+                    <button *ngIf="ckCorrente" class="_btn-text-greyed" mat-button cdkFocusInitial disabled>Impostato come anno corrente</button>
+
+                </mat-grid-tile>
             </mat-grid-list>
             
         </form>

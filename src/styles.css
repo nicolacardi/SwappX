@@ -942,6 +942,11 @@
         background-color: #044D7E !important;
     }
 
+    ._btn-text-greyed {
+        color: white !important;
+        background-color: #b5b5b5 !important;
+    }
+
     /* .mat-mdc-button:not(:disabled) {
         color: white !important;              
     } */

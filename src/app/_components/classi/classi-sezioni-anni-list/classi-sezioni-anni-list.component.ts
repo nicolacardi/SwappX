@@ -201,7 +201,6 @@ export class ClassiSezioniAnniListComponent implements OnInit {
               private actRoute:                 ActivatedRoute,
               private _snackBar:                MatSnackBar ) {
 
-    //let objAnno = localStorage.getItem('AnnoCorrente');
     
     this.currUser = Utility.getCurrentUser();
     let objAnno = localStorage.getItem('AnnoCorrente');
