@@ -10,7 +10,7 @@ export class HighlightDatePipe implements PipeTransform {
         if (value) {
             if (search) {
                 let valueStr = this.formatDate(value) + '';
-                valueStr = valueStr.replace(new RegExp('(' + search + ')', 'gi'), '<span class="yellow">$1</span>');
+                valueStr = valueStr.replace(new RegExp('(' + search + ')', 'gi'), '<span class="_bg_yellow">$1</span>');
                 return valueStr;
             } else {
 

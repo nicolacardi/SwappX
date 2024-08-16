@@ -196,7 +196,7 @@
                
                 <mat-grid-tile colspan="2" class="oflowyscroll _bordered-grey" >
                     <!-- con mat-selection-list al posto di mat-list e mat-list-option ho già le selezioni fatte -->
-                    <!-- <span class="ml10 cgrey _pos-absolute l200">{{element.tipoPersona!.descrizione}}</span> -->
+                    <!-- <span class="ml10 _bg_lightgrey _pos-absolute l200">{{element.tipoPersona!.descrizione}}</span> -->
 
                     <mat-list class="_pos-absolute t0 l0 w100"  >
                         <mat-option class="fs12 left" *ngFor="let element of personeListArrFiltered" [value]="element.id">
@@ -213,7 +213,7 @@
                         <mat-option class="fs12 left" style="height: 23px; width: 500px" *ngFor="let element of personeListSelArr" [value]="element.id">
                             <mat-icon (click)="removeFromSel(element)" class="pointer tx-right">remove_circle_outline</mat-icon> 
                             <span class="ml10">{{element.persona!.nome}} {{element.persona!.cognome}}</span>
-                            <!-- <span class="ml10 cgrey _pos-absolute l200">{{element.persona!.tipoPersona!.descrizione}}</span> -->
+                            <!-- <span class="ml10 _bg_lightgrey _pos-absolute l200">{{element.persona!.tipoPersona!.descrizione}}</span> -->
 
                             <!-- [ngClass]="{'invisible': element.ckLetto}" serve prima passare qui lo scadenzapersona-->
                             <mat-icon matTooltip="letto" *ngIf="element.ckLetto" style="position:absolute; right: 10px; top: 0px">done</mat-icon> 

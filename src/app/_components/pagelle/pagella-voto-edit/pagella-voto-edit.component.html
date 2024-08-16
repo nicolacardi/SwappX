@@ -32,7 +32,7 @@
                 </mat-select>
 
                 <mat-icon *ngIf="element.tipoVotoID == 3 && iscrizioneID>0" class="pointer" (click) = "openObiettivi(element)">add_circle_outline</mat-icon>
-                <mat-label class="fs10" *ngIf="element.tipoVotoID == 3 && iscrizioneID>0" [ngClass]="{'_col-red': element.countVotiObiettivi<element.countTotObiettivi}">{{element.countVotiObiettivi}}/{{element.countTotObiettivi}} </mat-label> 
+                <mat-label class="fs10" *ngIf="element.tipoVotoID == 3 && iscrizioneID>0" [ngClass]="{'_1diN': element.countVotiObiettivi<element.countTotObiettivi}">{{element.countVotiObiettivi}}/{{element.countTotObiettivi}} </mat-label> 
             
                 <mat-label class="_warning" *ngIf="element.tipoVotoID == null">Indicazione<br>tipo voto<br> mancante</mat-label>
             </td>

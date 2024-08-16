@@ -12,8 +12,8 @@ export class HighlightPipe implements PipeTransform {
       valueStr = valueStr.replace (/ /g,'|');         //sostituisco temporaneamente gli spazi con un pipe
       //poichè il risultato verrà inserito in una innerHTML gli spazi che sono a ridosso dello span vengono interpretati come inutili e quindi ignorati
       //per questo è necessario poi risostituirli con &nbsp;
-      valueStr = valueStr.replace(new RegExp('(' + search + ')', 'gi'), '<span class="yellow">$1</span>');
-      //return valueStr.replace(new RegExp('(?![^&;]+;)(?!<[^<>]*)(' + search + ')(?![^<>]*>)(?![^&;]+;)', 'gi'), '<span class="yellow">$1</span>');  //Così avevo trovato
+      valueStr = valueStr.replace(new RegExp('(' + search + ')', 'gi'), '<span class="_bg_yellow">$1</span>');
+      //return valueStr.replace(new RegExp('(?![^&;]+;)(?!<[^<>]*)(' + search + ')(?![^<>]*>)(?![^&;]+;)', 'gi'), '<span class="_bg_yellow">$1</span>');  //Così avevo trovato
       valueStr = valueStr.replace (/\|/g,'&nbsp;');   //risostituisco i pipe con spazi html (deve finire in un innerHTML)
       return valueStr;
     } else {
@@ -36,7 +36,7 @@ export class HighlightPipe implements PipeTransform {
     // //***********CUSTOMPIPE PER EVIDENZIARE TUTTA LA STRINGA DOVE VIENE TROVATA E NON SOLO LA PARTE CERCATA ********/
     // if (search) {
     //   let valueStr = value + ''; // + '';       // Ensure numeric values are converted to strings
-    //   if (valueStr.indexOf(search)) { valueStr = "<span class='yellow'>"+valueStr+"</span>"}
+    //   if (valueStr.indexOf(search)) { valueStr = "<span class='_bg_yellow'>"+valueStr+"</span>"}
     //   return valueStr;
     // } else {
     //   return value;

@@ -193,6 +193,14 @@
     hyphens: auto;
   }
 
+  ._1diN {
+    color:white;
+    background-color: red;
+    padding-right: 5px;
+    padding-left: 5px;
+    border-radius: 2px;
+  }
+
 
 /* togliamo i selettori dalla input numerica nelle pagelle */
 input::-webkit-outer-spin-button,
