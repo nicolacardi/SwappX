@@ -171,11 +171,10 @@
 
 /*#region ********** TOOLBAR ***********/
     /* la toolbar è la fascia in alto */   
-    .mat-toolbar {                              
-        font-family: 'Titillium Web', sans-serif;
-        background: transparent url("../src/assets/backgroundglassToolbar.svg") no-repeat center;
-        background-size: cover;
-        color: white;                         /* governa il colore del menu sandwich in alto a sinistra*/
+    .mat-toolbar {                             
+        background: transparent url("../src/assets/backgroundglassToolbar.svg") no-repeat center !important;
+        background-size: cover !important;
+        color: white !important;                         /* governa il colore del menu sandwich in alto a sinistra*/
         z-index: 10000;
         position: fixed;
     }
@@ -1603,7 +1602,7 @@
         background-size: cover;
         color: rgb(10,10,10) !important;            
         margin-top: 5px;
-        border-radius: 50px 50px 0px 0px;
+        border-radius: 50px 50px 0px 0px !important;
     }
 
     .material-icons.color_white { color: #FFFFFF; }
@@ -1619,8 +1618,8 @@
     /* la leftSidenav è il menu è una mat-nav-list, l'unica della app */
     .leftSidenav {
         /* width:  250px; */
-        background-color: rgb(85, 85, 85);
-        /* color: red; */
+        background-color: rgb(85, 85, 85) !important;
+        
     }
 
     .leftSidenav .mdc-list-item__primary-text { /* colore del menu nella sidenav */
@@ -1637,6 +1636,10 @@
         background: rgb(137, 136, 136) !important;
     }
 
+    mat-nav-list mat-expansion-panel {
+        background: rgb(85, 85, 85) !important;
+    }
+
     mat-nav-list mat-expansion-panel mat-panel-title{
         /* color: rgb(10,10,10) !important; */
         color: rgb(255, 255, 255) !important;
@@ -1647,7 +1650,7 @@
         background: rgb(137, 136, 136) !important;
     }
 
-    :host ::ng-deep .mat-expansion-indicator::after{
+    .mat-expansion-indicator::after{
         color: white !important;
     }
 
@@ -1656,9 +1659,6 @@
     .mat-expansion-indicator::after {
         color: white;
     }
-
-
-
 
     .mat-drawer-backdrop.mat-drawer-shown {
         background-color: rgba(0,0,0,0.2);
