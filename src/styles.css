@@ -1,9 +1,4 @@
 
-/* 
-@import '~quill/dist/quill.snow.css';
-@import '~quill/dist/quill.core.css';
-@import '~quill/dist/quill.bubble.css'; 
-*/
 
 /*#region ********** GENERALI **********/
     html, body { 
@@ -34,6 +29,30 @@
 
     .mat-h1, .mat-headline-5, .mat-typography h1 { /*mat.typography-hierarchy ??*/
         font-family: 'Titillium Web', sans-serif;
+    }
+
+    ._underline {
+        text-decoration: underline;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .al-right {
+        justify-content: flex-end;
+    }
+
+    .tx-right {
+        text-align:right;
+    }
+
+    .low-row {
+        min-height: 30px;
+    }
+
+    .stroked {
+        text-decoration: line-through;
     }
 
     .mat-mdc-form-field{
@@ -147,6 +166,45 @@
     }
 /*#endregion ***************************/
 
+/*#region ********** LOGOs AND IMAGEs ******/
+
+    .logo {
+
+        width: 100%;
+        padding-top: 5px;
+    
+    }
+  
+    .logo-img {
+        width: 125px;
+        display: block; 
+        margin-left: auto; 
+        margin-right: auto;
+    }
+  
+    .logo-img2{
+        display: block; 
+        margin-left: auto; 
+        margin-right: auto;
+        background:  url("../src/assets/solologoscrittacolor.png") no-repeat center;
+        background-size: cover;
+        height: 38px;
+        width: 210px;
+    }
+    
+    .logo-img2:hover {
+        background: url("../src/assets/logoscritta.svg") no-repeat center;
+        background-size: cover;
+        height: 38px;
+        width: 210px;
+    }
+  
+    .logo-login {
+        width: 200px;
+    }
+
+/*#endregion ***************************/
+
 /*#region ********** TOOLBAR ***********/
     /* la toolbar è la fascia in alto */   
     .mat-toolbar {                             
@@ -158,7 +216,7 @@
     }
 /*#endregion ***************************/
 
-/*#region ********** MARGINI VARI ******/
+/*#region ********** MARGINs ******/
 
     /* margin: auto serve per CENTRARE elementi di tipo display: block */
     .ma {
@@ -334,8 +392,36 @@
 
 /*#endregion ***************************/
 
-/*#region ********** POS ABSOLUTE ******/
-    /* top */
+/*#region ********** POS ******/
+
+
+
+/*serve per fissare la posizione relative di un container dentro il quale si trova un position absolute*/
+    ._pos-relative {
+        position: relative;
+    }
+
+    ._pos-absolute {
+        position: absolute;
+    }
+
+    ._pos-absolute_i {
+        position: absolute !important;
+    }
+
+    ._pos-fixed {
+        position: fixed;
+    }
+
+    ._floatright {
+        float: right;
+    }
+
+    ._floatleft {
+        float: left;
+    }    
+
+/* top */
     .t0 {
         top: 0px;
     }
@@ -768,6 +854,11 @@
 /*#endregion ***************************/
 
 /*#region ********** BORDERS ***********/
+    
+    .box-shadowed {
+        box-shadow: 0 3px 4px 0 rgba(149, 149, 149, 0.05), 4px 2px 10px  rgba(0, 0, 0, 0.1);
+    }
+
     .br10 {
         border-radius: 10px; 
     }
@@ -921,6 +1012,7 @@
     ._btn-text-container .mat-button-disabled{
         background-color: rgba(100, 100, 100, 0.2) !important;
     }
+
     /* button di add*/
     ._btn-blu {
         z-index: 1000;
@@ -1144,13 +1236,6 @@
         background-color: #044D7E !important;
     }
 
-    ._btn-calcolo-rette{
-        background-color: #044D7E !important ;
-        position: absolute !important;
-        top: 80px;
-        right: 75px;
-    }
-
     /* button di apertura toolbar sulla sx */
     ._btn-toolbar {
         z-index: 1000;
@@ -1160,30 +1245,6 @@
     }
 
     ._btn-toolbar:hover{
-        transform: scale(1.05);
-    }
-
-    ._btn-addAlunno {
-        z-index: 1000;
-        position: absolute !important;
-        left: 10px;
-        top: 5px;
-        background-color: #e0b20d !important;
-    }
-
-    ._btn-addAlunno:hover{
-        transform: scale(1.05);
-    }
-
-    ._btn-addDocente {
-        z-index: 1000;
-        position: absolute !important;
-        left: 10px;
-        top: 5px;
-        background-color: #e0b20d !important;
-    }
-
-    ._btn-addDocente:hover{
         transform: scale(1.05);
     }
 
@@ -1437,13 +1498,7 @@
         cursor: pointer;
     }
 
-    ._grey-background {
-        background-color: rgba(173, 173, 173, 0.142);
-    }
 
-    ._cell-align-top {
-        vertical-align: top;
-    }
 
     .mat-mdc-paginator-container {
         position: absolute;
@@ -1503,6 +1558,41 @@
         width: 100px !important;
     }
 
+    .flex-container {
+        display: flex;
+        justify-content:space-evenly;
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+
+    .flex-item {
+        margin-top: 15px;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 30%;
+    }
+    
+    .flex-container-hor{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+    .flex-item-start {
+        align-self: flex-start; /* Per allineare a sinistra */
+    }
+
+    .flex-item-end {
+        align-self: flex-end; /* Per allineare a destra */
+    }
+
+    ._flex-align-top .mat-figure{
+        justify-content: flex-start !important ;
+        align-items: flex-start !important;
+    }
+
+    ._cell-align-top {
+        vertical-align: top;
+    }
 
 /*#endregion *********************************/
 
@@ -1528,13 +1618,18 @@
         border-radius: 50px 50px 0px 0px !important;
     }
 
-    .material-icons.color_white { color: #FFFFFF; }
+    .material-icons.color_white { 
+        color: #FFFFFF; 
+    }
 
     .button-transparent.mat-mdc-mini-fab.mat-accent   {
         margin-left: 10px;
         background-color: transparent !important;
         box-shadow: none;
         border: 0.5px solid rgba(255, 255, 255, 0.3);
+    }
+    .mat-mdc-mini-fab[disabled]{
+        background-color: #cfcfcf49 !important;
     }
 
     /* senza questa avviene l wordwrap nel menu nelle etichette espandibili*/
@@ -1605,11 +1700,6 @@
         padding: 0 16px !important;
     }
 
-
-    /* .descMenu{
-        margin-left: 5px;
-    } */
-
     .iconaMenu{
         height: 24px;
     }
@@ -1626,7 +1716,6 @@
         left: 10px;
         opacity: 0.12;
     }
-
 
     .iconaMenuSidenav{
         width: 35px;
@@ -1715,6 +1804,10 @@
     background-color: lightgrey !important;
 }
 
+._bg_lightlightgrey {
+    background-color: rgba(173, 173, 173, 0.142);
+}
+
 .color-div {
     width: 32px;
     height: 32px;
@@ -1732,21 +1825,49 @@
 
 /*#endregion ***************************/
 
+/*#region ********** WARNINGS *********/
+
+    ._warning {
+        color: red;
+        font-size: 12px;
+        word-wrap: break-word;
+        text-decoration: underline;
+    }
+
+    ._warnCentroSchermo {
+        position: absolute;
+        width: 20%;
+        left: 40%;
+        top: 40%;
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 10px;
+        border: grey 1px solid;
+        text-align: center;
+        z-index: 1000;
+        cursor: pointer;
+    }
+
+    ._warnCentroSchermo2 {
+        position: relative;
+        width: 20%;
+        left: 40%;
+        top: 50px; 
+
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 10px;
+        border: grey 1px solid;
+        text-align: center;
+        z-index: 1000;
+        cursor: pointer;
+    }
+/*#endregion ***************************/
 
 
 
-/*le icone nei mat-mini-fab sono scentrate verso il basso: questo css rimedia*/
-/*TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
-/*TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
-.mat-button-wrapper{
-    line-height: 20px !important;
-/* padding: 0px 0px 30px 0px; */
-}
 
-.mat-mdc-mini-fab[disabled]{
-    background-color: #cfcfcf49 !important;
-/* padding: 0px 0px 30px 0px; */
-}
+
 
 .frameLabel{
     position: absolute;
@@ -1782,207 +1903,19 @@
     z-index: 1000;
 }
 
-
-.logo {
-
-  width: 100%;
-  padding-top: 5px;
-
-}
-
-.logo-img {
-    width: 125px;
-    display: block; 
-    margin-left: auto; 
-    margin-right: auto;
-}
-
-.logo-img2{
-    display: block; 
-    margin-left: auto; 
-    margin-right: auto;
-    background:  url("../src/assets/solologoscrittacolor.png") no-repeat center;
-    background-size: cover;
-    height: 38px;
-    width: 210px;
-}
-
-.logo-img2:hover {
-    background: url("../src/assets/logoscritta.svg") no-repeat center;
-    background-size: cover;
-    height: 38px;
-    width: 210px;
-}
-
-.logo-login {
-    width: 200px;
+._noresize {
+    resize: none !important;
 }
 
 
-  
+/* taglia il testo negli eventi del fullcalendar che altrimenti deborda */
+.fc-v-event .fc-event-title {
+    max-height: calc(100% - 20px) !important;
 
+  }
 
-._underline {
-    text-decoration: underline;
-}
+/*#region ********** NON USATE *********/
 
-.bold {
-    font-weight: bold;
-}
-
-.al-right {
-    justify-content: flex-end;
-}
-
-.tx-right {
-  text-align:right;
-}
-
-.low-row {
-    min-height: 30px;
-}
-
-.stroked {
-    text-decoration: line-through;
-}
-
-.image-cropper {
-    width: 100px;
-    height: 100px;
-    position: relative;
-    /* overflow: hidden; */
-    /*border-radius: 50%;*/
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-}
-
-    .shadowed {
-        box-shadow: 0 3px 4px 0 rgba(149, 149, 149, 0.05), 4px 2px 10px  rgba(0, 0, 0, 0.1);
-    }
-
-    .flex-container {
-        display: flex;
-        justify-content:space-evenly;
-        flex-wrap: wrap;
-        align-items: flex-start;
-    }
-
-    .flex-item {
-        margin-top: 15px;
-        flex-grow: 0;
-        flex-shrink: 0;
-        flex-basis: 30%;
-    }
-    
-    .flex-container-hor{
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-    }
-    .flex-item-start {
-        align-self: flex-start; /* Per allineare a sinistra */
-    }
-
-    .flex-item-end {
-        align-self: flex-end; /* Per allineare a destra */
-    }
-
-/*serve per fissare la posizione relative di un container dentro il quale si trova un position absolute*/
-    ._pos-relative {
-        position: relative;
-    }
-
-    ._pos-absolute {
-        position: absolute;
-    }
-
-    ._pos-absolute_i {
-        position: absolute !important;
-    }
-
-    ._pos-fixed {
-        position: fixed;
-    }
-
-
-    ._floatright {
-        float: right;
-    }
-
-    ._floatleft {
-        float: left;
-    }
-
-    ._warnCentroSchermo {
-        position: absolute;
-        width: 20%;
-        left: 40%;
-        top: 40%;
-        background-color: #f9f9f9;
-        padding: 10px;
-        border-radius: 10px;
-        border: grey 1px solid;
-        text-align: center;
-        z-index: 1000;
-        cursor: pointer;
-    }
-
-    ._warnCentroSchermo2 {
-        position: relative;
-        width: 20%;
-        left: 40%;
-        top: 50px; 
-
-        background-color: #f9f9f9;
-        padding: 10px;
-        border-radius: 10px;
-        border: grey 1px solid;
-        text-align: center;
-        z-index: 1000;
-        cursor: pointer;
-    }
-
-    /* ._align-top {
-        align-items: flex-start !important;
-    } */
-
-    ._align-top .mat-figure{
-        justify-content: flex-start !important ;
-        align-items: flex-start !important;
-    }
-
-    ._noresize {
-        resize: none !important;
-    }
-
-
-    ._warning {
-        color: red;
-        font-size: 12px;
-        word-wrap: break-word;
-        text-decoration: underline;
-    }
-
- 
-    /* 
-.roundphoto {
-    
-    margin: 0 auto;
-    height: 100%;
-    position: relative;
-    left: 0;
-
-} */
-
-
-div.outer {
-    width: 300px; 
-    margin: 0 auto; 
-    border: 1px solid red; /* for demo */
-    overflow: visible;
-    height: 102px;  /* for demo since child is floated */ 
-}
 div.inner {
     position:relative;
     float: right;
@@ -1995,140 +1928,19 @@ div.inner img {
     opacity: .5; /* for demo */
 }
 
-
-
-/* taglia il testo negli eventi del fullcalendar che altrimenti deborda */
-.fc-v-event .fc-event-title {
-    max-height: calc(100% - 20px) !important;
-
-  }
-
-
-
-
-/*#region ********** QUILL (NON USATO)**************/
-/* NON CHIARO PERCHE' MA VA SCRITTO QUI: IN TEMPLATE.CSS NON FUNZIONA */
-
-/* .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="10px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="10px"]::before {
-  content: "10px";
+div.outer {
+    width: 300px; 
+    margin: 0 auto; 
+    border: 1px solid red; /* for demo */
+    overflow: visible;
+    height: 102px;  /* for demo since child is floated */ 
 }
 
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="12px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="12px"]::before {
-  content: "12px";
+ /*le icone nei mat-mini-fab sono scentrate verso il basso: questo css rimedia*/
+.mat-button-wrapper{
+    line-height: 20px !important;
+/* padding: 0px 0px 30px 0px; */
 }
 
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="14px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="14px"]::before {
-  content: "14px";
-}
 
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="16px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="16px"]::before {
-  content: "16px";
-}
-
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="18px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="18px"]::before {
-  content: "18px";
-}
-
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="20px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="20px"]::before {
-  content: "20px";
-}
-
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="22px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="22px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="22px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="22px"]::before {
-  content: "22px";
-}
-
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="24px"]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="24px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="24px"]::before,
-.ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="24px"]::before {
-  content: "24px";
-} */
-
-/* non so se servano quelle che seguono*/
-/* .ql-picker.ql-placeholder {width: 118px;}
-.ql-picker.ql-placeholder > span.ql-picker-label::before {content: 'Placeholders';} 
-.ql-picker.ql-placeholder > span.ql-picker-options > span.ql-picker-item::before {content: attr(data-label);}
-.ql-custom .ql-picker-item:before {content: attr(data-label);} */
-
-
-/* ****quill mention */
-
-  /* .ql-mention-list-container {
-    width: 270px;
-    border: 1px solid #f0f0f0;
-    border-radius: 4px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 12px 0 rgba(30, 30, 30, 0.08);
-    z-index: 9001;
-    overflow: auto;
-    position: absolute;
-  }
-  
-  .ql-mention-loading {
-    line-height: 30px;
-    padding: 0 20px;
-    vertical-align: middle;
-    font-size: 12px;
-  }
-  
-  .ql-mention-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    z-index: 10000;
-  }
-  
-  .ql-mention-list-item {
-    cursor: pointer;
-    line-height: 30px;
-    font-size: 12px;
-    padding: 0 20px;
-    vertical-align: middle;
-  }
-  
-  .ql-mention-list-item.disabled {
-    cursor: auto;
-  }
-  
-  .ql-mention-list-item.selected {
-    background-color: #d3e1ebd0;
-    text-decoration: none;
-  }
-  
-  .mention {
-    height: 24px;
-    width: 65px;
-    border-radius: 6px;
-    background-color: #d3e1ebd0;
-    padding: 3px 0;
-    margin-right: 2px;
-    user-select: all;
-  }
-  
-  .mention > span {
-    margin: 0 3px;
-  } */
-  
-/*#endregion *********************************/
+/*#endregion ***************************/

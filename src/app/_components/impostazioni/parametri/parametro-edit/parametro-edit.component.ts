@@ -6,8 +6,6 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
 import { tap }                                  from 'rxjs/operators';
-// import { CustomOption, QuillEditorComponent }   from 'ngx-quill'
-// import 'quill-mention'
 
 //components
 import { SnackbarComponent }                    from '../../../utilities/snackbar/snackbar.component';

@@ -6,8 +6,6 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable }                           from 'rxjs';
 import { tap }                                  from 'rxjs/operators';
-// import { CustomOption, QuillEditorComponent }   from 'ngx-quill'
-// import 'quill-mention'
 
 //components
 import { SnackbarComponent }                    from '../../../utilities/snackbar/snackbar.component';
@@ -48,7 +46,7 @@ export class DomandaEditComponent implements OnInit {
   //   }
   // ];
 
-  // @ViewChild('QuillEditor', { static: false }) editor!: QuillEditorComponent
+
 
 //#endregion
 
@@ -204,20 +202,4 @@ export class DomandaEditComponent implements OnInit {
 //#endregion
 
 
-
-
-
-
-//per QUILL
-// changeFontSize() {
-//   this.editor.quillEditor.setSelection(0, this.editor.quillEditor.getLength()) 
-//   this.editor.quillEditor.format('size', this.form.controls.fontSize.value);
-//   this.form.controls.testo.setValue(this.editor.quillEditor.root.innerHTML);
-// }
-
-// changeAlignment() {
-//   this.editor.quillEditor.setSelection(0, this.editor.quillEditor.getLength()) 
-//   this.editor.quillEditor.format('align', this.form.controls.alignment.value);
-//   this.form.controls.testo.setValue(this.editor.quillEditor.root.innerHTML);
-// }
 }

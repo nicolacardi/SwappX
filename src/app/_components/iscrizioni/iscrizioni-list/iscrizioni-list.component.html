@@ -69,12 +69,12 @@
 
         <ng-container matColumnDef="stato">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header>St.Iscrizione<mat-icon class="iconaFilter" *ngIf="filterValues.stato">filter_alt</mat-icon></th>
-            <td mat-cell [ngStyle]="{'color': element.stato.color}"  class="_grey-background" *matCellDef="let element" [innerHTML]="element.stato.descrizione | highlight: filterValue"></td>
+            <td mat-cell [ngStyle]="{'color': element.stato.color}"  class="_bg_lightlightgrey" *matCellDef="let element" [innerHTML]="element.stato.descrizione | highlight: filterValue"></td>
         </ng-container>
 
         <ng-container matColumnDef="actionsColumn2">
             <th mat-header-cell *matHeaderCellDef cdkDrag mat-sort-header></th>
-            <td mat-cell class="_grey-background" *matCellDef="let element" >
+            <td mat-cell class="_bg_lightlightgrey" *matCellDef="let element" >
                 <img *ngIf="element.stato.codice == '30'"
                     src="./assets/send_mail.svg"     
                     class="pointer w24px" 

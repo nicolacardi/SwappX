@@ -211,8 +211,6 @@ import { ProceduraIscrizioneComponent }         from './_components/procedura-is
 
 import { ClickDoubleDirective }                 from './_components/utilities/clickdouble/clickdouble.directive';
 
-//import { QuillModule }                          from 'ngx-quill';
-
 import { PagelleClasseEditComponent }           from './_components/pagelle/pagelle-classe-edit/pagelle-classe-edit.component';
 import { ImgUploadsComponent }                  from './_components/impostazioni/imguploads/imguploads.component';
 import { HttpErrorInterceptor }                 from './_user/auth/httperror.interceptor';
@@ -456,7 +454,6 @@ import { RisorseCSAListEditComponent }          from './_components/impostazioni
     FormsModule,
     FullCalendarModule,
     ColorPickerModule,
-    //QuillModule.forRoot(),
     ClipboardModule,
   ],
   providers: [
