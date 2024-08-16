@@ -27,7 +27,7 @@ export class IscrizioneRisposteService {
   }
 
 
-    listByIscrizione(iscrizioneID: number): Observable<CLS_IscrizioneRisposta[]>{
+  listByIscrizione(iscrizioneID: number): Observable<CLS_IscrizioneRisposta[]>{
     return this.http.get<CLS_IscrizioneRisposta[]>(environment.apiBaseUrl+'CLS_IscrizioneRisposte/ListByIscrizione/'+iscrizioneID);   
     //http://213.215.231.4/swappX/api/CLS_IscrizioneRisposte/ListByIscrizione/328
   }

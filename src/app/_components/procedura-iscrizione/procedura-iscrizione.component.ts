@@ -1,22 +1,25 @@
 //#region ----- IMPORTS ------------------------
 
 import { Component, OnInit, QueryList, ViewChild, ViewChildren }                    from '@angular/core';
-import { Observable, concatMap, firstValueFrom, iif, last, map, of, tap }           from 'rxjs';
+import { Observable, concatMap, firstValueFrom, tap }           from 'rxjs';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { MatStepper }                           from '@angular/material/stepper';
 import { ActivatedRoute }                       from '@angular/router';
-import { FormatoData, Utility } from '../utilities/utility.component';
-
+import { FormatoData, Utility }                 from '../utilities/utility.component';
+import { FormControl }                          from '@angular/forms';
 //components
 import { SnackbarComponent }                    from '../utilities/snackbar/snackbar.component';
 import { PersonaFormComponent }                 from '../persone/persona-form/persona-form.component';
 import { IscrizioneRisposteComponent }          from './iscrizione-risposte/iscrizione-risposte.component';
+import { GenitoreFormComponent }                from '../genitori/genitore-form/genitore-form.component';
+import { AlunnoFormComponent }                  from '../alunni/alunno-form/alunno-form.component';
+import { AssociazioneComponent }                from './associazione/associazione.component';
 
 //services
 import { IscrizioniService }                    from '../iscrizioni/iscrizioni.service';
 import { IscrizioneRisposteService }            from './iscrizione-risposte//iscrizione-risposte.service';
-import { OpenXMLService }                       from '../utilities/openXML/open-xml.service';
 import { RetteService }                         from '../pagamenti/rette.service';
+import { FilesService }                         from '../pagelle/files.service';
 
 //models
 import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
@@ -24,10 +27,6 @@ import { ALU_Genitore }                         from 'src/app/_models/ALU_Genito
 import { ALU_GenitoreAlunno }                   from 'src/app/_models/ALU_GenitoreAlunno';
 import { CLS_IscrizioneRisposta }               from 'src/app/_models/CLS_IscrizioneRisposta';
 import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDocument';
-import { GenitoreFormComponent } from '../genitori/genitore-form/genitore-form.component';
-import { AlunnoFormComponent } from '../alunni/alunno-form/alunno-form.component';
-import { AssociazioneComponent } from './associazione/associazione.component';
-import { FormControl } from '@angular/forms';
 
 //#endregion
 @Component({
@@ -67,7 +66,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
   constructor(
               private svcIscrizioni:            IscrizioniService,
               private svcIscrizioneRisposte:    IscrizioneRisposteService,
-              private svcOpenXML:               OpenXMLService,
+              private svcFile:                  FilesService,
               private svcRette:                 RetteService,
 
               private actRoute:                 ActivatedRoute,
@@ -514,7 +513,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
         
         () => {
           //console.log ("tagDocument", tagDocument);
-          this.svcOpenXML.createAndDownloadFile(tagDocument, nomeFile )
+          this.svcFile.buildAndGetBase64(tagDocument, nomeFile )
         }
     )
     ;  

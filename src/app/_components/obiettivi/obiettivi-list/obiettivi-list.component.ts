@@ -2,6 +2,7 @@
 
 import { Component, Input, OnInit, ViewChild }  from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
+import { MatPaginator }                         from '@angular/material/paginator';
 import { MatSort }                              from '@angular/material/sort';
 import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable }                           from 'rxjs';
@@ -81,9 +82,9 @@ export class ObiettiviListComponent implements OnInit {
 
 //#region ----- ViewChild Input Output ---------
 
-  @Input() obiettiviFilterComponent!:                            ObiettiviFilterComponent;
-
-  @ViewChild(MatSort) sort!:                MatSort;
+  @Input() obiettiviFilterComponent!:           ObiettiviFilterComponent;
+  @ViewChild(MatPaginator) paginator!:          MatPaginator;
+  @ViewChild(MatSort) sort!:                    MatSort;
 //#endregion
 
 //#region ----- Constructor --------------------
@@ -122,8 +123,9 @@ export class ObiettiviListComponent implements OnInit {
       map(val=>val.filter(val=>(val.annoID == this.form.controls['selectAnnoScolastico'].value)))
     )
     .subscribe(val =>   {
-      console.log("obiettivi-list - loadData - val", val);
+      // console.log("obiettivi-list - loadData - val", val);
       this.matDataSource.data = val;
+      this.matDataSource.paginator = this.paginator;
       this.sortCustom(); 
       this.matDataSource.sort = this.sort; 
       this.matDataSource.filterPredicate = this.filterPredicate();

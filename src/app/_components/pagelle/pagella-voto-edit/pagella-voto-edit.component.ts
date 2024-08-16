@@ -1,26 +1,34 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
-import { MatSort, Sort }                              from '@angular/material/sort';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { MatTableDataSource }                   from '@angular/material/table';
-import { iif, Observable }                      from 'rxjs';
-import { concatMap, tap }                       from 'rxjs/operators';
+import { firstValueFrom, iif, Observable }                      from 'rxjs';
+import { concatMap, map, tap }                  from 'rxjs/operators';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 //components
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { VotiObiettiviEditComponent }           from '../voti-obiettivi-edit/voti-obiettivi-edit.component';
+import { FormatoData, Utility }                 from '../../utilities/utility.component';
+import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 //services
 import { PagellaVotiService }                   from '../pagella-voti.service';
 import { PagelleService }                       from '../pagelle.service';
-import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
 import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
+import { FilesService }                         from '../files.service';
 
 //classes
 import { DOC_Pagella }                          from 'src/app/_models/DOC_Pagella';
 import { DOC_PagellaVoto, DOC_TipoGiudizio }    from 'src/app/_models/DOC_PagellaVoto';
+import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
+import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDocument';
+import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscrizione';
+import { RisorseCSAService } from '../../impostazioni/risorse-csa/risorse-csa.service';
+import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component';
 
 //#endregion
 @Component({
@@ -36,30 +44,51 @@ export class PagellaVotoEditComponent implements OnInit  {
   obsTipiGiudizio$!:                            Observable<DOC_TipoGiudizio[]>;
   showPageTitle:                                boolean = true;
   lstPagellaVoti!:                              DOC_PagellaVoto[];
+  iscrizione!:                                  CLS_Iscrizione;
+  classeSezioneAnnoID!:                         number;
+  pagella!:                                     DOC_Pagella;
+  headerRows!:                                  string[];
+  displayedColumns!:                            string[];
+  chiusa = false;
+  form! :                                       UntypedFormGroup;
 
-  displayedColumns: string[] = [
+
+  displayedColumnsQ1: string[] = [
     "materia", 
+    "multiVoto",
+    "note"
+  ];
+
+  displayedColumnsQ2: string[] = [
     "multiVoto",
     "note"
   ];
 //#endregion  
 
 //#region ----- ViewChild Input Output ---------
-  @ViewChild(MatSort) sort!:                    MatSort;
-  @Input('objPagella') objPagella!:             DOC_Pagella;
-  @Input('classeSezioneAnnoID') classeSezioneAnnoID!:   number;
+  @Input('iscrizioneID') iscrizioneID!:         number;
+  @Input('periodo') periodo!:                   number;
+
   @Output('reloadParent') reloadParent = new EventEmitter(); //EMESSO quando si chiude la dialog obiettivo
 //#endregion
 
 //#region ----- Constructor --------------------
 
-  constructor(private svcPagella:               PagelleService,
+  constructor(private svcPagelle:               PagelleService,
+              private svcFiles:                 FilesService,
+              private svcRisorseCSA:            RisorseCSAService,
               private svcPagellaVoti:           PagellaVotiService,
-              private svcClasseSezioneAnno:     ClassiSezioniAnniService,
-              
+              private svcIscrizioni:            IscrizioniService,
               private _loadingService:          LoadingService,
+              private fb:                       UntypedFormBuilder, 
               private _snackBar:                MatSnackBar,
-              public _dialog:                   MatDialog ) { 
+              public _dialog:                   MatDialog ) {
+                
+    this.form = this.fb.group(
+      {
+        dtDocumento:                            [null],
+        giudizioQuad:                           ['']
+      });
   }
 
 //#endregion
@@ -67,51 +96,102 @@ export class PagellaVotoEditComponent implements OnInit  {
 //#region ----- LifeCycle Hooks e simili--------
 
   ngOnChanges() {
-    if (this.objPagella != undefined) 
+    if (this.iscrizioneID != undefined && this.periodo != undefined  && this.iscrizioneID !=0) 
+    {
       this.loadData();
+
+      this.svcIscrizioni.get(this.iscrizioneID).subscribe(res => {
+        this.iscrizione = res;
+      });
+      
+      //mi servirà anche la classeSezioneAnnoID
+      this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione => {this.classeSezioneAnnoID = iscrizione.classeSezioneAnnoID});
+
+      this.svcPagelle.listByIscrizione(this.iscrizioneID).pipe (
+      map(val=>val.filter(val=>(val.periodo == this.periodo)))).subscribe(
+        val =>  {
+          //console.log ("pagella-voto-edit - ngOnChanges - pagella", val);
+          console.log ("pagella-voto-edit - loadData - pagella:", this.pagella);
+          if (val.length != 0)  {
+            this.pagella = val[0];
+            this.chiusa = this.pagella.statoID! >= 2? true : false;
+            this.chiusa? this.form.controls.dtDocumento.disable(): this.form.controls.dtDocumento.enable();
+            this.chiusa? this.form.controls.giudizioQuad.disable(): this.form.controls.giudizioQuad.enable()
+
+            this.form.controls.dtDocumento.setValue(val[0].dtDocumento);
+            this.form.controls.giudizioQuad.setValue(val[0].giudizioQuad);
+            //this.dtIns = val[0].dtIns!;
+          }
+          else {
+            this.pagella = <DOC_Pagella>{};
+            this.pagella.id = -1;
+            this.pagella.iscrizioneID = this.iscrizioneID;
+            this.pagella.periodo = this.periodo;
+            this.pagella.statoID = 1;
+            const d = new Date();
+            d.setSeconds(0,0);
+            let dateNow = d.toISOString().split('.')[0];
+            this.pagella.dtIns = dateNow;
+
+            this.form.controls.dtDocumento.setValue("");
+            this.form.controls.giudizioQuad.setValue("");
+            //this.dtIns = '';
+          }
+        }
+      );
+    }
+    if (this.iscrizioneID ==0)
+    {
+      this.form.reset();
+    } 
   }
 
   ngOnInit(): void {
+    if (this.periodo == 1) { 
+      this.headerRows = ['header-row-blank', 'header-row-Quad'];
+      this.displayedColumns = this.displayedColumnsQ1
+    } else {
+      this.headerRows = ['header-row-Quad'];
+       this.displayedColumns = this.displayedColumnsQ2
+    }
   }
 
   loadData () {
-
     this.obsTipiGiudizio$= this.svcPagellaVoti.listTipiGiudizio();
 
-    let obsPagella$: Observable<DOC_PagellaVoto[]>;
-    obsPagella$ = this.svcClasseSezioneAnno.get(this.classeSezioneAnnoID).pipe (
-      concatMap( val => this.svcPagellaVoti.listByAnnoClassePagella(val.annoID, val.classeSezione.classeID, this.objPagella.id!)
-    ));
+    let obsPagellaVoti$: Observable<DOC_PagellaVoto[]>;
+    obsPagellaVoti$ = this.svcPagellaVoti.listByIscrizionePeriodo(this.iscrizioneID, this.periodo);
 
-    let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagella$);
+    let loadPagella$ =this._loadingService.showLoaderUntilCompleted(obsPagellaVoti$);
     loadPagella$.subscribe(val => { 
-      console.log("pagella-voto-edit - loadData - val", val)
+      // console.log("pagella-voto-edit - loadData - val");
+      // console.log(val);
+      this.lstPagellaVoti = val;
       this.matDataSource.data = val ;
-      this.sortCustom();
-      this.matDataSource.sort = this.sort; 
+
     });
   }
 
 //#endregion
 
-//#region ----- Filtri & Sort ------------------
-
-  sortCustom() {
-    this.matDataSource.sortingDataAccessor = (item:any, property) => {
-      switch(property) {
-        case 'materia':                         return item.materia.descrizione;
-        default: return item[property]
-      }
-    };
-  }
-
-//#endregion
 
 //#region ----- Operazioni CRUD ----------------
 
 
-  save (pagellaVoto: DOC_PagellaVoto) {
+  savePagella() {
+    //nel caso la pagella ancora non sia stata creata, va inserita
+    if (this.pagella.id == -1) {
+      // console.log("pagella voto-edit - savePagella - Pagella.id = -1: Non C'è una Pagella --->post pagella e poi postpagellaVoto");
+      // console.log("pagella voto-edit - savePagella - this.pagella:", this.pagella);
+      this.svcPagelle.post(this.pagella).subscribe() 
+    }
+    else {    //caso pagella già presente
+      this.svcPagelle.put(this.pagella).subscribe() 
+    }
+  }
 
+  savePagellaVoto (pagellaVoto: DOC_PagellaVoto) {
+    //la save viene scatenata ogni volta che cambia un voto o commento/nota (vedi sotto, cerca this.save...)
     //pulizia forminput da oggetti composti
     delete pagellaVoto.iscrizione;
     delete pagellaVoto.materia;
@@ -119,10 +199,10 @@ export class PagellaVotoEditComponent implements OnInit  {
     delete pagellaVoto._ObiettiviCompleti;
 
     //nel caso la pagella ancora non sia stata creata, va inserita
-    if (this.objPagella.id == -1) {
-      // console.log("pagella voto-edit - save - Pagella.id = -1: Non C'è una Pagella --->post pagella e poi postpagellaVoto");
-
-      this.svcPagella.post(this.objPagella)
+    if (this.pagella.id == -1) {
+      // console.log("pagella voto-edit - savePagellaVoto - Pagella.id = -1: Non C'è una Pagella --->post pagella e poi postpagellaVoto");
+      // console.log("pagella voto-edit - savePagellaVoto - this.pagella:", this.pagella);
+      this.svcPagelle.post(this.pagella)
         .pipe (
           tap( x =>  {
             pagellaVoto.pagellaID = x.id! 
@@ -133,10 +213,9 @@ export class PagellaVotoEditComponent implements OnInit  {
               this.svcPagellaVoti.put(pagellaVoto)
           )
         )
-      ).subscribe()
+      ).subscribe() 
     }
     else {    //caso pagella già presente
-
       if (pagellaVoto.id == 0) {
         this.svcPagellaVoti.post(pagellaVoto).subscribe({
           next: res => this.loadData() ,
@@ -156,48 +235,55 @@ export class PagellaVotoEditComponent implements OnInit  {
 
 //#region ----- Altri metodi -------------------
 
-  changeSelectGiudizio(formData: DOC_PagellaVoto, tipoGiudizioID: number) {
+  changeSelectGiudizio(pagellaVoto: DOC_PagellaVoto, tipoGiudizioID: number) {
 
-    if (formData.tipoGiudizioID == null) 
-        formData.tipoGiudizioID = 1;
+    pagellaVoto.pagellaID = this.pagella.id;
 
-    formData.pagellaID = this.objPagella.id;
-    formData.tipoGiudizioID = tipoGiudizioID;
-    let formData2 = Object.assign({}, formData);
-    this.save(formData2)
+    if (pagellaVoto.tipoGiudizioID == null) 
+    pagellaVoto.tipoGiudizioID = 1;
+    pagellaVoto.tipoGiudizioID = tipoGiudizioID;
 
-    if (this.objPagella.ckStampato) this.resetStampato();
+    let pagellaVoto2 = Object.assign({}, pagellaVoto);
+    this.savePagellaVoto(pagellaVoto2)
   }
 
-  changeVoto(formData: DOC_PagellaVoto, voto: any) {
+  changeVoto(pagellaVoto: DOC_PagellaVoto, voto: any) {
+
+    pagellaVoto.pagellaID = this.pagella.id;
 
     let votoN = parseInt(voto);
     if (votoN >10 ) votoN = 10
     if (votoN <0 )  votoN = 0
-    formData.voto = votoN;
-    formData.pagellaID = this.objPagella.id;
+    pagellaVoto.voto = votoN;
 
-    //nel caso di post l'ID del giudizio va messo a 1
-    if (formData.tipoGiudizioID == null) 
-        formData.tipoGiudizioID = 1;
+    if (pagellaVoto.tipoGiudizioID == null) 
+      pagellaVoto.tipoGiudizioID = 1;
 
-    let formData2 = Object.assign({}, formData);
-    this.save(formData2)
-
-    if (this.objPagella.ckStampato) this.resetStampato();
+    let pagellaVoto2 = Object.assign({}, pagellaVoto);
+    this.savePagellaVoto(pagellaVoto2)
   }
 
-  changeNote(formData: DOC_PagellaVoto, note: string) {
+  changeNote(pagellaVoto: DOC_PagellaVoto, note: string) {
     
-    formData.note = note;
-    formData.pagellaID = this.objPagella.id;;
-    if (formData.tipoGiudizioID == null) 
-        formData.tipoGiudizioID = 1;
+    pagellaVoto.pagellaID = this.pagella.id;;
 
-    let formData2 = Object.assign({}, formData);
-    this.save(formData2)
+    pagellaVoto.note = note;
 
-    if (this.objPagella.ckStampato) this.resetStampato();
+    if (pagellaVoto.tipoGiudizioID == null) 
+    pagellaVoto.tipoGiudizioID = 1;
+
+    let pagellaVoto2 = Object.assign({}, pagellaVoto);
+    this.savePagellaVoto(pagellaVoto2)
+  }
+
+  changeData(event: any) {
+    this.pagella.dtDocumento = Utility.formatDate(event.target.value, FormatoData.yyyy_mm_dd);
+    this.savePagella();
+  }
+
+  changeGiudizioQuad(event: any) {
+    this.pagella.giudizioQuad = event?.target.value;
+    this.savePagella();
   }
 
   openObiettivi(element: DOC_PagellaVoto) {
@@ -207,12 +293,13 @@ export class PagellaVotoEditComponent implements OnInit  {
     width: '600px',
     height: '300px',
     data: {
-        iscrizioneID:         this.objPagella.iscrizioneID,
-        pagellaID:            this.objPagella.id,
-        periodo:              this.objPagella.periodo,
+        iscrizioneID:         this.iscrizioneID,
+        pagellaID:            this.pagella.id,
+        periodo:              this.periodo,
         pagellaVotoID:        element.id,
         materiaID:            element.materiaID,
-        classeSezioneAnnoID:  this.classeSezioneAnnoID
+        classeSezioneAnnoID:  this.classeSezioneAnnoID,
+        chiusa:               this.chiusa
       }
     }
     
@@ -223,10 +310,65 @@ export class PagellaVotoEditComponent implements OnInit  {
         this.loadData(); 
       });
   }
+  
+  chiudiDocumento() {
+    const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+      width: '320px',
+      data: {titolo: "CHIUSURA DELLA PAGELLA", sottoTitolo: "Questa operazione è IRREVERSIBILE.<br>Non sarà più possibile modificare i voti.<br>Si conferma?"}
+    });
+    dialogYesNo.afterClosed().subscribe(result => {
 
-  resetStampato() {
-    this.svcPagella.setStampato(this.objPagella.id!, false).subscribe();
+      if(result) {
+        this.svcPagelle.completa(this.pagella.id!).subscribe();
+        this.chiusa = true;
+        this.form.controls.dtDocumento.disable();
+        this.form.controls.giudizioQuad.disable();
+      }
+
+    });
+  }
+
+  apriDocumento() {
+    const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+      width: '320px',
+      data: {titolo: "APERTURA DELLA PAGELLA", sottoTitolo: "Operazione consentita solo agli IT Administrator...Qui serve una password."}
+    });
+    dialogYesNo.afterClosed().subscribe(result => {
+      if(result) {
+        this.svcPagelle.riapri(this.pagella.id!).subscribe();
+        this.chiusa = false;
+        this.form.controls.dtDocumento.enable();
+        this.form.controls.giudizioQuad.enable();
+
+      }
+    });
+  }
+
+
+
+  async downloadPreviewPagella() {
+    let nomeFile: string;
+    let template!: string;
+    nomeFile = "PREVIEW_Pagella"  + '_' + this.iscrizione.classeSezioneAnno.anno.annoscolastico + "(" + this.periodo +"quad)_" + this.iscrizione.alunno.persona.cognome + ' ' + this.iscrizione.alunno.persona.nome + '.docx';    
+    await firstValueFrom(this.svcRisorseCSA.getByTipoDocCSA(1, this.iscrizione.classeSezioneAnnoID)
+      .pipe(
+        tap(res=> {
+          if (res) template= res.risorsa!.nomeFile
+          })
+      )
+    );
+
+    if (template== null || template == undefined || template == '') {
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "Non sembra disponibile un template per questa classe"}
+      });
+      return;
+    }
+    
+    this.svcFiles.buildAndGetBase64(this.svcFiles.openXMLPreparaPagella(template, this.iscrizione, this.lstPagellaVoti, this.pagella), nomeFile );
   }
   
+
 //#endregion
 }

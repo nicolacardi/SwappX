@@ -31,6 +31,7 @@ import { CLS_ClasseSezioneAnno, CLS_ClasseSezioneAnnoGroup } from 'src/app/_mode
 import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
 import { PER_Docente }                          from 'src/app/_models/PER_Docente';
 import { _UT_Parametro }                        from 'src/app/_models/_UT_Parametro';
+import { RisorseCSAListEditComponent }          from '../../impostazioni/risorse-csa/risorse-csa-list-edit/risorse-csa-list-edit.component';
 
 //#endregion
 @Component({
@@ -55,8 +56,7 @@ export class ClassiSezioniAnniListComponent implements OnInit {
     "numAlunni"
   ];
 
-  displayedColumnsClassiSezioniAnniPage:                   string[] =  [
-    "actionsColumn",
+  displayedColumnsSegreteriaDashboard:                   string[] =  [
     "descrizione",
     "sezione",
     "numAlunni",
@@ -69,6 +69,15 @@ export class ClassiSezioniAnniListComponent implements OnInit {
     "numStato60",
     "numStato70",
     "numStato80",
+  ];
+
+
+  displayedColumnsImpostazioni:                 string[] =  [
+    "actionsColumn",
+    "documents",
+    "descrizione",
+    "sezione",
+    "numAlunni",
 
     "descrizioneAnnoSuccessivo",
     "sezioneAnnoSuccessivo"
@@ -235,8 +244,8 @@ export class ClassiSezioniAnniListComponent implements OnInit {
         this.toggleChecks = false;
       }
     );
-    //emette anno all'inizio (FORSE NON SERVE) NC 21/09/24
-    //this.annoIdEmitter.emit(this.form.controls.selectAnnoScolastico.value);
+    //emette anno all'inizio...NON INIBIRE! non funzionerebbe l'aggiunta di un alunno a una classe in quanto non saprebbe l'annoID
+    this.annoIdEmitter.emit(this.form.controls.selectAnnoScolastico.value);
 
 
     this.showPageTitle = false;
@@ -254,9 +263,15 @@ export class ClassiSezioniAnniListComponent implements OnInit {
         this.displayedColumns = this.displayedColumnsCoordinatoreDashBoard;
         this.loadData();
         break;
-      case 'classi-sezioni-anni-page':
-          this.displayedColumns = this.displayedColumnsClassiSezioniAnniPage;
+      case 'segreteria-dashboard':
+          this.displayedColumns = this.displayedColumnsSegreteriaDashboard;
           this.showPageTitle = true;
+          this.showTableRibbon = true;
+          this.loadData();
+          break;
+      case 'impostazioni':
+          this.displayedColumns = this.displayedColumnsImpostazioni;
+          this.showPageTitle = false;
           this.showTableRibbon = true;
           this.loadData();
           break;
@@ -346,10 +361,9 @@ export class ClassiSezioniAnniListComponent implements OnInit {
       const loadClassi$ =this._loadingService.showLoaderUntilCompleted(obsClassi$);
 
       loadClassi$.subscribe( val =>   {
+        //console.log("classi-sezioni-anni-list - loadData val", val);
         this.matDataSource.data = val;
-
-
-        if (this.dove == "classi-sezioni-anni-page") {
+        if (this.dove == "impostazioni" || this.dove == "segreteria-dashboard") {
           this.matDataSource.paginator = this.paginator;
           this.sortCustom(); 
           this.matDataSource.sort = this.sort; 
@@ -492,6 +506,18 @@ export class ClassiSezioniAnniListComponent implements OnInit {
     };
 
     const dialogRef = this._dialog.open(ClasseSezioneAnnoEditComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() =>  this.loadData());
+  }
+
+  openDetailDocs(classeSezioneAnno:CLS_ClasseSezioneAnno) {
+    const dialogConfig : MatDialogConfig = {
+      panelClass: 'add-DetailDialog',
+      width: '500px',
+      height: '400px',
+      data: classeSezioneAnno
+    };
+
+    const dialogRef = this._dialog.open(RisorseCSAListEditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() =>  this.loadData());
   }
 

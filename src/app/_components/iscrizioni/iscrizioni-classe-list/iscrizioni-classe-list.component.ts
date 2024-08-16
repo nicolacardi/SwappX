@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatPaginator }                         from '@angular/material/paginator';
 import { MatSort }                              from '@angular/material/sort';
 import { Observable }                           from 'rxjs';
@@ -50,17 +50,34 @@ export class IscrizioniClasseListComponent implements OnInit {
       "email", 
       "telefono",
       "dtNascita", 
-      "stato",    //Stato Iscrizione
+      "stato",    
+
       // "indirizzo", 
       // "comune", 
       // "cap", 
       // "prov"
   ];
-  displayedColumnsPagella: string[] = [
+  displayedColumnsNomeCognome: string[] = [
       // "select",
       "nome", 
       "cognome"
   ];
+  displayedColumnsSegrDocs: string[] = [
+    "select",
+    "nome", 
+    "cognome",
+    //"ended",
+    // "PagellaQ1Esistente",
+    "PagellaQ1Completata",
+    "PagellaQ1Pubblicata",
+    // "PagellaQ2Esistente",
+    "PagellaQ2Completata",
+    "PagellaQ2Pubblicata",
+    "CertCompCompletata",
+    "CertCompPubblicata",
+    "ConsOriCompletato",
+    "ConsOriPubblicato"
+];
 
   selection = new SelectionModel<CLS_Iscrizione>(true, []);   //rappresenta la selezione delle checkbox
   selectedRowIndex=-1;
@@ -104,10 +121,14 @@ export class IscrizioniClasseListComponent implements OnInit {
   @Input() classeSezioneAnnoID!:                              number;
   //@Input() alunniFilterComponent!:                          IscrizioniFilterComponent;    //TODO!!!
   @Input('dove') dove! :                                      string;
+  @ViewChildren("endedIcons", { read: ElementRef }) endedIcons!:  QueryList<ElementRef>   //elenco delle icone di fine procedura serve per farci riferimento da fuori
 
   @Output('openDrawer') toggleDrawer = new EventEmitter<number>();
   @Output('iscrizioneID') iscrizioneIdEmitter = new EventEmitter<number>();  
   @Output('alunno') alunnoEmitter = new EventEmitter<ALU_Alunno>();  
+
+  @Output('pubblica') pubblica = new EventEmitter<any>();
+
 //#endregion
 
 //#region ----- Constructor --------------------
@@ -126,15 +147,34 @@ export class IscrizioniClasseListComponent implements OnInit {
     this.showPageTitle = false;
     this.showTableRibbon = false;
     switch(this.dove) {
-      case 'pagella':
-        this.displayedColumns = this.displayedColumnsPagella;
+      case 'segr-dashboard-pagelle':
+        this.displayedColumns = this.displayedColumnsSegrDocs;
         this.loadData();         
         break;
-      case 'certcompetenze':
-        this.displayedColumns = this.displayedColumnsPagella;
+      case 'coord-dashboard-pagelle':
+        this.displayedColumns = this.displayedColumnsNomeCognome;
         this.loadData();         
         break;
-      case 'lista-alunni':
+      case 'coord-dashboard-certcompetenze':
+        this.displayedColumns = this.displayedColumnsNomeCognome;
+        this.loadData();         
+        break;
+      case 'coord-dashboard-consorientativi':
+        this.displayedColumns = this.displayedColumnsNomeCognome;
+        this.loadData();         
+        break;
+      case 'docenti-dashboard-certcompetenze':
+        this.displayedColumns = this.displayedColumnsNomeCognome;
+        this.loadData();         
+        break;
+      case 'docenti-dashboard-consorientativi':
+        this.displayedColumns = this.displayedColumnsNomeCognome;
+        this.loadData();         
+        break;
+      case 'coord-dashboard-alunni':
+        this.loadData();         
+        break;
+      case 'docenti-dashboard-alunni':
         this.loadData();
         break;  
       default:
@@ -171,6 +211,7 @@ export class IscrizioniClasseListComponent implements OnInit {
 
       loadIscrizioni$.subscribe(
         res =>  {
+          //console.log("iscrizioni-classe-list - loadData - res:", res);
           this.matDataSource.data = res;
           this.matDataSource.paginator = this.paginator;
           this.sortCustom(); 
@@ -192,25 +233,27 @@ export class IscrizioniClasseListComponent implements OnInit {
 
   }
 
+
+
+//#endregion
+
+//#region ----- Filtri & Sort ------------------
+
   sortCustom() {
     this.matDataSource.sortingDataAccessor = (item:any, property) => {
       switch(property) {
-        case 'nome':                        return item.alunno.nome;
-        case 'cognome':                     return item.alunno.cognome;
-        case 'email':                       return item.alunno.email;
-        case 'telefono':                    return item.alunno.telefono;
-        case 'dtNascita':                   return item.alunno.dtNascita;
+        case 'nome':                        return item.alunno.persona.nome;
+        case 'cognome':                     return item.alunno.persona.cognome;
+        case 'email':                       return item.alunno.persona.email;
+        case 'telefono':                    return item.alunno.persona.telefono;
+        case 'dtNascita':                   return item.alunno.persona.dtNascita;
         case 'stato':                       return item.stato.descrizione;
         default: return item[property]
       }
     };
   }
 
-//#endregion
-
-//#region ----- Filtri & Sort ------------------
-
-/*
+  /*
   filterRightPanel(): (data: any, filter: string) => boolean {
 
     let filterFunction = function(data: any, filter: any): boolean {
@@ -397,6 +440,13 @@ export class IscrizioniClasseListComponent implements OnInit {
   }
 //#endregion
 
+  emitPubblica(documento: string, periodo: number) {
+    let obj = {
+      documento: documento,
+      periodo: periodo
+    }
+    this.pubblica.emit(obj);
+  }
 }
 
 

@@ -41,7 +41,7 @@
             <mat-card-content>
                 <div class="center mt10 ml30 _no-padding-bottom" *ngIf="obsRette$ | async" >
                     <mat-form-field appearance="outline">
-                        <mat-label>Anno Scolastico</mat-label>
+                        <mat-label>a.s.. </mat-label>
                         <mat-select formControlName="selectAnnoScolastico">
                             <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id">
                             {{element.annoscolastico}}

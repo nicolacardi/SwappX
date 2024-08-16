@@ -1,4 +1,3 @@
-import { CLS_Iscrizione } from "./CLS_Iscrizione";
 import { DOC_NotaIscrizione }                   from "./DOC_NotaIscrizione";
 import { PER_Persona }                          from "./PER_Persone";
 

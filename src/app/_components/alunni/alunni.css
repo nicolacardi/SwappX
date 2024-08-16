@@ -21,6 +21,11 @@
       overflow: auto;
     }
   
+    ._documenti-container{
+      height: 450px;
+      overflow: auto;
+    }
+
     /* elenco tutti i genitori da cui attingere */
     ._classi-list-container {
       height: 240px;

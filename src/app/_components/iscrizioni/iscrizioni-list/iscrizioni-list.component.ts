@@ -195,7 +195,7 @@ export class IscrizioniListComponent implements OnInit {
       
       loadIscrizioni$.subscribe(
         val =>  {
-          //console.log (val);
+          //console.table (val);
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;          
           this.sortCustom();

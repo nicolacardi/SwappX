@@ -39,6 +39,7 @@ displayedColumns: string[] = [
     "annoscolastico",
     "anno1",
     "anno2",
+    "ckChiuso",
     "dtInizio",
     "dtFineQ1",
     "dtFine"
@@ -77,6 +78,7 @@ constructor(private svcAnni:                        AnniScolasticiService,
 
     loadAnni$.subscribe(
       val =>   {
+        console.log("anniscolastici-list - loadData - val", val);
         this.matDataSource.data = val;
         //this.sortCustom(); 
         this.matDataSource.sort = this.sort; 
@@ -95,7 +97,7 @@ constructor(private svcAnni:                        AnniScolasticiService,
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '420px',
-      height: '500px',
+      height: '550px',
       data: {
         id:                              0
         //maSeq:                                 this.maxSeq
@@ -110,7 +112,7 @@ constructor(private svcAnni:                        AnniScolasticiService,
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '420px',
-      height: '500px',
+      height: '550px',
       data: {
       annoID:                              annoID,
       //maxSeq:                                 this.maxSeq

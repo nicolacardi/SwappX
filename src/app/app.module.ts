@@ -57,6 +57,9 @@ import { GenitoreFormComponent }                from './_components/genitori/gen
 import { DocentiDashboardComponent }            from './_components/docenti/docenti-dashboard/docenti-dashboard.component';
 import { DocenteFormComponent }                 from './_components/docenti/docente-form/docente-form.component';
 
+//Segreteria
+import { SegreteriaDashboardComponent }             from './_components/segreteria/segreteria-dashboard/segreteria-dashboard.component';
+
 //Classi-ClassiSezioniAnni
 import { CoordinatoreDashboardComponent }             from './_components/coordinatore/coordinatore-dashboard/coordinatore-dashboard.component';
 import { ClassiPageComponent }                  from './_components/classi/classi-sezioni-anni-page/classi-sezioni-anni-page.component';
@@ -108,13 +111,15 @@ import { VotiObiettiviEditComponent }           from './_components/pagelle/voti
 
 //Pagella
 import { PagellaVotoEditComponent }             from './_components/pagelle/pagella-voto-edit/pagella-voto-edit.component';
-import { PagellaEditComponent }                 from './_components/pagelle/pagelle-edit/pagelle-edit.component';
 
 //Lezioni
 import { OrarioPageComponent }                  from './_components/lezioni/orario-page/orario-page.component';
 import { LezioniCalendarioComponent }           from './_components/lezioni/lezioni-calendario/lezioni-calendario.component';
 import { LezioneComponent }                     from './_components/lezioni/lezione-edit/lezione.component';
 import { LezioniUtilsComponent }                from './_components/lezioni/lezioni-utils/lezioni-utils.component';
+import { DownloadRegistroClasseComponent }      from './_components/lezioni/download-registro-classe/download-registro-classe.component';
+import { DownloadRegistroDocenteComponent }     from './_components/lezioni/download-registro-docente/download-registro-docente.component';
+
 import { OrarioDocentePageComponent }           from './_components/lezioni/orario-docente-page/orario-docente-page.component';
 
 //Presenze
@@ -202,16 +207,12 @@ import { VerbaliFilterComponent }               from './_components/verbali/verb
 import { ProceduraIscrizioneComponent }         from './_components/procedura-iscrizione/procedura-iscrizione.component';
 
 //Templates
-import { TemplateComponent }                    from './_components/templates/template/template.component';
-import { PaginaComponent }                      from './_components/templates/pagina/pagina.component';
-import { BloccoComponent }                      from './_components/templates/blocco/blocco.component';
-import { BloccoEditComponent }                  from './_components/templates/blocco-edit/blocco-edit.component';
+
 
 import { ClickDoubleDirective }                 from './_components/utilities/clickdouble/clickdouble.directive';
 
-import { QuillModule }                          from 'ngx-quill';
-import { TableComponent }                       from './_components/templates/table/table.component';
-import { TableShowComponent }                   from './_components/templates/tableshow/tableshow.component';
+//import { QuillModule }                          from 'ngx-quill';
+
 import { PagelleClasseEditComponent }           from './_components/pagelle/pagelle-classe-edit/pagelle-classe-edit.component';
 import { ImgUploadsComponent }                  from './_components/impostazioni/imguploads/imguploads.component';
 import { HttpErrorInterceptor }                 from './_user/auth/httperror.interceptor';
@@ -235,14 +236,20 @@ import { ParametriPageComponent }               from './_components/impostazioni
 import { ParametriListComponent }               from './_components/impostazioni/parametri/parametri-list/parametri-list.component';
 import { ParametriFilterComponent }             from './_components/impostazioni/parametri/parametri-filter/parametri-filter.component';
 import { ParametroEditComponent }               from './_components/impostazioni/parametri/parametro-edit/parametro-edit.component';
+
+import { RisorsaCSAEditComponent }              from './_components/impostazioni/risorse-csa/risorsa-csa-edit/risorsa-csa-edit.component';
+
+
 import { AnnoScolasticoPageComponent }          from './_components/anni-scolastici/annoscolastico-page/annoscolastico-page.component';
 import { AnniScolasticiListComponent }          from './_components/anni-scolastici/anniscolastici-list/anniscolastici-list.component';
 import { AnnoscolasticoEditComponent }          from './_components/anni-scolastici/annoscolastico-edit/annoscolastico-edit.component';
 import { CompitiPageComponent }                 from './_components/lezioni/compiti-page/compiti-page.component';
 import { VotiInterrPageComponent }              from './_components/lezioni/voti-interr-page/voti-interr-page.component';
 import { DomandeFilterComponent }               from './_components/impostazioni/domande/domande-filter/domande-filter.component';
-import { PagelleAlunnoListComponent }           from './_components/pagelle/pagelle-alunno-list/pagelle-alunno-list.component';
+import { DocumentiAlunnoListComponent }         from './_components/pagelle/documenti-alunno-list/documenti-alunno-list.component';
 import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-materie/classi-anni-materie-filter/classi-anni-materie-filter.component';
+import { RisorseCSAListEditComponent }          from './_components/impostazioni/risorse-csa/risorse-csa-list-edit/risorse-csa-list-edit.component';
+
 
 // FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   //dayGridPlugin, NC 16/02/23
@@ -295,6 +302,7 @@ import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-
     ClassiSezioniAnniListComponent,
     CoordinatoreDashboardComponent,
     
+    SegreteriaDashboardComponent,
     DocenzeListComponent,
 
     IscrizioniClasseListComponent,
@@ -313,6 +321,9 @@ import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-
     ScadenzaEditComponent,
     MieScadenzeComponent,
     LezioniUtilsComponent,
+    DownloadRegistroClasseComponent,
+    DownloadRegistroDocenteComponent,
+
     OrarioDocentePageComponent,
 
     TipiScadenzaListComponent,
@@ -387,8 +398,6 @@ import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-
     ObiettiviFilterComponent,
     ObiettiviDuplicaComponent,
 
-    PagellaEditComponent,
-
     NoteListComponent,
     NotaEditComponent,
     NotePageComponent,
@@ -399,15 +408,8 @@ import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-
     VerbaliPageComponent,
     VerbaliFilterComponent,
 
-
-
     ProceduraIscrizioneComponent,
-    TemplateComponent,
-    PaginaComponent,
-    BloccoComponent,
-    BloccoEditComponent,
-    TableComponent,
-    TableShowComponent,
+
     PagelleClasseEditComponent,
     ResetPswComponent,
     ImgUploadsComponent,
@@ -430,13 +432,17 @@ import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-
     ParametriListComponent,
     ParametriFilterComponent,
     ParametroEditComponent,
+
+    RisorsaCSAEditComponent,
+    RisorseCSAListEditComponent,
+
     AnnoScolasticoPageComponent,
     AnniScolasticiListComponent,
     AnnoscolasticoEditComponent,
     CompitiPageComponent,
     VotiInterrPageComponent,
     DomandeFilterComponent,
-    PagelleAlunnoListComponent,
+    DocumentiAlunnoListComponent,
     ClassiAnniMaterieFilterComponent
   ],
   imports: [
@@ -450,7 +456,7 @@ import { ClassiAnniMaterieFilterComponent }     from './_components/classi-anni-
     FormsModule,
     FullCalendarModule,
     ColorPickerModule,
-    QuillModule.forRoot(),
+    //QuillModule.forRoot(),
     ClipboardModule,
   ],
   providers: [

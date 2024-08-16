@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, Input }          from '@angular/core';
+import { Component, Input }                     from '@angular/core';
 import { MatTableDataSource }                   from '@angular/material/table';
 import { Observable, concatMap, iif, tap }      from 'rxjs';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
@@ -83,15 +83,14 @@ export class PagelleClasseEditComponent{
 
 //#endregion
 
-  constructor(private svcClassiSezioniAnni:               ClassiSezioniAnniService,
-              private svcPagella:                         PagelleService,
-              private svcPagellaVoti:                     PagellaVotiService,
-              private svcObiettivi:                       ObiettiviService,
-              private _loadingService:                    LoadingService,    
-              public _dialog:                             MatDialog,
-              private _snackBar:                          MatSnackBar ) { 
-            
-  }
+  constructor(private svcClassiSezioniAnni:     ClassiSezioniAnniService,
+              private svcPagella:               PagelleService,
+              private svcPagellaVoti:           PagellaVotiService,
+              private svcObiettivi:             ObiettiviService,
+              private _loadingService:          LoadingService,    
+              public _dialog:                   MatDialog,
+              private _snackBar:                MatSnackBar )
+  {  }
 
 
   ngOnChanges() {
@@ -112,9 +111,8 @@ export class PagelleClasseEditComponent{
             this.displayedColumns = this.displayedColumnsGiudizi;
             break;
           default:
-            //console.log("qualche problema!");
+
         }
-      //}),
 
     this.obsTipiGiudizio$= this.svcPagellaVoti.listTipiGiudizio();
 
@@ -138,10 +136,6 @@ export class PagelleClasseEditComponent{
     ).subscribe(val => {
       this.countObiettivi = val;
     });
-
-  }
-  openObiettiviTest(iscrizioneID: number, pagellaID: number, periodo: number, pagellaVotoID: number ) {
-    //console.log (iscrizioneID, pagellaID, periodo, pagellaVotoID);
   }
 
   openObiettivi(iscrizioneID: number, pagellaID: number, periodo: number, pagellaVotoID: number ) {
@@ -185,7 +179,7 @@ export class PagelleClasseEditComponent{
     let pagellaVoto2 = Object.assign({}, objPagellaVoto);
     this.save(iscrizioneID, pagellaVoto2, pagella, periodo);
 
-    //if (this.objPagella.ckStampato) this.resetStampato();
+
   }
 
   changeVoto(iscrizioneID: number, pagella: DOC_Pagella, pagellaVoto: DOC_PagellaVoto, voto: any, periodo: number) {
@@ -193,15 +187,6 @@ export class PagelleClasseEditComponent{
     if (votoN >10 ) votoN = 10
     if (votoN <0 )  votoN = 0
 
-    //console.log ("pagelle-classe-edit ->", pagellaVoto);
-    //if (!pagella) console.log ("non c'è pagella!");
-    //if (pagella) console.log ("c'è pagella!");
-    //if (!pagellaVoto) console.log ("non c'è pagellaVoto!");
-    //if (pagellaVoto) console.log ("c'è pagellaVoto!");
-    //console.log ("voto da impostare", votoN);
-    //console.log ("*****************************************");
-
-    let today = new Date;
     let objPagellaVoto : DOC_PagellaVoto = {
       id: pagellaVoto? pagellaVoto.id: 0,
       pagellaID : pagella? pagella.id : 0,
@@ -219,8 +204,6 @@ export class PagelleClasseEditComponent{
 
     let pagellaVoto2 = Object.assign({}, objPagellaVoto);
     this.save(iscrizioneID, pagellaVoto2, pagella, periodo);
-    
-    //if (this.objPagella.ckStampato) this.resetStampato();
   }
 
   changeNote(iscrizioneID: number, pagella: DOC_Pagella, pagellaVoto: DOC_PagellaVoto, nota: string, periodo: number) {
@@ -256,7 +239,8 @@ export class PagelleClasseEditComponent{
     let objPagella : DOC_Pagella = {
       id: pagella? pagella.id : -1,
       iscrizioneID: iscrizioneID,
-      periodo: periodo
+      periodo: periodo,
+      
     }
 
     //nel caso la pagella ancora non sia stata creata, va inserita

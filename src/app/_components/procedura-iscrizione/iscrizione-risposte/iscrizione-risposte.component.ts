@@ -12,12 +12,13 @@ import { MatTableDataSource }                   from '@angular/material/table';
 import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
 import { FormatoData, Utility }                 from '../../utilities/utility.component';
 
-
 //services
 import { RisorseService }                       from '../../impostazioni/risorse/risorse.service';
 import { IscrizioniService }                    from '../../iscrizioni/iscrizioni.service';
 import { RetteService }                         from '../../pagamenti/rette.service';
-import { OpenXMLService }                       from '../../utilities/openXML/open-xml.service';
+import { FilesService }                         from '../../pagelle/files.service';
+import { ConsOrientativiService }               from './consorientativi.service';
+import { CertCompetenzeService }                from './certcompetenze.service';
 
 //models
 import { _UT_Domanda }                          from 'src/app/_models/_UT_Domanda';
@@ -25,6 +26,10 @@ import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscriz
 import { IscrizioneRisposteService }            from './iscrizione-risposte.service';
 import { CLS_IscrizioneRisposta }               from 'src/app/_models/CLS_IscrizioneRisposta';
 import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDocument';
+import { DOC_CertCompetenze } from 'src/app/_models/DOC_CertCompetenze';
+import { DOC_ConsOrientativo } from 'src/app/_models/DOC_ConsOrientativo';
+
+
 
 //#endregion
 @Component({
@@ -35,9 +40,13 @@ import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDoc
 export class IscrizioneRisposteComponent implements OnInit  {
 
 //#region ----- Variabili ----------------------
+  chiuso= false;
+  docEsistente = false;
+  certCompetenze:                               DOC_CertCompetenze = {iscrizioneID : 0};
+  consOrientativo:                              DOC_ConsOrientativo= {iscrizioneID : 0};
   iscrizione!:                                  CLS_Iscrizione;
   rettaConcordata!:                             number;
-  obsDomande$!:                                Observable<_UT_Domanda[]>;
+  obsDomande$!:                                 Observable<_UT_Domanda[]>;
   formRisposte! :                               UntypedFormGroup;
   questions: any[] = []; // Assuming questions is an array of question objects
 
@@ -63,9 +72,11 @@ constructor(private svcDomande:                 DomandeService,
             private fb:                         UntypedFormBuilder, 
             private svcRisorse:                 RisorseService,
             private svcIscrizioni:              IscrizioniService,
-            private svcOpenXML:                 OpenXMLService,
+            private svcFile:                    FilesService,
 
             private svcIscrizioneRisposte:      IscrizioneRisposteService,
+            private svcConsOrientativi:         ConsOrientativiService,
+            private svcCertCompetenze:          CertCompetenzeService,
 
             private svcRette:                   RetteService,
 
@@ -80,21 +91,57 @@ constructor(private svcDomande:                 DomandeService,
 
 
   ngOnChanges() {
-    if (this.iscrizioneID && this.contesto) 
+    if (this.iscrizioneID && this.contesto)
+      //console.log ("iscrizione-risposte - ngOnChanges - iscrizioneID", this.iscrizioneID) 
       this.loadData();
   }
 
 
 //#region ----- LifeCycle Hooks e simili-------
   ngOnInit(): void {
-    // this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione;})
-    // this.svcRette.sumConcordateByIscrizione(this.iscrizioneID).subscribe(rettaConcordata=> {this.rettaConcordata = rettaConcordata;})
-
-    //this.loadData();
   }
 
   loadData() {
-    if (this.iscrizioneID && this.contesto) {
+    if (this.iscrizioneID && this.contesto && this.iscrizioneID !=0) {
+      //console.log ("loadData iscrizioneID", this.iscrizioneID);
+
+      switch (this.contesto) {
+        case 'CertificazioneCompetenze':
+          this.svcCertCompetenze.listByIscrizione(this.iscrizioneID).subscribe(res => {
+            //console.log ("iscrizione-risposte - loadData - cert Competenze estratta", res, this.iscrizioneID);
+            if (res.length !=0) {
+              // console.log("metto docesistente a true");
+              this.docEsistente = true;
+              this.certCompetenze = res[0]
+              if (this.certCompetenze.statoID! >1) {this.chiuso = true} else {this.chiuso = false}
+            } else {
+              this.certCompetenze = {iscrizioneID : this.iscrizioneID};
+              // console.log("metto docesistente a false");
+              this.docEsistente = false;
+            }
+          });
+          
+          break;
+        case 'ConsiglioOrientativo':
+          this.svcConsOrientativi.listByIscrizione(this.iscrizioneID).subscribe(res => {
+            if (res.length !=0) {
+              this.docEsistente = true;
+              this.consOrientativo = res[0]
+              if (this.consOrientativo.statoID! >1) {this.chiuso = true} 
+            } else {
+              this.consOrientativo = {iscrizioneID : this.iscrizioneID};
+              this.docEsistente = false;
+            }
+          });
+          break;
+      }
+
+      if (this.iscrizioneID ==0) {
+        //console.log("iscrizione-risposte - loadData - reset formRisposte")
+        this.formRisposte.reset(); //non sembra funzionare
+      }
+
+
       // console.log("iscrizione-risposte - loadData");
       this.svcIscrizioni.get(this.iscrizioneID).subscribe(iscrizione=> {this.iscrizione = iscrizione;})
       this.svcRette.sumConcordateByIscrizione(this.iscrizioneID).subscribe(rettaConcordata=> {this.rettaConcordata = rettaConcordata;})
@@ -180,14 +227,44 @@ constructor(private svcDomande:                 DomandeService,
     }
   }
 //#endregion
+
+
 //#region ----- Altri metodi -------------------
 
-  download(risorsaID:number){
+  chiudiDocumento() {
+    switch (this.contesto) {
+      case 'CertificazioneCompetenze':
+        this.certCompetenze.statoID = 2;
+        this.svcCertCompetenze.put(this.certCompetenze).subscribe(() => this.loadData());
+
+        break;
+      case 'ConsiglioOrientativo':
+        this.consOrientativo.statoID = 2;
+        this.svcConsOrientativi.put(this.consOrientativo).subscribe(() => this.loadData());
+        break;
+    }
+  }
+
+  apriDocumento() {
+    switch (this.contesto) {
+      case 'CertificazioneCompetenze':
+        this.certCompetenze.statoID = 1;
+        this.svcCertCompetenze.put(this.certCompetenze).subscribe(() => this.loadData());
+        this.loadData();
+        break;
+      case 'ConsiglioOrientativo':
+        this.consOrientativo.statoID = 1;
+        this.svcConsOrientativi.put(this.consOrientativo).subscribe(() => this.loadData());
+        break;
+    }
+  }
+  
+  downloadAllegato(risorsaID:number){
     if (risorsaID == null) return;
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta download inviata...', panelClass: ['green-snackbar']});
     this.svcRisorse.get(risorsaID).subscribe(
       res=> {
-        const pdfData = res.base64.split(',')[1]; // estrae la stringa base64 dalla virgola in avanti
+        const pdfData = res.fileBase64.split(',')[1]; // estrae la stringa base64 dalla virgola in avanti
         const source = `data:application/pdf;base64,${pdfData}`;
         const link = document.createElement("a");
         link.href = source;
@@ -198,6 +275,36 @@ constructor(private svcDomande:                 DomandeService,
   }
 
   async save(contesto: string) {
+    //questa funzione eesegue la save del modulo di cert competenze e cons orientativo
+    //usa contesto e l'iscrizione per stabilire come salvare le risposte. Infatti Iscrizione è chiave di CLS_IscrizioenRisposte. 
+    //Contesto serve solo per scegliere il template giusto
+
+    //Ma qui dovrebbe ANCHE andare a salvare nella tabella
+    //DOC_CertCompetenze O DOC_ConsOrientativi a seconda e dovrebbe anche farlo con POST o PUT a seconda
+    //in base a contesto opero sull'uno o sull'altro
+
+
+    //console.log("iscrizione-risposte - save - contesto:", contesto);
+    //console.log("iscrizione-risposte - save - iscrizioneID:", this.iscrizioneID);
+    //console.log("iscrizione-risposte - save - iscrizioneID:", this.certCompetenze);
+
+    switch (contesto) {
+      case 'CertificazioneCompetenze':
+        let certCompetenzePOST : DOC_CertCompetenze = {iscrizioneID : this.iscrizioneID, statoID: 1};
+        //console.log("iscrizione-risposte - save - contesto: certCompetenze", this.certCompetenze);
+        if (this.certCompetenze.id)   this.svcCertCompetenze.put(this.certCompetenze).subscribe(); //di fatto aggiorna dtUpd e userUpd nel WS
+        else                          this.svcCertCompetenze.post(certCompetenzePOST).subscribe();
+        break;
+      case 'ConsiglioOrientativo':
+        let consOrientativoPOST : DOC_ConsOrientativo = {iscrizioneID : this.iscrizioneID, statoID: 1};
+        if (this.consOrientativo.id)  this.svcConsOrientativi.put(this.consOrientativo).subscribe(); //di fatto aggiorna dtUpd e userUpd nel WS
+        else                          this.svcConsOrientativi.post(consOrientativoPOST).subscribe();
+        break;
+    }
+
+    //che sia il caso di creare un component contenitore di iscrizione risposte nel quale mettere i pulsanti di save download e blocco?
+    //quelli non sarebbero propriamente di iscrizione risposte...o meglio non lo sarebbero download e blocco
+
     //cancello prima il record di iscrizione risposte che ha iscrizione e 
     await firstValueFrom(this.svcIscrizioneRisposte.deleteByIscrizioneAndContesto(this.iscrizioneID, contesto));
 
@@ -327,6 +434,7 @@ constructor(private svcDomande:                 DomandeService,
             {
               next: res=> {
                 // console.log ("inserita domanda", domandaID)
+                this.loadData();
               },
               error: err=> {
                 // console.log ("errore nell'inserimento", domandaID)
@@ -336,11 +444,9 @@ constructor(private svcDomande:                 DomandeService,
         }
       }
     }
-
-
   }
  
-  async downloadDocumento(contesto: string) {
+  async downloadPreviewDocumento(contesto: string) {
 
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta download inviata...', panelClass: ['green-snackbar']});
 
@@ -348,7 +454,6 @@ constructor(private svcDomande:                 DomandeService,
 
     console.log (nomeFile);
   
-
     let tagDocument : RPT_TagDocument = {
       templateName: contesto,
       tagFields:
@@ -432,13 +537,7 @@ constructor(private svcDomande:                 DomandeService,
         }
       )
     ));
-
-
-    this.svcOpenXML.createAndDownloadFile(tagDocument, nomeFile )
-    
-
-    
-
+    this.svcFile.buildAndGetBase64(tagDocument, nomeFile )
   }
 
   

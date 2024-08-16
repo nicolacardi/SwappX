@@ -192,7 +192,7 @@ export class DomandeListComponent implements OnInit{
     this._snackBar.openFromComponent(SnackbarComponent, {data: 'Richiesta download inviata...', panelClass: ['green-snackbar']});
     this.svcRisorse.get(risorsaID).subscribe(
       res=> {
-        const pdfData = res.base64.split(',')[1]; // estrae la stringa dalla virgola in avanti
+        const pdfData = res.fileBase64.split(',')[1]; // estrae la stringa dalla virgola in avanti
 
         // const blob = new Blob([pdfData], { type: 'application/pdf' });
         // console.log("blob", blob);              

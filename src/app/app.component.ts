@@ -43,7 +43,8 @@ export class AppComponent implements OnInit {
 //#endregion
 
 //#region ----- ViewChild Input Output -------
-  @ViewChild('expansionClassi') public expansionClassi!: MatExpansionPanel;
+  @ViewChild('expansionSegreteria') public expansionSegreteria!: MatExpansionPanel;
+  @ViewChild('expansionCoordinatore') public expansionCoordinatore!: MatExpansionPanel;
   @ViewChild('expansionPagamenti') public expansionPagamenti!: MatExpansionPanel;
   @ViewChild('expansionDocenti') public expansionDocenti!: MatExpansionPanel;
 
@@ -62,7 +63,7 @@ export class AppComponent implements OnInit {
       this.eventEmitterService.userSubscribeAttiva = this.eventEmitterService.invokeUserEmit.subscribe(
         user => {
           this.currUser = user;
-          console.log ("app.component - ngOnInit currUser", this.currUser);
+          //console.log ("app.component - ngOnInit currUser", this.currUser);
           //questo è un "captatore" dell'Emit, quindi può funzionare sia in fase di Login che di Logout
           if (user) {
             this.userFullName = this.currUser.fullname;
@@ -121,17 +122,24 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/user/login']);
   }
 
-  expandClassi() {
-    setTimeout(() => this.expansionClassi.expanded = true, 10);
+  
+  expandSegreteria() {
+    setTimeout(() => this.expansionSegreteria.expanded = true, 10);
   }
 
-  expandPagamenti() {
-    setTimeout(() => this.expansionPagamenti.expanded = true, 10);
+  expandCoordinatore() {
+    setTimeout(() => this.expansionCoordinatore.expanded = true, 10);
   }
 
   expandDocenti() {
     setTimeout(() => this.expansionDocenti.expanded = true, 10);
   }
+  
+  expandPagamenti() {
+    setTimeout(() => this.expansionPagamenti.expanded = true, 10);
+  }
+
+
 
   clickMenuItem() {
     if (!this.isPinned) {

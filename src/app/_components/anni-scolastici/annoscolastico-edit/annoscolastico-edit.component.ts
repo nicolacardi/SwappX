@@ -1,24 +1,26 @@
 //#region ----- IMPORTS ------------------------
 
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { MatSnackBar }                          from '@angular/material/snack-bar';
+import { Observable }                           from 'rxjs';
+import { tap }                                  from 'rxjs/operators';
 
 //components
-import { SnackbarComponent } from '../../utilities/snackbar/snackbar.component';
-import { DialogYesNoComponent } from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
+import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
 
 //services
-import { LoadingService } from '../../utilities/loading/loading.service';
-import { AnniScolasticiService } from '../anni-scolastici.service';
+import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { AnniScolasticiService }                from '../anni-scolastici.service';
 
 //classes
-import { ASC_AnnoScolastico } from 'src/app/_models/ASC_AnnoScolastico';
-import { DialogDataAnnoEdit } from 'src/app/_models/DialogData';
-import { FormatoData, Utility } from '../../utilities/utility.component';
+import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoScolastico';
+import { DialogDataAnnoEdit }                   from 'src/app/_models/DialogData';
+import { FormatoData, Utility }                 from '../../utilities/utility.component';
+import { IscrizioniService } from '../../iscrizioni/iscrizioni.service';
+import { PagelleService } from '../../pagelle/pagelle.service';
 
 //#endregion
 
@@ -46,6 +48,8 @@ export class AnnoscolasticoEditComponent implements OnInit {
   constructor(public _dialogRef: MatDialogRef<AnnoscolasticoEditComponent>,
                     @Inject(MAT_DIALOG_DATA) public data:   DialogDataAnnoEdit,
                     private svcAnni :                       AnniScolasticiService,
+                    private svcIscrizioni:                  IscrizioniService,
+                    private svcPagelle:                     PagelleService,
                     private _loadingService :               LoadingService,
                     private fb:                             UntypedFormBuilder, 
                     public _dialog:                         MatDialog,
@@ -58,9 +62,11 @@ export class AnnoscolasticoEditComponent implements OnInit {
         anno1:                                  ['', { validators:[ Validators.required, Validators.maxLength(50)]}],
         anno2:                                  [''],
         annoscolastico:                         [''],
+        iD_annoscolasticoPrec:                  [''],
         dtInizio:                               [''],
         dtFineQ1:                               [''],
-        dtFine:                                 ['']
+        dtFine:                                 [''],
+        ckChiuso:                               ['']
       });
   }
 
@@ -84,8 +90,9 @@ export class AnnoscolasticoEditComponent implements OnInit {
         .pipe(
           tap(
             anno => {
+              console.log ("annoscolastico-edit - loadData - anno", anno)
+
               this.form.patchValue(anno);
-              // console.log ("annoscolastico-edit - loadData - anno", anno)
             }
           )
       );
@@ -100,10 +107,10 @@ export class AnnoscolasticoEditComponent implements OnInit {
 
   save(){
 
-    this._snackBar.openFromComponent(SnackbarComponent, {data: 'Funzione non abilitata', panelClass: ['red-snackbar']})
+    //this._snackBar.openFromComponent(SnackbarComponent, {data: 'Funzione non abilitata', panelClass: ['red-snackbar']})
 
-    //TODO!!!
-    /*
+    //TODO la data viene sbagliata di un giorno, va sistemata
+
     if (this.form.controls['id'].value == null) {
       this.svcAnni.post(this.form.value).subscribe({
           next: res=> {
@@ -126,7 +133,7 @@ export class AnnoscolasticoEditComponent implements OnInit {
           )
         });
     }
-    */
+    
   }
 
   delete(){
@@ -172,6 +179,33 @@ export class AnnoscolasticoEditComponent implements OnInit {
 
     //impostazione della data finale
     this.form.controls[control].setValue(formattedDate);
+  }
+
+  changedCkChiuso(event: any) {
+    console.log ("qui", event.checked);
+    
+    if (event.checked) {
+      const dialogYesNo = this._dialog.open(DialogYesNoComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE", sottoTitolo: "Chiudere l'anno significa che<br>non si potranno più modificare <br>iscrizioni, quote, voti, pagamenti,<br>pagelle, ed altri documenti. Continuare?"}
+      });
+
+      dialogYesNo.afterClosed().subscribe(result => {
+        if(result) {
+          console.log("ANNO CHIUSO", this.form.controls.id.value);
+          //TODO qui scatta una serie di eventi
+
+          //TODO chiusura di tutte le pagelle
+            //trova tutte le iscrizioni dell'anno e chiude ciascuna pagella
+                this.svcPagelle.completaByAnno(this.form.controls.id.value).subscribe();
+          //TODO chiusura di tutti i cert Competenze e i cons orientativi
+
+        }
+        else {
+          this.form.controls.ckChiuso.setValue(false);
+        }
+      })
+      }
   }
 
 //#endregion

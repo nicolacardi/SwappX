@@ -31,6 +31,8 @@ import { ClassiSezioniAnniService }             from '../../classi/classi-sezion
 //models
 import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno';
 import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { AnniScolasticiService } from '../../anni-scolastici/anni-scolastici.service';
+import { concatMap, tap } from 'rxjs';
 
 //#endregion
 
@@ -88,6 +90,9 @@ export class CoordinatoreDashboardComponent implements OnInit {
   public classeSezioneAnno!:                    CLS_ClasseSezioneAnno;
 
   public annoID!:                               number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
+  public ckAnnoChiuso                           = false;           
+  public ckAnnoSuccChiuso                       = false;           
+
   public docenteID!:                            number;   //valore ricevuto (emitted) dal child ClassiSezioniAnniList
   public iscrizioneID!:                         number;   //valore ricevuto (emitted) dal child IscrizioniClasseList
   public alunno!:                               ALU_Alunno;   //valore ricevuto (emitted) dal child IscrizioniClasseList
@@ -112,6 +117,7 @@ export class CoordinatoreDashboardComponent implements OnInit {
   constructor(private svcIscrizioni:            IscrizioniService,
               private svcDocenze:               DocenzeService,
               private svcClassiSezioniAnni:     ClassiSezioniAnniService,
+              private svcAnni:                  AnniScolasticiService,
               private _navigationService:       NavigationService,
               public _dialog:                   MatDialog,
               private _jspdf:                   JspdfService,
@@ -136,6 +142,7 @@ export class CoordinatoreDashboardComponent implements OnInit {
     });
 
     this._navigationService.passPage("coordinatoreDashboard");  //A cosa serve??
+
   }
 //#endregion
 
@@ -173,6 +180,13 @@ export class CoordinatoreDashboardComponent implements OnInit {
   }
 
   promuovi() {
+    if(this.ckAnnoSuccChiuso) {
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "L'anno scolastico successivo è chiuso"}
+      });
+      return;
+    }
 
     if (this.viewListIscrizioni.getChecked().length == 0) {
       this._dialog.open(DialogOkComponent, {
@@ -202,6 +216,15 @@ export class CoordinatoreDashboardComponent implements OnInit {
 //#region ----- add/remove to/from Classe-------
 
   addAlunnoToClasse() {
+
+    if(this.ckAnnoChiuso) {
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "L'anno scolastico è stato chiuso"}
+      });
+      return;
+    }
+
     if(this.classeSezioneAnnoID<0) return;
 
     const dialogConfig : MatDialogConfig = {
@@ -222,6 +245,14 @@ export class CoordinatoreDashboardComponent implements OnInit {
   }
 
   addDocenteToClasse() {
+    if(this.ckAnnoChiuso) {
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "L'anno scolastico è stato chiuso"}
+      });
+      return;
+    }
+
     if(this.classeSezioneAnnoID<0) return;
 
     const dialogConfig : MatDialogConfig = {
@@ -239,6 +270,15 @@ export class CoordinatoreDashboardComponent implements OnInit {
   }
 
   removeAlunnoFromClasse() {
+
+    if(this.ckAnnoChiuso) {
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "L'anno scolastico è stato chiuso"}
+      });
+      return;
+    }
+
     const objIdToRemove = this.viewListIscrizioni.getChecked();
 
     const selections = objIdToRemove.length;
@@ -277,6 +317,14 @@ export class CoordinatoreDashboardComponent implements OnInit {
   }
 
   removeDocenteFromClasse() {
+    if(this.ckAnnoChiuso) {
+      this._dialog.open(DialogOkComponent, {
+        width: '320px',
+        data: {titolo: "ATTENZIONE!", sottoTitolo: "L'anno scolastico è stato chiuso"}
+      });
+      return;
+    }
+
     const objIdToRemove = this.viewDocenzeList.getChecked();
 
     const selections = objIdToRemove.length;
@@ -300,7 +348,7 @@ export class CoordinatoreDashboardComponent implements OnInit {
 
             //per ragioni di sincronia (aggiornamento classiSezioniAnniList dopo il loop) usiamo la Promise()
             for (const element of objIdToRemove) {
-              await this.svcDocenze.delete(element.id)
+              await this.svcDocenze.delete(element.id!)
               .toPromise();
             }
 
@@ -320,7 +368,26 @@ export class CoordinatoreDashboardComponent implements OnInit {
     //questo valore, emesso dal component ClassiSezioniAnni e qui ricevuto
     //serve per la successiva assegnazione ad una classe...in quanto il modale che va ad aggiungere
     //le classi ha bisogno di conoscere anche l'annoID per fare le proprie verifiche
+    //console.log ("coordinatore-dashboard - annoIDEmitted - annoID", annoID);
     this.annoID = annoID;
+    this.svcAnni.get(annoID).subscribe(res => {
+      this.ckAnnoChiuso = res.ckChiuso
+      //console.log ("coordinatore-dashboard - annoIDEmitted - res.ckChiuso", res.ckChiuso);
+
+    });
+
+    //per le promozioni bisogna anche scoprire se l'anno successivo è stato chiuso
+    let annoSuccID!: number;
+    this.svcAnni.getAnnoSucc(annoID)
+    .pipe(
+      tap(res=> annoSuccID = res.id),
+      concatMap(()=> this.svcAnni.get(annoSuccID))
+    )
+    .subscribe(res => {
+      this.ckAnnoSuccChiuso = res.ckChiuso
+      console.log ("coordinatore-dashboard - annoIDEmitted - res.ckSuccChiuso", res.ckChiuso);
+    });
+    
   }
 
   classeSezioneAnnoIDEmitted(classeSezioneAnnoID: number) {
@@ -343,6 +410,7 @@ export class CoordinatoreDashboardComponent implements OnInit {
   }
 
   iscrizioneIDEmitted(iscrizioneID: number) {
+    //console.log("coordinatore-dahsboard - iscrizioneIDEmitted", iscrizioneID);
     this.iscrizioneID = iscrizioneID;
   }
 

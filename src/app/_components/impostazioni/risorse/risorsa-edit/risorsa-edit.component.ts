@@ -1,6 +1,6 @@
 //#region ----- IMPORTS ------------------------
 import { Component, Inject, ViewChild }         from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar }                          from '@angular/material/snack-bar';
 import { Observable, tap }                      from 'rxjs';
@@ -62,7 +62,7 @@ export class RisorsaEditComponent {
     id:                                       [null],
     nomeFile:                                   [''],
     tipoFile:                                   [''],
-    base64:                                     [''],
+    fileBase64:                                 ['', Validators.required],
     dtIns:                                      [''],
     userIns:                                    ['']
   });
@@ -82,13 +82,13 @@ export class RisorsaEditComponent {
 
     if (this.data.risorsaID && this.data.risorsaID + '' != "0") {
 
-      const obsFile$: Observable<_UT_Risorsa> = this.svcRisorse.getLight(this.data.risorsaID);
+      const obsFile$: Observable<_UT_Risorsa> = this.svcRisorse.get(this.data.risorsaID);
       const loadFile$ = this._loadingService.showLoaderUntilCompleted(obsFile$);
       this.file$ = loadFile$
       .pipe(
           tap(
             file => {
-              // console.log ("risorsa-edit - loadData - file ", file);
+              console.log ("risorsa-edit - loadData - file ", file);
               this.form.patchValue(file)
             }
           )
@@ -117,25 +117,26 @@ export class RisorsaEditComponent {
     //   return;
     // }
 
+    console.log ("risorsa-edit - save - this.form.value", this.form.value);
 
 
 
     this.form.controls.userIns.setValue(this.currUser.personaID);
     // console.log ("risorsa-edit- save - this.form", this.form.value);
-    let tipoFile = Utility.extractMIMEType(this.form.controls.base64.value);
+    let tipoFile = Utility.extractMIMEType(this.form.controls.fileBase64.value);
     if (tipoFile == "vnd.openxmlformats-officedocument.wordprocessingml.document") {
       tipoFile = "docX"
     }
     this.form.controls.tipoFile.setValue(tipoFile);
     
 
-    let currentValue: string = this.form.controls.base64.value;
+    let currentValue: string = this.form.controls.fileBase64.value;
     let newValue: string = currentValue.replace('vnd.openxmlformats-officedocument.wordprocessingml.document', 'docx');
 
-    this.form.controls.base64.setValue(newValue);
+    this.form.controls.fileBase64.setValue(newValue);
 
 
-    //console.log ("Utility.extractMIMEType(this.form.controls.base64.value)",Utility.extractMIMEType(this.form.controls.base64.value));
+    //console.log ("Utility.extractMIMEType(this.form.controls.fileBase64.value)",Utility.extractMIMEType(this.form.controls.fileBase64.value));
     if (this.form.controls['id'].value == null) {
       //console.log (this.form.value);
       this.svcRisorse.post(this.form.value).subscribe({
@@ -149,17 +150,22 @@ export class RisorsaEditComponent {
         )
       });
     }
-    // else {
-    //   this.svcRisorse.put(this.form.value).subscribe({
-    //       next: res=> {
-    //         this._dialogRef.close();
-    //         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
-    //       },
-    //       error: err=> (
-    //         this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
-    //       )
-    //     });
-    // }
+    else {
+      //qui bisogna distinguere, perchè uno potrebbe aver solo modificato il nome del file o caricato un nuovo file
+      //ed il form di conseguenza potrebbe essere carico solo per metà....
+      
+      this.svcRisorse.put(this.form.value).subscribe({
+          next: ()=> {
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Record salvato', panelClass: ['green-snackbar']});
+            this.svcRisorse.renumberSeq().subscribe();
+            this._dialogRef.close();
+
+          },
+          error: ()=> (
+            this._snackBar.openFromComponent(SnackbarComponent, {data: 'Errore in salvataggio', panelClass: ['red-snackbar']})
+          )
+        });
+    }
   }
 
   // delete(){
@@ -216,7 +222,7 @@ export class RisorsaEditComponent {
     reader.readAsDataURL(file);
     reader.onload = async () => {
       this.nomeFile = file.name;
-      this.form.controls.base64.setValue(reader.result);
+      this.form.controls.fileBase64.setValue(reader.result);
     };
   }
   

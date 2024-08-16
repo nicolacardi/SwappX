@@ -70,4 +70,10 @@ export class DocenzeService {
     return this.http.delete( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/' + docenzaID);    
   }
 
+  deleteByMateriaCSA(materiaID: number, classeSezioneAnnoID: number): Observable <any>{
+    return this.http.delete( environment.apiBaseUrl  + 'CLS_ClassiDocentiMaterie/' + materiaID + '/' + classeSezioneAnnoID );    
+    //http://213.215.231.4/swappX/api/CLS_ClassiDocentiMaterie/deleteByMateriaCSA/1/16
+  }
+
+
 }

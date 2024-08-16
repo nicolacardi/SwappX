@@ -106,15 +106,31 @@ matDataSource = new                             MatTableDataSource<CLS_ClasseDoc
     obsInsegnamenti$= this.svcDocenze.listByClasseSezioneAnno(this.classeSezioneAnnoID);
     let loadInsegnamenti$ =this._loadingService.showLoaderUntilCompleted(obsInsegnamenti$);
 
-    loadInsegnamenti$.subscribe(val =>  {
-        this.matDataSource.data = val;
+    loadInsegnamenti$.subscribe(res =>  {
+        //console.log("docenze-list - loadData - res:", res);
+
+        this.matDataSource.data = res;
         //this.matDataSource.paginator = this.paginator;          
-        //this.sortCustom();
-        //this.matDataSource.sort = this.sort; 
+        this.sortCustom();
+        this.matDataSource.sort = this.sort; 
         //this.matDataSource.filterPredicate = this.filterPredicate();
       }
     );
     
+  }
+//#endregion
+
+//#region ----- Filtri & Sort ------------------
+
+  sortCustom() {
+    this.matDataSource.sortingDataAccessor = (item:any, property) => {
+      switch(property) {
+        case 'materia':                         return item.materia.descrizione;
+        case 'docenteNome':                     return item.docente.persona.nome;
+        case 'docenteCognome':                  return item.docente.persona.cognome;
+        default: return item[property]
+      }
+    };
   }
 //#endregion
 
@@ -170,8 +186,8 @@ matDataSource = new                             MatTableDataSource<CLS_ClasseDoc
 
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '400px',
-      height: '440px',
+      width: '460px',
+      height: '480px',
       data: id
     };
     const dialogRef = this._dialog.open(DocenzaEditComponent, dialogConfig);
@@ -222,7 +238,7 @@ matDataSource = new                             MatTableDataSource<CLS_ClasseDoc
     if (!row) 
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     else
-      return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+      return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id! + 1}`;
   }
 
   //questo metodo ritorna un booleano che dice se sono selezionati tutti i record o no

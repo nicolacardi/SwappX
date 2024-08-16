@@ -96,8 +96,8 @@
     /* avvicina le celle nelle quali sono scritte le rette D C e P in retta edit*/
     /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     :host ::ng-deep .cellRetta .mat-mdc-form-field-wrapper { 
-        padding:0px;
-        margin: 0px;
+        /* padding:0px;
+        margin: 0px; */
     }
 
     /*estetica delle cellette nelle quali sono scirtte le rete D C e P in retta edit */
@@ -106,8 +106,9 @@
         width: 50px; 
         padding-top: 2px !important;
         padding-bottom: 0px !important;
+        padding-right: 5px !important;
         border: 0.5px solid rgba(86, 86, 86, 0.279) !important;
-        border-radius: 2px;
+        /* border-radius: 2px; */
         height: 20px;
         min-height: 30px;
     }
@@ -132,16 +133,14 @@
     /*bordo inferiore nascosto (finiva a metà cella)*/
     /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-    :host ::ng-deep .cellRetta .mat-form-field-underline {
+    /* :host ::ng-deep .cellRetta .mat-form-field-underline {
         display: none;
-    }
+    } */
 
-    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-    :host ::ng-deep .cellRettaEdit .mat-form-field-wrapper { 
+    /* :host ::ng-deep .cellRettaEdit .mat-form-field-wrapper { 
         padding:5px;
         margin: 0px;
-    }
+    } */
 
     /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
@@ -209,15 +208,23 @@
 
     /*elenco pagamenti in retta-edit*/
     ._pagamento-edit-container {
-        max-height: 250px;
+        max-height: 200px;
         text-align: left;
-        padding-left: 18px;
-        padding-top: 12px;
+        padding-left: 0px;
+        padding-top: 0px;
+        display: flex;
+        flex-direction: row;
     }
 
     /*larghezza ridotta dei mat-form-field*/
     ._pagamento-edit-container mat-form-field {
         width: 132px; 
+        flex: 1;
+    }
+
+    ._pagamento-edit-container button.addRetta {
+        width: 50px; /* Imposta la larghezza desiderata per il button */
+        margin-right: 10px; /* Aggiungi spazio tra il button e l'ultimo mat-form-field */
     }
 
     /*non funziona o non viene più usato BOH*/
@@ -235,7 +242,7 @@
     /*pulsante save in retta-edit sezione Nuovo Pagamento - posizionamento*/
     .addRetta {
         position: absolute;
-        right: 18px;
+        right: 0px;
     }
 
 

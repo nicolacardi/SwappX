@@ -46,8 +46,8 @@ export class ClassiAnniMateriePageComponent implements OnInit {
   openDuplica() {
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
-      width: '400px',
-      height: '430px',
+      width: '800px',
+      height: '630px',
       data: 0
     };
     const dialogRef = this._dialog.open(ClassiAnniMaterieDuplicaComponent, dialogConfig);
@@ -60,6 +60,7 @@ export class ClassiAnniMateriePageComponent implements OnInit {
     const objIdToRemove = this.classiAnniMaterieList.getChecked();
 
     const selections = objIdToRemove.length;
+    console.log ("classi-anni-materie - deleteSelection - selections", selections);
     if (selections <= 0) {
       this._dialog.open(DialogOkComponent, {
         width: '320px',
@@ -69,7 +70,7 @@ export class ClassiAnniMateriePageComponent implements OnInit {
     else{
       const dialogRef = this._dialog.open(DialogYesNoComponent, {
         width: '320px',
-        data: {titolo: "ATTENZIONE", sottoTitolo: "Si stanno cancellando "+selections+" obiettivi. Continuare?"}
+        data: {titolo: "ATTENZIONE", sottoTitolo: "Si stanno cancellando "+selections+" Tipi di Voto. Continuare?"}
       });
       dialogRef.afterClosed().subscribe(
         async result => {
@@ -77,7 +78,7 @@ export class ClassiAnniMateriePageComponent implements OnInit {
           else {
             //per ragioni di sincronia (aggiornamento obiettiviList dopo il loop) usiamo la Promise()
 
-            this.deleteObiettiviSequentially(objIdToRemove)
+            this.deleteTipiVotoSequentially(objIdToRemove)
             .then(() => {
               //la then dovrebbe garantire che tutte le eliminazioni sono state completate con successo
               this.classiAnniMaterieList.resetSelections();
@@ -88,7 +89,7 @@ export class ClassiAnniMateriePageComponent implements OnInit {
     }
   }
 
-  async deleteObiettiviSequentially(objIdToRemove: any): Promise<any> {
+  async deleteTipiVotoSequentially(objIdToRemove: any): Promise<any> {
     for (const element of objIdToRemove) {
       try {
         await firstValueFrom(this.svcClassiAnniMaterie.delete(element.id).pipe(tap(()=>console.log("sto cancellando"))));

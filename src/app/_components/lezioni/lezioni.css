@@ -15,6 +15,16 @@
     z-index: 2;
   }
 
+  :host ::ng-deep .fc-icon-download-registro {
+    background: url("../../../assets/documento_download_white.svg");
+    background-repeat: no-repeat;
+    color: transparent !important;
+    width: 30px;
+    height: 30px;
+    padding: 0px;
+    z-index: 2;
+  }
+
 
   :host ::ng-deep ._iconFirma {
       width: 20px;

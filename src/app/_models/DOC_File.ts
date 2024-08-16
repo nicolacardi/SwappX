@@ -1,3 +1,4 @@
+import { RPT_TagDocument } from "./RPT_TagDocument";
 
 export interface DOC_File {
         id?:                                    number;
@@ -5,7 +6,9 @@ export interface DOC_File {
         tipoDoc:                                string;
         docID:                                  number;
         fileBase64?:                            string;
-        estensione:                             string;
+        tipoFile:                               string;
+
+        TagDocument?:                           RPT_TagDocument;
 }
 
  

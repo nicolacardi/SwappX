@@ -17,25 +17,25 @@
                 required
                 formControlName = "dtPagamento"
                 [matDatepicker]= "dpDtPagamento"
-                placeholder="Data pagamento" >
+                placeholder="Data" >
             <mat-datepicker-toggle matSuffix [for]="dpDtPagamento"></mat-datepicker-toggle>
             <mat-datepicker #dpDtPagamento></mat-datepicker>
-            <mat-error *ngIf="formRetta.controls.dtPagamento.errors?.required"> Campo obbligatorio</mat-error>
+            <!-- <mat-error *ngIf="formRetta.controls.dtPagamento.errors?.required"> Campo obbligatorio</mat-error> -->
         </mat-form-field>
 
         <mat-form-field>
             <input matInput type="number" required placeholder="Importo" formControlName="importo">
-            <mat-error *ngIf="formRetta.controls.importo.errors?.required"> Campo obbligatorio</mat-error>
+            <!-- <mat-error *ngIf="formRetta.controls.importo.errors?.required"> Campo obbligatorio</mat-error> -->
         </mat-form-field>
 
         <mat-form-field  >
-            <mat-label>Tipo pagamento</mat-label>
+            <mat-label>Tipo</mat-label>
             <mat-select formControlName="tipoPagamentoID">
                 <mat-option *ngFor="let element of (tipiPagamento$ | async)" [value]="element.id">
                     {{element.descrizione}}
                 </mat-option>
             </mat-select>
-            <mat-error *ngIf="formRetta.controls.tipoPagamentoID.errors?.required"> Campo obbligatorio</mat-error>
+            <!-- <mat-error *ngIf="formRetta.controls.tipoPagamentoID.errors?.required"> Campo obbligatorio</mat-error> -->
         </mat-form-field>
 
         <mat-form-field  matRequired>
@@ -45,7 +45,7 @@
                     {{element.descrizione}}
                 </mat-option>
             </mat-select>
-            <mat-error *ngIf="formRetta.controls.causaleID.errors?.required"> Campo obbligatorio</mat-error>
+            <!-- <mat-error *ngIf="formRetta.controls.causaleID.errors?.required"> Campo obbligatorio</mat-error> -->
         </mat-form-field>
 
         <mat-form-field  [ngClass]="{'_mese-hidden': causale.value != 1}">

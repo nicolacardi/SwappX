@@ -213,6 +213,7 @@ export class PagamentiListComponent implements OnInit {
 
     loadPagamenti$.subscribe(
       val => {
+        // console.log("pagamenti-list loadData - val ", val);
         this.matDataSource.data = val;
         this.matDataSource.paginator = this.paginator;
         

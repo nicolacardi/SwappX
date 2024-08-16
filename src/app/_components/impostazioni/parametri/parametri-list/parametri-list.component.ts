@@ -12,8 +12,8 @@ import { MatMenuTrigger }                       from '@angular/material/menu';
 import { MatDialog, MatDialogConfig }           from '@angular/material/dialog';
 
 //components
-import { ParametroEditComponent }   from '../parametro-edit/parametro-edit.component';
-import { ParametriFilterComponent } from '../parametri-filter/parametri-filter.component';
+import { ParametroEditComponent }               from '../parametro-edit/parametro-edit.component';
+import { ParametriFilterComponent }             from '../parametri-filter/parametri-filter.component';
 import { Utility }                              from '../../../utilities/utility.component';
 
 //services

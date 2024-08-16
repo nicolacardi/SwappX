@@ -23,8 +23,8 @@
     <form [formGroup] = "formRisposte">
 
         <ng-container *ngIf="contesto == 'CertificazioneCompetenze'|| contesto == 'ConsiglioOrientativo'">
-            <button  mat-mini-fab aria-label="Salva" matTooltip="Stampa" class="_btn-add _btn-pos-right-2 mb10"
-                    (click)="downloadDocumento(contesto)" >
+            <button  mat-mini-fab aria-label="Scarica Anteprima" matTooltip="Scarica Anteprima" class="_btn-add _btn-pos-right-2 mb10"
+                    (click)="downloadPreviewDocumento(contesto)" >
                     <mat-icon>file_download</mat-icon>
             </button>
 
@@ -33,6 +33,18 @@
                     (click)="save(contesto)" >
                     <mat-icon>save</mat-icon>
             </button>
+
+            <button *ngIf="!chiuso" [disabled]="!docEsistente" mat-mini-fab aria-label="Chiudi Documento" matTooltip="Chiudi Documento" class="_btn-add _btn-pos-right-3" (click)="chiudiDocumento()">
+                <img class="iconaMini pointer" src="./assets/unlocked.svg">
+            </button>
+
+            <button *ngIf="chiuso" [disabled]="!docEsistente" mat-mini-fab aria-label="Apri Documento" matTooltip="Apri Documento" class="_btn-add-red _btn-pos-right-3" (click)="apriDocumento()">
+                <img class="iconaMini pointer" src="./assets/lock.svg">
+            </button>
+
+
+
+
         </ng-container>
         <div>
             <br>
@@ -99,7 +111,7 @@
                 <td mat-cell  
                     class="_blue _underline pointer" 
                     *matCellDef="let element;  let j = index;" 
-                    (click) = "download(element.risorsa!.id)"
+                    (click) = "downloadAllegato(element.risorsa!.id)"
                     [ngClass]="{'invisible': element.numOpzioni == 0 && element.tipo != 'Risposta Libera'}"
                     >{{element.risorsa? element.risorsa.nomeFile: ''}}</td>
             </ng-container>

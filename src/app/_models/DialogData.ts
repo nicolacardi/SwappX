@@ -38,14 +38,30 @@ export interface DialogDataLezioniUtils {
         classeSezioneAnnoID:                    number;
       }
 
+export interface DialogDataDownloadRegistroClasse {
+      start:                                    Date;
+      classeSezioneAnnoID:                      number;
+      annoID:                                   number;
+      }
+
+export interface DialogDataDownloadRegistroDocente {
+      start:                                    Date;
+      docenteID:                                number;
+      annoID:                                   number;
+      }
+
+      
+
 
 export interface DialogDataVotiObiettivi {
         iscrizioneID:                           number
         pagellaID:                              number;
         pagellaVotoID:                          number;
         periodo:                                number;
+        //dtDocumento?:                              string;
         classeSezioneAnnoID:                    number;
         materiaID:                              number;
+        chiusa:                                 boolean;
       }
 
 export interface DialogDataColoreMateria {
@@ -102,4 +118,9 @@ export interface DialogDataTipoScadenzaEdit {
       tipoScadenzaID:                           number;
       maxSeq:                                   number;
 
+      }
+
+export interface DialogDataRisorsaClasseEdit {
+      risorsaCSAID:                             number;
+      classeSezioneAnnoID:                      number;
       }

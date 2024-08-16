@@ -30,8 +30,8 @@ import { ScadenzeCalendarioComponent }          from './_components/scadenze/sca
 import { VerbaliPageComponent }                 from './_components/verbali/verbali-page/verbali-page.component';
 import { OrarioPageComponent }                  from './_components/lezioni/orario-page/orario-page.component';
 import { ProceduraIscrizioneComponent }         from './_components/procedura-iscrizione/procedura-iscrizione.component';
-import { TemplateComponent }                    from './_components/templates/template/template.component';
 import { ChangePswExtComponent }                from './_user/change-psw-ext/change-psw-ext.component';
+import { SegreteriaDashboardComponent }         from './_components/segreteria/segreteria-dashboard/segreteria-dashboard.component';
 
 const routes: Routes = [
 
@@ -61,16 +61,15 @@ const routes: Routes = [
 
   { path: "genitori",                           component: GenitoriPageComponent, canActivate:[AuthGuard]},
 
-  //{ path: "docenti",                           component: DocentiPageComponent, canActivate:[AuthGuard]},
-
   { path: "soci",                               component: SociPageComponent,canActivate:[AuthGuard] },
-
 
   { path: "iscrizioni",                         component: IscrizioniPageComponent, canActivate:[AuthGuard]},
 
   { path: "classi",                             component: ClassiPageComponent,canActivate:[AuthGuard] },
 
-  { path: "coordinatore-dashboard",                   component: CoordinatoreDashboardComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'DocenteCoord', 'Docente' ] } },
+  { path: "segreteria-dashboard",               component: SegreteriaDashboardComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'DocenteCoord', 'Docente' ] } },
+
+  { path: "coordinatore-dashboard",             component: CoordinatoreDashboardComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'DocenteCoord', 'Docente' ] } },
 
   { path: "calendario-docente",                 component: OrarioDocentePageComponent,canActivate:[AuthGuard],data: { roles: ['ITManager', 'DocenteCoord', 'Docente' ] } },
 

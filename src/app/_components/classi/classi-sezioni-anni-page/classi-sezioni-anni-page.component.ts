@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 
 import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 
@@ -9,11 +9,13 @@ import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/clas
 })
 export class ClassiPageComponent {
 
-  @ViewChild(ClassiSezioniAnniListComponent) ClassiSezioniAnniListComponent!: ClassiSezioniAnniListComponent; 
 
+  @ViewChild(ClassiSezioniAnniListComponent) ClassiSezioniAnniListComponent!: ClassiSezioniAnniListComponent; 
+  @Input('dove') dove! :                        string;
   constructor() { }
 
-  ngOnInit() { }
+  ngOnChanges() {}
+  ngOnInit() {if (this.dove==null || this.dove =='' || this.dove == undefined) {this.dove="segreteria-dashboard"} }
 
   resetFiltri() { }
 

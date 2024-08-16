@@ -1,8 +1,8 @@
 
 
-@import '~quill/dist/quill.snow.css';
+/* @import '~quill/dist/quill.snow.css';
 @import '~quill/dist/quill.core.css';
-@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.bubble.css'; */
 
 /*#region ********** GENERALI **********/
     html, body { 
@@ -300,6 +300,10 @@
     }
 
     /* margin-top */
+    .mt-10 {
+        margin-top: -10px;
+    }
+
     .mt0 {
         margin-top: 0px;
     }
@@ -511,6 +515,16 @@
     .pl70 {
         padding-left: 70px;
     }
+
+    .pr5 {
+        padding-right: 5px;
+    }
+
+    .pr10 {
+        padding-right: 10px;
+    }
+
+
 /*#endregion ***************************/
 
 /*#region ********** WIDTH *************/
@@ -755,6 +769,10 @@
         height: 100px;
     }
 
+    .h120px {
+        height: 120px;
+    }
+
     .h125px {
         height: 125px;
     }
@@ -787,6 +805,10 @@
 
     ._border-left {
         border-left: 1px solid grey;
+    }
+
+    ._border-left-lightgrey {
+        border-left: 1px solid lightgrey;
     }
 
     ._border-left-dot {
@@ -925,6 +947,11 @@
     } */
     
 
+    ._toggle-std {
+        z-index: 1000;
+        position: absolute !important;
+    }
+
     /*TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
     /*TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
     ._btn-text-container .mat-button-disabled{
@@ -947,7 +974,7 @@
     ._btn-add-red {
         z-index: 1000;
         position: absolute !important;
-        background-color: #ff0000 !important;
+        background-color: #ba1414 !important;
     }
 
     ._btn-add-fixed {
@@ -1097,8 +1124,16 @@
         top: 125px;
     }
 
+    ._btn-pos-top-25 {
+        top: 100px;
+    }
+
     ._btn-pos-top-3 {
         top: 170px;
+    }
+
+    ._btn-pos-top-35 {
+        top: 190px;
     }
 
     ._btn-pos-top-4 {
@@ -1194,12 +1229,18 @@
         transform: scale(1.05);
     }
 
+    ._btn-red {
+        z-index: 1000;
+        background-color: #ba1414 !important;
+        color: white;
+    }
+
     ._btn-Red {
         z-index: 1000;
         position: absolute !important;
         left: 60px;
         top: 5px;
-        background-color: #e00d0d !important;
+        background-color: #ba1414 !important;
     }
 
     ._btn-Red:hover{
@@ -1435,6 +1476,7 @@
 
     ._table-row-low .mat-mdc-row {
         min-height: 30px;               /*FUNZIONA SOLO PER LE <mat-table>*/
+        /* height: 30px; */
     }
 
     ._table-title-low {
@@ -1663,6 +1705,9 @@
         width: 35px;
     }
 
+    .iconaMini{
+        width: 30px;
+    }
 
     ._icona-check-green {
         color: green;
@@ -1694,6 +1739,11 @@
     .topZIndex {
         z-index: 1000;
     }
+
+    .lowZIndex {
+        z-index: 1;
+    }
+
 /*#endregion ***************************/
 
 /*#region ********** OVERFLOW *********/
@@ -1926,6 +1976,9 @@
     }
 
 
+    ._floatright {
+        float: right;
+    }
 
     ._floatleft {
         float: left;
@@ -2074,11 +2127,11 @@ div.inner img {
 
 
 
-/* QUILL: NON CHIARO PERCHE' MA VADA SCRITTO QUI: IN TEMPLATE.CSS NON FUNZIONA */
+/* QUILL: NON CHIARO PERCHE' MA VA SCRITTO QUI: IN TEMPLATE.CSS NON FUNZIONA */
 
 
 
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
+/* .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
 .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="10px"]::before,
 .ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
 .ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="10px"]::before {
@@ -2132,7 +2185,7 @@ div.inner img {
 .ql-bubble .ql-picker.ql-size .ql-picker-item[data-value="24px"]::before,
 .ql-bubble .ql-picker.ql-size .ql-picker-label[data-value="24px"]::before {
   content: "24px";
-}
+} */
 
 /* non so se servano quelle che seguono*/
 /* .ql-picker.ql-placeholder {width: 118px;}
@@ -2143,7 +2196,7 @@ div.inner img {
 
 /* ****quill mention */
 
-  .ql-mention-list-container {
+  /* .ql-mention-list-container {
     width: 270px;
     border: 1px solid #f0f0f0;
     border-radius: 4px;
@@ -2151,7 +2204,6 @@ div.inner img {
     box-shadow: 0 2px 12px 0 rgba(30, 30, 30, 0.08);
     z-index: 9001;
     overflow: auto;
-    /* overflow: visible !important; */
     position: absolute;
   }
   
@@ -2199,5 +2251,5 @@ div.inner img {
   
   .mention > span {
     margin: 0 3px;
-  }
+  } */
   

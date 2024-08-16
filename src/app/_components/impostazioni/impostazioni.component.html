@@ -1,8 +1,13 @@
 <mat-tab-group mat-align-tabs="center" class="h100-64">
 
+    <!-- ********************************    MAT TAB Risorse Documenti ********************************** -->
 
-    <mat-tab  label="Cambio Anno Scolastico">
+    <mat-tab  label="Anni Scolastici">
         <app-annoscolastico-page></app-annoscolastico-page>
+    </mat-tab>
+
+    <mat-tab label="Gestione Classi">
+        <app-classi-sezioni-anni-page [dove]="'impostazioni'"></app-classi-sezioni-anni-page>
     </mat-tab>
 
     <mat-tab  label="Parametri Base">
@@ -17,6 +22,7 @@
     <mat-tab  label="Upload File">
         <app-risorse-page> </app-risorse-page>
     </mat-tab>
+
 
     <!-- ********************************    MAT TAB Risorse grafiche *********************************** -->
     <mat-tab  label="Upload Immagini">

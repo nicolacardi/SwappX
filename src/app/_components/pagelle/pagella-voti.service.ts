@@ -19,13 +19,20 @@ export class PagellaVotiService {
     //http://213.215.231.4/swappX/api/DOC_PagellaVoti/ListByAnnoClassePagella/2/1/33
   }
 
+  listByIscrizionePeriodo(iscrizioneID: number, periodo: number): Observable<DOC_PagellaVoto[]>{
+    return this.http.get<DOC_PagellaVoto[]>(environment.apiBaseUrl+'DOC_PagellaVoti/ListByIscrizionePeriodo/'+iscrizioneID+'/'+periodo);   
+    //http://213.215.231.4/swappX/api/DOC_PagellaVoti/ListByIscrizionePeriodo/330/1
+  }
+
   listByCSAMateria(classeSezioneAnnoID: number, materiaID: number): Observable<CLS_Iscrizione[]>{
 
     return this.http.get<CLS_Iscrizione[]>(environment.apiBaseUrl+'DOC_PagellaVoti/ListByCSAMateria/'+classeSezioneAnnoID+'/'+materiaID);
-    // .pipe (
-    //        map(val=> val.filter(val=>(val.periodo == periodo || val.periodo == 0)))
-    // );   
     //http://213.215.231.4/swappX/api/DOC_PagellaVoti/ListByCSAMateria/18/1002
+  }
+
+  listByIscrizione(iscrizioneID: number): Observable<CLS_Iscrizione[]>{
+    return this.http.get<CLS_Iscrizione[]>(environment.apiBaseUrl+'DOC_PagellaVoti/ListByIscrizione/'+iscrizioneID);
+    //http://213.215.231.4/swappX/api/DOC_PagellaVoti/ListByIscrizione/330
   }
   
   put(formData: any): Observable <any>{

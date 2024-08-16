@@ -18,12 +18,30 @@ export class ClasseAnnoMateriaService {
     //http://213.215.231.4/swappX/api/CLS_ClassiAnniMaterie/1
   } 
 
-  duplicaClassiAnniMaterie (annoIDFrom: number, annoIDTo: number) {
-    let formData = {};
+  // duplicaClassiAnniMaterie (annoIDFrom: number, annoIDTo: number) {
+  //   let formData = {};
+  //   return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterie/' + annoIDFrom + '/' + annoIDTo, formData);
+  // //http://213.215.231.4/SwappX/api/CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterie/2/3
+  // }
 
-    return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterie/' + annoIDFrom + '/' + annoIDTo, formData);
-  //http://213.215.231.4/SwappX/api/CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterie/2/3
+  duplicaClassiAnniMaterieByAnni (annoIDFrom: number, annoIDTo: number) {
+    let formData = {};
+    return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterieByAnni/' + annoIDFrom + '/' + annoIDTo, formData);
+  //http://213.215.231.4/SwappX/api/CLS_ClassiAnniMaterie/duplicaClassiAnniMaterieByAnni/2/3
   }
+
+  DuplicaClassiAnniMaterieByAnnoAndClassi(annoID: number, classeIDFrom: number, classeIDTo: number) {
+    let formData = {};
+    return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterieByAnnoAndClassi/' + annoID + '/' + classeIDFrom + '/' + classeIDTo, formData);
+  //http://213.215.231.4/SwappX/api/CLS_ClassiAnniMaterie/DuplicaClassiAnniMaterieByAnnoAndClassi/2/16/18
+  }
+
+  CambiaTipoByAnnoAndClasse(annoID: number, classeID: number, tipoID: number) {
+    let formData = {};
+    return this.http.post( environment.apiBaseUrl  + 'CLS_ClassiAnniMaterie/CambiaTipoByAnnoAndClasse/' + annoID + '/' + classeID + '/' + tipoID, formData);
+  //http://213.215.231.4/SwappX/api/CLS_ClassiAnniMaterie/CambiaTipoByAnnoAndClasse/2/16/3
+  }
+
 
   list(): Observable<CLS_ClasseAnnoMateria[]>{
     return this.http.get<CLS_ClasseAnnoMateria[]>(environment.apiBaseUrl+'CLS_ClassiAnniMaterie');
