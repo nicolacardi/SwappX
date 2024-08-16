@@ -4,5 +4,6 @@ export interface ASC_AnnoScolastico {
     anno2:                                      number;
     annoscolastico:                             string;
     ckChiuso:                                   boolean;
+
     ID_annoscolasticoPrec:                      number;
   }

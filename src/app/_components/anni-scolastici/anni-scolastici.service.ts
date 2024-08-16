@@ -51,6 +51,11 @@ export class AnniScolasticiService {
     return this.http.put( environment.apiBaseUrl  + 'ASC_Anni/' + formData.id , formData);    
   }
 
+  setAnnoCorrente(annoID: any): Observable <any>{
+    let formData: any;
+    return this.http.put( environment.apiBaseUrl  + 'ASC_Anni/setAnnoCorrente/' + annoID, formData);    
+  }
+
   post(formData: any): Observable <any>{
     formData.id = 0;
     return this.http.post( environment.apiBaseUrl  + 'ASC_Anni' , formData);  
