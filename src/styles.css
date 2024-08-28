@@ -173,11 +173,11 @@
     /* la toolbar è la fascia in alto */   
     .mat-toolbar {                              
         font-family: 'Titillium Web', sans-serif;
-        background: transparent url("../src/assets/backgroundglassToolbar.svg") no-repeat center;
-        background-size: cover;
-        color: white;                         /* governa il colore del menu sandwich in alto a sinistra*/
-        z-index: 10000;
-        position: fixed;
+        background: transparent url("../src/assets/backgroundglassToolbar.svg") no-repeat center !important;
+        background-size: cover !important;
+        color: white !important;                         /* governa il colore del menu sandwich in alto a sinistra*/
+        z-index: 10000 !important;
+        position: fixed !important;
     }
 /*#endregion ***************************/
 
@@ -1624,7 +1624,7 @@
     /* la leftSidenav è il menu è una mat-nav-list, l'unica della app */
     .leftSidenav {
         /* width:  250px; */
-        background-color: rgb(85, 85, 85);
+        background-color: rgb(85, 85, 85) !important;
         /* color: red; */
     }
 
@@ -1647,12 +1647,17 @@
         color: rgb(255, 255, 255) !important;
     }
 
+
+    mat-nav-list mat-expansion-panel{
+        /* color: rgb(10,10,10) !important; */
+        -mat-expansion-container-shape: 
+    }
     mat-nav-list mat-expansion-panel:hover{
         /* color: rgb(10,10,10) !important; */
         background: rgb(137, 136, 136) !important;
     }
 
-    :host ::ng-deep .mat-expansion-indicator::after{
+    .mat-expansion-indicator::after{
         color: white !important;
     }
 
@@ -1680,6 +1685,7 @@
 
     .sidenav-expansion-panel-header {
         padding: 0 16px !important;
+        background-color: rgb(85, 85, 85) !important;
     }
 
 
