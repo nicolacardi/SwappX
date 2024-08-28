@@ -1647,11 +1647,6 @@
         color: rgb(255, 255, 255) !important;
     }
 
-
-    mat-nav-list mat-expansion-panel{
-        /* color: rgb(10,10,10) !important; */
-        -mat-expansion-container-shape: 
-    }
     mat-nav-list mat-expansion-panel:hover{
         /* color: rgb(10,10,10) !important; */
         background: rgb(137, 136, 136) !important;
