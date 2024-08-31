@@ -41,6 +41,7 @@
 
     .mat-mdc-option{
         letter-spacing: 0em;                    /* fix font dopo migrazione a ng v15 */
+        font-family: 'Titillium Web', sans-serif !important;
     }
 
     .mat-mdc-cell{
