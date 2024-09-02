@@ -83,7 +83,8 @@
     }
 
     .mat-mdc-list-base {
-        --mdc-list-list-item-hover-label-text-color: rgb(79, 79, 79);
+        --mdc-list-list-item-hover-label-text-color: rgb(163, 163, 163);
+        --mdc-list-list-item-hover-state-layer-color: transparent;   /*attenzione questa è una forzatura utile per leftSidenav nelle parti collapsible NC 010924*/
     }
 
     .mat-mdc-card-outlined{   
@@ -1606,10 +1607,10 @@
     .toolSidenav {                                  
         width:  60px;
         background: transparent url("../src/assets/backgroundglassToolbarVertical.svg") no-repeat;
-        background-size: cover;
+        background-size: cover  !important;
         color: rgb(10,10,10) !important;            
         margin-top: 5px;
-        border-radius: 50px 50px 0px 0px;
+        border-radius: 50px 50px 0px 0px  !important;
     }
 
     .material-icons.color_white { color: #FFFFFF; }
@@ -1640,7 +1641,7 @@
 
     mat-nav-list a:hover{
         /* color: rgb(10,10,10) !important; */
-        background: rgb(137, 136, 136) !important;
+        /* background: rgb(137, 136, 136) !important; */
     }
 
     mat-nav-list mat-expansion-panel mat-panel-title{
@@ -1650,8 +1651,23 @@
 
     mat-nav-list mat-expansion-panel:hover{
         /* color: rgb(10,10,10) !important; */
-        background: rgb(137, 136, 136) !important;
+        /* background: rgb(137, 136, 136) !important; */
     }
+
+    mat-nav-list mat-expansion-panel{
+        /* color: rgb(10,10,10) !important; */
+        background: rgb(137, 136, 136) !important;
+        border-radius: 0px !important;
+    }
+
+
+    mat-nav-list mat-expansion-panel-header{
+        /* color: rgb(10,10,10) !important; */
+        border-radius: 0px !important;
+    }
+
+
+
 
     .mat-expansion-indicator::after{
         color: white !important;
@@ -1737,6 +1753,10 @@
 
     .transparent {
         background: none;
+    }
+
+    ._bg_lightslategrey {
+        background: lightslategray !important;
     }
 
     .invisible {
