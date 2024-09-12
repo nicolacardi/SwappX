@@ -91,5 +91,19 @@ z-index: 1000;
 }
 
 
+.no-select {
+  pointer-events: none; /* Prevents the entire option from responding to clicks */
+  color: inherit;        /* Keep text color as it is */
+
+}
+
+.no-select mat-icon {
+  pointer-events: auto; /* Allows the icon to remain clickable */
+  color: initial;        /* Ensure the icon has its normal color */
+
+}
+
+
+
 
 
