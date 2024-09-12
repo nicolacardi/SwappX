@@ -20,7 +20,7 @@
                 <a routerLink="/procedura-iscrizione" [queryParams]="{ iscrizioneID: element.link }">link a iscrizione</a>
             </div>
                     
-            <span class="fs40 _pos-absolute r10 t10" [ngStyle]="{'color': element.scadenza!.color}">●</span>
+            <span class="fs40 _pos-absolute r10 t10" [ngStyle]="{'color': element.scadenza!.tipoScadenza!.color}">●</span>
         </mat-card-content>
 
         <mat-button-toggle-group *ngIf="element.scadenza!.ckRisposta" class="_noborder _pos-absolute l10 mb5 mt5" name="risposta" aria-label="risposta" >
