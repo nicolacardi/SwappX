@@ -880,6 +880,13 @@
     .right {
         text-align: right;
     }
+
+    .fx_center {
+        display: flex;
+        justify-content: center; /* Centra orizzontalmente */
+        align-items: center; /* Centra verticalmente, se necessario */
+        text-align: center;
+      }
 /*#endregion ***************************/
 
 /*#region ********** CURSOR ************/

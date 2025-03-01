@@ -39,6 +39,7 @@ export class RisorseListComponent {
     "delete",
     "edit", 
     "nomeFile",
+    "descrizione",
     "tipoFile"
   ];
 
@@ -105,7 +106,7 @@ constructor(private svcRisorse:                   RisorseService,
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '600px',
-      height: '430px',
+      height: '530px',
       data: { risorsaID:  0}
     };
     const dialogRef = this._dialog.open(RisorsaEditComponent, dialogConfig);
@@ -120,7 +121,7 @@ constructor(private svcRisorse:                   RisorseService,
     const dialogConfig : MatDialogConfig = {
       panelClass: 'add-DetailDialog',
       width: '600px',
-      height: '430px',
+      height: '530px',
       data: { risorsaID:  id}
     };
     const dialogRef = this._dialog.open(RisorsaEditComponent, dialogConfig);

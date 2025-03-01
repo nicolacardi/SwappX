@@ -61,6 +61,7 @@ export class RisorsaEditComponent {
   this.form = this.fb.group({
     id:                                       [null],
     nomeFile:                                   [''],
+    descrizione:                                [''],
     tipoFile:                                   [''],
     fileBase64:                                 ['', Validators.required],
     dtIns:                                      [''],

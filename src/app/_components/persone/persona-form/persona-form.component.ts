@@ -3,7 +3,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild }            from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators }                     from '@angular/forms';
 import { MatDialog }                                                            from '@angular/material/dialog';
-import { Observable, firstValueFrom, from, of }                                 from 'rxjs';
+import { EMPTY, Observable, firstValueFrom, from, of }                                 from 'rxjs';
 import { concatMap, mergeMap, tap }                                             from 'rxjs/operators';
 import { MatSelectChange, MatSelectTrigger }                                    from '@angular/material/select';
 
@@ -173,6 +173,7 @@ export class PersonaFormComponent implements OnInit {
         .pipe( 
           tap(
             persona => {
+              console.log ("persona-form - loadData - persona", persona);
               this.form.patchValue(persona);
               
               // this._lstRoles = persona._LstRoles!; //questi i ruoli arrivati
@@ -251,11 +252,24 @@ export class PersonaFormComponent implements OnInit {
 
   save() :Observable<any>{
 
+    //se Utente Registrato è flaggato deve esistere la mail
+    // if (this.form.controls.ckRegistrato.value && this.form.controls.email.value == "") {
+
+    //   this._dialog.open(DialogOkComponent, {
+    //     width: '320px',
+    //     data: { titolo: "ATTENZIONE!", sottoTitolo: "Per registrare l'utente è nesessario indicare l'indirizzo mail" }
+    //   });
+    //   return EMPTY;
+    // }
+
+
+
+
     //verifica (e attende l'esito) se ci sono già persone con lo stesso nome-cognome, cf, email. 
     return from(this.checkExists()).pipe(
       mergeMap((msg) => {
         if (msg && msg.length > 0) {
-
+          console.log("persona-form - save - this.checkexists ha trovato qualcosa già esistente");
           const blockMessages = msg
             .filter(item => item.grav === "Block")
             .map(item => item.msg);
@@ -335,6 +349,7 @@ export class PersonaFormComponent implements OnInit {
           } 
           else {
             //PUT
+            console.log ("persona-form - save - siamo in 'put' perchè i controlli precedenti sono stati superati - this.form.value:", this.form.value);
             this.form.controls.dtNascita.setValue(Utility.formatDate(this.form.controls.dtNascita.value, FormatoData.yyyy_mm_dd));
             // this.saveRoles(); 
             return this.svcPersone.put(this.form.value);

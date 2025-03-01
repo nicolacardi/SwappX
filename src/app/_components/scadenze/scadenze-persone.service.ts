@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { CAL_ScadenzaPersone } from 'src/app/_models/CAL_Scadenza';
-import { PER_Persona } from 'src/app/_models/PER_Persone';
-import { environment } from 'src/environments/environment';
+import { HttpClient }                                 from '@angular/common/http';
+import { Injectable }                                 from '@angular/core';
+import { Observable }                                 from 'rxjs';
+import { CAL_ScadenzaPersone }                        from 'src/app/_models/CAL_Scadenza';
+import { PER_Persona }                                from 'src/app/_models/PER_Persone';
+import { environment }                                from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'

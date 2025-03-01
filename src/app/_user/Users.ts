@@ -1,9 +1,9 @@
-import { PER_Persona, PER_TipoPersona } from "../_models/PER_Persone";
+import { PER_Persona } from "../_models/PER_Persone";
 
 export interface User {
     id:                                         string;
     userID:                                     string;
-    username:                                   string; 
+    userName:                                   string; 
     email:                                      string;
     normalizedEmail:                            string;
 

@@ -183,7 +183,7 @@ export class UsersListComponent implements OnInit {
 
       const loadUsers$ =this._loadingService.showLoaderUntilCompleted(obsUsers$);
       loadUsers$.subscribe(  val =>  {
-          console.log("users-list loadData - val ", val);
+          //console.log("users-list loadData - val ", val);
           this.matDataSource.data = val;
           this.matDataSource.paginator = this.paginator;
           this.sortCustom();

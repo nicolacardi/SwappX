@@ -1,4 +1,3 @@
-import { ALU_Alunno } from "./ALU_Alunno";
 import { CAL_TipoScadenza } from "./CAL_TipoScadenza";
 import { PER_Persona } from "./PER_Persone";
 

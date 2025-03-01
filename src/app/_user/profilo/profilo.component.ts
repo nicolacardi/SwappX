@@ -49,7 +49,7 @@ export class ProfiloComponent implements OnInit {
 
     this.form = this.fb.group({
       file:           ['' , [Validators.required]],
-      username:       [{value:'' , disabled: true}, [Validators.required]],
+      username:       [{value:'' , disabled: true}],
       email:          [''],
       fullname:       [{value:'' , disabled: true} , [Validators.required]],
     });
@@ -59,7 +59,7 @@ export class ProfiloComponent implements OnInit {
     
     this.currUser = Utility.getCurrentUser();
 
-    this.form.controls.username.setValue(this.currUser.username);
+    this.form.controls.username.setValue(this.currUser.userName);
     this.form.controls.email.setValue(this.currUser.email);
     this.form.controls.fullname.setValue(this.currUser.fullname);
     
@@ -138,7 +138,7 @@ export class ProfiloComponent implements OnInit {
 
     this.svcUser.put(formData).subscribe({
       next: res => {
-        this.currUser.username = this.form.controls.username.value;
+        this.currUser.userName = this.form.controls.username.value;
         this.currUser.email =this.form.controls.email.value;
         this.currUser.fullname = this.form.controls.fullname.value;
 

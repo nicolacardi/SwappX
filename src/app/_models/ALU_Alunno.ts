@@ -1,5 +1,4 @@
-import { ALU_Genitore }                         from './ALU_Genitore';
-import { ALU_GenitoreAlunno } from './ALU_GenitoreAlunno';
+import { ALU_GenitoreAlunno }                   from './ALU_GenitoreAlunno';
 import { PER_Persona }                          from './PER_Persone';
 
 export interface ALU_Alunno {

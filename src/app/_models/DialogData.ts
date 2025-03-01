@@ -1,5 +1,5 @@
-import { DOC_NotaIscrizione } from "./DOC_NotaIscrizione";
-import { DOC_Verbale } from "./DOC_Verbale";
+import { DOC_NotaIscrizione }                   from "./DOC_NotaIscrizione";
+import { DOC_Verbale }                          from "./DOC_Verbale";
 import { TST_VotoInterr }                       from "./TST_VotiInterr";
 
 //I dialog Data si usano ogni volta che da un form ad una Dialog non bisogna passare una sola info ma un serie di informazioni

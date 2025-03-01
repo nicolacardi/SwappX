@@ -163,6 +163,7 @@ export class UserEditComponent implements OnInit {
       PersonaID:  this.form.controls.personaID.value,  //NC 25.12.22
       Password:   this.form.controls.password.value
     };
+    console.log ("user-edit.component - save - formData", formData);
     
     if (formData.userID == "0") {
       if (formData.Password == ""  || formData.Password == null || formData.Password == undefined) {

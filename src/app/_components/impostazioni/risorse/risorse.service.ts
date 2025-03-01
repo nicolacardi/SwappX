@@ -39,6 +39,7 @@ export class RisorseService {
 
   post(formData: any): Observable <any>{
     formData.id = 0;
+    console.log ("risorse-service - post - formData", formData);
     return this.http.post( environment.apiBaseUrl  + '_UT_Risorse' , formData);  
   }
 

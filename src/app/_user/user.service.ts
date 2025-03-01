@@ -1,4 +1,4 @@
-import { Injectable }                           from '@angular/core';
+import { Injectable }                               from '@angular/core';
 import { UntypedFormBuilder, Validators, UntypedFormGroup} from '@angular/forms';
 import { HttpClient }                           from "@angular/common/http";
 import { tap, timeout }                         from 'rxjs/operators';
@@ -9,7 +9,6 @@ import { environment }                          from 'src/environments/environme
 import { User }                                 from './Users';
 
 //services
-import { PersoneService }                       from '../_components/persone/persone.service';
 import { EventEmitterService }                  from '../_services/event-emitter.service';
 
 //classes
@@ -25,7 +24,6 @@ export class UserService {
   readonly BaseURI = environment.apiBaseUrl;
 
   private BehaviourSubjectcurrentUser :         BehaviorSubject<User>;      
-
 
   public obscurrentUser:                        Observable<User>;
 
