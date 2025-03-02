@@ -1,31 +1,30 @@
-import { Component, Inject, OnInit }            from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup }               from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar }                          from '@angular/material/snack-bar';
-import { firstValueFrom, iif, Observable, of }                           from 'rxjs';
-import { concatMap, finalize, tap }                                  from 'rxjs/operators';
+import { Component, Inject, OnInit }                              from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup }                   from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA }               from '@angular/material/dialog';
+import { MatSnackBar }                                            from '@angular/material/snack-bar';
+import { firstValueFrom, iif, Observable, of }                    from 'rxjs';
+import { concatMap, finalize, tap }                               from 'rxjs/operators';
 
 //components
-import { DialogYesNoComponent }                 from '../../utilities/dialog-yes-no/dialog-yes-no.component';
-import { DialogOkComponent }                    from '../../utilities/dialog-ok/dialog-ok.component';
+import { DialogYesNoComponent }                                   from '../../utilities/dialog-yes-no/dialog-yes-no.component';
+import { DialogOkComponent }                                      from '../../utilities/dialog-ok/dialog-ok.component';
 
-import { SnackbarComponent }                    from '../../utilities/snackbar/snackbar.component';
-import { Utility }                              from '../../utilities/utility.component';
+import { SnackbarComponent }                                      from '../../utilities/snackbar/snackbar.component';
+import { Utility }                                                from '../../utilities/utility.component';
 
 //services
-import { VerbaliService }                       from '../verbali.service';
-import { VerbaliPresentiService }               from '../verbali-presenti.service';
-import { ClassiSezioniAnniService }             from '../../classi/classi-sezioni-anni.service';
-import { PersoneService }                       from '../../persone/persone.service';
-
-import { LoadingService }                       from '../../utilities/loading/loading.service';
+import { VerbaliService }                                         from '../verbali.service';
+import { VerbaliPresentiService }                                 from '../verbali-presenti.service';
+import { ClassiSezioniAnniService }                               from '../../classi/classi-sezioni-anni.service';
+import { PersoneService }                                         from '../../persone/persone.service';
+import { LoadingService }                                         from '../../utilities/loading/loading.service';
+import { TipiPersonaService }                                     from '../../persone/tipi-persona.service';
 
 //models
-import { DOC_TipoVerbale, DOC_Verbale, DOC_VerbalePresente }         from 'src/app/_models/DOC_Verbale';
-import { PER_Persona }                          from 'src/app/_models/PER_Persone';
-import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_ClasseSezioneAnno';
-import { DialogDataVerbale }                    from 'src/app/_models/DialogData';
-import { TipiPersonaService } from '../../persone/tipi-persona.service';
+import { DOC_TipoVerbale, DOC_Verbale, DOC_VerbalePresente }      from 'src/app/_models/DOC_Verbale';
+import { PER_Persona }                                            from 'src/app/_models/PER_Persone';
+import { CLS_ClasseSezioneAnno }                                  from 'src/app/_models/CLS_ClasseSezioneAnno';
+import { DialogDataVerbale }                                      from 'src/app/_models/DialogData';
 
 
 @Component({
@@ -131,11 +130,14 @@ export class VerbaleEditComponent implements OnInit {
       this.obsVerbale$ = loadVerbale$
       .pipe( tap(
         verbale => {
+          console.log ("verbale-edit -  loadData - verbale", verbale);
+
+          
           //impostare i flag estraendo l'array da verbale.personale
           verbale._VerbalePresenti.forEach(async (x, index) =>
             { //devo inserire SOLO quelli che sono del personale
               let personale = false;
-
+              console.log("verbale-edit - loadData x.persona!._LstRoles!.length: ",x.persona!._LstRoles!.length ?? 0)
               //il seguente ciclo dovrebbe determinare se personale = true o personale = false
               for (let i=0; i <  x.persona!._LstRoles!.length; i++){
                 await firstValueFrom(this.svcTipiPersona.getByDescrizione(x.persona!._LstRoles![i])
@@ -143,6 +145,7 @@ export class VerbaleEditComponent implements OnInit {
                   tap (role=> {if (role.ckPersonale) personale = true }
                 )))
               }
+              console.log ("verbale-edit -  loadData - arrPersonaleIDPresenti", arrPersonaleIDPresenti);
 
               if (personale) 
                 arrPersonaleIDPresenti.push(verbale._VerbalePresenti[index].personaID)
