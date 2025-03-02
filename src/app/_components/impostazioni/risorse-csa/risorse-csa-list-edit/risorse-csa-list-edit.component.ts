@@ -27,9 +27,10 @@ import { RisorsaCSAEditComponent } from '../risorsa-csa-edit/risorsa-csa-edit.co
 
 
 @Component({
-  selector: 'app-risorse-csa-list-edit',
-  templateUrl: './risorse-csa-list-edit.component.html',
-  styleUrls: ['../risorse-csa.css']
+    selector: 'app-risorse-csa-list-edit',
+    templateUrl: './risorse-csa-list-edit.component.html',
+    styleUrls: ['../risorse-csa.css'],
+    standalone: false
 })
 export class RisorseCSAListEditComponent {
 

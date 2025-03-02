@@ -21,9 +21,10 @@ import * as saveAs from 'file-saver';
 //#endregion
 
 @Component({
-  selector: 'app-documenti-alunno-list',
-  templateUrl: './documenti-alunno-list.component.html',
-  styleUrls: ['../pagelle.css']
+    selector: 'app-documenti-alunno-list',
+    templateUrl: './documenti-alunno-list.component.html',
+    styleUrls: ['../pagelle.css'],
+    standalone: false
 })
 export class DocumentiAlunnoListComponent {
   matDataSource =                               new MatTableDataSource<DOC_DocsIscrizione>();

@@ -23,9 +23,10 @@ import { CLS_TipoVoto }                         from 'src/app/_models/CLS_TipoVo
 
 //#endregion
 @Component({
-  selector: 'app-classi-anni-materie-duplica',
-  templateUrl: './classi-anni-materie-duplica.component.html',
-  styleUrls: ['../classi-anni-materie.css']
+    selector: 'app-classi-anni-materie-duplica',
+    templateUrl: './classi-anni-materie-duplica.component.html',
+    styleUrls: ['../classi-anni-materie.css'],
+    standalone: false
 })
 export class ClassiAnniMaterieDuplicaComponent implements OnInit {
 

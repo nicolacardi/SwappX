@@ -25,9 +25,10 @@ import { SelectionModel } from '@angular/cdk/collections';
 
 //#endregion
 @Component({
-  selector: 'app-classi-anni-materie-list',
-  templateUrl: './classi-anni-materie-list.component.html',
-  styleUrls: ['../classi-anni-materie.css']
+    selector: 'app-classi-anni-materie-list',
+    templateUrl: './classi-anni-materie-list.component.html',
+    styleUrls: ['../classi-anni-materie.css'],
+    standalone: false
 })
 export class ClassiAnniMaterieListComponent implements OnInit {
 

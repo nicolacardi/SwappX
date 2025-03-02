@@ -33,9 +33,10 @@ import { AlunnoFormComponent } from '../alunno-form/alunno-form.component';
 //#endregion
 
 @Component({
-  selector:     'app-alunno-edit',
-  templateUrl:  './alunno-edit.component.html',
-  styleUrls:    ['./../alunni.css']
+    selector: 'app-alunno-edit',
+    templateUrl: './alunno-edit.component.html',
+    styleUrls: ['./../alunni.css'],
+    standalone: false
 })
 
 export class AlunnoEditComponent implements OnInit {

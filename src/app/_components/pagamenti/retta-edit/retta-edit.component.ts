@@ -30,9 +30,10 @@ import { DialogData } from 'src/app/_models/DialogData';
 
 //#endregion
 @Component({
-  selector: 'app-retta-edit',
-  templateUrl: './retta-edit.component.html',
-  styleUrls: ['../pagamenti.css']
+    selector: 'app-retta-edit',
+    templateUrl: './retta-edit.component.html',
+    styleUrls: ['../pagamenti.css'],
+    standalone: false
 })
 
 export class RettaEditComponent implements OnInit {

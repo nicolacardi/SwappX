@@ -44,9 +44,10 @@ import { PER_Persona } from 'src/app/_models/PER_Persone';
 
 //#endregion
 @Component({
-  selector:     'app-iscrizioni-list',
-  templateUrl:  './iscrizioni-list.component.html',
-  styleUrls:    ['../iscrizioni.css']
+    selector: 'app-iscrizioni-list',
+    templateUrl: './iscrizioni-list.component.html',
+    styleUrls: ['../iscrizioni.css'],
+    standalone: false
 })
 
 export class IscrizioniListComponent implements OnInit {

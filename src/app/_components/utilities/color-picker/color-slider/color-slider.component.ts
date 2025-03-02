@@ -1,9 +1,10 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
-  selector: 'app-color-slider',
-  templateUrl: './color-slider.component.html',
-  styleUrls: ['./color-slider.component.css']
+    selector: 'app-color-slider',
+    templateUrl: './color-slider.component.html',
+    styleUrls: ['./color-slider.component.css'],
+    standalone: false
 })
 export class ColorSliderComponent implements OnInit {
 

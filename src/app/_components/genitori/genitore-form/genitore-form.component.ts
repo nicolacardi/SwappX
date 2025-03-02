@@ -18,9 +18,10 @@ import { TipiGenitoreService } from '../tipi-genitore.service';
 //#endregion
 
 @Component({
-  selector: 'app-genitore-form',
-  templateUrl: './genitore-form.component.html',
-  styleUrls: ['./../genitori.css']
+    selector: 'app-genitore-form',
+    templateUrl: './genitore-form.component.html',
+    styleUrls: ['./../genitori.css'],
+    standalone: false
 })
 
 export class GenitoreFormComponent implements OnInit {

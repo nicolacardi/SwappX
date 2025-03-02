@@ -7,9 +7,10 @@ import { AnniScolasticiListComponent }          from '../anniscolastici-list/ann
 //#endregion
 
 @Component({
-  selector: 'app-annoscolastico-page',
-  templateUrl: './annoscolastico-page.component.html',
-  styleUrls: ['../anniscolastici.css']
+    selector: 'app-annoscolastico-page',
+    templateUrl: './annoscolastico-page.component.html',
+    styleUrls: ['../anniscolastici.css'],
+    standalone: false
 })
 export class AnnoScolasticoPageComponent  {
 

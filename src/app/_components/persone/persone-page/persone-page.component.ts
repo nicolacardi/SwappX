@@ -9,9 +9,10 @@ import { PersoneListComponent } from '../persone-list/persone-list.component';
 
 //#endregion
 @Component({
-  selector: 'app-persone-page',
-  templateUrl: './persone-page.component.html',
-  styleUrls: ['../persone.css']
+    selector: 'app-persone-page',
+    templateUrl: './persone-page.component.html',
+    styleUrls: ['../persone.css'],
+    standalone: false
 })
 
 export class PersonePageComponent implements OnInit {

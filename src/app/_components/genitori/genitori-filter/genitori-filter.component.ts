@@ -8,9 +8,10 @@ import { GenitoriListComponent }                from '../genitori-list/genitori-
 
 //#endregion
 @Component({
-  selector: 'app-genitori-filter',
-  templateUrl: './genitori-filter.component.html',
-  styleUrls: ['../genitori.css']
+    selector: 'app-genitori-filter',
+    templateUrl: './genitori-filter.component.html',
+    styleUrls: ['../genitori.css'],
+    standalone: false
 })
 
 export class GenitoriFilterComponent implements OnInit {

@@ -14,9 +14,10 @@ import { User }                                 from 'src/app/_user/Users';
 //#endregion
 
 @Component({
-  selector: 'app-change-psw',
-  templateUrl: './change-psw.component.html',
-  styleUrls: ['../user.css']
+    selector: 'app-change-psw',
+    templateUrl: './change-psw.component.html',
+    styleUrls: ['../user.css'],
+    standalone: false
 })
 
 export class ChangePswComponent implements OnInit {

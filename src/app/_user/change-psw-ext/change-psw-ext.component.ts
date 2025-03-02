@@ -20,9 +20,10 @@ import { User }                                 from 'src/app/_user/Users';
 //#endregion
 
 @Component({
-  selector: 'app-change-psw-ext',
-  templateUrl: './change-psw-ext.component.html',
-  styleUrls: ['../user.css']
+    selector: 'app-change-psw-ext',
+    templateUrl: './change-psw-ext.component.html',
+    styleUrls: ['../user.css'],
+    standalone: false
 })
 
 export class ChangePswExtComponent {

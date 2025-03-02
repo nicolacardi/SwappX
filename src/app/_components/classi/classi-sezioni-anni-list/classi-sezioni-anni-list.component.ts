@@ -35,9 +35,10 @@ import { RisorseCSAListEditComponent }          from '../../impostazioni/risorse
 
 //#endregion
 @Component({
-  selector: 'app-classi-sezioni-anni-list',
-  templateUrl: './classi-sezioni-anni-list.component.html',
-  styleUrls: ['./../classi.css']
+    selector: 'app-classi-sezioni-anni-list',
+    templateUrl: './classi-sezioni-anni-list.component.html',
+    styleUrls: ['./../classi.css'],
+    standalone: false
 })
 
 export class ClassiSezioniAnniListComponent implements OnInit {

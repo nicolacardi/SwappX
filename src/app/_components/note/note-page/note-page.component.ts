@@ -12,9 +12,10 @@ import { NavigationService }                    from '../../utilities/navigation
 
 //#endregion
 @Component({
-  selector: 'app-note-page',
-  templateUrl: './note-page.component.html',
-  styleUrls: ['../note.css']
+    selector: 'app-note-page',
+    templateUrl: './note-page.component.html',
+    styleUrls: ['../note.css'],
+    standalone: false
 })
 export class NotePageComponent implements OnInit {
   

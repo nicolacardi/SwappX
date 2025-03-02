@@ -20,9 +20,10 @@ import { _UT_UserFoto }                         from 'src/app/_models/_UT_UserFo
 import { User }                                 from 'src/app/_user/Users';
 
 @Component({
-  selector: 'app-profilo',
-  templateUrl: './profilo.component.html',
-  styleUrls: ['../user.css']
+    selector: 'app-profilo',
+    templateUrl: './profilo.component.html',
+    styleUrls: ['../user.css'],
+    standalone: false
 })
 
 export class ProfiloComponent implements OnInit {

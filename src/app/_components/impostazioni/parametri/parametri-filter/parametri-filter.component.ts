@@ -8,9 +8,10 @@ import { ParametriListComponent }               from '../parametri-list/parametr
 
 //#endregion
 @Component({
-  selector: 'app-parametri-filter',
-  templateUrl: './parametri-filter.component.html',
-  styleUrls: ['../parametri.css']
+    selector: 'app-parametri-filter',
+    templateUrl: './parametri-filter.component.html',
+    styleUrls: ['../parametri.css'],
+    standalone: false
 })
 
 export class ParametriFilterComponent implements OnInit {

@@ -22,9 +22,10 @@ import { DialogYesNoComponent } from 'src/app/_components/utilities/dialog-yes-n
 //#endregion
 
 @Component({
-  selector: 'app-risorse-list',
-  templateUrl: './risorse-list.component.html',
-  styleUrls: ['../risorse.css']
+    selector: 'app-risorse-list',
+    templateUrl: './risorse-list.component.html',
+    styleUrls: ['../risorse.css'],
+    standalone: false
 })
 export class RisorseListComponent {
 

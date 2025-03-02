@@ -22,9 +22,10 @@ import { DialogDataTipoScadenzaEdit }               from 'src/app/_models/Dialog
 
 //#endregion
 @Component({
-  selector: 'app-tiposcadenza-edit',
-  templateUrl: './tiposcadenza-edit.component.html',
-  styleUrls: ['../../scadenze.css']
+    selector: 'app-tiposcadenza-edit',
+    templateUrl: './tiposcadenza-edit.component.html',
+    styleUrls: ['../../scadenze.css'],
+    standalone: false
 })
 export class TipoScadenzaEditComponent implements OnInit {
 

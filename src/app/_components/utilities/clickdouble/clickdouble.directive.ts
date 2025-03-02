@@ -4,7 +4,8 @@ import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 @Directive({
-  selector: '[click.single],[click.double],[mousedown],[mouseup]',
+    selector: '[click.single],[click.double],[mousedown],[mouseup]',
+    standalone: false
 })
 export class ClickDoubleDirective implements OnInit, OnDestroy {
   @Input() debounceTime = 300;

@@ -5,9 +5,10 @@ import { UntypedFormControl }                   from '@angular/forms';
 import { ClassiAnniMaterieListComponent }       from '../classi-anni-materie-list/classi-anni-materie-list.component';
 
 @Component({
-  selector: 'app-classi-anni-materie-filter',
-  templateUrl: './classi-anni-materie-filter.component.html',
-  styleUrls: ['../classi-anni-materie.css']
+    selector: 'app-classi-anni-materie-filter',
+    templateUrl: './classi-anni-materie-filter.component.html',
+    styleUrls: ['../classi-anni-materie.css'],
+    standalone: false
 })
 export class ClassiAnniMaterieFilterComponent {
 

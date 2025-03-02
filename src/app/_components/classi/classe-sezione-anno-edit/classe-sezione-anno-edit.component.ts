@@ -26,9 +26,10 @@ import { CLS_ClasseSezione }                    from 'src/app/_models/CLS_Classe
 
 //#endregion
 @Component({
-  selector: 'app-classe-sezione-anno-edit',
-  templateUrl: './classe-sezione-anno-edit.component.html',
-  styleUrls: ['./../classi.css']
+    selector: 'app-classe-sezione-anno-edit',
+    templateUrl: './classe-sezione-anno-edit.component.html',
+    styleUrls: ['./../classi.css'],
+    standalone: false
 })
 export class ClasseSezioneAnnoEditComponent implements OnInit {
 

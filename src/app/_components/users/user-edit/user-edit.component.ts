@@ -26,9 +26,10 @@ import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger }
 import { PersonaEditComponent } from '../../persone/persona-edit/persona-edit.component';
 
 @Component({
-  selector: 'app-user-edit',
-  templateUrl: './user-edit.component.html',
-  styleUrls: ['../users.css']
+    selector: 'app-user-edit',
+    templateUrl: './user-edit.component.html',
+    styleUrls: ['../users.css'],
+    standalone: false
 })
 
 export class UserEditComponent implements OnInit {

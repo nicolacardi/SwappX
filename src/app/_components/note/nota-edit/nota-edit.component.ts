@@ -30,9 +30,10 @@ import { DialogDataNota }                       from 'src/app/_models/DialogData
 
 //#endregion
 @Component({
-  selector: 'app-nota-edit',
-  templateUrl: './nota-edit.component.html',
-  styleUrls: ['../note.css']
+    selector: 'app-nota-edit',
+    templateUrl: './nota-edit.component.html',
+    styleUrls: ['../note.css'],
+    standalone: false
 })
 
 export class NotaEditComponent implements OnInit {

@@ -5,9 +5,10 @@ import { Component, ViewChild }                 from '@angular/core';
 import { RisorseListComponent }             from '../risorse-list/risorse-list.component';
 //#endregion
 @Component({
-  selector: 'app-risorse-page',
-  templateUrl: './risorse-page.component.html',
-  styleUrls: ['../risorse.css']
+    selector: 'app-risorse-page',
+    templateUrl: './risorse-page.component.html',
+    styleUrls: ['../risorse.css'],
+    standalone: false
 })
 export class RisorsePageComponent {
 

@@ -5,9 +5,10 @@ import { IscrizioniListComponent }              from '../iscrizioni-list/iscrizi
 
 //#endregion
 @Component({
-  selector: 'app-iscrizioni-page',
-  templateUrl: './iscrizioni-page.component.html',
-  styleUrls: ['./../iscrizioni.css']
+    selector: 'app-iscrizioni-page',
+    templateUrl: './iscrizioni-page.component.html',
+    styleUrls: ['./../iscrizioni.css'],
+    standalone: false
 })
 export class IscrizioniPageComponent implements OnInit {
 

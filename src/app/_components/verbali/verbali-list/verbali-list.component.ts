@@ -25,9 +25,10 @@ import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoSc
 
 //#endregion
 @Component({
-  selector: 'app-verbali-list',
-  templateUrl: './verbali-list.component.html',
-  styleUrls: ['../verbali.css']
+    selector: 'app-verbali-list',
+    templateUrl: './verbali-list.component.html',
+    styleUrls: ['../verbali.css'],
+    standalone: false
 })
 export class VerbaliListComponent implements OnInit, OnChanges {
   

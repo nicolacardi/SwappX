@@ -19,9 +19,10 @@ import { MatSnackBar }                          from '@angular/material/snack-ba
 
 //#endregion
 @Component({
-  selector: 'app-obiettivi-duplica',
-  templateUrl: './obiettivi-duplica.component.html',
-  styleUrls: ['./../obiettivi.css']
+    selector: 'app-obiettivi-duplica',
+    templateUrl: './obiettivi-duplica.component.html',
+    styleUrls: ['./../obiettivi.css'],
+    standalone: false
 })
 
 export class ObiettiviDuplicaComponent implements OnInit {

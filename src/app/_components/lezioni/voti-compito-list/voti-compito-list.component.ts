@@ -17,9 +17,10 @@ import { TST_VotoCompito }                      from 'src/app/_models/TST_VotiCo
 
 //#endregion
 @Component({
-  selector:     'app-voti-compito-list',
-  templateUrl:  './voti-compito-list.component.html',
-  styleUrls:    ['../lezioni.css']
+    selector: 'app-voti-compito-list',
+    templateUrl: './voti-compito-list.component.html',
+    styleUrls: ['../lezioni.css'],
+    standalone: false
 })
 
 export class VotiCompitoListComponent implements OnInit {

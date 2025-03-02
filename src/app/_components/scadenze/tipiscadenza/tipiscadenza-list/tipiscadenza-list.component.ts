@@ -18,9 +18,10 @@ import { CAL_TipoScadenza }                     from 'src/app/_models/CAL_TipoSc
 
 //#endregion
 @Component({
-  selector: 'app-tipiscadenza-list',
-  templateUrl: './tipiscadenza-list.component.html',
-  styleUrls: ['../../scadenze.css']
+    selector: 'app-tipiscadenza-list',
+    templateUrl: './tipiscadenza-list.component.html',
+    styleUrls: ['../../scadenze.css'],
+    standalone: false
 })
 export class TipiScadenzaListComponent implements OnInit {
 

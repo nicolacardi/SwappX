@@ -5,9 +5,10 @@ import { MaterieListComponent }                 from '../materie-list/materie-li
 
 //#endregion
 @Component({
-  selector: 'app-materie-page',
-  templateUrl: './materie-page.component.html',
-  styleUrls: ['../materie.css']
+    selector: 'app-materie-page',
+    templateUrl: './materie-page.component.html',
+    styleUrls: ['../materie.css'],
+    standalone: false
 })
 export class MateriePageComponent implements OnInit {
 

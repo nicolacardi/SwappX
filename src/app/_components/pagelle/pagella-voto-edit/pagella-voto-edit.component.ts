@@ -32,9 +32,10 @@ import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component
 
 //#endregion
 @Component({
-  selector: 'app-pagella-voto-edit',
-  templateUrl: './pagella-voto-edit.component.html',
-  styleUrls: ['../pagelle.css']
+    selector: 'app-pagella-voto-edit',
+    templateUrl: './pagella-voto-edit.component.html',
+    styleUrls: ['../pagelle.css'],
+    standalone: false
 })
 
 export class PagellaVotoEditComponent implements OnInit  {

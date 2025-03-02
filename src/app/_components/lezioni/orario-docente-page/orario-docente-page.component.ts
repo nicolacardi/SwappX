@@ -17,9 +17,10 @@ import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
 @Component({
-  selector:     'app-orario-docente-page',
-  templateUrl:  './orario-docente-page.component.html',
-  styleUrls:    ['../lezioni.css']
+    selector: 'app-orario-docente-page',
+    templateUrl: './orario-docente-page.component.html',
+    styleUrls: ['../lezioni.css'],
+    standalone: false
 })
 
 export class OrarioDocentePageComponent implements OnInit {

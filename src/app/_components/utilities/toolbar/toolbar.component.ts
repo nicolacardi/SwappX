@@ -23,10 +23,9 @@ import { _UT_TableCol }                         from 'src/app/_models/_UT_TableC
 
 //#endregion
 @Component({
-  selector: 'app-toolbar',
-  templateUrl: './toolbar.component.html',
-
-
+    selector: 'app-toolbar',
+    templateUrl: './toolbar.component.html',
+    standalone: false
 })
 
 export class ToolbarComponent implements OnInit{

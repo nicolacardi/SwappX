@@ -22,9 +22,10 @@ import { ObiettiviService }                     from '../obiettivi.service';
 
 //#endregion
 @Component({
-  selector: 'app-obiettivi-page',
-  templateUrl: './obiettivi-page.component.html',
-  styleUrls: ['../obiettivi.css']
+    selector: 'app-obiettivi-page',
+    templateUrl: './obiettivi-page.component.html',
+    styleUrls: ['../obiettivi.css'],
+    standalone: false
 })
 export class ObiettiviPageComponent implements OnInit {
 

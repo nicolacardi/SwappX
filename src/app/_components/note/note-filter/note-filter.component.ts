@@ -8,9 +8,10 @@ import { NoteListComponent } from '../note-list/note-list.component';
 
 //#endregion
 @Component({
-  selector: 'app-note-filter',
-  templateUrl: './note-filter.component.html',
-  styleUrls: ['../note.css']
+    selector: 'app-note-filter',
+    templateUrl: './note-filter.component.html',
+    styleUrls: ['../note.css'],
+    standalone: false
 })
 export class NoteFilterComponent implements OnInit {
 

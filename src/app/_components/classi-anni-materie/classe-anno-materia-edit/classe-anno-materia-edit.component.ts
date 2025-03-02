@@ -31,9 +31,10 @@ import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component
 
 //#endregion
 @Component({
-  selector: 'app-classe-anno-materia-edit',
-  templateUrl: './classe-anno-materia-edit.component.html',
-  styleUrls: ['../classi-anni-materie.css']
+    selector: 'app-classe-anno-materia-edit',
+    templateUrl: './classe-anno-materia-edit.component.html',
+    styleUrls: ['../classi-anni-materie.css'],
+    standalone: false
 })
 
 export class ClasseAnnoMateriaEditComponent implements OnInit {

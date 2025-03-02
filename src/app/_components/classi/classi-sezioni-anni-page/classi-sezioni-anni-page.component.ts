@@ -3,9 +3,10 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 
 @Component({
-  selector: 'app-classi-sezioni-anni-page',
-  templateUrl: './classi-sezioni-anni-page.component.html',
-  styleUrls: ['./../classi.css']
+    selector: 'app-classi-sezioni-anni-page',
+    templateUrl: './classi-sezioni-anni-page.component.html',
+    styleUrls: ['./../classi.css'],
+    standalone: false
 })
 export class ClassiPageComponent {
 

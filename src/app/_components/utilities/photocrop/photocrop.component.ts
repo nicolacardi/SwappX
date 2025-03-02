@@ -9,9 +9,10 @@ export interface DialogData {
 
 
 @Component({
-  selector: 'app-photocrop',
-  templateUrl: './photocrop.component.html',
-  styleUrls: ['./photocrop.component.css']
+    selector: 'app-photocrop',
+    templateUrl: './photocrop.component.html',
+    styleUrls: ['./photocrop.component.css'],
+    standalone: false
 })
 export class PhotocropComponent implements OnInit {
   imgFile!:         string;

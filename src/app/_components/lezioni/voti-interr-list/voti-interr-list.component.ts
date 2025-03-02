@@ -20,9 +20,10 @@ import { VotoInterrEditComponent } from '../voto-interr-edit/voto-interr-edit.co
 //#endregion
 
 @Component({
-  selector:     'app-voti-interr-list',
-  templateUrl:  './voti-interr-list.component.html',
-  styleUrls:    ['../lezioni.css']
+    selector: 'app-voti-interr-list',
+    templateUrl: './voti-interr-list.component.html',
+    styleUrls: ['../lezioni.css'],
+    standalone: false
 })
 
 export class VotiInterrListComponent implements OnInit {

@@ -26,9 +26,10 @@ import { _UT_Risorsa }                          from 'src/app/_models/_UT_Risors
 //#endregion
 
 @Component({
-  selector: 'app-domanda-edit',
-  templateUrl: './domanda-edit.component.html',
-  styleUrls: ['../domande.css']
+    selector: 'app-domanda-edit',
+    templateUrl: './domanda-edit.component.html',
+    styleUrls: ['../domande.css'],
+    standalone: false
 })
 export class DomandaEditComponent implements OnInit {
 

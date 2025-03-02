@@ -26,9 +26,10 @@ import { FormCustomValidatorsArray } from '../../utilities/requireMatch/requireM
 
 //#endregion
 @Component({
-  selector: 'app-socio-form',
-  templateUrl: './socio-form.component.html',
-  styleUrls: ['../soci.css']
+    selector: 'app-socio-form',
+    templateUrl: './socio-form.component.html',
+    styleUrls: ['../soci.css'],
+    standalone: false
 })
 export class SocioFormComponent implements OnInit {
 

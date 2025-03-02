@@ -19,9 +19,10 @@ import { MAT_Materia } from 'src/app/_models/MAT_Materia';
 //#endregion
 
 @Component({
-  selector: 'app-materie-list',
-  templateUrl: './materie-list.component.html',
-  styleUrls: ['../materie.css']
+    selector: 'app-materie-list',
+    templateUrl: './materie-list.component.html',
+    styleUrls: ['../materie.css'],
+    standalone: false
 })
 export class MaterieListComponent implements OnInit {
 

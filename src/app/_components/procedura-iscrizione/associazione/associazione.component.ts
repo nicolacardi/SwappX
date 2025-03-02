@@ -18,9 +18,10 @@ import { concatMap } from 'rxjs';
 
 
 @Component({
-  selector: 'app-associazione',
-  templateUrl: './associazione.component.html',
-  styleUrls: ['../procedura-iscrizione.css']
+    selector: 'app-associazione',
+    templateUrl: './associazione.component.html',
+    styleUrls: ['../procedura-iscrizione.css'],
+    standalone: false
 })
 export class AssociazioneComponent implements OnInit{
 

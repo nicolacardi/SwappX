@@ -31,9 +31,10 @@ import { User }                                 from 'src/app/_user/Users';
 
 
 @Component({
-  selector: 'app-users-list',
-  templateUrl: './users-list.component.html',
-  styleUrls: ['../users.css']
+    selector: 'app-users-list',
+    templateUrl: './users-list.component.html',
+    styleUrls: ['../users.css'],
+    standalone: false
 })
 
 export class UsersListComponent implements OnInit {

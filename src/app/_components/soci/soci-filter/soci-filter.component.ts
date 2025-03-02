@@ -15,9 +15,10 @@ import { PER_TipoSocio }                      from 'src/app/_models/PER_Soci';
 
 //#endregion
 @Component({
-  selector: 'app-soci-filter',
-  templateUrl: './soci-filter.component.html',
-  styleUrls: ['../soci.css']
+    selector: 'app-soci-filter',
+    templateUrl: './soci-filter.component.html',
+    styleUrls: ['../soci.css'],
+    standalone: false
 })
 
 export class SociFilterComponent implements OnInit {

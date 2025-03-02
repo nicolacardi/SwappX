@@ -27,9 +27,10 @@ import { PER_Docente }                          from 'src/app/_models/PER_Docent
 
 //#endregion
 @Component({
-  selector: 'app-docenti-dashboard',
-  templateUrl: './docenti-dashboard.component.html',
-  styleUrls: ['../docenti.css']
+    selector: 'app-docenti-dashboard',
+    templateUrl: './docenti-dashboard.component.html',
+    styleUrls: ['../docenti.css'],
+    standalone: false
 })
 
 export class DocentiDashboardComponent implements OnInit {

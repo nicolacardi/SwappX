@@ -24,9 +24,10 @@ import { PER_Persona }                          from 'src/app/_models/PER_Person
 //#endregion
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['../user.css']
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['../user.css'],
+    standalone: false
 })
 
 

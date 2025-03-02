@@ -14,9 +14,10 @@ import { DocenzeService }                       from '../../docenze/docenze.serv
 //#endregion
 
 @Component({
-  selector: 'app-orario-page',
-  templateUrl: './orario-page.component.html',
-  styleUrls: ['./../lezioni.css']
+    selector: 'app-orario-page',
+    templateUrl: './orario-page.component.html',
+    styleUrls: ['./../lezioni.css'],
+    standalone: false
 })
 
 export class OrarioPageComponent implements OnInit {

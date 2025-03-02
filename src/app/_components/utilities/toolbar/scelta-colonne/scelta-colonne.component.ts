@@ -16,9 +16,10 @@ import { _UT_TableColVisible }                  from 'src/app/_models/_UT_TableC
 
 //#endregion
 @Component({
-  selector: 'app-scelta-colonne',
-  templateUrl: './scelta-colonne.component.html',
-  styleUrls: ['./scelta-colonne.component.css']
+    selector: 'app-scelta-colonne',
+    templateUrl: './scelta-colonne.component.html',
+    styleUrls: ['./scelta-colonne.component.css'],
+    standalone: false
 })
 export class SceltaColonneComponent implements OnInit {
 

@@ -29,9 +29,10 @@ import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
 @Component({
-  selector: 'app-parametri-list',
-  templateUrl: './parametri-list.component.html',
-  styleUrls: ['../parametri.css']
+    selector: 'app-parametri-list',
+    templateUrl: './parametri-list.component.html',
+    styleUrls: ['../parametri.css'],
+    standalone: false
 })
 
 export class ParametriListComponent implements OnInit {

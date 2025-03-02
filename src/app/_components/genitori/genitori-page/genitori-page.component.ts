@@ -13,9 +13,10 @@ import { NavigationService }                    from '../../utilities/navigation
 //#endregion
 
 @Component({
-  selector: 'app-genitori-page',
-  templateUrl: './genitori-page.component.html',
-  styleUrls: ['../genitori.css']
+    selector: 'app-genitori-page',
+    templateUrl: './genitori-page.component.html',
+    styleUrls: ['../genitori.css'],
+    standalone: false
 })
 
 export class GenitoriPageComponent implements OnInit {

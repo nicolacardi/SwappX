@@ -42,9 +42,10 @@ import { PER_Docente }                          from 'src/app/_models/PER_Docent
 //#endregion
 
 @Component({
-  selector: 'app-persona-edit',
-  templateUrl: './persona-edit.component.html',
-  styleUrls: ['../persone.css']
+    selector: 'app-persona-edit',
+    templateUrl: './persona-edit.component.html',
+    styleUrls: ['../persone.css'],
+    standalone: false
 })
 export class PersonaEditComponent implements OnInit {
 

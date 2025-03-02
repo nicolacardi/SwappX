@@ -13,9 +13,10 @@ import { ParametriListComponent } from '../parametri-list/parametri-list.compone
 //#endregion
 
 @Component({
-  selector: 'app-parametri-page',
-  templateUrl: './parametri-page.component.html',
-  styleUrls: ['../parametri.css']
+    selector: 'app-parametri-page',
+    templateUrl: './parametri-page.component.html',
+    styleUrls: ['../parametri.css'],
+    standalone: false
 })
 
 export class ParametriPageComponent implements OnInit {

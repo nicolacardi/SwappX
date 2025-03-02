@@ -27,9 +27,10 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 //#endregion
 
 @Component({
-  selector: 'app-annoscolastico-edit',
-  templateUrl: './annoscolastico-edit.component.html',
-  styleUrls: ['../anniscolastici.css']
+    selector: 'app-annoscolastico-edit',
+    templateUrl: './annoscolastico-edit.component.html',
+    styleUrls: ['../anniscolastici.css'],
+    standalone: false
 })
 export class AnnoscolasticoEditComponent implements OnInit {
 

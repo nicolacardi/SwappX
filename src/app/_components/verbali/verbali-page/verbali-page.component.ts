@@ -17,9 +17,10 @@ import { ASC_AnnoScolastico }                   from 'src/app/_models/ASC_AnnoSc
 
 
 @Component({
-  selector: 'app-verbali-page',
-  templateUrl: './verbali-page.component.html',
-  styleUrls: ['../verbali.css']
+    selector: 'app-verbali-page',
+    templateUrl: './verbali-page.component.html',
+    styleUrls: ['../verbali.css'],
+    standalone: false
 })
 
 export class VerbaliPageComponent implements OnInit {

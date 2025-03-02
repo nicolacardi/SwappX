@@ -20,9 +20,10 @@ import { ParametriService }                     from 'src/app/_components/impost
 //#endregion
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['../user.css']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['../user.css'],
+    standalone: false
 })
 
 export class LoginComponent implements OnInit {

@@ -17,9 +17,10 @@ import { PAG_TipoPagamento }                    from 'src/app/_models/PAG_TipoPa
 
 //#endregion
 @Component({
-  selector: 'app-pagamenti-filter',
-  templateUrl: './pagamenti-filter.component.html',
-  styleUrls: ['../pagamenti.css']
+    selector: 'app-pagamenti-filter',
+    templateUrl: './pagamenti-filter.component.html',
+    styleUrls: ['../pagamenti.css'],
+    standalone: false
 })
 export class PagamentiFilterComponent implements OnInit {
 

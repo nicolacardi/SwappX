@@ -28,9 +28,10 @@ import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
 @Component({
-  selector: 'app-soci-list',
-  templateUrl: './soci-list.component.html',
-  styleUrls: ['../soci.css']
+    selector: 'app-soci-list',
+    templateUrl: './soci-list.component.html',
+    styleUrls: ['../soci.css'],
+    standalone: false
 })
 export class SociListComponent implements OnInit {
 

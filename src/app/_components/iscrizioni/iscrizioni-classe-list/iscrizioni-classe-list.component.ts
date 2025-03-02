@@ -29,9 +29,10 @@ import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno
 //#endregion
 
 @Component({
-  selector:     'app-iscrizioni-classe-list',
-  templateUrl:  './iscrizioni-classe-list.component.html',
-  styleUrls:    ['../iscrizioni.css']
+    selector: 'app-iscrizioni-classe-list',
+    templateUrl: './iscrizioni-classe-list.component.html',
+    styleUrls: ['../iscrizioni.css'],
+    standalone: false
 })
 
 export class IscrizioniClasseListComponent implements OnInit {

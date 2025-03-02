@@ -25,9 +25,10 @@ import { DOC_PagellaVoto }                      from 'src/app/_models/DOC_Pagell
 
 //#endregion
 @Component({
-  selector: 'app-voti-obiettivi-edit',
-  templateUrl: './voti-obiettivi-edit.component.html',
-  styleUrls: ['../pagelle.css']
+    selector: 'app-voti-obiettivi-edit',
+    templateUrl: './voti-obiettivi-edit.component.html',
+    styleUrls: ['../pagelle.css'],
+    standalone: false
 })
 
 export class VotiObiettiviEditComponent implements OnInit {

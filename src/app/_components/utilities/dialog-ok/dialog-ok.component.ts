@@ -10,9 +10,10 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-dialog-ok',
-  templateUrl: './dialog-ok.component.html',
-  styleUrls: ['./dialog-ok.component.css']
+    selector: 'app-dialog-ok',
+    templateUrl: './dialog-ok.component.html',
+    styleUrls: ['./dialog-ok.component.css'],
+    standalone: false
 })
 
 export class DialogOkComponent   {

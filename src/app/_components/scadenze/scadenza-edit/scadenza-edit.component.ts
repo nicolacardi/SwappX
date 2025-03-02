@@ -37,10 +37,10 @@ import { ParametriService } from 'src/app/_components/impostazioni/parametri/par
 
 //#endregion
 @Component({
-  selector: 'app-scadenza-edit',
-  templateUrl: './scadenza-edit.component.html',
-  styleUrls: ['../scadenze.css'],
-
+    selector: 'app-scadenza-edit',
+    templateUrl: './scadenza-edit.component.html',
+    styleUrls: ['../scadenze.css'],
+    standalone: false
 })
 export class ScadenzaEditComponent implements OnInit {
 

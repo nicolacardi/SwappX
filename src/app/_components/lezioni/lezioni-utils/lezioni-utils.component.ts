@@ -71,15 +71,16 @@ import { DialogDataLezioniUtils }               from 'src/app/_models/DialogData
 //#endregion
 
 @Component({
-  selector: 'app-lezioni-utils',
-  templateUrl: './lezioni-utils.component.html',
-  styleUrls: ['../lezioni.css'],
-  providers: [
-    {
-      provide: MAT_DATE_RANGE_SELECTION_STRATEGY,
-      useClass: MyRangeSelectionStrategy,
-    },
-  ],
+    selector: 'app-lezioni-utils',
+    templateUrl: './lezioni-utils.component.html',
+    styleUrls: ['../lezioni.css'],
+    providers: [
+        {
+            provide: MAT_DATE_RANGE_SELECTION_STRATEGY,
+            useClass: MyRangeSelectionStrategy,
+        },
+    ],
+    standalone: false
 })
 
 export class LezioniUtilsComponent implements OnInit {

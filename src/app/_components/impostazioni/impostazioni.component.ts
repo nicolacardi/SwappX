@@ -19,9 +19,10 @@ import { HttpClient } from '@angular/common/http';
 
 //#endregion
 @Component({
-  selector: 'app-impostazioni',
-  templateUrl: './impostazioni.component.html',
-  styleUrls: ['./impostazioni.css']
+    selector: 'app-impostazioni',
+    templateUrl: './impostazioni.component.html',
+    styleUrls: ['./impostazioni.css'],
+    standalone: false
 })
 
 export class ImpostazioniComponent implements OnInit {

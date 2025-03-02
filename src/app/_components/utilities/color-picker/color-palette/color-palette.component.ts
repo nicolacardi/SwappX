@@ -13,9 +13,10 @@ import {
 }                                               from '@angular/core'
 //#endregion
 @Component({
-  selector: 'app-color-palette',
-  templateUrl: './color-palette.component.html',
-  styleUrls: ['./color-palette.component.css'],
+    selector: 'app-color-palette',
+    templateUrl: './color-palette.component.html',
+    styleUrls: ['./color-palette.component.css'],
+    standalone: false
 })
 export class ColorPaletteComponent implements AfterViewInit, OnChanges {
   @Input()

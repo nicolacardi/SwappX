@@ -23,9 +23,10 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 
 
 @Component({
-  selector: 'app-parametro-edit',
-  templateUrl: './parametro-edit.component.html',
-  styleUrls: ['../parametri.css']
+    selector: 'app-parametro-edit',
+    templateUrl: './parametro-edit.component.html',
+    styleUrls: ['../parametri.css'],
+    standalone: false
 })
 export class ParametroEditComponent {
 

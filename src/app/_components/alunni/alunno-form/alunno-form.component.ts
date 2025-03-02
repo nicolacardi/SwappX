@@ -16,9 +16,10 @@ import { ALU_Alunno }                           from 'src/app/_models/ALU_Alunno
 //#endregion
 
 @Component({
-  selector: 'app-alunno-form',
-  templateUrl: './alunno-form.component.html',
-  styleUrls:    ['./../alunni.css']
+    selector: 'app-alunno-form',
+    templateUrl: './alunno-form.component.html',
+    styleUrls: ['./../alunni.css'],
+    standalone: false
 })
 
 export class AlunnoFormComponent implements OnInit {

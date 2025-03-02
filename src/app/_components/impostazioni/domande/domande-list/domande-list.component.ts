@@ -22,9 +22,10 @@ import { _UT_Domanda }                         from 'src/app/_models/_UT_Domanda
 //#endregion
 
 @Component({
-  selector: 'app-domande-list',
-  templateUrl: './domande-list.component.html',
-  styleUrls: ['../domande.css']
+    selector: 'app-domande-list',
+    templateUrl: './domande-list.component.html',
+    styleUrls: ['../domande.css'],
+    standalone: false
 })
 export class DomandeListComponent implements OnInit{
 

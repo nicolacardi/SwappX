@@ -7,9 +7,10 @@ import { UntypedFormControl }                   from '@angular/forms';
 import { DomandeListComponent }                 from '../domande-list/domande-list.component';
 //#endregion
 @Component({
-  selector: 'app-domande-filter',
-  templateUrl: './domande-filter.component.html',
-  styleUrls: ['../domande.css']
+    selector: 'app-domande-filter',
+    templateUrl: './domande-filter.component.html',
+    styleUrls: ['../domande.css'],
+    standalone: false
 })
 export class DomandeFilterComponent {
 
