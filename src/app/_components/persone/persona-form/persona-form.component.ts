@@ -37,9 +37,10 @@ import { User }                                 from 'src/app/_user/Users';
 //#endregion
 
 @Component({
-  selector: 'app-persona-form',
-  templateUrl: './persona-form.component.html',
-  styleUrls: ['../persone.css']
+    selector: 'app-persona-form',
+    templateUrl: './persona-form.component.html',
+    styleUrls: ['../persone.css'],
+    standalone: false
 })
 export class PersonaFormComponent implements OnInit {
 

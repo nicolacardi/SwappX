@@ -29,9 +29,10 @@ import { DialogOkComponent } from '../../utilities/dialog-ok/dialog-ok.component
 //#endregion
 
 @Component({
-  selector: 'app-obiettivo-edit',
-  templateUrl: './obiettivo-edit.component.html',
-  styleUrls: ['../obiettivi.css']
+    selector: 'app-obiettivo-edit',
+    templateUrl: './obiettivo-edit.component.html',
+    styleUrls: ['../obiettivi.css'],
+    standalone: false
 })
 export class ObiettivoEditComponent implements OnInit {
 

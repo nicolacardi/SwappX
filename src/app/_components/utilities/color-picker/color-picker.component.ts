@@ -6,9 +6,10 @@ import { DialogDataColoreMateria }              from 'src/app/_models/DialogData
 
 //#endregion
 @Component({
-  selector: 'app-color-picker',
-  templateUrl: './color-picker.component.html',
-  styleUrls: ['./color-picker.component.css']
+    selector: 'app-color-picker',
+    templateUrl: './color-picker.component.html',
+    styleUrls: ['./color-picker.component.css'],
+    standalone: false
 })
 export class ColorPickerComponent implements OnInit {
 

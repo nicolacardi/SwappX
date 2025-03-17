@@ -18,9 +18,10 @@ import { CAL_Presenza }                         from 'src/app/_models/CAL_Presen
 //#endregion
 
 @Component({
-  selector:     'app-presenze-list',
-  templateUrl:  './presenze-list.component.html',
-  styleUrls:    ['../lezioni.css']
+    selector: 'app-presenze-list',
+    templateUrl: './presenze-list.component.html',
+    styleUrls: ['../lezioni.css'],
+    standalone: false
 })
 
 export class PresenzeListComponent implements OnInit {

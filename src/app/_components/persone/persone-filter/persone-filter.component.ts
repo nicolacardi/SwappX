@@ -15,9 +15,10 @@ import { PER_TipoPersona }                      from 'src/app/_models/PER_Person
 
 //#endregion
 @Component({
-  selector: 'app-persone-filter',
-  templateUrl: './persone-filter.component.html',
-  styleUrls: ['../persone.css']
+    selector: 'app-persone-filter',
+    templateUrl: './persone-filter.component.html',
+    styleUrls: ['../persone.css'],
+    standalone: false
 })
 
 export class PersoneFilterComponent implements OnInit {

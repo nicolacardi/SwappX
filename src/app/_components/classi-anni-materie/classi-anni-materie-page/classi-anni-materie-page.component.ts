@@ -18,9 +18,10 @@ import { MatSnackBar }                          from '@angular/material/snack-ba
 
 //#endregion
 @Component({
-  selector: 'app-classi-anni-materie-page',
-  templateUrl: './classi-anni-materie-page.component.html',
-  styleUrls: ['../classi-anni-materie.css']
+    selector: 'app-classi-anni-materie-page',
+    templateUrl: './classi-anni-materie-page.component.html',
+    styleUrls: ['../classi-anni-materie.css'],
+    standalone: false
 })
 
 export class ClassiAnniMateriePageComponent implements OnInit {

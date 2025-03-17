@@ -28,9 +28,10 @@ import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
 @Component({
-  selector: 'app-persone-list',
-  templateUrl: './persone-list.component.html',
-  styleUrls: ['../persone.css']
+    selector: 'app-persone-list',
+    templateUrl: './persone-list.component.html',
+    styleUrls: ['../persone.css'],
+    standalone: false
 })
 export class PersoneListComponent implements OnInit {
 

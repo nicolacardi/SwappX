@@ -8,9 +8,10 @@ import { UntypedFormControl }                   from '@angular/forms';
 import { ClassiSezioniAnniListComponent } from '../classi-sezioni-anni-list/classi-sezioni-anni-list.component';
 
 @Component({
-  selector: 'app-classi-sezioni-anni-filter',
-  templateUrl: './classi-sezioni-anni-filter.component.html',
-  styleUrls: ['./../classi.css']
+    selector: 'app-classi-sezioni-anni-filter',
+    templateUrl: './classi-sezioni-anni-filter.component.html',
+    styleUrls: ['./../classi.css'],
+    standalone: false
 })
 export class ClassiSezioniAnniFilterComponent implements OnInit {
 

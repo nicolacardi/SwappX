@@ -7,9 +7,10 @@ import { ActivatedRoute } from '@angular/router';
 import { ClassiSezioniAnniService } from '../../classi/classi-sezioni-anni.service';
 //#endregion
 @Component({
-  selector: 'app-rette',
-  templateUrl: './rette-page.component.html',
-  styleUrls: ['../pagamenti.css']
+    selector: 'app-rette',
+    templateUrl: './rette-page.component.html',
+    styleUrls: ['../pagamenti.css'],
+    standalone: false
 })
 export class RettePageComponent implements OnInit {
 

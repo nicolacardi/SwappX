@@ -8,9 +8,10 @@ import { AlunniListComponent }                  from '../alunni-list/alunni-list
 
 //#endregion
 @Component({
-  selector: 'app-alunni-filter',
-  templateUrl: './alunni-filter.component.html',
-  styleUrls: ['../alunni.css']
+    selector: 'app-alunni-filter',
+    templateUrl: './alunni-filter.component.html',
+    styleUrls: ['../alunni.css'],
+    standalone: false
 })
 
 export class AlunniFilterComponent implements OnInit {

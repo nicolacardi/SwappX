@@ -4,9 +4,10 @@ import { Component, Input, ViewChild }          from '@angular/core';
 import { CompitiListComponent }                 from '../compiti-list/compiti-list.component';
 
 @Component({
-  selector: 'app-compiti-page',
-  templateUrl: './compiti-page.component.html',
-  styleUrls: ['../lezioni.css']
+    selector: 'app-compiti-page',
+    templateUrl: './compiti-page.component.html',
+    styleUrls: ['../lezioni.css'],
+    standalone: false
 })
 export class CompitiPageComponent {
 

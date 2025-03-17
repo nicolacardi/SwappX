@@ -15,9 +15,10 @@ import { PAG_Retta } from 'src/app/_models/PAG_Retta';
 
 //#endregion
 @Component({
-  selector: 'app-rettaanno-edit',
-  templateUrl: './rettaanno-edit.component.html',
-  styleUrls: ['../pagamenti.css'],
+    selector: 'app-rettaanno-edit',
+    templateUrl: './rettaanno-edit.component.html',
+    styleUrls: ['../pagamenti.css'],
+    standalone: false
 })
 export class RettaannoEditComponent implements OnInit {
 

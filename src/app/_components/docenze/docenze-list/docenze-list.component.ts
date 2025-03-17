@@ -26,9 +26,10 @@ import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_Classe
 
 //#endregion
 @Component({
-  selector: 'app-docenze-list',
-  templateUrl: './docenze-list.component.html',
-  styleUrls: ['../docenze.css']
+    selector: 'app-docenze-list',
+    templateUrl: './docenze-list.component.html',
+    styleUrls: ['../docenze.css'],
+    standalone: false
 })
 
 export class DocenzeListComponent implements OnInit {

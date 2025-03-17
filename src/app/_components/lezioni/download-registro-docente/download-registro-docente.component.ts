@@ -23,10 +23,10 @@ import { PER_Docente }                          from 'src/app/_models/PER_Docent
 //#endregion
 
 @Component({
-  selector: 'app-download-registro-docente',
-  templateUrl: './download-registro-docente.component.html',
-  styleUrls: ['../lezioni.css'],
-
+    selector: 'app-download-registro-docente',
+    templateUrl: './download-registro-docente.component.html',
+    styleUrls: ['../lezioni.css'],
+    standalone: false
 })
 
 export class DownloadRegistroDocenteComponent implements OnInit {

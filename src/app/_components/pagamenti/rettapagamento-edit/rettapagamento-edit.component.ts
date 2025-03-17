@@ -25,9 +25,10 @@ import { PAG_TipoPagamento } from 'src/app/_models/PAG_TipoPagamento';
 
 //#endregion
 @Component({
-  selector: 'app-rettapagamento-edit',
-  templateUrl: './rettapagamento-edit.component.html',
-  styleUrls: ['../pagamenti.css']
+    selector: 'app-rettapagamento-edit',
+    templateUrl: './rettapagamento-edit.component.html',
+    styleUrls: ['../pagamenti.css'],
+    standalone: false
 })
 export class RettapagamentoEditComponent implements OnInit {
 

@@ -19,9 +19,10 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 
 //#endregion
 @Component({
-  selector: 'app-classi-sezioni-anni-summary',
-  templateUrl: './classi-sezioni-anni-summary.component.html',
-  styleUrls: ['../classi.css']
+    selector: 'app-classi-sezioni-anni-summary',
+    templateUrl: './classi-sezioni-anni-summary.component.html',
+    styleUrls: ['../classi.css'],
+    standalone: false
 })
 export class ClassiSezioniAnniSummaryComponent implements OnInit {
 

@@ -6,9 +6,10 @@ import { Component, ViewChild }                 from '@angular/core';
 import { DomandeListComponent }                from '../domande-list/domande-list.component';
 //#endregion
 @Component({
-  selector: 'app-domande-page',
-  templateUrl: './domande-page.component.html',
-  styleUrls: ['../domande.css']
+    selector: 'app-domande-page',
+    templateUrl: './domande-page.component.html',
+    styleUrls: ['../domande.css'],
+    standalone: false
 })
 export class DomandePageComponent {
 

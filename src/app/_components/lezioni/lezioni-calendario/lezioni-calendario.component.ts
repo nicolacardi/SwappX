@@ -41,9 +41,10 @@ import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
 @Component({
-  selector: 'app-lezioni-calendario',
-  templateUrl: './lezioni-calendario.component.html',
-  styleUrls: ['../lezioni.css']
+    selector: 'app-lezioni-calendario',
+    templateUrl: './lezioni-calendario.component.html',
+    styleUrls: ['../lezioni.css'],
+    standalone: false
 })
 export class LezioniCalendarioComponent implements OnInit {
 

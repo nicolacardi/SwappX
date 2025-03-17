@@ -35,9 +35,10 @@ import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
 @Component({
-  selector: 'app-scadenze-calendario',
-  templateUrl: './scadenze-calendario.component.html',
-  styleUrls: ['../scadenze.css']
+    selector: 'app-scadenze-calendario',
+    templateUrl: './scadenze-calendario.component.html',
+    styleUrls: ['../scadenze.css'],
+    standalone: false
 })
 export class ScadenzeCalendarioComponent implements OnInit {
 

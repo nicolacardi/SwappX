@@ -28,9 +28,10 @@ import { DialogDataVerbale }                                      from 'src/app/
 
 
 @Component({
-  selector: 'app-verbale-edit',
-  templateUrl: './verbale-edit.component.html',
-  styleUrls: ['../verbali.css']
+    selector: 'app-verbale-edit',
+    templateUrl: './verbale-edit.component.html',
+    styleUrls: ['../verbali.css'],
+    standalone: false
 })
 
 export class VerbaleEditComponent implements OnInit {

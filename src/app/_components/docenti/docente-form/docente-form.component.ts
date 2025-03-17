@@ -16,9 +16,10 @@ import { PER_Docente }                          from 'src/app/_models/PER_Docent
 //#endregion
 
 @Component({
-  selector: 'app-docente-form',
-  templateUrl: './docente-form.component.html',
-  styleUrls:    ['./../docenti.css']
+    selector: 'app-docente-form',
+    templateUrl: './docente-form.component.html',
+    styleUrls: ['./../docenti.css'],
+    standalone: false
 })
 
 export class DocenteFormComponent implements OnInit {

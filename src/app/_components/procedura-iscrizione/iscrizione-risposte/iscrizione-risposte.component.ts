@@ -33,9 +33,10 @@ import { DOC_ConsOrientativo } from 'src/app/_models/DOC_ConsOrientativo';
 
 //#endregion
 @Component({
-  selector: 'app-iscrizione-risposte',
-  templateUrl: './iscrizione-risposte.component.html',
-  styleUrls: ['../procedura-iscrizione.css']
+    selector: 'app-iscrizione-risposte',
+    templateUrl: './iscrizione-risposte.component.html',
+    styleUrls: ['../procedura-iscrizione.css'],
+    standalone: false
 })
 export class IscrizioneRisposteComponent implements OnInit  {
 

@@ -30,9 +30,10 @@ import { RPT_TagDocument }                      from 'src/app/_models/RPT_TagDoc
 
 //#endregion
 @Component({
-  selector: 'app-procedura-iscrizione',
-  templateUrl: './procedura-iscrizione.component.html',
-  styleUrls: ['./procedura-iscrizione.css']
+    selector: 'app-procedura-iscrizione',
+    templateUrl: './procedura-iscrizione.component.html',
+    styleUrls: ['./procedura-iscrizione.css'],
+    standalone: false
 })
 
 export class ProceduraIscrizioneComponent implements OnInit {

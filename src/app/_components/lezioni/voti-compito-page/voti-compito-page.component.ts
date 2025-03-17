@@ -16,9 +16,10 @@ import { CAL_Lezione } from 'src/app/_models/CAL_Lezione';
 //#endregion
 
 @Component({
-  selector: 'app-voti-compito-page',
-  templateUrl: './voti-compito-page.component.html',
-  styleUrls: ['../lezioni.css']
+    selector: 'app-voti-compito-page',
+    templateUrl: './voti-compito-page.component.html',
+    styleUrls: ['../lezioni.css'],
+    standalone: false
 })
 export class VotiCompitoPageComponent implements OnInit {
 //#region ----- Variabili ----------------------

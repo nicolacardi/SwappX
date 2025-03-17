@@ -9,9 +9,10 @@ import { SociListComponent } from '../soci-list/soci-list.component';
 
 //#endregion
 @Component({
-  selector: 'app-soci-page',
-  templateUrl: './soci-page.component.html',
-  styleUrls: ['../soci.css']
+    selector: 'app-soci-page',
+    templateUrl: './soci-page.component.html',
+    styleUrls: ['../soci.css'],
+    standalone: false
 })
 
 export class SociPageComponent implements OnInit {

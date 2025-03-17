@@ -19,9 +19,10 @@ import { CLS_Iscrizione }                       from 'src/app/_models/CLS_Iscriz
 import { PAG_Retta }                            from 'src/app/_models/PAG_Retta';
 
 @Component({
-  selector: 'app-retta-calcolo-alunno',
-  templateUrl: './retta-calcolo-alunno.component.html',
-  styleUrls: ['../pagamenti.css']
+    selector: 'app-retta-calcolo-alunno',
+    templateUrl: './retta-calcolo-alunno.component.html',
+    styleUrls: ['../pagamenti.css'],
+    standalone: false
 })
 export class RettaCalcoloAlunnoComponent implements OnInit {
 

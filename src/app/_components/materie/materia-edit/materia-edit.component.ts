@@ -25,9 +25,10 @@ import { DialogDataMateriaEdit } from 'src/app/_models/DialogData';
 //#endregion
 
 @Component({
-  selector: 'app-materia-edit',
-  templateUrl: './materia-edit.component.html',
-  styleUrls: ['../materie.css']
+    selector: 'app-materia-edit',
+    templateUrl: './materia-edit.component.html',
+    styleUrls: ['../materie.css'],
+    standalone: false
 })
 export class MateriaEditComponent implements OnInit {
 

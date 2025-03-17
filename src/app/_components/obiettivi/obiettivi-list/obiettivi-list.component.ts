@@ -26,9 +26,10 @@ import { SelectionModel } from '@angular/cdk/collections';
 
 //#endregion
 @Component({
-  selector: 'app-obiettivi-list',
-  templateUrl: './obiettivi-list.component.html',
-  styleUrls: ['../obiettivi.css']
+    selector: 'app-obiettivi-list',
+    templateUrl: './obiettivi-list.component.html',
+    styleUrls: ['../obiettivi.css'],
+    standalone: false
 })
 export class ObiettiviListComponent implements OnInit {
 

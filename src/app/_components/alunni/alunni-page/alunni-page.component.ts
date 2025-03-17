@@ -13,9 +13,10 @@ import { NavigationService }                    from '../../utilities/navigation
 //#endregion
 
 @Component({
-  selector: 'app-alunni-page',
-  templateUrl: './alunni-page.component.html',
-  styleUrls: ['./../alunni.css']
+    selector: 'app-alunni-page',
+    templateUrl: './alunni-page.component.html',
+    styleUrls: ['./../alunni.css'],
+    standalone: false
 })
 
 export class AlunniPageComponent implements OnInit {

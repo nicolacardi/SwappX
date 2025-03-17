@@ -31,9 +31,10 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-iscrizioni-classe-calcolo',
-  templateUrl: './iscrizioni-classe-calcolo.component.html',
-  styleUrls: ['../iscrizioni.css']
+    selector: 'app-iscrizioni-classe-calcolo',
+    templateUrl: './iscrizioni-classe-calcolo.component.html',
+    styleUrls: ['../iscrizioni.css'],
+    standalone: false
 })
 export class IscrizioniClasseCalcoloComponent implements OnInit {
 

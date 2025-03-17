@@ -8,9 +8,10 @@ import { IscrizioniListComponent } from '../iscrizioni-list/iscrizioni-list.comp
 
 //#endregion
 @Component({
-  selector: 'app-iscrizioni-filter',
-  templateUrl: './iscrizioni-filter.component.html',
-  styleUrls: ['./../iscrizioni.css']
+    selector: 'app-iscrizioni-filter',
+    templateUrl: './iscrizioni-filter.component.html',
+    styleUrls: ['./../iscrizioni.css'],
+    standalone: false
 })
 export class IscrizioniFilterComponent implements OnInit {
 

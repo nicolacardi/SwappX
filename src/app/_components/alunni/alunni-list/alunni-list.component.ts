@@ -31,9 +31,10 @@ import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
 @Component({
-  selector:     'app-alunni-list',
-  templateUrl:  './alunni-list.component.html',
-  styleUrls:    ['../alunni.css']
+    selector: 'app-alunni-list',
+    templateUrl: './alunni-list.component.html',
+    styleUrls: ['../alunni.css'],
+    standalone: false
 })
 
 export class AlunniListComponent implements OnInit {

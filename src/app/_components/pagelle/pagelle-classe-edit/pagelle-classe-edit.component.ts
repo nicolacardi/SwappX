@@ -27,9 +27,10 @@ import { DOC_Pagella }                          from 'src/app/_models/DOC_Pagell
 //#endregion
 
 @Component({
-  selector: 'app-pagelle-classe-edit',
-  templateUrl: './pagelle-classe-edit.component.html',
-  styleUrls: ['../pagelle.css']
+    selector: 'app-pagelle-classe-edit',
+    templateUrl: './pagelle-classe-edit.component.html',
+    styleUrls: ['../pagelle.css'],
+    standalone: false
 })
 export class PagelleClasseEditComponent{
 

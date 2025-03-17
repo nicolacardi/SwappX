@@ -23,10 +23,10 @@ import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_Classe
 //#endregion
 
 @Component({
-  selector: 'app-download-registro-classe',
-  templateUrl: './download-registro-classe.component.html',
-  styleUrls: ['../lezioni.css'],
-
+    selector: 'app-download-registro-classe',
+    templateUrl: './download-registro-classe.component.html',
+    styleUrls: ['../lezioni.css'],
+    standalone: false
 })
 
 export class DownloadRegistroClasseComponent implements OnInit {

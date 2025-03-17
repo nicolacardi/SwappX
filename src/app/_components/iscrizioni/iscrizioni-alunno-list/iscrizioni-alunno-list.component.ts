@@ -18,9 +18,10 @@ import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_Classe
 
 //#endregion
 @Component({
-  selector: 'app-iscrizioni-alunno-list',
-  templateUrl: './iscrizioni-alunno-list.component.html',
-  styleUrls: ['../iscrizioni.css']
+    selector: 'app-iscrizioni-alunno-list',
+    templateUrl: './iscrizioni-alunno-list.component.html',
+    styleUrls: ['../iscrizioni.css'],
+    standalone: false
 })
 export class IscrizioniAlunnoListComponent implements OnInit {
 

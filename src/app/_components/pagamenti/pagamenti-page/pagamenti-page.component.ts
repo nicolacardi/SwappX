@@ -10,9 +10,10 @@ import { PagamentiListComponent } from '../pagamenti-list/pagamenti-list.compone
 
 //#endregion
 @Component({
-  selector: 'app-pagamenti-page',
-  templateUrl: './pagamenti-page.component.html',
-  styleUrls: ['../pagamenti.css']
+    selector: 'app-pagamenti-page',
+    templateUrl: './pagamenti-page.component.html',
+    styleUrls: ['../pagamenti.css'],
+    standalone: false
 })
 export class PagamentiPageComponent implements OnInit {
 

@@ -28,9 +28,10 @@ import { MaterieService } from '../../materie/materie.service';
 
 //#endregion
 @Component({
-  selector: 'app-voto-interr-edit',
-  templateUrl: './voto-interr-edit.component.html',
-  styleUrls: ['./../lezioni.css']
+    selector: 'app-voto-interr-edit',
+    templateUrl: './voto-interr-edit.component.html',
+    styleUrls: ['./../lezioni.css'],
+    standalone: false
 })
 export class VotoInterrEditComponent implements OnInit {
 

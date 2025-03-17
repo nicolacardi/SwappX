@@ -12,9 +12,10 @@ import { TipiPersonaService } from '../../persone/tipi-persona.service';
 import { PER_TipoPersona } from 'src/app/_models/PER_Persone';
 
 @Component({
-  selector: 'app-users-filter',
-  templateUrl: './users-filter.component.html',
-  styleUrls: ['../users.css']
+    selector: 'app-users-filter',
+    templateUrl: './users-filter.component.html',
+    styleUrls: ['../users.css'],
+    standalone: false
 })
 
 export class UsersFilterComponent implements OnInit {

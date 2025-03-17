@@ -28,9 +28,10 @@ import { CLS_ClasseSezioneAnno }                from 'src/app/_models/CLS_Classe
 
 
 @Component({
-  selector: 'app-risorsa-csa-edit',
-  templateUrl: './risorsa-csa-edit.component.html',
-  styleUrls: ['../risorse-csa.css']
+    selector: 'app-risorsa-csa-edit',
+    templateUrl: './risorsa-csa-edit.component.html',
+    styleUrls: ['../risorse-csa.css'],
+    standalone: false
 })
 export class RisorsaCSAEditComponent {
 

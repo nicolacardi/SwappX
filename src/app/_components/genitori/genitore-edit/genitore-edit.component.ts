@@ -30,9 +30,10 @@ import { GenitoreFormComponent } from '../genitore-form/genitore-form.component'
 //#endregion
 
 @Component({
-  selector: 'app-genitore-edit',
-  templateUrl: './genitore-edit.component.html',
-  styleUrls: ['./../genitori.css']
+    selector: 'app-genitore-edit',
+    templateUrl: './genitore-edit.component.html',
+    styleUrls: ['./../genitori.css'],
+    standalone: false
 })
 
 export class GenitoreEditComponent implements OnInit {

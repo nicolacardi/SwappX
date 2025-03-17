@@ -20,9 +20,10 @@ import { Observable }                           from 'rxjs';
 //#endregion
 
 @Component({
-  selector: 'app-obiettivi-filter',
-  templateUrl: './obiettivi-filter.component.html',
-  styleUrls: ['../obiettivi.css']
+    selector: 'app-obiettivi-filter',
+    templateUrl: './obiettivi-filter.component.html',
+    styleUrls: ['../obiettivi.css'],
+    standalone: false
 })
 export class ObiettiviFilterComponent implements OnInit {
 

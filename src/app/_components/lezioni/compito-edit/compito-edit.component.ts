@@ -25,9 +25,10 @@ import { TST_VotoCompito }                      from 'src/app/_models/TST_VotiCo
 
 //#endregion
 @Component({
-  selector: 'app-compito-edit',
-  templateUrl: './compito-edit.component.html',
-  styleUrls: ['./../lezioni.css']
+    selector: 'app-compito-edit',
+    templateUrl: './compito-edit.component.html',
+    styleUrls: ['./../lezioni.css'],
+    standalone: false
 })
 export class CompitoEditComponent implements OnInit {
 

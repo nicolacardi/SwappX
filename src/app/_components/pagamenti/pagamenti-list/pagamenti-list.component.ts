@@ -32,9 +32,10 @@ import { User }                                 from 'src/app/_user/Users';
 
 //#endregion
 @Component({
-  selector: 'app-pagamenti-list',
-  templateUrl: './pagamenti-list.component.html',
-  styleUrls: ['../pagamenti.css']
+    selector: 'app-pagamenti-list',
+    templateUrl: './pagamenti-list.component.html',
+    styleUrls: ['../pagamenti.css'],
+    standalone: false
 })
 
 export class PagamentiListComponent implements OnInit {

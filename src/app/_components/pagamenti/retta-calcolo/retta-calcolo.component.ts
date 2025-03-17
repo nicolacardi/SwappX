@@ -27,9 +27,10 @@ import { PAG_Retta }                            from 'src/app/_models/PAG_Retta'
 
 //#endregion
 @Component({
-  selector: 'app-retta-calcolo',
-  templateUrl: './retta-calcolo.component.html',
-  styleUrls: ['../pagamenti.css']
+    selector: 'app-retta-calcolo',
+    templateUrl: './retta-calcolo.component.html',
+    styleUrls: ['../pagamenti.css'],
+    standalone: false
 })
 
 export class RettaCalcoloComponent implements OnInit {

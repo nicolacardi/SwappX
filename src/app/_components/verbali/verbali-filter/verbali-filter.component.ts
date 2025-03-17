@@ -5,9 +5,10 @@ import { UntypedFormControl }                   from '@angular/forms';
 import { VerbaliListComponent } from '../verbali-list/verbali-list.component';
 
 @Component({
-  selector: 'app-verbali-filter',
-  templateUrl: './verbali-filter.component.html',
-  styleUrls: ['../verbali.css']
+    selector: 'app-verbali-filter',
+    templateUrl: './verbali-filter.component.html',
+    styleUrls: ['../verbali.css'],
+    standalone: false
 })
 
 export class VerbaliFilterComponent implements OnInit {

@@ -20,9 +20,10 @@ import { MatSnackBar }                          from '@angular/material/snack-ba
 
 //#endregion
 @Component({
-  selector: 'app-messaggi',
-  templateUrl: './messaggi.component.html',
-  styleUrls: ['./messaggi.component.css']
+    selector: 'app-messaggi',
+    templateUrl: './messaggi.component.html',
+    styleUrls: ['./messaggi.component.css'],
+    standalone: false
 })
 
 export class MessaggiComponent implements OnInit {

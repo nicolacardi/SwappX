@@ -18,9 +18,10 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
 //#endregion
 @Component({
-  selector: 'app-rettepagamenti-summary',
-  templateUrl: './rettepagamenti-summary.component.html',
-  styleUrls: ['../pagamenti.css']
+    selector: 'app-rettepagamenti-summary',
+    templateUrl: './rettepagamenti-summary.component.html',
+    styleUrls: ['../pagamenti.css'],
+    standalone: false
 })
 
 export class RettepagamentiSummaryComponent implements OnInit {

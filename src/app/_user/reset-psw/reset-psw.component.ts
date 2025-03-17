@@ -22,9 +22,10 @@ import { ParametriService } from 'src/app/_components/impostazioni/parametri/par
 //#endregion
 
 @Component({
-  selector: 'app-reset-psw',
-  templateUrl: './reset-psw.component.html',
-  styleUrls: ['../user.css']
+    selector: 'app-reset-psw',
+    templateUrl: './reset-psw.component.html',
+    styleUrls: ['../user.css'],
+    standalone: false
 })
 
 

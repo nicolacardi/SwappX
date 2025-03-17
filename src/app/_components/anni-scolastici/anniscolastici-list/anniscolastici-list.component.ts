@@ -21,9 +21,10 @@ import { _UT_Parametro } from 'src/app/_models/_UT_Parametro';
 
 //#endregion
 @Component({
-  selector: 'app-anniscolastici-list',
-  templateUrl: './anniscolastici-list.component.html',
-  styleUrls: ['../anniscolastici.css']
+    selector: 'app-anniscolastici-list',
+    templateUrl: './anniscolastici-list.component.html',
+    styleUrls: ['../anniscolastici.css'],
+    standalone: false
 })
 export class AnniScolasticiListComponent implements OnInit {
 

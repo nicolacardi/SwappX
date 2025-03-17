@@ -28,9 +28,10 @@ import { CLS_ClasseAnnoMateria } from 'src/app/_models/CLS_ClasseAnnoMateria';
 
 //#endregion
 @Component({
-  selector: 'app-docenze-add',
-  templateUrl: './docenze-add.component.html',
-  styleUrls: ['./../docenze.css']
+    selector: 'app-docenze-add',
+    templateUrl: './docenze-add.component.html',
+    styleUrls: ['./../docenze.css'],
+    standalone: false
 })
 
 export class DocenzeAddComponent implements OnInit {

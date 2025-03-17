@@ -41,9 +41,10 @@ import { RisorseCSAService } from '../../impostazioni/risorse-csa/risorse-csa.se
 //#endregion
 
 @Component({
-  selector: 'app-segreteria-dashboard',
-  templateUrl: './segreteria-dashboard.component.html',
-  styleUrls: ['../segreteria.css']
+    selector: 'app-segreteria-dashboard',
+    templateUrl: './segreteria-dashboard.component.html',
+    styleUrls: ['../segreteria.css'],
+    standalone: false
 })
 
 export class SegreteriaDashboardComponent implements OnInit {

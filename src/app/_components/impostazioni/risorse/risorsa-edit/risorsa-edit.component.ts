@@ -24,9 +24,10 @@ import { User }                                 from 'src/app/_user/Users';
 //#endregion
 
 @Component({
-  selector: 'app-risorsa-edit',
-  templateUrl: './risorsa-edit.component.html',
-  styleUrls: ['../risorse.css']
+    selector: 'app-risorsa-edit',
+    templateUrl: './risorsa-edit.component.html',
+    styleUrls: ['../risorse.css'],
+    standalone: false
 })
 export class RisorsaEditComponent {
 

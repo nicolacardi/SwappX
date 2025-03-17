@@ -30,9 +30,10 @@ import { TableColsVisibleService }              from '../../utilities/toolbar/ta
 
 //#endregion
 @Component({
-  selector: 'app-genitori-list',
-  templateUrl: './genitori-list.component.html',
-  styleUrls: ['../genitori.css']
+    selector: 'app-genitori-list',
+    templateUrl: './genitori-list.component.html',
+    styleUrls: ['../genitori.css'],
+    standalone: false
 })
 
 export class GenitoriListComponent implements OnInit {

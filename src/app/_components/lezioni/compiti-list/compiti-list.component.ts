@@ -19,9 +19,10 @@ import { CAL_Lezione }                          from 'src/app/_models/CAL_Lezion
 
 //#endregion
 @Component({
-  selector:     'app-compiti-list',
-  templateUrl:  './compiti-list.component.html',
-  styleUrls:    ['../lezioni.css']
+    selector: 'app-compiti-list',
+    templateUrl: './compiti-list.component.html',
+    styleUrls: ['../lezioni.css'],
+    standalone: false
 })
 
 export class CompitiListComponent implements OnInit {

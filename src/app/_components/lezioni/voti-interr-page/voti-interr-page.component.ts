@@ -2,9 +2,10 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { VotiInterrListComponent } from '../voti-interr-list/voti-interr-list.component';
 
 @Component({
-  selector: 'app-voti-interr-page',
-  templateUrl: './voti-interr-page.component.html',
-  styleUrls: ['../lezioni.css']
+    selector: 'app-voti-interr-page',
+    templateUrl: './voti-interr-page.component.html',
+    styleUrls: ['../lezioni.css'],
+    standalone: false
 })
 export class VotiInterrPageComponent {
 //#region ----- ViewChild Input Output ---------

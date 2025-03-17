@@ -23,9 +23,10 @@ import { User }                                 from 'src/app/_user/Users';
 //#endregion
 
 @Component({
-  selector: 'app-socio-edit',
-  templateUrl: './socio-edit.component.html',
-  styleUrls: ['../soci.css']
+    selector: 'app-socio-edit',
+    templateUrl: './socio-edit.component.html',
+    styleUrls: ['../soci.css'],
+    standalone: false
 })
 export class SocioEditComponent implements OnInit {
 

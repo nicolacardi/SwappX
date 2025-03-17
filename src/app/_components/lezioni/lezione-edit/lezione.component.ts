@@ -44,10 +44,10 @@ import { DialogDataLezione }                    from 'src/app/_models/DialogData
 //#endregion
 
 @Component({
-  selector: 'app-lezione',
-  templateUrl: './lezione.component.html',
-  styleUrls: ['../lezioni.css'],
-
+    selector: 'app-lezione',
+    templateUrl: './lezione.component.html',
+    styleUrls: ['../lezioni.css'],
+    standalone: false
 })
 export class LezioneComponent implements OnInit {
 

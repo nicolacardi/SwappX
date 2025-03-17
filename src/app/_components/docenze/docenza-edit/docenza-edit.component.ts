@@ -23,9 +23,10 @@ import { PER_Docente } from 'src/app/_models/PER_Docente';
 
 //#endregion
 @Component({
-  selector: 'app-docenza-edit',
-  templateUrl: './docenza-edit.component.html',
-  styleUrls: ['../docenze.css']
+    selector: 'app-docenza-edit',
+    templateUrl: './docenza-edit.component.html',
+    styleUrls: ['../docenze.css'],
+    standalone: false
 })
 export class DocenzaEditComponent implements OnInit {
 

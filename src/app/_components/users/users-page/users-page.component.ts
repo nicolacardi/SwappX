@@ -9,9 +9,10 @@ import { UsersListComponent } from '../users-list/users-list.component';
 import { NavigationService } from '../../utilities/navigation/navigation.service';
 
 @Component({
-  selector: 'app-users-page',
-  templateUrl: './users-page.component.html',
-  styleUrls: ['../users.css']
+    selector: 'app-users-page',
+    templateUrl: './users-page.component.html',
+    styleUrls: ['../users.css'],
+    standalone: false
 })
 
 export class UsersPageComponent implements OnInit {

@@ -37,49 +37,50 @@ import { concatMap, tap } from 'rxjs';
 //#endregion
 
 @Component({
-  selector: 'app-coordinatore-dashboard',
-//#region ----- animations -------
-  // animations: [
-  //   trigger('openCloseAlu', [
-  //     // ...
-  //     state('openAddAlu', style({
-  //       transform: 'rotate(0)',
-  //       backgroundImage: 'url("../../../../assets/plus.svg")',
-  //     })),
-  //     state('closedAddAlu', style({
-  //       transform: 'rotate(-360deg)',
-  //       color: "black",
-  //       backgroundImage: 'url("../../../../assets/alunnoPlus.svg")',
-  //     })),
-  //     transition('openAddAlu => closedAddAlu', [
-  //       animate('0.2s ease-in-out')
-  //     ]),
-  //     transition('closed => open', [
-  //       animate('0.2s ease-in-out')
-  //     ]),
-  //   ]),
-  //   trigger('openCloseDoc', [
-  //     // ...
-  //     state('openAddDoc', style({
-  //       transform: 'rotate(0)',
-  //       backgroundImage: 'url("../../../../assets/plus.svg")',
-  //     })),
-  //     state('closedAddDoc', style({
-  //       transform: 'rotate(-360deg)',
-  //       color: "black",
-  //       backgroundImage: 'url("../../../../assets/docentePlus.svg")',
-  //     })),
-  //     transition('openAddDoc => closedAddDoc', [
-  //       animate('0.2s ease-in-out')
-  //     ]),
-  //     transition('closed => open', [
-  //       animate('0.2s ease-in-out')
-  //     ]),
-  //   ]),
-  // ],
-//#endregion
-  templateUrl: './coordinatore-dashboard.component.html',
-  styleUrls: ['../coordinatore.css']
+    selector: 'app-coordinatore-dashboard',
+    //#region ----- animations -------
+    // animations: [
+    //   trigger('openCloseAlu', [
+    //     // ...
+    //     state('openAddAlu', style({
+    //       transform: 'rotate(0)',
+    //       backgroundImage: 'url("../../../../assets/plus.svg")',
+    //     })),
+    //     state('closedAddAlu', style({
+    //       transform: 'rotate(-360deg)',
+    //       color: "black",
+    //       backgroundImage: 'url("../../../../assets/alunnoPlus.svg")',
+    //     })),
+    //     transition('openAddAlu => closedAddAlu', [
+    //       animate('0.2s ease-in-out')
+    //     ]),
+    //     transition('closed => open', [
+    //       animate('0.2s ease-in-out')
+    //     ]),
+    //   ]),
+    //   trigger('openCloseDoc', [
+    //     // ...
+    //     state('openAddDoc', style({
+    //       transform: 'rotate(0)',
+    //       backgroundImage: 'url("../../../../assets/plus.svg")',
+    //     })),
+    //     state('closedAddDoc', style({
+    //       transform: 'rotate(-360deg)',
+    //       color: "black",
+    //       backgroundImage: 'url("../../../../assets/docentePlus.svg")',
+    //     })),
+    //     transition('openAddDoc => closedAddDoc', [
+    //       animate('0.2s ease-in-out')
+    //     ]),
+    //     transition('closed => open', [
+    //       animate('0.2s ease-in-out')
+    //     ]),
+    //   ]),
+    // ],
+    //#endregion
+    templateUrl: './coordinatore-dashboard.component.html',
+    styleUrls: ['../coordinatore.css'],
+    standalone: false
 })
 
 export class CoordinatoreDashboardComponent implements OnInit {

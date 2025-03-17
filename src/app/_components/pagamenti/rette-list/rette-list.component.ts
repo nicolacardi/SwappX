@@ -29,9 +29,10 @@ import { _UT_Parametro }                        from 'src/app/_models/_UT_Parame
 
 //#endregion
 @Component({
-  selector: 'app-rette-list',
-  templateUrl: './rette-list.component.html',
-  styleUrls: ['../pagamenti.css']
+    selector: 'app-rette-list',
+    templateUrl: './rette-list.component.html',
+    styleUrls: ['../pagamenti.css'],
+    standalone: false
 })
 export class RetteListComponent implements OnInit {
   

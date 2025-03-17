@@ -27,9 +27,10 @@ import { NoteIscrizioniService } from '../noteiscrizioni.service';
 //#endregion
 
 @Component({
-  selector: 'app-note-list',
-  templateUrl: './note-list.component.html',
-  styleUrls: ['../note.css']
+    selector: 'app-note-list',
+    templateUrl: './note-list.component.html',
+    styleUrls: ['../note.css'],
+    standalone: false
 })
 export class NoteListComponent implements OnInit {
   

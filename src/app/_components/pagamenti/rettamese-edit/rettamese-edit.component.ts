@@ -19,9 +19,10 @@ import { PAG_Retta }                            from 'src/app/_models/PAG_Retta'
 
 //#endregion
 @Component({
-  selector: 'app-rettamese-edit',
-  templateUrl: './rettamese-edit.component.html',
-  styleUrls: ['../pagamenti.css'],
+    selector: 'app-rettamese-edit',
+    templateUrl: './rettamese-edit.component.html',
+    styleUrls: ['../pagamenti.css'],
+    standalone: false
 })
 
 export class RettameseEditComponent implements OnInit{

@@ -23,9 +23,10 @@ import { CAL_ScadenzaPersone }                  from 'src/app/_models/CAL_Scaden
 //#endregion
 
 @Component({
-  selector: 'app-mie-scadenze',
-  templateUrl: './miescadenze.component.html',
-  styleUrls: ['../scadenze.css']
+    selector: 'app-mie-scadenze',
+    templateUrl: './miescadenze.component.html',
+    styleUrls: ['../scadenze.css'],
+    standalone: false
 })
 
 export class MieScadenzeComponent implements OnInit {
