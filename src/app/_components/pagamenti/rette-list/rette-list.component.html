@@ -1,4 +1,4 @@
-<span class="_visibility-rette-container">
+<span class="_visibility-rette-container lowZIndex"  >
     <button mat-icon-button  (click)="togD()" [disabled]= "showNum == 1 && showD">
         <mat-icon *ngIf="showD" color="primary">visibility</mat-icon>
         <mat-icon *ngIf="!showD" color="primary">visibility_off</mat-icon>
@@ -17,7 +17,7 @@
 </span>
 
 <h1 class="_titolo-pagina">Rette</h1>
-<form *ngIf="obsAnni$ | async" [formGroup] = "form"> 
+<form *ngIf="obsAnni$ | async" [formGroup] = "form" class="_pos-relative topZIndex">
     <mat-form-field class="ml20 topZIndex">
         <mat-select formControlName="selectAnnoScolastico" (selectionChange)="updateList()" #annoscolastico>
             <mat-option *ngFor="let element of (obsAnni$ | async)" [value]="element.id" >
@@ -36,7 +36,7 @@
 <mat-paginator class="transparent" [pageSize]="5" [pageSizeOptions]="[1, 3, 5]" showFirstLastButtons></mat-paginator>
 
 <!-- **************************   MAT-TABLE   ******************* -->
-<mat-table class="_table-row-low transparent" [dataSource]="matDataSource"
+<mat-table class="_table-row-low transparent lowZindex" [dataSource]="matDataSource"
     multiTemplateDataRows
     >
     

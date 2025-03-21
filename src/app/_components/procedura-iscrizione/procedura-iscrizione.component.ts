@@ -102,12 +102,21 @@ export class ProceduraIscrizioneComponent implements OnInit {
     //   concatMap(genitore => this.svcAlunni.listByGenitore(genitore.id))
     // );
 
+
     this.actRoute.queryParams.subscribe(
       params => {
-        this.iscrizioneID = params['iscrizioneID'];     
+        this.iscrizioneID = params['iscrizioneID'];  
+            //se uno arriva qui è un genitore che sta compilando quindi la prima cosa da fare è aggiormnare lo statoIscrizione a 05 (login effettuato)   
+
+        let formData = {
+          id: this.iscrizioneID,
+          codiceStato: 50
+        }
+        this.svcIscrizioni.updateStato(formData).subscribe(res=>this.loadData());
+
     });
 
-    this.loadData()
+    // this.loadData()
   }
 
   loadData() {
@@ -156,12 +165,23 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   }
 
+  salvaAssociazione() {
+    this.AssociazioneComponent.save();
+    this.associazioneSaved.setValue(true);
+  }
+
   async salvaRisposte(contesto: string) {
 
     //ho spostato in iscrizione-risposte la save...da testare
     if (contesto == 'Consensi')          this.ConsensiFormComponent.save(contesto);
-    if (contesto == 'DatiEconomici')    this.DatiEconomiciFormComponent.save(contesto);
-    
+    if (contesto == 'DatiEconomici')     {
+      this.DatiEconomiciFormComponent.save(contesto);
+      let formData = {
+        id: this.iscrizioneID,
+        codiceStato: 60
+      }
+      this.svcIscrizioni.updateStato(formData).subscribe();
+    }
 
     return;
     await firstValueFrom(this.svcIscrizioneRisposte.deleteByIscrizioneAndTipo(this.iscrizioneID, contesto));
@@ -305,10 +325,7 @@ export class ProceduraIscrizioneComponent implements OnInit {
 
   }
 
-  salvaAssociazione() {
-    this.AssociazioneComponent.save();
-    this.associazioneSaved.setValue(true);
-  }
+
 
   async downloadModuloIscrizione() {
 

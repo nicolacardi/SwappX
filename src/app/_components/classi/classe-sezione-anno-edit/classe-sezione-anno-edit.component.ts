@@ -108,10 +108,13 @@ export class ClasseSezioneAnnoEditComponent implements OnInit {
 
             let annoIDsucc=0;
             this.svcAnni.getAnnoSucc(classe.anno.id).pipe (
-              tap ( val   =>  annoIDsucc= val.id),
+              tap ( val   =>  {
+                console.log ("classe-sezione-anno edit - loadData - val anno successivo", val);
+                annoIDsucc= val.id
+              }),
               concatMap(() => this.obsClassiSezioniAnniSucc$ = this.svcClasseSezioneAnno.listByAnnoGroupByClasse(annoIDsucc))
             ).subscribe({
-              next: res=> { },
+              next: res=> { console.log (" classe-sezione-anno-edit - loadData - elenco classi anno successivo ", res)},
               error: err=> this.obs.unsubscribe()  ///NC ??? serve nel caso di errore, ma qui dentro cosa accade se c'è un errore?
             });
             this.form.controls['classeSezioneAnnoSuccID'].setValue(classe.ClasseSezioneAnnoSucc?.id); 

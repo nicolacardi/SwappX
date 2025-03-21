@@ -53,7 +53,6 @@ export class IscrizioniService {
   }
   
   //bisogna passare alla post un formData
-  //updateStato (id: number, codiceStato: number) {
   updateStato(formData: any): Observable <any>{
     return this.http.post( environment.apiBaseUrl  + 'CLS_Iscrizioni/UpdateStato?id='+formData.id+'&CodiceStato='+formData.codiceStato, formData);
   }
